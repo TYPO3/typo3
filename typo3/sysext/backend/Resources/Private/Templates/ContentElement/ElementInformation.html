@@ -4,11 +4,9 @@
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <f:layout name="Module" />
 
 <f:section name="Content">
-
     <f:if condition="{accessAllowed}">
         <f:then>
             <f:if condition="{hookContent}">
@@ -24,9 +22,7 @@
             <f:be.infobox state="2">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission')}</f:be.infobox>
         </f:else>
     </f:if>
-
 </f:section>
-
 
 <f:section name="nativeContent">
     <div class="card-container">

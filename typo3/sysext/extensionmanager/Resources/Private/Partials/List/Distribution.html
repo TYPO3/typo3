@@ -1,4 +1,9 @@
-{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:em="http://typo3.org/ns/TYPO3/CMS/Extensionmanager/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 <div class="card card-size-fixed-small">
     <div class="card-image">
         <f:link.action action="show" controller="Distribution" arguments="{extension:distribution}" class="distribution-image">
@@ -47,3 +52,4 @@
         </f:link.action>
     </div>
 </div>
+</html>

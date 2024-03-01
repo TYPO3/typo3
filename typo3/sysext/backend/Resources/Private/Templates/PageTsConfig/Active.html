@@ -4,7 +4,6 @@
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <f:layout name="Module"/>
 
 <f:section name="Before">
@@ -37,9 +36,7 @@
         />
     </h1>
     <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.description" /></p>
-
     <f:render section="Options" arguments="{_all}" />
-
     <f:comment><!-- Constants from Site settings --></f:comment>
     <f:if condition="{siteSettingsAst}">
         <h2><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.siteSettings" /></h2>
@@ -55,7 +52,6 @@
             />
         </div>
     </f:if>
-
     <h2><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.activePageTsConfig" /></h2>
     <f:if condition="!{pageTsConfigAst.children}">
         <f:then>

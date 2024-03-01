@@ -1,10 +1,17 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 <f:if condition="{menu.menuItems -> f:count()} > 1">
-    {menu.label} <select class="form-select form-select-sm t3-js-jumpMenuBox"
-                        name="{menu.identifier}"
-                        data-menu-identifier="{menu.dataIdentifier}"
-                        data-global-event="change" data-action-navigate="$value">
+    {menu.label}
+    <select class="form-select form-select-sm t3-js-jumpMenuBox"
+        name="{menu.identifier}"
+        data-menu-identifier="{menu.dataIdentifier}"
+        data-global-event="change" data-action-navigate="$value"
+    >
         <f:for each="{menu.menuItems}" as="menuItem">
             <option value="{menuItem.href}" {f:if(condition: '{menuItem.active}', then: ' selected="selected"')}>{menuItem.title}</option>
         </f:for>
     </select>
 </f:if>
+</html>

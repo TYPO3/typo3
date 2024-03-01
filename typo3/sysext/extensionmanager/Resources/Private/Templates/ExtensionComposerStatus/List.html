@@ -4,21 +4,16 @@
     xmlns:em="http://typo3.org/ns/TYPO3/CMS/Extensionmanager/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <f:layout name="Module" />
 
 <f:section name="Content">
-
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/extensionmanager/main.js'
         }"
     />
-
     <em:be.trigger triggers="{triggers}" />
-
     <h1><f:translate key="extensionComposerStatus" /></h1>
-
     <f:if condition="{extensions}">
         <f:then>
             <f:be.infobox title="Invalid composer.json files in extensions" state="-1">

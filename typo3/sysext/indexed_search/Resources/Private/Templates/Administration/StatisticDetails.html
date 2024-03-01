@@ -3,7 +3,6 @@
     xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <f:layout name="Module" />
 
 <f:section name="Content">
@@ -29,7 +28,6 @@
             <f:render section="wordlisting" arguments="{words:words,phash:phash,page:page,keywords:keywords,title:'words'}" />
             <f:render section="wordlisting" arguments="{words:topCount,phash:phash,title:'topCount'}" />
             <f:render section="wordlisting" arguments="{words:topFrequency,phash:phash,title:'topFrequency'}" />
-
             <f:if condition="{debug}">
                 <h3>
                     <f:translate key="administration.statistics.debug" />

@@ -1,21 +1,18 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:em="http://typo3.org/ns/TYPO3/CMS/Extensionmanager/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <f:layout name="Module" />
 
 <f:section name="Content">
-
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/extensionmanager/main.js'
         }"
     />
-
     <em:be.trigger triggers="{triggers}" />
-
     <div class="distribution-detail">
         <div class="distribution-detail-previewpane">
             <typo3-extensionmanager-distribution-image
@@ -30,7 +27,6 @@
                 <h1>{extension.title}</h1>
                 <p>{extension.description}</p>
             </div>
-
             <ul class="distribution-detail-actions">
                 <f:if condition="{distributionActive}">
                     <f:else>
@@ -43,22 +39,23 @@
                     <f:then>
                         <li>
                             <button class="btn btn-default distribution-openViewModule"
-                                    data-dispatch-action="TYPO3.ModuleMenu.showModule"
-                                    data-dispatch-args-list="page_preview">
+                                data-dispatch-action="TYPO3.ModuleMenu.showModule"
+                                data-dispatch-args-list="page_preview"
+                            >
                                 <core:icon identifier="actions-document-view" /> <f:translate key="distribution.welcome.openViewModule" />
                             </button>
                         </li>
                         <li>
                             <button class="btn btn-default distribution-openPageModule"
-                                    data-dispatch-action="TYPO3.ModuleMenu.showModule"
-                                    data-dispatch-args-list="web_layout">
+                                data-dispatch-action="TYPO3.ModuleMenu.showModule"
+                                data-dispatch-args-list="web_layout"
+                            >
                                 <core:icon identifier="actions-open" /> <f:translate key="distribution.welcome.openPageModule" />
                             </button>
                         </li>
                     </f:then>
                 </f:if>
             </ul>
-
             <dl class="row mt-4 mb-4">
                 <dt class="col-sm-2"><f:translate key="extensionList.distribution.title" /></dt>
                 <dd class="col-sm-10">{extension.title}</dd>
@@ -71,7 +68,6 @@
                 <dt class="col-sm-2"><f:translate key="extensionList.distribution.downloads" /></dt>
                 <dd class="col-sm-10">{extension.alldownloadcounter}</dd>
             </dl>
-
             <f:if condition="{extension.dependencies}">
                 <h2><f:translate key="distribution.dependency.headline" /></h2>
                 <div class="table-fit">
@@ -97,10 +93,8 @@
                     </table>
                 </div>
             </f:if>
-
         </div>
     </div>
-
 </f:section>
 
 </html>

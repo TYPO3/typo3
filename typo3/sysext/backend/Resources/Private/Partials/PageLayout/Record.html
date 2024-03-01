@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 {f:if(condition: '{item.disabled} && {item.context.drawingConfiguration.showHidden} == 0', then: 'height: 0; position: absolute;') -> f:variable(name: 'style')}
 <div class="t3-page-ce {item.wrapperClassName} t3js-page-ce t3js-page-ce-sortable" id="element-tt_content-{item.record.uid}" data-table="tt_content" data-uid="{item.record.uid}" data-language-uid="{item.record.sys_language_uid}" style="{style}">
     <div class="t3-page-ce-element t3-page-ce-dragitem" id="{item.uniqueId}">
@@ -28,3 +33,4 @@
     </f:if>
     <div class="t3-page-ce-dropzone t3js-page-ce-dropzone-available"></div>
 </div>
+</html>
