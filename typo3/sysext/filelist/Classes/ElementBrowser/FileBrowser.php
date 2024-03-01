@@ -59,8 +59,17 @@ class FileBrowser extends AbstractResourceBrowser
         $this->searchWord = (string)trim($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? '');
 
         $fileExtensions = GeneralUtility::trimExplode('~', explode('|', $this->bparams)[3], true);
-        $allowed = str_replace('allowed=', '', $fileExtensions[0] ?? '');
-        $disallowed = str_replace('disallowed=', '', $fileExtensions[1] ?? '');
+        $allowed = preg_replace('/^allowed=/', '', $fileExtensions[0] ?? '', 1);
+        // There might still be old links around, using ";" as delimiter
+        if (str_contains($allowed, ';disallowed=')) {
+            trigger_error(
+                'Using ";" as delimiter for the allowed / disallowed file extension list is deprecated and will stop working in v13. Use "~" as delimiter instead.',
+                E_USER_DEPRECATED
+            );
+            [$allowed, $disallowed] = GeneralUtility::trimExplode(';disallowed=', $allowed, false, 2);
+        } else {
+            $disallowed = preg_replace('/^disallowed=/', '', $fileExtensions[1] ?? '', 1);
+        }
 
         $this->fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
         if ($allowed !== '' && !str_contains($allowed, 'sys_file') && !str_contains($allowed, '*')) {
