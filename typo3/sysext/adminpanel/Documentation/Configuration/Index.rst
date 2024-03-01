@@ -6,12 +6,12 @@
 Configuration
 =============
 
-If the TypoScript property :t3-typoscript:`config.admPanel` is set,
+If the TypoScript property :ref:`typoscript-config-admpanel` is set,
 the admin panel is displayed at the bottom of pages in the frontend for
 logged-in backend users.
 
 By default, the Admin Panel is displayed to logged-in admins only. This behaviour
-can be changed by setting :t3-user-tsconfig:`admPanel.enable` for certain
+can be changed by setting :ref:`tsconfig-admpanel-enable` for certain
 backend users or groups.
 
 .. contents:: **Available settings**
@@ -30,14 +30,14 @@ The following settings can be made in the project's TypoScript setup. See also
 config.admPanel
 ---------------
 
-..  t3-typoscript:: config.admPanel
+..  confval:: config.admPanel
 
     :Type: boolean
     :Default: false
 
     If set, the Admin Panel displays at the bottom of pages. This applies only
     to logged-in admins or backend users with
-    :t3-user-tsconfig:`admPanel.enable` enabled.
+    :ref:`tsconfig-admpanel-enable` enabled.
 
     ..  rubric:: Example
 
@@ -53,10 +53,13 @@ The options below can be set in the user TSconfig of a backend backend user or
 group. See also
 :ref:`Using and setting user TSconfig <t3tsconfig:setting-user-tsconfig>`.
 
+
+.. _tsconfig-admpanel-enable:
+
 admPanel.enable
 ---------------
 
-..  t3-user-tsconfig:: admPanel.enable
+..  confval:: admPanel.enable
 
     :Type: array<string, boolean>
     :Default: For admin users, `admPanel.enable.all = 1` is default.
@@ -89,7 +92,7 @@ admPanel.enable
 admPanel.hide
 -------------
 
-..  t3-user-tsconfig:: admPanel.hide
+..  confval:: admPanel.hide
 
     :Type: boolean
 
@@ -105,7 +108,7 @@ admPanel.hide
 admPanel.override
 -----------------
 
-..  t3-user-tsconfig:: admPanel.override
+..  confval:: admPanel.override
 
     :Type: object
 
