@@ -3409,6 +3409,7 @@ to{opacity:1;transform:translate3d(0,0,0)}
 .svg-tree-wrapper .node-bg{fill:var(--svgtree-node-bg);stroke:var(--svgtree-node-border-color);stroke-width:1px}
 .svg-tree-wrapper .node-bg__border{display:none;pointer-events:none;fill:var(--svgtree-drag-dropindicator-color);stroke:var(--svgtree-drag-dropindicator-color);stroke-width:1;shape-rendering:crispedges}
 .svg-tree-wrapper .node-bg.ver-element,.svg-tree-wrapper .node-bg.ver-page,.svg-tree-wrapper .node-bg.ver-versions{--svgtree-node-bg:var(--svgtree-node-version-bg);--svgtree-node-border-color:var(--svgtree-node-version-border-color)}
+.svg-tree-wrapper .node-bg.ver-versions{fill:var(--svgtree-node-version-bg)!important}
 .svg-tree-wrapper .node:focus{outline:0}
 .svg-tree-wrapper .node-over{--svgtree-node-bg:var(--svgtree-node-hover-bg);--svgtree-node-border-color:var(--svgtree-node-hover-border-color)}
 .svg-tree-wrapper .node-selected{--svgtree-node-bg:var(--svgtree-node-selected-bg);--svgtree-node-border-color:var(--svgtree-node-selected-border-color)}

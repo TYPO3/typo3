@@ -144,6 +144,10 @@
                 --svgtree-node-bg: var(--svgtree-node-version-bg);
                 --svgtree-node-border-color: var(--svgtree-node-version-border-color);
             }
+
+            &.ver-versions {
+                fill: var(--svgtree-node-version-bg) !important;
+            }
         }
 
         &:focus {
