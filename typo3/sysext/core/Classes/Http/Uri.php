@@ -53,6 +53,8 @@ class Uri implements UriInterface
     protected array $supportedSchemes = [
         'http'  => 80,
         'https' => 443,
+        'ws' => 80,
+        'wss' => 443,
     ];
 
     /**

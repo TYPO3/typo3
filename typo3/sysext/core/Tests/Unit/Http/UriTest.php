@@ -43,6 +43,8 @@ final class UriTest extends UnitTestCase
         return [
             'full uri' => [ 'https://user:pass@local.example.com:3001/foo?bar=baz#quz' ],
             'double slash' => [ 'https://user:pass@local.example.com:3001//' ],
+            'websocket uri' => [ 'ws://user:pass@local.example.com:3001/foo?bar=baz#quz' ],
+            'secure websocket uri' => [ 'wss://user:pass@local.example.com:3001/foo?bar=baz#quz' ],
         ];
     }
 
