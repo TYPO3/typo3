@@ -1157,7 +1157,7 @@ class BackendUtility
      * @param bool $preferNavTitle Prefers the 'nav_title' if available over the 'title' (nessesary for Tree with options.pageTree.showNavTitle = 1)
      * @return string
      */
-    public static function titleAttribForPages($row, $perms_clause = '', $includeAttrib = true, $preferNavTitle = false)
+    public static function titleAttribForPages($row, $perms_clause = '', $includeAttrib = true, bool $preferNavTitle = false)
     {
         if (!isset($row['uid'])) {
             return '';
