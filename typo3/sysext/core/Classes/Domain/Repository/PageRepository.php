@@ -357,8 +357,6 @@ class PageRepository implements LoggerAwareInterface
         if (!$schema->isLanguageAware()) {
             return $originalRow;
         }
-        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-        $languageField = $languageCapability->getLanguageField()->getName();
 
         try {
             /** @var LanguageAspect $languageAspect */
@@ -379,45 +377,33 @@ class PageRepository implements LoggerAwareInterface
         if ($languageAspect->doOverlays()) {
             $attempted = true;
             // Mixed = if nothing is available in the selected language, try the fallbacks
-            // Fallbacks work as follows:
+            // Fallbacks work as follows (happens in the actual methods):
             // 1. We have a default language record and then start doing overlays (= the basis for fallbacks)
             // 2. Check if the actual requested language version is available in the DB (language=3 = canadian-french)
             // 3. If not, we check the next language version in the chain (e.g. language=2 = french) and so forth until we find a record
             if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_MIXED) {
-                $languageChain = $this->getLanguageFallbackChain($languageAspect);
-                $languageChain = array_reverse($languageChain);
                 if ($table === 'pages') {
-                    $result = $this->getPageOverlay(
+                    $localizedRecord = $this->getPageOverlay(
                         $originalRow,
-                        new LanguageAspect($languageAspect->getId(), $languageAspect->getId(), LanguageAspect::OVERLAYS_MIXED, $languageChain)
+                        $languageAspect
                     );
-                    if (!empty($result)) {
-                        $localizedRecord = $result;
+                    if (empty($localizedRecord)) {
+                        $localizedRecord = $originalRow;
                     }
                 } else {
-                    $languageChain = array_merge($languageChain, [$languageAspect->getContentId()]);
                     // Loop through each (fallback) language and see if there is a record
-                    // However, we do not want to preserve the "originalRow", that's why we set the option to "OVERLAYS_ON"
-                    while (($languageId = array_pop($languageChain)) !== null) {
-                        $result = $this->getRecordOverlay(
-                            $table,
-                            $originalRow,
-                            new LanguageAspect($languageId, $languageId, LanguageAspect::OVERLAYS_ON)
-                        );
-                        // If an overlay is found, return it
-                        if (is_array($result)) {
-                            $localizedRecord = $result;
-                            $localizedRecord['_REQUESTED_OVERLAY_LANGUAGE'] = $languageAspect->getContentId();
-                            break;
-                        }
-                    }
+                    $localizedRecord = $this->getRecordOverlay(
+                        $table,
+                        $originalRow,
+                        $languageAspect
+                    );
                     if ($localizedRecord === null) {
                         // If nothing was found, we set the localized record to the originalRow to simulate
                         // that the default language is "kept" (we want fallback to default language).
                         // Note: Most installations might have "type=fallback" set but do not set the default language
                         // as fallback. In the future - once we want to get rid of the magic "default language",
                         // this needs to behave different, and the "pageNotFound" special handling within fallbacks should be removed
-                        // and we need to check explicitly on in_array(0, $languageAspect->getFallbackChain())
+                        // plus: we need to check explicitly on in_array(0, $languageAspect->getFallbackChain())
                         // However, getPageOverlay() a few lines above also returns the "default language page" as well.
                         $localizedRecord = $originalRow;
                     }
@@ -744,6 +730,7 @@ class PageRepository implements LoggerAwareInterface
             }
 
             $pid = $incomingRecordPid;
+            $languageUids = array_merge([$languageAspect->getContentId()], $this->getLanguageFallbackChain($languageAspect));
             // When inside a workspace, the already versioned $row of the default language is coming in
             // For moved versioned records, the PID MIGHT be different. However, the idea of this function is
             // to get the language overlay of the LIVE default record, and afterward get the versioned record
@@ -753,25 +740,38 @@ class PageRepository implements LoggerAwareInterface
             if (isset($row['_ORIG_pid']) && $schema->isWorkspaceAware() && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
                 $pid = $row['_ORIG_pid'];
             }
-            $olrow = $queryBuilder->select('*')
+            $overlayRows = $queryBuilder->select('*')
                 ->from($table)
                 ->where(
                     $queryBuilder->expr()->eq(
                         'pid',
                         $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                     ),
-                    $queryBuilder->expr()->eq(
+                    $queryBuilder->expr()->in(
                         $languageField,
-                        $queryBuilder->createNamedParameter($languageAspect->getContentId(), Connection::PARAM_INT)
+                        $queryBuilder->createNamedParameter($languageUids, Connection::PARAM_INT_ARRAY)
                     ),
                     $queryBuilder->expr()->eq(
                         $transOrigPointerField,
                         $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
                     )
                 )
-                ->setMaxResults(1)
                 ->executeQuery()
-                ->fetchAssociative();
+                ->fetchAllAssociative();
+
+            $olrow = false;
+            if ($overlayRows !== []) {
+                // Note: The exact order of the $languageUid traversal is important
+                foreach ($languageUids as $languageId) {
+                    foreach ($overlayRows as $overlayRow) {
+                        if ((int)$overlayRow[$languageField] === $languageId) {
+                            // Found the requested language, stop searching
+                            $olrow = $overlayRow;
+                            break 2;
+                        }
+                    }
+                }
+            }
 
             $this->versionOL($table, $olrow);
             // Merge record content by traversing all fields:
@@ -788,7 +788,7 @@ class PageRepository implements LoggerAwareInterface
                     } elseif ($fN === 'uid') {
                         $row['_LOCALIZED_UID'] = (int)$olrow['uid'];
                         // will be overridden again outside of this method if there is a multi-level chain
-                        $row['_REQUESTED_OVERLAY_LANGUAGE'] = $olrow[$languageField];
+                        $row['_REQUESTED_OVERLAY_LANGUAGE'] = $languageAspect->getContentId();
                     }
                 }
                 return $row;

@@ -786,7 +786,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
             'overlayMode' => 'mixed',
         ];
         // Expected behaviour:
-        // Non translated default language elements are not shown, because of hideNonTranslated
+        // Non translated default language elements are not shown, because of "hideNonTranslated" a.k.a. "strict"
         yield 'strict with fallback to default' => [
             'languageConfiguration' => [
                 'fallbackType' => 'strict',
@@ -802,7 +802,7 @@ final class LocalizedSiteContentRenderingTest extends FunctionalTestCase
                 'fallbackType' => 'strict',
                 'fallbackChain' => ['DA', 'EN'],
             ],
-            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
+            'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', '[PL] Without default language'],
             'fallbackType' => 'strict',
             'fallbackChain' => '1,0,pageNotFound',
             'overlayMode' => 'includeFloating',
