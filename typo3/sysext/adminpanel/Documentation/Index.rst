@@ -53,4 +53,3 @@ contains a range of metrics including debug and caching information.
    :hidden:
 
    Sitemap
-   genindex
