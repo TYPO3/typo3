@@ -93,11 +93,24 @@ final class RotatingFileWriterTest extends UnitTestCase
         self::assertCount(1, $rotatedFiles);
     }
 
-    #[DataProvider('writingLogWithLatestRotationInTimeFrameDoesNotRotateDataProvider')]
-    #[Test]
-    public function writingLogWithLatestRotationInTimeFrameDoesNotRotate(Interval $interval, int $rotationTimestamp): void
+    public static function intervalDataProvider(): array
     {
-        $rotationDate = (new \DateTimeImmutable('@' . $rotationTimestamp))->format('YmdHis');
+        return [
+            [Interval::DAILY],
+            [Interval::WEEKLY],
+            [Interval::MONTHLY],
+            [Interval::YEARLY],
+        ];
+    }
+
+    #[DataProvider('intervalDataProvider')]
+    #[Test]
+    public function writingLogWithLatestRotationInTimeFrameDoesNotRotate(Interval $interval): void
+    {
+        $testingTolerance = 100;
+        $rotationDate = (new \DateTime('@' . (time() + $testingTolerance)))
+            ->sub(new \DateInterval($interval->getDateInterval()))
+            ->format('YmdHis');
         $logFileName = $this->getDefaultFileName();
 
         file_put_contents($logFileName, 'fooo');
@@ -114,24 +127,15 @@ final class RotatingFileWriterTest extends UnitTestCase
         self::assertCount(1, $rotatedFiles);
     }
 
-    public static function writingLogWithLatestRotationInTimeFrameDoesNotRotateDataProvider(): array
-    {
-        $secondsOfADay = 86400;
-        $tolerance = 100;
-
-        return [
-            [Interval::DAILY, time() - $secondsOfADay + $tolerance],
-            [Interval::WEEKLY, time() - $secondsOfADay * 7 + $tolerance],
-            [Interval::MONTHLY, time() - $secondsOfADay * 30 + $tolerance],
-            [Interval::YEARLY, time() - $secondsOfADay * 365 + $tolerance],
-        ];
-    }
-
-    #[DataProvider('writingLogWithExpiredLatestRotationInTimeFrameRotatesDataProvider')]
+    #[DataProvider('intervalDataProvider')]
     #[Test]
-    public function writingLogWithExpiredLatestRotationInTimeFrameRotates(Interval $interval, int $rotationTimestamp): void
+    public function writingLogWithExpiredLatestRotationInTimeFrameRotates(Interval $interval): void
     {
-        $rotationDate = (new \DateTimeImmutable('@' . $rotationTimestamp))->format('YmdHis');
+        // Helper variable to ensure the next rotation interval kicks in
+        $boost = 100;
+        $rotationDate = (new \DateTime('@' . (time() - $boost)))
+            ->sub(new \DateInterval($interval->getDateInterval()))
+            ->format('YmdHis');
         $logFileName = $this->getDefaultFileName();
 
         file_put_contents($logFileName, 'fooo');
@@ -146,20 +150,6 @@ final class RotatingFileWriterTest extends UnitTestCase
 
         $rotatedFiles = glob($logFileName . '.*');
         self::assertCount(2, $rotatedFiles);
-    }
-
-    public static function writingLogWithExpiredLatestRotationInTimeFrameRotatesDataProvider(): array
-    {
-        $secondsOfADay = 86400;
-        // Helper variable to ensure the next rotation interval kicks in
-        $boost = 100;
-
-        return [
-            [Interval::DAILY, time() - $secondsOfADay - $boost],
-            [Interval::WEEKLY, time() - $secondsOfADay * 7 - $boost],
-            [Interval::MONTHLY, time() - $secondsOfADay * 31 - $boost], // dumb test, always expect months with 31 days
-            [Interval::YEARLY, time() - $secondsOfADay * 366 - $boost], // dumb test, always expect years with 366 days
-        ];
     }
 
     #[Test]
