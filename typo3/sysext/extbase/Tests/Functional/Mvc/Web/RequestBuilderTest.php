@@ -678,7 +678,7 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => ['action' => 'show']]);
 
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest

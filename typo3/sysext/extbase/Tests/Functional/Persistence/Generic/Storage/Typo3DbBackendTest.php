@@ -55,7 +55,7 @@ final class Typo3DbBackendTest extends FunctionalTestCase
     public function getObjectDataByQueryChangesUidIfInPreview(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbBackendTestImport.csv');
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)

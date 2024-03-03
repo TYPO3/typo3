@@ -1885,7 +1885,7 @@ final class ContentObjectRendererTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1414513947);
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
         $this->subject->setRequest($request);
@@ -1907,7 +1907,7 @@ final class ContentObjectRendererTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
         $this->subject->setRequest($request);
@@ -1922,7 +1922,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $configuration = [
             'exceptionHandler' => '1',
         ];
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
         $this->subject->setRequest($request);
@@ -1933,7 +1933,7 @@ final class ContentObjectRendererTest extends UnitTestCase
     public function renderingContentObjectDoesNotThrowExceptionIfExceptionHandlerIsConfiguredGlobally(): void
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject);
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([
             'contentObjectExceptionHandler' => '1',
         ]);
@@ -1948,7 +1948,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1414513947);
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject, false);
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([
             'contentObjectExceptionHandler' => '1',
         ]);
@@ -1964,7 +1964,7 @@ final class ContentObjectRendererTest extends UnitTestCase
     public function renderedErrorMessageCanBeCustomized(): void
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject);
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
         $this->subject->setRequest($request);
@@ -1981,7 +1981,7 @@ final class ContentObjectRendererTest extends UnitTestCase
     public function localConfigurationOverridesGlobalConfiguration(): void
     {
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture($this->subject);
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([
             'contentObjectExceptionHandler.' => [
                 'errorMessage' => 'Global message for testing',
@@ -2011,7 +2011,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                 'ignoreCodes.' => ['10.' => '1414513947'],
             ],
         ];
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
         $this->subject->setRequest($request);
@@ -2093,7 +2093,7 @@ final class ContentObjectRendererTest extends UnitTestCase
             $linkFactory->method('create')->willReturn($linkResult);
             GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         }
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
         $this->subject->setRequest($request);
@@ -2365,7 +2365,7 @@ final class ContentObjectRendererTest extends UnitTestCase
     #[Test]
     public function parseFuncParsesNestedTagsProperly(string $value, array $configuration, string $expectedResult): void
     {
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
         $this->subject->setRequest($request);
@@ -5933,7 +5933,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         int $times,
         string $will
     ): void {
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([
             'disablePrefixComment' => $disable,
         ]);
@@ -7327,7 +7327,7 @@ final class ContentObjectRendererTest extends UnitTestCase
             "lib.bar.value = bar\n";
         $lineStream = (new LossyTokenizer())->tokenize($typoScriptString);
         $typoScriptAst = (new AstBuilder(new NoopEventDispatcher()))->build($lineStream, new RootNode());
-        $typoScriptAttribute = new FrontendTypoScript(new RootNode(), []);
+        $typoScriptAttribute = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScriptAttribute->setSetupTree($typoScriptAst);
         $typoScriptAttribute->setSetupArray($typoScriptAst->toArray());
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScriptAttribute);

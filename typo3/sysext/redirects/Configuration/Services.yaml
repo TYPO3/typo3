@@ -24,3 +24,7 @@ services:
   TYPO3\CMS\Redirects\Configuration\CheckIntegrityConfiguration:
     arguments:
       $extensionConfiguration: '@extension.configuration.redirects'
+
+  TYPO3\CMS\Redirects\Service\RedirectService:
+    arguments:
+      $typoScriptCache: '@cache.typoscript'

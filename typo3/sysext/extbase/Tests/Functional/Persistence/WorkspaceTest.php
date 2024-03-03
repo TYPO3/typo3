@@ -58,7 +58,7 @@ final class WorkspaceTest extends FunctionalTestCase
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect($workspaceId));
         GeneralUtility::setSingletonInstance(Context::class, $context);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -86,7 +86,7 @@ final class WorkspaceTest extends FunctionalTestCase
         $context->setAspect('backend.user', new UserAspect($backendUser));
         $context->setAspect('workspace', new WorkspaceAspect($workspaceId));
         GeneralUtility::setSingletonInstance(Context::class, $context);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)

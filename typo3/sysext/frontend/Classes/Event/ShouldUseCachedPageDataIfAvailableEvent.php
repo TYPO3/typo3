@@ -28,13 +28,15 @@ final class ShouldUseCachedPageDataIfAvailableEvent
 {
     public function __construct(
         private readonly ServerRequestInterface $request,
-        private readonly TypoScriptFrontendController $controller,
         private bool $shouldUseCachedPageData
     ) {}
 
+    /**
+     * @todo: deprecate
+     */
     public function getController(): TypoScriptFrontendController
     {
-        return $this->controller;
+        return $this->request->getAttribute('frontend.controller');
     }
 
     public function getRequest(): ServerRequestInterface

@@ -76,7 +76,7 @@ final class IndexerTest extends UnitTestCase
     {
         $absRefPrefix = '/' . StringUtility::getUniqueId();
         $html = 'test <a href="' . $absRefPrefix . 'index.php">test</a> test';
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([
             'absRefPrefix' => $absRefPrefix,
         ]);

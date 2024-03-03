@@ -15,6 +15,11 @@ services:
     arguments:
       $cache: '@cache.assets'
 
+  TYPO3\CMS\Frontend\Middleware\PrepareTypoScriptFrontendRendering:
+    arguments:
+      $pageCache: '@cache.pages'
+      $typoScriptCache: '@cache.typoscript'
+
   TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor:
     public: true
 

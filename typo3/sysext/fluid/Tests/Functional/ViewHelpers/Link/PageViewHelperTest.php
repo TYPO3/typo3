@@ -242,7 +242,7 @@ final class PageViewHelperTest extends FunctionalTestCase
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray($frontendTypoScriptConfigArray);
         $request = new ServerRequest('http://localhost/typo3/');
@@ -267,7 +267,7 @@ final class PageViewHelperTest extends FunctionalTestCase
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
         $frontendTypoScript->setConfigArray([]);
         $request = new ServerRequest();

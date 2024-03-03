@@ -20,7 +20,10 @@ namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
@@ -30,12 +33,20 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\TreeFromLineStreamBuilder;
+use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
@@ -78,9 +89,23 @@ final class RedirectServiceTest extends UnitTestCase
                 new RecordAccessVoter(new NoopEventDispatcher()),
                 new ErrorController(),
                 new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
-            )
+            ),
+            new FrontendTypoScriptFactory(
+                $this->createMock(ContainerInterface::class),
+                new NoopEventDispatcher(),
+                new SysTemplateTreeBuilder(
+                    $this->createMock(ConnectionPool::class),
+                    $this->createMock(PackageManager::class),
+                    new Context(),
+                    new TreeFromLineStreamBuilder(new FileNameValidator())
+                ),
+                new LossyTokenizer(),
+                new IncludeTreeTraverser(),
+                new ConditionVerdictAwareIncludeTreeTraverser(),
+            ),
+            $this->createMock(PhpFrontend::class),
+            $this->createMock(LoggerInterface::class),
         );
-        $this->redirectService->setLogger($logger);
 
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
     }
@@ -633,12 +658,24 @@ final class RedirectServiceTest extends UnitTestCase
                     new ErrorController(),
                     new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
                 ),
+                new FrontendTypoScriptFactory(
+                    $this->createMock(ContainerInterface::class),
+                    new NoopEventDispatcher(),
+                    new SysTemplateTreeBuilder(
+                        $this->createMock(ConnectionPool::class),
+                        $this->createMock(PackageManager::class),
+                        new Context(),
+                        new TreeFromLineStreamBuilder(new FileNameValidator())
+                    ),
+                    new LossyTokenizer(),
+                    new IncludeTreeTraverser(),
+                    new ConditionVerdictAwareIncludeTreeTraverser(),
+                ),
+                $this->createMock(PhpFrontend::class),
+                $this->createMock(LoggerInterface::class),
             ],
             '',
         );
-
-        $logger = new NullLogger();
-        $redirectService->setLogger($logger);
 
         $pageRecord = 't3://page?uid=13';
         $redirectTargetMatch = [

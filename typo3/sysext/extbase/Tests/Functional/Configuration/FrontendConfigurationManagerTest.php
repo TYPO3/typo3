@@ -56,7 +56,7 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
     </data>
 </T3FlexForms>';
 
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($typoScript);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
 
@@ -75,7 +75,7 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = ['pi_flexform' => $flexForm];
         $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $frontendConfigurationManager = $this->get(FrontendConfigurationManager::class);
@@ -356,7 +356,7 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
         $contentObject = new ContentObjectRenderer();
         $contentObject->data = ['pi_flexform' => $flexForm];
         $request = (new ServerRequest())->withAttribute('currentContentObject', $contentObject);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($typoScript);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
         $frontendConfigurationManager = $this->get(FrontendConfigurationManager::class);

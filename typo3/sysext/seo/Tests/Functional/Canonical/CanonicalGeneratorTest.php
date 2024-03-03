@@ -180,7 +180,7 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         ];
         $pageInformation->setPageRecord($pageRecord);
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = $request->withAttribute('frontend.typoscript', $typoScript);
         $this->get(CanonicalGenerator::class)->generate(['request' => $request]);

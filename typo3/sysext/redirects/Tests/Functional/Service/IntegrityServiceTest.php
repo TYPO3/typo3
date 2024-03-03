@@ -19,10 +19,14 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Redirects\Service\IntegrityService;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
@@ -40,13 +44,18 @@ final class IntegrityServiceTest extends FunctionalTestCase
     {
         parent::setUp();
         $siteFinder = $this->getSiteFinderMock();
+        /** @var PhpFrontend $typoScriptCache */
+        $typoScriptCache = $this->get(CacheManager::class)->getCache('typoscript');
         $this->subject = new IntegrityService(
             new RedirectService(
                 new RedirectCacheService(),
                 $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock(),
                 $siteFinder,
                 new NoopEventDispatcher(),
-                $this->get(PageInformationFactory::class)
+                $this->get(PageInformationFactory::class),
+                $this->get(FrontendTypoScriptFactory::class),
+                $typoScriptCache,
+                $this->get(LogManager::class)->getLogger('Testing'),
             ),
             $siteFinder
         );

@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Redirects\Service;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
@@ -47,18 +48,19 @@ use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
 /**
  * Creates a proper URL to redirect from a matched redirect of a request
  *
- * @internal due to some possible refactorings in TYPO3 v9
+ * @internal due to some possible refactorings
  */
-class RedirectService implements LoggerAwareInterface
+class RedirectService
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private readonly RedirectCacheService $redirectCacheService,
         private readonly LinkService $linkService,
         private readonly SiteFinder $siteFinder,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly PageInformationFactory $pageInformationFactory,
+        private readonly FrontendTypoScriptFactory $frontendTypoScriptFactory,
+        private readonly PhpFrontend $typoScriptCache,
+        private readonly LoggerInterface $logger,
     ) {}
 
     /**
@@ -402,14 +404,48 @@ class RedirectService implements LoggerAwareInterface
         $originalRequest = $originalRequest->withAttribute('frontend.page.information', $pageInformation);
         $controller = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $controller->initializePageRenderer($originalRequest);
-        $frontendTypoScript = $controller->getFromCache($originalRequest);
+        $expressionMatcherVariables = $this->getExpressionMatcherVariables($site, $originalRequest, $controller);
+        $frontendTypoScript = $this->frontendTypoScriptFactory->createSettingsAndSetupConditions(
+            $site,
+            $pageInformation->getSysTemplateRows(),
+            // $originalRequest does not contain site ...
+            $expressionMatcherVariables,
+            $this->typoScriptCache,
+        );
+        $frontendTypoScript = $this->frontendTypoScriptFactory->createSetupConfigOrFullSetup(
+            false,
+            $frontendTypoScript,
+            $site,
+            $pageInformation->getSysTemplateRows(),
+            $expressionMatcherVariables,
+            '0',
+            $this->typoScriptCache,
+            null
+        );
         $newRequest = $originalRequest->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $controller->releaseLocks();
         $controller->newCObj($newRequest);
         if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $GLOBALS['TSFE'] = $controller;
         }
         return $controller;
+    }
+
+    private function getExpressionMatcherVariables(SiteInterface $site, ServerRequestInterface $request, TypoScriptFrontendController $controller): array
+    {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        $topDownRootLine = $pageInformation->getRootLine();
+        $localRootline = $pageInformation->getLocalRootLine();
+        ksort($topDownRootLine);
+        return [
+            'request' => $request,
+            'pageId' => $pageInformation->getId(),
+            'page' => $pageInformation->getPageRecord(),
+            'fullRootLine' => $topDownRootLine,
+            'localRootLine' => $localRootline,
+            'site' => $site,
+            'siteLanguage' => $request->getAttribute('language'),
+            'tsfe' => $controller,
+        ];
     }
 
     protected function replaceRegExpCaptureGroup(array $matchedRedirect, UriInterface $uri, array $linkDetails): array

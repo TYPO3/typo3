@@ -134,7 +134,7 @@ final class RequestHandlerTest extends UnitTestCase
 
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
         $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setPageArray([
             'meta.' => [
@@ -295,7 +295,7 @@ final class RequestHandlerTest extends UnitTestCase
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
         $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
         $pageRendererMock->expects(self::once())->method('setMetaTag')->with($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setPageArray([
             'meta.' => $typoScript,
@@ -342,7 +342,7 @@ final class RequestHandlerTest extends UnitTestCase
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->getMock();
         $pageRendererMock->method('getDocType')->willReturn(DocType::html5);
         $pageRendererMock->expects(self::never())->method('setMetaTag');
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setPageArray([
             'meta.' => [
@@ -459,7 +459,7 @@ final class RequestHandlerTest extends UnitTestCase
                 self::assertSame($expectedArgs[3], $subProperties);
                 self::assertSame($expectedArgs[4], $replace);
             });
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setPageArray([
             'meta.' => $typoScript,

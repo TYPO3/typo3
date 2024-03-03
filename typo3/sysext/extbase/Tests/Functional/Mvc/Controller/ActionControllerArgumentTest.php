@@ -191,7 +191,7 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
 
     private function buildRequest(string $actionName, array $arguments = null): Request
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $serverRequest = (new ServerRequest())
             ->withAttribute('extbase', new ExtbaseRequestParameters())

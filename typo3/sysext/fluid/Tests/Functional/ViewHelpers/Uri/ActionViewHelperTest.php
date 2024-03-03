@@ -187,7 +187,7 @@ final class ActionViewHelperTest extends FunctionalTestCase
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray([]);
         $extbaseRequestParameters = new ExtbaseRequestParameters();

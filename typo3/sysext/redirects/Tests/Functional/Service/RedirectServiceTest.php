@@ -22,6 +22,8 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -29,8 +31,10 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
@@ -98,14 +102,18 @@ final class RedirectServiceTest extends FunctionalTestCase
             ]
         );
 
+        /** @var PhpFrontend $typoScriptCache */
+        $typoScriptCache = $this->get(CacheManager::class)->getCache('typoscript');
         $redirectService = new RedirectService(
             new RedirectCacheService(),
             $linkServiceMock,
             $siteFinder,
             new NoopEventDispatcher(),
-            $this->get(PageInformationFactory::class)
+            $this->get(PageInformationFactory::class),
+            $this->get(FrontendTypoScriptFactory::class),
+            $typoScriptCache,
+            $this->get(LogManager::class)->getLogger('Testing'),
         );
-        $redirectService->setLogger($logger);
 
         // Assert correct redirect is matched
         $redirectMatch = $redirectService->matchRedirect($uri->getHost(), $uri->getPath(), $uri->getQuery());
@@ -850,12 +858,11 @@ final class RedirectServiceTest extends FunctionalTestCase
             $this->buildSiteConfiguration(1, 'https://acme.com/')
         );
 
-        $logger = new NullLogger();
         $frontendUserAuthentication = new FrontendUserAuthentication();
 
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $uri = new Uri('https://acme.com/non-existing-page');
-        $request = $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest($uri))
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest($uri))
             ->withAttribute('site', $siteFinder->getSiteByRootPageId(1))
             ->withAttribute('frontend.user', $frontendUserAuthentication)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
@@ -878,14 +885,18 @@ final class RedirectServiceTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(BeforeRedirectMatchDomainEvent::class, 'before-redirect-match-domain-event-is-triggered');
 
+        /** @var PhpFrontend $typoScriptCache */
+        $typoScriptCache = $this->get(CacheManager::class)->getCache('typoscript');
         $redirectService = new RedirectService(
             new RedirectCacheService(),
             new LinkService(),
             $siteFinder,
             $this->get(EventDispatcherInterface::class),
-            $this->get(PageInformationFactory::class)
+            $this->get(PageInformationFactory::class),
+            $this->get(FrontendTypoScriptFactory::class),
+            $typoScriptCache,
+            $this->get(LogManager::class)->getLogger('Testing'),
         );
-        $redirectService->setLogger($logger);
 
         $redirectMatch = $redirectService->matchRedirect($uri->getHost(), $uri->getPath(), $uri->getQuery());
 

@@ -48,7 +48,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function convertQueryToDoctrineQueryBuilderDoesNotAddAndWhereWithEmptyConstraint(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -67,7 +67,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function convertQueryToDoctrineQueryBuilderThrowsExceptionOnNotImplementedConstraint(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -90,7 +90,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function convertQueryToDoctrineQueryBuilderAddsSimpleAndWhere(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -112,7 +112,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function convertQueryToDoctrineQueryBuilderAddsNotConstraint(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -134,7 +134,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function convertQueryToDoctrineQueryBuilderAddsAndConstraint(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -160,7 +160,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function convertQueryToDoctrineQueryBuilderAddsOrConstraint(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -186,7 +186,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function languageStatementWorksForDefaultLanguage(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -204,7 +204,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function languageStatementWorksForNonDefaultLanguage(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -267,7 +267,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionTakesDeleteStatementIntoAccountIfNecessary(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -312,7 +312,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function orderStatementGenerationWorks(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -339,7 +339,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $this->expectException(UnsupportedOrderException::class);
         $this->expectExceptionCode(1242816074);
 
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -360,7 +360,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function orderStatementGenerationWorksWithMultipleOrderings(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -473,7 +473,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function expressionIsOmittedForIgnoreEnableFieldsAreAndDoNotIncludeDeletedInFrontendContext(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -497,7 +497,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function expressionIsGeneratedForIgnoreEnableFieldsAndDoNotIncludeDeletedInFrontendContext(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -521,7 +521,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function expressionIsGeneratedForIgnoreOnlyFeGroupAndDoNotIncludeDeletedInFrontendContext(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -547,7 +547,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function expressionIsGeneratedForDoNotIgnoreEnableFieldsAndDoNotIncludeDeletedInFrontendContext(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -573,7 +573,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     public function respectEnableFieldsSettingGeneratesCorrectStatementWithOnlyEndTimeInFrontendContext(): void
     {
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['enablecolumns']['endtime'] = 'endtime_column';
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -601,7 +601,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         // simulate time for backend enable fields
         $GLOBALS['SIM_ACCESS_TIME'] = 1451779200;
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['enablecolumns']['endtime'] = 'endtime_column';
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -622,7 +622,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     #[Test]
     public function visibilityConstraintStatementGenerationThrowsExceptionIfTheQuerySettingsAreInconsistent(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -684,7 +684,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl'] = [
             'rootLevel' => $rootLevel,
         ];
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)

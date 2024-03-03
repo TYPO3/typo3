@@ -158,7 +158,6 @@ class RequestHandler implements RequestHandlerInterface
             $controller->generatePage_postProcessing($request);
             $this->timeTracker->pull();
         }
-        $controller->releaseLocks();
 
         // Render non-cached page parts by replacing placeholders which are taken from cache or added during page generation
         if ($controller->isINTincScript()) {

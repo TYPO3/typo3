@@ -53,8 +53,8 @@ final class IncludeTreeSetupConditionConstantSubstitutionVisitor implements Incl
 
     /**
      * Do the magic, see tests for details.
-     * Implementation within 'visitBeforeChilden()' since this allows running *both* this
-     * visitor first, and then TreeVisitorConditionMatcher directly afterwards in the same
+     * Implementation within 'visitBeforeChildren()' since this allows running *both* this
+     * visitor first, and then IncludeTreeConditionMatcherVisitor directly afterward in the same
      * traverser cycle!
      */
     public function visitBeforeChildren(IncludeInterface $include, int $currentDepth): void

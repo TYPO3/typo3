@@ -31,13 +31,8 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -102,10 +97,8 @@ class BackendConfigurationManager implements SingletonInterface
         private readonly PhpFrontend $typoScriptCache,
         private readonly FrontendInterface $runtimeCache,
         private readonly SysTemplateRepository $sysTemplateRepository,
-        private readonly SysTemplateTreeBuilder $treeBuilder,
-        private readonly LossyTokenizer $lossyTokenizer,
-        private readonly ConditionVerdictAwareIncludeTreeTraverser $includeTreeTraverserConditionVerdictAware,
         private readonly SiteFinder $siteFinder,
+        private readonly FrontendTypoScriptFactory $frontendTypoScriptFactory,
     ) {}
 
     public function setRequest(ServerRequestInterface $request): void
@@ -205,6 +198,10 @@ class BackendConfigurationManager implements SingletonInterface
                 // Keep null / NullSite when no site could be determined for whatever reason.
             }
         }
+        if ($site === null) {
+            // If still no site object, have NullSite (usually pid 0).
+            $site = new NullSite();
+        }
 
         $rootLine = [];
         $sysTemplateFakeRow = [
@@ -236,10 +233,6 @@ class BackendConfigurationManager implements SingletonInterface
             $sysTemplateRows[] = $sysTemplateFakeRow;
         }
 
-        // We do cache tree and tokens, but don't cache full ast in this backend context for now:
-        // That's a possible improvement to further speed up extbase backend modules, but a bit of
-        // hassle. See the Frontend TypoScript calculation on how to do this.
-        $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->lossyTokenizer, $site, $this->typoScriptCache);
         $expressionMatcherVariables = [
             'request' => $this->request,
             'pageId' => $pageId,
@@ -247,34 +240,11 @@ class BackendConfigurationManager implements SingletonInterface
             'fullRootLine' => $rootLine,
             'site' => $site,
         ];
-        $conditionMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
-        $conditionMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-        $includeTreeTraverserConditionVerdictAwareVisitors = [];
-        $includeTreeTraverserConditionVerdictAwareVisitors[] = $conditionMatcherVisitor;
-        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
-        $includeTreeTraverserConditionVerdictAwareVisitors[] = $constantAstBuilderVisitor;
-        $this->includeTreeTraverserConditionVerdictAware->traverse($constantIncludeTree, $includeTreeTraverserConditionVerdictAwareVisitors);
-        $constantsAst = $constantAstBuilderVisitor->getAst();
-        $flatConstants = $constantsAst->flatten();
 
-        $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->lossyTokenizer, $site, $this->typoScriptCache);
-        $includeTreeTraverserConditionVerdictAwareVisitors = [];
-        $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
-        $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flatConstants);
-        $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupConditionConstantSubstitutionVisitor;
-        $setupMatcherVisitor = GeneralUtility::makeInstance(IncludeTreeConditionMatcherVisitor::class);
-        $setupMatcherVisitor->initializeExpressionMatcherWithVariables($expressionMatcherVariables);
-        $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupMatcherVisitor;
-        $setupAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
-        $setupAstBuilderVisitor->setFlatConstants($flatConstants);
-        $includeTreeTraverserConditionVerdictAwareVisitors[] = $setupAstBuilderVisitor;
-        $this->includeTreeTraverserConditionVerdictAware->traverse($setupIncludeTree, $includeTreeTraverserConditionVerdictAwareVisitors);
-        $setupAst = $setupAstBuilderVisitor->getAst();
-
-        $setupArray = $setupAst->toArray();
-
+        $typoScript = $this->frontendTypoScriptFactory->createSettingsAndSetupConditions($site, $sysTemplateRows, $expressionMatcherVariables, $this->typoScriptCache);
+        $typoScript = $this->frontendTypoScriptFactory->createSetupConfigOrFullSetup(true, $typoScript, $site, $sysTemplateRows, $expressionMatcherVariables, '0', $this->typoScriptCache, null);
+        $setupArray = $typoScript->getSetupArray();
         $this->runtimeCache->set($cacheIdentifier, $setupArray);
-
         return $setupArray;
     }
 

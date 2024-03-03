@@ -244,7 +244,7 @@ final class FormViewHelperTest extends FunctionalTestCase
 
     protected function createRequest(): ServerRequestInterface
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupTree(new RootNode());
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray([]);

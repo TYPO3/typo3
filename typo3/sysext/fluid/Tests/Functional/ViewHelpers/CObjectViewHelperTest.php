@@ -45,13 +45,6 @@ final class CObjectViewHelperTest extends FunctionalTestCase
         );
     }
 
-    protected function tearDown(): void
-    {
-        // @todo: When a FE sub request throws an exception, as some of the below test do, TSFE does NOT release locks properly!
-        $GLOBALS['TSFE']->releaseLocks();
-        parent::tearDown();
-    }
-
     #[Test]
     public function viewHelperAcceptsDataParameter(): void
     {

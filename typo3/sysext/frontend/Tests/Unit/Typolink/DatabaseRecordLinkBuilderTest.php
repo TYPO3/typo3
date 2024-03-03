@@ -157,7 +157,7 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         $pageRepositoryMock = $this->createMock(PageRepository::class);
         $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($typoScriptConfig);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $contentObjectRendererMock->method('getRequest')->willReturn($request);

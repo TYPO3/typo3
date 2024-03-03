@@ -439,7 +439,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
     #[Test]
     public function getTypoScriptSetupReturnsSetupFromRequest(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray(['foo' => 'bar']);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         self::assertEquals(['foo' => 'bar'], $this->frontendConfigurationManager->_call('getTypoScriptSetup'));
@@ -448,7 +448,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
     #[Test]
     public function getPluginConfigurationReturnsEmptyArrayIfNoPluginConfigurationWasFound(): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray(['foo' => 'bar']);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $expectedResult = [];
@@ -479,7 +479,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
             ],
         ];
         $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($testSetup);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $expectedResult = [
@@ -510,7 +510,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
             ],
         ];
         $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($testSetup);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $expectedResult = [
@@ -577,7 +577,7 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
                 self::assertSame($settings, $arguments[0]);
                 return $arguments[1];
             });
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($testSetup);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $expectedResult = [

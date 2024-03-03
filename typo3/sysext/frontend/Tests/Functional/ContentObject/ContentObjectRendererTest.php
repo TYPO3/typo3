@@ -639,7 +639,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     #[Test]
     public function typolinkReturnsCorrectLinkForSpamEncryptedEmails(array $tsfeConfig, string $linkText, string $parameter, string $expected): void
     {
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray($tsfeConfig);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
         $subject = new ContentObjectRenderer();
@@ -874,7 +874,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $subject = new ContentObjectRenderer($tsfe);
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = $this->getPreparedRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject->setRequest($request);
@@ -1163,7 +1163,7 @@ And another one';
         $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
         $subject->setCurrentFile($fileReference);
-        $typoScript = new FrontendTypoScript(new RootNode(), []);
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = $this->getPreparedRequest()->withAttribute('frontend.typoscript', $typoScript);
         $subject->setRequest($request);
