@@ -36,7 +36,7 @@ interface Slide {
   identifier: string;
   title: string;
   progressBarTitle: string;
-  content: string|JQuery;
+  content: string | JQuery | Element | DocumentFragment;
   severity: SeverityEnum;
   callback?: SlideCallback;
 }
@@ -85,7 +85,7 @@ class MultiStepWizard {
   public addSlide(
     identifier: string,
     title: string,
-    content: string = '',
+    content: string | JQuery | Element | DocumentFragment = '',
     severity: SeverityEnum = SeverityEnum.info,
     progressBarTitle: string,
     callback?: SlideCallback,
@@ -116,10 +116,13 @@ class MultiStepWizard {
     }
 
     const spinnerIcon = await Icons.getIcon('spinner-circle', Icons.sizes.large, null, null);
-    const $processingSlide = $('<div />', { class: 'text-center' }).append(spinnerIcon);
+    const processingSlide = document.createElement('div');
+    processingSlide.classList.add('text-center');
+    processingSlide.append(document.createRange().createContextualFragment(spinnerIcon));
+
     this.addSlide(
       'final-processing-slide', top.TYPO3.lang['wizard.processing.title'],
-      $processingSlide[0].outerHTML,
+      processingSlide,
       Severity.info,
       null,
       callback,
@@ -553,22 +556,35 @@ class MultiStepWizard {
       return this.setup.$carousel;
     }
 
-    let slides = '<div class="carousel slide" data-bs-ride="false">'
-      + '<div class="carousel-inner" role="listbox">';
+    const carouselOuter = document.createElement('div');
+    carouselOuter.classList.add('carousel', 'slide');
+    carouselOuter.dataset.bsRide = 'false';
+    const carouselInner = document.createElement('div');
+    carouselInner.classList.add('carousel-inner');
+    carouselInner.role = 'listbox';
+    carouselOuter.append(carouselInner);
 
     for (let i = 0; i < this.setup.slides.length; ++i) {
       const currentSlide: Slide = this.setup.slides[i];
-      let slideContent = currentSlide.content;
-
-      if (typeof slideContent === 'object') {
-        slideContent = slideContent.html();
+      const slideInner = document.createElement('div');
+      if (typeof currentSlide.content === 'string') {
+        slideInner.textContent = currentSlide.content;
+      } else {
+        if (currentSlide.content instanceof $) {
+          slideInner.replaceChildren((currentSlide.content as JQuery).get(0));
+        } else {
+          slideInner.replaceChildren(currentSlide.content as Element | DocumentFragment);
+        }
       }
-      slides += '<div class="carousel-item" data-bs-slide="' + currentSlide.identifier + '" data-step="' + i + '">' + slideContent + '</div>';
+      const slide = document.createElement('div');
+      slide.classList.add('carousel-item');
+      slide.dataset.bsSlide = currentSlide.identifier;
+      slide.dataset.step = i.toString(10);
+      slide.append(slideInner)
+      carouselInner.append(slide);
     }
 
-    slides += '</div></div>';
-
-    this.setup.$carousel = $(slides);
+    this.setup.$carousel = $(carouselOuter);
     this.setup.$carousel.find('.carousel-item').first().addClass('active');
 
     return this.setup.$carousel;

@@ -64,7 +64,6 @@ class Localization {
       const $triggerButton = $(e.currentTarget);
       const actions: Array<string> = [];
       const availableLocalizationModes: Array<string> = [];
-      let slideStep1: string = '';
 
       if ($triggerButton.data('allowTranslate') === 0 && $triggerButton.data('allowCopy') === 0) {
         Modal.confirm(
@@ -125,13 +124,16 @@ class Localization {
       if (availableLocalizationModes.length === 1) {
         MultiStepWizard.set('localizationMode', availableLocalizationModes[0]);
       } else {
-        slideStep1 += '<div data-bs-toggle="buttons">' + actions.join('') + '</div>';
+        const buttonContainer = document.createElement('div');
+        buttonContainer.dataset.bsToggle = 'buttons';
+        buttonContainer.append(...actions.map((actionMarkup: string): DocumentFragment => document.createRange().createContextualFragment(actionMarkup)));
+
         MultiStepWizard.addSlide(
           'localize-choose-action',
           TYPO3.lang['localize.wizard.header_page']
             .replace('{0}', $triggerButton.data('page'))
             .replace('{1}', $triggerButton.data('languageName')),
-          slideStep1,
+          buttonContainer,
           SeverityEnum.notice,
           TYPO3.lang['localize.wizard.step.selectMode'],
           ($slide: JQuery, settings: MultiStepWizardSettings): void => {
