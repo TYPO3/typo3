@@ -12,10 +12,10 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import $ from 'jquery';
 import NProgress from 'nprogress';
 import '@typo3/backend/input/clearable';
 import '@typo3/backend/element/icon-element';
+import '@typo3/backend/element/pagination';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
@@ -24,7 +24,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
-enum RecyclerIdentifiers {
+enum Identifiers {
   searchForm = '#recycler-form',
   searchText = '#recycler-form [name=search-text]',
   searchSubmitBtn = '#recycler-form button[type=submit]',
@@ -39,13 +39,6 @@ enum RecyclerIdentifiers {
   massDelete = 'button[data-multi-record-selection-action=massdelete]',
 }
 
-interface RecyclerPagingConfig {
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
-  itemsPerPage: number;
-}
-
 type RecordToDelete = string;
 
 /**
@@ -53,8 +46,7 @@ type RecordToDelete = string;
  * JavaScript module for Recycler
  */
 class Recycler {
-  public elements: { [key: string]: JQuery } = {}; // filled in getElements()
-  public paging: RecyclerPagingConfig = {
+  public paging: Record<string, number> = {
     currentPage: 1,
     totalPages: 1,
     totalItems: 0,
@@ -76,124 +68,102 @@ class Recycler {
   }
 
   /**
-   * Gets required elements
-   */
-  private getElements(): void {
-    this.elements = {
-      $searchForm: $(RecyclerIdentifiers.searchForm),
-      $searchTextField: $(RecyclerIdentifiers.searchText),
-      $searchSubmitBtn: $(RecyclerIdentifiers.searchSubmitBtn),
-      $depthSelector: $(RecyclerIdentifiers.depthSelector),
-      $tableSelector: $(RecyclerIdentifiers.tableSelector),
-      $recyclerTable: $(RecyclerIdentifiers.recyclerTable),
-      $tableBody: $(RecyclerIdentifiers.recyclerTable).find('tbody'),
-      $paginator: $(RecyclerIdentifiers.paginator),
-      $reloadAction: $(RecyclerIdentifiers.reloadAction),
-      $massUndo: $(RecyclerIdentifiers.massUndo),
-      $massDelete: $(RecyclerIdentifiers.massDelete),
-    };
-  }
-
-  /**
    * Register events
    */
   private registerEvents(): void {
-    // submitting the form
-    this.elements.$searchForm.on('submit', (e: JQueryEventObject): void => {
-      e.preventDefault();
-      if (this.elements.$searchTextField.val() !== '') {
+    new RegularEvent('submit', (event: SubmitEvent) => {
+      event.preventDefault();
+
+      const searchTextField = document.querySelector(Identifiers.searchText) as HTMLInputElement;
+      if (searchTextField.value !== '') {
         this.loadDeletedElements();
       }
-    });
+    }).delegateTo(document, Identifiers.searchForm);
 
     // changing the search field
-    this.elements.$searchTextField.on('keyup', (e: JQueryEventObject): void => {
-      const $me = $(e.currentTarget);
+    new RegularEvent('keyup', (event: KeyboardEvent) => {
+      const input = event.currentTarget as HTMLInputElement;
+      const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
 
-      if ($me.val() !== '') {
-        this.elements.$searchSubmitBtn.removeClass('disabled');
+      if (input.value !== '') {
+        searchSubmitButton.classList.remove('disabled');
       } else {
-        this.elements.$searchSubmitBtn.addClass('disabled');
+        searchSubmitButton.classList.add('disabled');
         this.loadDeletedElements();
       }
-    });
-    (this.elements.$searchTextField.get(0) as HTMLInputElement).clearable(
+    }).delegateTo(document, Identifiers.searchText);
+
+    // changing "depth"
+    new RegularEvent('change', () => {
+      this.loadAvailableTables().then((): void => {
+        this.loadDeletedElements();
+      });
+    }).delegateTo(document, Identifiers.depthSelector);
+
+    // changing "table"
+    new RegularEvent('change', () => {
+      this.paging.currentPage = 1;
+      this.loadDeletedElements();
+    }).delegateTo(document, Identifiers.tableSelector);
+
+    // clicking "recover" in single row
+    new RegularEvent('click', this.undoRecord.bind(this)).delegateTo(document, Identifiers.undo);
+
+    // clicking "delete" in single row
+    new RegularEvent('click', this.deleteRecord.bind(this)).delegateTo(document, Identifiers.delete);
+
+    new RegularEvent('click', (event: Event) => {
+      event.preventDefault();
+      this.loadAvailableTables().then((): void => {
+        this.loadDeletedElements();
+      });
+    }).delegateTo(document, Identifiers.reloadAction);
+
+    (document.querySelector(Identifiers.searchText) as HTMLInputElement).clearable(
       {
         onClear: () => {
-          this.elements.$searchSubmitBtn.addClass('disabled');
+          const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
+          searchSubmitButton.classList.add('disabled');
           this.loadDeletedElements();
         },
       },
     );
 
-    // changing "depth"
-    this.elements.$depthSelector.on('change', (): void => {
-      this.loadAvailableTables().then((): void => {
-        this.loadDeletedElements();
-      });
-    });
-
-    // changing "table"
-    this.elements.$tableSelector.on('change', (): void => {
-      this.paging.currentPage = 1;
-      this.loadDeletedElements();
-    });
-
-    // clicking "recover" in single row
-    new RegularEvent('click', this.undoRecord).delegateTo(document, RecyclerIdentifiers.undo);
-
-    // clicking "delete" in single row
-    new RegularEvent('click', this.deleteRecord).delegateTo(document, RecyclerIdentifiers.delete);
-
-    this.elements.$reloadAction.on('click', (e: JQueryEventObject): void => {
-      e.preventDefault();
-      this.loadAvailableTables().then((): void => {
-        this.loadDeletedElements();
-      });
-    });
-
     // clicking an action in the paginator
-    this.elements.$paginator.on('click', '[data-action]', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event) => {
+      event.preventDefault();
 
-      const $el: JQuery = $(e.currentTarget);
-      let reload: boolean = false;
+      const paginator = (event.target as HTMLElement).closest('button') as HTMLButtonElement;
 
-      switch ($el.data('action')) {
-        case 'previous':
-          if (this.paging.currentPage > 1) {
-            this.paging.currentPage--;
-            reload = true;
-          }
-          break;
-        case 'next':
-          if (this.paging.currentPage < this.paging.totalPages) {
-            this.paging.currentPage++;
-            reload = true;
-          }
-          break;
-        case 'page':
-          this.paging.currentPage = parseInt($el.find('span').text(), 10);
-          reload = true;
-          break;
-        default:
+      if (!paginator) {
+        return;
       }
 
-      if (reload) {
-        this.loadDeletedElements();
+      if (paginator.dataset.action === 'previous') {
+        if (this.paging.currentPage > 1) {
+          this.paging.currentPage--;
+        }
+      } else if (paginator.dataset.action === 'next') {
+        if (this.paging.currentPage < this.paging.totalPages) {
+          this.paging.currentPage++;
+        }
+      } else if (paginator.dataset.action === 'page') {
+        this.paging.currentPage = parseInt(paginator.querySelector('span').textContent, 10);
       }
-    });
+
+      this.loadDeletedElements();
+    }).delegateTo(document, Identifiers.paginator);
 
     if (!TYPO3.settings.Recycler.deleteDisable) {
-      this.elements.$massDelete.show();
+      (document.querySelector(Identifiers.massDelete) as HTMLElement).style.display = 'block';
     } else {
-      this.elements.$massDelete.remove();
+      document.querySelector(Identifiers.massDelete).remove();
     }
 
     // checkboxes in the table
-    new RegularEvent('multiRecordSelection:checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:massundo', this.undoRecord).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:massdelete', this.deleteRecord).bindTo(document);
+    new RegularEvent('multiRecordSelection:checkbox:state:changed', this.handleCheckboxStateChanged.bind(this)).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:massundo', this.undoRecord.bind(this)).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:massdelete', this.deleteRecord.bind(this)).bindTo(document);
   }
 
   /**
@@ -202,29 +172,28 @@ class Recycler {
   private initialize(): void {
     NProgress.configure({ parent: '.module-loading-indicator', showSpinner: false });
 
-    this.getElements();
     this.registerEvents();
 
     if (TYPO3.settings.Recycler.depthSelection > 0) {
-      this.elements.$depthSelector.val(TYPO3.settings.Recycler.depthSelection).trigger('change');
-    } else {
-      this.loadAvailableTables().then((): void => {
-        this.loadDeletedElements();
-      });
+      (document.querySelector(Identifiers.depthSelector) as HTMLInputElement).value = String(TYPO3.settings.Recycler.depthSelection);
     }
+
+    this.loadAvailableTables().then((): void => {
+      this.loadDeletedElements();
+    });
   }
 
   /**
    * Handles the clicks on checkboxes in the records table
    */
-  private readonly handleCheckboxStateChanged = (e: Event): void => {
-    const $checkbox = $(e.target);
-    const $tr = $checkbox.parents('tr');
-    const table = $tr.data('table');
-    const uid = $tr.data('uid');
+  private handleCheckboxStateChanged(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    const tableRow = checkbox.closest('tr') as HTMLTableRowElement;
+    const table = tableRow.dataset.table;
+    const uid = tableRow.dataset.uid;
     const record = table + ':' + uid;
 
-    if ($checkbox.prop('checked')) {
+    if (checkbox.checked) {
       this.markedRecordsForMassAction.push(record);
     } else {
       const index = this.markedRecordsForMassAction.indexOf(record);
@@ -234,56 +203,69 @@ class Recycler {
     }
 
     if (this.markedRecordsForMassAction.length > 0) {
-      this.elements.$massUndo.find('span.text').text(
-        this.createMessage(TYPO3.lang['button.undoselected'], [this.markedRecordsForMassAction.length.toString(10)])
-      );
-      this.elements.$massDelete.find('span.text').text(
-        this.createMessage(TYPO3.lang['button.deleteselected'], [this.markedRecordsForMassAction.length.toString(10)])
-      );
+      const massUndo = document.querySelector(Identifiers.massUndo) as HTMLButtonElement;
+      const massDelete = document.querySelector(Identifiers.massDelete) as HTMLButtonElement;
+
+      massUndo.querySelector('span.text')
+        .textContent = this.createMessage(TYPO3.lang['button.undoselected'], [this.markedRecordsForMassAction.length.toString(10)]);
+
+      massDelete.querySelector('span.text')
+        .textContent = this.createMessage(TYPO3.lang['button.deleteselected'], [this.markedRecordsForMassAction.length.toString(10)]);
     } else {
       this.resetMassActionButtons();
     }
-  };
+  }
 
   /**
    * Resets the mass action state
    */
   private resetMassActionButtons(): void {
+    const massUndo = document.querySelector(Identifiers.massUndo) as HTMLButtonElement;
+    const massDelete = document.querySelector(Identifiers.massDelete) as HTMLButtonElement;
+
     this.markedRecordsForMassAction = [];
-    this.elements.$massUndo.find('span.text').text(TYPO3.lang['button.undo']);
-    this.elements.$massDelete.find('span.text').text(TYPO3.lang['button.delete']);
+    massUndo.querySelector('span.text').textContent = TYPO3.lang['button.undo'];
+    massDelete.querySelector('span.text').textContent = TYPO3.lang['button.delete'];
     document.dispatchEvent(new CustomEvent('multiRecordSelection:actions:hide'));
   }
 
   /**
    * Loads all tables which contain deleted records.
    */
-  private loadAvailableTables(): Promise<AjaxResponse> {
+  private async loadAvailableTables(): Promise<AjaxResponse> {
+    const tableSelector = document.querySelector(Identifiers.tableSelector) as HTMLSelectElement;
+    const depthSelector = document.querySelector(Identifiers.depthSelector) as HTMLSelectElement;
+
     NProgress.start();
-    this.elements.$tableSelector.val('');
+    tableSelector.value = '';
     this.paging.currentPage = 1;
 
     return new AjaxRequest(TYPO3.settings.ajaxUrls.recycler).withQueryArguments({
       action: 'getTables',
       startUid: TYPO3.settings.Recycler.startUid,
-      depth: this.elements.$depthSelector.find('option:selected').val(),
+      depth: depthSelector.value,
     }).get().then(async (response: AjaxResponse): Promise<AjaxResponse> => {
       const data = await response.resolve();
-      const tables: Array<JQuery> = [];
+      const tables: Array<HTMLOptionElement> = [];
 
-      this.elements.$tableSelector.children().remove();
+      tableSelector.replaceChildren();
       for (const value of data) {
         const tableName = value[0];
         const deletedRecords = value[1];
         const tableDescription = value[2] ? value[2] : TYPO3.lang.label_allrecordtypes;
         const optionText = tableDescription + ' (' + deletedRecords + ')';
-        tables.push($('<option />').val(tableName).text(optionText));
+
+        const option = document.createElement('option');
+        option.value = tableName;
+        option.textContent = optionText;
+
+        tables.push(option);
       }
 
       if (tables.length > 0) {
-        this.elements.$tableSelector.append(tables);
+        tableSelector.append(...tables);
         if (TYPO3.settings.Recycler.tableSelection !== '') {
-          this.elements.$tableSelector.val(TYPO3.settings.Recycler.tableSelection);
+          tableSelector.value = TYPO3.settings.Recycler.tableSelection;
         }
       }
 
@@ -294,34 +276,41 @@ class Recycler {
   /**
    * Loads the deleted elements, based on the filters
    */
-  private loadDeletedElements(): Promise<AjaxResponse> {
+  private async loadDeletedElements(): Promise<AjaxResponse> {
+    const depthSelector = document.querySelector(Identifiers.depthSelector) as HTMLSelectElement;
+    const tableSelector = document.querySelector(Identifiers.tableSelector) as HTMLSelectElement;
+    const searchTextField = document.querySelector(Identifiers.searchText) as HTMLInputElement;
+
     NProgress.start();
     this.resetMassActionButtons();
 
     return new AjaxRequest(TYPO3.settings.ajaxUrls.recycler).withQueryArguments({
       action: 'getDeletedRecords',
-      depth: this.elements.$depthSelector.find('option:selected').val(),
+      depth: depthSelector.value,
       startUid: TYPO3.settings.Recycler.startUid,
-      table: this.elements.$tableSelector.find('option:selected').val(),
-      filterTxt: this.elements.$searchTextField.val(),
+      table: tableSelector.value,
+      filterTxt: searchTextField.value,
       start: (this.paging.currentPage - 1) * this.paging.itemsPerPage,
       limit: this.paging.itemsPerPage,
     }).get().then(async (response: AjaxResponse): Promise<AjaxResponse> => {
+      const tableBody = document.querySelector(`${Identifiers.recyclerTable} tbody`);
       const data = await response.resolve();
-      this.elements.$tableBody.html(data.rows);
+
+      tableBody.innerHTML = data.rows;
       this.buildPaginator(data.totalItems);
 
       return response;
     }).finally(() => NProgress.done());
   }
 
-  private readonly deleteRecord = (e: Event): void => {
+  private deleteRecord(event: Event, currentTarget: HTMLElement): void {
     if (TYPO3.settings.Recycler.deleteDisable) {
       return;
     }
 
-    const $tr = $(e.target).parents('tr');
-    const isMassDelete = $tr.parent().prop('tagName') !== 'TBODY'; // deleteRecord() was invoked by the mass delete button
+    const target = currentTarget ? currentTarget : event.target as HTMLElement;
+    const tableRow = target.closest('tr') as HTMLTableRowElement;
+    const isMassDelete = tableRow === null || tableRow.parentElement.tagName !== 'TBODY'; // deleteRecord() was invoked by the mass delete button
     let records: Array<string>;
     let message: string;
 
@@ -329,9 +318,9 @@ class Recycler {
       records = this.markedRecordsForMassAction;
       message = TYPO3.lang['modal.massdelete.text'];
     } else {
-      const uid = $tr.data('uid');
-      const table = $tr.data('table');
-      const recordTitle = $tr.data('recordtitle');
+      const uid = tableRow.dataset.uid;
+      const table = tableRow.dataset.table;
+      const recordTitle = tableRow.dataset.recordtitle;
       records = [table + ':' + uid];
       message = table === 'pages' ? TYPO3.lang['modal.deletepage.text'] : TYPO3.lang['modal.deletecontent.text'];
       message = this.createMessage(message, [recordTitle, '[' + records[0] + ']']);
@@ -358,57 +347,68 @@ class Recycler {
         },
       ]
     });
-  };
+  }
 
-  private readonly undoRecord = (e: Event): void => {
-    const $tr = $(e.target).parents('tr');
-    const isMassUndo = $tr.parent().prop('tagName') !== 'TBODY'; // undoRecord() was invoked by the mass delete button
-
+  private undoRecord(event: Event, currentTarget: HTMLElement): void {
+    const target = currentTarget ? currentTarget : event.target as HTMLElement;
+    const tableRow = target.closest('tr') as HTMLTableRowElement;
+    const isMassUndo = tableRow === null || tableRow.parentElement.tagName !== 'TBODY'; // undoRecord() was invoked by the mass delete button
     let records: Array<string>;
     let messageText: string;
     let recoverPages: boolean;
+
     if (isMassUndo) {
       records = this.markedRecordsForMassAction;
       messageText = TYPO3.lang['modal.massundo.text'];
       recoverPages = true;
     } else {
-      const uid = $tr.data('uid');
-      const table = $tr.data('table');
-      const recordTitle = $tr.data('recordtitle');
+      const uid = tableRow.dataset.uid;
+      const table = tableRow.dataset.table;
+      const recordTitle = tableRow.dataset.recordtitle;
 
       records = [table + ':' + uid];
       recoverPages = table === 'pages';
       messageText = recoverPages ? TYPO3.lang['modal.undopage.text'] : TYPO3.lang['modal.undocontent.text'];
       messageText = this.createMessage(messageText, [recordTitle, '[' + records[0] + ']']);
 
-      if (recoverPages && $tr.data('parentDeleted')) {
+      if (recoverPages && tableRow.dataset.parentDeleted) {
         messageText += TYPO3.lang['modal.undo.parentpages'];
       }
     }
 
-    let $message: JQuery = null;
+    let message: Element = null;
     if (recoverPages) {
-      $message = $('<div />').append(
-        $('<p />').text(messageText),
-        $('<div />', { class: 'form-check' }).append(
-          $('<input />', {
-            type: 'checkbox',
-            id: 'undo-recursive',
-            class: 'form-check-input'
-          }),
-          $('<label />', {
-            class: 'form-check-label',
-            for: 'undo-recursive'
-          }).text(TYPO3.lang['modal.undo.recursive'])
-        )
-      );
+      const wrapper = document.createElement('div');
+
+      const paragraph = document.createElement('p');
+      paragraph.textContent = messageText;
+
+      const checkboxWrapper = document.createElement('div');
+      checkboxWrapper.classList.add('form-check');
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = 'undo-recursive';
+      checkbox.classList.add('form-check-input');
+
+      const label = document.createElement('label');
+      label.classList.add('form-check-label');
+      label.htmlFor = 'undo-recursive';
+      label.textContent = TYPO3.lang['modal.undo.recursive'];
+
+      checkboxWrapper.append(checkbox, label);
+      wrapper.append(paragraph, checkboxWrapper);
+
+      message = wrapper;
     } else {
-      $message = $('<p />').text(messageText);
+      const paragraph = document.createElement('p');
+      paragraph.textContent = messageText;
+      message = paragraph;
     }
 
     Modal.advanced({
       title: TYPO3.lang['modal.undo.header'],
-      content: $message,
+      content: message,
       severity: SeverityEnum.ok,
       staticBackdrop: true,
       buttons: [
@@ -426,15 +426,15 @@ class Recycler {
               'undo',
               typeof records === 'object' ? records : [records],
               isMassUndo,
-              $message.find('#undo-recursive').prop('checked'),
+              (message.querySelector('#undo-recursive') as HTMLInputElement)?.checked,
             );
           }),
         },
       ]
     });
-  };
+  }
 
-  private callAjaxAction(action: string, records: RecordToDelete[], isMassAction: boolean, recursive: boolean = false): Promise<AjaxResponse>|null {
+  private async callAjaxAction(action: string, records: RecordToDelete[], isMassAction: boolean, recursive: boolean = false): Promise<AjaxResponse>|null {
     const data: { records: RecordToDelete[], action: string, recursive?: number } = {
       records: records,
       action: '',
@@ -499,8 +499,10 @@ class Recycler {
    * Build the paginator
    */
   private buildPaginator(totalItems: number): void {
+    const paginator = document.querySelector(Identifiers.paginator);
+
     if (totalItems === 0) {
-      this.elements.$paginator.contents().remove();
+      paginator.replaceChildren();
       return;
     }
 
@@ -509,43 +511,14 @@ class Recycler {
 
     if (this.paging.totalPages === 1) {
       // early abort if only one page is available
-      this.elements.$paginator.contents().remove();
+      paginator.replaceChildren();
       return;
     }
 
-    const $ul = $('<ul />', { class: 'pagination' }),
-      liElements = [],
-      $controlFirstPage = $('<li />', { class: 'page-item' }).append(
-        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'previous' }).append(
-          $('<typo3-backend-icon />', { 'identifier': 'actions-arrow-left-alt', 'size': 'small' }),
-        ),
-      ),
-      $controlLastPage = $('<li />', { class: 'page-item' }).append(
-        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'next' }).append(
-          $('<typo3-backend-icon />', { 'identifier': 'actions-arrow-right-alt', 'size': 'small' }),
-        ),
-      );
+    const pagination = document.createElement('typo3-backend-pagination');
+    pagination.paging = this.paging;
 
-    if (this.paging.currentPage === 1) {
-      $controlFirstPage.addClass('disabled').find('button').prop('disabled', true);
-    }
-
-    if (this.paging.currentPage === this.paging.totalPages) {
-      $controlLastPage.addClass('disabled').find('button').prop('disabled', true);
-    }
-
-    for (let i = 1; i <= this.paging.totalPages; i++) {
-      const $li = $('<li />', { class: 'page-item' + (this.paging.currentPage === i ? ' active' : '') });
-      $li.append(
-        $('<button />', { class: 'page-link', type: 'button', 'data-action': 'page' }).append(
-          $('<span />').text(i),
-        ),
-      );
-      liElements.push($li);
-    }
-
-    $ul.append($controlFirstPage, liElements, $controlLastPage);
-    this.elements.$paginator.empty().append($ul);
+    paginator.replaceChildren(pagination);
   }
 }
 

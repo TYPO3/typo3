@@ -17,7 +17,7 @@ import { range } from 'lit/directives/range';
 import { map } from 'lit/directives/map';
 import { classMap } from 'lit/directives/class-map';
 
-@customElement('typo3-workspaces-pagination')
+@customElement('typo3-backend-pagination')
 export class PaginationElement extends LitElement {
   @property({ type: Object })
   public paging: Record<string, number> | null = null;
@@ -54,6 +54,6 @@ export class PaginationElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'typo3-workspaces-pagination': PaginationElement;
+    'typo3-backend-pagination': PaginationElement;
   }
 }

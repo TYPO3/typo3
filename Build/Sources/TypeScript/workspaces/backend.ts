@@ -19,7 +19,7 @@ import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import '@typo3/backend/input/clearable';
 import '@typo3/workspaces/renderable/record-table';
-import '@typo3/workspaces/renderable/pagination';
+import '@typo3/backend/element/pagination';
 import Workspaces from './workspaces';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import Persistent from '@typo3/backend/storage/persistent';
@@ -539,7 +539,7 @@ class Backend extends Workspaces {
       return;
     }
 
-    const pagination = document.createElement('typo3-workspaces-pagination');
+    const pagination = document.createElement('typo3-backend-pagination');
     pagination.paging = this.paging;
 
     this.elements.$pagination.empty().append(pagination);
