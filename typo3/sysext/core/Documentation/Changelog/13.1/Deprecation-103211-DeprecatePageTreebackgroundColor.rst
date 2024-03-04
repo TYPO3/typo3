@@ -11,7 +11,7 @@ See :issue:`103211`
 Description
 ===========
 
-The user TSconfig option :tsconfig:`options.pageTree.backgroundColor`
+The user TSconfig option :typoscript:`options.pageTree.backgroundColor`
 has been deprecated and will be removed in TYPO3 v14 due to its
 lack of accessibility. It is being replaced with a new label
 system for tree nodes.
@@ -20,7 +20,7 @@ system for tree nodes.
 Impact
 ======
 
-During v13, :tsconfig:`options.pageTree.backgroundColor` will be
+During v13, :typoscript:`options.pageTree.backgroundColor` will be
 migrated to the new label system. Since the use case is unknown,
 the generated label will be "Color: <value>". This information
 will be displayed on all affected nodes.
@@ -30,7 +30,7 @@ Affected installations
 ======================
 
 All installations that use the user TSconfig option
-:tsconfig:`options.pageTree.backgroundColor` are affected.
+:typoscript:`options.pageTree.backgroundColor` are affected.
 
 
 Migration
@@ -38,13 +38,15 @@ Migration
 
 Before:
 
-..  code-block:: tsconfig
+..  code-block:: typoscript
+    :caption: EXT:my_extension/Configuration/user.tsconfig
 
     options.pageTree.backgroundColor.<pageid> = #ff8700
 
 After:
 
-..  code-block:: tsconfig
+..  code-block:: typoscript
+    :caption: EXT:my_extension/Configuration/user.tsconfig
 
     options.pageTree.label.<pageid> {
         label = Campaign A
