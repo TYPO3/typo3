@@ -74,7 +74,6 @@ class Backend extends Workspaces {
     totalItems: 0,
   };
   private markedRecordsForMassAction: string[] = [];
-  private readonly indentationPadding: number = 26;
 
   constructor() {
     super();
