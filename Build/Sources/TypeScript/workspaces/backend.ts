@@ -30,6 +30,7 @@ import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-im
 import { selector } from '@typo3/core/literals';
 import IconHelper from '@typo3/workspaces/utility/icon-helper';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
+import { Diff } from '@typo3/workspaces/renderable/diff-view';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -48,8 +49,6 @@ enum Identifiers {
   previewLinksButton = '.t3js-preview-link',
   pagination = '#workspace-pagination',
 }
-
-export type Diff = { field: string, label: string, content: string, html: string };
 
 /**
  * Backend workspace module. Loaded only in Backend context, not in
@@ -81,6 +80,7 @@ class Backend extends Workspaces {
     topLevelModuleImport('@typo3/workspaces/renderable/send-to-stage-form.js');
     topLevelModuleImport('@typo3/workspaces/renderable/comment-view.js');
     topLevelModuleImport('@typo3/workspaces/renderable/history-view.js');
+    topLevelModuleImport('@typo3/workspaces/renderable/diff-view.js');
 
     DocumentService.ready().then((): void => {
       this.getElements();
@@ -112,18 +112,11 @@ class Backend extends Workspaces {
    * @param {Object} diff
    * @return {$}
    */
-  private static generateDiffView(diff: Diff[]): JQuery {
-    const $diff = $('<div />', { class: 'diff' });
+  private static generateDiffView(diff: Diff[]): HTMLElement {
+    const diffView = document.createElement('typo3-workspaces-diff-view');
+    diffView.diffs = diff;
 
-    for (const currentDiff of diff) {
-      $diff.append(
-        $('<div />', { class: 'diff-item' }).append(
-          $('<div />', { class: 'diff-item-title' }).text(currentDiff.label),
-          $('<div />', { class: 'diff-item-result' }).html(currentDiff.content),
-        ),
-      );
-    }
-    return $diff;
+    return diffView;
   }
 
   /**

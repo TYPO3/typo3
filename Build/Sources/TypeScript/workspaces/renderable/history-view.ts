@@ -15,7 +15,7 @@ import { customElement, property } from 'lit/decorators';
 import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat';
 import { unsafeHTML } from 'lit/directives/unsafe-html';
-import type { Diff } from '../backend';
+import type { Diff } from './diff-view';
 
 type History = {
   differences: string | Diff[];
