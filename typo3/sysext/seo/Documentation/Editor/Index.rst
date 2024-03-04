@@ -90,7 +90,7 @@ By default the title will have the name of the site as a suffix, separated by a 
 Index this page
 ---------------
 
-Defines whether the page should be indexed by a search engine or not.
+Defines whether the page should be indexed by a search engine or not. Disabling indexing also removes the page from the XML sitemap.
 
 Follow this page
 ----------------
