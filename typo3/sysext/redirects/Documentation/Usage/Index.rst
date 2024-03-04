@@ -139,6 +139,10 @@ General tab
     - URL, e.g. `https://example.org/features`
     - page ID or page URI, e.g. `t3://page?uid=1`
     - file URI, e.g. `t3://file?uid=1`
+    - path with reference to
+      :ref:`regular expression capturing group <regex-examples>` if the regular
+      expression feature is used with e.g. capturing groups in Source Path, e.g.
+      `/newpath/$1`
 
 .. confval:: Status Code HTTP Header
 
