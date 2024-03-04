@@ -1444,6 +1444,7 @@ return [
                 '_gl',
                 // Google ads
                 'gad',
+                'gad_source',
                 'gclid',
                 'dclid',
                 // Facebook
