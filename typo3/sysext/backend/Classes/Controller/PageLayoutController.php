@@ -198,7 +198,7 @@ class PageLayoutController
         if ($this->id) {
             // Compile language data for pid != 0 only. The language drop-down is not shown on pid 0
             // since pid 0 can't be localized.
-            $pageTranslations = $this->getExistingPageTranslations();
+            $pageTranslations = BackendUtility::getExistingPageTranslations($this->id);
             foreach ($pageTranslations as $pageTranslation) {
                 $languageId = $pageTranslation[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
                 if (isset($this->availableLanguages[$languageId])) {
@@ -234,40 +234,6 @@ class PageLayoutController
                 $this->moduleData->set('language', 0);
             }
         }
-    }
-
-    /**
-     * Fetch all records of the current page ID.
-     * Does not check permissions.
-     */
-    protected function getExistingPageTranslations(): array
-    {
-        if ($this->id === 0) {
-            return [];
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-        $result = $queryBuilder
-            ->select('*')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
-                )
-            )
-            ->executeQuery();
-
-        $rows = [];
-        while ($row = $result->fetchAssociative()) {
-            BackendUtility::workspaceOL('pages', $row, $this->getBackendUser()->workspace);
-            if ($row && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                $rows[] = $row;
-            }
-        }
-        return $rows;
     }
 
     protected function getLocalizedPageRecord(int $languageId): ?array

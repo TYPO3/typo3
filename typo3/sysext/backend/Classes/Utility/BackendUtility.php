@@ -480,6 +480,42 @@ class BackendUtility
     }
 
     /**
+     * Fetch all records of the given page ID.
+     * Does not check permissions.
+     *
+     * @internal
+     */
+    public static function getExistingPageTranslations(int $pageUid): array
+    {
+        if ($pageUid === 0) {
+            return [];
+        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, self::getBackendUserAuthentication()->workspace));
+        $result = $queryBuilder
+            ->select('*')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                    $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
+                )
+            )
+            ->executeQuery();
+
+        $rows = [];
+        while ($row = $result->fetchAssociative()) {
+            BackendUtility::workspaceOL('pages', $row, self::getBackendUserAuthentication()->workspace);
+            if ($row && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+                $rows[] = $row;
+            }
+        }
+        return $rows;
+    }
+
+    /**
      * Opens the page tree to the specified page id
      *
      * @param int $pid Page id.
