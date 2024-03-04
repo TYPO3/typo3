@@ -18,15 +18,16 @@
                     <f:for each="{compareUserList}" as="compareUser">
                         <tr>
                             <td class="col-avatar">
-                                <a
-                                    href="#"
+                                <button
+                                    type="button"
+                                    class="btn btn-link p-0"
                                     data-contextmenu-trigger="click"
                                     data-contextmenu-table="be_users"
                                     data-contextmenu-uid="{compareUser.uid}"
                                     title="id={compareUser.uid}"
                                 >
                                     <backend:avatar backendUser="{compareUser.uid}" showIcon="TRUE" />
-                                </a>
+                                </button>
                             </td>
                             <td class="col-title">
                                 <backend:link.editRecord table="be_users" uid="{compareUser.uid}" title="edit">

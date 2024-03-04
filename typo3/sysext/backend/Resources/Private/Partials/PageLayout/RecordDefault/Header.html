@@ -34,9 +34,10 @@
                             <core:icon identifier="actions-edit-delete" size="small" />
                         </a>
                     </f:if>
-                    <button aria-haspopup="true"
+                    <button type="button"
+                            aria-haspopup="true"
                             aria-controls="contentMenu0" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:advancedFunctions')}"
-                            class="btn btn-default btn-borderless btn-sm"
+                            class="btn btn-link p-0"
                             data-contextmenu-trigger="click"
                             data-contextmenu-table="tt_content"
                             data-contextmenu-uid="{item.record.uid}">

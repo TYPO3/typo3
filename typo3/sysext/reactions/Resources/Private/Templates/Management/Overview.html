@@ -127,15 +127,16 @@
                     <f:if condition="{reactionTypes.{reaction.type}}">
                         <f:then>
                             <td class="col-icon">
-                                <a
-                                    href="#"
+                                <button
+                                    type="button"
+                                    class="btn btn-link p-0"
                                     data-contextmenu-trigger="click"
                                     data-contextmenu-table="sys_reaction"
                                     data-contextmenu-uid="{reaction.uid}"
                                     title="{reaction.name}"
                                 >
                                     <core:iconForRecord table="sys_reaction" row="{reactionRecord}" />
-                                </a>
+                                </button>
                             </td>
                             <td>
                                 <be:link.editRecord

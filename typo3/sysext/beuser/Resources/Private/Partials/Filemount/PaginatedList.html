@@ -22,15 +22,16 @@
             <f:for each="{paginator.paginatedItems}" as="fileMount">
                 <tr>
                     <td class="col-icon">
-                        <a
-                            href="#"
+                        <button
+                            type="button"
+                            class="btn btn-link p-0"
                             data-contextmenu-trigger="click"
                             data-contextmenu-table="sys_filemounts"
                             data-contextmenu-uid="{fileMount.uid}"
                             title="{f:if(condition: '{fileMount.title}', then: '{fileMount.title} ')}(id={fileMount.uid})"
                         >
                             <beuser:spriteIconForRecord table="sys_filemounts" object="{fileMount}" />
-                        </a>
+                        </button>
                     </td>
                     <td class="col-title">{fileMount.title}</td>
                     <td>{fileMount.description}</td>

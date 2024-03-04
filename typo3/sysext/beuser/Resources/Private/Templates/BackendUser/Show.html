@@ -25,15 +25,16 @@
             <tr>
                 <th>{f:translate(key:'realName')}</th>
                 <td class="col-title">
-                    <a
-                        href="#"
+                    <button
+                        type="button"
+                        class="btn btn-link p-0"
                         data-contextmenu-trigger="click"
                         data-contextmenu-table="be_users"
                         data-contextmenu-uid="{data.user.uid}"
                         title="id={data.user.uid}"
                     >
                         <backend:avatar backendUser="{data.user.uid}" showIcon="true"/>
-                    </a>
+                    </button>
                     {data.user.realName}
                 </td>
             </tr>

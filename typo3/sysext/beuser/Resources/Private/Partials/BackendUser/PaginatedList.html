@@ -19,15 +19,16 @@
             <f:for each="{paginator.paginatedItems}" as="backendUser">
                 <tr>
                     <td class="col-avatar">
-                        <a
-                            href="#"
+                        <button
+                            type="button"
+                            class="btn btn-link p-0"
                             data-contextmenu-trigger="click"
                             data-contextmenu-table="be_users"
                             data-contextmenu-uid="{backendUser.uid}"
                             title="{f:if(condition: '{backendUser.description}', then: '{backendUser.description} ')}(id={backendUser.uid})"
                         >
                             <backend:avatar backendUser="{backendUser.uid}" showIcon="TRUE" />
-                        </a>
+                        </button>
                     </td>
                     <td class="col-title">
                         <backend:link.editRecord table="be_users" uid="{backendUser.uid}" title="edit">
