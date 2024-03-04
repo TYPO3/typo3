@@ -16,7 +16,7 @@
 
 <f:section name="Content">
     <f:if condition="{selectedFolder}">
-        <h4 class="text-truncate">
+        <h4 class="text-truncate mb-4">
             <core:iconForResource resource="{selectedFolder}" />
             <f:render section="LinkWrap" contentAs="linkText" arguments="{_all}">
                 {selectedFolder.storage.name}: {selectedFolder.identifier}
