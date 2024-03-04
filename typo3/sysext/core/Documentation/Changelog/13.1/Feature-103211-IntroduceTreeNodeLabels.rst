@@ -67,9 +67,9 @@ The labels can also be added by using the event
                 // Add special label for all pages with parent page ID 123
                 if ($item['_page']['pid'] === 123) {
                     $item['labels'][] = new Label(
-                        'Campaign B', // Label
-                        '#00658f',    // Color as RGB value
-                        1,            // Priority
+                        label: 'Campaign B',
+                        color: '#00658f',
+                        priority: 1,
                     );
                 }
             }
