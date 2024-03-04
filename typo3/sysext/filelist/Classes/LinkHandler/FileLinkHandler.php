@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Filelist\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
+use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
@@ -60,16 +62,6 @@ class FileLinkHandler extends AbstractResourceLinkHandler
     {
         $contentHtml = '';
         if ($this->selectedFolder !== null) {
-            $markup = [];
-
-            // Create the filelist header bar
-            $markup[] = '<div class="row justify-content-between mb-2">';
-            $markup[] = '    <div class="col-auto"></div>';
-            $markup[] = '    <div class="col-auto">';
-            $markup[] = '        ' . $this->getViewModeButton($request);
-            $markup[] = '    </div>';
-            $markup[] = '</div>';
-
             // Create the filelist
             $this->filelist->start(
                 $this->selectedFolder,
@@ -81,6 +73,9 @@ class FileLinkHandler extends AbstractResourceLinkHandler
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
             $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
 
+            $searchWord = trim((string)($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? ''));
+            $searchDemand = $searchWord !== '' ? FileSearchDemand::createForSearchTerm($searchWord)->withFolder($this->selectedFolder)->withRecursive() : null;
+
             $resource = $this->linkParts['url']['file'] ?? null;
             if ($resource instanceof ResourceInterface) {
                 $resourceSelectedMatcher = GeneralUtility::makeInstance(Matcher::class);
@@ -90,9 +85,27 @@ class FileLinkHandler extends AbstractResourceLinkHandler
                 $this->filelist->setResourceSelectedMatcher($resourceSelectedMatcher);
             }
 
-            $markup[] = $this->filelist->render(null, $this->view);
+            $markup = [];
 
-            // Build the file upload and folder creation form
+            // Render the filelist search box
+            $markup[] = '<div class="mb-4">';
+            $markup[] = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
+                ->setSearchWord($searchWord)
+                ->render($request, $this->filelist->createModuleUri($this->getUrlParameters([])));
+            $markup[] = '</div>';
+
+            // Render the filelist header bar
+            $markup[] = '<div class="row justify-content-between mb-2">';
+            $markup[] = '    <div class="col-auto"></div>';
+            $markup[] = '    <div class="col-auto">';
+            $markup[] = '        ' . $this->getViewModeButton($request);
+            $markup[] = '    </div>';
+            $markup[] = '</div>';
+
+            // Render the filelist
+            $markup[] = $this->filelist->render($searchDemand, $this->view);
+
+            // Render the file upload and folder creation form
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
             $markup[] = $folderUtilityRenderer->uploadForm($request, $this->selectedFolder);
             $markup[] = $folderUtilityRenderer->createFolder($request, $this->selectedFolder);
