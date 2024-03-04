@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Used from backend `/typo3` context to check webserver response in general (independent of install tool).
@@ -28,10 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ServerResponseCheckController
 {
-    public static function hmac(string $value): string
-    {
-        return GeneralUtility::hmac($value, ServerResponseCheckController::class);
-    }
+    public function __construct(private readonly HashService $hashService) {}
 
     public function checkHostAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -41,7 +38,9 @@ class ServerResponseCheckController
         if (empty($time) || !is_string($time) || empty($hash) || !is_string($hash)) {
             return new JsonResponse(['error' => 'Query params src-time` and src-hash` are required.'], 400);
         }
-        if (!hash_equals(self::hmac($time), $hash)) {
+
+        $expectedHash = $this->hashService->hmac($time, 'server-response-check');
+        if (!hash_equals($expectedHash, $hash)) {
             return new JsonResponse(['error' => 'Invalid time or hash provided.'], 400);
         }
         if ((int)$time + 60 < time()) {

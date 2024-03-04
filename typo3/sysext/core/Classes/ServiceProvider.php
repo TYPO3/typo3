@@ -24,6 +24,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
 use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -67,6 +68,7 @@ class ServiceProvider extends AbstractServiceProvider
             Console\CommandRegistry::class => self::getConsoleCommandRegistry(...),
             Context\Context::class => self::getContext(...),
             Core\BootService::class => self::getBootService(...),
+            Crypto\HashService::class => self::getHashService(...),
             Crypto\PasswordHashing\PasswordHashFactory::class => self::getPasswordHashFactory(...),
             Database\Schema\SchemaMigrator::class => self::getSchemaMigrator(...),
             Database\Schema\Parser\Parser::class => self::getSchemaParser(...),
@@ -593,6 +595,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getCoreMiddlewares(ContainerInterface $container): \ArrayObject
     {
         return new \ArrayObject($container->get(Http\MiddlewareStackResolver::class)->resolve('core'));
+    }
+
+    public static function getHashService(): HashService
+    {
+        return new HashService();
     }
 
     public static function provideFallbackEventDispatcher(

@@ -71,7 +71,8 @@ class Maintenance implements MiddlewareInterface
         protected readonly ConfigurationManager $configurationManager,
         protected readonly PasswordHashFactory $passwordHashFactory,
         protected readonly ContainerInterface $container,
-        protected readonly FormProtectionFactory $formProtectionFactory
+        protected readonly FormProtectionFactory $formProtectionFactory,
+        protected readonly SessionService $sessionService
     ) {}
 
     /**
@@ -118,15 +119,13 @@ class Maintenance implements MiddlewareInterface
             return $controller->showLoginAction($request);
         }
 
-        // session related actions
-        $session = new SessionService();
-
+        $this->sessionService->installSessionHandler();
         // the backend user has an active session but the admin / maintainer
         // rights have been revoked or the user was disabled or deleted in the meantime
-        if ($session->isAuthorizedBackendUserSession($request) && !$session->hasActiveBackendUserRoleAndSession()) {
+        if ($this->sessionService->isAuthorizedBackendUserSession($request) && !$this->sessionService->hasActiveBackendUserRoleAndSession()) {
             // log out the user and destroy the session
-            $session->resetSession();
-            $session->destroySession($request);
+            $this->sessionService->resetSession();
+            $this->sessionService->destroySession($request);
             $formProtection = $this->formProtectionFactory->createFromRequest($request);
             $formProtection->clean();
 
@@ -136,35 +135,35 @@ class Maintenance implements MiddlewareInterface
         if ($actionName === 'preAccessCheck') {
             $response = new JsonResponse([
                 'installToolLocked' => !$this->checkEnableInstallToolFile(),
-                'isAuthorized' => $session->isAuthorized($request),
+                'isAuthorized' => $this->sessionService->isAuthorized($request),
             ]);
         } elseif ($actionName === 'checkLogin') {
-            if (!$this->checkEnableInstallToolFile() && !$session->isAuthorizedBackendUserSession($request)) {
+            if (!$this->checkEnableInstallToolFile() && !$this->sessionService->isAuthorizedBackendUserSession($request)) {
                 throw new \RuntimeException('Not authorized', 1505563556);
             }
-            if ($session->isAuthorized($request)) {
-                $session->refreshSession();
+            if ($this->sessionService->isAuthorized($request)) {
+                $this->sessionService->refreshSession();
                 $response = new JsonResponse([
                     'success' => true,
                 ]);
             } else {
                 // Session expired, log out user, start new session
-                $session->resetSession();
-                $session->startSession();
+                $this->sessionService->resetSession();
+                $this->sessionService->startSession();
                 $response = new JsonResponse([
                     'success' => false,
                 ]);
             }
         } elseif ($actionName === 'login') {
-            $session->initializeSession();
+            $this->sessionService->initializeSession();
             if (!$this->checkEnableInstallToolFile()) {
                 throw new \RuntimeException('Not authorized', 1505567462);
             }
-            $this->checkSessionToken($request, $session);
-            $this->checkSessionLifetime($request, $session);
+            $this->checkSessionToken($request);
+            $this->checkSessionLifetime($request);
             $password = $request->getParsedBody()['install']['password'] ?? null;
             $authService = $this->container->get(AuthenticationService::class);
-            if ($authService->loginWithPassword($password, $request, $session)) {
+            if ($authService->loginWithPassword($password, $request, $this->sessionService)) {
                 $response = new JsonResponse([
                     'success' => true,
                 ]);
@@ -197,7 +196,7 @@ class Maintenance implements MiddlewareInterface
             }
             $formProtection = $this->formProtectionFactory->createFromRequest($request);
             $formProtection->clean();
-            $session->destroySession($request);
+            $this->sessionService->destroySession($request);
             $response = new JsonResponse([
                 'success' => true,
             ]);
@@ -206,15 +205,15 @@ class Maintenance implements MiddlewareInterface
             if ($enforceReferrerResponse !== null) {
                 return $enforceReferrerResponse;
             }
-            $session->initializeSession();
+            $this->sessionService->initializeSession();
             if (
-                !$this->checkSessionToken($request, $session)
-                || !$this->checkSessionLifetime($request, $session)
-                || !$session->isAuthorized($request)
+                !$this->checkSessionToken($request)
+                || !$this->checkSessionLifetime($request)
+                || !$this->sessionService->isAuthorized($request)
             ) {
                 return new HtmlResponse('', 403);
             }
-            $session->refreshSession();
+            $this->sessionService->refreshSession();
             if (!array_key_exists($controllerName, $this->controllers)) {
                 throw new \RuntimeException(
                     'Unknown controller ' . $controllerName,
@@ -260,7 +259,7 @@ class Maintenance implements MiddlewareInterface
     /**
      * Use form protection API to find out if protected POST forms are ok.
      */
-    protected function checkSessionToken(ServerRequestInterface $request, SessionService $session): bool
+    protected function checkSessionToken(ServerRequestInterface $request): bool
     {
         $postValues = $request->getParsedBody()['install'] ?? null;
         // no post data is there, so no token check necessary
@@ -281,8 +280,8 @@ class Maintenance implements MiddlewareInterface
             $tokenOk = $formProtection->validateToken($postValues['token'], 'installTool', $action);
         }
         if (!$tokenOk) {
-            $session->resetSession();
-            $session->startSession();
+            $this->sessionService->resetSession();
+            $this->sessionService->startSession();
         }
         return $tokenOk;
     }
@@ -293,13 +292,13 @@ class Maintenance implements MiddlewareInterface
      *
      * @return bool True if session lifetime is OK
      */
-    protected function checkSessionLifetime(ServerRequestInterface $request, SessionService $session): bool
+    protected function checkSessionLifetime(ServerRequestInterface $request): bool
     {
-        $isExpired = $session->isExpired($request);
+        $isExpired = $this->sessionService->isExpired($request);
         if ($isExpired) {
             // Session expired, log out user, start new session
-            $session->resetSession();
-            $session->startSession();
+            $this->sessionService->resetSession();
+            $this->sessionService->startSession();
         }
         return !$isExpired;
     }

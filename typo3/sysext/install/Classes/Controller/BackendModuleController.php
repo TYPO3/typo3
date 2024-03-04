@@ -39,10 +39,9 @@ use TYPO3\CMS\Install\Service\SessionService;
  */
 class BackendModuleController
 {
-    protected ?SessionService $sessionService = null;
-
     public function __construct(
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly SessionService $sessionService
     ) {}
 
     /**
@@ -84,7 +83,9 @@ class BackendModuleController
     protected function setAuthorizedAndRedirect(string $controller, ServerRequestInterface $request): ResponseInterface
     {
         $userSession = $this->getBackendUser()->getSession();
-        $this->getSessionService()->setAuthorizedBackendSession($userSession);
+        $this->sessionService->installSessionHandler();
+        $this->sessionService->startSession();
+        $this->sessionService->setAuthorizedBackendSession($userSession);
         $entryPointResolver = GeneralUtility::makeInstance(BackendEntryPointResolver::class);
         $redirectLocation = $entryPointResolver->getUriFromRequest($request, 'install.php')->withQuery('?install[controller]=' . $controller . '&install[context]=backend');
         return new RedirectResponse($redirectLocation, 303);
@@ -93,18 +94,5 @@ class BackendModuleController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Install Tool modified sessions meta-data (handler, storage, name) which
-     * conflicts with existing session that for instance.
-     */
-    protected function getSessionService(): SessionService
-    {
-        if ($this->sessionService === null) {
-            $this->sessionService = new SessionService();
-            $this->sessionService->startSession();
-        }
-        return $this->sessionService;
     }
 }

@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\Exception\SettingsWriteException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -29,7 +30,6 @@ use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\Exception\SilentConfigurationUpgradeReadonlyException;
 use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
@@ -53,6 +53,7 @@ class LayoutController extends AbstractController
         private readonly SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
         private readonly SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService,
         private readonly BackendEntryPointResolver $backendEntryPointResolver,
+        private readonly HashService $hashService,
     ) {}
 
     /**
@@ -63,7 +64,7 @@ class LayoutController extends AbstractController
     {
         $bust = $GLOBALS['EXEC_TIME'];
         if (!Environment::getContext()->isDevelopment()) {
-            $bust = GeneralUtility::hmac((string)(new Typo3Version()) . Environment::getProjectPath());
+            $bust = $this->hashService->hmac((new Typo3Version()) . Environment::getProjectPath(), self::class);
         }
 
         $packages = [

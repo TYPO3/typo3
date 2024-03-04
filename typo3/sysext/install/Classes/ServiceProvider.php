@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -48,6 +49,7 @@ use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Service\LateBootService;
+use TYPO3\CMS\Install\Service\SessionService;
 use TYPO3\CMS\Install\Service\SetupDatabaseService;
 use TYPO3\CMS\Install\Service\SetupService;
 use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
@@ -84,6 +86,7 @@ class ServiceProvider extends AbstractServiceProvider
             Service\SilentTemplateFileUpgradeService::class => self::getSilentTemplateFileUpgradeService(...),
             Service\WebServerConfigurationFileService::class => self::getWebServerConfigurationFileService(...),
             Service\DatabaseUpgradeWizardsService::class => self::getDatabaseUpgradeWizardsService(...),
+            Service\SessionService::class => self::getSessionService(...),
             Service\SetupService::class => self::getSetupService(...),
             Service\SetupDatabaseService::class => self::getSetupDatabaseService(...),
             Middleware\Installer::class => self::getInstallerMiddleware(...),
@@ -95,6 +98,7 @@ class ServiceProvider extends AbstractServiceProvider
             Controller\LoginController::class => self::getLoginController(...),
             Controller\MaintenanceController::class => self::getMaintenanceController(...),
             Controller\SettingsController::class => self::getSettingsController(...),
+            Controller\ServerResponseCheckController::class => self::getServerResponseCheckController(...),
             Controller\UpgradeController::class => self::getUpgradeController(...),
             Command\LanguagePackCommand::class => self::getLanguagePackCommand(...),
             Command\UpgradeWizardRunCommand::class => self::getUpgradeWizardRunCommand(...),
@@ -219,6 +223,13 @@ class ServiceProvider extends AbstractServiceProvider
         ]);
     }
 
+    public static function getSessionService(ContainerInterface $container): Service\SessionService
+    {
+        return new Service\SessionService(
+            $container->get(HashService::class),
+        );
+    }
+
     public static function getSetupService(ContainerInterface $container): Service\SetupService
     {
         return new Service\SetupService(
@@ -242,7 +253,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Middleware\Installer(
             $container,
-            $container->get(FormProtectionFactory::class)
+            $container->get(FormProtectionFactory::class),
+            $container->get(SessionService::class),
         );
     }
 
@@ -253,7 +265,8 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(ConfigurationManager::class),
             $container->get(PasswordHashFactory::class),
             $container,
-            $container->get(FormProtectionFactory::class)
+            $container->get(FormProtectionFactory::class),
+            $container->get(SessionService::class),
         );
     }
 
@@ -286,6 +299,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(FormProtectionFactory::class),
             $container->get(SetupService::class),
             $container->get(SetupDatabaseService::class),
+            $container->get(HashService::class),
         );
     }
 
@@ -296,6 +310,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Service\SilentConfigurationUpgradeService::class),
             $container->get(Service\SilentTemplateFileUpgradeService::class),
             $container->get(BackendEntryPointResolver::class),
+            $container->get(HashService::class),
         );
     }
 
@@ -332,6 +347,13 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(AstTraverser::class),
             $container->get(FormProtectionFactory::class),
             $container->get(ConfigurationManager::class),
+        );
+    }
+
+    public static function getServerResponseCheckController(ContainerInterface $container): Controller\ServerResponseCheckController
+    {
+        return new Controller\ServerResponseCheckController(
+            $container->get(HashService::class),
         );
     }
 

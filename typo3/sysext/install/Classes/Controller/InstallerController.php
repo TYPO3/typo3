@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Exception\SettingsWriteException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -80,6 +81,7 @@ final class InstallerController
         private readonly FormProtectionFactory $formProtectionFactory,
         private readonly SetupService $setupService,
         private readonly SetupDatabaseService $setupDatabaseService,
+        private readonly HashService $hashService,
     ) {}
 
     /**
@@ -89,7 +91,7 @@ final class InstallerController
     {
         $bust = $GLOBALS['EXEC_TIME'];
         if (!Environment::getContext()->isDevelopment()) {
-            $bust = GeneralUtility::hmac((string)(new Typo3Version()) . Environment::getProjectPath());
+            $bust = $this->hashService->hmac((new Typo3Version()) . Environment::getProjectPath(), self::class);
         }
         $packages = [
             $this->packageManager->getPackage('core'),

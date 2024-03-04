@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Service\Session;
 
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception;
@@ -41,8 +42,11 @@ class FileSessionHandler implements \SessionHandlerInterface
      */
     private int $expirationTimeInMinutes;
 
-    public function __construct(string $sessionPath, int $expirationTimeInMinutes)
-    {
+    public function __construct(
+        string $sessionPath,
+        int $expirationTimeInMinutes,
+        private readonly HashService $hashService
+    ) {
         $this->sessionPath = rtrim($sessionPath, '/') . '/';
         $this->expirationTimeInMinutes = $expirationTimeInMinutes;
         // Start our PHP session early so that hasSession() works
@@ -63,7 +67,7 @@ class FileSessionHandler implements \SessionHandlerInterface
                 1371243449
             );
         }
-        $sessionSavePath = $this->sessionPath . GeneralUtility::hmac('session:' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+        $sessionSavePath = $this->sessionPath . $this->hashService->hmac('session:' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'], self::class);
         $this->ensureSessionSavePathExists($sessionSavePath);
         return $sessionSavePath;
     }

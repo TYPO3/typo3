@@ -37,7 +37,8 @@ class Installer implements MiddlewareInterface
 {
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly FormProtectionFactory $formProtectionFactory
+        private readonly FormProtectionFactory $formProtectionFactory,
+        private readonly SessionService $sessionService
     ) {}
 
     /**
@@ -73,10 +74,10 @@ class Installer implements MiddlewareInterface
         } else {
             $this->throwIfInstallerIsNotAvailable();
             // With main folder layout available, sessions can be handled
-            $session = new SessionService();
-            $session->startSession();
-            if ($session->isExpired($request)) {
-                $session->refreshSession();
+            $this->sessionService->installSessionHandler();
+            $this->sessionService->startSession();
+            if ($this->sessionService->isExpired($request)) {
+                $this->sessionService->refreshSession();
             }
             $postValues = $request->getParsedBody()['install'] ?? [];
             $sessionTokenOk = false;
@@ -93,8 +94,8 @@ class Installer implements MiddlewareInterface
                 $sessionTokenOk = $formProtection->validateToken($postValues['token'], 'installTool', $actionName);
             }
             if (!$sessionTokenOk) {
-                $session->resetSession();
-                $session->startSession();
+                $this->sessionService->resetSession();
+                $this->sessionService->startSession();
                 throw new \RuntimeException('Invalid session token', 1505647737);
             }
 
@@ -110,7 +111,7 @@ class Installer implements MiddlewareInterface
 
             if ($actionName === 'executeDefaultConfiguration') {
                 // Executing last step cleans session
-                $session->destroySession($request);
+                $this->sessionService->destroySession($request);
             }
         }
 

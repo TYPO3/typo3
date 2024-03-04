@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install\Service;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
@@ -64,18 +65,16 @@ class SessionService implements SingletonInterface
      */
     private $regenerateSessionIdTime = 5;
 
-    /**
-     * Constructor. Starts PHP session handling in our own private store
-     *
-     * Side-effect: might set a cookie, so must be called before any other output.
-     */
-    public function __construct()
+    public function __construct(private readonly HashService $hashService) {}
+
+    public function installSessionHandler(): void
     {
         // Register our "save" session handler
         $sessionHandler = GeneralUtility::makeInstance(
             FileSessionHandler::class,
             Environment::getVarPath() . '/session',
-            $this->expireTimeInMinutes
+            $this->expireTimeInMinutes,
+            $this->hashService
         );
         session_set_save_handler($sessionHandler);
         session_name($this->cookieName);
