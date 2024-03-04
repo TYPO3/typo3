@@ -48,6 +48,7 @@ return [
             'clipBoard' => true,
             'searchBox' => false,
             'collapsedTables' => [],
+            'language' => -1,
         ],
     ],
     'site_configuration' => [

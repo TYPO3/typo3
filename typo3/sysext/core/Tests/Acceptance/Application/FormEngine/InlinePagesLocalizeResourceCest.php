@@ -29,6 +29,8 @@ final class InlinePagesLocalizeResourceCest
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'staticdata']);
         $I->switchToContentFrame();
+        $I->click('Language');
+        $I->click('All languages');
         $I->waitForText('staticdata', 20);
     }
 
@@ -58,6 +60,8 @@ final class InlinePagesLocalizeResourceCest
         $I->wait(1);
         // Edit the page translation and see if that resource has been added.
         $I->switchToContentFrame();
+        $I->click('Language');
+        $I->click('All languages');
         $I->waitForText('staticdata - language 1');
         $I->wait(1);
         $I->click('staticdata - language 1');

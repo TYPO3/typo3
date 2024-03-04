@@ -487,9 +487,10 @@ class BackendUtility
      * Fetch all records of the given page ID.
      * Does not check permissions.
      *
+     * @param int[] $limitToLanguageIds
      * @internal
      */
-    public static function getExistingPageTranslations(int $pageUid): array
+    public static function getExistingPageTranslations(int $pageUid, array $limitToLanguageIds = []): array
     {
         if ($pageUid === 0 || !($schema = self::getTcaSchema('pages'))?->hasCapability(TcaSchemaCapability::Language)) {
             return [];
@@ -498,7 +499,7 @@ class BackendUtility
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, self::getBackendUserAuthentication()->workspace));
-        $result = $queryBuilder
+        $queryBuilder
             ->select('*')
             ->from('pages')
             ->where(
@@ -506,8 +507,17 @@ class BackendUtility
                     $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
                     $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
                 )
-            )
-            ->executeQuery();
+            );
+        if (!empty($limitToLanguageIds)) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
+                    $queryBuilder->createNamedParameter($limitToLanguageIds, Connection::PARAM_INT_ARRAY)
+                )
+            );
+        }
+
+        $result = $queryBuilder->executeQuery();
 
         $rows = [];
         while ($row = $result->fetchAssociative()) {

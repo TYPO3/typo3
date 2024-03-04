@@ -37,6 +37,8 @@ final class Inline1nCest
         $I->click('List');
         $pageTree->openPath(['styleguide TCA demo', 'inline 1n']);
         $I->switchToContentFrame();
+        $I->click('Language');
+        $I->click('All languages');
 
         $I->waitForText('inline 1n', 20);
         $editRecordLinkCssPath = '#recordlist-tx_styleguide_inline_1n a[aria-label="Edit record"]';

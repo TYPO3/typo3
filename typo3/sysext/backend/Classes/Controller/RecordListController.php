@@ -32,7 +32,9 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Security\SudoMode\Exception\VerificationRequiredException;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -54,6 +56,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -82,6 +85,7 @@ class RecordListController
     protected ?ModuleData $moduleData = null;
     protected bool $allowClipboard = true;
     protected bool $allowSearch = true;
+    protected int $currentSelectedLanguage;
 
     public function __construct(
         private readonly ComponentFactory $componentFactory,
@@ -114,7 +118,8 @@ class RecordListController
         $this->searchTerm = trim((string)($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? ''));
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
         $cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
-        $siteLanguages = $request->getAttribute('site')->getAvailableLanguages($this->getBackendUserAuthentication(), false, $this->id);
+        $siteLanguages = $request->getAttribute('site')->getAvailableLanguages($backendUser, false, $this->id);
+        $this->currentSelectedLanguage = (int)$this->moduleData->get('language');
 
         // Loading module configuration, clean up settings, current page and page access
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
@@ -215,7 +220,7 @@ class RecordListController
         if ($pageinfo) {
             $view->getDocHeaderComponent()->setPageBreadcrumb($pageinfo);
         }
-        $this->getDocHeaderButtons($view, $clipboard, $request, $this->table, $dbList->listURL(), []);
+        $this->getDocHeaderButtons($view, $clipboard, $request, $this->table, $dbList->listURL(), [], $siteLanguages);
         $view->assignMultiple([
             'pageId' => $this->id,
             'pageTitle' => $title,
@@ -404,11 +409,20 @@ class RecordListController
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
+     *
+     * @param SiteLanguage[] $availableLanguages
      */
-    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, string $table, UriInterface $listUrl, array $moduleSettings): void
+    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, ServerRequestInterface $request, string $table, UriInterface $listUrl, array $moduleSettings, array $availableLanguages): void
     {
         $queryParams = $request->getQueryParams();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
+
+        // Language
+        if ($languageButton = $this->makeLanguageSwitchButton($availableLanguages)) {
+            $buttonBar->addButton($languageButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
+        }
+
         if ($table !== 'tt_content' && !($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
             // New record button if: table is not tt_content - tt_content should be managed in page module, link is
             // not disabled via TSconfig, page is not 'edit locked'
@@ -722,6 +736,145 @@ class RecordListController
         });
 
         return (string)$this->uriBuilder->buildUriFromRequest($request, $params);
+    }
+
+    /**
+     * Language Switch
+     *
+     * @param SiteLanguage[] $availableLanguages
+     */
+    protected function makeLanguageSwitchButton(array $availableLanguages): ?ButtonInterface
+    {
+        $languageMenuConfiguration = $this->getLanguageMenuConfiguration($availableLanguages);
+        // Early return if less than 2 languages are available
+        if (count($languageMenuConfiguration['language']) < 2) {
+            return null;
+        }
+
+        $languageService = $this->getLanguageService();
+
+        $languageDropDownButton = $this->componentFactory->createDropDownButton()
+            ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.language'))
+            ->setShowLabelText(true);
+
+        foreach ($languageMenuConfiguration['language'] as $key => $language) {
+            $siteLanguage = $availableLanguages[$key] ?? null;
+            if (!$siteLanguage instanceof SiteLanguage) {
+                // Skip invalid language keys, e.g. "-1" for "all languages"
+                continue;
+            }
+            /** @var DropDownItemInterface $languageItem */
+            $languageItem = GeneralUtility::makeInstance(DropDownRadio::class)
+                ->setActive($this->currentSelectedLanguage === $siteLanguage->getLanguageId())
+                ->setIcon($this->iconFactory->getIcon($siteLanguage->getFlagIdentifier()))
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_list', [
+                    'id' => $this->id,
+                    'language' => $siteLanguage->getLanguageId(),
+                ]))
+                ->setLabel($siteLanguage->getTitle());
+            $languageDropDownButton->addItem($languageItem);
+        }
+
+        /** @var DropDownItemInterface $allLanguagesItem */
+        $allLanguagesItem = GeneralUtility::makeInstance(DropDownRadio::class)
+            ->setActive($this->currentSelectedLanguage === -1)
+            ->setIcon($this->iconFactory->getIcon('flags-multiple'))
+            ->setHref(
+                (string)$this->uriBuilder->buildUriFromRoute('web_list', [
+                    'id' => $this->id,
+                    'language' => -1,
+                ])
+            )
+            ->setLabel(
+                $languageService->sL(
+                    'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'
+                )
+            );
+        $languageDropDownButton->addItem($allLanguagesItem);
+
+        return $languageDropDownButton;
+    }
+
+    /**
+     * Creates the module menu configuration.
+     *
+     * @param SiteLanguage[] $availableLanguages
+     * @return array{language: array<int, string>}
+     */
+    protected function getLanguageMenuConfiguration(array $availableLanguages): array
+    {
+        $backendUser = $this->getBackendUserAuthentication();
+        $languageService = $this->getLanguageService();
+        $translations = [];
+
+        // MENU-ITEMS:
+        $languageMenuConfiguration = [
+            'language' => [
+                0 => isset($availableLanguages[0]) ? $availableLanguages[0]->getTitle() : $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage'),
+            ],
+        ];
+
+        // First, select all localized page records on the current page.
+        // Each represents a possibility for a language on the page. Add these to language selector.
+        if ($this->id) {
+            // Add all possible languages first for the cleanup to make sure we keep the selected language
+            // when the user switches between pages with/without translations
+            foreach ($availableLanguages as $language) {
+                $languageMenuConfiguration['language'][$language->getLanguageId()] = $language->getTitle();
+            }
+
+            // Compile language data for pid != 0 only. The language drop-down is not shown on pid 0
+            // since pid 0 can't be localized.
+            $availableLanguageIds = array_map(static function ($siteLanguage) {
+                return $siteLanguage->getLanguageId();
+            }, $availableLanguages);
+
+            $pageTranslations = BackendUtility::getExistingPageTranslations($this->id, $availableLanguageIds);
+            $schema = $this->tcaSchemaFactory->get('pages');
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $languageField = $languageCapability->getLanguageField()->getName();
+            foreach ($pageTranslations as $pageTranslation) {
+                $languageId = $pageTranslation[$languageField];
+                $translations[] = $languageId;
+            }
+
+            // Add special "-1" in case translations of the current page exist
+            if (count($languageMenuConfiguration['language']) > 1) {
+                // We need to add -1 (all) here so a possible -1 value will be allowed when calling
+                // moduleData->cleanUp(). Actually, this is only relevant if we are dealing with the
+                // "languages" mode, which however can only be safely determined, after the moduleData
+                // have been cleaned up => chicken and egg problem. We therefore remove the -1 item from
+                // the menu again, as soon as we are able to determine the requested mode.
+                // @todo Replace the whole "mode" handling with some more robust solution
+                $languageMenuConfiguration['language'][-1] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages');
+            }
+        }
+        // Clean up settings
+        if ($this->moduleData->cleanUp($languageMenuConfiguration)) {
+            $backendUser->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
+        }
+
+        // Remove all languages from $languageMenuConfiguration, which have no page translations after cleanup
+        foreach ($languageMenuConfiguration['language'] as $languageId => $language) {
+            if ($languageId > 0 && !in_array($languageId, $translations, true)) {
+                unset($languageMenuConfiguration['language'][$languageId]);
+            }
+        }
+
+        if ($translations === []) {
+            // Remove -1 if we have no translations
+            unset($languageMenuConfiguration['language'][-1]);
+
+            // No translations -> set module data for the current request to default language
+            $this->moduleData->set('language', 0);
+        } elseif (!isset($languageMenuConfiguration['language'][$this->moduleData->get('language')])) {
+            // If the currently selected language is not available on this page (no translation),
+            // fall back to "all languages" (-1) temporarily for this page only (not persisted).
+            // When navigating to a page with the selected language translation, it will be used again.
+            $this->moduleData->set('language', -1);
+        }
+
+        return $languageMenuConfiguration;
     }
 
     /**
