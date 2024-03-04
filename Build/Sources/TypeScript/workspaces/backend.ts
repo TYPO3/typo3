@@ -1039,20 +1039,26 @@ class Backend extends Workspaces {
       ]),
     ).then(async (response: AjaxResponse): Promise<void> => {
       const result: Record<string, string> = (await response.resolve())[0].result;
-      const $list = $('<dl />');
+      const list = document.createElement('dl');
 
       for (const [language, url] of Object.entries(result)) {
-        $list.append(
-          $('<dt />').text(language),
-          $('<dd />').append(
-            $('<a />', { href: url, target: '_blank' }).text(url),
-          ),
-        );
+        const title = document.createElement('dt');
+        title.textContent = language;
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank';
+        link.textContent = url;
+
+        const listItem = document.createElement('dd');
+        listItem.appendChild(link);
+
+        list.append(title, listItem);
       }
 
       Modal.show(
         TYPO3.lang.previewLink,
-        $list,
+        list,
         SeverityEnum.info,
         [{
           text: TYPO3.lang.ok,
