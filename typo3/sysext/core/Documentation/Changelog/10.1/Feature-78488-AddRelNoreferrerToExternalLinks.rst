@@ -17,6 +17,10 @@ All links processed by :typoscript:`typolink` with external links opening in a n
 Links opening in a new window are defined as those having an attribute :html:`target` which is either not empty,
 :html:`_self`, :html:`_top` or :html:`_parent`.
 
+..  note::
+    Initially this feature added :html:`rel="noopener noreferrer`. However :html:`noreferrer` also implies the property 
+    :html:`noopener`. Therfore the later war removed.
+
 
 Impact
 ======
