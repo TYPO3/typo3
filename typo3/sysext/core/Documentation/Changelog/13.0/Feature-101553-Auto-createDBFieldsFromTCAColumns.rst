@@ -94,6 +94,7 @@ Columns are auto-created for these TCA :php:`columns` types:
 * :php:`type = 'inline'` - new with Core v13
 * :php:`type = 'number'` - new with Core v13
 * :php:`type = 'select'` - new with Core v13
+* :php:`type = 'input'` - new with Core v13
 
 See :ref:`Breaking: DateTime column definitions <breaking-99937-1691166389>`
 for a change in the :sql:`datetime` column definition calculation.

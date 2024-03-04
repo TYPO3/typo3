@@ -92,7 +92,6 @@ return [
                 'size' => 20,
                 'required' => true,
                 'eval' => 'trim',
-                'max' => 256,
             ],
         ],
         'subtitle' => [
@@ -101,7 +100,7 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 256,
+                'nullable' => true,
             ],
         ],
         'description' => [

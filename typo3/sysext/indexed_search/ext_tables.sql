@@ -1,7 +1,4 @@
-
-#
-# Table structure for table 'index_phash'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE index_phash (
   phash varchar(32) NOT NULL,
   phash_grouping varchar(32) NOT NULL,
@@ -31,18 +28,14 @@ CREATE TABLE index_phash (
   KEY freeIndexUid (freeIndexUid)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'index_fulltext'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE index_fulltext (
   phash varchar(32) NOT NULL,
   fulltextdata mediumtext,
   PRIMARY KEY (phash)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'index_rel'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE index_rel (
   phash varchar(32) NOT NULL,
   wid varchar(32) NOT NULL,
@@ -54,9 +47,7 @@ CREATE TABLE index_rel (
   KEY wid (wid,phash)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'index_words'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE index_words (
   wid varchar(32) NOT NULL,
   baseword varchar(60) DEFAULT '' NOT NULL,
@@ -65,9 +56,7 @@ CREATE TABLE index_words (
   KEY baseword (baseword)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'index_section'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE index_section (
   uniqid int(11) NOT NULL auto_increment,
   phash varchar(32) NOT NULL,
@@ -83,9 +72,7 @@ CREATE TABLE index_section (
   KEY rl0_2 (rl0,phash)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'index_grlist'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE index_grlist (
   uniqid int(11) NOT NULL auto_increment,
   phash varchar(32) NOT NULL,
@@ -97,37 +84,23 @@ CREATE TABLE index_grlist (
   KEY phash_grouping (phash_x,hash_gr_list)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'index_debug'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE index_debug (
   phash varchar(32) NOT NULL,
   debuginfo mediumtext,
   PRIMARY KEY (phash)
 );
 
-#
-# Table structure for table 'index_config'
-#
 CREATE TABLE index_config (
+  # @todo: Change TCA type from input to something better
   set_id int(11) DEFAULT '0' NOT NULL,
+  # @todo: Completely unused?!
   session_data mediumtext,
-
-  title varchar(255) DEFAULT '' NOT NULL,
-  get_params varchar(255) DEFAULT '' NOT NULL,
-  fieldlist varchar(255) DEFAULT '' NOT NULL,
-  externalUrl varchar(255) DEFAULT '' NOT NULL,
-  filepath varchar(255) DEFAULT '' NOT NULL,
-  extensions varchar(255) DEFAULT '' NOT NULL,
-
-  # group fields, but rely on the integer format, so default format (text) gets overridden here
+  # @todo: type=group fields, but rely on integer.
   alternative_source_pid int(11) unsigned DEFAULT '0' NOT NULL,
 );
 
-
-#
-# Table structure for table 'index_stat_word'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE index_stat_word (
   uid int(11) NOT NULL auto_increment,
   word varchar(50) DEFAULT '' NOT NULL,

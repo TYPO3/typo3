@@ -972,6 +972,7 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:target',
             'config' => [
                 'type' => 'input',
+                'max' => 30,
                 'size' => 20,
                 'eval' => 'trim',
                 'valuePicker' => [
@@ -1043,6 +1044,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
+                'max' => 30,
                 'eval' => 'trim',
                 'default' => '',
             ],
@@ -1059,6 +1061,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
+                'max' => 30,
                 'eval' => 'trim',
                 'default' => '',
             ],

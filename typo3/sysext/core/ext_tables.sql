@@ -1,56 +1,38 @@
-#
-# Table structure for table 'be_groups'
-#
-CREATE TABLE be_groups (
-	title varchar(50) DEFAULT '' NOT NULL,
-);
-
-#
-# Table structure for table 'be_sessions'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE be_sessions (
 	ses_id varchar(190) DEFAULT '' NOT NULL,
 	ses_iplock varchar(39) DEFAULT '' NOT NULL,
 	ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
 	ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	ses_data longblob,
+
 	PRIMARY KEY (ses_id),
 	KEY ses_tstamp (ses_tstamp)
 );
 
-#
-# Table structure for table 'be_users'
-#
 CREATE TABLE be_users (
-	username varchar(50) DEFAULT '' NOT NULL,
 	# @todo: Analyzer does not handle default yet.
 	lang varchar(10) DEFAULT 'default' NOT NULL,
-	realName varchar(80) DEFAULT '' NOT NULL,
+	# No TCA column defined since it is a general storage blob
 	uc mediumblob,
+	# No TCA column defined
 	workspace_id int(11) DEFAULT '0' NOT NULL,
+	# @todo: Keep this field defined here or make it a different type (not 'none') in TCA and handle in schema analyzer
 	mfa mediumblob,
+
 	KEY username (username)
 );
 
-#
-# Table structure for table 'pages'
-#
 CREATE TABLE pages (
+	# No TCA column defined for perms_
 	perms_userid int(11) unsigned DEFAULT '0' NOT NULL,
 	perms_groupid int(11) unsigned DEFAULT '0' NOT NULL,
 	perms_user tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	perms_group tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	perms_everybody tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	title varchar(255) DEFAULT '' NOT NULL,
-	url varchar(255) DEFAULT '' NOT NULL,
-	subtitle varchar(255) DEFAULT '' NOT NULL,
-	target varchar(80) DEFAULT '' NOT NULL,
-	cache_tags varchar(255) DEFAULT '' NOT NULL,
+	# No TCA column defined
 	SYS_LASTCHANGED int(10) unsigned DEFAULT '0' NOT NULL,
-	author varchar(255) DEFAULT '' NOT NULL,
-	nav_title varchar(255) DEFAULT '' NOT NULL,
-
-	# group fields, but rely on the integer format, so default format (text) gets overridden here
+	# @todo: type=group fields, but rely on integer.
 	shortcut int(10) unsigned DEFAULT '0' NOT NULL,
 	content_from_pid int(10) unsigned DEFAULT '0' NOT NULL,
 	mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
@@ -60,21 +42,18 @@ CREATE TABLE pages (
 	KEY slug (slug(127))
 );
 
-#
-# Table structure for table 'sys_registry'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE sys_registry (
 	uid int(11) unsigned NOT NULL auto_increment,
 	entry_namespace varchar(128) DEFAULT '' NOT NULL,
 	entry_key varchar(128) DEFAULT '' NOT NULL,
 	entry_value mediumblob,
+
 	PRIMARY KEY (uid),
 	UNIQUE KEY entry_identifier (entry_namespace,entry_key)
 );
 
-#
-# Table structure for table 'sys_be_shortcuts'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE sys_be_shortcuts (
 	uid int(11) unsigned NOT NULL auto_increment,
 	userid int(11) unsigned DEFAULT '0' NOT NULL,
@@ -83,52 +62,36 @@ CREATE TABLE sys_be_shortcuts (
 	description varchar(255) DEFAULT '' NOT NULL,
 	sorting int(11) DEFAULT '0' NOT NULL,
 	sc_group tinyint(4) DEFAULT '0' NOT NULL,
+
 	PRIMARY KEY (uid),
 	KEY event (userid)
 );
 
-
-#
-# Table structure for table 'sys_news'
-#
-CREATE TABLE sys_news (
-	title varchar(255) DEFAULT '' NOT NULL,
-	content mediumtext
-);
-
-
-#
-# Table structure for table 'sys_filemounts'
-#
-CREATE TABLE sys_filemounts (
-	title varchar(255) DEFAULT '' NOT NULL,
-);
-
-
-#
-# Table structure for table 'sys_file_storage'
-#
 CREATE TABLE sys_file_storage (
-	name varchar(255) DEFAULT '' NOT NULL,
+	# @todo: type=user currently needs manual configuration
 	is_public tinyint(4) DEFAULT '0' NOT NULL,
+	# @todo: This can be a varchar(255), but it needs clarification if it can be nullable.
 	processingfolder tinytext
 );
 
-#
-# Table structure for table 'sys_file'
-#
 CREATE TABLE sys_file (
+	# No TCA column
 	last_indexed int(11) DEFAULT '0' NOT NULL,
-
-	# file info data
+	# @todo: Incomplete or broken TCA
 	identifier text,
+	# No TCA column
 	identifier_hash char(40) DEFAULT '' NOT NULL,
+	# No TCA column
 	folder_hash char(40) DEFAULT '' NOT NULL,
+	# No TCA column
 	extension varchar(255) DEFAULT '' NOT NULL,
-	mime_type varchar(255) DEFAULT '' NOT NULL,
+	# @todo: Restrict to varchar(255)?
 	name tinytext,
+	# No TCA column
 	sha1 char(40) DEFAULT '' NOT NULL,
+	# No TCA column
 	creation_date int(11) DEFAULT '0' NOT NULL,
+	# No TCA column
 	modification_date int(11) DEFAULT '0' NOT NULL,
 
 	KEY sel01 (storage,identifier_hash),
@@ -138,29 +101,21 @@ CREATE TABLE sys_file (
 	KEY sha1 (sha1)
 );
 
-#
-# Table structure for table 'sys_file_metadata'
-#
 CREATE TABLE sys_file_metadata (
+	# @todo: Restrict to varchar(255)?
 	title tinytext,
+	# @todo: Restrict to varchar(255)?
 	alternative text,
 
 	KEY file (file),
 	KEY fal_filelist (l10n_parent,sys_language_uid)
 );
 
-
-#
-# Table structure for table 'sys_file_processedfile'.
-# which is a "temporary" file, like an image preview
-# This table does not have a TCA representation, as it is only written
-# to using direct SQL queries in the code
-#
+# Define table and fields since it has no TCA
 CREATE TABLE sys_file_processedfile (
 	uid int(11) NOT NULL auto_increment,
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
-
 	storage int(11) DEFAULT '0' NOT NULL,
 	original int(11) DEFAULT '0' NOT NULL,
 	identifier varchar(512) DEFAULT '' NOT NULL,
@@ -179,20 +134,12 @@ CREATE TABLE sys_file_processedfile (
 	KEY identifier (storage,identifier(180))
 );
 
-#
-# Table structure for table 'sys_file_reference'
-# which is one usage of a file with overloaded metadata
-#
 CREATE TABLE sys_file_reference (
-	# Reference fields (basically same as MM table)
-	tablenames varchar(64) DEFAULT '' NOT NULL,
-	fieldname varchar(64) DEFAULT '' NOT NULL,
-
-	# group fields, but rely on the integer format, so default format (text) gets overridden here
+	# @todo: type=group field, but rely on integer.
 	uid_local int(11) DEFAULT '0' NOT NULL,
-
-	# Local usage overlay fields
+	# @todo: Restrict to varchar(255)?
 	title tinytext,
+	# @todo: Restrict to varchar(255)?
 	alternative text,
 
 	KEY tablenames_fieldname (tablenames(32),fieldname(12)),
@@ -202,19 +149,14 @@ CREATE TABLE sys_file_reference (
 	KEY combined_1 (l10n_parent, t3ver_oid, t3ver_wsid, t3ver_state, deleted)
 );
 
-
-#
-# Table structure for table 'sys_file_collection'
-#
 CREATE TABLE sys_file_collection (
+	# @todo: Restrict to varchar(255)?
 	title tinytext,
 	# @todo: db analyzer would remove default. needs another look.
 	type varchar(30) DEFAULT 'static' NOT NULL,
 );
 
-#
-# Table structure for table 'sys_history'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE sys_history (
 	uid int(11) unsigned NOT NULL auto_increment,
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
@@ -233,9 +175,7 @@ CREATE TABLE sys_history (
 	KEY recordident_2 (tablename(100),tstamp)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'sys_lockedrecords'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE sys_lockedrecords (
 	uid int(11) unsigned NOT NULL auto_increment,
 	userid int(11) unsigned DEFAULT '0' NOT NULL,
@@ -245,13 +185,12 @@ CREATE TABLE sys_lockedrecords (
 	record_pid int(11) DEFAULT '0' NOT NULL,
 	username varchar(50) DEFAULT '' NOT NULL,
 	feuserid int(11) unsigned DEFAULT '0' NOT NULL,
+
 	PRIMARY KEY (uid),
 	KEY event (userid,tstamp)
 );
 
-#
-# Table structure for table 'sys_refindex'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE sys_refindex (
 	# @todo: Force a latin1 field to reduce primary key length, it only holds hex chars 0-9,a-f.
 	hash varchar(32) DEFAULT '' NOT NULL,
@@ -296,9 +235,7 @@ CREATE TABLE sys_refindex (
 	KEY lookup_string (ref_string(191))
 );
 
-#
-# Table structure for table 'sys_log'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE sys_log (
 	uid int(11) unsigned NOT NULL auto_increment,
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
@@ -335,39 +272,31 @@ CREATE TABLE sys_log (
 	KEY index_level (level)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'sys_category'
-#
 CREATE TABLE sys_category (
-	title tinytext NOT NULL,
-
-	# group fields, but rely on the integer format, so default format (text) gets overridden here
+	# @todo: type=group fields, but rely on integer.
 	items int(11) DEFAULT '0' NOT NULL,
 
 	KEY category_parent (parent),
 	KEY category_list (pid,deleted,sys_language_uid)
 );
 
-#
-# Table structure for table 'sys_messenger_messages'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE `sys_messenger_messages` (
-  id int(11) unsigned NOT NULL auto_increment,
-  body longtext NOT NULL,
-  headers longtext NOT NULL,
-  queue_name varchar(190) NOT NULL,
-  created_at datetime NOT NULL,
-  available_at datetime NOT NULL,
-  delivered_at datetime DEFAULT NULL,
-  PRIMARY KEY (id),
-  KEY queue_name (queue_name),
-  KEY available_at (available_at),
-  KEY delivered_at (delivered_at)
+	id int(11) unsigned NOT NULL auto_increment,
+	body longtext NOT NULL,
+	headers longtext NOT NULL,
+	queue_name varchar(190) NOT NULL,
+	created_at datetime NOT NULL,
+	available_at datetime NOT NULL,
+	delivered_at datetime DEFAULT NULL,
+
+	PRIMARY KEY (id),
+	KEY queue_name (queue_name),
+	KEY available_at (available_at),
+	KEY delivered_at (delivered_at)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'sys_http_report'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE sys_http_report (
 	uuid varchar(36) NOT NULL,
 	status tinyint(1) unsigned DEFAULT '0' NOT NULL,
@@ -389,9 +318,7 @@ CREATE TABLE sys_http_report (
 	KEY all_conditions (type,status,scope,summary,request_time)
 ) ENGINE=InnoDB;
 
-#
-# Table structure for table 'sys_csp_resolution'
-#
+# Define table and fields since it has no TCA
 CREATE TABLE sys_csp_resolution (
 	summary varchar(40) NOT NULL,
 	created int(11) unsigned NOT NULL,

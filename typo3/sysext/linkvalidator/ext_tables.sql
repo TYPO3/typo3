@@ -1,3 +1,4 @@
+# Define table and fields since it has no TCA
 CREATE TABLE tx_linkvalidator_link (
 	uid int(11) NOT NULL auto_increment,
 	record_uid int(11) DEFAULT '0' NOT NULL,

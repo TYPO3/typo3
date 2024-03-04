@@ -1,6 +1,3 @@
-CREATE TABLE tx_testselectflexmm_local (
-);
-
 # MM tables for fields defined in flex form data structures
 # are NOT auto created by DefaultTcaSchema
 CREATE TABLE tx_testselectflexmm_flex_1_multiplesidebyside_1_mm (
@@ -11,8 +8,4 @@ CREATE TABLE tx_testselectflexmm_flex_1_multiplesidebyside_1_mm (
 
 	KEY uid_local (uid_local),
 	KEY uid_foreign (uid_foreign)
-);
-
-CREATE TABLE tx_testselectflexmm_foreign (
-	title text
 );

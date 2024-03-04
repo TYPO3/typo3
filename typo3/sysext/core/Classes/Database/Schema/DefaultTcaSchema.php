@@ -898,6 +898,26 @@ class DefaultTcaSchema
                 );
             }
 
+            // Add fields for all tables, defining input columns (TCA type=input)
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if ((string)($fieldConfig['config']['type'] ?? '') !== 'input'
+                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                ) {
+                    continue;
+                }
+                $length = $fieldConfig['config']['max'] ?? null;
+                $nullable = $fieldConfig['config']['nullable'] ?? false;
+                $tables[$tableName]->addColumn(
+                    $this->quote($fieldName),
+                    Types::STRING,
+                    [
+                        'length' => $length ?? 255,
+                        'default' => '',
+                        'notnull' => !$nullable,
+                    ]
+                );
+            }
+
             // Add fields for all tables, defining inline columns (TCA type=inline)
             foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
                 if ((string)($fieldConfig['config']['type'] ?? '') !== 'inline'

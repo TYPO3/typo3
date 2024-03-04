@@ -66,6 +66,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'required' => true,
+                'max' => 100,
                 'eval' => 'trim',
             ],
         ],

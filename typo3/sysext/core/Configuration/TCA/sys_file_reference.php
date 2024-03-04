@@ -77,15 +77,19 @@ return [
         'tablenames' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.tablenames',
             'config' => [
+                // @todo: type=input is probably not a good choice here.
                 'type' => 'input',
                 'size' => 30,
+                'max' => 64,
                 'eval' => 'trim',
             ],
         ],
         'fieldname' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.fieldname',
             'config' => [
+                // @todo: type=input is probably not a good choice here.
                 'type' => 'input',
+                'max' => 64,
                 'size' => 30,
             ],
         ],

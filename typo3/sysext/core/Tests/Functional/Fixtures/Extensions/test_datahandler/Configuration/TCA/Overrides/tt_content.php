@@ -105,6 +105,7 @@ defined('TYPO3') or die();
             'label' => 'Normal input field with min value set to 10',
             'config' => [
                 'type' => 'input',
+                'nullable' => true,
                 'min' => 10,
             ],
         ],
@@ -113,6 +114,7 @@ defined('TYPO3') or die();
             'label' => 'Normal input field with min value set to 0',
             'config' => [
                 'type' => 'input',
+                'nullable' => true,
                 'min' => 0,
             ],
         ],

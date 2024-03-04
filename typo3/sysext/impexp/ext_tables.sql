@@ -1,7 +1,5 @@
-#
-# Table structure for table 'tx_impexp_presets'
-#
 CREATE TABLE tx_impexp_presets (
+  # type=passthrough fields need manual configuration
   title varchar(255) DEFAULT '' NOT NULL,
   public tinyint(3) DEFAULT '0' NOT NULL,
   item_uid int(11) DEFAULT '0' NOT NULL,
@@ -10,23 +8,20 @@ CREATE TABLE tx_impexp_presets (
   KEY lookup (item_uid)
 );
 
-#
-# Table structure for table 'tt_content'
-#
+# Some fields need manual configuration
 CREATE TABLE tt_content (
+  # type=passthrough fields need manual configuration
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL
 );
 
-#
-# Table structure for table 'pages'
-#
+# Some fields need manual configuration
 CREATE TABLE pages (
+  # type=passthrough fields need manual configuration
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL
 );
 
-#
-# Table structure for table 'sys_template'
-#
+# Some fields need manual configuration
 CREATE TABLE sys_template (
+  # type=passthrough fields need manual configuration
   tx_impexp_origuid int(11) DEFAULT '0' NOT NULL
 );

@@ -1,9 +1,7 @@
-#
-# Table structure for table 'tx_extensionmanager_domain_model_extension'
-#
+# Keeping most fields here since that table *should not* have TCA at all
 CREATE TABLE tx_extensionmanager_domain_model_extension (
   extension_key varchar(60) NOT NULL default '',
-  # Can be removed once TYPO3s testing framework fixture does not set <repository>
+  # @todo: Can be removed once TYPO3s testing framework fixture does not set <repository>
   repository int(1) NOT NULL default 1,
   remote varchar(100) NOT NULL default 'ter',
   version varchar(15) NOT NULL default '',

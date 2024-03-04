@@ -123,8 +123,8 @@
                 <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="t3ver_oid" type="integer">0</field>
-                <field index="header">Test content</field>
                 <field index="header_link">file:2</field>
+                <field index="header">Test content</field>
                 <field index="CType">text</field>
             </fieldlist>
             <related index="rels" type="array">
@@ -155,8 +155,8 @@
                 <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="t3ver_oid" type="integer">0</field>
-                <field index="header">Test content 2</field>
                 <field index="header_link">file:4</field>
+                <field index="header">Test content 2</field>
                 <field index="CType">text</field>
             </fieldlist>
             <related index="rels" type="array">
@@ -186,11 +186,11 @@
                 <field index="identifier">/user_upload/typo3_image3.jpg</field>
                 <field index="identifier_hash">25777b72e5e1cbed2d1b33e4fe5b737304b5bd28</field>
                 <field index="folder_hash">19669f1e02c2f16705ec7587044c66443be70725</field>
-                <field index="mime_type">image/jpeg</field>
                 <field index="name">typo3_image3.jpg</field>
                 <field index="sha1">e873c1e2ffd0f191e183a1057de3eef4d62e782d</field>
                 <field index="creation_date">1393346082</field>
                 <field index="modification_date">1392907534</field>
+                <field index="mime_type">image/jpeg</field>
                 <field index="metadata">0</field>
                 <field index="size">5565</field>
                 <field index="storage">1</field>

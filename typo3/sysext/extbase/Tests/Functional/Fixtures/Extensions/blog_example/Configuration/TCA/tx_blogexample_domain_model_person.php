@@ -56,7 +56,6 @@ return [
                 'size' => 20,
                 'required' => true,
                 'eval' => 'trim',
-                'max' => 256,
             ],
         ],
         'lastname' => [
@@ -66,7 +65,6 @@ return [
                 'size' => 20,
                 'required' => true,
                 'eval' => 'trim',
-                'max' => 256,
             ],
         ],
         'email' => [

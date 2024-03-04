@@ -1,5 +1,3 @@
-# 1nff: 1:n relations using foreign_field as pointer on child table
-
 CREATE TABLE tx_testirreforeignfield_hotel
 (
   parentidentifier tinytext NOT NULL,

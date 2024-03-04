@@ -1653,6 +1653,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         );
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('link')->toArray());
     }
+
     #[Test]
     public function enrichAddsLinkNullable(): void
     {
@@ -1675,6 +1676,77 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ]
         );
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('link')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsInput(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['input'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'input',
+            ],
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`input`',
+            Type::getType('string'),
+            [
+                'length' => 255,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('input')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsInputAndConsidersMax(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['input'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'input',
+                'max' => 512,
+            ],
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`input`',
+            Type::getType('string'),
+            [
+                'length' => 512,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('input')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsInputAndConsidersNullable(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['input'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'input',
+                'nullable' => true,
+            ],
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`input`',
+            Type::getType('string'),
+            [
+                'length' => 255,
+                'default' => '',
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('input')->toArray());
     }
 
     #[Test]

@@ -137,8 +137,8 @@ return [
             'active' => 'active',
             'showDiffContent' => '<strong class="text-nowrap">[tt_content:1 =&gt; 2]:</strong>
 <table class="table table-striped table-hover">
-<tr><td>Header (header)</td><td><del>CE 1 first image</del><ins>Test content</ins></td></tr>
 <tr><td>Images (image)</td><td>N/A</td></tr>
+<tr><td>Header (header)</td><td><del>CE 1 first image</del><ins>Test content</ins></td></tr>
 <tr><td>Type (CType)</td><td><ins>Regular </ins>Text <del>&amp; Images</del><ins>Element</ins></td></tr>
 </table>',
             'controls' => '',
@@ -204,8 +204,8 @@ return [
             'active' => 'active',
             'showDiffContent' => '<strong class="text-nowrap">[tt_content:2 =&gt; 1]:</strong>
 <table class="table table-striped table-hover">
-<tr><td>Header (header)</td><td><del>CE 2 second image</del><ins>Test content 2</ins></td></tr>
 <tr><td>Images (image)</td><td>N/A</td></tr>
+<tr><td>Header (header)</td><td><del>CE 2 second image</del><ins>Test content 2</ins></td></tr>
 <tr><td>Type (CType)</td><td><ins>Regular </ins>Text <del>&amp; Images</del><ins>Element</ins></td></tr>
 </table>',
             'controls' => '',
