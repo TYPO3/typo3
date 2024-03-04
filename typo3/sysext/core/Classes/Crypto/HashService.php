@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Crypto;
 
-use TYPO3\CMS\Core\Exception\Crypto\EmptyAdditionalSecretException;
 use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
 use TYPO3\CMS\Core\SingletonInterface;
 
@@ -35,7 +34,7 @@ final class HashService implements SingletonInterface
     public function hmac(string $input, string $additionalSecret): string
     {
         if ($additionalSecret === '') {
-            throw new EmptyAdditionalSecretException('The ' . __METHOD__ . ' function requires a non-empty additional secret.', 1704453167);
+            throw new \LogicException('The ' . __METHOD__ . ' function requires a non-empty additional secret.', 1704453167);
         }
 
         $secret = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . $additionalSecret;

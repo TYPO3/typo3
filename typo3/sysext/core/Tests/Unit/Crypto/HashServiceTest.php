@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Crypto;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashService;
-use TYPO3\CMS\Core\Exception\Crypto\EmptyAdditionalSecretException;
 use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -37,7 +36,7 @@ final class HashServiceTest extends UnitTestCase
     #[Test]
     public function hmacThrowsExceptionIfEmptyAdditionalSecretProvided(): void
     {
-        $this->expectException(EmptyAdditionalSecretException::class);
+        $this->expectException(\LogicException::class);
 
         // @phpstan-ignore-next-line We are explicitly testing a contract violation here.
         $this->subject->hmac('message', '');
