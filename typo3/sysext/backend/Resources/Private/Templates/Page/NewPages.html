@@ -66,13 +66,14 @@
                                             <td>
                                                 <span class="treeline-icon treeline-icon-join{f:if(condition: '{pageIterator.isLast}', then: 'bottom')}"></span>
                                                 <span title="id={page.uid}"><f:spaceless>
-                                                    <a href="#"
+                                                    <button type="button"
+                                                        class="btn btn-link p-0"
                                                         data-contextmenu-trigger="click"
                                                         data-contextmenu-table="pages"
                                                         data-contextmenu-uid="{page.uid}"
                                                     >
                                                         <core:iconForRecord table="pages" row="{page}" />
-                                                    </a>
+                                                    </button>
                                                     {page.title -> f:format.crop(maxCharacters: maxTitleLength)}
                                                 </f:spaceless></span>
                                             </td>

@@ -19,15 +19,16 @@
             <f:for each="{paginator.paginatedItems}" as="backendUserGroup">
                 <tr>
                     <td class="col-icon">
-                        <a
-                            href="#"
+                        <button
+                            type="button"
+                            class="btn btn-link p-0"
                             data-contextmenu-trigger="click"
                             data-contextmenu-table="be_groups"
                             data-contextmenu-uid="{backendUserGroup.uid}"
                             title="{f:if(condition: '{backendUserGroup.description}', then: '{backendUserGroup.description} ')}(id={backendUserGroup.uid})"
                         >
                             <beuser:spriteIconForRecord table="be_groups" object="{backendUserGroup}" />
-                        </a>
+                        </button>
                     </td>
                     <td class="title">
                         <backend:link.editRecord table="be_groups" uid="{backendUserGroup.uid}" title="{f:translate(key:'edit')}">

@@ -9,15 +9,15 @@
             <div class="note note-category-{note.category}">
                 <div class="note-header">
                     <div class="note-header-bar">
-                        <a
-                            href="#"
-                            class="note-icon"
+                        <button
+                            type="button"
+                            class="btn btn-link p-0 note-icon"
                             data-contextmenu-trigger="click"
                             data-contextmenu-table="sys_note"
                             data-contextmenu-uid="{note.uid}"
                         >
                             <core:icon identifier="sysnote-type-{note.category}" />
-                        </a>
+                        </button>
                         <span class="note-author">
                             <f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:author" />:
                             <f:if condition="{note.authorDisabled} || {note.authorDeleted} || !{note.authorUsername}">

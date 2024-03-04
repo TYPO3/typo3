@@ -82,15 +82,16 @@
                     <f:if condition="{webhookTypes.{webhook.webhookType.identifier}}">
                         <f:then>
                             <td class="col-icon">
-                                <a
-                                    href="#"
+                                <button
+                                    type="button"
+                                    class="btn btn-link p-0"
                                     data-contextmenu-trigger="click"
                                     data-contextmenu-table="sys_webhook"
                                     data-contextmenu-uid="{webhook.uid}"
                                     title="{webhook.name}"
                                 >
                                     <core:iconForRecord table="sys_webhook" row="{webhook.row}" />
-                                </a>
+                                </button>
                             </td>
                             <td>
                                 <be:link.editRecord

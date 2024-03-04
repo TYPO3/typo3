@@ -27,15 +27,16 @@
                             <f:if condition="{it.isFirst}">
                                 <f:then>
                                     <td class="col-avatar">
-                                        <a
-                                            href="#"
+                                        <button
+                                            type="button"
+                                            class="btn btn-link p-0"
                                             data-contextmenu-trigger="click"
                                             data-contextmenu-table="be_users"
                                             data-contextmenu-uid="{onlineUser.backendUser.uid}"
                                             title="{f:if(condition: '{onlineUser.backendUser.description}', then: '{onlineUser.backendUser.description} ')}(id={onlineUser.backendUser.uid})"
                                         >
                                             <backend:avatar backendUser="{onlineUser.backendUser.uid}" showIcon="true" />
-                                        </a>
+                                        </button>
                                     </td>
                                     <td class="col-title">
                                         <b>{onlineUser.backendUser.userName}</b>

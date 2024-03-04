@@ -811,9 +811,9 @@ class FileQueueItem {
       if (data.upload[0].icon) {
         this.iconCol
           .innerHTML = (
-            '<a href="#" data-contextmenu-trigger="click" data-contextmenu-uid="'
+            '<button type="button" class="btn btn-link p-0" data-contextmenu-trigger="click" data-contextmenu-uid="'
             + combinedIdentifier + '" data-contextmenu-table="sys_file">'
-            + data.upload[0].icon + '</span></a>'
+            + data.upload[0].icon + '</span></button>'
           );
       }
 

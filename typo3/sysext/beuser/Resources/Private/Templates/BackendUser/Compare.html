@@ -38,14 +38,15 @@
                     <th><f:translate key="avatar" /></th>
                     <f:for each="{compareUserList}" as="compareData">
                         <td>
-                            <a
-                                href="#"
+                            <button
+                                type="button"
+                                class="btn btn-link p-0"
                                 data-contextmenu-trigger="click"
                                 data-contextmenu-table="be_users"
                                 data-contextmenu-uid="{compareData.user.uid}"
                                 title="id={compareData.user.uid}">
                                 <backend:avatar backendUser="{compareData.user.uid}" showIcon="true" />
-                            </a>
+                            </button>
                         </td>
                     </f:for>
                 </tr>

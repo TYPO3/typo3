@@ -91,7 +91,7 @@ final class ExportCest extends AbstractCest
         $rootPageTitle = 'New TYPO3 site';
         $recordPageTitle = 'elements t3editor';
         $recordTable = '#recordlist-tx_styleguide_elements_t3editor';
-        $recordIcon = 'tr:first-child a[data-contextmenu-trigger]';
+        $recordIcon = 'tr:first-child button[data-contextmenu-trigger]';
 
         $pageTree->openPath(['styleguide TCA demo', $recordPageTitle]);
         $I->switchToContentFrame();
@@ -234,7 +234,7 @@ final class ExportCest extends AbstractCest
         $rootPage = '#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel';
         $rootPageTitle = 'New TYPO3 site';
         $sysLanguageTable = '#recordlist-be_groups';
-        $sysLanguageIcon = 'tr:first-child a[data-contextmenu-trigger]';
+        $sysLanguageIcon = 'tr:first-child button[data-contextmenu-trigger]';
         $tabExport = 'a[href="#export-filepreset"]';
         $contentExport = '#export-filepreset';
         $buttonSaveToFile = 'tx_impexp[save_export]';
