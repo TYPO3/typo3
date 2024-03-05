@@ -205,6 +205,14 @@ class MultiStepWizard {
     return $button;
   }
 
+  public next(): void {
+    this.setup.carousel.next();
+  }
+
+  public previous(): void {
+    this.setup.carousel.prev();
+  }
+
   /**
    * Unlock the button for the next step
    *

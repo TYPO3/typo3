@@ -126,7 +126,7 @@ function newFormSetup(formManagerApp: FormManager): void {
 
       $(Identifiers.newFormModeButton, modal).on('click', function (e: Event) {
         MultiStepWizard.set('newFormMode', $(e.currentTarget).val());
-        MultiStepWizard.unlockNextStep().get(0).click();
+        MultiStepWizard.next();
       });
 
       nextButton.on('click', async function() {
