@@ -25,7 +25,7 @@
     >
         <f:for each="{modules}" as="module" iteration="iterator">
             <li
-                role="presentation"
+                role="menuitem"
                 data-modulemenu-level="1"
                 {f:if(condition: module.subModules, then: 'class="modulemenu-group modulemenu-group-{f:if(condition: module.collapsed, then: \'collapsed\', else: \'expanded\')}"')}
             >
@@ -45,7 +45,7 @@
         class="modulemenu-group-container collapse {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, else: \'show\')}')}"
     >
         <f:for each="{modules}" as="module">
-            <li role="presentation" data-modulemenu-level="2">
+            <li role="menuitem" data-modulemenu-level="2">
                 <f:render section="Button" arguments="{module: module, tabIndex: '-1'}" />
             </li>
         </f:for>

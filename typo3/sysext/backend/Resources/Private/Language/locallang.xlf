@@ -6,6 +6,9 @@
 			<trans-unit id="onlineDocumentation" resname="onlineDocumentation">
 				<source>TYPO3 Online Documentation</source>
 			</trans-unit>
+			<trans-unit id="opensInANewWindow" resname="opensInANewWindow">
+				<source>opens in a new window</source>
+			</trans-unit>
 			<trans-unit id="no_modules_registered" resname="no_modules_registered">
 				<source>No modules have been registered. Please contact your system administrator.</source>
 			</trans-unit>
