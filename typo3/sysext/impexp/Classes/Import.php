@@ -1198,8 +1198,12 @@ class Import extends ImportExport
                         if (isset($relation['type']) && !($table === 'sys_file_reference' && $field === 'uid_local') && $relation['type'] === 'db' && isset($GLOBALS['TCA'][$table]['columns'][$field])) {
                             if (is_array($relation['itemArray'] ?? null) && !empty($relation['itemArray'])) {
                                 $fieldTca = $GLOBALS['TCA'][$table]['columns'][$field];
-                                $actualRelations = $this->remapRelationsOfField($relation['itemArray'], $fieldTca['config'], $field);
-                                $updateData[$table][$actualUid][$field] = implode(',', $actualRelations);
+                                if (is_array($fieldTca['config'])) {
+                                    $actualRelations = $this->remapRelationsOfField($relation['itemArray'], $fieldTca['config'], $field);
+                                    $updateData[$table][$actualUid][$field] = implode(',', $actualRelations);
+                                } else {
+                                    $this->addError(sprintf('Error: Missing TCA "config" for field "%s:%s"', $table, $field));
+                                }
                             }
                         }
                     }
