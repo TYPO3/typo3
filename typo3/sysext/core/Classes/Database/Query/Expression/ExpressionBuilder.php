@@ -511,7 +511,150 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
     }
 
     /**
-     * Create a SQL aggregate function.
+     * Creates a expression to alias a value, field value or sub-expression.
+     *
+     * **Example:**
+     * ```
+     * $queryBuilder->selectLiteral(
+     *   $queryBuilder->quoteIdentifier('uid'),
+     *   $queryBuilder->expr()->as('(1 + 1 + 1)', 'calculated_field'),
+     * );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * (1 + 1 + 1) AS `calculated_field`
+     * ```
+     *
+     * @param string $expression Value, identifier or expression which should be aliased
+     * @param string $asIdentifier Alias identifier
+     * @return string Returns aliased expression
+     */
+    public function as(string $expression, string $asIdentifier = ''): string
+    {
+        if (trim($this->trimIdentifierQuotes(trim($expression))) === '') {
+            throw new \InvalidArgumentException(
+                sprintf('Value or expression must be provided as first argument for "%s"', __METHOD__),
+                1709826333
+            );
+        }
+        $asIdentifier = trim($this->trimIdentifierQuotes(trim($this->unquoteLiteral($asIdentifier))));
+        if ($asIdentifier !== '') {
+            $asIdentifier = ' AS ' . $this->connection->quoteIdentifier($asIdentifier);
+        }
+        return $expression . $asIdentifier;
+    }
+
+    /**
+     * Concatenate multiple values or expressions into one string value.
+     * No automatic quoting or value casting! Ensure each part evaluates to a valid varchar value!
+     *
+     * **Example:**
+     * ```
+     * // Combine value of two fields with a space
+     * $concatExpressionAsString = $queryBuilder->expr()->concat(
+     *   $queryBuilder->quoteIdentifier('first_name_field'),
+     *   $queryBuilder->quote(' '),
+     *   $queryBuilder->quoteIdentifier('last_name_field')
+     * );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * CONCAT(`first_name_field`, " ", `last_name_field`)
+     * ```
+     *
+     * @param string ...$parts Unquoted value or expression part to concatenated with the other parts
+     * @return string Returns the concatenation expression compatible with the database connection platform
+     */
+    public function concat(string ...$parts): string
+    {
+        return $this->connection->getDatabasePlatform()->getConcatExpression(...$parts);
+    }
+
+    /**
+     * Create a `CAST()` statement to cast value or expression to a varchar with a given dynamic max length.
+     * MySQL does not support `VARCHAR` as cast type, therefor `CHAR` is used.
+     *
+     * **Example:**
+     * ```
+     * $fieldVarcharCastExpression = $queryBuilder->expr()->castVarchar(
+     *   $queryBuilder->quote('123'), // integer as string
+     *   255,                         // convert to varchar(255) field - dynamic length
+     *   'new_field_identifier',
+     * );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * CAST("123" AS VARCHAR(255))
+     * ```
+     *
+     * @param string $value Unquoted value or expression, which should be cast
+     * @param int $length Dynamic varchar field length
+     * @param string $asIdentifier Used to add a field identifier alias (`AS`) if non-empty string (optional)
+     * @return string Returns the cast expression compatible for the database platform
+     */
+    public function castVarchar(string $value, int $length = 255, string $asIdentifier = ''): string
+    {
+        $platform = $this->connection->getDatabasePlatform();
+        $pattern = match (true) {
+            $platform instanceof DoctrinePostgreSQLPlatform => '(%s::%s(%s))',
+            default => '(CAST(%s AS %s(%s)))'
+        };
+        $type = match (true) {
+            // MariaDB added VARCHAR as alias for CHAR to the CAST function, therefore we
+            // need to use CHAR here - albeit this still creates a VARCHAR type as long as
+            // length is not ZERO.
+            // https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast
+            $platform instanceof DoctrineMySQLPlatform => 'CHAR',
+            default => 'VARCHAR'
+        };
+        return $this->as(sprintf($pattern, $value, $type, $length), $asIdentifier);
+    }
+
+    /**
+     * Create a `CAST` statement to cast a value or expression result to signed integer type.
+     *
+     * Be aware that some database vendors will emit an error if an invalid type has been provided (PostgreSQL),
+     * and other silently return valid integer from the string discarding the non-integer part (starting with digits)
+     * or silently returning unrelated integer value. Use with care.
+     *
+     * No automatic quoting or value casting! Ensure each part evaluates to a valid value!
+     *
+     * **Example:**
+     * ```
+     * $queryBuilder->expr()->castInt(
+     *  '(' . '1 * 10' . ')',
+     *  'virtual_field',
+     * );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * CAST(('1 * 10') AS INTEGER) AS `virtual_field`
+     * ```
+     *
+     * @param string $value Quoted value or expression result which should be cast to integer type
+     * @param string $asIdentifier Optionally add a field identifier alias (`AS`)
+     * @return string Returns the integer cast expression compatible with the connection database platform
+     */
+    public function castInt(string $value, string $asIdentifier = ''): string
+    {
+        // @todo Consider to add a flag to allow unsigned integer casting, except for PostgresSQL
+        //       which does not support unsigned integer type at all.
+        $type = 'SIGNED INTEGER';
+        $pattern = '(CAST(%s AS %s))';
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrinePostgreSQLPlatform) {
+            $pattern = '%s::%s';
+            $type = 'INTEGER';
+        }
+        return $this->as(sprintf($pattern, $value, $type), $asIdentifier);
+    }
+
+    /**
+     * Create an SQL aggregate function.
      *
      * @param string|null $alias
      */
@@ -547,6 +690,307 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
     }
 
     /**
+     * Create a statement to generate a value repeating defined $value for $numberOfRepeats times.
+     * This method can be used to provide the repeat number as a sub-expression or calculation.
+     *
+     * This method does not quote anything! Ensure proper quoting (value/identifier) for $numberOfRepeates and $value.
+     *
+     * **Example:**
+     * ```
+     * $queryBuilder->expr()->repeat(
+     *   20,
+     *   $queryBuilder->quote('0'),
+     *   $queryBuilder->quoteIdentifier('aliased_field'),
+     * );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * REPEAT("0", 20) AS `aliased_field`
+     * ```
+     *
+     * @param int|string $numberOfRepeats Statement or value defining how often the $value should be repeated. Proper quoting must be ensured.
+     * @param string $value Value which should be repeated. Proper quoting must be ensured
+     * @param string $asIdentifier Provide `AS` identifier if not empty
+     * @return string Returns the platform compatible statement to create the x-times repeated value
+     */
+    public function repeat(int|string $numberOfRepeats, string $value, string $asIdentifier = ''): string
+    {
+        $numberOfRepeats = $this->castInt((string)$numberOfRepeats);
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrineSQLitePlatform) {
+            $pattern = "replace(printf('%%.' || %s || 'c', '/'),'/', %s)";
+            return $this->as(
+                sprintf($pattern, $numberOfRepeats, $value),
+                $asIdentifier
+            );
+        }
+        $pattern = 'REPEAT(%s, %s)';
+        return $this->as(
+            sprintf($pattern, $value, $numberOfRepeats),
+            $asIdentifier,
+        );
+    }
+
+    /**
+     * Create statement containing $numberOfSpaces spaces.
+     * This method does not quote anything! Ensure proper quoting (value/identifier) for $numberOfSpaces!
+     *
+     * **Example:**
+     * ```
+     * $queryBuilder->expr()->space(
+     *   $queryBuilder->expr()->castInt(
+     *     $queryBuilder->quoteIdentifier('table_repeat_number_field')
+     *   ),
+     *   $queryBuilder->quoteIdentifier('aliased_field'),
+     * );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * SPACE(CAST(`table_repeat_number_field` AS INTEGER)) AS `aliased_field`
+     * ```
+     *
+     * @param int|string $numberOfSpaces Statement or value defining how often a space should be repeated. Proper quoting must be ensured.
+     * @param string $asIdentifier Provide `AS` identifier if not empty
+     * @return string Returns the platform compatible statement to create the x-times repeated space(s).
+     */
+    public function space(int|string $numberOfSpaces, string $asIdentifier = ''): string
+    {
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
+            // Use `SPACE()` method supported by MySQL and MariaDB
+            $pattern = 'SPACE(%s)';
+            $numberOfSpaces = $this->castInt((string)$numberOfSpaces);
+            return $this->as(
+                sprintf($pattern, $numberOfSpaces),
+                $asIdentifier,
+            );
+        }
+        // Emulate `SPACE()` by using the `repeat()` expression.
+        return $this->repeat($numberOfSpaces, $this->connection->quote(' '), $asIdentifier);
+    }
+
+    /**
+     * Extract $length character of $value from the right side.
+     * $length can be an integer like value or a sub-expression evaluating to an integer value
+     * to define the length of the extracted length from the right side.
+     * This method does not quote anything! Ensure proper quoting (value/identifier) $length and $value!
+     *
+     * **Example:**
+     * ```
+     * $queryBuilder->expr()->left(
+     *   $queryBuilder->castInt('(' . '23' . ')'),
+     *   $queryBuilder->quoteIdentifier('table_field_name'),
+     *   'virtual_field'
+     * );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * LEFT(CAST(`table_field_name` AS INTEGER), CAST("23" AS INTEGER)) AS `virtual_field`
+     * ```
+     *
+     * @param int|string $length Integer value or expression providing the length as integer
+     * @param string $value Value, identifier or expression defining the value to extract from the left
+     * @param string $asIdentifier Provide `AS` identifier if not empty
+     * @return string Return the expression to extract defined substring from the right side.
+     */
+    public function left(int|string $length, string $value, string $asIdentifier = ''): string
+    {
+        $length = (is_string($length)) ? $this->castInt($length) : (string)$length;
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrineSQLitePlatform) {
+            // SQLite does not support `LEFT()`, use `SUBSTRING()` instead. Weirdly, we need to increment the length by
+            // one to get the correct substring length.
+            return $this->as(
+                $platform->getSubstringExpression($value, '0', $length . ' + 1'),
+                $asIdentifier,
+            );
+        }
+        return $this->as(
+            sprintf('LEFT(%s, %s)', $value, $length),
+            $asIdentifier,
+        );
+    }
+
+    /**
+     * Extract $length character of $value from the right side.
+     * $length can be an integer like value or a sub-expression evaluating to an integer value to
+     * define the length of the extracted length from the right side.
+     * This method does not quote anything! Ensure proper quoting (value/identifier) $length and $value!
+     *
+     * **Example:**
+     * ```
+     * $expression5 = $queryBuilder->expr()->right(
+     *    6,
+     *    $queryBuilder->quote('some-string'),
+     *    'calculated_row_field',
+     *  );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * RIGHT("some-string", CAST(6 AS INTEGER)) AS `calculated_row_field`
+     * ```
+     *
+     * @param int|string $length Integer value or expression providing the length as integer
+     * @param string $value Value, identifier or expression defining the value to extract from the left
+     * @param string $asIdentifier Provide `AS` identifier if not empty
+     * @return string Return the expression to extract defined substring from the right side
+     */
+    public function right(int|string $length, string $value, string $asIdentifier = ''): string
+    {
+        if ($asIdentifier !== '') {
+            $asIdentifier = ' AS ' . $this->connection->quoteIdentifier($this->unquoteLiteral($this->trimIdentifierQuotes($asIdentifier)));
+        }
+        $length = (is_string($length)) ? $this->castInt($length) : (string)$length;
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrineSQLitePlatform) {
+            // SQLite does not support `RIGHT()`, use `SUBSTRING()` instead.
+            return $this->connection->getDatabasePlatform()
+                ->getSubstringExpression($value, $length . ' * -1') . $asIdentifier;
+        }
+        return sprintf('RIGHT(%s, %s)', $value, $length) . $asIdentifier;
+    }
+
+    /**
+     * Left-pad the value or sub-expression result with $paddingValue, to a total length of $length.
+     * No automatic quoting or escaping is done, which allows the usage of a sub-expression for $value!
+     *
+     * **Example:**
+     * ```
+     * $queryBuilder->expr()->leftPad(
+     *   $queryBuilder->quote('123'),
+     *   10,
+     *   '0',
+     *   'padded_value'
+     * );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * LPAD("123", CAST("10" AS INTEGER), "0") AS `padded_value`
+     * ```
+     *
+     * @param string $value Value, identifier or expression defining the value which should be left padded
+     * @param int|string $length Padded length, to either fill up with $paddingValue on the left side or crop to
+     * @param string $paddingValue Padding character used to fill up if characters are missing on the left side
+     * @param string $asIdentifier Provide `AS` identifier if not empty
+     * @return string Returns database connection platform compatible left-pad expression.
+     */
+    public function leftPad(string $value, int|string $length, string $paddingValue, string $asIdentifier = ''): string
+    {
+        if (trim($this->unquoteLiteral($paddingValue), ' ') === '') {
+            throw new \InvalidArgumentException(
+                sprintf('Empty $paddingValue provided for "%s".', __METHOD__),
+                1709658914
+            );
+        }
+        if (strlen(trim($this->unquoteLiteral($paddingValue), ' ')) > 1) {
+            throw new \InvalidArgumentException(
+                sprintf('Invalid $paddingValue "%s" provided for "%s". Exactly one char allowed.', $paddingValue, __METHOD__),
+                1709659006
+            );
+        }
+        // PostgresSQL is really picky about types when calling functions, therefore we ensure that the value or
+        // expression result is ensured to be string-typed by casting it to a varchar result for all platforms.
+        $value = $this->castVarchar($value);
+        $paddingValue = $this->connection->quote($this->unquoteLiteral($paddingValue));
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrineSQLitePlatform) {
+            // SQLite does not support `LPAD()`, therefore we need to build up a generic nested method construct to
+            // mimic that method for now. Basically, the length is checked and either the substring up to the length
+            // returned OR the substring from the right side up to the length on the concentrated repeated-value with
+            // the value to cut of the overlapped prefixed repeated value.
+            $repeat = $this->repeat(
+                $length,
+                $paddingValue
+            );
+            $pattern = 'IIF(LENGTH(%s) >= %s, %s, %s)';
+            return $this->as(sprintf(
+                $pattern,
+                // Value and length for the length check to consider which part to use.
+                $value,
+                $this->castInt((string)$length),
+                // Return substring with $length from left side to mimic `LPAD()` behaviour of other platforms.
+                $platform->getSubstringExpression($value, '0', $this->castInt((string)$length) . ' + 1'),
+                // Concatenate `repeat + value` and fetch the substring with length from the right side,
+                // so we cut of overlapping prefixed repeat placeholders.
+                $this->right($length, $this->concat($repeat, $value))
+            ), $asIdentifier);
+        }
+        return $this->as(sprintf('LPAD(%s, %s, %s)', $value, $this->castInt((string)$length), $paddingValue), $asIdentifier);
+    }
+
+    /**
+     * Right-pad the value or sub-expression result with $paddingValue, to a total length of $length.
+     * No automatic quoting or escaping is done, which allows the usage of a sub-expression for $value!
+     *
+     * **Example:**
+     * ```
+     * $queryBuilder->expr()->rightPad(
+     *   $queryBuilder->quote('123'),
+     *   10,
+     *   '0',
+     *   'padded_value'
+     * );
+     * ```
+     *
+     * **Result with MySQL:**
+     * ```
+     * RPAD("123", CAST("10" AS INTEGER), "0") AS `padded_value`
+     * ```
+     *
+     * @param string $value Value, identifier or expression defining the value which should be right padded
+     * @param int|string $length Value, identifier or expression defining the padding length to fill up or crop
+     * @param string $paddingValue Padding character used to fill up if characters are missing on the right side
+     * @param string $asIdentifier Provide `AS` identifier if not empty
+     * @return string Returns database connection platform compatible right-pad expression
+     */
+    public function rightPad(string $value, int|string $length, string $paddingValue, string $asIdentifier = ''): string
+    {
+        if (trim($this->unquoteLiteral($paddingValue), ' ') === '') {
+            throw new \InvalidArgumentException(
+                sprintf('Empty $paddingValue provided for "%s".', __METHOD__),
+                1709664589
+            );
+        }
+        if (strlen(trim($this->unquoteLiteral($paddingValue), ' ')) > 1) {
+            throw new \InvalidArgumentException(
+                sprintf('Invalid $paddingValue "%s" provided for "%s". Exactly one char allowed.', $paddingValue, __METHOD__),
+                1709664598
+            );
+        }
+        // PostgresSQL is really picky about types when calling functions, therefore we ensure that the value or
+        // expression result is ensured to be string-type by casting it to a varchar result for all platforms.
+        $value = $this->castVarchar($value);
+        $paddingValue = $this->connection->quote($this->unquoteLiteral($paddingValue));
+        $platform = $this->connection->getDatabasePlatform();
+        if ($platform instanceof DoctrineSQLitePlatform) {
+            $repeat = $this->repeat(
+                $length,
+                $paddingValue
+            );
+            $pattern = 'IIF(LENGTH(%s) >= %s, %s, %s)';
+            return $this->as(sprintf(
+                $pattern,
+                // Value and length for the length check to consider which part to use.
+                $value,
+                $this->castInt((string)$length),
+                // Return substring with $length from left side to mimic `RPAD()` behaviour of other platforms.
+                // Note: `RPAD()` cuts the value from the left like LPAD(), which is brain melt. Therefore,
+                // this is adopted here to be concise with this behaviour.
+                $this->left($length, $value),
+                // Concatenate `repeat + value` and fetch the substring with length from the right side, so we
+                // cut off overlapping prefixed repeat placeholders.
+                $this->left($length, $this->castVarchar($this->concat($value, $this->castVarchar($repeat))))
+            ), $asIdentifier);
+        }
+        return $this->as(sprintf('RPAD(%s, %s, %s)', $value, $this->castInt((string)$length), $paddingValue), $asIdentifier);
+    }
+
+    /**
      * Quotes a given input parameter.
      *
      * @param string $input The parameter to be quoted.
@@ -575,5 +1019,15 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
             return str_replace(array_keys($map), array_values($map), substr($value, 1, -1));
         }
         return $value;
+    }
+
+    /**
+     * Trim all possible identifier quotes from identifier.
+     *
+     * @see \Doctrine\DBAL\Schema\AbstractAsset::trimQuotes()
+     */
+    private function trimIdentifierQuotes(string $identifier): string
+    {
+        return str_replace(['`', '"', '[', ']'], '', $identifier);
     }
 }

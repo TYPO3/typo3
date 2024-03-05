@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Expression;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -936,5 +937,725 @@ final class ExpressionBuilderTest extends FunctionalTestCase
 
         $quoteChar = substr($connection->quote('__FAKE__'), 0, 1);
         self::assertSame("'", $quoteChar, $connection->getDatabasePlatform()::class);
+    }
+
+    public static function concatReturnsExpectedResultDataProvider(): \Generator
+    {
+        yield 'only title' => [
+            'pageId' => 1,
+            'expectedRow' => [
+                'uid' => 1,
+                'pid' => 0,
+                'title' => 'only-title',
+                'subtitle' => '',
+                'combined_title' => 'only-title ',
+            ],
+        ];
+
+        yield 'only subtitle' => [
+            'pageId' => 2,
+            'expectedRow' => [
+                'uid' => 2,
+                'pid' => 0,
+                'title' => '',
+                'subtitle' => 'only-subtitle',
+                'combined_title' => ' only-subtitle',
+            ],
+        ];
+
+        yield 'title and subtitle' => [
+            'pageId' => 3,
+            'expectedRow' => [
+                'uid' => 3,
+                'pid' => 0,
+                'title' => 'title',
+                'subtitle' => 'subtitle',
+                'combined_title' => 'title subtitle',
+            ],
+        ];
+
+        yield '123 and single space' => [
+            'pageId' => 4,
+            'expectedRow' => [
+                'uid' => 4,
+                'pid' => 0,
+                'title' => '123',
+                'subtitle' => ' ',
+                // Note: Two space is intended, one space from record subtitle and the space as concetenation separator
+                'combined_title' => '123  ',
+            ],
+        ];
+    }
+
+    #[DataProvider('concatReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function concatReturnsExpectedResult(int $pageId, array $expectedRow): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderConcat.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $row = $queryBuilder
+            ->select('uid', 'pid', 'title', 'subtitle')
+            ->addSelectLiteral(
+                $queryBuilder->expr()->concat(
+                    $queryBuilder->quoteIdentifier('title'),
+                    $queryBuilder->quote(' '),
+                    $queryBuilder->quoteIdentifier('subtitle'),
+                ) . ' AS ' . $queryBuilder->quoteIdentifier('combined_title')
+            )
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertSame($expectedRow, $row);
+    }
+
+    public static function castVarcharReturnsExpectedResultDataProvider(): \Generator
+    {
+        yield 'uid as string #1' => [
+            'pageId' => 1,
+            'field' => 'uid',
+            'fields' => ['uid', 'pid', 'title', 'subtitle'],
+            'length' => 11,
+            'asIdentifier' => 'uidAsString',
+            'expectedLength' => 1,
+            'expectedRow' => [
+                'uid' => 1,
+                'pid' => 0,
+                'title' => 'only-title',
+                'subtitle' => '',
+                'uidAsString' => '1',
+            ],
+        ];
+
+        yield 'uid as string #2' => [
+            'pageId' => 123456789,
+            'field' => 'uid',
+            'fields' => ['uid', 'pid', 'title', 'subtitle'],
+            'length' => 11,
+            'asIdentifier' => 'uidAsString',
+            'expectedLength' => 9,
+            'expectedRow' => [
+                'uid' => 123456789,
+                'pid' => 0,
+                'title' => '123',
+                'subtitle' => ' ',
+                'uidAsString' => '123456789',
+            ],
+        ];
+    }
+
+    #[DataProvider('castVarcharReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function castVarcharReturnsExpectedResult(int $pageId, string $field, array $fields, int $length, string $asIdentifier, int $expectedLength, array $expectedRow): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderCastVarchar.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $row = $queryBuilder
+            ->select('uid', 'pid', 'title', 'subtitle')
+            ->addSelectLiteral(
+                $queryBuilder->expr()->castVarchar($queryBuilder->quoteIdentifier($field), $length, $asIdentifier)
+            )
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey($asIdentifier, $row);
+        self::assertIsString($row[$asIdentifier]);
+        self::assertSame($expectedLength, strlen($row[$asIdentifier]));
+        self::assertSame($expectedRow, $row);
+    }
+
+    #[Test]
+    public function castIntReturnsExpectedResult(): void
+    {
+        $expectedRow = [
+            'uid' => 1,
+            'pid' => 0,
+            'title' => '123',
+            'subtitle' => '',
+            'titleAsInteger' => 123,
+        ];
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderCastInt.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $row = $queryBuilder
+            ->select('uid', 'pid', 'title', 'subtitle')
+            ->addSelectLiteral(
+                $queryBuilder->expr()->castInt($queryBuilder->quoteIdentifier('title'), 'titleAsInteger')
+            )
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey('titleAsInteger', $row);
+        self::assertIsInt($row['titleAsInteger']);
+        self::assertSame(123, $row['titleAsInteger']);
+        self::assertSame($expectedRow, $row);
+    }
+
+    public static function repeatReturnsExpectedResultDataProvider(): \Generator
+    {
+        // colon as repeat value
+        yield 'Repeat ":" for 1 time with integer repeats number' => [
+            'numberOfRepeats' => 1,
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => ':',
+        ];
+        yield 'Repeat ":" for 5 times with integer repeats number' => [
+            'numberOfRepeats' => 5,
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => ':::::',
+        ];
+        yield 'Repeat ":" for 10 times with integer repeats number' => [
+            'numberOfRepeats' => 10,
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => '::::::::::',
+        ];
+        yield 'Repeat ":" for 20 times with integer repeats number' => [
+            'numberOfRepeats' => 20,
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => '::::::::::::::::::::',
+        ];
+        yield 'Repeat ":" for 1 times with string repeats number' => [
+            'numberOfRepeats' => '1',
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => ':',
+        ];
+        yield 'Repeat ":" for 5 times with string repeats number' => [
+            'numberOfRepeats' => '5',
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => ':::::',
+        ];
+        yield 'Repeat ":" for 10 times with string repeats number' => [
+            'numberOfRepeats' => '10',
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => '::::::::::',
+        ];
+        yield 'Repeat ":" for 20 times with string repeats number' => [
+            'numberOfRepeats' => '20',
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => '::::::::::::::::::::',
+        ];
+        yield 'Repeat ":" for 1 times with expression repeats number' => [
+            'numberOfRepeats' => '0 + 1',
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => ':',
+        ];
+        yield 'Repeat ":" for 5 times with expression repeats number' => [
+            'numberOfRepeats' => '0 + 5',
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => ':::::',
+        ];
+        yield 'Repeat ":" for 10 times with expression repeats number' => [
+            'numberOfRepeats' => '0 + 10',
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => '::::::::::',
+        ];
+        yield 'Repeat ":" for 20 times with expression repeats number' => [
+            'numberOfRepeats' => '0 + 20',
+            'repeatValue' => ':',
+            'expectedRepeatAsString' => '::::::::::::::::::::',
+        ];
+        // space as repeat value
+        yield 'Repeat " " for 1 times with integer repeats number' => [
+            'numberOfRepeats' => 1,
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => ' ',
+        ];
+        yield 'Repeat " " for 5 times with integer repeats number' => [
+            'numberOfRepeats' => 5,
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => '     ',
+        ];
+        yield 'Repeat " " for 10 times with integer repeats number' => [
+            'numberOfRepeats' => 10,
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => '          ',
+        ];
+        yield 'Repeat " " for 20 times with integer repeats number' => [
+            'numberOfRepeats' => 20,
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => '                    ',
+        ];
+        yield 'Repeat " " for 1 times with string repeats number' => [
+            'numberOfRepeats' => '1',
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => ' ',
+        ];
+        yield 'Repeat " " for 5 times with string repeats number' => [
+            'numberOfRepeats' => '5',
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => '     ',
+        ];
+        yield 'Repeat " " for 10 times with string repeats number' => [
+            'numberOfRepeats' => '10',
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => '          ',
+        ];
+        yield 'Repeat " " for 20 times with string repeats number' => [
+            'numberOfRepeats' => '20',
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => '                    ',
+        ];
+        yield 'Repeat " " for 1 times with expression repeats number' => [
+            'numberOfRepeats' => '0 + 1',
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => ' ',
+        ];
+        yield 'Repeat " " for 5 times with expression repeats number' => [
+            'numberOfRepeats' => '0 + 5',
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => '     ',
+        ];
+        yield 'Repeat " " for 10 times with expression repeats number' => [
+            'numberOfRepeats' => '0 + 10',
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => '          ',
+        ];
+        yield 'Repeat " " for 20 times with expression repeats number' => [
+            'numberOfRepeats' => '0 + 20',
+            'repeatValue' => ' ',
+            'expectedRepeatAsString' => '                    ',
+        ];
+    }
+
+    #[DataProvider('repeatReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function repeatReturnsExpectedResult(int|string $numberOfRepeats, string $repeatValue, string $expectedRepeatAsString): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $repeatValue = $queryBuilder->quote($repeatValue);
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->repeat($numberOfRepeats, $repeatValue, $queryBuilder->quoteIdentifier('repeatAsString'))
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertSame($expectedRepeatAsString, $row['repeatAsString'] ?? null);
+    }
+
+    #[DataProvider('repeatReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function repeatWithValueExpressionReturnsExpectedResult(int|string $numberOfRepeats, string $repeatValue, string $expectedRepeatAsString): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $repeatValue = $queryBuilder->expr()->concat(
+            $queryBuilder->quote(''),
+            $queryBuilder->quote($repeatValue),
+            $queryBuilder->quote(''),
+        );
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->repeat($numberOfRepeats, $repeatValue, $queryBuilder->quoteIdentifier('repeatAsString'))
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertSame($expectedRepeatAsString, $row['repeatAsString'] ?? null);
+    }
+
+    public static function spaceReturnsCorrectNumberOfSpacesDataProvider(): \Generator
+    {
+        // integer repeat value
+        yield 'one space with integer repeat' => ['numberOfSpaces' => 1, 'expectedSpacesString' => ' '];
+        yield 'five spaces with integer repeat' => ['numberOfSpaces' => 5, 'expectedSpacesString' => '     '];
+        yield 'ten spaces with integer repeat' => ['numberOfSpaces' => 10, 'expectedSpacesString' => '          '];
+        yield 'twenty spaces with integer repeat' => ['numberOfSpaces' => 20, 'expectedSpacesString' => '                    '];
+        // string repeat value
+        yield 'one space with string repeat' => ['numberOfSpaces' => '1', 'expectedSpacesString' => ' '];
+        yield 'five spaces with string repeat' => ['numberOfSpaces' => '5', 'expectedSpacesString' => '     '];
+        yield 'ten spaces with string repeat' => ['numberOfSpaces' => '10', 'expectedSpacesString' => '          '];
+        yield 'twenty spaces with string repeat' => ['numberOfSpaces' => '20', 'expectedSpacesString' => '                    '];
+        // expression repeat value
+        yield 'one space with expression repeat' => ['numberOfSpaces' => '0 + 1', 'expectedSpacesString' => ' '];
+        yield 'five spaces with expression repeat' => ['numberOfSpaces' => '0 + 5', 'expectedSpacesString' => '     '];
+        yield 'ten spaces with expression repeat' => ['numberOfSpaces' => '0 + 10', 'expectedSpacesString' => '          '];
+        yield 'twenty spaces with expression repeat' => ['numberOfSpaces' => '0 + 20', 'expectedSpacesString' => '                    '];
+    }
+
+    #[DataProvider('spaceReturnsCorrectNumberOfSpacesDataProvider')]
+    #[Test]
+    public function spaceReturnsCorrectNumberOfSpaces(int|string $numberOfSpaces, string $expectedSpacesString): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->space($numberOfSpaces, 'spacesString')
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertSame($expectedSpacesString, $row['spacesString'] ?? null);
+    }
+
+    public static function leftReturnsExpectedResultDataProvider(): \Generator
+    {
+        yield 'string value with string length covered by full length' => [
+            'length' => '4',
+            'value' => 'some-string',
+            'expectedValue' => 'some',
+        ];
+        yield 'int value with string length covered by full length' => [
+            'length' => 4,
+            'value' => 'some-string',
+            'expectedValue' => 'some',
+        ];
+        yield 'string length exceeding full-value string value length returns full value' => [
+            'length' => '100',
+            'value' => 'some-string',
+            'expectedValue' => 'some-string',
+        ];
+        yield 'int length exceeding full-value string value length returns full value' => [
+            'length' => 100,
+            'value' => 'some-string',
+            'expectedValue' => 'some-string',
+        ];
+        yield 'Length sub-expression returns expected substring' => [
+            'length' => '(1 + 3)',
+            'value' => 'some-string',
+            'expectedValue' => 'some',
+        ];
+        yield 'Length sub-expression exceeding full-value length returns full-value' => [
+            'length' => '(2 * 2)',
+            'value' => 'some-string',
+            'expectedValue' => 'some',
+        ];
+    }
+
+    #[DataProvider('leftReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function leftReturnsExpectedResult(int|string $length, string $value, string $expectedValue): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->left($length, $queryBuilder->quote($value)) . ' AS ' . $queryBuilder->quoteIdentifier('expectedValue'),
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey('expectedValue', $row);
+        self::assertIsString($row['expectedValue']);
+        self::assertSame($expectedValue, $row['expectedValue']);
+    }
+
+    public static function rightReturnsExpectedResultDataProvider(): \Generator
+    {
+        yield 'string value with string length covered by full length' => [
+            'length' => '6',
+            'value' => 'some-string',
+            'expectedValue' => 'string',
+        ];
+        yield 'int value with string length covered by full length' => [
+            'length' => 6,
+            'value' => 'some-string',
+            'expectedValue' => 'string',
+        ];
+        yield 'string length exceeding full-value string value length returns full value' => [
+            'length' => '100',
+            'value' => 'some-string',
+            'expectedValue' => 'some-string',
+        ];
+        yield 'int length exceeding full-value string value length returns full value' => [
+            'length' => 100,
+            'value' => 'some-string',
+            'expectedValue' => 'some-string',
+        ];
+        yield 'Length sub-expression returns expected substring' => [
+            'length' => '(1 + 5)',
+            'value' => 'some-string',
+            'expectedValue' => 'string',
+        ];
+        yield 'Length sub-expression exceeding full-value length returns full-value' => [
+            'length' => '(5 * 10)',
+            'value' => 'some-string',
+            'expectedValue' => 'some-string',
+        ];
+    }
+
+    #[DataProvider('rightReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function rightReturnsExpectedResult(int|string $length, string $value, string $expectedValue): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->right($length, $queryBuilder->quote($value)) . ' AS ' . $queryBuilder->quoteIdentifier('expectedValue'),
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey('expectedValue', $row);
+        self::assertIsString($row['expectedValue']);
+        self::assertSame($expectedValue, $row['expectedValue']);
+    }
+
+    public static function leftPadReturnsExpectedResultDataProvider(): \Generator
+    {
+        yield 'value and int length returns expected left padded value if value is too short #1' => [
+            'value' => '123',
+            'length' => 5,
+            'paddingValue' => '0',
+            'expectedValue' => '00123',
+        ];
+        yield 'value and int length returns expected left padded value if value is too short #2' => [
+            'value' => '123',
+            'length' => 10,
+            'paddingValue' => '.',
+            'expectedValue' => '.......123',
+        ];
+        yield 'returns value cut to length if value length exceeds padding length' => [
+            'value' => '1234567890',
+            'length' => 5,
+            'paddingValue' => '.',
+            'expectedValue' => '12345',
+        ];
+    }
+
+    #[DataProvider('leftPadReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function leftPadReturnsExpectedResult(string $value, int|string $length, string $paddingValue, string $expectedValue): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->leftPad($queryBuilder->quote($value), $length, $paddingValue, 'expectedValue'),
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey('expectedValue', $row);
+        self::assertIsString($row['expectedValue']);
+        self::assertSame($expectedValue, $row['expectedValue']);
+    }
+
+    public static function leftPadWithValueSubexpressionReturnsExpectedResultDataProvider(): \Generator
+    {
+        yield 'value and int length returns expected left padded value if value is too short #1' => [
+            'value' => ['1', '2', '3'],
+            'length' => 5,
+            'paddingValue' => '0',
+            'expectedValue' => '00123',
+        ];
+        yield 'value and int length returns expected left padded value if value is too short #2' => [
+            'value' => ['1', '2', '3'],
+            'length' => 10,
+            'paddingValue' => '.',
+            'expectedValue' => '.......123',
+        ];
+        yield 'returns cutted value to length if value length exceeds padding length' => [
+            'value' => ['1', '2', '3', '4', '5', '7', '8', '9', '0'],
+            'length' => 5,
+            'paddingValue' => '.',
+            'expectedValue' => '12345',
+        ];
+    }
+
+    #[DataProvider('leftPadWithValueSubexpressionReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function leftPadWithValueSubexpressionReturnsExpectedResult(array $value, int|string $length, string $paddingValue, string $expectedValue): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $value = array_map(fn($value) => $queryBuilder->quote($value), array_values($value));
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->leftPad($queryBuilder->expr()->concat(...$value), $length, $paddingValue, 'expectedValue'),
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey('expectedValue', $row);
+        self::assertIsString($row['expectedValue']);
+        self::assertSame($expectedValue, $row['expectedValue']);
+    }
+
+    public static function rightPadReturnsExpectedResultDataProvider(): \Generator
+    {
+        yield 'value and int length returns expected left padded value if value is too short #1' => [
+            'value' => '123',
+            'length' => 5,
+            'paddingValue' => '0',
+            'expectedValue' => '12300',
+        ];
+        yield 'value and int length returns expected left padded value if value is too short #2' => [
+            'value' => '123',
+            'length' => 10,
+            'paddingValue' => '.',
+            'expectedValue' => '123.......',
+        ];
+        yield 'returns cutted value to length if value length exceeds padding length' => [
+            'value' => '1234567890',
+            'length' => 5,
+            'paddingValue' => '.',
+            // Note: `RPAD` cuts the value from the left like LPAD, which is basically brain melting. Therefore,
+            // this is adopted here to be concise with this behaviour.
+            'expectedValue' => '12345',
+        ];
+    }
+
+    #[DataProvider('rightPadReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function rightPadReturnsExpectedResult(string $value, int|string $length, string $paddingValue, string $expectedValue): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->rightPad($queryBuilder->quote($value), $length, $paddingValue, 'expectedValue')
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey('expectedValue', $row);
+        self::assertIsString($row['expectedValue']);
+        self::assertSame($expectedValue, $row['expectedValue']);
+    }
+
+    #[DataProvider('rightPadReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function rightPadReturnsWithQuotedAliasExpectedResult(string $value, int|string $length, string $paddingValue, string $expectedValue): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->rightPad($queryBuilder->quote($value), $length, $paddingValue, $queryBuilder->quoteIdentifier('expectedValue'))
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey('expectedValue', $row);
+        self::assertIsString($row['expectedValue']);
+        self::assertSame($expectedValue, $row['expectedValue']);
+    }
+
+    public static function rightPadWithValueSubexpressionReturnsExpectedResultDataProvider(): \Generator
+    {
+        yield 'value and int length returns expected left padded value if value is too short #1' => [
+            'value' => ['1', '2', '3'],
+            'length' => 5,
+            'paddingValue' => '0',
+            'expectedValue' => '12300',
+        ];
+        yield 'value and int length returns expected left padded value if value is too short #2' => [
+            'value' => ['1', '2', '3'],
+            'length' => 10,
+            'paddingValue' => '.',
+            'expectedValue' => '123.......',
+        ];
+        yield 'returns cutted value to length if value length exceeds padding length' => [
+            'value' => ['1', '2', '3', '4', '5', '7', '8', '9', '0'],
+            'length' => 5,
+            'paddingValue' => '.',
+            'expectedValue' => '12345',
+        ];
+    }
+
+    #[DataProvider('rightPadWithValueSubexpressionReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function rightPadWithValueSubexpressionReturnsExpectedResult(array $value, int|string $length, string $paddingValue, string $expectedValue): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $value = array_map(fn($value) => $queryBuilder->quote($value), array_values($value));
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->rightPad($queryBuilder->expr()->concat(...$value), $length, $paddingValue, 'expectedValue'),
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey('expectedValue', $row);
+        self::assertIsString($row['expectedValue']);
+        self::assertSame($expectedValue, $row['expectedValue']);
+    }
+
+    #[DataProvider('rightPadWithValueSubexpressionReturnsExpectedResultDataProvider')]
+    #[Test]
+    public function rightPadWithValueSubexpressionWithQuotedAliasReturnsExpectedResult(array $value, int|string $length, string $paddingValue, string $expectedValue): void
+    {
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $value = array_map(fn($value) => $queryBuilder->quote($value), array_values($value));
+        $row = $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->expr()->rightPad($queryBuilder->expr()->concat(...$value), $length, $paddingValue, $queryBuilder->quoteIdentifier('expectedValue')),
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertArrayHasKey('expectedValue', $row);
+        self::assertIsString($row['expectedValue']);
+        self::assertSame($expectedValue, $row['expectedValue']);
+    }
+
+    #[Test]
+    public function leftPadWithEmptyStringPaddingValueThrowsInvalidArgumentException(): void
+    {
+        self::expectExceptionCode(1709658914);
+        self::expectException(\InvalidArgumentException::class);
+
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder->expr()->leftPad('uid', 10, '');
+    }
+
+    #[Test]
+    public function leftPadWithMultiCharacterPaddingValueThrowsInvalidArgumentException(): void
+    {
+        self::expectExceptionCode(1709659006);
+        self::expectException(\InvalidArgumentException::class);
+
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder->expr()->leftPad('uid', 10, '..');
+    }
+
+    #[Test]
+    public function rightPadWithEmptyStringPaddingValueThrowsInvalidArgumentException(): void
+    {
+        self::expectExceptionCode(1709664589);
+        self::expectException(\InvalidArgumentException::class);
+
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder->expr()->rightPad('uid', 10, '');
+    }
+
+    #[Test]
+    public function rightPadWithMultiCharacterPaddingValueThrowsInvalidArgumentException(): void
+    {
+        self::expectExceptionCode(1709664598);
+        self::expectException(\InvalidArgumentException::class);
+
+        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder->expr()->rightPad('uid', 10, '..');
     }
 }

@@ -1159,6 +1159,8 @@ class QueryBuilder extends ConcreteQueryBuilder
      * Creates a cast of the $fieldName to a text datatype depending on the database management system.
      *
      * @param string $fieldName The fieldname will be quoted and casted according to database platform automatically
+     *
+     * @todo This is literally an expression and should be provided by the ExpressionBuilder. Duplicate/move this.
      */
     public function castFieldToTextType(string $fieldName): string
     {
