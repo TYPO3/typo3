@@ -30,7 +30,6 @@ import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-im
 import { selector } from '@typo3/core/literals';
 import IconHelper from '@typo3/workspaces/utility/icon-helper';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
-import { Diff } from '@typo3/workspaces/renderable/diff-view';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -78,9 +77,7 @@ class Backend extends Workspaces {
     super();
 
     topLevelModuleImport('@typo3/workspaces/renderable/send-to-stage-form.js');
-    topLevelModuleImport('@typo3/workspaces/renderable/comment-view.js');
-    topLevelModuleImport('@typo3/workspaces/renderable/history-view.js');
-    topLevelModuleImport('@typo3/workspaces/renderable/diff-view.js');
+    topLevelModuleImport('@typo3/workspaces/renderable/record-information.js');
 
     DocumentService.ready().then((): void => {
       this.getElements();
@@ -104,45 +101,6 @@ class Backend extends Workspaces {
    */
   private static refreshPageTree(): void {
     top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
-  }
-
-  /**
-   * Generates the diff view of a record
-   *
-   * @param {Object} diff
-   * @return {$}
-   */
-  private static generateDiffView(diff: Diff[]): HTMLElement {
-    const diffView = document.createElement('typo3-workspaces-diff-view');
-    diffView.diffs = diff;
-
-    return diffView;
-  }
-
-  /**
-   * Generates the comments view of a record
-   *
-   * @param {Object} comments
-   * @return {$}
-   */
-  private static generateCommentView(comments: any[]): HTMLElement {
-    const commentView = document.createElement('typo3-workspaces-comment-view');
-    commentView.comments = comments;
-
-    return commentView;
-  }
-
-  /**
-   * Renders the record's history
-   *
-   * @param {Object} data
-   * @return {JQuery}
-   */
-  private static generateHistoryView(data: any[]): HTMLElement {
-    const historyViewElement = document.createElement('typo3-workspaces-history-view');
-    historyViewElement.historyItems = data;
-
-    return historyViewElement;
   }
 
   /**
@@ -564,97 +522,11 @@ class Backend extends Workspaces {
       }),
     ).then(async (response: AjaxResponse): Promise<void> => {
       const item = (await response.resolve())[0].result.data[0];
-      const $content = $('<div />');
-      const $tabsNav = $('<ul />', { class: 'nav nav-tabs', role: 'tablist' });
-      const $tabsContent = $('<div />', { class: 'tab-content' });
       const modalButtons = [];
 
-      $content.append(
-        $('<p />').html(TYPO3.lang.path.replace('{0}', item.path_Live)),
-        $('<p />').html(
-          TYPO3.lang.current_step.replace('{0}', item.label_Stage)
-            .replace('{1}', item.stage_position)
-            .replace('{2}', item.stage_count),
-        ),
-      );
-
-      if (item.diff.length > 0) {
-        $tabsNav.append(
-          $('<li />', { role: 'presentation', class: 'nav-item' }).append(
-            $('<a />', {
-              class: 'nav-link',
-              href: '#workspace-changes',
-              'aria-controls': 'workspace-changes',
-              role: 'tab',
-              'data-bs-toggle': 'tab',
-            }).text(TYPO3.lang['window.recordChanges.tabs.changeSummary']),
-          ),
-        );
-        $tabsContent.append(
-          $('<div />', { role: 'tabpanel', class: 'tab-pane', id: 'workspace-changes' }).append(
-            $('<div />', { class: 'form-section' }).append(
-              Backend.generateDiffView(item.diff),
-            ),
-          ),
-        );
-      }
-
-      if (item.comments.length > 0) {
-        $tabsNav.append(
-          $('<li />', { role: 'presentation', class: 'nav-item' }).append(
-            $('<a />', {
-              class: 'nav-link',
-              href: '#workspace-comments',
-              'aria-controls': 'workspace-comments',
-              role: 'tab',
-              'data-bs-toggle': 'tab',
-            }).html(TYPO3.lang['window.recordChanges.tabs.comments'] + '&nbsp;').append(
-              $('<span />', { class: 'badge' }).text(item.comments.length),
-            ),
-          ),
-        );
-        $tabsContent.append(
-          $('<div />', { role: 'tabpanel', class: 'tab-pane', id: 'workspace-comments' }).append(
-            $('<div />', { class: 'form-section' }).append(
-              Backend.generateCommentView(item.comments),
-            ),
-          ),
-        );
-      }
-
-      if (item.history.total > 0) {
-        $tabsNav.append(
-          $('<li />', { role: 'presentation', class: 'nav-item' }).append(
-            $('<a />', {
-              class: 'nav-link',
-              href: '#workspace-history',
-              'aria-controls': 'workspace-history',
-              role: 'tab',
-              'data-bs-toggle': 'tab',
-            }).text(TYPO3.lang['window.recordChanges.tabs.history']),
-          ),
-        );
-
-        $tabsContent.append(
-          $('<div />', { role: 'tabpanel', class: 'tab-pane', id: 'workspace-history' }).append(
-            $('<div />', { class: 'form-section' }).append(
-              Backend.generateHistoryView(item.history.data),
-            ),
-          ),
-        );
-      }
-
-      // Mark the first tab and pane as active
-      $tabsNav.find('li > a').first().addClass('active');
-      $tabsContent.find('.tab-pane').first().addClass('active');
-
-      // Attach tabs
-      $content.append(
-        $('<div />').append(
-          $tabsNav,
-          $tabsContent,
-        ),
-      );
+      const content = document.createElement('typo3-workspaces-record-information');
+      content.record = item;
+      content.TYPO3lang = TYPO3.lang;
 
       if (item.label_PrevStage !== false && $tr.data('stage') !== $tr.data('prevStage')) {
         modalButtons.push({
@@ -692,7 +564,7 @@ class Backend extends Workspaces {
       Modal.advanced({
         type: Modal.types.default,
         title: TYPO3.lang['window.recordInformation'].replace('{0}', $tr.find('.t3js-title-live').text().trim()),
-        content: $content,
+        content: content,
         severity: SeverityEnum.info,
         buttons: modalButtons,
         size: Modal.sizes.medium,
