@@ -1,7 +1,4 @@
-<html
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    data-namespace-typo3-fluid="true"
->
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
 <f:if condition="{context.drawingConfiguration.languageMode}">
     <f:then>
         <f:render partial="PageLayout/LanguageColumns" arguments="{_all}" />
@@ -10,4 +7,3 @@
         <f:render partial="PageLayout/Grid" arguments="{_all}" />
     </f:else>
 </f:if>
-</html>

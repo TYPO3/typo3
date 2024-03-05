@@ -3,9 +3,11 @@
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
+
 <f:layout name="Module" />
 
 <f:section name="Content">
+
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/tree/tree-node-toggle.js',
@@ -16,9 +18,12 @@
             'collapse-state-search.numberOfSearchMatches': 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.numberOfSearchMatches'
         }"
     />
+
     <form action="" id="ConfigurationView" method="post">
         <h1><f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.title" /></h1>
+
         <h2>{treeName}</h2>
+
         <div id="lowlevel-config" class="form-row">
             <div class="form-group">
                 <form action="#">
@@ -43,10 +48,12 @@
                 <span class="badge badge-success hidden t3js-collapse-states-search-numberOfSearchMatches"></span>
             </div>
         </div>
+
         <div class="t3js-collapse-states-search-tree">
             <f:format.raw>{tree}</f:format.raw>
         </div>
     </form>
+
 </f:section>
 
 </html>

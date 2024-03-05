@@ -3,9 +3,11 @@
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
+
 <f:layout name="Module" />
 
 <f:section name="Content">
+
     <f:variable name="providerTitle" value="{provider.title -> f:translate(key: provider.title, default: provider.title)}"/>
 
     <h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.title" arguments="{0: providerTitle}"/></h1>
@@ -48,6 +50,7 @@
             </div>
         </div>
     </form>
+
 </f:section>
 
 </html>

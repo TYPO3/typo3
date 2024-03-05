@@ -2,6 +2,7 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
+
 <f:layout name="Module"/>
 
 <f:section name="Before">
@@ -21,10 +22,14 @@
 </f:section>
 
 <f:section name="Content">
+
     <f:if condition="{accessContent}">
         <f:then>
-            <h1><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title"/></h1>
+            <h1>
+                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title"/>
+            </h1>
             <f:if condition="{content}">
+
                 <form action="{f:be.uri(route: 'web_info_overview', parameters: '{id: pageUid}')}" method="post">
                     <div class="form-row">
                         <div class="form-group">
@@ -41,6 +46,7 @@
                         </div>
                     </div>
                 </form>
+
                 <f:format.raw>{content}</f:format.raw>
             </f:if>
         </f:then>
@@ -50,6 +56,7 @@
             </f:be.infobox>
         </f:else>
     </f:if>
+
 </f:section>
 
 </html>
