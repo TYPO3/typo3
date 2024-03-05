@@ -39,9 +39,8 @@ class TcaSlug implements FormDataProviderInterface
         $row = $result['databaseRow'];
         $languageId = 0;
 
-        if (($result['processedTca']['ctrl']['languageField'] ?? '') !== '') {
-            $languageField = $result['processedTca']['ctrl']['languageField'];
-            $languageId = (int)((is_array($row[$languageField] ?? null) ? ($row[$languageField][0] ?? 0) : $row[$languageField]) ?? 0);
+        if (($languageField = $result['processedTca']['ctrl']['languageField'] ?? '') !== '' && isset($row[$languageField])) {
+            $languageId = (int)(is_array($row[$languageField]) ? ($row[$languageField][0] ?? 0) : $row[$languageField]);
         }
 
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
