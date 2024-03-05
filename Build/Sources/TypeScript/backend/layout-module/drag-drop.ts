@@ -15,16 +15,15 @@
  * Module: @typo3/backend/layout-module/drag-drop
  * this JS code does the drag+drop logic for the Layout module (Web => Page)
  */
-import interact from 'interactjs';
-import { BaseEvent } from '@interactjs/core/BaseEvent';
-import { Interactable } from '@interactjs/core/Interactable';
-import { DragEvent } from '@interactjs/actions/drag/plugin';
-import { DropEvent } from '@interactjs/actions/drop/DropEvent';
 import DocumentService from '@typo3/core/document-service';
 import DataHandler from '../ajax-data-handler';
 import Icons from '../icons';
 import ResponseInterface from '../ajax-data-handler/response-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
+import type { DragDropThumbnail, DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
+import BroadcastService from '@typo3/backend/broadcast-service';
+import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 
 interface Parameters {
   cmd?: { [key: string]: { [key: string]: any } };
@@ -32,176 +31,163 @@ interface Parameters {
   CB?: { paste: string, update: { colPos: number | boolean, sys_language_uid: number } };
 }
 
-class DragDrop {
-  private static readonly contentIdentifier: string = '.t3js-page-ce';
-  private static readonly draggableContentIdentifier: string = '.t3js-page-ce-sortable';
-  private static readonly draggableContentHandleIdentifier: string = '.t3js-page-ce-draghandle';
-  private static readonly draggableContentCloneIdentifier: string = '[data-dragdrop-clone]';
-  private static readonly dropZoneIdentifier: string = '.t3js-page-ce-dropzone-available';
-  private static readonly columnIdentifier: string = '.t3js-page-column';
-  private static readonly validDropZoneClass: string = 'active';
-  private static readonly dropPossibleHoverClass: string = 't3-page-ce-dropzone-possible';
-  private static readonly addContentIdentifier: string = '.t3js-page-new-ce';
+type ContentElementDragDropData = {
+  pid: number;
+  uid: number;
+  language: number;
+  content: string;
+}
 
+enum Identifiers {
+  content = '.t3js-page-ce',
+  draggableContent = '.t3js-page-ce-sortable',
+  draggableContentHandle = '.t3js-page-ce-draghandle',
+  dropZone = '.t3js-page-ce-dropzone-available',
+  column = '.t3js-page-column',
+  addContent = '.t3js-page-new-ce',
+}
+
+enum Classes {
+  validDropZoneClass = 'active',
+  dropPossibleHoverClass = 't3-page-ce-dropzone-possible',
+}
+
+class DragDrop {
   constructor() {
     DocumentService.ready().then((): void => {
-      DragDrop.initialize();
+      this.initialize();
     });
   }
 
   /**
    * initializes Drag+Drop for all content elements on the page
    */
-  public static initialize(): void {
-    const moduleBody = document.querySelector('.module') as HTMLElement;
-
-    // Pipe scroll attempt to parent element
-    new RegularEvent('wheel', (e: WheelEvent): void => {
-      moduleBody.scrollLeft += e.deltaX;
-      moduleBody.scrollTop += e.deltaY;
-    }).delegateTo(document, '.draggable-dragging');
-
-    interact(DragDrop.draggableContentIdentifier)
-      .draggable({
-        allowFrom: DragDrop.draggableContentHandleIdentifier,
-        onstart: DragDrop.onDragStart,
-        onmove: DragDrop.onDragMove,
-        onend: DragDrop.onDragEnd,
-      })
-      .pointerEvents({
-        allowFrom: DragDrop.draggableContentHandleIdentifier,
-      })
-      .on('move', function (event: BaseEvent) {
-        const interaction = event.interaction;
-        const currentTarget = event.currentTarget as HTMLElement;
-        if (interaction.pointerIsDown && !interaction.interacting() && currentTarget.getAttribute('clone') != 'false') {
-          const clone = currentTarget.cloneNode(true) as HTMLElement;
-          clone.setAttribute('data-dragdrop-clone', 'true');
-          currentTarget.parentNode.insertBefore(clone, currentTarget.nextSibling);
-          interaction.start({ name: 'drag' }, event.interactable, currentTarget);
-        }
-      });
-
-    interact(DragDrop.dropZoneIdentifier).dropzone({
-      accept: this.draggableContentIdentifier,
-      ondrop: DragDrop.onDrop,
-      checker: (
-        dragEvent: DragEvent,
-        event: MouseEvent,
-        dropped: boolean,
-        dropzone: Interactable,
-        dropElement: HTMLElement
-      ): boolean => {
-        const dropzoneRect = dropElement.getBoundingClientRect();
-
-        return (event.pageX >= dropzoneRect.left && event.pageX <= dropzoneRect.left + dropzoneRect.width) // is cursor in boundaries of x-axis
-          && (event.pageY >= dropzoneRect.top && event.pageY <= dropzoneRect.top + dropzoneRect.height); // is cursor in boundaries of y-axis;
+  public initialize(): void {
+    new RegularEvent('mousedown', (e: MouseEvent, target: HTMLElement): void => {
+      const closestDenyElement = (e.target as HTMLElement).closest('a,img');
+      if (closestDenyElement !== null && target.contains(closestDenyElement)) {
+        // Do not enable drag&drop when event is triggered on an anchor element
+        return;
       }
-    }).on('dragenter', (e: DropEvent): void => {
-      e.target.classList.add(DragDrop.dropPossibleHoverClass);
-    }).on('dragleave', (e: DropEvent): void => {
-      e.target.classList.remove(DragDrop.dropPossibleHoverClass);
-    });
+
+      const content = (target.closest(Identifiers.content) as HTMLElement);
+      (content.querySelector(Identifiers.draggableContentHandle) as HTMLElement).draggable = true;
+    }).delegateTo(document, Identifiers.draggableContentHandle);
+
+    new RegularEvent(
+      'dragstart',
+      this.onDragStart.bind(this)
+    ).delegateTo(document, Identifiers.draggableContentHandle);
+
+    new RegularEvent(
+      'dragenter',
+      this.onDragEnter.bind(this)
+    ).delegateTo(document, Identifiers.draggableContentHandle);
+
+    new RegularEvent(
+      'dragend',
+      this.onDragEnd.bind(this)
+    ).delegateTo(document, Identifiers.draggableContentHandle);
+
+    new RegularEvent('dragenter', (event: DragEvent, target: HTMLElement): void => {
+      target.classList.add(Classes.dropPossibleHoverClass);
+
+      event.dataTransfer.dropEffect = event.ctrlKey ? 'copy' : 'move';
+    }).delegateTo(document, Identifiers.dropZone);
+
+    new RegularEvent('dragover', (event: DragEvent): void => {
+      event.preventDefault();
+
+      event.dataTransfer.dropEffect = event.ctrlKey ? 'copy' : 'move';
+    }).delegateTo(document, Identifiers.dropZone);
+
+    new RegularEvent('dragleave', (event: DragEvent, target: HTMLElement): void => {
+      event.preventDefault();
+      target.classList.remove(Classes.dropPossibleHoverClass);
+    }).delegateTo(document, Identifiers.dropZone);
+
+    new RegularEvent('drop', this.onDrop.bind(this), { capture: true, passive: true }).delegateTo(document, Identifiers.dropZone);
+
+    new RegularEvent('typo3:page-layout-drag-drop:elementChanged', this.onBroadcastElementChanged.bind(this)).bindTo(top.document);
   }
 
-  private static onDragStart(e: DragEvent): void {
-    e.target.dataset.dragStartX = (e.client.x - e.rect.left).toString();
-    e.target.dataset.dragStartY = (e.client.y - e.rect.top).toString();
+  protected onDragEnter(event: DragEvent): void {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = event.ctrlKey ? 'copy' : 'move';
 
-    // Configure styling of element
-    e.target.style.width = getComputedStyle(e.target).getPropertyValue('width');
-    e.target.classList.add('draggable-dragging');
-
-    const copyMessage = document.createElement('div');
-    copyMessage.classList.add('draggable-copy-message');
-    copyMessage.textContent = TYPO3.lang['dragdrop.copy.message'];
-    e.target.append(copyMessage);
-
-    e.target.closest(DragDrop.columnIdentifier).classList.remove('active');
-    (e.target.querySelector(DragDrop.dropZoneIdentifier) as HTMLElement).hidden = true;
-
-    document.querySelectorAll(DragDrop.dropZoneIdentifier).forEach((element: HTMLElement): void => {
-      const addContentButton = element.parentElement.querySelector(DragDrop.addContentIdentifier) as HTMLElement;
-      if (addContentButton !== null) {
-        addContentButton.hidden = true;
-        element.classList.add(DragDrop.validDropZoneClass);
-      }
-    });
+    this.showDropZones();
   }
 
-  private static onDragMove(e: DragEvent): void {
-    const scrollSensitivity = 20;
-    const scrollSpeed = 20;
-    const moduleContainer = document.querySelector('.module') as HTMLElement;
+  protected onDragStart(event: DragEvent, target: HTMLElement): void {
+    const content = target.closest(Identifiers.content) as HTMLElement;
 
-    // Re-calculate position of draggable element
-    e.target.style.left = `${e.client.x - parseInt(e.target.dataset.dragStartX, 10)}px`;
-    e.target.style.top = `${e.client.y - parseInt(e.target.dataset.dragStartY, 10)}px`;
+    event.dataTransfer.setData(DataTransferTypes.content, JSON.stringify({
+      pid: this.getCurrentPageId(),
+      uid: parseInt(content.dataset.uid, 10),
+      language: parseInt(content.dataset.languageUid, 10),
+      content: content.outerHTML,
+    } as ContentElementDragDropData));
 
-    // Scroll when draggable leaves the viewport
-    if (e.delta.x < 0 && e.pageX - scrollSensitivity < 0) {
-      // Scroll left
-      moduleContainer.scrollLeft -= scrollSpeed;
-    } else if (e.delta.x > 0 && e.pageX + scrollSensitivity > moduleContainer.offsetWidth) {
-      // Scroll right
-      moduleContainer.scrollLeft += scrollSpeed;
-    }
+    const metadata: DragTooltipMetadata = this.getDragTooltipMetadataFromContentElement(content);
+    event.dataTransfer.setData(DataTransferTypes.dragTooltip, JSON.stringify(metadata));
+    event.dataTransfer.effectAllowed = 'copyMove';
+    event.dataTransfer.dropEffect = 'copy';
 
-    if (e.delta.y < 0 && e.pageY - scrollSensitivity - document.querySelector('.t3js-module-docheader').clientHeight < 0) {
-      // Scroll up
-      moduleContainer.scrollTop -= scrollSpeed;
-    } else if (e.delta.y > 0 && e.pageY + scrollSensitivity > moduleContainer.offsetHeight) {
-      // Scroll down
-      moduleContainer.scrollTop += scrollSpeed;
-    }
+    // Hack to render "Press CTRL to copy" in original element only, but not in drag image clone
+    window.setTimeout((): void => {
+      const copyMessage = document.createElement('span');
+      copyMessage.classList.add('t3js-draggable-copy-message', 'badge', 'badge-secondary');
+      copyMessage.textContent = TYPO3.lang['dragdrop.copy.message'];
+      content.append(copyMessage);
+    }, 0);
+
+    content.closest(Identifiers.column).classList.remove('active');
+    (content.querySelector(Identifiers.dropZone) as HTMLElement).hidden = true;
   }
 
-  private static onDragEnd(e: DragEvent): void {
-    e.target.dataset.dragStartX = '';
-    e.target.dataset.dragStartY = '';
-
-    e.target.classList.remove('draggable-dragging');
-    e.target.style.width = 'unset';
-    e.target.style.left = 'unset';
-    e.target.style.top = 'unset';
+  protected onDragEnd(event: DragEvent, target: HTMLElement): void {
+    const content = target.closest(Identifiers.content) as HTMLElement;
+    // Disable "draggable" attribute again, see `mousedown` event handler
+    content.draggable = false;
 
     // Show create new element button
-    e.target.closest(DragDrop.columnIdentifier).classList.add('active');
-    (e.target.querySelector(DragDrop.dropZoneIdentifier) as HTMLElement).hidden = false;
-    e.target.querySelector('.draggable-copy-message').remove();
+    content.closest(Identifiers.column).classList.add('active');
+    (content.querySelector(Identifiers.dropZone) as HTMLElement).hidden = false;
+    content.querySelector('.t3js-draggable-copy-message').remove();
 
-    document.querySelectorAll(DragDrop.dropZoneIdentifier + '.' + DragDrop.validDropZoneClass).forEach((element: HTMLElement): void => {
-      const addContentButton = element.parentElement.querySelector(DragDrop.addContentIdentifier) as HTMLElement;
-      if (addContentButton !== null) {
-        addContentButton.hidden = false;
-      }
-      element.classList.remove(DragDrop.validDropZoneClass);
-    });
-
-    // Remove clones
-    document.querySelectorAll(DragDrop.draggableContentCloneIdentifier).forEach((element: HTMLElement): void => {
-      element.remove();
-    });
+    this.hideDropZones();
   }
 
   /**
    * this method does the whole logic when a draggable is dropped on to a dropzone
    * sending out the request and afterwards move the HTML element in the right place.
    *
-   * @param {DropEvent} e
+   * @param {DropEvent} event
    */
-  private static onDrop(e: DropEvent): void {
-    const dropContainer = e.target as HTMLElement;
-    const draggedElement = e.relatedTarget as HTMLElement;
-    const newColumn = DragDrop.getColumnPositionForElement(dropContainer);
-    const contentElementUid: number = parseInt(draggedElement.dataset.uid, 10);
+  protected onDrop(event: DragEvent, dropContainer: HTMLElement): void {
+    let draggedElement: HTMLElement;
 
-    if (typeof (contentElementUid) === 'number' && contentElementUid > 0) {
+    dropContainer.classList.remove(Classes.dropPossibleHoverClass);
+
+    if (!event.dataTransfer.types.includes(DataTransferTypes.content)) {
+      // Dropped element is not accepted
+      return;
+    }
+
+    const newColumn = this.getColumnPositionForElement(dropContainer);
+    const contentElementDragDropData = JSON.parse(event.dataTransfer.getData(DataTransferTypes.content)) as ContentElementDragDropData;
+
+    draggedElement = document.querySelector(`${Identifiers.content}[data-uid="${contentElementDragDropData.uid}"]`);
+    if (!draggedElement) {
+      draggedElement = document.createRange().createContextualFragment(contentElementDragDropData.content).firstElementChild as HTMLElement;
+    }
+
+    if (typeof (contentElementDragDropData.uid) === 'number' && contentElementDragDropData.uid > 0) {
       const parameters: Parameters = {};
       // add the information about a possible column position change
-      const targetFound = (dropContainer.closest(DragDrop.contentIdentifier) as HTMLElement).dataset.uid;
+      const targetFound = (dropContainer.closest(Identifiers.content) as HTMLElement).dataset.uid;
       // the item was moved to the top of the colPos, so the page ID is used here
-      let targetPid;
+      let targetPid: number;
       if (targetFound === undefined) {
         // the actual page is needed. Read it from the container into which the element was dropped.
         targetPid = parseInt((dropContainer.closest('[data-page]') as HTMLElement).dataset.page, 10);
@@ -211,7 +197,7 @@ class DragDrop {
       }
 
       // the dragged elements language uid
-      let language: number = parseInt(draggedElement.dataset.languageUid, 10);
+      let language = contentElementDragDropData.language;
       if (language !== -1) {
         // new elements language must be the same as the column the element is dropped in if element is not -1
         language = parseInt((dropContainer.closest('[data-language-uid]') as HTMLElement).dataset.languageUid, 10);
@@ -221,11 +207,11 @@ class DragDrop {
       if (targetPid !== 0) {
         colPos = newColumn;
       }
-      const isCopyAction = (e.dragEvent.ctrlKey || dropContainer.classList.contains('t3js-paste-copy'));
+      const isCopyAction = (event.ctrlKey || dropContainer.classList.contains('t3js-paste-copy'));
       const datahandlerCommand = isCopyAction ? 'copy' : 'move';
       parameters.cmd = {
         tt_content: {
-          [contentElementUid]: {
+          [contentElementDragDropData.uid]: {
             [datahandlerCommand]: {
               action: 'paste',
               target: targetPid,
@@ -238,7 +224,21 @@ class DragDrop {
         }
       };
 
-      DragDrop.ajaxAction(dropContainer, draggedElement, parameters, isCopyAction).then((): void => {
+      this.ajaxAction(parameters, isCopyAction).then((): void => {
+        // insert draggable on the new position
+        if (!dropContainer.parentElement.classList.contains(Identifiers.content.substring(1))) {
+          dropContainer.closest(Identifiers.dropZone).after(draggedElement);
+        } else {
+          dropContainer.closest(Identifiers.content).after(draggedElement);
+        }
+
+        this.broadcast('elementChanged', {
+          pid: contentElementDragDropData.pid,
+          uid: contentElementDragDropData.uid,
+          targetPid: this.getCurrentPageId(),
+          action: isCopyAction ? 'copy' : 'move',
+        });
+
         const languageDescriber = document.querySelector(`.t3-page-column-lang-name[data-language-uid="${language}"]`) as HTMLElement;
         if (languageDescriber === null) {
           return;
@@ -256,16 +256,28 @@ class DragDrop {
     }
   }
 
+  protected onBroadcastElementChanged(event: CustomEvent<{ payload: { pid: number, uid: number, targetPid: number, action: string } }>): void {
+    if (event.detail.payload.pid !== this.getCurrentPageId()) {
+      return;
+    }
+
+    if (event.detail.payload.targetPid === event.detail.payload.pid) {
+      return;
+    }
+
+    if (event.detail.payload.action === 'move') {
+      document.querySelector(`${Identifiers.content}[data-uid="${event.detail.payload.uid}"]`).remove();
+    }
+  }
+
   /**
    * this method does the actual AJAX request for both, the move and the copy action.
    *
-   * @param {HTMLElement} dropContainer
-   * @param {HTMLElement} draggedElement
    * @param {Parameters} parameters
    * @param {boolean} isCopyAction
    * @private
    */
-  private static ajaxAction(dropContainer: HTMLElement, draggedElement: HTMLElement, parameters: Parameters, isCopyAction: boolean): Promise<void> {
+  protected ajaxAction(parameters: Parameters, isCopyAction: boolean): Promise<void> {
     const table: string = Object.keys(parameters.cmd).shift();
     const uid: number = parseInt(Object.keys(parameters.cmd[table]).shift(), 10);
     const eventData = { component: 'dragdrop', action: isCopyAction ? 'copy' : 'move', table, uid };
@@ -276,12 +288,6 @@ class DragDrop {
         throw result.messages;
       }
 
-      // insert draggable on the new position
-      if (!dropContainer.parentElement.classList.contains(DragDrop.contentIdentifier.substring(1))) {
-        dropContainer.closest(DragDrop.dropZoneIdentifier).after(draggedElement);
-      } else {
-        dropContainer.closest(DragDrop.contentIdentifier).after(draggedElement);
-      }
       if (isCopyAction || (gridContainer?.dataset.defaultLanguageBinding === '1')) {
         self.location.reload();
       }
@@ -293,12 +299,79 @@ class DragDrop {
    * @param element HTMLElement
    * @return int|null the colPos
    */
-  private static getColumnPositionForElement(element: HTMLElement): number | boolean {
+  protected getColumnPositionForElement(element: HTMLElement): number | boolean {
     const columnContainer = element.closest('[data-colpos]') as HTMLElement;
     if (columnContainer !== null && columnContainer.dataset.colpos !== undefined) {
       return parseInt(columnContainer.dataset.colpos, 10);
     }
     return false;
+  }
+
+  protected getDragTooltipMetadataFromContentElement(contentElement: HTMLElement): DragTooltipMetadata {
+    let description, iconIdentifier;
+    const thumbnails: DragDropThumbnail[] = [];
+    const contentElementTitle = contentElement.querySelector('.t3-page-ce-header-title') as HTMLElement;
+    const title = contentElementTitle.innerText;
+
+    const contentElementPreview = contentElement.querySelector('.element-preview') as HTMLElement;
+    if (contentElementPreview) {
+      description = contentElementPreview.innerText;
+
+      if (description.length > 80) {
+        description = description.substring(0, 80) + '...';
+      }
+    }
+
+    const contentElementIcon = contentElement.querySelector('.t3js-icon') as HTMLElement;
+    if (contentElementIcon) {
+      iconIdentifier = contentElementIcon.dataset.identifier;
+    }
+
+    const contentImagePreviews = contentElement.querySelectorAll('.preview-thumbnails-element-image img');
+    if (contentImagePreviews.length > 0) {
+      contentImagePreviews.forEach((image: HTMLImageElement): void => {
+        thumbnails.push({
+          src: image.src,
+          height: image.height,
+          width: image.width,
+        });
+      })
+    }
+
+    return {
+      tooltipIconIdentifier: iconIdentifier,
+      tooltipLabel: title,
+      tooltipDescription: description,
+      thumbnails: thumbnails,
+    };
+  }
+
+  protected getCurrentPageId(): number {
+    return parseInt((document.querySelector('[data-page]') as HTMLElement).dataset.page, 10);
+  }
+
+  protected broadcast(eventName: string, payload?: unknown) {
+    BroadcastService.post(new BroadcastMessage('page-layout-drag-drop', eventName, payload || {}));
+  }
+
+  protected showDropZones(): void {
+    document.querySelectorAll(Identifiers.dropZone).forEach((element: HTMLElement): void => {
+      const addContentButton = element.parentElement.querySelector(Identifiers.addContent) as HTMLElement;
+      if (addContentButton !== null) {
+        addContentButton.hidden = true;
+        element.classList.add(Classes.validDropZoneClass);
+      }
+    });
+  }
+
+  protected hideDropZones(): void {
+    document.querySelectorAll(`${Identifiers.dropZone}.${Classes.validDropZoneClass}`).forEach((element: HTMLElement): void => {
+      const addContentButton = element.parentElement.querySelector(Identifiers.addContent) as HTMLElement;
+      if (addContentButton !== null) {
+        addContentButton.hidden = false;
+      }
+      element.classList.remove(Classes.validDropZoneClass);
+    });
   }
 }
 

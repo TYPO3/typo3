@@ -347,24 +347,3 @@ html {
         cursor: move;
     }
 }
-
-.draggable-dragging {
-    position: absolute;
-    z-index: 299 !important;
-    opacity: .5;
-    box-shadow: 0 1px 24px rgba(0, 0, 0, .5);
-
-    .t3-page-ce-actions {
-        display: none;
-    }
-
-    .t3-page-ce-element {
-        margin-bottom: 0;
-    }
-
-    .draggable-copy-message {
-        font-size: $font-size-sm;
-        position: absolute;
-        top: -1.25rem;
-    }
-}

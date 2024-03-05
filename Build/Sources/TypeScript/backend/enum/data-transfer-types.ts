@@ -17,4 +17,5 @@ export enum DataTransferTypes {
   pages = 'application/x-typo3-record-pages+json',
   falResources = 'application/x-typo3-fal-resources+json',
   dragTooltip = 'application/x-typo3-drag-tooltip+json',
+  content = 'application/x-typo3-content+json',
 }

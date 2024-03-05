@@ -4416,10 +4416,6 @@ html{scroll-behavior:smooth}
 .preview-thumbnails-element-image{height:var(--preview-thumbnails-size);width:var(--preview-thumbnails-size);display:flex;background-color:rgba(0,0,0,.05);overflow:hidden;border-radius:2px;justify-content:center;align-items:center}
 .preview-thumbnails-element-image .icon{height:calc(var(--preview-thumbnails-size)/ 2);width:calc(var(--preview-thumbnails-size)/ 2)}
 .t3-page-ce-dragitem .t3-page-ce-header-draggable:hover{cursor:move}
-.draggable-dragging{position:absolute;z-index:299!important;opacity:.5;box-shadow:0 1px 24px rgba(0,0,0,.5)}
-.draggable-dragging .t3-page-ce-actions{display:none}
-.draggable-dragging .t3-page-ce-element{margin-bottom:0}
-.draggable-dragging .draggable-copy-message{font-size:10.5px;position:absolute;top:-1.25rem}
 .tx_recycler_recycler tr.collapse{display:none}
 .tx_recycler_recycler tr.collapse.show{display:table-row}
 .scheduler-sortable-handle{cursor:move!important}
