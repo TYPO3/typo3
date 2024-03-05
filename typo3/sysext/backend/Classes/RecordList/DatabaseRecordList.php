@@ -602,17 +602,23 @@ class DatabaseRecordList
         // Setting the limits for the amount of records to be displayed in the list and single table view.
         // Using the default value and overwriting with page TSconfig and TCA config. The limit is forced
         // to be in the range of 0 - 10000.
-
+        $itemsLimitSingleTableFromTca = null;
+        $itemsLimitPerTableFromTca = null;
+        // Do not use configuration of table 'pages' for page translations
+        if ($table !== 'pages' || !$this->showOnlyTranslatedRecords) {
+            $itemsLimitSingleTableFromTca = $GLOBALS['TCA'][$table]['interface']['maxSingleDBListItems'] ?? null;
+            $itemsLimitPerTableFromTca = $GLOBALS['TCA'][$table]['interface']['maxDBListItems'] ?? null;
+        }
         // default 100 for single table view
         $itemsLimitSingleTable = MathUtility::forceIntegerInRange((int)(
-            $GLOBALS['TCA'][$table]['interface']['maxSingleDBListItems'] ??
+            $itemsLimitSingleTableFromTca ??
             $this->modTSconfig['itemsLimitSingleTable'] ??
             100
         ), 0, 10000);
 
         // default 20 for list view
         $itemsLimitPerTable = MathUtility::forceIntegerInRange((int)(
-            $GLOBALS['TCA'][$table]['interface']['maxDBListItems'] ??
+            $itemsLimitPerTableFromTca ??
             $this->modTSconfig['itemsLimitPerTable'] ??
             20
         ), 0, 10000);
@@ -803,7 +809,7 @@ class DatabaseRecordList
                 $rowOutput .= '
                     <tr data-multi-record-selection-element="true">
                         <td colspan="' . (count($this->fieldArray)) . '">
-                            <a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-sm btn-default">
+                            <a href="' . htmlspecialchars($this->listURL('', $tableIdentifier)) . '" class="btn btn-sm btn-default">
                                 ' . $this->iconFactory->getIcon('actions-caret-down', IconSize::SMALL)->render() . '
                                 ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.expandTable') . '
                             </a>
@@ -2308,6 +2314,11 @@ class DatabaseRecordList
         if ($GLOBALS['TCA'][$table] ?? false) {
             // Setting single table mode, if table exists:
             $this->table = $table;
+        }
+        // Resolve unique table identifier for page translations. See getTable()
+        if ($table === 'pages_translated') {
+            $this->table = 'pages';
+            $this->showOnlyTranslatedRecords = true;
         }
         $this->page = MathUtility::forceIntegerInRange((int)$pointer, 1, 1000);
         $this->showLimit = MathUtility::forceIntegerInRange((int)$showLimit, 0, 10000);

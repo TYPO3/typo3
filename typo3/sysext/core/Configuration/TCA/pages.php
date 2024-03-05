@@ -60,10 +60,6 @@ return [
         ],
         'searchFields' => 'title,nav_title,subtitle,url,slug,keywords,description,abstract,author,author_email',
     ],
-    'interface' => [
-        'maxDBListItems' => 30,
-        'maxSingleDBListItems' => 50,
-    ],
     'columns' => [
         'doktype' => [
             'exclude' => true,
