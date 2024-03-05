@@ -150,9 +150,9 @@ class Constraint
         return $this->endTimestamp;
     }
 
-    public function setPageId(int $id): void
+    public function setPageId(?int $id): void
     {
-        $this->pageId = $id;
+        $this->pageId = $id ?? 0;
     }
 
     public function getPageId(): int
