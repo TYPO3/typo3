@@ -2006,7 +2006,7 @@ class DatabaseRecordList
                     : $title;
 
                 $out .= '<a href="' . htmlspecialchars($href) . '"'
-                    . '" class="btn btn-default t3js-action-localize"'
+                    . ' class="btn btn-default t3js-action-localize"'
                     . ' title="' . $title . '">'
                     . $lC . '</a> ';
             }
