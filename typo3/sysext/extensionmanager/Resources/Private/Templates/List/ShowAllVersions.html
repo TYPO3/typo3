@@ -3,15 +3,19 @@
     xmlns:em="http://typo3.org/ns/TYPO3/CMS/Extensionmanager/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
+
 <f:layout name="Module" />
 
 <f:section name="Content">
+
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/extensionmanager/main.js'
         }"
     />
+
     <em:be.trigger triggers="{triggers}" />
+
     <h1><f:translate key="showAllVersions" /> {extensionKey}</h1>
     <f:if condition="{currentVersion}">
         <p><f:format.nl2br>{currentVersion.description}</f:format.nl2br></p>
@@ -65,6 +69,7 @@
         </table>
     </f:if>
     <f:render partial="List/TerShowVersionsTable" arguments="{tableId: 'terVersionTable', extensions: extensions}" />
+
 </f:section>
 
 </html>

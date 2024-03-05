@@ -1,8 +1,4 @@
-<html
-    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:em="http://typo3.org/ns/TYPO3/CMS/Extensionmanager/ViewHelpers"
-    data-namespace-typo3-fluid="true"
->
+{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <div class="table-fit">
     <table id="{tableId}" class="table table-striped table-hover extension-list">
         <thead>
@@ -19,7 +15,7 @@
             <f:for each="{extensions}" as="extension">
                 <tr>
                     <td><em:downloadExtension class="download" extension="{extension}" /></td>
-                    <td>{extension.title}</td>
+                    <td>{extension.title}</th>
                     <td>{extension.version}</td>
                     <td><f:format.nl2br>{extension.updateComment}</f:format.nl2br></td>
                     <td data-sort="{f:format.date(date: extension.lastUpdated, format: 'U')}"><f:format.date>{extension.lastUpdated}</f:format.date></td>
@@ -29,4 +25,3 @@
         </tbody>
     </table>
 </div>
-</html>

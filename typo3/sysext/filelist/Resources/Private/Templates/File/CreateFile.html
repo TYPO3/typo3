@@ -2,9 +2,11 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
+
 <f:layout name="Module" />
 
 <f:section name="Content">
+
     <h1><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_file" /></h1>
     <f:if condition="{hasPermission}">
         <f:if condition="{fileExtList -> f:count()} > 0">
@@ -62,6 +64,7 @@
             </form>
         </f:if>
     </f:if>
+
 </f:section>
 
 </html>

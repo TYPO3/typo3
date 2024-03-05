@@ -1,8 +1,8 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
+
 <f:render section="Before" arguments="{_all}" optional="true" />
 
 <div class="module {moduleClass}" data-module-id="{moduleId}" data-module-name="{moduleName}">
@@ -23,6 +23,7 @@
         <f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
 
         <f:render section="Content" arguments="{_all}" optional="true" />
+
     </div>
     <f:if condition="{formTag}">
         <f:then>

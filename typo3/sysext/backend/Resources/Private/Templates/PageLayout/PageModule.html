@@ -2,6 +2,7 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
+
 <f:layout name="Module" />
 
 <f:section name="Before">
@@ -30,6 +31,7 @@
 </f:section>
 
 <f:section name="Content">
+
     <typo3-backend-editable-page-title
         pageTitle="{localizedPageTitle}"
         pageId="{pageId}"
@@ -38,15 +40,19 @@
     >
         {localizedPageTitle}
     </typo3-backend-editable-page-title>
+
     <f:for each="{infoBoxes}" as="infoBox">
         <f:be.infobox state="{infoBox.state}">
             <f:format.raw>{infoBox.message}</f:format.raw>
         </f:be.infobox>
     </f:for>
+
     <f:format.raw>{eventContentHtmlTop}</f:format.raw>
+
     <form action="{f:be.uri(route:'web_layout', parameters:'{id: pageId}')}" id="PageLayoutController" method="post">
         <f:format.raw>{mainContentHtml}</f:format.raw>
     </form>
+
     <f:if condition="{hiddenElementsShowToggle}">
         <div class="form-check form-switch">
             <input
@@ -62,7 +68,9 @@
             </label>
         </div>
     </f:if>
+
     <f:format.raw>{eventContentHtmlBottom}</f:format.raw>
+
 </f:section>
 
 </html>
