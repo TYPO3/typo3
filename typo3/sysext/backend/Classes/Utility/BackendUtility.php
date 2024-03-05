@@ -1092,7 +1092,7 @@ class BackendUtility
                         'src' => $processedImage->getPublicUrl() ?? '',
                         'width' => $processedImage->getProperty('width'),
                         'height' => $processedImage->getProperty('height'),
-                        'alt' => $fileReferenceObject->getName(),
+                        'alt' => $fileReferenceObject->getAlternative() ?: $fileReferenceObject->getName(),
                         'loading' => 'lazy',
                     ];
                     $imgTag = '<img ' . GeneralUtility::implodeAttributes($attributes, true) . $tparams . '/>';
