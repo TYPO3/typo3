@@ -13,7 +13,6 @@
 
 import { ScaffoldIdentifierEnum } from '../enum/viewport/scaffold-identifier';
 import { AbstractContainer } from './abstract-container';
-import $ from 'jquery';
 import ClientRequest from '../event/client-request';
 import InteractionRequest from '../event/interaction-request';
 import Loader from './loader';
@@ -21,7 +20,7 @@ import TriggerRequest from '../event/trigger-request';
 
 class ContentContainer extends AbstractContainer {
   public get(): Window {
-    return (<HTMLIFrameElement>$(ScaffoldIdentifierEnum.contentModuleIframe)[0]).contentWindow;
+    return (document.querySelector(ScaffoldIdentifierEnum.contentModuleIframe) as HTMLIFrameElement).contentWindow;
   }
 
   public beforeSetUrl(interactionRequest: InteractionRequest): Promise<void> {
@@ -81,12 +80,8 @@ class ContentContainer extends AbstractContainer {
     return 0;
   }
 
-  private resolveIFrameElement(): HTMLElement {
-    const $iFrame = $(ScaffoldIdentifierEnum.contentModuleIframe + ':first');
-    if ($iFrame.length === 0) {
-      return null;
-    }
-    return $iFrame.get(0);
+  private resolveIFrameElement(): HTMLElement|null {
+    return document.querySelector(ScaffoldIdentifierEnum.contentModuleIframe);
   }
 
   private resolveRouterElement(): HTMLElement {
