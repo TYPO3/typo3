@@ -1,4 +1,4 @@
-<h3 class="dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarks')}</h3>
+<p class="h3 dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarks')}</p>
 <f:if condition="{f:count(subject: '{shortcutMenu}')} == 0">
     <f:then>
         <f:comment>No shortcuts added yet, show a small help message how to add shortcuts</f:comment>
@@ -13,7 +13,7 @@
                 <hr class="dropdown-divider" aria-hidden="true">
             </f:if>
             <f:if condition="{group.title}">
-                <h3 class="dropdown-headline" id="shortcut-group-{group.id}">{group.title}</h3>
+                <p class="h3 dropdown-headline" id="shortcut-group-{group.id}">{group.title}</p>
             </f:if>
             <ul class="dropdown-list" data-shortcutgroup="{group.id}">
                 <f:for each="{group.shortcuts}" as="shortcut">

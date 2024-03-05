@@ -4,7 +4,7 @@
     data-systeminformation-data-severitybadgeclass="{severityBadgeClass}"
 ></span>
 
-<h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemInformation.header"/></h3>
+<p class="h3 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemInformation.header"/></p>
 <p class="dropdown-item-text">
     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.intro.text"/>
     <a href="#" data-moduleroute-identifier="tools_toolsenvironment">
@@ -14,16 +14,17 @@
 
 <f:if condition="{systemInformation}">
     <table class="dropdown-table">
+        <caption class="hidden">System overview</caption>
         <f:for each="{systemInformation}" as="info">
             <tr>
-                <th data-type="icon">
+                <td data-type="icon">
                     <f:if condition="{info.iconIdentifier}">
                         <f:then>
                             <core:icon identifier="{info.iconIdentifier}" size="small" alternativeMarkupIdentifier="inline" />
                         </f:then>
                         <f:else>{info.icon -> f:format.raw()}</f:else>
                     </f:if>
-                </th>
+                </td>
                 <th data-type="title">
                     <f:translate key="{info.title}" default="{info.title}"/>
                     <f:if condition="{info.titleAddition}"> ({info.titleAddition -> f:format.htmlspecialchars()})</f:if>

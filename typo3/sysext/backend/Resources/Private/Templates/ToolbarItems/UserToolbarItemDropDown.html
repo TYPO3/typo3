@@ -8,7 +8,7 @@
         0: '@typo3/backend/switch-user.js'
     }"
 />
-<h3 class="dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}</h3>
+<p class="h3 dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}</p>
 <f:if condition="{modules}">
     <ul class="dropdown-list">
         <f:for each="{modules}" as="module">
@@ -35,7 +35,7 @@
 </f:if>
 <f:if condition="{f:count(subject: recentUsers)} > 0">
     <hr class="dropdown-divider" aria-hidden="true">
-    <h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.list" /></h3>
+    <p class="h3 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.list" /></p>
     <ul class="modulemenu-group-container">
         <f:for each="{recentUsers}" as="user">
             <li>

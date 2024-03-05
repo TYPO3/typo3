@@ -1,5 +1,5 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<h3 class="dropdown-headline" id="help-dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.help')}</h3>
+<p class="h3 dropdown-headline" id="help-dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.help')}</p>
 <f:if condition="{modules}">
     <hr class="dropdown-divider" aria-hidden="true">
     <nav class="t3js-helpmenu">
@@ -35,7 +35,9 @@
                         </span>
                         <span class="dropdown-item-column dropdown-item-column-title">
                             <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:onlineDocumentation">TYPO3 Online Documentation</f:translate>
+                            <span class="visually-hidden">(<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:opensInANewWindow" />)</span>
                         </span>
+                        <core:icon identifier="actions-window-open" />
                     </span>
                 </a>
             </li>

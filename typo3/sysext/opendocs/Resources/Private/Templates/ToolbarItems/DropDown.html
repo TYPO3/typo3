@@ -5,7 +5,7 @@
     }"
 />
 
-<h3 class="dropdown-headline">{f:translate(key: 'LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbaritem')}</h3>
+<p class="h3 dropdown-headline">{f:translate(key: 'LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbaritem')}</p>
 <f:if condition="{noDocs}">
     <p class="dropdown-item-text"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:no_docs" /></p>
 </f:if>
@@ -16,7 +16,7 @@
             <hr class="dropdown-divider" aria-hidden="true">
             <ul class="dropdown-list">
                 <li>
-                    <h3 class="dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:open_docs" /></h3>
+                    <p class="h3 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:open_docs" /></p>
                     <a href="#" class="dropdown-item dropdown-item-action t3js-topbar-opendocs-close"
                         title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeAllDocs')}">
                         <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
@@ -47,7 +47,7 @@
         </f:if>
         <f:if condition="{recentDocuments}">
             <hr class="dropdown-divider" aria-hidden="true">
-            <h3 class="dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:recent_docs" /></h3>
+            <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:recent_docs" /></p>
             <ul class="dropdown-list">
                 <f:for each="{recentDocuments}" as="recentDocument">
                     <li>

@@ -83,6 +83,7 @@ class Avatar
             'width="' . (int)$avatarImage->getWidth() . '" ' .
             'height="' . (int)$avatarImage->getHeight() . '" ' .
             'alt="" ' .
+            'aria-hidden="true" ' .
             'loading="lazy" />';
     }
 
