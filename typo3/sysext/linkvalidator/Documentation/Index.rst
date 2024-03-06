@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ====================
 TYPO3 Link Validator
 ====================
@@ -57,4 +59,3 @@ send status mails when broken links are detected.
    :hidden:
 
    Sitemap
-   genindex

@@ -3,7 +3,8 @@
 
 .. php:namespace::  TYPO3\CMS\Linkvalidator\Linktype
 
-.. php:class:: abstract AbstractLinktype
+.. php:class:: AbstractLinktype
+   :abstract:
 
    This class provides Check Base plugin implementation
 
