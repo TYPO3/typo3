@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ====================
 TYPO3 Indexed Search
 ====================
@@ -56,4 +58,3 @@ backend module for statistics of the indexer and a frontend plugin.
    :hidden:
 
    Sitemap
-   genindex
