@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 =====================================
 TYPO3 Content Elements based on Fluid
 =====================================
@@ -51,4 +53,3 @@ This extension provides Fluid templating for TYPO3 content elements.
    :hidden:
 
    Sitemap
-   genindex
