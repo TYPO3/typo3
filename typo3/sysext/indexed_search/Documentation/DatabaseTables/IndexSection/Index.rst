@@ -15,13 +15,17 @@ Points out the section where an entry in index\_phash belongs.
 phash
 """""
 
+..  versionchanged:: 13.0
+    The field has been transformed to a varchar field, full md5 hashes are
+    stored.
+
 .. container:: table-row
 
    Field
          phash
 
    Description
-         The phash of the indexed document.
+         The md5 hash of the indexed document.
 
 
 
@@ -30,13 +34,17 @@ phash
 phash\_t3
 """""""""
 
+..  versionchanged:: 13.0
+    The field has been transformed to a varchar field, full md5 hashes are
+    stored.
+
 .. container:: table-row
 
    Field
          phash\_t3
 
    Description
-         The phash of the "parent" TYPO3 page of the indexed document.
+         The md5 hash of the "parent" TYPO3 page of the indexed document.
 
          If the "document" being indexed is a TYPO3 page, then phash and
          phash\_t3 are the same.

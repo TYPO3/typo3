@@ -16,13 +16,17 @@ description, keywords, body.
 phash
 """""
 
+..  versionchanged:: 13.0
+    The field has been transformed to a varchar field, full md5 hashes are
+    stored.
+
 .. container:: table-row
 
    Field
          phash
 
    Description
-         The phash of the indexed document.
+         The md5 hash of the indexed document.
 
 
 
