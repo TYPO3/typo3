@@ -51,4 +51,3 @@ format.
    :hidden:
 
    Sitemap
-   genindex
