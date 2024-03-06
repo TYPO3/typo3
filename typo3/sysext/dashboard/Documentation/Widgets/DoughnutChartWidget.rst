@@ -7,7 +7,7 @@ Doughnut Chart Widget
 =====================
 
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
-.. program:: TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget
+.. php:class:: TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget
 
 Widgets using this class will show a doughnut chart with the provided data.
 
@@ -47,13 +47,13 @@ Dependencies
 .. option:: $dataProvider
 
    To add data to a Bar Chart widget, you need to have a DataProvider that implements
-   the interface :php:class:`ChartDataProviderInterface`.
+   the interface :php:`ChartDataProviderInterface`.
 
    See :ref:`graph-widget-implementation` for further information.
 
 .. option:: $buttonProvider
 
    Optionally you can add a button with a link to some additional data.
-   This button should be provided by a ButtonProvider that implements the interface :php:class:`ButtonProviderInterface`.
+   This button should be provided by a ButtonProvider that implements the interface :php:`ButtonProviderInterface`.
 
    See :ref:`adding-buttons` for further info and configuration options.

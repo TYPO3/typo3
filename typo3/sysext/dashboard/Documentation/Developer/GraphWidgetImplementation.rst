@@ -15,9 +15,9 @@ Next the data will be provided to the widget instance, which will be rendered wi
 
 To make the dashboard aware of this workflow, some interfaces come together:
 
-* :php:class:`EventDataInterface`
+* :php:`EventDataInterface`
 
-* :php:class:`AdditionalCssInterface`
+* :php:`AdditionalCssInterface`
 
 Also the existing template file :file:`Widget/ChartWidget` is used, which provides necessary HTML to render the chart.
 The provided ``eventData`` will be rendered as a chart and therefore has to match the expected structure.
@@ -86,7 +86,7 @@ Together with :file:`Services.yaml`:
          - name: dashboard.widget
 
 The configuration adds necessary CSS classes, as well as the ``dataProvider`` to use.
-The provider implements :php:class:`ChartDataProviderInterface` and could look like the following.
+The provider implements :php:`ChartDataProviderInterface` and could look like the following.
 
 :file:`Classes/Widgets/Provider/SysLogErrorsDataProvider`::
 

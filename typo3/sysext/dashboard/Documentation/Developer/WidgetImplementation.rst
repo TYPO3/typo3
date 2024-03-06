@@ -30,7 +30,7 @@ PHP class
 ---------
 
 Each Widget has to be a PHP class.
-This class has to implement the :php:class:`WidgetInterface` and could look like this::
+This class has to implement the :php:`WidgetInterface` and could look like this::
 
     class RssWidget implements WidgetInterface, RequestAwareWidgetInterface
     {
@@ -82,7 +82,7 @@ It should make it possible for integrators to register new widgets using the imp
 
 The difference between :php:`$options` and :php:`$configuration` in above example is the following:
 :php:`$options` are the options for this implementation which can be provided through :file:`Services.yaml`.
-:php:`$configuration` is an instance of :php:class:`WidgetConfigurationInterface`
+:php:`$configuration` is an instance of :php:`WidgetConfigurationInterface`
 holding all internal configuration, like icon identifier.
 
 .. _implement-new-widget-fluid:
@@ -103,7 +103,7 @@ Providing custom JS
 There are two ways to add JavaScript for an widget:
 
 JavaScript module
-    Implement :php:class:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
+    Implement :php:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
 
     ..  code-block:: php
 
@@ -128,7 +128,7 @@ JavaScript module
         :ref:`t3coreapi:backend-javascript-es6` for more info about JavaScript in TYPO3 Backend.
 
 Plain JS files
-    Implement :php:class:`AdditionalJavaScriptInterface`:
+    Implement :php:`AdditionalJavaScriptInterface`:
 
     .. code-block:: php
 
@@ -144,7 +144,7 @@ Plain JS files
        }
 
 JavaScript
-    Implement :php:class:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
+    Implement :php:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
 
     .. code-block:: php
 
@@ -169,7 +169,7 @@ Providing custom CSS
 
 It is possible to add custom Css to style widgets.
 
-Implement :php:class:`AdditionalCssInterface`::
+Implement :php:`AdditionalCssInterface`::
 
    class RssWidget implements WidgetInterface, AdditionalCssInterface
    {

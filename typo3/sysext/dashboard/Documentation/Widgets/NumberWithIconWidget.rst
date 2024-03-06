@@ -7,7 +7,7 @@ Number With Icon Widget
 =======================
 
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
-.. program:: TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget
+.. php:class:: TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget
 
 Widgets using this class will show a widget with a number, some additional
 text and an icon.
@@ -66,4 +66,4 @@ Dependencies
 .. option:: $dataProvider
 
    This class should provide the number to show.
-   This data provider needs to implement the :php:class:`NumberWithIconDataProviderInterface`.
+   This data provider needs to implement the :php:`NumberWithIconDataProviderInterface`.

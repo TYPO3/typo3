@@ -7,7 +7,7 @@ RSS Widget
 ==========
 
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
-.. program:: TYPO3\CMS\Dashboard\Widgets\RssWidget
+.. php:class:: TYPO3\CMS\Dashboard\Widgets\RssWidget
 
 Widgets using this class will show a list of items of the configured RSS feed.
 
@@ -83,7 +83,7 @@ Dependencies
 .. option:: $buttonProvider
 
    Provides an optional button to show which is used to open the source of RSS data.
-   This button should be provided by a ButtonProvider that implements the interface :php:class:`ButtonProviderInterface`.
+   This button should be provided by a ButtonProvider that implements the interface :php:`ButtonProviderInterface`.
 
    See :ref:`adding-buttons` for further info and configuration options.
 

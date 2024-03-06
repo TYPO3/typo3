@@ -36,7 +36,7 @@ The identifier is used to configure presets for users, see :ref:`configure-prese
 
 Each preset consists of the following options:
 
-.. program:: TYPO3\CMS\Dashboard\DashboardPreset
+.. php:class:: TYPO3\CMS\Dashboard\DashboardPreset
 
 .. option:: title
 

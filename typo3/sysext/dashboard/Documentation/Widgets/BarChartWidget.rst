@@ -15,7 +15,7 @@ Widgets using this class will show a bar chart with the provided data.
 This kind of widgets are useful if you want to show some statistics of for example
 historical data.
 
-.. program:: TYPO3\CMS\Dashboard\Widgets\BarChartWidget
+.. php:class:: TYPO3\CMS\Dashboard\Widgets\BarChartWidget
 
 Example
 -------
@@ -52,13 +52,13 @@ Dependencies
 .. option:: $dataProvider
 
    To add data to a Bar Chart widget, you need to have a DataProvider that implements
-   the interface :php:class:`ChartDataProviderInterface`.
+   the interface :php:`ChartDataProviderInterface`.
 
    See :ref:`graph-widget-implementation` for further information.
 
 .. option:: $buttonProvider
 
    Optionally you can add a button with a link to some additional data.
-   This button should be provided by a ButtonProvider that implements the interface :php:class:`ButtonProviderInterface`.
+   This button should be provided by a ButtonProvider that implements the interface :php:`ButtonProviderInterface`.
 
    See :ref:`adding-buttons` for further info and configuration options.
