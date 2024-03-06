@@ -84,6 +84,13 @@ editor.config
    This is the default, as defined in `EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml
    <https://github.com/typo3/typo3/blob/main/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Base.yaml>`__.
 
+   .. note::
+      When adding custom styling and fonts, all CSS declarations need to be
+      prefixed with `.ck-content`. This scoping is applied by TYPO3
+      automatically to all custom CSS styles. Referenced CSS stylesheets need to
+      be downloadable via :js:`fetch()` in order for the JavaScript-based
+      prefixing to work.
+
 .. option:: editor.config.heading
 
    Defines headings available in the heading dropdown.

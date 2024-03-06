@@ -71,6 +71,8 @@ In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for examp
        contentsCss:
          - "EXT:my_extension/Resources/Public/Css/rte.css"
 
+See also the note for :option:`editor.config.contentsCss`.
+
 How do I customize the toolbar?
 ===============================
 
