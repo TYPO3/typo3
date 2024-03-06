@@ -55,8 +55,8 @@ Next steps
 ==========
 
 Configure the Admin Panel to be displayed to logged-in backend admins the
-TypoScript configuration :t3-typoscript:`config.admPanel = 1 <config.admPanel>`.
+TypoScript configuration :ref:`config.admPanel = 1 <typoscript-config-admpanel>`.
 
-By default the admin panel is displayed to logged-in admins only. This behaviour
-can be changed by setting :t3-user-tsconfig:`admPanel.enable` for certain
-backend users or groups.
+By default, the admin panel is displayed to logged-in admins only. This behaviour
+can be changed by setting :ref:`admPanel.enable <tsconfig-admpanel-enable>` for
+certain backend users or groups.
