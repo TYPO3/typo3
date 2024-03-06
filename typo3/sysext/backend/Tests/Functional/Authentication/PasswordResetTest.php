@@ -23,6 +23,7 @@ use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Mail\MailerInterface;
@@ -53,7 +54,7 @@ final class PasswordResetTest extends FunctionalTestCase
     public function isNotEnabledWorks(): void
     {
         $mailerMock = $this->createStub(MailerInterface::class);
-        $subject = new PasswordReset($mailerMock);
+        $subject = new PasswordReset($mailerMock, new HashService());
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordReset'] = false;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = false;
         self::assertFalse($subject->isEnabled());
@@ -65,7 +66,7 @@ final class PasswordResetTest extends FunctionalTestCase
     public function isNotEnabledWithNoUsers(): void
     {
         $mailerMock = $this->createStub(MailerInterface::class);
-        $subject = new PasswordReset($mailerMock);
+        $subject = new PasswordReset($mailerMock, new HashService());
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordReset'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = false;
         self::assertFalse($subject->isEnabled());
@@ -79,7 +80,7 @@ final class PasswordResetTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_only_admins.csv');
         $mailerMock = $this->createStub(MailerInterface::class);
-        $subject = new PasswordReset($mailerMock);
+        $subject = new PasswordReset($mailerMock, new HashService());
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordReset'] = false;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = false;
         self::assertFalse($subject->isEnabled());
@@ -95,7 +96,7 @@ final class PasswordResetTest extends FunctionalTestCase
     public function isEnabledForUserTest(): void
     {
         $mailerMock = $this->createStub(MailerInterface::class);
-        $subject = new PasswordReset($mailerMock);
+        $subject = new PasswordReset($mailerMock, new HashService());
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = false;
 
         // False since no users exist
@@ -129,7 +130,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $emailAddress = 'does-not-exist@example.com';
         $mailerMock = $this->createStub(MailerInterface::class);
-        $subject = new PasswordReset($mailerMock);
+        $subject = new PasswordReset($mailerMock, new HashService());
         $loggerMock = $this->createMock(LoggerInterface::class);
         $loggerMock->expects(self::atLeastOnce())->method('warning')->with('Password reset requested for email but no valid users');
         $subject->setLogger($loggerMock);
@@ -147,7 +148,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $emailAddress = 'duplicate@example.com';
         $mailerMock = $this->createStub(MailerInterface::class);
-        $subject = new PasswordReset($mailerMock);
+        $subject = new PasswordReset($mailerMock, new HashService());
         $subject->setLogger($this->logger);
         $context = new Context();
         $request = new ServerRequest();
@@ -166,7 +167,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $emailAddress = 'editor-with-email@example.com';
         $username = 'editor-with-email';
         $mailerMock = $this->createStub(MailerInterface::class);
-        $subject = new PasswordReset($mailerMock);
+        $subject = new PasswordReset($mailerMock, new HashService());
         $subject->setLogger($this->logger);
         $context = new Context();
         $uri = new Uri('https://localhost/typo3/');
@@ -187,7 +188,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $mailerMock = $this->createStub(MailerInterface::class);
-        $subject = new PasswordReset($mailerMock);
+        $subject = new PasswordReset($mailerMock, new HashService());
         $loggerMock = $this->createMock(LoggerInterface::class);
         $loggerMock->expects(self::exactly(2))->method('warning')->with('Password reset not possible. Valid user for token not found.');
         $subject->setLogger($loggerMock);

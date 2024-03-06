@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -42,6 +43,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
+        private readonly HashService $hashService,
     ) {}
 
     /**
@@ -647,7 +649,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         if (empty($context['config'])) {
             throw new \RuntimeException('Empty context config section given', 1489751362);
         }
-        if (!hash_equals(GeneralUtility::hmac((string)$context['config'], 'InlineContext'), (string)$context['hmac'])) {
+        if (!hash_equals($this->hashService->hmac((string)$context['config'], 'InlineContext'), (string)$context['hmac'])) {
             throw new \RuntimeException('Hash does not validate', 1489751363);
         }
         return json_decode($context['config'], true);

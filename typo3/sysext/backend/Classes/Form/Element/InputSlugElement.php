@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Controller\FormSlugAjaxController;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
@@ -66,6 +67,7 @@ class InputSlugElement extends AbstractFormElement
 
     public function __construct(
         private readonly IconFactory $iconFactory,
+        private readonly HashService $hashService,
     ) {}
 
     /**
@@ -229,7 +231,7 @@ class InputSlugElement extends AbstractFormElement
             }
         }
         $parentPageId = $this->data['parentPageRow']['uid'] ?? 0;
-        $signature = GeneralUtility::hmac(
+        $signature = $this->hashService->hmac(
             implode(
                 '',
                 [

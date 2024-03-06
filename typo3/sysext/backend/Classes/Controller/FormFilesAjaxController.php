@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
@@ -48,6 +49,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly StreamFactoryInterface $streamFactory,
         private readonly FormDataCompiler $formDataCompiler,
+        private readonly HashService $hashService,
     ) {}
 
     /**
@@ -504,7 +506,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         if (empty($context['config'])) {
             throw new \RuntimeException('Empty context config section given', 1664486790);
         }
-        if (!hash_equals(GeneralUtility::hmac((string)$context['config'], 'FilesContext'), (string)$context['hmac'])) {
+        if (!hash_equals($this->hashService->hmac((string)$context['config'], 'FilesContext'), (string)$context['hmac'])) {
             throw new \RuntimeException('Hash does not validate', 1664486791);
         }
         return json_decode($context['config'], true);

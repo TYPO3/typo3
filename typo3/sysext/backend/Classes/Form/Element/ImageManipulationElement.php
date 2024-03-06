@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\ModifyImageManipulationPreviewUrlEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
@@ -123,6 +124,7 @@ class ImageManipulationElement extends AbstractFormElement
         private readonly UriBuilder $uriBuilder,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ResourceFactory $resourceFactory,
+        private readonly HashService $hashService,
     ) {}
 
     /**
@@ -295,7 +297,7 @@ class ImageManipulationElement extends AbstractFormElement
             'image' => $image->getUid(),
         ];
         $uriArguments['arguments'] = json_encode($arguments);
-        $uriArguments['signature'] = GeneralUtility::hmac((string)($uriArguments['arguments'] ?? ''), $this->wizardRouteName);
+        $uriArguments['signature'] = $this->hashService->hmac((string)($uriArguments['arguments'] ?? ''), $this->wizardRouteName);
 
         return $uriArguments;
     }

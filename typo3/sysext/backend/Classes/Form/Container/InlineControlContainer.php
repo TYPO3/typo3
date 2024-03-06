@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -72,6 +73,7 @@ class InlineControlContainer extends AbstractContainer
     public function __construct(
         private readonly IconFactory $iconFactory,
         private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly HashService $hashService,
     ) {}
 
     /**
@@ -163,7 +165,7 @@ class InlineControlContainer extends AbstractContainer
             ],
             'context' => [
                 'config' => $configJson,
-                'hmac' => GeneralUtility::hmac($configJson, 'InlineContext'),
+                'hmac' => $this->hashService->hmac($configJson, 'InlineContext'),
             ],
         ];
         $this->inlineData['nested'][$nameObject] = $this->data['tabAndInlineStack'];

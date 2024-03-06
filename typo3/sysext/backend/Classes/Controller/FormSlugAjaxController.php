@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -37,7 +38,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FormSlugAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
-        private Context $context
+        private Context $context,
+        private readonly HashService $hashService
     ) {}
 
     /**
@@ -155,7 +157,7 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
     protected function checkRequest(ServerRequestInterface $request): bool
     {
         $queryParameters = $request->getParsedBody() ?? [];
-        $expectedHash = GeneralUtility::hmac(
+        $expectedHash = $this->hashService->hmac(
             implode(
                 '',
                 [

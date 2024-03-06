@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -40,6 +41,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
 {
     protected MfaSetupController $subject;
     protected ServerRequest $request;
+    protected HashService $hashService;
 
     /**
      * Some tests trigger backendUser->logOff() which destroys the backend user session.
@@ -72,7 +74,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
             $this->get(BackendViewFactory::class),
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
-
+        $this->hashService = new HashService();
         $this->request = (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
@@ -282,7 +284,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
                 'KRMVATZTJFZUC53FONXW2ZJB'
             )->generateTotp((int)floor($timestamp / 30)),
             'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
-            'checksum' => GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
+            'checksum' => $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
         ];
 
         $request = $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody);
@@ -329,7 +331,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
             'identifier' => 'totp',
             'totp' => '123456', // invalid !!!
             'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
-            'checksum' => GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
+            'checksum' => $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
         ];
 
         $request = $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody);

@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Uid\UuidV4;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\InvestigateMutationsEvent;
@@ -38,7 +39,6 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\Resolution;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ResolutionRepository;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\SummarizedReport;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * AJAX endpoint for the CSP backend module, providing access to persisted CSP reports & resolutions.
@@ -53,6 +53,7 @@ class CspAjaxController
         protected readonly ReportRepository $reportRepository,
         protected readonly ResolutionRepository $resolutionRepository,
         protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly HashService $hashService,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -189,7 +190,7 @@ class CspAjaxController
 
     protected function generateResolutionSummary(Scope $scope, MutationSuggestion $suggestion): string
     {
-        return GeneralUtility::hmac(
+        return $this->hashService->hmac(
             json_encode([
                 $scope,
                 $suggestion->identifier,

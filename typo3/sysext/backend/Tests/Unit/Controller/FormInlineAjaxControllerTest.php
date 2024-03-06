@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -44,7 +45,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController(new FormDataCompiler()))->createAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler(), new HashService()))->createAction($request);
     }
 
     #[Test]
@@ -59,7 +60,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController(new FormDataCompiler()))->createAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler(), new HashService()))->createAction($request);
     }
 
     #[Test]
@@ -81,7 +82,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController(new FormDataCompiler()))->createAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler(), new HashService()))->createAction($request);
     }
 
     #[Test]
@@ -96,7 +97,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController(new FormDataCompiler()))->detailsAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler(), new HashService()))->detailsAction($request);
     }
 
     #[Test]
@@ -111,7 +112,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController(new FormDataCompiler()))->detailsAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler(), new HashService()))->detailsAction($request);
     }
 
     #[Test]
@@ -133,7 +134,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController(new FormDataCompiler()))->detailsAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler(), new HashService()))->detailsAction($request);
     }
 
     #[Test]
@@ -148,7 +149,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController(new FormDataCompiler()))->synchronizeLocalizeAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler(), new HashService()))->synchronizeLocalizeAction($request);
     }
 
     #[Test]
@@ -163,7 +164,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController(new FormDataCompiler()))->synchronizeLocalizeAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler(), new HashService()))->synchronizeLocalizeAction($request);
     }
 
     #[Test]
@@ -185,7 +186,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController(new FormDataCompiler()))->synchronizeLocalizeAction($request);
+        (new FormInlineAjaxController(new FormDataCompiler(), new HashService()))->synchronizeLocalizeAction($request);
     }
 
     /**

@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\SiteConfigurationDataGroup;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -49,6 +50,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
         private readonly SiteLanguagePresets $siteLanguagePresets,
+        private readonly HashService $hashService,
     ) {
         // Bring site TCA into global scope.
         // @todo: We might be able to get rid of that later
@@ -355,7 +357,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         // encode JSON again to ensure same `json_encode()` settings as used when generating original hash
         // (side-note: JSON encoded literals differ for target scenarios, e.g. HTML attr, JS string, ...)
         $encodedConfig = (string)json_encode($config);
-        if (!hash_equals(GeneralUtility::hmac($encodedConfig, 'InlineContext'), (string)$context['hmac'])) {
+        if (!hash_equals($this->hashService->hmac($encodedConfig, 'InlineContext'), (string)$context['hmac'])) {
             throw new \RuntimeException('Hash does not validate', 1522771640);
         }
         return $config;

@@ -26,6 +26,7 @@ use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -68,7 +69,10 @@ class PasswordReset implements LoggerAwareInterface
     protected const MAXIMUM_RESET_ATTEMPTS = 3;
     protected const MAXIMUM_RESET_ATTEMPTS_SINCE = '-30 minutes';
 
-    public function __construct(private readonly MailerInterface $mailer) {}
+    public function __construct(
+        private readonly MailerInterface $mailer,
+        private readonly HashService $hashService,
+    ) {}
 
     /**
      * Check if there are at least one in the system that contains a non-empty password AND an email address set.
@@ -231,7 +235,7 @@ class PasswordReset implements LoggerAwareInterface
         $currentTime = $context->getAspect('date')->getDateTime();
         $expiresOn = $currentTime->modify(self::TOKEN_VALID_UNTIL);
         // Create a hash ("one time password") out of the token including the timestamp of the expiration date
-        $hash = GeneralUtility::hmac($token . '|' . (string)$expiresOn->getTimestamp() . '|' . $emailAddress . '|' . (string)$userId, 'password-reset');
+        $hash = $this->hashService->hmac($token . '|' . $expiresOn->getTimestamp() . '|' . $emailAddress . '|' . $userId, 'password-reset');
 
         // Set the token in the database, which is hashed
         GeneralUtility::makeInstance(ConnectionPool::class)
@@ -305,7 +309,7 @@ class PasswordReset implements LoggerAwareInterface
         }
 
         // Validate hash by rebuilding the hash from the parameters and the URL and see if this matches against the stored password_reset_token
-        $hash = GeneralUtility::hmac($token . '|' . (string)$expirationTimestamp . '|' . $user['email'] . '|' . (string)$user['uid'], 'password-reset');
+        $hash = $this->hashService->hmac($token . '|' . $expirationTimestamp . '|' . $user['email'] . '|' . $user['uid'], 'password-reset');
         if (!$this->getHasher()->checkPassword($hash, $user['password_reset_token'] ?? '')) {
             return null;
         }

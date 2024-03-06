@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -34,7 +35,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 #[AsController]
 class ImageManipulationController
 {
-    public function __construct(protected readonly BackendViewFactory $backendViewFactory) {}
+    public function __construct(
+        protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly HashService $hashService,
+    ) {}
 
     /**
      * Returns the HTML for the wizard inside the modal
@@ -68,7 +72,7 @@ class ImageManipulationController
      */
     protected function isSignatureValid(ServerRequestInterface $request): bool
     {
-        $token = GeneralUtility::hmac($request->getParsedBody()['arguments'], 'ajax_wizard_image_manipulation');
+        $token = $this->hashService->hmac($request->getParsedBody()['arguments'], 'ajax_wizard_image_manipulation');
         return hash_equals($token, $request->getParsedBody()['signature']);
     }
 }

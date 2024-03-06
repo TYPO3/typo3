@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Behavior;
 
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 trait OnFieldChangeTrait
@@ -64,9 +65,10 @@ trait OnFieldChangeTrait
     protected function forwardOnFieldChangeQueryParams(array $items): array
     {
         $func = $this->getOnFieldChangeItems($items);
+        $hashService = GeneralUtility::makeInstance(HashService::class);
         return [
             'fieldChangeFunc' => $func,
-            'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($func), 'backend-link-browser'),
+            'fieldChangeFuncHash' => $hashService->hmac(serialize($func), 'backend-link-browser'),
         ];
     }
 }

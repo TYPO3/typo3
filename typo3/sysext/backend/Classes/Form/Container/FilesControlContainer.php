@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\CustomFileControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -78,6 +79,7 @@ class FilesControlContainer extends AbstractContainer
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
         private readonly DefaultUploadFolderResolver $defaultUploadFolderResolver,
+        private readonly HashService $hashService,
     ) {}
 
     /**
@@ -171,7 +173,7 @@ class FilesControlContainer extends AbstractContainer
             ],
             'context' => [
                 'config' => $configJson,
-                'hmac' => GeneralUtility::hmac($configJson, 'FilesContext'),
+                'hmac' => $this->hashService->hmac($configJson, 'FilesContext'),
             ],
         ];
         $this->fileReferenceData['nested'][$formFieldIdentifier] = $this->data['tabAndInlineStack'];

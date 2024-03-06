@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -40,6 +41,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
 {
     protected MfaConfigurationController $subject;
     protected ServerRequest $request;
+    protected HashService $hashService;
     protected NormalizedParams $normalizedParams;
 
     protected array $configurationToUseInTestInstance = [
@@ -62,7 +64,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
             $this->get(ModuleTemplateFactory::class),
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
-
+        $this->hashService = new HashService();
         $this->request = (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
@@ -282,7 +284,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
                 'KRMVATZTJFZUC53FONXW2ZJB'
             )->generateTotp((int)floor($timestamp / 30));
             $parsedBody['secret'] = 'KRMVATZTJFZUC53FONXW2ZJB';
-            $parsedBody['checksum'] = GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup');
+            $parsedBody['checksum'] = $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup');
         }
 
         $request = $this->request

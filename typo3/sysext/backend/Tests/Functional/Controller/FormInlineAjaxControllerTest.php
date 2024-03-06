@@ -21,10 +21,10 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FormInlineAjaxControllerTest extends FunctionalTestCase
@@ -32,6 +32,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
     use SiteBasedTestTrait;
 
     protected FormInlineAjaxController $subject;
+    protected HashService $hashService;
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
@@ -67,7 +68,8 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
             ]
         );
 
-        $this->subject = new FormInlineAjaxController(new FormDataCompiler());
+        $this->subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService());
+        $this->hashService = new HashService();
     }
 
     #[Test]
@@ -190,7 +192,7 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         $configJson = json_encode($config);
         return [
             'config' => $configJson,
-            'hmac' => GeneralUtility::hmac($configJson, 'InlineContext'),
+            'hmac' => $this->hashService->hmac($configJson, 'InlineContext'),
         ];
     }
 }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Site\SiteLanguagePresets;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,6 +49,7 @@ class SiteLanguageContainer extends AbstractContainer
     public function __construct(
         private readonly InlineStackProcessor $inlineStackProcessor,
         private readonly SiteLanguagePresets $siteLanguagePresets,
+        private readonly HashService $hashService,
     ) {}
 
     public function render(): array
@@ -96,7 +98,7 @@ class SiteLanguageContainer extends AbstractContainer
             ],
             'context' => [
                 'config' => $configJson,
-                'hmac' => GeneralUtility::hmac($configJson, 'InlineContext'),
+                'hmac' => $this->hashService->hmac($configJson, 'InlineContext'),
             ],
         ];
         $this->inlineData['nested'][$nameObject] = $this->data['tabAndInlineStack'];

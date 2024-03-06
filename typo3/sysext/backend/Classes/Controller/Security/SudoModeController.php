@@ -32,6 +32,7 @@ use TYPO3\CMS\Backend\Security\SudoMode\PasswordVerification;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -61,6 +62,7 @@ final class SudoModeController implements LoggerAwareInterface
         private readonly PasswordVerification $passwordVerification,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly BackendEntryPointResolver $backendEntryPointResolver,
+        private readonly HashService $hashService,
     ) {}
 
     public function buildModuleActionUriForClaim(AccessClaim $claim): UriInterface
@@ -169,7 +171,7 @@ final class SudoModeController implements LoggerAwareInterface
         $additionalPeppers = [self::class, $additionalPepper];
         return [
             'claim' => $claim->id,
-            'hash' => GeneralUtility::hmac($claim->id, json_encode($additionalPeppers)),
+            'hash' => $this->hashService->hmac($claim->id, json_encode($additionalPeppers)),
         ];
     }
 
@@ -181,7 +183,7 @@ final class SudoModeController implements LoggerAwareInterface
         $claimId = (string)($request->getQueryParams()['claim'] ?? '');
         $claimHash = (string)($request->getQueryParams()['hash'] ?? '');
         $additionalPeppers = [self::class, $additionalPepper];
-        $expectedHash = GeneralUtility::hmac($claimId, json_encode($additionalPeppers));
+        $expectedHash = $this->hashService->hmac($claimId, json_encode($additionalPeppers));
         if ($claimId === '' ||  $claimHash === '' || !hash_equals($expectedHash, $claimHash)) {
             return null;
         }
