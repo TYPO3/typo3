@@ -26,7 +26,6 @@ import type {
   FormEditorDefinitions,
   FormElement,
   FormElementDefinition,
-  NoInfer,
   PublisherSubscriber,
   ValidationResultsRecursive
 } from '@typo3/form/backend/form-editor/core';

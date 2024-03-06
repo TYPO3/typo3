@@ -323,7 +323,7 @@ function subscribeEvents(): void {
       targetEvent,
       modalConfiguration
     ]: [
-      'view/insertElements/perform/after' | 'view/insertElements/perform/inside',
+      'view/insertElements/perform/bottom',
       InsertElementsModalConfiguration?
     ]
   ): void => {
@@ -626,7 +626,7 @@ function subscribeEvents(): void {
       formElement
     ]: [
       string,
-      keyof FormEditorDefinitions,
+      'validators',
       FormElement?
     ]
   ): void => {
