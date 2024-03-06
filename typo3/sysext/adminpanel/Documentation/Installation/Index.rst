@@ -24,7 +24,7 @@ This should either give you no result or something similar to:
 
 ..  code-block:: none
 
-    typo3/cms-adminpanel v12.4.1
+    typo3/cms-adminpanel       v12.4.11
 
 If it is not installed yet, use the ``composer require`` command to install
 the extension:
@@ -45,7 +45,7 @@ not be activated yet. Activate it as follows:
     module.
 #.  Click the :guilabel:`Activate` icon for the Admin Panel extension.
 
-..  figure:: ../Images/InstallActivate.png
+..  figure:: /Images/InstallActivate.png
     :class: with-border
     :alt: Extension manager showing Admin Panel extension
 

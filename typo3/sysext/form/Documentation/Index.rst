@@ -40,6 +40,7 @@ integrators and developers alike to create all kinds of forms.
    :titlesonly:
 
    Introduction/Index
+   Installation/Index
    QuickStartForEditors/Index
    QuickStartForIntegrators/Index
    D/Index

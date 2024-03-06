@@ -26,7 +26,7 @@ This should either give you no result or something similar to:
 
 ..  code-block:: none
 
-    typo3/cms-recycler v12.4.5
+    typo3/cms-recycler       v12.4.5
 
 If it is not installed yet, use the :bash:`composer require` command to install
 the extension:

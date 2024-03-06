@@ -1,8 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-
-
-.. _installation:
+..  _installation:
 
 ============
 Installation
@@ -10,47 +8,47 @@ Installation
 
 Target group: **Administrators**
 
-This extension is part of the TYPO3 core.
+This extension is part of the TYPO3 Core.
 
-Installation with composer
+..  contents:: Table of contents
+    :local:
+
+Installation with Composer
 ==========================
 
-Check whether you are already using the extension with
+Check whether you are already using the extension with:
 
-.. code-block:: bash
+..  code-block:: bash
 
-   composer show | grep seo
+    composer show | grep seo
 
 This should either give you no result or something similar to:
 
-.. code-block:: bash
+..  code-block:: none
 
-   typo3/cms-seo                                    v9.5.10            SEO features for TYPO3.
+    typo3/cms-seo       v12.4.11
 
-If it is not yet installed, use the ``composer require`` command to install the extension
+If it is not installed yet, use the ``composer require`` command to install
+the extension:
 
-.. code-block:: bash
+..  code-block:: bash
 
-   composer require typo3/cms-seo ^9.5
+    composer require typo3/cms-seo
 
-The given version depends on the version of the TYPO3 core you are using.
+The given version depends on the version of the TYPO3 Core you are using.
 
-Now head over to the extension manager and activate the extension.
-
-.. figure:: ../Images/em.png
-   :class: with-shadow
-   :alt: Extension manager with filtered seo ext
-
-   Extension manager with filtered seo ext
-
-Installation without composer
+Installation without Composer
 =============================
 
-In an installation without composer, the code of EXT:seo is already shipped. You just have to activate the extension.
-Head over to the extension manager and activate the extension.
+In an installation without Composer, the extension is already shipped but might
+not be activated yet. Activate it as follows:
 
-.. figure:: ../Images/em.png
-   :class: with-shadow
-   :alt: Extension manager with filtered seo ext
+#.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
+    module.
+#.  Click the :guilabel:`Activate` icon for the SEO extension.
 
-   Extension manager with filtered seo ext
+..  figure:: /Images/em.png
+    :class: with-border
+    :alt: Extension manager showing SEO extension
+
+    Extension manager showing SEO extension

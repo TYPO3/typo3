@@ -7,20 +7,47 @@
 Installation
 ============
 
-The system extension is part of common Composer distributions such as
-`typo3/cms-base-distribution <https://packagist.org/packages/typo3/cms-base-distribution>`__.
-It is activated by default and ships with a default configuration for editors.
+This extension is part of the TYPO3 Core.
 
-If you don't use any distribution the system extension can be installed via:
+..  contents:: Table of contents
+    :local:
 
-.. code-block:: bash
+Installation with Composer
+==========================
 
-   composer require typo3/cms-rte-ckeditor
+Check whether you are already using the extension with:
 
-Legacy installations
-====================
+..  code-block:: bash
 
-For legacy installations that do not use Composer, EXT:rte_ckeditor is already
-part of the distributed package.
+    composer show | grep rte
 
-Activate the :guilabel:`RTE CKEditor` extension in :guilabel:`Admin Tools > Extension Manager`.
+This should either give you no result or something similar to:
+
+..  code-block:: none
+
+    typo3/cms-rte-ckeditor       v12.4.11
+
+If it is not installed yet, use the ``composer require`` command to install
+the extension:
+
+..  code-block:: bash
+
+    composer require typo3/cms-rte-ckeditor
+
+The given version depends on the version of the TYPO3 Core you are using.
+
+Installation without Composer
+=============================
+
+In an installation without Composer, the extension is already shipped but might
+not be activated yet. Activate it as follows:
+
+#.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
+    module.
+#.  Click the :guilabel:`Activate` icon for the RTE CKEditor extension.
+
+..  figure:: /Images/InstallActivate.png
+    :class: with-border
+    :alt: Extension manager showing RTE CKEditor extension
+
+    Extension manager showing RTE CKEditor extension
