@@ -215,10 +215,10 @@ class ImageProcessingInstructions
             $offsetY = (float)(($obj->height - $obj->originalHeight) * ($cropOffsetVertical + 100) / 200);
 
             $obj->cropArea = new Area(
-                (float)$cropWidth,
-                (float)$cropHeight,
                 $offsetX,
                 $offsetY,
+                (float)$cropWidth,
+                (float)$cropHeight,
             );
         }
 

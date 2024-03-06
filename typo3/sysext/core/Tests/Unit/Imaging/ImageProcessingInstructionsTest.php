@@ -217,7 +217,7 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
         $result->width = 89;
         $result->height = 800;
         $result->useCropScaling = true;
-        $result->cropArea = new Area(50, 800, 19.5, 0);
+        $result->cropArea = new Area(19.5, 0, 50, 800);
         yield 'Incoming instructions use "c" in width with given height' => [
             100,
             900,
@@ -234,7 +234,7 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
         $result->width = 50;
         $result->height = 450;
         $result->useCropScaling = true;
-        $result->cropArea = new Area(50, 450, 0, 225);
+        $result->cropArea = new Area(0, 225, 50, 450);
         yield 'Incoming instructions use "c" in width but without height' => [
             100,
             900,
@@ -251,7 +251,7 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
         $result->width = 72;
         $result->height = 650;
         $result->useCropScaling = true;
-        $result->cropArea = new Area(50, 650, 13.2, 0);
+        $result->cropArea = new Area(13.2, 0, 50, 650);
         yield 'Incoming instructions use "c" in width on both sides' => [
             100,
             900,
@@ -268,7 +268,7 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
         $result->width = 89;
         $result->height = 800;
         $result->useCropScaling = true;
-        $result->cropArea = new Area(50, 800, 23.4, 0);
+        $result->cropArea = new Area(23.4, 0, 50, 800);
         yield 'Incoming instructions use "c" in width on both sides with given height' => [
             100,
             900,

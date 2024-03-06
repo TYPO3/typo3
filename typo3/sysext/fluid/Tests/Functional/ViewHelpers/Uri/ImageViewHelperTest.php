@@ -172,16 +172,12 @@ final class ImageViewHelperTest extends FunctionalTestCase
             200,
             200,
         ];
-        // Throws error "/usr/bin/gm convert: geometry does not contain image (unable to crop image)."
-        // It's not strictly necessary to test this as the next case makes sure that the values are passed through correctly
-        /*
         yield 'cropped' => [
             '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="100c" height="100c" />',
             '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
             100,
             100,
         ];
-        */
         yield 'masked width' => [
             '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="300m" height="300m" />',
             '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
