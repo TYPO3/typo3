@@ -6,7 +6,7 @@ import{Command as e,Plugin as t}from"@ckeditor/ckeditor5-core";import{parseKeyst
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */const n=a("Ctrl+A");class o extends t{static get pluginName(){return"SelectAllEditing"}init(){const e=this.editor,t=e.editing.view.document;e.commands.add("selectAll",new l(e)),this.listenTo(t,"keydown",((t,a)=>{c(a)===n&&(e.execute("selectAll"),a.preventDefault())}))}}
+ */const n=a("Ctrl+A");class o extends t{static get pluginName(){return"SelectAllEditing"}init(){const e=this.editor,t=e.t,a=e.editing.view.document;e.commands.add("selectAll",new l(e)),this.listenTo(a,"keydown",((t,a)=>{c(a)===n&&(e.execute("selectAll"),a.preventDefault())})),e.accessibility.addKeystrokeInfos({keystrokes:[{label:t("Select all"),keystroke:"CTRL+A"}]})}}
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
