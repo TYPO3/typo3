@@ -204,7 +204,9 @@ export class PageBrowser extends LitElement {
     if (!node.checked) {
       return;
     }
-    const contentsUrl = document.location.href + '&contentOnly=1&expandPage=' + node.identifier;
+    const contentsUrl = new URL(document.location.href, window.location.origin);
+    contentsUrl.searchParams.set('contentOnly', '1');
+    contentsUrl.searchParams.set('expandPage', node.identifier);
     (new AjaxRequest(contentsUrl)).get()
       .then((response: AjaxResponse) => response.resolve())
       .then((response) => {
