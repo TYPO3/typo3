@@ -93,6 +93,7 @@ class RecordListController
         $queryParams = $request->getQueryParams();
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/move-record-wizard-button.js');
 
         BackendUtility::lockRecords();
         $perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);

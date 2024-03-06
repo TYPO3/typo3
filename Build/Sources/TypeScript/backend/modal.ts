@@ -231,7 +231,9 @@ export class ModalElement extends LitElement {
     if (this.type === Types.iframe) {
       const loadCallback = (e: Event) => {
         const iframe = e.currentTarget as HTMLIFrameElement;
-        this.modalTitle = iframe.contentDocument.title;
+        if (iframe.contentDocument.title) {
+          this.modalTitle = iframe.contentDocument.title;
+        }
         // see Build/Sources/Sass/scaffold/_scaffold.scss
         iframe.contentDocument.body.classList.add('with-overflow');
       };

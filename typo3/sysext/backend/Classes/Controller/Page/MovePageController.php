@@ -21,14 +21,19 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
+use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -38,118 +43,166 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-final class MovePageController
+final readonly class MovePageController
 {
-    private int $page_id = 0;
-    private string $R_URI = '';
-    private int $moveUid = 0;
-    private int $makeCopy = 0;
-    private string $perms_clause = '';
+    use PageRendererBackendSetupTrait;
 
     public function __construct(
-        private readonly IconFactory $iconFactory,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly UriBuilder $uriBuilder,
+        private PageRenderer $pageRenderer,
+        private BackendViewFactory $backendViewFactory,
+        private UriBuilder $uriBuilder,
+        private LanguageServiceFactory $languageServiceFactory,
+        private ExtensionConfiguration $extensionConfiguration
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request);
-        $parsedBody = $request->getParsedBody();
+        $this->setUpBasicPageRendererForBackend(
+            $this->pageRenderer,
+            $this->extensionConfiguration,
+            $request,
+            $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser())
+        );
+        $view = $this->backendViewFactory->create($request);
         $queryParams = $request->getQueryParams();
+        $contentOnly = $queryParams['contentOnly'] ?? false;
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tree/page-browser.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
+        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::create('@typo3/backend/wizard/move-page.js', 'MovePage')->instance()
+        );
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/Wizards/move_page.xlf');
 
-        $this->page_id = (int)($parsedBody['uid'] ?? $queryParams['uid'] ?? 0);
-        $this->R_URI = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
-        $this->moveUid = (int)(($parsedBody['moveUid'] ?? $queryParams['moveUid'] ?? false) ?: $this->page_id);
-        $this->makeCopy = (int)($parsedBody['makeCopy'] ?? $queryParams['makeCopy'] ?? 0);
-        // Select-pages where clause for read-access
-        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $targetPid = (int)($queryParams['expandPage'] ?? 0);
+        $pageIdToMove = (int)($queryParams['uid'] ?? 0);
+        $makeCopy = (bool)($queryParams['makeCopy'] ?? 0);
 
-        // Setting up the buttons and markers for docheader
-        $this->getButtons($view);
-        $view->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movingElement'));
-        $view->assignMultiple($this->getContentVariables($request));
-        return $view->renderResponse('Page/MovePage');
+        if ($targetPid) {
+            $view->assignMultiple($this->getContentVariables($pageIdToMove, $targetPid));
+        }
+        $view->assignMultiple([
+            'activePage' => $targetPid,
+            'contentOnly' => $contentOnly,
+            // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
+            'makeCopyChecked' => $makeCopy,
+            'makeCopyUrl' => $this->uriBuilder->buildUriFromRoute(
+                'move_page',
+                [
+                    'uid' => $pageIdToMove,
+                    'makeCopy' => !$makeCopy,
+                ]
+            ),
+        ]);
+
+        $content = $view->render('Page/MovePage');
+        if ($contentOnly) {
+            return new HtmlResponse($content);
+        }
+        $this->pageRenderer->setBodyContent('<body>' . $content);
+        return new HtmlResponse($this->pageRenderer->render());
     }
 
-    private function getContentVariables(ServerRequestInterface $request): array
+    private function getContentVariables(int $pageIdToMove, int $targetPid): array
     {
-        if (!$this->page_id) {
+        $elementRow = BackendUtility::getRecordWSOL('pages', $pageIdToMove);
+        $targetRow = BackendUtility::getRecordWSOL('pages', $targetPid);
+        if (!$this->getBackendUser()->doesUserHaveAccess($targetRow, Permission::PAGE_EDIT)) {
             return [];
         }
-        $queryParams = $request->getQueryParams();
-        $assigns = [];
-        $backendUser = $this->getBackendUser();
-        // Get record for element:
-        $elRow = BackendUtility::getRecordWSOL('pages', $this->moveUid);
-        // Headerline: Icon, record title:
-        $assigns['record'] = $elRow;
-        $assigns['recordTooltip'] = BackendUtility::getRecordIconAltText($elRow, 'pages');
-        $assigns['recordTitle'] = BackendUtility::getRecordTitle('pages', $elRow, true);
-        // Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
-        $assigns['makeCopyChecked'] = (bool)$this->makeCopy;
-        $assigns['makeCopyUrl'] = $this->uriBuilder->buildUriFromRoute(
-            'move_page',
-            [
-                'uid' => $queryParams['uid'] ?? 0,
-                'makeCopy' => !$this->makeCopy,
-                'returnUrl' => $queryParams['returnUrl'] ?? '',
-            ]
-        );
-        $pageInfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
-        $assigns['pageInfo'] = $pageInfo;
-        if (is_array($pageInfo) && $backendUser->isInWebMount($pageInfo['pid'], $this->perms_clause)) {
-            // Initialize the page position map:
-            $pagePositionMap = GeneralUtility::makeInstance(PageMovingPagePositionMap::class);
-            $pagePositionMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
-            $pagePositionMap->moveUid = $this->moveUid;
-            // Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
-            if ($pageInfo['pid']) {
-                $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
-                if (is_array($pidPageInfo)) {
-                    if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-                        $assigns['goUpUrl'] = $this->uriBuilder->buildUriFromRoute(
-                            'move_page',
-                            [
-                                'uid' => (int)$pageInfo['pid'],
-                                'moveUid' => $this->moveUid,
-                                'makeCopy' => $this->makeCopy,
-                                'returnUrl' => $queryParams['returnUrl'] ?? '',
-                            ]
-                        );
-                    } else {
-                        $assigns['pidPageInfo'] = $pidPageInfo;
-                    }
-                    $assigns['pidRecordTitle'] = BackendUtility::getRecordTitle('pages', $pidPageInfo, true);
+        return [
+            'targetHasSubpages' => $this->pageHasSubpages($targetPid),
+            'element' => [
+                'record' => $elementRow,
+                'recordTooltip' => BackendUtility::getRecordIconAltText($elementRow, 'pages'),
+                'recordTitle' => BackendUtility::getRecordTitle('pages', $elementRow),
+                'recordPath' => BackendUtility::getRecordPath($pageIdToMove, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0),
+            ],
+            'target' => [
+                'record' => $targetRow,
+                'recordTooltip' => BackendUtility::getRecordIconAltText($targetRow, 'pages'),
+                'recordTitle' => BackendUtility::getRecordTitle('pages', $targetRow),
+                'recordPath' => BackendUtility::getRecordPath($targetPid, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0),
+            ],
+            'positions' => [
+                'above' => $this->getTargetForAboveInsert($targetRow),
+                'inside' => $targetRow['uid'],
+                'below' => $targetRow['uid'] * -1,
+            ],
+            'hasEditPermissions' => $this->getBackendUser()->doesUserHaveAccess($elementRow, Permission::PAGE_EDIT),
+            'isDifferentPage' => $pageIdToMove !== $targetRow['uid'],
+        ];
+    }
+
+    protected function getTargetForAboveInsert(array $targetRow): int
+    {
+        $targetPageId = (int)$targetRow['uid'];
+        $subpages = $this->getSubpagesForPageId($targetRow['pid']);
+        if (in_array($targetPageId, $subpages, true)) {
+            // Set pointer in array to $targetPid
+            while (current($subpages) !== $targetPageId) {
+                if (next($subpages) === false) {
+                    // We reached the end of the array and couldn't find the target pid (how?). Fall back to pid
+                    return (int)$targetRow['pid'];
                 }
             }
-            // Create the position tree:
-            $assigns['positionTree'] = $pagePositionMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI, $request);
-        }
-        return $assigns;
-    }
-
-    /**
-     * Create the panel of buttons for submitting the form or otherwise perform operations.
-     */
-    private function getButtons(ModuleTemplate $view): void
-    {
-        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        if ($this->page_id) {
-            if ($this->R_URI) {
-                $backButton = $buttonBar->makeLinkButton()
-                    ->setHref($this->R_URI)
-                    ->setShowLabelText(true)
-                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:goBack'))
-                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL));
-                $buttonBar->addButton($backButton);
+            $previousItem = prev($subpages);
+            if ($previousItem !== false) {
+                return $previousItem * -1;
             }
         }
+
+        return (int)$targetRow['pid'];
     }
 
-    private function getLanguageService(): LanguageService
+    protected function getSubpagesForPageId(int $pageId): array
     {
-        return $GLOBALS['LANG'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+
+        return $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId)),
+                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                QueryHelper::stripLogicalOperatorPrefix(
+                    $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                )
+            )
+            ->orderBy('sorting')
+            ->executeQuery()
+            ->fetchFirstColumn();
+    }
+
+    protected function pageHasSubpages(int $pageId): bool
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+
+        $count = (int)$queryBuilder
+            ->count('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId)),
+                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                QueryHelper::stripLogicalOperatorPrefix(
+                    $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+                )
+            )
+            ->executeQuery()
+            ->fetchOne();
+
+        return $count > 0;
     }
 
     private function getBackendUser(): BackendUserAuthentication

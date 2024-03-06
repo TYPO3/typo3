@@ -104,6 +104,7 @@ export class PageBrowserTree extends PageTree {
 
 /**
  * The actual element used in the HTML composing the tree and the toolbar
+ * <typo3-backend-component-page-browser type="pages"></typo3-backend-component-page-browser>
  */
 @customElement('typo3-backend-component-page-browser')
 export class PageBrowser extends LitElement {
@@ -127,7 +128,7 @@ export class PageBrowser extends LitElement {
 
   protected firstUpdated() {
     this.activePageId = parseInt(this.getAttribute('active-page'), 10);
-    this.actions = JSON.parse(this.getAttribute('tree-actions'));
+    this.actions = JSON.parse(this.getAttribute('tree-actions') ?? '[]');
   }
 
   // disable shadow dom for now

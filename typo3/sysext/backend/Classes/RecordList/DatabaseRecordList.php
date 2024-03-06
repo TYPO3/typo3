@@ -1517,9 +1517,10 @@ class DatabaseRecordList
                 $icon = $this->iconFactory->getIcon('actions-page-move', IconSize::SMALL);
                 $url = (string)$this->uriBuilder->buildUriFromRoute('move_page', [
                     'uid' => $row['uid'],
-                    'returnUrl' => $this->listURL(),
+                    'table' => $table,
+                    'expandPage' => $row['pid'] ?? 0,
                 ]);
-                $moveAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" aria-label="' . $linkTitleLL . '">' . $icon->render() . '</a>';
+                $moveAction = '<typo3-move-record-wizard-button class="btn btn-default" subject="' . $linkTitleLL . '" url="' . htmlspecialchars($url) . '" aria-label="' . $linkTitleLL . '" table="' . (string)$table . '">' . $icon->render() . '</a>';
             } else {
                 $linkTitleLL = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:move_record'));
                 $icon = $this->iconFactory->getIcon('actions-document-move', IconSize::SMALL);

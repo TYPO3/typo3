@@ -489,5 +489,6 @@ typo3-backend-form-selecttree-toolbar {
 
     &__submenu {
         margin-top: var(--module-docheader-spacing-y);
+        min-height: 25px;
     }
 }
