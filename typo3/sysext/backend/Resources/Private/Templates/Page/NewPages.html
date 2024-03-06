@@ -226,7 +226,7 @@
                                         <f:for each="{line.pageTypes}" as="typegroup" key="group">
                                             <optgroup label="{group}">
                                                 <f:for each="{typegroup}" as="type">
-                                                    <option data-icon='{core:icon(identifier: type.icon)}' value="{type.value}">{f:translate(key: type.label)}</option>
+                                                    <option data-icon='{core:icon(identifier: type.icon)}' value="{type.value}">{f:translate(key: type.label, default: type.label)}</option>
                                                 </f:for>
                                             </optgroup>
                                         </f:for>
