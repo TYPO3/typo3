@@ -52,4 +52,3 @@ This TYPO3 backend module is used to configure and create backend widgets.
    :hidden:
 
    Sitemap
-   genindex

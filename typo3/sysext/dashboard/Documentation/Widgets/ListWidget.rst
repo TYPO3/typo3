@@ -7,7 +7,7 @@ List Widget
 ===========
 
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
-.. program:: TYPO3\CMS\Dashboard\Widgets\ListWidget
+.. php:class:: TYPO3\CMS\Dashboard\Widgets\ListWidget
 
 Widgets using this class will show a simple list of items provided by a data
 provider.
@@ -46,4 +46,4 @@ Dependencies
 .. option:: $dataProvider
 
    This class should provide the items to show.
-   This data provider needs to implement the :php:class:`ListDataProviderInterface`.
+   This data provider needs to implement the :php:`ListDataProviderInterface`.
