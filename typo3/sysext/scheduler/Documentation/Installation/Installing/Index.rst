@@ -1,15 +1,60 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
+..  _installing:
 
+============
+Installation
+============
 
-.. _installing:
+This extension is part of the TYPO3 Core, but not installed by default.
 
-Installing the extension
-^^^^^^^^^^^^^^^^^^^^^^^^
+..  contents:: Table of contents
+    :local:
 
-The process is pretty straightforward: just install the extension in
-the Extension Manager. One database table will be created. Once the
-extension is installed, the following setting is available:
+Installation with Composer
+==========================
+
+Check whether you are already using the extension with:
+
+..  code-block:: bash
+
+    composer show | grep scheduler
+
+This should either give you no result or something similar to:
+
+..  code-block:: none
+
+    typo3/cms-scheduler       v12.4.11
+
+If it is not installed yet, use the ``composer require`` command to install
+the extension:
+
+..  code-block:: bash
+
+    composer require typo3/cms-adminpanel
+
+The given version depends on the version of the TYPO3 Core you are using.
+
+Installation without Composer
+=============================
+
+In an installation without Composer, the extension is already shipped but might
+not be activated yet. Activate it as follows:
+
+#.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
+    module.
+#.  Click the :guilabel:`Activate` icon for the Admin Panel extension.
+
+..  figure:: /Images/InstallActivate.png
+    :class: with-border
+    :alt: Extension manager showing Admin Panel extension
+
+    Extension manager showing Admin Panel extension
+
+Next steps
+==========
+
+Once the extension is installed, the following setting is available:
 
 - **Maximum lifetime** : it may happen that a task crashes while
   executing. In this case it will stay in a state marked as "running".
@@ -18,10 +63,7 @@ extension is installed, the following setting is available:
   parameter ensures that old executions are removed after a while. The
   lifetime is expressed in **minutes** . The default is 15 minutes.
 
-.. figure:: ../../Images/ExtensionConfiguration.png
+.. figure:: /Images/ExtensionConfiguration.png
     :alt: Extension configuration
 
     Configuring the extension settings
-
-
-

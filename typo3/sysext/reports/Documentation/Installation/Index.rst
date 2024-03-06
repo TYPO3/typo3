@@ -6,24 +6,47 @@
 Installation
 ============
 
-The system extension is not part of common Composer distributions such as
-`typo3/cms-base-distribution <https://packagist.org/packages/typo3/cms-base-distribution>`_.
+This extension is part of the TYPO3 Core, but not installed by default.
 
-Therefore, if you installed TYPO3 following :ref:`t3start:install`, EXT:reports
-is not automatically installed.
+..  contents:: Table of contents
+    :local:
 
-You can install it via:
+Installation with Composer
+==========================
 
-.. code-block:: bash
+Check whether you are already using the extension with:
+
+..  code-block:: bash
+
+    composer show | grep reports
+
+This should either give you no result or something similar to:
+
+..  code-block:: none
+
+    typo3/cms-reports       v12.4.11
+
+If it is not installed yet, use the ``composer require`` command to install
+the extension:
+
+..  code-block:: bash
 
     composer require typo3/cms-reports
 
-Legacy installations
-====================
+The given version depends on the version of the TYPO3 Core you are using.
 
-For legacy installations that do not use Composer, EXT:reports is already
-part of the distributed package.
+Installation without Composer
+=============================
 
-Activate the :guilabel:`Reports`
-extension in :guilabel:`Admin Tools > Extension Manager`.
+In an installation without Composer, the extension is already shipped but might
+not be activated yet. Activate it as follows:
 
+#.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
+    module.
+#.  Click the :guilabel:`Activate` icon for the Reports extension.
+
+..  figure:: /Images/InstallActivate.png
+    :class: with-border
+    :alt: Extension manager showing Reports extension
+
+    Extension manager showing Reports extension

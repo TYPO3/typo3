@@ -40,6 +40,7 @@ granular editing and publishing process.
    :titlesonly:
 
    Introduction/Index
+   Installation/Index
    Administration/Index
    Events/Index
    UsersGuide/Index

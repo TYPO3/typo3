@@ -47,7 +47,7 @@ send status mails when broken links are detected.
 
    Introduction/Index
    Editors/Index
-   Administration/Index
+   Installation/Index
    Configuration/Index
    Development/Index
    LargeSites/Index

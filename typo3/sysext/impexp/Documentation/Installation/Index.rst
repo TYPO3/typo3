@@ -6,54 +6,51 @@
 Installation
 ============
 
+This extension is part of the TYPO3 Core, but not installed by default.
+
+..  contents:: Table of contents
+    :local:
+
 .. _installation_composer:
 
-With Composer
-=============
+Installation with Composer
+==========================
 
-If your TYPO3 installation is using Composer, install the import/export
-extension by:
+Check whether you are already using the extension with:
 
-.. code-block:: bash
+..  code-block:: bash
+
+    composer show | grep impexp
+
+This should either give you no result or something similar to:
+
+..  code-block:: none
+
+    typo3/cms-impexp       v12.4.11
+
+If it is not installed yet, use the ``composer require`` command to install
+the extension:
+
+..  code-block:: bash
 
     composer require typo3/cms-impexp
 
-If you are using Composer and not working with the latest version of TYPO3
-you will need to add a version constraint:
-
-.. code-block:: bash
-
-    composer require typo3/cms-impexp:"^10.4"
-
-Installing the extension prior to version 11.4
-----------------------------------------------
-
-Before TYPO3 11.4 it was still necessary to manually activate extensions
-installed via Composer using the Extension Manager.
-
-If you are using TYPO3 with Composer and are using a version of TYPO3 that is
-older than 11.4, you will need to activate the extension:
-
-- Access :guilabel:`Admin Tools > Extension Manager > Installed Extensions`
-- Search for `impexp`
-- Activate the extension by selecting the :guilabel:`Activate` button in the
-  column labeled :guilabel:`A/D`
+The given version depends on the version of the TYPO3 Core you are using.
 
 .. _installation_legacy:
 
-Without Composer
-================
+Installation without Composer
+=============================
 
-If you are working with an installation of TYPO3 that doesn't use Composer, this
-extension will already be part of the installation due to the fact that
-"classic" `.tar` & `.zip` packages come bundled with all system extensions.
+In an installation without Composer, the extension is already shipped but might
+not be activated yet. Activate it as follows:
 
-However, whilst the extension is already downloaded, it is likely that the
-extension is not activated.
+#.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
+    module.
+#.  Click the :guilabel:`Activate` icon for the Import / Export extension.
 
-To activate the import/export tool, navigate to
-:guilabel:`Admin Tools > Extension Manager > Installed Extensions` and
-search for "impexp". If the extension is not active, activate it by selecting
-the :guilabel:`Activate` button in the column labeled :guilabel:`A/D`.
+..  figure:: /Images/ManualScreenshots/InstallActivate.png
+    :class: with-border
+    :alt: Extension manager showing Import / Export extension
 
-Admin rights are required to activate the extension.
+    Extension manager showing Import / Export extension

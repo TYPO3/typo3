@@ -23,7 +23,7 @@ This should either give you no result or something similar to:
 
 ..  code-block:: text
 
-    typo3/cms-sys-note       v12.4.9        TYPO3 CMS System Notes
+    typo3/cms-sys-note       v12.4.9
 
 If it is not installed, use the :bash:`composer require` command to install the
 extension:

@@ -40,6 +40,7 @@ in to the TYPO3 frontend.
    :titlesonly:
 
    Introduction/Index
+   Installation/Index
    UsersManual/Index
    LoginMechanism/Index
    Configuration/Index

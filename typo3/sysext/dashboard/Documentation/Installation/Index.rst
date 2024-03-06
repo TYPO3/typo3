@@ -9,40 +9,42 @@ Installation
 
 Target group: **Administrators**
 
-This extension is part of the TYPO3 core.
+This extension is part of the TYPO3 Core, but not installed by default.
 
-Installation with composer
+..  contents:: Table of contents
+    :local:
+
+Installation with Composer
 ==========================
 
-Check whether you are already using the extension with::
+Check whether you are already using the extension with:
 
-   composer show | grep dashboard
+..  code-block:: bash
 
-This should either give you no result or something similar to:::
+    composer show | grep dashboard
 
-   typo3/cms-dashboard v10.4.0 Dashboard for TYPO3.
+This should either give you no result or something similar to:
 
-If it is not yet installed, use the ``composer require`` command to install the extension::
+..  code-block:: none
 
-   composer require typo3/cms-dashboard ^10.4
+    typo3/cms-dashboard       v12.4.11
 
-The given version depends on the version of the TYPO3 core you are using.
+If it is not installed yet, use the ``composer require`` command to install
+the extension:
 
-Now head over to the extension manager and activate the extension.
+..  code-block:: bash
 
-.. figure:: ../Images/em.png
-   :class: with-shadow
-   :alt: Extension manager with filtered dashboard extension
+    composer require typo3/cms-dashboard
 
-   Extension manager with filtered dashboard extension
+The given version depends on the version of the TYPO3 Core you are using.
 
-Installation without composer
+Installation without Composer
 =============================
 
-In an installation without composer, the extension is already shipped. You just have to activate it.
+In an installation without Composer, the extension is already shipped. You just have to activate it.
 Head over to the extension manager and activate the extension.
 
-.. figure:: ../Images/em.png
+.. figure:: /Images/em.png
    :class: with-shadow
    :alt: Extension manager with filtered dashboard extension
 

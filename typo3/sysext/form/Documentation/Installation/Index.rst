@@ -1,4 +1,6 @@
-..  include:: /Includes.rst.txt
+.. include:: /Includes.rst.txt
+
+.. _installation:
 
 ============
 Installation
@@ -16,20 +18,20 @@ Check whether you are already using the extension with:
 
 ..  code-block:: bash
 
-    composer show | grep reactions
+    composer show | grep form
 
 This should either give you no result or something similar to:
 
 ..  code-block:: none
 
-    typo3/cms-reactions       v12.4.11
+    typo3/cms-form       v12.4.11
 
 If it is not installed yet, use the ``composer require`` command to install
 the extension:
 
 ..  code-block:: bash
 
-    composer require typo3/cms-reactions
+    composer require typo3/cms-form
 
 The given version depends on the version of the TYPO3 Core you are using.
 
@@ -41,10 +43,10 @@ not be activated yet. Activate it as follows:
 
 #.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
     module.
-#.  Click the :guilabel:`Activate` icon for the Reactions extension.
+#.  Click the :guilabel:`Activate` icon for the Form extension.
 
 ..  figure:: /Images/InstallActivate.png
     :class: with-border
-    :alt: Extension manager showing Reactions extension
+    :alt: Extension manager showing Form extension
 
-    Extension manager showing Reactions extension
+    Extension manager showing Form extension
