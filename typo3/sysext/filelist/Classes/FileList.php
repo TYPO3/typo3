@@ -26,7 +26,6 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
-use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -970,10 +969,18 @@ class FileList
             return null;
         }
 
-        $button = GeneralUtility::makeInstance(InputButton::class);
-        $button->setTitle($resourceView->getName());
+        $title = sprintf(
+            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.selectFile'),
+            $resourceView->getName(),
+        );
+        $button = GeneralUtility::makeInstance(GenericButton::class);
+        $button->setTitle($title);
+        $button->setAttributes([
+            'type' => 'button',
+            'data-filelist-action' => 'select',
+            'aria-label' => $title,
+        ]);
         $button->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
-        $button->setDataAttributes(['filelist-action' => 'select']);
 
         return $button;
     }

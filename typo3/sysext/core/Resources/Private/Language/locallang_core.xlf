@@ -1155,6 +1155,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.select" resname="cm.select">
 				<source>Select</source>
 			</trans-unit>
+			<trans-unit id="cm.selectFile" resname="cm.selectFile">
+				<source>Select %s</source>
+			</trans-unit>
 			<trans-unit id="cm.deselect" resname="cm.deselect">
 				<source>Deselect</source>
 			</trans-unit>
