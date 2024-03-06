@@ -30,7 +30,7 @@ PHP class
 ---------
 
 Each Widget has to be a PHP class.
-This class has to implement the :php:class:`WidgetInterface` and could look like this::
+This class has to implement the :php:`WidgetInterface` and could look like this::
 
    class RssWidget implements WidgetInterface
    {
@@ -102,9 +102,16 @@ The above class is documented at :ref:`rss-widget`.
 The documentation should provide all possible options and an concrete example.
 It should make it possible for integrators to register new widgets using the implementation.
 
+<<<<<<< HEAD   (a598d0 [TASK] Allow execution of acceptance tests with local chrome)
 The difference between ``$options`` and ``$configuration`` in above example is the following:
 ``$options`` are the options for this implementation which can be provided through :file:`Services.yaml`.
 ``$configuration`` is an instance of :php:class:`WidgetConfigurationInterface` holding all internal configuration, like icon identifier.
+=======
+The difference between :php:`$options` and :php:`$configuration` in above example is the following:
+:php:`$options` are the options for this implementation which can be provided through :file:`Services.yaml`.
+:php:`$configuration` is an instance of :php:`WidgetConfigurationInterface`
+holding all internal configuration, like icon identifier.
+>>>>>>> CHANGE (1bf527 [DOCS] Switch Dashboard documentation to PHP-based rendering)
 
 .. _implement-new-widget-fluid:
 
@@ -133,8 +140,13 @@ Providing custom JS
 
 There are two ways to add JavaScript for an widget:
 
+<<<<<<< HEAD   (a598d0 [TASK] Allow execution of acceptance tests with local chrome)
 RequireJS AMD module
    Implement :php:class:`RequireJsModuleInterface`::
+=======
+JavaScript module
+    Implement :php:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
+>>>>>>> CHANGE (1bf527 [DOCS] Switch Dashboard documentation to PHP-based rendering)
 
       class RssWidget implements WidgetInterface, RequireJsModuleInterface
       {
@@ -152,7 +164,11 @@ RequireJS AMD module
       :ref:`t3coreapi:requirejs` for more info about RequireJS in TYPO3 Backend.
 
 Plain JS files
+<<<<<<< HEAD   (a598d0 [TASK] Allow execution of acceptance tests with local chrome)
    Implement :php:class:`AdditionalJavaScriptInterface`::
+=======
+    Implement :php:`AdditionalJavaScriptInterface`:
+>>>>>>> CHANGE (1bf527 [DOCS] Switch Dashboard documentation to PHP-based rendering)
 
       class RssWidget implements WidgetInterface, AdditionalJavaScriptInterface
       {
@@ -165,14 +181,48 @@ Plain JS files
           }
       }
 
+<<<<<<< HEAD   (a598d0 [TASK] Allow execution of acceptance tests with local chrome)
 Both ways can also be combined.
+=======
+       class RssWidget implements WidgetInterface, AdditionalJavaScriptInterface
+       {
+           public function getJsFiles(): array
+           {
+               return [
+                   'EXT:my_extension/Resources/Public/JavaScript/file.js',
+                   'EXT:my_extension/Resources/Public/JavaScript/file2.js',
+               ];
+           }
+       }
+
+JavaScript
+    Implement :php:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
+
+    .. code-block:: php
+
+        class ExampleChartWidget implements JavaScriptInterface
+        {
+            // ...
+            public function getJavaScriptModuleInstructions(): array
+            {
+                return [
+                    JavaScriptModuleInstruction::create(
+                        '@typo3/dashboard/chart-initializer.js'
+                    )->invoke('initialize'),
+                ];
+            }
+        }
+
+All ways can be combined.
+
+>>>>>>> CHANGE (1bf527 [DOCS] Switch Dashboard documentation to PHP-based rendering)
 
 Providing custom CSS
 --------------------
 
 It is possible to add custom Css to style widgets.
 
-Implement :php:class:`AdditionalCssInterface`::
+Implement :php:`AdditionalCssInterface`::
 
    class RssWidget implements WidgetInterface, AdditionalCssInterface
    {

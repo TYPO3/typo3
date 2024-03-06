@@ -7,7 +7,7 @@ CTA Button Widget
 =================
 
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
-.. program:: TYPO3\CMS\Dashboard\Widgets\CtaWidget
+.. php:class:: TYPO3\CMS\Dashboard\Widgets\CtaWidget
 
 Widgets using this class will show a CTA (=Call to action) button to easily go to
 a specific page or do a specific action. You can add a button to the widget by
@@ -57,7 +57,7 @@ Dependencies
 .. option:: $buttonProvider
 
    Provides the actual button to show within the widget.
-   This button should be provided by a ButtonProvider that implements the interface :php:class:`ButtonProviderInterface`.
+   This button should be provided by a ButtonProvider that implements the interface :php:`ButtonProviderInterface`.
 
    See :ref:`adding-buttons` for further info and configuration options.
 

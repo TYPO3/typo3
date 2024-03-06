@@ -10,7 +10,7 @@ Adding button to Widget
 
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
 
-In order to add a button to a widget, a new dependency to an :php:class:`ButtonProviderInterface` can be added.
+In order to add a button to a widget, a new dependency to an :php:`ButtonProviderInterface` can be added.
 
 Template
 --------
@@ -49,7 +49,7 @@ The configuration is done through an configured Instance of the dependency, for 
          $buttonProvider: '@dashboard.buttons.t3news'
          # …
 
-.. program:: TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider
+.. php:class:: TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider
 
 .. option:: $title
 
