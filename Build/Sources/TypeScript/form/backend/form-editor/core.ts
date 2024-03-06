@@ -211,9 +211,6 @@ type ApplicationStateType = keyof ApplicationState;
 
 type PublisherSubscriberTopic = keyof PublisherSubscriberTopicArgumentsMap
 
-// see https://github.com/microsoft/TypeScript/issues/14829#issuecomment-322267089
-export type NoInfer<T> = T & {[K in keyof T]: T[K]};
-
 interface PublisherSubscriberFunction<T extends PublisherSubscriberTopic> {
   (topic: T, args: NoInfer<PublisherSubscriberTopicArgumentsMap[T]>): void;
 }
@@ -1918,7 +1915,7 @@ export class ApplicationStateStack {
       publisherSubscriber.publish(
         'core/applicationState/add',
         [
-          this.getCurrentState(),
+          this.getCurrentState<undefined>(),
           this.getCurrentStackPointer(),
           this.getCurrentStackSize()
         ]
