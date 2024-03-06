@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Slot;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileContentsSetEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileCreatedEvent;
@@ -26,7 +27,6 @@ use TYPO3\CMS\Core\Resource\Event\BeforeFileRenamedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 
 /**
@@ -53,9 +53,11 @@ final class FilePersistenceSlot implements SingletonInterface
      */
     protected $allowedInvocations = [];
 
+    public function __construct(private readonly HashService $hashService) {}
+
     public function getContentSignature(string $content): string
     {
-        return GeneralUtility::hmac($content);
+        return $this->hashService->hmac($content, self::class);
     }
 
     /**

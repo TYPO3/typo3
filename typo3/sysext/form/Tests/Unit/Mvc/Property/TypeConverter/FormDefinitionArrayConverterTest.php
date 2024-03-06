@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property\TypeConverter;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\FormDefinitionArrayConverter;
@@ -28,11 +28,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class FormDefinitionArrayConverterTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
+    protected HashService $hashService;
 
     public function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+        $this->hashService = new HashService();
     }
 
     #[Test]
@@ -55,11 +57,11 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
             ],
             '_orig_prototypeName' => [
                 'value' => 'standard',
-                'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
             ],
             '_orig_identifier' => [
                 'value' => 'test',
-                'hmac' => GeneralUtility::hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
             ],
         ];
 
@@ -170,11 +172,11 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
             'identifier' => 'test',
             '_orig_prototypeName' => [
                 'value' => 'standard',
-                'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
             ],
             '_orig_identifier' => [
                 'value' => 'test',
-                'hmac' => GeneralUtility::hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
             ],
         ];
 
@@ -199,11 +201,11 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
             'identifier' => 'xxx',
             '_orig_prototypeName' => [
                 'value' => 'standard',
-                'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
             ],
             '_orig_identifier' => [
                 'value' => 'test',
-                'hmac' => GeneralUtility::hmac(serialize(['test', 'prototypeName', 'test']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize(['test', 'prototypeName', 'test']), $sessionToken),
             ],
         ];
 

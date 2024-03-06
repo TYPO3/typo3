@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
@@ -28,10 +29,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FormDefinitionValidationServiceTest extends UnitTestCase
 {
+    protected HashService $hashService;
+
     protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+        $this->hashService = new HashService();
     }
 
     public function tearDown(): void
@@ -59,7 +63,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
             'label' => 'xxx',
             '_orig_label' => [
                 'value' => 'aaa',
-                'hmac' => GeneralUtility::hmac(serialize([$identifier, 'label', 'aaa']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize([$identifier, 'label', 'aaa']), $sessionToken),
             ],
         ];
 
@@ -104,7 +108,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
             'label' => 'aaa',
             '_orig_label' => [
                 'value' => 'aaa',
-                'hmac' => GeneralUtility::hmac(serialize([$identifier, 'label', 'aaa']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize([$identifier, 'label', 'aaa']), $sessionToken),
             ],
         ];
 
@@ -141,13 +145,13 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
             'identifier' => 'StringLength',
             '_orig_identifier' => [
                 'value' => 'StringLength',
-                'hmac' => GeneralUtility::hmac(serialize([$identifier, 'validators', 'StringLength', 'identifier', 'StringLength']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize([$identifier, 'validators', 'StringLength', 'identifier', 'StringLength']), $sessionToken),
             ],
             'options' => [
                 'test' => 'xxx',
                 '_orig_test' => [
                     'value' => 'aaa',
-                    'hmac' => GeneralUtility::hmac(serialize([$identifier, 'validators', 'StringLength', 'options.test', 'aaa']), $sessionToken),
+                    'hmac' => $this->hashService->hmac(serialize([$identifier, 'validators', 'StringLength', 'options.test', 'aaa']), $sessionToken),
                 ],
             ],
         ];
@@ -179,7 +183,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
             'identifier' => 'StringLength',
             '_orig_identifier' => [
                 'value' => 'StringLength',
-                'hmac' => GeneralUtility::hmac(serialize([$identifier, 'validators', 'StringLength', 'identifier', 'StringLength']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize([$identifier, 'validators', 'StringLength', 'identifier', 'StringLength']), $sessionToken),
             ],
             'options' => [
                 'test' => 'xxx',
@@ -210,13 +214,13 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
             'identifier' => 'StringLength',
             '_orig_identifier' => [
                 'value' => 'StringLength',
-                'hmac' => GeneralUtility::hmac(serialize([$identifier, 'validators', 'StringLength', 'identifier', 'StringLength']), $sessionToken),
+                'hmac' => $this->hashService->hmac(serialize([$identifier, 'validators', 'StringLength', 'identifier', 'StringLength']), $sessionToken),
             ],
             'options' => [
                 'test' => 'aaa',
                 '_orig_test' => [
                     'value' => 'aaa',
-                    'hmac' => GeneralUtility::hmac(serialize([$identifier, 'validators', 'StringLength', 'options.test', 'aaa']), $sessionToken),
+                    'hmac' => $this->hashService->hmac(serialize([$identifier, 'validators', 'StringLength', 'options.test', 'aaa']), $sessionToken),
                 ],
             ],
         ];
@@ -244,12 +248,13 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         $sessionToken = '54321';
         $identifier = 'text-1';
 
+        $hashService = new HashService();
         $validationDto = new ValidationDto('standard', 'Text', $identifier);
         $formElement = [
             'test' => 'xxx',
             '_orig_test' => [
                 'value' => 'xxx',
-                'hmac' => GeneralUtility::hmac(serialize([$identifier, 'test', 'xxx']), $sessionToken),
+                'hmac' => $hashService->hmac(serialize([$identifier, 'test', 'xxx']), $sessionToken),
             ],
         ];
 
@@ -261,7 +266,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
             'test' => 'xxx1',
             '_orig_test' => [
                 'value' => 'xxx',
-                'hmac' => GeneralUtility::hmac(serialize([$identifier, 'test', 'xxx']), $sessionToken),
+                'hmac' => $hashService->hmac(serialize([$identifier, 'test', 'xxx']), $sessionToken),
             ],
         ];
 
@@ -420,11 +425,12 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         $identifier = 'text-1';
 
         $validationDto = new ValidationDto('standard', 'Text', $identifier, null, 'validators', 'StringLength');
+        $hashService = new HashService();
         $formElement = [
             'test' => 'xxx',
             '_orig_test' => [
                 'value' => 'xxx',
-                'hmac' => GeneralUtility::hmac(serialize([$identifier, 'validators', 'StringLength', 'test', 'xxx']), $sessionToken),
+                'hmac' => $hashService->hmac(serialize([$identifier, 'validators', 'StringLength', 'test', 'xxx']), $sessionToken),
             ],
         ];
 
@@ -436,7 +442,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
             'test' => 'xxx1',
             '_orig_test' => [
                 'value' => 'xxx',
-                'hmac' => GeneralUtility::hmac(serialize([$identifier, 'validators', 'StringLength', 'test', 'xxx']), $sessionToken),
+                'hmac' => $hashService->hmac(serialize([$identifier, 'validators', 'StringLength', 'test', 'xxx']), $sessionToken),
             ],
         ];
 

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Slot;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -39,6 +40,8 @@ class ResourcePublicationSlot implements SingletonInterface
      * @var list<string>
      */
     protected $fileIdentifiers = [];
+
+    public function __construct(private readonly HashService $hashService) {}
 
     #[AsEventListener('form-framework/resource-getPublicUrl')]
     public function getPublicUrl(GeneratePublicUrlForResourceEvent $event): void
@@ -77,7 +80,7 @@ class ResourcePublicationSlot implements SingletonInterface
             $queryParameterArray['t'] = 'p';
         }
 
-        $queryParameterArray['token'] = GeneralUtility::hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile');
+        $queryParameterArray['token'] = $this->hashService->hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile');
         $publicUrl = GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'));
         $publicUrl .= '?' . http_build_query($queryParameterArray, '', '&', PHP_QUERY_RFC3986);
         return $publicUrl;

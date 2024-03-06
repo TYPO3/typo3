@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters;
 
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -36,10 +37,11 @@ class AddHmacDataToFormElementPropertyConverter extends AbstractConverter
         $lastKeySegment = array_pop($propertyPathParts);
         $propertyPathParts[] = '_orig_' . $lastKeySegment;
 
+        $hashService = GeneralUtility::makeInstance(HashService::class);
         $hmacValuePath = implode('.', array_merge($this->converterDto->getRenderablePathParts(), $propertyPathParts));
         $hmacValue = [
             'value' => $value,
-            'hmac' => GeneralUtility::hmac(serialize([$this->converterDto->getFormElementIdentifier(), $key, $value]), $this->sessionToken),
+            'hmac' => $hashService->hmac(serialize([$this->converterDto->getFormElementIdentifier(), $key, $value]), $this->sessionToken),
         ];
 
         $formDefinition = ArrayUtility::setValueByPath($formDefinition, $hmacValuePath, $hmacValue, '.');

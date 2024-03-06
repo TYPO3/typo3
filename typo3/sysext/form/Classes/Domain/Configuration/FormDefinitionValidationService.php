@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration;
 
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
@@ -223,7 +224,8 @@ class FormDefinitionValidationService implements SingletonInterface
         $this->checkHmacDataIntegrity($hmacData, $hmacContent, $sessionToken);
         $hmacContent[] = $propertyValue;
 
-        $expectedHash = GeneralUtility::hmac(serialize($hmacContent), $sessionToken);
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        $expectedHash = $hashService->hmac(serialize($hmacContent), $sessionToken);
         return hash_equals($expectedHash, $hmacData['hmac']);
     }
 
@@ -242,7 +244,8 @@ class FormDefinitionValidationService implements SingletonInterface
         }
 
         $hmacContent[] = $hmacData['value'] ?? '';
-        $expectedHash = GeneralUtility::hmac(serialize($hmacContent), $sessionToken);
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        $expectedHash = $hashService->hmac(serialize($hmacContent), $sessionToken);
 
         if (!hash_equals($expectedHash, $hmac)) {
             throw new PropertyException('Unauthorized modification of historical data. #1528538252', 1528538252);

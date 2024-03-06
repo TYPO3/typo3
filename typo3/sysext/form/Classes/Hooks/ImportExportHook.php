@@ -28,11 +28,11 @@ class ImportExportHook
         $fileRecord = $params['fileRecord'];
         $temporaryFile = $params['temporaryFile'];
 
-        $formPersistenceSlot = GeneralUtility::makeInstance(FilePersistenceSlot::class);
-        $formPersistenceSlot->allowInvocation(
+        $filePersistenceSlot = GeneralUtility::makeInstance(FilePersistenceSlot::class);
+        $filePersistenceSlot->allowInvocation(
             FilePersistenceSlot::COMMAND_FILE_ADD,
             implode(':', [$fileRecord['storage'], $fileRecord['identifier']]),
-            $formPersistenceSlot->getContentSignature(file_get_contents($temporaryFile))
+            $filePersistenceSlot->getContentSignature(file_get_contents($temporaryFile))
         );
     }
 }

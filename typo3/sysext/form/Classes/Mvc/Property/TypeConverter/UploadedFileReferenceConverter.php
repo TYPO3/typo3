@@ -221,7 +221,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
 
         $uploadFolder = $this->provideUploadFolder($uploadFolderId);
         // current folder name, derived from public random seed (`formSession`)
-        $currentName = 'form_' . GeneralUtility::hmac($seed, self::class);
+        $currentName = 'form_' . $this->hashService->hmac($seed, self::class);
         $uploadFolder = $this->provideTargetFolder($uploadFolder, $currentName);
         // sub-folder in $uploadFolder with 160 bit of derived entropy (.../form_<40-chars-hash>/actual.file)
         $uploadedFile = $uploadFolder->addUploadedFile($uploadInfo, $conflictMode);

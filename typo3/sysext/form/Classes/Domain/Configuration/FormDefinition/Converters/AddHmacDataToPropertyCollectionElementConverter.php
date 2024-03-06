@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters;
 
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,9 +43,10 @@ class AddHmacDataToPropertyCollectionElementConverter extends AbstractConverter
             $propertyPathParts
         ));
 
+        $hashService = GeneralUtility::makeInstance(HashService::class);
         $hmacValue = [
             'value' => $value,
-            'hmac' => GeneralUtility::hmac(
+            'hmac' => $hashService->hmac(
                 serialize([
                     $this->converterDto->getFormElementIdentifier(),
                     $this->converterDto->getPropertyCollectionName(),
