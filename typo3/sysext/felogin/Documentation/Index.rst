@@ -53,4 +53,3 @@ in to the TYPO3 frontend.
    :hidden:
 
    Sitemap
-   genindex
