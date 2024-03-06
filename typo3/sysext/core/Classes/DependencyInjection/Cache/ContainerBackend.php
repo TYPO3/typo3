@@ -29,13 +29,6 @@ class ContainerBackend extends SimpleFileBackend
         // disable cache flushing
     }
 
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
-    {
-        // Remove stale cache files, once a new DI container was built
-        parent::flush();
-        parent::set($entryIdentifier, $data, $tags, $lifetime);
-    }
-
     public function forceFlush(): void
     {
         parent::flush();
