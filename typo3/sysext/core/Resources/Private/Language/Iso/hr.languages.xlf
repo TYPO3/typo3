@@ -448,7 +448,7 @@
       </trans-unit>
       <trans-unit id="gu" resname="gu" approved="yes">
         <source>Gujarati</source>
-        <target>Gudžaratski</target>
+        <target>Gudžarati</target>
       </trans-unit>
       <trans-unit id="gv" resname="gv" approved="yes">
         <source>Manx</source>

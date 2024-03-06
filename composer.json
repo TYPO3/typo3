@@ -116,7 +116,7 @@
 		"phpstan/phpstan": "^1.10.59",
 		"phpstan/phpstan-phpunit": "^1.3.16",
 		"phpunit/phpunit": "^10.5.5",
-		"sokil/php-isocodes-db-i18n": "^4.0.19",
+		"sokil/php-isocodes-db-i18n": "^4.0.20",
 		"symfony/translation": "^6.4 || ^7.0",
 		"typo3/cms-styleguide": "^12.0.3",
 		"typo3/testing-framework": "^8.0.9",
