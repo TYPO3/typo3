@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\File;
@@ -131,7 +132,8 @@ EOF;
 
         /* For backwards compatibility the HMAC is transported within the md5 param */
         $hmacParameter = $this->request->getQueryParams()['md5'] ?? null;
-        $hmac = GeneralUtility::hmac(implode('|', [$fileUid, $parametersEncoded]));
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        $hmac = $hashService->hmac(implode('|', [$fileUid, $parametersEncoded]), 'tx_cms_showpic');
         if (!is_string($hmacParameter) || !hash_equals($hmac, $hmacParameter)) {
             throw new \InvalidArgumentException('hash does not match', 1476048456);
         }

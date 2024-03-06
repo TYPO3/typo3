@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -63,16 +64,18 @@ final class ShowImageControllerTest extends FunctionalTestCase
 
     public static function contentIsGeneratedForLocalFilesDataProvider(): \Generator
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = self::ENCRYPTION_KEY;
         $fileId = 13;
         $parameters = [];
-        $serializedParameters = base64_encode(serialize($parameters));
-        $jsonEncodedParameters = base64_encode(json_encode($parameters));
+        $serializedParameters = serialize($parameters);
+        $jsonEncodedParameters = json_encode($parameters);
+        $hashService = GeneralUtility::makeInstance(HashService::class);
         yield 'numeric fileId, json encoded' => [
             $fileId,
             [
                 'file' => $fileId,
                 'parameters' => [$jsonEncodedParameters],
-                'md5' => hash_hmac('sha1', implode('|', [$fileId, $jsonEncodedParameters]), self::ENCRYPTION_KEY),
+                'md5' => $hashService->hmac(implode('|', [$fileId, $jsonEncodedParameters]), 'tx_cms_showpic'),
             ],
         ];
         yield 'numeric fileId, outdated (valid) PHP encoded' => [
@@ -80,7 +83,7 @@ final class ShowImageControllerTest extends FunctionalTestCase
             [
                 'file' => $fileId,
                 'parameters' => [$serializedParameters],
-                'md5' => hash_hmac('sha1', implode('|', [$fileId, $serializedParameters]), self::ENCRYPTION_KEY),
+                'md5' => $hashService->hmac(implode('|', [$fileId, $serializedParameters]), 'tx_cms_showpic'),
             ],
         ];
     }
