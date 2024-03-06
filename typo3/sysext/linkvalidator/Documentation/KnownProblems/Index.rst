@@ -22,7 +22,7 @@ There are (at least) 2 possible counter-measures:
 #. Turn off external link checking entirely
    by removing `external` from Page TSconfig :ref:`linktypes`
 
-#. :ref:`Override the ExternalLinktype class <linktype-implementation>`
+#. Override the :php:`\TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype` class
    (in your own extension), to check only specific URLs or exclude specific
    URLs or handle only specific error types as errors.
 

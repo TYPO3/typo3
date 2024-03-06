@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ====================
 TYPO3 Link Validator
 ====================
@@ -39,21 +41,21 @@ send status mails when broken links are detected.
 
 **Table of Contents:**
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+..  toctree::
+    :maxdepth: 2
+    :titlesonly:
 
-   Introduction/Index
-   Editors/Index
-   Administration/Index
-   Configuration/Index
-   LargeSites/Index
-   KnownProblems/Index
+    Introduction/Index
+    Editors/Index
+    Administration/Index
+    Configuration/Index
+    Development/Api/Index
+    LargeSites/Index
+    KnownProblems/Index
 
 .. Meta Menu
 
-.. toctree::
-   :hidden:
+..  toctree::
+    :hidden:
 
-   Sitemap
-   genindex
+    Sitemap
