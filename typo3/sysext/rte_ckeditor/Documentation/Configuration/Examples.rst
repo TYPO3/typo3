@@ -149,6 +149,58 @@ plugin option :yaml:`config.htmlSupport`.
 .. _CKEditor5 schema: https://ckeditor.com/docs/ckeditor5/latest/features/html/general-html-support.html#enabling-custom-elements
 
 
+.. _config-example-fontplugin:
+
+How do I configure the font plugin?
+===================================
+
+.. versionadded:: 12.4.12
+
+In order to use the font plugin, the RTE configuration needs to be adapted:
+
+.. code-block:: yaml
+   :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
+
+   editor:
+     config:
+       toolbar:
+         items:
+           # add button to select font family
+           - fontFamily
+           # add button to select font size
+           - fontSize
+           # add button to select font color
+           - fontColor
+           # add button to select font background color
+           - fontBackgroundColor
+
+       fontColor:
+         colors:
+           - { label: 'Orange', color: '#ff8700' }
+           - { label: 'Blue', color: '#0080c9' }
+           - { label: 'Green', color: '#209d44' }
+
+       fontBackgroundColor:
+         colors:
+           - { label: 'Stage orange light', color: '#fab85c' }
+
+       fontFamily:
+         options:
+           - 'default'
+           - 'Arial, sans-serif'
+
+       fontSize:
+         options:
+           - 'default'
+           - 18
+           - 21
+
+       importModules:
+         - { 'module': '@ckeditor/ckeditor5-font', 'exports': ['Font'] }
+
+
+More information can be found in the
+`official documentation of CKEditor <https://ckeditor.com/docs/ckeditor5/latest/features/font.html>`__.
 
 .. _config-example-customplugin:
 
