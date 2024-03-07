@@ -1,3 +1,6 @@
+imports:
+  - { resource: 'Resources.yaml'}
+
 services:
   _defaults:
     autowire: true

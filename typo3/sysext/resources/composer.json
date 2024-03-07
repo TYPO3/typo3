@@ -1,0 +1,43 @@
+{
+    "name": "typo3/cms-resources",
+	"type": "typo3-cms-framework",
+	"description": "TYPO3 CMS Resources - Uniform Interface for TYPO3 Resources",
+	"homepage": "https://typo3.org",
+	"license": ["GPL-2.0-or-later"],
+	"authors": [{
+		"name": "TYPO3 Core Team",
+		"email": "typo3cms@typo3.org",
+		"role": "Developer"
+	}],
+	"support": {
+		"chat": "https://typo3.org/help",
+		"docs": "https://docs.typo3.org/c/typo3/cms-resources/main/en-us/",
+		"issues": "https://forge.typo3.org",
+		"source": "https://github.com/typo3/typo3"
+	},
+	"config": {
+		"sort-packages": true
+	},
+	"require": {
+		"typo3/cms-core": "13.1.*@dev",
+		"symfony/routing": "^7.0"
+	},
+	"suggest": {
+	},
+	"conflict": {
+		"typo3/cms": "*"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-main": "13.1.x-dev"
+		},
+		"typo3/cms": {
+			"extension-key": "resources"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Resources\\": "Classes/"
+		}
+	}
+}

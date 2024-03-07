@@ -1,0 +1,53 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3\CMS\Resources\:
+    resource: '../Classes/*'
+
+  TYPO3\CMS\Resources\Definition\RegistryInterface:
+    alias: 'typo3.resources.registry'
+
+  typo3.resources.routes:
+    class: Symfony\Component\Routing\RouteCollection
+    factory:
+      - TYPO3\CMS\Resources\Routing\Factory\RegistryRouteCollectionFactory
+      - createFromResourceRegistry
+    arguments:
+      - '@typo3.resources.registry'
+
+  TYPO3\CMS\Resources\Routing\ResourceRouter:
+    calls:
+      - addRouteCollection: ['@typo3.resources.routes']
+
+  TYPO3\CMS\Resources\Controller\ResourceController:
+    public: true
+
+  TYPO3\CMS\Resources\Command\GetCommand:
+    tags:
+      - name: 'console.command'
+        command: 'resource:get'
+        description: 'Display one or many resources'
+
+  TYPO3\CMS\Resources\Definition\Command\ListCommand:
+    tags:
+      - name: 'console.command'
+        command: 'resource:definition:list'
+        description: 'List statically defined resources'
+
+typo3_resources:
+  definitions:
+    - group: resources.typo3.org
+      names:
+        plural: resourcedefinitions
+        singular: resourcedefinition
+        kind: ResourceDefinition
+        shortnames: [rd]
+      versions:
+        - name: v1
+          served: true
+          model:
+            class: TYPO3\CMS\Resources\Definition\MetadataInterface
+            repository: '@typo3.resources.registry'

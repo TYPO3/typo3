@@ -1,0 +1,14 @@
+typo3_resources:
+  definitions:
+    - group: core.typo3.org
+      names:
+        plural: sites
+        singular: site
+        kind: Site
+        shortnames: [s]
+      versions:
+        - name: v1
+          served: true
+          model:
+            class: TYPO3\CMS\Core\Site\Entity\SiteInterface
+            repository: TYPO3\CMS\Core\Site\Infrastructure\YamlConfig\SiteRepository

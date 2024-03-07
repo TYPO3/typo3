@@ -32,13 +32,14 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Routing\PageRouter;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Resources\ResourceInterface;
 
 /**
  * Entity representing a single site with available languages
  *
  * @phpstan-type LanguageRef -1|0|positive-int
  */
-class Site implements SiteInterface
+class Site implements SiteInterface, ResourceInterface
 {
     protected const ERRORHANDLER_TYPE_PAGE = 'Page';
     protected const ERRORHANDLER_TYPE_FLUID = 'Fluid';
@@ -179,6 +180,11 @@ class Site implements SiteInterface
     public function getIdentifier(): string
     {
         return $this->identifier;
+    }
+
+    public function getId(): string
+    {
+        return $this->getIdentifier();
     }
 
     /**
