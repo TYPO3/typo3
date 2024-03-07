@@ -20,7 +20,7 @@ Links opening in a new window are defined as those having an attribute :html:`ta
 ..  note::
 
     Initially this feature added :html:`rel="noopener noreferrer`. However :html:`noreferrer` also
-    implies the property :html:`noopener`. Therfore the later was removed.
+    implies the property :html:`noopener`. Therefore, the latter was removed.
 
 
 Impact
