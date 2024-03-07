@@ -10,13 +10,13 @@ The LinkValidator uses so called "linktypes" to check for different types of
 links, for example internal or external links.
 
 All "linktypes" have to implement the
-:php:interface:`TYPO3\\CMS\\Linkvalidator\\Linktype\\LinktypeInterface`.
+:ref:`\TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface <linkvalidatorapi-LinktypeInterface>`.
 
 Classes implementing the :php:`LinktypeInterface` are automatically
 registered, if :ref:`autoconfigure <t3coreapi:dependency-injection-autoconfigure>`
 is enabled in :file:`Services.yaml`.
 
-Alternatively, one can manually tag a custom "linktype" with the
+Alternatively, one can manually tag a custom link type with the
 :yaml:`linkvalidator.linktype` tag:
 
 .. code-block:: yaml
@@ -28,7 +28,7 @@ Alternatively, one can manually tag a custom "linktype" with the
 Due to the autoconfiguration, the identifier has to be provided by the
 class directly, using the method :php:`getIdentifier()`.
 
-When extending :php:class:`TYPO3\\CMS\\Linkvalidator\\Linktype\\AbstractLinktype`
+When extending :ref:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype <linkvalidatorapi-AbstractLinktype>`
 it is sufficient to set the :php:`$identifier` class property.
 
 Example
@@ -40,7 +40,7 @@ Add new linktype
 You can find the following example in the extension
 `t3docs/examples <https://github.com/TYPO3-Documentation/t3docs-examples>`__.
 
-Extend :php:class:`TYPO3\\CMS\\Linkvalidator\\Linktype\\AbstractLinktype` to create
+Extend :ref:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype <linkvalidatorapi-AbstractLinktype>` to create
 a custom linktype:
 
 .. include:: /CodeSnippets/Examples/ExampleLinkType.rst.txt
