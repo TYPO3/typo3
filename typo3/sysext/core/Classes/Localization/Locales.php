@@ -61,6 +61,7 @@ class Locales implements SingletonInterface
         'fo' => 'Faroese',
         'fr' => 'French',
         'fr_CA' => 'French (Canada)',
+        'gd' => 'Scottish Gaelic',
         'gl' => 'Galician',
         'he' => 'Hebrew',
         'hi' => 'Hindi',
