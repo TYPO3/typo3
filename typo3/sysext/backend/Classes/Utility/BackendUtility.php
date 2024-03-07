@@ -508,7 +508,7 @@ class BackendUtility
         $rows = [];
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL('pages', $row, self::getBackendUserAuthentication()->workspace);
-            if ($row && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+            if ($row && VersionState::tryFrom($row['t3ver_state']) !== VersionState::DELETE_PLACEHOLDER) {
                 $rows[] = $row;
             }
         }

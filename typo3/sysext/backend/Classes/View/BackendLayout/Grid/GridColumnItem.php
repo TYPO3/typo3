@@ -268,7 +268,7 @@ class GridColumnItem extends AbstractGridObject
 
     public function isInconsistentLanguage(): bool
     {
-        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($this->context->getPageId())['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+        $allowInconsistentLanguageHandling = $this->context->getDrawingConfiguration()->getAllowInconsistentLanguageHandling();
         return !$allowInconsistentLanguageHandling
             && $this->getSiteLanguage()->getLanguageId() !== 0
             && $this->context->getLanguageModeIdentifier() === 'mixed'

@@ -51,15 +51,9 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class ContentFetcher
 {
-    /**
-     * @var PageLayoutContext
-     */
-    protected $context;
+    protected PageLayoutContext $context;
 
-    /**
-     * @var array
-     */
-    protected $fetchedContentRecords = [];
+    protected array $fetchedContentRecords = [];
 
     protected EventDispatcherInterface $eventDispatcher;
 
@@ -190,7 +184,6 @@ class ContentFetcher
                 $languageTranslationInfo['mode'] = 'mixed';
 
                 // We do not want to show the staleTranslationWarning if allowInconsistentLanguageHandling is enabled
-                $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($this->context->getPageId())['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
                 if (!$this->context->getDrawingConfiguration()->getAllowInconsistentLanguageHandling()) {
                     $siteLanguage = $this->context->getSiteLanguage($language);
                     $message = GeneralUtility::makeInstance(

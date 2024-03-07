@@ -36,6 +36,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
+use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -131,7 +132,7 @@ class PageLayoutController
         $this->initializeClipboard($request);
         $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($request, $view));
 
-        $pageLayoutContext = $this->createPageLayoutContext();
+        $pageLayoutContext = $this->createPageLayoutContext($request, $tsConfig);
         $mainLayoutHtml = $this->backendLayoutRenderer->drawContent($request, $pageLayoutContext);
         $numberOfHiddenElements = $this->getNumberOfHiddenElements(
             $pageLayoutContext->getDrawingConfiguration()->getLanguageMode()
@@ -157,21 +158,18 @@ class PageLayoutController
         return $view->renderResponse('PageLayout/PageModule');
     }
 
-    protected function createPageLayoutContext(): PageLayoutContext
+    protected function createPageLayoutContext(ServerRequestInterface $request, array $tsConfig): PageLayoutContext
     {
-        $tsConfig = BackendUtility::getPagesTSconfig($this->id);
-        $pageLayoutContext = GeneralUtility::makeInstance(PageLayoutContext::class, $this->pageinfo, $this->backendLayoutView->getBackendLayoutForPage($this->id));
-        $configuration = $pageLayoutContext->getDrawingConfiguration();
-        $configuration->setDefaultLanguageBinding(!empty($tsConfig['mod.']['web_layout.']['defLangBinding']));
-        $configuration->setActiveColumns($this->getActiveColumnsArray($pageLayoutContext, $tsConfig));
+        $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($this->id);
+        $configuration = DrawingConfiguration::create($backendLayout, $tsConfig);
         $configuration->setShowHidden((bool)$this->moduleData->get('showHidden'));
         $configuration->setLanguageColumns($this->MOD_MENU['language']);
         $configuration->setSelectedLanguageId($this->currentSelectedLanguage);
-        $configuration->setAllowInconsistentLanguageHandling((bool)($tsConfig['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false));
         if ((int)$this->moduleData->get('function') === 2) {
             $configuration->setLanguageMode(true);
         }
-        return $pageLayoutContext;
+
+        return PageLayoutContext::create($this->pageinfo, $backendLayout, $request->getAttribute('site'), $configuration, $tsConfig);
     }
 
     /**
@@ -500,18 +498,6 @@ class PageLayoutController
                     ])
             );
         }
-    }
-
-    protected function getActiveColumnsArray(PageLayoutContext $pageLayoutContext, array $tsConfig): array
-    {
-        $availableColumnPositionsFromBackendLayout = array_unique($pageLayoutContext->getBackendLayout()->getColumnPositionNumbers());
-        $allowedColumnPositionsByTsConfig = array_unique(GeneralUtility::intExplode(',', (string)($tsConfig['mod.']['SHARED.']['colPos_list'] ?? ''), true));
-        $activeColumns = $availableColumnPositionsFromBackendLayout;
-        if (!empty($allowedColumnPositionsByTsConfig)) {
-            // If there is no tsConfig colPos_list, no restriction. Else create intersection of available and allowed.
-            $activeColumns = array_intersect($availableColumnPositionsFromBackendLayout, $allowedColumnPositionsByTsConfig);
-        }
-        return $activeColumns;
     }
 
     /**

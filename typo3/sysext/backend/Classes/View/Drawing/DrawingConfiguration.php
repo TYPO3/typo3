@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\Drawing;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Drawing Configuration
@@ -34,10 +34,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 class DrawingConfiguration
 {
-    /**
-     * @var int
-     */
-    protected $selectedLanguageId = 0;
+    protected int $selectedLanguageId = 0;
 
     /**
      * Corresponds to web.layout.allowInconsistentLanguageHandling TSconfig property
@@ -49,41 +46,47 @@ class DrawingConfiguration
      * connection between default language and translation. When rendered
      * with this flag enabled, any translated versions are vertically
      * aligned so they are rendered in the same visual row as the original.
-     *
-     * @var bool
      */
-    protected $defaultLanguageBinding = true;
+    protected bool $defaultLanguageBinding = true;
 
     /**
      * If TRUE, indicates that the current rendering method shows multiple
      * languages (e.g. the "page" module is set in "Languages" mode.
-     *
-     * @var bool
      */
-    protected $languageMode = false;
+    protected bool $languageMode = false;
 
     /**
      * Key => "Language ID", Value "Label of language"
-     *
-     * @var array
      */
-    protected $languageColumns = [];
+    protected array $languageColumns = [];
 
     /**
      * Whether or not to show hidden records when rendering column contents.
-     *
-     * @var bool
      */
-    protected $showHidden = true;
+    protected bool $showHidden = true;
 
     /**
      * An array list of currently active columns. Only column identifiers
      * (colPos value) which are contained in this array will be rendered in
      * the page module.
-     *
-     * @var array
      */
-    protected $activeColumns = [1, 0, 2, 3];
+    protected array $activeColumns = [1, 0, 2, 3];
+
+    public static function create(BackendLayout $backendLayout, array $pageTsConfig): self
+    {
+        $obj = new self();
+        $obj->defaultLanguageBinding = !empty($pageTsConfig['mod.']['web_layout.']['defLangBinding']);
+        $obj->allowInconsistentLanguageHandling = (bool)($pageTsConfig['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+        $availableColumnPositionsFromBackendLayout = array_unique($backendLayout->getColumnPositionNumbers());
+        $allowedColumnPositionsByTsConfig = array_unique(GeneralUtility::intExplode(',', (string)($pageTsConfig['mod.']['SHARED.']['colPos_list'] ?? ''), true));
+        $obj->activeColumns = $availableColumnPositionsFromBackendLayout;
+        if (!empty($allowedColumnPositionsByTsConfig)) {
+            // If there is no tsConfig colPos_list, no restriction. Else create intersection of available and allowed.
+            $obj->activeColumns = array_intersect($availableColumnPositionsFromBackendLayout, $allowedColumnPositionsByTsConfig);
+        }
+
+        return $obj;
+    }
 
     public function getSelectedLanguageId(): int
     {
@@ -100,19 +103,9 @@ class DrawingConfiguration
         return $this->allowInconsistentLanguageHandling;
     }
 
-    public function setAllowInconsistentLanguageHandling(bool $allowInconsistentLanguageHandling): void
-    {
-        $this->allowInconsistentLanguageHandling = $allowInconsistentLanguageHandling;
-    }
-
     public function getDefaultLanguageBinding(): bool
     {
         return $this->defaultLanguageBinding;
-    }
-
-    public function setDefaultLanguageBinding(bool $defaultLanguageBinding): void
-    {
-        $this->defaultLanguageBinding = $defaultLanguageBinding;
     }
 
     public function getLanguageMode(): bool
@@ -151,20 +144,5 @@ class DrawingConfiguration
     public function getActiveColumns(): array
     {
         return $this->activeColumns;
-    }
-
-    public function setActiveColumns(array $activeColumns): void
-    {
-        $this->activeColumns = $activeColumns;
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

@@ -27,12 +27,9 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -42,58 +39,21 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class PageLayoutContext
 {
-    /**
-     * @var BackendLayout
-     */
-    protected $backendLayout;
-
-    /**
-     * @var DrawingConfiguration
-     */
-    protected $drawingConfiguration;
-
-    /**
-     * @var ContentFetcher
-     */
-    protected $contentFetcher;
-
-    /**
-     * @var array
-     */
-    protected $pageRecord;
-
-    /**
-     * @var array|null
-     */
-    protected $localizedPageRecord;
-
-    /**
-     * @var int
-     */
-    protected $pageId;
+    protected ContentFetcher $contentFetcher;
+    protected ?array $localizedPageRecord = null;
+    protected int $pageId;
 
     /**
      * @var SiteLanguage[]
      */
-    protected $siteLanguages;
-
-    /**
-     * @var SiteLanguage
-     */
-    protected $siteLanguage;
-
-    /**
-     * @var SiteInterface
-     */
-    protected $site;
+    protected array $siteLanguages = [];
+    protected SiteLanguage $siteLanguage;
 
     /**
      * Array of content type labels. Key is CType, value is either a plain text
      * label or an LLL:EXT:... reference to a specific label.
-     *
-     * @var array
      */
-    protected $contentTypeLabels = [];
+    protected array $contentTypeLabels = [];
 
     /**
      * Labels for columns, in format of TCA select options. Numerically indexed
@@ -103,26 +63,25 @@ class PageLayoutContext
      * - label (hardcoded or LLL:EXT:... reference. MANDATORY)
      * - value (colPos of column. MANDATORY)
      * - icon (icon name or file reference. OPTIONAL)
-     *
-     * @var array
      */
-    protected $itemLabels = [];
+    protected array $itemLabels = [];
 
-    public function __construct(array $pageRecord, BackendLayout $backendLayout)
-    {
+    public function __construct(
+        protected readonly array $pageRecord,
+        protected readonly BackendLayout $backendLayout,
+        protected readonly SiteInterface $site,
+        protected readonly DrawingConfiguration $drawingConfiguration,
+        protected readonly array $tsConfig
+    ) {
         $this->pageId = (int)($pageRecord['uid'] ?? 0);
-        try {
-            $this->site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($this->pageId);
-        } catch (SiteNotFoundException $e) {
-            $this->site = new NullSite();
-        }
-        // TODO: retrieve implementation class names from Site?
-        $this->pageRecord = $pageRecord;
-        $this->backendLayout = $backendLayout;
-        $this->drawingConfiguration = GeneralUtility::makeInstance(DrawingConfiguration::class);
         $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $this);
         $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUser(), true, $this->pageId);
         $this->siteLanguage = $this->site->getDefaultLanguage();
+    }
+
+    public static function create(array $pageRecord, BackendLayout $backendLayout, SiteInterface $site, DrawingConfiguration $drawingConfiguration, array $tsConfig): self
+    {
+        return new self($pageRecord, $backendLayout, $site, $drawingConfiguration, $tsConfig);
     }
 
     public function cloneForLanguage(SiteLanguage $language): self
@@ -132,7 +91,7 @@ class PageLayoutContext
         return $copy;
     }
 
-    public function setSiteLanguage(SiteLanguage $siteLanguage): void
+    protected function setSiteLanguage(SiteLanguage $siteLanguage): void
     {
         $this->siteLanguage = $siteLanguage;
         $languageId = $siteLanguage->getLanguageId();
@@ -190,7 +149,7 @@ class PageLayoutContext
     {
         $selectedLanguageId = $this->drawingConfiguration->getSelectedLanguageId();
         if ($selectedLanguageId === -1) {
-            $languages = $this->getSiteLanguages();
+            $languages = $this->siteLanguages;
             if (!isset($languages[0])) {
                 // $languages may not contain the default (0) in case the user does not have access to it.
                 // However, as for selected pages, it should also be displayed readonly in the "all languages" view
@@ -228,14 +187,12 @@ class PageLayoutContext
         if ($this->getBackendUser()->isAdmin()) {
             return true;
         }
-        $pageRecord = $this->getPageRecord();
-        return !$pageRecord['editlock'] && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::PAGE_EDIT);
+        return !$this->pageRecord['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageRecord, Permission::PAGE_EDIT);
     }
 
     public function getAllowNewContent(): bool
     {
-        $pageId = $this->getPageId();
-        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($pageId)['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+        $allowInconsistentLanguageHandling = $this->drawingConfiguration->getAllowInconsistentLanguageHandling();
         if (!$allowInconsistentLanguageHandling && $this->getLanguageModeIdentifier() === 'connected') {
             return false;
         }
@@ -272,20 +229,12 @@ class PageLayoutContext
 
     public function getLanguageMode(): string
     {
-        switch ($this->getLanguageModeIdentifier()) {
-            case 'mixed':
-                $languageMode = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageModeMixed');
-                break;
-            case 'connected':
-                $languageMode = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageModeConnected');
-                break;
-            case 'free':
-                $languageMode = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageModeFree');
-                break;
-            default:
-                $languageMode = '';
-        }
-        return $languageMode;
+        return match ($this->getLanguageModeIdentifier()) {
+            'mixed' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageModeMixed'),
+            'connected' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageModeConnected'),
+            'free' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageModeFree'),
+            default => '',
+        };
     }
 
     public function getLanguageModeIdentifier(): string
@@ -301,7 +250,6 @@ class PageLayoutContext
         if (!$this->getBackendUser()->check('tables_modify', 'pages')) {
             return [];
         }
-        $id = $this->getPageId();
 
         // First, select all languages that are available for the current user
         $availableTranslations = [];
@@ -322,13 +270,13 @@ class PageLayoutContext
             ->where(
                 $queryBuilder->expr()->eq(
                     $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
-                    $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->pageId, Connection::PARAM_INT)
                 )
             );
         $statement = $queryBuilder->executeQuery();
         while ($row = $statement->fetchAssociative()) {
             BackendUtility::workspaceOL('pages', $row, $this->getBackendUser()->workspace);
-            if ($row && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+            if ($row && VersionState::tryFrom($row['t3ver_state']) !== VersionState::DELETE_PLACEHOLDER) {
                 unset($availableTranslations[(int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]]);
             }
         }
@@ -346,7 +294,7 @@ class PageLayoutContext
                     [
                         'cmd' => [
                             'pages' => [
-                                $id => [
+                                $this->pageId => [
                                     'localize' => $languageUid,
                                 ],
                             ],
@@ -354,7 +302,7 @@ class PageLayoutContext
                         'redirect' => (string)$uriBuilder->buildUriFromRoute(
                             'record_edit',
                             [
-                                'justLocalized' => 'pages:' . $id . ':' . $languageUid,
+                                'justLocalized' => 'pages:' . $this->pageId . ':' . $languageUid,
                                 'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
                             ]
                         ),
@@ -368,7 +316,7 @@ class PageLayoutContext
 
     public function getLocalizedPageTitle(): string
     {
-        return $this->getLocalizedPageRecord()['title'] ?? $this->getPageRecord()['title'];
+        return $this->localizedPageRecord['title'] ?? $this->pageRecord['title'];
     }
 
     public function getLocalizedPageRecord(): ?array
