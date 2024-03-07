@@ -51,25 +51,14 @@ with the name of your preset.
 .. code-block:: php
    :caption: EXT:my_sitepackage/ext_localconf.php
 
-   $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['my_preset'] = 'EXT:my_extension/Configuration/RTE/MyPreset.yaml';
+   $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['my_preset']
+      = 'EXT:my_extension/Configuration/RTE/MyPreset.yaml';
 
 In :file:`Configuration/RTE/MyPreset.yaml`, create your configuration, for example:
 
-.. code-block:: yaml
+.. literalinclude:: _Examples/_MyPreset.yaml
+   :language: yaml
    :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
-
-   # Import basic configuration
-   imports:
-     - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
-     - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
-     - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
-   # Add configuration for the editor
-   # For complete documentation see http://docs.ckeditor.com/#!/api/CKEDITOR.config
-   editor:
-     config:
-       # Include custom CSS
-       contentsCss:
-         - "EXT:my_extension/Resources/Public/Css/rte.css"
 
 See also the note for :option:`editor.config.contentsCss`.
 
@@ -81,20 +70,9 @@ items in the YAML configuration. The following configuration shows the toolbar
 configuration of the minimal editor setup included in file
 :file:`EXT:rte_ckeditor/Configuration/RTE/Minimal.yaml`:
 
-.. code-block:: yaml
+.. literalinclude:: _Examples/_CustomizeToolbar.yaml
+   :language: yaml
    :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
-
-   # Minimal configuration for the editor
-   editor:
-     config:
-       toolbar:
-         items:
-           - bold
-           - italic
-           - '|'
-           - clipboard
-           - undo
-           - redo
 
 The :yaml:`'|'` can be used as a separator between groups of toolbar items.
 
@@ -110,17 +88,9 @@ To save space in the toolbar or to arrange the features thematically, it is
 possible to group several items into a dropdown as shown in the following
 example:
 
-.. code-block:: yaml
+.. literalinclude:: _Examples/_GroupingToolbarItems.yaml
+   :language: yaml
    :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
-
-   # Minimal configuration for the editor
-   editor:
-     config:
-       toolbar:
-         items:
-           - bold
-           - italic
-           - { label: 'Additional', icon: 'threeVerticalDots', items: [ 'specialCharacters', 'horizontalLine' ] }
 
 
 How do I allow a specific tag?
@@ -129,15 +99,9 @@ How do I allow a specific tag?
 Allowed content in CKEditor5 is to be configured via the General HTML Support
 plugin option :yaml:`config.htmlSupport`.
 
-.. code-block:: yaml
+.. literalinclude:: _Examples/_AllowSpecificTag.yaml
+   :language: yaml
    :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
-
-   # Allow the <iframe> tag with all attributes, all classes and all styles:
-   RTE:
-     config:
-       htmlSupport:
-         allow:
-           - { name: 'iframe', attributes: true, classes: true, styles: true }
 
 .. note::
    :yaml:`config.htmlSupport` only applies to elements that are "known" to
@@ -158,46 +122,9 @@ How do I configure the font plugin?
 
 In order to use the font plugin, the RTE configuration needs to be adapted:
 
-.. code-block:: yaml
+.. literalinclude:: _Examples/_FontPlugin.yaml
+   :language: yaml
    :caption: EXT:my_sitepackage/Configuration/RTE/MyPreset.yaml
-
-   editor:
-     config:
-       toolbar:
-         items:
-           # add button to select font family
-           - fontFamily
-           # add button to select font size
-           - fontSize
-           # add button to select font color
-           - fontColor
-           # add button to select font background color
-           - fontBackgroundColor
-
-       fontColor:
-         colors:
-           - { label: 'Orange', color: '#ff8700' }
-           - { label: 'Blue', color: '#0080c9' }
-           - { label: 'Green', color: '#209d44' }
-
-       fontBackgroundColor:
-         colors:
-           - { label: 'Stage orange light', color: '#fab85c' }
-
-       fontFamily:
-         options:
-           - 'default'
-           - 'Arial, sans-serif'
-
-       fontSize:
-         options:
-           - 'default'
-           - 18
-           - 21
-
-       importModules:
-         - { 'module': '@ckeditor/ckeditor5-font', 'exports': ['Font'] }
-
 
 More information can be found in the
 `official documentation of CKEditor <https://ckeditor.com/docs/ckeditor5/latest/features/font.html>`__.
@@ -220,10 +147,12 @@ Make sure to replace `<my_extension>` with your extension key.
 
 .. rst-class:: bignums
 
-1. Create the file :file:`<my_extension>/Resources/Public/JavaScript/Ckeditor/timestamp-plugin.js`
-   and add the following ES6 JavaScript code:
+1. Create the plugin file
+
+   Add the following ES6 JavaScript code:
 
    .. code-block:: javascript
+      :caption: EXT:<my_extension>/Resources/Public/JavaScript/Ckeditor/timestamp-plugin.js
 
       import { Plugin } from '@ckeditor/ckeditor5-core';
       import { ButtonView } from '@ckeditor/ckeditor5-ui';
@@ -262,50 +191,30 @@ Make sure to replace `<my_extension>` with your extension key.
         }
       }
 
-2. Register the ES6 JavaScript in :file:`EXT:<my_extension>/Configuration/JavaScriptModules.php`
+2. Register the ES6 JavaScript
 
-   .. code-block:: php
-
-      <?php
-
-      return [
-          'dependencies' => ['backend'],
-          'tags' => [
-              'backend.form',
-          ],
-          'imports' => [
-              '@my-vendor/my-package/timestamp-plugin.js' => 'EXT:<my_extension>/Resources/Public/JavaScript/Ckeditor/timestamp-plugin.js',
-          ],
-      ];
+   .. literalinclude:: _Examples/_timestamp-plugin_JavaScriptModules.php
+      :language: php
+      :caption: EXT:<my_extension>/Configuration/JavaScriptModules.php
 
 3. Include the plugin in the CKEditor configuration
 
-   .. code-block:: yaml
+   .. literalinclude:: _Examples/_timestamp-plugin.yaml
+      :language: yaml
+      :caption: EXT:<my_extension>/Configuration/RTE/MyPreset.yaml
+      :emphasize-lines: 4,14
       :linenos:
-
-      editor:
-        config:
-          importModules:
-            - { module: '@my-vendor/my-package/timestamp-plugin.js', exports: ['Timestamp'] }
-          toolbar:
-            items:
-              - bold
-              - italic
-              - '|'
-              - clipboard
-              - undo
-              - redo
-              - '|'
-              - timestamp
 
    The :yaml:`importModules` item in line 4 imports the previously registered ES6
    module. The :yaml:`timestamp` item in line 14 adds the plugin to the toolbar.
 
 4. Use the plugin
 
-   .. image:: images/timestamp-plugin.png
+   .. figure:: images/timestamp-plugin.png
       :class: with-shadow
+      :alt: The custom timestamp plugin in the editor
 
+      The custom timestamp plugin in the editor
 
 .. -------------------------------------
 .. todo: additional questions

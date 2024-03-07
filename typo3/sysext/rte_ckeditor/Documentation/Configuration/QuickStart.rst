@@ -46,30 +46,14 @@ Override the configuration preset "default" by adding this in :file:`<my_extensi
    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:my_extension/Configuration/RTE/Default.yaml';
 
 Add the file :file:`Configuration/RTE/Default.yaml` to your extension, use the file
-:file:`EXT:rte_ckeditor/Configuration/RTE/Full.yaml` as example (see latest
-`Full.yaml <https://github.com/typo3/typo3/blob/main/typo3/sysext/rte_ckeditor/Configuration/RTE/Full.yaml>`__)
+:t3src:`rte_ckeditor/Configuration/RTE/Full.yaml` as example.
 
 We explain the example :file:`Minimal.yaml` from the Core:
 
-.. code-block:: yaml
+.. literalinclude:: _Quickstart/_Minimal.yaml
+   :language: yaml
+   :caption: EXT:rte_ckeditor/Configuration/RTE/Minimal.yaml
    :linenos:
-
-   # Load default processing options
-   imports:
-       - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Processing.yaml' }
-       - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml' }
-
-   # Minimal configuration for the editor
-   editor:
-     config:
-       toolbar:
-         items:
-           - bold
-           - italic
-           - '|'
-           - clipboard
-           - undo
-           - redo
 
 line #2
    Imports existing files to make basic parts reusable and improve structure of configuration
