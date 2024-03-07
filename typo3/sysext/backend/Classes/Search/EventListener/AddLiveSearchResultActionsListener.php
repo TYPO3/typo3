@@ -65,9 +65,9 @@ final class AddLiveSearchResultActionsListener
 
         if (
             $backendUserIsActive
-            && (int)(($currentUser->user[$currentUser->userid_column] ?? 0) !== $resultItem->getExtraData()['uid'])
             && $currentUser->isAdmin()
             && $currentUser->getOriginalUserIdWhenInSwitchUserMode() === null
+            && (int)$currentUser->getUserId() !== (int)$resultItem->getExtraData()['uid']
         ) {
             $switchUserAction = (new ResultItemAction('switch_backend_user'))
                 ->setLabel($this->languageService->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:switchBackMode'))

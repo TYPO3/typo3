@@ -226,7 +226,7 @@ class RecordListDownloadController
                         'table' => $this->table,
                         'page' => $this->id,
                         'timestamp' => GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp'),
-                        'user' => $user->user[$user->username_column] ?? '',
+                        'user' => $user->getUserName() ?? '',
                         'site' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
                         'options' => [
                             'columns' => array_values($headerRow),

@@ -50,7 +50,7 @@ final class SwitchUserViewHelper extends AbstractTagBasedViewHelper
         $currentUser = self::getBackendUserAuthentication();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        if ((int)$targetUser->getUid() === (int)($currentUser->user[$currentUser->userid_column] ?? 0)
+        if ((int)$targetUser->getUid() === (int)$currentUser->getUserId()
             || !$targetUser->isActive()
             || !$currentUser->isAdmin()
             || $currentUser->getOriginalUserIdWhenInSwitchUserMode() !== null

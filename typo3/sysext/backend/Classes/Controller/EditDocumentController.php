@@ -522,7 +522,7 @@ class EditDocumentController
             $tce->process_cmdmap();
 
             // Update the module menu for the current backend user, as they updated their UI language
-            $currentUserId = (int)($beUser->user[$beUser->userid_column] ?? 0);
+            $currentUserId = $beUser->getUserId();
             if ($currentUserId
                 && (string)($this->data['be_users'][$currentUserId]['lang'] ?? '') !== ''
                 && $this->data['be_users'][$currentUserId]['lang'] !== $beUser->user['lang']
@@ -1849,8 +1849,7 @@ class EditDocumentController
     protected function isRecordCurrentBackendUser(): bool
     {
         $backendUser = $this->getBackendUser();
-        return $this->firstEl['table'] === 'be_users'
-            && (int)($this->firstEl['uid'] ?? 0) === (int)$backendUser->user[$backendUser->userid_column];
+        return $this->firstEl['table'] === 'be_users' && (int)($this->firstEl['uid'] ?? 0) === $backendUser->getUserId();
     }
 
     /**

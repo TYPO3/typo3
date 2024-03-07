@@ -70,13 +70,12 @@ class MfaInfoElement extends AbstractFormElement
 
         $isDeactivationAllowed = true;
         // Providers from system maintainers can only be deactivated by system maintainers.
-        // This check is however only be necessary if the target is a backend user.
-        if ($targetUser instanceof BackendUserAuthentication) {
-            $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
-            $isTargetUserSystemMaintainer = $targetUser->isAdmin() && in_array($userId, $systemMaintainers, true);
-            if ($isTargetUserSystemMaintainer && !$currentBackendUser->isSystemMaintainer()) {
-                $isDeactivationAllowed = false;
-            }
+        // However, this check is only necessary if the target is a backend user.
+        if (($targetUser instanceof BackendUserAuthentication)
+            && $targetUser->isSystemMaintainer(true)
+            && !$currentBackendUser->isSystemMaintainer()
+        ) {
+            $isDeactivationAllowed = false;
         }
 
         // Fetch providers from the mfa field

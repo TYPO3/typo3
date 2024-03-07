@@ -65,8 +65,8 @@ class SwitchUserController
         $targetUserId = (int)($request->getParsedBody()['targetUser'] ?? 0);
 
         if (!$targetUserId
-            || $targetUserId === (int)($currentUser->user[$currentUser->userid_column] ?? 0)
             || !$currentUser->isAdmin()
+            || $targetUserId === $currentUser->getUserId()
             || $currentUser->getOriginalUserIdWhenInSwitchUserMode() !== null
         ) {
             return $this->jsonResponse(['success' => false]);
@@ -86,13 +86,13 @@ class SwitchUserController
 
         // Write user switch to log
         $currentUser->writelog(Type::LOGIN, 2, 0, 1, 'User %s switched to user %s (be_users:%s)', [
-            $currentUser->user[$currentUser->username_column] ?? '',
+            $currentUser->getUserName() ?? '',
             $targetUser['username'] ?? '',
             $targetUserId,
         ]);
 
         $sessionObject = $currentUser->getSession();
-        $sessionObject->set('backuserid', (int)($currentUser->user[$currentUser->userid_column] ?? 0));
+        $sessionObject->set('backuserid', $currentUser->getUserId() ?? 0);
         $sessionRecord = $sessionObject->toArray();
         $sessionRecord['ses_userid'] = $targetUserId;
         $this->sessionBackend->update($sessionObject->getIdentifier(), $sessionRecord);

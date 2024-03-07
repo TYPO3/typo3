@@ -302,8 +302,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $groupDataArr = [];
         if (is_array($this->user)) {
             $this->logger->debug('Get usergroups for user', [
-                $this->userid_column => $this->user[$this->userid_column],
-                $this->username_column => $this->user[$this->username_column],
+                $this->userid_column => $this->getUserId(),
+                $this->username_column => $this->getUserName(),
             ]);
             $groupDataArr = GeneralUtility::makeInstance(GroupResolver::class)->resolveGroupsForUser($this->user, $this->usergroup_table);
         }
