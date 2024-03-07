@@ -79,6 +79,7 @@ class Locales implements SingletonInterface
         'mi' => 'Maori',
         'mk' => 'Macedonian',
         'ms' => 'Malay',
+        'mt' => 'Maltese',
         'nl' => 'Dutch',
         'no' => 'Norwegian',
         'pl' => 'Polish',
