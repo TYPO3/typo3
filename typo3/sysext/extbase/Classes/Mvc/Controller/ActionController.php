@@ -63,16 +63,12 @@ abstract class ActionController implements ControllerInterface
 {
     protected ResponseFactoryInterface $responseFactory;
     protected StreamFactoryInterface $streamFactory;
+    protected HashService $hashService;
 
     /**
      * @internal
      */
     protected ReflectionService $reflectionService;
-
-    /**
-     * @internal
-     */
-    protected HashService $hashService;
 
     /**
      * @internal
