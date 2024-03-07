@@ -50,13 +50,13 @@ class NoteRenderer
     {
         $backendUser = $this->getBackendUser();
         if ($pid <= 0
-            || empty($backendUser->user[$backendUser->userid_column])
+            || empty($backendUser->getUserId())
             || !$backendUser->check('tables_select', 'sys_note')
         ) {
             return '';
         }
 
-        $notes = $this->sysNoteRepository->findByPidAndAuthorId($pid, (int)$backendUser->user[$backendUser->userid_column], $position);
+        $notes = $this->sysNoteRepository->findByPidAndAuthorId($pid, (int)$backendUser->getUserId(), $position);
         if (!$notes) {
             return '';
         }

@@ -264,8 +264,8 @@ class MfaSetupController extends AbstractMfaController
         $user = $this->getBackendUser();
         $context = [
             'user' => [
-                'uid' => $user->user[$user->userid_column],
-                'username' => $user->user[$user->username_column],
+                'uid' => $user->getUserId(),
+                'username' => $user->getUserName(),
             ],
         ];
         if ($mfaProvider !== null) {

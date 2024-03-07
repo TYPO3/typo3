@@ -49,7 +49,7 @@ class TcaDisplayConditions
     public function isRecordCurrentUser(array $parameters): bool
     {
         $backendUser = $this->getBackendUser();
-        $isCurrentUser = (int)($parameters['record']['uid'] ?? 0) === (int)$backendUser->user[$backendUser->userid_column];
+        $isCurrentUser = (int)($parameters['record']['uid'] ?? 0) === (int)$backendUser->getUserId();
         return strtolower($parameters['conditionParameters'][0] ?? 'true') !== 'true' ? !$isCurrentUser : $isCurrentUser;
     }
 

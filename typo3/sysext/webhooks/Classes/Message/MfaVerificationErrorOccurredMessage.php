@@ -55,8 +55,8 @@ final class MfaVerificationErrorOccurredMessage implements WebhookMessageInterfa
             $event->getRequest()->getUri(),
             [
                 'user' => [
-                    'id' => $user->user[$user->userid_column],
-                    'name' => $user->user[$user->username_column],
+                    'id' => $user->getUserId(),
+                    'name' => $user->getUserName(),
                 ],
                 'provider' => $event->getProviderIdentifier(),
                 'isLocked' => $event->isProviderLocked(),

@@ -557,8 +557,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 // The login session is started.
                 $this->loginSessionStarted = true;
                 $this->logger->debug('User session finally read', [
-                    $this->userid_column => $this->user[$this->userid_column],
-                    $this->username_column => $this->user[$this->username_column],
+                    $this->userid_column => $this->getUserId(),
+                    $this->username_column => $this->getUserName(),
                 ]);
             } else {
                 // if we come here the current session is for sure not anonymous as this is a pre-condition for $authenticated = true
@@ -941,15 +941,16 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function writeUC()
     {
-        if (is_array($this->user) && $this->user[$this->userid_column]) {
+        $userId = $this->getUserId();
+        if ($userId) {
             $this->logger->debug('writeUC: {userid_column}={value}', [
                 'userid_column' => $this->userid_column,
-                'value' => $this->user[$this->userid_column],
+                'value' => $userId,
             ]);
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user_table)->update(
                 $this->user_table,
                 ['uc' => serialize($this->uc)],
-                [$this->userid_column => (int)$this->user[$this->userid_column]],
+                [$this->userid_column => $userId],
                 ['uc' => Connection::PARAM_LOB]
             );
         }
@@ -1251,6 +1252,22 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             ->where($query->expr()->eq($this->username_column, $query->createNamedParameter($name)));
 
         return $query->executeQuery()->fetchAssociative();
+    }
+
+    public function getUserId(): ?int
+    {
+        if (isset($this->user[$this->userid_column])) {
+            return (int)$this->user[$this->userid_column];
+        }
+        return null;
+    }
+
+    public function getUserName(): ?string
+    {
+        if (isset($this->user[$this->username_column])) {
+            return (string)$this->user[$this->username_column];
+        }
+        return null;
     }
 
     public function getSession(): UserSession

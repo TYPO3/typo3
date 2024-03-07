@@ -157,8 +157,8 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
         $this->logger->debug('MFA properties updated', [
             'provider' => $this->providerIdentifier,
             'user' => [
-                'uid' => $this->user->user[$this->user->userid_column],
-                'username' => $this->user->user[$this->user->username_column],
+                'uid' => $this->user->getUserId(),
+                'username' => $this->user->getUserName(),
             ],
         ]);
 
@@ -166,7 +166,7 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
         return (bool)GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user->user_table)->update(
             $this->user->user_table,
             [self::DATABASE_FIELD_NAME => $mfa],
-            [$this->user->userid_column => (int)$this->user->user[$this->user->userid_column]],
+            [$this->user->userid_column => (int)$this->user->getUserId()],
             [self::DATABASE_FIELD_NAME => Connection::PARAM_LOB]
         );
     }

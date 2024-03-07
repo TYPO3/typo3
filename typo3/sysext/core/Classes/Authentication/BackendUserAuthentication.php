@@ -375,17 +375,19 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Checks if the user is in the valid list of allowed system maintainers. if the list is not set,
      * then all admins are system maintainers. If the list is empty, no one is system maintainer (good for production
      * systems). If the currently logged in user is in "switch user" mode, this method will return false.
+     *
+     * @param bool $pure Whether to apply pure behavior (ignore development & skip fallback for empty setting)
      */
-    public function isSystemMaintainer(): bool
+    public function isSystemMaintainer(bool $pure = false): bool
     {
         if (!$this->isAdmin()) {
             return false;
         }
 
-        if ($GLOBALS['BE_USER']->getOriginalUserIdWhenInSwitchUserMode()) {
+        if (!$pure && $GLOBALS['BE_USER']->getOriginalUserIdWhenInSwitchUserMode()) {
             return false;
         }
-        if (Environment::getContext()->isDevelopment()) {
+        if (!$pure && Environment::getContext()->isDevelopment()) {
             return true;
         }
         $systemMaintainers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
@@ -396,11 +398,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // No system maintainers set up yet, so any admin is allowed to access the modules
         // but explicitly no system maintainers allowed (empty string in TYPO3_CONF_VARS).
         // @todo: this needs to be adjusted once system maintainers can log into the install tool with their credentials
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'])
-            && empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'])) {
-            return false;
+        if (!$pure && !isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'])) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -2045,8 +2046,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // In case the current session is a "switch-user" session, MFA is not required
         if ($this->getOriginalUserIdWhenInSwitchUserMode() !== null) {
             $this->logger->debug('MFA is skipped in switch user mode', [
-                $this->userid_column => $this->user[$this->userid_column],
-                $this->username_column => $this->user[$this->username_column],
+                $this->userid_column => $this->getUserId(),
+                $this->username_column => $this->getUserName(),
             ]);
             return;
         }

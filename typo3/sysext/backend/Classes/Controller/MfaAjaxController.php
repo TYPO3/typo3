@@ -83,7 +83,7 @@ class MfaAjaxController
     protected function deactivateAction(ServerRequestInterface $request, AbstractUserAuthentication $user): array
     {
         $lang = $this->getLanguageService();
-        $userName = (string)($user->user[$user->username_column] ?? '');
+        $userName = $user->getUserName() ?? '';
         $providerToDeactivate = (string)($request->getParsedBody()['provider'] ?? '');
 
         if ($providerToDeactivate === '') {
@@ -191,13 +191,12 @@ class MfaAjaxController
                 return false;
             }
             // Providers from system maintainers can only be deactivated by system maintainers.
-            // This check is however only be necessary if the target is a backend user.
-            if ($user instanceof BackendUserAuthentication) {
-                $systemMaintainers = array_map(intval(...), $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
-                $isTargetUserSystemMaintainer = $user->isAdmin() && in_array((int)$user->user[$user->userid_column], $systemMaintainers, true);
-                if ($isTargetUserSystemMaintainer && !$this->getBackendUser()->isSystemMaintainer()) {
-                    return false;
-                }
+            // However, this check is only necessary if the target is a backend user.
+            if (($user instanceof BackendUserAuthentication)
+                && $user->isSystemMaintainer(true)
+                && !$this->getBackendUser()->isSystemMaintainer()
+            ) {
+                return false;
             }
             return true;
         }

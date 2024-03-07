@@ -616,8 +616,7 @@ class RecordProvider extends AbstractProvider
      */
     protected function isRecordCurrentBackendUser(): bool
     {
-        return $this->table === 'be_users'
-            && (int)($this->record['uid'] ?? 0) === (int)$this->backendUser->user[$this->backendUser->userid_column];
+        return $this->table === 'be_users' && (int)($this->record['uid'] ?? 0) === $this->backendUser->getUserId();
     }
 
     /**

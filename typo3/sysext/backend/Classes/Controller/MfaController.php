@@ -194,10 +194,10 @@ class MfaController extends AbstractMfaController
         int $error = SystemLogErrorClassification::MESSAGE
     ): void {
         $user = $this->getBackendUser();
-        $username = $user->user[$user->username_column];
+        $username = $user->getUserName();
         $context = [
             'user' => [
-                'uid' => $user->user[$user->userid_column],
+                'uid' => $user->getUserId(),
                 'username' => $username,
             ],
         ];
