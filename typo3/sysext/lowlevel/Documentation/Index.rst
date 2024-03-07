@@ -96,4 +96,3 @@ pages and records.
    :hidden:
 
    Sitemap
-   genindex
