@@ -18,16 +18,21 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class InstallToolFormProtectionTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+    protected HashService $hashService;
+
     protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
+        $this->hashService = new HashService();
     }
 
     #[Test]
@@ -37,7 +42,10 @@ final class InstallToolFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = '42';
-        $tokenId = GeneralUtility::hmac($formName . $action . $formInstanceName . $sessionToken);
+        $tokenId = $this->hashService->hmac(
+            $formName . $action . $formInstanceName . $sessionToken,
+            AbstractFormProtection::class
+        );
         $_SESSION['installToolFormToken'] = $sessionToken;
         $subject = $this->getAccessibleMock(InstallToolFormProtection::class, null);
         $subject->_call('retrieveSessionToken');

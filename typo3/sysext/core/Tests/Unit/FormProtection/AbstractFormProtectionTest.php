@@ -26,6 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class AbstractFormProtectionTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
     protected ?FormProtectionTesting $subject;
 
     protected function setUp(): void

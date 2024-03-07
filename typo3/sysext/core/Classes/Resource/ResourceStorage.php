@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\FalDumpFileContentsDecoratorStream;
@@ -1406,7 +1407,8 @@ class ResourceStorage implements ResourceStorageInterface
                         $queryParameterArray['t'] = 'p';
                     }
 
-                    $queryParameterArray['token'] = GeneralUtility::hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile');
+                    $hashService = GeneralUtility::makeInstance(HashService::class);
+                    $queryParameterArray['token'] = $hashService->hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile');
                     $publicUrl = GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'));
                     $publicUrl .= '?' . http_build_query($queryParameterArray, '', '&', PHP_QUERY_RFC3986);
                 }

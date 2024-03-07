@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Page;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Page\Event\ResolveJavaScriptImportEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
@@ -40,6 +41,7 @@ class ImportMap
      * @param list<PackageInterface> $packages
      */
     public function __construct(
+        protected readonly HashService $hashService,
         protected readonly array $packages,
         protected readonly ?FrontendInterface $cache = null,
         protected readonly string $cacheIdentifier = '',
@@ -176,8 +178,9 @@ class ImportMap
         if ($isDevelopment) {
             $bust = (string)$GLOBALS['EXEC_TIME'];
         } else {
-            $bust = GeneralUtility::hmac(
-                Environment::getProjectPath() . implode('|', $extensionVersions)
+            $bust = $this->hashService->hmac(
+                Environment::getProjectPath() . implode('|', $extensionVersions),
+                self::class
             );
         }
 

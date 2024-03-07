@@ -98,7 +98,7 @@ final class InstallerController
             $this->packageManager->getPackage('backend'),
             $this->packageManager->getPackage('install'),
         ];
-        $importMap = new ImportMap($packages);
+        $importMap = new ImportMap($this->hashService, $packages);
         $sitePath = $request->getAttribute('normalizedParams')->getSitePath();
         $initModule = $sitePath . $importMap->resolveImport('@typo3/install/init-installer.js');
         $view = $this->initializeView();

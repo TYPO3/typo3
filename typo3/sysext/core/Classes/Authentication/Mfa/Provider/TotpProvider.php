@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -40,7 +41,7 @@ class TotpProvider implements MfaProviderInterface
 {
     private const MAX_ATTEMPTS = 3;
 
-    public function __construct(protected readonly Context $context) {}
+    public function __construct(protected readonly Context $context, protected readonly HashService $hashService) {}
 
     /**
      * Check if a TOTP is given in the current request
@@ -116,7 +117,7 @@ class TotpProvider implements MfaProviderInterface
 
         $secret = (string)($request->getParsedBody()['secret'] ?? '');
         $checksum = (string)($request->getParsedBody()['checksum'] ?? '');
-        if ($secret === '' || !hash_equals(GeneralUtility::hmac($secret, 'totp-setup'), $checksum)) {
+        if ($secret === '' || !hash_equals($this->hashService->hmac($secret, 'totp-setup'), $checksum)) {
             // Return since the request does not contain the initially created secret
             return false;
         }
@@ -234,7 +235,7 @@ class TotpProvider implements MfaProviderInterface
             'totpAuthUrl' => $totpAuthUrl,
             'qrCode' => $this->getSvgQrCode($totpAuthUrl),
             // Generate hmac of the secret to prevent it from being changed in the setup from
-            'checksum' => GeneralUtility::hmac($secret, 'totp-setup'),
+            'checksum' => $this->hashService->hmac($secret, 'totp-setup'),
         ]);
     }
 

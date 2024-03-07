@@ -19,12 +19,14 @@ namespace TYPO3\CMS\Core\Page;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 
 class ImportMapFactory implements SingletonInterface
 {
     public function __construct(
+        private readonly HashService $hashService,
         private readonly PackageManager $packageManager,
         private readonly FrontendInterface $assetsCache,
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -37,6 +39,7 @@ class ImportMapFactory implements SingletonInterface
             $this->packageManager->getActivePackages()
         );
         return new ImportMap(
+            $this->hashService,
             $activePackages,
             $this->assetsCache,
             $this->cacheIdentifier,

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\FormProtection;
 
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -80,8 +81,8 @@ abstract class AbstractFormProtection
         if ($formName == '') {
             throw new \InvalidArgumentException('$formName must not be empty.', 1294586643);
         }
-        $tokenId = GeneralUtility::hmac($formName . $action . $formInstanceName . $this->getSessionToken());
-        return $tokenId;
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        return $hashService->hmac($formName . $action . $formInstanceName . $this->getSessionToken(), self::class);
     }
 
     /**
@@ -96,7 +97,8 @@ abstract class AbstractFormProtection
      */
     public function validateToken($tokenId, $formName, $action = '', $formInstanceName = '')
     {
-        $validTokenId = GeneralUtility::hmac(((string)$formName . (string)$action) . (string)$formInstanceName . $this->getSessionToken());
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        $validTokenId = $hashService->hmac(((string)$formName . (string)$action) . (string)$formInstanceName . $this->getSessionToken(), self::class);
         if (hash_equals($validTokenId, (string)$tokenId)) {
             $isValid = true;
         } else {

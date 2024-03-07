@@ -20,15 +20,18 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BackendFormProtectionTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
     protected BackendFormProtection $subject;
     protected BackendUserAuthentication&MockObject $backendUserMock;
+    protected HashService $hashService;
 
     protected function setUp(): void
     {
@@ -42,6 +45,7 @@ final class BackendFormProtectionTest extends UnitTestCase
                 throw new \Exception('Closure called', 1442592030);
             }
         );
+        $this->hashService = new HashService();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
@@ -64,8 +68,9 @@ final class BackendFormProtectionTest extends UnitTestCase
         $action = 'edit';
         $formInstanceName = '42';
 
-        $tokenId = GeneralUtility::hmac(
-            $formName . $action . $formInstanceName . $sessionToken
+        $tokenId = $this->hashService->hmac(
+            $formName . $action . $formInstanceName . $sessionToken,
+            AbstractFormProtection::class
         );
 
         $this->backendUserMock

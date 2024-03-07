@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +34,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class TotpProviderTest extends FunctionalTestCase
 {
     private BackendUserAuthentication $user;
+    private HashService $hashService;
     private MfaProviderManifestInterface $subject;
 
     protected function setUp(): void
@@ -41,6 +43,7 @@ final class TotpProviderTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->user = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
+        $this->hashService = GeneralUtility::makeInstance(HashService::class);
         $this->subject = $this->get(MfaProviderRegistry::class)->getProvider('totp');
     }
 
@@ -151,7 +154,7 @@ final class TotpProviderTest extends FunctionalTestCase
         $parsedBody = [
             'totp' => GeneralUtility::makeInstance(Totp::class, $secret)->generateTotp((int)floor($timestamp / 30)),
             'secret' => $secret,
-            'checksum' => GeneralUtility::hmac($secret, 'totp-setup'),
+            'checksum' => $this->hashService->hmac($secret, 'totp-setup'),
 
         ];
         self::assertTrue($this->subject->activate($request->withParsedBody($parsedBody), $propertyManager));

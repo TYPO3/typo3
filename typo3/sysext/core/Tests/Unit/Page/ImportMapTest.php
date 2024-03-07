@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -34,6 +35,7 @@ final class ImportMapTest extends UnitTestCase
     protected bool $backupEnvironment = true;
 
     protected ?PackageManager $backupPackageManager = null;
+    protected HashService $hashService;
 
     protected function setUp(): void
     {
@@ -51,6 +53,7 @@ final class ImportMapTest extends UnitTestCase
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $this->backupPackageManager = \Closure::bind(fn(): PackageManager => ExtensionManagementUtility::$packageManager, null, ExtensionManagementUtility::class)();
+        $this->hashService = new HashService();
         ExtensionManagementUtility::setPackageManager($this->mockPackageManager());
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
@@ -68,7 +71,7 @@ final class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['core'];
 
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $output = $importMap->render('/', new ConsumableNonce());
 
         self::assertSame('', $output);
@@ -79,7 +82,7 @@ final class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['package1'];
 
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $url = $importMap->resolveImport('lit');
         $output = $importMap->render('/', new ConsumableNonce());
 
@@ -92,7 +95,7 @@ final class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['core'];
 
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $url = $importMap->resolveImport('lit');
 
         self::assertStringStartsWith('Fixtures/ImportMap/core/Resources/Public/JavaScript/Contrib/lit/index.js?bust=', $url);
@@ -103,7 +106,7 @@ final class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['core'];
 
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $url = $importMap->resolveImport('lit');
         $output = $importMap->render('/', new ConsumableNonce());
 
@@ -118,7 +121,7 @@ final class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['core'];
 
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $importMap->includeImportsFor('@typo3/core/Module1.js');
         $output = $importMap->render('/', new ConsumableNonce());
 
@@ -131,7 +134,7 @@ final class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['core', 'package2'];
 
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $importMap->includeImportsFor('@typo3/core/Module1.js');
         $output = $importMap->render('/', new ConsumableNonce());
 
@@ -145,7 +148,7 @@ final class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['package2', 'package3'];
 
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $importMap->includeImportsFor('@typo3/package2/File.js');
         $output = $importMap->render('/', new ConsumableNonce());
 
@@ -162,7 +165,7 @@ final class ImportMapTest extends UnitTestCase
     public function dependenciesAreLoaded(): void
     {
         $this->packages = ['core', 'package2'];
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $importMap->includeImportsFor('@typo3/package2/file.js');
         $output = $importMap->render('/', new ConsumableNonce());
 
@@ -173,7 +176,7 @@ final class ImportMapTest extends UnitTestCase
     public function unusedConfigurationsAreOmitted(): void
     {
         $this->packages = ['core', 'package2', 'package4'];
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $importMap->includeImportsFor('@typo3/package2/file.js');
         $output = $importMap->render('/', new ConsumableNonce());
 
@@ -189,7 +192,7 @@ final class ImportMapTest extends UnitTestCase
     public function includeAllImportsIsRespected(): void
     {
         $this->packages = ['core', 'package2', 'package4'];
-        $importMap = new ImportMap($this->getPackages());
+        $importMap = new ImportMap($this->hashService, $this->getPackages());
         $importMap->includeAllImports();
         $importMap->includeImportsFor('@typo3/package2/file.js');
         $output = $importMap->render('/', new ConsumableNonce());

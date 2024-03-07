@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
@@ -979,7 +980,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function pushModuleData(string $module, mixed $data, bool $dontPersistImmediately = false): void
     {
-        $sessionHash = GeneralUtility::hmac(
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        $sessionHash = $hashService->hmac(
             $this->userSession->getIdentifier(),
             'core-session-hash'
         );
@@ -999,7 +1001,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function getModuleData(string $module, string $type = ''): mixed
     {
-        $sessionHash = GeneralUtility::hmac(
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        $sessionHash = $hashService->hmac(
             $this->userSession->getIdentifier(),
             'core-session-hash'
         );

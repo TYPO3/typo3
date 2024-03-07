@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\Report;
@@ -26,7 +27,6 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportDetails;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportRepository;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportStatus;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\IpAnonymizationUtility;
 
 /**
@@ -38,7 +38,8 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
 
     public function __construct(
         protected readonly PolicyProvider $policyProvider,
-        protected readonly ReportRepository $reportRepository
+        protected readonly ReportRepository $reportRepository,
+        protected readonly HashService $hashService,
     ) {}
 
     protected function persistCspReport(Scope $scope, ServerRequestInterface $request): void
@@ -70,7 +71,7 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
 
     protected function generateReportSummary(Scope $scope, ReportDetails $details): string
     {
-        return GeneralUtility::hmac(
+        return $this->hashService->hmac(
             json_encode([
                 $scope,
                 $details['effective-directive'],

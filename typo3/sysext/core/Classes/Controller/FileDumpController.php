@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Event\ModifyFileDumpEvent;
 use TYPO3\CMS\Core\Resource\File;
@@ -42,15 +43,18 @@ class FileDumpController
     protected ResourceFactory $resourceFactory;
     protected EventDispatcherInterface $eventDispatcher;
     protected ResponseFactoryInterface $responseFactory;
+    protected HashService $hashService;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         ResourceFactory $resourceFactory,
-        ResponseFactoryInterface $responseFactory
+        ResponseFactoryInterface $responseFactory,
+        HashService $hashService
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->resourceFactory = $resourceFactory;
         $this->responseFactory = $responseFactory;
+        $this->hashService = $hashService;
     }
 
     /**
@@ -182,7 +186,7 @@ class FileDumpController
     protected function isTokenValid(array $parameters, ServerRequestInterface $request): bool
     {
         return hash_equals(
-            GeneralUtility::hmac(implode('|', $parameters), 'resourceStorageDumpFile'),
+            $this->hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile'),
             $request->getQueryParams()['token'] ?? ''
         );
     }

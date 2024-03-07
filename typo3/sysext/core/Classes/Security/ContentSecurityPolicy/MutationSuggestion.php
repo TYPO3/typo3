@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -52,7 +53,8 @@ final class MutationSuggestion implements \JsonSerializable
 
     public function hmac(): string
     {
-        return GeneralUtility::hmac(json_encode($this->getHashProperties()), self::class);
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        return $hashService->hmac(json_encode($this->getHashProperties()), self::class);
     }
 
     public function jsonSerialize(): array
@@ -63,9 +65,10 @@ final class MutationSuggestion implements \JsonSerializable
             'priority' => $this->priority,
             'label' => $this->label,
         ];
+        $hashService = GeneralUtility::makeInstance(HashService::class);
         $hashContent = json_encode($this->getHashProperties());
         $properties['hash'] = sha1($hashContent);
-        $properties['hmac'] = GeneralUtility::hmac($hashContent, self::class);
+        $properties['hmac'] = $hashService->hmac($hashContent, self::class);
         return $properties;
     }
 

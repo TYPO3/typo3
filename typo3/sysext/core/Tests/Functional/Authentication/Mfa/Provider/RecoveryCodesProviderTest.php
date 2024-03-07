@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodes;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
@@ -36,6 +37,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class RecoveryCodesProviderTest extends FunctionalTestCase
 {
     private BackendUserAuthentication $user;
+    private HashService $hashService;
     private MfaProviderManifestInterface $subject;
 
     protected array $configurationToUseInTestInstance = [
@@ -58,6 +60,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->user = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
+        $this->hashService = GeneralUtility::makeInstance(HashService::class);
         $this->subject = $this->get(MfaProviderRegistry::class)->getProvider('recovery-codes');
     }
 
@@ -138,7 +141,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         $codes = GeneralUtility::makeInstance(RecoveryCodes::class, 'BE')->generatePlainRecoveryCodes();
         $parsedBody = [
             'recoveryCodes' => implode(PHP_EOL, $codes),
-            'checksum' => GeneralUtility::hmac(json_encode($codes) ?: '', 'recovery-codes-setup'),
+            'checksum' => $this->hashService->hmac(json_encode($codes) ?: '', 'recovery-codes-setup'),
         ];
         self::assertTrue($this->subject->activate($request->withParsedBody($parsedBody), $propertyManager));
     }

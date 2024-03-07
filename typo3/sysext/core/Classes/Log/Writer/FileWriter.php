@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Log\Writer;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -266,7 +267,8 @@ END;
      */
     protected function getDefaultLogFileName()
     {
-        $namePart = substr(GeneralUtility::hmac($this->defaultLogFileTemplate, 'defaultLogFile'), 0, 10);
+        $hashService = GeneralUtility::makeInstance(HashService::class);
+        $namePart = substr($hashService->hmac($this->defaultLogFileTemplate, 'defaultLogFile'), 0, 10);
         if ($this->logFileInfix !== '') {
             $namePart = $this->logFileInfix . '_' . $namePart;
         }
