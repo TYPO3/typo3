@@ -1,0 +1,36 @@
+editor:
+  config:
+    toolbar:
+      items:
+        # add button to select font family
+        - fontFamily
+        # add button to select font size
+        - fontSize
+        # add button to select font color
+        - fontColor
+        # add button to select font background color
+        - fontBackgroundColor
+
+    fontColor:
+      colors:
+        - { label: 'Orange', color: '#ff8700' }
+        - { label: 'Blue', color: '#0080c9' }
+        - { label: 'Green', color: '#209d44' }
+
+    fontBackgroundColor:
+      colors:
+        - { label: 'Stage orange light', color: '#fab85c' }
+
+    fontFamily:
+      options:
+        - 'default'
+        - 'Arial, sans-serif'
+
+    fontSize:
+      options:
+        - 'default'
+        - 18
+        - 21
+
+    importModules:
+      - { 'module': '@ckeditor/ckeditor5-font', 'exports': [ 'Font' ] }

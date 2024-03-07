@@ -1,0 +1,14 @@
+editor:
+  config:
+    importModules:
+      - { module: '@my-vendor/my-package/timestamp-plugin.js', exports: [ 'Timestamp' ] }
+    toolbar:
+      items:
+        - bold
+        - italic
+        - '|'
+        - clipboard
+        - undo
+        - redo
+        - '|'
+        - timestamp

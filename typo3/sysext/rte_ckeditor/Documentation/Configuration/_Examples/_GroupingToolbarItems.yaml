@@ -1,0 +1,8 @@
+# Minimal configuration for the editor
+editor:
+  config:
+    toolbar:
+      items:
+        - bold
+        - italic
+        - { label: 'Additional', icon: 'threeVerticalDots', items: [ 'specialCharacters', 'horizontalLine' ] }

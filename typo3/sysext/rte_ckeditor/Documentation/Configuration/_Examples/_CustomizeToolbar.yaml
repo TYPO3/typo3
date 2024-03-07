@@ -1,0 +1,11 @@
+# Minimal configuration for the editor
+editor:
+  config:
+    toolbar:
+      items:
+        - bold
+        - italic
+        - '|'
+        - clipboard
+        - undo
+        - redo
