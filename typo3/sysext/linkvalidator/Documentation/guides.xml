@@ -9,6 +9,7 @@
                project-issues="https://forge.typo3.org/projects/typo3cms-core/issues"
                edit-on-github-branch="main"
                edit-on-github="typo3/typo3"
+               edit-on-github-directory="typo3/sysext/linkvalidator/Documentation/"
                typo3-core-preferred="main"
                interlink-shortcode="typo3/cms-linkvalidator"
     />

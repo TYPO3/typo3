@@ -9,7 +9,10 @@
                project-issues="https://forge.typo3.org/projects/typo3cms-core/issues"
                edit-on-github-branch="main"
                edit-on-github="typo3/typo3"
-               typo3-core-preferred="main"/>
+               edit-on-github-directory="typo3/sysext/adminpanel/Documentation/"
+               typo3-core-preferred="main"
+               interlink-shortcode="typo3/cms-adminpanel"
+    />
     <project title="Admin Panel"
              release="main (development)"
              version="main (development)"
