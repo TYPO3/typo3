@@ -161,6 +161,13 @@ return [
             'Deprecation-80491-BackendControllerInclusionHooks.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-102821-ExtensionManagementUtilityaddPItoST43.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::appendToTypoConfVars' => [
         'numberOfMandatoryArguments' => 3,
         'maximumNumberOfArguments' => 3,

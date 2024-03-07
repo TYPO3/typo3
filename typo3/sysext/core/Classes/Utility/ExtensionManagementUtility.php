@@ -918,9 +918,16 @@ class ExtensionManagementUtility
      * @param string $suffix Is used as a suffix of the class name (e.g. "_pi1")
      * @param string $type See description above
      * @param bool $cacheable If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
+     *
+     * @deprecated since TYPO3 v13.3, will be removed in TYPO3 v14.0.
      */
     public static function addPItoST43(string $key, string $_ = '', string $suffix = '', string $type = 'list_type', bool $cacheable = false): void
     {
+        trigger_error(
+            'ExtensionManagementUtility::addPItoST43() has been deprecated in TYPO3 v13.3 and will be removed in v14.0. Use Plugin Registration API',
+            E_USER_DEPRECATED
+        );
+
         $cN = self::getCN($key);
         // General plugin
         $pluginContent = trim('
