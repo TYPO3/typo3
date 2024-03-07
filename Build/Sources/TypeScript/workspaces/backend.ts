@@ -13,7 +13,6 @@
 
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import DocumentService from '@typo3/core/document-service';
-import $ from 'jquery';
 import { html } from 'lit';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
@@ -42,6 +41,17 @@ enum Identifiers {
   chooseStageAction = '.workspace-actions [name="stage-action"]',
   chooseSelectionAction = '.workspace-actions [name="selection-action"]',
   chooseMassAction = '.workspace-actions [name="mass-action"]',
+  publishAction = '[data-action="publish"]',
+  prevStageAction = '[data-action="prevstage"]',
+  nextStageAction = '[data-action="nextstage"]',
+  changesAction = '[data-action="changes"]',
+  previewAction = '[data-action="preview"]',
+  openAction = '[data-action="open"]',
+  versionAction = '[data-action="version"]',
+  removeAction = '[data-action="remove"]',
+  expandAction = '[data-action="expand"]',
+  workspaceRecipientsSelectAll = '.t3js-workspace-recipients-selectall',
+  workspaceRecipientsDeselectAll = '.t3js-workspace-recipients-deselectall',
   container = '#workspace-panel',
   contentsContainer = '#workspace-contents',
   noContentsContainer = '#workspace-contents-empty',
@@ -54,7 +64,6 @@ enum Identifiers {
  * workspace preview. Contains all JavaScript of the main BE module.
  */
 class Backend extends Workspaces {
-  private readonly elements: { [key: string]: JQuery } = {};
   private readonly settings: { [key: string]: string | number } = {
     dir: 'ASC',
     id: TYPO3.settings.Workspaces.id,
@@ -80,17 +89,16 @@ class Backend extends Workspaces {
     topLevelModuleImport('@typo3/workspaces/renderable/record-information.js');
 
     DocumentService.ready().then((): void => {
-      this.getElements();
       this.registerEvents();
       this.notifyWorkspaceSwitchAction();
 
       // Set the depth from the main element
-      this.settings.depth = this.elements.$depthSelector.val();
-      this.settings.language = this.elements.$languageSelector.val();
-      this.settings.stage = this.elements.$stagesSelector.val();
+      this.settings.depth = (document.querySelector(Identifiers.depthSelector) as HTMLInputElement)?.value;
+      this.settings.language = (document.querySelector(Identifiers.languageSelector) as HTMLInputElement)?.value;
+      this.settings.stage = (document.querySelector(Identifiers.stagesSelector) as HTMLInputElement)?.value;
 
       // Fetch workspace info (listing) if workspace is accessible
-      if (this.elements.$container.length) {
+      if (document.querySelector(Identifiers.container) !== null) {
         this.getWorkspaceInfos();
       }
     });
@@ -110,9 +118,6 @@ class Backend extends Workspaces {
    * This also sets a data attribute which will be respected by
    * the multi record selection module. This is to prevent the
    * module from overriding the manually changed state.
-   *
-   * @param {string} collection The collection identifier
-   * @param {boolean} check The checked state
    */
   private static changeCollectionParentState(collection: string, check: boolean): void {
     const parent: HTMLInputElement = document.querySelector('tr[data-collection-current="' + collection + '"] input[type=checkbox]');
@@ -131,9 +136,6 @@ class Backend extends Workspaces {
    * This also sets a data attribute which will be respected by
    * the multi record selection module. This is to prevent the
    * module from overriding the manually changed state.
-   *
-   * @param {string} collectionCurrent The collection current identifier
-   * @param {boolean} check The checked state
    */
   private static changeCollectionChildrenState(collectionCurrent: string, check: boolean): void {
     const collectionChildren: NodeListOf<HTMLInputElement> = document.querySelectorAll(selector`tr[data-collection="${collectionCurrent}"] input[type=checkbox]`);
@@ -161,9 +163,6 @@ class Backend extends Workspaces {
 
   /**
    * Checks the integrity of a record
-   *
-   * @param {Array} payload
-   * @return {$}
    */
   private checkIntegrity(payload: object): Promise<AjaxResponse> {
     return this.sendRemoteRequest(
@@ -171,28 +170,10 @@ class Backend extends Workspaces {
     );
   }
 
-  private getElements(): void {
-    this.elements.$searchForm = $(Identifiers.searchForm);
-    this.elements.$searchTextField = $(Identifiers.searchTextField);
-    this.elements.$searchSubmitBtn = $(Identifiers.searchSubmitBtn);
-    this.elements.$depthSelector = $(Identifiers.depthSelector);
-    this.elements.$languageSelector = $(Identifiers.languageSelector);
-    this.elements.$stagesSelector = $(Identifiers.stagesSelector);
-    this.elements.$container = $(Identifiers.container);
-    this.elements.$contentsContainer = $(Identifiers.contentsContainer);
-    this.elements.$noContentsContainer = $(Identifiers.noContentsContainer);
-    this.elements.$tableBody = this.elements.$contentsContainer.find('tbody');
-    this.elements.$workspaceActions = $(Identifiers.workspaceActions);
-    this.elements.$chooseStageAction = $(Identifiers.chooseStageAction);
-    this.elements.$chooseSelectionAction = $(Identifiers.chooseSelectionAction);
-    this.elements.$chooseMassAction = $(Identifiers.chooseMassAction);
-    this.elements.$previewLinksButton = $(Identifiers.previewLinksButton);
-    this.elements.$pagination = $(Identifiers.pagination);
-  }
-
   private registerEvents(): void {
-    $(document).on('click', '[data-action="publish"]', (e: JQueryEventObject): void => {
-      const row = <HTMLTableRowElement>e.target.closest('tr');
+    new RegularEvent('click', (event: Event, target) => {
+      const row = target.closest('tr') as HTMLTableRowElement;
+
       this.checkIntegrity(
         {
           selection: [
@@ -213,66 +194,97 @@ class Backend extends Workspaces {
           this.renderPublishModal(row);
         }
       });
-    }).on('click', '[data-action="prevstage"]', (e: JQueryEventObject): void => {
-      this.sendToStage($(e.currentTarget).closest('tr'), 'prev');
-    }).on('click', '[data-action="nextstage"]', (e: JQueryEventObject): void => {
-      this.sendToStage($(e.currentTarget).closest('tr'), 'next');
-    }).on('click', '[data-action="changes"]', this.viewChanges)
-      .on('click', '[data-action="preview"]', this.openPreview.bind(this))
-      .on('click', '[data-action="open"]', (e: JQueryEventObject): void => {
-        const row = <HTMLTableRowElement>e.currentTarget.closest('tr');
-        const newUrl = TYPO3.settings.FormEngine.moduleUrl
-          + '&returnUrl=' + encodeURIComponent(document.location.href)
-          + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + row.dataset.table + '][' + row.dataset.uid + ']=edit';
+    }).delegateTo(document, Identifiers.publishAction);
 
-        window.location.href = newUrl;
-      }).on('click', '[data-action="version"]', (e: JQueryEventObject): void => {
-        const row = <HTMLTableRowElement>e.currentTarget.closest('tr');
-        const recordUid = row.dataset.table === 'pages' ? row.dataset.t3ver_oid : row.dataset.pid;
-        window.location.href = TYPO3.settings.WebLayout.moduleUrl
+    new RegularEvent('click', (event: Event, target: HTMLElement) => {
+      this.sendToStage(target.closest('tr'), 'prev');
+    }).delegateTo(document, Identifiers.prevStageAction);
+
+    new RegularEvent('click', (event: Event, target: HTMLElement) => {
+      this.sendToStage(target.closest('tr'), 'next');
+    }).delegateTo(document, Identifiers.nextStageAction);
+
+    new RegularEvent('click', this.viewChanges.bind(this)).delegateTo(document, Identifiers.changesAction);
+    new RegularEvent('click', this.openPreview.bind(this)).delegateTo(document, Identifiers.previewAction);
+
+    new RegularEvent('click', (event: Event, target: HTMLElement) => {
+      const row = target.closest('tr') as HTMLTableRowElement;
+      const newUrl = TYPO3.settings.FormEngine.moduleUrl
+        + '&returnUrl=' + encodeURIComponent(document.location.href)
+        + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + row.dataset.table + '][' + row.dataset.uid + ']=edit';
+
+      window.location.href = newUrl;
+    }).delegateTo(document, Identifiers.openAction);
+
+    new RegularEvent('click', (event: Event, target: HTMLElement) => {
+      const row = target.closest('tr') as HTMLTableRowElement
+      const recordUid = row.dataset.table === 'pages' ? row.dataset.t3ver_oid : row.dataset.pid;
+      window.location.href = TYPO3.settings.WebLayout.moduleUrl
         + '&id=' + recordUid;
-      }).on('click', '[data-action="remove"]', this.confirmDeleteRecordFromWorkspace)
-      .on('click', '[data-action="expand"]', (e: JQueryEventObject): void => {
-        const $me = $(e.currentTarget);
-        let iconIdentifier;
+    }).delegateTo(document, Identifiers.versionAction);
 
-        if ($me.first().attr('aria-expanded') === 'true') {
-          iconIdentifier = 'actions-caret-down';
-        } else {
-          iconIdentifier = 'actions-caret-right';
+    new RegularEvent('click', this.confirmDeleteRecordFromWorkspace.bind(this)).delegateTo(document, Identifiers.removeAction);
+
+    new RegularEvent('click', (event: Event, target: HTMLElement) => {
+      let iconIdentifier;
+
+      if (target.ariaExpanded === 'true') {
+        iconIdentifier = 'actions-caret-down';
+      } else {
+        iconIdentifier = 'actions-caret-right';
+      }
+
+      target.replaceChildren(document.createRange().createContextualFragment(IconHelper.getIcon(iconIdentifier)));
+    }).delegateTo(document, Identifiers.expandAction);
+
+    new RegularEvent('click', () => {
+      const workspaceRecipients = window.top.document.querySelectorAll('.t3js-workspace-recipient');
+
+      workspaceRecipients.forEach((recipient: HTMLInputElement) => {
+        if (!recipient.disabled) {
+          recipient.checked = true;
         }
-
-        $me.empty().append(IconHelper.getIcon(iconIdentifier));
       });
-    $(window.top.document).on('click', '.t3js-workspace-recipients-selectall', (): void => {
-      $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', true);
-    }).on('click', '.t3js-workspace-recipients-deselectall', (): void => {
-      $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', false);
-    });
+    }).delegateTo(window.top.document, Identifiers.workspaceRecipientsSelectAll);
 
-    this.elements.$searchForm.on('submit', (e: JQueryEventObject): void => {
-      e.preventDefault();
-      this.settings.filterTxt = this.elements.$searchTextField.val();
+    new RegularEvent('click', () => {
+      const workspaceRecipients = window.top.document.querySelectorAll('.t3js-workspace-recipient');
+
+      workspaceRecipients.forEach((recipient: HTMLInputElement) => {
+        if (!recipient.disabled) {
+          recipient.checked = false;
+        }
+      });
+    }).delegateTo(window.top.document, Identifiers.workspaceRecipientsDeselectAll);
+
+    new RegularEvent('submit', (event: Event) => {
+      event.preventDefault();
+
+      const searchTextField = document.querySelector(Identifiers.searchTextField) as HTMLInputElement;
+
+      this.settings.filterTxt = searchTextField.value;
       this.getWorkspaceInfos();
-    });
+    }).delegateTo(document, Identifiers.searchForm);
 
-    this.elements.$searchTextField.on('keyup', (e: JQueryEventObject): void => {
-      const me = <HTMLInputElement>e.target;
+    new RegularEvent('keyup', (event: Event) => {
+      const me = event.target as HTMLInputElement;
+      const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
 
       if (me.value !== '') {
-        this.elements.$searchSubmitBtn.removeClass('disabled');
+        searchSubmitButton.classList.remove('disabled');
       } else {
-        this.elements.$searchSubmitBtn.addClass('disabled');
+        searchSubmitButton.classList.add('disabled');
         this.getWorkspaceInfos();
       }
-    });
+    }).delegateTo(document, Identifiers.searchTextField);
 
-    const searchTextField = <HTMLInputElement>this.elements.$searchTextField.get(0);
-    if (searchTextField !== undefined) {
+    const searchTextField = document.querySelector(Identifiers.searchTextField) as HTMLInputElement;
+    if (searchTextField !== null) {
       searchTextField.clearable(
         {
           onClear: (): void => {
-            this.elements.$searchSubmitBtn.addClass('disabled');
+            const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
+            searchSubmitButton.classList.add('disabled');
             this.settings.filterTxt = '';
             this.getWorkspaceInfos();
           },
@@ -284,50 +296,50 @@ class Backend extends Workspaces {
     new RegularEvent('multiRecordSelection:checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
 
     // Listen for depth changes
-    this.elements.$depthSelector.on('change', (e: JQueryEventObject): void => {
-      const depth = (<HTMLSelectElement>e.target).value;
+    new RegularEvent('change', (event: Event, target: HTMLSelectElement) => {
+      const depth = target.value;
       Persistent.set('moduleData.workspaces_admin.depth', depth);
       this.settings.depth = depth;
       this.getWorkspaceInfos();
-    });
+    }).delegateTo(document, Identifiers.depthSelector);
 
     // Generate preview links
-    this.elements.$previewLinksButton.on('click', this.generatePreviewLinks);
+    new RegularEvent('click', this.generatePreviewLinks.bind(this)).delegateTo(document, Identifiers.previewLinksButton);
 
     // Listen for language changes
-    this.elements.$languageSelector.on('change', (e: JQueryEventObject): void => {
-      const $me = $(e.target);
-      Persistent.set('moduleData.workspaces_admin.language', $me.val());
-      this.settings.language = $me.val();
+    new RegularEvent('change', (event: Event, target: HTMLSelectElement) => {
+      Persistent.set('moduleData.workspaces_admin.language', target.value);
+      this.settings.language = target.value;
       this.sendRemoteRequest(
         this.generateRemotePayload('getWorkspaceInfos', this.settings),
       ).then(async (response: AjaxResponse): Promise<void> => {
         const actionResponse = await response.resolve();
-        this.elements.$languageSelector.prev().html($me.find(':selected').data('icon'));
+        target.previousElementSibling.innerHTML = (target.querySelector('option:checked') as HTMLElement).dataset.icon;
         this.renderWorkspaceInfos(actionResponse[0].result);
       });
-    });
+    }).delegateTo(document, Identifiers.languageSelector);
 
-    this.elements.$stagesSelector.on('change', (e: JQueryEventObject): void => {
-      const stage = (<HTMLSelectElement>e.target).value;
+    new RegularEvent('change', (event: Event, target: HTMLSelectElement) => {
+      const stage = target.value;
       Persistent.set('moduleData.workspaces_admin.stage', stage);
       this.settings.stage = stage;
       this.getWorkspaceInfos();
-    });
+    }).delegateTo(document, Identifiers.stagesSelector);
 
     // Listen for actions
-    this.elements.$chooseStageAction.on('change', this.sendToSpecificStageAction);
-    this.elements.$chooseSelectionAction.on('change', this.runSelectionAction);
-    this.elements.$chooseMassAction.on('change', this.runMassAction);
+    new RegularEvent('change', this.sendToSpecificStageAction.bind(this)).delegateTo(document, Identifiers.chooseStageAction);
+    new RegularEvent('change', this.runSelectionAction.bind(this)).delegateTo(document, Identifiers.chooseSelectionAction);
+    new RegularEvent('change', this.runMassAction.bind(this)).delegateTo(document, Identifiers.chooseMassAction);
 
     // clicking an action in the paginator
-    this.elements.$pagination.on('click', '[data-action]', (e: JQueryEventObject): void => {
-      e.preventDefault();
+    new RegularEvent('click', (event: Event) => {
+      event.preventDefault();
 
-      const $el = $(e.currentTarget);
+      const paginator = (event.target as HTMLElement).closest('button') as HTMLButtonElement;
+
       let reload = false;
 
-      switch ($el.data('action')) {
+      switch (paginator.dataset.action) {
         case 'previous':
           if (this.paging.currentPage > 1) {
             this.paging.currentPage--;
@@ -341,11 +353,11 @@ class Backend extends Workspaces {
           }
           break;
         case 'page':
-          this.paging.currentPage = parseInt($el.data('page'), 10);
+          this.paging.currentPage = parseInt(paginator.dataset.page, 10);
           reload = true;
           break;
         default:
-          throw 'Unknown action "' + $el.data('action') + '"';
+          throw 'Unknown action "' + paginator.dataset.action + '"';
       }
 
       if (reload) {
@@ -353,16 +365,16 @@ class Backend extends Workspaces {
         this.settings.start = parseInt(this.settings.limit.toString(), 10) * (this.paging.currentPage - 1);
         this.getWorkspaceInfos();
       }
-    });
+    }).delegateTo(document, Identifiers.pagination);
   }
 
-  private readonly handleCheckboxStateChanged = (e: Event): void => {
-    const $checkbox = $(e.target);
-    const $tr = $checkbox.parents('tr');
-    const checked = $checkbox.prop('checked');
-    const table = $tr.data('table');
-    const uid = $tr.data('uid');
-    const t3ver_oid = $tr.data('t3ver_oid');
+  private readonly handleCheckboxStateChanged = (event: Event): void => {
+    const checkbox = event.target as HTMLInputElement;
+    const tableRow = checkbox.closest('tr') as HTMLTableRowElement;
+    const checked = checkbox.checked;
+    const table = tableRow.dataset.table;
+    const uid = tableRow.dataset.uid;
+    const t3ver_oid = tableRow.dataset.t3ver_oid;
     const record = table + ':' + uid + ':' + t3ver_oid;
 
     if (checked) {
@@ -374,35 +386,33 @@ class Backend extends Workspaces {
       }
     }
 
-    if ($tr.data('collectionCurrent')) {
+    if (tableRow.dataset.collectionCurrent) {
       // change checked state from all collection children
-      Backend.changeCollectionChildrenState($tr.data('collectionCurrent'), checked);
-    } else if ($tr.data('collection')) {
+      Backend.changeCollectionChildrenState(tableRow.dataset.collectionCurrent, checked);
+    } else if (tableRow.dataset.collection) {
       // change checked state from all collection children and the collection parent
-      Backend.changeCollectionChildrenState($tr.data('collection'), checked);
-      Backend.changeCollectionParentState($tr.data('collection'), checked);
+      Backend.changeCollectionChildrenState(tableRow.dataset.collection, checked);
+      Backend.changeCollectionParentState(tableRow.dataset.collection, checked);
     }
 
-    this.elements.$chooseMassAction.prop('disabled', this.markedRecordsForMassAction.length > 0);
+    const chooseMassAction = document.querySelector(Identifiers.chooseMassAction) as HTMLSelectElement;
+    chooseMassAction.disabled = this.markedRecordsForMassAction.length > 0;
   };
 
   /**
    * Sends a record to a stage
-   *
-   * @param {Object} $row
-   * @param {String} direction
    */
-  private sendToStage($row: JQuery, direction: string): void {
+  private sendToStage(row: HTMLTableRowElement, direction: string): void {
     let nextStage: string;
     let stageWindowAction: string;
     let stageExecuteAction: string;
 
     if (direction === 'next') {
-      nextStage = $row.data('nextStage');
+      nextStage = row.dataset.nextStage;
       stageWindowAction = 'sendToNextStageWindow';
       stageExecuteAction = 'sendToNextStageExecute';
     } else if (direction === 'prev') {
-      nextStage = $row.data('prevStage');
+      nextStage = row.dataset.prevStage;
       stageWindowAction = 'sendToPrevStageWindow';
       stageExecuteAction = 'sendToPrevStageExecute';
     } else {
@@ -411,7 +421,7 @@ class Backend extends Workspaces {
 
     this.sendRemoteRequest(
       this.generateRemoteActionsPayload(stageWindowAction, [
-        $row.data('uid'), $row.data('table'), $row.data('t3ver_oid'),
+        row.dataset.uid, row.dataset.table, row.dataset.t3ver_oid,
       ]),
     ).then(async (response: AjaxResponse): Promise<void> => {
       const modal = this.renderSendToStageWindow(await response.resolve());
@@ -420,10 +430,10 @@ class Backend extends Workspaces {
         if (target.name === 'ok') {
           const serializedForm = Utility.convertFormToObject(modal.querySelector('form'));
           serializedForm.affects = {
-            table: $row.data('table'),
+            table: row.dataset.table,
             nextStage: nextStage,
-            t3ver_oid: $row.data('t3ver_oid'),
-            uid: $row.data('uid'),
+            t3ver_oid: row.dataset.t3ver_oid,
+            uid: row.dataset.uid,
             elements: [],
           };
 
@@ -443,9 +453,6 @@ class Backend extends Workspaces {
 
   /**
    * Gets the workspace infos (= filling the contents).
-   *
-   * @return {Promise}
-   * @protected
    */
   private getWorkspaceInfos(): void {
     this.sendRemoteRequest(
@@ -457,20 +464,21 @@ class Backend extends Workspaces {
 
   /**
    * Renders fetched workspace information
-   *
-   * @param {Object} result
    */
   private renderWorkspaceInfos(result: any): void {
+    const contentsContainer = document.querySelector(Identifiers.contentsContainer) as HTMLElement;
+    const noContentsContainer = document.querySelector(Identifiers.noContentsContainer) as HTMLElement;
+
     this.resetMassActionState(result.data.length);
     this.buildPagination(result.total);
 
     // disable the contents area
     if (result.total === 0) {
-      this.elements.$contentsContainer.hide();
-      this.elements.$noContentsContainer.show();
+      contentsContainer.style.display = 'none';
+      noContentsContainer.style.display = 'block';
     } else {
-      this.elements.$contentsContainer.show();
-      this.elements.$noContentsContainer.hide();
+      contentsContainer.style.display = 'block';
+      noContentsContainer.style.display = 'none';
     }
 
     const workspacesRecordTable = document.querySelector('typo3-workspaces-record-table');
@@ -479,12 +487,12 @@ class Backend extends Workspaces {
 
   /**
    * Renders the pagination
-   *
-   * @param {Number} totalItems
    */
   private buildPagination(totalItems: number): void {
+    const paginationContainer = document.querySelector(Identifiers.pagination) as HTMLElement;
+
     if (totalItems === 0) {
-      this.elements.$pagination.contents().remove();
+      paginationContainer.replaceChildren();
       return;
     }
 
@@ -493,31 +501,29 @@ class Backend extends Workspaces {
 
     if (this.paging.totalPages === 1) {
       // early abort if only one page is available
-      this.elements.$pagination.contents().remove();
+      paginationContainer.replaceChildren();
       return;
     }
 
     const pagination = document.createElement('typo3-backend-pagination');
     pagination.paging = this.paging;
 
-    this.elements.$pagination.empty().append(pagination);
+    paginationContainer.append(pagination);
   }
 
   /**
    * View changes of a record
-   *
-   * @param {Event} e
    */
-  private readonly viewChanges = (e: JQueryEventObject): void => {
-    e.preventDefault();
+  private viewChanges(event: Event, target: HTMLElement): void {
+    event.preventDefault();
 
-    const $tr = $(e.currentTarget).closest('tr');
+    const tableRow = target.closest('tr') as HTMLTableRowElement;
     this.sendRemoteRequest(
       this.generateRemotePayload('getRowDetails', {
-        stage: $tr.data('stage'),
-        t3ver_oid: $tr.data('t3ver_oid'),
-        table: $tr.data('table'),
-        uid: $tr.data('uid'),
+        stage: parseInt(tableRow.dataset.stage, 10),
+        t3ver_oid: parseInt(tableRow.dataset.t3ver_oid, 10),
+        table: tableRow.dataset.table,
+        uid: parseInt(tableRow.dataset.uid, 10),
         filterFields: true
       }),
     ).then(async (response: AjaxResponse): Promise<void> => {
@@ -528,7 +534,7 @@ class Backend extends Workspaces {
       content.record = item;
       content.TYPO3lang = TYPO3.lang;
 
-      if (item.label_PrevStage !== false && $tr.data('stage') !== $tr.data('prevStage')) {
+      if (item.label_PrevStage !== false && tableRow.dataset.stage !== tableRow.dataset.prevStage) {
         modalButtons.push({
           text: item.label_PrevStage.title,
           active: true,
@@ -536,7 +542,7 @@ class Backend extends Workspaces {
           name: 'prevstage',
           trigger: (e: Event, modal: ModalElement) => {
             modal.hideModal();
-            this.sendToStage($tr, 'prev');
+            this.sendToStage(tableRow, 'prev');
           },
         });
       }
@@ -549,7 +555,7 @@ class Backend extends Workspaces {
           name: 'nextstage',
           trigger: (e: Event, modal: ModalElement) => {
             modal.hideModal();
-            this.sendToStage($tr, 'next');
+            this.sendToStage(tableRow, 'next');
           },
         });
       }
@@ -563,26 +569,24 @@ class Backend extends Workspaces {
 
       Modal.advanced({
         type: Modal.types.default,
-        title: TYPO3.lang['window.recordInformation'].replace('{0}', $tr.find('.t3js-title-live').text().trim()),
+        title: TYPO3.lang['window.recordInformation'].replace('{0}', (tableRow.querySelector('.t3js-title-live') as HTMLElement).innerText.trim()),
         content: content,
         severity: SeverityEnum.info,
         buttons: modalButtons,
         size: Modal.sizes.medium,
       });
     });
-  };
+  }
 
   /**
    * Opens a record in a preview window
-   *
-   * @param {JQueryEventObject} evt
    */
-  private openPreview(evt: JQueryEventObject): void {
-    const $tr = $(evt.currentTarget).closest('tr');
+  private openPreview(event: Event, target: HTMLElement): void {
+    const tableRow = target.closest('tr') as HTMLTableRowElement;
 
     this.sendRemoteRequest(
       this.generateRemoteActionsPayload('viewSingleRecord', [
-        $tr.data('table'), $tr.data('uid'),
+        tableRow.dataset.table, tableRow.dataset.uid,
       ]),
     ).then(async (response: AjaxResponse): Promise<void> => {
       const previewUri: string = (await response.resolve())[0].result;
@@ -592,11 +596,10 @@ class Backend extends Workspaces {
 
   /**
    * Shows a confirmation modal and deletes the selected record from workspace.
-   *
-   * @param {Event} e
    */
-  private readonly confirmDeleteRecordFromWorkspace = (e: JQueryEventObject): void => {
-    const $tr = $(e.target).closest('tr');
+  private confirmDeleteRecordFromWorkspace(e: Event, target: HTMLElement): void {
+    const tableRow = target.closest('tr') as HTMLTableRowElement;
+
     const modal = Modal.confirm(
       TYPO3.lang['window.discard.title'],
       TYPO3.lang['window.discard.message'],
@@ -618,12 +621,13 @@ class Backend extends Workspaces {
         },
       ],
     );
+
     modal.addEventListener('button.clicked', (modalEvent: Event): void => {
       if ((<HTMLAnchorElement>modalEvent.target).name === 'ok') {
         this.sendRemoteRequest([
           this.generateRemoteActionsPayload('deleteSingleRecord', [
-            $tr.data('table'),
-            $tr.data('uid'),
+            tableRow.dataset.table,
+            tableRow.dataset.uid,
           ]),
         ]).then((): void => {
           modal.hideModal();
@@ -632,13 +636,13 @@ class Backend extends Workspaces {
         });
       }
     });
-  };
+  }
 
   /**
    * Runs a mass action
    */
-  private readonly runSelectionAction = (e: JQueryEventObject): void => {
-    const selectedAction = $(e.currentTarget).val();
+  private runSelectionAction(event: Event, target: HTMLSelectElement): void {
+    const selectedAction = target.value;
     const integrityCheckRequired = selectedAction !== 'discard';
 
     if (selectedAction.length === 0) {
@@ -674,7 +678,7 @@ class Backend extends Workspaces {
         }
       });
     }
-  };
+  }
 
   private readonly openIntegrityWarningModal = (): ModalElement => {
     const modal = Modal.confirm(
@@ -685,7 +689,7 @@ class Backend extends Workspaces {
     modal.addEventListener('button.clicked', (): void => modal.hideModal());
 
     return modal;
-  };
+  }
 
   private renderPublishModal(row: HTMLTableRowElement): void {
     const modal = Modal.advanced({
@@ -750,15 +754,16 @@ class Backend extends Workspaces {
       ]
     });
     modal.addEventListener('typo3-modal-hidden', (): void => {
-      this.elements.$chooseSelectionAction.val('');
+      const chooseSelectionAction = document.querySelector(Identifiers.chooseSelectionAction) as HTMLSelectElement;
+      chooseSelectionAction.value = '';
     });
   }
 
   /**
    * Runs a mass action
    */
-  private readonly runMassAction = (e: JQueryEventObject): void => {
-    const selectedAction = $(e.currentTarget).val();
+  private runMassAction(event: Event, target: HTMLSelectElement): void {
+    const selectedAction = target.value;
     const integrityCheckRequired = selectedAction !== 'discard';
 
     if (selectedAction.length === 0) {
@@ -784,7 +789,7 @@ class Backend extends Workspaces {
         }
       });
     }
-  };
+  }
 
   private renderMassActionModal(selectedAction: string): void {
     let massAction: string;
@@ -849,18 +854,17 @@ class Backend extends Workspaces {
       ]
     });
     modal.addEventListener('typo3-modal-hidden', (): void => {
-      this.elements.$chooseMassAction.val('');
+      const chooseMassAction = document.querySelector(Identifiers.chooseMassAction) as HTMLSelectElement;
+      chooseMassAction.value = '';
     });
   }
 
   /**
    * Sends marked records to a stage
-   *
-   * @param {Event} e
    */
-  private readonly sendToSpecificStageAction = (e: JQueryEventObject): void => {
+  private sendToSpecificStageAction(event: Event, target: HTMLInputElement): void {
     const affectedRecords: Array<{ [key: string]: number | string }> = [];
-    const stage = $(e.currentTarget).val();
+    const stage = target.value;
     for (let i = 0; i < this.markedRecordsForMassAction.length; ++i) {
       const affected = this.markedRecordsForMassAction[i].split(':');
       affectedRecords.push({
@@ -896,15 +900,16 @@ class Backend extends Workspaces {
         }
       });
       modal.addEventListener('typo3-modal-hide', (): void => {
-        this.elements.$chooseStageAction.val('');
+        const chooseStageAction = document.querySelector(Identifiers.chooseStageAction) as HTMLSelectElement;
+        chooseStageAction.value = '';
       });
     });
-  };
+  }
 
   /**
    * Fetches and renders available preview links
    */
-  private readonly generatePreviewLinks = (): void => {
+  private generatePreviewLinks(): void {
     this.sendRemoteRequest(
       this.generateRemoteActionsPayload('generateWorkspacePreviewLinksForAllLanguages', [
         this.settings.id,
@@ -942,7 +947,7 @@ class Backend extends Workspaces {
         ['modal-inner-scroll'],
       );
     });
-  };
+  }
 
   /**
    * This is used to reset the records, internally stored for
@@ -960,8 +965,11 @@ class Backend extends Workspaces {
   private resetMassActionState(hasRecords: boolean): void {
     this.markedRecordsForMassAction = [];
     if (hasRecords) {
-      this.elements.$workspaceActions.removeClass('hidden');
-      this.elements.$chooseMassAction.prop('disabled', false);
+      const workspaceActions = document.querySelector(Identifiers.workspaceActions) as HTMLElement;
+      workspaceActions.classList.remove('hidden');
+
+      const chooseMassAction = document.querySelector(Identifiers.chooseMassAction) as HTMLSelectElement;
+      chooseMassAction.disabled = false;
     }
     document.dispatchEvent(new CustomEvent('multiRecordSelection:actions:hide'));
   }
