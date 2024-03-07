@@ -9,6 +9,7 @@
                project-issues="https://forge.typo3.org/projects/typo3cms-core/issues"
                edit-on-github-branch="main"
                edit-on-github="typo3/typo3"
+               edit-on-github-directory="typo3/sysext/dashboard/Documentation/"
                typo3-core-preferred="12.4"
                interlink-shortcode="typo3/cms-dashboard"
     />
