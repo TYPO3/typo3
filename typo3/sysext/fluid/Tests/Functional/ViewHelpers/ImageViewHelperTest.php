@@ -198,22 +198,21 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
         yield 'inline-max width does not upscale' => [
             '<f:image src="fileadmin/ImageViewHelperTest.jpg" width="500m" />',
-            '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="500" height="375" alt="" />$@',
-            500,
-            375,
+            '@^<img src="(fileadmin/ImageViewHelperTest\.jpg)" width="400" height="300" alt="" />$@',
+            400,
+            300,
         ];
         yield 'inline-max height does not upscale' => [
             '<f:image src="fileadmin/ImageViewHelperTest.jpg" height="350m" />',
-            '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="467" height="350" alt="" />$@',
-            467,
-            350,
+            '@^<img src="(fileadmin/ImageViewHelperTest\.jpg)" width="400" height="300" alt="" />$@',
+            400,
+            300,
         ];
-        // would be 200x150, but image will be stretched (why!?) up to have a width of 250
         yield 'min width' => [
             '<f:image src="fileadmin/ImageViewHelperTest.jpg" height="150" minWidth="250" />',
-            '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="250" height="150" alt="" />$@',
+            '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="250" height="188" alt="" />$@',
             250,
-            150,
+            188,
         ];
         // would be 200x150, but image will be scaled down to have a width of 100
         yield 'max width' => [
@@ -222,11 +221,10 @@ final class ImageViewHelperTest extends FunctionalTestCase
             100,
             75,
         ];
-        // would be 200x150, but image will be stretched (why!?) up to have a height of 200
         yield 'min height' => [
             '<f:image src="fileadmin/ImageViewHelperTest.jpg" width="200" minHeight="200" />',
-            '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="200" height="200" alt="" />$@',
-            200,
+            '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="267" height="200" alt="" />$@',
+            267,
             200,
         ];
         // would be 200x150, but image will be scaled down to have a height of 75

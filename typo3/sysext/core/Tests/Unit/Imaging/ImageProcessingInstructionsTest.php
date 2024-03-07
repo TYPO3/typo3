@@ -33,11 +33,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
      */
     public static function fromCropScaleValuesImageDataProvider(): iterable
     {
-        $result = new ImageProcessingInstructions();
-        $result->width = 150;
-        $result->height = 120;
-        $result->originalWidth = 150;
-        $result->originalHeight = 0;
+        $result = new ImageProcessingInstructions(
+            width: 150,
+            height: 120,
+        );
         yield 'Get image scale for a width of 150px' => [
             170,
             136,
@@ -48,11 +47,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->width = 100;
-        $result->height = 80;
-        $result->originalWidth = 100;
-        $result->originalHeight = 0;
+        $result = new ImageProcessingInstructions(
+            width: 100,
+            height: 80,
+        );
         yield 'Get image scale with a maximum width of 100px' => [
             170,
             136,
@@ -63,11 +61,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->width = 200;
-        $result->height = 136;
-        $result->originalWidth = 0;
-        $result->originalHeight = 0;
+        $result = new ImageProcessingInstructions(
+            width: 200,
+            height: 160,
+        );
         yield 'Get image scale with a minimum width of 200px' => [
             170,
             136,
@@ -78,10 +75,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->width = 0;
-        $result->height = 0;
+        $result = new ImageProcessingInstructions(
+            width: 0,
+            height: 0,
+        );
         yield 'No PHP warning for zero in input dimensions when scaling' => [
             0,
             0,
@@ -92,10 +89,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->width = 50;
-        $result->height = 450;
+        $result = new ImageProcessingInstructions(
+            width: 50,
+            height: 450,
+        );
         yield 'width from original image and explicitly given scales an image down' => [
             100,
             900,
@@ -106,11 +103,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->originalHeight = 300;
-        $result->width = 33;
-        $result->height = 300;
+        $result = new ImageProcessingInstructions(
+            width: 33,
+            height: 300,
+        );
         yield 'width from original image with maxH set, also fills "origH" value' => [
             100,
             900,
@@ -121,11 +117,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 150;
-        $result->originalHeight = 0;
-        $result->width = 150;
-        $result->height = 1350;
+        $result = new ImageProcessingInstructions(
+            width: 150,
+            height: 1350,
+        );
         yield 'width from original image and explicitly given scales an image up' => [
             100,
             900,
@@ -136,11 +131,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 150;
-        $result->originalHeight = 0;
-        $result->width = 100;
-        $result->height = 900;
+        $result = new ImageProcessingInstructions(
+            width: 100,
+            height: 900,
+        );
         yield 'width from original image and explicitly given scales an image up but is disabled' => [
             100,
             900,
@@ -151,12 +145,11 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 0;
-        $result->originalHeight = 0;
-        $result->width = 150;
-        $result->height = 900;
-        yield 'min width explicitly given scales an image up but is disabled resulting in do not keep aspect ratio' => [
+        $result = new ImageProcessingInstructions(
+            width: 100,
+            height: 900,
+        );
+        yield 'min width explicitly given scales an image up but is disabled' => [
             100,
             900,
             '',
@@ -166,11 +159,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->originalHeight = 100;
-        $result->width = 0;
-        $result->height = 0;
+        $result = new ImageProcessingInstructions(
+            width: 0,
+            height: 0,
+        );
         yield 'no orig image given monitors "origW"' => [
             0,
             0,
@@ -181,11 +173,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->originalHeight = 800;
-        $result->width = 50;
-        $result->height = 450;
+        $result = new ImageProcessingInstructions(
+            width: 50,
+            height: 450,
+        );
         yield 'Incoming instructions use "m" in width with given height' => [
             100,
             900,
@@ -196,11 +187,10 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->originalHeight = 0;
-        $result->width = 50;
-        $result->height = 450;
+        $result = new ImageProcessingInstructions(
+            width: 50,
+            height: 450,
+        );
         yield 'Incoming instructions use "m" in width without height' => [
             100,
             900,
@@ -211,13 +201,11 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->originalHeight = 800;
-        $result->width = 89;
-        $result->height = 800;
-        $result->useCropScaling = true;
-        $result->cropArea = new Area(19.5, 0, 50, 800);
+        $result = new ImageProcessingInstructions(
+            width: 50,
+            height: 800,
+            cropArea: new Area(21.875, 0, 56.25 /* 900 / 800 * 50 */, 900),
+        );
         yield 'Incoming instructions use "c" in width with given height' => [
             100,
             900,
@@ -228,13 +216,11 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->originalHeight = 0;
-        $result->width = 50;
-        $result->height = 450;
-        $result->useCropScaling = true;
-        $result->cropArea = new Area(0, 225, 50, 450);
+        $result = new ImageProcessingInstructions(
+            width: 50,
+            height: 450,
+            cropArea: null,
+        );
         yield 'Incoming instructions use "c" in width but without height' => [
             100,
             900,
@@ -245,13 +231,11 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->originalHeight = 650;
-        $result->width = 72;
-        $result->height = 650;
-        $result->useCropScaling = true;
-        $result->cropArea = new Area(13.2, 0, 50, 650);
+        $result = new ImageProcessingInstructions(
+            width: 50,
+            height: 650,
+            cropArea: new Area(18.461538461538456, 0, 69.23076923076924 /* 900 / 650 * 50 */, 900),
+        );
         yield 'Incoming instructions use "c" in width on both sides' => [
             100,
             900,
@@ -262,13 +246,11 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             $result,
         ];
 
-        $result = new ImageProcessingInstructions();
-        $result->originalWidth = 50;
-        $result->originalHeight = 800;
-        $result->width = 89;
-        $result->height = 800;
-        $result->useCropScaling = true;
-        $result->cropArea = new Area(23.4, 0, 50, 800);
+        $result = new ImageProcessingInstructions(
+            width: 50,
+            height: 800,
+            cropArea: new Area(26.25, 0, 56.25 /* 900 / 800 * 50 */, 900),
+        );
         yield 'Incoming instructions use "c" in width on both sides with given height' => [
             100,
             900,

@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Imaging;
 
+use TYPO3\CMS\Core\Imaging\Exception\ZeroImageDimensionException;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 
 /**
  * A DTO representing all information needed to process an image,
@@ -31,19 +34,42 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
  *
  * @internal This object is still internal as long as cropping isn't migrated yet to the Crop API.
  */
-class ImageProcessingInstructions
+readonly class ImageProcessingInstructions
 {
-    /** @var int<0, max> */
-    public int $originalWidth = 0;
-    /** @var int<0, max> */
-    public int $originalHeight = 0;
-    /** @var int<0, max> */
-    public int $width = 0;
-    /** @var int<0, max> */
-    public int $height = 0;
-    public bool $useCropScaling = false;
-    public ?Area $cropArea = null;
-    public array $options = [];
+    /**
+     * @param int<0, max> $width
+     * @param int<0, max> $height
+     */
+    public function __construct(
+        public int $width = 0,
+        public int $height = 0,
+        public ?Area $cropArea = null,
+    ) {}
+
+    public static function fromProcessingTask(TaskInterface $task): ImageProcessingInstructions
+    {
+        $config = self::getConfigurationForImageCropScaleMask($task);
+        $processedFile = $task->getTargetFile();
+        $isCropped = false;
+        if (($config['crop'] ?? null) instanceof Area) {
+            $isCropped = true;
+            $imageWidth = (int)round($config['crop']->getWidth());
+            $imageHeight = (int)round($config['crop']->getHeight());
+        } else {
+            $imageWidth = (int)$processedFile->getOriginalFile()->getProperty('width');
+            $imageHeight = (int)$processedFile->getOriginalFile()->getProperty('height');
+        }
+        if ($imageWidth <= 0 || $imageHeight <= 0) {
+            throw new ZeroImageDimensionException('Width and height of the image must be greater than zero.', 1597310560);
+        }
+        return ImageProcessingInstructions::fromCropScaleValues(
+            $imageWidth,
+            $imageHeight,
+            $config['width'] ?? '',
+            $config['height'] ?? '',
+            $config
+        );
+    }
 
     /**
      * Get numbers for scaling the image based on input.
@@ -85,147 +111,176 @@ class ImageProcessingInstructions
      *   whereas $incomingWidth and $incomingHeight contain the target width and height that could be larger than originally requested.
      *
      * ----------------------------
-     * @param int<0, max> $incomingWidth the width of an original image for example, can be "0" if there is no original image (thus, it will remain "0" in the "originalWidth")
-     * @param int<0, max> $incomingHeight the height of an original image for example, can be "0" if there is no original image (thus, it will remain "0" in the "origHeight")
+     * @param int<0, max> $incomingWidth the width of an original image for example, can be "0" if there is no original image
+     * @param int<0, max> $incomingHeight the height of an original image for example, can be "0" if there is no original image
      * @param int<0, max>|string $width "required" width that is requested, can be "" or "0" or a number of a magic "m" or "c" appended
      * @param int<0, max>|string $height "required" height that is requested, can be "" or "0" or a number of a magic "m" or "c" appended
      * @param array $options Options: Keys are like "maxW", "maxH", "minW", "minH"
      */
     public static function fromCropScaleValues(int $incomingWidth, int $incomingHeight, int|string $width, int|string $height, array $options): self
     {
-        $cropOffsetHorizontal = 0;
-        $cropOffsetVertical = 0;
         $options = self::streamlineOptions($options);
-        $obj = new self();
+
+        if ($incomingWidth === 0 || $incomingHeight === 0) {
+            // @todo incomingWidth/Height makes no sense, we should ideally throw an exception here…
+            // this code is here to make existing unit tests happy and should be dropped
+            return new self(
+                width: 0,
+                height: 0,
+                cropArea: null
+            );
+        }
+
+        $cropArea = ($options['crop'] ?? null) instanceof Area ? $options['crop'] : new Area(0, 0, $incomingWidth, $incomingHeight);
+
         // If both the width and the height are set and one of the numbers is appended by an m, the proportions will
         // be preserved and thus width and height are treated as maximum dimensions for the image. The image will be
         // scaled to fit into the rectangle of the dimensions width and height.
         $useWidthOrHeightAsMaximumLimits = str_contains($width . $height, 'm');
-        if (($options['crop'] ?? null) instanceof Area) {
-            $obj->cropArea = $options['crop'];
-            unset($options['crop']);
-        } elseif (str_contains($width . $height, 'c')) {
+        $useCropScaling = str_contains($width . $height, 'c');
+
+        if ($useWidthOrHeightAsMaximumLimits && $useCropScaling) {
+            throw new \InvalidArgumentException('Cannot mix m and c modifiers for width/height', 1709840402);
+        }
+
+        if ($useWidthOrHeightAsMaximumLimits) {
+            if (str_contains($width, 'm')) {
+                $options['maxWidth'] = min((int)$width, $options['maxWidth'] ?? PHP_INT_MAX);
+                // width: auto
+                $width = 0;
+            }
+            if (str_contains($height, 'm')) {
+                $options['maxHeight'] = min((int)$height, $options['maxHeight'] ?? PHP_INT_MAX);
+                // height: auto
+                $height = 0;
+            }
+        }
+
+        if ((int)$width !== 0 && (int)$height !== 0 && $useCropScaling) {
             $cropOffsetHorizontal = (int)substr((string)strstr((string)$width, 'c'), 1);
             $cropOffsetVertical = (int)substr((string)strstr((string)$height, 'c'), 1);
-            $obj->useCropScaling = true;
+            $width = (int)$width;
+            $height = (int)$height;
+
+            $cropArea = self::applyCropScaleToCropArea($cropArea, $width, $height, $cropOffsetVertical, $cropOffsetHorizontal);
         }
+
         $width = (int)$width;
         $height = (int)$height;
+
+        if ($width > 0 && $height === 0) {
+            $height = (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth()));
+        }
+        if ($height > 0 && $width === 0) {
+            $width = (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight()));
+        }
+
         // If there are max-values...
         if (!empty($options['maxWidth'])) {
-            // If width is given...
-            if ($width > 0) {
-                if ($width > $options['maxWidth']) {
-                    $width = $options['maxWidth'];
-                    // Height should follow
-                    $useWidthOrHeightAsMaximumLimits = true;
-                }
-            } else {
-                if ($incomingWidth > $options['maxWidth']) {
-                    $width = $options['maxWidth'];
-                    // Height should follow
-                    $useWidthOrHeightAsMaximumLimits = true;
-                }
+            if ($width > $options['maxWidth'] || ($width === 0 && $cropArea->getWidth() > $options['maxWidth'])) {
+                $width = $options['maxWidth'];
+                $height = (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth()));
             }
         }
         if (!empty($options['maxHeight'])) {
-            // If height is given...
-            if ($height > 0) {
-                if ($height > $options['maxHeight']) {
-                    $height = $options['maxHeight'];
-                    // Height should follow
-                    $useWidthOrHeightAsMaximumLimits = true;
-                }
-            } else {
-                // Changed [0] to [1] 290801
-                if ($incomingHeight > $options['maxHeight']) {
-                    $height = $options['maxHeight'];
-                    // Height should follow
-                    $useWidthOrHeightAsMaximumLimits = true;
-                }
+            if ($height > $options['maxHeight'] || ($height === 0 && $cropArea->getHeight() > $options['maxHeight'])) {
+                $height = $options['maxHeight'];
+                $width = (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight()));
             }
         }
-        $obj->originalWidth = $width;
-        $obj->originalHeight = $height;
+
+        if (!empty($options['minWidth'])) {
+            if ($width < $options['minWidth'] || ($width === 0 && $cropArea->getWidth() < $options['minWidth'])) {
+                $width = $options['minWidth'];
+                $height = (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth()));
+            }
+        }
+        if (!empty($options['minHeight'])) {
+            if ($height < $options['minHeight'] || ($height === 0 && $cropArea->getHeight() < $options['minHeight'])) {
+                $height = $options['minHeight'];
+                $width = (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight()));
+            }
+        }
+
+        if ($width === 0 && $height === 0) {
+            $width = (int)round($cropArea->getWidth());
+            $height = (int)round($cropArea->getHeight());
+        }
+        if ($width === 0 || $height === 0) {
+            throw new \LogicException('Image processing instructions did not resolve into coherent positive width and height values. This is a bug. Please report.', 1709806820);
+        }
+
         if (!($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] ?? false)) {
-            if ($width > $incomingWidth) {
-                $width = $incomingWidth;
+            if ($width > $cropArea->getWidth()) {
+                $width = (int)round($cropArea->getWidth());
+                $height = (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth()));
             }
-            if ($height > $incomingHeight) {
-                $height = $incomingHeight;
+            if ($height > $cropArea->getHeight()) {
+                $height = (int)round($cropArea->getHeight());
+                $width = (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight()));
             }
-        }
-        // If scaling should be performed. Check that input "info" array will not cause division-by-zero
-        if (($width > 0 || $height > 0) && $incomingWidth && $incomingHeight) {
-            if ($width > 0 && $height === 0) {
-                $incomingHeight = (int)ceil($incomingHeight * ($width / $incomingWidth));
-                $incomingWidth = $width;
-            }
-            if ((int)$width === 0 && $height > 0) {
-                $incomingWidth = (int)ceil($incomingWidth * ($height / $incomingHeight));
-                $incomingHeight = $height;
-            }
-            if ($width !== 0 && $height !== 0) {
-                if ($useWidthOrHeightAsMaximumLimits) {
-                    $ratio = $incomingWidth / $incomingHeight;
-                    if ($height * $ratio > $width) {
-                        $height = (int)round($width / $ratio);
-                    } else {
-                        $width = (int)round($height * $ratio);
-                    }
-                }
-                if ($obj->useCropScaling) {
-                    $ratio = $incomingWidth / $incomingHeight;
-                    if ($height * $ratio < $width) {
-                        $height = (int)round($width / $ratio);
-                    } else {
-                        $width = (int)round($height * $ratio);
-                    }
-                }
-                $incomingWidth = $width;
-                $incomingHeight = $height;
-            }
-        }
-        $resultWidth = $incomingWidth;
-        $resultHeight = $incomingHeight;
-        // Set minimum-measures!
-        if (isset($options['minWidth']) && $resultWidth < $options['minWidth']) {
-            if (($useWidthOrHeightAsMaximumLimits || $obj->useCropScaling) && $resultWidth) {
-                $resultHeight = (int)round($resultHeight * $options['minWidth'] / $resultWidth);
-            }
-            $resultWidth = $options['minWidth'];
-        }
-        if (isset($options['minHeight']) && $resultHeight < $options['minHeight']) {
-            if (($useWidthOrHeightAsMaximumLimits || $obj->useCropScaling) && $resultHeight) {
-                $resultWidth = (int)round($resultWidth * $options['minHeight'] / $resultHeight);
-            }
-            $resultHeight = $options['minHeight'];
-        }
-        $obj->width = $resultWidth;
-        $obj->height = $resultHeight;
-
-        // The incoming values are percentage values, and need to be calculated in
-        // the actual width and height of the target file size, see https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Imgresource.html#width
-        // This needs a special calculation "magic", instead of using the "cropArea" feature.
-        // which TYPO3 uses since v8 which ships with a "cropArea" object right away.
-        if ($obj->useCropScaling && !$obj->cropArea) {
-            $cropWidth = $obj->originalWidth ?: $obj->width;
-            $cropHeight = $obj->originalHeight ?: $obj->height;
-            $offsetX = (float)(($obj->width - $obj->originalWidth) * ($cropOffsetHorizontal + 100) / 200);
-            $offsetY = (float)(($obj->height - $obj->originalHeight) * ($cropOffsetVertical + 100) / 200);
-
-            $obj->cropArea = new Area(
-                $offsetX,
-                $offsetY,
-                (float)$cropWidth,
-                (float)$cropHeight,
-            );
         }
 
-        return $obj;
+        if ((int)$cropArea->getOffsetLeft() === 0 &&
+            (int)$cropArea->getOffsetTop() === 0 &&
+            (int)$cropArea->getWidth() === $incomingWidth &&
+            (int)$cropArea->getHeight() === $incomingHeight) {
+            $cropArea = null;
+        }
+
+        return new self(
+            width: $width,
+            height: $height,
+            cropArea: $cropArea,
+        );
     }
 
-    public static function streamlineOptions(array $options): array
+    /**
+     * @param Area $cropArea with absolute crop data (not relative!)
+     * @param positive-int $width
+     * @param positive-int $height
+     * @param int<-100,100> $cropOffsetVertical
+     * @param int<-100,100> $cropOffsetHorizontal
+     */
+    private static function applyCropScaleToCropArea(
+        Area $cropArea,
+        int $width,
+        int $height,
+        int $cropOffsetVertical,
+        int $cropOffsetHorizontal
+    ): Area {
+        // @phpstan-ignore-next-line
+        if (!($width > 0 && $height > 0 && $cropArea->getWidth() > 0 && $cropArea->getHeight() > 0)) {
+            throw new \InvalidArgumentException('Apply crop scale must use concrete width and height', 1709810881);
+        }
+        $destRatio = $width / $height;
+        $cropRatio = $cropArea->getWidth() / $cropArea->getHeight();
+
+        if ($destRatio > $cropRatio) {
+            $w = $cropArea->getWidth();
+            $h = $cropArea->getWidth() / $destRatio;
+            $x = $cropArea->getOffsetLeft();
+            $y = $cropArea->getOffsetTop() + (float)(($cropArea->getHeight() - $h) * ($cropOffsetVertical + 100) / 200);
+        } else {
+            $w = $cropArea->getHeight() * $destRatio;
+            $h = $cropArea->getHeight();
+            $x = $cropArea->getOffsetLeft() + (float)(($cropArea->getWidth() - $w) * ($cropOffsetHorizontal + 100) / 200);
+            $y = $cropArea->getOffsetTop();
+        }
+
+        return new Area($x, $y, $w, $h);
+    }
+
+    /**
+     * @return array{
+     *             maxWidth?: int,
+     *             maxHeight?: int,
+     *             minWidth?: int,
+     *             minHeight?: int,
+     *             crop?: Area,
+     *         }
+     */
+    private static function streamlineOptions(array $options): array
     {
         if (isset($options['maxW'])) {
             $options['maxWidth'] = $options['maxW'];
@@ -243,23 +298,107 @@ class ImageProcessingInstructions
             $options['minHeight'] = $options['minH'];
             unset($options['minH']);
         }
+
+        if (($options['maxWidth'] ?? null) <= 0) {
+            unset($options['maxWidth']);
+        }
+        if (($options['maxHeight'] ?? null) <= 0) {
+            unset($options['maxHeight']);
+        }
+        if (($options['minWidth'] ?? null) <= 0) {
+            unset($options['minWidth']);
+        }
+        if (($options['minHeight'] ?? null) <= 0) {
+            unset($options['minHeight']);
+        }
+
         if (isset($options['crop'])) {
             if (is_string($options['crop'])) {
                 // check if it is a json object
                 $cropData = json_decode($options['crop']);
                 if ($cropData) {
-                    $options['crop'] = new Area((float)$cropData->x, (float)$cropData->y, (float)$cropData->width, (float)$cropData->height);
+                    // happens when $options['crop'] = '{"default":{"cropArea":{"x":0,"y":0,"width":1,"height":1},"selectedRatio":"NaN","focusArea":null}}'
+                    if (!isset($cropData->x) || !isset($cropData->y) || !isset($cropData->width) || !isset($cropData->height)) {
+                        unset($options['crop']);
+                    } else {
+                        $options['crop'] = new Area((float)$cropData->x, (float)$cropData->y, (float)$cropData->width, (float)$cropData->height);
+                    }
                 } else {
                     [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $options['crop'], 4);
                     $options['crop'] = new Area((float)$offsetLeft, (float)$offsetTop, (float)$newWidth, (float)$newHeight);
                 }
-                if ($options['crop']->isEmpty()) {
+                if (isset($options['crop']) && $options['crop']->isEmpty()) {
                     unset($options['crop']);
                 }
             } elseif (!$options['crop'] instanceof Area) {
                 unset($options['crop']);
             }
         }
+        return $options;
+    }
+
+    /**
+     * @return array{
+     *           width?: int<0, max>|string,
+     *           height?: int<0, max>|string,
+     *           maxWidth?: int<0, max>,
+     *           maxHeight?: int<0, max>,
+     *           maxW?: int<0, max>,
+     *           maxH?: int<0, max>,
+     *           minW?: int<0, max>,
+     *           minH?: int<0, max>,
+     *           crop?: Area,
+     *           noScale?: bool
+     *         }
+     */
+    private static function getConfigurationForImageCropScaleMask(TaskInterface $task): array
+    {
+        $configuration = $task->getConfiguration();
+
+        if ($task->getTargetFile()->getTaskIdentifier() === ProcessedFile::CONTEXT_IMAGEPREVIEW) {
+            $task->sanitizeConfiguration();
+            // @todo: this transformation needs to happen in the PreviewTask, but if we do this,
+            // all preview images would be re-created, so we should be careful when to do this.
+            $configuration = $task->getConfiguration();
+            $configuration['maxWidth'] = $configuration['width'];
+            unset($configuration['width']);
+            $configuration['maxHeight'] = $configuration['height'];
+            unset($configuration['height']);
+        }
+
+        $options = $configuration;
+        if ($configuration['maxWidth'] ?? null) {
+            $options['maxW'] = $configuration['maxWidth'];
+        }
+        if ($configuration['maxHeight'] ?? null) {
+            $options['maxH'] = $configuration['maxHeight'];
+        }
+        if ($configuration['minWidth'] ?? null) {
+            $options['minW'] = $configuration['minWidth'];
+        }
+        if ($configuration['minHeight'] ?? null) {
+            $options['minH'] = $configuration['minHeight'];
+        }
+        if ($configuration['crop'] ?? null) {
+            $options['crop'] = $configuration['crop'];
+            if (is_string($configuration['crop'])) {
+                // check if it is a json object
+                $cropData = json_decode($configuration['crop']);
+                if ($cropData) {
+                    $options['crop'] = new Area((float)$cropData->x, (float)$cropData->y, (float)$cropData->width, (float)$cropData->height);
+                } else {
+                    [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $configuration['crop'], 4);
+                    $options['crop'] = new Area((float)$offsetLeft, (float)$offsetTop, (float)$newWidth, (float)$newHeight);
+                }
+                if ($options['crop']->isEmpty()) {
+                    unset($options['crop']);
+                }
+            }
+        }
+        if ($configuration['noScale'] ?? null) {
+            $options['noScale'] = $configuration['noScale'];
+        }
+
         return $options;
     }
 }

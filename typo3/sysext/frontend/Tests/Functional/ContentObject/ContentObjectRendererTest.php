@@ -1229,7 +1229,7 @@ And another one';
         $result = $subject->getImgResource($fileReference, []);
 
         $expectedWidth = 512;
-        $expectedHeight = 341;
+        $expectedHeight = 342;
 
         self::assertEquals($expectedWidth, $result->getWidth());
         self::assertEquals($expectedHeight, $result->getHeight());

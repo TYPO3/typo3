@@ -198,22 +198,21 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
         yield 'inline-max width does not upscale' => [
             '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="500m" />',
-            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
-            500,
-            375,
+            '@^(fileadmin/ImageViewHelperTest\.jpg)$@',
+            400,
+            300,
         ];
         yield 'inline-max height does not upscale' => [
             '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" height="350m" />',
-            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
-            467,
-            350,
+            '@^(fileadmin/ImageViewHelperTest\.jpg)$@',
+            400,
+            300,
         ];
-        // would be 200x150, but image will be stretched (why!?) up to have a width of 250
         yield 'min width' => [
             '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" height="150" minWidth="250" />',
             '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
             250,
-            150,
+            188,
         ];
         // would be 200x150, but image will be scaled down to have a width of 100
         yield 'max width' => [
@@ -222,11 +221,10 @@ final class ImageViewHelperTest extends FunctionalTestCase
             100,
             75,
         ];
-        // would be 200x150, but image will be stretched (why!?) up to have a height of 200
         yield 'min height' => [
             '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="200" minHeight="200" />',
             '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
-            200,
+            267,
             200,
         ];
         // would be 200x150, but image will be scaled down to have a height of 75

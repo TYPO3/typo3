@@ -89,7 +89,8 @@ final class MetaTagGeneratorTest extends FunctionalTestCase
         yield 'social: 3000x600 enforced ratio (no up-scaling)' => [
             true,
             ['width' => 3000, 'height' => 600],
-            ['width' => 1142, 'height' => 600],
+            // width = round(1200/630*600)
+            ['width' => 1143, 'height' => 600],
             ProcessedFile::class,
         ];
 

@@ -105,7 +105,7 @@ final class ImageDimensionTest extends UnitTestCase
                 new ImageDimension(1000, 500),
                 'jpg',
                 ImageCropScaleMaskTask::class,
-                new ImageDimension(50, 25),
+                new ImageDimension(50, 50),
             ],
             'width and height are applied as given' => [
                 [
@@ -155,7 +155,7 @@ final class ImageDimensionTest extends UnitTestCase
                 new ImageDimension(1000, 500),
                 'svg',
                 ImageCropScaleMaskTask::class,
-                new ImageDimension(100, 50),
+                new ImageDimension(100, 100),
             ],
             'cropping is applied on SVGs' => [
                 [

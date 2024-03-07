@@ -339,13 +339,15 @@ class GraphicalFunctions
         $frame = $this->addFrameSelection && isset($options['frame']) ? (int)$options['frame'] : 0;
 
         $processingInstructions = ImageProcessingInstructions::fromCropScaleValues($info->getWidth(), $info->getHeight(), $width, $height, $options);
-        $w = $processingInstructions->originalWidth;
-        $h = $processingInstructions->originalHeight;
+
+        $originalWidth = $info->getWidth() ?: $width;
+        $originalHeight = $info->getHeight() ?: $height;
+
         // Check if conversion should be performed ($noScale - no processing needed).
         // $noScale flag is TRUE if the width / height does NOT dictate the image to be scaled. That is if no
         // width / height is given or if the destination w/h matches the original image dimensions, or if
         // the option to not scale the image is set.
-        $noScale = !$processingInstructions->originalWidth && !$processingInstructions->originalHeight || $processingInstructions->width === $info->getWidth() && $processingInstructions->height === $info->getHeight() || !empty($options['noScale']);
+        $noScale = !$originalWidth && !$originalHeight || $processingInstructions->width === $info->getWidth() && $processingInstructions->height === $info->getHeight() || !empty($options['noScale']);
         if ($noScale && !$processingInstructions->cropArea && !$additionalParameters && !$frame && $targetFileExtension === $info->getExtension() && !$forceCreation) {
             // Set the new width and height before returning,
             // if the noScale option is set, otherwise the incoming
@@ -360,12 +362,18 @@ class GraphicalFunctions
             return $info;
         }
 
+        $command = '';
+        if ($processingInstructions->cropArea) {
+            $cropArea = $processingInstructions->cropArea;
+            $command .= ' -crop ' . $cropArea->getWidth() . 'x' . $cropArea->getHeight() . '+' . $cropArea->getOffsetLeft() . '+' . $cropArea->getOffsetTop() . '! +repage ';
+        }
+
         // Start with the default scale command
         // check if we should use -sample or -geometry
         if ($options['sample'] ?? false) {
-            $command = '-auto-orient -sample';
+            $command .= '-auto-orient -sample';
         } else {
-            $command = $this->scalecmd;
+            $command .= $this->scalecmd;
         }
         // from the IM docs -- https://imagemagick.org/script/command-line-processing.php
         // "We see that ImageMagick is very good about preserving aspect ratios of images, to prevent distortion
@@ -374,10 +382,6 @@ class GraphicalFunctions
         // operator to the geometry. This will force the image size to exactly what you specify.
         // So, for example, if you specify 100x200! the dimensions will become exactly 100x200"
         $command .= ' ' . $processingInstructions->width . 'x' . $processingInstructions->height . '!';
-        if ($processingInstructions->cropArea) {
-            $cropArea = $processingInstructions->cropArea;
-            $command .= ' -crop ' . $cropArea->getWidth() . 'x' . $cropArea->getHeight() . '+' . $cropArea->getOffsetLeft() . '+' . $cropArea->getOffsetTop() . '! +repage';
-        }
         // Add params
         $additionalParameters = $this->modifyImageMagickStripProfileParameters($additionalParameters, $options);
         $command .= ($additionalParameters ? ' ' . $additionalParameters : $this->cmds[$targetFileExtension] ?? '');
@@ -449,36 +453,6 @@ class GraphicalFunctions
         }
         $result = $this->resize($imagefile, $targetFileExtension, $w, $h, $params, $options, $mustCreate);
         return $result?->toLegacyArray();
-    }
-
-    /**
-     * This only crops the image, but does not take other "options" such as maxWidth etc. not into account. Do not use
-     * standalone if you don't know what you are doing.
-     *
-     * @internal until API is finalized
-     */
-    public function crop(string $imageFile, string $targetFileExtension, string $cropInformation, array $options): ?ImageProcessingResult
-    {
-        // check if it is a json object
-        $cropData = json_decode($cropInformation);
-        if ($cropData) {
-            $offsetLeft = (int)($cropData->x ?? 0);
-            $offsetTop = (int)($cropData->y ?? 0);
-            $newWidth = (int)($cropData->width ?? 0);
-            $newHeight = (int)($cropData->height ?? 0);
-        } else {
-            [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $cropInformation, 4);
-        }
-
-        return $this->resize(
-            $imageFile,
-            $targetFileExtension,
-            '',
-            '',
-            sprintf('-crop %dx%d+%d+%d! +repage', $newWidth, $newHeight, $offsetLeft, $offsetTop),
-            isset($options['skipProfile']) ? ['skipProfile' => $options['skipProfile']] : [],
-            true
-        );
     }
 
     /**

@@ -65,16 +65,6 @@ class LocalCropScaleMaskHelper
         $configuration = $targetFile->getProcessingConfiguration();
         $configuration['additionalParameters'] ??= '';
 
-        $croppedImage = null;
-        if (!empty($configuration['crop'])) {
-            $result = $imageOperations->crop($originalFileName, $targetFileExtension, $configuration['crop'], $configuration);
-            // @todo: in the future, we want this to be one crop call (together with the scale command)
-            unset($configuration['crop']);
-            if ($result !== null) {
-                $originalFileName = $croppedImage = $result->getRealPath();
-            }
-        }
-
         // Normal situation (no masking) - just scale the image
         if (!is_array($configuration['maskImages'] ?? null)) {
             // the result info is an array with 0=width,1=height,2=extension,3=filename
@@ -85,8 +75,6 @@ class LocalCropScaleMaskHelper
                 $configuration['height'] ?? '',
                 $configuration['additionalParameters'],
                 $configuration,
-                // in case file is in `/typo3temp/` from the crop operation above, it must create a result
-                $result !== null
             );
         } else {
             $temporaryFileName = $this->getFilenameForImageCropScaleMask($task);
@@ -133,7 +121,7 @@ class LocalCropScaleMaskHelper
 
         // check if the processing really generated a new file (scaled and/or cropped)
         if ($result !== null) {
-            if ($result->getRealPath() !== $originalFileName || $originalFileName === $croppedImage) {
+            if ($result->getRealPath() !== $originalFileName) {
                 $result = [
                     'width' => $result->getWidth(),
                     'height' => $result->getHeight(),
@@ -143,11 +131,6 @@ class LocalCropScaleMaskHelper
                 // No file was generated
                 $result = null;
             }
-        }
-
-        // Cleanup temp file if it isn't used as result
-        if ($croppedImage && ($result === null || $croppedImage !== $result['filePath'])) {
-            GeneralUtility::unlink_tempfile($croppedImage);
         }
 
         // If noScale option is applied, we need to reset the width and height to ensure the scaled values
