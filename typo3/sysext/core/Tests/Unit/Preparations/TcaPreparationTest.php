@@ -304,6 +304,363 @@ final class TcaPreparationTest extends UnitTestCase
         ]);
     }
 
+    public static function configureFileReferencesDataProvider(): \Generator
+    {
+        yield 'allowed and disallowed in config' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'allowed' => ['foo', 'bar'],
+                                'disallowed' => ['baz', 'bencer'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'foreign_table' => 'sys_file_reference',
+                                'foreign_field' => 'uid_foreign',
+                                'foreign_sortby' => 'sorting_foreign',
+                                'foreign_table_field' => 'tablenames',
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'foo',
+                                    'tablenames' => 'aTable',
+                                ],
+                                'foreign_label' => 'uid_local',
+                                'foreign_selector' => 'uid_local',
+                                'allowed' => 'foo,bar',
+                                'disallowed' => 'baz,bencer',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'allowed and disallowed in config/overrideChildTca' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'overrideChildTca' => [
+                                    'columns' => [
+                                        'aField' => [
+                                            'config' => [
+                                                'allowed' => ['foo', 'bar'],
+                                                'disallowed' => ['baz', 'bencer'],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'foreign_table' => 'sys_file_reference',
+                                'foreign_field' => 'uid_foreign',
+                                'foreign_sortby' => 'sorting_foreign',
+                                'foreign_table_field' => 'tablenames',
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'foo',
+                                    'tablenames' => 'aTable',
+                                ],
+                                'foreign_label' => 'uid_local',
+                                'foreign_selector' => 'uid_local',
+                                'overrideChildTca' => [
+                                    'columns' => [
+                                        'aField' => [
+                                            'config' => [
+                                                'allowed' => 'foo,bar',
+                                                'disallowed' => 'baz,bencer',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'allowed and disallowed in columnsOverride/config' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aField' => [
+                                    'config' => [
+                                        'allowed' => ['foo', 'bar'],
+                                        'disallowed' => ['baz', 'bencer'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'foreign_table' => 'sys_file_reference',
+                                'foreign_field' => 'uid_foreign',
+                                'foreign_sortby' => 'sorting_foreign',
+                                'foreign_table_field' => 'tablenames',
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'foo',
+                                    'tablenames' => 'aTable',
+                                ],
+                                'foreign_label' => 'uid_local',
+                                'foreign_selector' => 'uid_local',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aField' => [
+                                    'config' => [
+                                        'allowed' => 'foo,bar',
+                                        'disallowed' => 'baz,bencer',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'columnsOverride without config' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aField' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'foreign_table' => 'sys_file_reference',
+                                'foreign_field' => 'uid_foreign',
+                                'foreign_sortby' => 'sorting_foreign',
+                                'foreign_table_field' => 'tablenames',
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'foo',
+                                    'tablenames' => 'aTable',
+                                ],
+                                'foreign_label' => 'uid_local',
+                                'foreign_selector' => 'uid_local',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aField' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'allowed and disallowed in columnsOverride/overrideChildTca/columns' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aField' => [
+                                    'config' => [
+                                        'overrideChildTca' => [
+                                            'columns' => [
+                                                'aField' => [
+                                                    'config' => [
+                                                        'allowed' => ['foo', 'bar'],
+                                                        'disallowed' => ['baz', 'bencer'],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'foreign_table' => 'sys_file_reference',
+                                'foreign_field' => 'uid_foreign',
+                                'foreign_sortby' => 'sorting_foreign',
+                                'foreign_table_field' => 'tablenames',
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'foo',
+                                    'tablenames' => 'aTable',
+                                ],
+                                'foreign_label' => 'uid_local',
+                                'foreign_selector' => 'uid_local',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aField' => [
+                                    'config' => [
+                                        'overrideChildTca' => [
+                                            'columns' => [
+                                                'aField' => [
+                                                    'config' => [
+                                                        'allowed' => 'foo,bar',
+                                                        'disallowed' => 'baz,bencer',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'allowed and disallowed in columnsOverride/overrideChildTca/types' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aField' => [
+                                    'config' => [
+                                        'overrideChildTca' => [
+                                            'types' => [
+                                                'aType' => [
+                                                    'config' => [
+                                                        'allowed' => ['foo', 'bar'],
+                                                        'disallowed' => ['baz', 'bencer'],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'foreign_table' => 'sys_file_reference',
+                                'foreign_field' => 'uid_foreign',
+                                'foreign_sortby' => 'sorting_foreign',
+                                'foreign_table_field' => 'tablenames',
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'foo',
+                                    'tablenames' => 'aTable',
+                                ],
+                                'foreign_label' => 'uid_local',
+                                'foreign_selector' => 'uid_local',
+                            ],
+                        ],
+                    ],
+                    'types' => [
+                        'aType' => [
+                            'columnsOverrides' => [
+                                'aField' => [
+                                    'config' => [
+                                        'overrideChildTca' => [
+                                            'types' => [
+                                                'aType' => [
+                                                    'config' => [
+                                                        'allowed' => 'foo,bar',
+                                                        'disallowed' => 'baz,bencer',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('configureFileReferencesDataProvider')]
+    #[Test]
+    public function configureFileReferences(array $input, array $expected): void
+    {
+        self::assertEquals($expected, (new TcaPreparation())->prepare($input));
+    }
+
     #[Test]
     public function prepareFileExtensionsReplacesPlaceholders(): void
     {

@@ -170,6 +170,37 @@ class TcaPreparation
 
     protected function configureFileReferences(array $tca): array
     {
+        $prepareFileExtensionLambda = static function (array $config): array {
+            if (!empty($allowed = ($config['allowed'] ?? null))) {
+                $config['allowed'] = self::prepareFileExtensions($allowed);
+            }
+            if (!empty($disallowed = ($config['disallowed'] ?? null))) {
+                $config['disallowed'] = self::prepareFileExtensions($disallowed);
+            }
+            return $config;
+        };
+
+        $migrateOverrideChildTcaExtensions = static function ($overrideChildTcaConfig) use ($prepareFileExtensionLambda): array {
+            if (is_array($overrideChildTcaConfig['columns'] ?? null)) {
+                foreach ($overrideChildTcaConfig['columns'] as &$overrideChildTcaColumnConfig) {
+                    if (!isset($overrideChildTcaColumnConfig['config'])) {
+                        continue;
+                    }
+                    $overrideChildTcaColumnConfig['config'] = $prepareFileExtensionLambda($overrideChildTcaColumnConfig['config']);
+                }
+                unset($overrideChildTcaColumnConfig);
+            }
+            if (is_array($overrideChildTcaConfig['types'] ?? null)) {
+                foreach ($overrideChildTcaConfig['types'] as &$overrideChildTcaTypeConfig) {
+                    if (!isset($overrideChildTcaTypeConfig['config'])) {
+                        continue;
+                    }
+                    $overrideChildTcaTypeConfig['config'] = $prepareFileExtensionLambda($overrideChildTcaTypeConfig['config']);
+                }
+            }
+            return $overrideChildTcaConfig;
+        };
+
         foreach ($tca as $table => &$tableDefinition) {
             if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
                 continue;
@@ -183,27 +214,40 @@ class TcaPreparation
                 // dedicated TCA type. However a lot of underlying code in DataHandler and
                 // friends relies on those keys, especially "foreign_table" and "foreign_selector".
                 // @todo Check which of those values can be removed since only used by FormEngine
-                $fieldConfig['config'] = array_replace_recursive(
-                    $fieldConfig['config'],
-                    [
-                        'foreign_table' => 'sys_file_reference',
-                        'foreign_field' => 'uid_foreign',
-                        'foreign_sortby' => 'sorting_foreign',
-                        'foreign_table_field' => 'tablenames',
-                        'foreign_match_fields' => [
-                            'fieldname' => $fieldName,
-                            'tablenames' => $table,
-                        ],
-                        'foreign_label' => 'uid_local',
-                        'foreign_selector' => 'uid_local',
-                    ]
-                );
-
-                if (!empty(($allowed = ($fieldConfig['config']['allowed'] ?? null)))) {
-                    $fieldConfig['config']['allowed'] = self::prepareFileExtensions($allowed);
+                $fieldConfig['config'] = array_replace_recursive($fieldConfig['config'], [
+                    'foreign_table' => 'sys_file_reference',
+                    'foreign_field' => 'uid_foreign',
+                    'foreign_sortby' => 'sorting_foreign',
+                    'foreign_table_field' => 'tablenames',
+                    'foreign_match_fields' => [
+                        'fieldname' => $fieldName,
+                        'tablenames' => $table,
+                    ],
+                    'foreign_label' => 'uid_local',
+                    'foreign_selector' => 'uid_local',
+                ]);
+                $fieldConfig['config'] = $prepareFileExtensionLambda($fieldConfig['config']);
+                if (is_array($fieldConfig['config']['overrideChildTca'] ?? null)) {
+                    $fieldConfig['config']['overrideChildTca'] = $migrateOverrideChildTcaExtensions($fieldConfig['config']['overrideChildTca']);
                 }
-                if (!empty(($disallowed = ($fieldConfig['config']['disallowed'] ?? null)))) {
-                    $fieldConfig['config']['disallowed'] = self::prepareFileExtensions($disallowed);
+            }
+            unset($fieldConfig);
+
+            if (is_array($tableDefinition['types'] ?? null)) {
+                foreach ($tableDefinition['types'] as &$typeConfig) {
+                    if (!isset($typeConfig['columnsOverrides']) || !is_array($typeConfig['columnsOverrides'])) {
+                        continue;
+                    }
+                    foreach ($typeConfig['columnsOverrides'] as &$columnsOverridesConfig) {
+                        if (!isset($columnsOverridesConfig['config']) || !is_array($columnsOverridesConfig['config'])) {
+                            continue;
+                        }
+
+                        $columnsOverridesConfig['config'] = $prepareFileExtensionLambda($columnsOverridesConfig['config']);
+                        if (is_array($columnsOverridesConfig['config']['overrideChildTca'] ?? null)) {
+                            $columnsOverridesConfig['config']['overrideChildTca'] = $migrateOverrideChildTcaExtensions($columnsOverridesConfig['config']['overrideChildTca']);
+                        }
+                    }
                 }
             }
         }
