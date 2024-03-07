@@ -1471,8 +1471,10 @@ return [
                 // Google ads
                 'gad',
                 'gad_source',
+                'gbraid',
                 'gclid',
                 'dclid',
+                'wbraid',
                 // Facebook
                 'fbclid',
                 // Microsoft Bing Ads.
