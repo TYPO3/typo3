@@ -1,0 +1,4 @@
+page = PAGE
+page.typeNum = 0
+page.10 = TEXT
+page.10.value = typeNumZero

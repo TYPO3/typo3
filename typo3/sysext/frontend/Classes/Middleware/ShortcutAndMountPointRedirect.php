@@ -187,7 +187,7 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareI
         $parameter = $pageRecord['uid'];
         /** @var PageArguments $pageArguments */
         $pageArguments = $request->getAttribute('routing');
-        $type = (int)($pageArguments->getPageType() ?: 0);
+        $type = $pageArguments->getPageType();
         if ($type) {
             $parameter .= ',' . $type;
         }

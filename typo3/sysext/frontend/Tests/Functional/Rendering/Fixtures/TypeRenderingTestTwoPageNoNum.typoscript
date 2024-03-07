@@ -1,0 +1,7 @@
+first = PAGE
+first.10 = TEXT
+first.10.value = firstPageContent
+
+second = PAGE
+second.10 = TEXT
+second.10.value = secondPageContent

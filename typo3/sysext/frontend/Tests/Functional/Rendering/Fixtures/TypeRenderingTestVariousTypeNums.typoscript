@@ -1,0 +1,14 @@
+page = PAGE
+page.typeNum = 0
+page.10 = TEXT
+page.10.value = defaultPage
+
+intType = PAGE
+intType.typeNum = 42
+intType.10 = TEXT
+intType.10.value = intTypeContent
+
+stringType = PAGE
+stringType.typeNum = foo
+stringType.10 = TEXT
+stringType.10.value = stringTypeContent

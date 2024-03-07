@@ -624,7 +624,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         /** @var PageArguments $pageArguments */
         $pageArguments = $request->getAttribute('routing');
-        $type = (int)($pageArguments->getPageType() ?: 0);
+        $type = $pageArguments->getPageType();
 
         $gotSetupConfigFromCache = false;
         $setupConfigTypoScriptCacheIdentifier = 'setup-config-' . sha1($serializedSysTemplateRows . $serializedConstantConditionList . serialize($setupConditionList) . $type);
@@ -644,11 +644,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // @todo: We could potentially remove *all* PAGE objects from setup here. This prevents people
                     //        from accessing other ones than the determined one in $frontendTypoScript->getSetupArray().
                     $typeNumChild = $potentialPageNode->getChildByName('typeNum');
-                    if ($typeNumChild && $type === (int)$typeNumChild->getValue()) {
+                    if ($typeNumChild && $type === $typeNumChild->getValue()) {
                         $rawSetupPageNodeFromType = $potentialPageNode;
                         break;
                     }
-                    if (!$typeNumChild && $type === 0) {
+                    if (!$typeNumChild && $type === '0') {
                         // The first PAGE node that has no typeNum is considered '0' automatically.
                         $rawSetupPageNodeFromType = $potentialPageNode;
                         break;
@@ -755,7 +755,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $pageArguments = $request->getAttribute('routing');
         $pageCacheIdentifierParameters = [
             'id' => $pageId,
-            'type' => (int)($pageArguments->getPageType() ?: 0),
+            'type' => $pageArguments->getPageType(),
             'groupIds' => implode(',', $this->context->getAspect('frontend.user')->getGroupIds()),
             'MP' => $pageInformation->getMountPoint(),
             'site' => $site->getIdentifier(),
