@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ===============
 TYPO3 Redirects
 ===============
@@ -54,4 +56,3 @@ redirects and automatically create redirects on slug changes.
    :hidden:
 
    Sitemap
-   genindex
