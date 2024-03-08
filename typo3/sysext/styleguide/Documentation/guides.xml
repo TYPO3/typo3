@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guides xmlns="https://www.phpdoc.org/guides" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.phpdoc.org/guides ../vendor/phpdocumentor/guides-cli/resources/schema/guides.xsd"
+        links-are-relative="true">
+    <extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
+               typo3-core-preferred="main"
+               interlink-shortcode="typo3/cms-styleguid"
+    />
+    <project title="Styleguide"
+    />
+</guides>
