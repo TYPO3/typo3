@@ -73,7 +73,7 @@
 				<source>Limit history to this record</source>
 			</trans-unit>
 			<trans-unit id="differenceMsg" resname="differenceMsg">
-				<source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+				<source>In the Difference column you can see the changes at every modification of records. New changes are displayed in green colored text and the red colored text are the old values which were removed.</source>
 			</trans-unit>
 			<trans-unit id="fullView" resname="fullView">
 				<source>Return to full view</source>
