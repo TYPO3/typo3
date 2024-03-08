@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ===============
 TYPO3 Reports
 ===============
@@ -119,4 +121,3 @@ This extension shows status reports and installed services in the
     :hidden:
 
     Sitemap
-    genindex
