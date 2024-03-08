@@ -27,7 +27,7 @@ class RecordRememberer implements SingletonInterface
     /**
      * @var int[]
      */
-    protected $rememberedUids = [];
+    protected array $rememberedUids = [];
 
     public function rememberRecords(iterable $records): void
     {

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View\Drawing;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\ContentFetcher;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\Grid;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
@@ -48,14 +47,14 @@ class BackendLayoutRenderer
 {
     public function __construct(
         protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly RecordRememberer $recordRememberer
     ) {}
 
     public function getGridForPageLayoutContext(PageLayoutContext $context): Grid
     {
         $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $context);
         $grid = GeneralUtility::makeInstance(Grid::class, $context);
-        $recordRememberer = GeneralUtility::makeInstance(RecordRememberer::class);
-        if ($context->getDrawingConfiguration()->getLanguageMode()) {
+        if ($context->getDrawingConfiguration()->isLanguageComparisonMode()) {
             $languageId = $context->getSiteLanguage()->getLanguageId();
         } else {
             $languageId = $context->getDrawingConfiguration()->getSelectedLanguageId();
@@ -69,7 +68,7 @@ class BackendLayoutRenderer
                 $rowObject->addColumn($columnObject);
                 if (isset($column['colPos'])) {
                     $records = $contentFetcher->getContentRecordsPerColumn((int)$column['colPos'], $languageId);
-                    $recordRememberer->rememberRecords($records);
+                    $this->recordRememberer->rememberRecords($records);
                     foreach ($records as $contentRecord) {
                         $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $context, $columnObject, $contentRecord);
                         $columnObject->addItem($columnItem);
@@ -92,14 +91,12 @@ class BackendLayoutRenderer
         $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'context' => $pageLayoutContext,
-            'hideRestrictedColumns' => (bool)(BackendUtility::getPagesTSconfig($pageLayoutContext->getPageId())['mod.']['web_layout.']['hideRestrictedCols'] ?? false),
-            'newContentTitle' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement'),
-            'newContentTitleShort' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content'),
+            'hideRestrictedColumns' => $pageLayoutContext->getDrawingConfiguration()->shouldHideRestrictedColumns(),
             'allowEditContent' => $backendUser->check('tables_modify', 'tt_content'),
             'maxTitleLength' => $backendUser->uc['titleLen'] ?? 20,
         ]);
 
-        if ($pageLayoutContext->getDrawingConfiguration()->getLanguageMode()) {
+        if ($pageLayoutContext->getDrawingConfiguration()->isLanguageComparisonMode()) {
             if ($pageLayoutContext->getDrawingConfiguration()->getDefaultLanguageBinding()) {
                 $view->assign('languageColumns', $this->getLanguageColumnsWithDefLangBindingForPageLayoutContext($pageLayoutContext));
             } else {

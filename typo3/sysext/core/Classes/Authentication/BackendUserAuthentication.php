@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type;
@@ -576,18 +577,23 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * Checking if a language value (-1, 0 and >0) is allowed to be edited by the user.
      *
-     * @param int $langValue Language value to evaluate
+     * @param int|SiteLanguage|string $langValue Language value to evaluate
      * @return bool Returns TRUE if the language value is allowed, otherwise FALSE.
      */
     public function checkLanguageAccess($langValue)
     {
         // The users language list must be non-blank - otherwise all languages are allowed.
-        if (trim($this->groupData['allowed_languages']) !== '') {
+        if (trim($this->groupData['allowed_languages']) === '') {
+            return true;
+        }
+        if ($langValue instanceof SiteLanguage) {
+            $langValue = $langValue->getLanguageId();
+        } else {
             $langValue = (int)$langValue;
-            // Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
-            if ($langValue != -1 && !$this->check('allowed_languages', (string)$langValue)) {
-                return false;
-            }
+        }
+        // Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
+        if ($langValue !== -1 && !$this->check('allowed_languages', (string)$langValue)) {
+            return false;
         }
         return true;
     }

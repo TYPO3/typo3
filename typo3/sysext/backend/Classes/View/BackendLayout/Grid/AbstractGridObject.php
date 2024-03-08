@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Base class for objects which constitute a page layout grid.
@@ -44,11 +43,6 @@ abstract class AbstractGridObject
     public function __construct(protected PageLayoutContext $context)
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-    }
-
-    public function getUniqueId(): string
-    {
-        return StringUtility::getUniqueId();
     }
 
     public function getContext(): PageLayoutContext

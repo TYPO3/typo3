@@ -32,18 +32,18 @@
                     <td class="t3-page-column t3-page-lang-label nowrap">
                         <div class="btn-group">
                             <f:if condition="{languageColumn.allowViewPage}">
-                                <button class="btn btn-default btn-sm" {f:if(condition: languageColumn.previewUrlAttributes, then: '{languageColumn.previewUrlAttributes -> f:format.raw()}', else: 'disabled="true"')} title="{languageColumn.viewPageLinkTitle}">
+                                <button class="btn btn-default btn-sm" {f:if(condition: languageColumn.previewUrlAttributes, then: '{languageColumn.previewUrlAttributes -> f:format.raw()}', else: 'disabled="true"')} title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')}">
                                     <core:icon identifier="actions-view" />
                                 </button>
                             </f:if>
                             <f:if condition="{languageColumn.allowEditPage}">
-                                <a href="{languageColumn.pageEditUrl}" class="btn btn-default btn-sm" title="{languageColumn.pageEditTitle}">
+                                <a href="{languageColumn.pageEditUrl}" class="btn btn-default btn-sm" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:edit')}">
                                     <core:icon identifier="actions-open" />
                                 </a>
                             </f:if>
                             <f:if condition="{allowEditContent} && {languageColumn.context.siteLanguage.languageId} && {languageColumn.translationData.untranslatedRecordUids}">
                                 <a href="#" class="btn btn-default btn-sm t3js-localize disabled"
-                                    title="{languageColumn.context.translatePageTitle}"
+                                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPageContent_translate')}"
                                     data-page="{languageColumn.context.localizedPageRecord.title}"
                                     data-has-elements="{languageColumn.translationData.hasTranslations as integer}"
                                     data-allow-copy="{languageColumn.allowTranslateCopy as integer}"
@@ -53,7 +53,7 @@
                                     data-language-id="{languageColumn.context.siteLanguage.languageId}"
                                     data-language-name="{languageColumn.context.siteLanguage.title}">
                                     <core:icon identifier="actions-localize" />
-                                    {languageColumn.translatePageTitle}
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPageContent_translate" />
                                 </a>
                             </f:if>
                         </div>

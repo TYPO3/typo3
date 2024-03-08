@@ -125,7 +125,7 @@ class GridColumnItem extends AbstractGridObject
                         ],
                     ],
                 ],
-                'redirect' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+                'redirect' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
             ]
         );
     }
@@ -278,14 +278,12 @@ class GridColumnItem extends AbstractGridObject
     public function getNewContentAfterUrl(): string
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $pageId = $this->context->getPageId();
-
         return (string)$uriBuilder->buildUriFromRoute('new_content_element_wizard', [
-            'id' => $pageId,
+            'id' => $this->context->getPageId(),
             'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
             'colPos' => $this->column->getColumnNumber(),
             'uid_pid' => -$this->record['uid'],
-            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
         ]);
     }
 
@@ -307,7 +305,7 @@ class GridColumnItem extends AbstractGridObject
                         ],
                     ],
                 ],
-                'redirect' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+                'redirect' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
             ]
         ) . '#element-' . $this->table . '-' . $this->record['uid'];
     }
@@ -345,7 +343,7 @@ class GridColumnItem extends AbstractGridObject
                     $this->record['uid'] => 'edit',
                 ],
             ],
-            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $this->table . '-' . $this->record['uid'],
+            'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $this->table . '-' . $this->record['uid'],
         ];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return $uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-' . $this->table . '-' . $this->record['uid'];

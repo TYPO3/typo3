@@ -61,7 +61,7 @@
                 class="form-check-input"
                 name="showHidden"
                 value="1"
-                {f:if(condition:'{hiddenElementsState} == 1', then:'checked="checked"')}
+                {f:if(condition:'{pageLayoutContext.drawingConfiguration.showHidden}', then:'checked="checked"')}
             />
             <label class="form-check-label" for="checkShowHidden">
                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:hiddenCE" /> ({hiddenElementsCount})

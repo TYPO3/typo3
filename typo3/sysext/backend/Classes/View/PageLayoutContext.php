@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
@@ -71,17 +72,12 @@ class PageLayoutContext
         protected readonly BackendLayout $backendLayout,
         protected readonly SiteInterface $site,
         protected readonly DrawingConfiguration $drawingConfiguration,
-        protected readonly array $tsConfig
+        protected readonly ServerRequestInterface $request
     ) {
         $this->pageId = (int)($pageRecord['uid'] ?? 0);
         $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $this);
         $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUser(), true, $this->pageId);
         $this->siteLanguage = $this->site->getDefaultLanguage();
-    }
-
-    public static function create(array $pageRecord, BackendLayout $backendLayout, SiteInterface $site, DrawingConfiguration $drawingConfiguration, array $tsConfig): self
-    {
-        return new self($pageRecord, $backendLayout, $site, $drawingConfiguration, $tsConfig);
     }
 
     public function cloneForLanguage(SiteLanguage $language): self
@@ -303,7 +299,7 @@ class PageLayoutContext
                             'record_edit',
                             [
                                 'justLocalized' => 'pages:' . $this->pageId . ':' . $languageUid,
-                                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+                                'returnUrl' => $this->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
                             ]
                         ),
                     ]
@@ -312,6 +308,11 @@ class PageLayoutContext
             }
         }
         return $options;
+    }
+
+    public function getCurrentRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 
     public function getLocalizedPageTitle(): string

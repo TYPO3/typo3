@@ -144,7 +144,7 @@ class NullSite implements SiteInterface
         $disabledLanguages = GeneralUtility::intExplode(',', (string)($pageTs['disableLanguages'] ?? ''), true);
         // Do not add the ones that are not allowed by the user
         foreach ($this->languages as $language) {
-            if ($user->checkLanguageAccess($language->getLanguageId()) && !in_array($language->getLanguageId(), $disabledLanguages, true)) {
+            if ($user->checkLanguageAccess($language) && !in_array($language->getLanguageId(), $disabledLanguages, true)) {
                 if ($language->getLanguageId() === 0) {
                     // 0: "Default" language
                     $defaultLanguageLabel = 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage';

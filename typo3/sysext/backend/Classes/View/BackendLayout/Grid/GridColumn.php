@@ -114,7 +114,7 @@ class GridColumn extends AbstractGridObject
 
     public function getColSpan(): int
     {
-        if ($this->context->getDrawingConfiguration()->getLanguageMode()) {
+        if ($this->context->getDrawingConfiguration()->isLanguageComparisonMode()) {
             return 1;
         }
         return $this->colSpan;
@@ -122,7 +122,7 @@ class GridColumn extends AbstractGridObject
 
     public function getRowSpan(): int
     {
-        if ($this->context->getDrawingConfiguration()->getLanguageMode()) {
+        if ($this->context->getDrawingConfiguration()->isLanguageComparisonMode()) {
             return 1;
         }
         return $this->rowSpan;
@@ -147,15 +147,19 @@ class GridColumn extends AbstractGridObject
         }
         $pageRecord = $this->context->getPageRecord();
         if (!$this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            || !$this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage()->getLanguageId())) {
+            || !$this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage())) {
             return null;
         }
-        $pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(
-            BackendUtility::getRecordTitle('pages', $pageRecord, true)
-        );
-        $editParam = '&edit[' . $this->table . '][' . implode(',', $this->getAllContainedItemUids()) . ']=edit' . $pageTitleParamForAltDoc;
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return $uriBuilder->buildUriFromRoute('record_edit') . $editParam . '&returnUrl=' . rawurlencode($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
+        return (string)$uriBuilder->buildUriFromRoute('record_edit', [
+            'edit' => [
+                $this->table => [
+                    implode(',', $this->getAllContainedItemUids()) => 'edit',
+                ],
+            ],
+            'recTitle' => rawurlencode(BackendUtility::getRecordTitle('pages', $pageRecord, true)),
+            'returnUrl' => rawurlencode($this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri()),
+        ]);
     }
 
     public function getNewContentUrl(): string
@@ -168,7 +172,7 @@ class GridColumn extends AbstractGridObject
             'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
             'colPos' => $this->getColumnNumber(),
             'uid_pid' => $pageId,
-            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
         ]);
     }
 
@@ -229,7 +233,7 @@ class GridColumn extends AbstractGridObject
         $pageRecord = $this->context->getPageRecord();
         return !$pageRecord['editlock']
             && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-            && $this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage()->getLanguageId());
+            && $this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage());
     }
 
     /**

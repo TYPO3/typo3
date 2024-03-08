@@ -75,7 +75,7 @@ class ContentFetcher
         $languageId = $languageId ?? $this->context->getSiteLanguage()->getLanguageId();
 
         if (empty($this->fetchedContentRecords)) {
-            $isLanguageMode = $this->context->getDrawingConfiguration()->getLanguageMode();
+            $isLanguageComparisonMode = $this->context->getDrawingConfiguration()->isLanguageComparisonMode();
             $queryBuilder = $this->getQueryBuilder();
             $result = $queryBuilder->executeQuery();
             $records = $this->getResult($result);
@@ -84,7 +84,7 @@ class ContentFetcher
                 $recordColumnNumber = (int)$record['colPos'];
                 if ($recordLanguage === -1) {
                     // Record is set to "all languages", place it according to view mode.
-                    if ($isLanguageMode) {
+                    if ($isLanguageComparisonMode) {
                         // Force the record to only be shown in default language in "Languages" view mode.
                         $recordLanguage = 0;
                     } else {

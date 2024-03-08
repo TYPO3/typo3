@@ -261,7 +261,7 @@ class Site implements SiteInterface
 
         // Do not add the ones that are not allowed by the user
         foreach ($this->languages as $language) {
-            if ($user->checkLanguageAccess($language->getLanguageId())) {
+            if ($user->checkLanguageAccess($language)) {
                 $availableLanguages[$language->getLanguageId()] = $language;
             }
         }

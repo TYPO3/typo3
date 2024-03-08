@@ -38,6 +38,7 @@ use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
 use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Backend\View\PageViewMode;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -124,7 +125,7 @@ class PageLayoutController
         }
 
         $tsConfig = BackendUtility::getPagesTSconfig($this->id);
-        $this->menuConfig($request);
+        $this->menuConfig();
         $this->currentSelectedLanguage = (int)$this->moduleData->get('language');
         $this->addJavaScriptModuleInstructions();
         $this->makeActionMenu($view, $tsConfig);
@@ -134,9 +135,7 @@ class PageLayoutController
 
         $pageLayoutContext = $this->createPageLayoutContext($request, $tsConfig);
         $mainLayoutHtml = $this->backendLayoutRenderer->drawContent($request, $pageLayoutContext);
-        $numberOfHiddenElements = $this->getNumberOfHiddenElements(
-            $pageLayoutContext->getDrawingConfiguration()->getLanguageMode()
-        );
+        $numberOfHiddenElements = $this->getNumberOfHiddenElements($pageLayoutContext->getDrawingConfiguration());
 
         $pageLocalizationRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
 
@@ -145,13 +144,13 @@ class PageLayoutController
         $view->assignMultiple([
             'pageId' => $this->id,
             'localizedPageId' => $pageLocalizationRecord['uid'] ?? 0,
+            'pageLayoutContext' => $pageLayoutContext,
             'infoBoxes' => $this->generateMessagesForCurrentPage($request),
             'isPageEditable' => $this->isPageEditable($this->currentSelectedLanguage),
-            'localizedPageTitle' => $this->getLocalizedPageTitle($this->currentSelectedLanguage, $this->pageinfo),
+            'localizedPageTitle' => $pageLocalizationRecord['title'] ?? $this->pageinfo['title'] ?? '',
             'eventContentHtmlTop' => $event->getHeaderContent(),
             'mainContentHtml' => $mainLayoutHtml,
             'hiddenElementsShowToggle' => ($this->getBackendUser()->check('tables_select', 'tt_content') && ($numberOfHiddenElements > 0)),
-            'hiddenElementsState' => (bool)$this->moduleData->get('showHidden'),
             'hiddenElementsCount' => $numberOfHiddenElements,
             'eventContentHtmlBottom' => $event->getFooterContent(),
         ]);
@@ -161,21 +160,18 @@ class PageLayoutController
     protected function createPageLayoutContext(ServerRequestInterface $request, array $tsConfig): PageLayoutContext
     {
         $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($this->id);
-        $configuration = DrawingConfiguration::create($backendLayout, $tsConfig);
+        $viewMode = (int)$this->moduleData->get('function') === 2 ? PageViewMode::LanguageComparisonView : PageViewMode::LayoutView;
+        $configuration = DrawingConfiguration::create($backendLayout, $tsConfig, $viewMode);
         $configuration->setShowHidden((bool)$this->moduleData->get('showHidden'));
         $configuration->setLanguageColumns($this->MOD_MENU['language']);
         $configuration->setSelectedLanguageId($this->currentSelectedLanguage);
-        if ((int)$this->moduleData->get('function') === 2) {
-            $configuration->setLanguageMode(true);
-        }
-
-        return PageLayoutContext::create($this->pageinfo, $backendLayout, $request->getAttribute('site'), $configuration, $tsConfig);
+        return GeneralUtility::makeInstance(PageLayoutContext::class, $this->pageinfo, $backendLayout, $request->getAttribute('site'), $configuration, $request);
     }
 
     /**
      * Initialize menu array
      */
-    protected function menuConfig(ServerRequestInterface $request): void
+    protected function menuConfig(): void
     {
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
@@ -462,18 +458,6 @@ class PageLayoutController
         return implode(', ', $links);
     }
 
-    protected function getLocalizedPageTitle(int $currentSelectedLanguage, array $pageInfo): string
-    {
-        if ($currentSelectedLanguage <= 0) {
-            return $pageInfo['title'];
-        }
-        $pageLocalizationRecord = $this->getLocalizedPageRecord($currentSelectedLanguage);
-        if (!is_array($pageLocalizationRecord)) {
-            return $pageInfo['title'];
-        }
-        return $pageLocalizationRecord['title'] ?? '';
-    }
-
     /**
      * Initializes the clipboard for generating paste links dynamically via JavaScript after each "+ Content" symbol
      */
@@ -686,8 +670,9 @@ class PageLayoutController
      * Returns the number of hidden elements (including those hidden by start/end times)
      * on the current page (for the current site language)
      */
-    protected function getNumberOfHiddenElements(bool $isLanguageModeActive): int
+    protected function getNumberOfHiddenElements(DrawingConfiguration $drawingConfiguration): int
     {
+        $isLanguageComparisonModeActive = $drawingConfiguration->isLanguageComparisonMode();
         $andWhere = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()
@@ -712,7 +697,7 @@ class PageLayoutController
                     [-1, 0]
                 )
             );
-        } elseif ($isLanguageModeActive && $this->currentSelectedLanguage !== -1) {
+        } elseif ($isLanguageComparisonModeActive && $this->currentSelectedLanguage !== -1) {
             // Multi-language view with any translation is active -
             // consider "all languages", the default and the translation
             $queryBuilder->andWhere(
@@ -816,7 +801,7 @@ class PageLayoutController
      */
     protected function getTargetPageIfVisible(array $targetPage): array
     {
-        return !(bool)($targetPage['hidden'] ?? false) ? $targetPage : [];
+        return !($targetPage['hidden'] ?? false) ? $targetPage : [];
     }
 
     /**

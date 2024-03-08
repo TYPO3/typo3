@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View\Drawing;
 
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\PageViewMode;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -39,7 +40,7 @@ class DrawingConfiguration
     /**
      * Corresponds to web.layout.allowInconsistentLanguageHandling TSconfig property
      */
-    protected bool $allowInconsistentLanguageHandling = false;
+    protected bool $allowInconsistentLanguageHandling;
 
     /**
      * Determines whether rendering should happen with a visually aligned
@@ -47,13 +48,7 @@ class DrawingConfiguration
      * with this flag enabled, any translated versions are vertically
      * aligned so they are rendered in the same visual row as the original.
      */
-    protected bool $defaultLanguageBinding = true;
-
-    /**
-     * If TRUE, indicates that the current rendering method shows multiple
-     * languages (e.g. the "page" module is set in "Languages" mode.
-     */
-    protected bool $languageMode = false;
+    protected bool $defaultLanguageBinding;
 
     /**
      * Key => "Language ID", Value "Label of language"
@@ -72,18 +67,37 @@ class DrawingConfiguration
      */
     protected array $activeColumns = [1, 0, 2, 3];
 
-    public static function create(BackendLayout $backendLayout, array $pageTsConfig): self
+    /**
+     * Whether or not to allow the translate mode for translations
+     */
+    protected bool $allowTranslateModeForTranslations;
+
+    /**
+     * Whether or not to allow the copy mode for translations
+     */
+    protected bool $allowCopyModeForTranslations;
+
+    protected bool $shouldHideRestrictedColumns;
+
+    protected PageViewMode $pageViewMode;
+
+    public static function create(BackendLayout $backendLayout, array $pageTsConfig, PageViewMode $pageViewMode): self
     {
         $obj = new self();
+        $obj->pageViewMode = $pageViewMode;
         $obj->defaultLanguageBinding = !empty($pageTsConfig['mod.']['web_layout.']['defLangBinding']);
         $obj->allowInconsistentLanguageHandling = (bool)($pageTsConfig['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+        $obj->shouldHideRestrictedColumns = (bool)($pageTsConfig['mod.']['web_layout.']['hideRestrictedCols'] ?? false);
         $availableColumnPositionsFromBackendLayout = array_unique($backendLayout->getColumnPositionNumbers());
         $allowedColumnPositionsByTsConfig = array_unique(GeneralUtility::intExplode(',', (string)($pageTsConfig['mod.']['SHARED.']['colPos_list'] ?? ''), true));
-        $obj->activeColumns = $availableColumnPositionsFromBackendLayout;
+        // If there is no tsConfig colPos_list, no restriction. Else create intersection of available and allowed.
         if (!empty($allowedColumnPositionsByTsConfig)) {
-            // If there is no tsConfig colPos_list, no restriction. Else create intersection of available and allowed.
             $obj->activeColumns = array_intersect($availableColumnPositionsFromBackendLayout, $allowedColumnPositionsByTsConfig);
+        } else {
+            $obj->activeColumns = $availableColumnPositionsFromBackendLayout;
         }
+        $obj->allowTranslateModeForTranslations = $pageTsConfig['mod.']['web_layout.']['localization.']['enableTranslate'] ?? true;
+        $obj->allowCopyModeForTranslations = $pageTsConfig['mod.']['web_layout.']['localization.']['enableCopy'] ?? true;
 
         return $obj;
     }
@@ -108,14 +122,9 @@ class DrawingConfiguration
         return $this->defaultLanguageBinding;
     }
 
-    public function getLanguageMode(): bool
+    public function isLanguageComparisonMode(): bool
     {
-        return $this->languageMode;
-    }
-
-    public function setLanguageMode(bool $languageMode): void
-    {
-        $this->languageMode = $languageMode;
+        return $this->pageViewMode === PageViewMode::LanguageComparisonView;
     }
 
     public function getLanguageColumns(): array
@@ -144,5 +153,20 @@ class DrawingConfiguration
     public function getActiveColumns(): array
     {
         return $this->activeColumns;
+    }
+
+    public function translateModeForTranslationsAllowed(): bool
+    {
+        return $this->allowTranslateModeForTranslations;
+    }
+
+    public function copyModeForTranslationsAllowed(): bool
+    {
+        return $this->allowCopyModeForTranslations;
+    }
+
+    public function shouldHideRestrictedColumns(): bool
+    {
+        return $this->shouldHideRestrictedColumns;
     }
 }
