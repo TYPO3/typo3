@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ================
 TYPO3 Workspaces
 ================
@@ -51,4 +53,3 @@ granular editing and publishing process.
    :hidden:
 
    Sitemap
-   genindex
