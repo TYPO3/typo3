@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree;
 
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
@@ -68,15 +67,17 @@ final class SysTemplateRepository
         $queryBuilder->select('sys_template.*')->from('sys_template');
         // Build a value list as joined table to have sorting based on list sorting
         $valueList = [];
-        // @todo: Use type/int cast from expression builder to handle this dbms aware
-        //        when support for this has been extracted from CTE PoC patch (sbuerk).
-        $isPostgres = $queryBuilder->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform;
-        $pattern = $isPostgres ? '%s::int as uid, %s::int as sorting' : '%s as uid, %s as sorting';
         foreach ($rootLinePageIds as $sorting => $rootLinePageId) {
             $valueList[] = sprintf(
-                $pattern,
-                $queryBuilder->createNamedParameter($rootLinePageId, Connection::PARAM_INT),
-                $queryBuilder->createNamedParameter($sorting, Connection::PARAM_INT)
+                '%s, %s',
+                $queryBuilder->expr()->castInt(
+                    $queryBuilder->createNamedParameter($rootLinePageId, Connection::PARAM_INT),
+                    'uid',
+                ),
+                $queryBuilder->expr()->castInt(
+                    $queryBuilder->createNamedParameter($sorting, Connection::PARAM_INT),
+                    'sorting',
+                )
             );
         }
         $valueList = 'SELECT ' . implode(' UNION ALL SELECT ', $valueList);
@@ -143,15 +144,17 @@ final class SysTemplateRepository
         }
         // Build a value list as joined table to have sorting based on list sorting
         $valueList = [];
-        // @todo: Use type/int cast from expression builder to handle this dbms aware
-        //        when support for this has been extracted from CTE PoC patch (sbuerk).
-        $isPostgres = $queryBuilder->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform;
-        $pattern = $isPostgres ? '%s::int as uid, %s::int as sorting' : '%s as uid, %s as sorting';
         foreach ($rootLinePageIds as $sorting => $rootLinePageId) {
             $valueList[] = sprintf(
-                $pattern,
-                $queryBuilder->createNamedParameter($rootLinePageId, Connection::PARAM_INT),
-                $queryBuilder->createNamedParameter($sorting, Connection::PARAM_INT)
+                '%s, %s',
+                $queryBuilder->expr()->castInt(
+                    $queryBuilder->createNamedParameter($rootLinePageId, Connection::PARAM_INT),
+                    'uid',
+                ),
+                $queryBuilder->expr()->castInt(
+                    $queryBuilder->createNamedParameter($sorting, Connection::PARAM_INT),
+                    'sorting',
+                ),
             );
         }
         $valueList = 'SELECT ' . implode(' UNION ALL SELECT ', $valueList);
