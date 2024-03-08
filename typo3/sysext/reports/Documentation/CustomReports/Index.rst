@@ -41,7 +41,7 @@ Register a custom status
 ========================
 
 All status providers must implement
-:php:class:`TYPO3\\CMS\\Reports\\StatusProviderInterface`.
+:php:interface:`TYPO3\\CMS\\Reports\\StatusProviderInterface`.
 If :yaml:`autoconfigure` is enabled in :file:`Services.yaml`,
 the status providers implementing this interface will be automatically
 registered.
