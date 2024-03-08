@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guides xmlns="https://www.phpdoc.org/guides" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.phpdoc.org/guides ../vendor/phpdocumentor/guides-cli/resources/schema/guides.xsd"
+        links-are-relative="true">
+    <extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
+               project-home="https://extensions.typo3.org/extension/rte_ckeditor/"
+               project-contact="https://typo3.slack.com/archives/C025BQLFA"
+               project-repository="https://github.com/typo3/typo3"
+               project-issues="https://forge.typo3.org/projects/typo3cms-core/issues"
+               edit-on-github-branch="main"
+               edit-on-github="typo3/typo3"
+               edit-on-github-directory="typo3/sysext/rte_ckeditor/Documentation/"
+               typo3-core-preferred="main"
+               interlink-shortcode="typo3/cms-dashboard"
+    />
+    <project title="RTE by CKEditor"
+             release="main (development)"
+             version="main (development)"
+             copyright="since 2016 by the TYPO3 contributors"
+    />
+</guides>
