@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ==============
 TYPO3 Recycler
 ==============
@@ -53,4 +55,3 @@ overview of deleted records before taking further action.
    :hidden:
 
    Sitemap
-   genindex
