@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ================================
 TYPO3 Search Engine Optimization
 ================================
@@ -52,4 +54,3 @@ and sitemaps.
    :hidden:
 
    Sitemap
-   genindex
