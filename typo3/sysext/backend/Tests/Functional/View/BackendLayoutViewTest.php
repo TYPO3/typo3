@@ -15,49 +15,55 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Unit\View;
+namespace TYPO3\CMS\Backend\Tests\Functional\View;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class BackendLayoutViewTest extends UnitTestCase
+final class BackendLayoutViewTest extends FunctionalTestCase
 {
-    protected BackendLayoutView&MockObject&AccessibleObjectInterface $backendLayoutView;
+    private const RUNTIME_CACHE_ENTRY = 'backendUtilityBeGetRootLine';
 
-    /**
-     * Sets up this test case.
-     */
+    private FrontendInterface $runtimeCache;
+    private BackendLayoutView&MockObject&AccessibleObjectInterface $backendLayoutView;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->runtimeCache = $this->get(CacheManager::class)->getCache('runtime');
         $this->backendLayoutView = $this->getAccessibleMock(
             BackendLayoutView::class,
-            ['getPage', 'getRootLine'],
+            ['getPage'],
             [],
             '',
             false
         );
     }
 
-    /**
-     * @param bool|string $expected
-     */
+    protected function tearDown(): void
+    {
+        $this->runtimeCache->remove(self::RUNTIME_CACHE_ENTRY);
+        parent::tearDown();
+    }
+
     #[DataProvider('selectedCombinedIdentifierIsDeterminedDataProvider')]
     #[Test]
-    public function selectedCombinedIdentifierIsDetermined($expected, array $page, array $rootLine): void
+    public function selectedCombinedIdentifierIsDetermined(false|string $expected, array $page, array $rootLine): void
     {
         $pageId = $page['uid'];
+        if ($pageId !== false) {
+            $this->mockRootLine((int)$pageId, $rootLine);
+        }
 
         $this->backendLayoutView->expects(self::once())
             ->method('getPage')->with(self::equalTo($pageId))
             ->willReturn($page);
-        $this->backendLayoutView
-            ->method('getRootLine')->with(self::equalTo($pageId))
-            ->willReturn($rootLine);
 
         $selectedCombinedIdentifier = $this->backendLayoutView->_call('getSelectedCombinedIdentifier', $pageId);
         self::assertEquals($expected, $selectedCombinedIdentifier);
@@ -200,5 +206,13 @@ final class BackendLayoutViewTest extends UnitTestCase
                 ],
             ],
         ];
+    }
+
+    private function mockRootLine(int $pageId, array $rootLine): void
+    {
+        $this->runtimeCache->set(self::RUNTIME_CACHE_ENTRY, [
+            $pageId . '--' => $rootLine, // plain, no overlay
+            $pageId . '--1' => $rootLine, // workspace overlay
+        ]);
     }
 }

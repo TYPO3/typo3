@@ -130,7 +130,7 @@ final class PageTsBackendLayoutDataProvider implements DataProviderInterface
     private function generateBackendLayoutFromTsConfig(string $identifier, array $data): ?array
     {
         $backendLayout = [];
-        if (!empty($data['config.']['backend_layout.']) && is_array($data['config.']['backend_layout.'])) {
+        if (is_array($data['config.']['backend_layout.'] ?? null)) {
             $backendLayout['uid'] = substr($identifier, 0, -1);
             $backendLayout['title'] = $data['title'] ?? $backendLayout['uid'];
             $backendLayout['icon'] = $data['icon'] ?? '';
@@ -148,7 +148,7 @@ final class PageTsBackendLayoutDataProvider implements DataProviderInterface
     /**
      * Attach Backend Layout to internal Stack
      */
-    private function attachBackendLayout(mixed $backendLayout = null)
+    private function attachBackendLayout(mixed $backendLayout = null): void
     {
         if ($backendLayout) {
             $this->backendLayouts[$backendLayout['uid']] = $backendLayout;
@@ -160,23 +160,9 @@ final class PageTsBackendLayoutDataProvider implements DataProviderInterface
      */
     private function createBackendLayout(array $data): BackendLayout
     {
-        $backendLayout = BackendLayout::create($data['uid'], $data['title'], $data['config']);
-        $backendLayout->setIconPath($this->getIconPath($data['icon']));
+        $backendLayout = BackendLayout::create((string)$data['uid'], $data['title'], $data['config']);
+        $backendLayout->setIconPath($data['icon'] ?? '');
         $backendLayout->setData($data);
         return $backendLayout;
-    }
-
-    /**
-     * Gets and sanitizes the icon path.
-     *
-     * @param string $icon Name of the icon file
-     */
-    private function getIconPath(string $icon): string
-    {
-        $iconPath = '';
-        if (!empty($icon)) {
-            $iconPath = $icon;
-        }
-        return $iconPath;
     }
 }

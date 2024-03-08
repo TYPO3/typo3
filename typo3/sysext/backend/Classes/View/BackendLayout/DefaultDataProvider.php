@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -31,10 +33,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DefaultDataProvider implements DataProviderInterface
 {
     /**
-     * @var string
      * Table name for backend_layouts
      */
-    protected $tableName = 'backend_layout';
+    protected string $tableName = 'backend_layout';
 
     /**
      * Adds backend layouts to the given backend layout collection.
@@ -44,7 +45,7 @@ class DefaultDataProvider implements DataProviderInterface
     public function addBackendLayouts(
         DataProviderContext $dataProviderContext,
         BackendLayoutCollection $backendLayoutCollection
-    ) {
+    ): void {
         $layoutData = $this->getLayoutData(
             $dataProviderContext->getFieldName(),
             $dataProviderContext->getPageTsConfig(),
@@ -62,9 +63,8 @@ class DefaultDataProvider implements DataProviderInterface
      *
      * @param string|int $identifier
      * @param int $pageId
-     * @return BackendLayout|null
      */
-    public function getBackendLayout($identifier, $pageId)
+    public function getBackendLayout($identifier, $pageId): ?BackendLayout
     {
         $backendLayout = null;
 
@@ -83,10 +83,8 @@ class DefaultDataProvider implements DataProviderInterface
 
     /**
      * Creates a backend layout with the default configuration.
-     *
-     * @return BackendLayout
      */
-    protected function createDefaultBackendLayout()
+    protected function createDefaultBackendLayout(): BackendLayout
     {
         return BackendLayout::create(
             'default',
@@ -97,12 +95,10 @@ class DefaultDataProvider implements DataProviderInterface
 
     /**
      * Creates a new backend layout using the given record data.
-     *
-     * @return BackendLayout
      */
-    protected function createBackendLayout(array $data)
+    protected function createBackendLayout(array $data): BackendLayout
     {
-        $backendLayout = BackendLayout::create($data['uid'], $data['title'], $data['config']);
+        $backendLayout = BackendLayout::create((string)$data['uid'], $data['title'], $data['config']);
         $backendLayout->setIconPath($this->getIconPath($data));
         $backendLayout->setData($data);
         return $backendLayout;
@@ -110,10 +106,8 @@ class DefaultDataProvider implements DataProviderInterface
 
     /**
      * Resolves the icon from the database record
-     *
-     * @return string
      */
-    protected function getIconPath(array $icon)
+    protected function getIconPath(array $icon): string
     {
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
         $references = $fileRepository->findByRelation($this->tableName, 'icon', (int)$icon['uid']);
@@ -132,7 +126,7 @@ class DefaultDataProvider implements DataProviderInterface
      * @param int $pageUid the ID of the page wea re getting the layouts for
      * @return array $layouts A collection of layout data of the registered provider
      */
-    protected function getLayoutData($fieldName, array $pageTsConfig, $pageUid)
+    protected function getLayoutData(string $fieldName, array $pageTsConfig, int $pageUid): array
     {
         $storagePid = $this->getStoragePid($pageTsConfig);
         $pageTsConfigId = $this->getPageTSconfigIds($pageTsConfig);
@@ -207,10 +201,8 @@ class DefaultDataProvider implements DataProviderInterface
 
     /**
      * Returns the storage PID from TCEFORM.
-     *
-     * @return int
      */
-    protected function getStoragePid(array $pageTsConfig)
+    protected function getStoragePid(array $pageTsConfig): int
     {
         $storagePid = 0;
 
@@ -223,10 +215,8 @@ class DefaultDataProvider implements DataProviderInterface
 
     /**
      * Returns the page TSconfig from TCEFORM.
-     *
-     * @return array
      */
-    protected function getPageTSconfigIds(array $pageTsConfig)
+    protected function getPageTSconfigIds(array $pageTsConfig): array
     {
         $pageTsConfigIds = [
             'backend_layout' => 0,

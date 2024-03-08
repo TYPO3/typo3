@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,97 +24,51 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class DataProviderContext implements SingletonInterface
 {
-    /**
-     * @var int
-     */
-    protected $pageId;
+    protected int $pageId = 0;
+    protected string $tableName = '';
+    protected string $fieldName = '';
+    protected array $data = [];
+    protected array $pageTsConfig = [];
 
-    /**
-     * @var string
-     */
-    protected $tableName;
-
-    /**
-     * @var string
-     */
-    protected $fieldName;
-
-    /**
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * @var array
-     */
-    protected $pageTsConfig;
-
-    /**
-     * @return int
-     */
-    public function getPageId()
+    public function getPageId(): int
     {
         return $this->pageId;
     }
 
-    /**
-     * @param int $pageId
-     * @return DataProviderContext
-     */
-    public function setPageId($pageId)
+    public function setPageId(int $pageId): self
     {
         $this->pageId = $pageId;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTableName()
+    public function getTableName(): string
     {
         return $this->tableName;
     }
 
-    /**
-     * @param string $tableName
-     * @return DataProviderContext
-     */
-    public function setTableName($tableName)
+    public function setTableName(string $tableName): self
     {
         $this->tableName = $tableName;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    /**
-     * @param string $fieldName
-     * @return DataProviderContext
-     */
-    public function setFieldName($fieldName)
+    public function setFieldName(string $fieldName): self
     {
         $this->fieldName = $fieldName;
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
 
-    /**
-     * @return DataProviderContext
-     */
-    public function setData(array $data)
+    public function setData(array $data): self
     {
         $this->data = $data;
         return $this;
@@ -123,10 +79,7 @@ class DataProviderContext implements SingletonInterface
         return $this->pageTsConfig;
     }
 
-    /**
-     * @return DataProviderContext
-     */
-    public function setPageTsConfig(array $pageTsConfig)
+    public function setPageTsConfig(array $pageTsConfig): self
     {
         $this->pageTsConfig = $pageTsConfig;
         return $this;

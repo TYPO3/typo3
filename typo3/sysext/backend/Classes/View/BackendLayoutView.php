@@ -47,11 +47,8 @@ class BackendLayoutView implements SingletonInterface
         private readonly TypoScriptStringFactory $typoScriptStringFactory,
     ) {
         $this->dataProviderCollection->add('default', DefaultDataProvider::class);
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'])) {
-            $dataProviders = (array)$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'];
-            foreach ($dataProviders as $identifier => $className) {
-                $this->dataProviderCollection->add($identifier, $className);
-            }
+        foreach ((array)($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'] ?? []) as $identifier => $className) {
+            $this->dataProviderCollection->add($identifier, $className);
         }
     }
 
@@ -70,10 +67,11 @@ class BackendLayoutView implements SingletonInterface
     public function addBackendLayoutItems(array &$parameters)
     {
         $pageId = $this->determinePageId($parameters['table'], $parameters['row']) ?: 0;
-        $pageTsConfig = (array)BackendUtility::getPagesTSconfig($pageId);
+        $pageTsConfig = BackendUtility::getPagesTSconfig($pageId);
         $identifiersToBeExcluded = $this->getIdentifiersToBeExcluded($pageTsConfig);
 
-        $dataProviderContext = $this->createDataProviderContext()
+        $dataProviderContext = GeneralUtility::makeInstance(DataProviderContext::class);
+        $dataProviderContext
             ->setPageId($pageId)
             ->setData($parameters['row'])
             ->setTableName($parameters['table'])
@@ -106,12 +104,11 @@ class BackendLayoutView implements SingletonInterface
     /**
      * Determines the page id for a given record of a database table.
      *
-     * @param string $tableName
      * @return int|false Returns page id or false on error
      */
-    protected function determinePageId($tableName, array $data)
+    protected function determinePageId(string $tableName, array $data): int|false
     {
-        if (empty($data)) {
+        if ($data === []) {
             return false;
         }
 
@@ -144,28 +141,26 @@ class BackendLayoutView implements SingletonInterface
             $pageId = $data['pid'];
         }
 
-        return $pageId;
+        return (int)$pageId;
     }
 
     /**
      * Returns the backend layout which should be used for this page.
      *
-     * @param int $pageId
-     * @return bool|string Identifier of the backend layout to be used, or FALSE if none
+     * @return false|string Identifier of the backend layout to be used, or FALSE if none
      */
-    public function getSelectedCombinedIdentifier($pageId)
+    protected function getSelectedCombinedIdentifier(int $pageId): string|false
     {
         if (!isset($this->selectedCombinedIdentifier[$pageId])) {
             $page = $this->getPage($pageId);
             $this->selectedCombinedIdentifier[$pageId] = (string)($page['backend_layout'] ?? null);
-
             if ($this->selectedCombinedIdentifier[$pageId] === '-1') {
                 // If it is set to "none" - don't use any
                 $this->selectedCombinedIdentifier[$pageId] = false;
             } elseif ($this->selectedCombinedIdentifier[$pageId] === '' || $this->selectedCombinedIdentifier[$pageId] === '0') {
                 // If it not set check the root-line for a layout on next level and use this
                 // (root-line starts with current page and has page "0" at the end)
-                $rootLine = $this->getRootLine($pageId);
+                $rootLine = BackendUtility::BEgetRootLine($pageId, '', true);
                 // Remove first and last element (current and root page)
                 array_shift($rootLine);
                 array_pop($rootLine);
@@ -189,10 +184,8 @@ class BackendLayoutView implements SingletonInterface
 
     /**
      * Gets backend layout identifiers to be excluded
-     *
-     * @return array
      */
-    protected function getIdentifiersToBeExcluded(array $pageTSconfig)
+    protected function getIdentifiersToBeExcluded(array $pageTSconfig): array
     {
         $identifiersToBeExcluded = [];
 
@@ -212,7 +205,7 @@ class BackendLayoutView implements SingletonInterface
      * This method is called as "itemsProcFunc" with the accordant context
      * for tt_content.colPos.
      */
-    public function colPosListItemProcFunc(array $parameters)
+    public function colPosListItemProcFunc(array &$parameters): void
     {
         $pageId = $this->determinePageId($parameters['table'], $parameters['row']);
 
@@ -223,12 +216,8 @@ class BackendLayoutView implements SingletonInterface
 
     /**
      * Adds items to a colpos list
-     *
-     * @param int $pageId
-     * @param array $items
-     * @return array
      */
-    protected function addColPosListLayoutItems($pageId, $items)
+    protected function addColPosListLayoutItems(int $pageId, array $items): array
     {
         $layout = $this->getSelectedBackendLayout($pageId);
         if ($layout && !empty($layout['__items'])) {
@@ -239,11 +228,9 @@ class BackendLayoutView implements SingletonInterface
 
     /**
      * Gets the list of available columns for a given page id
-     *
-     * @param int $id
-     * @return array $tcaItems
+     * @todo: will be removed once Page Position Map for content is removed.
      */
-    public function getColPosListItemsParsed($id)
+    public function getColPosListItemsParsed(int $id): array
     {
         $tsConfig = BackendUtility::getPagesTSconfig($id)['TCEFORM.']['tt_content.']['colPos.'] ?? [];
         $tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'] ?? [];
@@ -275,43 +262,36 @@ class BackendLayoutView implements SingletonInterface
      * @return array The updated $item array
      * @internal
      */
-    protected function addItems($items, $iArray)
+    protected function addItems(array $items, array $iArray): array
     {
         $languageService = $this->getLanguageService();
-        if (is_array($iArray)) {
-            foreach ($iArray as $value => $label) {
-                // if the label is an array (that means it is a subelement
-                // like "34.icon = mylabel.png", skip it (see its usage below)
-                if (is_array($label)) {
-                    continue;
-                }
-                // check if the value "34 = mylabel" also has a "34.icon = myimage.png"
-                if (isset($iArray[$value . '.']) && $iArray[$value . '.']['icon']) {
-                    $icon = $iArray[$value . '.']['icon'];
-                } else {
-                    $icon = '';
-                }
-                $items[] = [$languageService->sL($label), $value, $icon];
+        foreach ($iArray as $value => $label) {
+            // if the label is an array (that means it is a subelement
+            // like "34.icon = mylabel.png", skip it (see its usage below)
+            if (is_array($label)) {
+                continue;
             }
+            // check if the value "34 = mylabel" also has a "34.icon = myimage.png"
+            if (isset($iArray[$value . '.']) && $iArray[$value . '.']['icon']) {
+                $icon = $iArray[$value . '.']['icon'];
+            } else {
+                $icon = '';
+            }
+            $items[] = [$languageService->sL($label), $value, $icon];
         }
         return $items;
     }
 
     /**
      * Gets the selected backend layout structure as an array
-     *
-     * @param int $pageId
-     * @return array|null $backendLayout
      */
-    public function getSelectedBackendLayout($pageId)
+    public function getSelectedBackendLayout(int $pageId): ?array
     {
-        $layout = $this->getBackendLayoutForPage((int)$pageId);
-        return $layout?->getStructure();
+        return $this->getBackendLayoutForPage($pageId)?->getStructure();
     }
 
     /**
      * Get the BackendLayout object and parse the structure based on the UserTSconfig
-     * @return BackendLayout
      */
     public function getBackendLayoutForPage(int $pageId): ?BackendLayout
     {
@@ -329,7 +309,7 @@ class BackendLayoutView implements SingletonInterface
             $backendLayout = $this->dataProviderCollection->getBackendLayout('default', $pageId);
         }
 
-        if ($backendLayout instanceof BackendLayout) {
+        if ($backendLayout !== null) {
             $this->selectedBackendLayout[$pageId] = $backendLayout;
         }
         return $backendLayout;
@@ -376,12 +356,9 @@ class BackendLayoutView implements SingletonInterface
     }
 
     /**
-     * Get default columns layout
-     *
-     * @return string Default four column layout
-     * @static
+     * Get default columns layout (main column)
      */
-    public static function getDefaultColumnLayout()
+    public static function getDefaultColumnLayout(): string
     {
         return '
 		backend_layout {
@@ -403,11 +380,8 @@ class BackendLayoutView implements SingletonInterface
 
     /**
      * Gets a page record.
-     *
-     * @param int $pageId
-     * @return array|false|null
      */
-    protected function getPage($pageId)
+    protected function getPage(int $pageId): ?array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -424,28 +398,11 @@ class BackendLayoutView implements SingletonInterface
             )
             ->executeQuery()
             ->fetchAssociative();
-        BackendUtility::workspaceOL('pages', $page);
+        if (is_array($page)) {
+            BackendUtility::workspaceOL('pages', $page);
+        }
 
-        return $page;
-    }
-
-    /**
-     * Gets the page root-line.
-     *
-     * @param int $pageId
-     * @return array
-     */
-    protected function getRootLine($pageId)
-    {
-        return BackendUtility::BEgetRootLine($pageId, '', true);
-    }
-
-    /**
-     * @return DataProviderContext
-     */
-    protected function createDataProviderContext()
-    {
-        return GeneralUtility::makeInstance(DataProviderContext::class);
+        return is_array($page) ? $page : null;
     }
 
     protected function getLanguageService(): LanguageService
@@ -455,14 +412,9 @@ class BackendLayoutView implements SingletonInterface
 
     /**
      * Get column name from colPos item structure
-     *
-     * @param array $column
-     * @return string
      */
-    protected function getColumnName($column)
+    protected function getColumnName(array $column): string
     {
-        $columnName = $column['name'];
-        $columnName = $this->getLanguageService()->sL($columnName);
-        return $columnName;
+        return $this->getLanguageService()->sL($column['name']);
     }
 }

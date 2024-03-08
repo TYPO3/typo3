@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,50 +25,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class BackendLayout
 {
-    /**
-     * @var string
-     */
-    protected $identifier;
-
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $description;
-
-    /**
-     * @var string
-     */
-    protected $iconPath;
-
-    /**
-     * @var string
-     */
-    protected $configuration;
+    protected string $identifier;
+    protected string $title;
+    protected string $description = '';
+    protected string $iconPath = '';
+    protected string $configuration = '';
 
     /**
      * The structured data of the configuration represented as array.
-     *
-     * @var array
      */
-    protected $structure = [];
+    protected array $structure = [];
+    protected array $data = [];
 
-    /**
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * @param string $identifier
-     * @param string $title
-     * @param string|array $configuration
-     * @return BackendLayout
-     */
-    public static function create($identifier, $title, $configuration)
+    public static function create(string $identifier, string $title, string|array $configuration): BackendLayout
     {
         return GeneralUtility::makeInstance(
             static::class,
@@ -76,12 +47,7 @@ class BackendLayout
         );
     }
 
-    /**
-     * @param string $identifier
-     * @param string $title
-     * @param string|array $configuration
-     */
-    public function __construct($identifier, $title, $configuration)
+    public function __construct(string $identifier, string $title, string|array $configuration)
     {
         $this->setIdentifier($identifier);
         $this->setTitle($title);
@@ -93,19 +59,12 @@ class BackendLayout
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * @param string $identifier
-     * @throws \UnexpectedValueException
-     */
-    public function setIdentifier($identifier)
+    public function setIdentifier(string $identifier): void
     {
         if (str_contains($identifier, '__')) {
             throw new \UnexpectedValueException(
@@ -117,66 +76,42 @@ class BackendLayout
         $this->identifier = $identifier;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
-    public function getIconPath()
+    public function getIconPath(): string
     {
         return $this->iconPath;
     }
 
-    /**
-     * @param string $iconPath
-     */
-    public function setIconPath($iconPath)
+    public function setIconPath(string $iconPath): void
     {
         $this->iconPath = $iconPath;
     }
 
-    /**
-     * @return string
-     */
-    public function getConfiguration()
+    public function getConfiguration(): string
     {
         return $this->configuration;
     }
 
-    /**
-     * @param string $configuration
-     */
-    public function setConfiguration($configuration)
+    public function setConfiguration(string $configuration): void
     {
         $this->configuration = $configuration;
         $this->structure = GeneralUtility::makeInstance(BackendLayoutView::class)->parseStructure($this);
@@ -203,20 +138,17 @@ class BackendLayout
         return $this->structure['rowCount'] ?? 0;
     }
 
-    /**
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
 
-    public function setData(array $data)
+    public function setData(array $data): void
     {
         $this->data = $data;
     }
 
-    public function setStructure(array $structure)
+    public function setStructure(array $structure): void
     {
         $this->structure = $structure;
     }

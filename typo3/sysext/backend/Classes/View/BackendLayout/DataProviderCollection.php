@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -24,24 +26,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DataProviderCollection implements SingletonInterface
 {
     /**
-     * @var array|DataProviderInterface[]
+     * @var DataProviderInterface[]
      */
-    protected $dataProviders = [];
-
-    /**
-     * @var array
-     */
-    protected $results = [];
+    protected array $dataProviders = [];
+    protected array $results = [];
 
     /**
      * Adds a data provider to this collection.
-     *
-     * @param string $identifier
-     * @param string|object $classNameOrObject
-     * @throws \UnexpectedValueException
-     * @throws \LogicException
      */
-    public function add($identifier, $classNameOrObject)
+    public function add(string $identifier, string|object $classNameOrObject): void
     {
         if (str_contains($identifier, '__')) {
             throw new \UnexpectedValueException(
@@ -73,9 +66,9 @@ class DataProviderCollection implements SingletonInterface
      * backend layouts. Each data provider returns its own
      * backend layout collection.
      *
-     * @return array|BackendLayoutCollection[]
+     * @return BackendLayoutCollection[]
      */
-    public function getBackendLayoutCollections(DataProviderContext $dataProviderContext)
+    public function getBackendLayoutCollections(DataProviderContext $dataProviderContext): array
     {
         $result = [];
 
@@ -93,12 +86,8 @@ class DataProviderCollection implements SingletonInterface
      * e.g. "myextension_regular" and "myextension" is the identifier
      * of the accordant data provider and "regular" the identifier of
      * the accordant backend layout.
-     *
-     * @param string $combinedIdentifier
-     * @param int $pageId
-     * @return BackendLayout|null
      */
-    public function getBackendLayout($combinedIdentifier, $pageId)
+    public function getBackendLayout(string $combinedIdentifier, int $pageId): ?BackendLayout
     {
         $backendLayout = null;
 
@@ -118,11 +107,8 @@ class DataProviderCollection implements SingletonInterface
 
     /**
      * Creates a new backend layout collection.
-     *
-     * @param string $identifier
-     * @return BackendLayoutCollection
      */
-    protected function createBackendLayoutCollection($identifier)
+    protected function createBackendLayoutCollection(string $identifier): BackendLayoutCollection
     {
         return GeneralUtility::makeInstance(
             BackendLayoutCollection::class,
