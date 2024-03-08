@@ -11,7 +11,7 @@
                edit-on-github="typo3/typo3"
                edit-on-github-directory="typo3/sysext/rte_ckeditor/Documentation/"
                typo3-core-preferred="main"
-               interlink-shortcode="typo3/cms-dashboard"
+               interlink-shortcode="typo3/cms-rte-ckeditor"
     />
     <project title="RTE by CKEditor"
              release="main (development)"
