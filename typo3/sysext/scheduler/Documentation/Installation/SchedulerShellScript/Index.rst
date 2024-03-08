@@ -54,10 +54,9 @@ To run a specific scheduler task you need to provide the uid of the task::
 
    bin/typo3 scheduler:run --task=8
 
-or
+or::
 
    bin/typo3 scheduler:run -i 8
-
 
 The example will trigger the task with uid 8.
 

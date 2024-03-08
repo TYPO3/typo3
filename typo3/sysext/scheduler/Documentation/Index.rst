@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ===============
 TYPO3 Scheduler
 ===============
@@ -54,4 +56,3 @@ delivered by any extension.
    :hidden:
 
    Sitemap
-   genindex
