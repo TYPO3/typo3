@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+.. _start:
+
 =====================
 TYPO3 RTE by CKEditor
 =====================
@@ -53,4 +55,3 @@ backend.
    :hidden:
 
    Sitemap
-   genindex
