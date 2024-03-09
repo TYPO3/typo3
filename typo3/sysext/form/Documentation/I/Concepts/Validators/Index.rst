@@ -55,7 +55,7 @@ Alphanumeric validator (:yaml:`Alphanumeric`)
 
 The :ref:`"Alphanumeric validator"<prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric>`
 checks for alphanumeric strings. Alphanumeric is defined as a combination of
-alphabetic and numeric characters [A-Z + 0-9].
+alphabetic and numeric characters `[A-Z + 0-9]`.
 
 
 .. _concepts-validators-count:
@@ -83,8 +83,8 @@ The validator has 2 options:
 
 - Format [:yaml:`options.format`]: The format of the minimum and maximum option.
   Default: [:yaml:`Y-m-d`].
-- Minimum date [:yaml:`options.minimum`]: The minimum date formatted as Y-m-d.
-- Maximum date [:yaml:`options.maximum`]: The maximum date formatted as Y-m-d.
+- Minimum date [:yaml:`options.minimum`]: The minimum date formatted as `Y-m-d`.
+- Maximum date [:yaml:`options.maximum`]: The maximum date formatted as `Y-m-d`.
 
 The options :yaml:`minimum` and :yaml:`maximum` must have the format 'Y-m-d' which
 represents the `RFC 3339 <https://www.w3.org/TR/2011/WD-html-markup-20110405/input.date.html>`__
@@ -103,7 +103,7 @@ Date/time validator (:yaml:`DateTime`)
 The :ref:`"Date/time validator"<prototypes.<prototypeidentifier>.validatorsdefinition.datetime>`
 checks if the given value is a valid DateTime object. The date string is
 expected to be formatted according to the `W3C standard <http://www.w3.org/TR/NOTE-datetime.html>`__
-which is "YYYY-MM-DDT##:##:##+##:##", for example "2005-08-15T15:52:01+00:00".
+which is `YYYY-MM-DDT##:##:##+##:##`, for example `2005-08-15T15:52:01+00:00`.
 
 
 .. _concepts-validators-email:
@@ -115,7 +115,7 @@ The :ref:`"Email validator"<prototypes.<prototypeidentifier>.validatorsdefinitio
 checks if the given value is a valid email address. The format of a valid email
 address is defined in `RFC 3696 <https://tools.ietf.org/html/rfc3696>`__.
 The standard allows international characters and the multiple appearance
-of the @ sign.
+of the `@` sign.
 
 
 .. _concepts-validators-filesize:
@@ -126,14 +126,14 @@ File size validator (:yaml:`FileSize`)
 The :ref:`"File size validator"<prototypes.<prototypeidentifier>.validatorsdefinition.filesize>`
 validates a file resource regarding its file size. The validator has 2 options:
 
-- Minimum [:yaml:`options.maximum`]: The minimum filesize to accept. Use the
-  format <size>B|K|M|G. For example: 10M means 10 Megabytes.
-- Maximum [:yaml:`options.maximum`]: The maximum filesize to accept. Use the
-  format <size>B|K|M|G. For example: 10M means 10 Megabytes.
+-   Minimum [:yaml:`options.maximum`]: The minimum filesize to accept. Use the
+    format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
+-   Maximum [:yaml:`options.maximum`]: The maximum filesize to accept. Use the
+    format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
 
-Use the format <size>B|K|M|G when entering file sizes. For example: 10M
+Use the format `<size>B|K|M|G` when entering file sizes. For example: `10M`
 means 10 megabytes. Please keep in mind that the maximum file size also
-depends on the php.ini settings of your environment.
+depends on the :file:`php.ini` settings of your environment.
 
 
 .. _concepts-validators-floating_point:
@@ -143,7 +143,7 @@ Floating-point number validator (:yaml:`Float`)
 
 The :ref:`"Floating-point number validator"<prototypes.<prototypeidentifier>.validatorsdefinition.float>`
 checks if the given value is of type float or a string matching the regular
-expression [0-9.e+-].
+expression `[0-9.e+-]`.
 
 
 .. _concepts-validators-integer:
