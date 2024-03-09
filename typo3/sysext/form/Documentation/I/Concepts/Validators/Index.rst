@@ -55,7 +55,7 @@ Alphanumeric validator
 
 The 'Alphanumeric validator' checks for alphanumeric strings.
 Alphanumeric is defined as a combination of alphabetic and numeric
-characters [A-Z + 0-9].
+characters `[A-Z + 0-9]`.
 
 
 .. _concepts-validators-date_time:
@@ -66,7 +66,7 @@ Date/ time validator
 The 'Date/ time validator' checks if the given value is a valid DateTime
 object. The date string is expected to be formatted according to the `W3C
 standard <http://www.w3.org/TR/NOTE-datetime.html>`_ which is
-"YYYY-MM-DDT##:##:##+##:##", for example "2005-08-15T15:52:01+00:00".
+`YYYY-MM-DDT##:##:##+##:##`, for example `2005-08-15T15:52:01+00:00`.
 
 
 .. _concepts-validators-date_range:
@@ -99,7 +99,7 @@ Email validator
 The 'Email validator' checks if the given value is a valid email address.
 The format of a valid email address is defined in `RFC 3696 <https://tools.ietf.org/html/rfc3696>`_.
 The standard allows international characters and the multiple appearance
-of the @ sign.
+of the `@` sign.
 
 
 .. _concepts-validators-empty:
@@ -107,7 +107,7 @@ of the @ sign.
 Empty validator
 """""""""""""""
 
-The 'Empty validator' checks if the given value is not empty (NULL,
+The 'Empty validator' checks if the given value is not empty (`NULL`,
 empty string, empty array or empty object).
 
 
@@ -122,7 +122,7 @@ size. The validator has 2 options:
 - Minimum: The minimum file size to accept.
 - Maximum: The maximum file size to accept.
 
-Use the format <size>B|K|M|G when entering file sizes. For example: 10M
+Use the format `<size>B|K|M|G` when entering file sizes. For example: `10M`
 means 10 megabytes. Please keep in mind that the maximum file size also
 depends on the php.ini settings of your environment.
 
@@ -133,7 +133,7 @@ Floating-point number validator
 """""""""""""""""""""""""""""""
 
 The 'Floating-point number validator' checks if the given value is of
-type float or a string matching the regular expression [0-9.e+-].
+type float or a string matching the regular expression `[0-9.e+-]`.
 
 
 .. _concepts-validators-integer:
