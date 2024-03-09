@@ -61,7 +61,7 @@ implementationClassName
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst
+      .. include:: ../properties/implementationClassName.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.iconidentifier:
@@ -95,7 +95,7 @@ formEditor.iconIdentifier
       ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst
+      .. include:: ../properties/iconIdentifier.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.label:
@@ -129,4 +129,4 @@ formEditor.label
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst
+      .. include:: ../properties/label.rst.txt

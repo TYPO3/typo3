@@ -42,7 +42,7 @@ implementationClassName
       - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst
+      .. include:: ../properties/implementationClassName.rst.txt
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.table:
@@ -448,7 +448,7 @@ formeditor.iconIdentifier
       ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst
+      .. include:: ../properties/iconIdentifier.rst.txt
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.label:
@@ -484,7 +484,7 @@ formeditor.label
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst
+      .. include:: ../properties/label.rst.txt
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.predefineddefaults:
@@ -520,4 +520,4 @@ formeditor.predefinedDefaults
       ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/predefinedDefaults.rst
+      .. include:: ../properties/predefinedDefaults.rst.txt

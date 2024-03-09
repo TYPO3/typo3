@@ -13,55 +13,55 @@ Properties
 ==========
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.implementationclassname:
-.. include:: SummaryPage/implementationClassName.rst
+.. include:: SummaryPage/implementationClassName.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.renderingoptions._iscompositeformelement:
-.. include:: SummaryPage/renderingOptions/_isCompositeFormElement.rst
+.. include:: SummaryPage/renderingOptions/_isCompositeFormElement.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.renderingoptions._istoplevelformelement:
-.. include:: SummaryPage/renderingOptions/_isTopLevelFormElement.rst
+.. include:: SummaryPage/renderingOptions/_isTopLevelFormElement.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.renderingoptions.nextbuttonlabel:
-.. include:: SummaryPage/renderingOptions/nextButtonLabel.rst
+.. include:: SummaryPage/renderingOptions/nextButtonLabel.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.renderingoptions.previousbuttonlabel:
-.. include:: SummaryPage/renderingOptions/previousButtonLabel.rst
+.. include:: SummaryPage/renderingOptions/previousButtonLabel.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor:
-.. include:: SummaryPage/formEditor.rst
+.. include:: SummaryPage/formEditor.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.editors.100:
-.. include:: SummaryPage/formEditor/editors/100.rst
+.. include:: SummaryPage/formEditor/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.editors.200:
-.. include:: SummaryPage/formEditor/editors/200.rst
+.. include:: SummaryPage/formEditor/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.editors.300:
-.. include:: SummaryPage/formEditor/editors/300.rst
+.. include:: SummaryPage/formEditor/editors/300.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.editors.400:
-.. include:: SummaryPage/formEditor/editors/400.rst
+.. include:: SummaryPage/formEditor/editors/400.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.editors.9999:
-.. include:: SummaryPage/formEditor/editors/9999.rst
+.. include:: SummaryPage/formEditor/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.predefineddefaults:
-.. include:: SummaryPage/formEditor/predefinedDefaults.rst
+.. include:: SummaryPage/formEditor/predefinedDefaults.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor._iscompositeformelement:
-.. include:: SummaryPage/formEditor/_isCompositeFormElement.rst
+.. include:: SummaryPage/formEditor/_isCompositeFormElement.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor._istoplevelformelement:
-.. include:: SummaryPage/formEditor/_isTopLevelFormElement.rst
+.. include:: SummaryPage/formEditor/_isTopLevelFormElement.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.label:
-.. include:: SummaryPage/formEditor/label.rst
+.. include:: SummaryPage/formEditor/label.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.group:
-.. include:: SummaryPage/formEditor/group.rst
+.. include:: SummaryPage/formEditor/group.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.groupsorting:
-.. include:: SummaryPage/formEditor/groupSorting.rst
+.. include:: SummaryPage/formEditor/groupSorting.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.iconidentifier:
-.. include:: SummaryPage/formEditor/iconIdentifier.rst
+.. include:: SummaryPage/formEditor/iconIdentifier.rst.txt
