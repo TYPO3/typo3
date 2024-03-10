@@ -457,7 +457,7 @@ Signature::
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getidentifier:
-.. include:: RootRenderableInterface/getIdentifier.rst
+.. include:: RootRenderableInterface/getIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getrequest:
 
@@ -522,7 +522,7 @@ Signature::
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-gettype:
-.. include:: RootRenderableInterface/getType.rst
+.. include:: RootRenderableInterface/getType.rst.txt
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getelementvalue:
@@ -550,16 +550,16 @@ Signature::
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getrenderingoptions:
-.. include:: RootRenderableInterface/getRenderingOptions.rst
+.. include:: RootRenderableInterface/getRenderingOptions.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getrendererclassname:
-.. include:: RootRenderableInterface/getRendererClassName.rst
+.. include:: RootRenderableInterface/getRendererClassName.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getlabel:
-.. include:: RootRenderableInterface/getLabel.rst
+.. include:: RootRenderableInterface/getLabel.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-gettemplatename:
-.. include:: RenderableInterface/getTemplateName.rst
+.. include:: RenderableInterface/getTemplateName.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formruntime-getformdefinition:
 
@@ -743,25 +743,25 @@ Signature::
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-gettype:
-.. include:: RootRenderableInterface/getType.rst
+.. include:: RootRenderableInterface/getType.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getidentifier:
-.. include:: RootRenderableInterface/getIdentifier.rst
+.. include:: RootRenderableInterface/getIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-setidentifier:
-.. include:: AbstractRenderable/setIdentifier.rst
+.. include:: AbstractRenderable/setIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-setoptions:
-.. include:: AbstractRenderable/setOptions.rst
+.. include:: AbstractRenderable/setOptions.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-addvalidator:
-.. include:: FormElementInterface/addValidator.rst
+.. include:: FormElementInterface/addValidator.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-setdatatype:
-.. include:: FormElementInterface/setDataType.rst
+.. include:: FormElementInterface/setDataType.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getrendererclassname:
-.. include:: RootRenderableInterface/getRendererClassName.rst
+.. include:: RootRenderableInterface/getRendererClassName.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-setrendererclassname:
 
@@ -776,28 +776,28 @@ Signature::
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getrenderingoptions:
-.. include:: RootRenderableInterface/getRenderingOptions.rst
+.. include:: RootRenderableInterface/getRenderingOptions.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-setrenderingoption:
-.. include:: FormElementInterface/setRenderingOption.rst
+.. include:: FormElementInterface/setRenderingOption.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getparentrenderable:
-.. include:: RenderableInterface/getParentRenderable.rst
+.. include:: RenderableInterface/getParentRenderable.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-setparentrenderable:
-.. include:: RenderableInterface/setParentRenderable.rst
+.. include:: RenderableInterface/setParentRenderable.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getrootform:
-.. include:: AbstractRenderable/getRootForm.rst
+.. include:: AbstractRenderable/getRootForm.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-getlabel:
-.. include:: RootRenderableInterface/getLabel.rst
+.. include:: RootRenderableInterface/getLabel.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-setlabel:
-.. include:: AbstractRenderable/setLabel.rst
+.. include:: AbstractRenderable/setLabel.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-formdefinition-gettemplatename:
-.. include:: RenderableInterface/getTemplateName.rst
+.. include:: RenderableInterface/getTemplateName.rst.txt
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-page:
@@ -806,13 +806,13 @@ TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\Page
 +++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-getelements:
-.. include:: AbstractSection/getElements.rst
+.. include:: AbstractSection/getElements.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-getelementsrecursively:
-.. include:: AbstractSection/getElementsRecursively.rst
+.. include:: AbstractSection/getElementsRecursively.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-addelement:
-.. include:: AbstractSection/addElement.rst
+.. include:: AbstractSection/addElement.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-createelement:
 
@@ -832,61 +832,61 @@ Signature::
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-moveelementbefore:
-.. include:: AbstractSection/moveElementBefore.rst
+.. include:: AbstractSection/moveElementBefore.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-moveelementafter:
-.. include:: AbstractSection/moveElementAfter.rst
+.. include:: AbstractSection/moveElementAfter.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-removeelement:
-.. include:: AbstractSection/removeElement.rst
+.. include:: AbstractSection/removeElement.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-gettype:
-.. include:: RootRenderableInterface/getType.rst
+.. include:: RootRenderableInterface/getType.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-getidentifier:
-.. include:: RootRenderableInterface/getIdentifier.rst
+.. include:: RootRenderableInterface/getIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-setidentifier:
-.. include:: AbstractRenderable/setIdentifier.rst
+.. include:: AbstractRenderable/setIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-setoptions:
-.. include:: AbstractRenderable/setOptions.rst
+.. include:: AbstractRenderable/setOptions.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-addvalidator:
-.. include:: FormElementInterface/addValidator.rst
+.. include:: FormElementInterface/addValidator.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-createvalidator:
-.. include:: FormElementInterface/createValidator.rst
+.. include:: FormElementInterface/createValidator.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-setdatatype:
-.. include:: FormElementInterface/setDataType.rst
+.. include:: FormElementInterface/setDataType.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-getrendererclassname:
-.. include:: RootRenderableInterface/getRendererClassName.rst
+.. include:: RootRenderableInterface/getRendererClassName.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-getrenderingoptions:
-.. include:: RootRenderableInterface/getRenderingOptions.rst
+.. include:: RootRenderableInterface/getRenderingOptions.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-setrenderingoption:
-.. include:: FormElementInterface/setRenderingOption.rst
+.. include:: FormElementInterface/setRenderingOption.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-getparentrenderable:
-.. include:: RenderableInterface/getParentRenderable.rst
+.. include:: RenderableInterface/getParentRenderable.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-setparentrenderable:
-.. include:: RenderableInterface/setParentRenderable.rst
+.. include:: RenderableInterface/setParentRenderable.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-getrootform:
-.. include:: AbstractRenderable/getRootForm.rst
+.. include:: AbstractRenderable/getRootForm.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-getlabel:
-.. include:: RootRenderableInterface/getLabel.rst
+.. include:: RootRenderableInterface/getLabel.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-setlabel:
-.. include:: AbstractRenderable/setLabel.rst
+.. include:: AbstractRenderable/setLabel.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-page-gettemplatename:
-.. include:: RenderableInterface/getTemplateName.rst
+.. include:: RenderableInterface/getTemplateName.rst.txt
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-section:
@@ -895,28 +895,28 @@ TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\Section
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-initializeformelement:
-.. include:: FormElementInterface/initializeFormElement.rst
+.. include:: FormElementInterface/initializeFormElement.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getuniqueidentifier:
-.. include:: FormElementInterface/getUniqueIdentifier.rst
+.. include:: FormElementInterface/getUniqueIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-setproperty:
-.. include:: FormElementInterface/setProperty.rst
+.. include:: FormElementInterface/setProperty.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getproperties:
-.. include:: FormElementInterface/getProperties.rst
+.. include:: FormElementInterface/getProperties.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-isrequired:
-.. include:: FormElementInterface/isRequired.rst
+.. include:: FormElementInterface/isRequired.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getelements:
-.. include:: AbstractSection/getElements.rst
+.. include:: AbstractSection/getElements.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getelementsrecursively:
-.. include:: AbstractSection/getElementsRecursively.rst
+.. include:: AbstractSection/getElementsRecursively.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-addelement:
-.. include:: AbstractSection/addElement.rst
+.. include:: AbstractSection/addElement.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-createelement:
 
@@ -936,61 +936,61 @@ Signature::
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-moveelementbefore:
-.. include:: AbstractSection/moveElementBefore.rst
+.. include:: AbstractSection/moveElementBefore.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-moveelementafter:
-.. include:: AbstractSection/moveElementAfter.rst
+.. include:: AbstractSection/moveElementAfter.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-removeelement:
-.. include:: AbstractSection/removeElement.rst
+.. include:: AbstractSection/removeElement.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-gettype:
-.. include:: RootRenderableInterface/getType.rst
+.. include:: RootRenderableInterface/getType.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getidentifier:
-.. include:: RootRenderableInterface/getIdentifier.rst
+.. include:: RootRenderableInterface/getIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-setidentifier:
-.. include:: AbstractRenderable/setIdentifier.rst
+.. include:: AbstractRenderable/setIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-setoptions:
-.. include:: AbstractRenderable/setOptions.rst
+.. include:: AbstractRenderable/setOptions.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-addvalidator:
-.. include:: FormElementInterface/addValidator.rst
+.. include:: FormElementInterface/addValidator.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-createvalidator:
-.. include:: FormElementInterface/createValidator.rst
+.. include:: FormElementInterface/createValidator.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-setdatatype:
-.. include:: FormElementInterface/setDataType.rst
+.. include:: FormElementInterface/setDataType.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getrendererclassname:
-.. include:: RootRenderableInterface/getRendererClassName.rst
+.. include:: RootRenderableInterface/getRendererClassName.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getrenderingoptions:
-.. include:: RootRenderableInterface/getRenderingOptions.rst
+.. include:: RootRenderableInterface/getRenderingOptions.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-setrenderingoption:
-.. include:: FormElementInterface/setRenderingOption.rst
+.. include:: FormElementInterface/setRenderingOption.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getparentrenderable:
-.. include:: RenderableInterface/getParentRenderable.rst
+.. include:: RenderableInterface/getParentRenderable.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-setparentrenderable:
-.. include:: RenderableInterface/setParentRenderable.rst
+.. include:: RenderableInterface/setParentRenderable.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getrootform:
-.. include:: AbstractRenderable/getRootForm.rst
+.. include:: AbstractRenderable/getRootForm.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-getlabel:
-.. include:: RootRenderableInterface/getLabel.rst
+.. include:: RootRenderableInterface/getLabel.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-setlabel:
-.. include:: AbstractRenderable/setLabel.rst
+.. include:: AbstractRenderable/setLabel.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-section-gettemplatename:
-.. include:: RenderableInterface/getTemplateName.rst
+.. include:: RenderableInterface/getTemplateName.rst.txt
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement:
@@ -1007,73 +1007,73 @@ The following classes extends from ``AbstractFormElement`` and therefore contain
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-initializeformelement:
-.. include:: FormElementInterface/initializeFormElement.rst
+.. include:: FormElementInterface/initializeFormElement.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-getuniqueidentifier:
-.. include:: FormElementInterface/getUniqueIdentifier.rst
+.. include:: FormElementInterface/getUniqueIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-getdefaultvalue:
-.. include:: FormElementInterface/getDefaultValue.rst
+.. include:: FormElementInterface/getDefaultValue.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-setdefaultvalue:
-.. include:: FormElementInterface/setDefaultValue.rst
+.. include:: FormElementInterface/setDefaultValue.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-setproperty:
-.. include:: FormElementInterface/setProperty.rst
+.. include:: FormElementInterface/setProperty.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-getproperties:
-.. include:: FormElementInterface/getProperties.rst
+.. include:: FormElementInterface/getProperties.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-isrequired:
-.. include:: FormElementInterface/isRequired.rst
+.. include:: FormElementInterface/isRequired.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-gettype:
-.. include:: RootRenderableInterface/getType.rst
+.. include:: RootRenderableInterface/getType.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-getidentifier:
-.. include:: RootRenderableInterface/getIdentifier.rst
+.. include:: RootRenderableInterface/getIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-setidentifier:
-.. include:: AbstractRenderable/setIdentifier.rst
+.. include:: AbstractRenderable/setIdentifier.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-setoptions:
-.. include:: AbstractRenderable/setOptions.rst
+.. include:: AbstractRenderable/setOptions.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-addvalidator:
-.. include:: FormElementInterface/addValidator.rst
+.. include:: FormElementInterface/addValidator.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-createvalidator:
-.. include:: FormElementInterface/createValidator.rst
+.. include:: FormElementInterface/createValidator.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-setdatatype:
-.. include:: FormElementInterface/setDataType.rst
+.. include:: FormElementInterface/setDataType.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-getrendererclassname:
-.. include:: RootRenderableInterface/getRendererClassName.rst
+.. include:: RootRenderableInterface/getRendererClassName.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-getrenderingoptions:
-.. include:: RootRenderableInterface/getRenderingOptions.rst
+.. include:: RootRenderableInterface/getRenderingOptions.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-setrenderingoption:
-.. include:: FormElementInterface/setRenderingOption.rst
+.. include:: FormElementInterface/setRenderingOption.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-getparentrenderable:
-.. include:: RenderableInterface/getParentRenderable.rst
+.. include:: RenderableInterface/getParentRenderable.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-setparentrenderable:
-.. include:: RenderableInterface/setParentRenderable.rst
+.. include:: RenderableInterface/setParentRenderable.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-getrootform:
-.. include:: AbstractRenderable/getRootForm.rst
+.. include:: AbstractRenderable/getRootForm.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-getlabel:
-.. include:: RootRenderableInterface/getLabel.rst
+.. include:: RootRenderableInterface/getLabel.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-setlabel:
-.. include:: AbstractRenderable/setLabel.rst
+.. include:: AbstractRenderable/setLabel.rst.txt
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractformelement-gettemplatename:
-.. include:: RenderableInterface/getTemplateName.rst
+.. include:: RenderableInterface/getTemplateName.rst.txt
 
 
 .. _apireference-frontendrendering-programmatically-apimethods-abstractfinisher:

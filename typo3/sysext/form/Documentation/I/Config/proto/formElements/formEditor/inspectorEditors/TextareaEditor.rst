@@ -44,16 +44,16 @@ templateName
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      .. include:: properties/TemplateName.rst
+      .. include:: properties/TemplateName.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-textareaeditor:
-.. include:: properties/Identifier.rst
+.. include:: properties/Identifier.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-textareaeditor:
-.. include:: properties/Label.rst
+.. include:: properties/Label.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath-textareaeditor:
-.. include:: properties/PropertyPath.rst
+.. include:: properties/PropertyPath.rst.txt

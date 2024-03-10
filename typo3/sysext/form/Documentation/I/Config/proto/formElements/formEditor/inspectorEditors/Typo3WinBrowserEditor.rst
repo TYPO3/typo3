@@ -45,19 +45,19 @@ templateName
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      .. include:: properties/TemplateName.rst
+      .. include:: properties/TemplateName.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-typo3winbrowsereditor:
-.. include:: properties/Identifier.rst
+.. include:: properties/Identifier.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-typo3winbrowsereditor:
-.. include:: properties/Label.rst
+.. include:: properties/Label.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath-typo3winbrowsereditor:
-.. include:: properties/PropertyPath.rst
+.. include:: properties/PropertyPath.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.buttonlabel-typo3winbrowsereditor:

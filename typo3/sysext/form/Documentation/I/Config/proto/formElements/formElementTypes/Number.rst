@@ -13,94 +13,94 @@ Properties
 ==========
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.implementationclassname:
-.. include:: Number/implementationClassName.rst
+.. include:: Number/implementationClassName.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.properties.containerclassattribute:
-.. include:: Number/properties/containerClassAttribute.rst
+.. include:: Number/properties/containerClassAttribute.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.properties.elementclassattribute:
-.. include:: Number/properties/elementClassAttribute.rst
+.. include:: Number/properties/elementClassAttribute.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.properties.elementDescription:
-.. include:: Number/properties/elementDescription.rst
+.. include:: Number/properties/elementDescription.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.properties.elementerrorclassattribute:
-.. include:: Number/properties/elementErrorClassAttribute.rst
+.. include:: Number/properties/elementErrorClassAttribute.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.validators:
-.. include:: Number/validators.rst
+.. include:: Number/validators.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor:
-.. include:: Number/formEditor.rst
+.. include:: Number/formEditor.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.100:
-.. include:: Number/formEditor/editors/100.rst
+.. include:: Number/formEditor/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.200:
-.. include:: Number/formEditor/editors/200.rst
+.. include:: Number/formEditor/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.230:
-.. include:: Number/formEditor/editors/230.rst
+.. include:: Number/formEditor/editors/230.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.400:
-.. include:: Number/formEditor/editors/400.rst
+.. include:: Number/formEditor/editors/400.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.500:
-.. include:: Number/formEditor/editors/500.rst
+.. include:: Number/formEditor/editors/500.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.550:
-.. include:: Number/formEditor/editors/550.rst
+.. include:: Number/formEditor/editors/550.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.700:
-.. include:: Number/formEditor/editors/700.rst
+.. include:: Number/formEditor/editors/700.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.800:
-.. include:: Number/formEditor/editors/800.rst
+.. include:: Number/formEditor/editors/800.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.900:
-.. include:: Number/formEditor/editors/900.rst
+.. include:: Number/formEditor/editors/900.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.editors.9999:
-.. include:: Number/formEditor/editors/9999.rst
+.. include:: Number/formEditor/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.predefineddefaults:
-.. include:: Number/formEditor/predefinedDefaults.rst
+.. include:: Number/formEditor/predefinedDefaults.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.60:
-.. include:: Number/formEditor/propertyCollections/validators/60.rst
+.. include:: Number/formEditor/propertyCollections/validators/60.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.60.identifier:
-.. include:: Number/formEditor/propertyCollections/validators/60/identifier.rst
+.. include:: Number/formEditor/propertyCollections/validators/60/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.60.editors.100:
-.. include:: Number/formEditor/propertyCollections/validators/60/editors/100.rst
+.. include:: Number/formEditor/propertyCollections/validators/60/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70:
-.. include:: Number/formEditor/propertyCollections/validators/70.rst
+.. include:: Number/formEditor/propertyCollections/validators/70.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.identifier:
-.. include:: Number/formEditor/propertyCollections/validators/70/identifier.rst
+.. include:: Number/formEditor/propertyCollections/validators/70/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.editors.100:
-.. include:: Number/formEditor/propertyCollections/validators/70/editors/100.rst
+.. include:: Number/formEditor/propertyCollections/validators/70/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.editors.200:
-.. include:: Number/formEditor/propertyCollections/validators/70/editors/200.rst
+.. include:: Number/formEditor/propertyCollections/validators/70/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.editors.300:
-.. include:: Number/formEditor/propertyCollections/validators/70/editors/300.rst
+.. include:: Number/formEditor/propertyCollections/validators/70/editors/300.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.editors.9999:
-.. include:: Number/formEditor/propertyCollections/validators/70/editors/9999.rst
+.. include:: Number/formEditor/propertyCollections/validators/70/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.label:
-.. include:: Number/formEditor/label.rst
+.. include:: Number/formEditor/label.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.group:
-.. include:: Number/formEditor/group.rst
+.. include:: Number/formEditor/group.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.groupsorting:
-.. include:: Number/formEditor/groupSorting.rst
+.. include:: Number/formEditor/groupSorting.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.iconidentifier:
-.. include:: Number/formEditor/iconIdentifier.rst
+.. include:: Number/formEditor/iconIdentifier.rst.txt

@@ -45,15 +45,15 @@ templateName
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      .. include:: properties/TemplateName.rst
+      .. include:: properties/TemplateName.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-validatorseditor:
-.. include:: properties/Identifier.rst
+.. include:: properties/Identifier.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-validatorseditor:
-.. include:: properties/Label.rst
+.. include:: properties/Label.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-validatorseditor:

@@ -42,7 +42,7 @@ implementationClassName
       - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
 
 :aspect:`Description`
-      .. include:: ../properties/implementationClassName.rst
+      .. include:: ../properties/implementationClassName.rst.txt
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.pageuid:
@@ -253,7 +253,7 @@ formeditor.iconIdentifier
       ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst
+      .. include:: ../properties/iconIdentifier.rst.txt
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.label:
@@ -292,7 +292,7 @@ formeditor.label
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst
+      .. include:: ../properties/label.rst.txt
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.predefineddefaults:
@@ -331,7 +331,7 @@ formeditor.predefinedDefaults
       ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/predefinedDefaults.rst
+      .. include:: ../properties/predefinedDefaults.rst.txt
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formengine.label:
@@ -364,7 +364,7 @@ FormEngine.label
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
 
 :aspect:`Description`
-      .. include:: ../properties/formEngine/label.rst
+      .. include:: ../properties/formEngine/label.rst.txt
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formengine.elements:
@@ -417,5 +417,5 @@ FormEngine.elements
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
 
 :aspect:`Description`
-      .. include:: ../properties/formEngine/elements.rst
+      .. include:: ../properties/formEngine/elements.rst.txt
 

@@ -76,7 +76,7 @@ formeditor.iconIdentifier
       ToDo
 
 :aspect:`Description`
-      .. include:: ../properties/iconIdentifier.rst
+      .. include:: ../properties/iconIdentifier.rst.txt
 
 
 .. _prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.formeditor.label:
@@ -110,5 +110,5 @@ formeditor.label
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      .. include:: ../properties/label.rst
+      .. include:: ../properties/label.rst.txt
 

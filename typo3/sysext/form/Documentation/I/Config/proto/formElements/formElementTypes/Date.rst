@@ -32,205 +32,205 @@ Properties
 ==========
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.implementationclassname:
-.. include:: Date/implementationClassName.rst
+.. include:: Date/implementationClassName.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.properties.containerclassattribute:
-.. include:: Date/properties/containerClassAttribute.rst
+.. include:: Date/properties/containerClassAttribute.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.properties.displayFormat:
-.. include:: Date/properties/displayFormat.rst
+.. include:: Date/properties/displayFormat.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.properties.elementclassattribute:
-.. include:: Date/properties/elementClassAttribute.rst
+.. include:: Date/properties/elementClassAttribute.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.properties.elementerrorclassattribute:
-.. include:: Date/properties/elementErrorClassAttribute.rst
+.. include:: Date/properties/elementErrorClassAttribute.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.properties.fluidAdditionalAttributes.pattern:
-.. include:: Date/properties/fluidAdditionalAttributes/pattern.rst
+.. include:: Date/properties/fluidAdditionalAttributes/pattern.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor:
-.. include:: Date/formEditor.rst
+.. include:: Date/formEditor.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.editors.100:
-.. include:: Date/formEditor/editors/100.rst
+.. include:: Date/formEditor/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.editors.200:
-.. include:: Date/formEditor/editors/200.rst
+.. include:: Date/formEditor/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.editors.230:
-.. include:: Date/formEditor/editors/230.rst
+.. include:: Date/formEditor/editors/230.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.editors.500:
-.. include:: Date/formEditor/editors/500.rst
+.. include:: Date/formEditor/editors/500.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.editors.550:
-.. include:: Date/formEditor/editors/550.rst
+.. include:: Date/formEditor/editors/550.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.editors.700:
-.. include:: Date/formEditor/editors/700.rst
+.. include:: Date/formEditor/editors/700.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.editors.800:
-.. include:: Date/formEditor/editors/800.rst
+.. include:: Date/formEditor/editors/800.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.editors.900:
-.. include:: Date/formEditor/editors/900.rst
+.. include:: Date/formEditor/editors/900.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.editors.9999:
-.. include:: Date/formEditor/editors/9999.rst
+.. include:: Date/formEditor/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.predefineddefaults:
-.. include:: Date/formEditor/predefinedDefaults.rst
+.. include:: Date/formEditor/predefinedDefaults.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.10:
-.. include:: Date/formEditor/propertyCollections/validators/10.rst
+.. include:: Date/formEditor/propertyCollections/validators/10.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.10.identifier:
-.. include:: Date/formEditor/propertyCollections/validators/10/identifier.rst
+.. include:: Date/formEditor/propertyCollections/validators/10/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.10.editors.100:
-.. include:: Date/formEditor/propertyCollections/validators/10/editors/100.rst
+.. include:: Date/formEditor/propertyCollections/validators/10/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.10.editors.200:
-.. include:: Date/formEditor/propertyCollections/validators/10/editors/200.rst
+.. include:: Date/formEditor/propertyCollections/validators/10/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.10.editors.250:
-.. include:: Date/formEditor/propertyCollections/validators/10/editors/250.rst
+.. include:: Date/formEditor/propertyCollections/validators/10/editors/250.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.10.editors.300:
-.. include:: Date/formEditor/propertyCollections/validators/10/editors/300.rst
+.. include:: Date/formEditor/propertyCollections/validators/10/editors/300.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.10.editors.9999:
-.. include:: Date/formEditor/propertyCollections/validators/10/editors/9999.rst
+.. include:: Date/formEditor/propertyCollections/validators/10/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.20:
-.. include:: Date/formEditor/propertyCollections/validators/20.rst
+.. include:: Date/formEditor/propertyCollections/validators/20.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.20.identifier:
-.. include:: Date/formEditor/propertyCollections/validators/20/identifier.rst
+.. include:: Date/formEditor/propertyCollections/validators/20/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.20.editors.100:
-.. include:: Date/formEditor/propertyCollections/validators/20/editors/100.rst
+.. include:: Date/formEditor/propertyCollections/validators/20/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.20.editors.200:
-.. include:: Date/formEditor/propertyCollections/validators/20/editors/200.rst
+.. include:: Date/formEditor/propertyCollections/validators/20/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.20.editors.9999:
-.. include:: Date/formEditor/propertyCollections/validators/20/editors/9999.rst
+.. include:: Date/formEditor/propertyCollections/validators/20/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.30:
-.. include:: Date/formEditor/propertyCollections/validators/30.rst
+.. include:: Date/formEditor/propertyCollections/validators/30.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.30.identifier:
-.. include:: Date/formEditor/propertyCollections/validators/30/identifier.rst
+.. include:: Date/formEditor/propertyCollections/validators/30/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.30.editors.100:
-.. include:: Date/formEditor/propertyCollections/validators/30/editors/100.rst
+.. include:: Date/formEditor/propertyCollections/validators/30/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.30.editors.200:
-.. include:: Date/formEditor/propertyCollections/validators/30/editors/200.rst
+.. include:: Date/formEditor/propertyCollections/validators/30/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.30.editors.300:
-.. include:: Date/formEditor/propertyCollections/validators/30/editors/300.rst
+.. include:: Date/formEditor/propertyCollections/validators/30/editors/300.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.30.editors.400:
-.. include:: Date/formEditor/propertyCollections/validators/30/editors/400.rst
+.. include:: Date/formEditor/propertyCollections/validators/30/editors/400.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.30.editors.9999:
-.. include:: Date/formEditor/propertyCollections/validators/30/editors/9999.rst
+.. include:: Date/formEditor/propertyCollections/validators/30/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.40:
-.. include:: Date/formEditor/propertyCollections/validators/40.rst
+.. include:: Date/formEditor/propertyCollections/validators/40.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.40.identifier:
-.. include:: Date/formEditor/propertyCollections/validators/40/identifier.rst
+.. include:: Date/formEditor/propertyCollections/validators/40/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.40.editors.100:
-.. include:: Date/formEditor/propertyCollections/validators/40/editors/100.rst
+.. include:: Date/formEditor/propertyCollections/validators/40/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.40.editors.200:
-.. include:: Date/formEditor/propertyCollections/validators/40/editors/200.rst
+.. include:: Date/formEditor/propertyCollections/validators/40/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.40.editors.9999:
-.. include:: Date/formEditor/propertyCollections/validators/40/editors/9999.rst
+.. include:: Date/formEditor/propertyCollections/validators/40/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.50:
-.. include:: Date/formEditor/propertyCollections/validators/50.rst
+.. include:: Date/formEditor/propertyCollections/validators/50.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.50.identifier:
-.. include:: Date/formEditor/propertyCollections/validators/50/identifier.rst
+.. include:: Date/formEditor/propertyCollections/validators/50/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.50.editors.100:
-.. include:: Date/formEditor/propertyCollections/validators/50/editors/100.rst
+.. include:: Date/formEditor/propertyCollections/validators/50/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.50.editors.200:
-.. include:: Date/formEditor/propertyCollections/validators/50/editors/200.rst
+.. include:: Date/formEditor/propertyCollections/validators/50/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.50.editors.9999:
-.. include:: Date/formEditor/propertyCollections/validators/50/editors/9999.rst
+.. include:: Date/formEditor/propertyCollections/validators/50/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.60:
-.. include:: Date/formEditor/propertyCollections/validators/60.rst
+.. include:: Date/formEditor/propertyCollections/validators/60.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.60.identifier:
-.. include:: Date/formEditor/propertyCollections/validators/60/identifier.rst
+.. include:: Date/formEditor/propertyCollections/validators/60/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.60.editors.100:
-.. include:: Date/formEditor/propertyCollections/validators/60/editors/100.rst
+.. include:: Date/formEditor/propertyCollections/validators/60/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.60.editors.200:
-.. include:: Date/formEditor/propertyCollections/validators/60/editors/200.rst
+.. include:: Date/formEditor/propertyCollections/validators/60/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.60.editors.9999:
-.. include:: Date/formEditor/propertyCollections/validators/60/editors/9999.rst
+.. include:: Date/formEditor/propertyCollections/validators/60/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.70:
-.. include:: Date/formEditor/propertyCollections/validators/70.rst
+.. include:: Date/formEditor/propertyCollections/validators/70.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.70.identifier:
-.. include:: Date/formEditor/propertyCollections/validators/70/identifier.rst
+.. include:: Date/formEditor/propertyCollections/validators/70/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.70.editors.100:
-.. include:: Date/formEditor/propertyCollections/validators/70/editors/100.rst
+.. include:: Date/formEditor/propertyCollections/validators/70/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.70.editors.200:
-.. include:: Date/formEditor/propertyCollections/validators/70/editors/200.rst
+.. include:: Date/formEditor/propertyCollections/validators/70/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.70.editors.300:
-.. include:: Date/formEditor/propertyCollections/validators/70/editors/300.rst
+.. include:: Date/formEditor/propertyCollections/validators/70/editors/300.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.70.editors.400:
-.. include:: Date/formEditor/propertyCollections/validators/70/editors/400.rst
+.. include:: Date/formEditor/propertyCollections/validators/70/editors/400.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.70.editors.9999:
-.. include:: Date/formEditor/propertyCollections/validators/70/editors/9999.rst
+.. include:: Date/formEditor/propertyCollections/validators/70/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.80:
-.. include:: Date/formEditor/propertyCollections/validators/80.rst
+.. include:: Date/formEditor/propertyCollections/validators/80.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.80.identifier:
-.. include:: Date/formEditor/propertyCollections/validators/80/identifier.rst
+.. include:: Date/formEditor/propertyCollections/validators/80/identifier.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.80.editors.100:
-.. include:: Date/formEditor/propertyCollections/validators/80/editors/100.rst
+.. include:: Date/formEditor/propertyCollections/validators/80/editors/100.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.80.editors.200:
-.. include:: Date/formEditor/propertyCollections/validators/80/editors/200.rst
+.. include:: Date/formEditor/propertyCollections/validators/80/editors/200.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.80.editors.300:
-.. include:: Date/formEditor/propertyCollections/validators/80/editors/300.rst
+.. include:: Date/formEditor/propertyCollections/validators/80/editors/300.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.propertycollections.validators.80.editors.9999:
-.. include:: Date/formEditor/propertyCollections/validators/80/editors/9999.rst
+.. include:: Date/formEditor/propertyCollections/validators/80/editors/9999.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.label:
-.. include:: Date/formEditor/label.rst
+.. include:: Date/formEditor/label.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.group:
-.. include:: Date/formEditor/group.rst
+.. include:: Date/formEditor/group.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.groupsorting:
-.. include:: Date/formEditor/groupSorting.rst
+.. include:: Date/formEditor/groupSorting.rst.txt
 
 .. _prototypes.<prototypeIdentifier>.formelementsdefinition.date.formeditor.iconidentifier:
-.. include:: Date/formEditor/iconIdentifier.rst
+.. include:: Date/formEditor/iconIdentifier.rst.txt

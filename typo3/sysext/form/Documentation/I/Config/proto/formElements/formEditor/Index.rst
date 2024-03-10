@@ -46,7 +46,7 @@ Common [<formElementTypeIdentifier>][formEditor][editors][*] properties
 =======================================================================
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier:
-.. include:: inspectorEditors/properties/Identifier.rst
+.. include:: inspectorEditors/properties/Identifier.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename:
@@ -76,15 +76,15 @@ templateName
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      .. include:: inspectorEditors/properties/TemplateName.rst
+      .. include:: inspectorEditors/properties/TemplateName.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label:
-.. include:: inspectorEditors/properties/Label.rst
+.. include:: inspectorEditors/properties/Label.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath:
-.. include:: inspectorEditors/properties/PropertyPath.rst
+.. include:: inspectorEditors/properties/PropertyPath.rst.txt
 
 
 .. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formEditor.editors-availableinspectoreditors:
