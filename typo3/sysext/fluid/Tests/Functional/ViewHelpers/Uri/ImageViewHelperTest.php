@@ -172,23 +172,41 @@ final class ImageViewHelperTest extends FunctionalTestCase
             200,
             200,
         ];
-        yield 'cropped' => [
+        yield 'inline-cropped' => [
             '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="100c" height="100c" />',
             '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
             100,
             100,
         ];
-        yield 'masked width' => [
+        yield 'inline-max width' => [
             '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="300m" height="300m" />',
             '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
             300,
             225,
         ];
-        yield 'masked height' => [
+        yield 'inline-max height' => [
             '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="400m" height="150m" />',
             '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
             200,
             150,
+        ];
+        yield 'inline-max width & height' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="200m" height="150m" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            200,
+            150,
+        ];
+        yield 'inline-max width does not upscale' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" width="500m" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            500,
+            375,
+        ];
+        yield 'inline-max height does not upscale' => [
+            '<f:uri.image src="fileadmin/ImageViewHelperTest.jpg" height="350m" />',
+            '@^(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)$@',
+            467,
+            350,
         ];
         // would be 200x150, but image will be stretched (why!?) up to have a width of 250
         yield 'min width' => [

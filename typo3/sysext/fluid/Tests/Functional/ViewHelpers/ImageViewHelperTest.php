@@ -172,23 +172,41 @@ final class ImageViewHelperTest extends FunctionalTestCase
             200,
             200,
         ];
-        yield 'cropped' => [
+        yield 'inline-cropped' => [
             '<f:image src="fileadmin/ImageViewHelperTest.jpg" width="100c" height="100c" />',
             '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="100" height="100" alt="" />$@',
             100,
             100,
         ];
-        yield 'masked width' => [
+        yield 'inline-max width' => [
             '<f:image src="fileadmin/ImageViewHelperTest.jpg" width="300m" height="300m" />',
             '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="300" height="225" alt="" />$@',
             300,
             225,
         ];
-        yield 'masked height' => [
+        yield 'inline-max height' => [
             '<f:image src="fileadmin/ImageViewHelperTest.jpg" width="400m" height="150m" />',
             '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="200" height="150" alt="" />$@',
             200,
             150,
+        ];
+        yield 'inline-max width & height' => [
+            '<f:image src="fileadmin/ImageViewHelperTest.jpg" width="200m" height="150m" />',
+            '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="200" height="150" alt="" />$@',
+            200,
+            150,
+        ];
+        yield 'inline-max width does not upscale' => [
+            '<f:image src="fileadmin/ImageViewHelperTest.jpg" width="500m" />',
+            '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="500" height="375" alt="" />$@',
+            500,
+            375,
+        ];
+        yield 'inline-max height does not upscale' => [
+            '<f:image src="fileadmin/ImageViewHelperTest.jpg" height="350m" />',
+            '@^<img src="(fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.jpg)" width="467" height="350" alt="" />$@',
+            467,
+            350,
         ];
         // would be 200x150, but image will be stretched (why!?) up to have a width of 250
         yield 'min width' => [
