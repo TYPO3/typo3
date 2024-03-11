@@ -22,6 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -242,9 +243,14 @@ EOT
 
         $username = $this->getAdminUserName($questionHelper, $input, $output);
         $password = $this->getAdminUserPassword($questionHelper, $input, $output);
-        $email = $this->getAdminEmailAddress($questionHelper, $input, $output);
-        $this->setupService->createUser($username, $password, $email);
-        $this->setupService->setInstallToolPassword($password);
+        if ($password !== null) {
+            $email = $this->getAdminEmailAddress($questionHelper, $input, $output);
+            $this->setupService->createUser($username, $password, $email);
+            $this->setupService->setInstallToolPassword($password);
+        } elseif ($output->isVerbose()) {
+            $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
+            $errOutput->writeln('<info>No admin password defined. Skipped user creation.</info>');
+        }
 
         $siteName = $this->getProjectName($questionHelper, $input, $output);
         $this->setupService->setSiteName($siteName);
@@ -549,7 +555,7 @@ EOT
         return $usernameValidator($usernameFromCli);
     }
 
-    protected function getAdminUserPassword(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string
+    protected function getAdminUserPassword(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): ?string
     {
         $passwordValidator = function ($password) {
             $passwordValidationErrors = $this->setupDatabaseService->getBackendUserPasswordValidationErrors((string)$password);
@@ -565,9 +571,7 @@ EOT
         };
 
         $passwordFromCli = $this->getFallbackValueEnvOrOption($input, 'admin-user-password', 'TYPO3_SETUP_ADMIN_PASSWORD');
-        if ($passwordFromCli === false) {
-            // Force this question if `TYPO3_SETUP_ADMIN_PASSWORD` is not set via cli.
-            // Thus, the user will always be prompted for a password even --no-interaction is set.
+        if ($passwordFromCli === false && $input->isInteractive()) {
             $currentlyInteractive = $input->isInteractive();
             $input->setInteractive(true);
             $questionPassword = new Question('Admin user and installer password ? ');
@@ -578,6 +582,10 @@ EOT
             $input->setInteractive($currentlyInteractive);
 
             return $password;
+        }
+
+        if ($passwordFromCli === false) {
+            return null;
         }
 
         return $passwordValidator($passwordFromCli);
