@@ -195,9 +195,9 @@ ERROR_TEXT="\n"
 # Check for maximum line length
 #
 checkForLineLength() {
-	if grep -q -E '^[^#].{74}' "$MSG"; then
+	if grep -q -E '^[^#].{72}' "$MSG"; then
 		COMMIT_MSG_ERROR_FOUND=1
-		ERROR_TEXT="${ERROR_TEXT} - The maximum line length of 74 characters is exceeded.\n"
+		ERROR_TEXT="${ERROR_TEXT} - The maximum line length of 72 characters is exceeded.\n"
 	fi
 }
 
