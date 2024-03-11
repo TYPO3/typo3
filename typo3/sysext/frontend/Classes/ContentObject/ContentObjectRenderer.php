@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Query\From;
-use Doctrine\DBAL\Query\Join;
 use Doctrine\DBAL\Result;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -30,6 +29,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -4688,8 +4688,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function exec_getQuery($table, $conf)
     {
-        $statement = $this->getQuery($table, $conf);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $statement = $this->getQuery($connection, $table, $conf);
 
         return $connection->executeQuery($statement);
     }
@@ -4729,22 +4729,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Creates and returns a SELECT query for records from $table and with conditions based on the configuration in the $conf array
-     * Implements the "select" function in TypoScript
+     * Creates and returns a SELECT query for records from $table and with conditions
+     * based on the configuration in the $conf array.
+     * Implements the "select" function in TypoScript.
      *
      * @param string $table See ->exec_getQuery()
      * @param array $conf See ->exec_getQuery()
-     * @param bool $returnQueryArray If set, the function will return the query not as a string but array with the various parts. RECOMMENDED!
-     * @return mixed A SELECT query if $returnQueryArray is FALSE, otherwise the SELECT query in an array as parts.
+     * @return string A SELECT query
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      * @internal
      * @see numRows()
      */
-    public function getQuery($table, $conf, $returnQueryArray = false)
+    public function getQuery(Connection $connection, string $table, array $conf): string
     {
         // Resolve stdWrap in these properties first
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         $properties = [
             'pidInList',
             'uidInList',
@@ -4777,7 +4776,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
         // Handle PDO-style named parameter markers first
-        $queryMarkers = $this->getQueryMarkers($table, $conf);
+        $queryMarkers = $this->getQueryMarkers($connection, $conf);
         // Replace the markers in the non-stdWrap properties
         foreach ($queryMarkers as $marker => $markerValue) {
             $properties = [
@@ -4819,7 +4818,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $conf['pidInList'] = 'this';
         }
 
-        $queryParts = $this->getQueryConstraints($table, $conf);
+        $queryParts = $this->getQueryConstraints($connection, $table, $conf);
 
         $queryBuilder = $connection->createQueryBuilder();
         // @todo Check against getQueryConstraints, can probably use FrontendRestrictions
@@ -4843,14 +4842,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // Fields:
         if ($conf['selectFields'] ?? false) {
-            $queryBuilder->selectLiteral($this->sanitizeSelectPart($conf['selectFields'], $table));
+            $queryBuilder->selectLiteral($this->sanitizeSelectPart($connection, $conf['selectFields'], $table));
         }
 
         // Setting LIMIT:
         if (($conf['max'] ?? false) || ($conf['begin'] ?? false)) {
             // Finding the total number of records, if used:
             if (str_contains(strtolower(($conf['begin'] ?? '') . ($conf['max'] ?? '')), 'total')) {
-                $countQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                $countQueryBuilder = $connection->createQueryBuilder();
                 $countQueryBuilder->getRestrictions()->removeAll();
                 $countQueryBuilder->count('*')
                     ->from($table)
@@ -4920,92 +4919,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // @todo for exec_Query / getQuery it's the best we can do.
             $query = str_replace('###' . $marker . '###', $markerValue, $query);
         }
-
-        return $returnQueryArray ? $this->getQueryArray($queryBuilder) : $query;
+        return $query;
     }
 
-    /**
-     * Helper to transform a QueryBuilder object into a queryParts array that can be used
-     * with exec_SELECT_queryArray
-     *
-     * @return array
-     * @throws \RuntimeException
-     */
-    protected function getQueryArray(QueryBuilder $queryBuilder)
-    {
-        $fromClauses = [];
-        $knownAliases = [];
-        $queryParts = [];
-        $fromParts = $queryBuilder->getFrom();
-        $joinParts = $queryBuilder->getJoin();
-
-        // Loop through all FROM clauses
-        foreach ($fromParts as $from) {
-            if ($from->alias === null) {
-                $tableSql = $from->table;
-                $tableReference = $from->table;
-            } else {
-                $tableSql = $from->table . ' ' . $from->alias;
-                $tableReference = $from->alias;
-            }
-
-            $knownAliases[$tableReference] = true;
-
-            $fromClauses[$tableReference] = $tableSql . $this->getQueryArrayJoinHelper(
-                $tableReference,
-                $joinParts,
-                $knownAliases
-            );
-        }
-
-        $queryParts['SELECT'] = implode(', ', $queryBuilder->getSelect());
-        $queryParts['FROM'] = implode(', ', $fromClauses);
-        $queryParts['WHERE'] = (string)$queryBuilder->getWhere() ?: '';
-        $queryParts['GROUPBY'] = implode(', ', $queryBuilder->getGroupBy());
-        $queryParts['ORDERBY'] = implode(', ', $queryBuilder->getOrderBy());
-        if ($queryBuilder->getFirstResult() > 0) {
-            $queryParts['LIMIT'] = $queryBuilder->getFirstResult() . ',' . $queryBuilder->getMaxResults();
-        } elseif ($queryBuilder->getMaxResults() > 0) {
-            $queryParts['LIMIT'] = $queryBuilder->getMaxResults();
-        }
-
-        return $queryParts;
-    }
-
-    /**
-     * Helper to transform the QueryBuilder join part into a SQL fragment.
-     *
-     * @param array<string, Join[]> $joinParts
-     * @param array<string, bool>   $knownAliases
-     *
-     * @throws \RuntimeException
-     */
-    protected function getQueryArrayJoinHelper(string $fromAlias, array $joinParts, array &$knownAliases): string
-    {
-        $sql = '';
-
-        if (isset($joinParts[$fromAlias])) {
-            foreach ($joinParts[$fromAlias] as $join) {
-                /** @var Join $join */
-                if (array_key_exists($join->alias, $knownAliases)) {
-                    throw new \RuntimeException(
-                        'Non unique join alias: "' . $join->alias . '" found.',
-                        1472748872
-                    );
-                }
-                $sql .= ' ' . strtoupper($join->type)
-                    . ' JOIN ' . $join->table . ' ' . $join->alias
-                    . ' ON ' . ((string)$join->condition);
-                $knownAliases[$join->alias] = true;
-            }
-
-            foreach ($joinParts[$fromAlias] as $join) {
-                $sql .= $this->getQueryArrayJoinHelper($join->alias, $joinParts, $knownAliases);
-            }
-        }
-
-        return $sql;
-    }
     /**
      * Helper function for getQuery(), creating the WHERE clause of the SELECT query
      *
@@ -5015,10 +4931,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @throws \InvalidArgumentException
      * @see getQuery()
      */
-    protected function getQueryConstraints(string $table, array $conf): array
+    protected function getQueryConstraints(Connection $connection, string $table, array $conf): array
     {
-        // Init:
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder = $connection->createQueryBuilder();
         $expressionBuilder = $queryBuilder->expr();
         $request = $this->getRequest();
         $contentPid = $request->getAttribute('frontend.page.information')->getContentFromPid();
@@ -5205,16 +5120,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * This functions checks if the necessary fields are part of the select
      * and adds them if necessary.
      *
-     * @param string $selectPart Select part
-     * @param string $table Table to select from
      * @return string Sanitized select part
      * @internal
      * @see getQuery
      */
-    protected function sanitizeSelectPart($selectPart, $table)
+    protected function sanitizeSelectPart(Connection $connection, string $selectPart, string $table)
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-
         // Pattern matching parts
         $matchStart = '/(^\\s*|,\\s*|' . $table . '\\.)';
         $matchEnd = '(\\s*,|\\s*$)/';
@@ -5280,19 +5191,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Builds list of marker values for handling PDO-like parameter markers in select parts.
      * Marker values support stdWrap functionality thus allowing a way to use stdWrap functionality in various properties of 'select' AND prevents SQL-injection problems by quoting and escaping of numeric values, strings, NULL values and comma separated lists.
      *
-     * @param string $table Table to select records from
      * @param array $conf Select part of CONTENT definition
      * @return array List of values to replace markers with
      * @internal
      * @see getQuery()
      */
-    public function getQueryMarkers($table, $conf)
+    public function getQueryMarkers(Connection $connection, $conf)
     {
         if (!isset($conf['markers.']) || !is_array($conf['markers.'])) {
             return [];
         }
-        // Parse markers and prepare their values
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         $markerValues = [];
         foreach ($conf['markers.'] as $dottedMarker => $dummy) {
             $marker = rtrim($dottedMarker, '.');

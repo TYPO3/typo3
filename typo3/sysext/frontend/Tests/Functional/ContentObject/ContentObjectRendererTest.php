@@ -87,36 +87,28 @@ final class ContentObjectRendererTest extends FunctionalTestCase
             'testing empty conf' => [
                 'tt_content',
                 [],
-                [
-                    'SELECT' => '*',
-                ],
+                '*',
             ],
             'testing #17284: adding uid/pid for workspaces' => [
                 'tt_content',
                 [
                     'selectFields' => 'header,bodytext',
                 ],
-                [
-                    'SELECT' => 'header,bodytext, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]',
-                ],
+                'header,bodytext, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]',
             ],
             'testing #17284: no need to add' => [
                 'tt_content',
                 [
                     'selectFields' => 'tt_content.*',
                 ],
-                [
-                    'SELECT' => 'tt_content.*',
-                ],
+                'tt_content.*',
             ],
             'testing #17284: no need to add #2' => [
                 'tt_content',
                 [
                     'selectFields' => '*',
                 ],
-                [
-                    'SELECT' => '*',
-                ],
+                '*',
             ],
             'testing #29783: joined tables, prefix tablename' => [
                 'tt_content',
@@ -124,63 +116,49 @@ final class ContentObjectRendererTest extends FunctionalTestCase
                     'selectFields' => 'tt_content.header,be_users.username',
                     'join' => 'be_users ON tt_content.cruser_id = be_users.uid',
                 ],
-                [
-                    'SELECT' => 'tt_content.header,be_users.username, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]',
-                ],
+                'tt_content.header,be_users.username, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]',
             ],
             'testing #34152: single count(*), add nothing' => [
                 'tt_content',
                 [
                     'selectFields' => 'count(*)',
                 ],
-                [
-                    'SELECT' => 'count(*)',
-                ],
+                'count(*)',
             ],
             'testing #34152: single max(crdate), add nothing' => [
                 'tt_content',
                 [
                     'selectFields' => 'max(crdate)',
                 ],
-                [
-                    'SELECT' => 'max(crdate)',
-                ],
+                'max(crdate)',
             ],
             'testing #34152: single min(crdate), add nothing' => [
                 'tt_content',
                 [
                     'selectFields' => 'min(crdate)',
                 ],
-                [
-                    'SELECT' => 'min(crdate)',
-                ],
+                'min(crdate)',
             ],
             'testing #34152: single sum(is_siteroot), add nothing' => [
                 'tt_content',
                 [
                     'selectFields' => 'sum(is_siteroot)',
                 ],
-                [
-                    'SELECT' => 'sum(is_siteroot)',
-                ],
+                'sum(is_siteroot)',
             ],
             'testing #34152: single avg(crdate), add nothing' => [
                 'tt_content',
                 [
                     'selectFields' => 'avg(crdate)',
                 ],
-                [
-                    'SELECT' => 'avg(crdate)',
-                ],
+                'avg(crdate)',
             ],
             'single distinct, add nothing' => [
                 'tt_content',
                 [
                     'selectFields' => 'DISTINCT crdate',
                 ],
-                [
-                    'SELECT' => 'DISTINCT crdate',
-                ],
+                'DISTINCT crdate',
             ],
             'testing #96321: pidInList=root does not raise PHP 8 warning' => [
                 'tt_content',
@@ -189,9 +167,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
                     'recursive' => '5',
                     'pidInList' => 'root',
                 ],
-                [
-                    'SELECT' => '*',
-                ],
+                '*',
             ],
         ];
     }
@@ -201,7 +177,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
      */
     #[DataProvider('getQueryDataProvider')]
     #[Test]
-    public function getQuery(string $table, array $conf, array $expected): void
+    public function getQuery(string $table, array $conf, string $expected): void
     {
         $GLOBALS['TCA'] = [
             'pages' => [
@@ -230,18 +206,17 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $subject->setRequest($request);
 
-        $result = $subject->getQuery($table, $conf, true);
+        $connection = (new ConnectionPool())->getConnectionForTable('tt_content');
+        $result = $subject->getQuery($connection, $table, $conf);
 
-        $databasePlatform = (new ConnectionPool())->getConnectionForTable('tt_content')->getDatabasePlatform();
+        $databasePlatform = $connection->getDatabasePlatform();
         $identifierQuoteCharacter = (new PlatformHelper())->getIdentifierQuoteCharacter($databasePlatform);
-        foreach ($expected as $field => $value) {
-            // Replace the TYPO3 quote character with the actual quote character for the DBMS,
-            if ($field === 'SELECT') {
-                $quoteChar = $identifierQuoteCharacter;
-                $value = str_replace(['[', ']'], [$quoteChar, $quoteChar], $value);
-            }
-            self::assertEquals($value, $result[$field]);
-        }
+        // strip select * from part between SELECT and FROM
+        $selectValue = preg_replace('/SELECT (.*) FROM.*/', '$1', $result);
+        // Replace the TYPO3 quote character with the actual quote character for the DBMS
+        $quoteChar = $identifierQuoteCharacter;
+        $expected = str_replace(['[', ']'], [$quoteChar, $quoteChar], $expected);
+        self::assertEquals($expected, $selectValue);
     }
 
     #[Test]

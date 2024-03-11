@@ -44,7 +44,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend;
 use TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Storage\Typo3DbQueryParserTest;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Object-oriented approach to building SQL queries.
@@ -1217,8 +1216,7 @@ class QueryBuilder extends ConcreteQueryBuilder
     /**
      * Returns selected fields from internal query state.
      *
-     * @see ContentObjectRenderer::getQueryArray()
-     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @internal only, used for Extbase internal handling and core tests. Don't use it.
      * @return string[]
      */
     public function getSelect(): array
@@ -1230,10 +1228,9 @@ class QueryBuilder extends ConcreteQueryBuilder
     /**
      * Returns from tables from internal query state.
      *
-     * @see ContentObjectRenderer::getQueryArray()
      * @see Typo3DbBackend::getObjectDataByQuery()
      * @see Typo3DbBackend::getObjectCountByQuery()
-     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @internal only, used for Extbase internal handling and core tests. Don't use it.
      * @return From[]
      */
     public function getFrom()
@@ -1245,9 +1242,8 @@ class QueryBuilder extends ConcreteQueryBuilder
     /**
      * Returns where expressions from internal query state.
      *
-     * @see ContentObjectRenderer::getQueryArray()
      * @see Typo3DbQueryParserTest
-     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @internal only, used for Extbase internal handling and core tests. Don't use it.
      * @return CompositeExpression|string|null
      */
     public function getWhere(): CompositeExpression|string|null
@@ -1259,8 +1255,7 @@ class QueryBuilder extends ConcreteQueryBuilder
     /**
      * Returns having expressions from internal query state.
      *
-     * @see ContentObjectRenderer::getQueryArray()
-     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @internal only, used for Extbase internal handling and core tests. Don't use it.
      * @return CompositeExpression|string|null
      */
     public function getHaving(): CompositeExpression|string|null
@@ -1273,10 +1268,9 @@ class QueryBuilder extends ConcreteQueryBuilder
      * Returns order-by definitions from internal query state.
      *
      * @return string[]
-     * @see ContentObjectRenderer::getQueryArray()
      * @see RelationHandler::readForeignField()
      * @see Typo3DbQueryParserTest
-     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @internal only, used for Extbase internal handling and core tests. Don't use it.
      */
     public function getOrderBy(): array
     {
@@ -1287,10 +1281,9 @@ class QueryBuilder extends ConcreteQueryBuilder
     /**
      * Returns selected group-by definitions from internal query state.
      *
-     * @see ContentObjectRenderer::getQueryArray()
      * @see Typo3DbQueryParserTest
      * @return string[]
-     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @internal only, used for Extbase internal handling and core tests. Don't use it.
      */
     public function getGroupBy(): array
     {
@@ -1301,9 +1294,8 @@ class QueryBuilder extends ConcreteQueryBuilder
     /**
      * Returns the list of joins, indexed by `from-alias` from the internal query state.
      *
-     * @see ContentObjectRenderer::getQueryArray()
      * @return array<string, Join[]>
-     * @internal only, used for Extbase internal handling, ContentObject Query handling and core tests. Don't use it.
+     * @internal only, used for Extbase internal handling and core tests. Don't use it.
      */
     public function getJoin(): array
     {
