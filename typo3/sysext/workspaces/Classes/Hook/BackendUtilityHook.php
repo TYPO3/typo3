@@ -49,6 +49,9 @@ class BackendUtilityHook
             ->buildUriForWorkspaceSplitPreview($event->getPageId());
         $queryString = $uri->getQuery();
         if ($event->getAdditionalQueryParameters() !== []) {
+            if ($queryString !== '') {
+                $queryString .= '&';
+            }
             $queryString .= http_build_query($event->getAdditionalQueryParameters(), '', '&', PHP_QUERY_RFC3986);
         }
         // Reassemble encapsulated language id as query parameter, to open workspace preview in correct non-default language
