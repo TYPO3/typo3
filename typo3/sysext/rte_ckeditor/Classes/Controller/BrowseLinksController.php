@@ -99,8 +99,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $queryParameters = $request->getQueryParams();
         $this->siteUrl = $request->getAttribute('normalizedParams')->getSiteUrl();
         $this->currentLinkParts = $queryParameters['P']['curUrl'] ?? [];
-        $this->editorId = $queryParameters['editorId'];
-        $this->contentsLanguage = $queryParameters['contentsLanguage'];
+        $this->editorId = $queryParameters['editorId'] ?? '';
+        $this->contentsLanguage = $queryParameters['contentsLanguage'] ?? '';
         $this->contentLanguageService = $this->languageServiceFactory->create($this->contentsLanguage);
         $tcaFieldConf = [
             'enableRichtext' => true,
