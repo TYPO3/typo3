@@ -1242,7 +1242,7 @@ class FileList
         }
 
         $dropdownButton = GeneralUtility::makeInstance(DropDownButton::class);
-        $dropdownButton->setLabel('Translations');
+        $dropdownButton->setLabel($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:translations'));
         $dropdownButton->setIcon($this->iconFactory->getIcon('actions-translate', IconSize::SMALL));
         foreach ($dropdownItems as $dropdownItem) {
             $dropdownButton->addItem($dropdownItem);

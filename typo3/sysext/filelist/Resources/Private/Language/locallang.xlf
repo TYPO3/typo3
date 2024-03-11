@@ -120,6 +120,9 @@
 			<trans-unit id="actions.create_file" resname="actions.create_file">
 				<source>Create File</source>
 			</trans-unit>
+			<trans-unit id="translations" resname="translations">
+				<source>Translations</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
