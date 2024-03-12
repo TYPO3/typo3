@@ -4390,10 +4390,10 @@ html{scroll-behavior:smooth}
 .t3-page-column-header-icons:hover{opacity:1}
 .t3-page-lang-copyce{margin:var(--pagemodule-grid-spacing)}
 .t3-page-lang-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.t3-page-ce{display:block;position:relative;margin:var(--pagemodule-grid-spacing) var(--pagemodule-grid-inner-spacing);transition:height .4s ease-out;overflow:hidden}
+.t3-page-ce{display:block;position:relative;margin:var(--pagemodule-grid-spacing) var(--pagemodule-grid-inner-spacing);transition:height .4s ease-out}
 .t3-page-ce.active-drag{z-index:4500}
 .t3-page-ce[data-dragdrop-clone] .t3-page-ce-element{-webkit-user-select:none;-moz-user-select:none;user-select:none;opacity:.25}
-.t3-page-ce-element{border:1px solid var(--pagemodule-element-bg);background-color:var(--pagemodule-element-bg);border-radius:var(--pagemodule-element-border-radius);box-shadow:var(--pagemodule-element-box-shadow);margin-bottom:var(--pagemodule-grid-spacing)}
+.t3-page-ce-element{border:1px solid var(--pagemodule-element-bg);background-color:var(--pagemodule-element-bg);border-radius:var(--pagemodule-element-border-radius);box-shadow:var(--pagemodule-element-box-shadow);margin-bottom:var(--pagemodule-grid-spacing);overflow:hidden}
 .t3-page-ce-hidden .t3-page-ce-element{opacity:.5;border:1px dashed rgba(0,0,0,.5);background-color:var(--pagemodule-element-hidden-bg);box-shadow:none;transition:opacity .3s ease-in-out}
 .t3-page-ce-hidden .t3-page-ce-element:hover{opacity:1}
 .t3-page-ce-warning .t3-page-ce-element{border:1px solid var(--pagemodule-element-warning-border-color);background-color:var(--pagemodule-element-warning-bg);box-shadow:none}
