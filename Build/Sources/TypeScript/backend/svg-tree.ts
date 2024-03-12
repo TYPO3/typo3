@@ -1081,6 +1081,7 @@ export class SvgTree extends LitElement {
    * Event handler for clicking on a node's icon
    */
   protected clickOnIcon(evt: MouseEvent, node: TreeNode): void {
+    evt.stopImmediatePropagation();
     this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-context', { detail: { node: node, originalEvent: evt } }));
   }
 
