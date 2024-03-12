@@ -20,6 +20,7 @@ export interface FileListActionDetail {
   resources: [ResourceInterface, ...ResourceInterface[]];
   trigger: HTMLElement | null;
   url: string | null;
+  originalAction: string | null;
 }
 
 export enum FileListActionEvent {
@@ -118,6 +119,7 @@ class FileListActions {
       action: action,
       resources: [resource],
       url: target.dataset.filelistActionUrl ?? null,
+      originalAction: null
     };
     return detail;
   }
