@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
@@ -203,12 +202,8 @@ class EmailFinisher extends AbstractFinisher
             $this->options['templateName'] = 'Default';
         }
 
-        // Set the PSR-7 request object if available
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
-            $fluidEmail->setRequest($GLOBALS['TYPO3_REQUEST']);
-        }
-
         $fluidEmail
+            ->setRequest($this->finisherContext->getRequest())
             ->setTemplate($this->options['templateName'])
             ->assignMultiple([
                 'finisherVariableProvider' => $this->finisherContext->getFinisherVariableProvider(),
