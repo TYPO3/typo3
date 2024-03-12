@@ -646,7 +646,7 @@ export default (function() {
   FormEngineValidation.parseDouble = function(value: number|string|boolean, precision: number = 2): string {
     let theVal = '' + value;
     theVal = theVal.replace(/[^0-9,.-]/g, '');
-    const negative = theVal.substring(0, 1) === '-';
+    const negative = theVal.startsWith('-');
     theVal = theVal.replace(/-/g, '');
     theVal = theVal.replace(/,/g, '.');
     if (theVal.indexOf('.') === -1) {

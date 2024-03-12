@@ -203,7 +203,7 @@ interface Require {
 
     if (
       inPath(context.config, name) ||
-      url.charAt(0) === '/' ||
+      url.startsWith('/') ||
       (context.config.typo3BaseUrl as unknown as boolean) === false
     ) {
       originalLoad.call(req, context, name, url);

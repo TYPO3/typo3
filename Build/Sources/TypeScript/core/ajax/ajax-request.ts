@@ -161,7 +161,7 @@ class AjaxRequest {
 
   private composeRequestUrl(): string {
     let url = this.url;
-    if (url.charAt(0) === '?') {
+    if (url.startsWith('?')) {
       // URL is a search string only, prepend current location
       url = window.location.origin + window.location.pathname + url;
     }
