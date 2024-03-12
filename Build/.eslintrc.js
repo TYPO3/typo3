@@ -49,6 +49,7 @@ module.exports = {
       }
     ],
     "@typescript-eslint/no-array-delete": "error",
+    "@typescript-eslint/restrict-plus-operands": "error",
     "curly": "error",
     "default-case": "error",
     "dot-notation": "error",

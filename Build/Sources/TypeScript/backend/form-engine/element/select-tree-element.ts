@@ -78,7 +78,7 @@ export class SelectTreeElement {
       flexFormSectionContainerIsNew: this.recordField.dataset.flexformsectioncontainerisnew,
       command: this.recordField.dataset.command,
     };
-    return TYPO3.settings.ajaxUrls.record_tree_data + '&' + new URLSearchParams(params);
+    return TYPO3.settings.ajaxUrls.record_tree_data + '&' + new URLSearchParams(params).toString();
   }
 
   private readonly selectNode = (evt: CustomEvent) => {
