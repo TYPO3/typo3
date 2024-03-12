@@ -48,6 +48,7 @@ module.exports = {
         "format": ["PascalCase"]
       }
     ],
+    "@typescript-eslint/no-array-delete": "error",
     "curly": "error",
     "default-case": "error",
     "dot-notation": "error",

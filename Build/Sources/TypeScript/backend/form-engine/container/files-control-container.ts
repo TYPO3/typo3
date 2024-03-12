@@ -476,7 +476,7 @@ class FilesControlContainer extends HTMLElement {
     const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
     const indexOfRemoveUid = records.indexOf(objectUid);
     if (indexOfRemoveUid > -1) {
-      delete records[indexOfRemoveUid];
+      records.splice(indexOfRemoveUid, 1);
 
       (<HTMLInputElement>formField).value = records.join(',');
       (<HTMLInputElement>formField).classList.add('has-change');

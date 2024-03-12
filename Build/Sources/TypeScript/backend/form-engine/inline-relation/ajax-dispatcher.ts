@@ -109,7 +109,7 @@ export class AjaxDispatcher {
         element.type = 'text/css';
         element.href = stylesheetFile;
         document.querySelector('head').appendChild(element);
-        delete json.stylesheetFiles[index];
+        json.stylesheetFiles.splice(index, 1);
       }
     }
 

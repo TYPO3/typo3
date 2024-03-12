@@ -66,7 +66,7 @@ class AjaxQueue {
     this.requests.push(request);
     return response.then(payload.onfulfilled, payload.onrejected).then((): void => {
       const idx = this.requests.indexOf(request);
-      delete this.requests[idx];
+      this.requests.splice(idx, 1);
     });
   }
 
