@@ -142,7 +142,6 @@ html {
     position: relative;
     margin: var(--pagemodule-grid-spacing) var(--pagemodule-grid-inner-spacing);
     transition: height .4s ease-out;
-    overflow: hidden;
 
     &.active-drag {
         z-index: 4500;
@@ -162,6 +161,7 @@ html {
     border-radius: var(--pagemodule-element-border-radius);
     box-shadow: var(--pagemodule-element-box-shadow);
     margin-bottom: var(--pagemodule-grid-spacing);
+    overflow: hidden;
 
     .t3-page-ce-hidden & {
         opacity: .5;
