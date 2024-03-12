@@ -1,0 +1,6 @@
+"pages",
+,"uid","pid","title","slug","l10n_parent","l10n_source","sys_language_uid","doktype"
+,1,0,"Root 1","/",0,0,0,1
+"sys_redirect",
+,"uid","pid","deleted","disabled","source_host","source_path","target"
+,1,1,0,0,"*","/test-redirect-1/","/relative-target/"

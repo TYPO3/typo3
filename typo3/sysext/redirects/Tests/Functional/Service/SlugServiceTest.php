@@ -24,7 +24,9 @@ use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -555,6 +557,37 @@ final class SlugServiceTest extends FunctionalTestCase
             ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-3', 'target' => 't3://page?uid=4&_language=0'],
         ];
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
+    }
+
+    #[Test]
+    public function relativeTargetCanBeSetUsingDataHandler(): void
+    {
+        $newRedirect = StringUtility::getUniqueId('NEW');
+        $dataMap = [
+            'sys_redirect' => [
+                $newRedirect => [
+                    'pid' => 1,
+                    'deleted' => 0,
+                    'disabled' => 0,
+                    'source_host' => '*',
+                    'source_path' => '/test-redirect-1/',
+                    'target' => '/relative-target/',
+                ],
+            ],
+        ];
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RelativeTargetDataHandler.csv');
+        $this->buildBaseSite();
+
+        // For testing scenario we need to allow redirect records be added to normal pages.
+        $dokTypeRegistry = GeneralUtility::makeInstance(PageDoktypeRegistry::class);
+        $dokTypeRegistry->addAllowedRecordTypes(['sys_redirect'], PageRepository::DOKTYPE_DEFAULT);
+
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start($dataMap, []);
+        $dataHandler->process_datamap();
+
+        self::assertSame([], $dataHandler->errorLog);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/AssertionDataSets/RelativeTargetDataHandler.csv');
     }
 
     protected function buildBaseSite(): void
