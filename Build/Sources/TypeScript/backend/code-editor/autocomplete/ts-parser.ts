@@ -191,11 +191,11 @@ export class TsParser {
         if (i < tokens.length && tokens[i].string.length > 0) {
           const tokenValue = tokens[i].string;
 
-          if (tokenValue[0] === '#') {
+          if (tokenValue.startsWith('#')) {
             stack.push('#');
           } else if (tokenValue === '(') {
             stack.push('(');
-          } else if (tokenValue[0] === '/' && tokenValue[1] === '*') {
+          } else if (tokenValue.startsWith('/*')) {
             stack.push('/*');
           } else if (tokenValue === '{') {
             // TODO: ignore whole block if wrong whitespaces in this line
@@ -237,7 +237,7 @@ export class TsParser {
           if (tokenValue === ')') {
             stack.popIfLastElementEquals('(');
           }
-          if (tokenValue[0] === '*' && tokenValue[1] === '/') {
+          if (tokenValue.startsWith('*/')) {
             stack.popIfLastElementEquals('/*');
             ignoreLine = true;
           }

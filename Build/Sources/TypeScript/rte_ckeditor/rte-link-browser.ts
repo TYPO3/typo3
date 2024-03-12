@@ -92,7 +92,7 @@ class RteLinkBrowser {
       link = linkMatch[1] + linkMatch[2];
       const paramsPrefix = linkMatch[2].length > 0 ? '&' : '?';
       if (queryParams.length > 0) {
-        if (queryParams[0] === '&') {
+        if (queryParams.startsWith('&')) {
           queryParams = queryParams.substr(1);
         }
         // If params is set, append it

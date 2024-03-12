@@ -97,7 +97,7 @@ export class TsCodeCompletion {
       let childNode;
       // if the childnode has a value and there is a part of a reference operator ('<')
       // and it does not look like a html tag ('>')
-      if (childNodes[key].v && childNodes[key].v[0] === '<' && childNodes[key].v.indexOf('>') === -1) {
+      if (childNodes[key].v && childNodes[key].v.startsWith('<') && !childNodes[key].v.includes('>')) {
         const path = childNodes[key].v.replace(/</, '').trim();
         // if there are still whitespaces it's no path
         if (path.indexOf(' ') === -1) {
