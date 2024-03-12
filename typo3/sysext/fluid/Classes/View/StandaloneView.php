@@ -47,7 +47,7 @@ class StandaloneView extends AbstractTemplateView
     }
 
     /**
-     * @internal Currently used especially in functional tests. May change.
+     * @internal
      */
     public function setRequest(?ServerRequestInterface $request = null): void
     {
