@@ -29,6 +29,7 @@ class BrowseFolders {
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
       event.preventDefault();
       const detail: FileListActionDetail = event.detail;
+      detail.originalAction = FileListActionEvent.primary;
       detail.action = FileListActionEvent.select;
       document.dispatchEvent(new CustomEvent(FileListActionEvent.select, { detail: detail }));
     }).bindTo(document);
@@ -38,7 +39,7 @@ class BrowseFolders {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
       if (resource.type === 'folder') {
-        BrowseFolders.insertElement(resource.identifier, true);
+        BrowseFolders.insertElement(resource.identifier, detail.originalAction === FileListActionEvent.primary);
       }
     }).bindTo(document);
 

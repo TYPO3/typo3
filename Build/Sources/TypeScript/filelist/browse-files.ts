@@ -29,6 +29,7 @@ class BrowseFiles {
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
       event.preventDefault();
       const detail: FileListActionDetail = event.detail;
+      detail.originalAction = FileListActionEvent.primary;
       detail.action = FileListActionEvent.select;
       document.dispatchEvent(new CustomEvent(FileListActionEvent.select, { detail: detail }));
     }).bindTo(document);
@@ -38,7 +39,7 @@ class BrowseFiles {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
       if (resource.type === 'file') {
-        BrowseFiles.insertElement(resource.name, resource.uid, true);
+        BrowseFiles.insertElement(resource.name, resource.uid, detail.originalAction === FileListActionEvent.primary);
       }
       if (resource.type === 'folder') {
         this.loadContent(resource);
