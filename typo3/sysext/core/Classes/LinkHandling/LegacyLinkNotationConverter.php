@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\LinkHandling;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception as ResourceException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -218,7 +218,11 @@ class LegacyLinkNotationConverter
             if (str_contains($fileIdentifier, '#')) {
                 [$fileIdentifier, $fragment] = explode('#', $fileIdentifier, 2);
             }
-            $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($fileIdentifier);
+            try {
+                $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($fileIdentifier);
+            } catch (ResourceException $e) {
+                $fileOrFolderObject = null;
+            }
             // Links to a file/folder in the main TYPO3 directory should not be considered as file links, but an external link
             if ($fileOrFolderObject instanceof ResourceInterface && $fileOrFolderObject->getStorage()->isFallbackStorage()) {
                 return [
@@ -248,10 +252,6 @@ class LegacyLinkNotationConverter
             }
         } catch (\RuntimeException $e) {
             // Element wasn't found
-            $result['type'] = LinkService::TYPE_UNKNOWN;
-            $result['file'] = $mixedIdentifier;
-        } catch (ResourceDoesNotExistException $e) {
-            // Resource was not found
             $result['type'] = LinkService::TYPE_UNKNOWN;
             $result['file'] = $mixedIdentifier;
         }
