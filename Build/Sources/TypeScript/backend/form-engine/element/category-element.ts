@@ -106,7 +106,7 @@ class CategoryElement extends HTMLElement{
       flexFormContainerFieldName: this.recordField.dataset.flexformcontainerfieldname,
       flexFormContainerIdentifier: this.recordField.dataset.flexformcontaineridentifier,
       flexFormSectionContainerIsNew: this.recordField.dataset.flexformsectioncontainerisnew,
-    });
+    }).toString();
   }
 
   private readonly selectNode = (evt: CustomEvent) => {

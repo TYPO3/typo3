@@ -316,7 +316,7 @@ function loadAdditionalModules(_additionalViewModelModules: AdditionalViewModelM
       loadModule(additionalViewModelModules[i]).then(function(additionalViewModelModule) {
         assert(
           'function' === $.type(additionalViewModelModule.bootstrap),
-          'The module "' + additionalViewModelModules[i] + '" does not implement the method "bootstrap"',
+          'The module "' + additionalViewModelModules[i].name + '" does not implement the method "bootstrap"',
           1475425785
         );
         additionalViewModelModule.bootstrap(getFormEditorApp());
