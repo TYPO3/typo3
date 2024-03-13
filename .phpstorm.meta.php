@@ -136,4 +136,8 @@ namespace PHPSTORM_META {
         \TYPO3\CMS\Core\Routing\PageArguments::class,
         \TYPO3\CMS\Core\Routing\RouteResultInterface::class,
     ));
+
+    override(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(0), map([
+        '' => '@'
+    ]));
 }
