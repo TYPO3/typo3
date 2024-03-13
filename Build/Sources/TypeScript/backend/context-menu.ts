@@ -248,7 +248,7 @@ class ContextMenu {
     (new AjaxRequest(url)).withQueryArguments(parameters).get().then(async (response: AjaxResponse): Promise<void> => {
       const data: MenuItems = await response.resolve();
       if (typeof response !== 'undefined' && Object.keys(response).length > 0) {
-        this.populateData(data, 0);
+        this.populateData(data, 0, position);
       }
     }).catch((): void => {
       this.hide(stubMenu);
@@ -260,7 +260,7 @@ class ContextMenu {
     if (contentMenuCurrent !== null) {
       contentMenuCurrent.replaceChildren(document.createRange().createContextualFragment('<typo3-backend-spinner size="medium"></typo3-backend-spinner>'));
       contentMenuCurrent.style.display = null;
-      position ??= this.getPosition(contentMenuCurrent);
+      position = this.getPosition(contentMenuCurrent, position);
       const coordinates = this.toPixel(position);
 
       contentMenuCurrent.style.top = coordinates.top;
@@ -277,7 +277,7 @@ class ContextMenu {
    * @param {MenuItems} items The data that will be put in the menu
    * @param {number} level The depth of the context menu
    */
-  private populateData(items: MenuItems, level: number): void {
+  private populateData(items: MenuItems, level: number, position: MousePosition): void {
     const contentMenuCurrent = document.querySelector('#contentMenu' + level) as HTMLElement;
     const contentMenuParent = document.querySelector('#contentMenu' + (level - 1)) as HTMLElement;
     if (contentMenuCurrent !== null && contentMenuParent?.offsetParent !== null) {
@@ -290,6 +290,10 @@ class ContextMenu {
 
       contentMenuCurrent.innerHTML = '';
       contentMenuCurrent.appendChild(menuGroup);
+      position = this.getPosition(contentMenuCurrent, position);
+      const coordinates = this.toPixel(position);
+      contentMenuCurrent.style.top = coordinates.top;
+      contentMenuCurrent.style.insetInlineStart = coordinates.start;
       contentMenuCurrent.style.display = null;
       (contentMenuCurrent.querySelector('.context-menu-item[tabindex="-1"]') as HTMLElement).focus();
       this.initializeEvents(contentMenuCurrent, level);
@@ -447,7 +451,7 @@ class ContextMenu {
     return { start: Math.round(position.X) + 'px', top: Math.round(position.Y) + 'px' };
   }
 
-  private getPosition(element: HTMLElement): MousePosition {
+  private getPosition(element: HTMLElement, position: MousePosition = null): MousePosition {
 
     const space = 10;
     const offset = 5;
@@ -468,7 +472,10 @@ class ContextMenu {
       start : number = 0,
       top : number = 0;
 
-    if (origin !== undefined && origin !== null) {
+    if (position !== null) {
+      top = position.Y;
+      start = direction === 'ltr' ? position.X : windowDimentions.width - position.X;
+    } else if (origin !== undefined && origin !== null) {
       const boundingRect = origin.getBoundingClientRect();
       top = boundingRect.y;
       start = direction === 'ltr' ? boundingRect.x + boundingRect.width : windowDimentions.width - boundingRect.x;
