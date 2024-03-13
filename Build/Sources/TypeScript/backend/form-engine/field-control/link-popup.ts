@@ -24,6 +24,9 @@ class LinkPopup {
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
       this.controlElement = <HTMLElement>document.querySelector(controlElementId);
+      if (this.controlElement === null) {
+        return;
+      }
       this.controlElement.addEventListener('click', this.handleControlClick);
     });
   }

@@ -23,6 +23,9 @@ class GroupElement extends AbstractSortableSelectItems {
 
     DocumentService.ready().then((): void => {
       this.element = <HTMLSelectElement>document.getElementById(elementId);
+      if (this.element === null) {
+        return;
+      }
       this.registerEventHandler();
       this.registerSuggest();
     });
