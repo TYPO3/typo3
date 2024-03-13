@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
@@ -111,7 +112,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
         $changedProperties = parent::diffColumn($column1, $column2);
 
         // Only MySQL has variable length versions of TEXT/BLOB
-        if (!$this->databasePlatform instanceof MySQLPlatform) {
+        if (!($this->databasePlatform instanceof MariaDBPlatform || $this->databasePlatform instanceof MySQLPlatform)) {
             return $changedProperties;
         }
 
@@ -129,6 +130,15 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
         }
 
         return array_unique($changedProperties);
+    }
+
+    /**
+     * @todo TYPO3 v13 needs to properly handle the columnsEqual way, so we use the old column comparison here to
+     *       avoid noisy and incorrect comparison for now leading to endless loop.
+     */
+    public function columnsEqual(Column $column1, Column $column2): bool
+    {
+        return $this->diffColumn($column1, $column2) === [];
     }
 
     /**
@@ -153,9 +163,10 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
      */
     public static function compareSchemas(
         Schema $fromSchema,
-        Schema $toSchema
+        Schema $toSchema,
+        AbstractPlatform $platform = null
     ) {
-        $comparator       = new self();
+        $comparator       = new self($platform);
         $diff             = new SchemaDiff();
         $diff->fromSchema = $fromSchema;
 

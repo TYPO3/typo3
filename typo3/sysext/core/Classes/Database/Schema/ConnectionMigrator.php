@@ -244,7 +244,7 @@ class ConnectionMigrator
 
         // Build SchemaDiff and handle renames of tables and columns
         $comparator = GeneralUtility::makeInstance(Comparator::class, $this->connection->getDatabasePlatform());
-        $schemaDiff = $comparator->compareSchemas($fromSchema, $toSchema);
+        $schemaDiff = $comparator->compareSchemas($fromSchema, $toSchema, $this->connection->getDatabasePlatform());
         $schemaDiff = $this->migrateColumnRenamesToDistinctActions($schemaDiff);
 
         if ($renameUnused) {
