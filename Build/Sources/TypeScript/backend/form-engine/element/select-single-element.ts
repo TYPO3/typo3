@@ -34,6 +34,9 @@ class SelectSingleElement {
 
   public initialize = (elementSelector: string, options: SelectSingleElementOptions): void => {
     const selectElement: HTMLSelectElement = document.querySelector(elementSelector);
+    if (selectElement === null) {
+      return;
+    }
     options = options || {};
 
     new RegularEvent('change', (e: Event): void => {

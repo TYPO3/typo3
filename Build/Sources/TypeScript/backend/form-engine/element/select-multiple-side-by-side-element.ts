@@ -27,6 +27,9 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
     DocumentService.ready().then((document: Document): void => {
       this.selectedOptionsElement = <HTMLSelectElement>document.getElementById(selectedOptionsElementId);
       this.availableOptionsElement = <HTMLSelectElement>document.getElementById(availableOptionsElementId);
+      if (this.selectedOptionsElement === null || this.availableOptionsElement === null) {
+        return;
+      }
       this.registerEventHandler();
     });
   }
