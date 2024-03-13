@@ -867,14 +867,13 @@ final class RedirectServiceTest extends FunctionalTestCase
             ->withAttribute('frontend.user', $frontendUserAuthentication)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
+        /** @var BeforeRedirectMatchDomainEvent[] $dispatchedEvents */
         $dispatchedEvents = [];
         /** @var Container $container */
         $container = $this->get('service_container');
         $container->set(
             'before-redirect-match-domain-event-is-triggered',
-            static function (BeforeRedirectMatchDomainEvent $event) use (
-                &$dispatchedEvents
-            ): void {
+            static function (BeforeRedirectMatchDomainEvent $event) use (&$dispatchedEvents): void {
                 $dispatchedEvents[] = $event;
                 if ($event->getMatchDomainName() === '*') {
                     $event->setMatchedRedirect(['wildcard-manual-matched' => $event->getPath()]);

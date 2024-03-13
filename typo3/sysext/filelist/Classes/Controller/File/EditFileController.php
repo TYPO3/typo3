@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -125,11 +126,14 @@ class EditFileController
             throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1375889832);
         }
 
+        /** @var Folder $parentFolder */
+        $parentFolder = $file->getParentFolder();
+
         $returnUrl = GeneralUtility::sanitizeLocalUrl(
             $parsedBody['returnUrl']
             ?? $queryParams['returnUrl']
             ?? (string)$this->uriBuilder->buildUriFromRoute('media_management', [
-                'id' => $file->getParentFolder()->getCombinedIdentifier(),
+                'id' => $parentFolder->getCombinedIdentifier(),
             ])
         );
 

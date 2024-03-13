@@ -412,7 +412,7 @@ class Indexer
             // Parse URL:
             $qParts = parse_url($linkSource);
             // Check for jumpurl (TYPO3 specific thing...)
-            if (($qParts['query'] ?? false) && str_contains($qParts['query'] ?? '', 'jumpurl=')) {
+            if (($qParts['query'] ?? false) && str_contains($qParts['query'], 'jumpurl=')) {
                 parse_str($qParts['query'], $getP);
                 $linkSource = $getP['jumpurl'];
                 $qParts = parse_url($linkSource);

@@ -1276,15 +1276,15 @@ class DatabaseIntegrityController
         $comparison = (int)($conf['comparison'] ?? 0);
         $var = $conf['inputValue' . $suffix] ?? '';
         if ($comparison >> 5 === 0 || ($comparison === 32 || $comparison === 33 || $comparison === 64 || $comparison === 65 || $comparison === 66 || $comparison === 67 || $comparison === 96 || $comparison === 97)) {
-            $inputVal = $var ?? null;
+            $inputVal = $var;
         } elseif ($comparison === 39 || $comparison === 38) {
             // in list:
-            $inputVal = implode(',', GeneralUtility::intExplode(',', (string)($var ?? '')));
+            $inputVal = implode(',', GeneralUtility::intExplode(',', (string)$var));
         } elseif ($comparison === 68 || $comparison === 69 || $comparison === 162 || $comparison === 163) {
             // in list:
-            if (is_array($var ?? false)) {
+            if (is_array($var)) {
                 $inputVal = implode(',', $var);
-            } elseif ($var ?? false) {
+            } elseif ($var) {
                 $inputVal = $var;
             } else {
                 $inputVal = 0;
@@ -1296,7 +1296,7 @@ class DatabaseIntegrityController
         } else {
             // TODO: Six eyes looked at this code and nobody understood completely what is going on here and why we
             // fallback to float casting, the whole class smells like it needs a refactoring.
-            $inputVal = (float)($var ?? 0.0);
+            $inputVal = (float)$var;
         }
 
         return $inputVal;
@@ -1483,12 +1483,10 @@ class DatabaseIntegrityController
     protected function cleanUpQueryConfig(array $queryConfig): array
     {
         // Since we don't traverse the array using numeric keys in the upcoming while-loop make sure it's fresh and clean before displaying
-        if (!empty($queryConfig) && is_array($queryConfig)) {
+        if (!empty($queryConfig)) {
             ksort($queryConfig);
-        } elseif (empty($queryConfig[0]['type'])) {
-            // Make sure queryConfig is an array
-            $queryConfig = [];
-            $queryConfig[0] = ['type' => 'FIELD_'];
+        } else {
+            $queryConfig = [['type' => 'FIELD_']];
         }
         // Traverse:
         foreach ($queryConfig as $key => $conf) {
@@ -1503,7 +1501,7 @@ class DatabaseIntegrityController
             }
             switch ($fieldType) {
                 case 'newlevel':
-                    if (!$queryConfig[$key]['nl']) {
+                    if (!isset($conf['nl'])) {
                         $queryConfig[$key]['nl'][0]['type'] = 'FIELD_';
                     }
                     $queryConfig[$key]['nl'] = $this->cleanUpQueryConfig($queryConfig[$key]['nl']);
@@ -1517,7 +1515,7 @@ class DatabaseIntegrityController
                     if ((int)($conf['comparison'] ?? 0) >> 5 !== (int)($this->comp_offsets[$fieldType] ?? 0)) {
                         $conf['comparison'] = (int)($this->comp_offsets[$fieldType] ?? 0) << 5;
                     }
-                    $queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'] ?? '' ? (string)$conf['comparison'] : '0', ($conf['negate'] ?? null) ? 1 : 0);
+                    $queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'] ?? 0 ? (int)$conf['comparison'] : 0, (bool)($conf['negate'] ?? null));
                     $queryConfig[$key]['inputValue'] = $this->cleanInputVal($queryConfig[$key]);
                     $queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], '1');
             }
@@ -1541,10 +1539,7 @@ class DatabaseIntegrityController
         return $first;
     }
 
-    /**
-     * @param string $comparison
-     */
-    protected function verifyComparison($comparison, int $neg): int
+    protected function verifyComparison(int $comparison, bool $neg): int
     {
         $compOffSet = $comparison >> 5;
         $first = -1;
@@ -1560,10 +1555,7 @@ class DatabaseIntegrityController
         return $first;
     }
 
-    /**
-     * @param string $queryConfig
-     */
-    protected function getFormElements(int $subLevel = 0, $queryConfig = '', string $parent = ''): array
+    protected function getFormElements(int $subLevel = 0, string|array $queryConfig = null, string $parent = ''): array
     {
         $codeArr = [];
         if (!is_array($queryConfig)) {
@@ -1598,7 +1590,8 @@ class DatabaseIntegrityController
                 case 'ignore':
                     break;
                 case 'newlevel':
-                    if (!$queryConfig[$key]['nl']) {
+                    if (!is_array($queryConfig[$key]['nl'] ?? null)) {
+                        $queryConfig[$key]['nl'] = [];
                         $queryConfig[$key]['nl'][0]['type'] = 'FIELD_';
                     }
                     $lineHTML[] = '<input type="hidden" name="' . $fieldPrefix . '[type]" value="newlevel">';
@@ -1966,7 +1959,7 @@ class DatabaseIntegrityController
         $lineHTML[] = '</div>';
         $lineHTML[] = '<div class="form-group">';
         $lineHTML[] = '  <div class="input-group">';
-        $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', (string)$conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
+        $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', (int)$conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
         $lineHTML[] = '    <span class="input-group-text">';
         $lineHTML[] = '      <div class="form-check form-check-type-toggle">';
         $lineHTML[] = '        <input type="checkbox" class="form-check-input t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
@@ -1978,7 +1971,7 @@ class DatabaseIntegrityController
         return implode(LF, $lineHTML);
     }
 
-    protected function mkCompSelect(string $name, string $comparison, int $neg): string
+    protected function mkCompSelect(string $name, int $comparison, int $neg): string
     {
         $compOffSet = $comparison >> 5;
         $out = [];
@@ -2242,11 +2235,11 @@ class DatabaseIntegrityController
                 $fieldConfig = $GLOBALS['TCA'][$this->table]['columns'][$fieldName] ?? [];
                 $this->fields[$fieldName] = $fieldConfig['config'] ?? [];
                 $this->fields[$fieldName]['exclude'] = $fieldConfig['exclude'] ?? '';
-                if (((($this->fields[$fieldName]['type'] ?? '') === 'user') && (!isset($this->fields[$fieldName]['type']['userFunc'])))
+                if (((($this->fields[$fieldName]['type'] ?? '') === 'user') && (!isset($this->fields[$fieldName]['renderType'])))
                     || ($this->fields[$fieldName]['type'] ?? '') === 'none'
                 ) {
                     // Do not list type=none "virtual" fields or query them from db,
-                    // and if type is user without defined userFunc
+                    // and if type=user without defined renderType
                     unset($this->fields[$fieldName]);
                     continue;
                 }

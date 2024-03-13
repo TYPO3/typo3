@@ -144,7 +144,7 @@ class UserInformationService
                 }
             }
         }
-        $data['tables']['all'] = array_replace($data['tables']['tables_select'] ?? [], $data['tables']['tables_modify'] ?? []);
+        $data['tables']['all'] = array_replace($data['tables']['tables_select'], $data['tables']['tables_modify']);
 
         // DB mounts
         $dbMounts = GeneralUtility::trimExplode(',', $user->groupData['webmounts'] ?? '', true);

@@ -68,7 +68,7 @@ class BackendUserRepository extends Repository
             }
             if (count($searchConstraints) === 1) {
                 $constraints[] = reset($searchConstraints);
-            } elseif (count($searchConstraints) >= 2) {
+            } else {
                 $constraints[] = $query->logicalOr(...$searchConstraints);
             }
         }

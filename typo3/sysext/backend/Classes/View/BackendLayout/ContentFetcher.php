@@ -24,7 +24,7 @@ use TYPO3\CMS\Backend\View\Event\ModifyDatabaseQueryForContentEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -249,7 +249,7 @@ class ContentFetcher
         return $GLOBALS['LANG'];
     }
 
-    protected function getRuntimeCache(): VariableFrontend
+    protected function getRuntimeCache(): FrontendInterface
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }

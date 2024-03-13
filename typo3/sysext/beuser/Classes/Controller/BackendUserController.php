@@ -301,9 +301,9 @@ class BackendUserController extends ActionController
     public function initiatePasswordResetAction(int $user): ResponseInterface
     {
         $context = GeneralUtility::makeInstance(Context::class);
-        /** @var BackendUser $user */
-        $user = $this->backendUserRepository->findByUid($user);
-        if (!$user || !$user->isPasswordResetEnabled() || !$context->getAspect('backend.user')->isAdmin()) {
+        /** @var BackendUser|null $userObject */
+        $userObject = $this->backendUserRepository->findByUid($user);
+        if (!$userObject || !$userObject->isPasswordResetEnabled() || !$context->getAspect('backend.user')->isAdmin()) {
             // Add an error message
             $this->addFlashMessage(
                 LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.error.text', 'beuser') ?? '',
@@ -314,12 +314,11 @@ class BackendUserController extends ActionController
             GeneralUtility::makeInstance(PasswordReset::class)->initiateReset(
                 $this->request,
                 $context,
-                $user->getEmail()
+                $userObject->getEmail()
             );
             $this->addFlashMessage(
-                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.text', 'beuser', [$user->getEmail()]) ?? '',
-                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.title', 'beuser') ?? '',
-                ContextualFeedbackSeverity::OK
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.text', 'beuser', [$userObject->getEmail()]) ?? '',
+                LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:flashMessage.resetPassword.success.title', 'beuser') ?? ''
             );
         }
         return new ForwardResponse('index');

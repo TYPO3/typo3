@@ -56,6 +56,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\FlexFormService;
@@ -330,7 +331,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public ?LinkResultInterface $lastTypoLinkResult = null;
 
     /**
-     * @var File|FileReference|Folder|string|null Current file objects (during iterations over files)
+     * @var File|FileReference|Folder|FolderInterface|FileInterface|string|null Current file objects (during iterations over files)
      */
     protected $currentFile;
 
@@ -1022,7 +1023,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Sets the current file object during iterations over files.
      *
-     * @param File|FileReference|Folder|string|null $fileObject The file object.
+     * @param File|FileReference|Folder|FileInterface|FolderInterface|string|null $fileObject The file object.
      */
     public function setCurrentFile($fileObject)
     {
@@ -1032,7 +1033,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Gets the current file object during iterations over files.
      *
-     * @return File|FileReference|Folder|string|null The current file object.
+     * @return File|FileReference|Folder|FileInterface|FolderInterface|string|null The current file object.
      */
     public function getCurrentFile()
     {
@@ -2439,7 +2440,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $delimeter = chr((int)$delimeter);
         }
         $temp = explode($delimeter, $content);
-        if (empty($temp)) {
+        if ($temp === ['']) {
             return '';
         }
         $last = '' . (count($temp) - 1);
@@ -2776,13 +2777,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $valArr = explode($conf['token'], $value);
 
         // return value directly by returnKey. No further processing
-        if (!empty($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey'] ?? null) || ($conf['returnKey.'] ?? false))) {
+        if ($valArr !== [''] && (MathUtility::canBeInterpretedAsInteger($conf['returnKey'] ?? null) || ($conf['returnKey.'] ?? false))) {
             $key = (int)$this->stdWrapValue('returnKey', $conf ?? []);
             return $valArr[$key] ?? '';
         }
 
         // return the amount of elements. No further processing
-        if (!empty($valArr) && (($conf['returnCount'] ?? false) || ($conf['returnCount.'] ?? false))) {
+        if ($valArr !== [''] && (($conf['returnCount'] ?? false) || ($conf['returnCount.'] ?? false))) {
             $returnCount = (bool)$this->stdWrapValue('returnCount', $conf ?? []);
             return $returnCount ? count($valArr) : 0;
         }
@@ -3592,7 +3593,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $fileReference = $this->getResourceFactory()->getFileReferenceObject((int)$file);
                             $fileObject = $fileReference->getOriginalFile();
                         } else {
-                            $fileObject = $this->getResourceFactory()->getFileObject($file);
+                            $fileObject = $this->getResourceFactory()->getFileObject((int)$file);
                         }
                     } elseif (preg_match('/^(0|[1-9][0-9]*):/', $file)) { // combined identifier
                         $fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
@@ -4087,7 +4088,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $fileObject = $this->getCurrentFile();
             } elseif (MathUtility::canBeInterpretedAsInteger($fileUidOrCurrentKeyword)) {
                 $fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-                $fileObject = $fileFactory->getFileObject($fileUidOrCurrentKeyword);
+                $fileObject = $fileFactory->getFileObject((int)$fileUidOrCurrentKeyword);
             } else {
                 $fileObject = null;
             }

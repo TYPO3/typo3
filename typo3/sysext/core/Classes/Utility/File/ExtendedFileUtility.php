@@ -560,13 +560,8 @@ class ExtendedFileUtility extends BasicFileUtility
 
     /**
      * Gets a File or a Folder object from an identifier [storage]:[fileId]
-     *
-     * @param string $identifier
-     * @return File|Folder
-     * @throws Exception\InsufficientFileAccessPermissionsException
-     * @throws Exception\InvalidFileException
      */
-    protected function getFileObject($identifier)
+    protected function getFileObject(string $identifier)
     {
         $object = $this->fileFactory->retrieveFileOrFolderObject($identifier);
         if ($object === null) {
@@ -894,9 +889,8 @@ class ExtendedFileUtility extends BasicFileUtility
      * + example "2:targetpath/targetfolder/"
      *
      * @param array $cmds Command details as described above
-     * @return string Returns the new filename upon success
      */
-    public function func_newfile($cmds)
+    public function func_newfile($cmds): File|false|null
     {
         $targetFolderObject = $this->getFileObject($cmds['target']);
         if (!$targetFolderObject instanceof Folder) {

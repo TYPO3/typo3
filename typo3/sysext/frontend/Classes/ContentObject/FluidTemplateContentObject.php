@@ -282,7 +282,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             }
         }
         $variables['data'] = $this->cObj->data;
-        $variables['current'] = $this->cObj->data[$this->cObj->currentValKey ?? null] ?? null;
+        $variables['current'] = $this->cObj->data[$this->cObj->currentValKey] ?? null;
         return $variables;
     }
 

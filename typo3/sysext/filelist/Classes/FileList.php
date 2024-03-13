@@ -836,14 +836,10 @@ class FileList
      */
     protected function renderControl(ResourceView $resourceView): string
     {
-        if ($this->mode === Mode::MANAGE) {
-            return $this->renderControlManage($resourceView);
-        }
-        if ($this->mode === Mode::BROWSE) {
-            return $this->renderControlBrowse($resourceView);
-        }
-
-        return '';
+        return match ($this->mode) {
+            Mode::MANAGE => $this->renderControlManage($resourceView),
+            Mode::BROWSE => $this->renderControlBrowse($resourceView),
+        };
     }
 
     /**

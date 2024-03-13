@@ -181,34 +181,9 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\View\\\\BackendLayout\\\\ContentFetcher\\:\\:getRuntimeCache\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\VariableFrontend but returns TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/ContentFetcher.php
-
-		-
 			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\Area given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/ThumbnailViewHelper.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/beuser/Classes/Controller/BackendUserController.php
-
-		-
-			message: "#^Comparison operation \"\\>\\=\" between int\\<2, max\\> and 2 is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/beuser/Classes/Domain/Repository/BackendUserRepository.php
-
-		-
-			message: "#^Offset 'tables_modify' on array\\{tables_select\\: array\\<non\\-empty\\-string, mixed\\>, tables_modify\\: array\\<non\\-empty\\-string, mixed\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/beuser/Classes/Service/UserInformationService.php
-
-		-
-			message: "#^Offset 'tables_select' on array\\{tables_select\\: array\\<non\\-empty\\-string, mixed\\>, tables_modify\\: array\\<non\\-empty\\-string, mixed\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/beuser/Classes/Service/UserInformationService.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$writeAttemptLog \\(bool\\) on left side of \\?\\? is not nullable\\.$#"
@@ -676,11 +651,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/ArrayUtility.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:getCombinedIdentifier\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
-
-		-
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Exception\\\\ExistingTargetFileNameException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
@@ -697,36 +667,6 @@ parameters:
 
 		-
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Exception\\\\InsufficientUserPermissionsException is never thrown in the try block\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
-
-		-
-			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Exception\\\\ResourceDoesNotExistException is never thrown in the try block\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\File\\\\ExtendedFileUtility\\:\\:func_newfile\\(\\) should return string but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\File\\\\ExtendedFileUtility\\:\\:func_newfile\\(\\) should return string but returns false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\File\\\\ExtendedFileUtility\\:\\:func_rename\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
-
-		-
-			message: "#^Parameter \\#2 \\$targetFolder of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\:\\:addUploadedFile\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
-
-		-
-			message: "#^Parameter \\#2 \\$targetFolder of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\:\\:moveFile\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
 
@@ -1371,16 +1311,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/EmConfUtilityTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getCombinedIdentifier\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/Controller/File/EditFileController.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/FileList.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Fluid\\\\ViewHelpers\\\\Be\\\\Menus\\\\ActionMenuViewHelper\\:\\:compile\\(\\) should return string but returns null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/Menus/ActionMenuViewHelper.php
@@ -1409,11 +1339,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$input of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:retrieveFileOrFolderObject\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/FileViewHelperTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$fileObject of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:setCurrentFile\\(\\) expects string\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Classes/ViewHelpers/Link/ClickEnlargeViewHelper.php
 
 		-
 			message: "#^Parameter \\#2 \\$imageFile of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:imageLinkWrap\\(\\) expects string\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"
@@ -1641,11 +1566,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
-			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:getFileObject\\(\\) expects int, string given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 14
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
@@ -1659,26 +1579,6 @@ parameters:
 			message: "#^Variable \\$pidConf in isset\\(\\) always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Variable \\$temp in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Variable \\$valArr in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:\\$currentValKey \\(string\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/FluidTemplateContentObject.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ImageContentObject.php
 
 		-
 			message: "#^Negated boolean expression is always true\\.$#"
@@ -1876,11 +1776,6 @@ parameters:
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
 
 		-
-			message: "#^Offset 'query' on array\\{scheme\\?\\: string, host\\?\\: string, port\\?\\: int\\<0, 65535\\>, user\\?\\: string, pass\\?\\: string, path\\?\\: string, query\\: string, fragment\\?\\: string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
-
-		-
 			message: "#^Offset int\\<0, max\\> does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
@@ -1916,11 +1811,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
 
 		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/SystemEnvironment/ServerResponse/FileDeclaration.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Updates/DatabaseRowsUpdateWizard.php
@@ -1941,56 +1831,6 @@ parameters:
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/FileNodeTest.php
 
 		-
-			message: "#^Binary operation \"\\>\\>\" between string and 1 results in an error\\.$#"
-			count: 2
-			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
-
-		-
-			message: "#^Binary operation \"\\>\\>\" between string and 5 results in an error\\.$#"
-			count: 2
-			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
-
-		-
-			message: "#^Call to function is_array\\(\\) with string will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
-
-		-
-			message: "#^Cannot assign offset 'type' to string\\.$#"
-			count: 2
-			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
-
-		-
-			message: "#^Offset 'userFunc' on 'user' in isset\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
-
-		-
-			message: "#^Offset 0 on array\\{\\} in empty\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
-
-		-
-			message: "#^Variable \\$var on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 5
-			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Integrity/DatabaseIntegrityCheck.php
-
-		-
-			message: "#^Offset 1 does not exist on non\\-empty\\-array\\<0, TYPO3\\\\CMS\\\\Redirects\\\\Event\\\\BeforeRedirectMatchDomainEvent\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
-			message: "#^Right side of && is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/rte_ckeditor/Classes/Controller/BrowseLinksController.php
-
-		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/CronCommand.php
@@ -2004,8 +1844,3 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between non\\-falsy\\-string and '' will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/webhooks/Tests/Functional/WebhookExecutionTest.php

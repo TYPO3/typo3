@@ -399,8 +399,9 @@ class DatabaseIntegrityCheck
                 // The array index of $tableColumns is the lowercased column name!
                 // It is quoted for keywords
                 $column = $tableColumns[strtolower($fieldName)]
-                    ?? $tableColumns[$connection->quoteIdentifier(strtolower($fieldName))];
-                if (!$column) {
+                    ?? $tableColumns[$connection->quoteIdentifier(strtolower($fieldName))]
+                    ?? '';
+                if (empty($column)) {
                     // Throw meaningful exception if field does not exist in DB - 'none' is not filtered here since the
                     // method is only called with type=group fields
                     throw new \RuntimeException(

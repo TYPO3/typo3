@@ -97,10 +97,12 @@ final class WebhookExecutionTest extends FunctionalTestCase
         self::assertEquals(1, $numberOfRequestsFired);
     }
 
+    /**
+     * @todo This test might not test what should be tested.
+     */
     #[Test]
     public function oneMessageWithMultipleRequestsIsTriggeredAndDispatched(): void
     {
-        self::markTestSkipped('Fails with phpunit 10 for unknown reasons. Probably broken since ever?');
         $numberOfRequestsFired = 0;
         $inspector = function (RequestInterface $request) use (&$numberOfRequestsFired) {
             $payload = json_decode($request->getBody()->getContents(), true);
@@ -124,6 +126,8 @@ final class WebhookExecutionTest extends FunctionalTestCase
         ]);
 
         $userRequest = GeneralUtility::makeInstance(BackendUserAuthentication::class);
+        $userRequest->start($request);
+        // second request
         $userRequest->start($request);
         self::assertEquals(2, $numberOfRequestsFired);
     }

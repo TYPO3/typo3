@@ -68,7 +68,7 @@ class FileDeclaration
     protected $unexpectedContent;
 
     /**
-     * @var \Closure
+     * @var \Closure|null
      */
     protected $handler;
 

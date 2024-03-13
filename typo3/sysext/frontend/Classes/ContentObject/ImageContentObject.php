@@ -36,7 +36,7 @@ class ImageContentObject extends AbstractContentObject
     /**
      * Rendering the cObject, IMAGE
      *
-     * @param array $conf Array of TypoScript properties
+     * @param array|mixed $conf Array of TypoScript properties
      * @return string Output
      */
     public function render($conf = [])

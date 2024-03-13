@@ -206,9 +206,8 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 if (
                     !in_array($class, $classesAnchor['all'], true)
                     || (
-                        isset($classesAnchor[$this->displayedLinkHandlerId])
-                        && in_array($class, $classesAnchor['all'], true)
-                        && is_array($classesAnchor[$this->displayedLinkHandlerId])
+                        in_array($class, $classesAnchor['all'], true)
+                        && is_array($classesAnchor[$this->displayedLinkHandlerId] ?? null)
                         && in_array($class, $classesAnchor[$this->displayedLinkHandlerId])
                     )
                 ) {
@@ -339,8 +338,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $currentRel = '';
         if ($this->displayedLinkHandler === $this->currentLinkHandler
             && !empty($this->currentLinkParts)
-            && isset($this->linkAttributeValues['rel'])
-            && is_string($this->linkAttributeValues['rel'])
+            && is_string($this->linkAttributeValues['rel'] ?? null)
         ) {
             $currentRel = $this->linkAttributeValues['rel'];
         }
