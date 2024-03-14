@@ -27,7 +27,6 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\TestSet;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableItem;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Variables;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\VariableValue;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 final class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
 {
@@ -103,35 +102,7 @@ final class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTest
     #[Test]
     public function persistedPatternMapperIsApplied(TestSet $testSet): void
     {
-        $builder = Builder::create();
-        $enhancerConfiguration = $builder->compileEnhancerConfiguration($testSet);
-        $additionalParameters = $builder->compileGenerateParameters($testSet);
-        /** @var LanguageContext $languageContext */
-        $languageContext = $testSet->getSingleApplicable(LanguageContext::class);
-        $targetLanguageId = $languageContext->getLanguageId();
-        $expectation = $builder->compileUrl($testSet);
-
-        $this->mergeSiteConfiguration('acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
-        ]);
-        $this->mergeSiteConfiguration('archive-acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
-        ]);
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://acme.us/'))
-                ->withPageId(1100)
-                ->withInstructions([
-                    $this->createTypoLinkUrlInstruction([
-                        'parameter' => $testSet->getTargetPageId(),
-                        'language' => $targetLanguageId,
-                        'additionalParams' => $additionalParameters,
-                        'forceAbsoluteUrl' => 1,
-                    ]),
-                ])
-        );
-
-        self::assertSame($expectation, (string)$response->getBody());
+        $this->assertGeneratedUriEquals($testSet);
     }
 
     /**
