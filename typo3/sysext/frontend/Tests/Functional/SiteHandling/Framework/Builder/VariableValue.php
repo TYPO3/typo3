@@ -40,10 +40,19 @@ class VariableValue
         return new static($value, $defaultVariables);
     }
 
+    public static function createUrlEncodedParams(
+        string $value,
+        Variables $defaultVariables = null,
+        string $prefix = '&'
+    ): self {
+        $value = self::urlEncodeParams($value, $prefix);
+        return self::create($value, $defaultVariables);
+    }
+
     private function __construct(string $value, Variables $defaultVariables = null)
     {
-        $variableNames = $this->extractVariableNames($value);
-        if (count($variableNames) === 0) {
+        $variableNames = self::extractVariableNames($value);
+        if ($variableNames === []) {
             throw new \LogicException(
                 sprintf(
                     'Payload did not contain any variables "%s"',
@@ -58,9 +67,15 @@ class VariableValue
         $this->defaultVariables = $defaultVariables;
     }
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     public function apply(Variables $variables): string
     {
         $variables = $variables->withDefined($this->defaultVariables);
+        $variables = $this->resolveNestedVariables($variables);
 
         $this->assertVariableNames($variables);
         if (!$this->hasAllRequiredDefinedVariableNames($variables)) {
@@ -68,10 +83,23 @@ class VariableValue
         }
 
         return str_replace(
-            array_map([$this, 'wrap'], $variables->keys()),
+            array_map([self::class, 'wrap'], $variables->keys()),
             $variables->values(),
             $this->value
         );
+    }
+
+    private function resolveNestedVariables(Variables $variables): Variables
+    {
+        $target = clone $variables;
+        foreach ($variables as $key => $value) {
+            if ($value instanceof self) {
+                $otherVariables = clone $variables;
+                unset($otherVariables[$key]);
+                $target[$key] = $value->apply($otherVariables);
+            }
+        }
+        return $target;
     }
 
     private function assertVariableNames(Variables $variables): void
@@ -89,7 +117,7 @@ class VariableValue
         }
     }
 
-    private function extractVariableNames(string $value): array
+    private static function extractVariableNames(string $value): array
     {
         if (!preg_match_all('#\[\[(?P<variableName>[^\[\]]+)\]\]#', $value, $matches)) {
             return [];
@@ -97,8 +125,19 @@ class VariableValue
         return array_unique($matches['variableName']);
     }
 
-    private function wrap(string $item): string
+    private static function wrap(string $item): string
     {
         return '[[' . $item . ']]';
+    }
+
+    private static function urlEncodeParams(string $value, string $prefix = '&'): string
+    {
+        $variableNames = self::extractVariableNames($value);
+        $variableItems = array_map([self::class, 'wrap'], $variableNames);
+        $substitutes = array_map(static fn(): string => bin2hex(random_bytes(20)), $variableNames);
+        $value = str_replace($variableItems, $substitutes, $value);
+        parse_str($value, $params);
+        $value = http_build_query($params, '', '&', PHP_QUERY_RFC3986);
+        return $prefix . str_replace($substitutes, $variableItems, $value);
     }
 }
