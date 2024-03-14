@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -32,6 +33,7 @@ final class InlineChildLanguageTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mm',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_inline_two_parents',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
     ];
 
     protected function setUp(): void
@@ -168,6 +170,111 @@ final class InlineChildLanguageTest extends FunctionalTestCase
 
         self::assertSame([], $dataHandler->errorLog);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/InlineChildLanguageOfSecondParentImported.csv');
+    }
+
+    #[Test]
+    public function childrenInFlexFormFollowChangedLanguageOfParent(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/InlineChildLanguageInFlexForm.csv');
+
+        $dataHandler = $this->processDataMapAsUser(1, ['tt_content' => [2 => ['sys_language_uid' => -1]]]);
+
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame(-1, $this->getLanguageOfRecord('tx_testirreforeignfield_hotel', 1));
+        self::assertSame(-1, $this->getLanguageOfRecord('sys_file_reference', 2));
+    }
+
+    #[Test]
+    public function childrenInFlexFormFollowChangedLanguageOfParentInWorkspace(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/InlineChildLanguageInFlexForm.csv');
+
+        $dataHandler = $this->processDataMapAsUser(1, ['tt_content' => [2 => ['sys_language_uid' => -1]]], 1);
+
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame(0, $this->getLanguageOfRecord('tx_testirreforeignfield_hotel', 1));
+        self::assertSame(-1, $this->getLanguageOfWorkspaceVersion('tx_testirreforeignfield_hotel', 1, 1));
+        self::assertSame(0, $this->getLanguageOfRecord('sys_file_reference', 2));
+        self::assertSame(-1, $this->getLanguageOfWorkspaceVersion('sys_file_reference', 2, 1));
+    }
+
+    #[Test]
+    public function childInFlexFormFollowsLanguageOfNewParent(): void
+    {
+        $dataHandler = $this->processDataMapAsUser(1, [
+            'tt_content' => ['NEW1' => [
+                'pid' => 1,
+                'header' => 'New content with FlexForm child',
+                'sys_language_uid' => -1,
+                'tx_testirreforeignfield_flexform' => ['data' => ['sDEF' => ['lDEF' => ['hotels' => ['vDEF' => 'NEW2']]]]],
+            ]],
+            'tx_testirreforeignfield_hotel' => ['NEW2' => ['pid' => 1, 'title' => 'New hotel in FlexForm', 'sys_language_uid' => 0]],
+        ]);
+
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame(-1, $this->getLanguageOfRecord('tx_testirreforeignfield_hotel', (int)$dataHandler->substNEWwithIDs['NEW2']));
+    }
+
+    public static function childAddedToFlexFormOfExistingParentFollowsItsLanguageDataProvider(): \Generator
+    {
+        yield 'parent in all languages' => [3, -1];
+        yield 'translated parent' => [5, 1];
+    }
+
+    #[DataProvider('childAddedToFlexFormOfExistingParentFollowsItsLanguageDataProvider')]
+    #[Test]
+    public function childAddedToFlexFormOfExistingParentFollowsItsLanguage(int $parentUid, int $expectedLanguage): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/InlineChildLanguageInFlexForm.csv');
+
+        $dataHandler = $this->processDataMapAsUser(1, [
+            'tt_content' => [$parentUid => [
+                'tx_testirreforeignfield_flexform' => ['data' => ['sDEF' => ['lDEF' => ['hotels' => ['vDEF' => 'NEW2']]]]],
+            ]],
+            'tx_testirreforeignfield_hotel' => ['NEW2' => ['pid' => 1, 'title' => 'New hotel in FlexForm', 'sys_language_uid' => 0]],
+        ]);
+
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame($expectedLanguage, $this->getLanguageOfRecord('tx_testirreforeignfield_hotel', (int)$dataHandler->substNEWwithIDs['NEW2']));
+    }
+
+    /**
+     * The record type changes in the same data map, so the new child is part of
+     * the FlexForm data structure of the new record type only.
+     */
+    #[Test]
+    public function childAddedToFlexFormOfChangedRecordTypeFollowsLanguageOfParent(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/InlineChildLanguageInFlexForm.csv');
+
+        $dataHandler = $this->processDataMapAsUser(1, [
+            'tt_content' => [4 => [
+                'CType' => 'text',
+                'tx_testirreforeignfield_flexform' => ['data' => ['sDEF' => ['lDEF' => ['hotels' => ['vDEF' => 'NEW2']]]]],
+            ]],
+            'tx_testirreforeignfield_hotel' => ['NEW2' => ['pid' => 1, 'title' => 'New hotel in FlexForm', 'sys_language_uid' => 0]],
+        ]);
+
+        self::assertSame([], $dataHandler->errorLog);
+        self::assertSame(-1, $this->getLanguageOfRecord('tx_testirreforeignfield_hotel', (int)$dataHandler->substNEWwithIDs['NEW2']));
+    }
+
+    private function getLanguageOfRecord(string $table, int $uid): int
+    {
+        $record = $this->get(ConnectionPool::class)->getConnectionForTable($table)
+            ->select(['sys_language_uid'], $table, ['uid' => $uid])
+            ->fetchAssociative();
+        self::assertIsArray($record, $table . ':' . $uid . ' does not exist');
+        return (int)$record['sys_language_uid'];
+    }
+
+    private function getLanguageOfWorkspaceVersion(string $table, int $liveUid, int $workspaceId): int
+    {
+        $record = $this->get(ConnectionPool::class)->getConnectionForTable($table)
+            ->select(['sys_language_uid'], $table, ['t3ver_oid' => $liveUid, 't3ver_wsid' => $workspaceId])
+            ->fetchAssociative();
+        self::assertIsArray($record, 'No workspace version of ' . $table . ':' . $liveUid);
+        return (int)$record['sys_language_uid'];
     }
 
     private function processDataMapAsUser(int $userId, array $dataMap, int $workspaceId = 0): DataHandler

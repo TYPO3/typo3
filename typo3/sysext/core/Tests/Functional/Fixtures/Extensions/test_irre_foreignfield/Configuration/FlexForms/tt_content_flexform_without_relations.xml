@@ -1,0 +1,17 @@
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <type>array</type>
+                <el>
+                    <title>
+                        <label>Title</label>
+                        <config>
+                            <type>input</type>
+                        </config>
+                    </title>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>

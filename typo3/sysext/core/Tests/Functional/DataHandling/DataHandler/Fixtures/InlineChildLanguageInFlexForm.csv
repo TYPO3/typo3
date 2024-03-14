@@ -1,0 +1,12 @@
+"tt_content"
+,"uid","pid","sorting","CType","header","deleted","sys_language_uid","l18n_parent","tx_testirreforeignfield_flexform"
+,2,1,512,"text","Content with FlexForm children",0,0,0,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?><T3FlexForms><data><sheet index=""sDEF""><language index=""lDEF""><field index=""hotels""><value index=""vDEF"">1</value></field><field index=""files""><value index=""vDEF"">1</value></field></language></sheet></data></T3FlexForms>"
+,3,1,768,"text","Content in all languages",0,-1,0,""
+,4,1,1024,"testirreforeignfield_norelations","Content in all languages without FlexForm relations",0,-1,0,""
+,5,1,1280,"text","[Translate to Dansk:] Content with FlexForm children",0,1,2,""
+"tx_testirreforeignfield_hotel"
+,"uid","pid","title","deleted","sys_language_uid","parentid","parenttable","parentidentifier"
+,1,1,"Hotel in FlexForm",0,0,2,"tt_content","flexform.hotels"
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","deleted","sys_language_uid"
+,2,1,1,2,"tt_content","files",0,0

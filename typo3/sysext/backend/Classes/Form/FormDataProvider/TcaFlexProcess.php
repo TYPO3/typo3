@@ -461,6 +461,15 @@ class TcaFlexProcess implements FormDataProviderInterface
                 // pass through fullTca as it is immutable once set
                 'fullTca' => $result['fullTca'],
             ];
+            // Inline and file fields hand the language of the record over to new children
+            $languageField = (string)($result['processedTca']['ctrl']['languageField'] ?? '');
+            if ($languageField !== ''
+                && array_key_exists($languageField, $result['databaseRow'])
+                && !isset($dataStructureFields[$languageField])
+            ) {
+                $inputToFlexFormSegment['processedTca']['ctrl']['languageField'] = $languageField;
+                $inputToFlexFormSegment['databaseRow'][$languageField] = $result['databaseRow'][$languageField];
+            }
 
             if (!empty($tcaNewColumns)) {
                 // @todo: this has the same problem in scenario "a field was added later" as flex section container
