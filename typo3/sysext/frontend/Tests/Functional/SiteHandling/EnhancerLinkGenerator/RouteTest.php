@@ -139,7 +139,7 @@ final class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
                     ->withTargetPageId(1100)
                     ->withUrl(
                         VariableValue::create(
-                            'https://acme.us/welcome/enhance/hundred/20[[pathSuffix]]',
+                            'https://acme.us/welcome/enhance/hundred/20[[pathSuffix]]?cHash=',
                             Variables::create(['pathSuffix' => ''])
                         )
                     ),
@@ -148,7 +148,7 @@ final class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
                     ->withTargetPageId(1100)
                     ->withUrl(
                         VariableValue::create(
-                            'https://acme.fr/bienvenue/enhance/cent/20[[pathSuffix]]',
+                            'https://acme.fr/bienvenue/enhance/cent/20[[pathSuffix]]?cHash=',
                             Variables::create(['pathSuffix' => ''])
                         )
                     )
@@ -211,7 +211,7 @@ final class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
     #[Test]
     public function routeDefaultsForMultipleParametersAreConsidered(TestSet $testSet): void
     {
-        $this->assertGeneratedUriEquals($testSet);
+        $this->assertGeneratedUriEquals($testSet, false);
     }
 
     public static function routeRequirementsHavingAspectsAreConsideredDataProvider(): array

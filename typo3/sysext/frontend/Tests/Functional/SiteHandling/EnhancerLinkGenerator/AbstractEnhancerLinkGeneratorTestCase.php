@@ -109,7 +109,13 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
         self::assertStringStartsWith($expectation, (string)$response->getBody());
     }
 
-    protected function assertGeneratedUriEquals(TestSet $testSet): void
+    /**
+     * In case non-`$strict` assertions are performed (using `assertStringStartsWith`), the corresponding
+     * expectations need to be specific (e.g. ending with `?cHash=` to assert that part of the URI).
+     *
+     * @param bool $strict Whether to use `assertSame` instead of `assertStringStartsWith`
+     */
+    protected function assertGeneratedUriEquals(TestSet $testSet, bool $strict = true): void
     {
         $builder = Builder::create();
         $enhancerConfiguration = $builder->compileEnhancerConfiguration($testSet);
@@ -120,6 +126,9 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
         $expectation = $builder->compileUrl($testSet);
 
         $this->mergeSiteConfiguration('acme-com', [
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
+        ]);
+        $this->mergeSiteConfiguration('archive-acme-com', [
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
 
@@ -136,6 +145,11 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
                 ])
         );
 
-        self::assertStringStartsWith($expectation, (string)$response->getBody());
+        $actual = (string)$response->getBody();
+        if ($strict) {
+            self::assertSame($expectation, $actual);
+        } else {
+            self::assertStringStartsWith($expectation, $actual);
+        }
     }
 }
