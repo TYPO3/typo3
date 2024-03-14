@@ -379,7 +379,10 @@ class PageRouter implements RouterInterface
                 if ($route->hasOption('deflatedParameters')) {
                     $parameters = $route->getOption('deflatedParameters');
                 }
-                $mappableProcessor->generate($route, $parameters);
+                // skip the route, in case any aspect of it could not be mapped to a value
+                if ($mappableProcessor->generate($route, $parameters) === false) {
+                    continue;
+                }
                 // ABSOLUTE_URL is used as default fallback
                 $urlAsString = $generator->generate($routeName, $parameters, $referenceType);
                 $uri = new Uri($urlAsString);

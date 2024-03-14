@@ -311,4 +311,70 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
     {
         $this->assertGeneratedUriEquals($testSet);
     }
+
+    public static function outOfScopeValueIsNotMappedDataProvider(): array
+    {
+        $generatedParamsMap = [
+            'Simple' => '&value=[[value]]',
+            'Plugin' => '&testing[value]=[[value]]',
+            'Extbase' => '&tx_testing_link[action]=index&tx_testing_link[controller]=Link&tx_testing_link[value]=[[value]]',
+        ];
+        // variables (applied when invoking expectations)
+        $variables = Variables::create()->define([
+            'value' => null, // defined via VariableContext
+            'routePrefix' => 'enhance',
+            'aspectName' => 'value',
+        ]);
+        $variableContexts = [];
+        $enhancers = Builder::create()->declareEnhancers();
+        foreach ($enhancers as $enhancer) {
+            $generatedParams = $generatedParamsMap[$enhancer->describe()] ?? null;
+            if ($generatedParams === null) {
+                continue;
+            }
+            $variableContexts[] = VariablesContext::create(
+                Variables::create([
+                    'generatedParams' => VariableValue::createUrlEncodedParams($generatedParams, null, '?'),
+                ])
+            )->withRequiredApplicables($enhancer);
+        }
+        return Permutation::create($variables)
+            ->withTargets(
+                TestSet::create()
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create('https://acme.us/welcome[[generatedParams]]&cHash=')
+                    ),
+            )
+            ->withApplicableSet(
+                // value `5000` is out of scope for the given range `[1; 100]`
+                VariablesContext::create(Variables::create(['value' => 5000])),
+            )
+            ->withApplicableItems($enhancers)
+            ->withApplicableItems($variableContexts)
+            ->withApplicableSet(
+                AspectDeclaration::create('StaticRangeMapper')->withConfiguration([
+                    VariableItem::create('aspectName', [
+                        'type' => 'StaticRangeMapper',
+                        'start' => '1',
+                        'end' => '100',
+                    ]),
+                ])
+            )
+            ->permute()
+            ->getTargetsForDataProvider();
+    }
+
+    /**
+     * Asserts that value `5000` cannot generate a valid URL, having
+     * a `StaticRangeMapper` which only allows values in range `[1; 100]`.
+     *
+     * @test
+     * @dataProvider outOfScopeValueIsNotMappedDataProvider
+     */
+    public function outOfScopeValueIsNotMapped(TestSet $testSet): void
+    {
+        $this->assertGeneratedUriEquals($testSet, false);
+    }
 }
