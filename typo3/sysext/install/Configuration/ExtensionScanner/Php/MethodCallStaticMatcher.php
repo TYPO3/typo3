@@ -1606,4 +1606,11 @@ return [
             'Deprecation-102895-ExtensionManagementUtilitygetExtensionIcon.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::hmac' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-100596-GeneralUtility_GET.rst',
+        ],
+    ],
 ];
