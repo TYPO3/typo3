@@ -256,7 +256,7 @@ class FileReferenceContainer extends AbstractContainer
                             $thumbnail = '<img src="' . htmlspecialchars($imageUrl) . '" ' .
                                 'width="' . $processedImage->getProperty('width') . '" ' .
                                 'height="' . $processedImage->getProperty('height') . '" ' .
-                                'alt="' . $altText . '" ' .
+                                'alt="" ' .
                                 'title="' . $altText . '" ' .
                                 'loading="lazy">';
                         }
