@@ -52,3 +52,21 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;LLL:EXT:test_irre_foreignfield/Resources/Private/Language/locallang_db.xlf:tt_content.div.test_irre_foreignfield, tx_testirreforeignfield_hotels, tx_testirreforeignfield_flexform'
 );
+
+// A record type whose FlexForm data structure has no relations
+ExtensionManagementUtility::addRecordType(
+    [
+        'label' => 'FlexForm without relations',
+        'value' => 'testirreforeignfield_norelations',
+    ],
+    'CType, header, sys_language_uid, tx_testirreforeignfield_flexform',
+    [
+        'columnsOverrides' => [
+            'tx_testirreforeignfield_flexform' => [
+                'config' => [
+                    'ds' => 'FILE:EXT:test_irre_foreignfield/Configuration/FlexForms/tt_content_flexform_without_relations.xml',
+                ],
+            ],
+        ],
+    ],
+);

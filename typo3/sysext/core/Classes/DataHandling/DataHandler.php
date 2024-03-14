@@ -904,7 +904,7 @@ class DataHandler
                         }
                         $this->updateDB($table, $id, $fieldArray, (int)$currentRecord['pid']);
                     }
-                    if ($this->isInlineChildLanguageAlignmentRequired($table, $fieldArray, $incomingFieldArray)) {
+                    if ($this->isInlineChildLanguageAlignmentRequired($table, $fieldArray, $incomingFieldArray, $currentRecord)) {
                         $inlineParents = $this->registerInlineParent($inlineParents, $table, $id);
                     }
                     // Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
@@ -1255,17 +1255,20 @@ class DataHandler
 
     /**
      * Yields the fields of all sheets of a flex field, together with their value within the
-     * given FlexForm XML. Nothing is yielded if the data structure cannot be resolved for the row.
+     * given FlexForm XML or array. Nothing is yielded if the data structure cannot be resolved for the row.
      *
      * @return \Generator<FieldTypeInterface, mixed>
      */
-    private function getFlexFormSheetFieldValues(string $table, FlexFormFieldType $flexField, array $row, string $flexFormXml): \Generator
+    private function getFlexFormSheetFieldValues(string $table, FlexFormFieldType $flexField, array $row, array|string $flexFormValue): \Generator
     {
         $flexFormSchema = $this->flexFormSchemaFactory->getSchemaForRow($table, $flexField, $row);
         if ($flexFormSchema === null) {
             return;
         }
-        $flexForm = GeneralUtility::xml2array($flexFormXml);
+        $flexForm = is_array($flexFormValue) ? $flexFormValue : GeneralUtility::xml2array($flexFormValue);
+        if (!is_array($flexForm)) {
+            $flexForm = [];
+        }
         foreach ($flexFormSchema->getSheets() as $sheetName => $sheet) {
             foreach ($sheet->getFields() as $sheetField) {
                 $sheetFieldName = substr($sheetField->getName(), strlen($sheetName) + 1);
@@ -9518,9 +9521,10 @@ class DataHandler
     }
 
     /**
-     * Whether the language of an updated record has changed, or new inline children were submitted for it.
+     * Whether the language of an updated record has changed, or new inline children were submitted for it,
+     * either in an inline or file field of the record or in one of the sheets of its flex fields.
      */
-    private function isInlineChildLanguageAlignmentRequired(string $table, array $fieldArray, array $incomingFieldArray): bool
+    private function isInlineChildLanguageAlignmentRequired(string $table, array $fieldArray, array $incomingFieldArray, array $currentRecord): bool
     {
         $schema = $this->tcaSchemaFactory->get($table);
         if (!$schema->isLanguageAware()) {
@@ -9529,15 +9533,28 @@ class DataHandler
         if (isset($fieldArray[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()])) {
             return true;
         }
+        // The data structure of a flex field follows the record type submitted in the same data map
+        $updatedRecord = array_replace($currentRecord, $fieldArray);
         foreach ($schema->getFields() as $field) {
-            if (($field instanceof InlineFieldType || $field instanceof FileFieldType)
-                && is_string($incomingFieldArray[$field->getName()] ?? null)
-                && str_contains($incomingFieldArray[$field->getName()], 'NEW')
-            ) {
+            $value = $incomingFieldArray[$field->getName()] ?? null;
+            if ($field instanceof FlexFormFieldType && is_array($value)) {
+                foreach ($this->getFlexFormSheetFieldValues($table, $field, $updatedRecord, $value) as $sheetField => $sheetFieldValue) {
+                    if ($this->hasNewInlineChildren($sheetField, $sheetFieldValue)) {
+                        return true;
+                    }
+                }
+            } elseif ($this->hasNewInlineChildren($field, $value)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private function hasNewInlineChildren(FieldTypeInterface $field, mixed $value): bool
+    {
+        return ($field instanceof InlineFieldType || $field instanceof FileFieldType)
+            && is_string($value)
+            && str_contains($value, 'NEW');
     }
 
     /**
@@ -9565,71 +9582,107 @@ class DataHandler
             foreach ($parents as $table => $ids) {
                 $schema = $this->tcaSchemaFactory->get($table);
                 $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+                // The data structure of a flex field may depend on any field of the parent
+                $hasFlexFormFields = count($schema->getFields(static fn(FieldTypeInterface $field): bool => $field instanceof FlexFormFieldType)) > 0;
+                $parentRows = [];
                 $parentLanguages = [];
                 foreach (array_keys($ids) as $id) {
-                    $parent = BackendUtility::getRecord($table, $id, [$languageField]);
+                    $parent = BackendUtility::getRecord($table, $id, $hasFlexFormFields ? '*' : [$languageField]);
                     if ($parent !== null) {
+                        $parentRows[$id] = $parent;
                         $parentLanguages[$id] = (int)$parent[$languageField];
                     }
                 }
                 foreach ($schema->getFields() as $field) {
+                    if ($field instanceof FlexFormFieldType) {
+                        // Inline and file fields within the sheets of a flex field
+                        foreach ($parentLanguages as $id => $language) {
+                            $parent = $parentRows[$id];
+                            $flexFormValue = (string)($parent[$field->getName()] ?? '');
+                            if ($flexFormValue === '') {
+                                continue;
+                            }
+                            foreach ($this->getFlexFormSheetFieldValues($table, $field, $parent, $flexFormValue) as $sheetField => $sheetFieldValue) {
+                                $inlineParents = $this->alignLanguageOfChildrenOfField($table, $sheetField, $id, $language, (string)$sheetFieldValue, $alignedRecords, $inlineParents);
+                            }
+                        }
+                        continue;
+                    }
                     if (!$field instanceof InlineFieldType && !$field instanceof FileFieldType) {
                         continue;
                     }
-                    $configuration = $field->getConfiguration();
-                    $foreignTable = $configuration['foreign_table'] ?? '';
-                    if ($this->isManyToManyField($field) || !$this->tcaSchemaFactory->has($foreignTable)) {
-                        continue;
-                    }
-                    $foreignSchema = $this->tcaSchemaFactory->get($foreignTable);
-                    if (!$foreignSchema->isLanguageAware()) {
-                        continue;
-                    }
-                    $foreignLanguageCapability = $foreignSchema->getCapability(TcaSchemaCapability::Language);
-                    $foreignLanguageField = $foreignLanguageCapability->getLanguageField()->getName();
-                    $foreignTranslationFields = [$foreignLanguageCapability->getTranslationOriginPointerField()->getName()];
-                    if ($foreignLanguageCapability->hasTranslationSourceField()) {
-                        $foreignTranslationFields[] = $foreignLanguageCapability->getTranslationSourceField()->getName();
-                    }
-                    $foreignField = (string)($configuration['foreign_field'] ?? '');
-                    $parentPointerField = $foreignField !== '' && $foreignSchema->hasField($foreignField) ? $foreignSchema->getField($foreignField) : null;
-                    $childFields = [$foreignLanguageField, ...$foreignTranslationFields];
-                    if (!empty($parentPointerField?->getConfiguration()['behaviour']['allowLanguageSynchronization'])) {
-                        $childFields[] = 'l10n_state';
-                    }
+                    $readItemList = empty($field->getConfiguration()['foreign_field']);
                     foreach ($parentLanguages as $id => $language) {
                         $itemList = '';
-                        if (empty($configuration['foreign_field'])) {
+                        if ($readItemList) {
                             $itemList = (string)(BackendUtility::getRecord($table, $id, [$field->getName()])[$field->getName()] ?? '');
                         }
-                        $relationHandler = $this->createRelationHandlerInstance();
-                        $relationHandler->initializeForField($table, $field, $id, $itemList);
-                        foreach ($relationHandler->itemArray as $item) {
-                            $child = $this->getRecordToWriteInCurrentWorkspace($foreignTable, (int)$item['id'], $childFields);
-                            if ($child === null
-                                || isset($alignedRecords[$foreignTable . ':' . $child['uid']][$language])
-                                || (int)$child[$foreignLanguageField] === $language
-                                || $this->isParentPointerOfTranslationSynchronized($foreignTable, $parentPointerField, $child, $foreignTranslationFields[0])
-                            ) {
-                                continue;
-                            }
-                            $newData = [$foreignLanguageField => $language];
-                            // A child in default language or "all languages" is no translation
-                            if ($language <= LanguageMarker::DEFAULT_LANGUAGE) {
-                                foreach ($foreignTranslationFields as $translationField) {
-                                    if ((int)$child[$translationField] !== 0) {
-                                        $newData[$translationField] = 0;
-                                    }
-                                }
-                            }
-                            $this->updateFixedFields($foreignTable, $child, $newData);
-                            $alignedRecords[$foreignTable . ':' . $child['uid']][$language] = true;
-                            $inlineParents[$foreignTable][(int)$child['uid']] = true;
-                        }
+                        $inlineParents = $this->alignLanguageOfChildrenOfField($table, $field, $id, $language, $itemList, $alignedRecords, $inlineParents);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Aligns the children of a single inline or file field of a parent record, which may also
+     * be a field of a flex field sheet, with the given language of the parent.
+     *
+     * @param array<string, array<int, true>> $alignedRecords Children aligned in this run, per language
+     * @param array<string, array<int, true>> $inlineParents Aligned children, which are parents in the next pass
+     * @return array<string, array<int, true>>
+     */
+    private function alignLanguageOfChildrenOfField(string $table, FieldTypeInterface $field, int $id, int $language, string $itemList, array &$alignedRecords, array $inlineParents): array
+    {
+        if (!$field instanceof InlineFieldType && !$field instanceof FileFieldType) {
+            return $inlineParents;
+        }
+        $configuration = $field->getConfiguration();
+        $foreignTable = $configuration['foreign_table'] ?? '';
+        if ($this->isManyToManyField($field) || !$this->tcaSchemaFactory->has($foreignTable)) {
+            return $inlineParents;
+        }
+        $foreignSchema = $this->tcaSchemaFactory->get($foreignTable);
+        if (!$foreignSchema->isLanguageAware()) {
+            return $inlineParents;
+        }
+        $foreignLanguageCapability = $foreignSchema->getCapability(TcaSchemaCapability::Language);
+        $foreignLanguageField = $foreignLanguageCapability->getLanguageField()->getName();
+        $foreignTranslationFields = [$foreignLanguageCapability->getTranslationOriginPointerField()->getName()];
+        if ($foreignLanguageCapability->hasTranslationSourceField()) {
+            $foreignTranslationFields[] = $foreignLanguageCapability->getTranslationSourceField()->getName();
+        }
+        $foreignField = (string)($configuration['foreign_field'] ?? '');
+        $parentPointerField = $foreignField !== '' && $foreignSchema->hasField($foreignField) ? $foreignSchema->getField($foreignField) : null;
+        $childFields = [$foreignLanguageField, ...$foreignTranslationFields];
+        if (!empty($parentPointerField?->getConfiguration()['behaviour']['allowLanguageSynchronization'])) {
+            $childFields[] = 'l10n_state';
+        }
+        $relationHandler = $this->createRelationHandlerInstance();
+        $relationHandler->initializeForField($table, $field, $id, $itemList);
+        foreach ($relationHandler->itemArray as $item) {
+            $child = $this->getRecordToWriteInCurrentWorkspace($foreignTable, (int)$item['id'], $childFields);
+            if ($child === null
+                || isset($alignedRecords[$foreignTable . ':' . $child['uid']][$language])
+                || (int)$child[$foreignLanguageField] === $language
+                || $this->isParentPointerOfTranslationSynchronized($foreignTable, $parentPointerField, $child, $foreignTranslationFields[0])
+            ) {
+                continue;
+            }
+            $newData = [$foreignLanguageField => $language];
+            // A child in default language or "all languages" is no translation
+            if ($language <= LanguageMarker::DEFAULT_LANGUAGE) {
+                foreach ($foreignTranslationFields as $translationField) {
+                    if ((int)$child[$translationField] !== 0) {
+                        $newData[$translationField] = 0;
+                    }
+                }
+            }
+            $this->updateFixedFields($foreignTable, $child, $newData);
+            $alignedRecords[$foreignTable . ':' . $child['uid']][$language] = true;
+            $inlineParents[$foreignTable][(int)$child['uid']] = true;
+        }
+        return $inlineParents;
     }
 
     /**

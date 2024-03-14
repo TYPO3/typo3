@@ -59,7 +59,9 @@ translation pointers of the parent record itself are not changed.
 
 This applies to inline relations using :php:`'foreign_field'` as well as to
 inline relations stored as comma-separated list in the parent field, and to
-all fields of type :php:`'file'`.
+all fields of type :php:`'file'`. Fields of these types within the sheets of a
+FlexForm field are aligned with the language of the record holding the
+FlexForm as well.
 
 A child table can be used in inline relations of several parent tables, each
 with its own :php:`'foreign_field'`. When such a parent pointer is synchronized

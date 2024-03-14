@@ -22,7 +22,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Stub;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFiles;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -1027,6 +1029,108 @@ final class TcaFlexProcessTest extends FunctionalTestCase
             'dsDefault',
             $result['processedTca']['columns']['aField']['config']['ds']['sheets']['sDEF']['ROOT']['el']['aFlexField']['config']['default']
         );
+    }
+
+    public static function addDataHandsParentLanguageToInlineAndFileFieldsDataProvider(): \Generator
+    {
+        yield 'fields without value' => [[]];
+        yield 'fields with value' => [['sDEF' => ['lDEF' => ['anInlineField' => ['vDEF' => ''], 'aFileField' => ['vDEF' => '']]]]];
+    }
+
+    #[DataProvider('addDataHandsParentLanguageToInlineAndFileFieldsDataProvider')]
+    #[Test]
+    public function addDataHandsParentLanguageToInlineAndFileFields(array $flexData): void
+    {
+        $input = [
+            'request' => new ServerRequest(),
+            'tableName' => 'aTable',
+            'effectivePid' => 1,
+            'selectTreeCompileItems' => false,
+            'databaseRow' => [
+                'uid' => 5,
+                'sys_language_uid' => [2],
+                'aField' => [
+                    'data' => $flexData,
+                ],
+                'pointerField' => 'aFlex',
+            ],
+            'processedTca' => [
+                'ctrl' => [
+                    'languageField' => 'sys_language_uid',
+                    'transOrigPointerField' => 'l10n_parent',
+                ],
+                'columns' => [
+                    'sys_language_uid' => ['config' => ['type' => 'language']],
+                    'l10n_parent' => ['config' => ['type' => 'select', 'renderType' => 'selectSingle', 'items' => []]],
+                    'aField' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds_pointerField' => 'pointerField',
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTable","fieldName":"aField","dataStructureKey":"aFlex"}',
+                            'ds' => [
+                                'sheets' => [
+                                    'sDEF' => [
+                                        'ROOT' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'anInlineField' => [
+                                                    'label' => 'anInlineFieldLabel',
+                                                    'config' => [
+                                                        'type' => 'inline',
+                                                        'foreign_table' => 'aChildTable',
+                                                    ],
+                                                ],
+                                                'aFileField' => [
+                                                    'label' => 'aFileFieldLabel',
+                                                    'config' => [
+                                                        'type' => 'file',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'pageTsConfig' => [],
+        ];
+        $childTca = [
+            'ctrl' => [
+                'languageField' => 'sys_language_uid',
+                'transOrigPointerField' => 'l10n_parent',
+            ],
+            'columns' => [
+                'sys_language_uid' => ['config' => ['type' => 'language']],
+                'l10n_parent' => ['config' => ['type' => 'select', 'renderType' => 'selectSingle', 'items' => []]],
+            ],
+        ];
+        $input['fullTca'] = $GLOBALS['TCA'] + ['aTable' => $input['processedTca'], 'aChildTable' => $childTca];
+        $input = $this->addTcaSchemata($input);
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
+            DatabaseRowDefaultValues::class => [],
+            TcaInlineConfiguration::class => ['depends' => [DatabaseRowDefaultValues::class]],
+            TcaFiles::class => ['depends' => [DatabaseRowDefaultValues::class]],
+        ];
+
+        $languageService = self::createStub(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService;
+        $languageService->method('sL')->willReturnArgument(0);
+
+        $GLOBALS['BE_USER'] = $this->backendUserStub = $backendUserStub = self::createStub(BackendUserAuthentication::class);
+        $backendUserStub->method('isAdmin')->willReturn(true);
+        $backendUserStub->method('checkLanguageAccess')->willReturn(true);
+        $backendUserStub->method('check')->willReturn(true);
+
+        $result = new TcaFlexProcess()->addData($input);
+
+        $sheetFields = $result['processedTca']['columns']['aField']['config']['ds']['sheets']['sDEF']['ROOT']['el'];
+        self::assertSame(2, $sheetFields['anInlineField']['config']['inline']['parentSysLanguageUid'] ?? null);
+        self::assertSame(2, $sheetFields['aFileField']['config']['inline']['parentSysLanguageUid'] ?? null);
+        self::assertArrayNotHasKey('sys_language_uid', $result['databaseRow']['aField']['data']['sDEF']['lDEF'] ?? []);
     }
 
     #[Test]
