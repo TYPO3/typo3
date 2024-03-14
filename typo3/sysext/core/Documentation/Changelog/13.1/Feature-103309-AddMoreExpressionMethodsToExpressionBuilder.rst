@@ -80,7 +80,7 @@ Creates a statement to append a field alias to a value, identifier or sub-expres
 Can be used to concatenate values, row field values or expression results into
 a single string value.
 
-..  info::
+..  note::
 
     The created expression is built on the proper platform specific and preferred
     concatenation method, for example :sql:`string || string || string || ...`
@@ -146,7 +146,7 @@ a single string value.
 Can be used to create an expression which converts a value, row field value or
 the result of an expression to varchar type with dynamic length.
 
-..  info::
+..  note::
 
     Use the platform specific preferred way for casting to dynamic length
     character type, which means :sql:`CAST("value" AS VARCHAR(<LENGTH>))`
@@ -201,7 +201,7 @@ the result of an expression to varchar type with dynamic length.
 Can be used to create an expression which converts a value, row field value or
 the result of an expression to signed integer type.
 
-..  info::
+..  note::
 
     Use the platform specific preferred way for casting to dynamic length
     character type, which means :sql:`CAST("value" AS INTEGER)` for most database vendors
@@ -274,7 +274,7 @@ Create a statement to generate a value repeating defined :php:`$value` for
 :php:`$numberOfRepeats` times. This method can be used to provide the
 repeat number as a sub-expression or calculation.
 
-..  info::
+..  note::
 
     :sql:`REPEAT(string, number)` is used to build this expression for all database
     vendors except SQLite for which the compatible replacement construct expression
@@ -360,7 +360,7 @@ repeat number as a sub-expression or calculation.
 
 Create statement containing :php:`$numberOfSpaces` spaces.
 
-..  info::
+..  note::
 
     The :sql:`SPACE(number)` expression is used for MariaDB and MySQL and
     :php:`ExpressionBuilder::repeat()` expression as fallback for PostgreSQL
@@ -431,7 +431,7 @@ Create statement containing :php:`$numberOfSpaces` spaces.
 
 Extract :php:`$length` character of :php:`$value` from the left side.
 
-..  info::
+..  note::
 
     Creates a :sql:`LEFT(string, number_of_chars)` expression for all supported
     database vendors except SQLite, where :sql:`substring(string, integer[, integer])`
@@ -466,7 +466,7 @@ Extract :php:`$length` character of :php:`$value` from the left side.
 
 Extract :php:`$length` character of :php:`$value` from the right side.
 
-..  info::
+..  note::
 
     Creates a :sql:`RIGHT(string, number_of_chars)` expression for all supported
     database vendors except SQLite, where :sql:`substring(string, integer[, integer])`
@@ -531,7 +531,7 @@ Extract :php:`$length` character of :php:`$value` from the right side.
 Left-pad the value or sub-expression result with $paddingValue, to a total
 length of $length.
 
-..  info::
+..  note::
 
     SQLite does not support :sql:`LPAD(string, integer, string)`, therefore a
     more complex compatible replacement expression construct is created.
@@ -615,7 +615,7 @@ length of $length.
 Right-pad the value or sub-expression result with :php:`$paddingValue`, to a
 total length of :php:`$length`.
 
-..  info::
+..  note::
 
     SQLite does not support :sql:`RPAD(string, integer, string)`, therefore a
     complexer compatible replacement expression construct is created.
