@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Tests\TestBolt\:
+    resource: '../Classes/*'
+
+  TYPO3Tests\TestBolt\EventListener\AddTypoScriptFromSiteExtensionEventListener:
+    public: true
+    tags:
+      - name: event.listener
+        identifier: 'test-bolt/add-typoscript-from-site-extension'

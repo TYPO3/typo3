@@ -1,0 +1,8 @@
+"pages",,,,,,,,
+,"uid","pid","title","slug","hidden","deleted","fe_group",
+,1,0,"Root","/",0,0,0,
+,2,1,"Page2","/page2",0,0,0,
+"sys_redirect",,,,,,,,
+,"uid","pid","target_statuscode","disabled","deleted","source_host","source_path","target"
+,1,0,301,0,0,"non-configured.domain.tld","/redirect-to-pid1","t3://page?uid=1"
+,2,0,301,0,0,"non-configured.domain.tld","/redirect-to-pid2","t3://page?uid=2"

@@ -1,0 +1,20 @@
+{
+	"name": "typo3tests/test-bolt",
+	"type": "typo3-cms-extension",
+	"description": "This extension simulates b13/bolt.",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.1.*@dev",
+		"typo3/cms-frontend": "13.1.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_bolt"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestBolt\\": "Classes/"
+		}
+	}
+}

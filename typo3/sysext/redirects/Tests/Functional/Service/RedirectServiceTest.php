@@ -54,6 +54,10 @@ final class RedirectServiceTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['redirects'];
 
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/redirects/Tests/Functional/Fixtures/Extensions/test_bolt',
+    ];
+
     protected array $configurationToUseInTestInstance = [
         'FE' => [
             'cacheHash' => [
@@ -964,5 +968,94 @@ final class RedirectServiceTest extends FunctionalTestCase
         self::assertIsArray($response->getHeader('location'));
         self::assertEquals('TYPO3 Redirect ' . $redirectUid, $response->getHeader('X-Redirect-By')[0]);
         self::assertEquals($targetUrl, $response->getHeader('location')[0]);
+    }
+
+    public static function sourceHostNotNotContainedInAnySiteConfigRedirectIsRedirectedDataProvider(): \Generator
+    {
+        yield 'non-configured source_host with site rootpage target using T3 LinkHandler syntax' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-pid1'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => false,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 1,
+            'expectedRedirectLocationUri' => 'https://acme.com/',
+        ];
+        yield 'non-configured source_host with site sub-page target using T3 LinkHandler syntax' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-pid2'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => false,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 2,
+            'expectedRedirectLocationUri' => 'https://acme.com/page2',
+        ];
+        // Regression test for https://forge.typo3.org/issues/103395
+        yield 'non-configured source_host with site root target without typoscript using T3 LinkHandler syntax' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-pid1'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => true,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 1,
+            'expectedRedirectLocationUri' => 'https://acme.com/',
+        ];
+    }
+
+    /**
+     * @param array{constants?: string[], setup?: string[]} $rootPageTypoScriptFiles
+     */
+    #[DataProvider('sourceHostNotNotContainedInAnySiteConfigRedirectIsRedirectedDataProvider')]
+    #[Test]
+    public function sourceHostNotNotContainedInAnySiteConfigRedirectIsRedirected(
+        InternalRequest $request,
+        array $rootPageTypoScriptFiles,
+        bool $useTestBolt,
+        int $expectedRedirectStatusCode,
+        int $expectedRedirectUid,
+        string $expectedRedirectLocationUri,
+    ): void {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SourceHostWithoutSourceConfigRedirect.csv');
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, 'https://acme.com/')
+        );
+        if ($useTestBolt === true) {
+            $constants = '';
+            foreach ($rootPageTypoScriptFiles['constants'] ?? [] as $typoScriptFile) {
+                if (!str_starts_with($typoScriptFile, 'EXT:')) {
+                    // @deprecated will be removed in version 8, use "EXT:" syntax instead
+                    $constants .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
+                } else {
+                    $constants .= '@import \'' . $typoScriptFile . '\'' . LF;
+                }
+            }
+            $setup = '';
+            foreach ($rootPageTypoScriptFiles['setup'] ?? [] as $typoScriptFile) {
+                if (!str_starts_with($typoScriptFile, 'EXT:')) {
+                    // @deprecated will be removed in version 8, use "EXT:" syntax instead
+                    $setup .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
+                } else {
+                    $setup .= '@import \'' . $typoScriptFile . '\'' . LF;
+                }
+            }
+            $this->mergeSiteConfiguration('acme-com', [
+                'test_bolt_enabled' => true,
+                'test_bolt_constants' => $constants,
+                'test_bolt_setup' => $setup,
+            ]);
+            $connection = $this->getConnectionPool()->getConnectionForTable('pages');
+            $connection->update(
+                'pages',
+                ['is_siteroot' => 1],
+                ['uid' => 1]
+            );
+        } else {
+            $this->setUpFrontendRootPage(1, $rootPageTypoScriptFiles);
+        }
+
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertEquals($expectedRedirectStatusCode, $response->getStatusCode());
+        self::assertIsArray($response->getHeader('X-Redirect-By'));
+        self::assertIsArray($response->getHeader('location'));
+        self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
+        self::assertEquals($expectedRedirectLocationUri, $response->getHeader('location')[0]);
     }
 }
