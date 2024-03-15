@@ -4149,7 +4149,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (is_array($altRootLine)) {
             $rootLine = $altRootLine;
         } else {
-            $rootLine = $this->request->getAttribute('frontend.page.information')->getLocalRootLine();
+            $rootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
         }
         if (!$slideBack) {
             return $rootLine[$key][$field] ?? '';
@@ -4806,7 +4806,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $pidList = GeneralUtility::trimExplode(',', $conf['pidInList'], true);
                 array_walk($pidList, function (&$storagePid) {
                     if ($storagePid === 'this') {
-                        $storagePid = $this->request->getAttribute('frontend.page.information')->getId();
+                        $storagePid = $this->getRequest()->getAttribute('frontend.page.information')->getId();
                     }
                 });
                 $pageRepository = $this->getPageRepository();
@@ -5170,7 +5170,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return [];
         }
 
-        if ($pageIds === [$this->request->getAttribute('frontend.page.information')->getId()]) {
+        if ($pageIds === [$this->getRequest()->getAttribute('frontend.page.information')->getId()]) {
             // Middlewares already checked access to the current page and made sure the current doktype
             // is a doktype whose content should be rendered, so there is no need to check that again.
             return $pageIds;
