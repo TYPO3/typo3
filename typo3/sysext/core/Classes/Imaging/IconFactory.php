@@ -212,7 +212,8 @@ class IconFactory
                     }
                     $recordType[4] = 'contains-' . $moduleSuffix;
                 }
-                if (($row['content_from_pid'] ?? 0) > 0) {
+                $contentFromPid = is_array($row['content_from_pid'] ?? 0) ? ($row['content_from_pid'][0]['uid'] ?? 0) : $row['content_from_pid'] ?? 0;
+                if ($contentFromPid > 0) {
                     if ($row['is_siteroot'] ?? false) {
                         $recordType[4] = $this->getRecordTypeForPageType(
                             $recordType[1],
