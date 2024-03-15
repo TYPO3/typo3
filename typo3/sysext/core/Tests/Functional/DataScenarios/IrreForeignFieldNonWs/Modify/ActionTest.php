@@ -77,12 +77,30 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function copyParentContentToLanguageWithAllChildrenWithLocalizationExclude(): void
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::copyParentContentToLanguageWithAllChildrenWithLocalizationExclude();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToLanguageWAllChildrenWExclude.csv');
+    }
+
+    #[Test]
     public function localizeParentContentWithAllChildren(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeParentContentWithAllChildren();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentWAllChildren.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentWithAllChildrenWithLocalizationExclude(): void
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithAllChildrenWithLocalizationExclude();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentWAllChildrenWExclude.csv');
     }
 
     #[Test]

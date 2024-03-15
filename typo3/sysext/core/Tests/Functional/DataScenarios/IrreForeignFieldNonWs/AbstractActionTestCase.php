@@ -152,8 +152,34 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
+    /**
+     * See DataSet/copyParentContentToLanguageWAllChildrenWExclude.csv
+     */
+    public function copyParentContentToLanguageWithAllChildrenWithLocalizationExclude(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['l10n_mode'] = 'exclude';
+        $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['l10n_mode'] = 'exclude';
+
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
     public function localizeParentContentWithAllChildren(): void
     {
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    /**
+     * See DataSet/localizeParentContentWAllChildrenWExclude.csv
+     */
+    public function localizeParentContentWithAllChildrenWithLocalizationExclude(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['l10n_mode'] = 'exclude';
+        $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['l10n_mode'] = 'exclude';
+
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
