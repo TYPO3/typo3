@@ -129,7 +129,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         try {
             // Write error message to sys_log table
             $this->writeLog($logTitle . ': ' . $logMessage);
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
         }
     }
 
