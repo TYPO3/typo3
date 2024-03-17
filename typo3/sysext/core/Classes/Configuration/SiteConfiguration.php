@@ -57,7 +57,7 @@ class SiteConfiguration implements SingletonInterface
     protected $configFileName = 'config.yaml';
 
     /**
-     * Identifier to store all configuration data in cache_core cache.
+     * Identifier to store all configuration data in the core cache.
      *
      * @internal
      * @var string
