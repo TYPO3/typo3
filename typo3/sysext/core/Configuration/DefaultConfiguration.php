@@ -156,7 +156,7 @@ return [
         ],
         'caching' => [
             'cacheConfigurations' => [
-                // The cache_core cache is is for core php code only and must
+                // The core cache is is for core php code only and must
                 // not be abused by third party extensions.
                 'core' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
