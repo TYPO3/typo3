@@ -20,7 +20,7 @@ class Clearable {
     this.registerClearable();
   }
 
-  private static createCloseButton(): HTMLButtonElement {
+  private static createCloseButton(clearButtonTitle: string): HTMLButtonElement {
     // The inlined markup represents the current generated markup from the
     // icon api for the icon actions-close that can be found in the official
     // icon repository and is registered in the backend icon api.
@@ -50,6 +50,8 @@ class Clearable {
     const closeButton = document.createElement('button');
     closeButton.type = 'button';
     closeButton.tabIndex = -1;
+    closeButton.title = clearButtonTitle;
+    closeButton.ariaLabel = clearButtonTitle;
     closeButton.innerHTML = closeIcon;
     closeButton.style.visibility = 'hidden';
     closeButton.classList.add('close');
@@ -75,7 +77,15 @@ class Clearable {
       this.parentNode.insertBefore(wrap, this);
       wrap.appendChild(this);
 
-      const clearButton = Clearable.createCloseButton();
+      let clearButtonTitle = 'Clear input';
+      if (this.dataset.clearableLabel) {
+        clearButtonTitle = this.dataset.clearableLabel;
+      } else if ('lang' in top.TYPO3 && top.TYPO3.lang['labels.inputfield.clearButton.title']) {
+        clearButtonTitle = top.TYPO3.lang['labels.inputfield.clearButton.title'];
+      }
+
+      const clearButton = Clearable.createCloseButton(clearButtonTitle);
+
       const toggleClearButtonVisibility = (): void => {
         clearButton.style.visibility = this.value.length === 0 ? 'hidden' : 'visible';
       };
