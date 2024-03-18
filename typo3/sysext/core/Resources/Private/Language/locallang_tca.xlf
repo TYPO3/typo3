@@ -153,6 +153,9 @@
 			<trans-unit id="be_users.tabs.personal_data" resname="be_users.tabs.personal_data">
 				<source>Personal Data</source>
 			</trans-unit>
+			<trans-unit id="be_groups.palettes.tableRestrictions" resname="be_groups.palettes.tableRestrictions">
+				<source>Table restrictions</source>
+			</trans-unit>
 			<trans-unit id="be_groups.title" resname="be_groups.title">
 				<source>Grouptitle</source>
 			</trans-unit>
