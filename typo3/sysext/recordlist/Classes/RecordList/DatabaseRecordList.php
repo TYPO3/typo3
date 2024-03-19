@@ -562,7 +562,9 @@ class DatabaseRecordList
     {
         // Finding the total amount of records on the page
         $queryBuilderTotalItems = $this->getQueryBuilder($table, $id, [], ['*'], false, 0, 1);
-        $totalItems = (int)$queryBuilderTotalItems->count('*')
+        $queryBuilderTotalItems->resetQueryPart('orderBy');
+        $totalItems = (int)$queryBuilderTotalItems
+            ->count('*')
             ->executeQuery()
             ->fetchOne();
         if ($totalItems === 0) {
