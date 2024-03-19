@@ -66,3 +66,9 @@ $enable-dark-mode: false;
     margin-top: map-get($spacers, 3);
     margin-bottom: map-get($spacers, 4);
 }
+
+.sidebar > a {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

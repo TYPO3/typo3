@@ -111,8 +111,11 @@
 			<trans-unit id="filter" xml:space="preserve">
 				<source>Filter</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateButton" xml:space="preserve">
-				<source>Create page tree</source>
+			<trans-unit id="frontendCreateButtonWithSets" xml:space="preserve">
+				<source>Create page tree with site sets</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateButtonWithSysTemplate" xml:space="preserve">
+				<source>Create page tree with sys_template</source>
 			</trans-unit>
 			<trans-unit id="frontendDeleteButton" xml:space="preserve">
 				<source>Delete page tree and all related records</source>

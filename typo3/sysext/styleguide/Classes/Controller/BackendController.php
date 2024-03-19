@@ -74,7 +74,8 @@ final class BackendController
     private array $allowedAjaxActions = [
         'tcaCreate',
         'tcaDelete',
-        'frontendCreate',
+        'frontendCreateWithSets',
+        'frontendCreateWithSysTemplate',
         'frontendDelete',
     ];
 
@@ -218,7 +219,7 @@ final class BackendController
         return $moduleTemplate->renderResponse('Backend/Cards');
     }
 
-    private function frontendCreateAction(): ResponseInterface
+    private function frontendCreateWithSetsAction(): ResponseInterface
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         if (count($recordFinder->findUidsOfFrontendPages())) {
@@ -230,6 +231,27 @@ final class BackendController
         } else {
             $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
             $frontend->create();
+            $json = [
+                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkTitle'),
+                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkBody'),
+                'status' => ContextualFeedbackSeverity::OK,
+            ];
+        }
+        return new JsonResponse($json);
+    }
+
+    private function frontendCreateWithSysTemplateAction(): ResponseInterface
+    {
+        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
+        if (count($recordFinder->findUidsOfFrontendPages())) {
+            $json = [
+                'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionFailedTitle'),
+                'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionFailedBody'),
+                'status' => ContextualFeedbackSeverity::ERROR,
+            ];
+        } else {
+            $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
+            $frontend->create('', 1, false);
             $json = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkTitle'),
                 'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkBody'),

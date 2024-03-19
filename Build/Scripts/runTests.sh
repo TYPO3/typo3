@@ -291,6 +291,12 @@ Options:
             - 8.2 (default): use PHP 8.2
             - 8.3: use PHP 8.3
 
+    -t sets|systemplate
+        Only with -s acceptance|acceptanceComposer
+        Specifies which frontend rendering mechanism should be used
+            - sets: (default): use site sets
+            - systemplate: use sys_template records
+
     -e "<phpunit options>" (DEPRECATED).
         Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance
         Additional options to send to phpunit (unit & functional tests) or codeception (acceptance
@@ -401,6 +407,7 @@ PHP_VERSION="8.2"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 ACCEPTANCE_HEADLESS=1
+ACCEPTANCE_TOPIC="sets"
 EXTRA_TEST_OPTIONS=""
 PHPUNIT_RANDOM=""
 CGLCHECK_DRY_RUN=""
@@ -425,7 +432,7 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=()
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":a:b:s:c:d:i:p:e:xy:o:nhug" OPT; do
+while getopts ":a:b:s:c:d:i:t:p:e:xy:o:nhug" OPT; do
     case ${OPT} in
         s)
             TEST_SUITE=${OPTARG}
@@ -465,6 +472,9 @@ while getopts ":a:b:s:c:d:i:p:e:xy:o:nhug" OPT; do
             ;;
         g)
             ACCEPTANCE_HEADLESS=0
+            ;;
+        t)
+            ACCEPTANCE_TOPIC=${OPTARG}
             ;;
         x)
             PHP_XDEBUG_ON=1
@@ -583,9 +593,9 @@ fi
 # Suite execution
 case ${TEST_SUITE} in
     acceptance)
-        CODECEPION_ENV="--env ci,classic"
+        CODECEPION_ENV="--env ci,classic,${ACCEPTANCE_TOPIC}"
         if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-            CODECEPION_ENV="--env ci,classic,headless"
+            CODECEPION_ENV="--env ci,classic,headless,${ACCEPTANCE_TOPIC}"
         fi
         if [ "${CHUNKS}" -gt 0 ]; then
             ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
@@ -679,12 +689,12 @@ case ${TEST_SUITE} in
                 ;;
         esac
 
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name acceptance-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/acceptance-composer"
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name acceptance-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/acceptance-composer" sqlite "" "${ACCEPTANCE_TOPIC}"
         SUITE_EXIT_CODE=$?
         if [[ ${SUITE_EXIT_CODE} -eq 0 ]]; then
-            CODECEPION_ENV="--env ci,composer"
+            CODECEPION_ENV="--env ci,composer,${ACCEPTANCE_TOPIC}"
             if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-                CODECEPION_ENV="--env ci,composer,headless"
+                CODECEPION_ENV="--env ci,composer,headless,${ACCEPTANCE_TOPIC}"
             fi
             if [ "${CHUNKS}" -gt 0 ]; then
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}

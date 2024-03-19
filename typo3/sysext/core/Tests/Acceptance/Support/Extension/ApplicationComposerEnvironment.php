@@ -36,7 +36,7 @@ final class ApplicationComposerEnvironment extends Extension
         Events::SUITE_BEFORE => 'bootstrapTypo3Environment',
     ];
 
-    public function bootstrapTypo3Environment()
+    public function bootstrapTypo3Environment(): void
     {
         // @todo: ugly workaround for InstallTool/AbstractCest.php
         $root = realpath(__DIR__ . '/../../../../../../../' . $this->config['typo3InstancePath']);

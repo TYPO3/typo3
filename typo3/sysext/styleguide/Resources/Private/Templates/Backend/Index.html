@@ -33,14 +33,14 @@
                 </div>
                 <div class="card-footer">
                     <f:variable name="hiddenDemoExists">{f:if(condition: '{demoExists} = true', then: 'hidden')}</f:variable>
-                    <button {hiddenDemoExists} data-href="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'tcaCreate\'}')}" class="btn btn-default{f:if(condition: '{demoExists} = true', then: ' disabled')} t3js-generator-action" id="t3-tca-pagetree-create">
-                        <core:icon identifier="actions-plus" size="small" />
+                    <button {hiddenDemoExists} data-href="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'tcaCreate\'}')}" class="btn btn-default{f:if(condition: '{demoExists} = true', then: ' disabled')} t3js-generator-action" id="t3-tca-pagetree-create" data-generator-action="plus">
+                        <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
                         <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateButton" />
                     </button>
 
                     <f:variable name="hiddenDemoExists">{f:if(condition: '{demoExists} != true', then: 'hidden')}</f:variable>
-                    <button {hiddenDemoExists} data-href="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'tcaDelete\'}')}" class="btn btn-danger{f:if(condition: '{demoExists} != true', then: ' disabled')} t3js-generator-action" id="t3-tca-pagetree-delete">
-                        <core:icon identifier="actions-delete" size="small" />
+                    <button {hiddenDemoExists} data-href="{f:be.uri(route: 'help_styleguide', parameters: '{action: \'tcaDelete\'}')}" class="btn btn-danger{f:if(condition: '{demoExists} != true', then: ' disabled')} t3js-generator-action" id="t3-tca-pagetree-delete" data-generator-action="delete">
+                        <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
                         <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteButton" />
                     </button>
                 </div>
@@ -60,14 +60,19 @@
                 </div>
                 <div class="card-footer">
                     <f:variable name="hiddenFrontendExists">{f:if(condition: '{demoFrontendExists} = true', then: 'hidden')}</f:variable>
-                    <button {hiddenFrontendExists} data-href="{f:be.uri(route:'help_styleguide', parameters: '{action: \'frontendCreate\'}')}" class="btn btn-default{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')} t3js-generator-action" id="t3-ce-pagetree-create">
-                        <core:icon identifier="actions-plus" size="small" />
-                        <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateButton" />
+                    <button {hiddenFrontendExists} data-href="{f:be.uri(route:'help_styleguide', parameters: '{action: \'frontendCreateWithSets\'}')}" class="btn btn-primary{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')} t3js-generator-action" id="t3-ce-pagetree-create-sets" data-generator-action="plus">
+                        <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
+                        <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateButtonWithSets" />
+                    </button>
+
+                    <button {hiddenFrontendExists} data-href="{f:be.uri(route:'help_styleguide', parameters: '{action: \'frontendCreateWithSysTemplate\'}')}" class="btn btn-default{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')} t3js-generator-action" id="t3-ce-pagetree-create-sys-template" data-generator-action="plus">
+                        <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
+                        <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateButtonWithSysTemplate" />
                     </button>
 
                     <f:variable name="hiddenFrontendExists">{f:if(condition: '{demoFrontendExists} != true', then: 'hidden')}</f:variable>
-                    <button {hiddenFrontendExists} data-href="{f:be.uri(route:'help_styleguide', parameters: '{action: \'frontendDelete\'}')}" class="btn btn-danger{f:if(condition: '{demoFrontendExists} != true', then: ' disabled')} t3js-generator-action" id="t3-ce-pagetree-delete">
-                        <core:icon identifier="actions-delete" size="small" />
+                    <button {hiddenFrontendExists} data-href="{f:be.uri(route:'help_styleguide', parameters: '{action: \'frontendDelete\'}')}" class="btn btn-danger{f:if(condition: '{demoFrontendExists} != true', then: ' disabled')} t3js-generator-action" id="t3-ce-pagetree-delete" data-generator-action="delete">
+                        <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
                         <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendDeleteButton" />
                     </button>
                 </div>

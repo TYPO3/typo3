@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Template;
 
+use Codeception\Scenario;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -134,12 +135,17 @@ final class TemplateCest
         $I->see('value = HELLO WORLD!');
     }
 
-    public function checkClosestTemplateButton(ApplicationTester $I, PageTree $pageTree): void
+    public function checkClosestTemplateButton(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
         $I->wantTo('click on the button to go to the closest page with a TypoScript record');
         $I->switchToMainFrame();
-        $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
-        $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
+
+        $usesSiteSets = str_contains($scenario->current('env'), 'sets');
+        if ($usesSiteSets) {
+            $pageTree->openPath(['styleguide frontend demo', 'template records', 'template record subsite']);
+        } else {
+            $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
+        }
         $I->switchToContentFrame();
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->waitForElementNotVisible('#nprogress', 120);

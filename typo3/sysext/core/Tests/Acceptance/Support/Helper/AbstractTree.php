@@ -105,6 +105,7 @@ abstract class AbstractTree
     protected function ensureTreeNodeIsOpen(string $nodeText, RemoteWebElement $context)
     {
         $I = $this->tester;
+        $I->wait(0.1);
         $I->see($nodeText, static::$treeItemSelector);
 
         /** @var RemoteWebElement $context */

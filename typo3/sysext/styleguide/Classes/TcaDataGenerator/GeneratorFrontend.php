@@ -31,7 +31,7 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
  */
 final class GeneratorFrontend extends AbstractGenerator
 {
-    public function create(string $basePath = '', int $hidden = 1): void
+    public function create(string $basePath = '', int $hidden = 1, bool $useSiteSets = false): void
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $kauderWelsch = GeneralUtility::makeInstance(KauderwelschService::class);
@@ -54,7 +54,6 @@ final class GeneratorFrontend extends AbstractGenerator
         // Add entry page on top level
         $newIdOfEntryPage = StringUtility::getUniqueId('NEW');
         $newIdOfUserFolder = StringUtility::getUniqueId('NEW');
-        $newIdOfRootTsTemplate = StringUtility::getUniqueId('NEW');
         $newIdOfEntryContent = StringUtility::getUniqueId('NEW');
         $newIdOfCategory = StringUtility::getUniqueId('NEW');
         $newIdOfFrontendGroup = StringUtility::getUniqueId('NEW');
@@ -77,17 +76,6 @@ final class GeneratorFrontend extends AbstractGenerator
                     'tx_styleguide_containsdemo' => 'tx_styleguide_frontend',
                     'hidden' => 0,
                     'doktype' => 254,
-                ],
-            ],
-            'sys_template' => [
-                $newIdOfRootTsTemplate => [
-                    'title' => 'root styleguide frontend demo',
-                    'root' => 1,
-                    'clear' => 3,
-                    'include_static_file' => 'EXT:styleguide/Configuration/TypoScript',
-                    'constants' => '',
-                    'config' => '',
-                    'pid' => $newIdOfEntryPage,
                 ],
             ],
             'tt_content' => [
@@ -125,6 +113,51 @@ final class GeneratorFrontend extends AbstractGenerator
                 ],
             ],
         ];
+
+        if ($useSiteSets) {
+            $newIdOfTemplateFolder = StringUtility::getUniqueId('NEW');
+            $newIdOfDummyTemplateSubsite = StringUtility::getUniqueId('NEW');
+            $newIdOfExtTsTemplate = StringUtility::getUniqueId('NEW');
+            // Storage for for demo sys_template records
+            $data['pages'][$newIdOfTemplateFolder] = [
+                'title' => 'template records',
+                'pid' => $newIdOfEntryPage,
+                'tx_styleguide_containsdemo' => 'tx_styleguide_frontend',
+                'hidden' => 0,
+                'doktype' => 254,
+            ];
+            $data['pages'][$newIdOfDummyTemplateSubsite] = [
+                'title' => 'template record subsite',
+                'pid' => $newIdOfTemplateFolder,
+                'tx_styleguide_containsdemo' => 'tx_styleguide_frontend',
+                'hidden' => 0,
+                'doktype' => 254,
+            ];
+            $data['sys_template'] = [
+                $newIdOfExtTsTemplate => [
+                    'title' => 'styleguide frontend demo extension template',
+                    'root' => 0,
+                    'clear' => 0,
+                    'include_static_file' => '',
+                    'constants' => '',
+                    'config' => '',
+                    'pid' => $newIdOfTemplateFolder,
+                ],
+            ];
+        } else {
+            $newIdOfRootTsTemplate = StringUtility::getUniqueId('NEW');
+            $data['sys_template'] = [
+                $newIdOfRootTsTemplate => [
+                    'title' => 'root styleguide frontend demo',
+                    'root' => 1,
+                    'clear' => 3,
+                    'include_static_file' => 'EXT:styleguide/Configuration/TypoScript',
+                    'constants' => '',
+                    'config' => '',
+                    'pid' => $newIdOfEntryPage,
+                ],
+            ];
+        }
 
         $neighborPage = $newIdOfEntryPage;
         $contentData = $this->getElementContent();
@@ -176,7 +209,7 @@ final class GeneratorFrontend extends AbstractGenerator
             $domain = empty($basePath) ? '/' : $basePath;
         }
         $topPageUid = (int)$recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root'])[0];
-        $this->createSiteConfiguration($topPageUid, $domain, 'Styleguide frontend demo');
+        $this->createSiteConfiguration($topPageUid, $domain, 'Styleguide frontend demo', $useSiteSets ? ['typo3/styleguide'] : []);
 
         $this->populateSysFileReference();
         $this->populateTtContentPages();

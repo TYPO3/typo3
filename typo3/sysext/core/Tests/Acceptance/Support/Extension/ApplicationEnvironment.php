@@ -94,6 +94,8 @@ final class ApplicationEnvironment extends BackendEnvironment
     public function bootstrapTypo3Environment(SuiteEvent $suiteEvent): void
     {
         parent::bootstrapTypo3Environment($suiteEvent);
+        $useSiteSets = !str_contains($suiteEvent->getSettings()['current_environment'] ?? '', 'systemplate');
+
         // styleguide generator uses DataHandler for some parts. DataHandler needs an initialized BE user
         // with admin right and the live workspace.
         $request = $this->createServerRequest('https://typo3-testing.local/typo3/');
@@ -116,7 +118,7 @@ final class ApplicationEnvironment extends BackendEnvironment
         // Force basePath for testing environment, required for the frontend!
         // Otherwise the page can not be found, also do not set root page to
         // 'hidden' so menus (e.g. menu_sitemap_pages) are displayed correctly
-        $styleguideGeneratorFrontend->create('/', 0);
+        $styleguideGeneratorFrontend->create('/', 0, $useSiteSets);
 
         $testbase = new Testbase();
         $instancePath = getenv('TYPO3_PATH_ROOT', true);

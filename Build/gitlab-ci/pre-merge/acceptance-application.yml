@@ -1,4 +1,4 @@
-acceptance application mariadb 10.4 php 8.3 pre-merge:
+acceptance application sys_template mariadb 10.4 php 8.3 pre-merge:
   stage: main
   tags:
     - metal2
@@ -14,4 +14,4 @@ acceptance application mariadb 10.4 php 8.3 pre-merge:
   parallel: 13
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s acceptance -p 8.3 -d mariadb -i 10.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptance -p 8.3 -d mariadb -i 10.4 -t systemplate -c $CI_NODE_INDEX/$CI_NODE_TOTAL

@@ -41,7 +41,7 @@ abstract class AbstractGenerator
     /**
      * Create a site configuration on new styleguide root page
      */
-    protected function createSiteConfiguration(int $topPageUid, string $base = 'http://localhost/', string $title = 'styleguide demo'): void
+    protected function createSiteConfiguration(int $topPageUid, string $base = 'http://localhost/', string $title = 'styleguide demo', array $sets = []): void
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         // When the DataHandler created the page tree, a default site configuration has been added. Fetch,  rename, update.
@@ -137,6 +137,7 @@ abstract class AbstractGenerator
                     'languageId' => $highestLanguageId + 4,
                 ],
             ],
+            'dependencies' => $sets,
         ];
         $siteWriter->write($siteIdentifier, $configuration);
     }

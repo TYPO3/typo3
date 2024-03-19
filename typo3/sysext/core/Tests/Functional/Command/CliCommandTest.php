@@ -39,6 +39,9 @@ final class CliCommandTest extends AbstractCommandTestCase
         'extensionmanager',
         'scheduler',
         'workspaces',
+        'felogin',
+        'fluid_styled_content',
+        'seo',
         'styleguide',
         'install',
     ];

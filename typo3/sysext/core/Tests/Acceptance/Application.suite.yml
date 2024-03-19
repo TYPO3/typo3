@@ -24,6 +24,8 @@ env:
     extensions:
       enabled:
         - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\ApplicationComposerEnvironment
+  systemplate:
+  sets:
 
 groups:
   AcceptanceTests-Job-*: AcceptanceTests-Job-*

@@ -1,4 +1,4 @@
-acceptance application composer mariadb 10.4 php 8.2 min:
+acceptance application composer sys_template mariadb 10.4 php 8.2 min:
   stage: acceptance
   tags:
     - metal2
@@ -17,7 +17,7 @@ acceptance application composer mariadb 10.4 php 8.2 min:
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s acceptanceComposer -d mariadb -i 10.4 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptanceComposer -d mariadb -i 10.4 -p 8.2 -t systemplate -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application composer mariadb 10.10 php 8.3 max:
   stage: acceptance
   tags:
@@ -59,7 +59,7 @@ acceptance application composer mysql 8.0 php 8.3 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
     - Build/Scripts/runTests.sh -s acceptanceComposer -d mysql -i 8.0 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance application composer mysql 8.0 php 8.2 min:
+acceptance application composer sys_template mysql 8.0 php 8.2 min:
   stage: acceptance
   tags:
     - metal2
@@ -78,7 +78,7 @@ acceptance application composer mysql 8.0 php 8.2 min:
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s acceptanceComposer -d mysql -i 8.0 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptanceComposer -d mysql -i 8.0 -p 8.2 -t systemplate -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 acceptance application composer sqlite php 8.3 max:
   stage: acceptance

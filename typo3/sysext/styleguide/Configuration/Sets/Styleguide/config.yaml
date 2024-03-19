@@ -1,0 +1,9 @@
+name: typo3/styleguide
+label: Styleguide Theme
+
+dependencies:
+  - typo3/fluid-styled-content
+  - typo3/form
+  - typo3/felogin
+  - typo3/indexed-search
+  - typo3/seo-sitemap

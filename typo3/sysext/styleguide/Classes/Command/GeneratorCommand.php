@@ -39,7 +39,7 @@ final class GeneratorCommand extends Command
 {
     protected function configure(): void
     {
-        $this->addArgument('type', InputArgument::OPTIONAL, 'Create page tree data, valid arguments are "tca", "frontend" and "all"', 'all');
+        $this->addArgument('type', InputArgument::OPTIONAL, 'Create page tree data, valid arguments are "tca", "frontend", "frontend-systemplate" and "all"', 'all');
         $this->addOption('delete', 'd', InputOption::VALUE_NONE, 'Delete page tree and its records for the selected type');
         $this->addOption('create', 'c', InputOption::VALUE_NONE, 'Create page tree and its records for the selected type');
     }
@@ -71,7 +71,17 @@ final class GeneratorCommand extends Command
 
             case 'frontend':
                 if ($input->getOption('create')) {
-                    $this->createFrontend($output);
+                    $this->createFrontend($output, true);
+                }
+
+                if ($input->getOption('delete')) {
+                    $this->deleteFrontend($output);
+                }
+                break;
+
+            case 'frontend-systemplate':
+                if ($input->getOption('create')) {
+                    $this->createFrontend($output, false);
                 }
 
                 if ($input->getOption('delete')) {
@@ -82,7 +92,7 @@ final class GeneratorCommand extends Command
             case 'all':
                 if ($input->getOption('create')) {
                     $this->createTca($output);
-                    $this->createFrontend($output);
+                    $this->createFrontend($output, true);
                 }
 
                 if ($input->getOption('delete')) {
@@ -92,7 +102,7 @@ final class GeneratorCommand extends Command
 
                 break;
             default:
-                $output->writeln('<error>Please specify a valid action. Choose "tca", "frontend" or "all"</error>');
+                $output->writeln('<error>Please specify a valid action. Choose "tca", "frontend", "frontend-systemplate" or "all"</error>');
                 return 1;
         }
 
@@ -124,7 +134,7 @@ final class GeneratorCommand extends Command
         return 0;
     }
 
-    private function createFrontend(OutputInterface $output): int
+    private function createFrontend(OutputInterface $output, bool $useSiteSets): int
     {
         /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
@@ -134,7 +144,7 @@ final class GeneratorCommand extends Command
         } else {
             /** @var GeneratorFrontend $frontend */
             $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-            $frontend->create();
+            $frontend->create('', 1, $useSiteSets);
             $output->writeln('<info>Frontend page tree created!</info>');
         }
 

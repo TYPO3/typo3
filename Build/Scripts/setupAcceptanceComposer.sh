@@ -7,6 +7,7 @@ cd "$(dirname $(realpath $0))/../../"
 PROJECT_PATH=${1:-typo3temp/var/tests/acceptance-composer/}
 export TYPO3_DB_DRIVER=${2:-${TYPO3_DB_DRIVER:-sqlite}}
 EXTRA_PACKAGES="${3}"
+ACCEPTANCE_TOPIC="${4}"
 
 mkdir -p "${PROJECT_PATH}"
 ln -snf $(echo "${PROJECT_PATH}" | sed -e 's/[^\/][^\/]*/../g' -e 's/\/$//')/typo3/sysext "${PROJECT_PATH}/typo3-sysext"
@@ -40,7 +41,12 @@ TYPO3_PROJECT_NAME="New TYPO3 site" \
 vendor/bin/typo3 setup --force --no-interaction
 
 vendor/bin/typo3 dataset:import vendor/typo3/cms-core/Tests/Acceptance/Fixtures/BackendEnvironment.csv
-vendor/bin/typo3 styleguide:generate -c -- all
+vendor/bin/typo3 styleguide:generate -c tca
+if [ "${ACCEPTANCE_TOPIC}" = "systemplate" ]; then
+    vendor/bin/typo3 styleguide:generate -c frontend-systemplate
+else
+    vendor/bin/typo3 styleguide:generate -c frontend
+fi
 
 # Create favicon.ico to suppress potential javascript errors in console
 # which are caused by calling a non html in the browser, e.g. seo sitemap xml

@@ -795,3 +795,4 @@ textarea.form-control-lg{min-height:calc(1.5em + 1rem + calc(var(--bs-border-wid
 .ce-textpic.ce-intext .ce-gallery{flex-shrink:0;width:100%;max-width:100%;padding-right:calc(var(--bs-gutter-x) * .5);padding-left:calc(var(--bs-gutter-x) * .5);margin-top:var(--bs-gutter-y);flex:0 0 auto;width:33.33333333%}
 .ce-textpic.ce-intext .ce-bodytext{flex-shrink:0;width:100%;max-width:100%;padding-right:calc(var(--bs-gutter-x) * .5);padding-left:calc(var(--bs-gutter-x) * .5);margin-top:var(--bs-gutter-y);flex:0 0 auto;width:66.66666667%}
 .content{margin-top:1rem;margin-bottom:1.5rem}
+.sidebar>a{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
