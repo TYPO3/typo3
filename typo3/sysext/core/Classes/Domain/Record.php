@@ -1,0 +1,132 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+namespace TYPO3\CMS\Core\Domain;
+
+use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
+use TYPO3\CMS\Core\Domain\Record\LanguageInfo;
+use TYPO3\CMS\Core\Domain\Record\SystemProperties;
+use TYPO3\CMS\Core\Domain\Record\VersionInfo;
+
+/**
+ * Represents a record with all properties valid for this record type.
+ *
+ * @internal not part of public API, as this needs to be streamlined and proven
+ */
+readonly class Record implements \ArrayAccess, RecordInterface
+{
+    public function __construct(
+        protected RawRecord $rawRecord,
+        protected array $properties,
+        protected ?SystemProperties $systemProperties
+    ) {}
+
+    public function getUid(): int
+    {
+        return $this->rawRecord->getUid();
+    }
+
+    public function getPid(): int
+    {
+        return $this->rawRecord->getPid();
+    }
+
+    public function getFullType(): string
+    {
+        return $this->rawRecord->getFullType();
+    }
+
+    public function getRecordType(): ?string
+    {
+        return $this->rawRecord->getRecordType();
+    }
+
+    public function getMainType(): string
+    {
+        return $this->rawRecord->getMainType();
+    }
+
+    public function toArray(bool $includeSpecialProperties = false): array
+    {
+        if ($includeSpecialProperties) {
+            return ['uid' => $this->getUid(), 'pid' => $this->getPid()] + $this->properties + ($this->systemProperties?->toArray() ?? []);
+        }
+        return ['uid' => $this->getUid(), 'pid' => $this->getPid()] + $this->properties;
+    }
+
+    public function offsetExists(mixed $offset): bool
+    {
+        return isset($this->properties[$offset]) || isset($this->rawRecord[$offset]);
+    }
+
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->properties[$offset] ?? $this->rawRecord[$offset] ?? null;
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        throw new \InvalidArgumentException('Record properties cannot be modified.', 1712139281);
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        throw new \InvalidArgumentException('Record properties cannot be unset.', 1712139282);
+    }
+
+    public function getVersionInfo(): ?VersionInfo
+    {
+        return $this->systemProperties?->getVersion();
+    }
+
+    public function getLanguageInfo(): ?LanguageInfo
+    {
+        return $this->systemProperties?->getLanguage();
+    }
+
+    public function getLanguageId(): ?int
+    {
+        return $this->systemProperties?->getLanguage()?->getLanguageId();
+    }
+
+    public function getSystemProperties(): ?SystemProperties
+    {
+        return $this->systemProperties;
+    }
+
+    public function getComputedProperties(): ComputedProperties
+    {
+        return $this->rawRecord->getComputedProperties();
+    }
+
+    public function getRawRecord(): RawRecord
+    {
+        return $this->rawRecord;
+    }
+
+    public function getOverlaidUid(): int
+    {
+        $computedProperties = $this->getComputedProperties();
+        if ($computedProperties->getLocalizedUid() !== null) {
+            return $computedProperties->getLocalizedUid();
+        }
+        if ($computedProperties->getVersionedUid() !== null) {
+            return $computedProperties->getVersionedUid();
+        }
+        return $this->getUid();
+    }
+}

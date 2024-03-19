@@ -196,3 +196,7 @@ services:
   TYPO3\CMS\Frontend\DataProcessing\SplitProcessor:
     tags:
       - { name: 'data.processor', identifier: 'split' }
+
+  TYPO3\CMS\Frontend\DataProcessing\RecordTransformationProcessor:
+    tags:
+      - { name: 'data.processor', identifier: 'record-transformation' }

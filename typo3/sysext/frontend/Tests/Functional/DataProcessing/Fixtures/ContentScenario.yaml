@@ -1,0 +1,70 @@
+# Describes a scenario which mostly deals with the content on a page (tree),
+# not so much the actual pages.
+__variables:
+  - &pageStandard 1
+  - &pageFolder 254
+  - &contentText 'text'
+
+entitySettings:
+  '*':
+    nodeColumnName: 'pid'
+    columnNames: {id: 'uid', language: 'sys_language_uid'}
+    defaultValues: {pid: 0}
+  page:
+    isNode: true
+    tableName: 'pages'
+    parentColumnName: 'pid'
+    languageColumnNames: ['l10n_parent', 'l10n_source']
+    columnNames: {type: 'doktype', root: 'is_siteroot'}
+    defaultValues: {hidden: 0, doktype: *pageStandard}
+    valueInstructions:
+      backendLayout:
+        home: {backend_layout: 'pagets__home'}
+        default: {backend_layout: 'pagets__default'}
+        productdetail: {backend_layout: 'pagets__productdetail'}
+  content:
+    tableName: 'tt_content'
+    languageColumnNames: ['l18n_parent', 'l10n_source']
+    columnNames: {title: 'header', type: 'CType', text: 'bodytext'}
+    valueInstructions:
+      area:
+        stage: {colPos: 1}
+        main: {colPos: 0}
+        aside: {colPos: 2}
+        footer: {colPos: 5}
+        flashInfo: {colPos: 10}
+
+entities:
+  page:
+    - self: {id: 1000, title: 'ACME Guitars', root: true, slug: '/', backendLayout: 'home'}
+      entities:
+        content:
+          - self: {title: 'Welcome to ACME guitars', type: *contentText, area: 'stage'}
+          - self: {text: '<p>Great to see you here</p>', type: *contentText, area: 'main'}
+          - self: {text: '<p>If you read this you are at the end.</p>', type: *contentText, area: 'footer'}
+      children:
+        - self: {id: 1100, title: 'Our Products', slug: '/products', backendLayout: 'default'}
+          entities:
+            content:
+              - self: {title: 'EN: Content Element #1', type: *contentText, area: ''}
+              - self: {title: 'Flash Info for all products', type: *contentText, area: 'flashInfo'}
+          children:
+            - self: {id: 1110, title: 'Hero Guitar', slug: '/products/hero', backendLayout: 'productdetail'}
+              entities:
+                content:
+                  - self: {title: 'Hero is our flagship. Everyone should have two of em', type: *contentText, area: 'stage'}
+                  - self: {title: 'Get a hero for yourself, for your parents - and grandparents.', type: *contentText, area: 'aside'}
+                  - self: {title: 'It can never be too late to start playing the guitar. For yourself, at large concerts or in church. Just do it.', type: *contentText, area: 'main'}
+            - self: {id: 1120, title: 'Klando Guitar', slug: '/products/klando', backendLayout: 'productdetail'}
+            - self: {id: 1130, title: 'Mobyious Guitar', slug: '/products/mobyious', backendLayout: 'productdetail'}
+        - self: {id: 1200, title: 'Find us', slug: '/find-us', backendLayout: 'default'}
+        - self: {id: 1300, title: 'About us', slug: '/about us', backendLayout: 'default'}
+        - self: {id: 1500, title: 'Common Product Information', type: *pageFolder, slug: '/storage'}
+          entities:
+            content:
+              - self: {title: 'Fire Sale - 100% off of everything', type: *contentText, area: 'main'}
+        - self: {id: 403, title: 'That page is forbidden to you', slug: '/403', backendLayout: 'default'}
+        - self: {id: 404, title: 'That page was not found', slug: '/404', backendLayout: 'default'}
+          entities:
+            content:
+              - self: {title: 'EN: Page not found', type: *contentText, area: 'main'}

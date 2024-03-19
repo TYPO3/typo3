@@ -1,0 +1,41 @@
+mod.web_layout.BackendLayouts {
+  home {
+    title = Home
+    config {
+      backend_layout {
+        colCount = 3
+        rowCount = 4
+        rows {
+          1 {
+            columns {
+              1 {
+                name = Stage Area
+                colPos = 1
+                identifier = stage
+              }
+            }
+          }
+          3 {
+            columns {
+              2 {
+                name = Main
+                colPos = 0
+                identifier = main
+              }
+            }
+          }
+          4 {
+            columns {
+              1 {
+                name = Footer
+                colPos = 5
+                identifier = footer
+                slideMode = collectReverse
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

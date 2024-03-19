@@ -1,0 +1,61 @@
+mod.web_layout.BackendLayouts {
+  default {
+    title = Default
+    config {
+      backend_layout {
+        colCount = 3
+        rowCount = 4
+        rows {
+          1 {
+            columns {
+              1 {
+                name = Stage Area (will be slided)
+                colspan = 3
+                colPos = 1
+                identifier = stage
+                slideMode = slide
+              }
+            }
+          }
+          2 {
+            columns {
+              1 {
+                name = News / Flash Sale (optional, collect em all)
+                colspan = 3
+                colPos = 10
+                identifier = flashInfo
+                slideMode = collect
+              }
+            }
+          }
+          3 {
+            columns {
+              1 {
+                name = Aside
+                colPos = 2
+                identifier = aside
+              }
+              2 {
+                name = Main
+                colspan = 2
+                colPos = 0
+                identifier = main
+              }
+            }
+          }
+          4 {
+            columns {
+              1 {
+                name = Footer
+                colspan = 3
+                colPos = 5
+                identifier = footer
+                slideMode = collectReverse
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
