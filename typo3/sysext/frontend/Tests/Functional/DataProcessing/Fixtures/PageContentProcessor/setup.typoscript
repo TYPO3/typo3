@@ -1,0 +1,6 @@
+page = PAGE
+page.config.disableAllHeaderCode = 1
+page.10 = PAGEVIEW
+page.10.paths.10 = EXT:frontend/Tests/Functional/DataProcessing/Fixtures/PageContentProcessor/
+page.10.dataProcessing.10 = page-content
+page.10.dataProcessing.10.as = mainContent

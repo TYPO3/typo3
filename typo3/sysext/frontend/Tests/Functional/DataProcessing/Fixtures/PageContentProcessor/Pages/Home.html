@@ -1,0 +1,16 @@
+<header>
+    <h1>{page.pageRecord.title}</h1>
+    <f:for each="{mainContent.stage.records}" as="record">
+        <f:render partial="SingleContent" arguments="{record: record}"/>
+    </f:for>
+</header>
+<main>
+    <f:for each="{mainContent.main.records}" as="record">
+        <f:render partial="SingleContent" arguments="{record: record}"/>
+    </f:for>
+</main>
+<footer>
+    <f:for each="{mainContent.footer.records}" as="record">
+        <f:render partial="SingleContent" arguments="{record: record}"/>
+    </f:for>
+</footer>

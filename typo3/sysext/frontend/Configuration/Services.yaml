@@ -200,3 +200,7 @@ services:
   TYPO3\CMS\Frontend\DataProcessing\RecordTransformationProcessor:
     tags:
       - { name: 'data.processor', identifier: 'record-transformation' }
+
+  TYPO3\CMS\Frontend\DataProcessing\PageContentFetchingProcessor:
+    tags:
+      - { name: 'data.processor', identifier: 'page-content' }

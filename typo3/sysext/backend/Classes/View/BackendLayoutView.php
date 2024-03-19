@@ -302,6 +302,7 @@ class BackendLayoutView implements SingletonInterface
 						1 {
 							name = LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.1
 							colPos = 0
+							identifier = main
 						}
 					}
 				}

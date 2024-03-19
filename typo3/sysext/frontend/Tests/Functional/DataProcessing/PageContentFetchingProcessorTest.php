@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class RecordTransformationProcessorTest extends FunctionalTestCase
+final class PageContentFetchingProcessorTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
@@ -55,7 +55,7 @@ final class RecordTransformationProcessorTest extends FunctionalTestCase
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);
-            static::failIfArrayIsNotEmpty($writer->getErrors());
+            self::failIfArrayIsNotEmpty($writer->getErrors());
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
 
             $pageLayoutFileContents[] = file_get_contents(__DIR__ . '/Fixtures/PageLayouts/Default.tsconfig');
@@ -67,7 +67,7 @@ final class RecordTransformationProcessorTest extends FunctionalTestCase
                 ['TSconfig' => implode(chr(10), $pageLayoutFileContents)],
                 ['uid' => 1000]
             );
-            $this->setUpFrontendRootPage(1000, ['EXT:frontend/Tests/Functional/DataProcessing/Fixtures/RecordTransform/setup.typoscript'], ['title' => 'ACME Guitars']);
+            $this->setUpFrontendRootPage(1000, ['EXT:frontend/Tests/Functional/DataProcessing/Fixtures/PageContentProcessor/setup.typoscript'], ['title' => 'ACME Guitars']);
         });
     }
 
@@ -82,11 +82,13 @@ final class RecordTransformationProcessorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function productdetailLayoutIsRendered(): void
+    public function productDetailLayoutIsRendered(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/'))->withPageId(1110));
         $body = (string)$response->getBody();
         self::assertStringContainsString('Hero is our flagship', $body);
         self::assertStringContainsString('Get a hero for yourself', $body);
+        self::assertStringContainsString('Flash Info for all products', $body);
+        self::assertStringContainsString('If you read this you are at the end.', $body);
     }
 }
