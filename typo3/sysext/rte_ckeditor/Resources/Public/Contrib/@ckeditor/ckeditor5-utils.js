@@ -48,7 +48,7 @@ class m{constructor(t,e){this.source=t,this.name=e,this.path=[],this.stop=functi
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */const k="41.2.0",A=new Date(2024,2,6);
+ */const k="41.2.1",A=new Date(2024,2,18);
 /* istanbul ignore next -- @preserve */
 if(globalThis.CKEDITOR_VERSION)throw new E("ckeditor-duplicated-modules",null);
 /**
