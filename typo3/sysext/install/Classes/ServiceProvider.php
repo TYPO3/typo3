@@ -109,7 +109,6 @@ class ServiceProvider extends AbstractServiceProvider
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
             Mailer::class => self::getMailer(...),
             Updates\DatabaseUpdatedPrerequisite::class => self::getDatabaseUpdatedPrerequisite(...),
-            YamlFileLoader::class => self::getYamlFileLoader(...),
         ];
     }
 
@@ -435,11 +434,6 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Updates\DatabaseUpdatedPrerequisite::class, [
             $container->get(Service\DatabaseUpgradeWizardsService::class),
         ]);
-    }
-
-    public static function getYamlFileLoader(ContainerInterface $container): YamlFileLoader
-    {
-        return new YamlFileLoader();
     }
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry

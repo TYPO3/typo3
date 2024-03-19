@@ -58,6 +58,7 @@ class ServiceProvider extends AbstractServiceProvider
             Database\ConnectionPool::class => self::getConnectionPool(...),
             Database\DriverMiddlewareService::class => self::getDriverMiddlewaresService(...),
             Charset\CharsetConverter::class => self::getCharsetConverter(...),
+            Configuration\Loader\YamlFileLoader::class => self::getYamlFileLoader(...),
             Configuration\SiteConfiguration::class => self::getSiteConfiguration(...),
             Command\ListCommand::class => self::getListCommand(...),
             HelpCommand::class => self::getHelpCommand(...),
@@ -176,6 +177,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getCharsetConverter(ContainerInterface $container): Charset\CharsetConverter
     {
         return self::new($container, Charset\CharsetConverter::class);
+    }
+
+    public static function getYamlFileLoader(ContainerInterface $container): Configuration\Loader\YamlFileLoader
+    {
+        return self::new($container, Configuration\Loader\YamlFileLoader::class);
     }
 
     public static function getSiteConfiguration(ContainerInterface $container): Configuration\SiteConfiguration
