@@ -11,10 +11,12 @@ defined('TYPO3') or die();
 
 // Add default TypoScript
 ExtensionManagementUtility::addTypoScriptConstants(
-    "@import 'EXT:felogin/Configuration/TypoScript/constants.typoscript'"
+    "@import 'EXT:felogin/Configuration/TypoScript/constants.typoscript'",
+    false
 );
 ExtensionManagementUtility::addTypoScriptSetup(
-    "@import 'EXT:felogin/Configuration/TypoScript/setup.typoscript'"
+    "@import 'EXT:felogin/Configuration/TypoScript/setup.typoscript'",
+    false
 );
 
 ExtensionUtility::configurePlugin(

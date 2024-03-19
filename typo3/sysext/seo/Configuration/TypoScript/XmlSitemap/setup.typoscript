@@ -22,15 +22,15 @@ plugin.tx_seo {
   view {
     templateRootPaths {
       0 = EXT:seo/Resources/Private/Templates/XmlSitemap
-      10 = {$plugin.tx_seo.view.templateRootPath}
+      10 = {$plugin.tx_seo.view.templateRootPath ?? $seo.sitemap.view.templateRootPath}
     }
     partialRootPaths {
       0 = EXT:seo/Resources/Private/Partials/XmlSitemap
-      10 = {$plugin.tx_seo.view.partialRootPath}
+      10 = {$plugin.tx_seo.view.partialRootPath ?? $seo.sitemap.view.partialRootPath}
     }
     layoutRootPaths {
       0 = EXT:seo/Resources/Private/Layouts/XmlSitemap
-      10 = {$plugin.tx_seo.view.layoutRootPath}
+      10 = {$plugin.tx_seo.view.layoutRootPath ?? $seo.sitemap.view.layoutRootPath}
     }
   }
 
@@ -46,10 +46,10 @@ plugin.tx_seo {
           config {
             # Here you can override the xslFile for a single sitemap
             # xslFile = EXT:seo/Resources/Public/CSS/Sitemap.xsl
-            excludedDoktypes = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.excludedDoktypes}
+            excludedDoktypes = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.excludedDoktypes ?? $seo.sitemap.pages.excludedDoktypes}
             # comma-separated list of page uids which should be excluded recursive
-            excludePagesRecursive = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.excludePagesRecursive}
-            additionalWhere = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.additionalWhere}
+            excludePagesRecursive = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.excludePagesRecursive ?? $seo.sitemap.pages.excludePagesRecursive}
+            additionalWhere = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.additionalWhere ?? $seo.sitemap.pages.additionalWhere}
           }
         }
       }

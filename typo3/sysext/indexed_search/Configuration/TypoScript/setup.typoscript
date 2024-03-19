@@ -6,7 +6,7 @@ config.index_metatags = 1
 plugin.tx_indexedsearch {
 
 	settings {
-		targetPid = {$plugin.tx_indexedsearch.settings.targetPid}
+		targetPid = {$plugin.tx_indexedsearch.settings.targetPid ?? $indexedsearch.targetPid}
 
 		# show a link to the advanced search
 		displayAdvancedSearchLink = 1
@@ -23,7 +23,7 @@ plugin.tx_indexedsearch {
 		alwaysShowPageLinks = 1
 		mediaList =
 
-		rootPidList = {$plugin.tx_indexedsearch.settings.rootPidList}
+		rootPidList = {$plugin.tx_indexedsearch.settings.rootPidList ?? $indexedsearch.rootPidList}
 		page_links = 10
 		defaultFreeIndexUidList =
 		exactCount = 0
@@ -75,15 +75,15 @@ plugin.tx_indexedsearch {
 	view {
 		templateRootPaths {
 			0 = EXT:indexed_search/Resources/Private/Templates/
-			10 = {$plugin.tx_indexedsearch.view.templateRootPath}
+			10 = {$plugin.tx_indexedsearch.view.templateRootPath ?? $indexedsearch.view.templateRootPath}
 		}
 		partialRootPaths {
 			0 = EXT:indexed_search/Resources/Private/Partials/
-			10 = {$plugin.tx_indexedsearch.view.partialRootPath}
+			10 = {$plugin.tx_indexedsearch.view.partialRootPath ?? $indexedsearch.view.partialRootPath}
 		}
 		layoutRootPaths {
 			0 = EXT:indexed_search/Resources/Private/Layouts/
-			10 = {$plugin.tx_indexedsearch.view.layoutRootPath}
+			10 = {$plugin.tx_indexedsearch.view.layoutRootPath ?? $indexedsearch.view.layoutRootPath}
 		}
 	}
 }

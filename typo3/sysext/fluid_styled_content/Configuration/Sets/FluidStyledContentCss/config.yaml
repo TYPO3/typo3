@@ -1,0 +1,4 @@
+name: typo3/fluid-styled-content-css
+label: Fluid Styled Content CSS
+dependencies:
+  - typo3/fluid-styled-content

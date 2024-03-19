@@ -1,8 +1,8 @@
 plugin.tx_felogin_login {
   view {
-    templateRootPaths.10 = {$plugin.tx_felogin_login.view.templateRootPath}
-    partialRootPaths.10 = {$plugin.tx_felogin_login.view.partialRootPath}
-    layoutRootPaths.10 = {$plugin.tx_felogin_login.view.layoutRootPath}
+    templateRootPaths.10 = {$plugin.tx_felogin_login.view.templateRootPath ?? $felogin.view.templateRootPath}
+    partialRootPaths.10 = {$plugin.tx_felogin_login.view.partialRootPath ?? $felogin.view.partialRootPath}
+    layoutRootPaths.10 = {$plugin.tx_felogin_login.view.layoutRootPath ?? $felogin.view.layoutRootPath}
   }
 
   ignoreFlexFormSettingsIfEmpty = showForgotPassword
@@ -18,42 +18,42 @@ plugin.tx_felogin_login {
   ignoreFlexFormSettingsIfEmpty := addToList(redirectDisable)
 
   settings {
-    pages = {$styles.content.loginform.pid}
-    recursive = {$styles.content.loginform.recursive}
+    pages = {$styles.content.loginform.pid ?? $felogin.pid}
+    recursive = {$styles.content.loginform.recursive ?? $felogin.recursive}
 
     # Template
-    dateFormat = {$styles.content.loginform.dateFormat}
-    showForgotPassword = {$styles.content.loginform.showForgotPassword}
-    showPermaLogin = {$styles.content.loginform.showPermaLogin}
-    showLogoutFormAfterLogin = {$styles.content.loginform.showLogoutFormAfterLogin}
+    dateFormat = {$styles.content.loginform.dateFormat ?? $felogin.dateFormat}
+    showForgotPassword = {$styles.content.loginform.showForgotPassword ?? $felogin.showForgotPassword}
+    showPermaLogin = {$styles.content.loginform.showPermaLogin ?? $felogin.showPermaLogin}
+    showLogoutFormAfterLogin = {$styles.content.loginform.showLogoutFormAfterLogin ?? $felogin.showLogoutFormAfterLogin}
 
     # Email Settings
-    email_from = {$styles.content.loginform.emailFrom}
-    email_fromName = {$styles.content.loginform.emailFromName}
+    email_from = {$styles.content.loginform.emailFrom ?? $felogin.emailFrom}
+    email_fromName = {$styles.content.loginform.emailFromName ?? $felogin.emailFromName}
     email {
-      templateName = {$styles.content.loginform.email.templateName}
+      templateName = {$styles.content.loginform.email.templateName ?? $felogin.email.templateName}
       layoutRootPaths {
-        20 = {$styles.content.loginform.email.layoutRootPath}
+        20 = {$styles.content.loginform.email.layoutRootPath ?? $felogin.email.layoutRootPath}
       }
       templateRootPaths {
-        20 = {$styles.content.loginform.email.templateRootPath}
+        20 = {$styles.content.loginform.email.templateRootPath ?? $felogin.email.templateRootPath}
       }
       partialRootPaths {
-        20 = {$styles.content.loginform.email.partialRootPath}
+        20 = {$styles.content.loginform.email.partialRootPath ?? $felogin.email.partialRootPath}
       }
     }
 
     # Redirect Settings
-    redirectMode = {$styles.content.loginform.redirectMode}
-    redirectFirstMethod = {$styles.content.loginform.redirectFirstMethod}
-    redirectPageLogin = {$styles.content.loginform.redirectPageLogin}
-    redirectPageLoginError = {$styles.content.loginform.redirectPageLoginError}
-    redirectPageLogout = {$styles.content.loginform.redirectPageLogout}
-    redirectDisable = {$styles.content.loginform.redirectDisable}
+    redirectMode = {$styles.content.loginform.redirectMode ?? $felogin.redirectMode}
+    redirectFirstMethod = {$styles.content.loginform.redirectFirstMethod ?? $felogin.redirectFirstMethod}
+    redirectPageLogin = {$styles.content.loginform.redirectPageLogin ?? $felogin.redirectPageLogin}
+    redirectPageLoginError = {$styles.content.loginform.redirectPageLoginError ?? $felogin.redirectPageLoginError}
+    redirectPageLogout = {$styles.content.loginform.redirectPageLogout ?? $felogin.redirectPageLogout}
+    redirectDisable = {$styles.content.loginform.redirectDisable ?? $felogin.redirectDisable}
 
     # Security
-    exposeNonexistentUserInForgotPasswordDialog = {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog}
-    forgotLinkHashValidTime = {$styles.content.loginform.forgotLinkHashValidTime}
-    domains = {$styles.content.loginform.domains}
+    exposeNonexistentUserInForgotPasswordDialog = {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog ?? $felogin.exposeNonexistentUserInForgotPasswordDialog}
+    forgotLinkHashValidTime = {$styles.content.loginform.forgotLinkHashValidTime ?? $felogin.forgotLinkHashValidTime}
+    domains = {$styles.content.loginform.domains ?? $felogin.domains}
   }
 }
