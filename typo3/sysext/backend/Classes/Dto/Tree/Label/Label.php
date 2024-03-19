@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Dto\Tree\Label;
 
-/**
- * @internal
- */
 final readonly class Label implements \JsonSerializable
 {
     public function __construct(

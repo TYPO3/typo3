@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Backend\Dto\Tree\Status;
 
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
-/**
- * @internal
- */
 final readonly class StatusInformation implements \JsonSerializable
 {
     public function __construct(
