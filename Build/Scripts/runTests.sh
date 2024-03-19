@@ -4,6 +4,8 @@
 # TYPO3 core test runner based on docker or podman
 #
 
+trap 'cleanUp;exit 2' SIGINT
+
 waitFor() {
     local HOST=${1}
     local PORT=${2}
@@ -19,6 +21,9 @@ waitFor() {
         done;
     "
     ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name wait-for-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_ALPINE} /bin/sh -c "${TESTCOMMAND}"
+    if [[ $? -gt 0 ]]; then
+        kill -SIGINT -$$
+    fi
 }
 
 cleanUp() {
@@ -26,7 +31,11 @@ cleanUp() {
     for ATTACHED_CONTAINER in ${ATTACHED_CONTAINERS}; do
         ${CONTAINER_BIN} kill ${ATTACHED_CONTAINER} >/dev/null
     done
-    ${CONTAINER_BIN} network rm ${NETWORK} >/dev/null
+    if [ ${CONTAINER_BIN} = "docker" ]; then
+        ${CONTAINER_BIN} network rm ${NETWORK} >/dev/null
+    else
+        ${CONTAINER_BIN} network rm -f ${NETWORK} >/dev/null
+    fi
 }
 
 handleDbmsOptions() {
@@ -431,7 +440,7 @@ HOST_PID=$(id -g)
 USERSET=""
 SUFFIX=$(echo $RANDOM)
 NETWORK="typo3-core-${SUFFIX}"
-CI_PARAMS=""
+CI_PARAMS="${CI_PARAMS:-}"
 CONTAINER_HOST="host.docker.internal"
 
 # Option parsing updates above default vars
@@ -527,7 +536,6 @@ handleDbmsOptions
 if [ "${CI}" == "true" ]; then
     PHPSTAN_CONFIG_FILE="phpstan.ci.neon"
     CONTAINER_INTERACTIVE=""
-    CI_PARAMS="--pull=never"
 fi
 
 # determine default container binary to use: 1. podman 2. docker
@@ -615,9 +623,15 @@ case ${TEST_SUITE} in
             SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
         fi
         ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
-        ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        if [ ${CONTAINER_BIN} = "docker" ]; then
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        else
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+        fi
         waitFor chrome 4444
-        waitFor chrome 7900
+        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
+            waitFor chrome 7900
+        fi
         waitFor web 8000
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
             xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
@@ -652,7 +666,7 @@ case ${TEST_SUITE} in
             sqlite)
                 rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
                 mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite --tmpfs ${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}"
+                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
                 SUITE_EXIT_CODE=$?
                 ;;
@@ -707,10 +721,16 @@ case ${TEST_SUITE} in
                 SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
             fi
             ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT}/typo3temp/var/tests/acceptance-composer/public >/dev/null
+            if [ ${CONTAINER_BIN} = "docker" ]; then
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT}/typo3temp/var/tests/acceptance-composer/public >/dev/null
+            else
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT}/typo3temp/var/tests/acceptance-composer/public >/dev/null
+            fi
 
             waitFor chrome 4444
-            waitFor chrome 7900
+            if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
+                waitFor chrome 7900
+            fi
             waitFor web 8000
             if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
                 xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
@@ -728,14 +748,16 @@ case ${TEST_SUITE} in
             SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
         fi
         if [ ${CONTAINER_BIN} = "docker" ]; then
-            ${CONTAINER_BIN} run --rm -d ${SELENIUM_GRID} --name ac-istall-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+            ${CONTAINER_BIN} run --rm -d ${SELENIUM_GRID} --name ac-install-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
             ${CONTAINER_BIN} run --rm -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
         else
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-istall-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-install-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} php -S web:8000 -t ${CORE_ROOT} >/dev/null
         fi
         waitFor chrome 4444
-        waitFor chrome 7900
+        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
+            waitFor chrome 7900
+        fi
         waitFor web 8000
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
             xdg-open http://localhost:7900/?autoconnect=1 >/dev/null

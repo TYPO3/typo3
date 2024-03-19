@@ -10,6 +10,10 @@ variables:
   # and fails with package conflicts. Having a full clone by setting depth 0
   # prevents this, so we don't need to fiddle with COMPOSER_ROOT_VERSION env var.
   GIT_DEPTH: 0
+  # The `--pull=never` flag must not be removed.
+  # All images used by CI-jobs have to be preloaded on the TYPO3 testing
+  # infrastructure to avoid exceeding rate limits for docker.io or ghcr.io.
+  CI_PARAMS: "--pull=never"
 
 cache:
   # Default caching of .cache directory if a job does not override it.
