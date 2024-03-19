@@ -615,14 +615,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         $this->content = str_replace(
             [
-                '<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->',
-                '<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->',
+                '<!--HD_' . ($this->config['INTincScript_ext']['divKey'] ?? '') . '-->',
+                '<!--FD_' . ($this->config['INTincScript_ext']['divKey']  ?? '') . '-->',
             ],
             [
                 implode(LF, $this->additionalHeaderData),
                 implode(LF, $this->additionalFooterData),
             ],
-            $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'])
+            $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'] ?? '')
         );
         // Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
         $this->recursivelyReplaceIntPlaceholdersInContent($request);
