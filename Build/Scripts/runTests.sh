@@ -4,6 +4,8 @@
 # TYPO3 core test runner based on docker or podman
 #
 
+trap 'cleanUp;exit 2' SIGINT
+
 waitFor() {
     local HOST=${1}
     local PORT=${2}
@@ -19,6 +21,9 @@ waitFor() {
         done;
     "
     ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name wait-for-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_ALPINE} /bin/sh -c "${TESTCOMMAND}"
+    if [[ $? -gt 0 ]]; then
+        kill -SIGINT -$$
+    fi
 }
 
 cleanUp() {
@@ -26,7 +31,11 @@ cleanUp() {
     for ATTACHED_CONTAINER in ${ATTACHED_CONTAINERS}; do
         ${CONTAINER_BIN} kill ${ATTACHED_CONTAINER} >/dev/null
     done
-    ${CONTAINER_BIN} network rm ${NETWORK} >/dev/null
+    if [ ${CONTAINER_BIN} = "docker" ]; then
+        ${CONTAINER_BIN} network rm ${NETWORK} >/dev/null
+    else
+        ${CONTAINER_BIN} network rm -f ${NETWORK} >/dev/null
+    fi
 }
 
 handleDbmsOptions() {
@@ -399,7 +408,7 @@ HOST_PID=$(id -g)
 USERSET=""
 SUFFIX=$(echo $RANDOM)
 NETWORK="typo3-core-${SUFFIX}"
-CI_PARAMS=""
+CI_PARAMS="${CI_PARAMS:-}"
 CONTAINER_HOST="host.docker.internal"
 
 # Option parsing updates above default vars
@@ -495,7 +504,6 @@ handleDbmsOptions
 if [ "${CI}" == "true" ]; then
     PHPSTAN_CONFIG_FILE="phpstan.ci.neon"
     CONTAINER_INTERACTIVE=""
-    CI_PARAMS="--pull=never"
 fi
 
 # determine default container binary to use: 1. podman 2. docker
@@ -593,7 +601,9 @@ case ${TEST_SUITE} in
             ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
         fi
         waitFor chrome 4444
-        waitFor chrome 7900
+        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
+            waitFor chrome 7900
+        fi
         waitFor web 80
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
             xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
@@ -688,7 +698,9 @@ case ${TEST_SUITE} in
                 ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
             fi
             waitFor chrome 4444
-            waitFor chrome 7900
+            if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
+                waitFor chrome 7900
+            fi
             waitFor web 80
             if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
                 xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
@@ -708,7 +720,7 @@ case ${TEST_SUITE} in
         rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance" "${CORE_ROOT}/typo3temp/var/tests/AcceptanceReports"
         mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance"
         APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/acceptance -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
-        ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-istall-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
+        ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-install-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome --tmpfs /dev/shm:rw,nosuid,nodev,noexec ${IMAGE_SELENIUM} >/dev/null
         if [ ${CONTAINER_BIN} = "docker" ]; then
             ${CONTAINER_BIN} run --rm -d --name ac-install-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
             ${CONTAINER_BIN} run --rm -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
@@ -717,7 +729,9 @@ case ${TEST_SUITE} in
             ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
         fi
         waitFor chrome 4444
-        waitFor chrome 7900
+        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
+            waitFor chrome 7900
+        fi
         waitFor web 80
         if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
             xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
