@@ -281,6 +281,7 @@ return [
         'tableRestrictions' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.palettes.tableRestrictions',
             'showitem' => 'tables_select, tables_modify',
+            'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.palettes.tableRestrictions.description',
         ],
     ],
 ];
