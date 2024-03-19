@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 /**
  * Use this Event to alter the database query when loading content for a page (usually in the list module)
  * before it is executed.
+ * @todo This event should contain the $addSorting value, so listener knows when to add ORDER-BY stuff.
  */
 final class ModifyDatabaseQueryForRecordListingEvent
 {

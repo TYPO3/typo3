@@ -525,7 +525,10 @@ class DatabaseRecordList
     {
         // Finding the total amount of records on the page
         $queryBuilderTotalItems = $this->getQueryBuilder($table, ['*'], false, 0, 1);
-        $totalItems = (int)$queryBuilderTotalItems->count('*')
+        // @todo Switch to `resetOrderBy()` as soon as the QueryBuilder facade has that method on board.
+        $queryBuilderTotalItems->resetQueryPart('orderBy');
+        $totalItems = (int)$queryBuilderTotalItems
+            ->count('*')
             ->executeQuery()
             ->fetchOne();
         if ($totalItems === 0) {
@@ -2436,6 +2439,9 @@ class DatabaseRecordList
             );
         }
 
+        // @todo This event should contain the $addSorting value, so listener knows when to add ORDER-BY stuff.
+        //       Additionally, having QueryBuilder order-by with `addSorting: false` should be deprecated along
+        //       with the additional event flag.
         $event = new ModifyDatabaseQueryForRecordListingEvent(
             $queryBuilder,
             $table,
