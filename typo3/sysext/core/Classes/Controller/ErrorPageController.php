@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Controller;
 
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -68,6 +69,7 @@ class ErrorPageController
         $this->view->assign('errorCodeUrlPrefix', Typo3Information::URL_EXCEPTION);
         $this->view->assign('donationUrl', Typo3Information::URL_DONATE);
         $this->view->assign('errorCode', $errorCode);
+        $this->view->assign('requestId', GeneralUtility::makeInstance(RequestId::class));
         $this->view->assign('copyrightYear', GeneralUtility::makeInstance(Typo3Information::class)->getCopyrightYear());
         return $this->view->render();
     }

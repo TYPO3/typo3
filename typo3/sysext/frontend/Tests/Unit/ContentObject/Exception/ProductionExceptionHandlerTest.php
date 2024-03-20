@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
@@ -36,7 +37,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $exception = new PropagateResponseException(new HtmlResponse(''), 1607328584);
         $this->expectException(PropagateResponseException::class);
         $this->expectExceptionCode(1607328584);
-        $subject = new ProductionExceptionHandler(new Context(), new Random(), new NullLogger());
+        $subject = new ProductionExceptionHandler(new Context(), new Random(), new NullLogger(), new RequestId());
         $subject->handle($exception);
     }
 
@@ -46,25 +47,18 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $exception = new ImmediateResponseException(new HtmlResponse(''), 1533939251);
         $this->expectException(ImmediateResponseException::class);
         $this->expectExceptionCode(1533939251);
-        $subject = new ProductionExceptionHandler(new Context(), new Random(), new NullLogger());
+        $subject = new ProductionExceptionHandler(new Context(), new Random(), new NullLogger(), new RequestId());
         $subject->handle($exception);
     }
 
     #[Test]
-    public function handleReturnsMessageWithResolvedErrorCode(): void
+    public function handleReturnsMessageWithRequestId(): void
     {
-        $currentTimestamp = 1629993829;
-        $random = '029cca07';
-
-        $randomMock = $this->createMock(Random::class);
-        $randomMock->method('generateRandomHexString')->with(8)->willReturn($random);
-
-        $context = new Context();
-        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp)));
-        $exceptionHandler = new ProductionExceptionHandler($context, $randomMock, new NullLogger());
+        $requestId = new RequestId();
+        $exceptionHandler = new ProductionExceptionHandler(new Context(), new Random(), new NullLogger(), $requestId);
 
         self::assertEquals(
-            'Oops, an error occurred! Code: ' . date('YmdHis', $currentTimestamp) . $random,
+            'Oops, an error occurred! Request: ' . $requestId,
             $exceptionHandler->handle(new \Exception('Some exception', 1629996089))
         );
     }
@@ -80,7 +74,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
 
         $context = new Context();
         $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp)));
-        $exceptionHandler = new ProductionExceptionHandler($context, $randomMock, new NullLogger());
+        $exceptionHandler = new ProductionExceptionHandler($context, $randomMock, new NullLogger(), new RequestId());
         $exceptionHandler->setConfiguration([
             'errorMessage' => 'Custom error message: {code}',
         ]);
@@ -105,7 +99,8 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $exceptionHandler = new ProductionExceptionHandler(
             $context,
             $randomMock,
-            new NullLogger()
+            new NullLogger(),
+            new RequestId()
         );
         $exceptionHandler->setConfiguration([
             'errorMessage' => 'Custom error message: %s',

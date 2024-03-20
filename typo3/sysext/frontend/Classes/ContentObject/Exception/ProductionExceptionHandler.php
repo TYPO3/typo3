@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Exception;
 
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Error\AbstractExceptionHandler;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
@@ -32,16 +33,12 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
 {
     protected array $configuration = [];
 
-    protected Context $context;
-    protected Random $random;
-    protected LoggerInterface $logger;
-
-    public function __construct(Context $context, Random $random, LoggerInterface $logger)
-    {
-        $this->context = $context;
-        $this->random = $random;
-        $this->logger = $logger;
-    }
+    public function __construct(
+        protected Context $context,
+        protected Random $random,
+        protected LoggerInterface $logger,
+        protected RequestId $requestId
+    ) {}
 
     public function setConfiguration(array $configuration): void
     {
@@ -71,18 +68,18 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
             throw $exception;
         }
 
-        $errorMessage = $this->configuration['errorMessage'] ?? 'Oops, an error occurred! Code: {code}';
-        $code = $this->context->getAspect('date')->getDateTime()->format('YmdHis') . $this->random->generateRandomHexString(8);
+        $errorMessage = $this->configuration['errorMessage'] ?? 'Oops, an error occurred! Request: {requestId}';
 
-        // "%s" has to be replaced by {code} for b/w compatibility
+        // $code and it's placeholder %s for b/w compatibility
+        $code = $this->context->getAspect('date')->getDateTime()->format('YmdHis') . $this->random->generateRandomHexString(8);
         $errorMessage = str_replace('%s', '{code}', $errorMessage);
 
         // Log exception except HMAC validation exceptions caused by potentially forged requests
         if (!in_array($exception->getCode(), AbstractExceptionHandler::IGNORED_HMAC_EXCEPTION_CODES, true)) {
-            $this->logger->alert($errorMessage, ['exception' => $exception, 'code' => $code]);
+            $this->logger->alert($errorMessage, ['exception' => $exception, 'code' => $code, 'requestId' => $this->requestId]);
         }
 
-        // Return error message by replacing {code} with the actual code, generated above
-        return str_replace('{code}', $code, $errorMessage);
+        // Return interpolated error message
+        return str_replace(['{code}', '{requestId}'], [$code, $this->requestId], $errorMessage);
     }
 }

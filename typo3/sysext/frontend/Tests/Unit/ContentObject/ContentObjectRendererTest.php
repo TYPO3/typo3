@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -2030,7 +2031,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         if ($addProductionExceptionHandlerInstance) {
             GeneralUtility::addInstance(
                 ProductionExceptionHandler::class,
-                new ProductionExceptionHandler(new Context(), new Random(), new NullLogger())
+                new ProductionExceptionHandler(new Context(), new Random(), new NullLogger(), new RequestId())
             );
         }
         return $contentObjectFixture;
