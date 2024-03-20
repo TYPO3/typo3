@@ -997,15 +997,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * @internal
-     * @todo: Remove when not called in TF anymore.
-     */
-    public function releaseLocks(): void
-    {
-        // noop
-    }
-
-    /**
      * Send additional headers from config.additionalHeaders
      */
     protected function getAdditionalHeaders(ServerRequestInterface $request): array
