@@ -1410,6 +1410,7 @@ return [
                 'utm_creative_format',
                 'utm_marketing_tactic',
                 'gtm_debug',
+                '_ga',
                 '_gl',
                 // Google ads
                 'gad',
