@@ -4447,6 +4447,7 @@ html{scroll-behavior:smooth}
 .t3-page-ce-header-left{display:flex;-moz-column-gap:.25rem;column-gap:.25rem}
 .t3-page-ce-header-left,.t3-page-ce-header-right{flex-shrink:0}
 .t3-page-ce-header-title{text-overflow:ellipsis;overflow:hidden;white-space:nowrap;flex-grow:1;font-weight:700}
+.t3-page-ce-header-icon-flag{display:inline-flex;align-items:center}
 .t3-page-ce-body{padding:var(--pagemodule-grid-spacing);word-wrap:break-word;margin-top:calc(var(--pagemodule-grid-spacing) * -1)}
 .t3-page-ce-body:empty{display:none}
 .t3-page-ce-body img{max-width:100%;height:auto}
