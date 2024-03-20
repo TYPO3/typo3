@@ -207,6 +207,11 @@ html {
     }
 }
 
+.t3-page-ce-header-icon-flag {
+    display: inline-flex;
+    align-items: center;
+}
+
 .t3-page-ce-body {
     padding: var(--pagemodule-grid-spacing);
     word-wrap: break-word;
