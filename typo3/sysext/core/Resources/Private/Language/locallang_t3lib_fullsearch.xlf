@@ -13,7 +13,7 @@
 				<source>"%s" query entry removed!</source>
 			</trans-unit>
 			<trans-unit id="undelete_only" resname="undelete_only">
-				<source>undelete</source>
+				<source>Undelete</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -92,7 +92,6 @@ final class DbCheckModuleCest
     public function seeFullSearch(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $this->goToPageAndSeeHeadline($I, 'Full search', 'Search whole Database');
-        $I->see('Search options', 'h2');
 
         // Fill in search phrase and check results
         $I->fillField('input[name="SET[sword]"]', 'styleguide demo group 1');

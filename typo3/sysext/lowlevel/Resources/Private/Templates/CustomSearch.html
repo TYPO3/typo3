@@ -8,48 +8,63 @@
 <f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
-                0: '@typo3/lowlevel/query-generator.js'
-            }"
+            0: '@typo3/lowlevel/query-generator.js'
+        }"
     />
 </f:section>
 
 <f:section name="Content">
 
     <h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search_whole_database')}</h1>
-    <f:format.raw>{submenu}</f:format.raw>
 
-    <form method="post" id="DatabaseIntegrityView" name="queryform">
-        <f:if condition="{searchMode} == 'query'">
-            <f:then>
-                <f:format.raw>{queryMaker}</f:format.raw>
-            </f:then>
-            <f:else>
-                <h2 id="search-options">{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:searchOptions')}</h2>
-
+    <f:if condition="{searchMode} == 'raw'">
+        <f:then>
+            <f:comment><!-- Raw search --></f:comment>
+            <div class="form-row-md">
+                <f:format.raw>{searchTypeSelect}</f:format.raw>
                 <div class="form-group">
-                    <div class="input-group">
-                        <input aria-labelledby="search-options" placeholder="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.placeholder')}" class="form-control" type="search" id="searchField" name="SET[sword]" value="{sword}">
-                        <button class="btn btn-default" disabled type="submit" name="submitSearch" id="submitSearch" title="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.submit')}">
-                            <core:icon identifier="actions-search" size="small" />
-                        </button>
-                    </div>
+                    <form method="post" id="DatabaseIntegrityView" name="queryform">
+                        <label for="searchField" class="form-label">
+                            <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
+                        </label>
+                        <div class="input-group">
+                            <input type="search" id="searchField" name="SET[sword]" class="form-control" value="{sword}" />
+                            <button class="btn btn-default" disabled type="submit" name="submitSearch" id="submitSearch" title="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:search.submit')}">
+                                <core:icon identifier="actions-search" size="small" />
+                            </button>
+                        </div>
+                    </form>
                 </div>
+            </div>
 
-                <f:if condition="{results}">
-                    <f:then>
-                        <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:result')}</h2>
-                        <f:format.raw>{results}</f:format.raw>
-                    </f:then>
-                    <f:else if="{sword} != ''">
-                        <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_results', arguments: {0: sword})}" />
-                    </f:else>
-                    <f:else if="{isSearching}">
-                        <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_sword')}" />
-                    </f:else>
-                </f:if>
-            </f:else>
-        </f:if>
-    </form>
+            <f:if condition="{results}">
+                <f:then>
+                    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.result')}</h2>
+                    <f:format.raw>{results}</f:format.raw>
+                </f:then>
+                <f:else if="{sword} != ''">
+                    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.result')}</h2>
+                    <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_results', arguments: {0: sword})}" state="-1" />
+                </f:else>
+                <f:else if="{isSearching}">
+                    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.result')}</h2>
+                    <f:be.infobox message="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:no_sword')}" state="-1" />
+                </f:else>
+            </f:if>
+        </f:then>
+        <f:else>
+            <f:comment><!-- Advanced query --></f:comment>
+            <div class="form-row-sm">
+                <f:format.raw>{searchTypeSelect}</f:format.raw>
+                <f:format.raw>{queryTypeSelect}</f:format.raw>
+            </div>
+            <f:format.raw>{queryOptions}</f:format.raw>
+
+            <form method="post" id="DatabaseIntegrityView" name="queryform">
+                <f:format.raw>{queryMaker}</f:format.raw>
+            </form>
+        </f:else>
+    </f:if>
 
 </f:section>
 

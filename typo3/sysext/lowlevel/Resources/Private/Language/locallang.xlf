@@ -93,10 +93,6 @@
 			<trans-unit id="module.dbint.docheader.viewmode" resname="module.dbint.docheader.viewmode">
 				<source>Module action</source>
 			</trans-unit>
-			<trans-unit id="search.placeholder" resname="search.placeholder">
-				<source>Search Word</source>
-				<note>Placeholder text for search in database input</note>
-			</trans-unit>
 			<trans-unit id="search.submit" resname="search.submit">
 				<source>Search All Records</source>
 				<note>Label of submit button to search within the database (raw search in all fields)</note>
@@ -182,6 +178,80 @@
 			<trans-unit id="updateRefIndex" resname="updateRefIndex">
 				<source>Update reference index</source>
 			</trans-unit>
+
+			<trans-unit id="fullSearch.flashMessage.noResultsFoundMessage" resname="fullSearch.flashMessage.noResultsFoundMessage">
+				<source>The query returned no results.</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.section.queryOptions" resname="fullSearch.section.queryOptions">
+				<source>Query options</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.section.querySQL" resname="fullSearch.section.querySQL">
+				<source>Full SQL query</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.section.querySQL.error" resname="fullSearch.section.querySQL.error">
+				<source>SQL error</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.section.querySettings" resname="fullSearch.section.querySettings">
+				<source>Query compilation</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.section.queryStorage" resname="fullSearch.section.queryStorage">
+				<source>Load/save query</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.section.result" resname="fullSearch.section.result">
+				<source>Result</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.type.count.resultsFound" resname="fullSearch.type.count.resultsFound">
+				<source>records found.</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.type.all.noResultsFound" resname="fullSearch.type.all.noResultsFound">
+				<source>No records found.</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.btn.delete.label" resname="fullSearch.form.btn.delete.label">
+				<source>Delete</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.btn.load.label" resname="fullSearch.form.btn.load.label">
+				<source>Load</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.btn.save.label" resname="fullSearch.form.btn.save.label">
+				<source>Save</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.groupBy.label" resname="fullSearch.form.field.groupBy.label">
+				<source>Group by</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.limit.label" resname="fullSearch.form.field.limit.label">
+				<source>Limit</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.makeQuery.label" resname="fullSearch.form.field.makeQuery.label">
+				<source>Result type</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.orderBy.label" resname="fullSearch.form.field.orderBy.label">
+				<source>Order by</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.orderBy.descending" resname="fullSearch.form.field.orderBy.descending">
+				<source>Descending</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.searchType.label" resname="fullSearch.form.field.searchType.label">
+				<source>Search type</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.query.label" resname="fullSearch.form.field.query.label">
+				<source>Query</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.queryFields.label" resname="fullSearch.form.field.queryFields.label">
+				<source>Fields</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.queryTable.label" resname="fullSearch.form.field.queryTable.label">
+				<source>Table</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.queryStore.storage.label" resname="fullSearch.form.field.queryStore.storage.label">
+				<source>Saved queries</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.queryStore.storage.0" resname="fullSearch.form.field.queryStore.storage.0">
+				<source>[New]</source>
+			</trans-unit>
+			<trans-unit id="fullSearch.form.field.queryStore.title.label" resname="fullSearch.form.field.queryStore.title.label">
+				<source>Title</source>
+			</trans-unit>
+
 			<trans-unit id="showSQL" resname="showSQL">
 				<source>Show SQL parts</source>
 			</trans-unit>
@@ -196,9 +266,6 @@
 			</trans-unit>
 			<trans-unit id="showDeleted" resname="showDeleted">
 				<source>Show even deleted entries (with undelete buttons)</source>
-			</trans-unit>
-			<trans-unit id="searchOptions" resname="searchOptions">
-				<source>Search options</source>
 			</trans-unit>
 			<trans-unit id="result" resname="result">
 				<source>Result</source>
