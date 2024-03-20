@@ -28,7 +28,7 @@ Impact
 When a file is created, the user TSconfig is loaded automatically without a
 custom registration, cached within the Core caches, and more
 performant than the existing registration format. The old registration
-format has been been marked as deprecated, see
+format has been marked as deprecated, see
 :ref:`Deprecated ExtensionManagementUtility::addUserTSConfig() <deprecation-101807-1693474000>`
 for more details.
 
