@@ -22,7 +22,7 @@
 				<source>Action</source>
 			</trans-unit>
 			<trans-unit id="column.recordTitle" resname="column.recordTitle">
-				<source>Record title</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="differences" resname="differences">
 				<source>Differences</source>

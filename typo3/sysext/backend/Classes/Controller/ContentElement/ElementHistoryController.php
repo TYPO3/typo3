@@ -279,6 +279,8 @@ class ElementHistoryController
                 $elParts = explode(':', $key);
                 $singleLine['revertRecordUrl'] = $this->buildUrl(['rollbackFields' => $key]);
                 $singleLine['title'] = $this->generateTitle($elParts[0], $elParts[1]);
+                $singleLine['recordTable'] = $elParts[0];
+                $singleLine['recordUid'] = $elParts[1];
                 $lines[] = $singleLine;
             }
             $this->view->assign('revertAllUrl', $this->buildUrl(['rollbackFields' => 'ALL']));
@@ -442,8 +444,7 @@ class ElementHistoryController
         $title = '';
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['label'])) {
             $record = $this->getRecord($table, (int)$uid) ?? [];
-            $title .= '"' . BackendUtility::getRecordTitle($table, $record) . '"';
-            $title .= ' (' . $table . ':' . $uid . ')';
+            $title .= BackendUtility::getRecordTitle($table, $record);
         }
         return $title;
     }

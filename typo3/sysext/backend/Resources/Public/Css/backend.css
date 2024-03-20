@@ -3468,7 +3468,7 @@ typo3-backend-form-selecttree-toolbar{display:block;border-bottom:1px solid rgba
 .table .col-datetime{width:14ch;white-space:nowrap;box-sizing:content-box}
 .table .col-avatar{width:32px;box-sizing:content-box}
 .table .col-action,.table .col-username{width:15ch}
-.table .col-recordtitle{width:200px}
+.table .col-recordtitle{width:250px}
 .table .col-action,.table .col-recordtitle,.table .col-state{min-width:120px}
 .table .col-differences,.table .col-task{min-width:400px}
 .table .col-clipboard,.table .col-control,.table .col-nowrap{white-space:nowrap!important}
