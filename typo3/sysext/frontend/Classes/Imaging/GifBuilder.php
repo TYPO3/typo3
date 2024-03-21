@@ -246,8 +246,10 @@ class GifBuilder
         }
         // Checking TEXT and IMAGE objects for files. If any errors the objects are cleared.
         // The Bounding Box for the objects is stored in an array
-        foreach ($sKeyArray as $theKey) {
-            $theValue = $this->setup[$theKey];
+        foreach ($sKeyArray as $index => $theKey) {
+            if (!($theValue = $this->setup[$theKey] ?? false)) {
+                continue;
+            }
             if ((int)$theKey && ($conf = $this->setup[$theKey . '.'] ?? [])) {
                 // Swipes through TEXT and IMAGE-objects
                 switch ($theValue) {
@@ -306,6 +308,7 @@ class GifBuilder
                 }
                 // Checks if disabled is set
                 if (($conf['if.'] ?? false) && !$this->cObj->checkIf($conf['if.'])) {
+                    unset($sKeyArray[$index]);
                     unset($this->setup[$theKey]);
                     unset($this->setup[$theKey . '.']);
                     unset($this->objBB[$theKey]);
@@ -319,7 +322,9 @@ class GifBuilder
         $this->setup['workArea'] = (string)$this->cObj->stdWrapValue('workArea', $this->setup);
         $this->setup['workArea'] = $this->calcOffset($this->setup['workArea']);
         foreach ($sKeyArray as $theKey) {
-            $theValue = $this->setup[$theKey];
+            if (!($theValue = $this->setup[$theKey] ?? false)) {
+                continue;
+            }
             if ((int)$theKey && ($this->setup[$theKey . '.'] ?? false)) {
                 switch ($theValue) {
                     case 'TEXT':
