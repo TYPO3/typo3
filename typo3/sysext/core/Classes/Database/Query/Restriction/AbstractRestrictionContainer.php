@@ -69,7 +69,20 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
      */
     public function removeByType(string $restrictionType): QueryRestrictionContainerInterface
     {
-        unset($this->restrictions[$restrictionType], $this->enforcedRestrictions[$restrictionType]);
+        foreach ($this->restrictions as $type => $instance) {
+            if ($instance instanceof $restrictionType) {
+                unset($this->restrictions[$type]);
+                break;
+            }
+        }
+
+        foreach ($this->enforcedRestrictions as $type => $instance) {
+            if ($instance instanceof $restrictionType) {
+                unset($this->enforcedRestrictions[$type]);
+                break;
+            }
+        }
+
         return $this;
     }
 
