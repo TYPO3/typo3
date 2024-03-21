@@ -24,10 +24,8 @@ use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -93,7 +91,7 @@ class BackendLayoutView implements SingletonInterface
                 }
 
                 $parameters['items'][] = [
-                    'label' => $this->getLanguageService()->sL($backendLayout->getTitle()),
+                    'label' => $backendLayout->getTitle(),
                     'value' => $combinedIdentifier,
                     'icon' => $backendLayout->getIconPath(),
                 ];
@@ -187,17 +185,14 @@ class BackendLayoutView implements SingletonInterface
      */
     protected function getIdentifiersToBeExcluded(array $pageTSconfig): array
     {
-        $identifiersToBeExcluded = [];
-
-        if (ArrayUtility::isValidPath($pageTSconfig, 'options./backendLayout./exclude')) {
-            $identifiersToBeExcluded = GeneralUtility::trimExplode(
+        if (isset($pageTSconfig['options.']['backendLayout.']['exclude'])) {
+            return GeneralUtility::trimExplode(
                 ',',
-                ArrayUtility::getValueByPath($pageTSconfig, 'options./backendLayout./exclude'),
+                $pageTSconfig['options.']['backendLayout.']['exclude'],
                 true
             );
         }
-
-        return $identifiersToBeExcluded;
+        return [];
     }
 
     /**
@@ -222,62 +217,6 @@ class BackendLayoutView implements SingletonInterface
         $layout = $this->getSelectedBackendLayout($pageId);
         if ($layout && !empty($layout['__items'])) {
             $items = $layout['__items'];
-        }
-        return $items;
-    }
-
-    /**
-     * Gets the list of available columns for a given page id
-     * @todo: will be removed once Page Position Map for content is removed.
-     */
-    public function getColPosListItemsParsed(int $id): array
-    {
-        $tsConfig = BackendUtility::getPagesTSconfig($id)['TCEFORM.']['tt_content.']['colPos.'] ?? [];
-        $tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'] ?? [];
-        $tcaItems = $tcaConfig['items'];
-        $tcaItems = $this->addItems($tcaItems, $tsConfig['addItems.'] ?? []);
-        if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
-            $tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
-        }
-        if (!empty($tsConfig['removeItems'])) {
-            foreach (GeneralUtility::trimExplode(',', $tsConfig['removeItems'], true) as $removeId) {
-                foreach ($tcaItems as $key => $item) {
-                    if ($item[1] == $removeId) {
-                        unset($tcaItems[$key]);
-                    }
-                }
-            }
-        }
-        return $tcaItems;
-    }
-
-    /**
-     * Merges items into an item-array, optionally with an icon
-     * example:
-     * TCEFORM.pages.doktype.addItems.13 = My Label
-     * TCEFORM.pages.doktype.addItems.13.icon = EXT:t3skin/icons/gfx/i/pages.gif
-     *
-     * @param array $items The existing item array
-     * @param array $iArray An array of items to add. NOTICE: The keys are mapped to values, and the values and mapped to be labels. No possibility of adding an icon.
-     * @return array The updated $item array
-     * @internal
-     */
-    protected function addItems(array $items, array $iArray): array
-    {
-        $languageService = $this->getLanguageService();
-        foreach ($iArray as $value => $label) {
-            // if the label is an array (that means it is a subelement
-            // like "34.icon = mylabel.png", skip it (see its usage below)
-            if (is_array($label)) {
-                continue;
-            }
-            // check if the value "34 = mylabel" also has a "34.icon = myimage.png"
-            if (isset($iArray[$value . '.']) && $iArray[$value . '.']['icon']) {
-                $icon = $iArray[$value . '.']['icon'];
-            } else {
-                $icon = '';
-            }
-            $items[] = [$languageService->sL($label), $value, $icon];
         }
         return $items;
     }
@@ -342,7 +281,7 @@ class BackendLayoutView implements SingletonInterface
                             continue;
                         }
                         $backendLayoutData['__items'][] = [
-                            'label' => $this->getColumnName($column),
+                            'label' => $column['name'],
                             'value' => $column['colPos'],
                             'icon' => null,
                         ];
@@ -403,18 +342,5 @@ class BackendLayoutView implements SingletonInterface
         }
 
         return is_array($page) ? $page : null;
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Get column name from colPos item structure
-     */
-    protected function getColumnName(array $column): string
-    {
-        return $this->getLanguageService()->sL($column['name']);
     }
 }

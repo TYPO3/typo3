@@ -156,11 +156,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Tree/Renderer/UnorderedListTreeRenderer.php
 
 		-
-			message: "#^Variable \\$columnsConfiguration in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/View/AbstractContentPagePositionMap.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php

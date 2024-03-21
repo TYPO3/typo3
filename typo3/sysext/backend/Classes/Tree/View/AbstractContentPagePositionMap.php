@@ -283,28 +283,28 @@ abstract class AbstractContentPagePositionMap
      * Fetch TCA colPos list from BackendLayoutView and prepare for map generation.
      * This also takes the "colPos_list" TSconfig into account.
      */
-    protected function getColumnsConfiguration(int $id): array
+    protected function getColumnsConfiguration(int $pageId): array
     {
-        $columnsConfiguration = $this->backendLayoutView->getColPosListItemsParsed($id);
-        if ($columnsConfiguration === []) {
+        $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($pageId);
+        if (!$backendLayout) {
             return [];
         }
 
+        $items = [];
         // Prepare the columns configuration (using named keys, etc.)
-        foreach ($columnsConfiguration as &$item) {
-            $item = [
-                'title' => $item['label'] ?? '',
-                'colPos' => (int)($item['value'] ?? 0),
+        foreach ($backendLayout->getUsedColumns() as $colPos => $label) {
+            $items[] = [
+                'title' => $label,
+                'colPos' => (int)$colPos,
                 'isRestricted' => false,
             ];
         }
-        unset($item);
 
-        $sharedColPosList = trim(BackendUtility::getPagesTSconfig($id)['mod.']['SHARED.']['colPos_list'] ?? '');
+        $sharedColPosList = trim(BackendUtility::getPagesTSconfig($pageId)['mod.']['SHARED.']['colPos_list'] ?? '');
         if ($sharedColPosList !== '') {
             $activeColPosArray = array_unique(GeneralUtility::intExplode(',', $sharedColPosList));
-            if (!empty($columnsConfiguration) && !empty($activeColPosArray)) {
-                foreach ($columnsConfiguration as &$item) {
+            if (!empty($items) && !empty($activeColPosArray)) {
+                foreach ($items as &$item) {
                     if (!in_array((int)$item['colPos'], $activeColPosArray, true)) {
                         $item['isRestricted'] = true;
                     }
@@ -313,7 +313,7 @@ abstract class AbstractContentPagePositionMap
             }
         }
 
-        return $columnsConfiguration;
+        return $items;
     }
 
     protected function getBackendUser(): BackendUserAuthentication
