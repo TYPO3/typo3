@@ -23,6 +23,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -58,6 +59,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         }
         if ($this->schemaManager->tablesExist(['another_test_table'])) {
             $this->schemaManager->dropTable('another_test_table');
+        }
+        if ($this->schemaManager->tablesExist(['a_textfield_test_table'])) {
+            $this->schemaManager->dropTable('a_textfield_test_table');
         }
     }
 
@@ -375,5 +379,174 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $updateSuggestions = $subject->getUpdateSuggestions($statements);
         self::assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
         self::assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
+    }
+
+    public static function textFieldDefaultValueTestDataProvider(): \Generator
+    {
+        yield 'text not null default empty string value' => [
+            'fixtureFileName' => 'text-not-null-default-empty-string-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'text-not-null-default-empty-string-value.csv',
+            'expectedDefaultValue' => '',
+            'expectedNotNull' => true,
+            'expectDefaultValue' => true,
+        ];
+        yield 'text default empty string value' => [
+            'fixtureFileName' => 'text-default-empty-string-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'text-default-empty-string-value.csv',
+            'expectedDefaultValue' => '',
+            'expectedNotNull' => false,
+            'expectDefaultValue' => true,
+        ];
+        yield 'text default NULL' => [
+            'fixtureFileName' => 'text-default-null.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'text-default-null.csv',
+            'expectedDefaultValue' => null,
+            'expectedNotNull' => false,
+            'expectDefaultValue' => true,
+        ];
+        yield 'text not null default value string value' => [
+            'fixtureFileName' => 'text-not-null-default-value-string-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'text-not-null-default-value-string-value.csv',
+            'expectedDefaultValue' => 'database-default-value',
+            'expectedNotNull' => true,
+            'expectDefaultValue' => true,
+        ];
+    }
+
+    #[DataProvider('textFieldDefaultValueTestDataProvider')]
+    #[Test]
+    public function textFieldDefaultValueTest(
+        string $fixtureFileName,
+        string $table,
+        string $fieldName,
+        string $assertionFileName,
+        string|null $expectedDefaultValue,
+        bool $expectedNotNull,
+        bool $expectDefaultValue,
+    ): void {
+        $subject = $this->get(SchemaMigrator::class);
+        $statements = $this->sqlReader->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/TextFieldDefaultValue/' . $fixtureFileName));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $result = $subject->migrate(
+            $statements,
+            $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table']
+        );
+        self::assertSame([], $result);
+
+        $tableDefinition = $this->getConnectionPool()->getConnectionForTable($table)->createSchemaManager()->introspectTable($table);
+        self::assertTrue($tableDefinition->hasColumn($fieldName));
+        $column = $tableDefinition->getColumn($fieldName);
+        if ($expectDefaultValue) {
+            self::assertArrayHasKey('default', $column->toArray());
+            self::assertSame($expectedDefaultValue, $column->getDefault());
+        } else {
+            self::assertArrayNotHasKey('default', $column->toArray());
+        }
+        self::assertSame($expectedNotNull, $column->getNotnull());
+
+        $this->getConnectionPool()->getConnectionForTable($table)->insert(
+            $table,
+            [
+                'pid' => 0,
+            ]
+        );
+        self::assertCSVDataSet(__DIR__ . '/../Fixtures/TextFieldDefaultValue/Assertions/' . $assertionFileName);
+    }
+
+    public static function jsonFieldDefaultValueTestDataProvider(): \Generator
+    {
+        yield 'json not null default empty object value' => [
+            'fixtureFileName' => 'json-not-null-default-empty-object-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'json-not-null-default-empty-object-value.csv',
+            'expectedDefaultValue' => '{}',
+            'expectedNotNull' => true,
+            'expectDefaultValue' => true,
+        ];
+        yield 'json default empty object value' => [
+            'fixtureFileName' => 'json-default-empty-object-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'json-default-empty-object-value.csv',
+            'expectedDefaultValue' => '{}',
+            'expectedNotNull' => false,
+            'expectDefaultValue' => true,
+        ];
+        yield 'json not null default empty array value' => [
+            'fixtureFileName' => 'json-not-null-default-empty-array-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'json-not-null-default-empty-array-value.csv',
+            'expectedDefaultValue' => '[]',
+            'expectedNotNull' => true,
+            'expectDefaultValue' => true,
+        ];
+        yield 'json default empty array value' => [
+            'fixtureFileName' => 'json-default-empty-array-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'json-default-empty-array-value.csv',
+            'expectedDefaultValue' => '[]',
+            'expectedNotNull' => false,
+            'expectDefaultValue' => true,
+        ];
+        yield 'json default NULL' => [
+            'fixtureFileName' => 'json-default-null.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'json-default-null.csv',
+            'expectedDefaultValue' => null,
+            'expectedNotNull' => false,
+            'expectDefaultValue' => true,
+        ];
+    }
+
+    #[DataProvider('jsonFieldDefaultValueTestDataProvider')]
+    #[Test]
+    public function jsonFieldDefaultValueTest(
+        string $fixtureFileName,
+        string $table,
+        string $fieldName,
+        string $assertionFileName,
+        string|null $expectedDefaultValue,
+        bool $expectedNotNull,
+        bool $expectDefaultValue,
+    ): void {
+        $subject = $this->get(SchemaMigrator::class);
+        $statements = $this->sqlReader->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/JsonFieldDefaultValue/' . $fixtureFileName));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $result = $subject->migrate(
+            $statements,
+            $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table']
+        );
+        self::assertSame([], $result);
+
+        $tableDefinition = $this->getConnectionPool()->getConnectionForTable($table)->createSchemaManager()->introspectTable($table);
+        self::assertTrue($tableDefinition->hasColumn($fieldName));
+        $column = $tableDefinition->getColumn($fieldName);
+        if ($expectDefaultValue) {
+            self::assertArrayHasKey('default', $column->toArray());
+            self::assertSame($expectedDefaultValue, $column->getDefault());
+        } else {
+            self::assertArrayNotHasKey('default', $column->toArray());
+        }
+        self::assertSame($expectedNotNull, $column->getNotnull());
+
+        $this->getConnectionPool()->getConnectionForTable($table)->insert(
+            $table,
+            [
+                'pid' => 0,
+            ]
+        );
+        self::assertCSVDataSet(__DIR__ . '/../Fixtures/JsonFieldDefaultValue/Assertions/' . $assertionFileName);
     }
 }

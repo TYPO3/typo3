@@ -149,7 +149,7 @@ class TableBuilder
             $this->getDoctrineColumnTypeName($item->dataType)
         );
 
-        $column->setNotnull(!$item->allowNull);
+        $column->setNotnull($item->allowNull === false);
         $column->setAutoincrement($item->autoIncrement);
         $column->setComment((string)$item->comment);
 

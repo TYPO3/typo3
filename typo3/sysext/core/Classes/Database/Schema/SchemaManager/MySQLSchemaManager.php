@@ -22,6 +22,10 @@ use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\MySQLSchemaManager as DoctrineMySQLSchemaManager;
+use Doctrine\DBAL\Types\BlobType;
+use Doctrine\DBAL\Types\JsonType;
+use Doctrine\DBAL\Types\TextType;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * Extending the doctrine MySQLSchemaManager to integrate additional processing stuff
@@ -46,6 +50,22 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
 {
     use CustomDoctrineTypesColumnDefinitionTrait;
     use CustomPortableTableIndexesListTrait;
+    private const MYSQL_ESCAPE_SEQUENCES = [
+        '\\0' => "\0",
+        "\\'" => "'",
+        '\\"' => '"',
+        '\\b' => "\b",
+        '\\n' => "\n",
+        '\\r' => "\r",
+        '\\t' => "\t",
+        '\\Z' => "\x1a",
+        '\\\\' => '\\',
+        '\\%' => '%',
+        '\\_' => '_',
+
+        // internally
+        "''" => "'",
+    ];
 
     /**
      * Gets Table Column Definition.
@@ -56,8 +76,50 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
     {
         /** @var DoctrineMariaDBPlatform|DoctrineMySQLPlatform $platform */
         $platform = $this->platform;
+        $tableColumn = $this->normalizeTableColumnData($tableColumn, $platform);
         return $this->processCustomDoctrineTypesColumnDefinition($tableColumn, $platform)
             ?? parent::_getPortableTableColumnDefinition($tableColumn);
+    }
+
+    /**
+     * @param array<string, mixed> $tableColumn
+     * @return array<string, mixed>
+     */
+    protected function normalizeTableColumnData(array $tableColumn, DoctrineMariaDBPlatform|DoctrineMySQLPlatform $platform): array
+    {
+        if (!($platform instanceof DoctrineMySQLPlatform)) {
+            return $tableColumn;
+        }
+
+        $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
+        $dbType = strtolower($tableColumn['type']);
+        $dbType = strtok($dbType, '(), ');
+        assert(is_string($dbType));
+
+        $columnDefault = $tableColumn['default'] ?? null;
+        $type = Type::getType($platform->getDoctrineTypeMapping($dbType));
+        if ($type instanceof TextType || $type instanceof BlobType || $type instanceof JsonType) {
+            $tableColumn['default'] = $this->getMySQLTextAndBlobColumnDefault($columnDefault);
+        }
+
+        return $tableColumn;
+    }
+
+    protected function getMySQLTextAndBlobColumnDefault(string|null $columnDefault): string|null
+    {
+        if ($columnDefault === null || $columnDefault === 'NULL') {
+            return null;
+        }
+        if (str_starts_with($columnDefault, '_')) {
+            $columnDefault = substr($columnDefault, (mb_strpos($columnDefault, '\'') - 1));
+        }
+        if ($columnDefault === "\'\'") {
+            return '';
+        }
+        if (preg_match("/^\\\'(.*)\\\'$/", trim($columnDefault), $matches) === 1) {
+            return strtr($matches[1], self::MYSQL_ESCAPE_SEQUENCES);
+        }
+        return $columnDefault;
     }
 
     /**

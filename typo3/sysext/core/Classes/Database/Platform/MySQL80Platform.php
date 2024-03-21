@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Database\Platform;
 
 use Doctrine\DBAL\Platforms\MySQL80Platform as DoctrineMySQL80Platform;
 use Doctrine\DBAL\Schema\TableDiff as DoctrineTableDiff;
+use TYPO3\CMS\Core\Database\Platform\Traits\MySQLDefaultValueDeclarationSQLOverrideTrait;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 
 /**
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Database\Schema\TableDiff;
 class MySQL80Platform extends DoctrineMySQL80Platform
 {
     use MySQLCompatibleAlterTablePlatformAwareTrait;
+    use MySQLDefaultValueDeclarationSQLOverrideTrait;
 
     /**
      * Gets the SQL statements for altering an existing table.
