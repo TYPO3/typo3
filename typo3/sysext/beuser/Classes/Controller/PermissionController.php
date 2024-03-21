@@ -181,7 +181,7 @@ class PermissionController
                 break;
             case 'toggle_edit_lock':
                 // Initialize requested lock state
-                $editLockState = !$conf['editLockState'];
+                $editLockState = $conf['editLockState'] ? 0 : 1;
 
                 // Execute TCE Update
                 $tce->start([
