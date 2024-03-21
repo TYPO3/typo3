@@ -130,18 +130,19 @@ class SingleFieldContainer extends AbstractContainer
             $options['renderType'] = $parameterArray['fieldConf']['config']['type'];
         }
         $resultArray = $this->nodeFactory->create($options)->render();
-
-        // Render a custom HTML element which will ask the user to save/update the form due to changing the element.
-        // This is used for eg. "type" fields and others configured with "onChange"
-        // (https://docs.typo3.org/m/typo3/reference-tca/main/en-us/Columns/Properties/OnChange.html)
-        $requestFormEngineUpdate =
-            (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
-            || (isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload');
-        if ($requestFormEngineUpdate) {
-            $askForUpdate = $backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE);
-            $requestMode = $askForUpdate ? 'ask' : 'enforce';
-            $fieldSelector = sprintf('[name="%s"]', $parameterArray['itemFormElName']);
-            $resultArray['html'] .= '<typo3-formengine-updater mode="' . htmlspecialchars($requestMode) . '" field="' . htmlspecialchars($fieldSelector) . '"></typo3-formengine-updater>';
+        if ($resultArray['html'] !== '') {
+            // Render a custom HTML element which will ask the user to save/update the form due to changing the element.
+            // This is used for e.g. "type" fields and others configured with "onChange"
+            // (https://docs.typo3.org/m/typo3/reference-tca/main/en-us/Columns/Properties/OnChange.html)
+            $requestFormEngineUpdate =
+                (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
+                || (isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload');
+            if ($requestFormEngineUpdate) {
+                $askForUpdate = $backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE);
+                $requestMode = $askForUpdate ? 'ask' : 'enforce';
+                $fieldSelector = sprintf('[name="%s"]', $parameterArray['itemFormElName']);
+                $resultArray['html'] .= '<typo3-formengine-updater mode="' . htmlspecialchars($requestMode) . '" field="' . htmlspecialchars($fieldSelector) . '"></typo3-formengine-updater>';
+            }
         }
         return $resultArray;
     }
