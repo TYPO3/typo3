@@ -37,7 +37,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface
 
     /**
      * @var int<1, max>|null The uid of the record. The uid is only unique in the context of the database table.
-     * @todo introduce type declarations in 13.0 (possibly breaking)
      */
     protected ?int $uid = null;
 
