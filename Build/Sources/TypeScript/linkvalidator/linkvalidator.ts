@@ -29,8 +29,6 @@ enum Identifier {
  */
 class Linkvalidator {
   constructor() {
-    this.toggleTriggerCheckBox();
-    this.toggleActionButton();
     this.initializeEvents();
   }
 

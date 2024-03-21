@@ -427,6 +427,7 @@ class LinkValidatorController
     {
         $brokenLinksInformation = $this->linkAnalyzer->getLinkCounts();
         $options = [
+            'anyOptionChecked' => false,
             'totalCountLabel' => $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:overviews.nbtotal'),
             'totalCount' => $brokenLinksInformation['total'] ?: '0',
             'optionsByType' => [],
@@ -436,14 +437,19 @@ class LinkValidatorController
             if (!in_array($type, $linkTypes, true)) {
                 continue;
             }
+            $isChecked = !empty($this->checkOpt[$prefix][$type]);
+            if ($isChecked) {
+                $options['anyOptionChecked'] = true;
+            }
             $options['optionsByType'][$type] = [
                 'id' => $prefix . '_SET_' . $type,
                 'name' => $prefix . '_SET[' . $type . ']',
                 'label' => $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:hooks.' . $type) ?: $type,
-                'checked' => !empty($this->checkOpt[$prefix][$type]) ? ' checked="checked"' : '',
+                'checked' => $isChecked,
                 'count' => (!empty($brokenLinksInformation[$type]) ? $brokenLinksInformation[$type] : '0'),
             ];
         }
+        $options['allOptionsChecked'] = array_filter($options['optionsByType'], static fn(array $option): bool => !$option['checked']) === [];
         return $options;
     }
 

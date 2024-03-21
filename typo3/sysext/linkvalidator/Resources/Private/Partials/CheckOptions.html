@@ -13,7 +13,7 @@
         <tr>
             <th>
                 <div class="form-check form-switch">
-                    <input id="options-by-type-toggle-all" class="options-by-type-toggle-all form-check-input" type="checkbox" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall')}">
+                    <input id="options-by-type-toggle-all" class="options-by-type-toggle-all form-check-input" type="checkbox" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall')}" {f:if(condition: '{options.allOptionsChecked}', then: 'checked')}>
                     <label class="form-check-label" for="options-by-type-toggle-all"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall"/></label>
                 </div>
             </th>
@@ -25,7 +25,7 @@
             <tr>
                 <td>
                     <div class="form-check form-switch">
-                        <input type="checkbox" class="form-check-input options-by-type" value="1" id="{optionByType.id}" name="{optionByType.name}" {optionByType.checked}/>
+                        <input type="checkbox" class="form-check-input options-by-type" value="1" id="{optionByType.id}" name="{optionByType.name}" {f:if(condition: '{optionByType.checked}', then: 'checked')} />
                         <label class="form-check-label" for="{optionByType.id}">{optionByType.label}</label>
                     </div>
                 </td>
