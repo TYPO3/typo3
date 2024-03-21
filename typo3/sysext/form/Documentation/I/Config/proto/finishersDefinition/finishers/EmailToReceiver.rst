@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.emailtoreceiver:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver:
 
 =================
 [EmailToReceiver]
 =================
 
-.. _prototypes.<prototypeidentifier>.finishersdefinitionemailtoreceiver-properties:
+.. _prototypes.prototypeIdentifier.finishersdefinitionemailtoreceiver-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.implementationclassname:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.implementationclassname:
 
 implementationClassName
 -----------------------
@@ -45,7 +45,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.subject:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.subject:
 
 options.subject
 ---------------
@@ -74,7 +74,7 @@ options.subject
       Subject of the email.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipients:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.recipients:
 
 options.recipients
 ------------------
@@ -113,7 +113,7 @@ options.recipients
          first@example.org: First Recipient
          second@example.org: Second Recipient
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.senderaddress:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.senderaddress:
 
 options.senderAddress
 ---------------------
@@ -141,7 +141,7 @@ options.senderAddress
       Email address of the sender/ visitor (From).
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.sendername:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.sendername:
 
 options.senderName
 ------------------
@@ -169,7 +169,7 @@ options.senderName
       Human-readable name of the sender.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.replytorecipients:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.replytorecipients:
 
 options.replyToRecipients
 -------------------------
@@ -197,7 +197,7 @@ options.replyToRecipients
       Email addresses of to be used as reply-to emails.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.carboncopyrecipients:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.carboncopyrecipients:
 
 options.carbonCopyRecipients
 ----------------------------
@@ -225,7 +225,7 @@ options.carbonCopyRecipients
       Email addresses of the copy recipient.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.blindcarbonCopyrecipients:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.blindcarbonCopyrecipients:
 
 options.blindCarbonCopyRecipients
 ---------------------------------
@@ -253,7 +253,7 @@ options.blindCarbonCopyRecipients
       Email address of the blind copy recipient.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.addhtmlpart:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.addhtmlpart:
 
 options.addHtmlPart
 -------------------
@@ -283,7 +283,7 @@ options.addHtmlPart
       plaintext-only mails.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.attachuploads:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.attachuploads:
 
 options.attachUploads
 ---------------------
@@ -311,7 +311,7 @@ options.attachUploads
       If set, all uploaded items are attached to the email.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.title:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.title:
 
 options.title
 -------------
@@ -341,7 +341,7 @@ options.title
       email body. Do not confuse this field with the subject of the email.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.translation.language:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.translation.language:
 
 options.translation.language
 ----------------------------
@@ -372,7 +372,7 @@ options.translation.language
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.translation.translationfiles:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
@@ -403,7 +403,7 @@ options.translation.translationFiles
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.partialrootpaths:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.partialrootpaths:
 
 options.partialRootPaths
 ------------------------
@@ -430,7 +430,7 @@ options.partialRootPaths
       Fluid partial paths.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.layoutrootpaths:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.layoutrootpaths:
 
 options.layoutRootPaths
 -----------------------
@@ -457,7 +457,7 @@ options.layoutRootPaths
       Fluid layout paths.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.variables:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.options.variables:
 
 options.variables
 -----------------
@@ -484,7 +484,7 @@ options.variables
       Associative array of variables which are available inside the Fluid template.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
@@ -518,7 +518,7 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.formeditor.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.formeditor.label:
 
 formeditor.label
 ----------------
@@ -552,7 +552,7 @@ formeditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
@@ -600,7 +600,7 @@ formeditor.predefinedDefaults
       .. include:: ../properties/predefinedDefaults.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.formengine.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.formengine.label:
 
 FormEngine.label
 ----------------
@@ -634,7 +634,7 @@ FormEngine.label
 
 
 @ToDo
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.formengine.elements:
+.. _prototypes.prototypeIdentifier.finishersdefinition.emailtoreceiver.formengine.elements:
 
 FormEngine.elements
 -------------------

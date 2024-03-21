@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.finisherseditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.finisherseditor:
 
 =================
 [FinishersEditor]
 =================
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.finisherseditor-introduction:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.finisherseditor-introduction:
 
 Introduction
 ============
@@ -16,12 +16,12 @@ Introduction
 Shows a select list with finishers. If a finisher is already added to the form definition, then this finisher will be removed from the select list.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.finisherseditor-properties:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.finisherseditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename-finisherseditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-finisherseditor:
 
 templateName
 ------------
@@ -36,7 +36,7 @@ templateName
       Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
+      - :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
       Inspector-FinishersEditor
@@ -48,15 +48,15 @@ templateName
       .. include:: properties/TemplateName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-finisherseditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-finisherseditor:
 .. include:: properties/Identifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-finisherseditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-finisherseditor:
 .. include:: properties/Label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-finisherseditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.value-finisherseditor:
 
 selectOptions.[*].value
 -----------------------
@@ -71,7 +71,7 @@ selectOptions.[*].value
       Yes
 
 :aspect:`Related options`
-      - :ref:`"[finishersDefinition]"<prototypes.\<prototypeidentifier>.finishersdefinition.*>`
+      - :ref:`"[finishersDefinition]"<prototypes.prototypeidentifier.finishersdefinition.*>`
 
 
 .. :aspect:`Good to know`
@@ -81,7 +81,7 @@ selectOptions.[*].value
       Has to match with a ``prototypes.<prototypeIdentifier>.finishersdefinition`` configuration key.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.label-finisherseditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.label-finisherseditor:
 
 selectOptions.[*].label
 -----------------------

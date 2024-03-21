@@ -6,7 +6,7 @@ formEditor.editors.700
       prototypes.<prototypeIdentifier>.formElementsDefinition.Email.formEditor.editors.700
 
 :aspect:`Data type`
-      array/ :ref:`[GridColumnViewPortConfigurationEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.gridcolumnviewportconfigurationeditor>`
+      array/ :ref:`[GridColumnViewPortConfigurationEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.gridcolumnviewportconfigurationeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

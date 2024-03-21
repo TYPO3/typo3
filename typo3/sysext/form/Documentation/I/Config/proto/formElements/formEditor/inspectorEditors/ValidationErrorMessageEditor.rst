@@ -1,12 +1,12 @@
 .. include:: /Includes.rst.txt
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.validationerrormessageeditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.validationerrormessageeditor:
 
 ==============================
 [ValidationErrorMessageEditor]
 ==============================
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.validationerrormessageeditor-introduction:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.validationerrormessageeditor-introduction:
 
 Introduction
 ============
@@ -15,12 +15,12 @@ Shows a textarea. It allows the definition of custom validation error messages. 
 those error messages for all existing validators.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.validationerrormessageeditor-properties:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.validationerrormessageeditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename-validationerrormessageeditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-validationerrormessageeditor:
 
 templateName
 ------------
@@ -35,7 +35,7 @@ templateName
       Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
+      - :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
       Inspector-ValidationErrorMessageEditor
@@ -47,19 +47,19 @@ templateName
       .. include:: properties/TemplateName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-validationerrormessageeditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-validationerrormessageeditor:
 .. include:: properties/Identifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-validationerrormessageeditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-validationerrormessageeditor:
 .. include:: properties/Label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath-validationerrormessageeditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertypath-validationerrormessageeditor:
 .. include:: properties/PropertyPath.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.fieldexplanationtext-validationerrormessageeditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.fieldexplanationtext-validationerrormessageeditor:
 
 fieldExplanationText
 --------------------

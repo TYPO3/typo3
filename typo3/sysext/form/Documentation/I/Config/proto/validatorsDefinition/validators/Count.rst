@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.count:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.count:
 
 =======
 [Count]
 =======
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.count-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.count-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -20,13 +20,13 @@ Validation error codes
 - Error message: `You must select between %s to %s elements.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.count-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.count-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.count.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -58,7 +58,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.options.minimum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.count.options.minimum:
 
 options.minimum
 ---------------
@@ -82,7 +82,7 @@ options.minimum
       The minimum count to accept.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.options.maximum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.count.options.maximum:
 
 options.maximum
 ---------------
@@ -106,7 +106,7 @@ options.maximum
       The maximum count to accept.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.count.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -140,7 +140,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.count.formeditor.label:
 
 formEditor.label
 ----------------
@@ -174,7 +174,7 @@ formEditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.count.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------

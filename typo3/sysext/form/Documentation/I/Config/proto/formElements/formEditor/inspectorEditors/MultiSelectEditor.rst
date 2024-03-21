@@ -1,13 +1,13 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.multiselecteditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.multiselecteditor:
 
 ===================
 [MultiSelectEditor]
 ===================
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.multiselecteditor-introduction:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.multiselecteditor-introduction:
 
 Introduction
 ============
@@ -15,12 +15,12 @@ Introduction
 Shows a multiselect list with values. If one or more selectoptions are selected, then the option value will be written within a form element property which is defined by the "propertyPath" option.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.multiselecteditor-properties:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.multiselecteditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename-multiselecteditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-multiselecteditor:
 
 templateName
 ------------
@@ -35,7 +35,7 @@ templateName
       Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
+      - :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
       Inspector-MultiSelectEditor
@@ -47,19 +47,19 @@ templateName
       .. include:: properties/TemplateName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-multiselecteditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-multiselecteditor:
 .. include:: properties/Identifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-multiselecteditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-multiselecteditor:
 .. include:: properties/Label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath-multiselecteditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertypath-multiselecteditor:
 .. include:: properties/PropertyPath.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-multiselecteditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.value-multiselecteditor:
 
 selectOptions.[*].value
 -----------------------
@@ -84,7 +84,7 @@ selectOptions.[*].value
       The corresponding form elements property is identified by the ``propertyPath`` option.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.label-multiselecteditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.label-multiselecteditor:
 
 selectOptions.[*].label
 -----------------------

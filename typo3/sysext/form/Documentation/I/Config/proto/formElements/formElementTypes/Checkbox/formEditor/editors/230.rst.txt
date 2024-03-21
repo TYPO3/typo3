@@ -6,7 +6,7 @@ formEditor.editors.230
       prototypes.<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.editors.230
 
 :aspect:`Data type`
-      array/ :ref:`[TextEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+      array/ :ref:`[TextEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.texteditor>`
 
 :aspect:`Needed by`
       Frontend/ Backend (form editor)

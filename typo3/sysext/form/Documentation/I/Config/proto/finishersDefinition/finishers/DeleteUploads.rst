@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.deleteuploads:
+.. _prototypes.prototypeIdentifier.finishersdefinition.deleteuploads:
 
 ===============
 [DeleteUploads]
 ===============
 
-.. _prototypes.<prototypeidentifier>.finishersdefinitiondeleteuploads-properties:
+.. _prototypes.prototypeIdentifier.finishersdefinitiondeleteuploads-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.implementationclassname:
+.. _prototypes.prototypeIdentifier.finishersdefinition.deleteuploads.implementationclassname:
 
 implementationClassName
 -----------------------
@@ -45,7 +45,7 @@ implementationClassName
       Array which defines the available finishers. Every key within this array is called the ``<finisherIdentifier>``
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.finishersdefinition.deleteuploads.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
@@ -79,7 +79,7 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.deleteuploads.formeditor.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.deleteuploads.formeditor.label:
 
 formeditor.label
 ----------------

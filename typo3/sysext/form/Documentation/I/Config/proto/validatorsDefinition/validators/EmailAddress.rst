@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.emailaddress:
 
 ==============
 [EmailAddress]
 ==============
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.emailaddress-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -17,13 +17,13 @@ Validation error codes
 - Error message: `The given subject was not a valid email address.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.emailaddress-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.emailaddress.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -57,7 +57,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.emailaddress.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -91,7 +91,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.emailaddress.formeditor.label:
 
 formEditor.label
 ----------------

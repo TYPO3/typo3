@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize:
 
 ==========
 [FileSize]
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -24,13 +24,13 @@ Validation error codes
 - Error message: `You must select a file that is no larger than %s.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -62,7 +62,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.options.minimum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.options.minimum:
 
 options.minimum
 ---------------
@@ -86,7 +86,7 @@ options.minimum
       The minimum filesize to accept. Use the format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.options.maximum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.options.maximum:
 
 options.maximum
 ---------------
@@ -110,7 +110,7 @@ options.maximum
       The maximum filesize to accept. Use the format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -144,7 +144,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.formeditor.label:
 
 formEditor.label
 ----------------
@@ -178,7 +178,7 @@ formEditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.filesize.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.filesize.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------

@@ -1,20 +1,20 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.closure:
+.. _prototypes.prototypeIdentifier.finishersdefinition.closure:
 
 =========
 [Closure]
 =========
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinitionclosure-properties:
+.. _prototypes.prototypeIdentifier.finishersdefinitionclosure-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.implementationclassname:
+.. _prototypes.prototypeIdentifier.finishersdefinition.closure.implementationclassname:
 
 implementationClassName
 -----------------------
@@ -46,7 +46,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.options.closure:
+.. _prototypes.prototypeIdentifier.finishersdefinition.closure.options.closure:
 
 options.closure
 ---------------
@@ -75,7 +75,7 @@ options.closure
       The closure which is invoked if the finisher is triggered.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.finishersdefinition.closure.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
@@ -112,7 +112,7 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.closure.formeditor.label:
 
 formeditor.label
 ----------------
@@ -149,7 +149,7 @@ formeditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.closure.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.finishersdefinition.closure.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------

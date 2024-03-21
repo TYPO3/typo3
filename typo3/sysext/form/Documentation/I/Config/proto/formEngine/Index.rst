@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formengine:
+.. _prototypes.prototypeIdentifier.formengine:
 
 ============
 [formEngine]
 ============
 
 
-.. _prototypes.<prototypeidentifier>.formengine-properties:
+.. _prototypes.prototypeIdentifier.formengine-properties:
 
 Properties
 ==========
 
-.. _prototypes.<prototypeidentifier>.formengine.translationfiles:
+.. _prototypes.prototypeIdentifier.formengine.translationfiles:
 
 translationFiles
 ----------------

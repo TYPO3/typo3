@@ -43,12 +43,12 @@ prototypes
       - :ref:`"Form configuration vs. form definition"<concepts-formdefinition-vs-formconfiguration>`
 
 :aspect:`Description`
-      Array which defines the available prototypes. Every key within this array is called the ``<prototypeIdentifier>``.
+      Array which defines the available prototypes. Every key within this array is called the ``prototypeIdentifier``.
 
 
-.. _prototypes.<prototypeidentifier>:
+.. _prototypes.prototypeIdentifier:
 
-<prototypeIdentifier>
+prototypeIdentifier
 ---------------------
 
 :aspect:`Option path`

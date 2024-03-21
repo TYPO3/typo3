@@ -7,7 +7,7 @@ formEditor.editors.300
       prototypes.<prototypeIdentifier>.formElementsDefinition.MultiCheckbox.formEditor.editors.300
 
 :aspect:`Data type`
-      array/ :ref:`[PropertyGridEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertygrideditor>`
+      array/ :ref:`[PropertyGridEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertygrideditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

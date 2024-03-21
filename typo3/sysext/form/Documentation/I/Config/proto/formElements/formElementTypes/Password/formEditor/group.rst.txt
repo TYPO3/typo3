@@ -24,7 +24,7 @@ formEditor.group
              group: input
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Description`
       Define within which group within the ``form editor`` "new Element" modal the form element should be shown.

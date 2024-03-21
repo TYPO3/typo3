@@ -6,7 +6,7 @@ formEditor.propertyCollections.validators.70.editors.400
       prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.propertyCollections.validators.70.editors.400
 
 :aspect:`Data type`
-      array/ :ref:`[ValidationErrorMessageEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validationerrormessageeditor>`
+      array/ :ref:`[ValidationErrorMessageEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.validationerrormessageeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

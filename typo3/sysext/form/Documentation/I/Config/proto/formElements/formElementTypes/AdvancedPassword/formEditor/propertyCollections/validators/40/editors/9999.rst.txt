@@ -7,7 +7,7 @@ formEditor.propertyCollections.validators.40.editors.9999
       prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.propertyCollections.validators.40.editors.9999
 
 :aspect:`Data type`
-      array/ :ref:`[RemoveElementEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.removeelementeditor>`
+      array/ :ref:`[RemoveElementEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.removeelementeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

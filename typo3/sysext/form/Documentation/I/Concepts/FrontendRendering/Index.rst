@@ -254,7 +254,7 @@ the following translation scenarios are possible:
 
 In Extbase, the validation messages are identified with the help of
 numerical codes (UNIX timestamps). For the same validator, different codes
-are valid. Read more about :ref:`concrete validator configurations <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`.
+are valid. Read more about :ref:`concrete validator configurations <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`.
 
 The look-up process searches for translation keys in all given translation
 files based on the following order:
@@ -328,8 +328,8 @@ the following translation scenarios are possible:
 The look-up process searches for translation keys in all given translation
 files based on the following order:
 
-- ``<formDefinitionIdentifier>.finisher.<finisherIdentifier>.<optionName>``
-- ``finisher.<finisherIdentifier>.<optionName>``
+- ``<formDefinitionIdentifier>.finisher.finisheridentifier.<optionName>``
+- ``finisher.finisheridentifier.<optionName>``
 
 
 Example

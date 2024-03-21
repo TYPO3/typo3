@@ -6,7 +6,7 @@ formEditor.editors.300
       prototypes.<prototypeIdentifier>.formElementsDefinition.ContentElement.formEditor.editors.300
 
 :aspect:`Data type`
-      array/ :ref:`[Typo3WinBrowserEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.typo3winbrowsereditor>`
+      array/ :ref:`[Typo3WinBrowserEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.typo3winbrowsereditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

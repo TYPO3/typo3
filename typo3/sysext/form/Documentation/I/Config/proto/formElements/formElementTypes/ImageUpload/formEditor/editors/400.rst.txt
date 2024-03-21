@@ -7,7 +7,7 @@ formEditor.editors.400
       prototypes.<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.editors.400
 
 :aspect:`Data type`
-      array/ :ref:`[SingleSelectEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.singleselecteditor>`
+      array/ :ref:`[SingleSelectEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.singleselecteditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

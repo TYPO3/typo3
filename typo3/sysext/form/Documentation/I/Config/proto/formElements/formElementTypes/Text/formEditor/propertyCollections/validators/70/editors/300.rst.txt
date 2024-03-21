@@ -7,7 +7,7 @@ formEditor.propertyCollections.validators.70.editors.300
       prototypes.<prototypeIdentifier>.formElementsDefinition.Text.formEditor.propertyCollections.validators.70.editors.300
 
 :aspect:`Data type`
-      array/ :ref:`[TextEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+      array/ :ref:`[TextEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.texteditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

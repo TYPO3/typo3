@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*:
 
 ==================================================
 [<formElementTypeIdentifier>][formEditor][editors]
 ==================================================
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors-properties:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors-properties:
 
 Properties
 ==========
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors:
 
 <formElementTypeIdentifier>.formEditor.editors
 ----------------------------------------------
@@ -28,10 +28,10 @@ Properties
       Backend (form editor)
 
 :aspect:`Mandatory`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -40,16 +40,16 @@ Properties
       Array with numerical keys. Each arrayitem describes an ``inspector editor`` which is used to write values into a form element property.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*-commonproperties:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*-commonproperties:
 
 Common [<formElementTypeIdentifier>][formEditor][editors][*] properties
 =======================================================================
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier:
 .. include:: inspectorEditors/properties/Identifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename:
 
 templateName
 ------------
@@ -67,10 +67,10 @@ templateName
       Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
+      - :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -79,15 +79,15 @@ templateName
       .. include:: inspectorEditors/properties/TemplateName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label:
 .. include:: inspectorEditors/properties/Label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertypath:
 .. include:: inspectorEditors/properties/PropertyPath.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formEditor.editors-availableinspectoreditors:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formEditor.editors-availableinspectoreditors:
 
 available inspector editors
 ---------------------------

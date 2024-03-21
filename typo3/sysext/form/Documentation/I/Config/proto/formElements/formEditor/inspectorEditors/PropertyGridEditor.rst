@@ -1,13 +1,13 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertygrideditor:
 
 ====================
 [PropertyGridEditor]
 ====================
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertygrideditor-introduction:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertygrideditor-introduction:
 
 Introduction
 ============
@@ -15,12 +15,12 @@ Introduction
 Shows a grid which allows you to add (and remove) multiple rows and fill values for each row.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertygrideditor-properties:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertygrideditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.templatename-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.templatename-propertygrideditor:
 
 templateName
 ------------
@@ -35,7 +35,7 @@ templateName
       Yes
 
 :aspect:`Related options`
-      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formEditorPartials <prototypes.\<prototypeidentifier>.formeditor.formeditorpartials>`
+      - :ref:`prototypes.prototypeIdentifier.formEditor.formEditorPartials <prototypes.prototypeIdentifier.formeditor.formeditorpartials>`
 
 :aspect:`value`
       Inspector-PropertyGridEditor
@@ -47,19 +47,19 @@ templateName
       .. include:: properties/TemplateName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.identifier-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.identifier-propertygrideditor:
 .. include:: properties/Identifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.label-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.label-propertygrideditor:
 .. include:: properties/Label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertypath-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertypath-propertygrideditor:
 .. include:: properties/PropertyPath.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.issortable-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.issortable-propertygrideditor:
 
 isSortable
 ----------
@@ -83,7 +83,7 @@ isSortable
       If set to 'false' the rows are not sortable.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.enableaddrow-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.enableaddrow-propertygrideditor:
 
 enableAddRow
 ------------
@@ -107,7 +107,7 @@ enableAddRow
       If set to 'false' the "add new row" button is disabled.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.enabledeleterow-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.enabledeleterow-propertygrideditor:
 
 enableDeleteRow
 ---------------
@@ -131,7 +131,7 @@ enableDeleteRow
       If set to 'false' the "delete row" button is disabled.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.multiselection-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.multiselection-propertygrideditor:
 
 multiSelection
 --------------
@@ -155,7 +155,7 @@ multiSelection
       If set to 'false' only one row can be marked as preselected.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.removelastavailablerowflashmessagetitle-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.removelastavailablerowflashmessagetitle-propertygrideditor:
 
 removeLastAvailableRowFlashMessageTitle
 ---------------------------------------
@@ -181,7 +181,7 @@ removeLastAvailableRowFlashMessageTitle
       This property defines the title for the flash message.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.removelastavailablerowflashmessagemessage-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.removelastavailablerowflashmessagemessage-propertygrideditor:
 
 removeLastAvailableRowFlashMessageMessage
 -----------------------------------------
@@ -208,7 +208,7 @@ removeLastAvailableRowFlashMessageMessage
 
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.shouldshowpreselectedvaluecolumn-propertygrideditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.shouldshowpreselectedvaluecolumn-propertygrideditor:
 
 shouldShowPreselectedValueColumn
 --------------------------------

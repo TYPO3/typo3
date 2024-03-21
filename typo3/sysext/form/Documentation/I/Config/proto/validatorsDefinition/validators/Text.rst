@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.text:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.text:
 
 ======
 [Text]
 ======
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.text-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.text-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -17,13 +17,13 @@ Validation error codes
 - Error message: `The given subject was not a valid text (e.g. contained XML tags).`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.text-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.text-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.text.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.text.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -55,7 +55,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.text.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.text.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -89,7 +89,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.text.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.text.formeditor.label:
 
 formEditor.label
 ----------------

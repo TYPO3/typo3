@@ -7,7 +7,7 @@ formEditor.editors.900
       prototypes.<prototypeIdentifier>.formElementsDefinition.Url.formEditor.editors.900
 
 :aspect:`Data type`
-      array/ :ref:`[ValidatorsEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatorseditor>`
+      array/ :ref:`[ValidatorsEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.validatorseditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

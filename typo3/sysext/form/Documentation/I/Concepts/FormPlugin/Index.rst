@@ -24,8 +24,8 @@ globally and valid for the whole ``form definition`` . While adding the form
 to a specific page, the backend editor can define a different redirect target. This
 setting is only valid for the page containing the plugin.
 
-Read more about changing the :ref:`general<prototypes.\<prototypeidentifier>.formengine>`
-and :ref:`aspect-specific form plugin configuration<prototypes.\<prototypeIdentifier>.finishersdefinition.\<finisheridentifier>.formengine>`.
+Read more about changing the :ref:`general<prototypes.prototypeIdentifier.formengine>`
+and :ref:`aspect-specific form plugin configuration<prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formengine>`.
 
 
 .. _concepts-formplugin-exclude-override:
