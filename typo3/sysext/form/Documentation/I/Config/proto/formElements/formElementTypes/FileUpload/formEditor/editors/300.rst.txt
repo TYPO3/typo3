@@ -7,7 +7,7 @@ formEditor.editors.300
       prototypes.<prototypeIdentifier>.formElementsDefinition.FileUpload.formEditor.editors.300
 
 :aspect:`Data type`
-      array/ :ref:`[MultiSelectEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.multiselecteditor>`
+      array/ :ref:`[MultiSelectEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.multiselecteditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

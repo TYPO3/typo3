@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange:
 
 =============
 [NumberRange]
 =============
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -20,13 +20,13 @@ Validation error codes
 - Error message: `The given subject was not in the valid range (%s - %s).`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -58,7 +58,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.options.minimum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.options.minimum:
 
 options.minimum
 ---------------
@@ -82,7 +82,7 @@ options.minimum
       The minimum value to accept.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.options.maximum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.options.maximum:
 
 options.maximum
 ---------------
@@ -106,7 +106,7 @@ options.maximum
       The maximum value to accept.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -140,7 +140,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.formeditor.label:
 
 formEditor.label
 ----------------
@@ -174,7 +174,7 @@ formEditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.numberrange.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.numberrange.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------

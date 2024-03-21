@@ -53,7 +53,7 @@ Server-side validation
 Alphanumeric validator (:yaml:`Alphanumeric`)
 """""""""""""""""""""""""""""""""""""""""""""
 
-The :ref:`"Alphanumeric validator"<prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric>`
+The :ref:`"Alphanumeric validator"<prototypes.prototypeIdentifier.validatorsdefinition.alphanumeric>`
 checks for alphanumeric strings. Alphanumeric is defined as a combination of
 alphabetic and numeric characters `[A-Z + 0-9]`.
 
@@ -63,7 +63,7 @@ alphabetic and numeric characters `[A-Z + 0-9]`.
 Number of submitted values validator (:yaml:`Count`)
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
-The :ref:`"Number of submitted values validator"<prototypes.<prototypeidentifier>.validatorsdefinition.count>`
+The :ref:`"Number of submitted values validator"<prototypes.prototypeIdentifier.validatorsdefinition.count>`
 checks if the given value contains the specified amount of elements. The
 validator has 2 options:
 
@@ -76,7 +76,7 @@ validator has 2 options:
 Date range validator (:yaml:`DateRange`)
 """"""""""""""""""""""""""""""""""""""""
 
-The :ref:`"Date range validator"<prototypes.<prototypeidentifier>.validatorsdefinition.daterange>`
+The :ref:`"Date range validator"<prototypes.prototypeIdentifier.validatorsdefinition.daterange>`
 checks if the given value is a valid DateTime object and in-between a specified
 date range. The range can be defined by providing a minimum and/or maximum date.
 The validator has 2 options:
@@ -100,7 +100,7 @@ and maximum date can be configured through the validator options.
 Date/time validator (:yaml:`DateTime`)
 """""""""""""""""""""""""""""""""""""""
 
-The :ref:`"Date/time validator"<prototypes.<prototypeidentifier>.validatorsdefinition.datetime>`
+The :ref:`"Date/time validator"<prototypes.prototypeIdentifier.validatorsdefinition.datetime>`
 checks if the given value is a valid DateTime object. The date string is
 expected to be formatted according to the `W3C standard <http://www.w3.org/TR/NOTE-datetime.html>`__
 which is `YYYY-MM-DDT##:##:##+##:##`, for example `2005-08-15T15:52:01+00:00`.
@@ -111,7 +111,7 @@ which is `YYYY-MM-DDT##:##:##+##:##`, for example `2005-08-15T15:52:01+00:00`.
 Email validator (:yaml:`EmailAddress`)
 """"""""""""""""""""""""""""""""""""""
 
-The :ref:`"Email validator"<prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress>`
+The :ref:`"Email validator"<prototypes.prototypeIdentifier.validatorsdefinition.emailaddress>`
 checks if the given value is a valid email address. The format of a valid email
 address is defined in `RFC 3696 <https://tools.ietf.org/html/rfc3696>`__.
 The standard allows international characters and the multiple appearance
@@ -123,7 +123,7 @@ of the `@` sign.
 File size validator (:yaml:`FileSize`)
 """"""""""""""""""""""""""""""""""""""
 
-The :ref:`"File size validator"<prototypes.<prototypeidentifier>.validatorsdefinition.filesize>`
+The :ref:`"File size validator"<prototypes.prototypeIdentifier.validatorsdefinition.filesize>`
 validates a file resource regarding its file size. The validator has 2 options:
 
 -   Minimum [:yaml:`options.maximum`]: The minimum filesize to accept. Use the
@@ -141,7 +141,7 @@ depends on the :file:`php.ini` settings of your environment.
 Floating-point number validator (:yaml:`Float`)
 """""""""""""""""""""""""""""""""""""""""""""""
 
-The :ref:`"Floating-point number validator"<prototypes.<prototypeidentifier>.validatorsdefinition.float>`
+The :ref:`"Floating-point number validator"<prototypes.prototypeIdentifier.validatorsdefinition.float>`
 checks if the given value is of type float or a string matching the regular
 expression `[0-9.e+-]`.
 
@@ -151,7 +151,7 @@ expression `[0-9.e+-]`.
 Integer number validator (:yaml:`Integer`)
 """"""""""""""""""""""""""""""""""""""""""
 
-The :ref:`"Integer number validator"<prototypes.<prototypeidentifier>.validatorsdefinition.integer>`
+The :ref:`"Integer number validator"<prototypes.prototypeIdentifier.validatorsdefinition.integer>`
 checks if the given value is a valid integer.
 
 
@@ -160,7 +160,7 @@ checks if the given value is a valid integer.
 Empty validator (:yaml:`NotEmpty`)
 """"""""""""""""""""""""""""""""""
 
-The :ref:`"Empty validator"<prototypes.<prototypeidentifier>.validatorsdefinition.notempty>`
+The :ref:`"Empty validator"<prototypes.prototypeIdentifier.validatorsdefinition.notempty>`
 checks if the given value is not empty (NULL, empty string, empty array or empty
 object).
 
@@ -170,7 +170,7 @@ object).
 Number validator (:yaml:`Number`)
 """""""""""""""""""""""""""""""""
 
-The :ref:`"Number validator"<prototypes.<prototypeidentifier>.validatorsdefinition.number>`
+The :ref:`"Number validator"<prototypes.prototypeIdentifier.validatorsdefinition.number>`
 checks if the given value is a number.
 
 
@@ -179,7 +179,7 @@ checks if the given value is a number.
 Number range validator (:yaml:`NumberRange`)
 """"""""""""""""""""""""""""""""""""""""""""
 
-The :ref:`"Number range validator"<prototypes.<prototypeidentifier>.validatorsdefinition.numberrange>`
+The :ref:`"Number range validator"<prototypes.prototypeIdentifier.validatorsdefinition.numberrange>`
 checks if the given value is a number in the specified range. The validator has
 2 options:
 
@@ -192,7 +192,7 @@ checks if the given value is a number in the specified range. The validator has
 Regular expression validator (:yaml:`RegularExpression`)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-The :ref:`"Regular expression validator"<prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression>`
+The :ref:`"Regular expression validator"<prototypes.prototypeIdentifier.validatorsdefinition.regularexpression>`
 checks if the given value matches the specified regular expression. Delimiters
 or modifiers are not supported. The validator has 1 option:
 
@@ -210,7 +210,7 @@ case would be :code:`/^[-a-z0-9]+\.[a-z]{2,6}$/`.
 String length validator (:yaml:`StringLength`)
 """"""""""""""""""""""""""""""""""""""""""""""
 
-The :ref:`"String length validator"<prototypes.<prototypeidentifier>.validatorsdefinition.stringlength>`
+The :ref:`"String length validator"<prototypes.prototypeIdentifier.validatorsdefinition.stringlength>`
 checks if the given value is a valid string and its length is in the specified
 range. The validator has 2 options:
 
@@ -223,7 +223,7 @@ range. The validator has 2 options:
 Non-XML text validator (:yaml:`Text`)
 """""""""""""""""""""""""""""""""""""
 
-The :ref:`"Non-XML text validator"<prototypes.<prototypeidentifier>.validatorsdefinition.text>`
+The :ref:`"Non-XML text validator"<prototypes.prototypeIdentifier.validatorsdefinition.text>`
 checks if the given value is a valid text (contains no XML tags). This basically
 means, that tags are stripped. In this special case quotes are not encoded
 (see `filter_var() <https://php.net/filter_var>`__ for more information.

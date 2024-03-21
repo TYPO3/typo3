@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression:
 
 ===================
 [RegularExpression]
 ===================
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -17,13 +17,13 @@ Validation error codes
 - Error message: `The given subject did not match the pattern.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -55,7 +55,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.options.regularExpression:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.options.regularExpression:
 
 options.regularExpression
 -------------------------
@@ -79,7 +79,7 @@ options.regularExpression
       The regular expression to use for validation, used as given.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -113,7 +113,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.formeditor.label:
 
 formEditor.label
 ----------------
@@ -147,7 +147,7 @@ formEditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.regularexpression.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------

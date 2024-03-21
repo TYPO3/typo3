@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.redirect:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect:
 
 ==========
 [Redirect]
 ==========
 
-.. _prototypes.<prototypeidentifier>.finishersdefinitionredirect-properties:
+.. _prototypes.prototypeIdentifier.finishersdefinitionredirect-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.implementationclassname:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.implementationclassname:
 
 implementationClassName
 -----------------------
@@ -45,7 +45,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.pageuid:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.options.pageuid:
 
 options.pageUid
 ---------------
@@ -73,13 +73,13 @@ options.pageUid
       Redirect to this page uid.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.additionalparameters:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.options.additionalparameters:
 
 options.additionalParameters
 ----------------------------
 
 :aspect:`Option path`
-      prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.additionalParameters
+      prototypes.prototypeIdentifier.finishersDefinition.Redirect.options.additionalParameters
 
 :aspect:`Data type`
       string
@@ -101,7 +101,7 @@ options.additionalParameters
       Additional parameters which should be used on the target page.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.fragment:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.options.fragment:
 
 options.fragment
 ----------------
@@ -130,7 +130,7 @@ options.fragment
       The :html:`#` character can be omitted.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.delay:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.options.delay:
 
 options.delay
 -------------
@@ -158,7 +158,7 @@ options.delay
       The redirect delay in seconds.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.statuscode:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.options.statuscode:
 
 options.statusCode
 ------------------
@@ -186,7 +186,7 @@ options.statusCode
       The HTTP status code for the redirect. Default is "303 See Other".
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.translation.translationfiles:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
@@ -217,7 +217,7 @@ options.translation.translationFiles
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
@@ -256,7 +256,7 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.formeditor.label:
 
 formeditor.label
 ----------------
@@ -295,7 +295,7 @@ formeditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
@@ -334,7 +334,7 @@ formeditor.predefinedDefaults
       .. include:: ../properties/predefinedDefaults.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formengine.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.formengine.label:
 
 FormEngine.label
 ----------------
@@ -367,7 +367,7 @@ FormEngine.label
       .. include:: ../properties/formEngine/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.redirect.formengine.elements:
+.. _prototypes.prototypeIdentifier.finishersdefinition.redirect.formengine.elements:
 
 FormEngine.elements
 -------------------

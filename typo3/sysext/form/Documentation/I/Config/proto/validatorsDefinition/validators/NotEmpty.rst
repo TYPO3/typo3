@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.notempty:
 
 ==========
 [NotEmpty]
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.notempty-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -26,13 +26,13 @@ Validation error codes
 - Error message: `The given subject was empty.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.notempty-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.notempty.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -64,7 +64,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.notempty.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -98,7 +98,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.notempty.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.notempty.formeditor.label:
 
 formEditor.label
 ----------------

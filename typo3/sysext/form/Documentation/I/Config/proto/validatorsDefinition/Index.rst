@@ -1,20 +1,20 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition:
+.. _prototypes.prototypeIdentifier.validatorsdefinition:
 
 ======================
 [validatorsDefinition]
 ======================
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.*:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.*:
 
 [validatorsDefinition]
 ----------------------
@@ -47,7 +47,7 @@ Properties
       Array which defines the available serverside validators. Every key within this array is called the ``<validatoridentifier>``.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.<validatoridentifier>:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier:
 
 <validatorIdentifier>
 ---------------------
@@ -96,9 +96,9 @@ Properties
                [...]
 
 :aspect:`Related options`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.\<formElementTypeIdentifier>.formEditor.propertyCollections.validators.[*].identifier"<prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.propertycollections.validators.*.identifier>`
-      - :ref:`"[ValidatorsEditor] selectOptions.[*].value"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-validatorseditor>`
-      - :ref:`"[RequiredValidatorEditor] validatorIdentifier"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.validatoridentifier-requiredvalidatoreditor>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.formelementtypeidentifier.formEditor.propertyCollections.validators.[*].identifier"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.validators.*.identifier>`
+      - :ref:`"[ValidatorsEditor] selectOptions.[*].value"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.value-validatorseditor>`
+      - :ref:`"[RequiredValidatorEditor] validatorIdentifier"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.validatoridentifier-requiredvalidatoreditor>`
 
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
@@ -107,12 +107,12 @@ Properties
       This array key identifies a validator. This identifier could be used to attach a validator to a form element.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.<validatoridentifier>-commonproperties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-commonproperties:
 
 Common <validatorIdentifier> properties
 =======================================
 
-.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -130,7 +130,7 @@ implementationClassName
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
@@ -139,7 +139,7 @@ implementationClassName
       .. include:: properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.options:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier.options:
 
 options
 -------
@@ -154,10 +154,10 @@ options
       Frontend/ Backend (form editor)
 
 :aspect:`Mandatory`
-      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`)
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
@@ -166,7 +166,7 @@ options
       Array with validator options.
 
 
-.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier.formeditor:
 
 formEditor
 ----------
@@ -184,7 +184,7 @@ formEditor
       Recommended
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -193,7 +193,7 @@ formEditor
       Array with configurations for the ``form editor``
 
 
-.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
@@ -211,7 +211,7 @@ formeditor.iconIdentifier
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -220,7 +220,7 @@ formeditor.iconIdentifier
       .. include:: properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier.formeditor.label:
 
 formeditor.label
 ----------------
@@ -238,7 +238,7 @@ formeditor.label
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -247,7 +247,7 @@ formeditor.label
       .. include:: properties/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.validatorsdefinition.<validatoridentifier>.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
@@ -265,7 +265,7 @@ formeditor.predefinedDefaults
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete validators configuration <prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete validators configuration <prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -274,7 +274,7 @@ formeditor.predefinedDefaults
       .. include:: properties/predefinedDefaults.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.<validatoridentifier>-concreteconfigurations:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier-concreteconfigurations:
 
 Concrete configurations
 =======================

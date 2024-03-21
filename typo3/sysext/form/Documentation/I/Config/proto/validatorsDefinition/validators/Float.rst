@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.float:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.float:
 
 =======
 [Float]
 =======
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.float-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.float-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -17,13 +17,13 @@ Validation error codes
 - Error message: `The given subject was not a valid float.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.float-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.float-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.float.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.float.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -55,7 +55,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.float.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.float.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -89,7 +89,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.float.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.float.formeditor.label:
 
 formEditor.label
 ----------------

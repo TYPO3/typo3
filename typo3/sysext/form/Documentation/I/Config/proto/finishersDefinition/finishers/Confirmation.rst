@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.confirmation:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation:
 
 ==============
 [Confirmation]
 ==============
 
-.. _prototypes.<prototypeidentifier>.finishersdefinitionconfirmation-properties:
+.. _prototypes.prototypeIdentifier.finishersdefinitionconfirmation-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.implementationclassname:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.implementationclassname:
 
 implementationClassName
 -----------------------
@@ -45,7 +45,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.message:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.options.message:
 
 options.message
 ---------------
@@ -74,7 +74,7 @@ options.message
       The text which is shown if the finisher is invoked.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.contentelementuid:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.options.contentelementuid:
 
 options.contentElementUid
 -------------------------
@@ -99,7 +99,7 @@ options.contentElementUid
       If contentElementUid is set, the option "message" will be ignored.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.typoscriptobjectpath:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.options.typoscriptobjectpath:
 
 options.typoscriptObjectPath
 ----------------------------
@@ -123,7 +123,7 @@ options.typoscriptObjectPath
       The option "typoscriptObjectPath" can be used to render the content element (options.contentElementUid) through a typoscript lib.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.variables:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.options.variables:
 
 options.variables
 -----------------
@@ -147,7 +147,7 @@ options.variables
       Variables which should be available within the template.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templatename:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.options.templatename:
 
 options.templateName
 --------------------
@@ -171,7 +171,7 @@ options.templateName
       Define a custom template name which should be used.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.templaterootpaths:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.options.templaterootpaths:
 
 options.templateRootPaths
 -------------------------
@@ -201,7 +201,7 @@ options.templateRootPaths
       Used to define several paths for templates, which will be tried in reversed order (the paths are searched from bottom to top).
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.options.translation.translationfiles:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
@@ -232,7 +232,7 @@ options.translation.translationFiles
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
@@ -269,7 +269,7 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.formeditor.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.formeditor.label:
 
 formeditor.label
 ----------------
@@ -306,7 +306,7 @@ formeditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.confirmation.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.finishersdefinition.confirmation.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------

@@ -30,7 +30,7 @@ formEditor.iconIdentifier
       An icon identifier which must be registered through the ``\TYPO3\CMS\Core\Imaging\IconRegistry``.
       This icon will be shown within
 
-      - :ref:`"Inspector [FormElementHeaderEditor]"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.formelementheadereditor>`.
+      - :ref:`"Inspector [FormElementHeaderEditor]"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.formelementheadereditor>`.
       - :ref:`"Abstract view formelement templates"<apireference-formeditor-stage-commonabstractformelementtemplates>`.
       - ``Tree`` component.
       - "new element" Modal

@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.stringlength:
 
 ==============
 [StringLength]
 ==============
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.stringlength-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -29,13 +29,13 @@ Validation error codes
 - Error message: `The length of the given string exceeded %s characters.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.stringlength-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.stringlength.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -67,7 +67,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.options.minimum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.stringlength.options.minimum:
 
 options.minimum
 ---------------
@@ -91,7 +91,7 @@ options.minimum
       Minimum length for a valid string.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.options.maximum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.stringlength.options.maximum:
 
 options.maximum
 ---------------
@@ -115,7 +115,7 @@ options.maximum
       Maximum length for a valid string.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.stringlength.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -149,7 +149,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.stringlength.formeditor.label:
 
 formEditor.label
 ----------------
@@ -183,7 +183,7 @@ formEditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.stringlength.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.stringlength.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------

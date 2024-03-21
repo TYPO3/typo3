@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.flashmessage:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage:
 
 ==============
 [FlashMessage]
 ==============
 
-.. _prototypes.<prototypeidentifier>.finishersdefinitionflashmessage-properties:
+.. _prototypes.prototypeIdentifier.finishersdefinitionflashmessage-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.implementationclassname:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.implementationclassname:
 
 implementationClassName
 -----------------------
@@ -45,7 +45,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagebody:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagebody:
 
 options.messageBody
 -------------------
@@ -74,7 +74,7 @@ options.messageBody
       The flash message body TEXT.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagetitle:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagetitle:
 
 options.messageTitle
 --------------------
@@ -103,7 +103,7 @@ options.messageTitle
       The flash message title.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagearguments:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagearguments:
 
 options.messageArguments
 ------------------------
@@ -132,7 +132,7 @@ options.messageArguments
       The flash message arguments, if needed.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.messagecode:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.messagecode:
 
 options.messageCode
 -------------------
@@ -159,7 +159,7 @@ options.messageCode
       The flash message code, if needed.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.severity:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.severity:
 
 options.severity
 ----------------
@@ -187,7 +187,7 @@ options.severity
       See :t3src:`core/Classes/Type/ContextualFeedbackSeverity.php` cases for the codes.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.options.translation.translationfiles:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
@@ -218,7 +218,7 @@ options.translation.translationFiles
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
@@ -259,7 +259,7 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.formeditor.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.formeditor.label:
 
 formeditor.label
 ----------------
@@ -300,7 +300,7 @@ formeditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.flashmessage.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------

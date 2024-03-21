@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange:
 
 ===========
 [DateRange]
 ===========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -23,13 +23,13 @@ Validation error codes
 - Error message: `You must select a date after %s.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -61,7 +61,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.format:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange.options.format:
 
 options.format
 --------------
@@ -90,7 +90,7 @@ options.format
       The format of the minimum and maximum option.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.minimum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange.options.minimum:
 
 options.minimum
 ---------------
@@ -114,7 +114,7 @@ options.minimum
       The minimum date formatted as Y-m-d.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.maximum:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange.options.maximum:
 
 options.maximum
 ---------------
@@ -138,7 +138,7 @@ options.maximum
       The maximum date formatted as Y-m-d.
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -172,7 +172,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange.formeditor.label:
 
 formEditor.label
 ----------------
@@ -206,7 +206,7 @@ formEditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.daterange.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------

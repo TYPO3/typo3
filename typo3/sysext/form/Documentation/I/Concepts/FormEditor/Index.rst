@@ -232,7 +232,7 @@ to use this element in their manually created YAML definitions or via API anymor
          AdvancedPassword: null
 
 
-The correct way is to unset the :ref:`group property <prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.group>`.
+The correct way is to unset the :ref:`group property <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.group>`.
 This property defines within which group within the ``form editor`` "new Element"
 modal the form element should be shown. Unsetting this property will remove the
 form element safely form the form editor. Check out the following example. The

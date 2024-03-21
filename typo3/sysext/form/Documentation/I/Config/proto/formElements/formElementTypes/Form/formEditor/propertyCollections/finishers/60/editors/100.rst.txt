@@ -7,7 +7,7 @@ formEditor.propertyCollections.finishers.60.editors.100
       prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.60.editors.100
 
 :aspect:`Data type`
-      array/ :ref:`[CollectionElementHeaderEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.collectionelementheadereditor>`
+      array/ :ref:`[CollectionElementHeaderEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.collectionelementheadereditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

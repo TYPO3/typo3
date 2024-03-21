@@ -33,7 +33,7 @@ formEditor.propertyCollections.validators.60.identifier
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"\<validatorIdentifier>"<prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>>`
+      - :ref:`"\<validatorIdentifier>"<prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier>`
 
 :aspect:`Description`
       Identifies the validator which should be attached to the form element. Must be equal to an existing ``<validatorIdentifier>``.

@@ -7,7 +7,7 @@ formEditor.editors.100
       prototypes.<prototypeIdentifier>.formElementsDefinition.DatePicker.formEditor.editors.100
 
 :aspect:`Data type`
-      array/ :ref:`[FormElementHeaderEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.formelementheadereditor>`
+      array/ :ref:`[FormElementHeaderEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.formelementheadereditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

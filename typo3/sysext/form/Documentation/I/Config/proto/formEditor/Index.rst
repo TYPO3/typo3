@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.formeditor:
+.. _prototypes.prototypeIdentifier.formeditor:
 
 ============
 [formEditor]
 ============
 
 
-.. _prototypes.<prototypeidentifier>.formeditor-properties:
+.. _prototypes.prototypeIdentifier.formeditor-properties:
 
 Properties
 ==========
 
-.. _prototypes.<prototypeidentifier>.formeditor.translationfiles:
+.. _prototypes.prototypeIdentifier.formeditor.translationfiles:
 
 translationFiles
 ----------------
@@ -46,7 +46,7 @@ translationFiles
       Filesystem path(s) to translation files which should be searched for form editor translations.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.app:
+.. _prototypes.prototypeIdentifier.formeditor.dynamicjavascriptmodules.app:
 
 dynamicJavaScriptModules.app
 ----------------------------
@@ -81,7 +81,7 @@ dynamicJavaScriptModules.app
       ES6 module specifier for the form editor JavaScript app.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.mediator:
+.. _prototypes.prototypeIdentifier.formeditor.dynamicjavascriptmodules.mediator:
 
 dynamicJavaScriptModules.mediator
 ---------------------------------
@@ -117,7 +117,7 @@ dynamicJavaScriptModules.mediator
       ES6 module specifier for the form editor JavaScript mediator.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.viewmodel:
+.. _prototypes.prototypeIdentifier.formeditor.dynamicjavascriptmodules.viewmodel:
 
 dynamicJavaScriptModules.viewModel
 ----------------------------------
@@ -153,7 +153,7 @@ dynamicJavaScriptModules.viewModel
       ES6 module specifier for the form editor JavaScript view model.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.additionalviewmodelmodules:
+.. _prototypes.prototypeIdentifier.formeditor.dynamicjavascriptmodules.additionalviewmodelmodules:
 
 dynamicJavaScriptModules.additionalViewModelModules
 ---------------------------------------------------
@@ -181,7 +181,7 @@ dynamicJavaScriptModules.additionalViewModelModules
       Array with ES6 module specifiers for custom JavaScript modules.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.addinlinesettings:
+.. _prototypes.prototypeIdentifier.formeditor.addinlinesettings:
 
 addInlineSettings
 -----------------
@@ -208,7 +208,7 @@ addInlineSettings
       Adds Javascript Inline Setting. This will occur in TYPO3.settings - object.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.maximumundosteps:
+.. _prototypes.prototypeIdentifier.formeditor.maximumundosteps:
 
 maximumUndoSteps
 ----------------
@@ -240,7 +240,7 @@ maximumUndoSteps
       Define the maximum possible undo steps within the form editor.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.stylesheets:
+.. _prototypes.prototypeIdentifier.formeditor.stylesheets:
 
 stylesheets
 -----------
@@ -273,7 +273,7 @@ stylesheets
       The CSS files to be used by the ``form editor``.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration:
+.. _prototypes.prototypeIdentifier.formeditor.formeditorfluidconfiguration:
 
 formEditorFluidConfiguration
 ----------------------------
@@ -311,7 +311,7 @@ formEditorFluidConfiguration
       Basic fluid template search path configurations.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration.templatepathandfilename:
+.. _prototypes.prototypeIdentifier.formeditor.formeditorfluidconfiguration.templatepathandfilename:
 
 formEditorFluidConfiguration.templatePathAndFilename
 ----------------------------------------------------
@@ -348,7 +348,7 @@ formEditorFluidConfiguration.templatePathAndFilename
       Internal setting. Template which render the inline HTML templates which are used by the form editor JavaScript.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration.partialrootpaths:
+.. _prototypes.prototypeIdentifier.formeditor.formeditorfluidconfiguration.partialrootpaths:
 
 formEditorFluidConfiguration.partialRootPaths
 ---------------------------------------------
@@ -386,7 +386,7 @@ formEditorFluidConfiguration.partialRootPaths
       Array with fluid partial search paths for the inline HTML templates which are used by the form editor JavaScript.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.formeditorfluidconfiguration.layoutrootpaths:
+.. _prototypes.prototypeIdentifier.formeditor.formeditorfluidconfiguration.layoutrootpaths:
 
 formEditorFluidConfiguration.layoutRootPaths
 --------------------------------------------
@@ -424,7 +424,7 @@ formEditorFluidConfiguration.layoutRootPaths
       Internal setting.  Array with fluid layout search paths.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.formeditorpartials:
+.. _prototypes.prototypeIdentifier.formeditor.formeditorpartials:
 
 formEditorPartials
 ------------------
@@ -496,15 +496,15 @@ formEditorPartials
 :aspect:`Good to know`
       - :ref:`"Form editor"<concepts-formeditor>`
       - :ref:`"Common Abstract view formelement templates"<apireference-formeditor-stage-commonabstractformelementtemplates>`
-      - :ref:`"available inspector editors"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formEditor.editors-availableinspectoreditors>`
+      - :ref:`"available inspector editors"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formEditor.editors-availableinspectoreditors>`
       - :ref:`"view/inspector/editor/insert/perform"<apireference-formeditor-basicjavascriptconcepts-events-view-inspector-editor-insert-perform>`
 
 :aspect:`Description`
-      Array with mappings for the inline HTML templates. The keys are identifiers which could be used within the JavaScript code. The values are partial paths, relative to :ref:`"prototypes.\<prototypeIdentifier>.formeditor.formEditorFluidConfiguration.partialRootPaths"<prototypes.\<prototypeidentifier>.formeditor.formeditorfluidconfiguration.partialrootpaths>`.
+      Array with mappings for the inline HTML templates. The keys are identifiers which could be used within the JavaScript code. The values are partial paths, relative to :ref:`"prototypes.prototypeIdentifier.formeditor.formEditorFluidConfiguration.partialRootPaths"<prototypes.prototypeIdentifier.formeditor.formeditorfluidconfiguration.partialrootpaths>`.
       The partials content will be rendered as inline HTML. This inline HTML templates can be identified and used by such a key (e.g. "Inspector-TextEditor") within the JavaScript code.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.formelementpropertyvalidatorsdefinition:
+.. _prototypes.prototypeIdentifier.formeditor.formelementpropertyvalidatorsdefinition:
 
 formElementPropertyValidatorsDefinition
 ---------------------------------------
@@ -548,8 +548,8 @@ formElementPropertyValidatorsDefinition
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
 
 :aspect:`Related options`
-      - :ref:`"[TextEditor] propertyValidators"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor>`
-      - :ref:`"[Typo3WinBrowserEditor] propertyValidators"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor>`
+      - :ref:`"[TextEditor] propertyValidators"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidators-texteditor>`
+      - :ref:`"[Typo3WinBrowserEditor] propertyValidators"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor>`
 
 :aspect:`Good to know`
       - :ref:`"Form editor"<concepts-formeditor>`
@@ -561,7 +561,7 @@ formElementPropertyValidatorsDefinition
       for this validator. Every array key within ``formElementPropertyValidatorsDefinition`` must be equal to such an identifier.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.formelementpropertyvalidatorsdefinition.<formelementpropertyvalidatoridentifier>.errormessage:
+.. _prototypes.prototypeIdentifier.formeditor.formelementpropertyvalidatorsdefinition.<formelementpropertyvalidatoridentifier>.errormessage:
 
 formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>.errorMessage
 ---------------------------------------------------------------------------------------------
@@ -605,8 +605,8 @@ formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
 
 :aspect:`Related options`
-      - :ref:`"[TextEditor] propertyValidators"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor>`
-      - :ref:`"[Typo3WinBrowserEditor] propertyValidators"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor>`
+      - :ref:`"[TextEditor] propertyValidators"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidators-texteditor>`
+      - :ref:`"[Typo3WinBrowserEditor] propertyValidators"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor>`
 
 :aspect:`Good to know`
       - :ref:`"Form editor"<concepts-formeditor>`
@@ -615,7 +615,7 @@ formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>
       The error message for an inspector editor property validator which is shown if the validation fails.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.formelementgroups:
+.. _prototypes.prototypeIdentifier.formeditor.formelementgroups:
 
 formElementGroups
 -----------------
@@ -653,30 +653,30 @@ formElementGroups
                label: formEditor.formElementGroups.page.label
 
 :aspect:`Related options`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.advancedpassword.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Checkbox.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.checkbox.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.ContentElement.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.contentelement.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Date.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.date.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.DatePicker.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.datepicker.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Email.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.email.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Fieldset.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.fieldset.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.FileUpload.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.fileupload.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.GridRow.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.gridrow.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Hidden.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.hidden.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.ImageUpload.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.imageupload.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.MultiCheckbox.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.multicheckbox.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.MultiSelect.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.multiselect.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Number.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.number.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Page.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.page.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Password.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.password.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.RadioButton.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.radiobutton.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.SingleSelect.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.singleselect.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.StaticText.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.statictext.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.SummaryPage.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.summarypage.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Telephone.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.telephone.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Text.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.text.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Textarea.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.textarea.formeditor.group>`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Url.formEditor.group"<prototypes.\<prototypeIdentifier>.formelementsdefinition.url.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.AdvancedPassword.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.advancedpassword.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Checkbox.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.checkbox.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.ContentElement.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.contentelement.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Date.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.date.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.DatePicker.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.datepicker.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Email.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.email.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Fieldset.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.fieldset.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.FileUpload.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.fileupload.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.GridRow.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.gridrow.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Hidden.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.hidden.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.ImageUpload.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.imageupload.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.MultiCheckbox.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.multicheckbox.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.MultiSelect.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.multiselect.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Number.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.number.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Page.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.page.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Password.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.password.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.RadioButton.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.radiobutton.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.SingleSelect.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.singleselect.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.StaticText.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.statictext.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.SummaryPage.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.summarypage.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Telephone.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.telephone.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Text.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.text.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Textarea.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.textarea.formeditor.group>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Url.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.url.formeditor.group>`
 
 :aspect:`Good to know`
       - :ref:`"Form editor"<concepts-formeditor>`
@@ -687,7 +687,7 @@ formElementGroups
       must be equal to an array key within ``formElementGroups``.
 
 
-.. _prototypes.<prototypeidentifier>.formeditor.formelementgroups.<formelementgroupidentifier>.label:
+.. _prototypes.prototypeIdentifier.formeditor.formelementgroups.<formelementgroupidentifier>.label:
 
 formElementGroups.<formElementGroupIdentifier>.label
 ----------------------------------------------------

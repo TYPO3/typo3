@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.alphanumeric:
 
 ==============
 [Alphanumeric]
 ==============
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.alphanumeric-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -17,13 +17,13 @@ Validation error codes
 - Error message: `The given subject was not a valid alphanumeric string.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.alphanumeric-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.alphanumeric.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -55,7 +55,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.alphanumeric.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -89,7 +89,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.alphanumeric.formeditor.label:
 
 formEditor.label
 ----------------

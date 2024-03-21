@@ -7,7 +7,7 @@ formEditor.propertyCollections.finishers.20.editors.850
       prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.850
 
 :aspect:`Data type`
-      array/ :ref:`[PropertyGridEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertygrideditor>`
+      array/ :ref:`[PropertyGridEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertygrideditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

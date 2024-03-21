@@ -7,7 +7,7 @@ formEditor.editors.500
       prototypes.<prototypeIdentifier>.formElementsDefinition.AdvancedPassword.formEditor.editors.500
 
 :aspect:`Data type`
-      array/ :ref:`[CheckboxEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor>`
+      array/ :ref:`[CheckboxEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.checkboxeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

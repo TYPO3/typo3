@@ -7,7 +7,7 @@ formEditor.propertyCollections.finishers.20.editors.1200
       prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.1200
 
 :aspect:`Data type`
-      array/ :ref:`[SingleSelectEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.singleselecteditor>`
+      array/ :ref:`[SingleSelectEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.singleselecteditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

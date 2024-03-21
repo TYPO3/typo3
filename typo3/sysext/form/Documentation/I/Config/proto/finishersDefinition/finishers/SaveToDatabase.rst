@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.savetodatabase:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase:
 
 ================
 [SaveToDatabase]
 ================
 
-.. _prototypes.<prototypeidentifier>.finishersdefinitionsavetodatabase-properties:
+.. _prototypes.prototypeIdentifier.finishersdefinitionsavetodatabase-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.implementationclassname:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.implementationclassname:
 
 implementationClassName
 -----------------------
@@ -45,7 +45,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.table:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.table:
 
 options.table
 -------------
@@ -73,7 +73,7 @@ options.table
       Insert or update values into this table.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.mode:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.mode:
 
 options.mode
 ------------
@@ -106,7 +106,7 @@ options.mode
       ``update`` will update a given database row with the values from the submitted form and/or some predefined values. 'options.whereClause' is then required.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.whereclause:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.whereclause:
 
 options.whereClause
 -------------------
@@ -134,7 +134,7 @@ options.whereClause
       This where clause will be used for a database update action.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.elements:
 
 options.elements
 ----------------
@@ -164,7 +164,7 @@ options.elements
       The value for each key within ``options.elements`` is an array with additional informations.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.mapondatabasecolumn:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.mapondatabasecolumn:
 
 options.elements.<formElementIdentifier>.mapOnDatabaseColumn
 ------------------------------------------------------------
@@ -192,7 +192,7 @@ options.elements.<formElementIdentifier>.mapOnDatabaseColumn
       The value from the submitted form element with the identifier ``<formElementIdentifier>`` will be written into this database column.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.savefileidentifierinsteadofuid:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.savefileidentifierinsteadofuid:
 
 options.elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
 -------------------------------------------------------------------------------------------
@@ -225,7 +225,7 @@ options.elements.<formElementIdentifier>.saveFileIdentifierInsteadOfUid
       FAL identifier (1:/user_uploads/some_uploaded_pic.jpg) instead.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.skipifvalueisempty:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.skipifvalueisempty:
 
 options.elements.<formElementIdentifier>.skipIfValueIsEmpty
 -------------------------------------------------------------------------------
@@ -255,7 +255,7 @@ options.elements.<formElementIdentifier>.skipIfValueIsEmpty
       is valid content.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.dateformat:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.elements.<formelementidentifier>.dateformat:
 
 options.elements.<formElementIdentifier>.dateFormat
 ---------------------------------------------------
@@ -287,7 +287,7 @@ options.elements.<formElementIdentifier>.dateFormat
       The default value is "U" which means a Unix timestamp.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.databasecolumnmappings:
 
 options.databaseColumnMappings
 ------------------------------
@@ -322,7 +322,7 @@ options.databaseColumnMappings
       will override the value you set within ``options.databaseColumnMappings``.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings.<databasecolumnname>.value:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.databasecolumnmappings.<databasecolumnname>.value:
 
 options.databaseColumnMappings.<databaseColumnName>.value
 ---------------------------------------------------------
@@ -355,7 +355,7 @@ options.databaseColumnMappings.<databaseColumnName>.value
       to the ``options.elements`` configuration variant.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings.<databasecolumnname>.skipifvalueisempty:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.databasecolumnmappings.<databasecolumnname>.skipifvalueisempty:
 
 options.databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
 ----------------------------------------------------------------------
@@ -384,7 +384,7 @@ options.databaseColumnMappings.<databaseColumnName>.skipIfValueIsEmpty
       <databaseColumnName>.value` is empty. Empty means strings without content, whitespace is valid content.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.translation.translationfiles:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.options.translation.translationfiles:
 
 options.translation.translationFiles
 ------------------------------------
@@ -415,7 +415,7 @@ options.translation.translationFiles
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
@@ -451,7 +451,7 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.formeditor.label:
 
 formeditor.label
 ----------------
@@ -487,7 +487,7 @@ formeditor.label
       .. include:: ../properties/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.finishersdefinition.savetodatabase.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------

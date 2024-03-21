@@ -1,19 +1,19 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition:
+.. _prototypes.prototypeIdentifier.formelementsdefinition:
 
 ========================
 [formElementsDefinition]
 ========================
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition-properties:
+.. _prototypes.prototypeIdentifier.formelementsdefinition-properties:
 
 Properties
 ==========
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.*:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.*:
 
 [formElementsDefinition]
 ------------------------
@@ -46,7 +46,7 @@ Properties
       Array which defines the available form elements. Every key within this array is called the ``<formElementTypeIdentifier>``.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier:
 
 <formElementTypeIdentifier>
 ---------------------------
@@ -129,13 +129,13 @@ Properties
       This array key identifies a form element. This identifier could be used to attach a form element to a form.
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>-commonproperties:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-commonproperties:
 
 Common <formElementTypeIdentifier> properties
 =============================================
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.defaultValue:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.defaultValue:
 
 defaultValue
 ------------
@@ -161,7 +161,7 @@ defaultValue
       ``MultiSelect`` form element).
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.implementationclassname:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.implementationclassname:
 
 implementationClassName
 -----------------------
@@ -179,7 +179,7 @@ implementationClassName
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -188,7 +188,7 @@ implementationClassName
       Classname which implements the form element.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingoptions.translation.translationfiles:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.renderingoptions.translation.translationfiles:
 
 renderingOptions.translation.translationFiles
 ---------------------------------------------
@@ -206,7 +206,7 @@ renderingOptions.translation.translationFiles
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -214,10 +214,10 @@ renderingOptions.translation.translationFiles
 
 :aspect:`Description`
       Filesystem path(s) to translation files which should be searched for form element property translations.
-      If ``translationFiles`` is undefined, - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
+      If ``translationFiles`` is undefined, - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<prototypes.prototypeIdentifier.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingOptions.translation.translatePropertyValueIfEmpty:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.renderingOptions.translation.translatePropertyValueIfEmpty:
 
 renderingOptions.translation.translatePropertyValueIfEmpty
 ----------------------------------------------------------
@@ -245,7 +245,7 @@ renderingOptions.translation.translatePropertyValueIfEmpty
       If set to ``false``, the form element property translation will be skipped if the form element property value is empty.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.renderingoptions.templatename:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.renderingoptions.templatename:
 
 renderingOptions.templateName
 -----------------------------
@@ -260,7 +260,7 @@ renderingOptions.templateName
       Frontend/ Backend (form editor)
 
 :aspect:`Mandatory`
-      (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Default value`
       undefined
@@ -273,7 +273,7 @@ renderingOptions.templateName
       Set ``templateName`` to define a custom template name which should be used instead of the ``<formElementTypeIdentifier>``.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.properties:
 
 properties
 ----------
@@ -291,7 +291,7 @@ properties
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -301,7 +301,7 @@ properties
       Array with form element specific properties.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.elementDescription:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.properties.elementDescription:
 
 properties.elementDescription
 -----------------------------
@@ -330,7 +330,7 @@ properties.elementDescription
       below the form element.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.fluidadditionalattributes:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.properties.fluidadditionalattributes:
 
 properties.fluidAdditionalAttributes
 ------------------------------------
@@ -348,7 +348,7 @@ properties.fluidAdditionalAttributes
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -358,7 +358,7 @@ properties.fluidAdditionalAttributes
       The values within this array are directly used within the form element ViewHelper's property ``additionalAttributes``.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.properties.gridcolumnclassautoconfiguration:
 
 properties.gridColumnClassAutoConfiguration
 -------------------------------------------
@@ -379,7 +379,7 @@ properties.gridColumnClassAutoConfiguration
       Undefined
 
 :aspect:`Related options`
-      - :ref:`"GridRow viewPorts"<prototypes.\<prototypeIdentifier>.formelementsdefinition.gridrow.properties.gridcolumnclassautoconfiguration.viewports>`
+      - :ref:`"GridRow viewPorts"<prototypes.prototypeIdentifier.formelementsdefinition.gridrow.properties.gridcolumnclassautoconfiguration.viewports>`
 
 :aspect:`Description`
         If the form element lies within a GridRow you can define the number of columns which the form element should occupy.
@@ -399,7 +399,7 @@ properties.gridColumnClassAutoConfiguration
                       xs:
                         numbersOfColumnsToUse: '5'
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.label:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.label:
 
 label
 -----
@@ -417,7 +417,7 @@ label
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom form element implementations"<concepts-frontendrendering-codecomponents-customformelementimplementations>`
@@ -427,7 +427,7 @@ label
       The label of the form element.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor:
 
 formEditor
 ----------
@@ -445,7 +445,7 @@ formEditor
       No (but recommended)
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -454,7 +454,7 @@ formEditor
       Array with configurations for the ``form editor``
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.predefineddefaults:
 
 formEditor.predefinedDefaults
 -----------------------------
@@ -472,7 +472,7 @@ formEditor.predefinedDefaults
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -481,7 +481,7 @@ formEditor.predefinedDefaults
       Defines predefined defaults for form element properties which are prefilled, if the form element is added to a form.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections:
 
 formEditor.propertyCollections
 ------------------------------
@@ -499,7 +499,7 @@ formEditor.propertyCollections
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -508,7 +508,7 @@ formEditor.propertyCollections
       Array with configurations for ``property collections`` for the form element.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.validators:
 
 formEditor.propertyCollections.validators
 -----------------------------------------
@@ -526,7 +526,7 @@ formEditor.propertyCollections.validators
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -535,7 +535,7 @@ formEditor.propertyCollections.validators
       Array with configurations for available validators for a form element.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators.*.identifier:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.validators.*.identifier:
 
 formEditor.propertyCollections.validators.[*].identifier
 --------------------------------------------------------
@@ -553,17 +553,17 @@ formEditor.propertyCollections.validators.[*].identifier
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"\<validatorIdentifier>"<prototypes.\<prototypeidentifier>.validatorsdefinition.\<validatoridentifier>>`
+      - :ref:`"\<validatorIdentifier>"<prototypes.prototypeIdentifier.validatorsdefinition.validatoridentifier>`
 
 :aspect:`Description`
       Identifies the validator which should be attached to the form element. Must be equal to an existing ``<validatorIdentifier>``.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.validators.*.editors:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.validators.*.editors:
 
 formEditor.propertyCollections.validators.[*].editors
 -----------------------------------------------------
@@ -581,7 +581,7 @@ formEditor.propertyCollections.validators.[*].editors
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -590,7 +590,7 @@ formEditor.propertyCollections.validators.[*].editors
       Array with available ``inspector editors`` for this validator.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.finishers:
 
 formEditor.propertyCollections.finishers
 ----------------------------------------
@@ -608,7 +608,7 @@ formEditor.propertyCollections.finishers
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -617,7 +617,7 @@ formEditor.propertyCollections.finishers
       Array with configurations for available finisher for a form definition.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.identifier:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.finishers.*.identifier:
 
 formEditor.propertyCollections.finishers.[*].identifier
 -------------------------------------------------------
@@ -635,17 +635,17 @@ formEditor.propertyCollections.finishers.[*].identifier
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
-      - :ref:`"\<finisherIdentifier>"<prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>>`
+      - :ref:`"\<finisherIdentifier>"<prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier>`
 
 :aspect:`Description`
       Identifies the finisher which should be attached to the form definition. Must be equal to an existing ``<finisherIdentifier>``.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.editors:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.finishers.*.editors:
 
 formEditor.propertyCollections.finishers.[*].editors
 ----------------------------------------------------
@@ -663,7 +663,7 @@ formEditor.propertyCollections.finishers.[*].editors
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
@@ -672,7 +672,7 @@ formEditor.propertyCollections.finishers.[*].editors
       Array with available ``inspector editors`` for this finisher.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.label:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.label:
 
 formEditor.label
 ----------------
@@ -690,7 +690,7 @@ formEditor.label
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -699,7 +699,7 @@ formEditor.label
       This label will be shown within the "new element" Modal.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.group:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.group:
 
 formEditor.group
 ----------------
@@ -717,17 +717,17 @@ formEditor.group
       No
 
 :aspect:`Related options`
-      - :ref:`prototypes.\<prototypeIdentifier>.formEditor.formElementGroups <prototypes.\<prototypeidentifier>.formeditor.formelementgroups>`
+      - :ref:`prototypes.prototypeIdentifier.formEditor.formElementGroups <prototypes.prototypeIdentifier.formeditor.formelementgroups>`
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Description`
       Define within which group within the ``form editor`` "new Element" modal the form element should be shown.
       The ``group`` value must be equal to an array key within ``formElementGroups``.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.groupsorting:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.groupsorting:
 
 formEditor.groupSorting
 -----------------------
@@ -745,7 +745,7 @@ formEditor.groupSorting
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -754,7 +754,7 @@ formEditor.groupSorting
       The position within the ``formEditor.group`` for this form element.
 
 
-.. _prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -772,7 +772,7 @@ formEditor.iconIdentifier
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -781,13 +781,13 @@ formEditor.iconIdentifier
       An icon identifier which must be registered through the :php:`\TYPO3\CMS\Core\Imaging\IconRegistry`.
       This icon will be shown within
 
-      - :ref:`"Inspector [FormElementHeaderEditor]"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.formelementheadereditor>`.
+      - :ref:`"Inspector [FormElementHeaderEditor]"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.formelementheadereditor>`.
       - :ref:`"Abstract view formelement templates"<apireference-formeditor-stage-commonabstractformelementtemplates>`.
       - ``Tree`` component.
       - "new element" Modal
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formEditor.editors-tree:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formEditor.editors-tree:
 
 formEditor.editors
 ------------------
@@ -797,7 +797,7 @@ formEditor.editors
     formEditor/Index
 
 
-.. _prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>-concreteconfigurations:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations:
 
 Concrete configurations
 =======================

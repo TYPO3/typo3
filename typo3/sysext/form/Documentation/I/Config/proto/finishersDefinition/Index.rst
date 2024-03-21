@@ -1,20 +1,20 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition:
+.. _prototypes.prototypeIdentifier.finishersdefinition:
 
 =====================
 [finishersDefinition]
 =====================
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition-properties:
+.. _prototypes.prototypeIdentifier.finishersdefinition-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.*:
+.. _prototypes.prototypeIdentifier.finishersdefinition.*:
 
 [finishersDefinition]
 ---------------------
@@ -47,7 +47,7 @@ Properties
       Array which defines the available finishers. Every key within this array is called the ``<finisherIdentifier>``.
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.<finisheridentifier>:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier:
 
 <finisherIdentifier>
 --------------------
@@ -91,8 +91,8 @@ Properties
                [...]
 
 :aspect:`Related options`
-      - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.\<formElementTypeIdentifier>.formEditor.propertyCollections.finishers.[*].identifier"<prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.propertycollections.finishers.*.identifier>`
-      - :ref:`"[FinishersEditor] selectOptions.[*].value"<prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.selectoptions.*.value-finisherseditor>`
+      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.formelementtypeidentifier.formEditor.propertyCollections.finishers.[*].identifier"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.propertycollections.finishers.*.identifier>`
+      - :ref:`"[FinishersEditor] selectOptions.[*].value"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.selectoptions.*.value-finisherseditor>`
 
 :aspect:`Good to know`
       - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
@@ -101,13 +101,13 @@ Properties
       This array key identifies a finisher. This identifier could be used to attach a finisher to a form.
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.<finisheridentifier>-commonproperties:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-commonproperties:
 
 Common <finisherIdentifier> properties
 =============================================
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.implementationClassName:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -125,7 +125,7 @@ implementationClassName
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeidentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
@@ -134,7 +134,7 @@ implementationClassName
       .. include:: properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.options:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.options:
 
 options
 -------
@@ -149,10 +149,10 @@ options
       Frontend
 
 :aspect:`Mandatory`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Custom finisher implementations"<concepts-finishers-customfinisherimplementations>`
@@ -161,7 +161,7 @@ options
       Array with finisher options.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.translation.translationFiles:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.translation.translationFiles:
 
 translation.translationFiles
 ----------------------------
@@ -179,17 +179,17 @@ translation.translationFiles
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete element configuration <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete element configuration <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate finisher options"<concepts-frontendrendering-translation-finishers>`
 
 :aspect:`Description`
       Filesystem path(s) to translation files which should be searched for finisher translations.
-      If the property is undefined, - :ref:`"prototypes.\<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<prototypes.\<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
+      If the property is undefined, - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Form.renderingOptions.translation.translationFiles"<prototypes.prototypeIdentifier.formelementsdefinition.form.renderingoptions.translation.translationfiles>` will be used.
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor:
 
 formEditor
 ----------
@@ -207,7 +207,7 @@ formEditor
       Recommended
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -216,7 +216,7 @@ formEditor
       Array with configurations for the ``form editor``
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
@@ -234,7 +234,7 @@ formeditor.iconIdentifier
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -243,7 +243,7 @@ formeditor.iconIdentifier
        .. include:: properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor.label:
 
 formeditor.label
 ----------------
@@ -261,7 +261,7 @@ formeditor.label
       Yes
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -270,7 +270,7 @@ formeditor.label
       .. include:: properties/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formeditor.predefineddefaults:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
@@ -288,7 +288,7 @@ formeditor.predefinedDefaults
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -297,7 +297,7 @@ formeditor.predefinedDefaults
       .. include:: properties/predefinedDefaults.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.formengine:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.formengine:
 
 FormEngine
 ----------
@@ -315,7 +315,7 @@ FormEngine
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 .. :aspect:`Good to know`
       ToDo
@@ -324,7 +324,7 @@ FormEngine
       Array with configurations for the ``form plugin``
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.FormEngine.label:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.FormEngine.label:
 
 FormEngine.label
 ----------------
@@ -342,7 +342,7 @@ FormEngine.label
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
@@ -351,7 +351,7 @@ FormEngine.label
       .. include:: properties/formEngine/label.rst.txt
 
 
-.. _prototypes.<prototypeIdentifier>.finishersdefinition.<finisheridentifier>.FormEngine.elements:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier.FormEngine.elements:
 
 FormEngine.elements
 -------------------
@@ -369,7 +369,7 @@ FormEngine.elements
       No
 
 :aspect:`Default value`
-      Depends (see :ref:`concrete finishers configuration <prototypes.\<prototypeidentifier>.finishersdefinition.\<finisheridentifier>-concreteconfigurations>`)
+      Depends (see :ref:`concrete finishers configuration <prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations>`)
 
 :aspect:`Good to know`
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`
@@ -378,7 +378,7 @@ FormEngine.elements
       .. include:: properties/formEngine/elements.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.finishersdefinition.<finisheridentifier>-concreteconfigurations:
+.. _prototypes.prototypeIdentifier.finishersdefinition.finisheridentifier-concreteconfigurations:
 
 Concrete configurations
 =======================

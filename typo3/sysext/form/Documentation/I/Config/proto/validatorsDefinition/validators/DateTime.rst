@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.datetime:
 
 ==========
 [DateTime]
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.datetime-validationerrorcodes:
 
 validation error codes
 ======================
@@ -17,13 +17,13 @@ validation error codes
 - Error message: `The given subject was not a valid DateTime. Got: '%s'`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.datetime-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.datetime.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -55,7 +55,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.datetime.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -89,7 +89,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.datetime.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.datetime.formeditor.label:
 
 formEditor.label
 ----------------

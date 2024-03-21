@@ -7,7 +7,7 @@ formEditor.propertyCollections.finishers.20.editors.1050
       prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.20.editors.1050
 
 :aspect:`Data type`
-      array/ :ref:`[CheckboxEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.checkboxeditor>`
+      array/ :ref:`[CheckboxEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.checkboxeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

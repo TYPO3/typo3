@@ -43,7 +43,7 @@ properties.gridColumnClassAutoConfiguration.viewPorts.[*].classPattern
                    classPattern: 'col-lg-{@numbersOfColumnsToUse}'
 
 :aspect:`Related options`
-      - :ref:`"properties.gridColumnClassAutoConfiguration"<prototypes.\<prototypeIdentifier>.formelementsdefinition.\<formelementtypeidentifier>.properties.gridcolumnclassautoconfiguration>`
+      - :ref:`"properties.gridColumnClassAutoConfiguration"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.properties.gridcolumnclassautoconfiguration>`
 
 :aspect:`Description`
       Defines the CSS class pattern for the CSS grid system.

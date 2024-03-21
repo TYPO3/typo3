@@ -7,7 +7,7 @@ formEditor.propertyCollections.finishers.50.editors.300
       prototypes.<prototypeIdentifier>.formElementsDefinition.Form.formEditor.propertyCollections.finishers.50.editors.300
 
 :aspect:`Data type`
-      array/ :ref:`[TextareaEditor] <prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.textareaeditor>`
+      array/ :ref:`[TextareaEditor] <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.textareaeditor>`
 
 :aspect:`Needed by`
       Backend (form editor)

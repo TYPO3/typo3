@@ -1,14 +1,14 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.number:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.number:
 
 ========
 [Number]
 ========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.number-validationerrorcodes:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.number-validationerrorcodes:
 
 Validation error codes
 ======================
@@ -17,13 +17,13 @@ Validation error codes
 - Error message: `The given subject was not a valid number.`
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.number-properties:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.number-properties:
 
 Properties
 ==========
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.number.implementationClassName:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.number.implementationClassName:
 
 implementationClassName
 -----------------------
@@ -55,7 +55,7 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.number.formeditor.iconidentifier:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.number.formeditor.iconidentifier:
 
 formEditor.iconIdentifier
 -------------------------
@@ -89,7 +89,7 @@ formEditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst.txt
 
 
-.. _prototypes.<prototypeidentifier>.validatorsdefinition.number.formeditor.label:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.number.formeditor.label:
 
 formEditor.label
 ----------------
