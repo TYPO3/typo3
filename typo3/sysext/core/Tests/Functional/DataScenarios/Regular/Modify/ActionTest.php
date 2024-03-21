@@ -50,9 +50,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function createContentForLanguageAll(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::createContentForLanguageAll();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentForLanguageAll.csv');
@@ -78,8 +75,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function modifyTranslatedContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::modifyTranslatedContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContent.csv');
 
@@ -106,9 +101,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function deleteLocalizedContentAndDeleteContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-
         parent::deleteLocalizedContentAndDeleteContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
 
@@ -135,8 +127,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function copyContentToLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
 
@@ -160,8 +150,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function copyContentToLanguageWithLanguageSynchronization(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguageWithLanguageSynchronization();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageWSynchronization.csv');
 
@@ -185,8 +173,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function copyContentToLanguageWithLocalizationExclude(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguageWithLocalizationExclude();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageWExclude.csv');
 
@@ -210,9 +196,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::copyContentToLanguageFromNonDefaultLanguage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageFromNonDefaultLanguage.csv');
 
@@ -248,8 +231,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function localizeContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
 
@@ -277,8 +258,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function localizeContentWithLanguageSynchronization(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContentWithLanguageSynchronization();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentWSynchronization.csv');
 
@@ -291,23 +270,18 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function localizeContentWithLanguageSynchronizationHavingNullValue(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContentWithLanguageSynchronizationHavingNullValue();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentWSynchronizationHNull.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Testing #1'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
     }
 
     #[Test]
     public function localizeContentFromNonDefaultLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::localizeContentFromNonDefaultLanguage();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguage.csv');
@@ -321,9 +295,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationDefault(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::localizeContentFromNonDefaultLanguageWithLanguageSynchronizationDefault();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguageWSynchronizationDefault.csv');
@@ -337,9 +308,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationSource(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::localizeContentFromNonDefaultLanguageWithLanguageSynchronizationSource();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguageWSynchronizationSource.csv');
@@ -360,7 +328,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function localizeContentAfterMovedContent(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportFreeModeElements.csv');
         parent::localizeContentAfterMovedContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedContent.csv');
     }
@@ -368,8 +335,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function createLocalizedContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::createLocalizedContent();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createLocalizedContent.csv');
@@ -383,8 +348,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function createLocalizedContentWithLanguageSynchronization(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::createLocalizedContentWithLanguageSynchronization();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createLocalizedContentWSynchronization.csv');
@@ -398,8 +361,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function createLocalizedContentWithLocalizationExclude(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::createLocalizedContentWithLocalizationExclude();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createLocalizedContentWExclude.csv');
@@ -407,7 +368,7 @@ final class ActionTest extends AbstractActionTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing', '[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing', 'Regular Element #2'));
     }
 
     #[Test]
@@ -600,7 +561,6 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function copyPageFreeMode(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportFreeModeElements.csv');
         parent::copyPageFreeMode();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageFreeMode.csv');
 
@@ -637,11 +597,10 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function localizeAndCopyPage(): void
     {
-        parent::localizePage();
-        parent::copyPage();
+        parent::localizeAndCopyPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNCopyPage.csv');
 
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId'])->withLanguageId(self::VALUE_LanguageId));
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['localizedPageId'])->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
@@ -663,7 +622,11 @@ final class ActionTest extends AbstractActionTestCase
     public function localizeAndCopyPageWithLanguageSynchronization(): void
     {
         parent::localizePageWithLanguageSynchronization();
-        parent::copyPage();
+        // Copy page
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+        $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+        $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNCopyPageWSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
@@ -678,7 +641,11 @@ final class ActionTest extends AbstractActionTestCase
         parent::localizePageWithLanguageSynchronization();
         // Set localized page "l10n_state" "author" field to "custom", then copy default language page, which will copy localized page as well.
         $this->actionService->modifyRecord(self::TABLE_Page, $this->recordIds['localizedPageId'], ['author' => 'Custom Author', 'l10n_state' => ['author' => 'custom']]);
-        parent::copyPage();
+        // Copy page
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+        $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+        $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNModifyNCopyPageWSynchronization.csv');
     }
 

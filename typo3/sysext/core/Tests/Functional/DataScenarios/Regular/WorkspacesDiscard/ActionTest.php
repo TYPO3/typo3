@@ -83,8 +83,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function hideContentAndMoveToDifferentPage(): void
     {
-        parent::hideContent();
-        parent::moveContentToDifferentPage();
+        parent::hideContentAndMoveToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/hideContentAndMoveToDifferentPage.csv');
     }
@@ -100,8 +99,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function deleteLocalizedContentAndDeleteContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::deleteLocalizedContentAndDeleteContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
@@ -118,8 +115,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function copyContentToLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
@@ -128,9 +123,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::copyContentToLanguageFromNonDefaultLanguage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageFromNonDefaultLanguage.csv');
@@ -139,8 +131,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function localizeContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
@@ -165,9 +155,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function localizeContentFromNonDefaultLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::localizeContentFromNonDefaultLanguage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguage.csv');
@@ -251,8 +238,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         self::assertThat($responseSectionsSource, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3'));
 
-        /**
-         * The original page is not translated, for this reason this is disabled until the tests are adapted.
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
@@ -260,7 +245,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSectionsSource, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
-         */
 
         // Check if the target page does not contain the moved record
         $response = $this->executeFrontendSubRequest(
@@ -579,10 +563,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function deletingDefaultLanguageElementDiscardsConnectedLocalizedElement(): void
     {
-        // Switch to live workspace and localize page in live
-        $this->setWorkspaceId(0);
-        $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->setWorkspaceId(self::VALUE_WorkspaceId);
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefaultTranslations.csv');
 
         // Localize 'Regular Element #2' (289) in workspace "connected mode"
         $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
@@ -605,10 +587,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function deletingDefaultLanguageElementDiscardsConnectedLocalizedElementChain(): void
     {
-        // Switch to live workspace and localize page in live
-        $this->setWorkspaceId(0);
-        $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->setWorkspaceId(self::VALUE_WorkspaceId);
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefaultTranslations.csv');
 
         // Localize 'Regular Element #2' (289) in workspace "connected mode"
         $newRecordIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);

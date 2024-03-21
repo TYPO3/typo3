@@ -1,5 +1,13 @@
+"pages",,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug"
+,100,88,256,0,1,90,90,0,0,0,0,"[Translate to Dansk:] Target","/data-handler/translate-to-dansk-target"
+,101,88,256,0,2,90,90,0,0,0,0,"[Translate to Deutsch:] Target","/data-handler/translate-to-deutsch-target"
 "tt_content",,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header"
 ,310,90,256,0,0,0,0,0,0,0,0,"Regular Element #10"
 ,311,90,512,0,1,0,310,0,0,0,0,"[Translate to Dansk:] Regular Element #10"
 ,312,90,768,0,2,0,311,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
+"sys_refindex",,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",
+,"811c1b9b63612efde79cdcdc83dbbb7a","pages",100,"l10n_parent",,,,0,0,"pages",90,,
+,"1eeeb475499458a4b827f36672c0b398","pages",101,"l10n_parent",,,,0,0,"pages",90,,

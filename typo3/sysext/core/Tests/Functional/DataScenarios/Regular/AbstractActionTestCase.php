@@ -76,6 +76,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function createContents(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         // Creating record at the beginning of the page
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][0];
@@ -91,12 +94,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function createContentForLanguageAll(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Language set to all', 'sys_language_uid' => -1]);
         $this->recordIds['newContentLanguageAll'] = $newTableIds[self::TABLE_Content][0];
     }
 
     public function modifyContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
     }
 
@@ -105,33 +114,51 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function modifyTranslatedContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['header' => 'Testing Translation #3']);
     }
 
     public function hideContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['hidden' => '1']);
     }
 
     public function deleteContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
     }
 
     public function deleteLocalizedContentAndDeleteContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
     }
 
     public function copyContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageId);
         $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
 
     public function copyContentToLanguage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
@@ -141,6 +168,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function copyContentToLanguageWithLanguageSynchronization(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
@@ -152,6 +182,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function copyContentToLanguageWithLocalizationExclude(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $GLOBALS['TCA']['tt_content']['columns']['header']['l10n_mode'] = 'exclude';
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
@@ -163,6 +196,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
         $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
     }
@@ -172,17 +208,26 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function copyPasteContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageId, ['header' => 'Testing #1']);
     }
 
     public function localizeContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
 
     public function localizeContentWithHideAtCopy(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['hideAtCopy'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
@@ -194,6 +239,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function localizeContentWithEmptyTcaIntegrityColumns(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $integrityFieldNames = [
             'language' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['languageField'] ?? null,
             'languageParent' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['transOrigPointerField'] ?? null,
@@ -209,8 +257,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
         // explicitly call TcaMigration (which was executed already earlier in functional testing bootstrap)
         $GLOBALS['TCA'] = (new TcaMigration())->migrate($GLOBALS['TCA']);
-        // create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         // perform actions to be tested
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
@@ -218,6 +264,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function localizeContentWithLanguageSynchronization(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
@@ -226,6 +275,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function localizeContentWithLanguageSynchronizationHavingNullValue(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['nullable'] = true;
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['bodytext' => null]);
@@ -237,12 +289,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function localizeContentFromNonDefaultLanguage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
     }
 
     public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationDefault(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
@@ -251,6 +309,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationSource(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
@@ -265,20 +326,12 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function localizeContentFromNonDefaultLanguageWithAllContentElements(): void
     {
-        // Change defaults from import data set: We want to create all the lang 1 and lang 2 content elements
-        // with one DH call in one go per language, but the import data set has some localized content elements
-        // already. Drop those.
+        // Run test without translations: We want to create all the lang 1 and lang 2 content elements
+        // with one DH call in one go per language.
         $this->setWorkspaceId(0);
-        $this->actionService->deleteRecords([
-            'tt_content' => [300, 301, 302],
-        ]);
         if (defined('static::VALUE_WorkspaceId') > 0) {
             $this->setWorkspaceId(static::VALUE_WorkspaceId);
         }
-
-        // Create translated pages first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
 
         // @todo: This should be extracted as localizeRecords() in addition to localizeRecord() to ActionService
         // Create localization of the 3 default language content elements
@@ -316,8 +369,10 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function localizeContentAfterMovedContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportFreeModeElements.csv');
+
         // Default language element 310 on page 90 that has two 'free mode' localizations is moved to page 89.
         // Note the two localizations are NOT moved along with the default language element, due to free mode.
         // Note l10n_source of first localization 311 is kept and still points to 310, even though 310 is moved to different page.
@@ -332,6 +387,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function createLocalizedContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newContentIdDefault = StringUtility::getUniqueId('NEW');
         $newContentIdLocalized = StringUtility::getUniqueId('NEW');
         $dataMap = [
@@ -347,6 +405,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function createLocalizedContentWithLanguageSynchronization(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $newContentIdDefault = StringUtility::getUniqueId('NEW');
         $newContentIdLocalized = StringUtility::getUniqueId('NEW');
@@ -363,6 +424,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function createLocalizedContentWithLocalizationExclude(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $GLOBALS['TCA']['tt_content']['columns']['header']['l10n_mode'] = 'exclude';
         $newContentIdDefault = StringUtility::getUniqueId('NEW');
         $newContentIdLocalized = StringUtility::getUniqueId('NEW');
@@ -379,16 +443,33 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function changeContentSorting(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
     }
 
     public function changeContentSortingAfterSelf(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdFirst);
     }
 
     public function moveContentToDifferentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
+    }
+
+    public function hideContentAndMoveToDifferentPage(): void
+    {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['hidden' => '1']);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
     }
 
@@ -397,22 +478,34 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function movePasteContentToDifferentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget, ['header' => 'Testing #1']);
     }
 
     public function moveContentToDifferentPageAndChangeSorting(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
     }
 
     public function moveContentToDifferentPageAndHide(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget, ['hidden' => '1']);
     }
 
     public function moveLocalizedContentToDifferentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_LanguageId);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdThird, self::VALUE_PageIdTarget);
@@ -427,12 +520,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function createPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
     }
 
     public function createPageAndSubPageAndSubPageContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, $this->recordIds['newPageId'], ['title' => 'Testing #1 #1', 'hidden' => 0]);
@@ -447,6 +546,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function createPageAndChangePageSorting(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, 88, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
         $this->actionService->moveRecord(self::TABLE_Page, $this->recordIds['newPageId'], -self::VALUE_PageId);
@@ -457,6 +559,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function createPageAndMoveCreatedPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
         $this->actionService->moveRecord(self::TABLE_Page, $this->recordIds['newPageId'], -self::VALUE_PageId);
@@ -464,6 +569,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function createPageAndContentWithTcaDefaults(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
             [
@@ -477,16 +585,25 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function modifyPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
     }
 
     public function deletePage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
     }
 
     public function copyPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
         $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
@@ -495,12 +612,30 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function copyPageFreeMode(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportFreeModeElements.csv');
+
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdTarget);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageIdTarget];
+        $this->recordIds['newContentIdTenth'] = $newTableIds[self::TABLE_Content][310];
+        $this->recordIds['newContentIdTenthLocalized'] = $newTableIds[self::TABLE_Content][311];
+        $this->recordIds['newContentIdTenthLocalized2'] = $newTableIds[self::TABLE_Content][312];
     }
 
     public function localizePage(): void
     {
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    public function localizeAndCopyPage(): void
+    {
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+        $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+        $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
@@ -708,21 +843,33 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function changePageSorting(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
     }
 
     public function changePageSortingAfterSelf(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageId);
     }
 
     public function movePageToDifferentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
     }
 
     public function movePageToDifferentPageTwice(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);
     }
@@ -800,6 +947,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function movePageToDifferentPageAndChangeSorting(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
     }

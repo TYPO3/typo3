@@ -113,8 +113,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function hideContentAndMoveToDifferentPage(): void
     {
-        parent::hideContent();
-        parent::moveContentToDifferentPage();
+        parent::hideContentAndMoveToDifferentPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/hideContentAndMoveToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest(
@@ -155,8 +154,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function deleteLocalizedContentAndDeleteContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::deleteLocalizedContentAndDeleteContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
 
@@ -189,8 +186,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function copyContentToLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
 
@@ -217,9 +212,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::copyContentToLanguageFromNonDefaultLanguage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageFromNonDefaultLanguage.csv');
 
@@ -246,8 +238,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function localizeContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContent();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
 
@@ -294,8 +284,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function localizeContentWithHideAtCopy(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContentWithHideAtCopy();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentWHideAtCopy.csv');
 
@@ -311,9 +299,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function localizeContentFromNonDefaultLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::localizeContentFromNonDefaultLanguage();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguage.csv');
@@ -1103,8 +1088,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function createLocalizedNotHiddenWorkspaceContentHiddenInLive(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefaultTranslations.csv');
+
         // Have a hidden live content element
         $this->setWorkspaceId(0);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['hidden' => 1]);

@@ -93,8 +93,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function hideContentAndMoveToDifferentPage(): void
     {
-        parent::hideContent();
-        parent::moveContentToDifferentPage();
+        parent::hideContentAndMoveToDifferentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/hideContentAndMoveToDifferentPage.csv');
 
@@ -134,8 +133,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function deleteLocalizedContentAndDeleteContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::deleteLocalizedContentAndDeleteContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
@@ -164,8 +161,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function copyContentToLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
@@ -190,8 +185,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::copyContentToLanguageFromNonDefaultLanguage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageFromNonDefaultLanguage.csv');
@@ -216,8 +209,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function localizeContent(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
@@ -247,8 +238,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function localizeContentFromNonDefaultLanguage(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::localizeContentFromNonDefaultLanguage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguage.csv');

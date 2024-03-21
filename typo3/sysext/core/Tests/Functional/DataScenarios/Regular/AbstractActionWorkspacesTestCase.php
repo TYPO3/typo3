@@ -22,10 +22,6 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
     protected const VALUE_ParentPageId = 88;
     protected const VALUE_ContentIdZero = 296;
 
-    protected const VALUE_ContentIdTenth = 310;
-    protected const VALUE_ContentIdTenthLocalized = 311;
-    protected const VALUE_ContentIdTenthLocalized2 = 312;
-
     protected const VALUE_WorkspaceId = 1;
 
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefaultWorkspaces.csv';
@@ -34,6 +30,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     public function createContentAndCopyContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_PageId);
@@ -43,8 +42,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     public function createContentAndLocalize(): void
     {
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $localizedContentId = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
@@ -53,12 +53,18 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     public function changeContentSortingAndDeleteMovedRecord(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
     }
 
     public function changeContentSortingAndDeleteLiveRecord(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         // Switch to live workspace
         $this->setWorkspaceId(0);
@@ -69,17 +75,11 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     public function deleteContentAndPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
-    }
-
-    public function copyPageFreeMode(): void
-    {
-        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdTarget);
-        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageIdTarget];
-        $this->recordIds['newContentIdTenth'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdTenth];
-        $this->recordIds['newContentIdTenthLocalized'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdTenthLocalized];
-        $this->recordIds['newContentIdTenthLocalized2'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdTenthLocalized2];
     }
 
     /**
@@ -88,6 +88,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, -self::VALUE_PageIdTarget, ['title' => 'Testing #1', 'hidden' => 0]);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
@@ -98,6 +101,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function createContentAndCopyDraftPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
@@ -109,6 +115,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function createContentAndCopyLivePage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 
@@ -127,6 +136,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function createPageAndCopyDraftParentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->backendUser->uc['copyLevels'] = 10;
 
         $newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
@@ -140,6 +152,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function createPageAndCopyLiveParentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->backendUser->uc['copyLevels'] = 10;
 
         $newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
@@ -160,6 +175,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function createNestedPagesAndCopyDraftParentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->backendUser->uc['copyLevels'] = 10;
 
         $newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
@@ -177,6 +195,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function createNestedPagesAndCopyLiveParentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->backendUser->uc['copyLevels'] = 10;
 
         $newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
@@ -199,6 +220,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function deleteContentAndCopyDraftPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -209,6 +233,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function deleteContentAndCopyLivePage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
 
         // Switch to live workspace
@@ -226,6 +253,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function changeContentSortingAndCopyDraftPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -236,6 +266,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function changeContentSortingAndCopyLivePage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
 
         // Switch to live workspace
@@ -253,6 +286,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function moveContentAndCopyDraftPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdZero, self::VALUE_PageId);
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
@@ -264,6 +300,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function moveContentAndCopyLivePage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdZero, self::VALUE_PageId);
 
@@ -282,6 +321,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function createPlaceholdersAndDeleteDraftParentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
         $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, ['title' => 'Testing #1']);
         $newTableIds = $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_ParentPageId);
@@ -293,6 +335,9 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function createPlaceholdersAndDeleteLiveParentPage(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
         $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, ['title' => 'Testing #1']);
 
@@ -313,9 +358,11 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
      */
     public function localizeContentAfterMovedInLiveContent(): void
     {
+        // Run test with translations
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportFreeModeElements.csv');
+
         $this->setWorkspaceId(0);
-        // Create translated page first
-        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         // Default language element 310 on page 90 that has two 'free mode' localizations is moved to page 89.
         // Note the two localizations are NOT moved along with the default language element, due to free mode.
         // Note l10n_source of first localization 311 is kept and still points to 310, even though 310 is moved to different page.
