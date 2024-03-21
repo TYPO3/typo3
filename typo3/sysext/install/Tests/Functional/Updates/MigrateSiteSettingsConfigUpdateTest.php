@@ -18,9 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Functional\Updates;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\MigrateSiteSettingsConfigUpdate;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -31,7 +30,7 @@ final class MigrateSiteSettingsConfigUpdateTest extends FunctionalTestCase
     {
         $siteconfigurationIdentifier = 'settings';
 
-        GeneralUtility::makeInstance(SiteConfiguration::class)->write(
+        $this->get(SiteWriter::class)->write(
             $siteconfigurationIdentifier,
             [
                 'rootPageId' => 1,
@@ -66,7 +65,7 @@ final class MigrateSiteSettingsConfigUpdateTest extends FunctionalTestCase
     {
         $siteconfigurationIdentifier = 'withoutSettings';
 
-        GeneralUtility::makeInstance(SiteConfiguration::class)->write(
+        $this->get(SiteWriter::class)->write(
             $siteconfigurationIdentifier,
             [
                 'rootPageId' => 2,

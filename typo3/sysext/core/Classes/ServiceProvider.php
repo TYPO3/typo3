@@ -59,7 +59,7 @@ class ServiceProvider extends AbstractServiceProvider
             Database\DriverMiddlewareService::class => self::getDriverMiddlewaresService(...),
             Charset\CharsetConverter::class => self::getCharsetConverter(...),
             Configuration\Loader\YamlFileLoader::class => self::getYamlFileLoader(...),
-            Configuration\SiteConfiguration::class => self::getSiteConfiguration(...),
+            Configuration\SiteWriter::class => self::getSiteWriter(...),
             Command\ListCommand::class => self::getListCommand(...),
             HelpCommand::class => self::getHelpCommand(...),
             Command\CacheFlushCommand::class => self::getCacheFlushCommand(...),
@@ -184,9 +184,9 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Configuration\Loader\YamlFileLoader::class);
     }
 
-    public static function getSiteConfiguration(ContainerInterface $container): Configuration\SiteConfiguration
+    public static function getSiteWriter(ContainerInterface $container): Configuration\SiteWriter
     {
-        return self::new($container, Configuration\SiteConfiguration::class, [
+        return self::new($container, Configuration\SiteWriter::class, [
             Environment::getConfigPath() . '/sites',
             $container->get(EventDispatcherInterface::class),
             $container->get('cache.core'),
@@ -269,7 +269,6 @@ class ServiceProvider extends AbstractServiceProvider
         );
 
         $cacheWarmers = [
-            Configuration\SiteConfiguration::class,
             Http\MiddlewareStackResolver::class,
             Imaging\IconRegistry::class,
             Package\PackageManager::class,

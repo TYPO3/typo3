@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -204,7 +204,7 @@ final class GeneratorFrontend extends AbstractGenerator
             if (!empty($rootUid)) {
                 $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId((int)$rootUid[0]);
                 $identifier = $site->getIdentifier();
-                GeneralUtility::makeInstance(SiteConfiguration::class)->delete($identifier);
+                GeneralUtility::makeInstance(SiteWriter::class)->delete($identifier);
             }
         } catch (SiteNotFoundException $e) {
             // Do not throw a thing if site config does not exist

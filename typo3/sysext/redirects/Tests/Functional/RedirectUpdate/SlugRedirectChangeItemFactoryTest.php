@@ -19,9 +19,8 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\RedirectUpdate;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
@@ -138,7 +137,7 @@ final class SlugRedirectChangeItemFactoryTest extends FunctionalTestCase
             'base' => '/',
             'settings' => $settings,
         ];
-        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
-        $siteConfiguration->write('testing', $configuration);
+        $siteWriter = $this->get(SiteWriter::class);
+        $siteWriter->write('testing', $configuration);
     }
 }

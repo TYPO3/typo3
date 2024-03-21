@@ -23,6 +23,7 @@ use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Registry;
@@ -39,6 +40,7 @@ final class ImportSiteConfigurationsOnPackageInitialization implements LoggerAwa
     public function __construct(
         private readonly Registry $registry,
         private readonly SiteConfiguration $siteConfiguration,
+        private readonly SiteWriter $siteWriter,
     ) {}
 
     #[AsEventListener(after: ImportContentOnPackageInitialization::class)]
@@ -98,7 +100,7 @@ final class ImportSiteConfigurationsOnPackageInitialization implements LoggerAwa
             $configuration = $this->siteConfiguration->load($siteIdentifier);
             $configuration['rootPageId'] = $importedPageId;
             try {
-                $this->siteConfiguration->write($siteIdentifier, $configuration);
+                $this->siteWriter->write($siteIdentifier, $configuration);
             } catch (SiteConfigurationWriteException $e) {
                 $this->logger->warning(
                     sprintf(

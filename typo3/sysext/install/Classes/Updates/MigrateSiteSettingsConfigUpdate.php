@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Install\Updates;
 
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
@@ -34,11 +35,13 @@ class MigrateSiteSettingsConfigUpdate implements UpgradeWizardInterface
     protected const SETTINGS_FILENAME = 'settings.yaml';
 
     protected ?SiteConfiguration $siteConfiguration = null;
+    protected ?SiteWriter $siteWriter = null;
     protected array $sitePathsToMigrate = [];
 
     public function __construct()
     {
         $this->siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
+        $this->siteWriter = GeneralUtility::makeInstance(SiteWriter::class);
         $this->sitePathsToMigrate = $this->getSitePathsToMigrate();
     }
 
@@ -58,7 +61,7 @@ class MigrateSiteSettingsConfigUpdate implements UpgradeWizardInterface
     {
         try {
             foreach ($this->sitePathsToMigrate as $siteIdentifier => $settings) {
-                $this->siteConfiguration->writeSettings($siteIdentifier, $settings);
+                $this->siteWriter->writeSettings($siteIdentifier, $settings);
             }
         } catch (SiteConfigurationWriteException $e) {
             return false;

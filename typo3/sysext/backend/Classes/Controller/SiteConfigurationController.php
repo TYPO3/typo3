@@ -34,6 +34,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -72,6 +73,7 @@ class SiteConfigurationController
         private readonly FormDataCompiler $formDataCompiler,
         private readonly PageRenderer $pageRenderer,
         private readonly SiteConfiguration $siteConfiguration,
+        private readonly SiteWriter $siteWriter,
     ) {}
 
     /**
@@ -402,13 +404,12 @@ class SiteConfigurationController
             );
 
             // Persist the configuration
-            $siteConfigurationManager = GeneralUtility::makeInstance(SiteConfiguration::class);
             try {
                 if (!$isNewConfiguration && $currentIdentifier !== $siteIdentifier) {
-                    $siteConfigurationManager->rename($currentIdentifier, $siteIdentifier);
+                    $this->siteWriter->rename($currentIdentifier, $siteIdentifier);
                     $this->getBackendUser()->writelog(Type::SITE, SiteAction::RENAME, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was renamed to \'%s\'.', [$currentIdentifier, $siteIdentifier], 'site');
                 }
-                $siteConfigurationManager->write($siteIdentifier, $newSiteConfiguration, true);
+                $this->siteWriter->write($siteIdentifier, $newSiteConfiguration, true);
                 if ($isNewConfiguration) {
                     $this->getBackendUser()->writelog(Type::SITE, SiteAction::CREATE, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was created.', [$siteIdentifier], 'site');
                 } else {
@@ -656,7 +657,7 @@ class SiteConfigurationController
         }
         try {
             // Verify site does exist, method throws if not
-            GeneralUtility::makeInstance(SiteConfiguration::class)->delete($siteIdentifier);
+            $this->siteWriter->delete($siteIdentifier);
             $this->getBackendUser()->writelog(Type::SITE, SiteAction::DELETE, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was deleted.', [$siteIdentifier], 'site');
         } catch (SiteConfigurationWriteException $e) {
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);

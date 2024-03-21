@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\EventListener;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
@@ -250,7 +250,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
 
     protected function buildSite(array $configuration): void
     {
-        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
-        $siteConfiguration->write('testing', $configuration);
+        $siteWriter = $this->get(SiteWriter::class);
+        $siteWriter->write('testing', $configuration);
     }
 }

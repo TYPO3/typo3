@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\EventListener;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
@@ -80,7 +80,7 @@ final class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
             'base' => '/',
             'settings' => $settings,
         ];
-        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
-        $siteConfiguration->write('testing', $configuration);
+        $siteWriter = $this->get(SiteWriter::class);
+        $siteWriter->write('testing', $configuration);
     }
 }

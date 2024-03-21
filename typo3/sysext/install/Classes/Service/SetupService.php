@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Install\Service;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
@@ -42,7 +42,7 @@ readonly class SetupService
 {
     public function __construct(
         private ConfigurationManager $configurationManager,
-        private SiteConfiguration $siteConfiguration,
+        private SiteWriter $siteWriter,
         private YamlFileLoader $yamlFileLoader,
     ) {}
 
@@ -58,7 +58,7 @@ readonly class SetupService
     public function createSiteConfiguration(string $identifier, int $rootPageId, string $siteUrl): void
     {
         // Create a default site configuration called "main" as best practice
-        $this->siteConfiguration->createNewBasicSite($identifier, $rootPageId, $siteUrl);
+        $this->siteWriter->createNewBasicSite($identifier, $rootPageId, $siteUrl);
     }
 
     /**

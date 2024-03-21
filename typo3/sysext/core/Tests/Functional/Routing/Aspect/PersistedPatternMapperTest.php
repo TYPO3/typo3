@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Routing\Aspect;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -317,7 +317,7 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
             $cache = $this->get('cache.core');
             $eventDispatcher = $this->get(EventDispatcherInterface::class);
             GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
-            GeneralUtility::makeInstance(SiteConfiguration::class, $path, $eventDispatcher, $cache)->write($site->getIdentifier(), $site->getConfiguration());
+            GeneralUtility::makeInstance(SiteWriter::class, $path, $eventDispatcher, $cache)->write($site->getIdentifier(), $site->getConfiguration());
         } catch (\Exception $exception) {
             self::markTestSkipped($exception->getMessage());
         }

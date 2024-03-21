@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\SiteHandling;
 
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\Frontend\PhpError;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
@@ -59,11 +60,11 @@ trait SiteBasedTestTrait
         if (!empty($errorHandling)) {
             $configuration['errorHandling'] = $errorHandling;
         }
-        $siteConfiguration = $this->get(SiteConfiguration::class);
+        $siteWriter = $this->get(SiteWriter::class);
         try {
             // ensure no previous site configuration influences the test
             GeneralUtility::rmdir($this->instancePath . '/typo3conf/sites/' . $identifier, true);
-            $siteConfiguration->write($identifier, $configuration);
+            $siteWriter->write($identifier, $configuration);
         } catch (\Exception $exception) {
             $this->markTestSkipped($exception->getMessage());
         }
@@ -74,10 +75,11 @@ trait SiteBasedTestTrait
         array $overrides
     ): void {
         $siteConfiguration = $this->get(SiteConfiguration::class);
+        $siteWriter = $this->get(SiteWriter::class);
         $configuration = $siteConfiguration->load($identifier);
         $configuration = array_merge($configuration, $overrides);
         try {
-            $siteConfiguration->write($identifier, $configuration);
+            $siteWriter->write($identifier, $configuration);
         } catch (\Exception $exception) {
             $this->markTestSkipped($exception->getMessage());
         }

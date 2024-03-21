@@ -21,7 +21,7 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -236,7 +236,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Service\SetupService(
             $container->get(ConfigurationManager::class),
-            $container->get(SiteConfiguration::class),
+            $container->get(SiteWriter::class),
             $container->get(YamlFileLoader::class)
         );
     }

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Hooks;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -87,11 +87,11 @@ class CreateSiteConfiguration
         $siteIdentifier = $entryPoint . '-' . md5((string)$pageId);
 
         if (!$this->siteExistsByRootPageId($pageId)) {
-            $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
+            $siteWriter = GeneralUtility::makeInstance(SiteWriter::class);
             $normalizedParams = $this->getNormalizedParams();
             $basePrefix = Environment::isCli() ? $normalizedParams->getSitePath() : $normalizedParams->getSiteUrl();
             try {
-                $siteConfiguration->createNewBasicSite(
+                $siteWriter->createNewBasicSite(
                     $siteIdentifier,
                     $pageId,
                     $basePrefix . $entryPoint

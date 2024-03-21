@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -46,9 +46,9 @@ abstract class AbstractGenerator
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         // When the DataHandler created the page tree, a default site configuration has been added. Fetch,  rename, update.
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($topPageUid);
-        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
+        $siteWriter = GeneralUtility::makeInstance(SiteWriter::class);
         $siteIdentifier = 'styleguide-demo-' . $topPageUid;
-        $siteConfiguration->rename($site->getIdentifier(), $siteIdentifier);
+        $siteWriter->rename($site->getIdentifier(), $siteIdentifier);
         $highestLanguageId = $recordFinder->findHighestLanguageId();
         $configuration = [
             'base' => $base . 'styleguide-demo-' . $topPageUid,
@@ -138,7 +138,7 @@ abstract class AbstractGenerator
                 ],
             ],
         ];
-        $siteConfiguration->write($siteIdentifier, $configuration);
+        $siteWriter->write($siteIdentifier, $configuration);
     }
 
     /**
