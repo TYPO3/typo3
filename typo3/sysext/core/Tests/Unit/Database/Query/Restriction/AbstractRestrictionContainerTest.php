@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\InstantiatableAbstractRestrictionContainer;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockEnforceableQueryRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockQueryRestriction;
@@ -52,6 +53,20 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         $subject->add($restriction);
         $subject->removeByType(get_class($restriction));
 
+        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
+        self::assertSame('', (string)$expression);
+    }
+
+    #[Test]
+    public function crossClassWillBeRemovedWhenRemovedByType(): void
+    {
+        $restriction = new class () extends HiddenRestriction {};
+
+        $subject = new InstantiatableAbstractRestrictionContainer();
+        $subject->add($restriction);
+        $subject->removeByType(HiddenRestriction::class);
+
+        $GLOBALS['TCA']['aTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         self::assertSame('', (string)$expression);
     }
