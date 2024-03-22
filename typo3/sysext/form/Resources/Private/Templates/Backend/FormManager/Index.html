@@ -1,36 +1,32 @@
 <html
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <f:layout name="Module" />
 
 <f:section name="Content">
-
     <f:be.pageRenderer
         includeCssFiles="{stylesheets}"
     />
-
     <h1><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.headline" /></h1>
     <f:if condition="{hasForms}">
         <form style="display:inline;"
-                data-global-event="submit"
-                data-action-navigate="$form=~s/$value/"
-                data-navigate-value="{f:uri.action(action:'index', arguments:'{searchTerm: \'$[value]\'}')}"
-                data-value-selector="input[name='searchTerm']"
+            data-global-event="submit"
+            data-action-navigate="$form=~s/$value/"
+            data-navigate-value="{f:uri.action(action:'index', arguments:'{searchTerm: \'$[value]\'}')}"
+            data-value-selector="input[name='searchTerm']"
         >
-            <div class="row mb-3">
-                <div class="col-6">
+            <div class="form-row">
+                <div class="form-group">
                     <div class="input-group">
-                        <button class="btn btn-default" type="submit" name="search">
-                            <core:icon identifier="actions-search" size="small" />
-                        </button>
+                        <input type="search" id="search_field" name="searchTerm" class="form-control" value="{searchTerm}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
                         <label for="search_field" class="visually-hidden">
                             <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
                         </label>
-                        <input type="search" id="search_field" name="searchTerm" class="form-control" value="{searchTerm}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
+                        <button class="btn btn-default" type="submit" name="search">
+                            <core:icon identifier="actions-search" size="small" />
+                        </button>
                     </div>
                 </div>
             </div>
@@ -73,12 +69,12 @@
                                 </td>
                                 <td class="col-title">
                                     <f:if condition="{form.invalid} || {form.readOnly}">
-                                            <f:then>
-                                                <div title="{form.name}">{form.name}</div>
-                                            </f:then>
-                                            <f:else>
-                                                <f:link.action controller="FormEditor" action="index" arguments="{formPersistenceIdentifier: form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}">{form.name}</f:link.action>
-                                            </f:else>
+                                        <f:then>
+                                            <div title="{form.name}">{form.name}</div>
+                                        </f:then>
+                                        <f:else>
+                                            <f:link.action controller="FormEditor" action="index" arguments="{formPersistenceIdentifier: form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}">{form.name}</f:link.action>
+                                        </f:else>
                                     </f:if>
                                 </td>
                                 <td><code>{form.persistenceIdentifier}</code></td>
