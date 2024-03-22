@@ -1,4 +1,4 @@
-annotations php 8.2 pre-merge:
+integrity php 8.2 pre-merge:
   stage: main
   tags:
     - metal2
@@ -8,7 +8,7 @@ annotations php 8.2 pre-merge:
       - main
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s checkAnnotations -p 8.2
+    - Build/Scripts/runTests.sh -s checkIntegrityPhp -p 8.2
 
 cgl pre-merge:
   stage: main
@@ -62,9 +62,6 @@ integration various pre-merge:
     - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.2
     - Build/Scripts/runTests.sh -s checkBom -p 8.2
     - Build/Scripts/runTests.sh -s checkComposer -p 8.2
-    - Build/Scripts/runTests.sh -s checkTestClassFinal -p 8.2
-    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.2
-    - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.2
 
 lint php 8.2 pre-merge:
   stage: main

@@ -271,6 +271,7 @@
 			"TYPO3\\CMS\\Beuser\\Tests\\": "typo3/sysext/beuser/Tests/",
 			"TYPO3\\CMS\\Core\\Tests\\": "typo3/sysext/core/Tests/",
 			"TYPO3\\CMS\\Composer\\Scripts\\": "Build/Scripts/composer/",
+			"TYPO3\\CMS\\PhpIntegrityChecks\\": "Build/Scripts/phpIntegrityChecks/",
 			"TYPO3\\CMS\\Dashboard\\Tests\\": "typo3/sysext/dashboard/Tests/",
 			"TYPO3\\CMS\\Extbase\\Tests\\": "typo3/sysext/extbase/Tests/",
 			"TYPO3\\CMS\\Extensionmanager\\Tests\\": "typo3/sysext/extensionmanager/Tests/",

@@ -1,4 +1,4 @@
-annotations php 8.2:
+integrity php 8.2:
   stage: integrity
   tags:
     - metal2
@@ -7,7 +7,7 @@ annotations php 8.2:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s checkAnnotations -p 8.2
+    - Build/Scripts/runTests.sh -s checkIntegrityPhp -p 8.2
 
 cgl:
   stage: integrity
@@ -58,9 +58,6 @@ integration various:
     - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.2
     - Build/Scripts/runTests.sh -s checkBom -p 8.2
     - Build/Scripts/runTests.sh -s checkComposer -p 8.2
-    - Build/Scripts/runTests.sh -s checkTestClassFinal -p 8.2
-    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.2
-    - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.2
 
 iso database max:
   stage: integrity

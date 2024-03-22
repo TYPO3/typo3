@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 declare(strict_types=1);
@@ -16,22 +15,25 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace TYPO3\CMS\PhpIntegrityChecks;
+
 use PhpParser\Comment\Doc;
-use PhpParser\Error;
 use PhpParser\Node;
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitorAbstract;
-use PhpParser\ParserFactory;
-use PhpParser\PhpVersion;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-
-class NodeVisitor extends NodeVisitorAbstract
+/**
+ * Check for allowed annotations in classes, report on any not whitelisted
+ */
+final class AnnotationChecker extends AbstractPhpIntegrityChecker
 {
-    public array $matches = [];
+    // black list some unit test fixture files from extension scanner that test matchers of old annotations
+    protected array $excludedFileNames = [
+        'MethodAnnotationMatcherFixture.php',
+        'PropertyAnnotationMatcherFixture.php',
+    ];
 
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): void
     {
         switch (get_class($node)) {
             case Node\Stmt\Class_::class:
@@ -88,9 +90,12 @@ class NodeVisitor extends NodeVisitorAbstract
                     $matches
                 );
                 if (!empty($matches['annotations'])) {
-                    $this->matches[$node->getLine()] = array_map(static function (string $value): string {
-                        return '@' . $value;
-                    }, $matches['annotations']);
+                    $this->messages[$this->getRelativeFileNameFromRepositoryRoot()][$node->getLine()] = array_map(
+                        static function (string $value): string {
+                            return '@' . $value;
+                        },
+                        $matches['annotations']
+                    );
                 }
 
                 break;
@@ -98,64 +103,30 @@ class NodeVisitor extends NodeVisitorAbstract
                 break;
         }
     }
-}
 
-$parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
-
-$finder = new Symfony\Component\Finder\Finder();
-$finder->files()
-    ->in(__DIR__ . '/../../typo3/')
-    ->name('/\.php$/')
-    // black list some unit test fixture files from extension scanner that test matchers of old annotations
-    ->notName('MethodAnnotationMatcherFixture.php')
-    ->notName('PropertyAnnotationMatcherFixture.php')
-;
-
-$output = new ConsoleOutput();
-
-$errors = [];
-foreach ($finder as $file) {
-    try {
-        $ast = $parser->parse($file->getContents());
-    } catch (Error $error) {
-        $output->writeln('<error>Parse error: ' . $error->getMessage() . '</error>');
-        exit(1);
-    }
-
-    $visitor = new NodeVisitor();
-
-    $traverser = new NodeTraverser();
-    $traverser->addVisitor($visitor);
-
-    $ast = $traverser->traverse($ast);
-
-    if (!empty($visitor->matches)) {
-        $errors[$file->getRealPath()] = $visitor->matches;
-        $output->write('<error>F</error>');
-    } else {
-        $output->write('<fg=green>.</>');
-    }
-}
-
-$output->writeln('');
-
-if (!empty($errors)) {
-    $output->writeln('');
-
-    foreach ($errors as $file => $matchesPerLine) {
-        $output->writeln('');
-        $output->writeln('<error>' . $file . '</error>');
-
-        /**
-         * @var array $matchesPerLine
-         * @var int $line
-         * @var array $matches
-         */
-        foreach ($matchesPerLine as $line => $matches) {
-            $output->writeln($line . ': ' . implode(', ', $matches));
+    public function outputResult(SymfonyStyle $io, array $issueCollection): void
+    {
+        $io->title('Annotation checker result');
+        if ($issueCollection !== []) {
+            $io->error('Following annotations are invalid. Remove them:');
+            $table = new Table($io);
+            $table->setHeaders([
+                'File',
+                'Line',
+                'Annotation(s)',
+            ]);
+            foreach ($issueCollection as $file => $issues) {
+                foreach ($issues as $line => $annotations) {
+                    $table->addRow([
+                        $file,
+                        $line,
+                        implode(', ', $annotations),
+                    ]);
+                }
+            }
+            $table->render();
+        } else {
+            $io->success('Annotation integrity is in good shape.');
         }
     }
-    exit(1);
 }
-
-exit(0);
