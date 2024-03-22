@@ -19,11 +19,9 @@ namespace TYPO3\CMS\Backend\Tests\Functional\View;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendLayoutViewTest extends FunctionalTestCase
@@ -31,19 +29,13 @@ final class BackendLayoutViewTest extends FunctionalTestCase
     private const RUNTIME_CACHE_ENTRY = 'backendUtilityBeGetRootLine';
 
     private FrontendInterface $runtimeCache;
-    private BackendLayoutView&MockObject&AccessibleObjectInterface $backendLayoutView;
+    private BackendLayoutView $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->runtimeCache = $this->get(CacheManager::class)->getCache('runtime');
-        $this->backendLayoutView = $this->getAccessibleMock(
-            BackendLayoutView::class,
-            ['getPage'],
-            [],
-            '',
-            false
-        );
+        $this->subject = $this->get(BackendLayoutView::class);
     }
 
     protected function tearDown(): void
@@ -61,11 +53,7 @@ final class BackendLayoutViewTest extends FunctionalTestCase
             $this->mockRootLine((int)$pageId, $rootLine);
         }
 
-        $this->backendLayoutView->expects(self::once())
-            ->method('getPage')->with(self::equalTo($pageId))
-            ->willReturn($page);
-
-        $selectedCombinedIdentifier = $this->backendLayoutView->_call('getSelectedCombinedIdentifier', $pageId);
+        $selectedCombinedIdentifier = $this->subject->getSelectedCombinedIdentifier($pageId);
         self::assertEquals($expected, $selectedCombinedIdentifier);
     }
 

@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
+use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -82,7 +83,6 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
-use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
@@ -3901,7 +3901,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     case 'pagelayout':
                         $pageInformation = $this->getRequest()->getAttribute('frontend.page.information');
                         $pageLayoutResolver = GeneralUtility::makeInstance(PageLayoutResolver::class);
-                        $retVal = $pageLayoutResolver->getLayoutForPage($pageInformation->getPageRecord(), $pageInformation->getRootLine());
+                        $retVal = $pageLayoutResolver->getLayoutIdentifierForPage($pageInformation->getPageRecord(), $pageInformation->getRootLine());
                         break;
                     case 'current':
                         $retVal = $this->data[$this->currentValKey] ?? null;

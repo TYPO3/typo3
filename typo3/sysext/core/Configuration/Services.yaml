@@ -213,6 +213,9 @@ services:
   TYPO3\CMS\Core\Locking\ResourceMutex:
     public: true
 
+  TYPO3\CMS\Core\Page\PageLayoutResolver:
+    public: true
+
   TYPO3\CMS\Core\Page\PageRenderer:
     arguments:
       $assetsCache: '@cache.assets'

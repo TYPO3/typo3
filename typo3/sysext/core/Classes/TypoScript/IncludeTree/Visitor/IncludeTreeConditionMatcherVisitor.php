@@ -26,9 +26,9 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\ExpressionLanguage\RequestWrapper;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
+use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeConditionInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
-use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 
 /**
  * A visitor that looks at IncludeConditionInterface nodes and
@@ -122,7 +122,7 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
             // the 'nearest' parent. However, here it is always passed sorted, so it is a top-down rootLine. Hence, this needs to be once
             // again reversed at this point.
             $bottomUpFullRootLine = array_reverse($fullRootLine);
-            $tree->pagelayout = $this->pageLayoutResolver->getLayoutForPage($variables['page'], $bottomUpFullRootLine);
+            $tree->pagelayout = $this->pageLayoutResolver->getLayoutIdentifierForPage($variables['page'], $bottomUpFullRootLine);
             $enrichedVariables['tree'] = $tree;
         }
 

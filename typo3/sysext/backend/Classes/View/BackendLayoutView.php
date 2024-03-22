@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,6 +44,7 @@ class BackendLayoutView implements SingletonInterface
     public function __construct(
         private readonly DataProviderCollection $dataProviderCollection,
         private readonly TypoScriptStringFactory $typoScriptStringFactory,
+        private readonly PageLayoutResolver $pageLayoutResolver,
     ) {
         $this->dataProviderCollection->add('default', DefaultDataProvider::class);
         foreach ((array)($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'] ?? []) as $identifier => $className) {
@@ -146,35 +148,26 @@ class BackendLayoutView implements SingletonInterface
      * Returns the backend layout which should be used for this page.
      *
      * @return false|string Identifier of the backend layout to be used, or FALSE if none
+     * @internal only public for testing purposes
      */
-    protected function getSelectedCombinedIdentifier(int $pageId): string|false
+    public function getSelectedCombinedIdentifier(int $pageId): string|false
     {
         if (!isset($this->selectedCombinedIdentifier[$pageId])) {
-            $page = $this->getPage($pageId);
-            $this->selectedCombinedIdentifier[$pageId] = (string)($page['backend_layout'] ?? null);
-            if ($this->selectedCombinedIdentifier[$pageId] === '-1') {
+            // If it not set check the root-line for a layout on next level and use this
+            // (root-line starts with current page and has page "0" at the end)
+            $rootLine = BackendUtility::BEgetRootLine($pageId, '', true);
+            // Use first element as current page,
+            $page = reset($rootLine);
+            // and remove last element (root page / pid=0)
+            array_pop($rootLine);
+            $selectedLayout = $this->pageLayoutResolver->getLayoutIdentifierForPage($page, $rootLine);
+            if ($selectedLayout === 'none') {
                 // If it is set to "none" - don't use any
-                $this->selectedCombinedIdentifier[$pageId] = false;
-            } elseif ($this->selectedCombinedIdentifier[$pageId] === '' || $this->selectedCombinedIdentifier[$pageId] === '0') {
-                // If it not set check the root-line for a layout on next level and use this
-                // (root-line starts with current page and has page "0" at the end)
-                $rootLine = BackendUtility::BEgetRootLine($pageId, '', true);
-                // Remove first and last element (current and root page)
-                array_shift($rootLine);
-                array_pop($rootLine);
-                foreach ($rootLine as $rootLinePage) {
-                    $this->selectedCombinedIdentifier[$pageId] = (string)$rootLinePage['backend_layout_next_level'];
-                    if ($this->selectedCombinedIdentifier[$pageId] === '-1') {
-                        // If layout for "next level" is set to "none" - don't use any and stop searching
-                        $this->selectedCombinedIdentifier[$pageId] = false;
-                        break;
-                    }
-                    if ($this->selectedCombinedIdentifier[$pageId] !== '' && $this->selectedCombinedIdentifier[$pageId] !== '0') {
-                        // Stop searching if a layout for "next level" is set
-                        break;
-                    }
-                }
+                $selectedLayout = false;
+            } elseif ($selectedLayout === 'default') {
+                $selectedLayout = '0';
             }
+            $this->selectedCombinedIdentifier[$pageId] = $selectedLayout;
         }
         // If it is set to a positive value use this
         return $this->selectedCombinedIdentifier[$pageId];
@@ -315,32 +308,5 @@ class BackendLayoutView implements SingletonInterface
 			}
 		}
 		';
-    }
-
-    /**
-     * Gets a page record.
-     */
-    protected function getPage(int $pageId): ?array
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll();
-        $page = $queryBuilder
-            ->select('uid', 'pid', 'backend_layout')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        if (is_array($page)) {
-            BackendUtility::workspaceOL('pages', $page);
-        }
-
-        return is_array($page) ? $page : null;
     }
 }

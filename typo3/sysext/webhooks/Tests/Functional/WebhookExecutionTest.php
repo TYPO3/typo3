@@ -57,9 +57,6 @@ final class WebhookExecutionTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_webhooks.csv');
 
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-
         $this->writeSiteConfiguration(
             'testing',
             $this->buildSiteConfiguration(1, '/'),
@@ -67,6 +64,8 @@ final class WebhookExecutionTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
     private function registerRequestInspector(callable $inspector): void
