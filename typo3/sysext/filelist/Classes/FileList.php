@@ -263,6 +263,7 @@ class FileList
     {
         $view->assign('displayThumbs', $this->thumbs);
         $view->assign('displayCheckbox', $this->resourceSelectableMatcher ? true : false);
+        $view->assign('defaultLanguageAccess', $this->getBackendUser()->checkLanguageAccess(0));
         $view->assign('pagination', [
             'backward' => $this->getPaginationLinkForDirection($paginator, NavigationDirection::BACKWARD),
             'forward' => $this->getPaginationLinkForDirection($paginator, NavigationDirection::FORWARD),
@@ -496,6 +497,9 @@ class FileList
                 'data-multi-record-selection-element' => 'true',
                 'draggable' => $resourceView->canMove() ? 'true' : 'false',
             ];
+            if ($this->getBackendUser()->checkLanguageAccess(0)) {
+                $attributes['data-default-language-access'] = 'true';
+            }
             foreach ($this->fieldArray as $field) {
                 switch ($field) {
                     case 'icon':
@@ -998,7 +1002,7 @@ class FileList
 
     protected function createControlEditMetaData(ResourceView $resourceView): ?ButtonInterface
     {
-        if (!$resourceView->getMetaDataUid()) {
+        if (!$resourceView->getMetaDataUid() || !$this->getBackendUser()->checkLanguageAccess(0)) {
             return null;
         }
 
@@ -1333,6 +1337,7 @@ class FileList
     {
         if (!($resourceView->resource instanceof File)
             || !$resourceView->canEditMetadata()
+            || !$this->getBackendUser()->checkLanguageAccess(0)
             || !$this->onlineMediaHelperRegistry->hasOnlineMediaHelper($resourceView->resource->getExtension())
         ) {
             return null;

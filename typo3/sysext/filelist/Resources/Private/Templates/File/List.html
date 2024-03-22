@@ -93,13 +93,15 @@
                         <div class="col">
                             <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
                         </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration -> f:format.raw()}">
+                        <f:if condition="{editActionConfiguration}">
+                            <div class="col">
+                                <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration -> f:format.raw()}">
                                 <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked')}">
                                     <core:icon identifier="actions-open" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked" />
                                 </span>
-                            </button>
-                        </div>
+                                </button>
+                            </div>
+                        </f:if>
                         <f:if condition="{downloadActionConfiguration}">
                             <div class="col">
                                 <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="download" data-multi-record-selection-action-config="{downloadActionConfiguration -> f:format.raw()}">

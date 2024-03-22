@@ -8,7 +8,7 @@
             }" />
         </f:if>
         <f:for each="{resources}" as="resource">
-            <f:render section="ResourceTile" arguments="{resource: resource, displayThumbs: displayThumbs, displayCheckbox: displayCheckbox}" />
+            <f:render section="ResourceTile" arguments="{resource: resource, displayThumbs: displayThumbs, displayCheckbox: displayCheckbox, defaultLanguageAccess: defaultLanguageAccess}" />
         </f:for>
         <f:if condition="{pagination.forward}">
             <f:render section="PaginationTile" arguments="{
@@ -55,6 +55,7 @@
         data-filelist-selectable="{f:if(condition: resource.isSelectable, then: 'true', else: 'false')}"
         data-filelist-selected="{f:if(condition: resource.isSelected, then: 'true', else: 'false')}"
         data-multi-record-selection-element="true"
+        {f:if(condition: defaultLanguageAccess, then: 'data-default-language-access="true"')}
         draggable="{resource.canMove ? 'true' : 'false'}"
     >
         <button type="button" title="{resource.name}" data-filelist-action="primary">
