@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Redirects\Event\AfterAutoCreateRedirectHasBeenPersistedEvent;
@@ -562,7 +563,7 @@ final class SlugServiceTest extends FunctionalTestCase
             'rootPageId' => 1,
             'base' => '/',
         ];
-        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
+        $siteConfiguration = $this->get(SiteConfiguration::class);
         $siteConfiguration->write('testing', $configuration);
     }
 
@@ -572,7 +573,7 @@ final class SlugServiceTest extends FunctionalTestCase
             'rootPageId' => 1,
             'base' => '/sub-folder',
         ];
-        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
+        $siteConfiguration = $this->get(SiteConfiguration::class);
         $siteConfiguration->write('testing', $configuration);
     }
 
@@ -583,7 +584,7 @@ final class SlugServiceTest extends FunctionalTestCase
             'base' => '/',
             'languages' => $this->languages,
         ];
-        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
+        $siteConfiguration = $this->get(SiteConfiguration::class);
         $siteConfiguration->write('testing', $configuration);
     }
 
@@ -602,13 +603,14 @@ final class SlugServiceTest extends FunctionalTestCase
             'base' => '/sub-folder',
             'languages' => $languages,
         ];
-        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
+        $siteConfiguration = $this->get(SiteConfiguration::class);
         $siteConfiguration->write('testing', $configuration);
     }
 
     protected function createSubject(): void
     {
-        GeneralUtility::makeInstance(SiteMatcher::class)->refresh();
+        $this->get(SiteMatcher::class)->refresh();
+        $this->get(SiteFinder::class)->getAllSites(false);
         $this->subject = new SlugService(
             context: GeneralUtility::makeInstance(Context::class),
             pageRepository: GeneralUtility::makeInstance(PageRepository::class),
