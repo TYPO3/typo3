@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\SiteHandling;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\Frontend\PhpError;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -60,12 +59,7 @@ trait SiteBasedTestTrait
         if (!empty($errorHandling)) {
             $configuration['errorHandling'] = $errorHandling;
         }
-        $siteConfiguration = new SiteConfiguration(
-            $this->instancePath . '/typo3conf/sites/',
-            $this->get(EventDispatcherInterface::class),
-            $this->get('cache.core')
-        );
-
+        $siteConfiguration = $this->get(SiteConfiguration::class);
         try {
             // ensure no previous site configuration influences the test
             GeneralUtility::rmdir($this->instancePath . '/typo3conf/sites/' . $identifier, true);
@@ -79,11 +73,7 @@ trait SiteBasedTestTrait
         string $identifier,
         array $overrides
     ): void {
-        $siteConfiguration = new SiteConfiguration(
-            $this->instancePath . '/typo3conf/sites/',
-            $this->get(EventDispatcherInterface::class),
-            $this->get('cache.core')
-        );
+        $siteConfiguration = $this->get(SiteConfiguration::class);
         $configuration = $siteConfiguration->load($identifier);
         $configuration = array_merge($configuration, $overrides);
         try {
