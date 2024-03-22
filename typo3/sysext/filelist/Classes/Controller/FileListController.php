@@ -382,19 +382,28 @@ class FileListController implements LoggerAwareInterface
                 'fileUploadUrl' => $this->getFileUploadUrl(),
                 'totalItems' => $this->filelist->totalItems,
             ]);
+
+            // Add edit metadata configuration, if user can edit default language
+            if ($this->getBackendUser()->checkLanguageAccess(0)) {
+                $this->view->assign(
+                    'editActionConfiguration',
+                    GeneralUtility::jsonEncodeForHtmlAttribute([
+                        'idField' => 'filelistMetaUid',
+                        'table' => 'sys_file_metadata',
+                        'returnUrl' => $this->filelist->createModuleUri(),
+                    ])
+                );
+            }
+
             // Assign meta information for the multi record selection
-            $this->view->assignMultiple([
-                'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                    'idField' => 'filelistMetaUid',
-                    'table' => 'sys_file_metadata',
-                    'returnUrl' => $this->filelist->createModuleUri(),
-                ], true),
-                'deleteActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
+            $this->view->assign(
+                'deleteActionConfiguration',
+                GeneralUtility::jsonEncodeForHtmlAttribute([
                     'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                     'title' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked'),
                     'content' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarkedWarning'),
-                ], true),
-            ]);
+                ]),
+            );
 
             // Add download button configuration, if file download is enabled
             if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.']['enabled'] ?? true) {
@@ -402,7 +411,7 @@ class FileListController implements LoggerAwareInterface
                     'downloadActionConfiguration',
                     GeneralUtility::jsonEncodeForHtmlAttribute([
                         'downloadUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_download'),
-                    ], true)
+                    ])
                 );
             }
         } else {

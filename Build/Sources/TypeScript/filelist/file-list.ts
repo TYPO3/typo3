@@ -89,7 +89,8 @@ export default class Filelist {
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
-      if (resource.type === 'file') {
+      const resourceElement: HTMLElement = detail.trigger.closest('[data-default-language-access]') as HTMLElement;
+      if (resource.type === 'file' && resourceElement !== null) {
         window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
           + '&edit[sys_file_metadata][' + resource.metaUid + ']=edit'
           + '&returnUrl=' + Filelist.getReturnUrl('');

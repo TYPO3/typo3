@@ -225,10 +225,11 @@ class FileProvider extends AbstractProvider
     protected function canEditMetadata(): bool
     {
         return $this->isFile()
-           && $this->record->isIndexed()
-           && $this->record->checkActionPermission('editMeta')
-           && $this->record->getMetaData()->offsetExists('uid')
-           && $this->backendUser->check('tables_modify', 'sys_file_metadata');
+            && $this->record->isIndexed()
+            && $this->record->checkActionPermission('editMeta')
+            && $this->record->getMetaData()->offsetExists('uid')
+            && $this->backendUser->check('tables_modify', 'sys_file_metadata')
+            && $this->backendUser->checkLanguageAccess(0);
     }
 
     protected function canBeRenamed(): bool
