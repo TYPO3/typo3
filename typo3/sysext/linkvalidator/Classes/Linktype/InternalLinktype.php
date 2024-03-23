@@ -24,7 +24,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
- * This class provides Check Internal Links plugin implementation
+ * This class checks internal links (links to database records), but only links to pages
+ * (including links to content elements in the URL fragment).
+ *
+ * The actual format of the link is irrelevant, checked is the result returned by the configured softref parsers, but
+ * typically, the link target look like this:
+ *
+ * - t3://page?uid=123
+ * - t3://page?uid=123&_language=1
+ * - t3://page?uid=123#c43
+ *
+ * @todo Makes sense to rename this to PageLinktype for more clarity
  */
 class InternalLinktype extends AbstractLinktype
 {
@@ -63,6 +73,23 @@ class InternalLinktype extends AbstractLinktype
     protected $responseContent = true;
 
     protected string $identifier = 'db';
+
+    /**
+     * Type fetching method, based on the type that softRefParserObj returns.
+     *
+     * @param array $value Reference properties
+     * @param string $type Current type
+     * @param string $key Validator hook name
+     * @return string Fetched type
+     */
+    public function fetchType(array $value, string $type, string $key): string
+    {
+        [$table] = explode(':', $value['recordRef'] ?? '');
+        if (($value['type'] ?? false) === $key && in_array($table, ['pages', 'tt_content'], true)) {
+            $type = 'db';
+        }
+        return $type;
+    }
 
     /**
      * Checks a given URL + /path/filename.ext for validity
