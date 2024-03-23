@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -55,7 +54,8 @@ class RecyclerAjaxController
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly FrontendInterface $runtimeCache,
         protected readonly IconFactory $iconFactory,
-        protected readonly ConnectionPool $connectionPool
+        protected readonly ConnectionPool $connectionPool,
+        protected readonly RecordHistory $recordHistory
     ) {}
 
     /**
@@ -164,7 +164,6 @@ class RecyclerAjaxController
         $groupedRecords = [];
         $lang = $this->getLanguageService();
 
-        $recordHistory = GeneralUtility::makeInstance(RecordHistory::class);
         foreach ($deletedRowsArray as $table => $rows) {
             $groupedRecords[$table]['information'] = [
                 'table' => $table,
@@ -172,10 +171,10 @@ class RecyclerAjaxController
             ];
             foreach ($rows as $row) {
                 $pageTitle = $this->getPageTitle((int)$row['pid']);
-                $ownerInformation = $recordHistory->getCreationInformationForRecord($table, $row);
+                $ownerInformation = $this->recordHistory->getCreationInformationForRecord($table, $row);
                 $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['actiontype'] === 'BE' ? $ownerInformation['userid'] : 0);
                 $backendUserName = $this->getBackendUserInformation($ownerUid);
-                $userIdWhoDeleted = $this->getUserWhoDeleted($table, (int)$row['uid']);
+                $deleteUserUid = $this->recordHistory->getUserIdFromDeleteActionForRecord($table, (int)$row['uid']);
 
                 $groupedRecords[$table]['records'][] = [
                     'uid' => $row['uid'],
@@ -188,8 +187,8 @@ class RecyclerAjaxController
                     'owner_uid' => $ownerUid,
                     'title' => BackendUtility::getRecordTitle($table, $row),
                     'path' => $this->getRecordPath((int)$row['pid']),
-                    'delete_user_uid' => $userIdWhoDeleted,
-                    'delete_user' => $this->getBackendUserInformation($userIdWhoDeleted),
+                    'delete_user_uid' => $deleteUserUid,
+                    'delete_user' => $this->getBackendUserInformation($deleteUserUid),
                     'isParentDeleted' => $table === 'pages' && $this->isParentPageDeleted((int)$row['pid']),
                 ];
             }
@@ -240,38 +239,6 @@ class RecyclerAjaxController
             $this->runtimeCache->set($cacheId, $username);
         }
         return $username;
-    }
-
-    /**
-     * Get the user uid of the user who deleted the record
-     * @todo: move this to RecordHistory class
-     */
-    protected function getUserWhoDeleted(string $table, int $uid): int
-    {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_history');
-        $queryBuilder->select('userid')
-            ->from('sys_history')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'tablename',
-                    $queryBuilder->createNamedParameter($table)
-                ),
-                $queryBuilder->expr()->eq(
-                    'usertype',
-                    $queryBuilder->createNamedParameter('BE')
-                ),
-                $queryBuilder->expr()->eq(
-                    'recuid',
-                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'actiontype',
-                    $queryBuilder->createNamedParameter(RecordHistoryStore::ACTION_DELETE, Connection::PARAM_INT)
-                )
-            )
-            ->setMaxResults(1);
-
-        return (int)$queryBuilder->executeQuery()->fetchOne();
     }
 
     /**
