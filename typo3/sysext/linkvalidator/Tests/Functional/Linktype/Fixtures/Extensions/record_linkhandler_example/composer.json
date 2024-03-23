@@ -1,0 +1,18 @@
+{
+	"name": "typo3tests/record-linkhandler-example",
+	"description": "Linkvalidator testing RecordLinktype",
+	"type": "typo3-cms-extension",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "record_linkhandler_example",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	},
+	"version": "1.0.0"
+}

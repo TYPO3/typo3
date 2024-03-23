@@ -18,6 +18,9 @@
       <trans-unit id="hooks.file">
         <source>File Links</source>
       </trans-unit>
+      <trans-unit id="hooks.record">
+        <source>Record Links</source>
+      </trans-unit>
       <trans-unit id="hooks.external">
         <source>External Links</source>
       </trans-unit>
@@ -116,6 +119,9 @@
       </trans-unit>
       <trans-unit id="list.report.contentnotexisting">
         <source>Record (id=###uid###) does not exist.</source>
+      </trans-unit>
+      <trans-unit id="list.report.recordtablenotexisting">
+        <source>Table or link identifier '###table###' of the linked record (id=###uid###) could not be resolved.</source>
       </trans-unit>
       <trans-unit id="list.report.noinformation">
         <source>No information about the error is available.</source>

@@ -63,7 +63,8 @@ For this reason, it is currently not possible to check for
 
     Detecting a soft reference is not the same as validating it: a match is
     only checked and reported as broken if it also resolves to one of the
-    registered link types (`db` for internal links, `external` or `file`).
+    registered link types (`db` for internal links, `record` for record links,
+    `external` or `file`).
 
     Type :ref:`email <t3tca:columns-email>` automatically adds the soft
     reference `email[subst]`, and the same soft reference can be added

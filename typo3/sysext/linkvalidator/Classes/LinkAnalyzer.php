@@ -602,6 +602,11 @@ class LinkAnalyzer
         return $this->brokenLinkRepository->getNumberOfBrokenLinksForRecordsOnPages($this->pids, $this->searchFields);
     }
 
+    public function getTSConfig(): array
+    {
+        return $this->tsConfig;
+    }
+
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

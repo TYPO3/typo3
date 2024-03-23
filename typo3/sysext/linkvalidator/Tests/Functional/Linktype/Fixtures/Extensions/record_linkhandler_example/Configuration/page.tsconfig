@@ -1,0 +1,9 @@
+# For testing purposes, the identifier differs from the table name
+TCEMAIN.linkHandler.tx_myrecord {
+  handler = TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler
+  label = RecordLinkhandlerExample
+  configuration {
+    table = tx_record_linkhandler_example
+  }
+  scanAfter = page
+}

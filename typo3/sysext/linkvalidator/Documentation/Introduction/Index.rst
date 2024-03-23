@@ -30,8 +30,9 @@ a way to conveniently fix these problems.
 It includes the following features:
 
 -   The LinkValidator can check all kinds of links. This includes internal
-    links to pages and content elements, file links to files in the local
-    file system and external links to resources somewhere else in the web.
+    links to pages and content elements, links to records of custom tables
+    (for example news), file links to files in the local file system and
+    external links to resources somewhere else in the web.
 
 -   The LinkValidator checks a number of fields by default, for example
     :sql:`header` and :sql:`bodytext` fields of content elements.

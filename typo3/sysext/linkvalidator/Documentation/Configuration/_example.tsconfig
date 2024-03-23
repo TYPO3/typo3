@@ -3,7 +3,7 @@ mod.linkvalidator {
     tt_content := addToList(mysitepackage_carousel_morelink)
     mysitepackage_carousel_carousel_items = text,typolink
   }
-  linktypes = db,file,external
+  linktypes = db,file,record,external
   checkhidden = 0
   mail {
     fromname = TYPO3 LinkValidator

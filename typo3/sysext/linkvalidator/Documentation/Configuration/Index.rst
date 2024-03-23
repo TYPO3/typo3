@@ -97,15 +97,27 @@ You must prefix them with `mod.linkvalidator`, for example
 ..  confval:: linktypes
     :name: tsconfig-linktypes
     :type: string
-    :Path: mod.linkvalidator.linktypesConfig.linktypes
-    :Default: `db,file`
+    :Path: mod.linkvalidator.linktypes
+    :Default: `db,file,record`
 
     Comma separated list of link types to check.
 
     **Possible values:**
 
     db
-        Check links to database records.
+        Check links to pages and content elements.
+
+    record
+        ..  versionadded:: 15.0
+
+        Check links to records of custom tables (for example news) using
+        the record link handler (`t3://record?identifier=...`).
+
+        Links to hidden records are reported unless
+        `mod.linkvalidator.reportHiddenRecords = 0` is set. Links whose table
+        is not available, for example because no `TCEMAIN.linkHandler`
+        configuration applies to the page, are reported with the table or link
+        identifier.
 
     file
         Check links to files located in your local TYPO3 installation.
@@ -118,6 +130,9 @@ You must prefix them with `mod.linkvalidator`, for example
 
     ..  versionchanged:: 13.0
         The default was changed to exclude "external" link type.
+
+    ..  versionchanged:: 15.0
+        The "record" link type was added to the default.
 
     ..  warning::
         External links can lead to some :ref:`known issues <usagePitfallsExternalLinks>`.
@@ -166,6 +181,19 @@ You must prefix them with `mod.linkvalidator`, for example
 
     If set, disabled pages and content elements are checked for broken
     links, too.
+
+..  _reporthiddenrecords:
+
+..  confval:: reportHiddenRecords
+    :name: tsconfig-reporthiddenrecords
+    :type: boolean
+    :Path: mod.linkvalidator.reportHiddenRecords
+    :Default: `1`
+
+    ..  versionadded:: 15.0
+
+    If set, links to hidden records (disabled, not yet started or expired)
+    are reported as broken by the `record` link type.
 
 ..  confval:: showCheckLinkTab
     :name: tsconfig-showchecklinktab

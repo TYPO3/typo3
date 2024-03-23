@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","title","perms_everybody"
+,1,0,"Root",15
+"tt_content"
+,"uid","pid","CType","header","header_link","bodytext"
+,1,1,"text","rte link to deleted record","","<p><a href=""t3://record?identifier=tx_myrecord&amp;uid=3"">Link</a></p>"
+,2,1,"text","header link to missing record","t3://record?identifier=tx_myrecord&uid=999",""
+,3,1,"text","valid links","t3://record?identifier=tx_myrecord&uid=1","<p><a href=""t3://record?identifier=tx_myrecord&amp;uid=1"">Link</a></p>"
