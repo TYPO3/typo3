@@ -2348,12 +2348,13 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $pid, $field)
     {
-        if (is_array($tcaFieldConf['items'])) {
-            foreach ($tcaFieldConf['items'] as $set) {
-                if ((string)$set['value'] === (string)$value) {
-                    $res['value'] = $value;
-                    break;
-                }
+        if (!is_array($tcaFieldConf['items'] ?? null)) {
+            $tcaFieldConf['items'] = [];
+        }
+        foreach ($tcaFieldConf['items'] as $set) {
+            if ((string)$set['value'] === (string)$value) {
+                $res['value'] = $value;
+                break;
             }
         }
 
