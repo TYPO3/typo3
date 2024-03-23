@@ -32,7 +32,6 @@ final class ContentElementsCest
         $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
         $pageTree->openPath(['styleguide frontend demo']);
         $I->switchToContentFrame();
-        $I->wait(1);
         $I->waitForElementVisible('select[name=actionMenu]');
         $I->selectOption('select[name=actionMenu]', 'Layout');
         $I->wait(1);

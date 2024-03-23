@@ -39,7 +39,6 @@ final class SysNoteCest
         $I->click('List');
         $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->wait(0.2);
         $I->switchToContentFrame();
 
         $I->click('.module-docheader .btn[title="Create new record"]');

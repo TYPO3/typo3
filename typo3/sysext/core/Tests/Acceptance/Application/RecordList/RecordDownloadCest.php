@@ -39,7 +39,6 @@ final class RecordDownloadCest
         $I->click('List');
         $I->waitForElementNotVisible('#nprogress');
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->wait(0.2);
         $I->switchToContentFrame();
         $I->canSee('Download');
         $I->click('typo3-recordlist-record-download-button');
