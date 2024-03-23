@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Event;
 use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Listeners are able to modify the resolved ContentObjectRenderer->getImgResource() result

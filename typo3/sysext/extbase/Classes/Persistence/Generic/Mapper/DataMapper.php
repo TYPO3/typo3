@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use Doctrine\Instantiator\InstantiatorInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;

@@ -22,7 +22,6 @@ use Doctrine\DBAL\Query\From;
 use Doctrine\DBAL\Query\Join;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Doctrine\DBAL\Query\QueryType;
-use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Connection;
 
 /**

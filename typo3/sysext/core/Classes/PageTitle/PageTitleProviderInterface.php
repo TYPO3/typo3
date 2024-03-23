@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\PageTitle;
 
-use Psr\Http\Message\ServerRequestInterface;
-
 /**
  * Interface for PageTitleProviders with the methods that are needed by the PageTitleProviderManager
  */
