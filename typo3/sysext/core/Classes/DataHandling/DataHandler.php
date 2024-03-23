@@ -2245,14 +2245,15 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field The field to check
      * @return array Modified $res array
      */
-    protected function checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $pid, $field)
+    protected function checkValueForRadio(array $res, $value, $tcaFieldConf, $table, $id, $pid, $field): array
     {
-        if (is_array($tcaFieldConf['items'])) {
-            foreach ($tcaFieldConf['items'] as $set) {
-                if ((string)$set['value'] === (string)$value) {
-                    $res['value'] = $value;
-                    break;
-                }
+        if (!is_array($tcaFieldConf['items'] ?? null)) {
+            $tcaFieldConf['items'] = [];
+        }
+        foreach ($tcaFieldConf['items'] as $set) {
+            if ((string)$set['value'] === (string)$value) {
+                $res['value'] = $value;
+                break;
             }
         }
 

@@ -1087,6 +1087,16 @@ final class DataHandlerTest extends UnitTestCase
     }
 
     #[Test]
+    public function checkValueForRadioAcceptsUndefinedItems(): void
+    {
+        $expectedResult = [];
+        $tcaConfig = [];
+        $value = 0;
+        $result = $this->subject->_call('checkValueForRadio', [], $value, $tcaConfig, '', 0, 0, '');
+        self::assertSame($expectedResult, $result);
+    }
+
+    #[Test]
     public function checkValueForInputConvertsNullToEmptyString(): void
     {
         $expectedResult = ['value' => ''];
