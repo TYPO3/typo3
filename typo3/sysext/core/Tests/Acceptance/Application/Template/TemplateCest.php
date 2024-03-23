@@ -161,7 +161,6 @@ class TemplateCest
         $I->switchToMainFrame();
         $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->switchToContentFrame();
-        $I->wait(1);
         $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
         $I->wait(1);
         $I->waitForText('No template');
@@ -192,7 +191,6 @@ class TemplateCest
         $I->switchToMainFrame();
         $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->switchToContentFrame();
-        $I->wait(1);
         $I->selectOption('.t3-js-jumpMenuBox', 'Constant Editor');
         $I->wait(2);
         $I->selectOption('.t3-js-jumpMenuBox', 'Info/Modify');

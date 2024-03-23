@@ -77,6 +77,9 @@ class PageTree extends AbstractPageTree
     {
         $this->closeSecondLevelPaths();
         parent::openPath($path);
+
+        // pagetree has 300ms timeout for double click detection, wait 350ms to wait for the click to have happened
+        $this->tester->wait(0.35);
     }
 
     /**
