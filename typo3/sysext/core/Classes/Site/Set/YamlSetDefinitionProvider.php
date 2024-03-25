@@ -103,6 +103,7 @@ class YamlSetDefinitionProvider
                 'settingsDefinitions' => $settingsDefinitions,
             ];
             $setData['typoscript'] ??= $basePath;
+            $setData['pagets'] ??= $basePath . '/page.tsconfig';
             return new SetDefinition(...$setData);
         } catch (\Error $e) {
             throw new \Exception('Invalid set definition: ' . json_encode($set), 1170859526, $e);

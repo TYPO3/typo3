@@ -84,10 +84,12 @@ class Site implements SiteInterface
 
     protected ?SiteTypoScript $typoscript;
 
+    protected ?SiteTSconfig $tsConfig;
+
     /**
      * Sets up a site object, and its languages, error handlers and the settings
      */
-    public function __construct(string $identifier, int $rootPageId, array $configuration, SiteSettings $settings = null, ?SiteTypoScript $typoscript = null)
+    public function __construct(string $identifier, int $rootPageId, array $configuration, SiteSettings $settings = null, ?SiteTypoScript $typoscript = null, ?SiteTSconfig $tsConfig = null)
     {
         $this->identifier = $identifier;
         $this->rootPageId = $rootPageId;
@@ -96,6 +98,7 @@ class Site implements SiteInterface
         }
         $this->settings = $settings;
         $this->typoscript = $typoscript;
+        $this->tsConfig = $tsConfig;
         // Merge settings back in configuration for backwards-compatibility
         $configuration['settings'] = $this->settings->getAll();
         $this->configuration = $configuration;
@@ -331,12 +334,20 @@ class Site implements SiteInterface
      */
     public function isTypoScriptRoot(): bool
     {
-        return $this->sets !== [] || $this->typoscript !== null;
+        return $this->sets !== [] || $this->typoscript !== null || $this->tsConfig !== null;
     }
 
     public function getTypoScript(): ?SiteTypoScript
     {
         return $this->typoscript;
+    }
+
+    /**
+     * @internal
+     */
+    public function getTSconfig(): ?SiteTSconfig
+    {
+        return $this->tsConfig;
     }
 
     /**

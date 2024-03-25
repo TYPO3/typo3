@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
+use TYPO3\CMS\Core\Site\Entity\SiteTSconfig;
 use TYPO3\CMS\Core\Site\Entity\SiteTypoScript;
 use TYPO3\CMS\Core\Site\SiteSettingsFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,6 +65,13 @@ class SiteConfiguration implements SingletonInterface
      * @internal
      */
     protected string $typoScriptConstantsFileName = 'constants.typoscript';
+
+    /**
+     * File naming containing page TSconfig definitions
+     *
+     * @internal
+     */
+    protected string $pageTSconfigFileName = 'page.tsconfig';
 
     /**
      * YAML file name with all settings related to Content-Security-Policies.
@@ -123,11 +131,12 @@ class SiteConfiguration implements SingletonInterface
             $identifier = (string)$identifier;
             $siteSettings = $this->siteSettingsFactory->getSettings($identifier, $configuration);
             $siteTypoScript = $this->getSiteTypoScript($identifier);
+            $siteTSconfig = $this->getSiteTSconfig($identifier);
             $configuration['contentSecurityPolicies'] = $this->getContentSecurityPolicies($identifier);
 
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript);
+                $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript, $siteTSconfig);
             }
         }
         $this->firstLevelCache = $sites;
@@ -250,6 +259,25 @@ class SiteConfiguration implements SingletonInterface
             return null;
         }
         return new SiteTypoScript(...$definitions);
+    }
+
+    protected function getSiteTSconfig(string $siteIdentifier): ?SiteTSconfig
+    {
+        $pageTSconfig = null;
+        $path = $this->configPath . '/' . $siteIdentifier . '/' . $this->pageTSconfigFileName;
+        if (file_exists($path)) {
+            $contents = @file_get_contents(GeneralUtility::fixWindowsFilePath($path));
+            if ($contents !== false) {
+                $pageTSconfig = $contents;
+            }
+        }
+        if ($pageTSconfig === null) {
+            return null;
+        }
+
+        return new SiteTSconfig(
+            pageTSconfig: $pageTSconfig
+        );
     }
 
     protected function getContentSecurityPolicies(string $siteIdentifier): array
