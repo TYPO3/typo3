@@ -311,6 +311,8 @@ class LinkAnalyzer
             $valueField = $record[$field];
 
             // Add a softref definition for link fields if the TCA does not specify one already
+            // todo: check for 'type' => 'file' as well and update in documentation
+            // e.g. pages.media
             if (($conf['type'] ?? '') === 'link' && empty($conf['softref'])) {
                 $conf['softref'] = 'typolink';
             }
