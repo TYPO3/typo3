@@ -53,4 +53,3 @@ integrators and developers alike to create all kinds of forms.
    :hidden:
 
    Sitemap
-   genindex
