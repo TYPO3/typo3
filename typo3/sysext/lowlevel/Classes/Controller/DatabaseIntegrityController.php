@@ -1682,12 +1682,12 @@ class DatabaseIntegrityController
                     if ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
                         $lineHTML[] = '<select class="form-select" name="' . $fieldPrefix . '[inputValue][]" multiple="multiple">';
                     } elseif ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
-                        if (is_array($conf['inputValue'])) {
+                        if (is_array($conf['inputValue'] ?? null)) {
                             $conf['inputValue'] = implode(',', $conf['inputValue']);
                         }
                         $lineHTML[] = '<input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
                     } elseif ($conf['comparison'] === 64) {
-                        if (is_array($conf['inputValue'])) {
+                        if (is_array($conf['inputValue'] ?? null)) {
                             $conf['inputValue'] = $conf['inputValue'][0];
                         }
                         $lineHTML[] = '<select class="form-select t3js-submit-change" name="' . $fieldPrefix . '[inputValue]">';
@@ -1719,8 +1719,11 @@ class DatabaseIntegrityController
                         $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1'] ?? '') . '" name="' . $fieldPrefix . '[inputValue1]">';
                         $lineHTML[] = '</div>';
                     } else {
+                        if (is_array($conf['inputValue'] ?? null)) {
+                            $conf['inputValue'] = '';
+                        }
                         $lineHTML[] = '<div class="form-group">';
-                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
                         $lineHTML[] = '</div>';
                     }
                     $lineHTML[] = '</div>';
