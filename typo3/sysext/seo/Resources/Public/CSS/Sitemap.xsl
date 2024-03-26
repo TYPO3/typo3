@@ -98,10 +98,10 @@
                         <table id="sitemap" cellpadding="3" width="100%">
                             <thead>
                                 <tr>
-                                    <th width="40%">URL</th>
-                                    <th title="Last Modification Time" width="20%">Last Mod.</th>
-                                    <th title="Change frequency" width="20%">Change freq.</th>
-                                    <th title="Priority" width="20%">Priority</th>
+                                    <th width="70%">URL</th>
+                                    <th title="Last Modification Time" width="15%">Last Mod.</th>
+                                    <th title="Change frequency" width="10%">Change freq.</th>
+                                    <th title="Priority" width="5%">Priority</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -113,7 +113,7 @@
                                             <xsl:variable name="itemURL">
                                                 <xsl:value-of select="sitemap:loc"/>
                                             </xsl:variable>
-                                            <a href="{$itemURL}">
+                                            <a href="{$itemURL}" target="_blank">
                                                 <xsl:value-of select="sitemap:loc"/>
                                             </a>
                                         </td>
