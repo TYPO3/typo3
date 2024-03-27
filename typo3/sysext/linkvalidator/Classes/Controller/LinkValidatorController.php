@@ -120,7 +120,7 @@ class LinkValidatorController
             if (($this->modTS['actionAfterEditRecord'] ?? '') === 'recheck') {
                 // recheck broken links for last edited record
                 $this->linkAnalyzer->recheckLinks(
-                    $this->checkOpt['check'],
+                    $this->getLinkTypesFromCheckOptions(),
                     $this->lastEditedRecord['uid'],
                     $this->lastEditedRecord['table'],
                     $this->lastEditedRecord['field'],
@@ -268,9 +268,9 @@ class LinkValidatorController
     }
 
     /**
-     * Check for broken links
+     * @return string[]
      */
-    protected function updateBrokenLinks(): void
+    protected function getLinkTypesFromCheckOptions(): array
     {
         // convert ['external' => 1, 'db' => 0, ...] into ['external']
         $linkTypes = [];
@@ -279,7 +279,18 @@ class LinkValidatorController
                 $linkTypes[] = $linkType;
             }
         }
-        $this->linkAnalyzer->getLinkStatistics($linkTypes, (bool)($this->modTS['checkhidden'] ?? false));
+        return $linkTypes;
+    }
+
+    /**
+     * Check for broken links
+     */
+    protected function updateBrokenLinks(): void
+    {
+        $this->linkAnalyzer->getLinkStatistics(
+            $this->getLinkTypesFromCheckOptions(),
+            (bool)($this->modTS['checkhidden'] ?? false)
+        );
     }
 
     /**
