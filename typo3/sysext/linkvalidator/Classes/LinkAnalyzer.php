@@ -286,7 +286,7 @@ class LinkAnalyzer
 
         $schema = $this->tcaSchemaFactory->get($table);
 
-        $selectFields = ['uid', 'pid'];
+        $selectFields = ['uid', 'pid', $field];
         if ($schema->hasCapability(TcaSchemaCapability::Label)) {
             /** @var LabelCapability $labelCapability */
             $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
