@@ -352,7 +352,7 @@ class LinkValidatorController
             $fieldLabel = substr($fieldLabel, 0, -1);
         }
 
-        return [
+        $result = [
             'title' => $table . ':' . $row['record_uid'],
             'icon' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),
             'headline' => $row['headline'],
@@ -368,27 +368,26 @@ class LinkValidatorController
                 date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row['last_check'])
             ),
             'needsRecheck' => (bool)$row['needs_recheck'],
-            // Construct link to edit the record
-            'editUrl' => (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
-                'edit' => [
-                    $table => [
-                        $row['record_uid'] => 'edit',
-                    ],
-                ],
-                'columnsOnly' => [
-                    $table => [$row['field']],
-                ],
-                'returnUrl' => $this->getModuleUri(
-                    'report',
-                    [
-                        'last_edited_record_uid' => $row['record_uid'],
-                        'last_edited_record_table' => $table,
-                        'last_edited_record_field' => $row['field'],
-                        'last_edited_record_timestamp' => $this->context->getPropertyFromAspect('date', 'timestamp'),
-                    ]
-                ),
-            ]),
         ];
+        $editUrlParameters = [
+            'edit' => [
+                $table => [
+                    $row['record_uid'] => 'edit',
+                ],
+            ],
+            'returnUrl' => $this->getModuleUri(
+                'report',
+                [
+                    'last_edited_record_uid' => $row['record_uid'],
+                    'last_edited_record_table' => $table,
+                    'last_edited_record_field' => $row['field'],
+                    'last_edited_record_timestamp' => $this->context->getPropertyFromAspect('date', 'timestamp'),
+                ]
+            ),
+        ];
+        $result['editUrlFull'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $editUrlParameters);
+        $result['editUrlField'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', array_merge($editUrlParameters, ['columnsOnly' => [$table => [$row['field']]]]));
+        return $result;
     }
 
     /**

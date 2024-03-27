@@ -57,9 +57,18 @@
                         </f:if>
                     </td>
                     <td>
-                        <a class="btn btn-default" href="{item.editUrl}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}">
-                            <core:icon identifier="actions-open" size="small" />
-                        </a>
+                        <div class="btn-group">
+                            <f:if condition="{item.editUrlField}">
+                                <a class="btn btn-default" href="{item.editUrlField}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.editField')}">
+                                    <core:icon identifier="actions-open" size="small" />
+                                </a>
+                            </f:if>
+                            <f:if condition="{item.editUrlFull}">
+                                <a class="btn btn-default" href="{item.editUrlFull}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}">
+                                    <core:icon identifier="actions-document-edit" size="small" />
+                                </a>
+                            </f:if>
+                        </div>
                     </td>
                 </tr>
             </f:for>

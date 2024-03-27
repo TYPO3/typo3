@@ -60,6 +60,9 @@
 			<trans-unit id="list.tableFoot.records" resname="list.tableFoot.records">
 				<source>Records</source>
 			</trans-unit>
+			<trans-unit id="list.editField" resname="list.editField">
+				<source>Edit only the field containing this broken link</source>
+			</trans-unit>
 			<trans-unit id="list.field" resname="list.field">
 				<source>(Field: %s)</source>
 			</trans-unit>
