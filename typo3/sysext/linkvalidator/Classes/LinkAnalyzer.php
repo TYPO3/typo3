@@ -27,6 +27,9 @@ use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserResult;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\LabelCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\Event\BeforeRecordIsAnalyzedEvent;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
@@ -65,16 +68,15 @@ class LinkAnalyzer
 
     /**
      * The currently active TSconfig. Will be passed to the init function.
-     *
-     * @var array
      */
-    protected $tsConfig = [];
+    protected array $tsConfig = [];
 
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly BrokenLinkRepository $brokenLinkRepository,
         protected readonly SoftReferenceParserFactory $softReferenceParserFactory,
         protected readonly LinktypeRegistry $linktypeRegistry,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -119,19 +121,37 @@ class LinkAnalyzer
         foreach ($this->searchFields as $table => $fields) {
             // If table is not configured, assume the extension is not installed
             // and therefore no need to check it
-            if (!is_array($GLOBALS['TCA'][$table] ?? null)) {
+            if (!$this->tcaSchemaFactory->has($table)) {
                 continue;
             }
+            $schema = $this->tcaSchemaFactory->get($table);
 
-            // Re-init selectFields for table
-            $selectFields = array_merge(['uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label']], $fields);
-            if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false) {
-                $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
-            }
-            if ($GLOBALS['TCA'][$table]['ctrl']['type'] ?? false) {
-                if (isset($GLOBALS['TCA'][$table]['columns'][$GLOBALS['TCA'][$table]['ctrl']['type']])) {
-                    $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['type'];
+            $selectFields = ['uid', 'pid'];
+            // Only add fields which are defined in the Schema
+            foreach ($fields as $field) {
+                if ($schema->hasField($field)) {
+                    $selectFields[] = $field;
                 }
+            }
+
+            if ($schema->hasCapability(TcaSchemaCapability::Label)) {
+                /** @var LabelCapability $labelCapability */
+                $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
+                if ($labelCapability->hasPrimaryField()) {
+                    $selectFields[] = $labelCapability->getPrimaryField()->getName();
+                }
+                foreach ($labelCapability->getAdditionalFields() as $additionalField) {
+                    $selectFields[] = $additionalField->getName();
+                }
+            }
+
+            if ($schema->isLanguageAware()) {
+                $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+                $selectFields[] = $languageCapability->getLanguageField()->getName();
+            }
+
+            if ($schema->getSubSchemaDivisorField() !== null) {
+                $selectFields[] = $schema->getSubSchemaDivisorField()->getName();
             }
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -182,9 +202,14 @@ class LinkAnalyzer
                 continue;
             }
 
-            //  Check them
+            // Check them
             foreach ($links[$key] as $entryValue) {
                 $table = $entryValue['table'];
+                if (!$this->tcaSchemaFactory->has($table)) {
+                    continue;
+                }
+                $schema = $this->tcaSchemaFactory->get($table);
+
                 $record = [];
                 $record['headline'] = BackendUtility::getRecordTitle($table, $entryValue['row']);
                 $record['record_pid'] = $entryValue['row']['pid'];
@@ -194,13 +219,13 @@ class LinkAnalyzer
                 $record['link_title'] = $entryValue['link_title'] ?? '';
                 $record['field'] = $entryValue['field'];
                 $record['last_check'] = time();
-                $typeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? false;
-                if (isset($entryValue['row'][$typeField])) {
+                $typeField = $schema->getSubSchemaDivisorField()?->getName() ?? false;
+                if ($typeField && isset($entryValue['row'][$typeField])) {
                     $record['element_type'] = (string)$entryValue['row'][$typeField];
                 }
-                $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false;
-                if ($languageField && isset($entryValue['row'][$languageField])) {
-                    $record['language'] = $entryValue['row'][$languageField];
+                $languageFieldName = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName() : false;
+                if ($languageFieldName && isset($entryValue['row'][$languageFieldName])) {
+                    $record['language'] = $entryValue['row'][$languageFieldName];
                 } else {
                     $record['language'] = -1;
                 }
@@ -248,7 +273,7 @@ class LinkAnalyzer
     ): void {
         // If table is not configured, assume the extension is not installed
         // and therefore no need to check it
-        if (!is_array($GLOBALS['TCA'][$table])) {
+        if (!$this->tcaSchemaFactory->has($table)) {
             return;
         }
 
@@ -259,7 +284,28 @@ class LinkAnalyzer
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
-        $row = $queryBuilder->select('uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label'], $field, 'tstamp')
+        $schema = $this->tcaSchemaFactory->get($table);
+
+        $selectFields = ['uid', 'pid'];
+        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
+            /** @var LabelCapability $labelCapability */
+            $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
+            if ($labelCapability->hasPrimaryField()) {
+                $selectFields[] = $labelCapability->getPrimaryField()->getName();
+            }
+            foreach ($labelCapability->getAdditionalFields() as $additionalField) {
+                $selectFields[] = $additionalField->getName();
+            }
+        }
+
+        $updatedFieldName = null;
+        if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
+            $updatedFieldName = $schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName();
+            $selectFields[] = $updatedFieldName;
+        }
+
+        $row = $queryBuilder
+            ->select(...$selectFields)
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
@@ -275,7 +321,7 @@ class LinkAnalyzer
             $this->brokenLinkRepository->removeBrokenLinksForRecord($table, (int)$recordUid);
             return;
         }
-        if (($row['tstamp'] ?? 0) && $timestamp && ((int)($row['tstamp']) < $timestamp)) {
+        if ($updatedFieldName && $row[$updatedFieldName] && $timestamp && ((int)($row[$updatedFieldName]) < $timestamp)) {
             // timestamp has not changed: no need to recheck
             return;
         }
@@ -304,12 +350,17 @@ class LinkAnalyzer
         $results = $event->getResults();
         $record = $event->getRecord();
 
+        $schema = $this->tcaSchemaFactory->get($table);
         // Put together content of all relevant fields
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $idRecord = $record['uid'];
         // Get all references
         foreach ($fields as $field) {
-            $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+            if (!$schema->hasField($field)) {
+                continue;
+            }
+            $fieldInformation = $schema->getField($field);
+            $conf = $fieldInformation->getConfiguration();
             $valueField = $record[$field];
 
             // @todo: check for 'type' => 'file' as well and update in documentation?
@@ -381,7 +432,7 @@ class LinkAnalyzer
      * @param string $field The current field
      * @param string $table The current table
      */
-    protected function analyzeTypoLinks(SoftReferenceParserResult $parserResult, array &$results, $htmlParser, array $record, $field, $table)
+    protected function analyzeTypoLinks(SoftReferenceParserResult $parserResult, array &$results, HtmlParser $htmlParser, array $record, string $field, string $table)
     {
         $linkTags = $htmlParser->splitIntoBlock('a,link', $parserResult->getContent());
         $idRecord = $record['uid'];

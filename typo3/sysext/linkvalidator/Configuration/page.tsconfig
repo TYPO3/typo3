@@ -2,8 +2,12 @@ mod.linkvalidator {
 
   # specify fields to be crawled
   searchFields {
-    pages = media,url
-    tt_content = bodytext,header_link,records
+    # pages.media: forward compatibility, not yet supported (type=file not as softref), but may be in the future
+    pages = url, media, canonical_link
+    # tt_content.records: forward compatibility, not yet supported (type=group not as softref), but may be in the future
+    tt_content = bodytext, header_link, records
+    sys_file_reference = link
+    sys_redirect = target
   }
 
   # specify link types to be crawled
