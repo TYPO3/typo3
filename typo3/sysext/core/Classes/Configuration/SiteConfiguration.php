@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
+use TYPO3\CMS\Core\Site\Entity\SiteTypoScript;
 use TYPO3\CMS\Core\Site\SiteSettingsFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -49,6 +50,20 @@ class SiteConfiguration implements SingletonInterface
      * @internal
      */
     protected string $configFileName = 'config.yaml';
+
+    /**
+     * File naming containing TypoScript Setup.
+     *
+     * @internal
+     */
+    protected string $typoScriptSetupFileName = 'setup.typoscript';
+
+    /**
+     * File naming containing TypoScript Constants.
+     *
+     * @internal
+     */
+    protected string $typoScriptConstantsFileName = 'constants.typoscript';
 
     /**
      * YAML file name with all settings related to Content-Security-Policies.
@@ -107,11 +122,12 @@ class SiteConfiguration implements SingletonInterface
             // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
             $identifier = (string)$identifier;
             $siteSettings = $this->siteSettingsFactory->getSettings($identifier, $configuration);
+            $siteTypoScript = $this->getSiteTypoScript($identifier);
             $configuration['contentSecurityPolicies'] = $this->getContentSecurityPolicies($identifier);
 
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings);
+                $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript);
             }
         }
         $this->firstLevelCache = $sites;
@@ -133,10 +149,11 @@ class SiteConfiguration implements SingletonInterface
             // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
             $identifier = (string)$identifier;
             $siteSettings = new SiteSettings($configuration['settings'] ?? []);
+            $siteTypoScript = $this->getSiteTypoScript($identifier);
 
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings);
+                $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript);
             }
         }
         return $sites;
@@ -211,6 +228,28 @@ class SiteConfiguration implements SingletonInterface
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->configFileName;
         $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
         return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+    }
+
+    protected function getSiteTypoScript(string $siteIdentifier): ?SiteTypoScript
+    {
+        $data = [
+            'setup' => $this->typoScriptSetupFileName,
+            'constants' => $this->typoScriptConstantsFileName,
+        ];
+        $definitions = [];
+        foreach ($data as $type => $fileName) {
+            $path = $this->configPath . '/' . $siteIdentifier . '/' . $fileName;
+            if (file_exists($path)) {
+                $contents = @file_get_contents(GeneralUtility::fixWindowsFilePath($path));
+                if ($contents !== false) {
+                    $definitions[$type] = $contents;
+                }
+            }
+        }
+        if ($definitions === []) {
+            return null;
+        }
+        return new SiteTypoScript(...$definitions);
     }
 
     protected function getContentSecurityPolicies(string $siteIdentifier): array

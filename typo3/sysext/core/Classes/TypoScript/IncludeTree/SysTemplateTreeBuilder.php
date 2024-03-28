@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\DefaultTypoScriptInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\DefaultTypoScriptMagicKeyInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ExtensionStaticInclude;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeStaticFileDatabaseI
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeStaticFileFileInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SiteInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SiteTemplateInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SysTemplateInclude;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -55,7 +57,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * attached sys_template records, gets their content and various sub includes and takes care
  * of correct include order.
  *
- * This class together with TreeFromTokenLineStreamBuilder also takes care of conditions and
+ * This class together with TreeFromLineStreamBuilder also takes care of conditions and
  * imports ("@import" and "<INCLUDE_TYPOSCRIPT:"): Those create child nodes in the tree. To
  * evaluate conditions, the tree is later traversed, condition verdicts (true / false) are
  * determined, to see if condition's child nodes should be considered in AST.
@@ -89,6 +91,7 @@ final class SysTemplateTreeBuilder
         private readonly PackageManager $packageManager,
         private readonly Context $context,
         private readonly TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
+        private readonly SetRegistry $setRegistry,
     ) {}
 
     /**
@@ -110,6 +113,15 @@ final class SysTemplateTreeBuilder
         $this->includedSysTemplateUids = [];
 
         $rootNode = new RootInclude();
+
+        $siteIsTypoScriptRoot = $site instanceof Site ? $site->isTypoScriptRoot() : false;
+        if ($siteIsTypoScriptRoot) {
+            $cacheIdentifier = 'site-template-' . $this->type . '-' . $site->getIdentifier();
+            $includeNode = $this->cache?->require($cacheIdentifier) ?: null;
+            $includeNode ??= $this->createSiteTemplateInclude($site, $cacheIdentifier);
+            $rootNode->addChild($includeNode);
+        }
+
         if (empty($sysTemplateRows)) {
             return $rootNode;
         }
@@ -121,13 +133,14 @@ final class SysTemplateTreeBuilder
         // sys_template records if the flag is set somewhere and if not, actively sets it dynamically for the
         // first templates. As a result, integrators do not need to think about the 'clear' flags at all for
         // simple instances, it 'just works'.
-        $atLeastOneSysTemplateRowHasClearFlag = false;
-        foreach ($sysTemplateRows as $sysTemplateRow) {
-            if (($this->type === 'constants' && $sysTemplateRow['clear'] & 1) || ($this->type === 'setup' && $sysTemplateRow['clear'] & 2)) {
-                $atLeastOneSysTemplateRowHasClearFlag = true;
-            }
-        }
+        $atLeastOneSysTemplateRowHasClearFlag = $siteIsTypoScriptRoot;
         if (!$atLeastOneSysTemplateRowHasClearFlag) {
+            foreach ($sysTemplateRows as $sysTemplateRow) {
+                if (($this->type === 'constants' && $sysTemplateRow['clear'] & 1) || ($this->type === 'setup' && $sysTemplateRow['clear'] & 2)) {
+                    $atLeastOneSysTemplateRowHasClearFlag = true;
+                    break;
+                }
+            }
             $firstRow = reset($sysTemplateRows);
             $firstRow['clear'] = $this->type === 'constants' ? 1 : 2;
             $sysTemplateRows[array_key_first($sysTemplateRows)] = $firstRow;
@@ -166,6 +179,84 @@ final class SysTemplateTreeBuilder
         }
 
         return $rootNode;
+    }
+
+    private function createSiteTemplateInclude(
+        Site $site,
+        string $cacheIdentifier
+    ): SiteTemplateInclude {
+        $includeNode = new SiteTemplateInclude();
+        $includeNode->setRoot(true);
+        $includeNode->setClear(true);
+
+        $this->addDefaultTypoScriptFromGlobals($includeNode);
+
+        $sets = $this->setRegistry->getSets(...$site->getSets());
+        if (count($sets) > 0) {
+            $includeSetInclude = new IncludeStaticFileFileInclude();
+            $includeSetInclude->setName('site:' . $site->getIdentifier() . ':sets');
+            $includeSetInclude->setPath('site:' . $site->getIdentifier() . '/');
+            foreach ($sets as $set) {
+                $this->handleSetInclude($includeSetInclude, rtrim($set->typoscript, '/') . '/', 'set:' . $set->name);
+                $this->addStaticMagicFromGlobals($includeSetInclude, 'set:' . $set->name);
+            }
+            $includeNode->addChild($includeSetInclude);
+        }
+
+        if ($this->type === 'constants') {
+            $this->addDefaultTypoScriptConstantsFromSite($includeNode, $site);
+        }
+
+        $siteTypoScript = $site->getTypoScript();
+        $content = $this->type === 'constants' ? $siteTypoScript?->constants : $siteTypoScript?->setup;
+        if ($content !== null) {
+            $includeNode->setLineStream($this->tokenizer->tokenize($content));
+            $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type, $this->tokenizer);
+        }
+
+        $includeNode->setName(sprintf(
+            '[site:%s%s] %s',
+            $site->getIdentifier(),
+            $content === null ? '' : '/' . $this->type . '.typoscript',
+            $site->getConfiguration()['websiteTitle'] ?? ''
+        ));
+
+        $this->cache?->set($cacheIdentifier, $this->prepareNodeForCache($includeNode));
+
+        return $includeNode;
+    }
+
+    private function handleSetInclude(IncludeInterface $parentNode, string $path, string $label): void
+    {
+        $path = GeneralUtility::getFileAbsFileName($path);
+
+        // '/.../my_extension/Configuration/TypoScript/MyStaticInclude/include_static_file.txt'
+        $includeStaticFileFileIncludePath = $path . 'include_static_file.txt';
+        if (file_exists($path . 'include_static_file.txt')) {
+            $includeStaticFileFileInclude = new IncludeStaticFileFileInclude();
+            //$name = 'EXT:' . $extensionKey . '/' . $pathSegmentWithAppendedSlash . 'include_static_file.txt';
+            //$includeStaticFileFileInclude->setName($name);
+            $includeStaticFileFileInclude->setName($label . ':include_static_file.txt');
+            $includeStaticFileFileInclude->setPath($path . 'include_static_file.txt');
+            $parentNode->addChild($includeStaticFileFileInclude);
+            $includeStaticFileFileIncludeContent = (string)file_get_contents($includeStaticFileFileIncludePath);
+            // @todo: There is no array_unique() for DB based include_static_file content?!
+            $includeStaticFileFileIncludeArray = array_unique(GeneralUtility::trimExplode(',', $includeStaticFileFileIncludeContent, true));
+            foreach ($includeStaticFileFileIncludeArray as $includeStaticFileFileIncludeString) {
+                $this->handleSingleIncludeStaticFile($includeStaticFileFileInclude, $includeStaticFileFileIncludeString);
+            }
+        }
+
+        $fileName = $path . $this->type . '.typoscript';
+        if (file_exists($fileName)) {
+            $fileContent = file_get_contents($fileName);
+            $fileNode = new FileInclude();
+            $fileNode->setName($label . ':' . $this->type . '.typoscript');
+            $fileNode->setPath($fileName);
+            $fileNode->setLineStream($this->tokenizer->tokenize($fileContent));
+            $this->treeFromTokenStreamBuilder->buildTree($fileNode, $this->type, $this->tokenizer);
+            $parentNode->addChild($fileNode);
+        }
     }
 
     /**

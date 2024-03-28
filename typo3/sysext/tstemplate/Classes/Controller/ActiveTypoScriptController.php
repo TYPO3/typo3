@@ -94,6 +94,8 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
 
         // @todo: Switch to BU::BEgetRootLine($pageUid, '', true) as in PageTsConfig? Similar in other controllers and actions.
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $site = $request->getAttribute('site');
+        $rootLine = $this->getScopedRootline($site, $rootLine);
 
         // Template selection handling for this page
         $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
@@ -131,7 +133,6 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
         // Build the constant include tree
-        $site = $request->getAttribute('site');
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, new LosslessTokenizer(), $site);
         // Set enabled conditions in constant include tree
         $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
@@ -225,6 +226,8 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
 
         // @todo: Switch to BU::BEgetRootLine($pageUid, '', true) as in PageTsConfig? Similar in other controllers and actions.
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
+        $site = $request->getAttribute('site');
+        $rootLine = $this->getScopedRootline($site, $rootLine);
 
         // Template selection handling
         $allTemplatesOnPage = $this->getAllTemplateRecordsOnPage($pageUid);
@@ -243,7 +246,6 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             }
         }
 
-        $site = $request->getAttribute('site');
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
         // Get current value of to-edit object path

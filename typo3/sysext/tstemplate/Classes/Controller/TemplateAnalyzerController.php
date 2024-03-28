@@ -108,11 +108,11 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         }
 
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
-
+        $site = $request->getAttribute('site');
+        $rootLine = $this->getScopedRootline($site, $rootLine);
         $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
 
         // Build the constant include tree
-        $site = $request->getAttribute('site');
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         $constantIncludeTree->setIdentifier('constants tstemplate includes');
         // Set enabled conditions in constant include tree

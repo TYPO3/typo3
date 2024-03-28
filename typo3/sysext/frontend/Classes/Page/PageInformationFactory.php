@@ -116,7 +116,7 @@ final readonly class PageInformationFactory
         $pageInformation = $event->getPageInformation();
 
         $pageInformation = $this->setSysTemplateRows($request, $pageInformation);
-        return $this->setLocalRootLine($pageInformation);
+        return $this->setLocalRootLine($request, $pageInformation);
     }
 
     /**
@@ -532,19 +532,20 @@ final readonly class PageInformationFactory
      */
     protected function setSysTemplateRows(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
     {
+        $site = $request->getAttribute('site');
         $rootLine = $pageInformation->getRootLine();
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
-        if (empty($sysTemplateRows)) {
-            // Early exception if there is no sys_template at all.
-            $message = 'No TypoScript record found!';
-            $this->logger->error($message);
-            $response = $this->errorController->internalErrorAction(
-                $request,
-                $message,
-                ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
-            );
-            throw new PageInformationCreationFailedException($response, 1705656657);
+        if ($site->isTypoScriptRoot()) {
+            $rootLineUntilSite = [];
+            foreach ($rootLine as $index => $rootlinePage) {
+                $rootLineUntilSite[$index] = $rootlinePage;
+                $pageId = (int)($rootlinePage['uid'] ?? 0);
+                if ($pageId === $site->getRootPageId()) {
+                    break;
+                }
+            }
+            $rootLine = $rootLineUntilSite;
         }
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
         $pageInformation->setSysTemplateRows($sysTemplateRows);
         return $pageInformation;
     }
@@ -552,17 +553,20 @@ final readonly class PageInformationFactory
     /**
      * Calculate "local" rootLine that stops at first root=1 template.
      */
-    protected function setLocalRootLine(PageInformation $pageInformation): PageInformation
+    protected function setLocalRootLine(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
     {
+        $site = $request->getAttribute('site');
         $sysTemplateRows = $pageInformation->getSysTemplateRows();
         $rootLine = $pageInformation->getRootLine();
         $sysTemplateRowsIndexedByPid = array_combine(array_column($sysTemplateRows, 'pid'), $sysTemplateRows);
         $localRootline = [];
         foreach ($rootLine as $rootlinePage) {
             array_unshift($localRootline, $rootlinePage);
-            if ((int)($rootlinePage['uid'] ?? 0) > 0
-                && (int)($sysTemplateRowsIndexedByPid[$rootlinePage['uid']]['root'] ?? 0) === 1
-            ) {
+            $pageId = (int)($rootlinePage['uid'] ?? 0);
+            if ($pageId === $site->getRootPageId() && $site->isTypoScriptRoot()) {
+                break;
+            }
+            if ($pageId > 0 && (int)($sysTemplateRowsIndexedByPid[$pageId]['root'] ?? 0) === 1) {
                 break;
             }
         }

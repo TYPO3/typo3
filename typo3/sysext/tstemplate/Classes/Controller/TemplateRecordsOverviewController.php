@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -58,6 +59,33 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
             $backendUser->pushModuleData($currentModuleIdentifier, $moduleData->toArray());
         }
 
+        $pagesWithTemplates = [];
+
+        $sites = $this->siteFinder->getAllSites();
+        foreach ($sites as $identifier => $site) {
+            if (!$site instanceof Site) {
+                continue;
+            }
+            if (!$site->isTypoScriptRoot()) {
+                continue;
+            }
+            $rootPageId = $site->getRootPageId();
+            $additionalFieldsForRootline = ['sorting', 'shortcut'];
+            $rootline = array_reverse(BackendUtility::BEgetRootLine($rootPageId, '', true, $additionalFieldsForRootline));
+            if ($rootline !== []) {
+                $pagesWithTemplates = $this->setInPageArray($pagesWithTemplates, $rootline, [
+                    'type' => 'site',
+                    'root' => 1,
+                    'clear' => 1,
+                    'pid' => $rootPageId,
+                    'sorting' => -1,
+                    'uid' => -1,
+                    'title' => $site->getConfiguration()['websiteTitle'] ?? '',
+                    'site' => $site,
+                ]);
+            }
+        }
+
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -67,12 +95,11 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
             ->orderBy('sys_template.pid')
             ->addOrderBy('sys_template.sorting')
             ->executeQuery();
-        $pagesWithTemplates = [];
         while ($record = $result->fetchAssociative()) {
             $additionalFieldsForRootline = ['sorting', 'shortcut'];
             $rootline = array_reverse(BackendUtility::BEgetRootLine($record['pid'], '', true, $additionalFieldsForRootline));
             if ($rootline !== []) {
-                $pagesWithTemplates = $this->setInPageArray($pagesWithTemplates, $rootline, $record);
+                $pagesWithTemplates = $this->setInPageArray($pagesWithTemplates, $rootline, [...$record, 'type' => 'sys_template']);
             }
         }
 

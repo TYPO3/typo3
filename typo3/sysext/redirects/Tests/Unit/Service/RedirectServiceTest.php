@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
@@ -97,7 +98,8 @@ final class RedirectServiceTest extends UnitTestCase
                     $this->createMock(ConnectionPool::class),
                     $this->createMock(PackageManager::class),
                     new Context(),
-                    new TreeFromLineStreamBuilder(new FileNameValidator())
+                    new TreeFromLineStreamBuilder(new FileNameValidator()),
+                    $this->createMock(SetRegistry::class),
                 ),
                 new LossyTokenizer(),
                 new IncludeTreeTraverser(),
@@ -665,7 +667,8 @@ final class RedirectServiceTest extends UnitTestCase
                         $this->createMock(ConnectionPool::class),
                         $this->createMock(PackageManager::class),
                         new Context(),
-                        new TreeFromLineStreamBuilder(new FileNameValidator())
+                        new TreeFromLineStreamBuilder(new FileNameValidator()),
+                        $this->createMock(SetRegistry::class),
                     ),
                     new LossyTokenizer(),
                     new IncludeTreeTraverser(),

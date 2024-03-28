@@ -37,7 +37,10 @@
             </f:else>
         </f:if>
     </h1>
-    <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:submodule.description" /></p>
+
+    <f:if condition="{selectedTemplateUid} > 0">
+        <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:submodule.description" /></p>
+    </f:if>
 
     <f:comment><!-- Options --></f:comment>
     <f:render
@@ -51,14 +54,27 @@
         }"
     />
 
-    <f:comment><!-- Main form --></f:comment>
-    <f:if condition="!{relevantCategories}">
-        <f:then>
-            <f:be.infobox message="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:infobox.message.noConstants')}" state="-1" />
-        </f:then>
-        <f:else>
-            <f:render partial="ConstantEditorFields" arguments="{_all}" />
-        </f:else>
+    <f:if condition="{selectedTemplateUid} > 0">
+        <f:comment><!-- Main form --></f:comment>
+        <f:if condition="!{relevantCategories}">
+            <f:then>
+                <f:be.infobox message="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:infobox.message.noConstants')}" state="-1" />
+            </f:then>
+            <f:else>
+                <f:render partial="ConstantEditorFields" arguments="{_all}" />
+            </f:else>
+        </f:if>
+    </f:if>
+
+    <f:if condition="{selectedTemplateUid} == -1">
+        <p class="alert alert-info">
+            <f:translate
+                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:label.infoTypoScriptRecordFromSite"
+                arguments="{
+                    0: 'site:{templateRecord.site.identifier}'
+                }"
+            />
+        </p>
     </f:if>
 </f:section>
 

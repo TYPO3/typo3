@@ -68,13 +68,21 @@
         <td class="align-top">
             <f:for each="{page._templates}" as="templateFile" iteration="templateIterator">
                 <div class="{f:if(condition: '{templateIterator.isLast}', then: '', else: 'mb-2')}">
-                    <core:IconForRecord table="sys_template" row="{templateFile}" />
-                    <a
-                        href="{f:be.uri(route: 'web_typoscript_infomodify', parameters:'{id: templateFile.pid, selectedTemplate: templateFile.uid}')}"
-                        title="ID: {templateFile.uid}"
-                    >
-                        {templateFile.title -> f:format.crop(maxCharacters: maxCharacters)}
-                    </a>
+                    <f:if condition="{templateFile.type} == 'sys_template'">
+                        <core:IconForRecord table="sys_template" row="{templateFile}" />
+                        <a
+                            href="{f:be.uri(route: 'web_typoscript_infomodify', parameters:'{id: templateFile.pid, selectedTemplate: templateFile.uid}')}"
+                            title="ID: {templateFile.uid}"
+                        >
+                            {templateFile.title -> f:format.crop(maxCharacters: maxCharacters)}
+                        </a>
+                    </f:if>
+                    <f:if condition="{templateFile.type} == 'site'">
+                        <span title="{templateFile.title} (site:{templateFile.site.identifier})">
+                            <core:icon identifier="mimetypes-x-content-template" overlay="mimetypes-x-content-domain" size="small"/>
+                            {templateFile.title -> f:format.crop(maxCharacters: maxCharacters)}
+                        </span>
+                    </f:if>
                 </div>
             </f:for>
         </td>

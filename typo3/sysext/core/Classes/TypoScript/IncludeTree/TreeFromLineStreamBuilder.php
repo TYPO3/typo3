@@ -251,12 +251,14 @@ final class TreeFromLineStreamBuilder
     private function processAtImport(string $fileSuffix, IncludeInterface $node, Token $atImportValueToken, LineInterface $atImportLine, bool $tryRelative = false): void
     {
         $atImportValue = $atImportValueToken->getValue();
+        $atImportName = $atImportValue;
         if ($tryRelative) {
             if (empty($node->getPath())) {
                 return;
             }
             $parentPath = rtrim(dirname($node->getPath()), '/') . '/';
             $atImportValue = ltrim($atImportValue, './');
+            $atImportName = preg_replace('#([:/])[^:/]+$#', '$1', $node->getName()) . $atImportValue;
             $atImportValue = $parentPath . $atImportValue;
         }
         $absoluteFileName = rtrim(GeneralUtility::getFileAbsFileName($atImportValue), '/');
@@ -266,7 +268,7 @@ final class TreeFromLineStreamBuilder
         if (str_ends_with($absoluteFileName, '.' . $fileSuffix) && is_file($absoluteFileName)) {
             // Simple file with allowed file suffix
             if ($this->fileNameValidator->isValid($absoluteFileName)) {
-                $this->addSingleAtImportFile($node, $absoluteFileName, $atImportValue, $atImportLine);
+                $this->addSingleAtImportFile($node, $absoluteFileName, $atImportValue, $atImportName, $atImportLine);
                 $this->addStaticMagicFromGlobals($node, $atImportValue);
             }
         } elseif (is_dir($absoluteFileName)) {
@@ -281,7 +283,7 @@ final class TreeFromLineStreamBuilder
                 }
                 $singleAbsoluteFileName = $absoluteFileName . '/' . $potentialInclude;
                 $identifier = rtrim($atImportValue, '/') . '/' . $potentialInclude;
-                $this->addSingleAtImportFile($node, $singleAbsoluteFileName, $identifier, $atImportLine);
+                $this->addSingleAtImportFile($node, $singleAbsoluteFileName, $identifier, $identifier, $atImportLine);
                 $this->addStaticMagicFromGlobals($node, $identifier);
             }
         } elseif (is_file($absoluteFileName . '.' . $fileSuffix)) {
@@ -289,7 +291,7 @@ final class TreeFromLineStreamBuilder
             if ($this->fileNameValidator->isValid($absoluteFileName . '.' . $fileSuffix)) {
                 $singleAbsoluteFileName = $absoluteFileName . '.' . $fileSuffix;
                 $identifier = $atImportValue . '.' . $fileSuffix;
-                $this->addSingleAtImportFile($node, $singleAbsoluteFileName, $identifier, $atImportLine);
+                $this->addSingleAtImportFile($node, $singleAbsoluteFileName, $identifier, $identifier, $atImportLine);
                 $this->addStaticMagicFromGlobals($node, $identifier);
             }
         } elseif (str_contains($absoluteFileName, '*')) {
@@ -336,7 +338,7 @@ final class TreeFromLineStreamBuilder
                 }
                 $singleAbsoluteFileName = $directory . $potentialInclude;
                 $identifier = rtrim(dirname($atImportValue), '/') . '/' . $potentialInclude;
-                $this->addSingleAtImportFile($node, $singleAbsoluteFileName, $identifier, $atImportLine);
+                $this->addSingleAtImportFile($node, $singleAbsoluteFileName, $identifier, $identifier, $atImportLine);
                 $this->addStaticMagicFromGlobals($node, $identifier);
             }
         } elseif (!$tryRelative) {
@@ -350,11 +352,16 @@ final class TreeFromLineStreamBuilder
      *
      * Warning: Recursively calls buildTree() to process includes of included content.
      */
-    private function addSingleAtImportFile(IncludeInterface $parentNode, string $absoluteFileName, string $path, LineInterface $atImportLine): void
-    {
+    private function addSingleAtImportFile(
+        IncludeInterface $parentNode,
+        string $absoluteFileName,
+        string $path,
+        string $name,
+        LineInterface $atImportLine
+    ): void {
         $content = file_get_contents($absoluteFileName);
         $newNode = new AtImportInclude();
-        $newNode->setName($path);
+        $newNode->setName($name);
         $newNode->setPath($path);
         $newNode->setLineStream($this->tokenizer->tokenize($content));
         $newNode->setOriginalLine($atImportLine);

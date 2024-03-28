@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Routing\PageArguments;
@@ -28,7 +29,9 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Page\PageInformationCreationFailedException;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 
@@ -49,6 +52,8 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
         private Context $context,
         private TimeTracker $timeTracker,
         private PageInformationFactory $pageInformationFactory,
+        private LoggerInterface $logger,
+        private ErrorController $errorController,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -83,6 +88,19 @@ final readonly class TypoScriptFrontendInitialization implements MiddlewareInter
             return $exception->getResponse();
         } finally {
             $this->timeTracker->pull();
+        }
+        $site = $request->getAttribute('site');
+        if (!$site->isTypoScriptRoot() && $pageInformation->getSysTemplateRows() === []) {
+            // Early exception if there is no typoscript definition in current site and no sys_template at all.
+            // @todo improve message?
+            $message = 'No TypoScript record found!';
+            $this->logger->error($message);
+            $response = $this->errorController->internalErrorAction(
+                $request,
+                $message,
+                ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_FOUND]
+            );
+            throw new PageInformationCreationFailedException($response, 1705656657);
         }
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
 

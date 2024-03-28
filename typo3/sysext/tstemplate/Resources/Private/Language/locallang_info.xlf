@@ -33,6 +33,9 @@
 			<trans-unit id="btn.editTypoScriptRecord" resname="btn.editTypoScriptRecord">
 				<source>Edit the whole TypoScript record</source>
 			</trans-unit>
+			<trans-unit id="label.infoTypoScriptRecordFromSite" resname="label.infoTypoScriptRecordFromSite">
+				<source>The site TypoScript record from "%s" can be edited on filesystem level.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -32,7 +32,7 @@
                 </form>
             </div>
         </f:if>
-        <f:if condition="{f:count(subject: relevantCategories)} > 1">
+        <f:if condition="{selectedTemplateUid} > 0 && {f:count(subject: relevantCategories)} > 1">
             <div class="form-group">
                 <form action="{f:be.uri(route: 'web_typoscript_constanteditor', parameters: '{id: pageUid}')}" method="post">
                     <label class="form-label" for="selectedCategory">
