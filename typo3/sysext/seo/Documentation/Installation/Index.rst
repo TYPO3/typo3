@@ -47,7 +47,7 @@ not be activated yet. Activate it as follows:
     module.
 #.  Click the :guilabel:`Activate` icon for the SEO extension.
 
-..  figure:: /Images/em.png
+..  figure:: /Images/InstallActivate.png
     :class: with-border
     :alt: Extension manager showing SEO extension
 
