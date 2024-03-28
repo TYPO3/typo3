@@ -554,7 +554,7 @@ class Folder implements FolderInterface
      */
     public function getModificationTime()
     {
-        return $this->storage->getFolderInfo($this)['mtime'];
+        return (int)$this->storage->getFolderInfo($this)['mtime'];
     }
 
     /**
@@ -564,6 +564,6 @@ class Folder implements FolderInterface
      */
     public function getCreationTime()
     {
-        return $this->storage->getFolderInfo($this)['ctime'];
+        return (int)$this->storage->getFolderInfo($this)['ctime'];
     }
 }
