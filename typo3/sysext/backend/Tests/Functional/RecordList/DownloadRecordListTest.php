@@ -68,7 +68,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
                 'email' => '',
                 'realName' => '',
                 'admin' => 'Yes',
-                'crdate' => '22-04-13 14:55',
+                'crdate' => '2013-04-22 14:55',
             ],
         ], $this->prepareRecordsForDbCompatAssertions($result));
     }

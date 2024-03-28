@@ -244,8 +244,8 @@ final class TotpProviderTest extends FunctionalTestCase
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::EDIT)->getBody()->getContents();
 
         self::assertMatchesRegularExpression('/<td>.*Name.*<td>.*some name/s', $response);
-        self::assertMatchesRegularExpression('/<td>.*Last updated.*<td>.*18-03-21/s', $response);
-        self::assertMatchesRegularExpression('/<td>.*Last used.*<td>.*18-03-21/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Last updated.*<td>.*2021-03-18/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Last used.*<td>.*2021-03-18/s', $response);
     }
 
     #[Test]

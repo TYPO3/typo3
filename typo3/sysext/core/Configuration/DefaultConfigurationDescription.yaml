@@ -75,10 +75,10 @@ SYS:
             description: 'Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function <code>\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()</code> for details on syntax. Setting this to blank value will deny all. Setting to "*" will allow all.'
         ddmmyy:
             type: text
-            description: 'Format of Day-Month-Year - see PHP-function <a href="https://php.net/date" target="_blank" rel="noreferrer">date()</a>'
+            description: 'Format of dates (without times) - see PHP-function <a href="https://php.net/date" target="_blank" rel="noreferrer">date()</a>'
         hhmm:
             type: text
-            description: 'Format of Hours-Minutes - see PHP-function <a href="https://php.net/date" target="_blank" rel="noreferrer">date()</a>'
+            description: 'Format of times (without dates) - see PHP-function <a href="https://php.net/date" target="_blank" rel="noreferrer">date()</a>'
         defaultScheme:
             type: text
             allowedValues:

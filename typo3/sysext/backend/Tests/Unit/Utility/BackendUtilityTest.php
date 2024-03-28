@@ -548,7 +548,7 @@ final class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame('28-08-15 (-2 days)', BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
+        self::assertSame('2015-08-28 (-2 days)', BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
     }
 
     public static function inputTypeDateDisplayOptions(): array
@@ -556,19 +556,19 @@ final class BackendUtilityTest extends UnitTestCase
         return [
             'typeSafe Setting' => [
                 true,
-                '28-08-15',
+                '2015-08-28',
             ],
             'non typesafe setting' => [
                 1,
-                '28-08-15',
+                '2015-08-28',
             ],
             'setting disabled typesafe' => [
                 false,
-                '28-08-15 (-2 days)',
+                '2015-08-28 (-2 days)',
             ],
             'setting disabled not typesafe' => [
                 0,
-                '28-08-15 (-2 days)',
+                '2015-08-28 (-2 days)',
             ],
         ];
     }
@@ -1106,8 +1106,8 @@ final class BackendUtilityTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceMock;
         $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 3, 23, 2016);
 
-        self::assertSame('24-03-16 00:00 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400));
-        self::assertSame('24-03-16 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400, 1, 'date'));
+        self::assertSame('2016-03-24 00:00 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400));
+        self::assertSame('2016-03-24 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400, 1, 'date'));
     }
 
     #[Test]

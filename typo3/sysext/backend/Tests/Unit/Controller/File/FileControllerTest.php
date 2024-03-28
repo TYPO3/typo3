@@ -83,7 +83,7 @@ final class FileControllerTest extends UnitTestCase
         self::assertSame(
             [
                 'id' => 'foo',
-                'date' => '29-11-73',
+                'date' => '1973-11-29',
                 'icon' => '',
                 'thumbUrl' => '',
                 'path' => '',

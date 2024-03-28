@@ -82,7 +82,7 @@ final class AbstractFormElementTest extends UnitTestCase
                     'format' => 'datetime',
                 ],
                 '1412358894',
-                '03-10-14 17:54',
+                '2014-10-03 17:54',
             ],
             'format to datetime with empty value' => [
                 [

@@ -233,8 +233,8 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
 
         self::assertMatchesRegularExpression('/<td>.*Name.*<td>.*some name/s', $response);
         self::assertMatchesRegularExpression('/<td>.*Recovery codes left.*<td>.*2/s', $response);
-        self::assertMatchesRegularExpression('/<td>.*Last updated.*<td>.*18-03-21/s', $response);
-        self::assertMatchesRegularExpression('/<td>.*Last used.*<td>.*18-03-21/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Last updated.*<td>.*2021-03-18/s', $response);
+        self::assertMatchesRegularExpression('/<td>.*Last used.*<td>.*2021-03-18/s', $response);
         self::assertMatchesRegularExpression('/<input.*id="regenerateCodes"/s', $response);
     }
 
