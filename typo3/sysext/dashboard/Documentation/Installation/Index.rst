@@ -44,8 +44,8 @@ Installation without Composer
 In an installation without Composer, the extension is already shipped. You just have to activate it.
 Head over to the extension manager and activate the extension.
 
-.. figure:: /Images/em.png
+.. figure:: /Images/InstallActivate.png
    :class: with-shadow
-   :alt: Extension manager with filtered dashboard extension
+   :alt: Extension manager showing Dashboard extension
 
-   Extension manager with filtered dashboard extension
+   Extension manager showing Dashboard extension

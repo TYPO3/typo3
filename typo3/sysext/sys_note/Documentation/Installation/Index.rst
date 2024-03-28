@@ -41,8 +41,8 @@ In an installation without Composer, the code of EXT:sys_note is already shipped
 You just have to activate the extension. Head over to the
 :guilabel:`Admin Tools > Extensions` module and activate the extension.
 
-..  figure:: ../Images/em.png
-    :alt: Extension Manager with sys_note extension
+..  figure:: /Images/InstallActivate.png
+    :alt: Extension Manager showing System Notes extension
     :class: with-shadow
 
-    Extension manager with :sql:`sys_note` extension
+    Extension manager showing System Notes extension
