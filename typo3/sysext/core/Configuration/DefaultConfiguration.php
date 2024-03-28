@@ -84,7 +84,7 @@ return [
         'cookieDomain' => '',
         'trustedHostsPattern' => 'SERVER_NAME',
         'devIPmask' => '127.0.0.1,::1',
-        'ddmmyy' => 'd-m-y',
+        'ddmmyy' => 'Y-m-d',
         'hhmm' => 'H:i',
         'loginCopyrightWarrantyProvider' => '',
         'loginCopyrightWarrantyURL' => '',
