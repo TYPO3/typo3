@@ -438,7 +438,10 @@ class PreviewUriBuilder
         if ($access['starttime'] > $GLOBALS['EXEC_TIME']) {
             // simulate access time to ensure PageRepository will find the page and in turn PageRouter will generate
             // a URL for it
-            $dateAspect = GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $access['starttime']));
+            $dateAspect = GeneralUtility::makeInstance(
+                DateTimeAspect::class,
+                (new \DateTimeImmutable())->setTimestamp($access['starttime'])
+            );
             $context->setAspect('date', $dateAspect);
             $additionalQueryParameters['ADMCMD_simTime'] = $access['starttime'];
         }
@@ -447,7 +450,7 @@ class PreviewUriBuilder
             // in turn PageRouter will generate a URL for it
             $dateAspect = GeneralUtility::makeInstance(
                 DateTimeAspect::class,
-                new \DateTimeImmutable('@' . ($access['endtime'] - 1))
+                (new \DateTimeImmutable())->setTimestamp($access['endtime'] - 1)
             );
             $context->setAspect('date', $dateAspect);
             $additionalQueryParameters['ADMCMD_simTime'] = ($access['endtime'] - 1);

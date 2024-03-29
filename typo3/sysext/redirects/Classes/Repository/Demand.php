@@ -126,9 +126,7 @@ class Demand
             $input->hasOption('hitCount') ? (int)$input->getOption('hitCount') : 0,
             $input->getOption('days')
                 ? new \DateTimeImmutable($input->getOption('days') . ' days ago')
-                : new \DateTimeImmutable(
-                    '90 days ago'
-                ),
+                : new \DateTimeImmutable('90 days ago'),
             $input->hasOption('creationType') ? (int)($input->getOption('creationType')) : null,
             $input->hasOption('protected') ? (int)($input->getOption('protected')) : null,
             $input->hasOption('integrityStatus') ? (string)($input->getOption('integrityStatus')) : RedirectConflict::NO_CONFLICT

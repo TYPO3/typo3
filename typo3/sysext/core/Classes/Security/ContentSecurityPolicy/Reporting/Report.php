@@ -41,8 +41,8 @@ class Report implements \JsonSerializable
             new ReportDetails($details ?: []),
             $array['summary'] ?? '',
             UuidV4::fromString($array['uuid'] ?? ''),
-            new \DateTimeImmutable('@' . ($array['created'] ?? '0')),
-            new \DateTimeImmutable('@' . ($array['changed'] ?? '0'))
+            (new \DateTimeImmutable())->setTimestamp((int)($array['created'] ?? 0)),
+            (new \DateTimeImmutable())->setTimestamp((int)($array['changed'] ?? 0)),
         );
     }
 

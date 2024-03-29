@@ -91,7 +91,7 @@ class MailMessage extends Email
      */
     public function setDate($date): self
     {
-        return $this->date(new \DateTime('@' . $date));
+        return $this->date((new \DateTime())->setTimestamp($date));
     }
 
     /**

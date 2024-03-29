@@ -180,14 +180,14 @@ final class DateViewHelper extends AbstractViewHelper
         }
 
         if (!$date instanceof \DateTimeInterface) {
-            try {
-                $base = $base instanceof \DateTimeInterface ? (int)$base->format('U') : (int)strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
-                $dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
-                $date = new \DateTime('@' . $dateTimestamp);
-                $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            } catch (\Exception $exception) {
-                throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor: ' . $exception->getMessage(), 1241722579);
+            $base = $base instanceof \DateTimeInterface
+                ? (int)$base->format('U')
+                : (int)strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
+            $dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
+            if ($dateTimestamp === false) {
+                throw new Exception('"' . $date . '" could not be converted to a timestamp. Probably due to a parsing error.', 1241722579);
             }
+            $date = (new \DateTime())->setTimestamp($dateTimestamp);
         }
 
         if ($pattern !== null) {

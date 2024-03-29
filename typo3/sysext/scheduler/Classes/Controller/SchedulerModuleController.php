@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
@@ -747,14 +748,13 @@ final class SchedulerModuleController
      */
     protected function getTimestampFromDateString(string $input): int
     {
-        if (is_numeric($input)) {
+        if (MathUtility::canBeInterpretedAsInteger($input)) {
             // Already looks like a timestamp
             return (int)$input;
         }
         try {
             // Convert from ISO 8601 dates
-            $dateTime = new \DateTime($input);
-            $value = $dateTime->getTimestamp();
+            $value = (new \DateTime($input))->getTimestamp();
             if ($value !== 0) {
                 $value -= (int)date('Z', $value);
             }
