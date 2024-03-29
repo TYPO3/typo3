@@ -4326,11 +4326,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php
-
-		-
 			message: "#^Variable \\$configuration on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Page/CacheHashCalculator.php

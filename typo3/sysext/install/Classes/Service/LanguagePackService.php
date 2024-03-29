@@ -307,7 +307,7 @@ class LanguagePackService
     protected function getFormattedDate($timestamp)
     {
         if (is_int($timestamp)) {
-            $date = new \DateTime('@' . $timestamp);
+            $date = (new \DateTime())->setTimestamp($timestamp);
             $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
             $timestamp = $date->format($format);
         }

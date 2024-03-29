@@ -184,18 +184,16 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         // Simulate date
         $simTime = null;
         if ($simulateDate) {
-            $simTime = $this->parseDate($simulateDate);
-            if ($simTime) {
-                $GLOBALS['SIM_EXEC_TIME'] = $simTime;
-                $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
-                $context->setAspect(
-                    'date',
-                    GeneralUtility::makeInstance(
-                        DateTimeAspect::class,
-                        new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])
-                    )
-                );
-            }
+            $simTime = max($simulateDate, 60);
+            $GLOBALS['SIM_EXEC_TIME'] = $simTime;
+            $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
+            $context->setAspect(
+                'date',
+                GeneralUtility::makeInstance(
+                    DateTimeAspect::class,
+                    (new \DateTimeImmutable())->setTimestamp($simTime)
+                )
+            );
         }
         // simulate usergroup
         if ($simulateUserGroup) {
@@ -234,31 +232,17 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Preview.js'];
     }
 
-    /**
-     * The simulated date needs to be a timestring (UTC)
-     *
-     * Simulation date is either set via configuration of AdminPanel (Date and Time Fields) or via ADMCMD_ $_GET
-     * parameter from backend previews
-     *
-     * @param int $simulateDate
-     * @return int
-     */
-    protected function parseDate(int $simulateDate): ?int
-    {
-        try {
-            $simTime = (new \DateTime('@' . $simulateDate))->getTimestamp();
-            $simTime = max($simTime, 60);
-        } catch (\Exception $e) {
-            $simTime = null;
-        }
-        return $simTime;
-    }
-
     protected function clearPreviewSettings(Context $context): void
     {
         $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
         $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
-        $context->setAspect('date', GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
+        $context->setAspect(
+            'date',
+            GeneralUtility::makeInstance(
+                DateTimeAspect::class,
+                (new \DateTimeImmutable())->setTimestamp($GLOBALS['SIM_EXEC_TIME'])
+            )
+        );
         $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
     }
 

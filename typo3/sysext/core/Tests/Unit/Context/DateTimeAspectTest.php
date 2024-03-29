@@ -58,6 +58,26 @@ class DateTimeAspectTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function getTimezoneReturnsUtcTimezoneOffsetWhenDateTimeIsInitializedFromUnixTimestamp(): void
+    {
+        $dateObject = new \DateTimeImmutable('@12345');
+        $subject = new DateTimeAspect($dateObject);
+        self::assertSame('+00:00', $subject->get('timezone'));
+    }
+
+    /**
+     * @test
+     */
+    public function getTimezoneReturnsGivenTimezoneOffsetWhenDateTimeIsInitializedFromIso8601Date(): void
+    {
+        $dateObject = new \DateTimeImmutable('2004-02-12T15:19:21+05:00');
+        $subject = new DateTimeAspect($dateObject);
+        self::assertSame('+05:00', $subject->get('timezone'));
+    }
+
+    /**
      * @return array
      */
     public function dateFormatValuesDataProvider(): array

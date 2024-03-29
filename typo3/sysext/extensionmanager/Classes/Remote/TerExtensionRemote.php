@@ -111,7 +111,7 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
     {
         if (file_exists($this->localExtensionListCacheFile) && filesize($this->localExtensionListCacheFile) > 0) {
             $mtime = filemtime($this->localExtensionListCacheFile);
-            return new \DateTimeImmutable('@' . $mtime);
+            return (new \DateTimeImmutable())->setTimestamp($mtime);
         }
         // Select a very old date (hint: easter egg)
         return new \DateTimeImmutable('1975-04-13');
