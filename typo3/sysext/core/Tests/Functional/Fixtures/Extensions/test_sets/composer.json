@@ -1,0 +1,14 @@
+{
+	"name": "typo3tests/test-sets",
+	"type": "typo3-cms-extension",
+	"description": "This extension contains set fixtures.",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.1.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_sets"
+		}
+	}
+}

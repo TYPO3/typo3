@@ -21,6 +21,9 @@
 			<trans-unit id="site.baseVariants" resname="site.baseVariants">
 				<source>Variants for the Entry Point</source>
 			</trans-unit>
+			<trans-unit id="site.dependencies" resname="site.dependencies">
+				<source>Sets for this Site</source>
+			</trans-unit>
 			<trans-unit id="site.languages" resname="site.languages">
 				<source>Available Languages for this Site</source>
 			</trans-unit>

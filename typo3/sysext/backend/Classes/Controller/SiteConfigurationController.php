@@ -260,6 +260,7 @@ class SiteConfigurationController
             $newSysSiteData['rootPageId'] = $pageId;
             foreach ($sysSiteRow as $fieldName => $fieldValue) {
                 $type = $siteTca['site']['columns'][$fieldName]['config']['type'];
+                $renderType = $siteTca['site']['columns'][$fieldName]['config']['renderType'] ?? '';
                 switch ($type) {
                     case 'input':
                     case 'number':
@@ -380,13 +381,18 @@ class SiteConfigurationController
                         break;
 
                     case 'select':
-                        if (MathUtility::canBeInterpretedAsInteger($fieldValue)) {
-                            $fieldValue = (int)$fieldValue;
-                        } elseif (is_array($fieldValue)) {
-                            $fieldValue = implode(',', $fieldValue);
+                        if ($renderType === 'selectMultipleSideBySide') {
+                            $fieldValues = is_array($fieldValue) ? $fieldValue : GeneralUtility::trimExplode(',', $fieldValue, true);
+                            $newSysSiteData[$fieldName] = $fieldValues;
+                        } else {
+                            if (MathUtility::canBeInterpretedAsInteger($fieldValue)) {
+                                $fieldValue = (int)$fieldValue;
+                            } elseif (is_array($fieldValue)) {
+                                $fieldValue = implode(',', $fieldValue);
+                            }
+                            $newSysSiteData[$fieldName] = $fieldValue;
                         }
 
-                        $newSysSiteData[$fieldName] = $fieldValue;
                         break;
 
                     case 'check':

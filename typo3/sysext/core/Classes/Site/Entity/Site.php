@@ -71,6 +71,11 @@ class Site implements SiteInterface
     protected $languages;
 
     /**
+     * @var list<string>
+     */
+    protected array $sets;
+
+    /**
      * @var array
      */
     protected $errorHandlers;
@@ -106,6 +111,7 @@ class Site implements SiteInterface
         );
         $this->base = new Uri($this->sanitizeBaseUrl($baseUrl));
 
+        $this->sets = $configuration['dependencies'] ?? [];
         foreach ($configuration['languages'] as $languageConfiguration) {
             $languageUid = (int)$languageConfiguration['languageId'];
             // site language has defined its own base, this is the case most of the time.
@@ -214,6 +220,16 @@ class Site implements SiteInterface
     }
 
     /**
+     * Returns configured sets of this site
+     *
+     * @return list<string>
+     */
+    public function getSets(): array
+    {
+        return $this->sets;
+    }
+
+    /**
      * Returns all available languages of this site, even the ones disabled for frontend usages
      *
      * @return array<LanguageRef, SiteLanguage>
@@ -305,6 +321,15 @@ class Site implements SiteInterface
     public function getSettings(): SiteSettings
     {
         return $this->settings;
+    }
+
+    /**
+     * @internal
+     */
+    public function isTypoScriptRoot(): bool
+    {
+        return $this->sets !== [];
+
     }
 
     /**

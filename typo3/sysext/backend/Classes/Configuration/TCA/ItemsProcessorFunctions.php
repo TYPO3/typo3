@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Configuration\TCA;
 
+use TYPO3\CMS\Core\Site\Set\SetCollector;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -119,5 +120,16 @@ class ItemsProcessorFunctions
         unset($language);
 
         $fieldDefinition['items'] = array_values($fieldDefinition['items']);
+    }
+
+    public function populateSiteSets(array &$fieldConfiguration): void
+    {
+        $sets = GeneralUtility::makeInstance(SetCollector::class)->getSetDefinitions();
+        foreach ($sets as $set) {
+            $fieldConfiguration['items'][] = [
+                'label' => $set->label,
+                'value' => $set->name,
+            ];
+        }
     }
 }

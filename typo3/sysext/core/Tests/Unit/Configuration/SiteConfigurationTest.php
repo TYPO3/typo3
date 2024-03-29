@@ -18,12 +18,18 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
+use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
+use TYPO3\CMS\Core\Site\Set\SetRegistry;
+use TYPO3\CMS\Core\Site\SiteSettingsFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -48,8 +54,12 @@ final class SiteConfigurationTest extends UnitTestCase
             GeneralUtility::mkdir_deep($this->fixturePath);
         }
         $this->testFilesToDelete[] = $basePath;
+        $setRegistry = $this->createMock(SetRegistry::class);
+        $packageDependentCacheIdentifier = $this->createMock(PackageDependentCacheIdentifier::class);
+        $settingsTypeRegistry = new SettingsTypeRegistry($this->createMock(ServiceLocator::class));
         $this->siteConfiguration = new SiteConfiguration(
             $this->fixturePath,
+            new SiteSettingsFactory($this->fixturePath, $setRegistry, $settingsTypeRegistry, new YamlFileLoader(), new NullFrontend('test'), $packageDependentCacheIdentifier),
             new NoopEventDispatcher(),
             new NullFrontend('test')
         );

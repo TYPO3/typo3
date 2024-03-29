@@ -64,6 +64,16 @@ return [
                 'default' => '',
             ],
         ],
+        'dependencies' => [
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.dependencies',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'itemsProcFunc' => \TYPO3\CMS\Core\Site\TcaSiteSetCollector::class . '->populateSiteSets',
+                'size' => 5,
+                'maxitems' => 9999,
+            ],
+        ],
         'languages' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages',
             'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.description',
@@ -100,7 +110,7 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => '--palette--;;default,--palette--;;base,
+            'showitem' => '--palette--;;default,--palette--;;base,dependencies,
                 --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.languages, languages,
                 --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.errorHandling, errorHandling,
                 --div--;LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.tab.routes, routes',

@@ -19,12 +19,15 @@ namespace TYPO3\CMS\Core\Package;
 
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
+use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOrigin;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOriginType;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
+use TYPO3\CMS\Core\Site\Set\SetCollector;
+use TYPO3\CMS\Core\Site\Set\YamlSetDefinitionProvider;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -57,6 +60,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             'backend.modules' => [ static::class, 'configureBackendModules' ],
             'content.security.policies' => [ static::class, 'configureContentSecurityPolicies' ],
             'icons' => [ static::class, 'configureIcons' ],
+            SetCollector::class => [ static::class, 'configureSetCollector' ],
         ];
     }
 
@@ -171,6 +175,39 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             }
         }
         return $icons;
+    }
+
+    public static function configureSetCollector(ContainerInterface $container, SetCollector $setCollector, string $path = null): SetCollector
+    {
+        $path = $path ?? static::getPackagePath();
+        $setPath = $path . 'Configuration/Sets';
+
+        try {
+            $finder = Finder::create()
+                ->files()
+                ->sortByName()
+                ->depth(1)
+                ->name('config.yaml')
+                ->in($setPath);
+        } catch (\InvalidArgumentException) {
+            // No such directory in this package
+            return $setCollector;
+        }
+
+        $setProvider = new YamlSetDefinitionProvider();
+        foreach ($finder as $fileInfo) {
+            try {
+                $setCollector->add($setProvider->get($fileInfo));
+            } catch (\RuntimeException $e) {
+                $logger = $container->get(LogManager::class)->getLogger(self::class);
+                $logger->error('Invalid set in {file}: {reason}', [
+                    'file' => $fileInfo->getPathname(),
+                    'reason' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        return $setCollector;
     }
 
     /**

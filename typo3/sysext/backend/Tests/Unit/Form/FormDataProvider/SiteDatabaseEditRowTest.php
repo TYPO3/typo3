@@ -102,6 +102,10 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
             'someArray' => [
                 'foo' => 'bar',
             ],
+            'dependencies' => [
+                'foo/bar',
+                'baz',
+            ],
         ];
         $siteFinderMock = $this->createMock(SiteFinder::class);
         GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
@@ -118,6 +122,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
             'rootPageId' => 42,
             'pid' => 0,
             'foo' => 'bar',
+            'dependencies' => 'foo/bar,baz',
         ];
 
         self::assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration))->addData($input));
