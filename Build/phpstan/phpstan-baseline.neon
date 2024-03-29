@@ -2451,11 +2451,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php
-
-		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Frontend\\\\Plugin\\\\AbstractPlugin has an unused parameter \\$_\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php

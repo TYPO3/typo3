@@ -163,18 +163,13 @@ class PreviewSimulator implements MiddlewareInterface
             return false;
         }
 
-        $simulatedDate = new \DateTimeImmutable('@' . $queryTime);
-        if (!$simulatedDate) {
-            return false;
-        }
-
         $GLOBALS['SIM_EXEC_TIME'] = $queryTime;
         $GLOBALS['SIM_ACCESS_TIME'] = $queryTime - $queryTime % 60;
         $this->context->setAspect(
             'date',
             GeneralUtility::makeInstance(
                 DateTimeAspect::class,
-                $simulatedDate
+                (new \DateTimeImmutable())->setTimestamp($queryTime)
             )
         );
         return true;

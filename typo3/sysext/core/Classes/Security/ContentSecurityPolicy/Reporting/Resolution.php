@@ -49,7 +49,7 @@ class Resolution implements \JsonSerializable
             $array['mutation_identifier'],
             $mutationCollection,
             $meta ?: [],
-            new \DateTimeImmutable('@' . ($array['created'] ?? '0')),
+            (new \DateTimeImmutable())->setTimestamp((int)($array['created'] ?? 0)),
         );
     }
 

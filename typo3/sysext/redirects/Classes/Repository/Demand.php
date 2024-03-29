@@ -117,10 +117,8 @@ class Demand
             $input->hasOption('hitCount') ? (int)$input->getOption('hitCount') : 0,
             $input->getOption('days')
                 ? new \DateTimeImmutable($input->getOption('days') . ' days ago')
-                : new \DateTimeImmutable(
-                    '90 days ago'
-                ),
-            $input->getOption('creationType') !== null ? (int)($input->getOption('creationType')) : null
+                : new \DateTimeImmutable('90 days ago'),
+            $input->hasOption('creationType') ? (int)($input->getOption('creationType')) : null,
         );
     }
 

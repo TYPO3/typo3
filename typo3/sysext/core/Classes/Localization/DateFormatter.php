@@ -74,8 +74,8 @@ class DateFormatter
      */
     public function strftime(string $format, int|string|\DateTimeInterface|null $timestamp, string|Locale|null $locale = null, $useUtcTimeZone = false): string
     {
-        if (!($timestamp instanceof \DateTimeInterface)) {
-            $timestamp = is_int($timestamp) ? '@' . $timestamp : (string)$timestamp;
+        if (!$timestamp instanceof \DateTimeInterface) {
+            $timestamp = MathUtility::canBeInterpretedAsInteger($timestamp) ? '@' . $timestamp : (string)$timestamp;
             try {
                 $timestamp = new \DateTime($timestamp);
             } catch (\Exception $e) {

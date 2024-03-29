@@ -41,7 +41,7 @@ Build your own :php:`clear_preview` method:
         'date',
         GeneralUtility::makeInstance(
             DateTimeAspect::class,
-            new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])
+            (new \DateTimeImmutable())->setTimestamp($GLOBALS['SIM_EXEC_TIME'])
         )
     );
     $context->setAspect(
