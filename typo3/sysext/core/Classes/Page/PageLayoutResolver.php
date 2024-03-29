@@ -131,4 +131,13 @@ class PageLayoutResolver
         }
         return $selectedLayout;
     }
+
+    public function getLayoutIdentifierForPageWithoutPrefix(array $page, array $rootLine): string
+    {
+        $selectedLayout = $this->getLayoutIdentifierForPage($page, $rootLine);
+        if (str_contains($selectedLayout, '__')) {
+            return explode('__', $selectedLayout, 2)[1] ?? '';
+        }
+        return $selectedLayout;
+    }
 }

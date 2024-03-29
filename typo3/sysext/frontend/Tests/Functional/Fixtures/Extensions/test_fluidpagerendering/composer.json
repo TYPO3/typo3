@@ -1,0 +1,14 @@
+{
+	"name": "typo3tests/fixture-fluidpagerendering-test",
+	"type": "typo3-cms-extension",
+	"description": "Full Page Rendering via Fluid Test",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.1.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_fluidpagerendering"
+		}
+	}
+}

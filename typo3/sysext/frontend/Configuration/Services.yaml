@@ -133,6 +133,11 @@ services:
       - name: frontend.contentobject
         identifier: 'FLUIDTEMPLATE'
 
+  TYPO3\CMS\Frontend\ContentObject\PageViewContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'PAGEVIEW'
+
   TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject:
     tags:
       - name: frontend.contentobject

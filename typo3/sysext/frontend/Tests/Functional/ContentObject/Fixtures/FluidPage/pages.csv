@@ -1,0 +1,4 @@
+pages
+,uid,pid,slug,title,sys_language_uid,l10n_parent,backend_layout,TSconfig
+,1,0,/,Fluid Root Page,0,0,pagets__Standard,@import "EXT:test_fluidpagerendering/Configuration/TypoScript/plain.typoscript"
+,2,0,/,Fluid Root Page FR,1,1,pagets__Standard,@import "EXT:test_fluidpagerendering/Configuration/TypoScript/plain.typoscript"

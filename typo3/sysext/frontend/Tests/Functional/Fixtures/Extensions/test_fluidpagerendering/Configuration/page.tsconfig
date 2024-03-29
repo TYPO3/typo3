@@ -1,0 +1,63 @@
+mod.web_layout.BackendLayouts {
+  Standard {
+    title = Standard Test Page Layout
+    config {
+      backend_layout {
+        colCount = 3
+        rowCount = 3
+        rows {
+          1 {
+            columns {
+              1 {
+                name = Header
+                colspan = 3
+                colPos = 1
+                identifier = header
+              }
+            }
+          }
+          2 {
+            columns {
+              1 {
+                name = Main
+                colspan = 2
+                colPos = 0
+                identifier = main
+              }
+              2 {
+                name = Aside
+                rowspan = 2
+                colPos = 2
+                identifier = aside
+                slideMode = collect
+              }
+            }
+          }
+          3 {
+            columns {
+              1 {
+                name = Main Left
+                colPos = 5
+                identifier = mainLeft
+              }
+              2 {
+                name = Main Right
+                colPos = 6
+                identifier = mainRight
+              }
+            }
+          }
+          4 {
+            columns {
+              1 {
+                name = Footer
+                colspan = 3
+                colPos = 4
+                identifier = footer
+              }
+          }
+        }
+      }
+    }
+  }
+}
