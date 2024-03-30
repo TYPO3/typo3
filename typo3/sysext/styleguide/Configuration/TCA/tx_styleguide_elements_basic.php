@@ -846,18 +846,32 @@ return [
             ],
         ],
         'email_3' => [
-            'label' => 'email_3 nullable',
+            'label' => 'email_3',
+            'description' => 'nullable',
             'config' => [
                 'type' => 'email',
                 'nullable' => true,
             ],
         ],
         'email_4' => [
-            'label' => 'email_4 nullable with placeholder',
+            'label' => 'email_4',
+            'description' => 'nullable with placeholder',
             'config' => [
                 'type' => 'email',
                 'nullable' => true,
                 'placeholder' => 'info@example.org',
+            ],
+        ],
+        'email_5' => [
+            'label' => 'email_5',
+            'description' => 'valuePicker',
+            'config' => [
+                'type' => 'email',
+                'valuePicker' => [
+                    'items' => [
+                        ['Example email', 'info@example.org'],
+                    ],
+                ],
             ],
         ],
 
@@ -1878,7 +1892,7 @@ backend_layout {
                 --div--;number,
                     number_1, number_2, number_3, number_4, number_5, number_7,
                 --div--;email,
-                    email_1, email_2, email_3, email_4,
+                    email_1, email_2, email_3, email_4, email_5,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
