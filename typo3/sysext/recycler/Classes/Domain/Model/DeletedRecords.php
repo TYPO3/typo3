@@ -501,9 +501,7 @@ class DeletedRecords
 
     protected function resolveTree(int $id, int $depth, int $begin = 0, string $permsClause = ''): array
     {
-        $depth = (int)$depth;
-        $begin = (int)$begin;
-        $id = abs((int)$id);
+        $id = abs($id);
         $theList = [];
         if ($begin === 0) {
             $theList[] = $id;
