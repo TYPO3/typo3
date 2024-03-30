@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -141,6 +142,31 @@ class EmailElement extends AbstractFormElement
             $attributes['autocomplete'] = empty($config['autocomplete']) ? 'new-' . $fieldName : 'on';
         }
 
+        $valuePickerHtml = [];
+        if (is_array($config['valuePicker']['items'] ?? false)) {
+            $valuePickerConfiguration = [
+                'mode' => $config['valuePicker']['mode'] ?? 'replace',
+                'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
+            ];
+            $valuePickerAttributes = array_merge(
+                [
+                    'class' => 'form-select form-control-adapt',
+                ],
+                $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+            );
+
+            $valuePickerHtml[] = '<typo3-formengine-valuepicker ' . GeneralUtility::implodeAttributes($valuePickerConfiguration, true) . '>';
+            $valuePickerHtml[] = '<select ' . GeneralUtility::implodeAttributes($valuePickerAttributes, true) . '>';
+            $valuePickerHtml[] = '<option></option>';
+            foreach ($config['valuePicker']['items'] as $item) {
+                $valuePickerHtml[] = '<option value="' . htmlspecialchars((string)$item[1]) . '">' . htmlspecialchars($languageService->sL($item[0])) . '</option>';
+            }
+            $valuePickerHtml[] = '</select>';
+            $valuePickerHtml[] = '</typo3-formengine-valuepicker>';
+
+            $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-wizard/value-picker.js');
+        }
+
         $fieldControlResult = $this->renderFieldControl();
         $fieldControlHtml = $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
@@ -156,9 +182,10 @@ class EmailElement extends AbstractFormElement
         $mainFieldHtml[] =          '<input type="email" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $mainFieldHtml[] =          '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
-        if (!empty($fieldControlHtml)) {
+        if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
             $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $mainFieldHtml[] =          '<div class="btn-group">';
+            $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
             $mainFieldHtml[] =              $fieldControlHtml;
             $mainFieldHtml[] =          '</div>';
             $mainFieldHtml[] =      '</div>';
