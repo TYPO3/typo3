@@ -29,7 +29,7 @@ Impact
 ======
 
 By default, WebP images can now be generated, as TYPO3's configuration setting
-:php:`$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] is now extended with
+:php:`$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']` is now extended with
 "webp".
 
 Integrators can now use the file extension `webp` in their Fluid template or
