@@ -131,11 +131,32 @@ final class RotatingFileWriterTest extends UnitTestCase
     #[Test]
     public function writingLogWithExpiredLatestRotationInTimeFrameRotates(Interval $interval): void
     {
-        // Helper variable to ensure the next rotation interval kicks in
-        $boost = 100;
-        $rotationDate = (new \DateTime('@' . (time() - $boost)))
-            ->sub(new \DateInterval($interval->getDateInterval()))
-            ->format('YmdHis');
+        $rotationDateModifierClosure = match ($interval) {
+            Interval::MONTHLY, Interval::YEARLY => static function (\DateTimeImmutable $rotationDate) use ($interval): \DateTimeImmutable {
+                // This is great – when subtracting 1 month or 1 year, it may happen that the result would be invalid:
+                // e.g. 2024-03-30 -1 month -> 2024-02-30, 2024-05-31 -1 month -> 2024-04-31, 2028-02-29 -1 year -> 2027-02-29, etc.
+                // PHP thankfully catches this and rolls over to the next(!) valid date:
+                // e.g. 2024-03-30 -1 month -> 2024-03-01, 2024-05-31 -1 month -> 2024-05-01, 2028-02-29 -1 year -> 2027-03-01, etc.
+                // However, this is not the desired result in this case when SUBTRACTING a month as the previous(!!) valid date is required.
+                // For this reason, a custom handling in case of months and years is in place that goes back in time to the first day of
+                // the given period, and sets the current day or the last day of the resulting period, whatever fits:
+                // e.g. 2024-03-30 -1 month -> 2024-02-29, 2024-05-12 -1 month -> 2024-04-12, 2028-02-29 -1 year -> 2027-02-28, etc.
+                if ($interval === Interval::MONTHLY) {
+                    $firstDayOfModifier = 'first day of -1 month';
+                } else {
+                    $firstDayOfModifier = 'first day of -1 year';
+                }
+
+                $currentDay = $rotationDate->format('j');
+                $rotationDate = $rotationDate->modify($firstDayOfModifier);
+                $totalDays = $rotationDate->format('t');
+                return $rotationDate->modify('+' . (min($currentDay, $totalDays) - 1) . ' days');
+            },
+            default => static function (\DateTimeImmutable $rotationDate) use ($interval): \DateTimeImmutable {
+                return $rotationDate->sub(new \DateInterval($interval->getDateInterval()));
+            },
+        };
+        $rotationDate = $rotationDateModifierClosure(new \DateTimeImmutable('@' . time()))->format('YmdHis');
         $logFileName = $this->getDefaultFileName();
 
         file_put_contents($logFileName, 'fooo');
