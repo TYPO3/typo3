@@ -170,16 +170,12 @@ General tab
     `https://example.com/all-features`. If there are already query
     parameters in the target field, these are used instead.
 
-----
-
 .. confval:: Protected
 
     :Field: protected
 
     This does not affect the redirect itself. It protects the record from
     automatic deletion (e.g. with redirects:cleanup).
-
-----
 
 .. confval:: Creation Type
 
@@ -188,6 +184,13 @@ General tab
     This field allows to differentiate between redirects that are created
     automatically when the slug of a page is changed and those that are created
     in the backend module by editors.
+
+.. confval:: Integrity Status
+
+    :Field: integrity_status
+
+    This field hints about a broken redirect, for example, if the page references
+    to itself.
 
 
 Statistics tab
