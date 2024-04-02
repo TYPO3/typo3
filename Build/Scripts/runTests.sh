@@ -533,8 +533,8 @@ fi
 IMAGE_APACHE="ghcr.io/typo3/core-testing-apache24:1.3"
 IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\.//'):$(getPhpImageVersion $PHP_VERSION)"
 
-IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs18:1.2"
-IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs18-chrome:1.2"
+IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs18:1.4"
+IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs18-chrome:1.4"
 IMAGE_ALPINE="docker.io/alpine:3.8"
 IMAGE_SELENIUM="docker.io/selenium/standalone-chrome:4.11.0-20230801"
 IMAGE_REDIS="docker.io/redis:4-alpine"
