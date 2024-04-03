@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="af" resname="af" approved="yes">
         <source>Afrikaans</source>
-        <target>แอฟริกา</target>
+        <target>แอฟริคานส์</target>
       </trans-unit>
       <trans-unit id="afa" resname="afa" approved="yes">
         <source>Afro-Asiatic languages</source>
@@ -29,6 +29,10 @@
       <trans-unit id="ain" resname="ain" approved="yes">
         <source>Ainu</source>
         <target>ไอนุ</target>
+      </trans-unit>
+      <trans-unit id="ak" resname="ak" approved="yes">
+        <source>Akan</source>
+        <target>อะคาน</target>
       </trans-unit>
       <trans-unit id="akk" resname="akk" approved="yes">
         <source>Akkadian</source>
@@ -41,6 +45,10 @@
       <trans-unit id="am" resname="am" approved="yes">
         <source>Amharic</source>
         <target>อัมฮาริก</target>
+      </trans-unit>
+      <trans-unit id="an" resname="an" approved="yes">
+        <source>Aragonese</source>
+        <target>อารากอน</target>
       </trans-unit>
       <trans-unit id="ang" resname="ang" approved="yes">
         <source>English, Old (ca. 450-1100)</source>
@@ -69,6 +77,10 @@
       <trans-unit id="aus" resname="aus" approved="yes">
         <source>Australian languages</source>
         <target>กลุ่มภาษาออสเตรเลียน</target>
+      </trans-unit>
+      <trans-unit id="av" resname="av" approved="yes">
+        <source>Avaric</source>
+        <target>อาวาริก</target>
       </trans-unit>
       <trans-unit id="awa" resname="awa" approved="yes">
         <source>Awadhi</source>
@@ -113,6 +125,10 @@
       <trans-unit id="bi" resname="bi" approved="yes">
         <source>Bislama</source>
         <target>บิสลามา</target>
+      </trans-unit>
+      <trans-unit id="bm" resname="bm" approved="yes">
+        <source>Bambara</source>
+        <target>บัมบารา</target>
       </trans-unit>
       <trans-unit id="bn" resname="bn" approved="yes">
         <source>Bengali</source>
@@ -186,6 +202,10 @@
         <source>Creoles and pidgins, Portuguese-based</source>
         <target>ภาษาลูกผสมและภาษาแก้ขัด อิงภาษาโปรตุเกส</target>
       </trans-unit>
+      <trans-unit id="cr" resname="cr" approved="yes">
+        <source>Cree</source>
+        <target>ครี</target>
+      </trans-unit>
       <trans-unit id="crp" resname="crp" approved="yes">
         <source>Creoles and pidgins</source>
         <target>ภาษาลูกผสมและภาษาแก้ขัด</target>
@@ -193,6 +213,14 @@
       <trans-unit id="cs" resname="cs" approved="yes">
         <source>Czech</source>
         <target>เช็ก</target>
+      </trans-unit>
+      <trans-unit id="csb" resname="csb" approved="yes">
+        <source>Kashubian</source>
+        <target>คาชูเบียน</target>
+      </trans-unit>
+      <trans-unit id="cv" resname="cv" approved="yes">
+        <source>Chuvash</source>
+        <target>ชูวัช</target>
       </trans-unit>
       <trans-unit id="cy" resname="cy" approved="yes">
         <source>Welsh</source>
@@ -222,6 +250,10 @@
         <source>Dravidian languages</source>
         <target>กลุ่มภาษาฑราวิฑ</target>
       </trans-unit>
+      <trans-unit id="dsb" resname="dsb" approved="yes">
+        <source>Lower Sorbian</source>
+        <target>ซอร์บต่ำ</target>
+      </trans-unit>
       <trans-unit id="dum" resname="dum" approved="yes">
         <source>Dutch, Middle (ca. 1050-1350)</source>
         <target>ดัตช์ยุคกลาง (ประมาณ ค.ศ. 1050-1350)</target>
@@ -233,6 +265,10 @@
       <trans-unit id="dz" resname="dz" approved="yes">
         <source>Dzongkha</source>
         <target>ภูฏาน</target>
+      </trans-unit>
+      <trans-unit id="ee" resname="ee" approved="yes">
+        <source>Ewe</source>
+        <target>เอเว</target>
       </trans-unit>
       <trans-unit id="egy" resname="egy" approved="yes">
         <source>Egyptian (Ancient)</source>
@@ -290,6 +326,10 @@
         <source>Faroese</source>
         <target>แฟโร</target>
       </trans-unit>
+      <trans-unit id="fon" resname="fon" approved="yes">
+        <source>Fon</source>
+        <target>ฟอน</target>
+      </trans-unit>
       <trans-unit id="fr" resname="fr" approved="yes">
         <source>French</source>
         <target>ฝรั่งเศส</target>
@@ -302,9 +342,29 @@
         <source>French, Old (842-ca. 1400)</source>
         <target>ฝรั่งเศสโบราณ (ประมาณ ค.ศ. 842-1400)</target>
       </trans-unit>
+      <trans-unit id="frr" resname="frr" approved="yes">
+        <source>Northern Frisian</source>
+        <target>ฟรีเชียเหนือ</target>
+      </trans-unit>
+      <trans-unit id="frs" resname="frs" approved="yes">
+        <source>Eastern Frisian</source>
+        <target>ฟรีเชียตะวันออก</target>
+      </trans-unit>
+      <trans-unit id="fur" resname="fur" approved="yes">
+        <source>Friulian</source>
+        <target>ฟริอูเลียน</target>
+      </trans-unit>
+      <trans-unit id="fy" resname="fy" approved="yes">
+        <source>Western Frisian</source>
+        <target>ฟรีเชียตะวันตก</target>
+      </trans-unit>
       <trans-unit id="ga" resname="ga" approved="yes">
         <source>Irish</source>
         <target>ไอริช</target>
+      </trans-unit>
+      <trans-unit id="gd" resname="gd" approved="yes">
+        <source>Gaelic; Scottish Gaelic</source>
+        <target>เกลิก; เกลิกสก็อต</target>
       </trans-unit>
       <trans-unit id="gem" resname="gem" approved="yes">
         <source>Germanic languages</source>
@@ -321,6 +381,10 @@
       <trans-unit id="gmh" resname="gmh" approved="yes">
         <source>German, Middle High (ca. 1050-1500)</source>
         <target>เยอรมันสูงยุคกลาง (ประมาณ ค.ศ. 1050-1500)</target>
+      </trans-unit>
+      <trans-unit id="gn" resname="gn" approved="yes">
+        <source>Guarani</source>
+        <target>กวารานี</target>
       </trans-unit>
       <trans-unit id="goh" resname="goh" approved="yes">
         <source>German, Old High (ca. 750-1050)</source>
@@ -358,6 +422,10 @@
         <source>Hindi</source>
         <target>ฮินดี</target>
       </trans-unit>
+      <trans-unit id="hil" resname="hil" approved="yes">
+        <source>Hiligaynon</source>
+        <target>ฮีลีไกโนน</target>
+      </trans-unit>
       <trans-unit id="him" resname="him" approved="yes">
         <source>Himachali languages; Western Pahari languages</source>
         <target>กลุ่มภาษาหิมาจลี; กลุ่มภาษาพิหารีตะวันตก</target>
@@ -373,6 +441,10 @@
       <trans-unit id="hr" resname="hr" approved="yes">
         <source>Croatian</source>
         <target>โครเอเชีย</target>
+      </trans-unit>
+      <trans-unit id="hsb" resname="hsb" approved="yes">
+        <source>Upper Sorbian</source>
+        <target>ซอร์บสูง</target>
       </trans-unit>
       <trans-unit id="ht" resname="ht" approved="yes">
         <source>Haitian; Haitian Creole</source>
@@ -446,6 +518,10 @@
         <source>Japanese</source>
         <target>ญี่ปุ่น</target>
       </trans-unit>
+      <trans-unit id="jbo" resname="jbo" approved="yes">
+        <source>Lojban</source>
+        <target>โลจบาน</target>
+      </trans-unit>
       <trans-unit id="jpr" resname="jpr" approved="yes">
         <source>Judeo-Persian</source>
         <target>ยิว-เปอร์เซีย</target>
@@ -462,6 +538,14 @@
         <source>Georgian</source>
         <target>จอร์เจีย</target>
       </trans-unit>
+      <trans-unit id="kaa" resname="kaa" approved="yes">
+        <source>Kara-Kalpak</source>
+        <target>คาราคัลปัก</target>
+      </trans-unit>
+      <trans-unit id="kab" resname="kab" approved="yes">
+        <source>Kabyle</source>
+        <target>คาไบล์</target>
+      </trans-unit>
       <trans-unit id="kac" resname="kac" approved="yes">
         <source>Kachin; Jingpho</source>
         <target>กะฉิ่น; จิงผ่อ</target>
@@ -474,6 +558,10 @@
         <source>Kawi</source>
         <target>กวิ</target>
       </trans-unit>
+      <trans-unit id="kbd" resname="kbd" approved="yes">
+        <source>Kabardian</source>
+        <target>คาบาร์เดีย</target>
+      </trans-unit>
       <trans-unit id="kg" resname="kg" approved="yes">
         <source>Kongo</source>
         <target>คองโก</target>
@@ -482,9 +570,17 @@
         <source>Khasi</source>
         <target>ขาสี</target>
       </trans-unit>
+      <trans-unit id="ki" resname="ki" approved="yes">
+        <source>Kikuyu; Gikuyu</source>
+        <target>คิคูยู; กิคูยู</target>
+      </trans-unit>
       <trans-unit id="kk" resname="kk" approved="yes">
         <source>Kazakh</source>
         <target>คาซัคสถาน</target>
+      </trans-unit>
+      <trans-unit id="kl" resname="kl" approved="yes">
+        <source>Kalaallisut; Greenlandic</source>
+        <target>กะลาลลิซุต; กรีนแลนด์</target>
       </trans-unit>
       <trans-unit id="km" resname="km" approved="yes">
         <source>Central Khmer</source>
@@ -502,6 +598,10 @@
         <source>Konkani</source>
         <target>โกงกณี</target>
       </trans-unit>
+      <trans-unit id="krl" resname="krl" approved="yes">
+        <source>Karelian</source>
+        <target>คารีเลียน</target>
+      </trans-unit>
       <trans-unit id="ks" resname="ks" approved="yes">
         <source>Kashmiri</source>
         <target>กัศมีรี</target>
@@ -510,9 +610,21 @@
         <source>Kurdish</source>
         <target>เคิร์ด</target>
       </trans-unit>
+      <trans-unit id="kum" resname="kum" approved="yes">
+        <source>Kumyk</source>
+        <target>คูมิค</target>
+      </trans-unit>
+      <trans-unit id="kv" resname="kv" approved="yes">
+        <source>Komi</source>
+        <target>โคมิ</target>
+      </trans-unit>
+      <trans-unit id="kw" resname="kw" approved="yes">
+        <source>Cornish</source>
+        <target>คอร์นิช</target>
+      </trans-unit>
       <trans-unit id="ky" resname="ky" approved="yes">
         <source>Kirghiz; Kyrgyz</source>
-        <target>คีร์กีซสถาน</target>
+        <target>คีร์กีซ</target>
       </trans-unit>
       <trans-unit id="la" resname="la" approved="yes">
         <source>Latin</source>
@@ -525,6 +637,10 @@
       <trans-unit id="lb" resname="lb" approved="yes">
         <source>Luxembourgish; Letzeburgesch</source>
         <target>ลักเซมเบิร์ก</target>
+      </trans-unit>
+      <trans-unit id="lg" resname="lg" approved="yes">
+        <source>Ganda</source>
+        <target>แกนดา</target>
       </trans-unit>
       <trans-unit id="ln" resname="ln" approved="yes">
         <source>Lingala</source>
@@ -554,6 +670,10 @@
         <source>Austronesian languages</source>
         <target>ตระกูลภาษาออสโตรนีเซียน</target>
       </trans-unit>
+      <trans-unit id="mdf" resname="mdf" approved="yes">
+        <source>Moksha</source>
+        <target>มอกชา</target>
+      </trans-unit>
       <trans-unit id="mg" resname="mg" approved="yes">
         <source>Malagasy</source>
         <target>มาลากาซี</target>
@@ -569,6 +689,10 @@
       <trans-unit id="mi" resname="mi" approved="yes">
         <source>Maori</source>
         <target>เมารี</target>
+      </trans-unit>
+      <trans-unit id="min" resname="min" approved="yes">
+        <source>Minangkabau</source>
+        <target>มีนังกาเบา</target>
       </trans-unit>
       <trans-unit id="mis" resname="mis" approved="yes">
         <source>Uncoded languages</source>
@@ -626,6 +750,10 @@
         <source>Mayan languages</source>
         <target>ตระกูลภาษามายัน</target>
       </trans-unit>
+      <trans-unit id="myv" resname="myv" approved="yes">
+        <source>Erzya</source>
+        <target>เอร์เซีย</target>
+      </trans-unit>
       <trans-unit id="na" resname="na" approved="yes">
         <source>Nauru</source>
         <target>นาอูรู</target>
@@ -633,6 +761,10 @@
       <trans-unit id="nb" resname="nb" approved="yes">
         <source>Bokmål, Norwegian; Norwegian Bokmål</source>
         <target>นอร์เวย์ (บุคมอล)</target>
+      </trans-unit>
+      <trans-unit id="nd" resname="nd" approved="yes">
+        <source>Ndebele, North; North Ndebele</source>
+        <target>เอ็นดีเบลีเหนือ</target>
       </trans-unit>
       <trans-unit id="nds" resname="nds" approved="yes">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
@@ -670,6 +802,10 @@
         <source>N'Ko</source>
         <target>เอ็นโก</target>
       </trans-unit>
+      <trans-unit id="nr" resname="nr" approved="yes">
+        <source>Ndebele, South; South Ndebele</source>
+        <target>เอ็นดีเบลีใต้</target>
+      </trans-unit>
       <trans-unit id="nso" resname="nso" approved="yes">
         <source>Pedi; Sepedi; Northern Sotho</source>
         <target>ซูทูเหนือ</target>
@@ -682,6 +818,10 @@
         <source>Classical Newari; Old Newari; Classical Nepal Bhasa</source>
         <target>เนวารีดั้งเดิม; เนวารีโบราณ; เนปาลดั้งเดิม</target>
       </trans-unit>
+      <trans-unit id="ny" resname="ny" approved="yes">
+        <source>Chichewa; Chewa; Nyanja</source>
+        <target>ชิเชวา; เชวา; นยานจา</target>
+      </trans-unit>
       <trans-unit id="oc" resname="oc" approved="yes">
         <source>Occitan (post 1500); Provençal</source>
         <target>Occitan (post 1500); Provençal</target>
@@ -692,7 +832,7 @@
       </trans-unit>
       <trans-unit id="om" resname="om" approved="yes">
         <source>Oromo</source>
-        <target>โอโรโม</target>
+        <target>ออโรโม</target>
       </trans-unit>
       <trans-unit id="or" resname="or" approved="yes">
         <source>Oriya</source>
@@ -713,6 +853,10 @@
       <trans-unit id="pal" resname="pal" approved="yes">
         <source>Pahlavi</source>
         <target>พาลาวี</target>
+      </trans-unit>
+      <trans-unit id="pap" resname="pap" approved="yes">
+        <source>Papiamento</source>
+        <target>ปาเปียเมนโต</target>
       </trans-unit>
       <trans-unit id="pau" resname="pau" approved="yes">
         <source>Palauan</source>
@@ -828,7 +972,7 @@
       </trans-unit>
       <trans-unit id="se" resname="se" approved="yes">
         <source>Northern Sami</source>
-        <target>ซามิเหนือ</target>
+        <target>ซามีเหนือ</target>
       </trans-unit>
       <trans-unit id="sem" resname="sem" approved="yes">
         <source>Semitic languages</source>
@@ -868,7 +1012,7 @@
       </trans-unit>
       <trans-unit id="sla" resname="sla" approved="yes">
         <source>Slavic languages</source>
-        <target>กลุ่มภาษาสลาวิก</target>
+        <target>กลุ่มภาษาสลาฟ</target>
       </trans-unit>
       <trans-unit id="sm" resname="sm" approved="yes">
         <source>Samoan</source>
@@ -876,11 +1020,23 @@
       </trans-unit>
       <trans-unit id="sma" resname="sma" approved="yes">
         <source>Southern Sami</source>
-        <target>ซามิใต้</target>
+        <target>ซามีใต้</target>
       </trans-unit>
       <trans-unit id="smi" resname="smi" approved="yes">
         <source>Sami languages</source>
-        <target>กลุ่มภาษาซามิ</target>
+        <target>กลุ่มภาษาซามี</target>
+      </trans-unit>
+      <trans-unit id="smj" resname="smj" approved="yes">
+        <source>Lule Sami</source>
+        <target>ซามีลูเล</target>
+      </trans-unit>
+      <trans-unit id="smn" resname="smn" approved="yes">
+        <source>Inari Sami</source>
+        <target>ซามีอินารี</target>
+      </trans-unit>
+      <trans-unit id="sms" resname="sms" approved="yes">
+        <source>Skolt Sami</source>
+        <target>ซามีสโกลต์</target>
       </trans-unit>
       <trans-unit id="so" resname="so" approved="yes">
         <source>Somali</source>
@@ -976,7 +1132,7 @@
       </trans-unit>
       <trans-unit id="tlh" resname="tlh" approved="yes">
         <source>Klingon; tlhIngan-Hol</source>
-        <target>คลิงออน; tlhIngan-Hol</target>
+        <target>คลิงงอน; tlhIngan-Hol</target>
       </trans-unit>
       <trans-unit id="tn" resname="tn" approved="yes">
         <source>Tswana</source>
@@ -989,6 +1145,10 @@
       <trans-unit id="tog" resname="tog" approved="yes">
         <source>Tonga (Nyasa)</source>
         <target>ตองกา (นีอาซา)</target>
+      </trans-unit>
+      <trans-unit id="tpi" resname="tpi" approved="yes">
+        <source>Tok Pisin</source>
+        <target>ทอกพิซิน</target>
       </trans-unit>
       <trans-unit id="tr" resname="tr" approved="yes">
         <source>Turkish</source>
@@ -1022,6 +1182,10 @@
         <source>Tuvinian</source>
         <target>ตูวัน</target>
       </trans-unit>
+      <trans-unit id="udm" resname="udm" approved="yes">
+        <source>Udmurt</source>
+        <target>อุดมูร์ต</target>
+      </trans-unit>
       <trans-unit id="ug" resname="ug" approved="yes">
         <source>Uighur; Uyghur</source>
         <target>อุยกูร์</target>
@@ -1050,6 +1214,10 @@
         <source>Vai</source>
         <target>ไว</target>
       </trans-unit>
+      <trans-unit id="ve" resname="ve" approved="yes">
+        <source>Venda</source>
+        <target>เวนดา</target>
+      </trans-unit>
       <trans-unit id="vi" resname="vi" approved="yes">
         <source>Vietnamese</source>
         <target>เวียดนาม</target>
@@ -1057,6 +1225,10 @@
       <trans-unit id="wa" resname="wa" approved="yes">
         <source>Walloon</source>
         <target>วอลลูน</target>
+      </trans-unit>
+      <trans-unit id="wen" resname="wen" approved="yes">
+        <source>Sorbian languages</source>
+        <target>กลุ่มภาษาซอร์บ</target>
       </trans-unit>
       <trans-unit id="wo" resname="wo" approved="yes">
         <source>Wolof</source>

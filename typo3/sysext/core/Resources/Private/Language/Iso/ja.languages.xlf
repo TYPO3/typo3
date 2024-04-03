@@ -330,6 +330,10 @@
         <source>Chamic languages</source>
         <target>チャム語族</target>
       </trans-unit>
+      <trans-unit id="cnr" resname="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>モンテネグロ語</target>
+      </trans-unit>
       <trans-unit id="co" resname="co" approved="yes">
         <source>Corsican</source>
         <target>コルシカ語</target>
@@ -776,7 +780,7 @@
       </trans-unit>
       <trans-unit id="ira" resname="ira" approved="yes">
         <source>Iranian languages</source>
-        <target>Iranian languages</target>
+        <target>イラン語派</target>
       </trans-unit>
       <trans-unit id="iro" resname="iro" approved="yes">
         <source>Iroquoian languages</source>
