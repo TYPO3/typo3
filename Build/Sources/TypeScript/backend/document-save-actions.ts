@@ -22,6 +22,7 @@ type SubmitTriggerHTMLElement = HTMLAnchorElement|HTMLButtonElement;
 
 /**
  * Module: @typo3/backend/document-save-actions
+ * @deprecated: use @typo3/backend/form/submit-interceptor instead
  */
 class DocumentSaveActions {
   private static instance: DocumentSaveActions = null;
@@ -29,6 +30,7 @@ class DocumentSaveActions {
   private readonly preSubmitCallbacks: PreSubmitCallback[] = [];
 
   private constructor() {
+    console.warn('The module `@typo3/backend/document-save-actions.js` has been deprecated and will be removed in TYPO3 v14. Please consider migrating to `@typo3/backend/form/submit-interceptor.js` instead.');
     DocumentService.ready().then((): void => {
       this.initializeSaveHandling();
     });

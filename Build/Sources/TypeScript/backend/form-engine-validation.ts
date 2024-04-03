@@ -19,13 +19,13 @@
 import $ from 'jquery';
 import { DateTime } from 'luxon';
 import Md5 from '@typo3/backend/hashing/md5';
-import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import Modal from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 import Utility from './utility';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DomHelper from '@typo3/backend/utility/dom-helper';
 import { selector } from '@typo3/core/literals';
+import SubmitInterceptor from '@typo3/backend/form/submit-interceptor';
 
 type FormEngineFieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement;
 type CustomEvaluationCallback = (value: string) => string;
@@ -747,7 +747,8 @@ export default (function() {
   };
 
   FormEngineValidation.registerSubmitCallback = function () {
-    DocumentSaveActions.getInstance().addPreSubmitCallback((): boolean => {
+    const submitInterceptor = new SubmitInterceptor(formEngineFormElement);
+    submitInterceptor.addPreSubmitCallback((): boolean => {
       if (document.querySelector('.' + FormEngineValidation.errorClass) === null) {
         return true;
       }

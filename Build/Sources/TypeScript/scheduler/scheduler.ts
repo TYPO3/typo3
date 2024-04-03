@@ -12,7 +12,6 @@
  */
 
 import SortableTable from '@typo3/backend/sortable-table';
-import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Modal from '@typo3/backend/modal';
 import Icons from '@typo3/backend/icons';
@@ -23,6 +22,7 @@ import DateTimePicker from '@typo3/backend/date-time-picker';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import Severity from '@typo3/backend/severity';
 import DocumentService from '@typo3/core/document-service';
+import SubmitInterceptor from '@typo3/backend/form/submit-interceptor';
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -35,12 +35,11 @@ interface TableNumberMapping {
 class Scheduler {
   constructor() {
     DocumentService.ready().then((): void => {
+      this.initializeSubmitInterceptor();
       this.initializeEvents();
       this.initializeDefaultStates();
       this.initializeCloseConfirm();
     });
-
-    DocumentSaveActions.registerEvents();
   }
 
   private static updateClearableInputs(): void {
@@ -161,6 +160,15 @@ class Scheduler {
     (document.querySelector('#task_multiple_row') as HTMLElement).hidden = !taskIsRecurring;
   }
 
+  private initializeSubmitInterceptor(): void {
+    const schedulerForm: HTMLFormElement = document.querySelector('form[name=tx_scheduler_form]');
+    if (!schedulerForm) {
+      return;
+    }
+
+    new SubmitInterceptor(schedulerForm);
+  }
+
   /**
    * Registers listeners
    */
@@ -233,6 +241,27 @@ class Scheduler {
     new RegularEvent('multiRecordSelection:action:go_cron', this.executeTasks.bind(this)).bindTo(document);
 
     window.addEventListener('message', this.listenOnElementBrowser.bind(this));
+
+    new RegularEvent('click', (e: Event): void => {
+      e.preventDefault();
+
+      this.saveDocument(e);
+    }).delegateTo(document, 'button[form]');
+  }
+
+  private saveDocument(e: Event): void {
+    const schedulerForm: HTMLFormElement = document.querySelector('form[name=tx_scheduler_form]');
+    if (!schedulerForm) {
+      return;
+    }
+
+    const hidden = document.createElement('input')
+    hidden.type = 'hidden';
+    hidden.value = 'save';
+    hidden.name = 'CMD';
+
+    schedulerForm.append(hidden);
+    schedulerForm.requestSubmit(e.target as HTMLElement);
   }
 
   /**
@@ -366,7 +395,7 @@ class Scheduler {
                 hidden.value = 'saveclose';
                 hidden.name = 'CMD';
 
-                schedulerForm.append(hidden)
+                schedulerForm.append(hidden);
                 schedulerForm.submit();
               },
             }
