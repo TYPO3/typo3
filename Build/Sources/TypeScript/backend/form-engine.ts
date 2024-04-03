@@ -34,7 +34,7 @@ import Utility from '@typo3/backend/utility';
 import { selector } from '@typo3/core/literals';
 import '@typo3/backend/form-engine/element/extra/char-counter';
 import type { PromiseControls } from '@typo3/backend/event/interaction-request-assignment';
-import Hotkeys from '@typo3/backend/hotkeys';
+import Hotkeys, { ModifierKeys } from '@typo3/backend/hotkeys';
 
 interface OnFieldChangeItem {
   name: string;
@@ -777,7 +777,6 @@ export default (function() {
     if (FormEngine.hasChange()) {
       const title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to close without saving?';
       const content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes. Are you sure you want to discard these changes?';
-      const $elem = $('<input />').attr('type', 'hidden').attr('name', '_saveandclosedok').attr('value', '1');
       const buttons: Array<{text: string, btnClass: string, name: string, active?: boolean}> = [
         {
           text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
@@ -807,9 +806,8 @@ export default (function() {
           modal.hideModal();
           callback.call(null, true);
         } else if ((e.target as HTMLButtonElement).name === 'save') {
-          $(selector`form[name="${FormEngine.formName}"]`).append($elem);
           modal.hideModal();
-          FormEngine.saveDocument();
+          FormEngine.saveAndCloseDocument();
         }
       });
     } else {
@@ -1283,6 +1281,16 @@ export default (function() {
     FormEngine.formElement.requestSubmit();
   };
 
+  FormEngine.saveAndCloseDocument = function(): void {
+    const saveAndCloseInput = document.createElement('input');
+    saveAndCloseInput.type = 'hidden';
+    saveAndCloseInput.name = '_saveandclosedok';
+    saveAndCloseInput.value = '1';
+    document.querySelector(selector`form[name="${FormEngine.formName}"]`).append(saveAndCloseInput);
+
+    FormEngine.saveDocument();
+  }
+
   /**
    * Main init function called from outside
    *
@@ -1305,6 +1313,11 @@ export default (function() {
 
         FormEngine.saveDocument();
       }, { scope: 'backend/form-engine', allowOnEditables: true, bindElement: FormEngine.formElement._savedok });
+      Hotkeys.register([Hotkeys.normalizedCtrlModifierKey, ModifierKeys.SHIFT, 's'], (e: KeyboardEvent): void => {
+        e.preventDefault();
+
+        FormEngine.saveAndCloseDocument();
+      }, { scope: 'backend/form-engine', allowOnEditables: true });
     });
   };
 
