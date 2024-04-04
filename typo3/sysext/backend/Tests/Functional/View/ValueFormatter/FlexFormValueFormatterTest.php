@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\Tests\Functional\View\ValueFormatter;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FlexFormValueFormatterTest extends FunctionalTestCase
@@ -35,16 +37,19 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
     #[Test]
     public function flexFormDataWillBeDisplayedHumanReadable(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config'] = $this->getFieldTcaConfig();
+        $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config'] = $this->getFieldTcaConfig();
         $expectedOutput = trim(file_get_contents(__DIR__ . '/Fixtures/FlexFormValueFormatter/ValuePreview.txt'));
         $flexFormData = file_get_contents(__DIR__ . '/Fixtures/FlexFormValueFormatter/FlexFormValue.xml');
 
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
+        $connection->insert('tt_content', ['pi_flexform' => $flexFormData]);
+
         $flexFormValueFormatter = new FlexFormValueFormatter();
         $actualOutput = $flexFormValueFormatter->format(
-            'aTableName',
-            'aFieldName',
+            'tt_content',
+            'pi_flexform',
             $flexFormData,
-            0,
+            (int)$connection->lastInsertId('tt_content'),
             $this->getFieldTcaConfig(),
         );
 

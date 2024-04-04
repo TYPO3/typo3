@@ -45,7 +45,11 @@ class FlexFormValueFormatter
             return '';
         }
 
-        $record = BackendUtility::getRecord($tableName, $uid) ?? [];
+        $record = BackendUtility::getRecord($tableName, $uid);
+        if (is_null($record)) {
+            // Record is already deleted
+            return '';
+        }
 
         // Get FlexForm data and structure
         $flexFormDataArray = GeneralUtility::xml2array($value);
