@@ -20,8 +20,9 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
@@ -63,7 +64,16 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     #[Test]
     public function nonExistingLazyLoadedPropertyReturnsNull(): void
     {
-        $lazyLoadingProxy = new LazyLoadingProxy(new Blog(), 'administrator', 0);
-        self::assertNull(ObjectAccess::getProperty($lazyLoadingProxy, 'name'));
+        $lazyLoadingProxy = new LazyLoadingProxy(
+            new Blog(),
+            'administrator',
+            0,
+            GeneralUtility::makeInstance(DataMapper::class)
+        );
+        // Directly using the magic `__get()` method here to avoid PHPStan complaining
+        // about the dynamic property issue and spare an ignore pattern or annotation.
+        // See: https://phpstan.org/blog/solving-phpstan-access-to-undefined-property
+        // This equals to: self::assertNull($lazyLoadingProxy->name);
+        self::assertNull($lazyLoadingProxy->__get('name'));
     }
 }
