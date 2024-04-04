@@ -448,8 +448,8 @@ class ImageManipulation {
 
     let minCroppedWidth = 15;
     let minCroppedHeight = 15;
-    let width = Math.ceil(e.detail.width);
-    let height = Math.ceil(e.detail.height);
+    let width = Math.floor(e.detail.width);
+    let height = Math.floor(e.detail.height);
 
     if (width < minCroppedWidth || height < minCroppedHeight) {
       width = Math.max(minCroppedHeight, height)
