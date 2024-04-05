@@ -85,7 +85,7 @@ class PageViewContentObject extends AbstractContentObject
 
         $this->view->assignMultiple($variables);
 
-        return $this->view->render();
+        return (string)$this->view->render();
     }
 
     protected function setTemplate(array $conf): void
