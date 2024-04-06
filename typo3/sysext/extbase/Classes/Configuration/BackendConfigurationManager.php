@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -377,7 +378,16 @@ class BackendConfigurationManager implements SingletonInterface
      */
     protected function getCurrentPageIdFromRequest(ServerRequestInterface $request): int
     {
-        return (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        // @todo: This misuses 'id' as a broken convention for pages-uid. The filelist module for instance
+        //        uses 'id' as "storage-uid:path", which is only mitigated here by testing the argument
+        //        with MU:canBeInterpretedAsInteger().
+        //        This is in-line with a similar misuse in BackendModuleValidator.
+        $id = 0;
+        $potentialId = $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0;
+        if (MathUtility::canBeInterpretedAsInteger($potentialId) && $potentialId > 0) {
+            $id = (int)$potentialId;
+        }
+        return $id;
     }
 
     /**
