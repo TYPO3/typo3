@@ -754,7 +754,7 @@ class AdministrationRepository
         if (!is_array($pageRec)) {
             return;
         }
-        $keywords = array_flip(GeneralUtility::trimExplode(',', $pageRec['keywords'], true));
+        $keywords = array_flip(GeneralUtility::trimExplode(',', $pageRec['keywords'] ?? '', true));
         // Merge keywords:
         foreach ($words as $key => $v) {
             if ($v) {
