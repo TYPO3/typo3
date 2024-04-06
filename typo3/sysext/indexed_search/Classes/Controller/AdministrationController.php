@@ -219,7 +219,7 @@ class AdministrationController extends ActionController
     /**
      * Statistics for a given page hash
      */
-    protected function statisticDetailsAction(int $pageHash = 0): ResponseInterface
+    protected function statisticDetailsAction(string $pageHash): ResponseInterface
     {
         $view = $this->initializeModuleTemplate($this->request);
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
@@ -239,7 +239,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -256,7 +256,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -279,7 +279,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'index_rel.phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_words.wid',
@@ -303,7 +303,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -319,7 +319,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'index_rel.phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_words.is_stopword',
@@ -344,7 +344,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'index_rel.phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_words.is_stopword',
