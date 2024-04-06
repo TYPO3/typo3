@@ -27,8 +27,8 @@
                 </table>
             </div>
             <f:render section="wordlisting" arguments="{words:words,phash:phash,page:page,keywords:keywords,title:'words'}" />
-            <f:render section="wordlisting" arguments="{words:topCount,phash:phash,title:'topCount'}" />
-            <f:render section="wordlisting" arguments="{words:topFrequency,phash:phash,title:'topFrequency'}" />
+            <f:render section="wordlisting" arguments="{words:topCount,phash:phash,page:page,title:'topCount'}" />
+            <f:render section="wordlisting" arguments="{words:topFrequency,phash:phash,page:page,title:'topFrequency'}" />
 
             <f:if condition="{debug}">
                 <h3>
@@ -90,9 +90,7 @@
                         <tr>
                             <th><f:translate key="administration.stopWords" /></th>
                             <f:if condition="{title}=='words'">
-                                <f:if condition="{page}">
-                                    <th><f:translate key="administration.keywords" /></th>
-                                </f:if>
+                                <th><f:translate key="administration.keywords" /></th>
                             </f:if>
                             <th><f:translate key="administration.statistics.word" /></th>
                             <th><f:translate key="field.wordCount" /></th>
@@ -107,11 +105,9 @@
                                     <f:form.checkbox name="stopwords[{word.wid}]" value="1" checked="{word.is_stopword}" />
                                 </td>
                                 <f:if condition="{title}=='words'">
-                                    <f:if condition="{page}">
-                                        <td>
-                                            <f:form.checkbox name="keywords[{word.baseword}]" value="1" checked="{word.is_keyword}" />
-                                        </td>
-                                    </f:if>
+                                    <td>
+                                        <f:form.checkbox name="keywords[{word.baseword}]" value="1" checked="{word.is_keyword}" />
+                                    </td>
                                 </f:if>
                                 <td>
                                     <f:link.action action="wordDetail" arguments="{wordHash:word.wid,pageHash:phash}">{word.baseword}</f:link.action>
@@ -130,14 +126,12 @@
             </div>
             <f:if condition="{title}=='words'">
                 <f:then>
-                    <f:if condition="{keywords}">
-                        <div>
-                            {f:translate(key:'administration.keywords.current')}:
-                            <f:for each="{keywords}" key="keyword" as="_" iteration="i">
-                                {f:if(condition:i.isFirst,then:'',else:', ')}<i>{keyword}</i>
-                            </f:for>
-                        </div>
-                    </f:if>
+                    <div>
+                        {f:translate(key:'administration.keywords.current')}:
+                        <f:for each="{keywords}" key="keyword" as="_" iteration="i">
+                            {f:if(condition:i.isFirst,then:'',else:', ')}<i>{keyword}</i>
+                        </f:for>
+                    </div>
                     <f:form.submit class="btn btn-default" value="{f:translate(key:'administration.stopWordsKeywords.save')}" />
                 </f:then>
                 <f:else>
