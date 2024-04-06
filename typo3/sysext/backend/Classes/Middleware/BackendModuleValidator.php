@@ -214,6 +214,11 @@ class BackendModuleValidator implements MiddlewareInterface
             throw new ModuleAccessDeniedException('You don\'t have access to this module.', 1642450334);
         }
 
+        // @todo: This misuses 'id' as a broken convention for pages-uid. The filelist module for instance
+        //        uses 'id' as "storage-uid:path", which is only mitigated here by testing the argument
+        //        with MU:canBeInterpretedAsInteger().
+        //        Also see a similar misuse in extbase BackendConfigurationManager, which does this as well
+        //        to guess a pages-uid for TypoScript retrieval.
         $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
         if (MathUtility::canBeInterpretedAsInteger($id) && $id > 0) {
             $id = (int)$id;
