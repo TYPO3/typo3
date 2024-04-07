@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
@@ -534,7 +535,7 @@ final readonly class PageInformationFactory
     {
         $site = $request->getAttribute('site');
         $rootLine = $pageInformation->getRootLine();
-        if ($site->isTypoScriptRoot()) {
+        if ($site instanceof Site && $site->isTypoScriptRoot()) {
             $rootLineUntilSite = [];
             foreach ($rootLine as $index => $rootlinePage) {
                 $rootLineUntilSite[$index] = $rootlinePage;
