@@ -36,9 +36,6 @@
 			<trans-unit id="indexedsearch.config.minAge" resname="indexedsearch.config.minAge">
 				<source>Min TTL (hours) for indexed page: The time in hours that must pass before an indexed page can be indexed again regardless of changes on the page.</source>
 			</trans-unit>
-			<trans-unit id="indexedsearch.config.maxAge" resname="indexedsearch.config.maxAge">
-				<source>Deprecated! Max TTL (hours) for indexed page: The time in hours that is the maximum age of an indexed page before it will get indexed again. Usually the index is kept consistent, therefore you won't need this feature.</source>
-			</trans-unit>
 			<trans-unit id="indexedsearch.config.maxExternalFiles" resname="indexedsearch.config.maxExternalFiles">
 				<source>Max external files to index: When external files are found on a page this number indicates how many may be indexed at that point. This prevents pages with links to many external documents to take the server down - but it may also prevent documents from being indexed.</source>
 			</trans-unit>

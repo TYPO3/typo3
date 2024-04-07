@@ -24,7 +24,6 @@ enum IndexStatus
 {
     case MTIME_MATCHED;
     case MINIMUM_AGE_NOT_EXCEEDED;
-    case MAXIMUM_AGE_EXCEEDED;
     case MODIFICATION_TIME_DIFFERS;
     case MODIFICATION_TIME_NOT_SET;
     case NEW_DOCUMENT;
@@ -34,7 +33,6 @@ enum IndexStatus
         return match ($this) {
             self::MTIME_MATCHED => 'mtime matched the document, so no changes detected and no content updated',
             self::MINIMUM_AGE_NOT_EXCEEDED => 'The minimum age was not exceeded',
-            self::MAXIMUM_AGE_EXCEEDED => 'The configured max-age was exceeded for the document and thus it\'s indexed',
             self::MODIFICATION_TIME_DIFFERS => 'The minimum age was exceed and mtime was set and the mtime was different, so the page was indexed',
             self::MODIFICATION_TIME_NOT_SET => 'The minimum age was exceed, but mtime was not set, so the page was indexed',
             self::NEW_DOCUMENT => 'Page has never been indexed (is not represented in the index_phash table)',

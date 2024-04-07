@@ -31,9 +31,6 @@ disableFrontendIndexing = 0
   # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.minAge
 minAge = 24
 
-  # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.maxAge
-maxAge = 0
-
   # cat=basic; type=int; label=LLL:EXT:indexed_search/Resources/Private/Language/locallang_em.xlf:indexedsearch.config.maxExternalFiles
 maxExternalFiles = 5
 

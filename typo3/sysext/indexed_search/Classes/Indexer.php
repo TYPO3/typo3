@@ -51,11 +51,6 @@ class Indexer
     public array $external_parsers = [];
 
     /**
-     * Min/Max times
-     */
-    public int $tstamp_maxAge = 0;
-
-    /**
      * If set, this tells a number of seconds that is the maximum age of an indexed document.
      * Regardless of mtime the document will be re-indexed if this limit is exceeded.
      */
@@ -117,7 +112,6 @@ class Indexer
         // Indexer configuration from Extension Manager interface
         $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         $this->tstamp_minAge = MathUtility::forceIntegerInRange((int)($this->indexerConfig['minAge'] ?? 0) * 3600, 0);
-        $this->tstamp_maxAge = MathUtility::forceIntegerInRange((int)($this->indexerConfig['maxAge'] ?? 0) * 3600, 0);
         $this->maxExternalFiles = MathUtility::forceIntegerInRange((int)($this->indexerConfig['maxExternalFiles'] ?? 5), 0, 1000);
         $this->flagBitMask = MathUtility::forceIntegerInRange((int)($this->indexerConfig['flagBitMask'] ?? 0), 0, 255);
 
@@ -1256,12 +1250,6 @@ class Indexer
             return IndexStatus::NEW_DOCUMENT;
         }
 
-        if ($this->tstamp_maxAge && $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_maxAge) {
-            // If max age is exceeded, index the page
-            // The configured max-age was exceeded for the document, and thus it's indexed.
-            return IndexStatus::MAXIMUM_AGE_EXCEEDED;
-        }
-
         if (!$this->tstamp_minAge || $GLOBALS['EXEC_TIME'] > $row['tstamp'] + $this->tstamp_minAge) {
             // if minAge is not set or if minAge is exceeded, consider at mtime
             if ($mtime) {
@@ -1273,12 +1261,8 @@ class Indexer
                 }
 
                 // mtime matched the document, so no changes detected and no content updated
-                if ($this->tstamp_maxAge) {
-                    $this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', LogLevel::WARNING);
-                } else {
-                    $this->updateTstamp($phash);
-                    $this->log_setTSlogMessage('mtime matched, timestamp updated.', LogLevel::NOTICE);
-                }
+                $this->updateTstamp($phash);
+                $this->log_setTSlogMessage('mtime matched, timestamp updated.', LogLevel::NOTICE);
                 return IndexStatus::MTIME_MATCHED;
             }
 
