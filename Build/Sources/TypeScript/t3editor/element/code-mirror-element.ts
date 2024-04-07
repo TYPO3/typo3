@@ -104,12 +104,6 @@ export class CodeMirrorElement extends LitElement {
     .cm-scroller {
       min-height: 100%;
       max-height: calc(100vh - 10rem);
-      flex: 1;
-      align-items: unset;
-    }
-
-    .ͼ1 .cm-scroller {
-      align-items: unset !important;
     }
   `;
 
