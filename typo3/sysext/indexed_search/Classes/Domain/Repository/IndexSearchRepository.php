@@ -734,20 +734,6 @@ class IndexSearchRepository
                 $expressionBuilder->in('ISEC.rl2', GeneralUtility::intExplode(',', substr($this->sections, 4)))
             );
             $match = true;
-        } else {
-            // Traversing user configured fields to see if any of those are used to limit search to a section:
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] ?? [] as $fieldName => $rootLineLevel) {
-                if (str_starts_with($this->sections, $fieldName . '_')) {
-                    $whereClause = $whereClause->with(
-                        $expressionBuilder->in(
-                            'ISEC.' . $fieldName,
-                            GeneralUtility::intExplode(',', substr($this->sections, strlen($fieldName) + 1))
-                        )
-                    );
-                    $match = true;
-                    break;
-                }
-            }
         }
         // If no match above, test the static types:
         if (!$match) {

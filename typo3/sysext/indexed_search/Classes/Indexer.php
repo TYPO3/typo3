@@ -1448,9 +1448,6 @@ class Indexer
         $fieldArray['rl0'] = (int)($this->conf['rootline_uids'][0] ?? 0);
         $fieldArray['rl1'] = (int)($this->conf['rootline_uids'][1] ?? 0);
         $fieldArray['rl2'] = (int)($this->conf['rootline_uids'][2] ?? 0);
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] ?? [] as $fieldName => $rootLineLevel) {
-            $fieldArray[$fieldName] = (int)$this->conf['rootline_uids'][$rootLineLevel];
-        }
     }
 
     /********************************
