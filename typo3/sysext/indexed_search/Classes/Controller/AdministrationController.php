@@ -422,10 +422,10 @@ class AdministrationController extends ActionController
     /**
      * Statistics for a given word id
      *
-     * @param int $id
+     * @param int $wordHash
      * @param int $pageHash
      */
-    protected function wordDetailAction($id = 0, $pageHash = 0): ResponseInterface
+    protected function wordDetailAction($wordHash = 0, $pageHash = 0): ResponseInterface
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_phash');
         $rows = $queryBuilder
@@ -436,7 +436,7 @@ class AdministrationController extends ActionController
             ->where(
                 $queryBuilder->expr()->eq(
                     'index_rel.wid',
-                    $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($wordHash, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'index_rel.phash',
