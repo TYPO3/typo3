@@ -122,7 +122,6 @@ class Indexer
         /** @var Lexer $lexer */
         $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
         $this->lexerObj = $lexer;
-        $this->lexerObj->debug = (bool)($this->indexerConfig['debugMode'] ?? false);
     }
 
     /**
@@ -1029,7 +1028,6 @@ class Indexer
                     'conf' => array_merge($this->conf, ['content' => substr($this->conf['content'], 0, 1000)]),
                     'contentParts' => array_merge($this->indexingDataStringDto->toArray(), ['body' => substr($this->indexingDataStringDto->body, 0, 1000)]),
                     'logs' => $this->internal_log,
-                    'lexer' => $this->lexerObj->debugString,
                 ], JSON_THROW_ON_ERROR),
             ];
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1172,7 +1170,6 @@ class Indexer
                     'static_page_arguments' => $subinfo,
                     'contentParts' => array_merge($indexingDataDto->toArray(), ['body' => substr($indexingDataDto->body, 0, 1000)]),
                     'logs' => $this->internal_log,
-                    'lexer' => $this->lexerObj->debugString,
                 ], JSON_THROW_ON_ERROR),
             ];
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)

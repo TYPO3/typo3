@@ -27,13 +27,6 @@ class Lexer
     // CJK (Chinese / Japanese / Korean)
     protected const CHARTYPE_CJK = 'cjk';
 
-    public bool $debug = false;
-
-    /**
-     * If set, the debugString is filled with HTML output highlighting search / non-search words (for backend display)
-     */
-    public string $debugString = '';
-
     public array $lexerConf = [
         'printjoins' => [
             46, // .
@@ -55,27 +48,17 @@ class Lexer
      */
     public function split2Words(string $wordString): array
     {
-        // Reset debug string:
-        $this->debugString = '';
-        // Then convert the string to lowercase:
+        // Convert the string to lowercase:
         if (!$this->lexerConf['casesensitive']) {
             $wordString = mb_strtolower($wordString, 'utf-8');
         }
         // Now, splitting words:
         $pos = 0;
         $words = [];
-        $this->debugString = '';
         while (1) {
             [$start, $len] = $this->get_word($wordString, $pos);
             if ($len) {
                 $this->addWords($words, $wordString, $start, $len);
-                if ($this->debug) {
-                    $this->debugString .= '<span style="color:red">' . htmlspecialchars(substr(
-                        $wordString,
-                        $pos,
-                        $start - $pos
-                    )) . '</span>' . htmlspecialchars(substr($wordString, $start, $len));
-                }
                 $pos = $start + $len;
             } else {
                 break;

@@ -262,11 +262,8 @@ class AdministrationController extends ActionController
             ->executeQuery()
             ->fetchAssociative();
         $debugInfo = [];
-        $lexer = '';
         if (is_array($debugRow)) {
             $debugInfo = json_decode($debugRow['debuginfo'], true);
-            $lexer = $debugInfo['lexer'];
-            unset($debugInfo['lexer']);
         }
         $pageRecord = BackendUtility::getRecord('pages', $pageHashRow['data_page_id']);
         $keywords = is_array($pageRecord) ? array_flip(GeneralUtility::trimExplode(',', (string)$pageRecord['keywords'], true)) : [];
@@ -368,7 +365,6 @@ class AdministrationController extends ActionController
             'topCount' => $topCountWords,
             'topFrequency' => $topFrequency,
             'debug' => $debugInfo,
-            'lexer' => $lexer,
             'page' => $pageRecord,
             'keywords' => $keywords,
         ]);

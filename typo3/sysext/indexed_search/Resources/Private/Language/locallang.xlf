@@ -421,9 +421,6 @@
 			<trans-unit id="administration.statistics.debug" resname="administration.statistics.debug">
 				<source>Debug</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.lexer" resname="administration.statistics.lexer">
-				<source>Lexer</source>
-			</trans-unit>
 			<trans-unit id="administration.statistics.view.overview" resname="administration.statistics.view.overview">
 				<source>Overview</source>
 			</trans-unit>
