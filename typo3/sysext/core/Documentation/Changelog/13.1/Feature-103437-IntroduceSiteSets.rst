@@ -40,9 +40,8 @@ follows:
 
     # Load TypoScript, TSconfig and settings from dependencies
     dependencies:
-      - typo3/fluid-styled-content
-      - typo3/felogin
-      - typo3/seo-xml-sitemap
+      - some-namespace/slider
+      - other-namespace/fancy-carousel
 
 
 Sets are applied to sites via `dependencies` array in site configuration:
@@ -53,7 +52,7 @@ Sets are applied to sites via `dependencies` array in site configuration:
     base: 'http://example.com/'
     rootPageId: 1
     dependencies:
-      - typo3/styleguide
+      - my-vendor/my-set
 
 Site sets can also be edited via the backend module `Site Management > Sites`.
 
