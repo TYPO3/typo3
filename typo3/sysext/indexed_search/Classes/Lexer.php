@@ -15,9 +15,6 @@
 
 namespace TYPO3\CMS\IndexedSearch;
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Lexer class for indexed_search
  * A lexer splits the text into words
@@ -47,7 +44,6 @@ class Lexer
             39, // '
         ],
         'casesensitive' => false, // Set, if case-sensitive indexing is wanted
-        'removeChars' => [],
     ];
 
     /**
@@ -132,12 +128,6 @@ class Lexer
                 }
             }
         } else {
-            // Normal "single-byte" chars:
-            // Remove chars:
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            foreach ($this->lexerConf['removeChars'] as $skipJoin) {
-                $theWord = str_replace($charsetConverter->UnumberToChar($skipJoin), '', $theWord);
-            }
             // Add word:
             $words[] = $theWord;
         }
