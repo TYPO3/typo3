@@ -223,6 +223,7 @@ Options:
             - lintTypescript: TS linting
             - lintHtml: HTML linting
             - listExceptionCodes: list core exception codes in JSON format
+            - npm: "npm" command dispatcher, to execute various npm commands directly
             - phpstan: phpstan tests
             - phpstanGenerateBaseline: regenerate phpstan baseline, handy after phpstan updates
             - unit (default): PHP unit tests
@@ -369,6 +370,13 @@ Examples:
     # Some composer command examples
     ./Build/Scripts/runTests.sh -s composer -- dumpautoload
     ./Build/Scripts/runTests.sh -s composer -- info | grep "symfony"
+
+    # Some npm command examples
+    ./Build/Scripts/runTests.sh -s npm -- audit
+    ./Build/Scripts/runTests.sh -s npm -- ci
+    ./Build/Scripts/runTests.sh -s npm -- run build
+    ./Build/Scripts/runTests.sh -s npm -- run watch:build
+    ./Build/Scripts/runTests.sh -s npm -- install --save bootstrap@^5.3.2
 EOF
 }
 
@@ -1037,6 +1045,11 @@ case ${TEST_SUITE} in
         ;;
     listExceptionCodes)
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name list-exception-codes-${SUFFIX} ${IMAGE_PHP} Build/Scripts/duplicateExceptionCodeCheck.sh -p
+        SUITE_EXIT_CODE=$?
+        ;;
+    npm)
+        COMMAND=(npm "$@")
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} -w ${CORE_ROOT}/Build -e HOME=${CORE_ROOT}/.cache --name npm-${SUFFIX} ${IMAGE_NODEJS} "${COMMAND[@]}"
         SUITE_EXIT_CODE=$?
         ;;
     phpstan)
