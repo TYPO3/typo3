@@ -85,7 +85,6 @@ class DatabaseIntegrityController
      * is set to true, the names of fields and tables are displayed.
      */
     protected bool $showFieldAndTableNames = false;
-    protected array $hookArray = [];
     protected string $table = '';
     protected bool $enablePrefix = false;
     protected int $noDownloadB = 0;
@@ -464,7 +463,6 @@ class DatabaseIntegrityController
     protected function queryMaker(ServerRequestInterface $request): string
     {
         $output = '';
-        $this->hookArray = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3lib_fullsearch'] ?? [];
         $msg = $this->procesStoreControl($request);
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
         if (!($userTsConfig['mod.']['dbint.']['disableStoreControl'] ?? false)) {
@@ -691,11 +689,6 @@ class DatabaseIntegrityController
                 foreach ($dataRows as $dataRow) {
                     $rowArr[] = $this->resultRowDisplay($dataRow, $GLOBALS['TCA'][$table], $table, $request);
                 }
-                if (is_array($this->hookArray['beforeResultTable'] ?? false)) {
-                    foreach ($this->hookArray['beforeResultTable'] as $_funcRef) {
-                        $out .= GeneralUtility::callUserFunction($_funcRef, $this->MOD_SETTINGS);
-                    }
-                }
                 if (!empty($rowArr)) {
                     $cPR['header'] = 'Result';
                     $out .= '<div class="table-fit">';
@@ -859,12 +852,6 @@ class DatabaseIntegrityController
             ])) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf:undelete_only')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', IconSize::SMALL)->render() . '</a>';
             $out .= '</div>';
-        }
-        $_params = [$table => $row];
-        if (is_array($this->hookArray['additionalButtons'] ?? false)) {
-            foreach ($this->hookArray['additionalButtons'] as $_funcRef) {
-                $out .= GeneralUtility::callUserFunction($_funcRef, $_params);
-            }
         }
         $out .= '</td></tr>';
 
