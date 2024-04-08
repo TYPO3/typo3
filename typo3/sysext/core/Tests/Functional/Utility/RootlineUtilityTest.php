@@ -18,15 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Utility;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
-use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RootlineUtilityTest extends FunctionalTestCase
@@ -45,7 +47,6 @@ final class RootlineUtilityTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->writeSiteConfiguration(
             'main',
             $this->buildSiteConfiguration(1000, 'https://acme.com/'),
@@ -55,51 +56,296 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN']),
             ]
         );
-        $this->withDatabaseSnapshot(function () {
-            $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-            $backendUser = $this->setUpBackendUser(1);
-            Bootstrap::initializeLanguageObject();
-            $factory = DataHandlerFactory::fromYamlFile(__DIR__ . '/Fixtures/RootlineScenario.yaml');
-            $writer = DataHandlerWriter::withBackendUser($backendUser);
-            $writer->invokeFactory($factory);
-            static::failIfArrayIsNotEmpty($writer->getErrors());
-        });
+        self::importCSVDataSet(__DIR__ . '/Fixtures/RootlineUtilityImport.csv');
+    }
+
+    private function filterExpectedValues(array $incomingData, array $fields): array
+    {
+        $result = [];
+        foreach ($incomingData as $pos => $values) {
+            $filteredValues = [];
+            foreach ($fields as $field) {
+                if (isset($values[$field])) {
+                    $filteredValues[$field] = $values[$field];
+                }
+            }
+            $result[$pos] = $filteredValues;
+        }
+        return $result;
+    }
+
+    #[Test]
+    public function verifyCleanReferenceIndex()
+    {
+        $referenceIndexFixResult = GeneralUtility::makeInstance(ReferenceIndex::class)->updateIndex(true);
+        if (count($referenceIndexFixResult['errors']) > 0) {
+            self::fail('Reference index not clean. ' . LF . implode(LF, $referenceIndexFixResult['errors']));
+        }
+    }
+
+    #[Test]
+    public function isMountedPageWithoutMountPointsReturnsFalse(): void
+    {
+        $subject = new RootlineUtility(1, '', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'isMountedPage'));
+        self::assertFalse($subjectMethodReflection->invoke($subject));
+    }
+
+    #[Test]
+    public function isMountedPageWithMatchingMountPointParameterReturnsTrue(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'isMountedPage'));
+        self::assertTrue($subjectMethodReflection->invoke($subject));
+    }
+
+    #[Test]
+    public function isMountedPageWithNonMatchingMountPointParameterReturnsFalse(): void
+    {
+        $subject = new RootlineUtility(1, '99-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'isMountedPage'));
+        self::assertFalse($subjectMethodReflection->invoke($subject));
+    }
+
+    #[Test]
+    public function processMountedPageWithNonMountedPageThrowsException(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1343464100);
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'processMountedPage'));
+        $subjectMethodReflection->invoke($subject, ['uid' => 1], ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_DEFAULT]);
+    }
+
+    #[Test]
+    public function processMountedPageWithMountedPageNotThrowsException(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'processMountedPage'));
+        $result = $subjectMethodReflection->invoke(
+            $subject,
+            ['uid' => 1],
+            ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]
+        );
+        self::assertNotEmpty($result);
+    }
+
+    #[Test]
+    public function processMountedPageWithMountedPageAddsMountedFromParameter(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'processMountedPage'));
+        $result = $subjectMethodReflection->invoke(
+            $subject,
+            ['uid' => 1],
+            ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]
+        );
+        self::assertTrue(isset($result['_MOUNTED_FROM']));
+        self::assertSame(1, $result['_MOUNTED_FROM']);
+    }
+
+    #[Test]
+    public function processMountedPageWithMountedPageAddsMountPointParameterToReturnValue(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'processMountedPage'));
+        $result = $subjectMethodReflection->invoke(
+            $subject,
+            ['uid' => 1],
+            ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]
+        );
+        self::assertTrue(isset($result['_MP_PARAM']));
+        self::assertSame('1-99', $result['_MP_PARAM']);
+    }
+
+    #[Test]
+    public function processMountedPageForMountPageIsOverlayAddsMountOLParameter(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'processMountedPage'));
+        $result = $subjectMethodReflection->invoke(
+            $subject,
+            ['uid' => 1],
+            ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1]
+        );
+        self::assertTrue(isset($result['_MOUNT_OL']));
+        self::assertTrue($result['_MOUNT_OL']);
+    }
+
+    #[Test]
+    public function processMountedPageForMountPageIsOverlayAddsDataInformationAboutMountPage(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'processMountedPage'));
+        $result = $subjectMethodReflection->invoke(
+            $subject,
+            ['uid' => 1],
+            [
+                'uid' => 99,
+                'doktype' => PageRepository::DOKTYPE_MOUNTPOINT,
+                'mount_pid' => 1,
+                'mount_pid_ol' => 1,
+                'pid' => 5,
+                'title' => 'TestCase',
+            ]
+        );
+        self::assertTrue(isset($result['_MOUNT_PAGE']));
+        self::assertSame(['uid' => 99, 'pid' => 5, 'title' => 'TestCase'], $result['_MOUNT_PAGE']);
+    }
+
+    #[Test]
+    public function processMountedPageForMountPageWithoutOverlayReplacesMountedPageWithMountPage(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'processMountedPage'));
+        $mountPointPageData = [
+            'uid' => 99,
+            'doktype' => PageRepository::DOKTYPE_MOUNTPOINT,
+            'mount_pid' => 1,
+            'mount_pid_ol' => 0,
+        ];
+        $result = $subjectMethodReflection->invoke(
+            $subject,
+            ['uid' => 1],
+            $mountPointPageData
+        );
+        // Tests that $mountPointPageData is completely part of $result and keys match.
+        self::assertSame($mountPointPageData, array_intersect_assoc($mountPointPageData, $result));
+    }
+
+    #[Test]
+    public function columnHasRelationToResolveDetectsGroupFieldAsLocal(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'columnHasRelationToResolve'));
+        self::assertFalse($subjectMethodReflection->invoke(
+            $subject,
+            [
+                'config' => [
+                    'type' => 'group',
+                ],
+            ]
+        ));
+    }
+
+    #[Test]
+    public function columnHasRelationToResolveDetectsGroupFieldWithMMAsRemote(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'columnHasRelationToResolve'));
+        self::assertTrue($subjectMethodReflection->invoke(
+            $subject,
+            [
+                'config' => [
+                    'type' => 'group',
+                    'MM' => 'tx_xyz',
+                ],
+            ]
+        ));
+    }
+
+    #[Test]
+    public function columnHasRelationToResolveDetectsInlineFieldAsLocal(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'columnHasRelationToResolve'));
+        self::assertFalse($subjectMethodReflection->invoke(
+            $subject,
+            [
+                'config' => [
+                    'type' => 'inline',
+                ],
+            ]
+        ));
+    }
+
+    #[Test]
+    public function columnHasRelationToResolveDetectsInlineFieldWithForeignKeyAsRemote(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'columnHasRelationToResolve'));
+        self::assertTrue($subjectMethodReflection->invoke(
+            $subject,
+            [
+                'config' => [
+                    'type' => 'inline',
+                    'foreign_field' => 'xyz',
+                ],
+            ]
+        ));
+    }
+
+    #[Test]
+    public function columnHasRelationToResolveDetectsInlineFieldWithFMMAsRemote(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'columnHasRelationToResolve'));
+        self::assertTrue($subjectMethodReflection->invoke(
+            $subject,
+            [
+                'config' => [
+                    'type' => 'inline',
+                    'MM' => 'xyz',
+                ],
+            ]
+        ));
+    }
+
+    #[Test]
+    public function columnHasRelationToResolveDetectsSelectFieldAsLocal(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'columnHasRelationToResolve'));
+        self::assertFalse($subjectMethodReflection->invoke(
+            $subject,
+            [
+                'config' => [
+                    'type' => 'select',
+                ],
+            ]
+        ));
+    }
+
+    #[Test]
+    public function columnHasRelationToResolveDetectsSelectFieldWithMMAsRemote(): void
+    {
+        $subject = new RootlineUtility(1, '1-99', new Context());
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'columnHasRelationToResolve'));
+        self::assertTrue($subjectMethodReflection->invoke(
+            $subject,
+            [
+                'config' => [
+                    'type' => 'select',
+                    'MM' => 'xyz',
+                ],
+            ]
+        ));
+    }
+
+    #[Test]
+    public function getCacheIdentifierContainsAllContextParameters(): void
+    {
+        $cacheFrontend = new NullFrontend('some-frontend');
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(15));
+        $context->setAspect('visibility', new VisibilityAspect(true));
+        $context->setAspect('language', new LanguageAspect(8, 8, LanguageAspect::OVERLAYS_OFF));
+        $subject = new RootlineUtility(42, '47-11', $context);
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'getCacheIdentifier'));
+        self::assertSame('42_47-11_8_15_0_1', $subjectMethodReflection->invoke($subject));
+        self::assertTrue($cacheFrontend->isValidEntryIdentifier($subjectMethodReflection->invoke($subject)));
+        $context->setAspect('workspace', new WorkspaceAspect(0));
+        $subject = new RootlineUtility(42, '47-11', $context);
+        $subjectMethodReflection = (new \ReflectionMethod($subject, 'getCacheIdentifier'));
+        self::assertSame('42_47-11_8_0_0_1', $subjectMethodReflection->invoke($subject));
+        self::assertTrue($cacheFrontend->isValidEntryIdentifier($subjectMethodReflection->invoke($subject)));
     }
 
     #[Test]
     public function getForRootPageOnlyReturnsRootPageInformation(): void
     {
         $rootPageUid = 1000;
-        $subject = new RootlineUtility($rootPageUid);
-
-        $result = $subject->get();
-
-        self::assertCount(1, $result);
-        self::assertSame($rootPageUid, (int)$result[0]['uid']);
-    }
-
-    #[Test]
-    public function getForRootPageAndWithMissingTableColumnsTcaReturnsEmptyArray(): void
-    {
-        $rootPageUid = 1000;
-        $subject = new RootlineUtility($rootPageUid);
-
-        unset($GLOBALS['TCA']['pages']['columns']);
-        $result = $subject->get();
-
-        self::assertCount(1, $result);
-        self::assertSame($rootPageUid, (int)$result[0]['uid']);
-    }
-
-    #[Test]
-    public function getForRootPageAndWithNonArrayTableColumnsTcaReturnsEmptyArray(): void
-    {
-        $rootPageUid = 1000;
-        $subject = new RootlineUtility($rootPageUid);
-
-        $GLOBALS['TCA']['pages']['columns'] = 'This is not an array.';
-        $result = $subject->get();
-
+        $result = (new RootlineUtility($rootPageUid))->get();
         self::assertCount(1, $result);
         self::assertSame($rootPageUid, (int)$result[0]['uid']);
     }
@@ -107,11 +353,9 @@ final class RootlineUtilityTest extends FunctionalTestCase
     #[Test]
     public function resolveLivePagesAndSkipWorkspacedVersions(): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(0));
-        $subject = new RootlineUtility(1330, '', $context);
-        $result = $subject->get();
-
+        $result = (new RootlineUtility(1330, '', $context))->get();
         $expected = [
             2 => [
                 'pid' => 1300,
@@ -144,11 +388,9 @@ final class RootlineUtilityTest extends FunctionalTestCase
     #[Test]
     public function resolveWorkspaceOverlaysOfNewPageInWorkspace(): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(1));
-        $subject = new RootlineUtility(1400, '', $context);
-        $result = $subject->get();
-
+        $result = (new RootlineUtility(1400, '', $context))->get();
         $expected = [
             1 => [
                 'pid' => 1000,
@@ -174,11 +416,9 @@ final class RootlineUtilityTest extends FunctionalTestCase
     #[Test]
     public function resolveLiveRootLineForMovedPage(): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(0));
-        $subject = new RootlineUtility(1333, '', $context);
-        $result = $subject->get();
-
+        $result = (new RootlineUtility(1333, '', $context))->get();
         $expected = [
             3 => [
                 'pid' => 1330,
@@ -219,11 +459,9 @@ final class RootlineUtilityTest extends FunctionalTestCase
     #[Test]
     public function resolveWorkspaceOverlaysOfMovedPage(): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(1));
-        $subject = new RootlineUtility(1333, '', $context);
-        $result = $subject->get();
-
+        $result = (new RootlineUtility(1333, '', $context))->get();
         $expected = [
             3 => [
                 'pid' => 1320,
@@ -232,8 +470,8 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_wsid' => 1,
                 't3ver_state' => 4,
                 'title' => 'EN: Risk',
-                '_ORIG_pid' => 1330, // Pointing to the LIVE pid! WHY? All others point to the same PID! @todo
                 '_ORIG_uid' => 10001,
+                '_ORIG_pid' => 1330, // Pointing to the LIVE pid! WHY? All others point to the same PID! @todo
             ],
             2 => [
                 'pid' => 1300,
@@ -264,8 +502,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
 
         // Now explicitly requesting the versioned ID, which holds the same result
-        $subject = new RootlineUtility(10001, '', $context);
-        $result = $subject->get();
+        $result = (new RootlineUtility(10001, '', $context))->get();
         self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
     }
 
@@ -274,25 +511,8 @@ final class RootlineUtilityTest extends FunctionalTestCase
     {
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1343464101);
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(2));
-        $subject = new RootlineUtility(1310, '', $context);
-        $subject->get();
-    }
-
-    protected function filterExpectedValues(array $incomingData, array $fields): array
-    {
-        $result = [];
-        foreach ($incomingData as $pos => $values) {
-            array_walk($values, static function (&$val) {
-                if (is_numeric($val)) {
-                    $val = (int)$val;
-                }
-            });
-            $result[$pos] = array_filter($values, static function ($fieldName) use ($fields) {
-                return in_array($fieldName, $fields, true);
-            }, ARRAY_FILTER_USE_KEY);
-        }
-        return $result;
+        (new RootlineUtility(1310, '', $context))->get();
     }
 }

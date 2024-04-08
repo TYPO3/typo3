@@ -27,14 +27,14 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class ExtendedFileUtilityTest extends FunctionalTestCase
 {
     protected array $pathsToProvideInTestInstance = [
-        'typo3/sysext/core/Tests/Functional/Utility/Fixtures/Folders/' => 'fileadmin/',
+        'typo3/sysext/core/Tests/Functional/Utility/File/Fixtures/Folders/' => 'fileadmin/',
     ];
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSet/sys_refindex.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSet/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/sys_refindex.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/sys_file.csv');
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
 
