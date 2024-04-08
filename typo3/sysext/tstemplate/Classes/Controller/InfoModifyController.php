@@ -127,6 +127,7 @@ class InfoModifyController extends AbstractTemplateModuleController
         foreach ($allTemplatesOnPage as $templateRow) {
             if ((int)$templateRow['uid'] === $selectedTemplateUid) {
                 $currentTemplateRecord = $templateRow;
+                break;
             }
         }
 

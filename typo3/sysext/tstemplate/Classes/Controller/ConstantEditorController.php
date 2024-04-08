@@ -132,6 +132,13 @@ class ConstantEditorController extends AbstractTemplateModuleController
                 $currentTemplateConstants = $templateRow['constants'] ?? '';
             }
         }
+        $currentTemplateRecord = [];
+        foreach ($allTemplatesOnPage as $templateRow) {
+            if ((int)$templateRow['uid'] === $selectedTemplateUid) {
+                $currentTemplateRecord = $templateRow;
+                break;
+            }
+        }
 
         // Build the constant include tree
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
@@ -193,6 +200,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
         $view->assignMultiple([
             'templateTitle' => $templateTitle,
             'pageUid' => $pageUid,
+            'templateRecord' => $currentTemplateRecord,
             'allTemplatesOnPage' => $allTemplatesOnPage,
             'selectedTemplateUid' => $selectedTemplateUid,
             'relevantCategories' => $relevantCategories,
