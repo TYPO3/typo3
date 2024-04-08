@@ -23,6 +23,7 @@ import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selec
 import Severity from '@typo3/backend/severity';
 import DocumentService from '@typo3/core/document-service';
 import SubmitInterceptor from '@typo3/backend/form/submit-interceptor';
+import Hotkeys, { ModifierKeys } from '@typo3/backend/hotkeys';
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -37,6 +38,7 @@ class Scheduler {
     DocumentService.ready().then((): void => {
       this.initializeSubmitInterceptor();
       this.initializeEvents();
+      this.registerHotKeys();
       this.initializeDefaultStates();
       this.initializeCloseConfirm();
     });
@@ -245,12 +247,12 @@ class Scheduler {
     new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
 
-      this.saveDocument(e);
+      this.saveDocument(e.target as HTMLElement);
     }).delegateTo(document, 'button[form]');
   }
 
-  private saveDocument(e: Event): void {
-    const schedulerForm: HTMLFormElement = document.querySelector('form[name=tx_scheduler_form]');
+  private saveDocument(submitter?: HTMLElement): void {
+    const schedulerForm = this.getTaskEditForm();
     if (!schedulerForm) {
       return;
     }
@@ -261,7 +263,55 @@ class Scheduler {
     hidden.name = 'CMD';
 
     schedulerForm.append(hidden);
-    schedulerForm.requestSubmit(e.target as HTMLElement);
+    schedulerForm.requestSubmit(submitter);
+  }
+
+  private saveAndCloseDocument(submitter?: HTMLElement): void {
+    const schedulerForm = this.getTaskEditForm();
+    if (!schedulerForm) {
+      return;
+    }
+
+    const hidden = document.createElement('input')
+    hidden.type = 'hidden';
+    hidden.value = 'saveclose';
+    hidden.name = 'CMD';
+
+    schedulerForm.append(hidden);
+    schedulerForm.requestSubmit(submitter);
+  }
+
+  private registerHotKeys(): void {
+    const form = this.getTaskEditForm();
+    if (form === null) {
+      return;
+    }
+
+    let submitterElement = null;
+    if (form.CMD instanceof HTMLElement) {
+      submitterElement = form.CMD;
+    } else if (form.CMD instanceof NodeList) {
+      submitterElement = form.CMD.item(0) as HTMLButtonElement;
+    }
+
+    Hotkeys.setScope('scheduler/edit-task');
+    Hotkeys.register([Hotkeys.normalizedCtrlModifierKey, 's'], (e: KeyboardEvent): void => {
+      e.preventDefault();
+
+      this.saveDocument(submitterElement);
+    }, {
+      scope: 'scheduler/edit-task',
+      allowOnEditables: true,
+      bindElement: submitterElement,
+    });
+    Hotkeys.register([Hotkeys.normalizedCtrlModifierKey, ModifierKeys.SHIFT, 's'], (e: KeyboardEvent): void => {
+      e.preventDefault();
+
+      this.saveAndCloseDocument(submitterElement);
+    }, {
+      scope: 'scheduler/edit-task',
+      allowOnEditables: true,
+    });
   }
 
   /**
@@ -346,7 +396,7 @@ class Scheduler {
   }
 
   private initializeCloseConfirm() {
-    const schedulerForm: HTMLFormElement = document.querySelector('form[name=tx_scheduler_form]');
+    const schedulerForm = this.getTaskEditForm();
     if(!schedulerForm) {
       return;
     }
@@ -403,6 +453,10 @@ class Scheduler {
         );
       }
     })
+  }
+
+  private getTaskEditForm(): HTMLFormElement|null {
+    return document.querySelector('form[name=tx_scheduler_form]');
   }
 }
 
