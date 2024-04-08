@@ -1004,6 +1004,39 @@ final class RedirectServiceTest extends FunctionalTestCase
             'expectedRedirectUid' => 1,
             'expectedRedirectLocationUri' => 'https://acme.com/',
         ];
+        // Not configured source host and matched redirect to external page
+        yield 'non-configured source_host without tailing slash with external target without TypoScript using T3 LinkHandler syntax' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-external'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => true,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 3,
+            'expectedRedirectLocationUri' => 'https://external.domain.tld/',
+        ];
+        yield 'non-configured source_host with tailing slash with external target without TypoScript using T3 LinkHandler syntax' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-external/'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => true,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 3,
+            'expectedRedirectLocationUri' => 'https://external.domain.tld/',
+        ];
+        yield 'non-configured source_host without tailing slash with external target with using T3 LinkHandler syntax' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-external'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => false,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 3,
+            'expectedRedirectLocationUri' => 'https://external.domain.tld/',
+        ];
+        yield 'non-configured source_host with tailing slash with external target with TypoScript using T3 LinkHandler syntax' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-external/'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => false,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 3,
+            'expectedRedirectLocationUri' => 'https://external.domain.tld/',
+        ];
     }
 
     /**
