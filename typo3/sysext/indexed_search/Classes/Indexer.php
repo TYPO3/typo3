@@ -102,26 +102,20 @@ class Indexer
     public string $indexExternalUrl_content = '';
     public int $freqRange = 32000;
     public float $freqMax = 0.1;
-    public Lexer $lexerObj;
     public int $flagBitMask;
-    protected TimeTracker $timeTracker;
 
-    public function __construct()
-    {
-        $this->timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
+    public function __construct(
+        private readonly TimeTracker $timeTracker,
+        private readonly Lexer $lexer,
+        private readonly RequestFactory $requestFactory,
+        private readonly ConnectionPool $connectionPool,
+        ExtensionConfiguration $extensionConfiguration,
+    ) {
         // Indexer configuration from Extension Manager interface
-        $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
+        $this->indexerConfig = $extensionConfiguration->get('indexed_search');
         $this->tstamp_minAge = MathUtility::forceIntegerInRange((int)($this->indexerConfig['minAge'] ?? 0) * 3600, 0);
         $this->maxExternalFiles = MathUtility::forceIntegerInRange((int)($this->indexerConfig['maxExternalFiles'] ?? 5), 0, 1000);
         $this->flagBitMask = MathUtility::forceIntegerInRange((int)($this->indexerConfig['flagBitMask'] ?? 0), 0, 255);
-
-        // Initialize lexer (class that deconstructs the text into words):
-        $lexerObjectClassName = ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?? null)
-            ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer']
-            : Lexer::class;
-        /** @var Lexer $lexer */
-        $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
-        $this->lexerObj = $lexer;
     }
 
     /**
@@ -524,7 +518,7 @@ class Indexer
     public function getUrlHeaders(string $url): array|false
     {
         try {
-            $response = GeneralUtility::makeInstance(RequestFactory::class)->request($url, 'HEAD');
+            $response = $this->requestFactory->request($url, 'HEAD');
             $headers = $response->getHeaders();
             $retVal = [];
             foreach ($headers as $key => $value) {
@@ -860,7 +854,7 @@ class Indexer
 
         // split all parts to words
         foreach ($input->toArray() as $key => $value) {
-            $contentArr[$key] = $this->lexerObj->split2Words($value);
+            $contentArr[$key] = $this->lexer->split2Words($value);
         }
 
         $indexingDataDto = IndexingDataAsArray::fromArray($contentArr);
@@ -998,8 +992,7 @@ class Indexer
             'freeIndexUid' => (int)$this->conf['freeIndexUid'],
             'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
         ];
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_phash');
+        $connection = $this->connectionPool->getConnectionForTable('index_phash');
         $connection->insert(
             'index_phash',
             $fields
@@ -1016,8 +1009,7 @@ class Indexer
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
         }
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_fulltext');
+        $connection = $this->connectionPool->getConnectionForTable('index_fulltext');
         $connection->insert('index_fulltext', $fields);
         // PROCESSING index_debug
         if ($this->indexerConfig['debugMode'] ?? false) {
@@ -1030,8 +1022,7 @@ class Indexer
                     'logs' => $this->internal_log,
                 ], JSON_THROW_ON_ERROR),
             ];
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_debug');
+            $connection = $this->connectionPool->getConnectionForTable('index_debug');
             $connection->insert('index_debug', $fields);
         }
     }
@@ -1051,8 +1042,7 @@ class Indexer
             'hash_gr_list' => md5($this->conf['gr_list']),
             'gr_list' => $this->conf['gr_list'],
         ];
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_grlist');
+        $connection = $this->connectionPool->getConnectionForTable('index_grlist');
         $connection->insert('index_grlist', $fields);
     }
 
@@ -1071,8 +1061,7 @@ class Indexer
             'page_id' => (int)$this->conf['id'],
         ];
         $this->getRootLineFields($fields);
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_section');
+        $connection = $this->connectionPool->getConnectionForTable('index_section');
         $connection->insert('index_section', $fields);
     }
 
@@ -1085,16 +1074,15 @@ class Indexer
     {
         // Removing old registrations for all tables. Because the pages are TYPO3 pages
         // there can be nothing else than 1-1 relations here.
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $tableArray = ['index_phash', 'index_section', 'index_grlist', 'index_fulltext', 'index_debug'];
         foreach ($tableArray as $table) {
-            $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
+            $this->connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
         }
 
         // Removing all index_section records with hash_t3 set to this hash (this includes such
         // records set for external media on the page as well!). The re-insert of these records
         // are done in indexRegularDocument($file).
-        $connectionPool->getConnectionForTable('index_section')->delete('index_section', ['phash_t3' => $phash]);
+        $this->connectionPool->getConnectionForTable('index_section')->delete('index_section', ['phash_t3' => $phash]);
     }
 
     /********************************
@@ -1145,8 +1133,7 @@ class Indexer
             'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
             'sys_language_uid' => (int)$this->conf['sys_language_uid'],
         ];
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_phash');
+        $connection = $this->connectionPool->getConnectionForTable('index_phash');
         $connection->insert(
             'index_phash',
             $fields
@@ -1159,8 +1146,7 @@ class Indexer
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
         }
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_fulltext');
+        $connection = $this->connectionPool->getConnectionForTable('index_fulltext');
         $connection->insert('index_fulltext', $fields);
         // PROCESSING index_debug
         if ($this->indexerConfig['debugMode'] ?? false) {
@@ -1172,8 +1158,7 @@ class Indexer
                     'logs' => $this->internal_log,
                 ], JSON_THROW_ON_ERROR),
             ];
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('index_debug');
+            $connection = $this->connectionPool->getConnectionForTable('index_debug');
             $connection->insert('index_debug', $fields);
         }
     }
@@ -1186,8 +1171,7 @@ class Indexer
     public function submitFile_section(string $hash): void
     {
         // Testing if there is already a section
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_section');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_section');
         $count = (int)$queryBuilder->count('phash')
             ->from('index_section')
             ->where(
@@ -1215,11 +1199,10 @@ class Indexer
      */
     public function removeOldIndexedFiles(string $phash): void
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         // Removing old registrations for tables.
         $tableArray = ['index_phash', 'index_grlist', 'index_fulltext', 'index_debug'];
         foreach ($tableArray as $table) {
-            $connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
+            $this->connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
         }
     }
 
@@ -1231,7 +1214,7 @@ class Indexer
      */
     public function getIndexStatus(int $mtime, string $phash): IndexStatus
     {
-        $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
+        $row = $this->connectionPool->getConnectionForTable('index_phash')
             ->select(
                 ['item_mtime', 'tstamp'],
                 'index_phash',
@@ -1279,7 +1262,7 @@ class Indexer
     public function checkContentHash(): array|true
     {
         // With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
-        $row = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_phash')
+        $row = $this->connectionPool->getConnectionForTable('index_phash')
             ->select(
                 ['phash'],
                 'index_phash',
@@ -1305,8 +1288,7 @@ class Indexer
      */
     public function checkExternalDocContentHash(string $hashGr, string $content_md5h): bool
     {
-        $count = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_phash')
+        $count = $this->connectionPool->getConnectionForTable('index_phash')
             ->count(
                 '*',
                 'index_phash',
@@ -1323,8 +1305,7 @@ class Indexer
      */
     public function is_grlist_set(string $phash_x): bool
     {
-        $count = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_grlist')
+        $count = $this->connectionPool->getConnectionForTable('index_grlist')
             ->count(
                 'phash_x',
                 'index_grlist',
@@ -1341,8 +1322,7 @@ class Indexer
      */
     public function update_grlist(string $phash, string $phash_x): void
     {
-        $count = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_grlist')
+        $count = $this->connectionPool->getConnectionForTable('index_grlist')
             ->count(
                 'phash',
                 'index_grlist',
@@ -1371,8 +1351,7 @@ class Indexer
             $updateFields['item_mtime'] = $mtime;
         }
 
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_phash')
+        $this->connectionPool->getConnectionForTable('index_phash')
             ->update(
                 'index_phash',
                 $updateFields,
@@ -1387,8 +1366,7 @@ class Indexer
      */
     public function updateSetId(string $phash): void
     {
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_phash')
+        $this->connectionPool->getConnectionForTable('index_phash')
             ->update(
                 'index_phash',
                 [
@@ -1405,8 +1383,7 @@ class Indexer
      */
     public function updateParsetime(string $phash, int $parsetime): void
     {
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_phash')
+        $this->connectionPool->getConnectionForTable('index_phash')
             ->update(
                 'index_phash',
                 [
@@ -1426,8 +1403,7 @@ class Indexer
         $updateFields = [];
         $this->getRootLineFields($updateFields);
 
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_section')
+        $this->connectionPool->getConnectionForTable('index_section')
             ->update(
                 'index_section',
                 $updateFields,
@@ -1469,7 +1445,7 @@ class Indexer
         $wordListArrayCount = count($wordListArray);
         $phashArray = array_column($wordListArray, 'hash');
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
         $count = (int)$queryBuilder->count('baseword')
             ->from('index_words')
             ->where(
@@ -1482,7 +1458,7 @@ class Indexer
             ->fetchOne();
 
         if ($count !== $wordListArrayCount) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_words');
+            $connection = $this->connectionPool->getConnectionForTable('index_words');
             $queryBuilder = $connection->createQueryBuilder();
 
             $result = $queryBuilder->select('wid')
@@ -1527,8 +1503,7 @@ class Indexer
         if (IndexedSearchUtility::isMysqlFullTextEnabled()) {
             return;
         }
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('index_words');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
         $result = $queryBuilder->select('wid')
             ->from('index_words')
             ->where(
@@ -1542,7 +1517,7 @@ class Indexer
             $stopWords[$row['wid']] = $row;
         }
 
-        $connectionPool->getConnectionForTable('index_rel')->delete('index_rel', ['phash' => $phash]);
+        $this->connectionPool->getConnectionForTable('index_rel')->delete('index_rel', ['phash' => $phash]);
 
         $fields = ['phash', 'wid', 'count', 'first', 'freq', 'flags'];
         $rows = [];
@@ -1561,7 +1536,7 @@ class Indexer
         }
 
         if (!empty($rows)) {
-            $connectionPool->getConnectionForTable('index_rel')->bulkInsert('index_rel', $rows, $fields);
+            $this->connectionPool->getConnectionForTable('index_rel')->bulkInsert('index_rel', $rows, $fields);
         }
     }
 

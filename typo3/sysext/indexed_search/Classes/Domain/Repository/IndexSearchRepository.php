@@ -130,6 +130,13 @@ class IndexSearchRepository
      */
     protected bool $displayForbiddenRecords = false;
 
+    public function __construct(
+        private readonly Context $context,
+        private readonly ExtensionConfiguration $extensionConfiguration,
+        private readonly TimeTracker $timeTracker,
+        private readonly ConnectionPool $connectionPool,
+    ) {}
+
     /**
      * initialize all options that are necessary for the search
      *
@@ -140,7 +147,7 @@ class IndexSearchRepository
     {
         $this->externalParsers = $externalParsers;
         $this->searchRootPageIdList = (string)$searchRootPageIdList;
-        $this->frontendUserGroupList = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
+        $this->frontendUserGroupList = implode(',', $this->context->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
         if ($settings['exactCount'] ?? false) {
             $this->useExactCount = true;
         }
@@ -168,16 +175,16 @@ class IndexSearchRepository
      */
     public function doSearch(array $searchWords, int $freeIndexUid): array|false
     {
-        $useMysqlFulltext = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'useMysqlFulltext');
+        $useMysqlFulltext = (bool)$this->extensionConfiguration->get('indexed_search', 'useMysqlFulltext');
         // Getting SQL result pointer:
-        $this->getTimeTracker()->push('Searching result');
+        $this->timeTracker->push('Searching result');
         // @todo Change method signatures to return the QueryBuilder instead the Result.
         if ($useMysqlFulltext) {
             $result = $this->getResultRows_SQLpointerMysqlFulltext($searchWords, $freeIndexUid);
         } else {
             $result = $this->getResultRows_SQLpointer($searchWords, $freeIndexUid);
         }
-        $this->getTimeTracker()->pull();
+        $this->timeTracker->pull();
         // Organize and process result:
         if ($result) {
             // We need the result row count beforehand for the pointer calculation. Using $result->rowCount() for
@@ -278,8 +285,7 @@ class IndexSearchRepository
                 $pageId,
             ];
         }
-        GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('index_stat_word')
+        $this->connectionPool->getConnectionForTable('index_stat_word')
             ->bulkInsert(
                 'index_stat_word',
                 $entries,
@@ -290,7 +296,7 @@ class IndexSearchRepository
 
     public function getFullTextRowByPhash(string $phash): ?array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_fulltext');
         return $queryBuilder
             ->select('*')
             ->from('index_fulltext')
@@ -307,8 +313,7 @@ class IndexSearchRepository
 
     public function getIndexConfigurationById(int $id): ?array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_config');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_config');
         return $queryBuilder
             ->select('uid', 'title')
             ->from('index_config')
@@ -337,9 +342,9 @@ class IndexSearchRepository
         // Perform SQL Search / collection of result rows array:
         if ($list) {
             // Do the search:
-            $this->getTimeTracker()->push('execFinalQuery');
+            $this->timeTracker->push('execFinalQuery');
             $res = $this->execFinalQuery($list, $freeIndexUid);
-            $this->getTimeTracker()->pull();
+            $this->timeTracker->pull();
             return $res;
         }
         return false;
@@ -355,7 +360,7 @@ class IndexSearchRepository
      */
     protected function getResultRows_SQLpointerMysqlFulltext(array $searchWordsArray, int $freeIndexUid): Result|false
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_fulltext');
+        $connection = $this->connectionPool->getConnectionForTable('index_fulltext');
         $platform = $connection->getDatabasePlatform();
         if (!($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform)) {
             throw new \RuntimeException(
@@ -369,11 +374,10 @@ class IndexSearchRepository
         // Perform SQL Search / collection of result rows array:
         $resource = false;
         if ($searchData) {
-            $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
             // Do the search:
-            $timeTracker->push('execFinalQuery');
+            $this->timeTracker->push('execFinalQuery');
             $resource = $this->execFinalQuery_fulltext($searchData, $freeIndexUid);
-            $timeTracker->pull();
+            $this->timeTracker->pull();
         }
         return $resource;
     }
@@ -461,7 +465,7 @@ class IndexSearchRepository
      */
     protected function execFinalQuery_fulltext(array $searchData, int $freeIndexUid): Result
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_fulltext');
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->select('index_fulltext.*', 'ISEC.*', 'IP.*')
             ->from('index_fulltext')
@@ -573,7 +577,7 @@ class IndexSearchRepository
             if (str_contains($sWord, ' ')) {
                 $theType = SearchType::SENTENCE;
             }
-            $this->getTimeTracker()->push('SearchWord "' . $sWord . '" - $theType=' . $theType->value);
+            $this->timeTracker->push('SearchWord "' . $sWord . '" - $theType=' . $theType->value);
             // Perform search for word:
             switch ($theType) {
                 case SearchType::PART_OF_WORD:
@@ -616,7 +620,7 @@ class IndexSearchRepository
                 // First search
                 $totalHashList = $phashList;
             }
-            $this->getTimeTracker()->pull();
+            $this->timeTracker->pull();
             $c++;
         }
         return implode(',', $totalHashList);
@@ -630,7 +634,7 @@ class IndexSearchRepository
      */
     protected function execPHashListQuery(string $wordSel, string $additionalWhereClause): Result
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
         $queryBuilder->select('IR.phash')
             ->from('index_words', 'IW')
             ->from('index_rel', 'IR')
@@ -670,9 +674,7 @@ class IndexSearchRepository
      */
     protected function searchDistinct(string $sWord): Result
     {
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_words')
-            ->expr();
+        $expressionBuilder = $this->connectionPool->getQueryBuilderForTable('index_words')->expr();
         $wSel = $expressionBuilder->eq('IW.wid', $expressionBuilder->literal(md5($sWord)));
         $this->wSelClauses[] = $wSel;
         return $this->execPHashListQuery($wSel, $expressionBuilder->eq('is_stopword', 0));
@@ -693,7 +695,7 @@ class IndexSearchRepository
             $sWord
         );
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_section');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_section');
         return $queryBuilder->select('ISEC.phash')
             ->from('index_section', 'ISEC')
             ->from('index_fulltext', 'IFT')
@@ -713,9 +715,7 @@ class IndexSearchRepository
      */
     protected function sectionTableWhere(): string
     {
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_section')
-            ->expr();
+        $expressionBuilder = $this->connectionPool->getQueryBuilderForTable('index_section')->expr();
 
         $whereClause = $expressionBuilder->and();
         $match = false;
@@ -764,9 +764,7 @@ class IndexSearchRepository
      */
     protected function mediaTypeWhere(): string
     {
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_phash')
-            ->expr();
+        $expressionBuilder = $this->connectionPool->getQueryBuilderForTable('index_phash')->expr();
         $whereClause = match ($this->mediaType) {
             MediaType::ALL_EXTERNAL => $expressionBuilder->neq('IP.item_type', $expressionBuilder->literal((string)MediaType::INTERNAL_PAGES->value)),
             MediaType::ALL_MEDIA => '', // include TYPO3 pages and external media
@@ -787,9 +785,7 @@ class IndexSearchRepository
             return '';
         }
 
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_phash')
-            ->expr();
+        $expressionBuilder = $this->connectionPool->getQueryBuilderForTable('index_phash')->expr();
 
         return ' AND ' . $expressionBuilder->eq('IP.sys_language_uid', $this->languageUid);
     }
@@ -806,8 +802,7 @@ class IndexSearchRepository
             return '';
         }
         // First, look if the freeIndexUid is a meta configuration:
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_config');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_config');
         $indexCfgRec = $queryBuilder->select('indexcfgs')
             ->from('index_config')
             ->where(
@@ -827,10 +822,8 @@ class IndexSearchRepository
             foreach ($refs as $ref) {
                 [$table, $uid] = GeneralUtility::revExplode('_', $ref, 2);
                 $uid = (int)$uid;
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('index_config');
-                $queryBuilder->select('uid')
-                    ->from('index_config');
+                $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_config');
+                $queryBuilder->select('uid')->from('index_config');
                 switch ($table) {
                     case 'index_config':
                         $idxRec = $queryBuilder
@@ -866,9 +859,7 @@ class IndexSearchRepository
             $list = [$freeIndexUid];
         }
 
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('index_phash')
-            ->expr();
+        $expressionBuilder = $this->connectionPool->getQueryBuilderForTable('index_phash')->expr();
         return ' AND ' . $expressionBuilder->in('IP.freeIndexUid', array_map('intval', $list));
     }
 
@@ -880,7 +871,7 @@ class IndexSearchRepository
      */
     protected function execFinalQuery(string $list, int $freeIndexUid): Result
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_words');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
         $queryBuilder->select('ISEC.*', 'IP.*')
             ->from('index_phash', 'IP')
             ->from('index_section', 'ISEC')
@@ -1036,7 +1027,7 @@ class IndexSearchRepository
         }
         // Evaluate regularly indexed pages based on item_type:
         // External media:
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_grlist');
+        $connection = $this->connectionPool->getConnectionForTable('index_grlist');
         if ($row['item_type']) {
             // For external media we will check the access of the parent page on which the media was linked from.
             // "phash_t3" is the phash of the parent TYPO3 page row which initiated the indexing of the documents
@@ -1107,10 +1098,5 @@ class IndexSearchRepository
     protected function getSearchRootPageIdList(): array
     {
         return GeneralUtility::intExplode(',', $this->searchRootPageIdList);
-    }
-
-    protected function getTimeTracker(): TimeTracker
-    {
-        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

@@ -27,7 +27,7 @@ class Lexer
     // CJK (Chinese / Japanese / Korean)
     protected const CHARTYPE_CJK = 'cjk';
 
-    public array $lexerConf = [
+    protected array $lexerConf = [
         'printjoins' => [
             46, // .
             45, // -

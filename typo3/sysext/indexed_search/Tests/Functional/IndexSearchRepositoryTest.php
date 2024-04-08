@@ -40,7 +40,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $indexer = new Indexer();
+        $indexer = $this->get(Indexer::class);
         $indexer->init([
             'id' => 1,
             'type' => 0,
@@ -92,7 +92,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
 
     private function getSearchRepository(SearchType $searchType = SearchType::PART_OF_WORD): IndexSearchRepository
     {
-        $searchRepository = GeneralUtility::makeInstance(IndexSearchRepository::class);
+        $searchRepository = $this->get(IndexSearchRepository::class);
         $searchRepositoryDefaultOptions = [
             'defaultOperand' => 0,
             'sections' => 0,

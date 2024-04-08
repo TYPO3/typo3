@@ -31,7 +31,7 @@ final class IndexerTest extends FunctionalTestCase
     #[Test]
     public function indexerIndexesLoremIpsumContent(): void
     {
-        $indexer = new Indexer();
+        $indexer = $this->get(Indexer::class);
         $indexer->init([
             'id' => 1,
             'type' => 0,
@@ -66,7 +66,7 @@ final class IndexerTest extends FunctionalTestCase
     #[Test]
     public function indexerDoesNotFailForWordsWithPhashCollision(): void
     {
-        $indexer = new Indexer();
+        $indexer = $this->get(Indexer::class);
         $indexer->init([
             'id' => 1,
             'type' => 0,
@@ -133,13 +133,13 @@ final class IndexerTest extends FunctionalTestCase
             'indexedDocTitle' => '',
         ];
 
-        $indexer = new Indexer();
+        $indexer = $this->get(Indexer::class);
         $indexer->init($indexerConfig);
         $indexer->indexerConfig['debugMode'] = false;
         $indexer->indexTypo3PageContent();
         self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/indexing_words_twice_first.csv');
 
-        $indexer = new Indexer();
+        $indexer = $this->get(Indexer::class);
         $indexer->init($indexerConfig);
         $indexer->indexerConfig['debugMode'] = false;
         $indexer->forceIndexing = true;

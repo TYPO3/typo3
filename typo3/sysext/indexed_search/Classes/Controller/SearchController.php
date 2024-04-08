@@ -71,8 +71,6 @@ class SearchController extends ActionController
 
     protected int $defaultResultNumber = 10;
     protected array $availableResultsNumbers = [];
-    protected IndexSearchRepository $searchRepository;
-    protected Lexer $lexerObj;
     protected array $externalParsers = [];
 
     /**
@@ -91,12 +89,14 @@ class SearchController extends ActionController
     protected array $resultSections = [];
 
     protected array $pathCache = [];
-    protected TypoScriptService $typoScriptService;
 
-    public function injectTypoScriptService(TypoScriptService $typoScriptService)
-    {
-        $this->typoScriptService = $typoScriptService;
-    }
+    public function __construct(
+        private readonly Context $context,
+        private readonly IndexSearchRepository $searchRepository,
+        private readonly TypoScriptService $typoScriptService,
+        private readonly Lexer $lexer,
+        private readonly LinkFactory $linkFactory,
+    ) {}
 
     /**
      * sets up all necessary object for searching
@@ -122,7 +122,7 @@ class SearchController extends ActionController
             $searchData = array_merge($this->settings['defaultOptions'], $searchData);
         }
         // Hand in the current site language as languageUid
-        $searchData['languageUid'] = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
+        $searchData['languageUid'] = $this->context->getPropertyFromAspect('language', 'id', 0);
 
         $this->initializeExternalParsers();
         // If "_sections" is set, this value overrides any existing value.
@@ -156,7 +156,6 @@ class SearchController extends ActionController
         if ($rootPidListFromSettings) {
             $this->searchRootPageIdList = implode(',', GeneralUtility::intExplode(',', $rootPidListFromSettings));
         }
-        $this->searchRepository = GeneralUtility::makeInstance(IndexSearchRepository::class);
         $this->searchRepository->initialize($this->settings, $searchData, $this->externalParsers, $this->searchRootPageIdList);
         // $this->searchData is used in $this->getSearchWords
         $this->searchWords = $this->getSearchWords($searchData, (bool)$searchData['defaultOperand']);
@@ -623,19 +622,13 @@ class SearchController extends ActionController
      */
     protected function procSearchWordsByLexer(array $searchWords): array
     {
-        $newSearchWords = [];
-        // Init lexer (used to post-processing of search words)
-        $lexerObjectClassName = ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?? false) ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] : Lexer::class;
-
-        /** @var Lexer $lexer */
-        $lexer = GeneralUtility::makeInstance($lexerObjectClassName);
-        $this->lexerObj = $lexer;
         // Traverse the search word array
+        $newSearchWords = [];
         foreach ($searchWords as $wordDef) {
             // No space in word (otherwise it might be a sentence in quotes like "there is").
             if (!str_contains($wordDef['sword'], ' ')) {
                 // Split the search word by lexer:
-                $res = $this->lexerObj->split2Words($wordDef['sword']);
+                $res = $this->lexer->split2Words($wordDef['sword']);
                 // Traverse lexer result and add all words again:
                 foreach ($res as $word) {
                     $newSearchWords[] = [
@@ -942,7 +935,7 @@ class SearchController extends ActionController
      */
     protected function linkPage(int $pageUid, array $row, string $linkText): LinkResultInterface
     {
-        $pageLanguage = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'contentId', 0);
+        $pageLanguage = $this->context->getPropertyFromAspect('language', 'contentId', 0);
 
         $linkConfiguration = [
             'parameter' => $pageUid . ',' . $row['data_page_type'],
@@ -966,7 +959,7 @@ class SearchController extends ActionController
 
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $cObj->start($row, 'pages');
-        return GeneralUtility::makeInstance(LinkFactory::class)->create($linkText, $linkConfiguration, $cObj);
+        return $this->linkFactory->create($linkText, $linkConfiguration, $cObj);
     }
 
     /**
@@ -1007,8 +1000,7 @@ class SearchController extends ActionController
                         true
                     );
                     $breadcrumbWrap = $this->settings['breadcrumbWrap'] ?? '/';
-                    $breadcrumbWraps = GeneralUtility::makeInstance(TypoScriptService::class)
-                        ->explodeConfigurationForOptionSplit(['wrap' => $breadcrumbWrap], $pageCount);
+                    $breadcrumbWraps = $this->typoScriptService->explodeConfigurationForOptionSplit(['wrap' => $breadcrumbWrap], $pageCount);
                     foreach ($rl as $v) {
                         $uid = (int)$v['uid'];
 
