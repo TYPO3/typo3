@@ -996,15 +996,14 @@ final class RedirectServiceTest extends FunctionalTestCase
             'expectedRedirectLocationUri' => 'https://acme.com/page2',
         ];
         // Regression test for https://forge.typo3.org/issues/103395
-        // @todo Enable again in bugfix change.
-        //        yield 'non-configured source_host with site root target without typoscript using T3 LinkHandler syntax' => [
-        //            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-pid1'),
-        //            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
-        //            'useTestBolt' => true,
-        //            'expectedRedirectStatusCode' => 301,
-        //            'expectedRedirectUid' => 1,
-        //            'expectedRedirectLocationUri' => 'https://acme.com/',
-        //        ];
+        yield 'non-configured source_host with site root target without typoscript using T3 LinkHandler syntax' => [
+            'request' => new InternalRequest('https://non-configured.domain.tld/redirect-to-pid1'),
+            'rootPageTypoScriptFiles' => ['setup' => ['EXT:redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']],
+            'useTestBolt' => true,
+            'expectedRedirectStatusCode' => 301,
+            'expectedRedirectUid' => 1,
+            'expectedRedirectLocationUri' => 'https://acme.com/',
+        ];
     }
 
     /**

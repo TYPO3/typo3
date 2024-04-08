@@ -387,6 +387,20 @@ class RedirectService implements LoggerAwareInterface
      */
     protected function bootFrontendController(SiteInterface $site, array $queryParams, ServerRequestInterface $originalRequest): TypoScriptFrontendController
     {
+        // Request without a matching site configuration can still have matching redirects and the $site already
+        // contains a resolved site based on the target or a default one. If the request site is a NullSite, we
+        // replace it here to ensure proper TypoScript loading, which is essential if no sys_template record exist
+        // and extension like `b13/bolt` providing fake template rows. Without this, they could work properly.
+        //
+        // There is currently not a better way to pass this down, and is fixed in TYPO3 v13 due to a more extensive
+        // rework and implementation of a TypoScript factory already.
+        //
+        // See https://forge.typo3.org/issues/103395
+        if ($originalRequest->getAttribute('site') instanceof NullSite) {
+            $originalRequest = $originalRequest
+                ->withAttribute('site', $site)
+                ->withAttribute('siteLanguage', $site->getDefaultLanguage());
+        }
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
             GeneralUtility::makeInstance(Context::class),
