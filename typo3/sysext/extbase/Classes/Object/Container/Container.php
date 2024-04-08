@@ -72,7 +72,7 @@ class Container implements SingletonInterface, LoggerAwareInterface
      *
      * @var array
      */
-    private $prototypeObjectsWhichAreCurrentlyInstanciated;
+    private $prototypeObjectsWhichAreCurrentlyInstanciated = [];
 
     /**
      * @var ReflectionService
