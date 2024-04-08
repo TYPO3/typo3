@@ -105,8 +105,7 @@ class RootlineUtility
     {
         $this->mountPointParameter = $this->sanitizeMountPointParameter($mountPointParameter);
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $this->initializePageRepository();
-
+        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         $this->languageUid = $this->context->getPropertyFromAspect('language', 'id', 0);
         $this->workspaceUid = (int)$this->context->getPropertyFromAspect('workspace', 'id', 0);
         if ($this->mountPointParameter !== '') {
@@ -115,37 +114,10 @@ class RootlineUtility
             }
             $this->parseMountPointParameter();
         }
-
         $this->pageUid = $this->resolvePageId($uid);
-        $this->cache ??= GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline');
-        $this->runtimeCache ??= GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-
+        $this->cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline');
+        $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $this->cacheIdentifier = $this->getCacheIdentifier();
-    }
-
-    protected function initializePageRepository(): void
-    {
-        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-    }
-
-    /**
-     * Constructs the cache Identifier
-     */
-    public function getCacheIdentifier(int $otherUid = null): string
-    {
-        $mountPointParameter = (string)$this->mountPointParameter;
-        if ($mountPointParameter !== '' && str_contains($mountPointParameter, ',')) {
-            $mountPointParameter = str_replace(',', '__', $mountPointParameter);
-        }
-
-        return implode('_', [
-            $otherUid ?? $this->pageUid,
-            $mountPointParameter,
-            $this->languageUid,
-            $this->workspaceUid,
-            $this->context->getAspect('visibility')->includeHiddenContent() ? '1' : '0',
-            $this->context->getAspect('visibility')->includeHiddenPages() ? '1' : '0',
-        ]);
     }
 
     /**
@@ -182,6 +154,22 @@ class RootlineUtility
             }
         }
         return $this->runtimeCache->get('rootline-localcache-' . $this->cacheIdentifier);
+    }
+
+    protected function getCacheIdentifier(int $otherUid = null): string
+    {
+        $mountPointParameter = $this->mountPointParameter;
+        if ($mountPointParameter !== '' && str_contains($mountPointParameter, ',')) {
+            $mountPointParameter = str_replace(',', '__', $mountPointParameter);
+        }
+        return implode('_', [
+            $otherUid ?? $this->pageUid,
+            $mountPointParameter,
+            $this->languageUid,
+            $this->workspaceUid,
+            $this->context->getAspect('visibility')->includeHiddenContent() ? '1' : '0',
+            $this->context->getAspect('visibility')->includeHiddenPages() ? '1' : '0',
+        ]);
     }
 
     /**
@@ -234,8 +222,11 @@ class RootlineUtility
      */
     protected function enrichWithRelationFields(int $uid, array $pageRecord): array
     {
-        if (!isset($GLOBALS['TCA']['pages']['columns']) || !is_array($GLOBALS['TCA']['pages']['columns'])) {
-            return $pageRecord;
+        if (!is_array($GLOBALS['TCA']['pages']['columns'] ?? false)) {
+            throw new \LogicException(
+                'Main ext:core configuration $GLOBALS[\'TCA\'][\'pages\'][\'columns\'] not found.',
+                1712572738
+            );
         }
 
         foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
@@ -341,7 +332,7 @@ class RootlineUtility
      * Checks whether the current Page is a Mounted Page
      * (according to the MP-URL-Parameter)
      */
-    public function isMountedPage(): bool
+    protected function isMountedPage(): bool
     {
         return array_key_exists($this->pageUid, $this->parsedMountPointParameters);
     }
