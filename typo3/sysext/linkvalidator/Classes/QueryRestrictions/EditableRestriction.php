@@ -65,7 +65,12 @@ class EditableRestriction implements QueryRestrictionInterface
         foreach ($searchFields as $table => $fields) {
             if ($table !== 'pages' && ($GLOBALS['TCA'][$table]['ctrl']['type'] ?? false)) {
                 $type = $GLOBALS['TCA'][$table]['ctrl']['type'];
-                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$type]['config'];
+                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$type]['config'] ?? [];
+                if ($fieldConfig === []) {
+                    // $type might be "uid_local:type" for table "sys_file_reference" and then $fieldConfig will be empty
+                    // in this case we skip because we do not join with the other table and will not have this value
+                    continue;
+                }
                 // Check for items
                 if ($fieldConfig['type'] === 'select'
                     && is_array($fieldConfig['items'] ?? false)
