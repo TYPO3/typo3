@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Page;
 
+use TYPO3\CMS\Core\Page\PageLayout;
+
 /**
  * This DTO carries various Frontend rendering related page information. It is
  * set up by a Frontend middleware and attached to as 'frontend.page.information'
@@ -99,6 +101,13 @@ final class PageInformation
      * @var array<int, array<string, mixed>>
      */
     private array $sysTemplateRows;
+
+    /**
+     * The resolved PageLayout of the page (selected backend layout)
+     *
+     * @var PageLayout|null
+     */
+    private ?PageLayout $pageLayout = null;
 
     /**
      * @internal Only to be set by core
@@ -230,5 +239,18 @@ final class PageInformation
     public function getContentFromPid(): int
     {
         return $this->contentFromPid;
+    }
+
+    /**
+     * @internal Only to be set by core
+     */
+    public function setPageLayout(PageLayout $pageLayout): void
+    {
+        $this->pageLayout = $pageLayout;
+    }
+
+    public function getPageLayout(): ?PageLayout
+    {
+        return $this->pageLayout;
     }
 }

@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Page;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -54,7 +56,13 @@ class PageLayoutResolver
     public function getLayoutForPage(array $pageRecord, array $rootLine): ?PageLayout
     {
         $pageId = (int)$pageRecord['uid'];
-        $site = $this->siteFinder->getSiteByPageId($pageId, $rootLine);
+
+        try {
+            $site = $this->siteFinder->getSiteByPageId($pageId, $rootLine);
+        } catch (SiteNotFoundException) {
+            $site = new NullSite();
+        }
+
         $pageTsConfig = $this->pageTsConfigFactory->create($rootLine, $site);
 
         $dataProviderContext = GeneralUtility::makeInstance(DataProviderContext::class);

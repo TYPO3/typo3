@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
-use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -161,7 +160,7 @@ class PageViewContentObject extends AbstractContentObject
         $variables = [
             'site' => $this->request->getAttribute('site'),
             'language' => $this->request->getAttribute('language'),
-            'page' => new Page($this->request->getAttribute('frontend.page.information')->getPageRecord()),
+            'page' => $this->request->getAttribute('frontend.page.information'),
         ];
         // Accumulate the variables to be process and loop them through cObjGetSingle
         if (is_array($conf['variables.'] ?? false) && $conf['variables.'] !== []) {

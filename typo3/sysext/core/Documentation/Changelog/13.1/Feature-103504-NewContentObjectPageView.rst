@@ -44,7 +44,17 @@ In order to reduce the burdon for integrators, the folder names for "pages",
 - :typoscript:`settings` - contains all TypoScript settings (= Constants)
 - :typoscript:`site` - the current Site object
 - :typoscript:`language` - the current Site Language object
-- :typoscript:`page` - the current Page record as object
+- :typoscript:`page` - the current Page Information object
+
+.. note::
+
+    The Page Information object contains all relevant information about
+    the current page. Those are e.g. the corresponding page record, the
+    rootline, and many more. Worth mentioning is also the Page Layout object,
+    which provides all the information about the selected backend layout.
+    This includes the identifier, the title, the available content areas
+    with their corresponding name and `colPos`. Additionally, the full (raw)
+    backend layout configuration is available.
 
 There is no special Extbase resolving done for the templates.
 
@@ -134,8 +144,9 @@ After
         }
     }
 
-In Fluid, the pageUid is available as :html:`{page.uid}` and pageTitle
-as :html:`{page.title}`.
+In Fluid, the pageUid is available as :html:`{page.id}` and pageTitle
+as :html:`{page.pageRecord.title}`. The page layout identifier can be accessed
+using :html:`{page.pageLayout.identifier}`.
 
 Impact
 ======
@@ -145,9 +156,14 @@ reduce the amount of TypoScript needed to render a page in the TYPO3 Frontend.
 
 Sane defaults are applied, variables and settings are available at any time.
 
-.. note::
+..  note::
 
     This cObject is marked as experimental until TYPO3 v13 LTS as some
     functionality will be added.
+
+..  note::
+
+    Default variable names cannot be set or overridden and trying to do
+    will throw an exception.
 
 .. index:: TypoScript, ext:frontend

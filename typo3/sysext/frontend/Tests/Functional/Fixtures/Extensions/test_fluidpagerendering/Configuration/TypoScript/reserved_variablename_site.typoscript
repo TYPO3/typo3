@@ -1,0 +1,3 @@
+page.10.variables {
+  site = reserved
+}

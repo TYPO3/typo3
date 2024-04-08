@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
+use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -68,6 +69,7 @@ final readonly class PageInformationFactory
         private RecordAccessVoter $accessVoter,
         private ErrorController $errorController,
         private SysTemplateRepository $sysTemplateRepository,
+        private PageLayoutResolver $pageLayoutResolver,
     ) {}
 
     /**
@@ -108,6 +110,7 @@ final readonly class PageInformationFactory
 
         $pageInformation = $this->settingLanguage($request, $pageInformation);
         $pageInformation = $this->setContentFromPid($request, $pageInformation);
+        $pageInformation = $this->setPageLayout($pageInformation);
         $this->checkBackendUserAccess($request, $pageInformation);
 
         $event = $this->eventDispatcher->dispatch(new AfterPageAndLanguageIsResolvedEvent($request, $pageInformation));
@@ -406,6 +409,21 @@ final readonly class PageInformationFactory
         $targetPageInformation = $this->setPageAndRootline($request, $targetPageInformation);
         // Above call did not throw. Set the verified id.
         $pageInformation->setContentFromPid($targetPageInformation->getId());
+        return $pageInformation;
+    }
+
+    /**
+     * Resolve the selected backend layout for the current page and add it to the page information
+     */
+    protected function setPageLayout(PageInformation $pageInformation): PageInformation
+    {
+        $pageLayout = $this->pageLayoutResolver->getLayoutForPage(
+            $pageInformation->getPageRecord(),
+            $pageInformation->getRootLine()
+        );
+        if ($pageLayout !== null) {
+            $pageInformation->setPageLayout($pageLayout);
+        }
         return $pageInformation;
     }
 

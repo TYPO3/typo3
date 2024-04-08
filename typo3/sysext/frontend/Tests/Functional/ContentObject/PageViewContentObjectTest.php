@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Frontend\ContentObject\PageViewContentObject;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -62,6 +64,7 @@ final class PageViewContentObjectTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
         self::assertStringContainsString('You are on page Fluid Root Page', (string)$response->getBody());
         self::assertStringContainsString('This is a standard page with no content.', (string)$response->getBody());
+        self::assertStringContainsString('page-layout-identifier-Standard', (string)$response->getBody());
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID)->withLanguageId(1));
         self::assertStringContainsString('Vous êtes à la page Fluid Root Page FR', (string)$response->getBody());
     }
@@ -78,5 +81,55 @@ final class PageViewContentObjectTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID)->withQueryParameter('type', 123));
         self::assertStringContainsString('You are on page Fluid Root Page', (string)$response->getBody());
         self::assertStringContainsString('This is a standard page with no content.', (string)$response->getBody());
+        self::assertStringContainsString('page-layout-identifier-Standard', (string)$response->getBody());
+    }
+
+    /**
+     * @return array<string, array{variableName: string}>
+     */
+    public static function reservedVariableNameDataProvider(): array
+    {
+        $stub = new class () extends PageViewContentObject {
+            public function __construct() {}
+
+            public function getReservedVariableNames(): array
+            {
+                return $this->reservedVariables;
+            }
+        };
+        $dataSets = [];
+        foreach ($stub->getReservedVariableNames() as $reservedVariableName) {
+            $dataSets[$reservedVariableName] = [
+                'variableName' => $reservedVariableName,
+            ];
+        }
+        return $dataSets;
+    }
+
+    #[DataProvider('reservedVariableNameDataProvider')]
+    #[Test]
+    public function assignReservedVariableNameInTypoScriptThrowsInvalidArgumentException(string $variableName): void
+    {
+        $this->setUpFrontendRootPage(
+            self::ROOT_PAGE_ID,
+            [
+                'EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluidpagerendering/Configuration/TypoScript/plain.typoscript',
+                sprintf(
+                    'EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluidpagerendering/Configuration/TypoScript/reserved_variablename_%s.typoscript',
+                    $variableName
+                ),
+            ]
+        );
+
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionCode(1711748615);
+        self::expectExceptionMessage(
+            sprintf(
+                'Cannot use reserved name "%s" as variable name in PAGEVIEW.',
+                $variableName
+            )
+        );
+
+        $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
     }
 }

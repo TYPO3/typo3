@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -90,6 +91,7 @@ final class RedirectServiceTest extends UnitTestCase
                 new RecordAccessVoter(new NoopEventDispatcher()),
                 new ErrorController(),
                 new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
+                $this->createMock(PageLayoutResolver::class),
             ),
             new FrontendTypoScriptFactory(
                 $this->createMock(ContainerInterface::class),
@@ -659,6 +661,7 @@ final class RedirectServiceTest extends UnitTestCase
                     new RecordAccessVoter(new NoopEventDispatcher()),
                     new ErrorController(),
                     new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
+                    $this->createMock(PageLayoutResolver::class),
                 ),
                 new FrontendTypoScriptFactory(
                     $this->createMock(ContainerInterface::class),
