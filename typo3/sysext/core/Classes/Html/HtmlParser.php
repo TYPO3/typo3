@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class HtmlParser
 {
-    protected array $caseShift_cache = [];
-
     // Void elements that do not have closing tags, as defined by HTML5, except link element
     public const VOID_ELEMENTS = 'area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr';
 
@@ -539,7 +537,14 @@ class HtmlParser
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 } else {
-                                                    if (!in_array($this->caseShift($tagAttrib[0][$attr] ?? '', $params['casesensitiveComp'] ?? false), (array)$this->caseShift($params['list'], $params['casesensitiveComp'] ?? false, $tagName))) {
+                                                    $normalizedSearchWord = $tagAttrib[0][$attr] ?? '';
+                                                    $normalizedSearchList = $params['list'];
+                                                    if (!($params['casesensitiveComp'] ?? false)) {
+                                                        // Case-sensitive comparison is not wanted, normalize all values
+                                                        $normalizedSearchWord = strtoupper($tagAttrib[0][$attr] ?? '');
+                                                        array_walk($normalizedSearchList, strtoupper(...));
+                                                    }
+                                                    if (!in_array($normalizedSearchWord, $normalizedSearchList, true)) {
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 }
@@ -550,11 +555,18 @@ class HtmlParser
                                             ) {
                                                 unset($tagAttrib[0][$attr]);
                                             }
-                                            if (
-                                                (string)($params['removeIfEquals'] ?? '') !== ''
-                                                && $this->caseShift($tagAttrib[0][$attr], (bool)($params['casesensitiveComp'] ?? false)) === $this->caseShift($params['removeIfEquals'], (bool)($params['casesensitiveComp'] ?? false))
-                                            ) {
-                                                unset($tagAttrib[0][$attr]);
+                                            if ((string)($params['removeIfEquals'] ?? '') !== '') {
+                                                $normalizedAttribute = $tagAttrib[0][$attr];
+                                                $normalizedRemoveIfEquals = $params['removeIfEquals'];
+                                                if (!($params['casesensitiveComp'] ?? false)) {
+                                                    // Case-sensitive comparison is not wanted, normalize all values
+                                                    $normalizedAttribute = strtoupper($tagAttrib[0][$attr]);
+                                                    $normalizedRemoveIfEquals = strtoupper($params['removeIfEquals']);
+                                                }
+
+                                                if ($normalizedAttribute === $normalizedRemoveIfEquals) {
+                                                    unset($tagAttrib[0][$attr]);
+                                                }
                                             }
                                             if ($params['prefixRelPathWith'] ?? false) {
                                                 $urlParts = parse_url($tagAttrib[0][$attr]);
@@ -814,36 +826,6 @@ class HtmlParser
             }
         }
         return $srcVal;
-    }
-
-    /**
-     * Internal function for case shifting of a string or whole array
-     *
-     * @param mixed $str Input string/array
-     * @param bool $caseSensitiveComparison If this value is FALSE, the string is returned in uppercase
-     * @param string $cacheKey Key string used for internal caching of the results. Could be an MD5 hash of the serialized version of the input $str if that is an array.
-     * @return array|string Output string, processed
-     * @internal
-     */
-    public function caseShift($str, $caseSensitiveComparison, $cacheKey = '')
-    {
-        if ($caseSensitiveComparison) {
-            return $str;
-        }
-        if (is_array($str)) {
-            // Fetch from runlevel cache
-            if ($cacheKey && isset($this->caseShift_cache[$cacheKey])) {
-                $str = $this->caseShift_cache[$cacheKey];
-            } else {
-                array_walk($str, strtoupper(...));
-                if ($cacheKey) {
-                    $this->caseShift_cache[$cacheKey] = $str;
-                }
-            }
-        } else {
-            $str = strtoupper($str);
-        }
-        return $str;
     }
 
     /**
