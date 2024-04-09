@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * This data provider is used in casual edit record / new record / edit page / new page
@@ -55,8 +56,10 @@ class SiteResolving implements FormDataProviderInterface
         } elseif (array_key_exists('tableName', $result) && $result['tableName'] === 'pages') {
             if (!empty($result['databaseRow']['t3ver_oid'])) {
                 $pageIdDefaultLanguage = $result['databaseRow']['t3ver_oid'];
+            } elseif (MathUtility::canBeInterpretedAsInteger($result['databaseRow']['uid'] ?? '')) {
+                $pageIdDefaultLanguage = $result['databaseRow']['uid'];
             } else {
-                $pageIdDefaultLanguage = $result['databaseRow']['uid'] ?? $result['effectivePid'];
+                $pageIdDefaultLanguage = $result['effectivePid'];
             }
         } else {
             $pageIdDefaultLanguage = $result['effectivePid'];
