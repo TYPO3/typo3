@@ -70,4 +70,23 @@ class SiteResolvingTest extends UnitTestCase
         $expected['site'] = $siteProphecy->reveal();
         self::assertSame($expected, (new SiteResolving($siteFinderProphecy->reveal()))->addData($input));
     }
+
+    #[Test]
+    public function addDataAddsSiteObjectOfEffectivePidForNewPage(): void
+    {
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        $siteMock = $this->createMock(Site::class);
+        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteMock);
+        $input = [
+            'databaseRow' => [
+                'uid' => 'NEW12345678BACDEF',
+            ],
+            'effectivePid' => 42,
+            'site' => $siteMock,
+            'tableName' => 'pages',
+        ];
+        $expected = $input;
+        $expected['site'] = $siteMock;
+        self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
+    }
 }
