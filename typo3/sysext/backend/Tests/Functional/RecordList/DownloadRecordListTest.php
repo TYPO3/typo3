@@ -197,6 +197,240 @@ final class DownloadRecordListTest extends FunctionalTestCase
         ], $this->prepareRecordsForDbCompatAssertions($result));
     }
 
+    #[Test]
+    public function downloadWithPresetReturnsRequestedData(): void
+    {
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(new ServerRequest());
+        $recordList->start(0, 'be_users', 0);
+        $recordList->setFields['be_users'] = [
+            'username',
+            'realName',
+            'email',
+            'admin',
+            'crdate',
+        ];
+        $recordList->modTSconfig['downloadPresets.']['be_users.']['10.'] = [
+            'identifier' => '10',
+            'label' => 'Preset 1',
+            'columns' => 'username, email',
+        ];
+        $columnsToRender = $recordList->getColumnsToRender('be_users', false, '10');
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
+        $headerRow = $subject->getHeaderRow($columnsToRender);
+        $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
+        $result = array_merge([$headerRow], $contentRows);
+        self::assertEquals([
+            [
+                'username' => 'username',
+                'email' => 'email',
+            ],
+            [
+                'username' => 'admin',
+                'email' => '',
+            ],
+        ], $this->prepareRecordsForDbCompatAssertions($result));
+    }
+
+    #[Test]
+    public function downloadWithMissingPresetReturnsFallbackData(): void
+    {
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(new ServerRequest());
+        $recordList->start(0, 'be_users', 0);
+        $recordList->setFields['be_users'] = [
+            'username',
+            'realName',
+            'email',
+            'admin',
+            'crdate',
+        ];
+        $recordList->modTSconfig['downloadPresets.']['be_users.']['10.'] = [
+            'label' => 'Preset 1',
+            'columns' => 'username, email',
+        ];
+        $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset INVALID');
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
+        $headerRow = $subject->getHeaderRow($columnsToRender);
+        $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
+        $result = array_merge([$headerRow], $contentRows);
+        self::assertEquals([
+            [
+                'username' => 'username',
+                'email' => 'email',
+                'realName' => 'realName',
+                'admin' => 'admin',
+                'crdate' => 'crdate',
+            ],
+            [
+                'username' => 'admin',
+                'email' => '',
+                'realName' => '',
+                'admin' => '1',
+                'crdate' => '1366642540',
+            ],
+        ], $this->prepareRecordsForDbCompatAssertions($result));
+    }
+
+    #[Test]
+    public function downloadWithInvalidPresetReturnsFallbackData(): void
+    {
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(new ServerRequest());
+        $recordList->start(0, 'be_users', 0);
+        $recordList->setFields['be_users'] = [
+            'username',
+            'realName',
+            'email',
+            'admin',
+            'crdate',
+        ];
+
+        $recordList->modTSconfig['downloadPresets.']['be_users.']['10.'] = [
+            'label' => 'Preset 1',
+            'columns' => ['username, email'], // Array, but STRING is required
+        ];
+        $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset INVALID');
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
+        $headerRow = $subject->getHeaderRow($columnsToRender);
+        $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
+        $result = array_merge([$headerRow], $contentRows);
+        self::assertEquals([
+            [
+                'username' => 'username',
+                'email' => 'email',
+                'realName' => 'realName',
+                'admin' => 'admin',
+                'crdate' => 'crdate',
+            ],
+            [
+                'username' => 'admin',
+                'email' => '',
+                'realName' => '',
+                'admin' => '1',
+                'crdate' => '1366642540',
+            ],
+        ], $this->prepareRecordsForDbCompatAssertions($result));
+
+        $recordList->modTSconfig['downloadPresets.']['be_users.']['10.'] = [
+            'title' => 'Preset 1', // wrong key, should be "label"
+            'columns' => 'username, email',
+        ];
+        $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset 1');
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
+        $headerRow = $subject->getHeaderRow($columnsToRender);
+        $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
+        $result = array_merge([$headerRow], $contentRows);
+        self::assertEquals([
+            [
+                'username' => 'username',
+                'email' => 'email',
+                'realName' => 'realName',
+                'admin' => 'admin',
+                'crdate' => 'crdate',
+            ],
+            [
+                'username' => 'admin',
+                'email' => '',
+                'realName' => '',
+                'admin' => '1',
+                'crdate' => '1366642540',
+            ],
+        ], $this->prepareRecordsForDbCompatAssertions($result));
+
+        $recordList->modTSconfig['downloadPresets.']['be_users.']['10.'] = [
+            'label' => 'Preset 1',
+            'fields' => 'username, email', // Wrong key, should be "columns"
+        ];
+        $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset 1');
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
+        $headerRow = $subject->getHeaderRow($columnsToRender);
+        $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
+        $result = array_merge([$headerRow], $contentRows);
+        self::assertEquals([
+            [
+                'username' => 'username',
+                'email' => 'email',
+                'realName' => 'realName',
+                'admin' => 'admin',
+                'crdate' => 'crdate',
+            ],
+            [
+                'username' => 'admin',
+                'email' => '',
+                'realName' => '',
+                'admin' => '1',
+                'crdate' => '1366642540',
+            ],
+        ], $this->prepareRecordsForDbCompatAssertions($result));
+    }
+
+    #[Test]
+    public function downloadWithMissingPresetColumnNamesReturnsValidData(): void
+    {
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(new ServerRequest());
+        $recordList->start(0, 'be_users', 0);
+        $recordList->setFields['be_users'] = [
+            'username',
+            'realName',
+            'email',
+            'admin',
+            'crdate',
+        ];
+        $recordList->modTSconfig['downloadPresets.']['be_users.']['10.'] = [
+            'label' => 'Preset 1',
+            'columns' => 'username, email, some, invalid',
+        ];
+        $columnsToRender = $recordList->getColumnsToRender('be_users', false, md5('Preset 1' . 'usernameemailsomeinvalid'));
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
+        $headerRow = $subject->getHeaderRow($columnsToRender);
+        $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
+        $result = array_merge([$headerRow], $contentRows);
+        self::assertEquals([
+            [
+                'username' => 'username',
+                'email' => 'email',
+            ],
+            [
+                'username' => 'admin',
+                'email' => '',
+            ],
+        ], $this->prepareRecordsForDbCompatAssertions($result));
+    }
+
+    #[Test]
+    public function downloadWithPresetUsingNonAllowedColumnNamesReturnsOnlyAllowedData(): void
+    {
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest(new ServerRequest());
+        $recordList->start(0, 'be_users', 0);
+        $recordList->setFields['be_users'] = [
+            'username',
+            'email',
+        ];
+        $recordList->modTSconfig['downloadPresets.']['be_users.']['10.'] = [
+            'label' => 'Preset 1',
+            'columns' => 'username, email, uid',
+        ];
+        // "uid" is not in list of setFields columns, and should thus not be returned.
+        $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset 1');
+        $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
+        $headerRow = $subject->getHeaderRow($columnsToRender);
+        $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
+        $result = array_merge([$headerRow], $contentRows);
+        self::assertEquals([
+            [
+                'username' => 'username',
+                'email' => 'email',
+            ],
+            [
+                'username' => 'admin',
+                'email' => '',
+            ],
+        ], $this->prepareRecordsForDbCompatAssertions($result));
+    }
+
     /**
      * postgres is returning int fields as pure integers, others use strings.
      * In order to have our tests reliable, we cast everything to string.

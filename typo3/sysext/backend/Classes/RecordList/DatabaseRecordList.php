@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadPresetsAreDisplayedEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListHeaderColumnsEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListTableActionsEvent;
@@ -421,7 +422,7 @@ class DatabaseRecordList
      * Returns a list of all fields / columns including meta columns such as
      * "_REF_" or "_PATH_" which should be rendered for the database table.
      */
-    public function getColumnsToRender(string $table, bool $includeMetaColumns): array
+    public function getColumnsToRender(string $table, bool $includeMetaColumns, string $selectedPreset = ''): array
     {
         $titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'] ?? '';
 
@@ -466,7 +467,62 @@ class DatabaseRecordList
                 }
             }
         }
-        return array_unique(array_merge($columnsToSelect, $rowListArray));
+
+        return $this->applyPresetToColumns(
+            $table,
+            $selectedPreset,
+            array_unique(array_merge($columnsToSelect, $rowListArray))
+        );
+    }
+
+    /**
+     * Checks if a preset exists that will modify the selected columns.
+     * @internal
+     */
+    protected function applyPresetToColumns(string $table, string $selectedPreset, array $columnsToRender): array
+    {
+        if ($selectedPreset === '') {
+            return $columnsToRender;
+        }
+
+        // To prevent client-side transmission of wanted column names,
+        // we only evaluate the defined presets and take the definition from there.
+        $presetRenderColumns = [];
+
+        $presets = $this->eventDispatcher->dispatch(
+            new BeforeRecordDownloadPresetsAreDisplayedEvent(
+                $table,
+                $this->modTSconfig['downloadPresets.'][$table . '.'] ?? [],
+                $this->request,
+                $this->id,
+            )
+        )->getPresets();
+
+        foreach ($presets as $presetData) {
+            if (($presetData->getIdentifier()) === $selectedPreset) {
+                $presetRenderColumns = ($presetData->getColumns());
+                break;
+            }
+        }
+
+        // Evaluation yielded empty list
+        if ($presetRenderColumns === []) {
+            return $columnsToRender;
+        }
+
+        // Make sure no column is configured in a preset that is not actually allowed.
+        foreach ($presetRenderColumns as $columnKey => $overlayColumnName) {
+            if (!in_array($overlayColumnName, $columnsToRender, true)) {
+                unset($presetRenderColumns[$columnKey]);
+            }
+        }
+
+        // Evaluation yielded no valid column names.
+        if ($presetRenderColumns === []) {
+            return $columnsToRender;
+        }
+
+        return $presetRenderColumns;
     }
 
     /**

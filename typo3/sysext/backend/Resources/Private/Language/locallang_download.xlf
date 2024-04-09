@@ -105,6 +105,9 @@
 			<trans-unit id="downloadSettings.formatOptions.json.meta.none" resname="downloadSettings.formatOptions.json.meta.none">
 				<source>No information, only download records</source>
 			</trans-unit>
+			<trans-unit id="downloadSettings.preset" resname="downloadSettings.preset">
+				<source>Preset</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
