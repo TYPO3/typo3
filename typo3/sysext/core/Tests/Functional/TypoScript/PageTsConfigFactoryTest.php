@@ -59,6 +59,13 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create([], new NullSite());
         self::assertSame('loadedFromTestExtensionConfigurationPageTsConfig', $pageTsConfig->getPageTsConfigArray()['loadedFromTestExtensionConfigurationPageTsConfig']);
+        // Verify relative includes are resolved as well.
+        self::assertSame('loadedFromRelativeIncludeTarget20', $pageTsConfig->getPageTsConfigArray()['loadedFromRelativeIncludeTarget20']);
+        self::assertSame('loadedFromRelativeIncludeTarget20Sub', $pageTsConfig->getPageTsConfigArray()['loadedFromRelativeIncludeTarget20Sub']);
+        self::assertSame('loadedFromRelativeIncludeTarget22', $pageTsConfig->getPageTsConfigArray()['loadedFromRelativeIncludeTarget22']);
+        self::assertSame('loadedFromRelativeIncludeTarget23', $pageTsConfig->getPageTsConfigArray()['loadedFromRelativeIncludeTarget23']);
+        // 24 is a relative include with path traversal and not allowed to be loaded.
+        self::assertArrayNotHasKey('loadedFromRelativeIncludeTarget24', $pageTsConfig->getPageTsConfigArray());
     }
 
     #[Test]
@@ -73,6 +80,26 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite());
         self::assertSame('loadedFromTsConfigField', $pageTsConfig->getPageTsConfigArray()['loadedFromTsConfigField']);
+    }
+
+    #[Test]
+    public function pageTsConfigLoadsRelativeTargets(): void
+    {
+        $rootLine = [
+            [
+                'uid' => 1,
+                'TSconfig' => '@import \'EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/Relative/includes.tsconfig\'',
+            ],
+        ];
+        $subject = $this->get(PageTsConfigFactory::class);
+        $pageTsConfig = $subject->create($rootLine, new NullSite());
+        self::assertSame('loadedFromRelativeIncludeTarget10', $pageTsConfig->getPageTsConfigArray()['loadedFromRelativeIncludeTarget10']);
+        self::assertSame('loadedFromRelativeIncludeTarget10Sub', $pageTsConfig->getPageTsConfigArray()['loadedFromRelativeIncludeTarget10Sub']);
+        self::assertSame('loadedFromRelativeIncludeTarget11', $pageTsConfig->getPageTsConfigArray()['loadedFromRelativeIncludeTarget11']);
+        self::assertSame('loadedFromRelativeIncludeTarget12', $pageTsConfig->getPageTsConfigArray()['loadedFromRelativeIncludeTarget12']);
+        self::assertSame('loadedFromRelativeIncludeTarget13', $pageTsConfig->getPageTsConfigArray()['loadedFromRelativeIncludeTarget13']);
+        // 14 is a relative include with path traversal and not allowed to be loaded.
+        self::assertArrayNotHasKey('loadedFromRelativeIncludeTarget14', $pageTsConfig->getPageTsConfigArray());
     }
 
     #[Test]

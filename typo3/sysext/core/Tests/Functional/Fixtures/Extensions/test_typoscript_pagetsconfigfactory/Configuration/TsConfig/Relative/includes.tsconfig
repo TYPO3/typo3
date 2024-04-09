@@ -1,0 +1,6 @@
+@import './include-target-10.tsconfig'
+@import './include-target-11'
+@import './include-target-12.tsconfig'
+@import './include-target-13.typoscript'
+# Not loaded: Path traversal not allowed.
+@import './../Relative/include-target-14.tsconfig'

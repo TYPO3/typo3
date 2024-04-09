@@ -99,7 +99,10 @@ final class TsConfigTreeBuilder
                 if ($tsConfigFile) {
                     $typoScriptString = @file_get_contents($tsConfigFile);
                     if (!empty($typoScriptString)) {
-                        $collectedPagesTsConfigArray['pagesTsConfig-package-' . $package->getPackageKey()] = $typoScriptString;
+                        $collectedPagesTsConfigArray['pagesTsConfig-package-' . $package->getPackageKey()] = [
+                            'filename' => $tsConfigFile,
+                            'content' => $typoScriptString,
+                        ];
                     }
                 }
             }
@@ -107,7 +110,7 @@ final class TsConfigTreeBuilder
         }
 
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] ?? '')) {
-            $collectedPagesTsConfigArray['pagesTsConfig-globals-defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
+            $collectedPagesTsConfigArray['pagesTsConfig-globals-defaultPageTSconfig'] = ['content' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig']];
         }
 
         foreach ($rootLine as $page) {
@@ -129,7 +132,9 @@ final class TsConfigTreeBuilder
                             if (str_starts_with($includeTsConfigFileAndPath, $extensionPath) && file_exists($includeTsConfigFileAndPath)) {
                                 $typoScriptString = (string)file_get_contents($includeTsConfigFileAndPath);
                                 if (!empty($typoScriptString)) {
-                                    $collectedPagesTsConfigArray['pagesTsConfig-page-' . $page['uid'] . '-includes-' . $key] = (string)file_get_contents($includeTsConfigFileAndPath);
+                                    $collectedPagesTsConfigArray['pagesTsConfig-page-' . $page['uid'] . '-includes-' . $key] = [
+                                        'content' => (string)file_get_contents($includeTsConfigFileAndPath),
+                                    ];
                                 }
                             }
                         }
@@ -137,20 +142,34 @@ final class TsConfigTreeBuilder
                 }
             }
             if (!empty($page['TSconfig'])) {
-                $collectedPagesTsConfigArray['pagesTsConfig-page-' . $page['uid'] . '-tsConfig'] = $page['TSconfig'];
+                $collectedPagesTsConfigArray['pagesTsConfig-page-' . $page['uid'] . '-tsConfig'] = ['content' => $page['TSconfig']];
             }
         }
 
         // @deprecated since TYPO3 v12, remove together with event class in v13.
-        $event = $this->eventDispatcher->dispatch(new LegacyModifyLoadedPageTsConfigEvent($collectedPagesTsConfigArray, $rootLine));
-        $collectedPagesTsConfigArray = $event->getTsConfig();
+        $event = $this->eventDispatcher->dispatch(new LegacyModifyLoadedPageTsConfigEvent(
+            array_map(static fn(array $descriptor): string => $descriptor['content'], $collectedPagesTsConfigArray),
+            $rootLine
+        ));
+        $collectedPagesTsConfigContentArray = $event->getTsConfig();
+        foreach ($collectedPagesTsConfigContentArray as $key => $content) {
+            $collectedPagesTsConfigArray[$key]['content'] = $content;
+        }
 
-        $event = $this->eventDispatcher->dispatch(new ModifyLoadedPageTsConfigEvent($collectedPagesTsConfigArray, $rootLine));
-        $collectedPagesTsConfigArray = $event->getTsConfig();
+        $event = $this->eventDispatcher->dispatch(new ModifyLoadedPageTsConfigEvent(
+            array_map(static fn(array $descriptor): string => $descriptor['content'], $collectedPagesTsConfigArray),
+            $rootLine
+        ));
+        $collectedPagesTsConfigContentArray = $event->getTsConfig();
+        foreach ($collectedPagesTsConfigContentArray as $key => $content) {
+            $collectedPagesTsConfigArray[$key]['content'] = $content;
+        }
 
         $includeTree = new RootInclude();
-        foreach ($collectedPagesTsConfigArray as $key => $typoScriptString) {
-            $includeTree->addChild($this->getTreeFromString((string)$key, $typoScriptString, $tokenizer, $cache));
+        foreach ($collectedPagesTsConfigArray as $key => $descriptor) {
+            $typoScriptString = $descriptor['content'];
+            $filename = $descriptor['filename'] ?? null;
+            $includeTree->addChild($this->getTreeFromString((string)$key, $typoScriptString, $tokenizer, $cache, $filename));
         }
         return $includeTree;
     }
@@ -159,7 +178,8 @@ final class TsConfigTreeBuilder
         string $name,
         string $typoScriptString,
         TokenizerInterface $tokenizer,
-        ?PhpFrontend $cache = null
+        ?PhpFrontend $cache = null,
+        string $filename = null,
     ): TsConfigInclude {
         $lowercaseName = mb_strtolower($name);
         $identifier = (new PackageDependentCacheIdentifier($this->packageManager))
@@ -174,6 +194,9 @@ final class TsConfigTreeBuilder
         }
         $includeNode = new TsConfigInclude();
         $includeNode->setName($name);
+        if ($filename !== null) {
+            $includeNode->setPath($filename);
+        }
         $includeNode->setLineStream($tokenizer->tokenize($typoScriptString));
         $this->treeFromTokenStreamBuilder->buildTree($includeNode, 'tsconfig', $tokenizer);
         $cache?->set($identifier, 'return unserialize(\'' . addcslashes(serialize($includeNode), '\'\\') . '\');');
