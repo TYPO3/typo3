@@ -1,1 +1,7 @@
 loadedFromTestExtensionConfigurationPageTsConfig = loadedFromTestExtensionConfigurationPageTsConfig
+@import './TsConfig/Relative/include-target-20.tsconfig'
+@import './TsConfig/Relative/include-target-21'
+@import './TsConfig/Relative/include-target-22.tsconfig'
+@import './TsConfig/Relative/include-target-23.typoscript'
+# Not loaded: Path traversal not allowed.
+@import './TsConfig/Relative/../Relative/include-target-24.tsconfig'

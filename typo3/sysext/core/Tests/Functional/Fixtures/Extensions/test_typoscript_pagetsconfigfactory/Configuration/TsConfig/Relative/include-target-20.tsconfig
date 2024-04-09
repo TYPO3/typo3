@@ -1,0 +1,2 @@
+loadedFromRelativeIncludeTarget20 = loadedFromRelativeIncludeTarget20
+@import './include-target-20-sub.tsconfig'
