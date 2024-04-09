@@ -59,6 +59,7 @@ final class TreeFromLineStreamBuilder
     /** @var 'constants'|'setup'|'other' */
     private string $type;
     private TokenizerInterface $tokenizer;
+    private bool $enableMagicIncludes = false;
 
     /**
      * Using "@import" with wildcards, the file ending depends on the given type:
@@ -78,7 +79,7 @@ final class TreeFromLineStreamBuilder
         private readonly FileNameValidator $fileNameValidator,
     ) {}
 
-    public function buildTree(IncludeInterface $node, string $type, TokenizerInterface $tokenizer): void
+    public function buildTree(IncludeInterface $node, string $type, TokenizerInterface $tokenizer, bool $enableMagicIncludes = true): void
     {
         if (!in_array($type, ['constants', 'setup', 'tsconfig', 'other'], true)) {
             // Type "constants" and "setup" trigger the weird addStaticMagicFromGlobals() resolving, while "other" ignores it.
@@ -86,6 +87,7 @@ final class TreeFromLineStreamBuilder
         }
         $this->type = $type;
         $this->tokenizer = $tokenizer;
+        $this->enableMagicIncludes = $enableMagicIncludes;
         $this->buildTreeInternal($node);
     }
 
@@ -560,6 +562,10 @@ final class TreeFromLineStreamBuilder
             return;
         }
         $globalsLookup = $extensionKeyWithoutUnderscores . '/' . $pathSegmentWithAppendedSlash;
+
+        if (!$this->enableMagicIncludes) {
+            return;
+        }
         // If this is a template of type "default content rendering", see if other extensions have added their TypoScript that should be included.
         if (in_array($globalsLookup, $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'], true)) {
             $source = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] ?? null;

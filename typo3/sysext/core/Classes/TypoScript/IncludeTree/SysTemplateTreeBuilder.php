@@ -86,6 +86,8 @@ final class SysTemplateTreeBuilder
     private TokenizerInterface $tokenizer;
     private ?PhpFrontend $cache = null;
 
+    private bool $enableStaticMagicIncludes = false;
+
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly PackageManager $packageManager,
@@ -116,6 +118,7 @@ final class SysTemplateTreeBuilder
 
         $siteIsTypoScriptRoot = $site instanceof Site ? $site->isTypoScriptRoot() : false;
         if ($siteIsTypoScriptRoot) {
+            $this->enableStaticMagicIncludes = false;
             $cacheIdentifier = 'site-template-' . $this->type . '-' . $site->getIdentifier();
             $includeNode = $this->cache?->require($cacheIdentifier) ?: null;
             $includeNode ??= $this->createSiteTemplateInclude($site, $cacheIdentifier);
@@ -126,6 +129,7 @@ final class SysTemplateTreeBuilder
             return $rootNode;
         }
 
+        $this->enableStaticMagicIncludes = true;
         // Convenience code: Usually, at least one sys_template records needs to have 'clear' set. This resets
         // the AST and triggers inclusion of "globals" TypoScript. When integrators missed to set the clear flags,
         // important globals TypoScript is not loaded, leading to pretty hard to find issues in Frontend
@@ -189,7 +193,8 @@ final class SysTemplateTreeBuilder
         $includeNode->setRoot(true);
         $includeNode->setClear(true);
 
-        $this->addDefaultTypoScriptFromGlobals($includeNode);
+        $this->addScopedStaticsFromGlobals($includeNode, 'siteSets');
+        $this->addContentRenderingFromGlobals($includeNode, 'TYPO3_CONF_VARS defaultContentRendering');
 
         $sets = $this->setRegistry->getSets(...$site->getSets());
         if (count($sets) > 0) {
@@ -198,7 +203,6 @@ final class SysTemplateTreeBuilder
             $includeSetInclude->setPath('site:' . $site->getIdentifier() . '/');
             foreach ($sets as $set) {
                 $this->handleSetInclude($includeSetInclude, rtrim($set->typoscript, '/') . '/', 'set:' . $set->name);
-                $this->addStaticMagicFromGlobals($includeSetInclude, 'set:' . $set->name);
             }
             $includeNode->addChild($includeSetInclude);
         }
@@ -211,7 +215,7 @@ final class SysTemplateTreeBuilder
         $content = $this->type === 'constants' ? $siteTypoScript?->constants : $siteTypoScript?->setup;
         if ($content !== null) {
             $includeNode->setLineStream($this->tokenizer->tokenize($content));
-            $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type, $this->tokenizer);
+            $this->treeFromTokenStreamBuilder->buildTree($includeNode, $this->type, $this->tokenizer, false);
         }
 
         $includeNode->setName(sprintf(
@@ -254,7 +258,7 @@ final class SysTemplateTreeBuilder
             $fileNode->setName($label . ':' . $this->type . '.typoscript');
             $fileNode->setPath($fileName);
             $fileNode->setLineStream($this->tokenizer->tokenize($fileContent));
-            $this->treeFromTokenStreamBuilder->buildTree($fileNode, $this->type, $this->tokenizer);
+            $this->treeFromTokenStreamBuilder->buildTree($fileNode, $this->type, $this->tokenizer, false);
             $parentNode->addChild($fileNode);
         }
     }
@@ -441,8 +445,10 @@ final class SysTemplateTreeBuilder
             }
         }
 
-        $extensionKeyWithoutUnderscores = str_replace('_', '', $extensionKey);
-        $this->addStaticMagicFromGlobals($parentNode, $extensionKeyWithoutUnderscores . '/' . $pathSegmentWithAppendedSlash);
+        if ($this->enableStaticMagicIncludes) {
+            $extensionKeyWithoutUnderscores = str_replace('_', '', $extensionKey);
+            $this->addStaticMagicFromGlobals($parentNode, $extensionKeyWithoutUnderscores . '/' . $pathSegmentWithAppendedSlash);
+        }
     }
 
     /**
@@ -534,11 +540,7 @@ final class SysTemplateTreeBuilder
         $parentConstantNode->addChild($node);
     }
 
-    /**
-     * A rather weird lookup in $GLOBALS['TYPO3_CONF_VARS']['FE'] for magic includes.
-     * See ExtensionManagementUtility::addTypoScript() for more details on this.
-     */
-    private function addStaticMagicFromGlobals(IncludeInterface $parentNode, string $identifier): void
+    private function addScopedStaticsFromGlobals(IncludeInterface $parentNode, string $identifier): void
     {
         // defaultTypoScript_constants.' or defaultTypoScript_setup.'
         $source = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $this->type . '.'][$identifier] ?? null;
@@ -549,16 +551,30 @@ final class SysTemplateTreeBuilder
             $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
             $parentNode->addChild($node);
         }
+    }
+
+    private function addContentRenderingFromGlobals(IncludeInterface $parentNode, string $name): void
+    {
+        $source = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $this->type . '.']['defaultContentRendering'] ?? null;
+        if (!empty($source)) {
+            $node = new DefaultTypoScriptMagicKeyInclude();
+            $node->setName($name);
+            $node->setLineStream($this->tokenizer->tokenize($source));
+            $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
+            $parentNode->addChild($node);
+        }
+    }
+
+    /**
+     * A rather weird lookup in $GLOBALS['TYPO3_CONF_VARS']['FE'] for magic includes.
+     * See ExtensionManagementUtility::addTypoScript() for more details on this.
+     */
+    private function addStaticMagicFromGlobals(IncludeInterface $parentNode, string $identifier): void
+    {
+        $this->addScopedStaticsFromGlobals($parentNode, $identifier);
         // If this is a template of type "default content rendering", see if other extensions have added their TypoScript that should be included.
         if (in_array($identifier, $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'], true)) {
-            $source = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $this->type . '.']['defaultContentRendering'] ?? null;
-            if (!empty($source)) {
-                $node = new DefaultTypoScriptMagicKeyInclude();
-                $node->setName('TYPO3_CONF_VARS defaultContentRendering ' . $this->type . ' for ' . $identifier);
-                $node->setLineStream($this->tokenizer->tokenize($source));
-                $this->treeFromTokenStreamBuilder->buildTree($node, $this->type, $this->tokenizer);
-                $parentNode->addChild($node);
-            }
+            $this->addContentRenderingFromGlobals($parentNode, 'TYPO3_CONF_VARS defaultContentRendering ' . $this->type . ' for ' . $identifier);
         }
     }
 

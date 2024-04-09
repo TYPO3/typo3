@@ -1025,14 +1025,23 @@ tt_content.' . $key . $suffix . ' {
      * FOR USE IN ext_localconf.php FILES
      *
      * @param string $content TypoScript Setup string
+     * @param bool $includeInSiteSets
      */
-    public static function addTypoScriptSetup(string $content): void
+    public static function addTypoScriptSetup(string $content, bool $includeInSiteSets = true): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] ??= '';
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'])) {
             $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] .= LF;
         }
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'] .= $content;
+
+        if ($includeInSiteSets) {
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['siteSets'] ??= '';
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['siteSets'])) {
+                $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['siteSets'] .= LF;
+            }
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['siteSets'] .= $content;
+        }
     }
 
     /**
@@ -1041,14 +1050,22 @@ tt_content.' . $key . $suffix . ' {
      * FOR USE IN ext_localconf.php FILES
      *
      * @param string $content TypoScript Constants string
+     * @param bool $includeInSiteSets
      */
-    public static function addTypoScriptConstants(string $content): void
+    public static function addTypoScriptConstants(string $content, bool $includeInSiteSets = true): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] ??= '';
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'])) {
             $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] .= LF;
         }
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] .= $content;
+        if ($includeInSiteSets) {
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants.']['siteSets'] ??= '';
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants.']['siteSets'])) {
+                $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants.']['siteSets'] .= LF;
+            }
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants.']['siteSets'] .= $content;
+        }
     }
 
     /**
@@ -1068,7 +1085,7 @@ tt_content.' . $key . $suffix . ' {
      * @param int|string $afterStaticUid string pointing to the "key" of a static_file template ([reduced extension_key]/[local path]). The points is that the TypoScript you add is included only IF that static template is included (and in that case, right after). So effectively the TypoScript you set can specifically overrule settings from those static templates.
      * @throws \InvalidArgumentException
      */
-    public static function addTypoScript(string $key, string $type, string $content, int|string $afterStaticUid = 0): void
+    public static function addTypoScript(string $key, string $type, string $content, int|string $afterStaticUid = 0, bool $includeInSiteSets = true): void
     {
         if ($type !== 'setup' && $type !== 'constants') {
             throw new \InvalidArgumentException('Argument $type must be set to either "setup" or "constants" when calling addTypoScript from extension "' . $key . '"', 1507321200);
@@ -1095,6 +1112,11 @@ tt_content.' . $key . $suffix . ' {
         } else {
             $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] ??= '';
             $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] .= $content;
+            if ($includeInSiteSets) {
+                // 'siteSets' is an @internal identifier
+                $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['siteSets'] ??= '';
+                $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['siteSets'] .= $content;
+            }
         }
     }
 
