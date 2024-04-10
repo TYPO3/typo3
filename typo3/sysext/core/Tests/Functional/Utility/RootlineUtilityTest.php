@@ -41,6 +41,14 @@ final class RootlineUtilityTest extends FunctionalTestCase
     ];
 
     protected array $coreExtensionsToLoad = ['workspaces'];
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_rootlineutility',
+    ];
+    protected array $configurationToUseInTestInstance = [
+        'FE' => [
+            'addRootLineFields' => 'categories,categories_other,tx_testrootlineutility_hotels',
+        ],
+    ];
 
     protected function setUp(): void
     {
@@ -389,7 +397,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                     't3ver_oid' => 0,
                     't3ver_wsid' => 0,
                     't3ver_state' => 0,
-                    'title' => 'EN Parent 1 Sub 1',
+                    'title' => 'EN Parent 1000 Sub 1',
                 ],
                 1 => [
                     'uid' => 1000,
@@ -397,7 +405,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                     't3ver_oid' => 0,
                     't3ver_wsid' => 0,
                     't3ver_state' => 0,
-                    'title' => 'EN Parent 1',
+                    'title' => 'EN Parent 1000',
                 ],
                 0 => [
                     'uid' => 1,
@@ -421,7 +429,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                     't3ver_oid' => 0,
                     't3ver_wsid' => 0,
                     't3ver_state' => 0,
-                    'title' => 'FR Parent 1 Sub 1',
+                    'title' => 'FR Parent 1000 Sub 1',
                     '_LOCALIZED_UID' => 1002,
                     '_REQUESTED_OVERLAY_LANGUAGE' => 1,
                 ],
@@ -431,7 +439,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                     't3ver_oid' => 0,
                     't3ver_wsid' => 0,
                     't3ver_state' => 0,
-                    'title' => 'EN Parent 1',
+                    'title' => 'EN Parent 1000',
                 ],
                 0 => [
                     'uid' => 1,
@@ -457,7 +465,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                     't3ver_oid' => 0,
                     't3ver_wsid' => 0,
                     't3ver_state' => 0,
-                    'title' => 'FR Parent 1 Sub 1',
+                    'title' => 'FR Parent 1000 Sub 1',
                 ],
                 1 => [
                     'uid' => 1000,
@@ -465,7 +473,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                     't3ver_oid' => 0,
                     't3ver_wsid' => 0,
                     't3ver_state' => 0,
-                    'title' => 'EN Parent 1',
+                    'title' => 'EN Parent 1000',
                 ],
                 0 => [
                     'uid' => 1,
@@ -489,7 +497,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                     't3ver_oid' => 0,
                     't3ver_wsid' => 2,
                     't3ver_state' => 1,
-                    'title' => 'EN WS2-new Parent 2 Sub 1',
+                    'title' => 'EN WS2-new Parent 1010 Sub 1',
                 ],
                 1 => [
                     'uid' => 1010,
@@ -497,7 +505,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                     't3ver_oid' => 0,
                     't3ver_wsid' => 0,
                     't3ver_state' => 0,
-                    'title' => 'EN Parent 2',
+                    'title' => 'EN Parent 1010',
                 ],
                 0 => [
                     'uid' => 1,
@@ -601,20 +609,21 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 ],
             ],
         ];
+
         yield 'media lang default' => [
-            'uid' => 1031,
+            'uid' => 2001,
             'language' => 0,
             'workspace' => 0,
             'testFields' => ['uid', 'title', 'media'],
             'expected' => [
                 2 => [
-                    'uid' => 1031,
-                    'title' => 'EN Parent 3 Sub 1',
+                    'uid' => 2001,
+                    'title' => 'EN Parent 2000 Sub 1',
                     'media' => '1001,1000',
                 ],
                 1 => [
-                    'uid' => 1030,
-                    'title' => 'EN Parent 3',
+                    'uid' => 2000,
+                    'title' => 'EN Parent 2000',
                     'media' => '',
                 ],
                 0 => [
@@ -624,20 +633,43 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 ],
             ],
         ];
-        yield 'media lang FR' => [
-            'uid' => 1031,
+        yield 'media lang FR, requesting with default lang uid' => [
+            'uid' => 2001,
             'language' => 1,
             'workspace' => 0,
             'testFields' => ['uid', 'title', 'media'],
             'expected' => [
                 2 => [
-                    'uid' => 1031,
-                    'title' => 'FR Parent 3 Sub 1',
+                    'uid' => 2001,
+                    'title' => 'FR Parent 2000 Sub 1',
                     'media' => '1010,1011',
                 ],
                 1 => [
-                    'uid' => 1030,
-                    'title' => 'EN Parent 3',
+                    'uid' => 2000,
+                    'title' => 'EN Parent 2000',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang FR, requesting with FR lang uid' => [
+            'uid' => 2002,
+            'language' => 1,
+            'workspace' => 0,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 2002,
+                    'title' => 'FR Parent 2000 Sub 1',
+                    'media' => '1010,1011',
+                ],
+                1 => [
+                    'uid' => 2000,
+                    'title' => 'EN Parent 2000',
                     'media' => '',
                 ],
                 0 => [
@@ -648,19 +680,19 @@ final class RootlineUtilityTest extends FunctionalTestCase
             ],
         ];
         yield 'media lang default, workspace new' => [
-            'uid' => 1041,
+            'uid' => 2011,
             'language' => 0,
             'workspace' => 2,
             'testFields' => ['uid', 'title', 'media'],
             'expected' => [
                 2 => [
-                    'uid' => 1041,
-                    'title' => 'EN WS2-new Parent 4 Sub 1 with media',
+                    'uid' => 2011,
+                    'title' => 'EN WS2-new Parent 2010 Sub 1 with media',
                     'media' => '1101,1100',
                 ],
                 1 => [
-                    'uid' => 1040,
-                    'title' => 'EN Parent 4',
+                    'uid' => 2010,
+                    'title' => 'EN Parent 2010',
                     'media' => '',
                 ],
                 0 => [
@@ -670,27 +702,649 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 ],
             ],
         ];
-        yield 'media lang default, workspace one media deleted' => [
-            'uid' => 1051,
-            'language' => 0,
+        yield 'media lang FR, workspace new, requesting with default lang uid' => [
+            'uid' => 2021,
+            'language' => 1,
             'workspace' => 2,
             'testFields' => ['uid', 'title', 'media'],
             'expected' => [
                 2 => [
-                    'uid' => 1051,
-                    'title' => 'EN WS2-changed Parent 5 Sub 1 with media deleted',
-                    // It would be better if these would be the ws-overlay uids directly.
-                    'media' => '1200',
+                    'uid' => 2021,
+                    'title' => 'FR WS2-new Parent 2020 Sub 1 with media',
+                    'media' => '1201,1200',
                 ],
                 1 => [
-                    'uid' => 1050,
-                    'title' => 'EN Parent 5',
+                    'uid' => 2020,
+                    'title' => 'EN Parent 2020',
                     'media' => '',
                 ],
                 0 => [
                     'uid' => 1,
                     'title' => 'EN Root',
                     'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang FR, workspace new, requesting with FR lang uid' => [
+            'uid' => 2022,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 2022,
+                    'title' => 'FR WS2-new Parent 2020 Sub 1 with media',
+                    'media' => '1201,1200',
+                ],
+                1 => [
+                    'uid' => 2020,
+                    'title' => 'EN Parent 2020',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang default, workspace media elements changed, requesting with live uid' => [
+            'uid' => 2031,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 2031,
+                    'title' => 'EN WS2-changed Parent 2030 Sub 1 with media changed',
+                    // It would be better if these would be the ws-overlay uids directly.
+                    'media' => '1300,1301,1307,1303', // bug: 1303 is hidden=1 in ws and should not be there
+                ],
+                1 => [
+                    'uid' => 2030,
+                    'title' => 'EN Parent 2030',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang default, workspace media elements changed, requesting with workspace uid' => [
+            'uid' => 2032,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 2032,
+                    'title' => 'EN WS2-changed Parent 2030 Sub 1 with media changed',
+                    // It would be better if these would be the ws-overlay uids directly.
+                    'media' => '1300,1301,1307,1303', // bug: 1303 is hidden=1 in ws and should not be there
+                ],
+                1 => [
+                    'uid' => 2030,
+                    'title' => 'EN Parent 2030',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang FR, workspace media elements changed, requesting with live uid and default lang' => [
+            'uid' => 2041,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 2041,
+                    'title' => 'FR WS2-changed Parent 2040 Sub 1 with media changed',
+                    // It would be better if these would be the ws-overlay uids directly.
+                    'media' => '1400,1407,1401,1403', // bug: 1403 is hidden
+                ],
+                1 => [
+                    'uid' => 2040,
+                    'title' => 'EN Parent 2040',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang FR, workspace media elements changed, requesting with live uid and FR lang' => [
+            'uid' => 2042,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 2042,
+                    'title' => 'FR WS2-changed Parent 2040 Sub 1 with media changed',
+                    // It would be better if these would be the ws-overlay uids directly.
+                    'media' => '1400,1407,1401,1403', // bug: 1403 is hidden
+                ],
+                1 => [
+                    'uid' => 2040,
+                    'title' => 'EN Parent 2040',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang FR, workspace media elements changed, requesting with workspace uid' => [
+            'uid' => 2043,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 2043,
+                    'title' => 'FR WS2-changed Parent 2040 Sub 1 with media changed',
+                    // It would be better if these would be the ws-overlay uids directly.
+                    'media' => '1400,1407,1401,1403', // bug: 1403 is hidden
+                ],
+                1 => [
+                    'uid' => 2040,
+                    'title' => 'EN Parent 2040',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+
+        yield 'categories lang default' => [
+            'uid' => 3010,
+            'language' => 0,
+            'workspace' => 0,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other'],
+            'expected' => [
+                2 => [
+                    'uid' => 3010,
+                    'title' => 'EN Parent 3000 Sub 10',
+                    // bugs: deleted, hidden, starttime, endtime ignored
+                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130',
+                    'categories_other' => '20,30',
+                ],
+                1 => [
+                    'uid' => 3000,
+                    'title' => 'EN Parent 3000 contains categories',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+            ],
+        ];
+        yield 'categories lang FR, requesting with default lang uid' => [
+            'uid' => 3020,
+            'language' => 1,
+            'workspace' => 0,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other'],
+            'expected' => [
+                2 => [
+                    'uid' => 3020,
+                    'title' => 'FR Parent 3000 Sub 20',
+                    // bugs: deleted, hidden, starttime, endtime ignored
+                    'categories' => '30,20,40,50,60,70,80,90,100,110,120,130',
+                    'categories_other' => '10,20',
+                ],
+                1 => [
+                    'uid' => 3000,
+                    'title' => 'FR Parent 3000 contains categories',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+            ],
+        ];
+        yield 'categories lang FR, requesting with FR lang uid' => [
+            'uid' => 3021,
+            'language' => 1,
+            'workspace' => 0,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other'],
+            'expected' => [
+                2 => [
+                    'uid' => 3021,
+                    'title' => 'FR Parent 3000 Sub 20',
+                    // bugs: deleted, hidden, starttime, endtime ignored
+                    'categories' => '30,20,40,50,60,70,80,90,100,110,120,130',
+                    'categories_other' => '10,20',
+                ],
+                1 => [
+                    'uid' => 3000,
+                    'title' => 'FR Parent 3000 contains categories',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+            ],
+        ];
+        yield 'categories lang default, workspace new' => [
+            'uid' => 3030,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other'],
+            'expected' => [
+                2 => [
+                    'uid' => 3030,
+                    'title' => 'EN WS2-new Parent 3000 Sub 30',
+                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130,140',
+                    'categories_other' => '20,30',
+                ],
+                1 => [
+                    'uid' => 3000,
+                    'title' => 'EN Parent 3000 contains categories',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+            ],
+        ];
+        yield 'categories lang FR, workspace new, requesting with default lang uid' => [
+            'uid' => 3040,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other'],
+            'expected' => [
+                2 => [
+                    'uid' => 3040,
+                    'title' => 'FR WS2-new Parent 3000 Sub 40',
+                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130,140',
+                    'categories_other' => '20,30',
+                ],
+                1 => [
+                    'uid' => 3000,
+                    'title' => 'FR Parent 3000 contains categories',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+            ],
+        ];
+        yield 'categories lang FR, workspace new, requesting with FR lang uid' => [
+            'uid' => 3041,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other'],
+            'expected' => [
+                2 => [
+                    'uid' => 3041,
+                    'title' => 'FR WS2-new Parent 3000 Sub 40',
+                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130,140',
+                    'categories_other' => '20,30',
+                ],
+                1 => [
+                    'uid' => 3000,
+                    'title' => 'FR Parent 3000 contains categories',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+            ],
+        ];
+        yield 'categories lang default, workspace categories changed, requesting with live uid' => [
+            'uid' => 3050,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other'],
+            'expected' => [
+                2 => [
+                    'uid' => 3050,
+                    'title' => 'EN WS2-changed Parent 3000 Sub 50',
+                    // @todo: 10 is kept but not connected in WS
+                    //        140 not found, 20 not found
+                    // @todo missing cases: - a category has a delete placeholder in ws
+                    //                      - a category is changed (eg. title) in ws
+                    //                      - a category is unhidden, starttime, endtime enabled in ws, while it is not in live
+                    //                      - this test case for FR, as with 'media lang FR, workspace media elements changed'
+                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130',
+                    'categories_other' => '20,30',
+                ],
+                1 => [
+                    'uid' => 3000,
+                    'title' => 'EN Parent 3000 contains categories',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+            ],
+        ];
+        yield 'categories lang default, workspace categories changed, requesting with workspace uid' => [
+            'uid' => 3051,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other'],
+            'expected' => [
+                2 => [
+                    'uid' => 3051,
+                    'title' => 'EN WS2-changed Parent 3000 Sub 50',
+                    'categories' => '30,40,50,60,70,80,90,100,110,120,130,140,20',
+                    'categories_other' => '20',
+                ],
+                1 => [
+                    'uid' => 3000,
+                    'title' => 'EN Parent 3000 contains categories',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                ],
+            ],
+        ];
+
+        yield 'hotel lang default' => [
+            'uid' => 4010,
+            'language' => 0,
+            'workspace' => 0,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4010,
+                    'title' => 'EN Parent 4000 Sub 10',
+                    // starttime / endtime not respected
+                    'tx_testrootlineutility_hotels' => '1001,1000,1004,1005',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang FR, requesting with default lang uid' => [
+            'uid' => 4020,
+            'language' => 1,
+            'workspace' => 0,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4020,
+                    'title' => 'FR Parent 4000 Sub 20',
+                    // starttime / endtime not respected
+                    'tx_testrootlineutility_hotels' => '1101,1103,1112,1114,1116,1118,1120,1122,1124,1125',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang FR, requesting with FR lang uid' => [
+            'uid' => 4021,
+            'language' => 1,
+            'workspace' => 0,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4021,
+                    'title' => 'FR Parent 4000 Sub 20',
+                    // starttime / endtime not respected
+                    'tx_testrootlineutility_hotels' => '1101,1103,1112,1114,1116,1118,1120,1122,1124,1125',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang default, workspace new' => [
+            'uid' => 4030,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4030,
+                    'title' => 'EN WS2-new Parent 4000 Sub 30',
+                    'tx_testrootlineutility_hotels' => '1201,1200,1204,1205',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang FR, workspace new, requesting with default lang uid' => [
+            'uid' => 4040,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4040,
+                    'title' => 'FR WS2-new Parent 4000 Sub 40',
+                    'tx_testrootlineutility_hotels' => '1301,1303,1312,1314,1316,1318,1320,1322,1324,1325',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang FR, workspace new, requesting with FR lang uid' => [
+            'uid' => 4041,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4041,
+                    'title' => 'FR WS2-new Parent 4000 Sub 40',
+                    'tx_testrootlineutility_hotels' => '1301,1303,1312,1314,1316,1318,1320,1322,1324,1325',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang default, workspace hotels changed, requesting with live uid' => [
+            'uid' => 4050,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4050,
+                    'title' => 'EN WS2-changed Parent 4000 Sub 50',
+                    // hidden, starttime, endtime bugs ...
+                    'tx_testrootlineutility_hotels' => '1400,1402,1404,1409,1413,1415,1417,1419,1421,1423',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang default, workspace hotels changed, requesting with workspace uid' => [
+            'uid' => 4051,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4051,
+                    'title' => 'EN WS2-changed Parent 4000 Sub 50',
+                    // hidden, starttime, endtime bugs ...
+                    'tx_testrootlineutility_hotels' => '1400,1402,1404,1409,1413,1415,1417,1419,1421,1423',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang FR, workspace hotels changed, requesting with live uid and default lang' => [
+            'uid' => 4060,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4060,
+                    'title' => 'FR WS2-changed Parent 4000 Sub 60',
+                    // hidden, starttime, endtime bugs ...
+                    'tx_testrootlineutility_hotels' => '1501,1503,1505,1510,1514,1516,1518,1520,1522,1524',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang FR, workspace hotels changed, requesting with live uid and FR lang' => [
+            'uid' => 4061,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4061,
+                    'title' => 'FR WS2-changed Parent 4000 Sub 60',
+                    // hidden, starttime, endtime bugs ...
+                    'tx_testrootlineutility_hotels' => '1501,1503,1505,1510,1514,1516,1518,1520,1522,1524',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'hotel lang FR, workspace hotels changed, requesting with workspace uid' => [
+            'uid' => 4062,
+            'language' => 1,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 4062,
+                    'title' => 'FR WS2-changed Parent 4000 Sub 60',
+                    // hidden, starttime, endtime bugs ...
+                    'tx_testrootlineutility_hotels' => '1501,1503,1505,1510,1514,1516,1518,1520,1522,1524',
+                ],
+                1 => [
+                    'uid' => 4000,
+                    'title' => 'EN Parent 4000',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'tx_testrootlineutility_hotels' => '',
                 ],
             ],
         ];
