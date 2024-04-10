@@ -156,12 +156,6 @@
 			<trans-unit id="be_users.tabs.personal_data" resname="be_users.tabs.personal_data">
 				<source>Personal Data</source>
 			</trans-unit>
-			<trans-unit id="be_groups.palettes.tableRestrictions" resname="be_groups.palettes.tableRestrictions">
-				<source>Table restrictions</source>
-			</trans-unit>
-			<trans-unit id="be_groups.palettes.tableRestrictions.description" resname="be_groups.palettes.tableRestrictions.description">
-				<source>Tables chosen for modification automatically receive read access permissions. Therefore, there's no need to select them again in the list designated for listing purposes.</source>
-			</trans-unit>
 			<trans-unit id="be_groups.title" resname="be_groups.title">
 				<source>Grouptitle</source>
 			</trans-unit>
@@ -169,7 +163,19 @@
 				<source>Page types</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tables_modify" resname="be_groups.tables_modify">
-				<source>Tables (modify)</source>
+				<source>Table permissions</source>
+			</trans-unit>
+			<trans-unit id="be_groups.tables_modify.description" resname="be_groups.tables_modify.description">
+				<source>Tables chosen for writing automatically receive read access permissions.</source>
+			</trans-unit>
+			<trans-unit id="be_groups.tables_modify.permissions.none" resname="be_groups.tables_modify.permissions.none">
+				<source>No Access</source>
+			</trans-unit>
+			<trans-unit id="be_groups.tables_modify.permissions.select" resname="be_groups.tables_modify.permissions.select">
+				<source>Read</source>
+			</trans-unit>
+			<trans-unit id="be_groups.tables_modify.permissions.modify" resname="be_groups.tables_modify.permissions.modify">
+				<source>Read &amp; Write</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tables_select" resname="be_groups.tables_select">
 				<source>Tables (listing)</source>

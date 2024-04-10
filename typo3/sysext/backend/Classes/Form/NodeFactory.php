@@ -105,6 +105,7 @@ class NodeFactory
         'belayoutwizard' => Element\BackendLayoutWizardElement::class,
         'json' => Element\JsonElement::class,
         'uuid' => Element\UuidElement::class,
+        'tablePermission' => Element\TablePermissionElement::class,
 
         // Default classes to enrich single elements
         'fieldControl' => NodeExpansion\FieldControl::class,

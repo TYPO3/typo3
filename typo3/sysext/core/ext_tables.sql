@@ -23,6 +23,11 @@ CREATE TABLE be_users (
 	KEY username (username)
 );
 
+CREATE TABLE be_groups(
+	# @todo: Remove once tables_modify and tables_select are merged to one field
+	tables_select longtext
+);
+
 CREATE TABLE pages (
 	# No TCA column defined for perms_
 	perms_userid int(11) unsigned DEFAULT '0' NOT NULL,

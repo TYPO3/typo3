@@ -3483,7 +3483,7 @@ typo3-backend-form-selecttree-toolbar{display:block;border-bottom:1px solid rgba
 .table .col-path{min-width:200px;max-width:40ch;word-wrap:break-word;word-break:break-all}
 .table .col-action,.table .col-language,.table .col-recordtitle,.table .col-state{min-width:120px}
 .table .col-differences,.table .col-task{min-width:400px}
-.table .col-clipboard,.table .col-control,.table .col-nowrap{white-space:nowrap!important}
+.table .col-clipboard,.table .col-control,.table .col-nowrap,.table .col-radiogroup{white-space:nowrap!important}
 .table .col-clipboard,.table .col-control{text-align:end}
 .table .col-border-left{border-inline-start:1px solid var(--bs-table-border-color)}
 .table .col-min{min-width:150px}
