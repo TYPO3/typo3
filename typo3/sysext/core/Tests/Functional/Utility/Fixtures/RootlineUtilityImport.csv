@@ -1,26 +1,86 @@
 "sys_workspace"
 ,"uid","pid","deleted","title"
-,1,0,0,"My Personal Workspace"
-,2,0,0,"Another Workspace"
+,1,0,0,"ws1"
+,2,0,0,"ws2"
+"sys_file"
+,"uid","pid","type","storage","identifier","extension","mime_type","name","sha1","size","creation_date","modification_date","missing","metadata","identifier_hash","folder_hash","last_indexed"
+,1,0,2,1,"/user_upload/image1.jpg","jpg","image/jpeg","image1.jpg","ae6951147687ed1f94f60973fca7ef46e2ba2372",166843,1375080761,1374139442,0,0,"16ba2a587da8ef10dfccbe8b9841bde85afbd2d4","19669f1e02c2f16705ec7587044c66443be70725",0
+,2,0,2,1,"/user_upload/image2.jpg","jpg","image/jpeg","image2.jpg","ae6951147687ed1f94f60973fca7ef46e2ba2372",166843,1375080761,1374139442,0,0,"16ba2a587da8ef10dfccbe8b9841bde85afbd2d4","19669f1e02c2f16705ec7587044c66443be70725",0
+,3,0,2,1,"/user_upload/image3.jpg","png","image/jpeg","image3.jpg","ae6951147687ed1f94f60973fca7ef46e2ba2372",166843,1375080761,1374139442,0,0,"16ba2a587da8ef10dfccbe8b9841bde85afbd2d4","19669f1e02c2f16705ec7587044c66443be70725",0
+,4,0,2,1,"/user_upload/image4.jpg","png","image/jpeg","image4.jpg","ae6951147687ed1f94f60973fca7ef46e2ba2372",166843,1375080761,1374139442,0,0,"16ba2a587da8ef10dfccbe8b9841bde85afbd2d4","19669f1e02c2f16705ec7587044c66443be70725",0
+,5,0,2,1,"/user_upload/image5.jpg","png","image/jpeg","image5.jpg","ae6951147687ed1f94f60973fca7ef46e2ba2372",166843,1375080761,1374139442,0,0,"16ba2a587da8ef10dfccbe8b9841bde85afbd2d4","19669f1e02c2f16705ec7587044c66443be70725",0
 "pages"
 ,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","media","mount_pid","mount_pid_ol","fe_group","slug","title"
-,1000,0,0,0,0,0,0,0,0,0,0,0,"/","ACME Global"
-,1100,1000,0,0,0,0,0,0,0,0,0,0,"/welcome","EN: Welcome"
-,1101,1000,0,1,1100,0,0,0,0,0,0,0,"/bienvenue","FR: Welcome"
-,1102,1000,0,2,1100,0,0,0,0,0,0,0,"/bienvenue-ca","FR-CA: Welcome"
-,1200,1000,0,0,0,0,0,0,0,0,0,0,"/features","EN: Features"
-,1300,1000,0,0,0,0,0,0,0,0,0,0,"/products","EN: Products"
-,1310,1300,0,0,0,0,0,0,0,0,0,0,"/products/toys","EN: Toys"
-,1320,1300,0,0,0,0,0,0,0,0,0,0,"/products/card-games","EN: Card Games"
-,1330,1300,0,0,0,0,0,0,0,0,0,0,"/products/board-games","EN: Board Games"
-,1331,1330,0,0,0,0,0,0,0,0,0,0,"/products/monopoly","EN: Monopoly"
-,1332,1330,0,0,0,0,0,0,0,0,0,0,"/products/board-games/catan","EN: Catan"
-,1333,1330,0,0,0,0,0,0,0,0,0,0,"/risk","EN: Risk"
-,1400,1000,0,0,0,1,0,1,0,0,0,0,"/a-new-page","EN: A new page in workspace"
-,10000,0,0,0,0,1,1000,0,0,0,0,,"/","ACME Global modified in Workspace 1"
-,10001,1320,0,0,0,1,1333,4,0,0,0,,"/risk","EN: Risk"
-,10002,1000,0,0,0,2,1300,2,0,0,0,,"/products","EN: Products"
+,1,0,0,0,0,0,0,0,0,0,0,0,"/","EN Root"
+,1000,1,0,0,0,0,0,0,0,0,0,0,"/parent1","EN Parent 1"
+,1001,1000,0,0,0,0,0,0,0,0,0,0,"/parent1/sub1","EN Parent 1 Sub 1"
+,1002,1000,0,1,1001,0,0,0,0,0,0,0,"/parent1/fr-sub1","FR Parent 1 Sub 1"
+,1003,1000,0,0,0,0,0,0,0,0,0,0,"/parent1/sub2","EN Parent 1 Sub 2"
+,1004,1,0,0,0,1,1000,2,0,0,0,0,"/parent1","EN WS1-deleted Parent 1"
+,1010,1,0,0,0,0,0,0,0,0,0,0,"/parent2","EN Parent 2"
+,1011,1010,0,0,0,2,0,1,0,0,0,0,"/parent2/sub1","EN WS2-new Parent 2 Sub 1"
+,1020,1,0,0,0,0,0,0,0,0,0,0,"/move-in-ws","EN To Move in WS"
+,1021,1,0,0,0,0,0,0,0,0,0,0,"/move-target","EN Move target"
+,1022,1021,0,0,0,2,1020,4,0,0,0,0,"/move-in-ws","EN WS2-moved Move in WS"
+,1030,1,0,0,0,0,0,0,0,0,0,0,"/parent3","EN Parent 3"
+,1031,1030,0,0,0,0,0,0,0,0,0,0,"/parent3/sub1","EN Parent 3 Sub 1"
+,1032,1030,0,1,1031,0,0,0,0,0,0,0,"/parent3/fr-sub1","FR Parent 3 Sub 1"
+,1040,1,0,0,0,0,0,0,0,0,0,0,"/parent4","EN Parent 4"
+,1041,1040,0,0,0,2,0,1,0,0,0,0,"/parent2/sub1-with-media","EN WS2-new Parent 4 Sub 1 with media"
+,1050,1,0,0,0,0,0,0,0,0,0,0,"/parent5","EN Parent 5"
+,1051,1050,0,0,0,0,0,0,0,0,0,0,"/parent5/sub1","EN Parent 5 Sub 1 with media"
+,1052,1050,0,0,0,2,1051,0,0,0,0,0,"/parent5/sub1","EN WS2-changed Parent 5 Sub 1 with media deleted"
+"sys_file_reference"
+,"uid","pid","deleted","hidden","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","t3ver_stage","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","title"
+,1000,1031,0,0,0,0,0,0,0,0,1,1031,"pages","media",2,"image1"
+,1001,1031,0,0,0,0,0,0,0,0,5,1031,"pages","media",1,"image5"
+,1002,1031,0,1,0,0,0,0,0,0,3,1031,"pages","media",3,"image3 hidden ref"
+,1003,1031,1,0,0,0,0,0,0,0,4,1031,"pages","media",4,"image4 deleted ref"
+,1010,1031,0,0,1,1,0,0,0,0,1,1032,"pages","media",1,"image1"
+,1011,1031,0,0,1,2,0,0,0,0,2,1032,"pages","media",2,"image2"
+,1012,1031,0,1,0,0,0,0,0,0,3,1032,"pages","media",3,"image3 hidden ref"
+,1013,1031,1,0,0,0,0,0,0,0,4,1032,"pages","media",4,"image4 deleted ref"
+,1100,1041,0,0,0,0,2,0,1,0,1,1041,"pages","media",2,"image1"
+,1101,1041,0,0,0,0,2,0,1,0,5,1041,"pages","media",1,"image5"
+,1102,1041,0,1,0,0,2,0,1,0,3,1041,"pages","media",3,"image3 hidden ref"
+,1200,1051,0,0,0,0,0,0,0,0,1,1051,"pages","media",2,"image1"
+,1201,1051,0,0,0,0,0,0,0,0,5,1051,"pages","media",1,"image5"
+,1202,1051,0,0,0,0,2,1200,0,0,1,1051,"pages","media",2,"image1"
+,1203,1051,0,0,0,0,2,1201,2,0,5,1051,"pages","media",1,"image5"
 "sys_refindex"
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string"
-,"d82e8687cecaf87aef30a619370d74c9","pages",1101,"l10n_parent",,,,0,0,"pages",1100,
-,"83405f026c17228bef16c5eb0e4349c6","pages",1102,"l10n_parent",,,,0,0,"pages",1100,
+,"9e8c5119deb1a180566b9782f267ddc1","pages",1002,"l10n_parent",,,,0,0,"pages",1001,
+,"ce974e1f306f053ec683e473d26ef862","pages",1031,"media",,,,0,0,"sys_file_reference",1001,
+,"94fb4a218422535e75ee4b70c6782608","pages",1031,"media",,,,1,0,"sys_file_reference",1000,
+,"ad4f345678532221cff034ffaaa90848","pages",1031,"media",,,,2,0,"sys_file_reference",1002,
+,"a4af7b5b6209bce7b57a1d20e79b3b3f","pages",1032,"l10n_parent",,,,0,0,"pages",1031,
+,"382f7da8a24d09e96f011baaa2fe298d","pages",1032,"media",,,,0,0,"sys_file_reference",1010,
+,"c2f7b0da34020c9cfa18645950b623ca","pages",1032,"media",,,,1,0,"sys_file_reference",1011,
+,"2b367281adfc037649d70399ce414c15","pages",1032,"media",,,,2,0,"sys_file_reference",1012,
+,"f41641a1a6e0dda41f47526445ebc8ac","pages",1041,"media",,,,0,2,"sys_file_reference",1101,
+,"a59b297ece542623f2d1c4fbc5f56c74","pages",1041,"media",,,,1,2,"sys_file_reference",1100,
+,"2ed09fceb6a99bd94fe8994728f6d3c5","pages",1041,"media",,,,2,2,"sys_file_reference",1102,
+,"6fba83e33f30d9ef14d5dfcd5d63fe5c","pages",1051,"media",,,,0,0,"sys_file_reference",1201,
+,"024f952c4311299a9518985e029af103","pages",1051,"media",,,,1,0,"sys_file_reference",1200,
+,"6f102ac56c0d4ad453e4fbb3690d5f51","pages",1052,"media",,,,0,2,"sys_file_reference",1203,
+,"19237b69723f541cb8f2a608db2c8ef2","pages",1052,"media",,,,1,2,"sys_file_reference",1202,
+,"39433ea4a82060704109046e4828d3c8","sys_file",1,"storage",,,,0,0,"sys_file_storage",1,
+,"1c9b8784c1518ef7b22704c4fc698ca9","sys_file",2,"storage",,,,0,0,"sys_file_storage",1,
+,"24d47b29aa969cf4db8635e76dd1c386","sys_file",3,"storage",,,,0,0,"sys_file_storage",1,
+,"bab37143de5339e474516691bf0c5857","sys_file",4,"storage",,,,0,0,"sys_file_storage",1,
+,"791d3f9d43dcbfa78cd49dd8258caa09","sys_file",5,"storage",,,,0,0,"sys_file_storage",1,
+,"1f6eb0fb60ffe14d40c03689e8a3ab47","sys_file_reference",1000,"uid_local",,,,0,0,"sys_file",1,
+,"9dc843f4b01cae5cda6126d29cc7ffcd","sys_file_reference",1001,"uid_local",,,,0,0,"sys_file",5,
+,"5c8ae9a01624f040b7b34d9471f80241","sys_file_reference",1002,"uid_local",,,,0,0,"sys_file",3,
+,"77a5eae3fe69e11b798d83ff7c6cc8df","sys_file_reference",1010,"l10n_parent",,,,0,0,"sys_file_reference",1,
+,"7b5f6ff3d4e47af0090b4fbbcfb6c9bc","sys_file_reference",1010,"uid_local",,,,0,0,"sys_file",1,
+,"fa91e6f5f2b59fe9b13ead4e6788d8b6","sys_file_reference",1011,"l10n_parent",,,,0,0,"sys_file_reference",2,
+,"6750ca3b9bad9259565f647b52363a77","sys_file_reference",1011,"uid_local",,,,0,0,"sys_file",2,
+,"1becc5a13fc300b03914e0a35f9e8fe6","sys_file_reference",1012,"uid_local",,,,0,0,"sys_file",3,
+,"f9f588287d59a44d76ad8bc288bcf01d","sys_file_reference",1100,"uid_local",,,,0,2,"sys_file",1,
+,"e6f056f44b25b8ec631b63e255f06789","sys_file_reference",1101,"uid_local",,,,0,2,"sys_file",5,
+,"987072f60e05a015ccc82debecc81965","sys_file_reference",1102,"uid_local",,,,0,2,"sys_file",3,
+,"8dabcc8318d35d142ea5210aef819fdf","sys_file_reference",1200,"uid_local",,,,0,0,"sys_file",1,
+,"ba730f55f3323ab577c91d650c1efbba","sys_file_reference",1201,"uid_local",,,,0,0,"sys_file",5,
+,"3eafeecf7f6fbf478ae9f537c5db7126","sys_file_reference",1202,"uid_local",,,,0,2,"sys_file",1,
+,"662cc7d7e85523cb3d6e0053ce6c1e50","sys_file_reference",1203,"uid_local",,,,0,2,"sys_file",5,

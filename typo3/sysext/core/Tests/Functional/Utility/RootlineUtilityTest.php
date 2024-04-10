@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Context\Context;
@@ -37,8 +38,6 @@ final class RootlineUtilityTest extends FunctionalTestCase
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8'],
-        'FR-CA' => ['id' => 2, 'title' => 'Franco-Canadian', 'locale' => 'fr_CA.UTF8'],
-        'ES' => ['id' => 3, 'title' => 'Spanish', 'locale' => 'es_ES.UTF8'],
     ];
 
     protected array $coreExtensionsToLoad = ['workspaces'];
@@ -48,11 +47,10 @@ final class RootlineUtilityTest extends FunctionalTestCase
         parent::setUp();
         $this->writeSiteConfiguration(
             'main',
-            $this->buildSiteConfiguration(1000, 'https://acme.com/'),
+            $this->buildSiteConfiguration(1, 'https://acme.com/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
                 $this->buildLanguageConfiguration('FR', '/fr/', ['EN']),
-                $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN']),
             ]
         );
         self::importCSVDataSet(__DIR__ . '/Fixtures/RootlineUtilityImport.csv');
@@ -76,10 +74,10 @@ final class RootlineUtilityTest extends FunctionalTestCase
     #[Test]
     public function verifyCleanReferenceIndex()
     {
-        $referenceIndexFixResult = $this->get(ReferenceIndex::class)->updateIndex(true);
-        if (count($referenceIndexFixResult['errors']) > 0) {
-            self::fail('Reference index not clean. ' . LF . implode(LF, $referenceIndexFixResult['errors']));
-        }
+        // Fix refindex, then compare with import csv again to verify nothing changed.
+        // This is to make sure the import csv is 'clean' - important for the other tests.
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/RootlineUtilityImport.csv');
     }
 
     #[Test]
@@ -346,7 +344,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1712572738);
         unset($GLOBALS['TCA']['pages']['columns']);
-        (new RootlineUtility(1000))->get();
+        (new RootlineUtility(1))->get();
     }
 
     #[Test]
@@ -355,172 +353,16 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1712572738);
         $GLOBALS['TCA']['pages']['columns'] = 'This is not an array.';
-        (new RootlineUtility(1000))->get();
+        (new RootlineUtility(1))->get();
     }
 
     #[Test]
     public function getForRootPageOnlyReturnsRootPageInformation(): void
     {
-        $rootPageUid = 1000;
+        $rootPageUid = 1;
         $result = (new RootlineUtility($rootPageUid))->get();
         self::assertCount(1, $result);
         self::assertSame($rootPageUid, (int)$result[0]['uid']);
-    }
-
-    #[Test]
-    public function resolveLivePagesAndSkipWorkspacedVersions(): void
-    {
-        $context = new Context();
-        $context->setAspect('workspace', new WorkspaceAspect(0));
-        $result = (new RootlineUtility(1330, '', $context))->get();
-        $expected = [
-            2 => [
-                'pid' => 1300,
-                'uid' => 1330,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 0,
-                't3ver_state' => 0,
-                'title' => 'EN: Board Games',
-            ],
-            1 => [
-                'pid' => 1000,
-                'uid' => 1300,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 0,
-                't3ver_state' => 0,
-                'title' => 'EN: Products',
-            ],
-            0 => [
-                'pid' => 0,
-                'uid' => 1000,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 0,
-                't3ver_state' => 0,
-                'title' => 'ACME Global',
-            ],
-        ];
-        self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title']));
-    }
-
-    #[Test]
-    public function resolveWorkspaceOverlaysOfNewPageInWorkspace(): void
-    {
-        $context = new Context();
-        $context->setAspect('workspace', new WorkspaceAspect(1));
-        $result = (new RootlineUtility(1400, '', $context))->get();
-        $expected = [
-            1 => [
-                'pid' => 1000,
-                'uid' => 1400,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 1,
-                't3ver_state' => 1,
-                'title' => 'EN: A new page in workspace',
-            ],
-            0 => [
-                'pid' => 0,
-                'uid' => 1000,
-                't3ver_oid' => 1000,
-                't3ver_wsid' => 1,
-                't3ver_state' => 0,
-                'title' => 'ACME Global modified in Workspace 1',
-                '_ORIG_uid' => 10000,
-            ],
-        ];
-        self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
-    }
-
-    #[Test]
-    public function resolveLiveRootLineForMovedPage(): void
-    {
-        $context = new Context();
-        $context->setAspect('workspace', new WorkspaceAspect(0));
-        $result = (new RootlineUtility(1333, '', $context))->get();
-        $expected = [
-            3 => [
-                'pid' => 1330,
-                'uid' => 1333,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 0,
-                't3ver_state' => 0,
-                'title' => 'EN: Risk',
-            ],
-            2 => [
-                'pid' => 1300,
-                'uid' => 1330,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 0,
-                't3ver_state' => 0,
-                'title' => 'EN: Board Games',
-            ],
-            1 => [
-                'pid' => 1000,
-                'uid' => 1300,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 0,
-                't3ver_state' => 0,
-                'title' => 'EN: Products',
-            ],
-            0 => [
-                'pid' => 0,
-                'uid' => 1000,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 0,
-                't3ver_state' => 0,
-                'title' => 'ACME Global',
-            ],
-        ];
-        self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
-    }
-
-    #[Test]
-    public function resolveWorkspaceOverlaysOfMovedPage(): void
-    {
-        $context = new Context();
-        $context->setAspect('workspace', new WorkspaceAspect(1));
-        $result = (new RootlineUtility(1333, '', $context))->get();
-        $expected = [
-            3 => [
-                'pid' => 1320,
-                'uid' => 1333,
-                't3ver_oid' => 1333,
-                't3ver_wsid' => 1,
-                't3ver_state' => 4,
-                'title' => 'EN: Risk',
-                '_ORIG_uid' => 10001,
-                '_ORIG_pid' => 1330, // Pointing to the LIVE pid! WHY? All others point to the same PID! @todo
-            ],
-            2 => [
-                'pid' => 1300,
-                'uid' => 1320,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 0,
-                't3ver_state' => 0,
-                'title' => 'EN: Card Games',
-            ],
-            1 => [
-                'pid' => 1000,
-                'uid' => 1300,
-                't3ver_oid' => 0,
-                't3ver_wsid' => 0,
-                't3ver_state' => 0,
-                'title' => 'EN: Products',
-            ],
-            0 => [
-                'pid' => 0,
-                'uid' => 1000,
-                't3ver_oid' => 1000,
-                't3ver_wsid' => 1,
-                't3ver_state' => 0,
-                'title' => 'ACME Global modified in Workspace 1',
-                '_ORIG_uid' => 10000,
-            ],
-        ];
-        self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
-
-        // Now explicitly requesting the versioned ID, which holds the same result
-        $result = (new RootlineUtility(10001, '', $context))->get();
-        self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid']));
     }
 
     #[Test]
@@ -529,7 +371,340 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1343464101);
         $context = new Context();
-        $context->setAspect('workspace', new WorkspaceAspect(2));
-        (new RootlineUtility(1310, '', $context))->get();
+        $context->setAspect('workspace', new WorkspaceAspect(1));
+        (new RootlineUtility(1002, '', $context))->get();
+    }
+
+    public static function getResolvesCorrectlyDataProvider(): \Generator
+    {
+        yield 'standard nested page lang default' => [
+            'uid' => 1001,
+            'language' => 0,
+            'workspace' => 0,
+            'testFields' => ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title'],
+            'expected' => [
+                2 => [
+                    'uid' => 1001,
+                    'pid' => 1000,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Parent 1 Sub 1',
+                ],
+                1 => [
+                    'uid' => 1000,
+                    'pid' => 1,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Parent 1',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'pid' => 0,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Root',
+                ],
+            ],
+        ];
+        yield 'standard nested page lang FR, requesting with default lang id' => [
+            'uid' => 1001,
+            'language' => 1,
+            'workspace' => 0,
+            'testFields' => ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_LOCALIZED_UID', '_REQUESTED_OVERLAY_LANGUAGE'],
+            'expected' => [
+                2 => [
+                    'uid' => 1001,
+                    'pid' => 1000,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'FR Parent 1 Sub 1',
+                    '_LOCALIZED_UID' => 1002,
+                    '_REQUESTED_OVERLAY_LANGUAGE' => 1,
+                ],
+                1 => [
+                    'uid' => 1000,
+                    'pid' => 1,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Parent 1',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'pid' => 0,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Root',
+                ],
+            ],
+        ];
+        // @todo: Inconsistent. Compare with above set: When requesting a localized uid directly, 'uid' is the
+        //        localized one, and '_LOCALIZED_UID' and '_REQUESTED_OVERLAY_LANGUAGE' are not set at all.
+        yield 'standard nested page lang FR, requesting with FR lang id' => [
+            'uid' => 1002,
+            'language' => 1,
+            'workspace' => 0,
+            'testFields' => ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_LOCALIZED_UID', '_REQUESTED_OVERLAY_LANGUAGE'],
+            'expected' => [
+                2 => [
+                    'uid' => 1002,
+                    'pid' => 1000,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'FR Parent 1 Sub 1',
+                ],
+                1 => [
+                    'uid' => 1000,
+                    'pid' => 1,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Parent 1',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'pid' => 0,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Root',
+                ],
+            ],
+        ];
+        yield 'new page in workspaces' => [
+            'uid' => 1011,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title'],
+            'expected' => [
+                2 => [
+                    'uid' => 1011,
+                    'pid' => 1010,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 2,
+                    't3ver_state' => 1,
+                    'title' => 'EN WS2-new Parent 2 Sub 1',
+                ],
+                1 => [
+                    'uid' => 1010,
+                    'pid' => 1,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Parent 2',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'pid' => 0,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Root',
+                ],
+            ],
+        ];
+        yield 'moved in workspaces, requesting with live id in live' => [
+            'uid' => 1020,
+            'language' => 0,
+            'workspace' => 0,
+            'testFields' => ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title'],
+            'expected' => [
+                1 => [
+                    'uid' => 1020,
+                    'pid' => 1,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN To Move in WS',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'pid' => 0,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Root',
+                ],
+            ],
+        ];
+        yield 'moved in workspaces, requesting with live id in workspace' => [
+            'uid' => 1020,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid'],
+            'expected' => [
+                2 => [
+                    'uid' => 1020,
+                    'pid' => 1021,
+                    't3ver_oid' => 1020,
+                    't3ver_wsid' => 2,
+                    't3ver_state' => 4,
+                    'title' => 'EN WS2-moved Move in WS',
+                    '_ORIG_uid' => 1022,
+                    '_ORIG_pid' => 1,
+                ],
+                1 => [
+                    'uid' => 1021,
+                    'pid' => 1,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Move target',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'pid' => 0,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Root',
+                ],
+            ],
+        ];
+        yield 'moved in workspaces, requesting with workspace id in workspace' => [
+            'uid' => 1022,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title', '_ORIG_uid', '_ORIG_pid'],
+            'expected' => [
+                2 => [
+                    'uid' => 1020,
+                    'pid' => 1021,
+                    't3ver_oid' => 1020,
+                    't3ver_wsid' => 2,
+                    't3ver_state' => 4,
+                    'title' => 'EN WS2-moved Move in WS',
+                    '_ORIG_uid' => 1022,
+                    '_ORIG_pid' => 1,
+                ],
+                1 => [
+                    'uid' => 1021,
+                    'pid' => 1,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Move target',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'pid' => 0,
+                    't3ver_oid' => 0,
+                    't3ver_wsid' => 0,
+                    't3ver_state' => 0,
+                    'title' => 'EN Root',
+                ],
+            ],
+        ];
+        yield 'media lang default' => [
+            'uid' => 1031,
+            'language' => 0,
+            'workspace' => 0,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 1031,
+                    'title' => 'EN Parent 3 Sub 1',
+                    'media' => '1001,1000',
+                ],
+                1 => [
+                    'uid' => 1030,
+                    'title' => 'EN Parent 3',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang FR' => [
+            'uid' => 1031,
+            'language' => 1,
+            'workspace' => 0,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 1031,
+                    'title' => 'FR Parent 3 Sub 1',
+                    'media' => '1010,1011',
+                ],
+                1 => [
+                    'uid' => 1030,
+                    'title' => 'EN Parent 3',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang default, workspace new' => [
+            'uid' => 1041,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 1041,
+                    'title' => 'EN WS2-new Parent 4 Sub 1 with media',
+                    'media' => '1101,1100',
+                ],
+                1 => [
+                    'uid' => 1040,
+                    'title' => 'EN Parent 4',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+        yield 'media lang default, workspace one media deleted' => [
+            'uid' => 1051,
+            'language' => 0,
+            'workspace' => 2,
+            'testFields' => ['uid', 'title', 'media'],
+            'expected' => [
+                2 => [
+                    'uid' => 1051,
+                    'title' => 'EN WS2-changed Parent 5 Sub 1 with media deleted',
+                    // @todo: bug. 1201 is included, but should not, since it has a delete placeholder.
+                    //        this is because $relationHandler->processDeletePlaceholder() is not called.
+                    'media' => '1201,1200',
+                ],
+                1 => [
+                    'uid' => 1050,
+                    'title' => 'EN Parent 5',
+                    'media' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'media' => '',
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('getResolvesCorrectlyDataProvider')]
+    #[Test]
+    public function getResolvesCorrectly(int $uid, int $language, int $workspace, array $testFields, array $expected): void
+    {
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect($workspace));
+        $context->setAspect('language', new LanguageAspect($language));
+        $result = (new RootlineUtility($uid, '', $context))->get();
+        self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
     }
 }
