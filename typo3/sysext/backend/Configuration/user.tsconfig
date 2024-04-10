@@ -1,7 +1,7 @@
 options.enableBookmarks = 1
 
 options.pageTree {
-    doktypesToShowInNewPageDragArea = 1,6,4,7,3,254,199
+  doktypesToShowInNewPageDragArea := addToList(1,6,4,7,3,254,199)
 }
 
 options.contextMenu {
