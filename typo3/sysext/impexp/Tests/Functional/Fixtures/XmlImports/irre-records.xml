@@ -251,10 +251,14 @@
                         <element index="tx_testirremm_offer:1" type="array">
                             <id>1</id>
                             <table>tx_testirremm_offer</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                         <element index="tx_testirremm_offer:2" type="array">
                             <id>2</id>
                             <table>tx_testirremm_offer</table>
+                            <sorting>2</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                     <softrefs type="array"></softrefs>
@@ -267,6 +271,8 @@
                         <element index="tx_testirremm_offer:3" type="array">
                             <id>3</id>
                             <table>tx_testirremm_offer</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                     <softrefs type="array"></softrefs>
@@ -281,6 +287,8 @@
                         <element index="tx_testirremm_price:3" type="array">
                             <id>3</id>
                             <table>tx_testirremm_price</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                     <softrefs type="array"></softrefs>
@@ -293,6 +301,8 @@
                         <element index="tx_testirremm_price:2" type="array">
                             <id>2</id>
                             <table>tx_testirremm_price</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                     <softrefs type="array"></softrefs>
@@ -305,6 +315,8 @@
                         <element index="tx_testirremm_price:1" type="array">
                             <id>1</id>
                             <table>tx_testirremm_price</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                     <softrefs type="array"></softrefs>
@@ -1140,10 +1152,14 @@
                         <element index="0" type="array">
                             <id>1</id>
                             <table>tx_testirremm_offer</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                         <element index="1" type="array">
                             <id>2</id>
                             <table>tx_testirremm_offer</table>
+                            <sorting>2</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                 </field>
@@ -1168,6 +1184,8 @@
                         <element index="0" type="array">
                             <id>3</id>
                             <table>tx_testirremm_offer</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                 </field>
@@ -1193,6 +1211,8 @@
                         <element index="0" type="array">
                             <id>3</id>
                             <table>tx_testirremm_price</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                 </field>
@@ -1218,6 +1238,8 @@
                         <element index="0" type="array">
                             <id>2</id>
                             <table>tx_testirremm_price</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                 </field>
@@ -1243,6 +1265,8 @@
                         <element index="0" type="array">
                             <id>1</id>
                             <table>tx_testirremm_price</table>
+                            <sorting>1</sorting>
+                            <sorting_foreign>0</sorting_foreign>
                         </element>
                     </relations>
                 </field>

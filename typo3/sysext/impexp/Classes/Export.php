@@ -520,6 +520,15 @@ class Export extends ImportExport
                 $this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']] = 1;
                 // Initialize reference index object:
                 $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+                // @todo: Using getRelations() from Refindex for this operation is a misuse, the method should
+                //        be protected. It would be better to use softref parser and RelationHandler here directly,
+                //        or fetch the relations using a sys_refindex query. Note with recent changes, 'itemArray'
+                //        with MM contain 'sorting', 'sorting_foreign', 'fieldname' as well, which could be removed
+                //        from export again if needed, since they are currently irrelevant during import.
+                //        Note 'fieldname' could be handy during import, though: When a category is for instance bound
+                //        to two different fields in a target table (e.g. 'pages'), that field indicates to which
+                //        of those a relation is bound. This is currently most likely not handled during import and
+                //        should have more test coverage.
                 $relations = $refIndexObj->getRelations($table, $row, 0);
                 $relations = $this->removeRedundantSoftRefsInRelations($relations);
                 // Data:

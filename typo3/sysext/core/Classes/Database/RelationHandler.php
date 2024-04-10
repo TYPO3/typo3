@@ -296,7 +296,7 @@ class RelationHandler
             }
         } elseif ($MMuid && ($conf['foreign_field'] ?? false)) {
             // If not MM but foreign_field, the read the records by the foreign_field
-            $this->readForeignField($MMuid, $conf);
+            $this->readForeignField((int)$MMuid, $conf);
         } else {
             // If not MM, then explode the itemlist by "," and traverse the list:
             $this->readList($itemlist, $conf);
@@ -477,11 +477,13 @@ class RelationHandler
         $uidLocal_field = 'uid_local';
         $uidForeign_field = 'uid_foreign';
         $sorting_field = 'sorting';
-        // In case of a reverse relation
+        $sortingForeign_field = 'sorting_foreign';
         if ($this->MM_is_foreign) {
+            // In case of a reverse relation
             $uidLocal_field = 'uid_foreign';
             $uidForeign_field = 'uid_local';
             $sorting_field = 'sorting_foreign';
+            $sortingForeign_field = 'sorting';
             if ($this->MM_isMultiTableRelationship) {
                 // Be backwards compatible! When allowing more than one table after
                 // having previously allowed only one table, this case applies.
@@ -524,12 +526,14 @@ class RelationHandler
         );
         $queryBuilder->orderBy($sorting_field);
         $queryBuilder->addOrderBy($uidForeign_field);
+        // @todo: It would be more safe adding an order-by fieldname if field exists (MM_oppositeUsage set) to avoid
+        //        arbitrary sorting if 2 mm rows to 2 different fields have same sorting and sorting_foreign values.
         $statement = $queryBuilder->executeQuery();
         $itemArray = [];
         while ($row = $statement->fetchAssociative()) {
             // Default
             if (!$this->MM_is_foreign) {
-                // If tablesnames columns exists and contain a name, then this value is the table, else it's the firstTable...
+                // If tablenames columns exists and contain a name, then this value is the table, else it's the firstTable...
                 $theTable = !empty($row['tablenames']) ? $row['tablenames'] : $this->firstTable;
             }
             if (($row[$uidForeign_field] || $theTable === 'pages') && $theTable && isset($this->tableArray[$theTable])) {
@@ -537,6 +541,15 @@ class RelationHandler
                     'id' => $row[$uidForeign_field],
                     'table' => $theTable,
                 ];
+                if (!empty($row['fieldname'])) {
+                    $item['fieldname'] = $row['fieldname'];
+                }
+                if (isset($row[$sorting_field])) {
+                    $item[$sorting_field] = $row[$sorting_field];
+                }
+                if (isset($row[$sortingForeign_field])) {
+                    $item[$sortingForeign_field] = $row[$sortingForeign_field];
+                }
                 $itemArray[] = $item;
                 $this->tableArray[$theTable][] = $row[$uidForeign_field];
             }
@@ -788,20 +801,17 @@ class RelationHandler
      * Reads items from a foreign_table, that has a foreign_field (uid of the parent record) and
      * stores the parts in the internal array itemArray and tableArray.
      *
-     * @param int|string $uid The uid of the parent record (this value is also on the foreign_table in the foreign_field)
+     * @param int $uid The uid of the parent record (this value is also on the foreign_table in the foreign_field)
      * @param array $conf TCA configuration for current field
      */
-    protected function readForeignField($uid, $conf)
+    protected function readForeignField(int $uid, $conf)
     {
         if ($this->useLiveParentIds) {
             $uid = $this->getLiveDefaultId($this->currentTable, $uid);
         }
 
-        $key = 0;
-        $uid = (int)$uid;
-        // skip further processing if $uid does not
-        // point to a valid parent record
         if ($uid === 0) {
+            // Skip further processing if uid does not point to a valid parent record
             return;
         }
 
@@ -809,17 +819,13 @@ class RelationHandler
         $foreign_table_field = $conf['foreign_table_field'] ?? '';
         $useDeleteClause = !$this->undeleteRecord;
         $foreign_match_fields = is_array($conf['foreign_match_fields'] ?? false) ? $conf['foreign_match_fields'] : [];
-        $queryBuilder = $this->getConnectionForTableName($foreign_table)
-            ->createQueryBuilder();
-        $queryBuilder->getRestrictions()
-            ->removeAll();
+        $queryBuilder = $this->getConnectionForTableName($foreign_table)->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->select('uid')->from($foreign_table);
         // Use the deleteClause (e.g. "deleted=0") on this table
         if ($useDeleteClause) {
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
-
-        $queryBuilder->select('uid')
-            ->from($foreign_table);
 
         // Search for $uid in foreign_field, and if we have symmetric relations, do this also on symmetric_field
         if (!empty($conf['symmetric_field'])) {
@@ -841,8 +847,7 @@ class RelationHandler
                 $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
             ));
         }
-        // If it's requested to look for the parent uid AND the parent table,
-        // add an additional SQL-WHERE clause
+        // If it's requested to look for the parent uid AND the parent table, add a where clause
         if ($foreign_table_field && $this->currentTable) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
@@ -863,10 +868,11 @@ class RelationHandler
                 GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getWorkspaceId())
             );
         }
-        // Get the correct sorting field
-        // Specific manual sortby for data handled by this field
+
+        // Set sorting criteria
         $sortby = '';
         if (!empty($conf['foreign_sortby'])) {
+            // Specific manual sortby for data handled by this field
             if (!empty($conf['symmetric_sortby']) && !empty($conf['symmetric_field'])) {
                 // Sorting depends on, from which side of the relation we're looking at it
                 // This requires bypassing automatic quoting and setting of the default sort direction
@@ -892,7 +898,6 @@ class RelationHandler
             // Default sortby for all table records
             $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['default_sortby'];
         }
-
         if (!empty($sortby)) {
             foreach (QueryHelper::parseOrderBy($sortby) as $orderPair) {
                 [$fieldName, $sorting] = $orderPair;
@@ -900,7 +905,6 @@ class RelationHandler
             }
         }
 
-        // Get the rows from storage
         $rows = [];
         $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
@@ -909,12 +913,16 @@ class RelationHandler
         if (!empty($rows)) {
             $sortby = $queryBuilder->getOrderBy();
             $ids = $this->getResolver($foreign_table, array_keys($rows), $sortby)->get();
+            $itemArray = [];
             foreach ($ids as $id) {
-                $this->itemArray[$key]['id'] = $id;
-                $this->itemArray[$key]['table'] = $foreign_table;
+                $item = [
+                    'id' => $id,
+                    'table' => $foreign_table,
+                ];
+                $itemArray[] = $item;
                 $this->tableArray[$foreign_table][] = $id;
-                $key++;
             }
+            $this->itemArray = $itemArray;
         }
     }
 
@@ -1538,9 +1546,8 @@ class RelationHandler
      *
      * @param string $tableName
      * @param int|string $id
-     * @return int
      */
-    protected function getLiveDefaultId($tableName, $id)
+    protected function getLiveDefaultId($tableName, $id): int
     {
         $liveDefaultId = BackendUtility::getLiveVersionIdOfRecord($tableName, $id);
         if ($liveDefaultId === null) {
