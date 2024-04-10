@@ -1538,7 +1538,7 @@ class EditDocumentController
             );
             $referenceCountMessage = BackendUtility::referenceCount(
                 $this->firstEl['table'],
-                (string)(int)$this->firstEl['uid'],
+                (int)$this->firstEl['uid'],
                 $this->getLanguageService()->sL(
                     'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'
                 ),

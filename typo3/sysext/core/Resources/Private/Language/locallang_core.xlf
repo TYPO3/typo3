@@ -559,9 +559,6 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.referencesToRecord" resname="labels.referencesToRecord">
 				<source>There are %s reference(s) to this record!</source>
 			</trans-unit>
-			<trans-unit id="labels.referencesToFolder" resname="labels.referencesToFolder">
-				<source>There are %s reference(s) to this folder!</source>
-			</trans-unit>
 			<trans-unit id="labels.referencesToFile" resname="labels.referencesToFile">
 				<source>There are %s reference(s) to this file!</source>
 			</trans-unit>

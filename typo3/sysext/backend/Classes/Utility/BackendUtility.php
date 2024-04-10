@@ -52,7 +52,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -2521,46 +2520,29 @@ class BackendUtility
     /**
      * Counting references to a record/file
      *
-     * @param string $table Table name (or "_FILE" if its a file)
-     * @param string $ref Reference: If table, then int-uid, if _FILE, then file reference (relative to Environment::getPublicPath())
-     * @param string $msg Message with %s, eg. "There were %s records pointing to this file!
+     * @param string $table Table name
+     * @param int $ref Record uid
+     * @param string $msg Message with %s, e.g. "There were %s records pointing to this file!"
      * @param string|int|null $count Reference count
      * @return string|int Output string (or int count value if no msg string specified)
+     * @todo: The method should vanish altogether: The signature with $msg and $count and
+     *        string|int return value is odd, and the method contains hacks for sys_file.
      */
     public static function referenceCount($table, $ref, $msg = '', $count = null)
     {
-        if ($count === null) {
-            // Build base query
+        if ($count === null && MathUtility::canBeInterpretedAsInteger($ref)) {
+            // MathUtility::canBeInterpretedAsInteger($ref) and no method type hint for b/w compat.
             $queryBuilder = static::getQueryBuilderForTable('sys_refindex');
-            $queryBuilder
-                ->count('*')
-                ->from('sys_refindex')
+            $queryBuilder->count('*')->from('sys_refindex')
                 ->where(
-                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table))
-                );
-
-            // Look up the path:
-            if ($table === '_FILE') {
-                if (!str_starts_with($ref, Environment::getPublicPath())) {
-                    return '';
-                }
-
-                $ref = PathUtility::stripPathSitePrefix($ref);
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($ref))
-                );
-            } else {
-                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
                     $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($ref, Connection::PARAM_INT))
                 );
-                if ($table === 'sys_file') {
-                    $queryBuilder->andWhere($queryBuilder->expr()->neq('tablename', $queryBuilder->quote('sys_file_metadata')));
-                }
+            if ($table === 'sys_file') {
+                $queryBuilder->andWhere($queryBuilder->expr()->neq('tablename', $queryBuilder->quote('sys_file_metadata')));
             }
-
             $count = $queryBuilder->executeQuery()->fetchOne();
         }
-
         if ($count) {
             return $msg ? sprintf($msg, $count) : $count;
         }

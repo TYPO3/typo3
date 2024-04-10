@@ -1118,18 +1118,16 @@ class FileList
         if (!$resourceView->canDelete()) {
             return null;
         }
-
         $recordInfo = $resourceView->getName();
-
+        $referenceCountText = '';
         if ($resourceView->resource instanceof Folder) {
             $identifier = $resourceView->getIdentifier();
-            $referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFolder'));
             $deleteType = 'delete_folder';
             if ($this->getBackendUser()->shallDisplayDebugInformation()) {
                 $recordInfo .= ' [' . $identifier . ']';
             }
         } else {
-            $referenceCountText = BackendUtility::referenceCount('sys_file', (string)$resourceView->getUid(), LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile'));
+            $referenceCountText = BackendUtility::referenceCount('sys_file', (int)$resourceView->getUid(), LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile'));
             $deleteType = 'delete_file';
             if ($this->getBackendUser()->shallDisplayDebugInformation()) {
                 $recordInfo .= ' [sys_file:' . $resourceView->getUid() . ']';

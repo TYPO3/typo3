@@ -409,10 +409,6 @@ class FileProvider extends AbstractProvider
                 $confirmMessage = sprintf(
                     $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'),
                     trim($recordInfo)
-                ) . BackendUtility::referenceCount(
-                    '_FILE',
-                    $this->record->getIdentifier(),
-                    LF . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFolder')
                 );
             } else {
                 if ($this->backendUser->shallDisplayDebugInformation()) {
@@ -423,7 +419,7 @@ class FileProvider extends AbstractProvider
                     trim($recordInfo)
                 ) . BackendUtility::referenceCount(
                     'sys_file',
-                    (string)$this->record->getUid(),
+                    (int)$this->record->getUid(),
                     LF . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile')
                 );
             }

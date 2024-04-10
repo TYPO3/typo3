@@ -35,7 +35,6 @@ class DatabaseService
      * Returns an array with all sys_refindex database rows which be
      * connected to a formDefinition identified by $persistenceIdentifier
      *
-     * @throws \InvalidArgumentException
      * @internal
      */
     public function getReferencesByPersistenceIdentifier(string $persistenceIdentifier): array
@@ -97,13 +96,10 @@ class DatabaseService
         return $items;
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
     protected function getAllReferences(string $column): array
     {
         if ($column !== 'ref_string' && $column !== 'ref_uid') {
-            throw new \InvalidArgumentException('$column must not be "ref_string" or "ref_uid".', 1535406600);
+            throw new \InvalidArgumentException('$column must be "ref_string" or "ref_uid".', 1535406600);
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');

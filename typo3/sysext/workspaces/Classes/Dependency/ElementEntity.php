@@ -176,7 +176,7 @@ class ElementEntity
                 ->executeQuery();
 
             while ($row = $result->fetchAssociative()) {
-                if ($row['ref_table'] !== '_FILE' && $row['ref_table'] !== '_STRING') {
+                if ($row['ref_table'] !== '_STRING') {
                     $arguments = [
                         'table' => $row['ref_table'],
                         'id' => $row['ref_uid'],
