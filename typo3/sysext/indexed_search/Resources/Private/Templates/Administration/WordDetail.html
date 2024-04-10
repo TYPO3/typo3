@@ -7,8 +7,7 @@
 <f:layout name="Module" />
 
 <f:section name="Content">
-    <h1><f:translate key="administration.statistics" /></h1>
-    <h2><f:translate key="administration.word.description" /></h2>
+    <h1><f:translate key="administration.wordDetail.headlineWithWordTitle" arguments="{0: '{wordTitle}'}"/></h1>
     <f:if condition="{rows}">
         <f:then>
             <div class="table-fit">
@@ -27,9 +26,7 @@
                     <tbody>
                         <f:for each="{rows}" as="row">
                             <tr>
-                                <td>
-                                    <f:link.action action="statisticDetails" arguments="{pageHash:row.phash}">{row.phash}</f:link.action>
-                                </td>
+                                <td>{row.phash}</td>
                                 <td>{row.page_id}</td>
                                 <td>{row.data_filename}</td>
                                 <td>{row.count}</td>
@@ -43,16 +40,12 @@
             </div>
         </f:then>
         <f:else>
-            <div class="alert alert-danger">
-                <div class="message-body">
-                    <f:translate key="administration.statistics.noResult" />
-                </div>
-            </div>
+            <f:be.infobox
+                message="{f:translate(key:'LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.noResult')}"
+                state="-2"
+            />
         </f:else>
     </f:if>
-    <f:link.action action="statisticDetails" arguments="{pageHash:phash}">
-        <f:translate key="administration.linkBack" />
-    </f:link.action>
 </f:section>
 
 </html>

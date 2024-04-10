@@ -199,6 +199,7 @@ class AdministrationController extends ActionController
         $view->assignMultiple([
             'extensionConfiguration' => $this->indexerConfig,
             'records' => $this->administrationRepository->getPageStatistic(),
+            'pageUid' => $this->pageUid,
         ]);
         return $view->renderResponse('Administration/Pages');
     }
@@ -212,6 +213,7 @@ class AdministrationController extends ActionController
         $view->assignMultiple([
             'extensionConfiguration' => $this->indexerConfig,
             'records' => $this->administrationRepository->getExternalDocumentsStatistic(),
+            'pageUid' => $this->pageUid,
         ]);
         return $view->renderResponse('Administration/ExternalDocuments');
     }
@@ -228,7 +230,8 @@ class AdministrationController extends ActionController
         $backButton = $buttonBar
             ->makeLinkButton()
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.back'))
-            ->setIcon($this->iconFactory->getIcon('actions-view-go-up', IconSize::SMALL))
+            ->setShowLabelText(true)
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
             ->setHref($this->uriBuilder->reset()->uriFor('statistic', [], 'Administration'));
         $buttonBar->addButton($backButton);
 
@@ -391,7 +394,7 @@ class AdministrationController extends ActionController
     /**
      * Statistics for a given word id
      */
-    protected function wordDetailAction(string $wordHash, string $pageHash): ResponseInterface
+    protected function wordDetailAction(string $wordHash, string $pageHash, string $wordTitle): ResponseInterface
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_phash');
         $rows = $queryBuilder
@@ -418,10 +421,22 @@ class AdministrationController extends ActionController
             ->fetchAllAssociative();
 
         $view = $this->initializeModuleTemplate($this->request);
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
+
+        // Set back button
+        $backButton = $buttonBar
+            ->makeLinkButton()
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.back'))
+            ->setShowLabelText(true)
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', IconSize::SMALL))
+            ->setHref($this->uriBuilder->reset()->uriFor('statisticDetails', ['pageHash' => $pageHash], 'Administration'));
+        $buttonBar->addButton($backButton);
+
         $view->assignMultiple([
             'extensionConfiguration' => $this->indexerConfig,
             'rows' => $rows,
             'phash' => $pageHash,
+            'wordTitle' => $wordTitle,
         ]);
         return $view->renderResponse('Administration/WordDetail');
     }

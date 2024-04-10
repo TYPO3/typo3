@@ -57,7 +57,6 @@
 				<source>Advanced search</source>
 			</trans-unit>
 
-
 			<trans-unit id="searchTypes.0" resname="searchTypes.0">
 				<source>Distinct word</source>
 			</trans-unit>
@@ -243,14 +242,15 @@
 			<trans-unit id="displayResults" resname="displayResults">
 				<source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
 			</trans-unit>
+
 			<trans-unit id="administration.menu.general" resname="administration.menu.general">
 				<source>General statistics</source>
 			</trans-unit>
 			<trans-unit id="administration.menu.pages" resname="administration.menu.pages">
-				<source>List: Pages</source>
+				<source>List of indexed pages</source>
 			</trans-unit>
 			<trans-unit id="administration.menu.externalDocuments" resname="administration.menu.externalDocuments">
-				<source>List: External documents</source>
+				<source>List of indexed external documents</source>
 			</trans-unit>
 			<trans-unit id="administration.menu.searchStatistic" resname="administration.menu.searchStatistic">
 				<source>Search statistics</source>
@@ -258,12 +258,32 @@
 			<trans-unit id="administration.menu.statistic" resname="administration.menu.statistic">
 				<source>Detailed statistics</source>
 			</trans-unit>
-			<trans-unit id="administration.index.description" resname="administration.index.description">
+
+			<trans-unit id="administration.externalDocuments.headline" resname="administration.externalDocuments.headline">
+				<source>List of indexed external documents</source>
+			</trans-unit>
+			<trans-unit id="administration.index.headline" resname="administration.index.headline">
 				<source>General statistics</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics" resname="administration.statistics">
-				<source>Indexing Engine Statistics</source>
+			<trans-unit id="administration.pages.headline" resname="administration.pages.headline">
+				<source>List of indexed pages</source>
 			</trans-unit>
+			<trans-unit id="administration.statistic.headline" resname="administration.statistic.headline">
+				<source>Detailed statistics</source>
+			</trans-unit>
+			<trans-unit id="administration.statisticDetails.headline" resname="administration.statisticDetails.headline">
+				<source>Details for a single result row</source>
+			</trans-unit>
+			<trans-unit id="administration.statisticDetails.headlineWithItemTitle" resname="administration.statisticDetails.headlineWithItemTitle">
+				<source>Details for single result row "%s"</source>
+			</trans-unit>
+			<trans-unit id="administration.wordDetail.headline" resname="administration.wordDetail.headline">
+				<source>Detail view of a single word</source>
+			</trans-unit>
+			<trans-unit id="administration.wordDetail.headlineWithWordTitle" resname="administration.wordDetail.headlineWithWordTitle">
+				<source>Detail view of single word "%s"</source>
+			</trans-unit>
+
 			<trans-unit id="administration.statistics.header" resname="administration.statistics.header">
 				<source>Row count by database table</source>
 			</trans-unit>
@@ -297,17 +317,8 @@
 			<trans-unit id="administration.statistics.mostSearched.last24hours" resname="administration.statistics.mostSearched.last24hours">
 				<source>Last 24 hours</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.noResult" resname="administration.statistics.noResult">
-				<source>No result found</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.noResultForPage" resname="administration.statistics.noResultForPage">
-				<source>No result for the selected page found.</source>
-			</trans-unit>
-			<trans-unit id="administration.statistics.selectPage" resname="administration.statistics.selectPage">
-				<source>Please select a page in the page tree.</source>
-			</trans-unit>
-			<trans-unit id="administration.external.title" resname="administration.external.title">
-				<source>External documents</source>
+			<trans-unit id="field.pageTitle" resname="field.pageTitle">
+				<source>Page title</source>
 			</trans-unit>
 			<trans-unit id="field.fileName" resname="field.fileName">
 				<source>Filename</source>
@@ -358,7 +369,7 @@
 				<source>Page Id</source>
 			</trans-unit>
 			<trans-unit id="field.uniqueId" resname="field.uniqueId">
-				<source>Unique Id</source>
+				<source>Uid</source>
 			</trans-unit>
 			<trans-unit id="field.type" resname="field.type">
 				<source>Type</source>
@@ -379,12 +390,9 @@
 				<source>Content</source>
 			</trans-unit>
 			<trans-unit id="administration.notIndexed" resname="administration.notIndexed">
-				<source>Not indexed?</source>
+				<source>Not indexed</source>
 			</trans-unit>
 
-			<trans-unit id="administration.document.description" resname="administration.document.description">
-				<source>Details for a single result row</source>
-			</trans-unit>
 			<trans-unit id="administration.document.words" resname="administration.document.words">
 				<source>All words found on page</source>
 			</trans-unit>
@@ -408,12 +416,6 @@
 			</trans-unit>
 			<trans-unit id="administration.stopWordsKeywords.save" resname="administration.stopWordsKeywords.save">
 				<source>Save keywords and stop words</source>
-			</trans-unit>
-			<trans-unit id="administration.word.description" resname="administration.word.description">
-				<source>Detail view of a single word</source>
-			</trans-unit>
-			<trans-unit id="administration.linkBack" resname="administration.linkBack">
-				<source>Back</source>
 			</trans-unit>
 			<trans-unit id="administration.statistics.sectionRecords" resname="administration.statistics.sectionRecords">
 				<source>Section records for this phash</source>
@@ -439,14 +441,26 @@
 			<trans-unit id="administration.back" resname="administration.back">
 				<source>Back</source>
 			</trans-unit>
-			<trans-unit id="administration.noPageSelected" resname="administration.noPageSelected">
-				<source>Please select a page from the page tree.</source>
-			</trans-unit>
 			<trans-unit id="administration.moduleFunctions.mode" resname="administration.moduleFunctions.mode">
 				<source>Mode</source>
 			</trans-unit>
 			<trans-unit id="administration.moduleFunctions.depth" resname="administration.moduleFunctions.depth">
 				<source>Depth</source>
+			</trans-unit>
+			<trans-unit id="administration.btn.info.title" resname="administration.btn.info.title">
+				<source>Display information</source>
+			</trans-unit>
+			<trans-unit id="administration.noPageSelected" resname="administration.noPageSelected">
+				<source>Please select a page in the page tree.</source>
+			</trans-unit>
+			<trans-unit id="administration.noRecords" resname="administration.noRecords">
+				<source>No records found.</source>
+			</trans-unit>
+			<trans-unit id="administration.noResult" resname="administration.noResult">
+				<source>No result found.</source>
+			</trans-unit>
+			<trans-unit id="administration.noResultForPage" resname="administration.noResultForPage">
+				<source>No result for the selected page found.</source>
 			</trans-unit>
 			<trans-unit id="error.noTypoScript" resname="error.noTypoScript">
 				<source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>

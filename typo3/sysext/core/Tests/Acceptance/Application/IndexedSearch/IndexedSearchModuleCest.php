@@ -37,7 +37,6 @@ final class IndexedSearchModuleCest
         $I->switchToContentFrame();
         $I->seeElement('.t3-js-jumpMenuBox');
         $I->selectOption('.t3-js-jumpMenuBox', 'General statistics');
-        $I->see('Indexing Engine Statistics', '.t3js-module-body');
         $I->see('General statistics', '.t3js-module-body');
         $I->see('Row count by database table', '.t3js-module-body');
         // Select only "Row count by database table"
@@ -47,16 +46,14 @@ final class IndexedSearchModuleCest
             $I->assertIsNumeric($count);
         }
 
-        $I->selectOption('.t3-js-jumpMenuBox', 'List: Pages');
-        $I->see('Indexing Engine Statistics', '.t3js-module-body');
-        $I->see('Pages', '.t3js-module-body');
+        $I->selectOption('.t3-js-jumpMenuBox', 'List of indexed pages');
+        $I->see('List of indexed pages', '.t3js-module-body');
 
-        $I->selectOption('.t3-js-jumpMenuBox', 'List: External documents');
-        $I->see('Indexing Engine Statistics', '.t3js-module-body');
-        $I->see('External documents', '.t3js-module-body');
+        $I->selectOption('.t3-js-jumpMenuBox', 'List of indexed external documents');
+        $I->see('List of indexed external documents', '.t3js-module-body');
 
         $I->selectOption('.t3-js-jumpMenuBox', 'Detailed statistics');
-        $I->see('Indexing Engine Statistics', '.t3js-module-body');
-        $I->see('Please select a page from the page tree.', '.t3js-module-body');
+        $I->see('Detailed statistics', '.t3js-module-body');
+        $I->see('Please select a page in the page tree.', '.t3js-module-body');
     }
 }
