@@ -198,6 +198,8 @@ class SilentConfigurationUpgradeService
         'GFX/gdlib',
         // #102146
         'BE/flexformForceCDATA',
+        // #103752
+        'FE/addRootLineFields',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}

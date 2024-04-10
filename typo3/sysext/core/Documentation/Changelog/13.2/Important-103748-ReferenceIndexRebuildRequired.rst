@@ -12,12 +12,12 @@ Description
 ===========
 
 A series of new columns has been added to the reference index table
-:sql:`sys_refindex. This requires a rebuild of this tables. All instances
+:sql:`sys_refindex`. This requires a rebuild of this table. All instances
 must update the reference index when upgrading.
 
 The reference index becomes more important with TYPO3 v13: Most notably, it
-is used within the frontend for performance improvements. This requires a
-valid index and keeping it up-to-date after deployments becomes mandatory
+is used within the frontend for structural performance improvements. This requires
+a valid index and keeping it up-to-date after deployments becomes mandatory
 to avoid wrong data during frontend and backend processing.
 
 After deployment and initial rebuild, the index is kept up-to-date when

@@ -394,9 +394,6 @@ FE:
         pageUnavailable_force:
             type: bool
             description: 'If TRUE, every frontend page is shown as "unavailable". If the client matches <a href="#SYS-devIPmask">[SYS][devIPmask]</a>, the page is shown as normal. This is useful during temporary site maintenance.'
-        addRootLineFields:
-            type: list
-            description: 'Comma-list of fields from the ''pages''-table. These fields are added to the select query for fields in the rootline.'
         checkFeUserPid:
             type: bool
             description: 'If set, the pid of fe_user logins must be sent in the form as the field ''pid'' and then the user must be located in the pid. If you unset this, you should change the fe_users.username eval-flag ''uniqueInPid'' to ''unique'' in $TCA. This will do: <code>$TCA[''fe_users''][''columns''][''username''][''config''][''eval'']= ''nospace,lower,required,unique'';</code>'

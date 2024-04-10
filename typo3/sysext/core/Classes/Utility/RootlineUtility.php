@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\BrokenRootLineException;
 use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
@@ -55,45 +54,7 @@ class RootlineUtility
     protected FrontendInterface $cache;
     protected FrontendInterface $runtimeCache;
 
-    /**
-     * Default fields to fetch when populating rootline data, will be merged dynamically
-     * with $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] in getRecordArray().
-     *
-     * @see self::getRecordArray()
-     * @var string[]
-     */
-    protected array $rootlineFields = [
-        'pid',
-        'uid',
-        't3ver_oid',
-        't3ver_wsid',
-        't3ver_state',
-        'title',
-        'nav_title',
-        'media',
-        'layout',
-        'hidden',
-        'starttime',
-        'endtime',
-        'fe_group',
-        'extendToSubpages',
-        'doktype',
-        'TSconfig',
-        'tsconfig_includes',
-        'is_siteroot',
-        'mount_pid',
-        'mount_pid_ol',
-        'backend_layout_next_level',
-    ];
-
-    /**
-     * Database Query Object
-     */
     protected PageRepository $pageRepository;
-
-    /**
-     * Query context
-     */
     protected Context $context;
 
     protected string $cacheIdentifier;
@@ -178,17 +139,14 @@ class RootlineUtility
      * @param int $uid Page id
      * @throws PageNotFoundException
      * @return array<string, string|int|float|null>
-     *   The array will contain the fields listed in the $rootlineFields static property.
      */
     protected function getRecordArray(int $uid): array
     {
-        $rootlineFields = array_merge($this->rootlineFields, GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], true));
-        $rootlineFields = array_unique($rootlineFields);
         $currentCacheIdentifier = $this->getCacheIdentifier($uid);
         if (!$this->runtimeCache->has('rootline-recordcache-' . $currentCacheIdentifier)) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder = $this->createQueryBuilder('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $row = $queryBuilder->select(...$rootlineFields)
+            $row = $queryBuilder->select('*')
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
@@ -229,32 +187,209 @@ class RootlineUtility
             );
         }
 
+        $resultFieldUidArray = [];
+        $localRelationColumns = [];
+        $foreignRelationColumns = [];
+        $foreignRelationColumnTableFieldMapping = [];
         foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
-            // Ensure that only fields defined in $rootlineFields (and "addRootLineFields") are actually evaluated
-            if (array_key_exists($column, $pageRecord) && $this->columnHasRelationToResolve($configuration)) {
-                $fieldConfig = $configuration['config'];
-                $relatedUids = [];
-                if (($fieldConfig['MM'] ?? false) || (!empty($fieldConfig['foreign_table'] ?? $fieldConfig['allowed'] ?? ''))) {
-                    $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
-                    // do not include hidden relational fields
-                    $relationalTable = $fieldConfig['foreign_table'] ?? $fieldConfig['allowed'];
-                    $hiddenFieldName = $GLOBALS['TCA'][$relationalTable]['ctrl']['enablecolumns']['disabled'] ?? null;
-                    if (!$this->context->getAspect('visibility')->includeHiddenContent() && $hiddenFieldName) {
-                        $fieldConfig['foreign_match_fields'][$hiddenFieldName] = 0;
-                    }
-                    $relationHandler->setWorkspaceId($this->workspaceUid);
-                    $relationHandler->start(
-                        $pageRecord[$column],
-                        $fieldConfig['foreign_table'] ?? $fieldConfig['allowed'],
-                        $fieldConfig['MM'] ?? '',
-                        $uid,
-                        'pages',
-                        $fieldConfig
-                    );
-                    $relationHandler->processDeletePlaceholder();
-                    $relatedUids = $relationHandler->getValueArray();
+            if ($this->columnHasRelationToResolve($configuration)) {
+                $resultFieldUidArray[$column] = [];
+                if (!empty($configuration['config']['MM']) && !empty($configuration['config']['MM_opposite_field'] && !empty($configuration['config']['foreign_table']))) {
+                    $foreignRelationColumns[] = $column;
+                    // This is a solution when multiple fields are on the foreign side in an MM relation to the same local side.
+                    // For instance, when there are two category fields in pages.
+                    $foreignRelationColumnTableFieldMapping[$configuration['config']['foreign_table']][$configuration['config']['MM_opposite_field']][$column] = 1;
+                } else {
+                    $localRelationColumns[] = $column;
                 }
-                $pageRecord[$column] = implode(',', $relatedUids);
+            }
+        }
+        if (empty($localRelationColumns) && empty($foreignRelationColumns)) {
+            // Early return if there are no relations to resolve at all. Typically, this does not kick in with pages, though.
+            return $pageRecord;
+        }
+
+        // @todo: There is a general issue with starttime & endtime restrictions: The date aspect of course always changes.
+        //        Since the result of this operation is cached into rootline cache, resolving restrictions based on time
+        //        may result in invalid caches. We cannot add the time restriction to the cache identifier since that
+        //        would not match cache rows constantly. That cache may also kick in when admin panel "simulate time"
+        //        is used and no-cache is not forced in admin panel, also leading to invalid results.
+        //        This is currently not a *huge* issue, since timed records attached to pages are "relatively" seldom, and
+        //        FE instances that use it most likely do something like "clearCacheAtMidnight" anyways.
+        //        To ultimately solve the issue, we should either drop the persisted rootline_cache altogether (which should
+        //        be do-able when the main rootline query switches to a CTE and does not need the cache anymore), OR we
+        //        remove the starttime/endtime handling here again, and let consumers sort out timed records on their own,
+        //        which would be a pity.
+        // @todo: Bug: The BE uses RootlineUtility as well, and the BE should usually *not* hide scheduled records. However,
+        //        BE currently does *not* set visibility includeScheduledRecords() to true, which probably should be changed
+        //        in a BE middleware. BE *does* init includeHiddenContent() and includeHiddenPages() to true, though.
+        // @todo: We could potentially handle ['enablecolumns']['fe_group'] here as well. This however is more work
+        //        since we then need two further fields in refindex to track it. Also fe_group is one of those CSV
+        //        fields that has "virtual" db connections "-2" and "-1" that don't point to true records. refindex
+        //        already behaves funny with those (and has no good test coverage). Also, having (negative) int uids
+        //        is a violation for select, those should at least use non-int strings and set "allowNonIdValues".
+        //        At best, we'd find some other way for -2 and -1 to get rid of those virtual values entirely. Everything
+        //        in this area is probably breaking and needs upgrade wizards.
+        // @todo: The queries below may benefit from being prepared and then fired with values, since they are potentially
+        //        executed often. This requires storing the prepared query in runtime cache, and requires switching from
+        //        named parameters to positional parameters.
+        // @todo: Note the entire thing currently handles only non-CSV relations (there must be a TCA foreign_field or MM),
+        //        CSV alues are not "filtered" and processed regarding hidden, starttime and similar at all. This could be
+        //        added later, but needs a careful implementation, for instance because of "allowNonIdValues", and combined
+        //        "table_uid" in type=group, and fe_group "virtual" -2 fields.
+        // @todo: This operation always returns already workspace uids if they exist. It however does *not* return localization
+        //        uids in most cases, this still needs to be done manually, when working with localized pages. Also,
+        //        hidden, starttime and endtime of the default language record kicks in, not of the localization overlay
+        //        row. We could potentially model this in refindex, by de-normalizing localization overlays in refindex
+        //        as well, but this needs work and some decisions since language overlays may need to consider fallback chains.
+        $visibilityAspect = $this->context->getAspect('visibility');
+        $includeHiddenContent = $visibilityAspect->includeHiddenContent();
+        $includeScheduledRecords = $visibilityAspect->includeScheduledRecords();
+        $dateTimestamp = (int)$this->context->getAspect('date')->get('timestamp');
+
+        if (!empty($localRelationColumns) && empty($foreignRelationColumns)) {
+            // We only have local side relations. Run a simple refindex query. Typically, this does not kick in with pages since it has categories MM.
+            // @todo: Add at least one test that manipulates TCA to verify this code branch works.
+            $queryBuilder = $this->createQueryBuilder('sys_refindex');
+            $result = $queryBuilder->select('tablename', 'field', 'ref_uid')
+                ->from('sys_refindex')
+                ->orderBy('sorting')
+                ->where(
+                    $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter('pages')),
+                    $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($pageRecord['_ORIG_uid'] ?? $uid, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->in('field', $queryBuilder->createNamedParameter($localRelationColumns, Connection::PARAM_STR_ARRAY)),
+                    $queryBuilder->expr()->eq('workspace', $this->workspaceUid),
+                    $queryBuilder->expr()->neq('ref_t3ver_state', VersionState::DELETE_PLACEHOLDER->value),
+                    $includeHiddenContent
+                        ? $queryBuilder->expr()->in('ref_hidden', [0, 1]) // Dummy restriction to not break combined index.
+                        : $queryBuilder->expr()->eq('ref_hidden', 0),
+                    $includeScheduledRecords
+                        ? $queryBuilder->expr()->lte('ref_starttime', 2147483647) // Dummy restriction to not break combined index.
+                        : $queryBuilder->expr()->lt('ref_starttime', $dateTimestamp),
+                    $includeScheduledRecords
+                        ? $queryBuilder->expr()->gte('ref_endtime', 0) // Dummy restriction to not break combined index.
+                        : $queryBuilder->expr()->gt('ref_endtime', $dateTimestamp)
+                )
+                ->executeQuery();
+            while ($row = $result->fetchAssociative()) {
+                $resultFieldUidArray[$row['field']][] = (int)$row['ref_uid'];
+            }
+            foreach ($resultFieldUidArray as $column => $connectedUids) {
+                if (empty($connectedUids)) {
+                    $pageRecord[$column] = '';
+                } else {
+                    $pageRecord[$column] = implode(',', $connectedUids);
+                }
+            }
+            return $pageRecord;
+        }
+
+        if (empty($localRelationColumns)) {
+            // We only have foreign side relations. Run a simple refindex query. Typically, this does not kick in with pages since it has inline media.
+            // @todo: Add at least one test that manipulates TCA to verify this code branch works.
+            $queryBuilder = $this->createQueryBuilder('sys_refindex');
+            $result = $queryBuilder->select('tablename', 'field', 'recuid', 'ref_field')
+                ->from('sys_refindex')
+                ->orderBy('ref_sorting')
+                ->where(
+                    $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('pages')),
+                    // Use workspace-uid if the record is an overlay.
+                    $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($pageRecord['_ORIG_uid'] ?? $uid, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->in('tablename', $queryBuilder->createNamedParameter(array_keys($foreignRelationColumnTableFieldMapping), Connection::PARAM_STR_ARRAY)),
+                    $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($this->workspaceUid, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->neq('t3ver_state', VersionState::DELETE_PLACEHOLDER->value),
+                    $includeHiddenContent
+                        ? $queryBuilder->expr()->in('hidden', [0, 1]) // Dummy restriction to not break combined index.
+                        : $queryBuilder->expr()->eq('hidden', 0),
+                    $includeScheduledRecords
+                        ? $queryBuilder->expr()->lte('starttime', 2147483647)
+                        : $queryBuilder->expr()->lt('starttime', $dateTimestamp),
+                    $includeScheduledRecords
+                        ? $queryBuilder->expr()->gte('endtime', 0)
+                        : $queryBuilder->expr()->gt('endtime', $dateTimestamp)
+                )
+                ->executeQuery();
+            while ($row = $result->fetchAssociative()) {
+                if (isset($foreignRelationColumnTableFieldMapping[$row['tablename']][$row['field']][$row['ref_field']])) {
+                    $resultFieldUidArray[$row['ref_field']][] = (int)$row['recuid'];
+                }
+            }
+            foreach ($resultFieldUidArray as $column => $connectedUids) {
+                if (empty($connectedUids)) {
+                    $pageRecord[$column] = '';
+                } else {
+                    $pageRecord[$column] = implode(',', $connectedUids);
+                }
+            }
+            return $pageRecord;
+        }
+
+        // We need rows from refindex by looking at both local side and foreign side.
+        // This is done using a UNION of two distinct queries. This is pretty useful
+        // since it saves a round trip and can use distinct indexes per "sub" query.
+        // Named arguments however are global for both queries, so we use a dummy query
+        // builder to gather them all.
+        // Also, postgres and sqlite don't support sorting on single queries with UNION,
+        // so we sort the final result set just before imploding to the final CSV per field.
+        $namedArgumentsQB = $this->createQueryBuilder('sys_refindex');
+        $localQB = $this->createQueryBuilder('sys_refindex');
+        $localQB->select('tablename', 'field', 'sorting', 'recuid', 'ref_uid', 'ref_field', 'ref_sorting')
+            ->from('sys_refindex')
+            ->where(
+                $localQB->expr()->eq('tablename', $namedArgumentsQB->createNamedParameter('pages')),
+                $localQB->expr()->eq('recuid', $namedArgumentsQB->createNamedParameter($pageRecord['_ORIG_uid'] ?? $uid, Connection::PARAM_INT)),
+                $localQB->expr()->in('field', $namedArgumentsQB->createNamedParameter($localRelationColumns, Connection::PARAM_STR_ARRAY)),
+                $localQB->expr()->eq('workspace', $this->workspaceUid),
+                $localQB->expr()->neq('ref_t3ver_state', VersionState::DELETE_PLACEHOLDER->value),
+                $includeHiddenContent
+                    ? $localQB->expr()->in('ref_hidden', [0, 1]) // Dummy restriction to not break combined index.
+                    : $localQB->expr()->eq('ref_hidden', 0),
+                $includeScheduledRecords
+                    ? $localQB->expr()->lte('ref_starttime', 2147483647) // Dummy restriction to not break combined index.
+                    : $localQB->expr()->lt('ref_starttime', $dateTimestamp),
+                $includeScheduledRecords
+                    ? $localQB->expr()->gte('ref_endtime', 0) // Dummy restriction to not break combined index.
+                    : $localQB->expr()->gt('ref_endtime', $dateTimestamp)
+            );
+        $foreignQB = $this->createQueryBuilder('sys_refindex');
+        $foreignQB->select('tablename', 'field', 'sorting', 'recuid', 'ref_uid', 'ref_field', 'ref_sorting')
+            ->from('sys_refindex')
+            ->where(
+                $foreignQB->expr()->eq('ref_table', $namedArgumentsQB->createNamedParameter('pages')),
+                // Use workspace-uid if the record is an overlay.
+                $foreignQB->expr()->eq('ref_uid', $namedArgumentsQB->createNamedParameter($pageRecord['_ORIG_uid'] ?? $uid, Connection::PARAM_INT)),
+                $foreignQB->expr()->in('tablename', $namedArgumentsQB->createNamedParameter(array_keys($foreignRelationColumnTableFieldMapping), Connection::PARAM_STR_ARRAY)),
+                $foreignQB->expr()->eq('workspace', $namedArgumentsQB->createNamedParameter($this->workspaceUid, Connection::PARAM_INT)),
+                $foreignQB->expr()->neq('t3ver_state', VersionState::DELETE_PLACEHOLDER->value),
+                $includeHiddenContent
+                    ? $foreignQB->expr()->in('hidden', [0, 1]) // Dummy restriction to not break combined index.
+                    : $foreignQB->expr()->eq('hidden', 0),
+                $includeScheduledRecords
+                    ? $foreignQB->expr()->lte('starttime', 2147483647)
+                    : $foreignQB->expr()->lt('starttime', $dateTimestamp),
+                $includeScheduledRecords
+                    ? $foreignQB->expr()->gte('endtime', 0)
+                    : $foreignQB->expr()->gt('endtime', $dateTimestamp)
+            );
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_refindex');
+        $result = $connection->executeQuery(
+            $localQB->getSQL() . ' UNION ALL ' . $foreignQB->getSQL(),
+            $namedArgumentsQB->getParameters(),
+            $namedArgumentsQB->getParameterTypes()
+        );
+        while ($row = $result->fetchAssociative()) {
+            if ($row['tablename'] === 'pages') {
+                $resultFieldUidArray[$row['field']][(int)$row['sorting']] = (int)$row['ref_uid'];
+            } elseif (isset($foreignRelationColumnTableFieldMapping[$row['tablename']][$row['field']][$row['ref_field']])) {
+                $resultFieldUidArray[$row['ref_field']][(int)$row['ref_sorting']] = (int)$row['recuid'];
+            }
+        }
+        foreach ($resultFieldUidArray as $column => $connectedUids) {
+            if (empty($connectedUids)) {
+                $pageRecord[$column] = '';
+            } else {
+                ksort($connectedUids, SORT_NUMERIC);
+                $pageRecord[$column] = implode(',', $connectedUids);
             }
         }
         return $pageRecord;

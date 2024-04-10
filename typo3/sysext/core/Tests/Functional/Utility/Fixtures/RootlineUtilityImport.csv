@@ -34,6 +34,12 @@
 ,131,3000,1,0,0,0,0,131,1,130,0,0,0,"FR cat 130"
 ,140,3000,1,0,0,0,0,140,0,0,2,0,1,"EN WS2-new cat 140"
 ,141,3000,1,0,0,0,0,141,1,141,2,0,1,"FR WS2-new cat 140"
+,150,3000,1,0,0,0,0,150,0,0,0,0,0,"EN cat 150"
+,151,3000,1,0,0,0,0,151,0,0,2,150,2,"EN WS2-deleted cat 150"
+,160,6000,0,0,0,0,0,160,0,0,0,0,0,"EN cat 160"
+,161,6000,0,0,0,1712700000,0,161,0,0,0,0,0,"EN cat 161 starttime 2024-04-10 00:00 UTC"
+,162,6000,0,0,0,0,1713564000,162,0,0,0,0,0,"EN cat 162 endttime 2024-04-20 00:00 UTC"
+,163,6000,0,0,0,1712700000,1713564000,163,0,0,0,0,0,"EN cat 163 starttime 2024-04-10 00:00 UTC endttime 2024-04-20 00:00 UTC"
 "sys_file"
 ,"uid","pid","type","storage","identifier","extension","mime_type","name"
 ,1,0,2,1,"/user_upload/image1.jpg","jpg","image/jpeg","image1.jpg"
@@ -95,6 +101,12 @@
 ,4060,4000,0,0,0,0,0,0,"/parent4000/sub60","EN Parent 4000 Sub 60"
 ,4061,4000,0,1,4060,0,0,0,"/parent4000/fr-sub60","FR Parent 4000 Sub 60"
 ,4062,4000,0,1,4060,2,4061,0,"/parent4000/fr-sub60","FR WS2-changed Parent 4000 Sub 60"
+# hidden relations tests
+,5000,1,0,0,0,0,0,0,"/parent5000","EN Parent 5000"
+,5010,5000,0,0,0,0,0,0,"/parent5000/sub10","EN Parent 5000 Sub 10"
+# starttime endtime relations tests
+,6000,1,0,0,0,0,0,0,"/parent6000","EN Parent 6000"
+,6010,6000,0,0,0,0,0,0,"/parent6000/sub10","EN Parent 6000 Sub 10"
 "tx_testrootlineutility_hotel"
 ,"uid","pid","parenttable","parentid","deleted","hidden","starttime","endtime","sorting","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","title"
 ,1000,4010,"pages",4010,0,0,0,0,2,0,0,0,0,0,"EN Hotel 1000"
@@ -212,6 +224,12 @@
 ,1523,4060,"pages",4061,0,0,0,1,12,1,0,2,1522,0,"FR WS2-endtime Hotel 1522"
 ,1524,4060,"pages",4061,0,0,0,1,13,1,0,0,0,0,"FR Hotel 1524 endtime in past"
 ,1525,4060,"pages",4061,0,0,0,0,13,1,0,2,1524,0,"FR WS2-unstarttime Hotel 1524"
+,1600,5010,"pages",5010,0,0,0,0,1,0,0,0,0,0,"EN Hotel 1600"
+,1601,5010,"pages",5010,0,1,0,0,2,0,0,0,0,0,"EN Hotel 1601 hidden"
+,1700,6010,"pages",6010,0,0,0,0,1,0,0,0,0,0,"EN Hotel 1700"
+,1701,6010,"pages",6010,0,0,1712700000,0,1,0,0,0,0,0,"EN Hotel 1701 starttime 2024-04-10 00:00 UTC"
+,1702,6010,"pages",6010,0,0,0,1713564000,1,0,0,0,0,0,"EN Hotel 1702 endttime 2024-04-20 00:00 UTC"
+,1703,6010,"pages",6010,0,0,1712700000,1713564000,1,0,0,0,0,0,"EN Hotel 1703 starttime 2024-04-10 00:00 UTC endttime 2024-04-20 00:00 UTC"
 "sys_category_record_mm"
 ,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
 ,10,3010,"pages","categories",0,2
@@ -289,6 +307,7 @@
 ,110,3050,"pages","categories",4,10
 ,120,3050,"pages","categories",4,11
 ,130,3050,"pages","categories",4,12
+,150,3050,"pages","categories",0,13
 ,20,3050,"pages","categories_other",6,1
 ,30,3050,"pages","categories_other",10,2
 ,30,3051,"pages","categories",11,1
@@ -303,8 +322,15 @@
 ,120,3051,"pages","categories",5,11
 ,130,3051,"pages","categories",5,12
 ,140,3051,"pages","categories",2,13
+,151,3051,"pages","categories",0,14
 ,20,3051,"pages","categories",7,15
 ,20,3051,"pages","categories_other",8,1
+,10,5010,"pages","categories",11,1
+,50,5010,"pages","categories",6,2
+,160,6010,"pages","categories",0,1
+,161,6010,"pages","categories",0,2
+,162,6010,"pages","categories",0,3
+,163,6010,"pages","categories",0,4
 "sys_file_reference"
 ,"uid","pid","deleted","hidden","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","t3ver_stage","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","title"
 ,1000,2001,0,0,0,0,0,0,0,0,1,2001,"pages","media",2,"image1"
@@ -494,12 +520,19 @@
 ,"f4ebb5bc2a8a1b8cd248875495f49bf2","pages",4062,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,10,2,"tx_testrootlineutility_hotel",1521,,0,0,1,0,0,
 ,"94f71c3c3695b02c8df361212785cc29","pages",4062,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,11,2,"tx_testrootlineutility_hotel",1523,,0,0,1,0,0,
 ,"ff8d109e8a14c03fc3847ad8ef745088","pages",4062,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,12,2,"tx_testrootlineutility_hotel",1525,,0,0,2147483647,0,0,
+,"436082cb560af968d0d21aa5b4e8117f","pages",5010,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,0,0,"tx_testrootlineutility_hotel",1600,,0,0,2147483647,0,0,
+,"c62d47eac693dc249280ecf0bc6b0d82","pages",5010,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,1,0,"tx_testrootlineutility_hotel",1601,,1,0,2147483647,0,0,
+,"c5886abff00f114b71f2bfaa003589b3","pages",6010,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,0,0,"tx_testrootlineutility_hotel",1700,,0,0,2147483647,0,0,
+,"b3ace6f5b7958a645f83a51ea3f4eae2","pages",6010,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,1,0,"tx_testrootlineutility_hotel",1701,,0,1712700000,2147483647,0,0,
+,"cacbde8895da162fb589f59e20aa3779","pages",6010,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,2,0,"tx_testrootlineutility_hotel",1702,,0,0,1713564000,0,0,
+,"f3c1d276bbd7b5948c2e786543ed6c7a","pages",6010,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,3,0,"tx_testrootlineutility_hotel",1703,,0,1712700000,1713564000,0,0,
 ,"8b2833cac7ba1bdc55ab93e773586393","sys_category",10,"parent",0,0,2147483647,0,,,,0,0,"sys_category",1,,0,0,2147483647,0,0,
 ,"d512890fbd41f10ebb0656b91670f7ad","sys_category",10,"items",0,0,2147483647,0,,,,0,0,"pages",3010,"categories",0,0,2147483647,0,2,
 ,"0d8ae19562d216faaa695827b0cf7674","sys_category",10,"items",0,0,2147483647,0,,,,1,0,"pages",3020,"categories",0,0,2147483647,0,2,
 ,"eba92ed9c4e2f85fa9d5b1070a315600","sys_category",10,"items",0,0,2147483647,0,,,,2,0,"pages",3021,"categories_other",0,0,2147483647,0,1,
 ,"91df4a2b643a8e6a9d8b6868a0355a4c","sys_category",10,"items",0,0,2147483647,0,,,,3,0,"pages",3040,"categories",0,0,2147483647,0,1,
 ,"8c9a076036a4eb3bbbaabf8fb0825c67","sys_category",10,"items",0,0,2147483647,0,,,,4,0,"pages",3050,"categories",0,0,2147483647,0,2,
+,"789c32dab4ef06c0179a52e6d480c901","sys_category",10,"items",0,0,2147483647,0,,,,5,0,"pages",5010,"categories",0,0,2147483647,0,1,
 ,"6437505b6db95c1888ea930ef3fc0453","sys_category",10,"items",0,0,2147483647,0,,,,0,2,"pages",3010,"categories",0,0,2147483647,0,2,
 ,"87ec01c6cb1795a86328edfd184b74a6","sys_category",10,"items",0,0,2147483647,0,,,,1,2,"pages",3020,"categories",0,0,2147483647,0,2,
 ,"1f79b886c70459915d369769b04714c3","sys_category",10,"items",0,0,2147483647,0,,,,2,2,"pages",3021,"categories_other",0,0,2147483647,0,1,
@@ -507,6 +540,7 @@
 ,"4784084d82a76a51b18fb1157e9a6465","sys_category",10,"items",0,0,2147483647,0,,,,4,2,"pages",3040,"categories",0,0,2147483647,0,1,
 ,"2d974540c298f9d4a342bb29b47b32da","sys_category",10,"items",0,0,2147483647,0,,,,5,2,"pages",3041,"categories",0,0,2147483647,0,2,
 ,"8ff366611034bc2474c180eda307cb05","sys_category",10,"items",0,0,2147483647,0,,,,6,2,"pages",3050,"categories",0,0,2147483647,0,2,
+,"3db58374fb243dcd8375928c75ae63fc","sys_category",10,"items",0,0,2147483647,0,,,,7,2,"pages",5010,"categories",0,0,2147483647,0,1,
 ,"a6561ec7b49a1562738b5087c6f5c624","sys_category",11,"l10n_parent",0,0,2147483647,0,,,,0,0,"sys_category",10,,0,0,2147483647,0,0,
 ,"ff01174eda9bf96cb3cff4b614551880","sys_category",11,"parent",0,0,2147483647,0,,,,0,0,"sys_category",1,,0,0,2147483647,0,0,
 ,"6150233adb84ac20c6cbe28af48ca705","sys_category",20,"parent",0,0,2147483647,0,,,,0,0,"sys_category",1,,0,0,2147483647,0,0,
@@ -547,11 +581,13 @@
 ,"12456e08e93512e86d6f7b2124dd673c","sys_category",50,"items",1,0,2147483647,0,,,,0,0,"pages",3010,"categories",0,0,2147483647,0,4,
 ,"c9582076c1ad3ac3217129181a1975d9","sys_category",50,"items",1,0,2147483647,0,,,,1,0,"pages",3021,"categories",0,0,2147483647,0,4,
 ,"ea82f8411ea4d2d405b0904aad3949bf","sys_category",50,"items",1,0,2147483647,0,,,,2,0,"pages",3050,"categories",0,0,2147483647,0,4,
+,"e0504d2c481271f11f06b648a3cbd2d4","sys_category",50,"items",1,0,2147483647,0,,,,3,0,"pages",5010,"categories",0,0,2147483647,0,2,
 ,"c8be5e991aefbebb339f7c9d8c53ae30","sys_category",50,"items",1,0,2147483647,0,,,,0,2,"pages",3010,"categories",0,0,2147483647,0,4,
 ,"7543ae20a00df9edd48c5562dbfc6bea","sys_category",50,"items",1,0,2147483647,0,,,,1,2,"pages",3021,"categories",0,0,2147483647,0,4,
 ,"33761bde9c3c7a8df38939fd9d1c6d61","sys_category",50,"items",1,0,2147483647,0,,,,2,2,"pages",3030,"categories",0,0,2147483647,0,4,
 ,"f6c9dc91c4124a8e295e12c9e97addd2","sys_category",50,"items",1,0,2147483647,0,,,,3,2,"pages",3041,"categories",0,0,2147483647,0,4,
 ,"d3dcd55cdff503146bf56cb31a672abf","sys_category",50,"items",1,0,2147483647,0,,,,4,2,"pages",3051,"categories",0,0,2147483647,0,4,
+,"e2049a95692a1f9a9a9993540a1fcb57","sys_category",50,"items",1,0,2147483647,0,,,,5,2,"pages",5010,"categories",0,0,2147483647,0,2,
 ,"3ed710fce78fa1b5cdbcbfc824ecc400","sys_category",51,"l10n_parent",1,0,2147483647,0,,,,0,0,"sys_category",50,,0,0,2147483647,0,0,
 ,"4dd148702ed6bfa17587f9379662c60d","sys_category",51,"parent",1,0,2147483647,0,,,,0,0,"sys_category",1,,0,0,2147483647,0,0,
 ,"c420436c3c97fdc989c581cc6f4690b7","sys_category",60,"parent",0,0,2147483647,0,,,,0,0,"sys_category",1,,0,0,2147483647,0,0,
@@ -648,6 +684,14 @@
 ,"cb3c4572d3602fc4742622ceabb26190","sys_category",140,"items",0,0,2147483647,1,,,,2,2,"pages",3051,"categories",0,0,2147483647,0,13,
 ,"d7649b7dd0d38262750dd2e3973f38db","sys_category",141,"l10n_parent",0,0,2147483647,1,,,,0,2,"sys_category",141,,0,0,2147483647,0,0,
 ,"3fc8bf272f8361c12aabc9d06d6ca76f","sys_category",141,"parent",0,0,2147483647,1,,,,0,2,"sys_category",1,,0,0,2147483647,0,0,
+,"8372bbfb337598500437bbc7db9c948f","sys_category",150,"parent",0,0,2147483647,0,,,,0,0,"sys_category",1,,0,0,2147483647,0,0,
+,"22a492e3d1355bc670b1e08ba86b8278","sys_category",150,"items",0,0,2147483647,0,,,,0,0,"pages",3050,"categories",0,0,2147483647,0,13,
+,"ad94ffe7a877749a7ee3eee14318cb2b","sys_category",151,"parent",0,0,2147483647,2,,,,0,2,"sys_category",1,,0,0,2147483647,0,0,
+,"78311d685bcd018988d67492e9dbe4e5","sys_category",151,"items",0,0,2147483647,2,,,,0,2,"pages",3051,"categories",0,0,2147483647,0,14,
+,"3b83c0bdc4aca445c79057c3e8482ef1","sys_category",160,"items",0,0,2147483647,0,,,,0,0,"pages",6010,"categories",0,0,2147483647,0,1,
+,"5708d5fa8705f73a541322d4ab7e01fd","sys_category",161,"items",0,1712700000,2147483647,0,,,,0,0,"pages",6010,"categories",0,0,2147483647,0,2,
+,"f6f1568018f75215f120378e030bbe0d","sys_category",162,"items",0,0,1713564000,0,,,,0,0,"pages",6010,"categories",0,0,2147483647,0,3,
+,"879174335aafe7868c50d4bf647e45d2","sys_category",163,"items",0,1712700000,1713564000,0,,,,0,0,"pages",6010,"categories",0,0,2147483647,0,4,
 ,"662118c0b7a0096482db813011801a45","sys_file",1,"storage",0,0,2147483647,0,,,,0,0,"sys_file_storage",1,,0,0,2147483647,0,0,
 ,"b29f51a7f7e6e6dcc6d99be7849ae442","sys_file",2,"storage",0,0,2147483647,0,,,,0,0,"sys_file_storage",1,,0,0,2147483647,0,0,
 ,"d762da2cbea3fc2bcaf1db96ded74dd7","sys_file",3,"storage",0,0,2147483647,0,,,,0,0,"sys_file_storage",1,,0,0,2147483647,0,0,

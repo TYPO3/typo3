@@ -1357,7 +1357,6 @@ return [
         'compressionLevel' => 0,
         'pageNotFoundOnCHashError' => true,
         'pageUnavailable_force' => false,
-        'addRootLineFields' => '',
         'checkFeUserPid' => true,
         'loginRateLimit' => 10,
         'loginRateLimitInterval' => '15 minutes',

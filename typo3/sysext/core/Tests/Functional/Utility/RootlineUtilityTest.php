@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -43,11 +44,6 @@ final class RootlineUtilityTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = ['workspaces'];
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_rootlineutility',
-    ];
-    protected array $configurationToUseInTestInstance = [
-        'FE' => [
-            'addRootLineFields' => 'categories,categories_other,tx_testrootlineutility_hotels',
-        ],
     ];
 
     protected function setUp(): void
@@ -757,8 +753,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 2031,
                     'title' => 'EN WS2-changed Parent 2030 Sub 1 with media changed',
-                    // It would be better if these would be the ws-overlay uids directly.
-                    'media' => '1300,1301,1307,1303', // bug: 1303 is hidden=1 in ws and should not be there
+                    'media' => '1304,1305,1307',
                 ],
                 1 => [
                     'uid' => 2030,
@@ -781,8 +776,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 2032,
                     'title' => 'EN WS2-changed Parent 2030 Sub 1 with media changed',
-                    // It would be better if these would be the ws-overlay uids directly.
-                    'media' => '1300,1301,1307,1303', // bug: 1303 is hidden=1 in ws and should not be there
+                    'media' => '1304,1305,1307',
                 ],
                 1 => [
                     'uid' => 2030,
@@ -805,8 +799,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 2041,
                     'title' => 'FR WS2-changed Parent 2040 Sub 1 with media changed',
-                    // It would be better if these would be the ws-overlay uids directly.
-                    'media' => '1400,1407,1401,1403', // bug: 1403 is hidden
+                    'media' => '1404,1407,1405',
                 ],
                 1 => [
                     'uid' => 2040,
@@ -829,8 +822,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 2042,
                     'title' => 'FR WS2-changed Parent 2040 Sub 1 with media changed',
-                    // It would be better if these would be the ws-overlay uids directly.
-                    'media' => '1400,1407,1401,1403', // bug: 1403 is hidden
+                    'media' => '1404,1407,1405',
                 ],
                 1 => [
                     'uid' => 2040,
@@ -853,8 +845,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 2043,
                     'title' => 'FR WS2-changed Parent 2040 Sub 1 with media changed',
-                    // It would be better if these would be the ws-overlay uids directly.
-                    'media' => '1400,1407,1401,1403', // bug: 1403 is hidden
+                    'media' => '1404,1407,1405',
                 ],
                 1 => [
                     'uid' => 2040,
@@ -878,8 +869,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 3010,
                     'title' => 'EN Parent 3000 Sub 10',
-                    // bugs: deleted, hidden, starttime, endtime ignored
-                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130',
+                    'categories' => '30,10,60,90,120',
                     'categories_other' => '20,30',
                 ],
                 1 => [
@@ -905,8 +895,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 3020,
                     'title' => 'FR Parent 3000 Sub 20',
-                    // bugs: deleted, hidden, starttime, endtime ignored
-                    'categories' => '30,20,40,50,60,70,80,90,100,110,120,130',
+                    'categories' => '30,20,60,90,120',
                     'categories_other' => '10,20',
                 ],
                 1 => [
@@ -932,8 +921,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 3021,
                     'title' => 'FR Parent 3000 Sub 20',
-                    // bugs: deleted, hidden, starttime, endtime ignored
-                    'categories' => '30,20,40,50,60,70,80,90,100,110,120,130',
+                    'categories' => '30,20,60,90,120',
                     'categories_other' => '10,20',
                 ],
                 1 => [
@@ -959,7 +947,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 3030,
                     'title' => 'EN WS2-new Parent 3000 Sub 30',
-                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130,140',
+                    'categories' => '30,10,60,90,120,140',
                     'categories_other' => '20,30',
                 ],
                 1 => [
@@ -985,7 +973,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 3040,
                     'title' => 'FR WS2-new Parent 3000 Sub 40',
-                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130,140',
+                    'categories' => '30,10,60,90,120,140',
                     'categories_other' => '20,30',
                 ],
                 1 => [
@@ -1011,7 +999,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 3041,
                     'title' => 'FR WS2-new Parent 3000 Sub 40',
-                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130,140',
+                    'categories' => '30,10,60,90,120,140',
                     'categories_other' => '20,30',
                 ],
                 1 => [
@@ -1037,14 +1025,15 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 3050,
                     'title' => 'EN WS2-changed Parent 3000 Sub 50',
-                    // @todo: 10 is kept but not connected in WS
-                    //        140 not found, 20 not found
-                    // @todo missing cases: - a category has a delete placeholder in ws
-                    //                      - a category is changed (eg. title) in ws
+                    // @todo missing cases: - a category is changed (eg. title) in ws
                     //                      - a category is unhidden, starttime, endtime enabled in ws, while it is not in live
                     //                      - this test case for FR, as with 'media lang FR, workspace media elements changed'
-                    'categories' => '30,10,40,50,60,70,80,90,100,110,120,130',
-                    'categories_other' => '20,30',
+                    // @todo observations: While inline foreign_field localized relations point to the localized records, MM relations do not
+                    //                     on the local 'category' side. Those need to be overlayed when dealing with localized
+                    //                     categories. This also has the side effect that hidden,starttime and endtime restrictions
+                    //                     from the default language kick in, and those of the localized overlays are ignored.
+                    'categories' => '30,60,90,120,140,20',
+                    'categories_other' => '20',
                 ],
                 1 => [
                     'uid' => 3000,
@@ -1069,7 +1058,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 3051,
                     'title' => 'EN WS2-changed Parent 3000 Sub 50',
-                    'categories' => '30,40,50,60,70,80,90,100,110,120,130,140,20',
+                    'categories' => '30,60,90,120,140,20',
                     'categories_other' => '20',
                 ],
                 1 => [
@@ -1096,8 +1085,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4010,
                     'title' => 'EN Parent 4000 Sub 10',
-                    // starttime / endtime not respected
-                    'tx_testrootlineutility_hotels' => '1001,1000,1004,1005',
+                    'tx_testrootlineutility_hotels' => '1001,1000',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1120,8 +1108,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4020,
                     'title' => 'FR Parent 4000 Sub 20',
-                    // starttime / endtime not respected
-                    'tx_testrootlineutility_hotels' => '1101,1103,1112,1114,1116,1118,1120,1122,1124,1125',
+                    'tx_testrootlineutility_hotels' => '1101,1103,1112,1118,1124,1125',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1144,8 +1131,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4021,
                     'title' => 'FR Parent 4000 Sub 20',
-                    // starttime / endtime not respected
-                    'tx_testrootlineutility_hotels' => '1101,1103,1112,1114,1116,1118,1120,1122,1124,1125',
+                    'tx_testrootlineutility_hotels' => '1101,1103,1112,1118,1124,1125',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1168,7 +1154,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4030,
                     'title' => 'EN WS2-new Parent 4000 Sub 30',
-                    'tx_testrootlineutility_hotels' => '1201,1200,1204,1205',
+                    'tx_testrootlineutility_hotels' => '1201,1200',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1191,7 +1177,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4040,
                     'title' => 'FR WS2-new Parent 4000 Sub 40',
-                    'tx_testrootlineutility_hotels' => '1301,1303,1312,1314,1316,1318,1320,1322,1324,1325',
+                    'tx_testrootlineutility_hotels' => '1301,1303,1312,1318,1324,1325',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1214,7 +1200,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4041,
                     'title' => 'FR WS2-new Parent 4000 Sub 40',
-                    'tx_testrootlineutility_hotels' => '1301,1303,1312,1314,1316,1318,1320,1322,1324,1325',
+                    'tx_testrootlineutility_hotels' => '1301,1303,1312,1318,1324,1325',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1237,8 +1223,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4050,
                     'title' => 'EN WS2-changed Parent 4000 Sub 50',
-                    // hidden, starttime, endtime bugs ...
-                    'tx_testrootlineutility_hotels' => '1400,1402,1404,1409,1413,1415,1417,1419,1421,1423',
+                    'tx_testrootlineutility_hotels' => '1401,1403,1404,1412,1418,1424',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1261,8 +1246,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4051,
                     'title' => 'EN WS2-changed Parent 4000 Sub 50',
-                    // hidden, starttime, endtime bugs ...
-                    'tx_testrootlineutility_hotels' => '1400,1402,1404,1409,1413,1415,1417,1419,1421,1423',
+                    'tx_testrootlineutility_hotels' => '1401,1403,1404,1412,1418,1424',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1285,8 +1269,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4060,
                     'title' => 'FR WS2-changed Parent 4000 Sub 60',
-                    // hidden, starttime, endtime bugs ...
-                    'tx_testrootlineutility_hotels' => '1501,1503,1505,1510,1514,1516,1518,1520,1522,1524',
+                    'tx_testrootlineutility_hotels' => '1502,1504,1505,1513,1519,1525',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1309,8 +1292,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4061,
                     'title' => 'FR WS2-changed Parent 4000 Sub 60',
-                    // hidden, starttime, endtime bugs ...
-                    'tx_testrootlineutility_hotels' => '1501,1503,1505,1510,1514,1516,1518,1520,1522,1524',
+                    'tx_testrootlineutility_hotels' => '1502,1504,1505,1513,1519,1525',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1333,8 +1315,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 4062,
                     'title' => 'FR WS2-changed Parent 4000 Sub 60',
-                    // hidden, starttime, endtime bugs ...
-                    'tx_testrootlineutility_hotels' => '1501,1503,1505,1510,1514,1516,1518,1520,1522,1524',
+                    'tx_testrootlineutility_hotels' => '1502,1504,1505,1513,1519,1525',
                 ],
                 1 => [
                     'uid' => 4000,
@@ -1357,6 +1338,213 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect($workspace));
         $context->setAspect('language', new LanguageAspect($language));
+        $context->setAspect('date', new DateTimeAspect((new \DateTimeImmutable())->setTimestamp(time())));
+        $result = (new RootlineUtility($uid, '', $context))->get();
+        self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
+    }
+
+    public static function getResolvesHiddenRelationsCorrectlyDataProvider(): \Generator
+    {
+        yield 'do not fetch hidden records' => [
+            'uid' => 5010,
+            'includeHiddenRecords' => false,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 5010,
+                    'title' => 'EN Parent 5000 Sub 10',
+                    'categories' => '10',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '1600',
+                ],
+                1 => [
+                    'uid' => 5000,
+                    'title' => 'EN Parent 5000',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'fetch hidden records' => [
+            'uid' => 5010,
+            'includeHiddenRecords' => true,
+            'testFields' => ['uid', 'title', 'categories', 'categories_other', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 5010,
+                    'title' => 'EN Parent 5000 Sub 10',
+                    'categories' => '10,50',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '1600,1601',
+                ],
+                1 => [
+                    'uid' => 5000,
+                    'title' => 'EN Parent 5000',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('getResolvesHiddenRelationsCorrectlyDataProvider')]
+    #[Test]
+    public function getResolvesHiddenRelationsCorrectly(int $uid, bool $includeHiddenRecords, array $testFields, array $expected): void
+    {
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(0));
+        $context->setAspect('language', new LanguageAspect(0));
+        $context->setAspect('date', new DateTimeAspect((new \DateTimeImmutable())->setTimestamp(time())));
+        $context->setAspect('visibility', new VisibilityAspect(false, $includeHiddenRecords, false, false));
+        $result = (new RootlineUtility($uid, '', $context))->get();
+        self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
+    }
+
+    public static function getResolvesStarttimeEndtimeRelationsCorrectlyDataProvider(): \Generator
+    {
+        yield 'include scheduled records' => [
+            'uid' => 6010,
+            'includeScheduledRecords' => true,
+            'simulateTime' => 1713132000, // Not relevant with includeScheduledRecords being true here
+            'testFields' => ['uid', 'title', 'categories', 'categories_other', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 6010,
+                    'title' => 'EN Parent 6000 Sub 10',
+                    'categories' => '160,161,162,163',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '1700,1701,1702,1703',
+                ],
+                1 => [
+                    'uid' => 6000,
+                    'title' => 'EN Parent 6000',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'simulate time within starttime and endtime restrictions' => [
+            'uid' => 6010,
+            'includeScheduledRecords' => false,
+            'simulateTime' => 1713132000, // 2024-04-15 00:00 UTC - within fixture starttime and endtime restrictions
+            'testFields' => ['uid', 'title', 'categories', 'categories_other', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 6010,
+                    'title' => 'EN Parent 6000 Sub 10',
+                    'categories' => '160,161,162,163',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '1700,1701,1702,1703',
+                ],
+                1 => [
+                    'uid' => 6000,
+                    'title' => 'EN Parent 6000',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'simulate time before starttime restrictions' => [
+            'uid' => 6010,
+            'includeScheduledRecords' => false,
+            'simulateTime' => 1712268000, // 2024-04-05 00:00 UTC - before starttime restrictions
+            'testFields' => ['uid', 'title', 'categories', 'categories_other', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 6010,
+                    'title' => 'EN Parent 6000 Sub 10',
+                    'categories' => '160,162',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '1700,1702',
+                ],
+                1 => [
+                    'uid' => 6000,
+                    'title' => 'EN Parent 6000',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+        yield 'simulate time after endtime restrictions' => [
+            'uid' => 6010,
+            'includeScheduledRecords' => false,
+            'simulateTime' => 1713996000, // 2024-04-25 00:00 UTC - after endtime restrictions
+            'testFields' => ['uid', 'title', 'categories', 'categories_other', 'tx_testrootlineutility_hotels'],
+            'expected' => [
+                2 => [
+                    'uid' => 6010,
+                    'title' => 'EN Parent 6000 Sub 10',
+                    'categories' => '160,161',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '1700,1701',
+                ],
+                1 => [
+                    'uid' => 6000,
+                    'title' => 'EN Parent 6000',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+                0 => [
+                    'uid' => 1,
+                    'title' => 'EN Root',
+                    'categories' => '',
+                    'categories_other' => '',
+                    'tx_testrootlineutility_hotels' => '',
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('getResolvesStarttimeEndtimeRelationsCorrectlyDataProvider')]
+    #[Test]
+    public function getResolvesStarttimeEndtimeRelationsCorrectly(int $uid, bool $includeScheduledRecords, int $simulateTime, array $testFields, array $expected): void
+    {
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(0));
+        $context->setAspect('language', new LanguageAspect(0));
+        $context->setAspect('date', new DateTimeAspect((new \DateTimeImmutable())->setTimestamp($simulateTime)));
+        $context->setAspect('visibility', new VisibilityAspect(false, false, false, $includeScheduledRecords));
         $result = (new RootlineUtility($uid, '', $context))->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
     }

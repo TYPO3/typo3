@@ -1184,4 +1184,9 @@ return [
             'Breaking-102932-RemovedTypoScriptFrontendControllerHooks.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'addRootLineFields\']' => [
+        'restFiles' => [
+            'Deprecation-103752-ObsoleteGLOBALSTYPO3_CONF_VARSFEaddRootLineFields.rst',
+        ],
+    ],
 ];
