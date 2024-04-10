@@ -143,7 +143,10 @@
             </div>
         </f:then>
         <f:else>
-            <h2><f:translate key="administration.noPageSelected" /></h2>
+            <f:be.infobox
+                message="{f:translate(key:'LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.noPageSelected')}"
+                state="-1"
+            />
         </f:else>
     </f:if>
 </f:section>
