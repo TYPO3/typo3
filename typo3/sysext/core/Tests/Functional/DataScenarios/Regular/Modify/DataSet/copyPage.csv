@@ -27,15 +27,15 @@
 ,306,93,32,0,0,0,0,0,0,0,0,"Regular Element #1"
 ,307,93,16,0,1,306,306,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
 ,308,93,8,0,2,306,307,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
-"sys_refindex",,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",
-,"1130084e4038e95f2d5806b731cd416a","tt_content",300,"l18n_parent",,,,0,0,"tt_content",299,,
-,"4a1e04a83a4a17882682d86f6cd61f3d","tt_content",301,"l18n_parent",,,,0,0,"tt_content",297,,
-,"25f3b71b67f29fa33fbfd4fa2d930b70","tt_content",302,"l18n_parent",,,,0,0,"tt_content",297,,
-,"583b9974d1df1d9efb695cdabfe53a73","pages",91,"l10n_parent",,,,0,0,"pages",89,,
-,"2a42323931078b2842779bd9446e8152","pages",92,"l10n_parent",,,,0,0,"pages",89,,
-,"6000cbc7fbee0d718f956c85c0d4b5f8","tt_content",304,"l18n_parent",,,,0,0,"tt_content",303,,
-,"e87069b61fe0470841bc2d196edb0624","tt_content",307,"l18n_parent",,,,0,0,"tt_content",306,,
-,"ca4707efbf5a7def7e5b0fb26964f4cd","tt_content",308,"l18n_parent",,,,0,0,"tt_content",306,,
-,"e3716e6dfc8ea67bd47698b0725df88a","pages",94,"l10n_parent",,,,0,0,"pages",93,,,
-,"28b33213ec141d71f67f6e25f772f326","pages",95,"l10n_parent",,,,0,0,"pages",93,,,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"02aa95a647ed365ffeeac881bd1af449","pages",91,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"14f90231b8565c61decd2aeaebea6034","pages",92,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"ca4f164be617724388f00923729e8558","tt_content",300,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",299,,0,0,2147483647,0,0,
+,"3676712de719382fe386617c1942c940","tt_content",301,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",297,,0,0,2147483647,0,0,
+,"2b5621b6ac407f06a71e517bf98c9c94","tt_content",302,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",297,,0,0,2147483647,0,0,
+,"b4ea58237dd46afb90d18be6f05568ca","pages",94,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",93,,0,0,2147483647,0,0,
+,"49757e4795d6f4b0aa4c8e4105498e78","pages",95,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",93,,0,0,2147483647,0,0,
+,"192520d49ab0594daafc1960081e9332","tt_content",304,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",303,,0,0,2147483647,0,0,
+,"97a04ad7a19e8ca4c7ae9827cfd49e1f","tt_content",307,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",306,,0,0,2147483647,0,0,
+,"5593d700f503189acb48e3c22771779f","tt_content",308,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",306,,0,0,2147483647,0,0,

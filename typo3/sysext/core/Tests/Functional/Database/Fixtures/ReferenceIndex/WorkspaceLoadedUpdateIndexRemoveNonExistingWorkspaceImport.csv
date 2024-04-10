@@ -18,14 +18,14 @@
 ,3,89,1,0,0,0,0,0,0,0,"Hotel #1",297,"tt_content","1nff.hotels",2,,
 ,5,89,1,0,0,0,0,0,0,0,"Hotel #1",298,"tt_content","1nff.hotels",1,,
 ,6,89,1,0,0,0,1,0,0,5,"Hotel #1",298,"tt_content","1nff.hotels",1,,
-"sys_refindex",,,,,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,,,
-,"8309f9a3ae2a259bdcb29913b7101244","pages",89,"tx_testirreforeignfield_hotels",,,,0,0,"tx_testirreforeignfield_hotel",2,,,,,,
-,"b9be8f0166b062001c138957270e72e2","tt_content",297,"tx_testirreforeignfield_hotels",,,,0,0,"tx_testirreforeignfield_hotel",3,,,,,,
-,"4e8bfa4d76d4cec2d9f6ec62d2974371","tt_content",298,"tx_testirreforeignfield_hotels",,,,0,0,"tx_testirreforeignfield_hotel",5,,,,,,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"f6c496743ae6ceac1e6ef37f59ac6ce4","pages",89,"tx_testirreforeignfield_hotels",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_hotel",2,,0,0,2147483647,0,0,
+,"9a75607fd165efe8f436d7feb1ddb99a","tt_content",297,"tx_testirreforeignfield_hotels",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_hotel",3,,0,0,2147483647,0,0,
+,"7d6fbd99ec79acf961d9cc5d8fd4045a","tt_content",298,"tx_testirreforeignfield_hotels",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_hotel",5,,0,0,2147483647,0,0,
 # valid - ws exists and records are connected
-,"f735c7fc6863a29d827ca201f60c8055","tt_content",299,"tx_testirreforeignfield_hotels",,,,0,1,"tx_testirreforeignfield_hotel",6,,,,,,
+,"18accb38deb8ac204616c75cce972a99","tt_content",299,"tx_testirreforeignfield_hotels",0,0,2147483647,0,,,,0,1,"tx_testirreforeignfield_hotel",6,,0,0,2147483647,0,0,
 # invalid - ws 2 is deleted = 1 - should be removed
-,"deletetWorkspace827ca201f60c8055","tt_content",299,"tx_testirreforeignfield_hotels",,,,0,2,"tx_testirreforeignfield_hotel",6,,,,,,
+,"deletetWorkspace827ca201f60c8055","tt_content",299,"tx_testirreforeignfield_hotels",0,0,2147483647,0,,,,0,2,"tx_testirreforeignfield_hotel",6,,0,0,2147483647,0,0,
 # invalid - ws 3 does not exist - should be removed
-,"notExistingWorkspacea201f60c8055","tt_content",299,"tx_testirreforeignfield_hotels",,,,0,3,"tx_testirreforeignfield_hotel",6,,,,,,
+,"notExistingWorkspacea201f60c8055","tt_content",299,"tx_testirreforeignfield_hotels",0,0,2147483647,0,,,,0,3,"tx_testirreforeignfield_hotel",6,,0,0,2147483647,0,0,

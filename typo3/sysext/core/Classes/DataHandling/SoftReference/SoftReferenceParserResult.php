@@ -61,6 +61,7 @@ final class SoftReferenceParserResult
 
     public static function createWithoutMatches(): self
     {
+        // @todo: set protected, use create() with empty elements instead.
         return new self();
     }
 

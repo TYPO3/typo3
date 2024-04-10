@@ -14,6 +14,6 @@
 ,297,89,384,0,0,0,0,0,0,0,0,"Regular Element #1",
 ,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2",
 ,299,89,768,0,0,0,0,0,0,0,0,"Regular Element #3",
-"sys_refindex",,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,
-,"583b9974d1df1d9efb695cdabfe53a73","pages",91,"l10n_parent",,,,0,0,"pages",89,,,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"ab1ee5054ca5810083dbf3a670ad3e1f","pages",91,"l10n_parent",1,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,

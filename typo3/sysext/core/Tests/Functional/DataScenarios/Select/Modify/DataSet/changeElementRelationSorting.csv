@@ -13,9 +13,9 @@
 ,1,89,256,0,0,0,0,0,0,0,"Element #1",
 ,2,89,512,0,0,0,0,0,0,0,"Element #2",
 ,3,89,768,0,0,0,0,0,0,0,"Element #3",
-"sys_refindex",,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",
-,"fb9a4c46d91b175ee7503de71523c849","tt_content",298,"tx_testdatahandler_select",,,,0,0,"tx_testdatahandler_element",2,,
-,"f54bf3a4ddc51685c0586b31015312cb","tt_content",298,"tx_testdatahandler_select",,,,1,0,"tx_testdatahandler_element",3,,
-,"a05916ff29b9bb17b09fa6e4bdf273af","tt_content",297,"tx_testdatahandler_select",,,,0,0,"tx_testdatahandler_element",2,,
-,"5563094af1a12997b54ec5c3b00eea6c","tt_content",297,"tx_testdatahandler_select",,,,1,0,"tx_testdatahandler_element",1,,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"794264e98721ed970ce545e238b93d70","tt_content",298,"tx_testdatahandler_select",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"191a3585c0803ac6477fd8c53c9d74e8","tt_content",298,"tx_testdatahandler_select",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",3,,0,0,2147483647,0,0,
+,"8a3d660876c91e8405bfee5fd1e2954e","tt_content",297,"tx_testdatahandler_select",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"9ca856e28fee3903e08f5a6d62a4e052","tt_content",297,"tx_testdatahandler_select",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",1,,0,0,2147483647,0,0,

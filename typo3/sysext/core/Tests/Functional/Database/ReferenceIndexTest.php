@@ -23,6 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ReferenceIndexTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = ['seo'];
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_refindex_softref',
@@ -38,11 +39,11 @@ final class ReferenceIndexTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function updateIndexHandlesSoftrefForDbFieldWithEmailSoftref(): void
+    public function updateIndexHandlesSoftrefForDbField(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForDbFieldWithEmailSoftrefImport.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForDbFieldImport.csv');
         $this->get(ReferenceIndex::class)->updateIndex(false);
-        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForDbFieldWithEmailSoftrefResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForDbFieldResult.csv');
     }
 
     #[Test]

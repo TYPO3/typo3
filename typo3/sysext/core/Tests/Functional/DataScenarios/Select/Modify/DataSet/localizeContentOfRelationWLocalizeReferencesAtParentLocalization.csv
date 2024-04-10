@@ -16,14 +16,14 @@
 ,3,89,768,0,0,0,0,0,0,0,"Element #3",
 ,4,89,640,0,1,2,0,0,0,0,"[Translate to Dansk:] Element #2","{""l10n_parent"":""0"",""l10n_diffsource"":"""",""hidden"":""0"",""sys_language_uid"":""0"",""title"":""Element #2""}"
 ,5,89,704,0,1,3,0,0,0,0,"[Translate to Dansk:] Element #3","{""l10n_parent"":""0"",""l10n_diffsource"":"""",""hidden"":""0"",""sys_language_uid"":""0"",""title"":""Element #3""}"
-"sys_refindex",,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",
-,"d7065184b2d510f3fada875169bc8c57","tt_content",297,"tx_testdatahandler_select",,,,0,0,"tx_testdatahandler_element",1,,
-,"d333521843e8774369e112581bd4643b","tt_content",297,"tx_testdatahandler_select",,,,1,0,"tx_testdatahandler_element",2,,
-,"fb9a4c46d91b175ee7503de71523c849","tt_content",298,"tx_testdatahandler_select",,,,0,0,"tx_testdatahandler_element",2,,
-,"f54bf3a4ddc51685c0586b31015312cb","tt_content",298,"tx_testdatahandler_select",,,,1,0,"tx_testdatahandler_element",3,,
-,"6dc66af7d395e5be3c87fc4e13c0455c","tt_content",299,"l18n_parent",,,,0,0,"tt_content",298,,
-,"b76b4fe0aa225d718110c5d667c1d8b1","tt_content",299,"tx_testdatahandler_select",,,,0,0,"tx_testdatahandler_element",4,,
-,"d6055b07069ed11ff1463f05f096bf6a","tt_content",299,"tx_testdatahandler_select",,,,1,0,"tx_testdatahandler_element",5,,
-,"3259213b352acc30dc7ed5478dd99d5a","tx_testdatahandler_element",4,"l10n_parent",,,,0,0,"tx_testdatahandler_element",2,,
-,"377d7a2b8dcf42c1742aedd1caa74b7a","tx_testdatahandler_element",5,"l10n_parent",,,,0,0,"tx_testdatahandler_element",3,,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"6d7bcceedf262d7023fea362d8d44859","tt_content",297,"tx_testdatahandler_select",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",1,,0,0,2147483647,0,0,
+,"d5a13ace149f5768325745e87f0843bc","tt_content",297,"tx_testdatahandler_select",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"794264e98721ed970ce545e238b93d70","tt_content",298,"tx_testdatahandler_select",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"191a3585c0803ac6477fd8c53c9d74e8","tt_content",298,"tx_testdatahandler_select",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",3,,0,0,2147483647,0,0,
+,"fb35403900160a0a5c71f73220052230","tx_testdatahandler_element",4,"l10n_parent",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
+,"8fd2f463063dfa214fd1c7b911b0c1aa","tx_testdatahandler_element",5,"l10n_parent",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",3,,0,0,2147483647,0,0,
+,"926002522f5d6aef95eca10810a3b88b","tt_content",299,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",298,,0,0,2147483647,0,0,
+,"023d11fe1424a5500adb51f81faf2cf6","tt_content",299,"tx_testdatahandler_select",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",4,,0,0,2147483647,0,0,
+,"78a6882a7bb74b7abf69bfba4cfb0f69","tt_content",299,"tx_testdatahandler_select",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",5,,0,0,2147483647,0,0,

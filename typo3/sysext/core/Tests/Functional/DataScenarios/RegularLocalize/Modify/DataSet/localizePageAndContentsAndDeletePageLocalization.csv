@@ -15,5 +15,5 @@
 ,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2",
 ,299,89,768,0,0,0,0,0,0,0,0,"Regular Element #3",
 ,300,89,640,1,1,298,298,0,0,0,0,"[Translate to Dansk:] Regular Element #2",
-"sys_refindex",,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"

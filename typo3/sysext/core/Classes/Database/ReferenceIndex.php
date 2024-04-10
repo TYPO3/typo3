@@ -38,7 +38,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ReferenceIndex
 {
-    /** Increase if a change in the code means we will have to force a re-generation of the index. */
+    /**
+     * Increase if a change in the code means we will have to force a re-generation of the index.
+     * MUST be int since xxhash ignores non-int seeds, see https://github.com/php/php-src/issues/10305
+     *
+     * @var positive-int
+     */
     private const HASH_VERSION = 1;
 
     /**
@@ -409,7 +414,7 @@ class ReferenceIndex
             if (($relation['ref_table'] ?? '') && $this->shouldExcludeTableFromReferenceIndex($relation['ref_table'])) {
                 continue;
             }
-            $relation['hash'] = md5(implode('///', $relation) . '///' . self::HASH_VERSION);
+            $relation['hash'] = hash(algo: 'xxh128', data: implode(',', $relation), options: ['seed' => self::HASH_VERSION]);
             // First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
             if (isset($currentRelationHashes[$relation['hash']])) {
                 unset($currentRelationHashes[$relation['hash']]);
@@ -544,10 +549,11 @@ class ReferenceIndex
     private function compileReferenceIndexRowsForRecord(string $tableName, array $record, int $workspaceUid): array
     {
         $relations = [];
+        $tableCtrl = (array)($GLOBALS['TCA'][$tableName]['ctrl'] ?? []);
         $recordRelations = $this->getRelations($tableName, $record, $workspaceUid);
         foreach ($recordRelations as $fieldName => $fieldRelations) {
+            $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
             if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
                 if (isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $workspaceUid && empty($fieldConfig['MM'])) {
                     // The given record is workspace-enabled but doesn't live in the selected workspace. Don't add index, it's not actually there.
                     // We still add those rows if the record is a local side live record of an MM relation and can be a target of a workspace record.
@@ -555,22 +561,55 @@ class ReferenceIndex
                     continue;
                 }
             }
-            if (is_array($fieldRelations['itemArray'] ?? false)) {
+            if (is_array($fieldRelations['itemArray'] ?? false) && !empty($fieldRelations['itemArray'])) {
                 // DB relations in a db field
-                foreach ($fieldRelations['itemArray'] as $sorting => $item) {
+                $itemArray = $fieldRelations['itemArray'];
+                if (($fieldConfig['type'] === 'inline' || $fieldConfig['type'] === 'file') && !empty($fieldConfig['foreign_table']) && empty($fieldConfig['MM'])) {
+                    // RelationHandler does not return info on hidden, starttime, endtime for inline non-MM, yet. Add this now.
+                    // @todo: Refactor RelationHandler / PlainDataResolver to (optionally?) return full child row record
+                    $itemArray = $this->enrichInlineRelations(current($itemArray)['table'], $fieldRelations['itemArray']);
+                }
+                $sorting = 0;
+                foreach ($itemArray as $refRecord) {
+                    $refUid = (int)$refRecord['id'];
+                    $refTable = (string)$refRecord['table'];
+                    $refTcaCtrl = (array)($GLOBALS['TCA'][$refTable]['ctrl'] ?? []);
                     $relations[] = [
                         'tablename' => $tableName,
-                        'recuid' => $record['uid'],
+                        'recuid' => (int)$record['uid'],
                         'field' => $fieldName,
+                        'hidden' => ($tableCtrl['enablecolumns']['disabled'] ?? false)
+                            ? (int)$record[$tableCtrl['enablecolumns']['disabled']]
+                            : 0,
+                        'starttime' => ($tableCtrl['enablecolumns']['starttime'] ?? false)
+                            ? (int)$record[$tableCtrl['enablecolumns']['starttime']]
+                            : 0,
+                        'endtime' => ($tableCtrl['enablecolumns']['endtime'] ?? false)
+                            ? (int)($record[$tableCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                            : 2147483647, // @todo: 2^31-1 (year 2038) and not 2^32-1 since postgres 32-bit int is always signed
+                        't3ver_state' => (int)($record['t3ver_state'] ?? 0),
                         'flexpointer' => '',
                         'softref_key' => '',
                         'softref_id' => '',
                         'sorting' => $sorting,
                         'workspace' => $workspaceUid,
-                        'ref_table' => $item['table'],
-                        'ref_uid' => (int)$item['id'],
+                        'ref_table' => $refTable,
+                        'ref_uid' => $refUid,
+                        'ref_field' => (string)($refRecord['fieldname'] ?? ''),
+                        'ref_hidden' => (($refTcaCtrl['enablecolumns']['disabled'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['disabled']]))
+                            ? (int)$refRecord[$refTcaCtrl['enablecolumns']['disabled']]
+                            : 0,
+                        'ref_starttime' => (($refTcaCtrl['enablecolumns']['starttime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['starttime']]))
+                            ? (int)$refRecord[$refTcaCtrl['enablecolumns']['starttime']]
+                            : 0,
+                        'ref_endtime' => (($refTcaCtrl['enablecolumns']['endtime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['endtime']]))
+                            ? (int)($refRecord[$refTcaCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                            : 2147483647,
+                        'ref_t3ver_state' => (int)($refRecord['t3ver_state'] ?? 0),
+                        'ref_sorting' => (int)($refRecord['sorting_foreign'] ?? 0),
                         'ref_string' => '',
                     ];
+                    $sorting++;
                 }
             }
             if (is_array($fieldRelations['softrefs']['keys'] ?? false)) {
@@ -583,26 +622,58 @@ class ReferenceIndex
                         if (!in_array($element['subst']['type'] ?? '', ['db', 'string'], true)) {
                             continue;
                         }
-                        $referencedTable = '_STRING';
-                        $referencedUid = 0;
-                        $referencedString = '';
+                        $refTable = '_STRING';
+                        $refUid = 0;
+                        $refString = '';
+                        $refRecord = [];
+                        $refTcaCtrl = [];
                         if ($element['subst']['type'] === 'db') {
-                            [$referencedTable, $referencedUid] = explode(':', $element['subst']['recordRef']);
+                            $explodedRefTableUid = explode(':', $element['subst']['recordRef']);
+                            $refTable = $explodedRefTableUid[0];
+                            $refUid = (int)$explodedRefTableUid[1];
+                            if ($refRecord = BackendUtility::getRecord($refTable, $refUid)) {
+                                // @todo: It would be great to refactor the softref parser mess "data structure"
+                                //        and let it return the reference record along the way - "db" type softrefs
+                                //        fetch those already.
+                                $refTcaCtrl = (array)($GLOBALS['TCA'][$refTable]['ctrl'] ?? []);
+                            }
                         } else {
-                            $referencedString = mb_substr($element['subst']['tokenValue'], 0, 1024);
+                            $refString = mb_substr($element['subst']['tokenValue'], 0, 1024);
                         }
                         $relations[] = [
                             'tablename' => $tableName,
-                            'recuid' => $record['uid'],
+                            'recuid' => (int)$record['uid'],
                             'field' => $fieldName,
+                            'hidden' => ($tableCtrl['enablecolumns']['disabled'] ?? false)
+                                ? (int)$record[$tableCtrl['enablecolumns']['disabled']]
+                                : 0,
+                            'starttime' => ($tableCtrl['enablecolumns']['starttime'] ?? false)
+                                ? (int)$record[$tableCtrl['enablecolumns']['starttime']]
+                                : 0,
+                            'endtime' => ($tableCtrl['enablecolumns']['endtime'] ?? false)
+                                ? (int)($record[$tableCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                                : 2147483647,
+                            't3ver_state' => (int)($record['t3ver_state'] ?? 0),
                             'flexpointer' => '',
-                            'softref_key' => $softrefKey,
+                            'softref_key' => (string)$softrefKey,
                             'softref_id' => (string)$softrefId,
-                            'sorting' => -1,
+                            'sorting' => 0,
                             'workspace' => $workspaceUid,
-                            'ref_table' => $referencedTable,
-                            'ref_uid' => (int)$referencedUid,
-                            'ref_string' => $referencedString,
+                            'ref_table' => $refTable,
+                            'ref_uid' => $refUid,
+                            'ref_field' => '',
+                            'ref_hidden' => (($refTcaCtrl['enablecolumns']['disabled'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['disabled']]))
+                                ? (int)$refRecord[$refTcaCtrl['enablecolumns']['disabled']]
+                                : 0,
+                            'ref_starttime' => (($refTcaCtrl['enablecolumns']['starttime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['starttime']]))
+                                ? (int)$refRecord[$refTcaCtrl['enablecolumns']['starttime']]
+                                : 0,
+                            'ref_endtime' => (($refTcaCtrl['enablecolumns']['endtime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['endtime']]))
+                                ? (int)($refRecord[$refTcaCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                                : 2147483647,
+                            'ref_t3ver_state' => (int)($refRecord['t3ver_state'] ?? 0),
+                            'ref_sorting' => 0,
+                            'ref_string' => $refString,
                         ];
                     }
                 }
@@ -610,20 +681,43 @@ class ReferenceIndex
             if (is_array($fieldRelations['flexFormRels']['db'] ?? false)) {
                 // DB relations in a flex field
                 foreach ($fieldRelations['flexFormRels']['db'] as $flexPointer => $subList) {
-                    foreach ($subList as $sorting => $item) {
+                    $sorting = 0;
+                    foreach ($subList as $refRecord) {
+                        // @todo: This has no proper test setup in ReferenceIndexTest and ReferenceIndexWorkspaceLoadedTest.
+                        //        We probably need to fetch the target record for inline relations here, as done with
+                        //        $fieldRelations['itemArray'] enrichInlineRelations() above, to set ref_ fields hidden, starttime,
+                        //        endtime and t3ver_state. Additionally, a test based on categories should verify MM details.
                         $relations[] = [
                             'tablename' => $tableName,
-                            'recuid' => $record['uid'],
+                            'recuid' => (int)$record['uid'],
                             'field' => $fieldName,
-                            'flexpointer' => $flexPointer,
+                            'hidden' => ($tableCtrl['enablecolumns']['disabled'] ?? false)
+                                ? (int)$record[$tableCtrl['enablecolumns']['disabled']]
+                                : 0,
+                            'starttime' => ($tableCtrl['enablecolumns']['starttime'] ?? false)
+                                ? (int)$record[$tableCtrl['enablecolumns']['starttime']]
+                                : 0,
+                            'endtime' => ($tableCtrl['enablecolumns']['endtime'] ?? false)
+                                ? (int)($record[$tableCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                                : 2147483647, // @todo: 2^31-1 (year 2038) and not 2^32-1 since postgres 32-bit int is always signed
+                            't3ver_state' => (int)($record['t3ver_state'] ?? 0),
+                            'flexpointer' => (string)$flexPointer,
                             'softref_key' => '',
                             'softref_id' => '',
                             'sorting' => $sorting,
                             'workspace' => $workspaceUid,
-                            'ref_table' => $item['table'],
-                            'ref_uid' => (int)$item['id'],
+                            'ref_table' => $refRecord['table'],
+                            'ref_uid' => (int)$refRecord['id'],
+                            'ref_field' => (string)($refRecord['fieldname'] ?? ''),
+                            // @todo: ref_hidden, ref_starttime, ref_endtime, ref_t3ver_state, ref_t3ver_state and ref_sorting need coverage and handling, see above.
+                            'ref_hidden' => 0,
+                            'ref_starttime' => 0,
+                            'ref_endtime' => 2147483647,
+                            'ref_t3ver_state' => 0,
+                            'ref_sorting' => 0,
                             'ref_string' => '',
                         ];
+                        $sorting++;
                     }
                 }
             }
@@ -638,26 +732,58 @@ class ReferenceIndex
                             if (!in_array($element['subst']['type'] ?? '', ['db', 'string'], true)) {
                                 continue;
                             }
-                            $referencedTable = '_STRING';
-                            $referencedUid = 0;
-                            $referencedString = '';
+                            $refTable = '_STRING';
+                            $refUid = 0;
+                            $refString = '';
+                            $refRecord = [];
+                            $refTcaCtrl = [];
                             if ($element['subst']['type'] === 'db') {
-                                [$referencedTable, $referencedUid] = explode(':', $element['subst']['recordRef']);
+                                $explodedRefTableUid = explode(':', $element['subst']['recordRef']);
+                                $refTable = $explodedRefTableUid[0];
+                                $refUid = (int)$explodedRefTableUid[1];
+                                if ($refRecord = BackendUtility::getRecord($refTable, $refUid)) {
+                                    // @todo: It would be great to refactor the softref parser mess "data structure"
+                                    //        and let it return the reference record along the way - "db" type softrefs
+                                    //        fetch those already.
+                                    $refTcaCtrl = (array)($GLOBALS['TCA'][$refTable]['ctrl'] ?? []);
+                                }
                             } else {
-                                $referencedString = mb_substr($element['subst']['tokenValue'], 0, 1024);
+                                $refString = mb_substr($element['subst']['tokenValue'], 0, 1024);
                             }
                             $relations[] = [
                                 'tablename' => $tableName,
-                                'recuid' => $record['uid'],
+                                'recuid' => (int)$record['uid'],
                                 'field' => $fieldName,
+                                'hidden' => ($tableCtrl['enablecolumns']['disabled'] ?? false)
+                                    ? (int)$record[$tableCtrl['enablecolumns']['disabled']]
+                                    : 0,
+                                'starttime' => ($tableCtrl['enablecolumns']['starttime'] ?? false)
+                                    ? (int)$record[$tableCtrl['enablecolumns']['starttime']]
+                                    : 0,
+                                'endtime' => ($tableCtrl['enablecolumns']['endtime'] ?? false)
+                                    ? (int)($record[$tableCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                                    : 2147483647,
+                                't3ver_state' => (int)($record['t3ver_state'] ?? 0),
                                 'flexpointer' => $flexPointer,
-                                'softref_key' => $softrefKey,
+                                'softref_key' => (string)$softrefKey,
                                 'softref_id' => (string)$softrefId,
-                                'sorting' => -1,
+                                'sorting' => 0,
                                 'workspace' => $workspaceUid,
-                                'ref_table' => $referencedTable,
-                                'ref_uid' => (int)$referencedUid,
-                                'ref_string' => $referencedString,
+                                'ref_table' => $refTable,
+                                'ref_uid' => $refUid,
+                                'ref_field' => '',
+                                'ref_hidden' => (($refTcaCtrl['enablecolumns']['disabled'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['disabled']]))
+                                    ? (int)$refRecord[$refTcaCtrl['enablecolumns']['disabled']]
+                                    : 0,
+                                'ref_starttime' => (($refTcaCtrl['enablecolumns']['starttime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['starttime']]))
+                                    ? (int)$refRecord[$refTcaCtrl['enablecolumns']['starttime']]
+                                    : 0,
+                                'ref_endtime' => (($refTcaCtrl['enablecolumns']['endtime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['endtime']]))
+                                    ? (int)($refRecord[$refTcaCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                                    : 2147483647,
+                                'ref_t3ver_state' => (int)($refRecord['t3ver_state'] ?? 0),
+                                'ref_sorting' => 0,
+                                'ref_string' => $refString,
                             ];
                         }
                     }
@@ -665,6 +791,55 @@ class ReferenceIndex
             }
         }
         return $relations;
+    }
+
+    /**
+     * RelationHandler does not return relation record details when dealing with
+     * inline foreign_table relations. We need fields like hidden and starrtime,
+     * though. Fetch them now.
+     */
+    private function enrichInlineRelations(string $tableName, array $itemArray): array
+    {
+        $selectFields = ['uid'];
+        $tableTcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'] ?? [];
+        if (!empty($tableTcaCtrl['enablecolumns']['disabled'])) {
+            $selectFields[] = $tableTcaCtrl['enablecolumns']['disabled'];
+        }
+        if (!empty($tableTcaCtrl['enablecolumns']['starttime'])) {
+            $selectFields[] = $tableTcaCtrl['enablecolumns']['starttime'];
+        }
+        if (!empty($tableTcaCtrl['enablecolumns']['endtime'])) {
+            $selectFields[] = $tableTcaCtrl['enablecolumns']['endtime'];
+        }
+        if ($tableTcaCtrl['versioningWS'] ?? false) {
+            $selectFields[] = 't3ver_state';
+        }
+        if (count($selectFields) === 1) {
+            return $itemArray;
+        }
+        $connection = $this->connectionPool->getConnectionForTable($tableName);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        $rows = [];
+        $uidList = array_column($itemArray, 'id');
+        foreach (array_chunk($uidList, $maxBindParameters - 10, true) as $chunk) {
+            $result = $queryBuilder->select(...$selectFields)->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
+                    )
+                )
+                ->orderBy('uid', 'ASC')->executeQuery();
+            while ($row = $result->fetchAssociative()) {
+                $rows[(int)$row['uid']] = $row;
+            }
+        }
+        foreach ($itemArray as &$item) {
+            $item = array_merge($item, $rows[$item['id']]);
+        }
+        return $itemArray;
     }
 
     private function getRelationsFromFlexData(string $tableName, string $fieldName, array $row, int $workspaceUid): array

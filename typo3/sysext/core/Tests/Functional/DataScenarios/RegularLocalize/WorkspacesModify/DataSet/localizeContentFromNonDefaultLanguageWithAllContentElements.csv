@@ -1,0 +1,10 @@
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0,
+,"96a6b7ec63daee0e0ce5d4908b6eda6f","sys_workspace_stage",1,"responsible_persons",0,0,2147483647,0,,,,0,0,"be_users",3,,0,0,2147483647,0,0,
+,"d9103ef69a08b5707342bd6a609937ba","tt_content",321,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",297,,0,0,2147483647,0,0,
+,"074657bc1b8bb2b36acacdc1626dcdc7","tt_content",322,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",298,,0,0,2147483647,0,0,
+,"f73bb792e7003044671f913b9dc701d1","tt_content",323,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",299,,0,0,2147483647,0,0,
+,"dd84a0ce12bdbbac457f60b4b668c79b","tt_content",324,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",297,,0,0,2147483647,0,0,
+,"0fc7b4d10521372d6844587ecf84744a","tt_content",325,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",298,,0,0,2147483647,0,0,
+,"de8d7910780d27101247654ddab8a444","tt_content",326,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",299,,0,0,2147483647,0,0,

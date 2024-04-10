@@ -19,8 +19,8 @@
 ,1,89,256,0,0,0,0,0,0,0,"Element #1"
 ,2,89,512,0,0,0,0,0,0,0,"Element #2"
 ,3,89,1024,0,0,0,0,0,0,0,"Element #3"
-"sys_refindex",,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string"
-,"26265001b2e3d788c5a4082f9cb3037a","tx_testselectflexmm_local",1,"flex_1","sMultiplesidebyside/lDEF/select_multiplesidebyside_1/vDEF/",,,0,0,"tx_testselectflexmm_foreign",1,
-,"1edd61614f5579f222faed0d454077c5","tx_testselectflexmm_local",1,"flex_1","sMultiplesidebyside/lDEF/select_multiplesidebyside_1/vDEF/",,,1,0,"tx_testselectflexmm_foreign",2,
-,"b3fde738939406609f6db48ae1850c38","tx_testselectflexmm_local",2,"flex_1","sMultiplesidebyside/lDEF/select_multiplesidebyside_1/vDEF/",,,0,0,"tx_testselectflexmm_foreign",2,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"e25c0c89fd52e941dee25dec97e2668b","tx_testselectflexmm_local",1,"flex_1",0,0,2147483647,0,"sMultiplesidebyside/lDEF/select_multiplesidebyside_1/vDEF/",,,0,0,"tx_testselectflexmm_foreign",1,,0,0,2147483647,0,0,
+,"52889cd0818da51471f4f892debf850f","tx_testselectflexmm_local",1,"flex_1",0,0,2147483647,0,"sMultiplesidebyside/lDEF/select_multiplesidebyside_1/vDEF/",,,1,0,"tx_testselectflexmm_foreign",2,,0,0,2147483647,0,0,
+,"023de2b7fdcec2381b80eb7f2d3bb1b7","tx_testselectflexmm_local",2,"flex_1",0,0,2147483647,0,"sMultiplesidebyside/lDEF/select_multiplesidebyside_1/vDEF/",,,0,0,"tx_testselectflexmm_foreign",2,,0,0,2147483647,0,0,

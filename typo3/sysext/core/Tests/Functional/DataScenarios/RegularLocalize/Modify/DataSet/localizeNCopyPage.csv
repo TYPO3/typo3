@@ -18,6 +18,6 @@
 ,300,91,256,0,0,0,0,0,0,0,0,"Regular Element #3"
 ,301,91,128,0,0,0,0,0,0,0,0,"Regular Element #2"
 ,302,91,64,0,0,0,0,0,0,0,0,"Regular Element #1"
-"sys_refindex",,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",
-,"2a42323931078b2842779bd9446e8152","pages",92,"l10n_parent",,,,0,0,"pages",89,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"14f90231b8565c61decd2aeaebea6034","pages",92,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,

@@ -253,22 +253,46 @@ CREATE TABLE sys_lockedrecords (
 # Table structure for table 'sys_refindex'
 #
 CREATE TABLE sys_refindex (
+	# @todo: Force a latin1 field to reduce primary key length, it only holds hex chars 0-9,a-f.
 	hash varchar(32) DEFAULT '' NOT NULL,
-	tablename varchar(255) DEFAULT '' NOT NULL,
-	recuid int(11) DEFAULT '0' NOT NULL,
+	tablename varchar(64) DEFAULT '' NOT NULL,
+	recuid int unsigned DEFAULT 0 NOT NULL,
 	field varchar(64) DEFAULT '' NOT NULL,
+	hidden smallint unsigned DEFAULT 0 NOT NULL,
+	starttime int unsigned DEFAULT 0 NOT NULL,
+	# @todo: 2^31-1 (year 2038) and not 2^32-1 since postgres 32-bit int is always signed
+	endtime int unsigned DEFAULT 2147483647 NOT NULL,
+	t3ver_state int unsigned DEFAULT 0 NOT NULL,
 	flexpointer varchar(255) DEFAULT '' NOT NULL,
 	softref_key varchar(30) DEFAULT '' NOT NULL,
 	softref_id varchar(40) DEFAULT '' NOT NULL,
-	sorting int(11) DEFAULT '0' NOT NULL,
-	workspace int(11) DEFAULT '0' NOT NULL,
-	ref_table varchar(255) DEFAULT '' NOT NULL,
-	ref_uid int(11) DEFAULT '0' NOT NULL,
+	# @todo: not unsigned since refindex wrote -1 for _STRING rows until v13.2.
+	#        Set unsigned in v14 or have an upgrade wizard in v13?
+	sorting int DEFAULT 0 NOT NULL,
+	workspace int unsigned DEFAULT 0 NOT NULL,
+	ref_table varchar(64) DEFAULT '' NOT NULL,
+	# @todo: ref_uid is still signed since refindex tends to write -2 for fe_group "all" relations.
+	#        EidRequestTest.php PlainScenario.yaml triggers this and fails with mariadb.
+	#        This is about "not real db relations" in refindex and needs to be sorted out
+	#        including some dedicated tests.
+	ref_uid int DEFAULT 0 NOT NULL,
+	ref_field varchar(64) DEFAULT '' NOT NULL,
+	ref_hidden smallint unsigned DEFAULT 0 NOT NULL,
+	ref_starttime int unsigned DEFAULT 0 NOT NULL,
+	# @todo: 2^31-1 (year 2038) and not 2^32-1 since postgres 32-bit int is always signed
+	ref_endtime int unsigned DEFAULT 2147483647 NOT NULL,
+	ref_t3ver_state int unsigned DEFAULT 0 NOT NULL,
+	ref_sorting int DEFAULT 0 NOT NULL,
 	ref_string varchar(1024) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (hash),
-	KEY lookup_rec (tablename(100),recuid),
-	KEY lookup_uid (ref_table(100),ref_uid),
+	# These two indexes are optimized for FE RootlineUtility usage. Other queries often at least re-use
+	# the first parts of the combined index, or can be changed to include more dummy where parts to use even more.
+	KEY lookup_rec (tablename,recuid,field,workspace,ref_t3ver_state,ref_hidden,ref_starttime,ref_endtime),
+	KEY lookup_ref (ref_table,ref_uid,tablename,workspace,t3ver_state,hidden,starttime,endtime),
+	# @todo: There is only one query in ext:form DatabaseService that has a where on ref_string at all.
+	#        It seems we could either juggle the above indexes around a bit, or could change the query
+	#        a bit to avoid this huge index here.
 	KEY lookup_string (ref_string(191))
 );
 

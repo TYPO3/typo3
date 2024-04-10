@@ -26,7 +26,7 @@
 ,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",0,2,,,,
 ,298,89,512,0,0,0,0,0,0,0,"Regular Element #2",0,2,,,,
 ,299,89,256,0,0,0,1,0,0,297,"Regular Element #1",0,3,,,,
-"sys_refindex",,,,,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,,,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
 # Should be removed - it is a workspace entry with local & foreign not having ws overlays and there is no other relation to a workspace record
-,"d624da48d7d6427f385a8197cb90c391","sys_category",30,"items",,,,0,1,"tt_content",298,,,,,,
+,"invalid460772ddb91e3d5f8ed1831df","sys_category",30,"items",0,0,2147483647,0,,,,0,1,"tt_content",298,"categories",0,0,2147483647,0,0,

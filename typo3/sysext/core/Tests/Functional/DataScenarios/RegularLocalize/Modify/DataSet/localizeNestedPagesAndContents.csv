@@ -19,10 +19,10 @@
 ,301,89,640,0,1,298,298,0,0,0,0,"[Translate to Dansk:] Regular Element #2",
 ,302,88,128,0,0,0,0,0,0,0,0,"Regular Element #0 (copy 1)",
 ,303,88,64,0,1,302,302,0,0,0,0,"[Translate to Dansk:] Regular Element #0 (copy 1)",
-"sys_refindex",,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,
-,"63f8eb86e577893c26c56ab8ad818336","pages",91,"l10n_parent",,,,0,0,"pages",88,,,
-,"87fae890cd68c7770291397d5d2e3586","tt_content",300,"l18n_parent",,,,0,0,"tt_content",296,,,
-,"2a42323931078b2842779bd9446e8152","pages",92,"l10n_parent",,,,0,0,"pages",89,,,
-,"27fc4b0362429e2ff0c4800dcbcbec94","tt_content",301,"l18n_parent",,,,0,0,"tt_content",298,,,
-,"8ec7d622c1b716d9eeffbe18cbafa8df","tt_content",303,"l18n_parent",,,,0,0,"tt_content",302,,,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"d05bdbb15d97ccd9e857b0705c111065","pages",91,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",88,,0,0,2147483647,0,0,
+,"78ccbfc4db794c6c8402bdd307dae275","tt_content",300,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",296,,0,0,2147483647,0,0,
+,"14f90231b8565c61decd2aeaebea6034","pages",92,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"c06305dbced4fc2009334ead87568fda","tt_content",301,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",298,,0,0,2147483647,0,0,
+,"348d0280eae48b90f094bc617222a17f","tt_content",303,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",302,,0,0,2147483647,0,0,

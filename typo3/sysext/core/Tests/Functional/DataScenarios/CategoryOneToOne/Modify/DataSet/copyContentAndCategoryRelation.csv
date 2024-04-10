@@ -15,9 +15,9 @@
 ,297,88,256,0,0,0,0,0,0,0,"Regular Element #1",30,,
 ,298,88,512,0,0,0,0,0,0,0,"Regular Element #2",0,,
 ,299,88,128,0,0,0,0,0,0,0,"Regular Element #1 (copy 1)",30,,
-"sys_refindex",,,,,,,,,,,,,,,
-,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,
-,"1b70a8e25c22645f7a49a79f57f3cf3f","sys_category",31,"parent",,,,0,0,"sys_category",28,,,,
-,"b61281c09f92431d63d014909c3a3e7f","sys_category",32,"parent",,,,0,0,"sys_category",28,,,,
-,"b1c78b324d2559aa9592d503c4a0401c","tt_content",297,"tx_testdatahandler_category",,,,0,0,"sys_category",30,,,,
-,"af0023002744c238773bf12fedd7793a","tt_content",299,"tx_testdatahandler_category",,,,0,0,"sys_category",30,,,,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"1d3c9012c47c9c6f0a3fb7bc3525d39a","sys_category",31,"parent",0,0,2147483647,0,,,,0,0,"sys_category",28,,0,0,2147483647,0,0,
+,"eff1a91e54bd618a384427656ae037e0","tt_content",297,"tx_testdatahandler_category",0,0,2147483647,0,,,,0,0,"sys_category",30,,0,0,2147483647,0,0,
+,"a9421ec0ff3414656d1d98332a93abe8","tt_content",299,"tx_testdatahandler_category",0,0,2147483647,0,,,,0,0,"sys_category",30,,0,0,2147483647,0,0,
+,"33cab3e69599a23dcd1182b97b7d1783","sys_category",32,"parent",0,0,2147483647,0,,,,0,0,"sys_category",28,,0,0,2147483647,0,0,
