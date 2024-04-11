@@ -158,8 +158,8 @@ class PreviewSimulator implements MiddlewareInterface
      */
     protected function simulateDate(ServerRequestInterface $request): bool
     {
-        $queryTime = $request->getQueryParams()['ADMCMD_simTime'] ?? false;
-        if (!$queryTime) {
+        $queryTime = (int)($request->getQueryParams()['ADMCMD_simTime'] ?? 0);
+        if ($queryTime === 0) {
             return false;
         }
 
