@@ -67,6 +67,11 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
         "''" => "'",
     ];
 
+    private const MYSQL_UNQUOTE_SEQUENCES = [
+        "\\'" => "'",
+        '\\"' => '"',
+    ];
+
     /**
      * Gets Table Column Definition.
      *
@@ -117,7 +122,13 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
             return '';
         }
         if (preg_match("/^\\\'(.*)\\\'$/", trim($columnDefault), $matches) === 1) {
-            return strtr($matches[1], self::MYSQL_ESCAPE_SEQUENCES);
+            return strtr(
+                strtr($matches[1], self::MYSQL_ESCAPE_SEQUENCES),
+                // MySQL saves quoted single-quote as escaped single-quote in the INFORMATION SCHEMA table, even
+                // if it has been provided with double-quote quoting and is inconsistent for itself and enforces
+                // a additional unquoting after the un-escaping step
+                self::MYSQL_UNQUOTE_SEQUENCES
+            );
         }
         return $columnDefault;
     }

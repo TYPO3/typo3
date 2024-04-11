@@ -419,6 +419,15 @@ final class SchemaMigratorTest extends FunctionalTestCase
             'expectedNotNull' => true,
             'expectDefaultValue' => true,
         ];
+        yield 'text not null default value string with single quote value' => [
+            'fixtureFileName' => 'text-not-null-default-value-string-with-single-quote-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'text-not-null-default-value-string-with-single-quote-value.csv',
+            'expectedDefaultValue' => "default-value with a single ' quote",
+            'expectedNotNull' => true,
+            'expectDefaultValue' => true,
+        ];
     }
 
     #[DataProvider('textFieldDefaultValueTestDataProvider')]
@@ -506,6 +515,24 @@ final class SchemaMigratorTest extends FunctionalTestCase
             'assertionFileName' => 'json-default-null.csv',
             'expectedDefaultValue' => null,
             'expectedNotNull' => false,
+            'expectDefaultValue' => true,
+        ];
+        yield 'json not null default data object value containing single-quote value' => [
+            'fixtureFileName' => 'json-not-null-default-data-object-value-with-single-quote-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'json-not-null-default-data-object-value-with-single-quote-value.csv',
+            'expectedDefaultValue' => '{"key1": "value1", "key2": 123, "key3": "value with a \' single quote"}',
+            'expectedNotNull' => true,
+            'expectDefaultValue' => true,
+        ];
+        yield 'json not null default data object value containing double-quote value' => [
+            'fixtureFileName' => 'json-not-null-default-data-object-value-with-double-quote-value.sql',
+            'table' => 'a_textfield_test_table',
+            'fieldName' => 'testfield',
+            'assertionFileName' => 'json-not-null-default-data-object-value-with-double-quote-value.csv',
+            'expectedDefaultValue' => '{"key1": "value1", "key2": 123, "key3": "value with a \" double quote"}',
+            'expectedNotNull' => true,
             'expectDefaultValue' => true,
         ];
     }

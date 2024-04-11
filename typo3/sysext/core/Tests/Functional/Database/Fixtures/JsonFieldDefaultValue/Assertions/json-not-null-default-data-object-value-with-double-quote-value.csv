@@ -1,0 +1,3 @@
+"a_textfield_test_table",
+,"uid","pid","testfield",
+,1,0,"{""key1"": ""value1"", ""key2"": 123, ""key3"": ""value with a \" double quote""}",

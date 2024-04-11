@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Types\JsonType;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * Extending the doctrine PostgreSQLSchemaManager to integrate additional processing stuff
@@ -50,6 +52,194 @@ class PostgreSQLSchemaManager extends \Doctrine\DBAL\Schema\PostgreSQLSchemaMana
         /** @var DoctrinePostgreSQLPlatform $platform */
         $platform = $this->platform;
         return $this->processCustomDoctrineTypesColumnDefinition($tableColumn, $platform)
-            ?? parent::_getPortableTableColumnDefinition($tableColumn);
+            // @todo Use parent::_getPortableTableColumnDefinition($tableColumn) after fixed Doctrine DBAL version has
+            //       been required as minimum version, see https://github.com/doctrine/dbal/issues/6357
+            ?? $this->fixedGetPortableTableColumnDefinition($tableColumn);
+    }
+
+    /**
+     * Gets Table Column Definition.
+     *
+     * @param array<string, mixed> $tableColumn
+     *
+     * @todo Remove along with PostgreSQMSchemaManager::parseDefaultExpression() after fixed Doctrine DBAL version
+     *       has been required as minimum version, see https://github.com/doctrine/dbal/issues/6357
+     */
+    protected function fixedGetPortableTableColumnDefinition(array $tableColumn): Column
+    {
+        $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
+
+        $length = null;
+
+        if (
+            in_array(strtolower($tableColumn['type']), ['varchar', 'bpchar'], true)
+            && preg_match('/\((\d*)\)/', $tableColumn['complete_type'], $matches) === 1
+        ) {
+            $length = (int)$matches[1];
+        }
+
+        $autoincrement = $tableColumn['attidentity'] === 'd';
+
+        $matches = [];
+
+        assert(array_key_exists('default', $tableColumn));
+        assert(array_key_exists('complete_type', $tableColumn));
+
+        if ($tableColumn['default'] !== null) {
+            if (preg_match("/^['(](.*)[')]::/", $tableColumn['default'], $matches) === 1) {
+                $tableColumn['default'] = $matches[1];
+            } elseif (preg_match('/^NULL::/', $tableColumn['default']) === 1) {
+                $tableColumn['default'] = null;
+            }
+        }
+
+        if ($length === -1 && isset($tableColumn['atttypmod'])) {
+            $length = $tableColumn['atttypmod'] - 4;
+        }
+
+        if ((int)$length <= 0) {
+            $length = null;
+        }
+
+        $fixed = false;
+
+        if (! isset($tableColumn['name'])) {
+            $tableColumn['name'] = '';
+        }
+
+        $precision = null;
+        $scale     = 0;
+        $jsonb     = null;
+
+        $dbType = strtolower($tableColumn['type']);
+        if (
+            $tableColumn['domain_type'] !== null
+            && $tableColumn['domain_type'] !== ''
+            && ! $this->platform->hasDoctrineTypeMappingFor($tableColumn['type'])
+        ) {
+            $dbType                       = strtolower($tableColumn['domain_type']);
+            $tableColumn['complete_type'] = $tableColumn['domain_complete_type'];
+        }
+
+        $type = $this->platform->getDoctrineTypeMapping($dbType);
+
+        switch ($dbType) {
+            case 'smallint':
+            case 'int2':
+            case 'int':
+            case 'int4':
+            case 'integer':
+            case 'bigint':
+            case 'int8':
+                $length = null;
+                break;
+
+            case 'bool':
+            case 'boolean':
+                if ($tableColumn['default'] === 'true') {
+                    $tableColumn['default'] = true;
+                }
+
+                if ($tableColumn['default'] === 'false') {
+                    $tableColumn['default'] = false;
+                }
+
+                $length = null;
+                break;
+
+            case 'json': // Added to parse default expression for json fields too.
+            case 'text':
+            case '_varchar':
+            case 'varchar':
+                $tableColumn['default'] = $this->parseDefaultExpression($tableColumn['default']);
+                break;
+
+            case 'char':
+            case 'bpchar':
+                $fixed = true;
+                break;
+
+            case 'float':
+            case 'float4':
+            case 'float8':
+            case 'double':
+            case 'double precision':
+            case 'real':
+            case 'decimal':
+            case 'money':
+            case 'numeric':
+                if (
+                    preg_match(
+                        '([A-Za-z]+\(([0-9]+),([0-9]+)\))',
+                        $tableColumn['complete_type'],
+                        $match,
+                    ) === 1
+                ) {
+                    $precision = (int)$match[1];
+                    $scale     = (int)$match[2];
+                    $length    = null;
+                }
+
+                break;
+
+            case 'year':
+                $length = null;
+                break;
+
+                // PostgreSQL 9.4+ only
+            case 'jsonb':
+                $jsonb = true;
+                break;
+        }
+
+        if (
+            is_string($tableColumn['default']) && preg_match(
+                "('([^']+)'::)",
+                $tableColumn['default'],
+                $match,
+            ) === 1
+        ) {
+            $tableColumn['default'] = $match[1];
+        }
+
+        $options = [
+            'length'        => $length,
+            'notnull'       => (bool)$tableColumn['isnotnull'],
+            'default'       => $tableColumn['default'],
+            'precision'     => $precision,
+            'scale'         => $scale,
+            'fixed'         => $fixed,
+            'autoincrement' => $autoincrement,
+        ];
+
+        if (isset($tableColumn['comment'])) {
+            $options['comment'] = $tableColumn['comment'];
+        }
+
+        $column = new Column($tableColumn['field'], Type::getType($type), $options);
+
+        if (! empty($tableColumn['collation'])) {
+            $column->setPlatformOption('collation', $tableColumn['collation']);
+        }
+
+        if ($column->getType() instanceof JsonType) {
+            $column->setPlatformOption('jsonb', $jsonb);
+        }
+
+        return $column;
+    }
+
+    /**
+     * Parses a default value expression as given by PostgreSQL
+     * @todo Remove along with PostgreSQMSchemaManager::fixedGetPortableTableColumnDefinition() after fixed Doctrine
+     *       DBAL version has been required as minimum version, see https://github.com/doctrine/dbal/issues/6357
+     */
+    private function parseDefaultExpression(?string $default): ?string
+    {
+        if ($default === null) {
+            return $default;
+        }
+
+        return str_replace("''", "'", $default);
     }
 }
