@@ -55,6 +55,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Extbase\Service\FileHandlingService;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
@@ -111,6 +112,7 @@ abstract class ActionController implements ControllerInterface
 
     protected MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService;
     protected EventDispatcherInterface $eventDispatcher;
+    protected FileHandlingService $fileHandlingService;
     protected RequestInterface $request;
     protected UriBuilder $uriBuilder;
 
@@ -213,6 +215,11 @@ abstract class ActionController implements ControllerInterface
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function injectFileHandlingService(FileHandlingService $fileHandlingService): void
+    {
+        $this->fileHandlingService = $fileHandlingService;
     }
 
     /**
@@ -365,6 +372,7 @@ abstract class ActionController implements ControllerInterface
         $this->initializeActionMethodArguments();
         $this->initializeActionMethodValidators();
         $this->mvcPropertyMappingConfigurationService->initializePropertyMappingConfigurationFromRequest($request, $this->arguments);
+        $this->fileHandlingService->initializeFileUploadConfigurationsFromRequest($request, $this->arguments);
         $this->initializeAction();
         $actionInitializationMethodName = 'initialize' . ucfirst($this->actionMethodName);
         /** @var callable $callable */
@@ -449,13 +457,17 @@ abstract class ActionController implements ControllerInterface
         // incoming request is not needed yet but can be passed into the action in the future like in symfony
         // todo: support this via method-reflection
 
-        $preparedArguments = [];
-        /** @var Argument $argument */
-        foreach ($this->arguments as $argument) {
-            $preparedArguments[] = $argument->getValue();
-        }
+        $this->fileHandlingService->initializeFileUploadDeletionConfigurationsFromRequest($request, $this->arguments);
         $validationResult = $this->arguments->validate();
         if (!$validationResult->hasErrors()) {
+            $preparedArguments = [];
+            /** @var Argument $argument */
+            foreach ($this->arguments as $argument) {
+                $this->fileHandlingService->applyDeletionsToArgument($argument);
+                $this->fileHandlingService->mapUploadedFilesToArgument($argument);
+                $preparedArguments[] = $argument->getValue();
+            }
+
             $this->eventDispatcher->dispatch(new BeforeActionCallEvent(static::class, $this->actionMethodName, $preparedArguments));
             $actionResult = $this->{$this->actionMethodName}(...$preparedArguments);
         } else {
@@ -839,6 +851,11 @@ abstract class ActionController implements ControllerInterface
                     $this->setArgumentValue($argument, $this->request->getArgument($argumentName));
                 } elseif ($argument->isRequired()) {
                     throw new RequiredArgumentMissingException('Required argument "' . $argumentName . '" is not set for ' . $this->request->getControllerObjectName() . '->' . $this->request->getControllerActionName() . '.', 1298012500);
+                }
+
+                if ($this->request->getMethod() === 'POST') {
+                    $uploadedFiles = $this->request->getUploadedFiles()[$argumentName] ?? [];
+                    $argument->setUploadedFiles($uploadedFiles);
                 }
             }
         } catch (\Exception $exception) {

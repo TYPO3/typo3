@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Extbase\Mvc\Controller\Argument;
+use TYPO3\CMS\Extbase\Mvc\Controller\FileHandlingServiceConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -139,5 +141,44 @@ final class ArgumentTest extends UnitTestCase
     {
         self::assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
         self::assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+    }
+
+    #[Test]
+    public function fileHandlingServiceConfigurationInitializedForNewArgument(): void
+    {
+        self::assertInstanceOf(FileHandlingServiceConfiguration::class, $this->simpleValueArgument->getFileHandlingServiceConfiguration());
+    }
+
+    #[Test]
+    public function uploadedFilesContainsInitialValue(): void
+    {
+        self::assertEmpty($this->simpleValueArgument->getUploadedFiles());
+    }
+
+    #[Test]
+    public function uploadedFilesCanBeSet(): void
+    {
+        $uploadedFile = new UploadedFile('/path/to/file', 0, UPLOAD_ERR_OK);
+        $this->simpleValueArgument->setUploadedFiles(['someProperty' => $uploadedFile]);
+
+        self::assertNotEmpty($this->simpleValueArgument->getUploadedFiles());
+    }
+
+    #[Test]
+    public function getUploadedFilesForPropertyReturnsUploadedFileIfAvailable(): void
+    {
+        $uploadedFile = new UploadedFile('/path/to/file', 0, UPLOAD_ERR_OK);
+        $this->simpleValueArgument->setUploadedFiles(['someProperty' => $uploadedFile]);
+
+        self::assertEquals([$uploadedFile], $this->simpleValueArgument->getUploadedFilesForProperty('someProperty'));
+    }
+
+    #[Test]
+    public function getUploadedFilesForPropertyReturnsEmptyArrayIfNoUploadedFileForProperty(): void
+    {
+        $uploadedFile = new UploadedFile('/path/to/file', 0, UPLOAD_ERR_OK);
+        $this->simpleValueArgument->setUploadedFiles(['someProperty' => $uploadedFile]);
+
+        self::assertEmpty($this->simpleValueArgument->getUploadedFilesForProperty('otherProperty'));
     }
 }

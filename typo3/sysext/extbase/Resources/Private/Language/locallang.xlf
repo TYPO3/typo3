@@ -91,13 +91,22 @@
 				<source>The image must at least have a width of %s pixels.</source>
 			</trans-unit>
 			<trans-unit id="validation.imagedimensions.minheight.notvalid" resname="validation.imagedimensions.minheight.notvalid">
-				<source>The image must at least have a heigh of %s pixels.</source>
+				<source>The image must at least have a height of %s pixels.</source>
 			</trans-unit>
 			<trans-unit id="validation.imagedimensions.maxwidth.notvalid" resname="validation.imagedimensions.maxwidth.notvalid">
 				<source>The image is too wide. The maximum width is %s pixels.</source>
 			</trans-unit>
 			<trans-unit id="validation.imagedimensions.maxheight.notvalid" resname="validation.imagedimensions.maxheight.notvalid">
 				<source>The image is too high. The maximum height is %s pixels.</source>
+			</trans-unit>
+			<trans-unit id="filehandlingserviceconfiguration.minfiles.notvalid" resname="filehandlingserviceconfiguration.minfiles.notvalid">
+				<source>You must at least upload %s file(s).</source>
+			</trans-unit>
+			<trans-unit id="filehandlingserviceconfiguration.minfiles.delete.notvalid" resname="filehandlingserviceconfiguration.minfiles.delete.notvalid">
+				<source>The file could not be deleted, because the minimum file upload amount would not be fulfilled after deletion.</source>
+			</trans-unit>
+			<trans-unit id="filehandlingserviceconfiguration.maxfiles.notvalid" resname="filehandlingserviceconfiguration.maxfiles.notvalid">
+				<source>The maximum amount of %s file(s) is exceeded.</source>
 			</trans-unit>
 		</body>
 	</file>

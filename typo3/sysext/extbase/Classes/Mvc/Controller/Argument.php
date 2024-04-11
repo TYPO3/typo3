@@ -15,6 +15,10 @@
 
 namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
+use Psr\Http\Message\UploadedFileInterface;
+use TYPO3\CMS\Core\Http\UploadedFile;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -29,6 +33,17 @@ class Argument
      * @var MvcPropertyMappingConfiguration
      */
     protected $propertyMappingConfiguration;
+
+    /**
+     * Configuration for the file handling service
+     */
+    protected FileHandlingServiceConfiguration $fileHandlingServiceConfiguration;
+
+    /**
+     * Uploaded files for the argument
+     * @var array<string, UploadedFileInterface|list<UploadedFileInterface>>
+     */
+    protected array $uploadedFiles = [];
 
     /**
      * Name of this argument
@@ -111,6 +126,7 @@ class Argument
 
         $this->validationResults = new Result();
         $this->propertyMappingConfiguration = GeneralUtility::makeInstance(MvcPropertyMappingConfiguration::class);
+        $this->fileHandlingServiceConfiguration = GeneralUtility::makeInstance(FileHandlingServiceConfiguration::class);
     }
 
     /**
@@ -218,7 +234,7 @@ class Argument
     /**
      * Returns the set validator
      *
-     * @return ValidatorInterface The set validator, NULL if none was set
+     * @return ValidatorInterface|null The set validator, NULL if none was set
      */
     public function getValidator()
     {
@@ -262,6 +278,25 @@ class Argument
     }
 
     /**
+     * Return the FileHandlingServiceConfiguration used for this argument; can be used by the
+     * initialize*action to modify the file upload configuration for properties.
+     */
+    public function getFileHandlingServiceConfiguration(): FileHandlingServiceConfiguration
+    {
+        return $this->fileHandlingServiceConfiguration;
+    }
+
+    public function getUploadedFiles(): array
+    {
+        return $this->uploadedFiles;
+    }
+
+    public function setUploadedFiles(array $uploadedFiles): void
+    {
+        $this->uploadedFiles = $uploadedFiles;
+    }
+
+    /**
      * @return bool TRUE if the argument is valid, FALSE otherwise
      */
     public function isValid(): bool
@@ -290,8 +325,37 @@ class Argument
             $this->validationResults->merge($validationMessages);
         }
 
+        if ($this->fileHandlingServiceConfiguration->hasfileUploadConfigurations()) {
+            $fileOperationValidationResults = $this->fileHandlingServiceConfiguration->validateFileOperations($this);
+            $this->validationResults->merge($fileOperationValidationResults);
+        }
+
         $this->hasBeenValidated = true;
         return $this->validationResults;
+    }
+
+    /**
+     * Returns an array of possible UploadedFile objects for the given property
+     * @return list<UploadedFileInterface>
+     */
+    public function getUploadedFilesForProperty(string $propertyName): array
+    {
+        $result = [];
+
+        try {
+            $uploadedFiles = ArrayUtility::getValueByPath($this->uploadedFiles, $propertyName, '.');
+            if ($uploadedFiles instanceof UploadedFile) {
+                $result = [$uploadedFiles];
+            } elseif (is_iterable($uploadedFiles)) {
+                foreach ($uploadedFiles as $uploadedFile) {
+                    $result[] = $uploadedFile;
+                }
+            }
+        } catch (MissingArrayPathException) {
+            // Do nothing, empty array will be returned
+        }
+
+        return $result;
     }
 
     /**

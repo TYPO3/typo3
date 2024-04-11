@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/file-upload",
+	"type": "typo3-cms-extension",
+	"description": "A test extension for extbase",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.2.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "file_upload"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\FileUpload\\": "Classes/"
+		}
+	}
+}

@@ -51,6 +51,11 @@ class TestController extends ActionController
         parent::initializeActionMethodArguments();
     }
 
+    public function mapRequestArgumentsToControllerArguments(): void
+    {
+        parent::mapRequestArgumentsToControllerArguments();
+    }
+
     public function getFlashMessageQueue(?string $identifier = null): FlashMessageQueue
     {
         return parent::getFlashMessageQueue($identifier);

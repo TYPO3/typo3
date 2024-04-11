@@ -26,6 +26,7 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\Type\BitSet;
+use TYPO3\CMS\Extbase\Annotation\FileUpload;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
@@ -167,14 +168,17 @@ class ClassSchema
 
             $this->properties[$propertyName] = [
                 'c' => null, // cascade
+                'f' => null, // file upload
                 't' => null, // type
                 'v' => [], // validators
             ];
 
             $validateAttributes = [];
+            $fileUploadAttributes = [];
             foreach ($reflectionProperty->getAttributes() as $attribute) {
                 match ($attribute->getName()) {
                     Validate::class => $validateAttributes[] = $attribute,
+                    FileUpload::class => $fileUploadAttributes[] = $attribute,
                     Lazy::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_LAZY,
                     Transient::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT,
                     Cascade::class => $this->properties[$propertyName]['c'] = ($attribute->newInstance())->value,
@@ -189,6 +193,18 @@ class ClassSchema
                     'name' => $validator->validator,
                     'options' => $validator->options,
                     'className' => $validatorObjectName,
+                ];
+            }
+
+            foreach ($fileUploadAttributes as $attribute) {
+                $fileUpload = $attribute->newInstance();
+
+                $this->properties[$propertyName]['f'] = [
+                    'validation' => $fileUpload->validation,
+                    'uploadFolder' => $fileUpload->uploadFolder,
+                    'addRandomSuffix' => $fileUpload->addRandomSuffix,
+                    'duplicationBehavior' => $fileUpload->duplicationBehavior,
+                    'createUploadFolderIfNotExist' => $fileUpload->createUploadFolderIfNotExist,
                 ];
             }
 
@@ -208,6 +224,24 @@ class ClassSchema
                         'name' => $validateAnnotation->validator,
                         'options' => $validateAnnotation->options,
                         'className' => $validatorObjectName,
+                    ];
+                }
+            }
+
+            /** @var array<int, FileUpload> $fileUploadAnnotations */
+            $fileUploadAnnotations = array_filter(
+                $annotations,
+                static fn(object $annotation): bool => $annotation instanceof FileUpload
+            );
+
+            if (count($fileUploadAnnotations) > 0) {
+                foreach ($fileUploadAnnotations as $fileUploadAnnotation) {
+                    $this->properties[$propertyName]['f'] = [
+                        'validation' => $fileUploadAnnotation->validation,
+                        'uploadFolder' => $fileUploadAnnotation->uploadFolder,
+                        'addRandomSuffix' => $fileUploadAnnotation->addRandomSuffix,
+                        'duplicationBehavior' => $fileUploadAnnotation->duplicationBehavior,
+                        'createUploadFolderIfNotExist' => $fileUploadAnnotation->createUploadFolderIfNotExist,
                     ];
                 }
             }

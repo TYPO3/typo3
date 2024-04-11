@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchema;
 
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
@@ -183,6 +184,7 @@ final class PropertyTest extends UnitTestCase
             $property->getValidators()
         );
     }
+
     #[Test]
     public function classSchemaDetectsValidateAttributeModelProperties(): void
     {
@@ -386,6 +388,75 @@ final class PropertyTest extends UnitTestCase
                 ],
             ],
             $property->getValidators()
+        );
+    }
+
+    #[Test]
+    public function classSchemaDetectsFileUploadAnnotationModelProperties(): void
+    {
+        $property = (new ClassSchema(DummyModel::class))
+            ->getProperty('propertyWithFileUploadAnnotation');
+
+        self::assertSame(
+            [
+                'validation' => [
+                    'required' => true,
+                    'maxFiles' => 1,
+                    'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
+                    'allowedMimeTypes' => ['image/png'],
+                ],
+                'uploadFolder' => '1:/user_upload/',
+                'addRandomSuffix' => true,
+                'duplicationBehavior' => DuplicationBehavior::REPLACE,
+                'createUploadFolderIfNotExist' => true,
+            ],
+            $property->getFileUpload()
+        );
+    }
+
+    #[Test]
+    public function classSchemaDetectsFileUploadAttributeModelProperties(): void
+    {
+        $property = (new ClassSchema(DummyModel::class))
+            ->getProperty('propertyWithFileUploadAttribute');
+
+        self::assertSame(
+            [
+                'validation' => [
+                    'required' => true,
+                    'maxFiles' => 1,
+                    'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
+                    'allowedMimeTypes' => ['image/png'],
+                ],
+                'uploadFolder' => '1:/user_upload/',
+                'addRandomSuffix' => true,
+                'duplicationBehavior' => DuplicationBehavior::REPLACE,
+                'createUploadFolderIfNotExist' => true,
+            ],
+            $property->getFileUpload()
+        );
+    }
+
+    #[Test]
+    public function classSchemaDetectsFileUploadAttributeOnPromotedModelProperties(): void
+    {
+        $property = (new ClassSchema(DummyModel::class))
+            ->getProperty('dummyPromotedProperty');
+
+        self::assertSame(
+            [
+                'validation' => [
+                    'required' => true,
+                    'maxFiles' => 1,
+                    'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
+                    'allowedMimeTypes' => ['image/png'],
+                ],
+                'uploadFolder' => '1:/user_upload/',
+                'addRandomSuffix' => true,
+                'duplicationBehavior' => DuplicationBehavior::REPLACE,
+                'createUploadFolderIfNotExist' => true,
+            ],
+            $property->getFileUpload()
         );
     }
 }

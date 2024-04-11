@@ -47,6 +47,7 @@ class Property
 
         $defaults = [
             'c' => null, // cascade
+            'f' => null, // file upload
             't' => [], // types
             'v' => [], // validators
         ];
@@ -149,6 +150,11 @@ class Property
     public function getValidators(): array
     {
         return $this->definition['v'];
+    }
+
+    public function getFileUpload(): ?array
+    {
+        return $this->definition['f'];
     }
 
     public function getCascadeValue(): ?string

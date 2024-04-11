@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 use TYPO3Tests\ActionControllerTest\Controller\TestController;
+use TYPO3Tests\ActionControllerTest\Domain\Model\Model;
 
 final class ActionControllerTest extends FunctionalTestCase
 {
@@ -309,5 +311,53 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertSame($messageBody, $messages[0]->getMessage());
         self::assertSame($messageTitle, $messages[0]->getTitle());
         self::assertSame($messageSeverity, $messages[0]->getSeverity());
+    }
+
+    #[Test]
+    public function mapRequestArgumentsToControllerArgumentsMapsUploadedFilesToArgument(): void
+    {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
+        $testFilename = $this->createTestFile('testfile.txt', 'TYPO3 - Inspiring People To Share');
+        $uploadedFile = new UploadedFile($testFilename, 100, UPLOAD_ERR_OK, 'testfile.txt');
+
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setUploadedFiles(['fooParam' => [$uploadedFile]]);
+
+        $serverRequest = (new ServerRequest('https://example.com/', 'POST'))
+            ->withAttribute('extbase', $extbaseRequestParameters);
+        $request = (new Request($serverRequest))
+            ->withControllerExtensionName('ActionControllerTest')
+            ->withControllerName('Test')
+            ->withControllerActionName('bar')
+            ->withPluginName('Pi1')
+            ->withArgument('fooParam', new Model());
+
+        $subject = $this->get(TestController::class);
+        $subject->arguments = new Arguments();
+        $subject->actionMethodName = 'fooAction';
+        $subject->request = $request;
+        $subject->initializeActionMethodArguments();
+        $subject->mapRequestArgumentsToControllerArguments();
+
+        self::assertSame([$uploadedFile], $subject->arguments['fooParam']->getUploadedFiles());
+    }
+
+    /**
+     * Helper function to create a test file with the given content.
+     */
+    protected function createTestFile(string $filename, string $content): string
+    {
+        $path = $this->instancePath . '/tmp';
+        $testFilename = $path . $filename;
+
+        GeneralUtility::mkdir($path);
+        touch($testFilename);
+        file_put_contents($testFilename, $content);
+
+        return $testFilename;
     }
 }
