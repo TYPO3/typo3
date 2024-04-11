@@ -333,21 +333,21 @@ final class ColumnDefinitionAttributesTest extends UnitTestCase
                 'columnFormat' => 'dynamic',
                 'storage' => null,
             ],
-            // @todo Parsing default values with quoted quotes throws a "Error: Expected ... GOT: 'can" exception, but
-            //       should work. Enable dataset along with the bugfix.
-            //"DEFAULT 'quoted single-quote \' can be parsed'" => [
-            //    'columnAttribute' => "DEFAULT 'quoted single-quote (\') can be parsed'",
-            //    'allowNull' => true,
-            //    'hasDefaultValue' => true,
-            //    'defaultValue' => "quoted single-quote (') is parsed properly",
-            //    'autoIncrement' => false,
-            //    'createIndex' => false,
-            //    'createUniqueIndex' => false,
-            //    'isPrimaryKey' => false,
-            //    'comment' => null,
-            //    'columnFormat' => null,
-            //    'storage' => null,
-            //],
+            // MySQL and MariaDB way to quote ' for a value string is to use double single-quotes "''" instead of
+            // using some sort of escape sequences, which is covered by the following testcase.
+            "DEFAULT 'quoted single-quote '' can be parsed'" => [
+                'columnAttribute' => "DEFAULT 'quoted single-quote ('') can be parsed'",
+                'allowNull' => true,
+                'hasDefaultValue' => true,
+                'defaultValue' => "quoted single-quote (') can be parsed",
+                'autoIncrement' => false,
+                'createIndex' => false,
+                'createUniqueIndex' => false,
+                'isPrimaryKey' => false,
+                'comment' => null,
+                'columnFormat' => null,
+                'storage' => null,
+            ],
             "DEFAULT 'double-quote (\") can be parsed'" => [
                 'columnAttribute' => "DEFAULT 'quoted single-quote (\") can be parsed'",
                 'allowNull' => true,
