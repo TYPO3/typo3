@@ -23,14 +23,11 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Legacy preview rendering refactored from PageLayoutView.
@@ -46,25 +43,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class StandardContentPreviewRenderer implements PreviewRendererInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
-
-    /**
-     * Menu content types defined by TYPO3
-     *
-     * @var string[]
-     */
-    private const MENU_CONTENT_TYPES = [
-        'menu_abstract',
-        'menu_categorized_content',
-        'menu_categorized_pages',
-        'menu_pages',
-        'menu_recently_updated',
-        'menu_related_pages',
-        'menu_section',
-        'menu_section_pages',
-        'menu_sitemap',
-        'menu_sitemap_pages',
-        'menu_subpages',
-    ];
 
     public function renderPageModulePreviewHeader(GridColumnItem $item): string
     {
@@ -117,17 +95,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             return $out;
         }
 
-        // Check if a Fluid-based preview template was defined for this record type
-        // and render it via Fluid. Possible option:
-        // mod.web_layout.tt_content.preview.media = EXT:site_mysite/Resources/Private/Templates/Preview/Media.html
-        $tsConfig = BackendUtility::getPagesTSconfig($record['pid'])['mod.']['web_layout.'][$table . '.']['preview.'] ?? [];
-        if (!empty($tsConfig[$recordType]) || !empty($tsConfig[$recordType . '.'])) {
-            $fluidPreview = $this->renderContentElementPreviewFromFluidTemplate($record, $item);
-            if ($fluidPreview !== null) {
-                return $fluidPreview;
-            }
-        }
-
         // This preview should only be used for tt_content records.
         if ($table !== 'tt_content') {
             return $out;
@@ -178,20 +145,34 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                     $out .= '<div class="alert alert-warning">' . htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:noPluginSelected')) . '</div>';
                 }
                 break;
-            default:
-                // Handle menu content types
-                if (in_array($recordType, self::MENU_CONTENT_TYPES, true)) {
-                    if ($recordType !== 'menu_sitemap' && (($record['pages'] ?? false) || ($record['selected_categories'] ?? false))) {
-                        // Show pages/categories if menu type is not "Sitemap"
-                        $out .= $this->linkEditContent($this->generateListForMenuContentTypes($record, $recordType), $record);
-                    }
-                    break;
+            case 'menu_abstract':
+            case 'menu_categorized_content':
+            case 'menu_categorized_pages':
+            case 'menu_pages':
+            case 'menu_recently_updated':
+            case 'menu_related_pages':
+            case 'menu_section':
+            case 'menu_section_pages':
+            case 'menu_sitemap':
+            case 'menu_sitemap_pages':
+            case 'menu_subpages':
+                if ($recordType !== 'menu_sitemap' && (($record['pages'] ?? false) || ($record['selected_categories'] ?? false))) {
+                    // Show pages/categories if menu type is not "Sitemap"
+                    $out .= $this->linkEditContent($this->generateListForMenuContentTypes($record, $recordType), $record);
                 }
+                break;
+            default:
                 if ($record['bodytext']) {
                     $out .= $this->linkEditContent($this->renderText($record['bodytext']), $record);
                 }
                 if ($record['image']) {
                     $out .= $this->linkEditContent($this->getThumbCodeUnlinked($record, $table, 'image'), $record);
+                }
+                if ($record['media']) {
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($record, $table, 'media'), $record);
+                }
+                if ($record['assets']) {
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($record, $table, 'assets'), $record);
                 }
         }
 
@@ -230,7 +211,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         if ($fieldList === []) {
             return '';
         }
-        $this->getProcessedValue($item, implode(',', $fieldList), $info);
+        $this->getProcessedValue($item, $fieldList, $info);
 
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && !empty($record[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']])) {
             $info[] = htmlspecialchars($record[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']]);
@@ -273,76 +254,17 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         return $shortcutRecord;
     }
 
-    protected function getProcessedValue(GridColumnItem $item, string $fieldList, array &$info): void
+    protected function getProcessedValue(GridColumnItem $item, string|array $fieldList, array &$info): void
     {
         $itemLabels = $item->getContext()->getItemLabels();
         $record = $item->getRecord();
         $table = $item->getTable();
-        $fieldArr = explode(',', $fieldList);
+        $fieldArr = is_array($fieldList) ? $fieldList : explode(',', $fieldList);
         foreach ($fieldArr as $field) {
             if ($record[$field]) {
                 $fieldValue = BackendUtility::getProcessedValue($table, $field, $record[$field], 0, false, false, $record['uid'] ?? 0, true, $record['pid'] ?? 0) ?? '';
                 $info[] = '<strong>' . htmlspecialchars((string)($itemLabels[$field] ?? '')) . '</strong> ' . htmlspecialchars($fieldValue);
             }
-        }
-    }
-
-    protected function renderContentElementPreviewFromFluidTemplate(array $row, ?GridColumnItem $item = null): ?string
-    {
-        // Backwards compatibility for call of this method with only 1 parameter.
-        $recordType = $item?->getRecordType() ?? $row['CType'] ?? null;
-        if ($recordType === null) {
-            return null;
-        }
-        $table = $item?->getTable() ?? 'tt_content';
-        $tsConfig = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['web_layout.'][$table . '.']['preview.'] ?? [];
-        $fluidTemplateFile = '';
-
-        if (
-            $table === 'tt_content'
-            && $recordType === 'list'
-            && !empty($row['list_type'])
-            && !empty($tsConfig['list.'][$row['list_type']])
-        ) {
-            $fluidTemplateFile = $tsConfig['list.'][$row['list_type']];
-        } elseif (!empty($tsConfig[$recordType])) {
-            $fluidTemplateFile = $tsConfig[$recordType];
-        }
-
-        if ($fluidTemplateFile === '') {
-            return null;
-        }
-
-        $fluidTemplateFileAbsolutePath = GeneralUtility::getFileAbsFileName($fluidTemplateFile);
-        if ($fluidTemplateFileAbsolutePath === '') {
-            return null;
-        }
-        try {
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename($fluidTemplateFileAbsolutePath);
-            $view->assignMultiple($row);
-            if ($table === 'tt_content' && !empty($row['pi_flexform'])) {
-                $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
-                $view->assign('pi_flexform_transformed', $flexFormService->convertFlexFormContentToArray($row['pi_flexform']));
-            }
-            return $view->render();
-        } catch (\Exception $e) {
-            $this->logger->warning('The backend preview for content element {uid} can not be rendered using the Fluid template file "{file}"', [
-                'uid' => $row['uid'],
-                'file' => $fluidTemplateFileAbsolutePath,
-                'exception' => $e,
-            ]);
-
-            if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-                $view = GeneralUtility::makeInstance(StandaloneView::class);
-                $view->assign('error', [
-                    'message' => str_replace(Environment::getProjectPath(), '', $e->getMessage()),
-                    'title' => 'Error while rendering FluidTemplate preview using ' . str_replace(Environment::getProjectPath(), '', $fluidTemplateFileAbsolutePath),
-                ]);
-                $view->setTemplateSource('<f:be.infobox title="{error.title}" state="2">{error.message}</f:be.infobox>');
-                return $view->render();
-            }
-            return null;
         }
     }
 
@@ -354,7 +276,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      * @param string $field Field name for which thumbnail are to be rendered.
      * @return string HTML for thumbnails, if any.
      */
-    protected function getThumbCodeUnlinked($row, $table, $field): string
+    protected function getThumbCodeUnlinked(array $row, string $table, string $field): string
     {
         return BackendUtility::thumbCode(row: $row, table: $table, field: $field, linkInfoPopup: false);
     }
@@ -409,7 +331,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      * @param array $row The row.
      * @return string If the whole thing was editable and $linkText is not empty $linkText is returned with link around. Otherwise just $linkText.
      */
-    protected function linkEditContent(string $linkText, $row, string $table = 'tt_content'): string
+    protected function linkEditContent(string $linkText, array $row, string $table = 'tt_content'): string
     {
         if (empty($linkText)) {
             return $linkText;

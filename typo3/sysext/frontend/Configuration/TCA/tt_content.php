@@ -1336,7 +1336,6 @@ return [
             ],
         ],
         'textmedia' => [
-            'previewRenderer' => \TYPO3\CMS\Frontend\Preview\TextmediaPreviewRenderer::class,
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     --palette--;;general,
@@ -1370,7 +1369,6 @@ return [
             ],
         ],
         'image' => [
-            'previewRenderer' => \TYPO3\CMS\Frontend\Preview\ImagePreviewRenderer::class,
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     --palette--;;general,

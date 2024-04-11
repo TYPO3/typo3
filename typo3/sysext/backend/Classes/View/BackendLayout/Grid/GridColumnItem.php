@@ -75,7 +75,7 @@ class GridColumnItem extends AbstractGridObject
         // Dispatch event to allow listeners adding an alternative content type
         // specific preview or to manipulate the content elements' record data.
         $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
-            new PageContentPreviewRenderingEvent($this->table, $this->record, $this->context)
+            new PageContentPreviewRenderingEvent($this->table, $this->getRecordType(), $this->record, $this->context)
         );
 
         // Update the modified record data
