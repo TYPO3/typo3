@@ -24,37 +24,6 @@ module.exports = function (grunt) {
   })
 
   /**
-   * Grunt stylefmt task
-   */
-  grunt.registerMultiTask('formatsass', 'Grunt task for stylefmt', function () {
-    let done = this.async(),
-      stylefmt = require('@ronilaukkarinen/stylefmt'),
-      postcss = require('postcss'),
-      scss = require('postcss-scss'),
-      files = this.filesSrc.filter(function (file) {
-        return grunt.file.isFile(file);
-      }),
-      counter = 0;
-    this.files.forEach(function (file) {
-      file.src.filter(function (filepath) {
-        let content = grunt.file.read(filepath);
-        let settings = {
-          from: filepath,
-          syntax: scss
-        };
-        postcss([stylefmt]).process(content, settings).then(function (result) {
-          grunt.file.write(file.dest, result.css);
-          grunt.log.success('Source file "' + filepath + '" was processed.');
-          counter++;
-          if (counter >= files.length) {
-            done(true);
-          }
-        });
-      });
-    });
-  });
-
-  /**
    * Grunt flag tasks
    */
   grunt.registerMultiTask('flags', 'Grunt task rendering the flags', function () {
@@ -155,16 +124,6 @@ module.exports = function (grunt) {
         configFile: '<%= paths.root %>/Build/.stylelintrc',
       },
       sass: ['<%= paths.sass %>**/*.scss']
-    },
-    formatsass: {
-      sass: {
-        files: [{
-          expand: true,
-          cwd: '<%= paths.sass %>',
-          src: ['**/*.scss'],
-          dest: '<%= paths.sass %>'
-        }]
-      }
     },
     sass: {
       options: {
@@ -269,6 +228,7 @@ module.exports = function (grunt) {
     exec: {
       ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json',
       ckeditor: ((process.platform === 'win32') ? 'node_modules\\.bin\\rollup.cmd' : './node_modules/.bin/rollup') + ' -c ckeditor5.rollup.config.js',
+      stylefix: ((process.platform === 'win32') ? 'node_modules\\.bin\\stylelint.cmd' : './node_modules/.bin/stylelint') + ' "<%= paths.sass %>**/*.scss" --fix --formatter verbose --cache --cache-location .cache/.stylelintcache --cache-strategy content',
       lintspaces: ((process.platform === 'win32') ? 'node_modules\\.bin\\lintspaces.cmd' : './node_modules/.bin/lintspaces') + ' --editorconfig ../.editorconfig "../typo3/sysext/*/Resources/Private/**/*.html"',
       'npm-install': 'npm install'
     },
@@ -985,11 +945,11 @@ module.exports = function (grunt) {
    * call "$ grunt css"
    *
    * this task does the following things:
-   * - formatsass
+   * - exec:stylefix
    * - sass
    * - postcss
    */
-  grunt.registerTask('css', ['formatsass', 'newer:sass', 'newer:postcss']);
+  grunt.registerTask('css', ['exec:stylefix', 'sass', 'newer:postcss']);
 
   /**
    * grunt update task
