@@ -251,6 +251,7 @@ class RootlineUtility
                         'pages',
                         $fieldConfig
                     );
+                    $relationHandler->processDeletePlaceholder();
                     $relatedUids = $relationHandler->getValueArray();
                 }
                 $pageRecord[$column] = implode(',', $relatedUids);

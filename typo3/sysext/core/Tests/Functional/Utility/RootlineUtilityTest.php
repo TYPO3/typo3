@@ -679,9 +679,8 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 2 => [
                     'uid' => 1051,
                     'title' => 'EN WS2-changed Parent 5 Sub 1 with media deleted',
-                    // @todo: bug. 1201 is included, but should not, since it has a delete placeholder.
-                    //        this is because $relationHandler->processDeletePlaceholder() is not called.
-                    'media' => '1201,1200',
+                    // It would be better if these would be the ws-overlay uids directly.
+                    'media' => '1200',
                 ],
                 1 => [
                     'uid' => 1050,
