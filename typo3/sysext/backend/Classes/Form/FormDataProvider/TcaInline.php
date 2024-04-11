@@ -182,7 +182,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                 // If that relation is configured to "showPossibleLocalizationRecords", this localized record
                 // needs to be removed from the list of records that are pending to be localized.
-                if ($showPossibleLocalizationRecords) {
+                if ($fieldNameWithDefaultLanguageUid && $showPossibleLocalizationRecords) {
                     $uidOfDefaultLanguageRecord = (int)$localizedRecord[$fieldNameWithDefaultLanguageUid];
                     if (in_array($uidOfDefaultLanguageRecord, $connectedUidsOfDefaultLanguageRecord, true)) {
                         // This localized child has a default language record. Remove this record from list of default language records
