@@ -88,7 +88,7 @@
 			<trans-unit id="widgets.documentation.gettingStarted.text" resname="widgets.documentation.gettingStarted.text" xml:space="preserve">
 				<source>New to TYPO3? In our Getting Started Tutorial you will learn the basics how to use TYPO3.</source>
  			</trans-unit>
-			<trans-unit id="widgets.documentation.gettingStarted.content.label" resname="widgets.documentation.gettingStarted.text" xml:space="preserve">
+			<trans-unit id="widgets.documentation.gettingStarted.content.label" resname="widgets.documentation.gettingStarted.content.label" xml:space="preserve">
 				<source>Getting Started Tutorial</source>
  			</trans-unit>
 
