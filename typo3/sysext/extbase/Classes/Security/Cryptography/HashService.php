@@ -28,6 +28,8 @@ use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  *
  * @deprecated will be removed in TYPO3 v14.0. Use \TYPO3\CMS\Core\Crypto\HashService instead.
+ *
+ * Note: Remove used exception codes in AbstractExceptionHandler::IGNORED_HMAC_EXCEPTION_CODES in v14.0
  */
 class HashService
 {
