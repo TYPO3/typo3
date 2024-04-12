@@ -53,6 +53,8 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
     public const IGNORED_HMAC_EXCEPTION_CODES = [
         1581862822, // Failed HMAC validation due to modified __trustedProperties in extbase property mapping
         1581862823, // Failed HMAC validation due to modified form state in ext:forms
+        1320830018, // Failed HMAC validation due to modified HMAC string in Extbase HashService
+        1320830276, // Failed HMAC validation due to too short HMAC string in Extbase HashService
     ];
 
     /**
