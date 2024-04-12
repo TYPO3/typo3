@@ -9,7 +9,7 @@
 			<trans-unit id="title" resname="title" xml:space="preserve">
 				<source>Dashboard</source>
 			</trans-unit>
-			<trans-unit id="widget.add" resnamr="widget.add" xml:space="preserve">
+			<trans-unit id="widget.add" resname="widget.add" xml:space="preserve">
 				<source>Add widget</source>
 			</trans-unit>
 			<trans-unit id="widget.add.button.close" resname="widget.add.button.close" xml:space="preserve">
