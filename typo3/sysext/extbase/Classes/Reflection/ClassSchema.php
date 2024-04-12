@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -99,15 +100,8 @@ class ClassSchema
      */
     private $injectMethods = [];
 
-    /**
-     * @var PropertyInfoExtractor
-     */
-    private static $propertyInfoExtractor;
-
-    /**
-     * @var DocBlockFactory
-     */
-    private static $docBlockFactory;
+    private static ?PropertyInfoExtractor $propertyInfoExtractor = null;
+    private static ?DocBlockFactoryInterface $docBlockFactory = null;
 
     /**
      * Constructs this class schema
@@ -159,24 +153,25 @@ class ClassSchema
         }
 
         if (self::$docBlockFactory === null) {
-            self::$docBlockFactory = DocBlockFactory::createInstance();
-            self::$docBlockFactory->registerTagHandler('author', Null_::class);
-            self::$docBlockFactory->registerTagHandler('covers', Null_::class);
-            self::$docBlockFactory->registerTagHandler('deprecated', Null_::class);
-            self::$docBlockFactory->registerTagHandler('link', Null_::class);
-            self::$docBlockFactory->registerTagHandler('method', Null_::class);
-            self::$docBlockFactory->registerTagHandler('property-read', Null_::class);
-            self::$docBlockFactory->registerTagHandler('property', Null_::class);
-            self::$docBlockFactory->registerTagHandler('property-write', Null_::class);
-            self::$docBlockFactory->registerTagHandler('return', Null_::class);
-            self::$docBlockFactory->registerTagHandler('see', Null_::class);
-            self::$docBlockFactory->registerTagHandler('since', Null_::class);
-            self::$docBlockFactory->registerTagHandler('source', Null_::class);
-            self::$docBlockFactory->registerTagHandler('throw', Null_::class);
-            self::$docBlockFactory->registerTagHandler('throws', Null_::class);
-            self::$docBlockFactory->registerTagHandler('uses', Null_::class);
-            self::$docBlockFactory->registerTagHandler('var', Null_::class);
-            self::$docBlockFactory->registerTagHandler('version', Null_::class);
+            self::$docBlockFactory = DocBlockFactory::createInstance([
+                'author' => Null_::class,
+                'covers' => Null_::class,
+                'deprecated' => Null_::class,
+                'link' => Null_::class,
+                'method' => Null_::class,
+                'property-read' => Null_::class,
+                'property' => Null_::class,
+                'property-write' => Null_::class,
+                'return' => Null_::class,
+                'see' => Null_::class,
+                'since' => Null_::class,
+                'source' => Null_::class,
+                'throw' => Null_::class,
+                'throws' => Null_::class,
+                'uses' => Null_::class,
+                'var' => Null_::class,
+                'version' => Null_::class,
+            ]);
         }
 
         $this->reflectProperties($reflectionClass);
