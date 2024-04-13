@@ -38,7 +38,7 @@ arguments:
 
 ..  code-block:: js
 
-    import { Hotkeys, ModifierKeys } from '@typo3/backend/hotkeys.js';
+    import Hotkeys, {ModifierKeys} from '@typo3/backend/hotkeys.js';
 
     Hotkeys.register(
         [Hotkeys.normalizedCtrlModifierKey, ModifierKeys.ALT, 'e'],
