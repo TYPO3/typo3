@@ -1,9 +1,11 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Cards"/>
 
-<h1>Environment</h1>
+<f:section name="headline">
+    <h1>Environment</h1>
+</f:section>
 
-<div class="card-container">
-    <div class="card card-size-fixed-small">
+<f:section name="cards">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Environment Overview', subtitle: 'Environment', icon: 'EXT:install/Resources/Public/Icons/modules/install-show-environment.svg'}" />
         <div class="card-body">
             <p class="card-text">Gives an overview of your host environment including its web server, PHP version, selected database and the application context.</p>
@@ -12,7 +14,7 @@
             <button type="button" class="btn btn-default" data-modal-size="small" data-import="@typo3/install/module/environment/system-information.js">Show System Information&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Environment Status', subtitle: 'PHP', icon: 'EXT:install/Resources/Public/Icons/modules/install-test-environment.svg'}" />
         <div class="card-body">
             <p class="card-text">Analyzes your host environment, identifying any issues that may prevent TYPO3 from running correctly.</p>
@@ -21,7 +23,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/environment/environment-check.js">Check Environment&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Directory Status', subtitle: 'Permissions', icon: 'EXT:install/Resources/Public/Icons/modules/install-check-directory.svg'}" />
         <div class="card-body">
             <p class="card-text">Analyzes your folder structure, checking files and directories for correct permissions and identifying any files or directories that may be missing from your installation.</p>
@@ -30,7 +32,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/environment/folder-structure.js">Check Directory Status&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'PHP Info', subtitle: 'PHP', icon: 'EXT:install/Resources/Public/Icons/modules/install-php-info.svg'}" />
         <div class="card-body">
             <p class="card-text">Outputs detailed information about your installation of PHP. Including version details and enabled PHP extensions.</p>
@@ -39,7 +41,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/environment/php-info.js">View PHP Info&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Test Mail Setup', subtitle: 'Mail', icon: 'EXT:install/Resources/Public/Icons/modules/install-test-mail.svg'}" />
         <div class="card-body">
             <p class="card-text">Test your mail configuration by sending out a dummy email via TYPO3.</p>
@@ -48,7 +50,7 @@
             <button type="button" class="btn btn-default" data-modal-size="small" data-import="@typo3/install/module/environment/mail-test.js">Test Mail Setup&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Image Processing', subtitle: 'Image Processing', icon: 'EXT:install/Resources/Public/Icons/modules/install-test-image.svg'}" />
         <div class="card-body">
             <p class="card-text">Creates test images and compares them against a set of reference images to help ensure that image processing is working correctly within your environment.</p>
@@ -57,6 +59,4 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/environment/image-processing.js">Test Images&hellip;</button>
         </div>
     </div>
-</div>
-
-</html>
+</f:section>

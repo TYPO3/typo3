@@ -1,9 +1,11 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Cards"/>
 
-<h1>Upgrade</h1>
+<f:section name="headline">
+    <h1>Upgrade</h1>
+</f:section>
 
-<div class="card-container">
-    <div class="card card-size-fixed-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
+<f:section name="cards">
+    <div class="card card-size-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
         <f:render partial="Card/Header" arguments="{ title: 'Update TYPO3 Core', subtitle: 'Core Upgrade', icon: 'EXT:install/Resources/Public/Icons/modules/install-update.svg'}"/>
         <div class="card-body">
             <p class="card-text">Update your TYPO3 installation (support for symbolic links required).</p>
@@ -22,7 +24,7 @@
             </f:else>
         </f:if>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Upgrade Wizard', subtitle: 'Core Upgrade', icon: 'EXT:install/Resources/Public/Icons/modules/install-wizards.svg'}" />
         <div class="card-body">
             <p class="card-text">Finalises the upgrade process when moving to a major release.</p>
@@ -31,7 +33,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/upgrade-wizards.js">Run Upgrade Wizard&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'View Upgrade Documentation', subtitle: 'Core Upgrade', icon: 'EXT:install/Resources/Public/Icons/modules/install-documentation.svg'}" />
         <div class="card-body">
             <p class="card-text">View and search for important changes that have been made for every major and minor release of TYPO3.</p>
@@ -40,7 +42,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/upgrade-docs.js">View Upgrade Documentation&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Check TCA in ext_tables.php', subtitle: 'TCA', icon: 'EXT:install/Resources/Public/Icons/modules/install-check-extables.svg'}" />
         <div class="card-body">
             <p class="card-text">Identify extensions that are modifying the Table Configuration Array (TCA) in <code>ext_tables.php</code>.</p>
@@ -49,7 +51,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/tca-ext-tables-check.js">Check TCA&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Check for Broken Extensions', subtitle: 'Extensions', icon: 'EXT:install/Resources/Public/Icons/modules/install-check-brokenextension.svg'}" />
         <div class="card-body">
             <p class="card-text">Checks the compatibility of all active extensions against the current (installed) version of TYPO3.</p>
@@ -58,7 +60,7 @@
             <button type="button" class="btn btn-default" data-modal-size="small" data-import="@typo3/install/module/upgrade/extension-compat-tester.js">Check Extension Compatibility&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Check TCA Migrations', subtitle: 'TCA', icon: 'EXT:install/Resources/Public/Icons/modules/install-check-tca.svg'}" />
         <div class="card-body">
             <p class="card-text">Identifies any third-party extensions that contain an outdated TCA configuration which should be adapted for the current (installed) version of TYPO3.</p>
@@ -67,7 +69,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/tca-migrations-check.js">Check TCA Migrations&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small {f:if(condition:'!{hasExtensions}', then: 'card-disabled')}">
+    <div class="card card-size-small {f:if(condition:'!{hasExtensions}', then: 'card-disabled')}">
         <f:render partial="Card/Header" arguments="{ title: 'Scan Extension Files', subtitle: 'Extensions', icon: 'EXT:install/Resources/Public/Icons/modules/install-scan-extensions.svg'}" />
         <div class="card-body">
             <p class="card-text">Scan extensions for usage of deprecated or outdated TYPO3 API calls.</p>
@@ -85,6 +87,4 @@
             </f:else>
         </f:if>
     </div>
-</div>
-
-</html>
+</f:section>

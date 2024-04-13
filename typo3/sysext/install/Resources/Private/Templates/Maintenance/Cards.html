@@ -1,9 +1,11 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Cards"/>
 
-<h1>Maintenance</h1>
+<f:section name="headline">
+    <h1>Maintenance</h1>
+</f:section>
 
-<div class="card-container">
-    <div class="card card-size-fixed-small">
+<f:section name="cards">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Flush TYPO3 and PHP Cache', subtitle: 'Caching', icon: 'EXT:install/Resources/Public/Icons/modules/install-clear-cache.svg'}" />
         <div class="card-body">
             <p class="card-text">This action directly clears all registered caches including opcode and dependency injection cache.</p>
@@ -12,7 +14,7 @@
             <button type="button" class="btn btn-default" data-inline="1"  data-import="@typo3/install/module/maintenance/cache.js">Flush cache</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Analyze Database Structure', subtitle: 'Database', icon: 'EXT:install/Resources/Public/Icons/modules/install-database-analyze.svg'}" />
         <div class="card-body">
             <p class="card-text">Compare and update the database table and field definitions of your installation against the specification defined for every activated extension.</p>
@@ -21,7 +23,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/maintenance/database-analyzer.js">Analyze database&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Remove Temporary Assets', subtitle: 'Caching', icon: 'EXT:install/Resources/Public/Icons/modules/install-clear-files.svg'}" />
         <div class="card-body">
             <p class="card-text">Clears temporary files including concatenated JS/CSS files and processed images.</p>
@@ -30,7 +32,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/maintenance/clear-typo3temp-files.js">Scan temporary files&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
+    <div class="card card-size-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
         <f:render partial="Card/Header" arguments="{ title: 'Rebuild PHP Autoload Information', subtitle: 'Caching', icon: 'EXT:install/Resources/Public/Icons/modules/install-clear-autoload.svg'}" />
         <div class="card-body">
             <p class="card-text">Resets autoload information for all active third party extensions.</p>
@@ -49,7 +51,7 @@
             </f:else>
         </f:if>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Clear Persistent Database Tables', subtitle: 'Database', icon: 'EXT:install/Resources/Public/Icons/modules/install-clear-database.svg'}" />
         <div class="card-body">
             <p class="card-text">Truncates persistent database tables, which are not related to caching.</p>
@@ -58,7 +60,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/maintenance/clear-tables.js">Scan tables&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Create Administrative User', subtitle: 'Backend Users', icon: 'EXT:install/Resources/Public/Icons/modules/install-create-admin.svg'}" />
         <div class="card-body">
             <p class="card-text">Create new administrative users and grant them system maintainer privileges (optional).</p>
@@ -67,7 +69,7 @@
             <button type="button" class="btn btn-default" data-modal-size="small" data-import="@typo3/install/module/maintenance/create-admin.js">Create Administrator&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Reset Backend User Preferences', subtitle: 'Backend Users', icon: 'EXT:install/Resources/Public/Icons/modules/install-reset-user.svg'}" />
         <div class="card-body">
             <p class="card-text">Clears preferences and settings for all backend users. The <code>uc</code> field is then set to an empty string.</p>
@@ -76,7 +78,7 @@
             <button type="button" class="btn btn-default" data-inline="1"  data-import="@typo3/install/module/maintenance/reset-backend-user-uc.js">Reset backend user preferences</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Manage Language Packs', subtitle: 'Language', icon: 'EXT:install/Resources/Public/Icons/modules/install-manage-language.svg'}" />
         <div class="card-body">
             <p class="card-text">Download and update language packs for installed extensions.</p>
@@ -85,6 +87,4 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/maintenance/language-packs.js">Manage languages&hellip;</button>
         </div>
     </div>
-</div>
-
-</html>
+</f:section>

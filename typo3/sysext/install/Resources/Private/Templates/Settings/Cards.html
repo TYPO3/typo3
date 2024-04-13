@@ -1,11 +1,15 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Cards"/>
 
-<h1>Settings</h1>
+<f:section name="headline">
+    <h1>Settings</h1>
+</f:section>
 
-<f:render partial="Generic/ConfigurationNotWritable" arguments="{_all}"/>
+<f:section name="header">
+    <f:render partial="Generic/ConfigurationNotWritable" arguments="{_all}"/>
+</f:section>
 
-<div class="card-container">
-    <div class="card card-size-fixed-small">
+<f:section name="cards">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Extension Configuration', subtitle: 'Global Configuration', icon: 'EXT:install/Resources/Public/Icons/modules/install-extension-settings.svg'}" />
         <div class="card-body">
             <p class="card-text">Configure settings for all enabled extensions.</p>
@@ -14,7 +18,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/settings/extension-configuration.js">Configure extensions&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Change Install Tool Password', subtitle: 'Access', icon: 'EXT:install/Resources/Public/Icons/modules/install-password.svg'}" />
         <div class="card-body">
             <p class="card-text">Set a new password for the Install Tool when accessed in Standalone mode.</p>
@@ -23,7 +27,7 @@
             <button type="button" class="btn btn-default" data-modal-size="small" data-import="@typo3/install/module/settings/change-install-tool-password.js">Change Install Tool Password&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Manage System Maintainers', subtitle: 'Access', icon: 'EXT:install/Resources/Public/Icons/modules/install-manage-maintainer.svg'}" />
         <div class="card-body">
             <p class="card-text">Specify which backend administrators have access to the Admin Tools module and Install Tool when accessed in Standalone Mode.</p>
@@ -32,7 +36,7 @@
             <button type="button" class="btn btn-default" data-modal-size="medium" data-import="@typo3/install/module/settings/system-maintainer.js">Manage System Maintainers&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Configuration Presets', subtitle: 'Global Configuration', icon: 'EXT:install/Resources/Public/Icons/modules/install-manage-presets.svg'}" />
         <div class="card-body">
             <p class="card-text">Configure image processing, debug/live mode and mail settings.</p>
@@ -41,7 +45,7 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/settings/presets.js">Choose Preset&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Feature Toggles', subtitle: 'Global Configuration', icon: 'EXT:install/Resources/Public/Icons/modules/install-manage-features.svg'}" />
         <div class="card-body">
             <p class="card-text">Enable and disable core features.</p>
@@ -50,7 +54,7 @@
             <button type="button" class="btn btn-default" data-modal-size="medium" data-import="@typo3/install/module/settings/features.js">Configure Features&hellip;</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small">
+    <div class="card card-size-small">
         <f:render partial="Card/Header" arguments="{ title: 'Configure Installation-Wide Options', subtitle: 'Global Configuration', icon: 'EXT:install/Resources/Public/Icons/modules/install-manage-settings.svg'}" />
         <div class="card-body">
             <p class="card-text">Modify settings written to system/settings.php.</p>
@@ -59,6 +63,4 @@
             <button type="button" class="btn btn-default" data-import="@typo3/install/module/settings/local-configuration.js">Configure options&hellip;</button>
         </div>
     </div>
-</div>
-
-</html>
+</f:section>
