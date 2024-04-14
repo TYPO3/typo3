@@ -81,7 +81,7 @@ final class ToolbarItemProvider
                     $this->lastRunInformation['end'] - $this->lastRunInformation['start'],
                     $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                 );
-                $severity = '';
+                $severity = InformationStatus::NOTICE;
                 $label = 'automatically';
                 if ($this->lastRunInformation['type'] === 'manual') {
                     $label = 'manually';
