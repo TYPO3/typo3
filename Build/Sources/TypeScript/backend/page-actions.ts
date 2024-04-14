@@ -42,21 +42,27 @@ class PageActions {
     me.disabled = true;
 
     for (const hiddenElement of hiddenElements) {
-      hiddenElement.style.display = 'block';
+      hiddenElement.style.display = 'flow-root';
       const scrollHeight = hiddenElement.scrollHeight;
-      hiddenElement.style.display = '';
+
+      // Always set `overflow: clip` after storing scrollHeight
+      // * For hidden state `height: 0px` is already set.
+      // * For visible state setting `overflow: clip` is fine anyway.
+      hiddenElement.style.overflow = 'clip';
 
       if (!me.checked) {
-        // Spacing between content elements is kept uniform by collapsed margins,
-        // hidden elements have a height of 0 and the margins of the surrounding elements
-        // cannot collapse, causing a visual gap. We therefore remove the element
-        // from the flow to prevent this.
+        // * Invisible elements must not be accessible/focusable by keyboard.
+        // * Spacing between content elements is kept uniform by collapsed margins,
+        //   hidden elements have a height of 0 and the margins of the surrounding elements
+        //   cannot collapse, causing a visual gap.
+        // Therefore do not display the element at all by setting `display: none`.
         hiddenElement.addEventListener('transitionend', (): void => {
-          hiddenElement.style.position = 'absolute';
+          hiddenElement.style.display = 'none';
+          hiddenElement.style.overflow = '';
         }, { once: true });
 
-        // We use requestAnimationFrame() as we have to set the container's height at first before resizing to 0px
-        // results in a smooth animation.
+        // We use requestAnimationFrame() as we have to set the container's height at first before resizing to
+        // collapsed-element-height. This results in a smooth animation.
         requestAnimationFrame(function() {
           hiddenElement.style.height = scrollHeight + 'px';
           requestAnimationFrame(function() {
@@ -64,7 +70,12 @@ class PageActions {
           });
         });
       } else {
-        hiddenElement.style.position = '';
+        hiddenElement.addEventListener('transitionend', (): void => {
+          hiddenElement.style.display = '';
+          hiddenElement.style.overflow = '';
+          hiddenElement.style.height = '';
+        }, { once: true });
+
         hiddenElement.style.height = scrollHeight + 'px';
       }
     }
