@@ -82,10 +82,10 @@
             <p>
             <f:if condition="{searchParams.extendedSearch}">
                 <f:then>
-                    <f:link.action action="form" arguments="{search: {extendedSearch: 0}}"><f:translate key="form.linkToRegularSearch" /></f:link.action>
+                    <f:link.action action="form" arguments="{search: {sword: sword, extendedSearch: 0}}"><f:translate key="form.linkToRegularSearch" /></f:link.action>
                 </f:then>
                 <f:else>
-                    <f:link.action action="form" arguments="{search: {extendedSearch: 1}}"><f:translate key="form.linkToAdvancedSearch" /></f:link.action>
+                    <f:link.action action="form" arguments="{search: {sword: sword, extendedSearch: 1}}"><f:translate key="form.linkToAdvancedSearch" /></f:link.action>
                 </f:else>
             </f:if>
             </p>
