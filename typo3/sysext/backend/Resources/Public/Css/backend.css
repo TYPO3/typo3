@@ -3408,6 +3408,7 @@ typo3-backend-form-selecttree-toolbar{display:block;border-bottom:1px solid rgba
 .element-browser-header+.element-browser-nav{padding-top:0}
 .element-browser-nav .nav{gap:2px}
 .element-browser-nav .nav-link,.element-browser-nav .nav.nav-tabs>li:not(.nav-item)>a:not(.nav-link){box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.element-browser-nav .nav-link:focus-visible,.element-browser-nav .nav.nav-tabs>li:not(.nav-item)>a:focus-visible:not(.nav-link){box-shadow:rgba(0,120,230,.25) 0 0 0 .25rem}
 .element-browser-body{overflow:unset;padding:var(--typo3-spacing)}
 .element-browser-body>:first-child{margin-top:0}
 .element-browser-body>:last-child{margin-bottom:0}
