@@ -286,21 +286,21 @@ class UpgradeWizards extends AbstractInteractableModule {
               if (typeof (data.adds.tables) === 'object') {
                 data.adds.tables.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table);
-                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, '<br>');
+                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, document.createElement('br'));
                 });
               }
               if (typeof (data.adds.columns) === 'object') {
                 data.adds.columns.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Field: ' + this.securityUtility.encodeHtml(element.field);
-                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, '<br>');
+                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, document.createElement('br'));
                 });
               }
               if (typeof (data.adds.indexes) === 'object') {
                 data.adds.indexes.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table)
                     + ', Index: ' + this.securityUtility.encodeHtml(element.index);
-                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, '<br>');
+                  adds.querySelector(Identifiers.wizardsBlockingAddsRows).append(title, document.createElement('br'));
                 });
               }
               modalContent.querySelector(Identifiers.outputWizardsContainer).appendChild(adds);
