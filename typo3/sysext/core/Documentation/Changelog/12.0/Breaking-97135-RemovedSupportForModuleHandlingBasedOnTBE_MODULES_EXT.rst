@@ -26,10 +26,10 @@ Therefore, the :php:`$GLOBALS['TBE_MODULES_EXT']` has been removed, while the
 corresponding :php:`ExtensionManagementUtility::insertModuleFunction()` API
 method has no effect.
 
-The related TSconfig options :typoscript:`mod.web_info.menu.function`
+The related page TSconfig options :typoscript:`mod.web_info.menu.function`
 as well as :typoscript:`mod.web_ts.menu.function` have been removed in favor
-of the existing :typoscript:`hideModules` option and the module access logic,
-which due to the new registration, now also covers those modules.
+of the existing :typoscript:`hideModules` user TSconfig option and the module
+access logic, which due to the new registration, now also covers those modules.
 
 Additionally, the following hooks have been removed, because their use cases
 does no longer exist:
@@ -44,7 +44,7 @@ The global :php:`TBE_MODULES_EXT` array does no longer exist and the
 :php:`ExtensionManagementUtility::insertModuleFunction()` API method no
 longer has any effect.
 
-The TSconfig options :typoscript:`mod.web_info.menu.function`
+The page TSconfig options :typoscript:`mod.web_info.menu.function`
 and :typoscript:`mod.web_ts.menu.function` are no longer evaluated.
 
 Using one of mentioned, :php:`TypoScriptTemplateModuleController` related
@@ -57,7 +57,7 @@ All installations using the global :php:`TBE_MODULES_EXT` array or
 calling :php:`ExtensionManagementUtility::insertModuleFunction()` in
 custom extension code.
 
-All installations using one of the removed TSconfig options or one
+All installations using one of the removed page TSconfig options or one
 of the removed hooks.
 
 Migration
@@ -96,16 +96,28 @@ Will now be registered in :file:`Configuration/Backend/Modules.php`:
         ],
     ],
 
-To hide a "third-level" module in the doc header menu, use the
+To hide a "third-level" module in the doc header menu, use the user TSconfig
 :typoscript:`options.hideModules` option:
 
 ..  code-block:: typoscript
+    :caption: **Page** TSconfig
 
     # before
     mod.web_info.menu.function.TYPO3\CMS\Info\Controller\TranslationStatusController = 0
 
+
+..  code-block:: typoscript
+    :caption: **User** TSconfig
+
     # after
     options.hideModules := addToList(web_info_translations)
+
+.. note::
+
+    While the previously used TSconfig options `mod.*.menu.function` are bound
+    to a page is the new `options.hideModules` option based on user and user
+    group level. This allows greater influence and furthermore allows to hide
+    any module, even if the module is not connected to a page.
 
 Additionally, use the module access logic to restrict access to those modules.
 
