@@ -153,7 +153,7 @@
     <template id="dashboardModal-add">
         <form action="{addDashboardUri}" id="formAddDashboard" class="dashboardModal-form" target="list_frame" method="post">
             <div class="form-group">
-                <label for="dashboardModalAdd-title"><f:translate key="LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.title" /></label>
+                <label class="form-label" for="dashboardModalAdd-title"><f:translate key="LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.title" /></label>
                 <input class="form-control" id="dashboardModalAdd-title" type="text" name="dashboard-title" required="required">
             </div>
 
@@ -200,7 +200,7 @@
         <form action="{configureDashboardUri}" id="configureDashboardForm" class="dashboardModal-form" target="list_frame" method="post">
             <input type="hidden" name="currentDashboard" value="{currentDashboard.identifier}">
             <div class="form-group">
-                <label for="dashboardModalConfigure-title"><f:translate key="LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.title" /></label>
+                <label class="form-label" for="dashboardModalConfigure-title"><f:translate key="LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.title" /></label>
                 <input class="form-control" id="dashboardModalConfigure-title" type="text" name="dashboard[title]" value="{currentDashboard.title}" required="required">
             </div>
         </form>
