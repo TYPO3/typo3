@@ -62,7 +62,7 @@ Typical code:
     $value = GeneralUtility::_GET('tx_scheduler');
 
     // After
-    $value = $request->getQueryParams()['tx_scheduler']) ?? null;
+    $value = $request->getQueryParams()['tx_scheduler'] ?? null;
 
 
 .. index:: PHP-API, FullyScanned, ext:core
