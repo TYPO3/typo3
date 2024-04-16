@@ -2068,7 +2068,6 @@ class DataHandler implements LoggerAwareInterface
         // Handle native date/time fields
         $isNativeDateTimeField = false;
         $nativeDateTimeFieldFormat = '';
-        $nativeDateTimeFieldEmptyValue = '';
         $nativeDateTimeFieldResetValue = '';
         $nativeDateTimeType = $tcaFieldConf['dbType'] ?? '';
         if (in_array($nativeDateTimeType, QueryHelper::getDateTimeTypes(), true)) {
