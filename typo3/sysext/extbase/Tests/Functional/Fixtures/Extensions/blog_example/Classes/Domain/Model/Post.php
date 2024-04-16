@@ -35,6 +35,8 @@ class Post extends AbstractEntity
 
     protected \DateTime $date;
 
+    protected ?\DateTime $archiveDate = null;
+
     protected ?Person $author = null;
 
     protected ?Person $secondAuthor = null;
@@ -132,6 +134,16 @@ class Post extends AbstractEntity
         return $this->date;
     }
 
+    public function getArchiveDate(): ?\DateTime
+    {
+        return $this->archiveDate;
+    }
+
+    public function setArchiveDate(?\DateTime $archiveDate): void
+    {
+        $this->archiveDate = $archiveDate;
+    }
+
     /**
      * @param ObjectStorage<Tag> $tags
      */
@@ -192,7 +204,7 @@ class Post extends AbstractEntity
         $this->categories->detach($category);
     }
 
-    public function setAuthor(Person $author): void
+    public function setAuthor(?Person $author): void
     {
         $this->author = $author;
     }
@@ -207,7 +219,7 @@ class Post extends AbstractEntity
         return $this->secondAuthor;
     }
 
-    public function setSecondAuthor(Person $secondAuthor): void
+    public function setSecondAuthor(?Person $secondAuthor): void
     {
         $this->secondAuthor = $secondAuthor;
     }
@@ -217,7 +229,7 @@ class Post extends AbstractEntity
         return $this->reviewer;
     }
 
-    public function setReviewer(Person $reviewer): void
+    public function setReviewer(?Person $reviewer): void
     {
         $this->reviewer = $reviewer;
     }

@@ -355,6 +355,10 @@ final class DataMapperTest extends FunctionalTestCase
             'valid date' => ['2013-01-01', 'date', date('c', strtotime('2013-01-01 00:00:00'))],
             'invalid datetime' => ['0000-00-00 00:00:00', 'datetime', null],
             'valid datetime' => ['2013-01-01 01:02:03', 'datetime', date('c', strtotime('2013-01-01 01:02:03'))],
+            'invalid time' => ['00:00:00', 'time', null],
+            'valid time' => ['01:02:03', 'time', date('c', strtotime('01:02:03'))],
+            'null datetime' => [null, 'datetime', null],
+            'null time' => [null, 'time', null],
         ];
     }
 

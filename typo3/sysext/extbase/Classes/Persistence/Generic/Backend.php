@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,6 +42,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
@@ -319,11 +321,11 @@ class Backend implements BackendInterface, SingletonInterface
                     if ($propertyValue->_isNew()) {
                         $this->insertObject($propertyValue, $object, $propertyName);
                     }
-                    $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
+                    $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, null, $property);
                 }
                 $queue[] = $propertyValue;
             } elseif ($object->_isNew() || $object->_isDirty($propertyName)) {
-                $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap);
+                $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap, $property);
             }
         }
         if (!empty($row)) {
@@ -596,7 +598,7 @@ class Backend implements BackendInterface, SingletonInterface
                     $row[$columnMap->getColumnName()] = 0;
                 }
             } elseif ($propertyValue !== null) {
-                $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap);
+                $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap, $property);
             }
         }
         $this->addCommonFieldsToRow($object, $row);
@@ -930,19 +932,48 @@ class Backend implements BackendInterface, SingletonInterface
     }
 
     /**
-     * Returns a plain value
-     *
-     * i.e. objects are flattened out if possible.
-     * Checks explicitly for null values as DataMapper's getPlainValue would convert this to 'NULL'
+     * Returns a plain value, i.e. objects are flattened out if possible.
+     * Checks explicitly for null values as DataMapper's getPlainValue would convert this to 'NULL'.
+     * For null values, the expected DB null value will be considered.
      *
      * @param mixed $input The value that will be converted
      * @param ColumnMap|null $columnMap Optional column map for retrieving the date storage format
+     * @param Property|null $property The current property
      * @return int|string|null
      */
-    protected function getPlainValue($input, ColumnMap $columnMap = null)
+    protected function getPlainValue(mixed $input, ColumnMap $columnMap = null, Property $property = null)
     {
-        return $input !== null
-            ? GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap)
-            : null;
+        if ($input !== null) {
+            return GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap);
+        }
+
+        if (!$property) {
+            return null;
+        }
+
+        $className = $property->getPrimaryType()->getClassName();
+
+        // Nullable domain model property
+        if (is_subclass_of($className, DomainObjectInterface::class)) {
+            return 0;
+        }
+
+        // Nullable DateTime property
+        if ($columnMap && is_subclass_of($className, \DateTimeInterface::class)) {
+            $datetimeFormats = QueryHelper::getDateTimeFormats();
+            $dateFormat = $columnMap->getDateTimeStorageFormat();
+            if (!$dateFormat) {
+                // Datetime property with no TCA dbType
+                return 0;
+            }
+
+            if (isset($datetimeFormats[$dateFormat])) {
+                // Datetime property with TCA dbType defined. Nullable fields will be saved with the empty value
+                // (e.g. "00:00:00" for dbType = time) as well, but DataMapper will correctly map those values to null
+                return $datetimeFormats[$dateFormat]['empty'];
+            }
+        }
+
+        return null;
     }
 }

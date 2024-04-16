@@ -36,6 +36,9 @@
 			<trans-unit id="tx_blogexample_domain_model_post.date" resname="tx_blogexample_domain_model_post.date">
 				<source>Date</source>
 			</trans-unit>
+			<trans-unit id="tx_blogexample_domain_model_post.archive_date" resname="tx_blogexample_domain_model_post.archive_date">
+				<source>Archive date</source>
+			</trans-unit>
 			<trans-unit id="tx_blogexample_domain_model_post.author" resname="tx_blogexample_domain_model_post.author">
 				<source>Author</source>
 			</trans-unit>

@@ -26,7 +26,7 @@ return [
         'maxSingleDBListItems' => 500,
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, author, second_author, content, tags, comments, related_posts, additional_name, additional_info, additional_comments, categories'],
+        '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, archive_date, author, second_author, content, tags, comments, related_posts, additional_name, additional_info, additional_comments, categories'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -96,6 +96,14 @@ return [
                 'size' => 12,
                 'required' => true,
                 'default' => time(),
+            ],
+        ],
+        'archive_date' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.archive_date',
+            'config' => [
+                'type' => 'datetime',
+                'size' => 12,
             ],
         ],
         'author' => [
