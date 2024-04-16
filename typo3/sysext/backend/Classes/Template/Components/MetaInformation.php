@@ -236,7 +236,7 @@ class MetaInformation
                 ->setTitle(BackendUtility::getRecordIconAltText($pageRecord, 'pages', false))
                 ->render();
             // Make Icon:
-            $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
+            $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid'], '', $pageRecord);
             $uid = $pageRecord['uid'];
             $title = BackendUtility::getRecordTitle('pages', $pageRecord);
         } else {

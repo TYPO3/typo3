@@ -2158,12 +2158,13 @@ class BackendUtility
      * @param int|string $uid If icon is for database record this is the UID for the
      * record from $table or identifier for sys_file record
      * @param string $context Set tree if menu is called from tree view
+     * @param array $row The record row if available
      *
      * @return string The link wrapped input string.
      */
-    public static function wrapClickMenuOnIcon($content, $table, $uid = 0, $context = ''): string
+    public static function wrapClickMenuOnIcon($content, $table, $uid = 0, $context = '', array $row = []): string
     {
-        $attributes = self::getContextMenuAttributes((string)$table, $uid, (string)$context);
+        $attributes = self::getContextMenuAttributes((string)$table, $uid, (string)$context, 'click', $row);
         return '<button type="button" class="btn btn-link p-0" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $content . '</button>';
     }
 
@@ -2195,15 +2196,36 @@ class BackendUtility
      * record from $table or identifier for sys_file record
      * @param string $context Set tree if menu is called from tree view
      * @param string $trigger Set the trigger the context menu is attached to. Possible options (click/contextmenu)
+     * @param array $row The record row if available
      */
-    public static function getContextMenuAttributes(string $table, $uid = 0, string $context = '', string $trigger = 'click'): array
-    {
-        return [
+    public static function getContextMenuAttributes(
+        string $table,
+        $uid = 0,
+        string $context = '',
+        string $trigger = 'click',
+        array $row = []
+    ): array {
+        $lang = static::getLanguageService();
+
+        $attributes = [
             'data-contextmenu-trigger' => $trigger,
             'data-contextmenu-table' => $table,
             'data-contextmenu-uid' => $uid,
             'data-contextmenu-context' => $context,
         ];
+
+        if ($row !== []) {
+            $attributes['aria-label'] = sprintf(
+                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open.recordLabel'),
+                self::getRecordTitle($table, $row)
+            );
+        } else {
+            $attributes['aria-label'] = $lang->sL(
+                'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open'
+            );
+        }
+
+        return $attributes;
     }
 
     /**
