@@ -674,23 +674,31 @@ export default (function() {
     });
   };
 
+  FormEngineValidation.isValid = function(): boolean {
+    return document.querySelector('.' + FormEngineValidation.errorClass) === null;
+  }
+
+  FormEngineValidation.showErrorModal = function(): void {
+    const modal = Modal.confirm(
+      TYPO3.lang.alert || 'Alert',
+      TYPO3.lang['FormEngine.fieldsMissing'],
+      Severity.error,
+      [
+        {
+          text: TYPO3.lang['button.ok'] || 'OK',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'ok',
+        },
+      ]
+    );
+    modal.addEventListener('button.clicked', () => modal.hideModal());
+  }
+
   FormEngineValidation.registerSubmitCallback = function () {
     DocumentSaveActions.getInstance().addPreSubmitCallback(function (e: Event) {
-      if ($('.' + FormEngineValidation.errorClass).length > 0) {
-        const modal = Modal.confirm(
-          TYPO3.lang.alert || 'Alert',
-          TYPO3.lang['FormEngine.fieldsMissing'],
-          Severity.error,
-          [
-            {
-              text: TYPO3.lang['button.ok'] || 'OK',
-              active: true,
-              btnClass: 'btn-default',
-              name: 'ok',
-            },
-          ]
-        );
-        modal.addEventListener('button.clicked', () => modal.hideModal());
+      if (!FormEngineValidation.isValid()) {
+        FormEngineValidation.showErrorModal();
 
         e.stopImmediatePropagation();
       }

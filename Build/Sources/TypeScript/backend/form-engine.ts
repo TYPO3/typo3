@@ -978,7 +978,7 @@ export default (function() {
   FormEngine.previewAction = function(event: Event, callback: PreviewActionCallback): void {
     callback = callback || FormEngine.previewActionCallback;
 
-    const previewUrl = (event.currentTarget as HTMLAnchorElement).href;
+    const previewUrl = (event.target as HTMLAnchorElement).href;
     const isNew = ('isNew' in (event.target as HTMLAnchorElement).dataset);
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedokview').attr('value', '1');
     if (FormEngine.hasChange() || FormEngine.isNew()) {
@@ -1045,28 +1045,46 @@ export default (function() {
       active: true
     };
     let modalButtons = [];
-    let content = '';
+    let contentStrings: string[] = [];
     if (isNew) {
+      if (!FormEngine.Validation.isValid()) {
+        FormEngine.Validation.showErrorModal();
+        return;
+      }
       modalButtons = [
         modalCancelButtonConfiguration,
         modalsaveViewButtonConfiguration
       ];
-      content = (
+      contentStrings = [
         TYPO3.lang['label.confirm.view_record_changed.content.is-new-page']
         || 'You need to save your changes before viewing the page. Do you want to save and view them now?'
-      );
+      ];
     } else {
       modalButtons = [
         modalCancelButtonConfiguration,
         modaldismissViewButtonConfiguration,
-        modalsaveViewButtonConfiguration
       ];
-      content = (
+      contentStrings = [
         TYPO3.lang['label.confirm.view_record_changed.content']
         || 'You currently have unsaved changes. You can either discard these changes or save and view them.'
-      );
+      ];
+      if (FormEngine.Validation.isValid()) {
+        modalButtons.push(modalsaveViewButtonConfiguration);
+      } else {
+        contentStrings.push(
+          TYPO3.lang['label.confirm.view_record_changed.invalid_form']
+          || 'The form appears to be invalid, therefore "Save changes and view" is not available.'
+        );
+      }
     }
-    const modal = Modal.confirm(title, content, Severity.info, modalButtons);
+    const contentElement = document.createElement('p');
+    contentStrings.forEach((item: string, i: number): void => {
+      contentElement.append(item);
+      if (i !== contentStrings.length - 1) {
+        contentElement.append(document.createElement('br'));
+      }
+    });
+    const modal = Modal.confirm(title, contentElement, Severity.info, modalButtons);
     modal.addEventListener('button.clicked', function (event: Event) {
       callback((event.target as HTMLButtonElement).name, previewUrl, $actionElement, modal);
     });

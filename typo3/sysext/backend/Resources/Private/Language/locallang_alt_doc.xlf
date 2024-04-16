@@ -99,6 +99,9 @@
 			<trans-unit id="label.confirm.view_record_changed.content" resname="label.confirm.view_record_changed.content">
 				<source>You currently have unsaved changes. You can either discard these changes or save and view them.</source>
 			</trans-unit>
+			<trans-unit id="label.confirm.view_record_changed.invalid_form" resname="label.confirm.view_record_changed.invalid_form">
+				<source>The form appears to be invalid, therefore "Save changes and view" is not available.</source>
+			</trans-unit>
 			<trans-unit id="label.confirm.view_record_changed.content.is-new-page" resname="label.confirm.view_record_changed.content.is-new-page">
 				<source>You need to save your changes before viewing the page. Do you want to save and view them now?</source>
 			</trans-unit>
