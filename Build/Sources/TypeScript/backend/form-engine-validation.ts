@@ -646,27 +646,35 @@ export default class FormEngineValidation {
     validationSuspended = false;
   }
 
+  public static isValid(): boolean {
+    return document.querySelector('.' + FormEngineValidation.errorClass) === null;
+  }
+
+  public static showErrorModal(): void {
+    const modal = Modal.confirm(
+      TYPO3.lang.alert || 'Alert',
+      TYPO3.lang['FormEngine.fieldsMissing'],
+      Severity.error,
+      [
+        {
+          text: TYPO3.lang['button.ok'] || 'OK',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'ok',
+        },
+      ]
+    );
+    modal.addEventListener('button.clicked', () => modal.hideModal());
+  }
+
   public static registerSubmitCallback() {
     const submitInterceptor = new SubmitInterceptor(formEngineFormElement);
     submitInterceptor.addPreSubmitCallback((): boolean => {
-      if (validationSuspended || document.querySelector('.' + FormEngineValidation.errorClass) === null) {
+      if (validationSuspended || FormEngineValidation.isValid()) {
         return true;
       }
 
-      const modal = Modal.confirm(
-        TYPO3.lang.alert || 'Alert',
-        TYPO3.lang['FormEngine.fieldsMissing'],
-        Severity.error,
-        [
-          {
-            text: TYPO3.lang['button.ok'] || 'OK',
-            active: true,
-            btnClass: 'btn-default',
-            name: 'ok',
-          },
-        ]
-      );
-      modal.addEventListener('button.clicked', () => modal.hideModal());
+      FormEngineValidation.showErrorModal();
 
       return false;
     });
