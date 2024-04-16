@@ -1521,6 +1521,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="labels.datepicker.today" resname="labels.datepicker.today">
 				<source>Today</source>
 			</trans-unit>
+			<trans-unit id="labels.contextMenu.open" resname="labels.contextMenu.open">
+				<source>Open context menu</source>
+			</trans-unit>
+			<trans-unit id="labels.contextMenu.open.recordLabel" resname="labels.contextMenu.open.recordLabel">
+				<source>Open context menu for record: %s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
