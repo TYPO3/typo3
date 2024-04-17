@@ -151,15 +151,16 @@ The corresponding event listener class:
 
     final class PageContentPreviewRendering
     {
-        public function __invoke(PageContentPreviewRenderingEvent): void
+        public function __invoke(PageContentPreviewRenderingEvent $event): void
         {
             $tableName = $event->getTable();
             $record = $event->getRecord();
 
             // early return if we do not need to react
-            if ($event->getTable() !== 'tt_content'
-                || ((string)($record['CType'] ?? '') !== 'my-content-element'
-               ) {
+            if (
+                $tableName !== 'tt_content'
+                || (string)($record['CType'] ?? '') !== 'my-content-element'
+            ) {
                 return;
             }
 
