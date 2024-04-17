@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -742,33 +741,6 @@ class AdministrationRepository
                 )
                 ->executeStatement();
         }
-    }
-
-    /**
-     * Save keywords
-     */
-    public function saveKeywords(array $words, int $pageId): void
-    {
-        // Get pages current keywords
-        $pageRec = BackendUtility::getRecord('pages', $pageId);
-        if (!is_array($pageRec)) {
-            return;
-        }
-        $keywords = array_flip(GeneralUtility::trimExplode(',', $pageRec['keywords'] ?? '', true));
-        // Merge keywords:
-        foreach ($words as $key => $v) {
-            if ($v) {
-                $keywords[$key] = 1;
-            } else {
-                unset($keywords[$key]);
-            }
-        }
-        // Compile new list:
-        $data = [];
-        $data['pages'][$pageId]['keywords'] = implode(', ', array_keys($keywords));
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start($data, []);
-        $dataHandler->process_datamap();
     }
 
     /**

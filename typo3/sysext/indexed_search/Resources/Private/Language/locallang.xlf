@@ -408,15 +408,6 @@
 			<trans-unit id="administration.stopWords.save" resname="administration.stopWords.save">
 				<source>Save stopwords</source>
 			</trans-unit>
-			<trans-unit id="administration.keywords" resname="administration.keywords">
-				<source>Page keywords</source>
-			</trans-unit>
-			<trans-unit id="administration.keywords.current" resname="administration.keywords.current">
-				<source>Current page keywords</source>
-			</trans-unit>
-			<trans-unit id="administration.stopWordsKeywords.save" resname="administration.stopWordsKeywords.save">
-				<source>Save keywords and stop words</source>
-			</trans-unit>
 			<trans-unit id="administration.statistics.sectionRecords" resname="administration.statistics.sectionRecords">
 				<source>Section records for this phash</source>
 			</trans-unit>

@@ -145,7 +145,7 @@ class AdministrationController extends ActionController
         if (isset($arguments['action']) && method_exists($this, $arguments['action'] . 'Action')) {
             $action = $arguments['action'];
             switch ($action) {
-                case 'saveStopwordsKeywords':
+                case 'saveStopwords':
                     $action = 'statisticDetails';
                     break;
                 case 'deleteIndexedItem':
@@ -269,7 +269,6 @@ class AdministrationController extends ActionController
             $debugInfo = json_decode($debugRow['debuginfo'], true);
         }
         $pageRecord = BackendUtility::getRecord('pages', $pageHashRow['data_page_id']);
-        $keywords = is_array($pageRecord) ? array_flip(GeneralUtility::trimExplode(',', (string)$pageRecord['keywords'], true)) : [];
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
         $wordRecords = $queryBuilder
@@ -289,11 +288,6 @@ class AdministrationController extends ActionController
             ->orderBy('index_words.baseword')
             ->executeQuery()
             ->fetchAllAssociative();
-        foreach ($wordRecords as $id => $row) {
-            if (isset($keywords[$row['baseword']])) {
-                $wordRecords[$id]['is_keyword'] = true;
-            }
-        }
 
         // sections
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_section');
@@ -369,23 +363,19 @@ class AdministrationController extends ActionController
             'topFrequency' => $topFrequency,
             'debug' => $debugInfo,
             'page' => $pageRecord,
-            'keywords' => $keywords,
         ]);
 
         return $view->renderResponse('Administration/StatisticDetails');
     }
 
     /**
-     * Save stop words and keywords
+     * Save stop words
      */
-    protected function saveStopwordsKeywordsAction(string $pageHash, int $pageId, array $stopwords = [], array $keywords = []): ResponseInterface
+    protected function saveStopwordsAction(string $pageHash, array $stopwords = []): ResponseInterface
     {
         if ($this->getBackendUserAuthentication()->isAdmin()) {
             if (is_array($stopwords) && !empty($stopwords)) {
                 $this->administrationRepository->saveStopWords($stopwords);
-            }
-            if (is_array($keywords) && !empty($keywords)) {
-                $this->administrationRepository->saveKeywords($keywords, $pageId);
             }
         }
         return $this->redirect('statisticDetails', null, null, ['pageHash' => $pageHash]);

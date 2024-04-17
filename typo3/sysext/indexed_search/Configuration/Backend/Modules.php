@@ -14,7 +14,7 @@ return [
         'extensionName' => 'IndexedSearch',
         'controllerActions' => [
             AdministrationController::class => [
-                'statistic', 'index', 'pages', 'externalDocuments', 'statisticDetails', 'deleteIndexedItem', 'saveStopwordsKeywords', 'wordDetail',
+                'statistic', 'index', 'pages', 'externalDocuments', 'statisticDetails', 'deleteIndexedItem', 'saveStopwords', 'wordDetail',
             ],
         ],
     ],
