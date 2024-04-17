@@ -44,7 +44,17 @@ final class ReferenceIndexWorkspaceLoadedTest extends FunctionalTestCase
     public function updateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecordImport.csv');
-        $result = $this->get(ReferenceIndex::class)->updateIndex(false);
+        $this->get(ReferenceIndex::class)->updateIndex(false);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecordResult.csv');
+    }
+
+    #[Test]
+    public function getListOfActiveWorkspacesReturnsActiveWorkspaces(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedActiveWorkspaces.csv');
+        $subject = $this->get(ReferenceIndex::class);
+        $subjectMethodReflection = new \ReflectionMethod($subject, 'getListOfActiveWorkspaces');
+        $expected = [0, 1, 2];
+        self::assertSame($expected, $subjectMethodReflection->invoke($subject));
     }
 }
