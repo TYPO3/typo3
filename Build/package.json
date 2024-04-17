@@ -43,7 +43,7 @@
     "eslint-plugin-lit": "^1.11.0",
     "eslint-plugin-wc": "^2.0.4",
     "filesize": "^10.1.0",
-    "flag-icons": "^7.1.0",
+    "flag-icons": "^7.2.1",
     "grunt": "^1.6.1",
     "grunt-concurrent": "^3.0.0",
     "grunt-contrib-clean": "^2.0.1",
