@@ -1142,11 +1142,7 @@ class ReferenceIndex implements LoggerAwareInterface
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $result = $queryBuilder->select('uid')->from('sys_workspace')->orderBy('uid')->executeQuery();
         // "0", plus non-deleted workspaces are active
-        $activeWorkspaces = [0];
-        while ($row = $result->fetchFirstColumn()) {
-            $activeWorkspaces[] = (int)$row[0];
-        }
-        return $activeWorkspaces;
+        return array_merge([0 => 0], $result->fetchFirstColumn());
     }
 
     /**
