@@ -1315,6 +1315,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 }
                 $fileMountRecordCache[$storageUid . $path . '-readonly'] = [
                     'base' => $storageUid,
+                    'identifier' => $storageUid . ':' . $path,
                     'title' => $path,
                     'path' => $path,
                     'read_only' => true,

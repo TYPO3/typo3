@@ -61,7 +61,7 @@ final class StoragePermissionsAspect
     private function addFileMountsToStorage(ResourceStorage $storage): void
     {
         foreach ($this->getBackendUser()->getFileMountRecords() as $fileMountRow) {
-            if (!str_contains($fileMountRow['identifier'], ':')) {
+            if (!str_contains($fileMountRow['identifier'] ?? '', ':')) {
                 // Skip record since the file mount identifier is invalid
                 continue;
             }
