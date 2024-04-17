@@ -273,7 +273,7 @@ class RootlineUtility
         if (!empty($configuration['MM']) && !empty($configuration['type']) && in_array($configuration['type'], ['select', 'inline', 'group'])) {
             return true;
         }
-        if (!empty($configuration['foreign_field']) && !empty($configuration['type']) && in_array($configuration['type'], ['select', 'inline', 'file'])) {
+        if (!empty($configuration['foreign_field']) && !empty($configuration['type']) && in_array($configuration['type'], ['inline', 'file'])) {
             return true;
         }
         if (($configuration['type'] ?? '') === 'category' && ($configuration['relationship'] ?? '') === 'manyToMany') {
