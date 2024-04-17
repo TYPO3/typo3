@@ -72,7 +72,11 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
                     );
                     return GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $str);
                 }
-                return GeneralUtility::cmpIP($request->getNormalizedParams()->getRemoteAddress(), $str);
+                $normalizedParams = $request->getNormalizedParams();
+                if ($normalizedParams === null) {
+                    return false;
+                }
+                return GeneralUtility::cmpIP($normalizedParams->getRemoteAddress(), $str);
             }
         );
     }
