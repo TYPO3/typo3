@@ -67,7 +67,11 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
                         1686745105
                     );
                 }
-                return GeneralUtility::cmpIP($request->getNormalizedParams()->getRemoteAddress(), $str);
+                $normalizedParams = $request->getNormalizedParams();
+                if ($normalizedParams === null) {
+                    return false;
+                }
+                return GeneralUtility::cmpIP($normalizedParams->getRemoteAddress(), $str);
             }
         );
     }
