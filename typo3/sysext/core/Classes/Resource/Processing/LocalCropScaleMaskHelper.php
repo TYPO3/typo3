@@ -121,7 +121,9 @@ class LocalCropScaleMaskHelper
 
         // check if the processing really generated a new file (scaled and/or cropped)
         if ($result !== null) {
-            if ($result->getRealPath() !== $originalFileName) {
+            // @todo: realpath handling should be revisited, they may produce issues
+            //        with open_basedir restrictions and/or lockRootPath.
+            if ($result->getRealPath() !== realpath($originalFileName)) {
                 $result = [
                     'width' => $result->getWidth(),
                     'height' => $result->getHeight(),
