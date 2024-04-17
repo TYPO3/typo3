@@ -1,0 +1,30 @@
+"sys_workspace"
+,"uid","pid","deleted","title"
+,1,0,0,"ws1"
+,2,0,0,"ws2"
+"sys_category"
+,"uid","pid","parent","deleted","hidden","starttime","endtime","sorting","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","title"
+,1,3000,0,0,0,0,0,1,0,0,0,0,0,"parent 1"
+,10,3000,1,0,0,0,0,10,0,0,0,0,0,"EN cat 10"
+"pages"
+,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","slug","title"
+,1,0,0,0,0,0,0,0,"/","EN Root"
+,1000,1,0,0,0,0,0,0,"/parent1000","EN Parent 1000 has cat 10"
+,1010,1,0,0,0,0,0,0,"/parent1010","EN Parent 1010 has cat 10"
+,1020,1,0,0,0,0,0,0,"/parent1020","EN Parent 1020 has cat 10"
+,1021,1,0,0,0,1,1020,0,"/parent1020","EN Parent 1020 WS1-changed has cat 10"
+,1030,1,0,0,0,0,0,0,"/parent1030","EN Parent 1030 NOT has cat 10"
+,1031,1,0,0,0,1,1030,0,"/parent1030","EN Parent 1030 WS1-changed HAS cat 10"
+,1040,1,0,0,0,1,0,1,"/parent1040","EN Parent 1040 WS1-new HAS cat 10"
+"tt_content"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_oid","t3ver_state","header"
+,1000,1000,256,0,0,0,0,0,0,"Element 1000"
+"sys_category_record_mm"
+,"uid_local","uid_foreign","tablenames","fieldname","sorting","sorting_foreign"
+,10,1000,"tt_content","categories",0,0
+,10,1000,"pages","categories",1,0
+,10,1010,"pages","categories",2,1
+,10,1020,"pages","categories",3,0
+,10,1021,"pages","categories",4,0
+,10,1031,"pages","categories",5,0
+,10,1040,"pages","categories",6,0

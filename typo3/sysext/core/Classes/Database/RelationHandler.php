@@ -263,6 +263,7 @@ class RelationHandler
         // The tables are traversed and internal arrays are initialized:
         $tempTableArray = GeneralUtility::trimExplode(',', $tablelist, true);
         foreach ($tempTableArray as $val) {
+            // @todo: Loop could be restricted in MM local when MM_oppositeUsage is used.
             $tName = trim($val);
             $this->tableArray[$tName] = [];
             $deleteField = $GLOBALS['TCA'][$tName]['ctrl']['delete'] ?? false;
@@ -1255,7 +1256,7 @@ class RelationHandler
             $purgeCallback = 'purgeLiveVersionedIds';
         }
 
-        $itemArrayHasBeenPurged = $this->purgeItemArrayHandler($purgeCallback);
+        $itemArrayHasBeenPurged = $this->purgeItemArrayHandler($purgeCallback, $workspaceId);
         $this->purged = ($this->purged || $itemArrayHasBeenPurged);
         return $itemArrayHasBeenPurged;
     }
@@ -1271,7 +1272,7 @@ class RelationHandler
             return false;
         }
 
-        return $this->purgeItemArrayHandler('purgeDeletePlaceholder');
+        return $this->purgeItemArrayHandler('purgeDeletePlaceholder', $this->getWorkspaceId());
     }
 
     /**
@@ -1280,7 +1281,7 @@ class RelationHandler
      * @param string $purgeCallback
      * @return bool Whether items have been purged
      */
-    protected function purgeItemArrayHandler($purgeCallback)
+    protected function purgeItemArrayHandler($purgeCallback, int $workspaceId)
     {
         $itemArrayHasBeenPurged = false;
 
@@ -1292,7 +1293,7 @@ class RelationHandler
             $purgedItemIds = [];
             $callable = [$this, $purgeCallback];
             if (is_callable($callable)) {
-                $purgedItemIds = $callable($itemTableName, $itemIds);
+                $purgedItemIds = $callable($itemTableName, $itemIds, $workspaceId);
             }
 
             $removedItemIds = array_diff($itemIds, $purgedItemIds);
@@ -1351,26 +1352,36 @@ class RelationHandler
     }
 
     /**
-     * Purges ids that are live but have an accordant version.
+     * Clean up the list of incoming MM connection candidates.
+     * readMM() results in a uid list that contains:
+     * * uids of all live MM connections
+     * * uids of workspace connections of all workspaces
+     * The method filters this candidate list:
+     * * Remove candidates of different workspaces
+     * * Remove live candidates that do have a workspace overlay
      *
-     * @param string $tableName
-     * @return array
+     * @todo: It should be possible to merge this method into main query of readMM()
+     *        directly to avoid the chunked query. Note purgeVersionedIds() does a
+     *        similar thing when requesting live, to throw away workspace connections.
+     * @todo: It would be possible to filter delete placeholder rows here as well,
+     *        but this needs bigger refactoring of the class, since purgeDeletePlaceholder()
+     *        is public and only called on demand.
      */
-    protected function purgeLiveVersionedIds($tableName, array $ids)
+    protected function purgeLiveVersionedIds(string $tableName, array $candidateUidList, int $targetWorkspaceUid): array
     {
-        $ids = $this->sanitizeIds($ids);
-        $ids = (array)array_combine($ids, $ids);
+        $candidateUidList = $this->sanitizeIds($candidateUidList);
+        $candidateUidList = array_combine($candidateUidList, $candidateUidList);
         $connection = $this->getConnectionForTableName($tableName);
         $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
-        foreach (array_chunk($ids, $maxBindParameters - 10, true) as $chunk) {
+        foreach (array_chunk($candidateUidList, $maxBindParameters - 10, true) as $chunk) {
             $queryBuilder = $connection->createQueryBuilder();
             $queryBuilder->getRestrictions()->removeAll();
-            $result = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
+            $result = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state', 't3ver_wsid')
                 ->from($tableName)
                 ->where(
                     $queryBuilder->expr()->in(
-                        't3ver_oid',
+                        'uid',
                         $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
                     ),
                     $queryBuilder->expr()->neq(
@@ -1380,17 +1391,26 @@ class RelationHandler
                 )
                 ->orderBy('t3ver_state', 'DESC')
                 ->executeQuery();
-
-            while ($version = $result->fetchAssociative()) {
-                $versionId = $version['uid'];
-                $liveId = $version['t3ver_oid'];
-                if (isset($ids[$liveId]) && isset($ids[$versionId])) {
-                    unset($ids[$liveId]);
+            while ($workspaceRow = $result->fetchAssociative()) {
+                $rowVersionUid = (int)$workspaceRow['uid'];
+                $rowLiveUid = (int)$workspaceRow['t3ver_oid'];
+                $rowWorkspaceUid = (int)$workspaceRow['t3ver_wsid'];
+                if ($rowWorkspaceUid !== $targetWorkspaceUid) {
+                    // If this row t3ver_wsid does not match requested workspace,
+                    // the row is a row of a different workspace and has to be
+                    // removed from result set.
+                    unset($candidateUidList[$rowVersionUid]);
+                    continue;
+                }
+                if (isset($candidateUidList[$rowLiveUid]) && isset($candidateUidList[$rowVersionUid])) {
+                    // This is a workspace row that overlays a live candidate,
+                    // so live needs to be removed from the candidate list.
+                    unset($candidateUidList[$rowLiveUid]);
                 }
             }
         }
 
-        return array_values($ids);
+        return array_values($candidateUidList);
     }
 
     /**
