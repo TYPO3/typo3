@@ -154,15 +154,18 @@ class InlineControlContainer extends AbstractContainer
         // e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
         $nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 
-        $config['inline']['first'] = false;
-        $firstChild = reset($this->data['parameterArray']['fieldConf']['children']);
-        if (isset($firstChild['databaseRow']['uid'])) {
-            $config['inline']['first'] = $firstChild['databaseRow']['uid'];
-        }
-        $config['inline']['last'] = false;
-        $lastChild = end($this->data['parameterArray']['fieldConf']['children']);
-        if (isset($lastChild['databaseRow']['uid'])) {
-            $config['inline']['last'] = $lastChild['databaseRow']['uid'];
+        $inlineChildren = $parameterArray['fieldConf']['children'] ?? [];
+
+        $config['inline']['first'] = $config['inline']['last'] = false;
+        if (is_array($inlineChildren) && $inlineChildren !== []) {
+            $firstChild = $inlineChildren[array_key_first($inlineChildren)] ?? null;
+            if (isset($firstChild['databaseRow']['uid'])) {
+                $config['inline']['first'] = $firstChild['databaseRow']['uid'];
+            }
+            $lastChild = $inlineChildren[array_key_last($inlineChildren)] ?? null;
+            if (isset($lastChild['databaseRow']['uid'])) {
+                $config['inline']['last'] = $lastChild['databaseRow']['uid'];
+            }
         }
 
         $top = $inlineStackProcessor->getStructureLevel(0);
@@ -193,7 +196,7 @@ class InlineControlContainer extends AbstractContainer
             // Add inlineData['unique'] with JS unique configuration
             // @todo: Improve validation and throw an exception if type is neither select nor group here
             $type = ($config['selectorOrUniqueConfiguration']['config']['type'] ?? '') === 'select' ? 'select' : 'groupdb';
-            foreach ($parameterArray['fieldConf']['children'] as $child) {
+            foreach ($inlineChildren as $child) {
                 // Determine used unique ids, skip not localized records
                 if (!$child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                     $value = $child['databaseRow'][$config['foreign_unique']];
@@ -248,7 +251,7 @@ class InlineControlContainer extends AbstractContainer
             && MathUtility::canBeInterpretedAsInteger($row['uid']);
         $numberOfFullLocalizedChildren = 0;
         $numberOfNotYetLocalizedChildren = 0;
-        foreach ($this->data['parameterArray']['fieldConf']['children'] as $child) {
+        foreach ($inlineChildren as $child) {
             if (!$child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 $numberOfFullLocalizedChildren++;
             }
@@ -320,7 +323,7 @@ class InlineControlContainer extends AbstractContainer
         $html .= '<div class="panel-group panel-hover" data-title="' . htmlspecialchars($title) . '" id="' . $nameObject . '_records">';
 
         $sortableRecordUids = [];
-        foreach ($this->data['parameterArray']['fieldConf']['children'] as $options) {
+        foreach ($inlineChildren as $options) {
             $options['inlineParentUid'] = $row['uid'];
             $options['inlineFirstPid'] = $this->data['inlineFirstPid'];
             // @todo: this can be removed if this container no longer sets additional info to $config

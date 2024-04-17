@@ -152,16 +152,18 @@ class FilesControlContainer extends AbstractContainer
         // e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
         $formFieldIdentifier = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 
-        $config['inline']['first'] = false;
+        $inlineChildren = $parameterArray['fieldConf']['children'] ?? [];
 
-        $firstChild = reset($this->data['parameterArray']['fieldConf']['children']);
-        if (isset($firstChild['databaseRow']['uid'])) {
-            $config['inline']['first'] = $firstChild['databaseRow']['uid'];
-        }
-        $config['inline']['last'] = false;
-        $lastChild = end($this->data['parameterArray']['fieldConf']['children']);
-        if (isset($lastChild['databaseRow']['uid'])) {
-            $config['inline']['last'] = $lastChild['databaseRow']['uid'];
+        $config['inline']['first'] = $config['inline']['last'] = false;
+        if (is_array($inlineChildren) && $inlineChildren !== []) {
+            $firstChild = $inlineChildren[array_key_first($inlineChildren)] ?? null;
+            if (isset($firstChild['databaseRow']['uid'])) {
+                $config['inline']['first'] = $firstChild['databaseRow']['uid'];
+            }
+            $lastChild = $inlineChildren[array_key_last($inlineChildren)] ?? null;
+            if (isset($lastChild['databaseRow']['uid'])) {
+                $config['inline']['last'] = $lastChild['databaseRow']['uid'];
+            }
         }
 
         $top = $inlineStackProcessor->getStructureLevel(0);
@@ -194,7 +196,7 @@ class FilesControlContainer extends AbstractContainer
             && MathUtility::canBeInterpretedAsInteger($row['uid']);
         $numberOfFullLocalizedChildren = 0;
         $numberOfNotYetLocalizedChildren = 0;
-        foreach ($this->data['parameterArray']['fieldConf']['children'] as $child) {
+        foreach ($inlineChildren as $child) {
             if (!$child['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
                 $numberOfFullLocalizedChildren++;
             }
@@ -216,7 +218,7 @@ class FilesControlContainer extends AbstractContainer
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         $sortableRecordUids = $fileReferencesHtml = [];
-        foreach ($this->data['parameterArray']['fieldConf']['children'] as $options) {
+        foreach ($inlineChildren as $options) {
             $options['inlineParentUid'] = $row['uid'];
             $options['inlineFirstPid'] = $this->data['inlineFirstPid'];
             $options['inlineParentConfig'] = $config;
