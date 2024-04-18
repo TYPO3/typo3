@@ -110,13 +110,18 @@
         }
     }
 
+    .col-language {
+        width: 200px;
+    }
+
     .col-recordtitle {
         width: 250px;
     }
 
     .col-state,
     .col-recordtitle,
-    .col-action {
+    .col-action,
+    .col-language {
         min-width: 120px;
     }
 

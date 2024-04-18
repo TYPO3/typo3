@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,n,o){var a,i=arguments.length,l=i<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,n):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(e,t,n,o);else for(var s=e.length-1;s>=0;s--)(a=e[s])&&(l=(i<3?a(l):i>3?a(t,n,l):a(t,n))||l);return i>3&&l&&Object.defineProperty(t,n,l),l};import{customElement,property}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import IconHelper from"@typo3/workspaces/utility/icon-helper.js";import{classMap}from"lit/directives/class-map.js";import{ifDefined}from"lit/directives/if-defined.js";import{repeat}from"lit/directives/repeat.js";import"@typo3/backend/element/icon-element.js";let RecordTableElement=class extends LitElement{constructor(){super(...arguments),this.results=[],this.latestPath=null}createRenderRoot(){return this}render(){return html`
+var __decorate=function(e,t,n,a){var o,l=arguments.length,i=l<3?t:null===a?a=Object.getOwnPropertyDescriptor(t,n):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,t,n,a);else for(var s=e.length-1;s>=0;s--)(o=e[s])&&(i=(l<3?o(i):l>3?o(t,n,i):o(t,n))||i);return l>3&&i&&Object.defineProperty(t,n,i),i};import{customElement,property}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import IconHelper from"@typo3/workspaces/utility/icon-helper.js";import{classMap}from"lit/directives/class-map.js";import{ifDefined}from"lit/directives/if-defined.js";import{repeat}from"lit/directives/repeat.js";import"@typo3/backend/element/icon-element.js";let RecordTableElement=class extends LitElement{constructor(){super(...arguments),this.results=[],this.latestPath=null}createRenderRoot(){return this}render(){return html`
       <div class="table-fit mb-0">
         <table class="table table-striped">
           <thead>
@@ -60,13 +60,15 @@ var __decorate=function(e,t,n,o){var a,i=arguments.length,l=i<3?t:null===o?o=Obj
                 </ul>
               </div>
             </th>
-            <th>${TYPO3.lang["column.wsTitle"]}</th>
-            <th>${TYPO3.lang["column.liveTitle"]}</th>
+            <th class="col-min">${TYPO3.lang["column.wsTitle"]}</th>
+            <th class="col-language">${TYPO3.lang["labels._LOCALIZATION_"]}</th>
+            <th class="col-datetime">${TYPO3.lang["column.lastChangeOn"]}</th>
+            <th class="col-state">${TYPO3.lang["column.wsStateAction"]}</th>
+            <th class="col-state">${TYPO3.lang["column.integrity"]}</th>
             <th>${TYPO3.lang["column.stage"]}</th>
-            <th>${TYPO3.lang["column.lastChangeOn"]}</th>
-            <th>${TYPO3.lang["column.integrity"]}</th>
-            <th><typo3-backend-icon identifier="flags-multiple" size="small"></typo3-backend-icon></th>
-            <th></th>
+            <th class="col-control nowrap">
+              <span class="visually-hidden">${TYPO3.lang["labels._CONTROL_"]}</span>
+            </th>
           </tr>
           </thead>
           <tbody data-multi-record-selection-row-selection="true">
@@ -74,7 +76,7 @@ var __decorate=function(e,t,n,o){var a,i=arguments.length,l=i<3?t:null===o?o=Obj
           </tbody>
         </table>
       </div>
-    `}renderTableRow(e){let t=null,n=!1;return this.latestPath!==e.path_Workspace&&(this.latestPath=e.path_Workspace,n=!0),""!==e.Workspaces_CollectionParent&&(t=this.results.find((t=>t.Workspaces_CollectionCurrent===e.Workspaces_CollectionParent))),html`
+    `}renderTableRow(e){let t=null,n=!1;this.latestPath!==e.path_Workspace&&(this.latestPath=e.path_Workspace,n=!0),""!==e.Workspaces_CollectionParent&&(t=this.results.find((t=>t.Workspaces_CollectionCurrent===e.Workspaces_CollectionParent)));let a,o;switch(e.state_Workspace){case"deleted":a="danger",o=TYPO3.lang["column.wsStateAction.deleted"];break;case"hidden":a="secondary",o=TYPO3.lang["column.wsStateAction.hidden"];break;case"modified":a="warning",o=TYPO3.lang["column.wsStateAction.modified"];break;case"moved":a="primary",o=TYPO3.lang["column.wsStateAction.moved"];break;case"new":a="success",o=TYPO3.lang["column.wsStateAction.new"];break;default:a="secondary",o=TYPO3.lang["column.wsStateAction.unchanged"]}return html`
       ${n?html`
         <tr>
           <th></th>
@@ -104,49 +106,52 @@ var __decorate=function(e,t,n,o){var a,i=arguments.length,l=i<3?t:null===o?o=Obj
             <input type="checkbox" class="form-check-input t3js-multi-record-selection-check"/>
           </span>
         </td>
-        <td class="t3js-title-workspace">
+        <td class="col-min t3js-title-workspace">
           <span class="icon icon-size-small">
-            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(e.icon_Workspace)} overlay=${IconHelper.getIconIdentifier(e.icon_Workspace_Overlay)} size="small">
+            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(e.icon_Workspace)} overlay=${IconHelper.getIconIdentifier(e.icon_Workspace_Overlay)} size="small"></typo3-backend-icon>
           </span>
           <a href="#" data-action="changes">
-            <span class="workspace-state-${e.state_Workspace}" title=${e.label_Workspace}>
+            <span title=${e.label_Workspace}>
               ${e.label_Workspace_crop}
             </span>
           </a>
         </td>
-        <td class="t3js-title-live">
-          <span class="icon icon-size-small">
-            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(e.icon_Live)} overlay=${IconHelper.getIconIdentifier(e.icon_Live_Overlay)} size="small">
+        <td class="col-language">
+          <span title="${e.language.title}" class="icon icon-size-small">
+            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(e.language.icon)} size="small"></typo3-backend-icon>
           </span>
-          <span class="workspace-live-title" title=${e.label_Live}>
-            ${e.label_Live_crop}
-          </span>
+          ${e.language.title_crop}
         </td>
-        <td>${e.label_Stage}</td>
-        <td>${e.lastChangedFormatted}</td>
-        <td>${""!==e.integrity.messages?html`
-          <span>
-            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(e.integrity.status)} size="small">
+        <td class="col-datetime">${e.lastChangedFormatted}</td>
+        <td class="col-state">
+          <span class="badge badge-${a}">${o}</span>
+        </td>
+        <td class="col-state">${""!==e.integrity.messages?html`
+          <span title="${e.integrity.messages}" class="icon icon-size-small">
+            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(e.integrity.status)} size="small"></typo3-backend-icon>
           </span>
         `:nothing}</td>
-        <td><typo3-backend-icon identifier=${IconHelper.getIconIdentifier(e.language.icon)} size="small"></td>
-        <td class="text-end nowrap">${this.renderActions(e)}</td>
+        <td>${e.label_Stage}</td>
+        <td class="col-control nowrap">
+          <div class="btn-group">${this.renderElementActions(e)}</div>
+          <div class="btn-group">${this.renderVersioningActions(e)}</div>
+        </td>
       </tr>
-    `}renderActions(e){const t=e.Workspaces_CollectionChildren>0&&""!==e.Workspaces_CollectionCurrent;return[this.getAction(t,"expand",e.expanded?"actions-caret-down":"actions-caret-right",{title:TYPO3.lang["tooltip.expand"],"data-bs-target":'[data-collection="'+e.Workspaces_CollectionCurrent+'"]',"aria-expanded":!t||e.expanded?"true":"false","data-bs-toggle":"collapse"}),this.getAction(e.hasChanges,"changes","actions-document-info",{title:TYPO3.lang["tooltip.showChanges"]}),this.getAction(e.allowedAction_publish&&""===e.Workspaces_CollectionParent,"publish","actions-version-swap-version",{title:TYPO3.lang["tooltip.publish"]}),this.getAction(e.allowedAction_view,"preview","actions-version-workspace-preview",{title:TYPO3.lang["tooltip.viewElementAction"]}),this.getAction(e.allowedAction_edit,"open","actions-open",{title:TYPO3.lang["tooltip.editElementAction"]}),this.getAction(e.allowedAction_versionPageOpen,"version","actions-version-page-open",{title:TYPO3.lang["tooltip.openPage"]}),this.getAction(e.allowedAction_delete,"remove","actions-version-document-remove",{title:TYPO3.lang["tooltip.discardVersion"]})]}getAction(e,t,n,o){return e?html`
+    `}renderElementActions(e){return[this.getAction(e.allowedAction_view,"preview","actions-version-workspace-preview",{title:TYPO3.lang["tooltip.viewElementAction"]}),this.getAction(e.allowedAction_edit,"open","actions-open",{title:TYPO3.lang["tooltip.editElementAction"]}),this.getAction(e.allowedAction_versionPageOpen,"version","actions-version-page-open",{title:TYPO3.lang["tooltip.openPage"]})]}renderVersioningActions(e){const t=e.Workspaces_CollectionChildren>0&&""!==e.Workspaces_CollectionCurrent;return[this.getAction(t,"expand",e.expanded?"actions-caret-down":"actions-caret-right",{title:TYPO3.lang["tooltip.expand"],"data-bs-target":'[data-collection="'+e.Workspaces_CollectionCurrent+'"]',"aria-expanded":!t||e.expanded?"true":"false","data-bs-toggle":"collapse"}),this.getAction(e.hasChanges,"changes","actions-document-info",{title:TYPO3.lang["tooltip.showChanges"]}),this.getAction(e.allowedAction_publish&&""===e.Workspaces_CollectionParent,"publish","actions-version-swap-version",{title:TYPO3.lang["tooltip.publish"]}),this.getAction(e.allowedAction_delete,"remove","actions-delete",{title:TYPO3.lang["tooltip.discardVersion"]})]}getAction(e,t,n,a){return e?html`
         <button
           class="btn btn-default"
           data-action="${t}"
-          title=${ifDefined(o.title)}
-          data-bs-target=${ifDefined(o["data-bs-target"])}
-          data-bs-toggle=${ifDefined(o["data-bs-toggle"])}
-          aria-expanded=${ifDefined(o["aria-expanded"])}>
-          <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(n)} size="small">
+          title=${ifDefined(a.title)}
+          data-bs-target=${ifDefined(a["data-bs-target"])}
+          data-bs-toggle=${ifDefined(a["data-bs-toggle"])}
+          aria-expanded=${ifDefined(a["aria-expanded"])}>
+          <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(n)} size="small"></typo3-backend-icon>
         </button>
       `:html`<span
       class="btn btn-default disabled"
-      title=${ifDefined(o.title)}
-      data-bs-target=${ifDefined(o["data-bs-target"])}
-      data-bs-toggle=${ifDefined(o["data-bs-toggle"])}
-      aria-expanded=${ifDefined(o["aria-expanded"])}>
-      <typo3-backend-icon identifier=${IconHelper.getIconIdentifier("empty-empty")} size="small">
+      title=${ifDefined(a.title)}
+      data-bs-target=${ifDefined(a["data-bs-target"])}
+      data-bs-toggle=${ifDefined(a["data-bs-toggle"])}
+      aria-expanded=${ifDefined(a["aria-expanded"])}>
+      <typo3-backend-icon identifier=${IconHelper.getIconIdentifier("empty-empty")} size="small"></typo3-backend-icon>
     </span>`}};__decorate([property({type:Array})],RecordTableElement.prototype,"results",void 0),RecordTableElement=__decorate([customElement("typo3-workspaces-record-table")],RecordTableElement);export{RecordTableElement};

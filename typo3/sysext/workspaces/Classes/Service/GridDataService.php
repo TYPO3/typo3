@@ -181,8 +181,6 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray = array_merge($versionArray, $defaultGridColumns);
                     $versionArray['label_Workspace'] = htmlspecialchars($workspaceRecordLabel);
                     $versionArray['label_Workspace_crop'] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($workspaceRecordLabel, (int)$backendUser->uc['titleLen']));
-                    $versionArray['label_Live'] = htmlspecialchars($liveRecordLabel);
-                    $versionArray['label_Live_crop'] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($liveRecordLabel, (int)$backendUser->uc['titleLen']));
                     $versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle((int)$versionRecord['t3ver_stage']));
                     $tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
                     $versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle((int)$tempStage['uid']));
@@ -205,14 +203,14 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['t3ver_oid'] = $calculatedT3verOid;
                     $versionArray['livepid'] = $record['livepid'];
                     $versionArray['stage'] = $versionRecord['t3ver_stage'];
-                    $versionArray['icon_Live'] = $iconLive->getIdentifier();
-                    $versionArray['icon_Live_Overlay'] = $iconLive->getOverlayIcon()?->getIdentifier() ?? '';
                     $versionArray['icon_Workspace'] = $iconWorkspace->getIdentifier();
                     $versionArray['icon_Workspace_Overlay'] = $iconWorkspace->getOverlayIcon()?->getIdentifier() ?? '';
                     $languageValue = $this->getLanguageValue($table, $versionRecord);
                     $versionArray['languageValue'] = $languageValue;
                     $versionArray['language'] = [
                         'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon'), IconSize::SMALL)->getIdentifier(),
+                        'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
+                        'title_crop' => htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->getSystemLanguageValue($languageValue, $pageId, 'title'), (int)$backendUser->uc['titleLen'])),
                     ];
                     $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
                     $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
@@ -401,7 +399,6 @@ class GridDataService implements LoggerAwareInterface
                 uasort($this->dataArray, [$this, 'intSort']);
                 break;
             case 'label_Workspace':
-            case 'label_Live':
             case 'label_Stage':
             case 'workspace_Title':
             case 'path_Live':
@@ -513,7 +510,6 @@ class GridDataService implements LoggerAwareInterface
                 'change' => ['hidden' => 0],
                 'path_Workspace' => ['hidden' => 0],
                 'path_Live' => ['hidden' => 0],
-                'label_Live' => ['hidden' => 0],
                 'label_Stage' => ['hidden' => 0],
                 'label_Workspace' => ['hidden' => 0],
             ];

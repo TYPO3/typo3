@@ -30,8 +30,6 @@ export type RecordData = {
   Workspaces_CollectionChildren: number,
   label_Workspace: string,
   label_Workspace_crop: string,
-  label_Live: string,
-  label_Live_crop: string,
   label_Stage: string,
   label_nextStage: string,
   value_nextStage: number,
@@ -47,13 +45,13 @@ export type RecordData = {
   t3ver_oid: number,
   livepid: number,
   stage: number,
-  icon_Live: string,
-  icon_Live_Overlay: string,
   icon_Workspace: string,
   icon_Workspace_Overlay: string,
   languageValue: number,
   language: {
-    icon: string
+    icon: string,
+    title: string,
+    title_crop: string
   },
   allowedAction_nextStage: boolean,
   allowedAction_prevStage: boolean,
@@ -134,13 +132,15 @@ export class RecordTableElement extends LitElement {
                 </ul>
               </div>
             </th>
-            <th>${TYPO3.lang['column.wsTitle']}</th>
-            <th>${TYPO3.lang['column.liveTitle']}</th>
+            <th class="col-min">${TYPO3.lang['column.wsTitle']}</th>
+            <th class="col-language">${TYPO3.lang['labels._LOCALIZATION_']}</th>
+            <th class="col-datetime">${TYPO3.lang['column.lastChangeOn']}</th>
+            <th class="col-state">${TYPO3.lang['column.wsStateAction']}</th>
+            <th class="col-state">${TYPO3.lang['column.integrity']}</th>
             <th>${TYPO3.lang['column.stage']}</th>
-            <th>${TYPO3.lang['column.lastChangeOn']}</th>
-            <th>${TYPO3.lang['column.integrity']}</th>
-            <th><typo3-backend-icon identifier="flags-multiple" size="small"></typo3-backend-icon></th>
-            <th></th>
+            <th class="col-control nowrap">
+              <span class="visually-hidden">${TYPO3.lang['labels._CONTROL_']}</span>
+            </th>
           </tr>
           </thead>
           <tbody data-multi-record-selection-row-selection="true">
@@ -164,6 +164,36 @@ export class RecordTableElement extends LitElement {
       parentItem = this.results.find((element: any) => {
         return element.Workspaces_CollectionCurrent === data.Workspaces_CollectionParent;
       });
+    }
+
+    const wsState = data.state_Workspace;
+    let wsStateActionClass: string;
+    let wsStateActionLabel: string;
+
+    switch (wsState) {
+      case 'deleted':
+        wsStateActionClass = 'danger';
+        wsStateActionLabel = TYPO3.lang['column.wsStateAction.deleted'];
+        break;
+      case 'hidden':
+        wsStateActionClass = 'secondary';
+        wsStateActionLabel = TYPO3.lang['column.wsStateAction.hidden'];
+        break;
+      case 'modified':
+        wsStateActionClass = 'warning';
+        wsStateActionLabel = TYPO3.lang['column.wsStateAction.modified'];
+        break;
+      case 'moved':
+        wsStateActionClass = 'primary';
+        wsStateActionLabel = TYPO3.lang['column.wsStateAction.moved'];
+        break;
+      case 'new':
+        wsStateActionClass = 'success';
+        wsStateActionLabel = TYPO3.lang['column.wsStateAction.new'];
+        break;
+      default:
+        wsStateActionClass = 'secondary';
+        wsStateActionLabel = TYPO3.lang['column.wsStateAction.unchanged'];
     }
 
     return html`
@@ -196,38 +226,70 @@ export class RecordTableElement extends LitElement {
             <input type="checkbox" class="form-check-input t3js-multi-record-selection-check"/>
           </span>
         </td>
-        <td class="t3js-title-workspace">
+        <td class="col-min t3js-title-workspace">
           <span class="icon icon-size-small">
-            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(data.icon_Workspace)} overlay=${IconHelper.getIconIdentifier(data.icon_Workspace_Overlay)} size="small">
+            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(data.icon_Workspace)} overlay=${IconHelper.getIconIdentifier(data.icon_Workspace_Overlay)} size="small"></typo3-backend-icon>
           </span>
           <a href="#" data-action="changes">
-            <span class="workspace-state-${data.state_Workspace}" title=${data.label_Workspace}>
+            <span title=${data.label_Workspace}>
               ${data.label_Workspace_crop}
             </span>
           </a>
         </td>
-        <td class="t3js-title-live">
-          <span class="icon icon-size-small">
-            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(data.icon_Live)} overlay=${IconHelper.getIconIdentifier(data.icon_Live_Overlay)} size="small">
+        <td class="col-language">
+          <span title="${data.language.title}" class="icon icon-size-small">
+            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(data.language.icon)} size="small"></typo3-backend-icon>
           </span>
-          <span class="workspace-live-title" title=${data.label_Live}>
-            ${data.label_Live_crop}
-          </span>
+          ${data.language.title_crop}
         </td>
-        <td>${data.label_Stage}</td>
-        <td>${data.lastChangedFormatted}</td>
-        <td>${ data.integrity.messages !== '' ? html`
-          <span>
-            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(data.integrity.status)} size="small">
+        <td class="col-datetime">${data.lastChangedFormatted}</td>
+        <td class="col-state">
+          <span class="badge badge-${wsStateActionClass}">${wsStateActionLabel}</span>
+        </td>
+        <td class="col-state">${ data.integrity.messages !== '' ? html`
+          <span title="${data.integrity.messages}" class="icon icon-size-small">
+            <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(data.integrity.status)} size="small"></typo3-backend-icon>
           </span>
         ` : nothing}</td>
-        <td><typo3-backend-icon identifier=${IconHelper.getIconIdentifier(data.language.icon)} size="small"></td>
-        <td class="text-end nowrap">${this.renderActions(data)}</td>
+        <td>${data.label_Stage}</td>
+        <td class="col-control nowrap">
+          <div class="btn-group">${this.renderElementActions(data)}</div>
+          <div class="btn-group">${this.renderVersioningActions(data)}</div>
+        </td>
       </tr>
     `;
   }
 
-  private renderActions(data: RecordData): TemplateResult[] {
+  private renderElementActions(data: RecordData): TemplateResult[] {
+    return [
+      this.getAction(
+        data.allowedAction_view,
+        'preview',
+        'actions-version-workspace-preview',
+        {
+          'title': TYPO3.lang['tooltip.viewElementAction']
+        }
+      ),
+      this.getAction(
+        data.allowedAction_edit,
+        'open',
+        'actions-open',
+        {
+          'title': TYPO3.lang['tooltip.editElementAction']
+        }
+      ),
+      this.getAction(
+        data.allowedAction_versionPageOpen,
+        'version',
+        'actions-version-page-open',
+        {
+          'title': TYPO3.lang['tooltip.openPage']
+        }
+      )
+    ];
+  }
+
+  private renderVersioningActions(data: RecordData): TemplateResult[] {
     const hasSubitems = data.Workspaces_CollectionChildren > 0 && data.Workspaces_CollectionCurrent !== '';
 
     return [
@@ -259,33 +321,9 @@ export class RecordTableElement extends LitElement {
         }
       ),
       this.getAction(
-        data.allowedAction_view,
-        'preview',
-        'actions-version-workspace-preview',
-        {
-          'title': TYPO3.lang['tooltip.viewElementAction']
-        }
-      ),
-      this.getAction(
-        data.allowedAction_edit,
-        'open',
-        'actions-open',
-        {
-          'title': TYPO3.lang['tooltip.editElementAction']
-        }
-      ),
-      this.getAction(
-        data.allowedAction_versionPageOpen,
-        'version',
-        'actions-version-page-open',
-        {
-          'title': TYPO3.lang['tooltip.openPage']
-        }
-      ),
-      this.getAction(
         data.allowedAction_delete,
         'remove',
-        'actions-version-document-remove',
+        'actions-delete',
         {
           'title': TYPO3.lang['tooltip.discardVersion']
         }
@@ -312,7 +350,7 @@ export class RecordTableElement extends LitElement {
           data-bs-target=${ifDefined(additionalAttributes['data-bs-target'])}
           data-bs-toggle=${ifDefined(additionalAttributes['data-bs-toggle'])}
           aria-expanded=${ifDefined(additionalAttributes['aria-expanded'])}>
-          <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(iconIdentifier)} size="small">
+          <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(iconIdentifier)} size="small"></typo3-backend-icon>
         </button>
       `;
     }
@@ -322,7 +360,7 @@ export class RecordTableElement extends LitElement {
       data-bs-target=${ifDefined(additionalAttributes['data-bs-target'])}
       data-bs-toggle=${ifDefined(additionalAttributes['data-bs-toggle'])}
       aria-expanded=${ifDefined(additionalAttributes['aria-expanded'])}>
-      <typo3-backend-icon identifier=${IconHelper.getIconIdentifier('empty-empty')} size="small">
+      <typo3-backend-icon identifier=${IconHelper.getIconIdentifier('empty-empty')} size="small"></typo3-backend-icon>
     </span>`;
   }
 }

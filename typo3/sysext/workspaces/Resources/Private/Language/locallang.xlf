@@ -3,27 +3,6 @@
 	<file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces">
 		<header/>
 		<body>
-			<trans-unit id="legend.label" resname="legend.label">
-				<source>Legend</source>
-			</trans-unit>
-			<trans-unit id="legend.edited" resname="legend.edited">
-				<source>edited</source>
-			</trans-unit>
-			<trans-unit id="legend.unchanged"  resname="legend.unchanged">
-				<source>unchanged</source>
-			</trans-unit>
-			<trans-unit id="legend.moved" resname="legend.moved">
-				<source>moved</source>
-			</trans-unit>
-			<trans-unit id="legend.deleted" resname="legend.deleted">
-				<source>deleted</source>
-			</trans-unit>
-			<trans-unit id="legend.new" resname="legend.new">
-				<source>created</source>
-			</trans-unit>
-			<trans-unit id="legend.hidden" resname="legend.hidden">
-				<source>hidden</source>
-			</trans-unit>
 			<trans-unit id="title" resname="title">
 				<source>Workspaces</source>
 			</trans-unit>
@@ -158,7 +137,28 @@
 				<source>Path</source>
 			</trans-unit>
 			<trans-unit id="column.wsTitle" resname="column.wsTitle">
-				<source>Changed</source>
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="column.wsStateAction" resname="column.wsStateAction">
+				<source>Action</source>
+			</trans-unit>
+			<trans-unit id="column.wsStateAction.deleted" resname="column.wsStateAction.deleted">
+				<source>deleted</source>
+			</trans-unit>
+			<trans-unit id="column.wsStateAction.hidden" resname="column.wsStateAction.hidden">
+				<source>hidden</source>
+			</trans-unit>
+			<trans-unit id="column.wsStateAction.modified" resname="column.wsStateAction.modified">
+				<source>modified</source>
+			</trans-unit>
+			<trans-unit id="column.wsStateAction.moved" resname="column.wsStateAction.moved">
+				<source>moved</source>
+			</trans-unit>
+			<trans-unit id="column.wsStateAction.new" resname="column.wsStateAction.new">
+				<source>created</source>
+			</trans-unit>
+			<trans-unit id="column.wsStateAction.unchanged" resname="column.wsStateAction.unchanged">
+				<source>unchanged</source>
 			</trans-unit>
 			<trans-unit id="column.uid" resname="column.uid">
 				<source>WS ID</source>
@@ -171,9 +171,6 @@
 			</trans-unit>
 			<trans-unit id="column.livePath" resname="column.livePath">
 				<source>Live path</source>
-			</trans-unit>
-			<trans-unit id="column.liveTitle" resname="column.liveTitle">
-				<source>Live title</source>
 			</trans-unit>
 			<trans-unit id="column.integrity" resname="column.integrity">
 				<source>Integrity</source>
@@ -194,7 +191,7 @@
 				<source>Send record to next Stage</source>
 			</trans-unit>
 			<trans-unit id="tooltip.discardVersion" resname="tooltip.discardVersion">
-				<source>Discard workspace version of record.</source>
+				<source>Discard version of record</source>
 			</trans-unit>
 			<trans-unit id="tooltip.expand" resname="tooltip.expand">
 				<source>Expand element and show relations</source>
@@ -203,7 +200,7 @@
 				<source>Show history of workspace version</source>
 			</trans-unit>
 			<trans-unit id="window.discard.title" resname="window.discard.title">
-				<source>Discard workspace version of record.</source>
+				<source>Discard version of record</source>
 			</trans-unit>
 			<trans-unit id="window.discardAll.title" resname="window.discardAll.title">
 				<source>Discard all workspace version of current page.</source>

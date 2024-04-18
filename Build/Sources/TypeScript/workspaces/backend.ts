@@ -71,7 +71,7 @@ class Backend extends Workspaces {
     language: 'all',
     limit: 30,
     query: '',
-    sort: 'label_Live',
+    sort: 'label_Workspace',
     start: 0,
     filterTxt: '',
   };
@@ -569,7 +569,7 @@ class Backend extends Workspaces {
 
       Modal.advanced({
         type: Modal.types.default,
-        title: TYPO3.lang['window.recordInformation'].replace('{0}', (tableRow.querySelector('.t3js-title-live') as HTMLElement).innerText.trim()),
+        title: TYPO3.lang['window.recordInformation'].replace('{0}', (tableRow.querySelector('.t3js-title-workspace') as HTMLElement).innerText.trim()),
         content: content,
         severity: SeverityEnum.info,
         buttons: modalButtons,

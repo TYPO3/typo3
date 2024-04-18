@@ -3473,8 +3473,9 @@ typo3-backend-form-selecttree-toolbar{display:block;border-bottom:1px solid rgba
 @media (min-width:768px){
 .table .col-fieldname{width:250px}
 }
+.table .col-language{width:200px}
 .table .col-recordtitle{width:250px}
-.table .col-action,.table .col-recordtitle,.table .col-state{min-width:120px}
+.table .col-action,.table .col-language,.table .col-recordtitle,.table .col-state{min-width:120px}
 .table .col-differences,.table .col-task{min-width:400px}
 .table .col-clipboard,.table .col-control,.table .col-nowrap{white-space:nowrap!important}
 .table .col-clipboard,.table .col-control{text-align:end}
@@ -4473,12 +4474,3 @@ html{scroll-behavior:smooth}
 .workspace-panel tr.collapse{display:none}
 .workspace-panel tr.collapse.show{display:table-row}
 .workspace-panel .page-link{height:100%}
-.workspace-state-unchanged{color:#000}
-.workspace-state-modified{color:#ff8700}
-.workspace-state-moved{color:#457fb8}
-.workspace-state-new{color:#3c9934}
-.workspace-state-hidden{color:#abaaaa}
-.workspace-state-deleted{color:#000;text-decoration:line-through}
-.workspace-legend{margin:5px;height:18px;color:#888}
-.workspace-legend dd,.workspace-legend dt{display:inline;overflow:hidden}
-.workspace-legend dd span{display:inline-block;padding:4px}

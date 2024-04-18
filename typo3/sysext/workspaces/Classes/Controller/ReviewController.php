@@ -115,7 +115,6 @@ class ReviewController
             'isAdmin' => $backendUser->isAdmin(),
             'customWorkspaceExists' => $customWorkspaceExists,
             'showGrid' => $workspaceIsAccessible,
-            'showLegend' => $workspaceIsAccessible,
             'pageUid' => $pageUid,
             'pageTitle' => $pageTitle,
             'activeWorkspaceUid' => $activeWorkspace,
