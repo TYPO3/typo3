@@ -277,7 +277,7 @@ class NewContentElementController
     protected function loadAvailableWizardsFromPluginSubTypes(): array
     {
         return (($pluginSubtypeValueField = (string)($GLOBALS['TCA']['tt_content']['types']['list']['subtype_value_field'] ?? '')) !== '')
-            ? $this->loadAvailableWizards($pluginSubtypeValueField)
+            ? $this->loadAvailableWizards($pluginSubtypeValueField, true)
             : [];
     }
 
