@@ -17,7 +17,17 @@
                     <f:for each="{phashRow}" as="value" key="key">
                         <tr>
                             <th class="col-recordtitle">{key}</th>
-                            <td>{value}</td>
+                            <td>
+                                <f:if condition="({key} == 'item_mtime') || ({key} == 'tstamp') || ({key} == 'crdate') || ({key} == 'item_crdate')">
+                                    <f:then>
+                                        <is:format.dateTime>{value}</is:format.dateTime>
+                                    </f:then>
+                                    <f:else if="{key} == 'item_size'">
+                                        <f:format.bytes decimals="1" value="{value}" />
+                                    </f:else>
+                                    <f:else>{value}</f:else>
+                                </f:if>
+                            </td>
                         </tr>
                     </f:for>
                 </table>
