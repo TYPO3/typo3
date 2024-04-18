@@ -456,6 +456,15 @@
 			<trans-unit id="error.noTypoScript" resname="error.noTypoScript">
 				<source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
 			</trans-unit>
+			<trans-unit id="administration.flag.32" resname="administration.flag.32">
+				<source>description</source>
+			</trans-unit>
+			<trans-unit id="administration.flag.64" resname="administration.flag.64">
+				<source>keyword</source>
+			</trans-unit>
+			<trans-unit id="administration.flag.128" resname="administration.flag.128">
+				<source>title</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
