@@ -3751,6 +3751,7 @@ typo3-backend-live-search typo3-backend-live-search-result-pagination .paginatio
 typo3-backend-live-search-result-item-container,typo3-backend-live-search-result-item-detail-container{position:relative;flex-grow:1;flex-basis:50%;overflow:auto;padding:var(--bs-modal-padding)}
 typo3-backend-live-search-result-item-container{padding-top:0}
 typo3-backend-live-search-result-container{--livesearch-item-opacity:.5;--livesearch-preamble-delimiter-border-width:1px;--livesearch-preamble-delimiter-border-color:rgb(215, 215, 215);display:flex;flex-direction:row;margin:calc(var(--bs-modal-padding) * -1);height:100%;overflow:auto}
+typo3-backend-live-search-result-container>.alert{flex:1 1 auto;align-self:flex-start;margin:var(--bs-modal-padding)}
 typo3-backend-live-search-result-action-list,typo3-backend-live-search-result-list{display:flex;flex-direction:column;gap:1px}
 typo3-backend-live-search-result-list .livesearch-result-item-group-label{font-weight:700;line-height:inherit;padding:var(--typo3-list-item-padding-y) 0;border-bottom:1px solid rgba(0,0,0,.1);margin-bottom:var(--typo3-list-item-padding-y);background-color:#fff;z-index:20}
 typo3-backend-live-search-result-list .livesearch-result-item-group-label.sticky{position:sticky;top:0;z-index:15}
