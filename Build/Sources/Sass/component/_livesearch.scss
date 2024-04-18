@@ -59,6 +59,12 @@ typo3-backend-live-search-result-container {
     margin: calc(var(--bs-modal-padding) * -1);
     height: 100%;
     overflow: auto;
+
+    > .alert {
+        flex: 1 1 auto;
+        align-self: flex-start;
+        margin: var(--bs-modal-padding);
+    }
 }
 
 typo3-backend-live-search-result-list,
