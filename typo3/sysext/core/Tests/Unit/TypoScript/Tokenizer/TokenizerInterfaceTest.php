@@ -6241,6 +6241,39 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             )
                     ),
             ],
+            'identifier, assignment, constant start, constant body with null coalesce, constant stop' => [
+                'foo={$bar ?? $baz}',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 0, 3))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz}', 0, 4))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz}', 0, 4))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz}'))
+                            )
+                    ),
+            ],
             'identifier, whitespace, assignment, whitespace, constant start, constant body, constant stop' => [
                 'foo = {$bar}',
                 (new LineStream())

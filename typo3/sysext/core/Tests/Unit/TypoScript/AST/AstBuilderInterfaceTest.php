@@ -1916,6 +1916,125 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
         $expectedAst = new RootNode();
         $objectNode = new ChildNode('foo');
+        $objectNode->setValue('barValue');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz}', 0, 6))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'assignment with existing constant with existing null coalesce fallback' => [
+            'foo = {$bar ?? $baz}',
+            ['bar' => 'barValue', 'baz' => 'bazValue'],
+            $expectedAst,
+            [
+                'foo' => 'barValue',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bazValue');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz}', 0, 6))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'assignment with non existing constant with existing null coalesce fallback' => [
+            'foo = {$bar ?? $baz}',
+            ['baz' => 'bazValue'],
+            $expectedAst,
+            [
+                'foo' => 'bazValue',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('bazValue');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz ?? $foobar}', 0, 6))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'assignment with multi null coalesce fallback picks first set constant' => [
+            'foo = {$bar ?? $baz ?? $foobar}',
+            ['baz' => 'bazValue'],
+            $expectedAst,
+            [
+                'foo' => 'bazValue',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('foobarValue');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz ?? $foobar}', 0, 6))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'assignment with multi null coalesce fallback picks last constant' => [
+            'foo = {$bar ?? $baz ?? $foobar}',
+            ['foobar' => 'foobarValue'],
+            $expectedAst,
+            [
+                'foo' => 'foobarValue',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('barBazValue');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$bar??baz}', 0, 6))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'assignment with existing constant that contains questions marks but is not a valid null coalesce fallback' => [
+            'foo = {$bar??baz}',
+            ['bar??baz' => 'barBazValue'],
+            $expectedAst,
+            [
+                'foo' => 'barBazValue',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('{$bar ?? baz}');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? baz}', 0, 6))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'assignment with existing constant that contains invalid null coalesce syntax' => [
+            'foo = {$bar ?? baz}',
+            ['bar' => 'barValue'],
+            $expectedAst,
+            [
+                'foo' => '{$bar ?? baz}',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
+        $objectNode->setValue('{$bar ?? $baz ?? $foobar}');
+        $objectNode->setOriginalValueTokenStream(
+            (new ConstantAwareTokenStream())
+                ->append(new Token(TokenType::T_CONSTANT, '{$bar ?? $baz ?? $foobar}', 0, 6))
+        );
+        $expectedAst->addChild($objectNode);
+        yield 'assignment with non existing constant null coalesce chain is kept as string literal' => [
+            'foo = {$bar ?? $baz ?? $foobar}',
+            [],
+            $expectedAst,
+            [
+                'foo' => '{$bar ?? $baz ?? $foobar}',
+            ],
+        ];
+
+        $expectedAst = new RootNode();
+        $objectNode = new ChildNode('foo');
         $objectNode->setValue('');
         $objectNode->setOriginalValueTokenStream(
             (new ConstantAwareTokenStream())
