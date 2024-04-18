@@ -85,8 +85,6 @@ class TranslationStatusController extends InfoModuleController
         $tree->addField('l18n_cfg');
         $tree->tree[] = [
             'row' => $treeStartingRecord,
-            // Creating top icon; the current page
-            'HTML' => $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render(),
         ];
         // Create the tree from starting point
         if ($this->currentDepth) {
@@ -155,10 +153,15 @@ class TranslationStatusController extends InfoModuleController
             } else {
                 $pageModuleLink = htmlspecialchars($pageTitle);
             }
+            $icon = '<span title="' . BackendUtility::getRecordIconAltText($data['row'], 'pages') . '">' . $this->iconFactory->getIconForRecord('pages', $data['row'], Icon::SIZE_SMALL)->render() . '</span>';
+            if ($this->getBackendUser()->recordEditAccessInternals('pages', $data['row'])) {
+                $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $data['row']['uid']);
+            }
 
             $tCells[] = '<td' . (!empty($data['row']['_CSSCLASS']) ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' .
                 (!empty($data['depthData']) ? $data['depthData'] : '') .
-                BackendUtility::wrapClickMenuOnIcon($data['HTML'], 'pages', $data['row']['uid']) .
+                ($data['HTML'] ?? '') .
+                $icon .
                 $pageModuleLink .
                 ((string)$data['row']['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]' : '') .
                 '</td>';
