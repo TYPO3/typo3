@@ -83,6 +83,31 @@ final class SchemaMigratorTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function mergingTableDefinitionReturnsLatestColumnDefinition(): void
+    {
+        $column1 = new Column('testfield', Type::getType('string'), ['length' => 100]);
+        $column2 = new Column('testfield', Type::getType('string'), ['length' => 200]);
+        $column3 = new Column('testfield', Type::getType('string'), ['length' => 220]);
+        $table1 = new Table('a_test_table', [$column1]);
+        $table2 = new Table('a_test_table', [$column2]);
+        $table3 = new Table('a_test_table', [$column3]);
+        $subject = $this->get(SchemaMigrator::class);
+        $mergeTableDefinitionsMethod = new \ReflectionMethod(
+            SchemaMigrator::class,
+            'mergeTableDefinitions'
+        );
+        $mergedTables = $mergeTableDefinitionsMethod->invoke($subject, [$table1, $table2, $table3]);
+        self::assertIsArray($mergedTables);
+        self::assertCount(1, $mergedTables);
+        self::assertArrayHasKey('a_test_table', $mergedTables);
+
+        $firstTable = $mergedTables['a_test_table'];
+        self::assertInstanceOf(Table::class, $firstTable);
+        self::assertTrue($firstTable->hasColumn('testfield'));
+        self::assertSame($column3, $firstTable->getColumn('testfield'));
+    }
+
+    #[Test]
     public function createNewTable(): void
     {
         $subject = $this->get(SchemaMigrator::class);

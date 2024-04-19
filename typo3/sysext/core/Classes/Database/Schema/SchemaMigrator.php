@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -380,8 +382,8 @@ class SchemaMigrator
             $currentTableDefinition = $return[$tableName];
             $return[$tableName] = new Table(
                 $tableName,
-                array_merge($currentTableDefinition->getColumns(), $table->getColumns()),
-                array_merge($currentTableDefinition->getIndexes(), $table->getIndexes()),
+                $this->mergeColumns(...$currentTableDefinition->getColumns(), ...$table->getColumns()),
+                $this->mergeIndexes(...$currentTableDefinition->getIndexes(), ...$table->getIndexes()),
                 [],
                 array_merge($currentTableDefinition->getForeignKeys(), $table->getForeignKeys()),
                 array_merge($currentTableDefinition->getOptions(), $table->getOptions())
@@ -389,6 +391,32 @@ class SchemaMigrator
         }
 
         return $return;
+    }
+
+    /**
+     * @param Column ...$columns
+     * @return Column[]
+     */
+    private function mergeColumns(Column ...$columns): array
+    {
+        $mergedColumns = [];
+        foreach ($columns as $column) {
+            $mergedColumns[$column->getName()] = $column;
+        }
+        return array_values($mergedColumns);
+    }
+
+    /**
+     * @param Index ...$indexes
+     * @return Index[]
+     */
+    private function mergeIndexes(Index ...$indexes): array
+    {
+        $mergedIndexes = [];
+        foreach ($indexes as $index) {
+            $mergedIndexes[$index->getName()] = $index;
+        }
+        return array_values($mergedIndexes);
     }
 
     /**
