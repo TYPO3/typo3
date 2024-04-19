@@ -129,7 +129,6 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
             NewContentElementController::class,
             'loadAvailableWizardsFromContentElements'
         );
-        $loadAvailableWizardsFromContentElements->setAccessible(true);
 
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionManagementUtility::addTcaSelectItem(
@@ -173,11 +172,10 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
         $group = $item['group'] ?? '';
         $type = $item['value'];
         $newContentElementWizardController = $this->get(NewContentElementController::class);
-        $loadAvailableWizardsFromContentElements = new \ReflectionMethod(
+        $loadAvailableWizardsFromPluginSubTypes = new \ReflectionMethod(
             NewContentElementController::class,
             'loadAvailableWizardsFromPluginSubTypes'
         );
-        $loadAvailableWizardsFromContentElements->setAccessible(true);
 
         // items array is undefined in TCA, add empty array.
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
@@ -187,7 +185,7 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
             $item
         );
 
-        $result = $loadAvailableWizardsFromContentElements->invoke($newContentElementWizardController);
+        $result = $loadAvailableWizardsFromPluginSubTypes->invoke($newContentElementWizardController);
         $actual = $result[$group . '.']['elements.'][$type . '.'] ?? [];
         self::assertSame($expected, $actual);
     }
