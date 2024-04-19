@@ -2,9 +2,9 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import svg from 'rollup-plugin-svg';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import * as path from 'path';
-import { buildConfigForTranslations } from './ckeditor5.rollup.helpers';
+import { buildConfigForTranslations } from './ckeditor/build-translations-config.js';
 import { readdirSync, statSync, existsSync } from 'fs';
 import { createRequire } from 'node:module';
 
@@ -26,7 +26,7 @@ const packages = readdirSync('node_modules/@ckeditor')
 export default [
   ...packages.map(pkg => {
     const packageName = `@ckeditor/${pkg}`;
-    const packageJson = `./node_modules/${packageName}/package.json`;
+    const packageJson = `../node_modules/${packageName}/package.json`;
     const require = createRequire(import.meta.url);
     let input = `./node_modules/${packageName}/${require(packageJson).main}`;
     if (packageName === '@ckeditor/ckeditor5-link') {
@@ -40,7 +40,7 @@ export default [
         compact: true,
         file: `../typo3/sysext/rte_ckeditor/Resources/Public/Contrib/${packageName}.js`,
         format: 'es',
-        plugins: [terser()],
+        plugins: [terser({ ecma: 8 })],
       },
       plugins: [
         {
@@ -75,7 +75,7 @@ export default [
               source !== 'color-name' &&
               source !== 'color-parse'
             ) {
-              throw new Error(`HEADS UP: New CKEditor5 import "${source}" (import from ${from}). Please decide whether to bundle or package separately and adapt Build/ckeditor5.rollup.config.js accordingly.`);
+              throw new Error(`HEADS UP: New CKEditor5 import "${source}" (import from ${from}). Please decide whether to bundle or package separately and adapt Build/rollup/ckeditor.js accordingly.`);
             }
             return null
           }
@@ -103,7 +103,7 @@ export default [
           ...postCssConfig,
           inject: function (cssVariableName, fileId) {
             // overrides functionality of native `style-inject` package, now applies `window.litNonce` to `<style>`
-            const importPath = path.resolve('./ckeditor5.rollup.functions.js');
+            const importPath = path.resolve('./rollup/shim/style-inject.js');
             return `import styleInject from '${importPath}';\n` + `styleInject(${cssVariableName});`;
           },
         }),

@@ -104,7 +104,7 @@ E.rethrowUnexpectedError(t,this)}}delegate(...t){return{to:(e,n)=>{this[M]||(thi
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */let pt;try{pt={window:window,document:document}}catch(t){
+ */let pt;try{pt={window,document}}catch(t){
 /* istanbul ignore next -- @preserve */
 pt={window:{},document:{}}}var gt=pt;
 /**

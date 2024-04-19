@@ -232,7 +232,7 @@ module.exports = function (grunt) {
     },
     exec: {
       ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json',
-      ckeditor: ((process.platform === 'win32') ? 'node_modules\\.bin\\rollup.cmd' : './node_modules/.bin/rollup') + ' -c ckeditor5.rollup.config.js',
+      rollup: ((process.platform === 'win32') ? 'node_modules\\.bin\\rollup.cmd' : './node_modules/.bin/rollup') + ' -c rollup.config.js',
       stylefix: ((process.platform === 'win32') ? 'node_modules\\.bin\\stylelint.cmd' : './node_modules/.bin/stylelint') + ' "<%= paths.sass %>**/*.scss" --fix --formatter verbose --cache --cache-location .cache/.stylelintcache --cache-strategy content',
       lintspaces: ((process.platform === 'win32') ? 'node_modules\\.bin\\lintspaces.cmd' : './node_modules/.bin/lintspaces') + ' --editorconfig ../.editorconfig "../typo3/sysext/*/Resources/Private/**/*.html"',
       'npm-install': 'npm install'
@@ -459,126 +459,6 @@ module.exports = function (grunt) {
         cache: './.cache/grunt-newer/'
       }
     },
-    rollup: {
-      options: {
-        format: 'esm',
-        entryFileNames: '[name].js'
-      },
-      'bootstrap': {
-        options: {
-          preserveModules: false,
-          plugins: () => [
-            {
-              name: 'terser',
-              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
-            },
-            {
-              name: 'externals',
-              resolveId: (source) => {
-                if (source === '@popperjs/core') {
-                  return { id: 'node_modules/@popperjs/core/dist/esm/index.js' }
-                }
-                return null
-              }
-            }
-          ]
-        },
-        files: {
-          '<%= paths.core %>Public/JavaScript/Contrib/bootstrap.js': [
-            'node_modules/bootstrap/dist/js/bootstrap.esm.js'
-          ]
-        }
-      },
-      'lodash-es': {
-        options: {
-          preserveModules: false,
-          plugins: () => [
-            {
-              name: 'terser',
-              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
-            },
-            {
-              name: 'externals',
-              resolveId: (source, importer) => {
-                if (source.startsWith('.') && importer) {
-                  const path = require('path');
-                  return require.resolve(path.resolve(path.dirname(importer), source))
-                }
-                return null;
-              }
-            }
-          ]
-        },
-        files: {
-          '<%= paths.backend %>Public/JavaScript/Contrib/lodash-es.js': [
-            'node_modules/lodash-es/lodash.js'
-          ]
-        }
-      },
-      'select-pure': {
-        options: {
-          preserveModules: false,
-          plugins: () => [
-            {
-              name: 'terser',
-              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
-            },
-            {
-              name: 'externals',
-              resolveId: (source, importer) => {
-                if (source === 'autobind-decorator') {
-                  return { id: 'node_modules/autobind-decorator/lib/esm/index.js' }
-                }
-                if (source === 'lit' || source.startsWith('lit/')) {
-                  return { id: source, external: true }
-                }
-                if (source.startsWith('lit-html/')) {
-                  return { id: source.replace('lit-html/', 'lit/'), external: true }
-                }
-                if (source.startsWith('.') && importer) {
-                  const path = require('path');
-                  return require.resolve(path.resolve(path.dirname(importer), source))
-                }
-                return null;
-              }
-            }
-          ]
-        },
-        files: {
-          '<%= paths.backend %>Public/JavaScript/Contrib/select-pure.js': [
-            'node_modules/select-pure/lib/index.js'
-          ]
-        }
-      },
-      'chart.js': {
-        options: {
-          preserveModules: false,
-          plugins: () => [
-            {
-              name: 'terser',
-              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
-            },
-            {
-              name: 'externals',
-              resolveId: (source) => {
-                if (source === 'chunks/helpers.segment.js') {
-                  return { id: 'node_modules/chart.js/dist/chunks/helpers.segment.js' }
-                }
-                if (source === '@kurkle/color') {
-                  return { id: 'node_modules/@kurkle/color/dist/color.esm.js' }
-                }
-                return null
-              }
-            }
-          ]
-        },
-        files: {
-          '<%= paths.dashboard %>Public/JavaScript/Contrib/chartjs.js': [
-            'node_modules/chart.js/dist/chart.js'
-          ]
-        }
-      }
-    },
     npmcopy: {
       options: {
         clean: false,
@@ -755,7 +635,6 @@ module.exports = function (grunt) {
   // Register tasks
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-rollup');
   grunt.loadNpmTasks('grunt-npmcopy');
   grunt.loadNpmTasks('grunt-terser');
   grunt.loadNpmTasks('@lodder/grunt-postcss');
@@ -799,7 +678,7 @@ module.exports = function (grunt) {
    * this task does the following things:
    * - copy some components to a specific destinations because they need to be included via PHP
    */
-  grunt.registerTask('update', ['ckeditor:compile-locales', 'rollup', 'exec:ckeditor', 'concurrent:npmcopy']);
+  grunt.registerTask('update', ['ckeditor:compile-locales', 'exec:rollup', 'concurrent:npmcopy']);
 
   /**
    * grunt compile-typescript task
