@@ -59,8 +59,8 @@ final class DashboardModuleCest
         $I->waitForElementVisible('.js-dashboard-addWidget');
         $I->click('.js-dashboard-addWidget');
         $modalDialog->canSeeDialog();
-        $I->click('#dashboard-widgetgroup-tab-systemInfo');
-        $I->click(self::$widgetTitle, ModalDialog::$openedModalSelector);
+        $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"systemInfo\"]').click()");
+        $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"typeOfUsers\"]').click()");
         $I->switchToContentFrame();
         $I->see(self::$widgetTitle, self::$widgetTitleSelector);
     }

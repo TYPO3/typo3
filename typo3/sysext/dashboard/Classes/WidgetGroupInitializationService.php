@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
@@ -26,7 +27,8 @@ class WidgetGroupInitializationService
 {
     public function __construct(
         private readonly WidgetGroupRegistry $widgetGroupRegistry,
-        private readonly WidgetRegistry $widgetRegistry
+        private readonly WidgetRegistry $widgetRegistry,
+        private readonly UriBuilder $uriBuilder,
     ) {}
 
     /**
@@ -41,17 +43,26 @@ class WidgetGroupInitializationService
 
             $widgetsForGroup = $this->widgetRegistry->getAvailableWidgetsForWidgetGroup($widgetGroupIdentifier);
             foreach ($widgetsForGroup as $widgetConfiguration) {
-                $widgets[$widgetConfiguration->getIdentifier()] = [
-                    'iconIdentifier' => $widgetConfiguration->getIconIdentifier(),
-                    'title' => $this->getLanguageService()->sL($widgetConfiguration->getTitle()),
+                $widgetIdentifier = $widgetConfiguration->getIdentifier();
+
+                $widgets[] = [
+                    'identifier' => $widgetIdentifier,
+                    'icon' => $widgetConfiguration->getIconIdentifier(),
+                    'label' => $this->getLanguageService()->sL($widgetConfiguration->getTitle()),
                     'description' => $this->getLanguageService()->sL($widgetConfiguration->getDescription()),
+                    'url' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'addWidget', 'widget' => $widgetIdentifier]),
+                    'requestType' => 'location',
                 ];
+            }
+
+            if ($widgets === []) {
+                continue;
             }
 
             $groupConfigurations[$widgetGroupIdentifier] = [
                 'identifier' => $widgetGroupIdentifier,
-                'title' => $widgetGroup->getTitle(),
-                'widgets' => $widgets,
+                'label' => $widgetGroup->getTitle(),
+                'items' => $widgets,
             ];
         }
 

@@ -12,6 +12,15 @@
 			<trans-unit id="widget.add" resname="widget.add" xml:space="preserve">
 				<source>Add widget</source>
 			</trans-unit>
+			<trans-unit id="widget.addToDashboard" resname="widget.addToDashboard" xml:space="preserve">
+				<source>Add widget to "%s"</source>
+			</trans-unit>
+			<trans-unit id="widget.addToDashboard.searchLabel" resname="widget.addToDashboard.searchLabel" xml:space="preserve">
+				<source>Search for dashboard widgets</source>
+			</trans-unit>
+			<trans-unit id="widget.addToDashboard.searchNotFound" resname="widget.addToDashboard.searchNotFound" xml:space="preserve">
+				<source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
+			</trans-unit>
 			<trans-unit id="widget.add.button.close" resname="widget.add.button.close" xml:space="preserve">
 				<source>Close</source>
 			</trans-unit>

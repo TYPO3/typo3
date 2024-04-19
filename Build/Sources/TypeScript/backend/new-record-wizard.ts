@@ -316,12 +316,14 @@ export class NewRecordWizard extends LitElement {
       }
 
       .item-body-label {
+        text-wrap: balance;
         font-weight: bold;
         margin-bottom: .25rem;
       }
 
       .item-body-description {
         opacity: .75;
+        text-wrap: pretty;
       }
     `
   ];
@@ -357,6 +359,15 @@ export class NewRecordWizard extends LitElement {
     this.selectAvailableCategory();
   }
 
+  protected getLanguageLabel(label: string): string {
+    const languageLabel = lll(label);
+    if (languageLabel !== '') {
+      return languageLabel;
+    }
+
+    return label;
+  }
+
   protected selectAvailableCategory(): void {
 
     const needsCategoryChange: boolean = this.categories.categoriesWithItems()
@@ -368,7 +379,7 @@ export class NewRecordWizard extends LitElement {
     this.messages = [];
     if (this.selectedCategory === null) {
       this.messages = [{
-        message: lll(this.searchNothingFoundLabel),
+        message: this.getLanguageLabel(this.searchNothingFoundLabel),
         severity: 'info'
       }];
     }
@@ -422,7 +433,7 @@ export class NewRecordWizard extends LitElement {
           .value="${this.searchTerm}"
           @input="${(event: InputEvent): void => { this.filter((<HTMLInputElement>event.target).value); }}"
           @keydown="${(event: KeyboardEvent): void => { if (event.key === KeyTypesEnum.ESCAPE) { event.stopImmediatePropagation(); this.filter(''); } }}"
-          placeholder="${lll(this.searchPlaceholder)}"
+          placeholder="${this.getLanguageLabel(this.searchPlaceholder)}"
         />
       </form>
     `;
@@ -453,6 +464,7 @@ export class NewRecordWizard extends LitElement {
     ${this.categories.items.map((category: Category) => {
     return html`
         <button
+          data-identifier="${category.identifier}"
           class="navigation-item${(this.selectedCategory === category) ? ' active' : ''}"
           ?disabled="${category.disabled}"
           @click="${() => { this.selectedCategory = category; this.toggleMenu = false; }}"
