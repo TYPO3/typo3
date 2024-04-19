@@ -469,12 +469,14 @@ class RelationHandler
      */
     protected function readMM($tableName, $uid, $mmOppositeTable)
     {
-        $key = 0;
         $theTable = null;
-        $queryBuilder = $this->getConnectionForTableName($tableName)
-            ->createQueryBuilder();
+        $queryBuilder = $this->getConnectionForTableName($tableName)->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->select('*')->from($tableName);
+        // Default
+        $uidLocal_field = 'uid_local';
+        $uidForeign_field = 'uid_foreign';
+        $sorting_field = 'sorting';
         // In case of a reverse relation
         if ($this->MM_is_foreign) {
             $uidLocal_field = 'uid_foreign';
@@ -503,11 +505,6 @@ class RelationHandler
                 $queryBuilder->andWhere($expression);
             }
             $theTable = $mmOppositeTable;
-        } else {
-            // Default
-            $uidLocal_field = 'uid_local';
-            $uidForeign_field = 'uid_foreign';
-            $sorting_field = 'sorting';
         }
         if ($this->MM_table_where) {
             $queryBuilder->andWhere(
@@ -528,6 +525,7 @@ class RelationHandler
         $queryBuilder->orderBy($sorting_field);
         $queryBuilder->addOrderBy($uidForeign_field);
         $statement = $queryBuilder->executeQuery();
+        $itemArray = [];
         while ($row = $statement->fetchAssociative()) {
             // Default
             if (!$this->MM_is_foreign) {
@@ -535,16 +533,15 @@ class RelationHandler
                 $theTable = !empty($row['tablenames']) ? $row['tablenames'] : $this->firstTable;
             }
             if (($row[$uidForeign_field] || $theTable === 'pages') && $theTable && isset($this->tableArray[$theTable])) {
-                $this->itemArray[$key]['id'] = $row[$uidForeign_field];
-                $this->itemArray[$key]['table'] = $theTable;
+                $item = [
+                    'id' => $row[$uidForeign_field],
+                    'table' => $theTable,
+                ];
+                $itemArray[] = $item;
                 $this->tableArray[$theTable][] = $row[$uidForeign_field];
-            } elseif ($this->registerNonTableValues) {
-                $this->itemArray[$key]['id'] = $row[$uidForeign_field];
-                $this->itemArray[$key]['table'] = '_NO_TABLE';
-                $this->nonTableArray[] = $row[$uidForeign_field];
             }
-            $key++;
         }
+        $this->itemArray = $itemArray;
     }
 
     /**
