@@ -11,7 +11,7 @@ See :issue:`101567`
 Description
 ===========
 
-The symfony PHP attribute :php:`\Symfony\Component\Console\Attribute\AsCommand`
+The Symfony PHP attribute :php:`\Symfony\Component\Console\Attribute\AsCommand`
 is now accepted to register console commands.
 This way CLI commands can be registered by setting the attribute on the command
 class. Only the parameters `command`, `description`, `aliases` and `hidden` are
@@ -49,7 +49,11 @@ attribute is assigned to the command class instead:
     use Symfony\Component\Console\Command\Command;
     use Symfony\Component\Console\Attribute\AsCommand;
 
-    #[AsCommand(name: 'myprefix:dofoo', description: 'My description', aliases: ['myprefix:dofoo-alias'])]
+    #[AsCommand(
+        name: 'myprefix:dofoo',
+        description: 'My description',
+        aliases: ['myprefix:dofoo-alias']
+    )]
     class MyCommand extends Command
     {
     }

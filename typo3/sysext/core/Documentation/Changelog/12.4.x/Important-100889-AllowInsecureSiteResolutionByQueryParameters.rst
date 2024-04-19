@@ -10,7 +10,7 @@ See :issue:`100889`
 
 ..  important::
     This change was introduced as part of the
-    `TYPO3 12.4.4 and 11.5.30 security releases <https://typo3.org/security/advisory/typo3-core-sa-2023-003>`__.
+    `TYPO3 v12.4.4 and v11.5.30 security releases <https://typo3.org/security/advisory/typo3-core-sa-2023-003>`__.
 
 Description
 ===========

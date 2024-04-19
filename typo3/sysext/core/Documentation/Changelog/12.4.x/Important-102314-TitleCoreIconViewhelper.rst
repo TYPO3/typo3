@@ -11,7 +11,7 @@ See :issue:`102314`
 Description
 ===========
 
-The `IconViewhelper` in EXT:core has been extended for a new argument `title`.
+The `IconViewhelper` in EXT:core has been extended with a new argument `title`.
 The new argument allows to set a corresponding title, which will be rendered
 as `title` attribute in the icon HTML markup. The `title` attribute will only
 be rendered, if explicitly passed. You can also pass an empty string.
@@ -32,9 +32,18 @@ Example
 This will be rendered as:
 
 .. code-block:: html
-    <span title="Open actions menu" class="t3js-icon icon icon-size-small icon-state-default icon-actions-menu" data-identifier="actions-menu" aria-hidden="true">
+
+    <span
+        title="Open actions menu"
+        class="t3js-icon icon icon-size-small icon-state-default icon-actions-menu"
+        data-identifier="actions-menu" aria-hidden="true"
+    >
         <span class="icon-markup">
-            <img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-menu.svg" width="16" height="16">
+            <img
+                src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-menu.svg"
+                width="16"
+                height="16"
+            >
         </span>
     </span>
 

@@ -11,7 +11,7 @@ See :issue:`100925`
 Description
 ===========
 
-To implement native json database field and TCA `type=json`
+To implement native JSON database field and TCA `type=json`
 support for TYPO3 v12 the need to cache the database schema
 information raised due to performance reason.
 
