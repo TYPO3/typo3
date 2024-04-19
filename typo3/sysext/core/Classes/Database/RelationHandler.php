@@ -261,18 +261,16 @@ class RelationHandler
             $tablelist = implode(',', array_keys($GLOBALS['TCA']));
         }
         // The tables are traversed and internal arrays are initialized:
-        $tempTableArray = GeneralUtility::trimExplode(',', $tablelist, true);
-        foreach ($tempTableArray as $val) {
+        foreach (GeneralUtility::trimExplode(',', $tablelist, true) as $tableName) {
             // @todo: Loop could be restricted in MM local when MM_oppositeUsage is used.
-            $tName = trim($val);
-            $this->tableArray[$tName] = [];
-            $deleteField = $GLOBALS['TCA'][$tName]['ctrl']['delete'] ?? false;
+            $this->tableArray[$tableName] = [];
+            $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? false;
             if ($this->checkIfDeleted && $deleteField) {
-                $fieldN = $tName . '.' . $deleteField;
-                if (!isset($this->additionalWhere[$tName])) {
-                    $this->additionalWhere[$tName] = '';
+                if (!isset($this->additionalWhere[$tableName])) {
+                    $this->additionalWhere[$tableName] = '';
                 }
-                $this->additionalWhere[$tName] .= ' AND ' . $fieldN . '=0';
+                // @todo: Omit ' AND ' and QueryHelper::stripLogicalOperatorPrefix() in consumers
+                $this->additionalWhere[$tableName] .= ' AND ' . $tableName . '.' . $deleteField . '=0';
             }
         }
         if (is_array($this->tableArray)) {
