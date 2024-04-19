@@ -13,7 +13,7 @@ Description
 
 The method :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hmac()`
 has been deprecated in TYPO3 v13 and will be removed with v14 in
-favour of :ref:`feature-102761-1704532036`.
+favor of :ref:`feature-102761-1704532036`.
 
 Impact
 ======
@@ -25,7 +25,7 @@ TYPO3 v13 and a fatal error in TYPO3 v14.
 Affected installations
 ======================
 
-All 3rd party extensions using :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hmac()`.
+All third-party extensions using :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hmac()`.
 
 
 Migration
@@ -66,16 +66,16 @@ After
 
     final readonly class MyService
     {
-      public function __construct(
-        private HashService $hashService,
-      ) {}
+        public function __construct(
+            private HashService $hashService,
+        ) {}
 
-      public function someMethod(): void
-      {
-        $hmac = $this->hashService->hmac('some-input', 'some-secret');
-      }
+        public function someMethod(): void
+        {
+            $hmac = $this->hashService->hmac('some-input', 'some-secret');
+        }
     }
 
-If possible, use dependency injection to inject :php:`HashService` to your class.
+If possible, use dependency injection to inject :php:`HashService` into your class.
 
 .. index:: Backend, FullyScanned, ext:core

@@ -12,9 +12,9 @@ Description
 ===========
 
 Database default values for :sql:`TEXT`, :sql:`JSON` and :sql:`BLOB` fields
-could not be used in a cross database vendor compatible manner, for
-example in :file:`ext_tables.sql` or as default database scheme generation
-for TCA managed tables and types.
+could not be used in a cross-database, vendor-compatible manner, for
+example in :file:`ext_tables.sql`, or as default database scheme generation
+for TCA-managed tables and types.
 
 Direct default values are still unsupported, but since
 `MySQL 8.0.13+ <https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-13.html#mysqld-8-0-13-data-types>`__
@@ -32,14 +32,15 @@ Example
       `json_field` JSON NOT NULL DEFAULT '{}'
     );
 
-.. code-block:: php
+..  code-block:: php
+    :caption: Insert a new record using the defined default values
 
     $connection = GeneralUtility::makeInstance(ConnectionPool::class)
         ->getConnectionByName(ConnectionPool::DEFAULT_NAME);
     $connection->insert(
         'tx_myextension_domain_model_entity',
         [
-          'pid' => 123,
+            'pid' => 123,
         ]
     );
 
@@ -61,16 +62,16 @@ Advanced example with value quoting
 Impact
 ======
 
-Database :sql:`INSERT` queries not providing values for fields, which
-have defined default values, and which are not using TCA powered TYPO3
-API's can be now used, and will receive database-level defined default
-values. This also accounts for dedicated applications operating directly
+Database :sql:`INSERT` queries that do not provide values for fields with
+defined default values, and that do not use TCA-powered TYPO3
+APIs, can now be used, and will receive default values defined at databaselevel.
+This also accounts for dedicated applications operating directly
 on the database table.
 
 ..  note::
 
-    TCA unaware API will not consider different TCA or FORM Engine default
+    TCA-unaware API will not consider different TCA or FormEngine default
     value overrides and settings. So it's good to provide the basic default
-    both in TCA and on database-level, if manually added.
+    both in TCA and at database level, if added manually.
 
 .. index:: Database, ext:core

@@ -23,12 +23,12 @@ Impact
 It is now possible to
 
 *  Fetch translated labels from translations.typo3.org / CrowdIn automatically
-   within the TYPO3 Backend
-*  Switch the backend interface to Irish Gaelic language
-*  Create a new language in a site configuration using Irish Gaelic
+   within the TYPO3 backend.
+*  Switch the backend interface to Irish Gaelic language.
+*  Create a new language in a site configuration using Irish Gaelic.
 *  Create translation files with the "ga" prefix (such as `ga.locallang.xlf`)
-   to create your own labels
+   to create your own labels.
 
-and TYPO3 will pick Irish Gaelic as a language just like any other supported language.
+TYPO3 will pick Irish Gaelic as a language just like any other supported language.
 
 .. index:: Backend, Frontend, ext:core

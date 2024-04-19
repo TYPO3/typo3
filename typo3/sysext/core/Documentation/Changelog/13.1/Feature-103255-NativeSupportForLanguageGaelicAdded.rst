@@ -23,12 +23,12 @@ Impact
 It is now possible to
 
 *  Fetch translated labels from translations.typo3.org / CrowdIn automatically
-   within the TYPO3 Backend
-*  Switch the backend interface to Scottish Gaelic language
-*  Create a new language in a site configuration using Scottish Gaelic
+   within the TYPO3 backend.
+*  Switch the backend interface to Scottish Gaelic language.
+*  Create a new language in a site configuration using Scottish Gaelic.
 *  Create translation files with the "gd" prefix (such as `gd.locallang.xlf`)
-   to create your own labels
+   to create your own labels.
 
-and TYPO3 will pick Scottish Gaelic as a language just like any other supported language.
+TYPO3 will pick Scottish Gaelic as a language just like any other supported language.
 
 .. index:: Backend, Frontend, ext:core

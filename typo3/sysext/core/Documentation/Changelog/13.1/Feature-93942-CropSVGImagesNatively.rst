@@ -30,7 +30,7 @@ Forced rasterization of cropped SVG assets can still be performed by setting the
 :html:`<f:image>` ViewHelper example:
 -------------------------------------
 
-.. code-block:: html
+..  code-block:: html
 
     <f:image image="{image}" fileExtension="png" />
 
@@ -39,7 +39,7 @@ This keeps forcing images to be generated as PNG image.
 `file.ext = png` TypoScript example:
 ------------------------------------
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     page.10 = IMAGE
     page.10.file = 2:/myfile.svg

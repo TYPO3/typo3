@@ -3,7 +3,7 @@
 .. _feature-103441-1710969809:
 
 ========================================================================================
-Feature: #103441 - Request id as public visible error reference in error handlers output
+Feature: #103441 - Request ID as public visible error reference in error handlers output
 ========================================================================================
 
 See :issue:`103441`
@@ -11,18 +11,21 @@ See :issue:`103441`
 Description
 ===========
 
-The ProductionExceptionHandler in EXT:core outputs error details, but not for everyone. As a normal visitor you don't see any tracable error information.
+The :php:`ProductionExceptionHandler` in EXT:core outputs error details, but not
+for everyone. As a normal visitor you don't see any traceable error information.
 
-The ProductionExceptionHandler in EXT:frontend outputs "Oops, an error occurred!" followed by a timestamp + a hash. This is part of log messages.
+The :php:`ProductionExceptionHandler` in EXT:frontend outputs "Oops, an error
+occurred!" followed by a timestamp and a hash. This is part of log messages.
 
-Whenever an error/exception is logged, the log message contains the request id.
+Whenever an error/exception is logged, the log message contains the request ID.
 
-With this the request id is also shown in web output of error/exception handlers as public visible error reference.
+With this the request ID is also shown in web output of error/exception handlers
+ as public visible error reference.
 
 
 Impact
 ======
 
-Everyone sees a request id as tracable error information.
+Everyone sees a request id as traceable error information.
 
 .. index:: Frontend, ext:core

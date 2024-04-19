@@ -11,15 +11,15 @@ See :issue:`103504`
 Description
 ===========
 
-A new Content Object for TypoScript :typoscript:`PAGEVIEW` has been added.
+A new content object for TypoScript :typoscript:`PAGEVIEW` has been added.
 
-This cObject is mainly intended for rendering a full page in the TYPO3 Frontend
+This cObject is mainly intended for rendering a full page in the TYPO3 frontend
 with fewer configuration options over the generic :typoscript:`FLUIDTEMPLATE`
 cObject.
 
 A basic usage of the :typoscript:`PAGEVIEW` cObject is as follows:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     page = PAGE
     page.10 = PAGEVIEW
@@ -27,41 +27,43 @@ A basic usage of the :typoscript:`PAGEVIEW` cObject is as follows:
 
 :typoscript:`PAGEVIEW` wires certain parts automatically:
 
-1. The name of the used page layout (Backend Layout) is resolved automatically.
+1.  The name of the used page layout (backend layout) is resolved automatically.
 
-If a page has a layout named "with_sidebar", the template file is then resolved
-to :file:`EXT:mysite/Resources/Private/Templates/Pages/With_sidebar.html`.
+    If a page has a layout named "with_sidebar", the template file is then resolved
+    to :file:`EXT:mysite/Resources/Private/Templates/Pages/With_sidebar.html`.
 
-2. Fluid features for Layouts and Partials are wired automatically, thus they
-can be placed into :file:`EXT:mysite/Resources/Private/Templates/Layouts/`
-and :file:`EXT:mysite/Resources/Private/Templates/Partials/`.
+2.  Fluid features for layouts and partials are wired automatically, thus they
+    can be placed into :file:`EXT:mysite/Resources/Private/Templates/Layouts/`
+    and :file:`EXT:mysite/Resources/Private/Templates/Partials/`.
 
-In order to reduce the burdon for integrators, the folder names for "pages",
-"layouts" and "partials" can start with lower-case or upper-case.
+    In order to reduce the burden for integrators, the folder names for "pages",
+    "layouts" and "partials" can start with a lowercase or an uppercase letter.
 
-3. Default variables are available in the Fluid template:
+3.  Default variables are available in the Fluid template:
 
-- :typoscript:`settings` - contains all TypoScript settings (= Constants)
-- :typoscript:`site` - the current Site object
-- :typoscript:`language` - the current Site Language object
-- :typoscript:`page` - the current Page Information object
+    -   :typoscript:`settings` - contains all TypoScript settings (= constants)
+    -   :typoscript:`site` - the current :php:`Site` object
+    -   :typoscript:`language` - the current :php:`SiteLanguage` object
+    -   :typoscript:`page` - the current page record as object
 
-.. note::
-
-    The Page Information object contains all relevant information about
-    the current page. Those are e.g. the corresponding page record, the
-    rootline, and many more. Worth mentioning is also the Page Layout object,
-    which provides all the information about the selected backend layout.
+..  note::
+    The :php:`PageInformation` object contains all relevant information about
+    the current page. Those are, for example, the corresponding page record, the
+    root line, and many more. Worth mentioning is also the :php:`PageLayout`
+    object, which provides all the information about the selected backend layout.
     This includes the identifier, the title, the available content areas
     with their corresponding name and `colPos`. Additionally, the full (raw)
     backend layout configuration is available.
 
 There is no special Extbase resolving done for the templates.
 
-Before
-------
+Migration
+---------
 
-.. code-block:: typoscript
+Before
+~~~~~~
+
+..  code-block:: typoscript
 
     page = PAGE
     page {
@@ -122,9 +124,9 @@ Before
     }
 
 After
------
+~~~~~
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     page = PAGE
     page {
@@ -144,15 +146,15 @@ After
         }
     }
 
-In Fluid, the pageUid is available as :html:`{page.id}` and pageTitle
-as :html:`{page.pageRecord.title}`. The page layout identifier can be accessed
+In Fluid, the pageUid is available as :html:`{page.uid}` and pageTitle
+as :html:`{page.title}`. The page layout identifier can be accessed
 using :html:`{page.pageLayout.identifier}`.
 
 Impact
 ======
 
 Creating new page templates based on Fluid follows conventions in order to
-reduce the amount of TypoScript needed to render a page in the TYPO3 Frontend.
+reduce the amount of TypoScript needed to render a page in the TYPO3 frontend.
 
 Sane defaults are applied, variables and settings are available at any time.
 

@@ -34,9 +34,9 @@ Migration
 Migrate to the module :js:`@typo3/backend/multi-step-wizard.js`. There are two
 major differences:
 
-* The class name changes to :js:`MultiStepWizard`
+* The class name changes to :js:`MultiStepWizard`.
 * The method :js:`addSlide()` receives an additional argument for the step title
-  in the progress bar
+  in the progress bar.
 
 
 Example

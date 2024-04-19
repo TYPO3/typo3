@@ -19,7 +19,7 @@ two pre-configured backend user groups with permission presets applied.
 ..  note::
 
     The pre-configured backend user group permissions are subject to be
-    further changed and adjusted and defines a first set. Also possible
+    further changed and adjusted and defines a first set. It is also possible
     that additional groups may be added or made configurable. That means,
     that the :bash:`./bin/typo3 setup:begroups:default` command and the
     pre-defined permissions are considerable `experimental` during the
@@ -42,7 +42,7 @@ Interactive / guided setup (questions/answers):
     ./bin/typo3 setup:begroups:default
 
 The backend user group can be set via the :bash:`--groups|-g` option. Allowed
-values for groups are :bash:`Both`, :bash:`Editor` and :bash:`Advanced Editor`):
+values for groups are :bash:`Both`, :bash:`Editor` and :bash:`Advanced Editor`:
 
 ..  code-block:: bash
     :caption: Command examples
@@ -51,7 +51,7 @@ values for groups are :bash:`Both`, :bash:`Editor` and :bash:`Advanced Editor`):
     ./bin/typo3 setup:begroups:default --groups Editor
     ./bin/typo3 setup:begroups:default --groups "Advanced Editor"
 
-When using the :bash:`--no-interaction` option, this defaults to :bash:`both`.
+When using the :bash:`--no-interaction` option, this defaults to :bash:`Both`.
 
 ..  note::
 

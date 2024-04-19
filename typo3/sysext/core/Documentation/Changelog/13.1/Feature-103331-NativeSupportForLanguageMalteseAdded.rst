@@ -23,12 +23,12 @@ Impact
 It is now possible to
 
 *  Fetch translated labels from translations.typo3.org / CrowdIn automatically
-   within the TYPO3 Backend
-*  Switch the backend interface to Maltese language
-*  Create a new language in a site configuration using Maltese
+   within the TYPO3 backend.
+*  Switch the backend interface to Maltese language.
+*  Create a new language in a site configuration using Maltese.
 *  Create translation files with the "mt" prefix (such as `mt.locallang.xlf`)
-   to create your own labels
+   to create your own labels.
 
-and TYPO3 will pick Maltese as a language just like any other supported language.
+TYPO3 will pick Maltese as a language just like any other supported language.
 
 .. index:: Backend, Frontend, ext:core

@@ -15,7 +15,7 @@ Database table :sql:`cache_treelist` has been removed, the database
 analyzer will suggest to drop it if it exists.
 
 That cache table was unused since a TYPO3 v12 patch level release, v13
-removed left over handling throughout the core and removed the table itself.
+removed leftover handling throughout the Core and removed the table itself.
 
 
 .. index:: Database, ext:frontend

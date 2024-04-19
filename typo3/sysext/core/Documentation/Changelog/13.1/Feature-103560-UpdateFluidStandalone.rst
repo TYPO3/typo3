@@ -2,9 +2,9 @@
 
 .. _feature-103560-1712562637:
 
-==================================================
-Feature: #103560 - Update Fluid Standalone to 2.11
-==================================================
+==========================================================
+Feature: #103560 - Update Fluid Standalone to version 2.11
+==========================================================
 
 See :issue:`103560`
 
@@ -28,7 +28,7 @@ templates:
 :html:`<f:split>` ViewHelper:
 -----------------------------
 
-The SplitViewHelper splits a string by the specified separator, which
+The :php:`SplitViewHelper` splits a string by the specified separator, which
 results in an array.
 
 .. code-block:: html
@@ -41,7 +41,7 @@ results in an array.
 :html:`<f:join>` ViewHelper:
 ----------------------------
 
-The JoinViewHelper combines elements from an array into a single string.
+The :php:`JoinViewHelper` combines elements from an array into a single string.
 
 .. code-block:: html
 
@@ -53,7 +53,7 @@ The JoinViewHelper combines elements from an array into a single string.
 :html:`<f:replace>` ViewHelper:
 -------------------------------
 
-The ReplaceViewHelper replaces one or multiple strings with other strings.
+The :php:`ReplaceViewHelper` replaces one or multiple strings with other strings.
 
 .. code-block:: html
 
@@ -65,7 +65,7 @@ The ReplaceViewHelper replaces one or multiple strings with other strings.
 :html:`<f:first>` and :html:`<f:last>` ViewHelpers:
 ---------------------------------------------------
 
-The FirstViewHelper and LastViewHelper return the first or last
+The :php:`FirstViewHelper` and :php:`LastViewHelper` return the first or last
 item of a specified array, respectively.
 
 .. code-block:: html

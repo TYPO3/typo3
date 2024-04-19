@@ -13,8 +13,8 @@ Description
 
 The user TSconfig option :typoscript:`options.pageTree.backgroundColor`
 has been deprecated and will be removed in TYPO3 v14 due to its
-lack of accessibility. It is being replaced with a new label
-system for tree nodes.
+lack of accessibility. It is being replaced with a
+:ref:`new label system <feature-103211-1709036591>` for tree nodes.
 
 
 Impact

@@ -18,12 +18,12 @@ selection, navigation, and more, the Tree has been a cornerstone for content
 handling.
 
 Originally introduced in Version 8 with a performance-oriented approach, the
-SVG-Tree, powered by d3js, has faithfully served the community for the past
+SVG tree, powered by d3js, has faithfully served the community for the past
 seven years. While it excelled in providing a fast and efficient experience,
 it had its share of challenges, particularly due to its reliance on SVG and
 d3js.
 
-Challenges with the SVG-Tree:
+Challenges with the SVG tree:
 
 - Limited functionality due to SVG constraints
 - Maintenance complexities with code-built SVG
@@ -38,44 +38,44 @@ component, paving the way for a more adaptable and user-friendly experience.
 Introducing the Modern Reactive Tree:
 
 The new Tree, built on contemporary web standards, bids farewell to the
-SVG-Tree's limitations. Embracing native drag and drop APIs, standard HTML
+SVG tree's limitations. Embracing native drag and drop APIs, standard HTML
 markup, and CSS for styling, the Modern Reactive Tree promises improved
 maintainability and accessibility.
 
-Key Enhancements:
+Key enhancements:
 
-- Unified Experience: All features are now consolidated into the base tree,
+- Unified experience: All features are now consolidated into the base tree,
   ensuring a seamless and consistent user experience. This encompasses data
   loading and processing, selection, keyboard navigation, drag and drop, and
   basic node editing.
 
-- User Preferences: The tree now dynamically adjusts to user preferences,
+- User preferences: The tree now dynamically adjusts to user preferences,
   supporting both light/dark mode and left-to-right (LTR) or right-to-left
   (RTL) writing modes.
 
-- Reactive Rendering: Adopting a modern reactive rendering approach, the tree
+- Reactive rendering: Adopting a modern reactive rendering approach, the tree
   and its nodes now autonomously redraw themselves based on property changes,
   ensuring a smoother and more responsive interface.
 
-- Native Drag and Drop: Leveraging native drag and drop functionality opens
+- Native drag and drop: Leveraging native drag and drop functionality opens
   up avenues for future enhancements, such as dragging content directly onto
   a page or seamlessly moving elements between browser windows.
 
-- Improved API Endpoints: All endpoints delivering data for the tree now adhere
+- Improved API endpoints: All endpoints delivering data for the tree now adhere
   to a defined API definition, enhancing consistency and compatibility with
   existing integrations.
 
-- Unified Dragging Tooltip Handling: The dragging tooltip handling has been
+- Unified dragging tooltip handling: The dragging tooltip handling has been
   adjusted to a unified component that can be utilized across all components,
   ensuring synchronization across browser windows.
 
-- Dynamic Tree Status Storage: The Pagetree status is no longer stored in the
+- Dynamic tree status storage: The Pagetree status is no longer stored in the
   database. Instead, it is now stored in the local storage of the user's
   browser. This change empowers the browser to control the tree status, making
   it more convenient for users to transition between multiple browsers or
   machines.
 
-- Enhanced Virtual Scroll: The virtual scroll of the tree has been improved,
+- Enhanced virtual scroll: The virtual scroll of the tree has been improved,
   ensuring that only nodes currently visible to the user are rendered to the
   DOM. Additionally, the focus on selected nodes is maintained even when
   scrolled out of view, providing a smoother and more user-friendly experience.
@@ -92,16 +92,16 @@ The TYPO3 CMS Tree modernization brings:
 - Personalization:
   Adapts to user preferences for a tailored interface.
 
-- Reactive Design:
+- Reactive design:
   Ensures smoother interactions.
 
-- Efficient Integration:
+- Efficient integration:
   Improved API endpoints for seamless data exchange.
 
-- Consistency Across Devices:
+- Consistency across devices:
   Unified dragging and dynamic storage for a consistent experience.
 
-- Enhanced Performance:
+- Enhanced performance:
   Optimal rendering during navigation.
 
 These changes collectively enhance usability, adaptability, and performance,

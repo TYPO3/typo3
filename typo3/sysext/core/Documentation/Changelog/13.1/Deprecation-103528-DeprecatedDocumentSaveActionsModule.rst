@@ -18,10 +18,12 @@ spinner icon instead. Over the course of some years, the module got more
 functionality, for example to prevent saving when validation fails.
 
 Since some refactorings within FormEngine, the module rather became a
-burden. This became visible with the introduction of the Hotkeys API, as
+burden. This became visible with the introduction of the
+:ref:`Hotkeys API <feature-101507-1690808401>`, as
 the :js:`@typo3/backend/document-save-actions.js` reacts on explicit :js:`click`
 events on the save icon, that is not triggered when FormEngine invokes a
-save action via keyboard shortcuts. Adjusting :js:`document-save-actions.js`'s
+:ref:`save action via keyboard shortcuts <feature-103529-1712154338>`.
+Adjusting :js:`document-save-actions.js`'s
 behavior is necessary, but would become a breaking change, which is
 unacceptable after the 13.0 release. For this reason, said module has
 been marked as deprecated and its usages are replaced by its successor

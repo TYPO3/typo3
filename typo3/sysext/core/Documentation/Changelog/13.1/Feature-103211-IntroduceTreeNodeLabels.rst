@@ -16,7 +16,8 @@ incorporate labels, offering enhanced functionality and additional
 information.
 
 Before the implementation of labels, developers and integrators
-relied on :typoscript:`pageTree.backgroundColor.<pageid>` for visual cues.
+relied on :typoscript:`pageTree.backgroundColor.<pageid>` for visual cues,
+which has been :ref:`deprecated <deprecation-103211-1709038752>` with TYPO3 v13.
 However, these background colors lacked accessibility and meaningful context,
 catering only to users with perfect eyesight and excluding those
 dependent on screen readers or contrast modes.

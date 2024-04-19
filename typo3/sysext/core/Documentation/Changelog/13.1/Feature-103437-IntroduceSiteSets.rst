@@ -3,7 +3,7 @@
 .. _feature-103437-1712062105:
 
 ======================================
-Feature: #103437 - Introduce Site Sets
+Feature: #103437 - Introduce site sets
 ======================================
 
 See :issue:`103437`
@@ -12,14 +12,14 @@ Description
 ===========
 
 Site sets ship parts of site configuration as composable pieces. They are
-intended to deliver settings, TypoScript, TSConfig and reference enabled content
+intended to deliver settings, TypoScript, TSconfig and reference enabled content
 blocks for the scope of a site.
 
 Extensions can provide multiple sets in order to ship presets for different
 sites or subsets (think of frameworks) where selected features are exposed
 as a subset (example: `typo3/seo-xml-sitemap`).
 
-A set is defined in an extensions subfolder in :file:`Configuration/Sets/`, for
+A set is defined in an extension's subfolder in :file:`Configuration/Sets/`, for
 example :file:`EXT:my_extension/Configuration/Sets/MySet/config.yaml`.
 
 The folder name in :file:`Configuration/Sets/` is arbitrary, significant
@@ -54,16 +54,17 @@ Sets are applied to sites via `dependencies` array in site configuration:
     dependencies:
       - my-vendor/my-set
 
-Site sets can also be edited via the backend module `Site Management > Sites`.
+Site sets can also be edited via the backend module
+:guilabel:`Site Management > Sites`.
 
 
-Settings Definitions
+Settings definitions
 --------------------
 
 Sets can define settings definitions which contain more metadata than just a
-value: They contain UI relevant options like `label`, `description`, `category`
+value: They contain UI-relevant options like `label`, `description`, `category`
 and `tags` and types like `int`, `bool`, `string`, `stringlist`, `text` or
-`color`. These definitions are are placed in a :file:`settings.definitions.yaml`
+`color`. These definitions are placed in :file:`settings.definitions.yaml`
 next to the site set file :file:`config.yaml`.
 
 ..  code-block:: yaml
@@ -86,11 +87,11 @@ can be shipped via :file:`settings.yaml` when placed next to the set file
 
 Note that default values for settings provided by the set do not need to be
 defined here, as defaults are to be provided within
-:file:`settings.definitions.yaml`)
+:file:`settings.definitions.yaml`.
 
-Here is an example where the setting `styles.content.defaultHeaderType` — as
-provided by `typo3/fluid-styled-content` — is configured via
-:file:`settings.yaml`.
+Here is an example where the setting `styles.content.defaultHeaderType` — as
+provided by `typo3/fluid-styled-content` — is configured via
+:file:`settings.yaml`:
 
 ..  code-block:: yaml
     :caption: EXT:my_extension/Configuration/Sets/MySet/settings.yaml
@@ -101,7 +102,7 @@ provided by `typo3/fluid-styled-content` — is configured via
 
 
 This setting will be exposed as site setting whenever the set
-`my-vendor/my-set` is applied to a site config.
+`my-vendor/my-set` is applied to a site configuration.
 
 
 Impact
