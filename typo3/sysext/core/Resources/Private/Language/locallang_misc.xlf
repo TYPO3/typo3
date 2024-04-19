@@ -225,6 +225,12 @@
 			<trans-unit id="makeCopy" resname="makeCopy">
 				<source>Make copy instead of moving element</source>
 			</trans-unit>
+			<trans-unit id="newRecordWizard.filter.placeholder" resname="newRecordWizard.filter.placeholder">
+				<source>Search for any record type</source>
+			</trans-unit>
+			<trans-unit id="newRecordWizard.filter.noResults" resname="newRecordWizard.filter.noResults">
+				<source>Unfortunately no record type matches your query, please try a different one.</source>
+			</trans-unit>
 			<trans-unit id="newContentElement" resname="newContentElement">
 				<source>New content element</source>
 			</trans-unit>

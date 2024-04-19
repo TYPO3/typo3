@@ -23,6 +23,8 @@ import Viewport from '@typo3/backend/viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 
+type RequestType = 'location'|'ajax'|undefined;
+
 class Item {
   public visible: boolean = true;
 
@@ -32,7 +34,7 @@ class Item {
     public readonly description: string,
     public readonly icon: string,
     public readonly url: string,
-    public readonly requestType: string,
+    public readonly requestType: RequestType,
     public readonly defaultValues: Array<any>,
     public readonly saveAndClose: boolean
   ) { }
@@ -111,7 +113,7 @@ interface DataItemInterface {
   description: string;
   icon: string;
   url: string,
-  requestType: string | undefined,
+  requestType: RequestType,
   defaultValues: Array<any> | undefined,
   saveAndClose: boolean | undefined
 }
@@ -132,10 +134,10 @@ interface Message {
 }
 
 /**
- * Module: @typo3/backend/new-content-element-wizard
+ * Module: @typo3/backend/new-record-wizard
  */
-@customElement('typo3-backend-new-content-element-wizard')
-export class NewContentElementWizard extends LitElement {
+@customElement('typo3-backend-new-record-wizard')
+export class NewRecordWizard extends LitElement {
   static styles: CSSResult[] = [
     css`
       :host {
@@ -332,6 +334,8 @@ export class NewContentElementWizard extends LitElement {
       },
     }
   }) categories: Categories = new Categories([]);
+  @property({ type: String }) searchPlaceholder: string = 'newRecordWizard.filter.placeholder';
+  @property({ type: String }) searchNothingFoundLabel: string = 'newRecordWizard.filter.noResults';
   @property({ type: String, attribute: false }) selectedCategory: Category | null = null;
   @property({ type: String, attribute: false }) searchTerm: string = '';
   @property({ type: Array, attribute: false }) messages: Message[] = [];
@@ -364,7 +368,7 @@ export class NewContentElementWizard extends LitElement {
     this.messages = [];
     if (this.selectedCategory === null) {
       this.messages = [{
-        message: lll('newContentElement.filter.noResults'),
+        message: lll(this.searchNothingFoundLabel),
         severity: 'info'
       }];
     }
@@ -418,7 +422,7 @@ export class NewContentElementWizard extends LitElement {
           .value="${this.searchTerm}"
           @input="${(event: InputEvent): void => { this.filter((<HTMLInputElement>event.target).value); }}"
           @keydown="${(event: KeyboardEvent): void => { if (event.key === KeyTypesEnum.ESCAPE) { event.stopImmediatePropagation(); this.filter(''); } }}"
-          placeholder="${lll('newContentElement.filter.placeholder')}"
+          placeholder="${lll(this.searchPlaceholder)}"
         />
       </form>
     `;
@@ -544,6 +548,6 @@ export class NewContentElementWizard extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'typo3-backend-new-content-element-wizard': NewContentElementWizard;
+    'typo3-backend-new-record-wizard': NewRecordWizard;
   }
 }

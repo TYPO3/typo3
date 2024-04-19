@@ -21,7 +21,7 @@ import ModuleMenu from './module-menu';
 import Notification from '@typo3/backend/notification';
 import Viewport from './viewport';
 import { ModuleStateStorage } from './storage/module-state-storage';
-import '@typo3/backend/new-content-element-wizard';
+import '@typo3/backend/new-record-wizard';
 
 /**
  * @exports @typo3/backend/context-menu-actions

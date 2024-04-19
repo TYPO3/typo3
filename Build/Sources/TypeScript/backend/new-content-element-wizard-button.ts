@@ -15,7 +15,7 @@ import { customElement, property } from 'lit/decorators';
 import { html, css, LitElement, TemplateResult } from 'lit';
 import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
-import '@typo3/backend/new-content-element-wizard';
+import '@typo3/backend/new-record-wizard';
 
 /**
  * Module: @typo3/backend/new-content-element-wizard-button
