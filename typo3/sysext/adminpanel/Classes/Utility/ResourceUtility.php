@@ -50,7 +50,7 @@ class ResourceUtility
                 }
             }
             if ($module instanceof SubmoduleProviderInterface) {
-                $subResult = self::getAdditionalResourcesForModules($module->getSubModules());
+                $subResult = self::getAdditionalResourcesForModules($module->getSubModules(), $attributes);
                 $result['js'] .= $subResult['js'];
                 $result['css'] .= $subResult['css'];
             }
