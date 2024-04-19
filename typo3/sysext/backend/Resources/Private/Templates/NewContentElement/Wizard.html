@@ -1,14 +1,7 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: '@typo3/backend/tabs.js'
-    }"
-/>
 
 <f:if condition="{positionSelection}">
     <h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
