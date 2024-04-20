@@ -29,6 +29,8 @@ use Doctrine\DBAL\Query\Join;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Doctrine\DBAL\Query\QueryException;
 use Doctrine\DBAL\Query\QueryType;
+use Doctrine\DBAL\Query\Union;
+use Doctrine\DBAL\Query\UnionType;
 use TYPO3\CMS\Core\Database\Connection;
 
 /**
@@ -114,6 +116,13 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     protected WithCollection $typo3_with;
 
     /**
+     * The QueryBuilder for the union parts.
+     *
+     * @var Union[]
+     */
+    protected array $typo3_unionParts = [];
+
+    /**
      * Initializes a new <tt>QueryBuilder</tt>.
      *
      * @param Connection $connection The DBAL Connection.
@@ -144,6 +153,44 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
         if (is_object($this->having)) {
             $this->having = clone $this->having;
         }
+    }
+
+    /**
+     * Specifies union parts to be used to build a UNION query.
+     * Replaces any previously specified parts.
+     *
+     * <code>
+     *     $qb = $conn->createQueryBuilder()
+     *         ->union('SELECT 1 AS field1', 'SELECT 2 AS field1');
+     * </code>
+     *
+     * @return $this
+     */
+    public function union(string|ConcreteQueryBuilder|DoctrineQueryBuilder $part): self
+    {
+        parent::union($part);
+        $this->type = QueryType::UNION;
+        $this->typo3_unionParts = [new Union($part)];
+        return $this;
+    }
+
+    /**
+     * Add parts to be used to build a UNION query.
+     *
+     * <code>
+     *     $qb = $conn->createQueryBuilder()
+     *         ->union('SELECT 1 AS field1')
+     *         ->addUnion('SELECT 2 AS field1', 'SELECT 3 AS field1')
+     * </code>
+     *
+     * @return $this
+     */
+    public function addUnion(string|ConcreteQueryBuilder|DoctrineQueryBuilder $part, UnionType $type = UnionType::DISTINCT): self
+    {
+        parent::addUnion($part, $type);
+        $this->type = QueryType::UNION;
+        $this->typo3_unionParts[] = new Union($part, $type);
+        return $this;
     }
 
     /**

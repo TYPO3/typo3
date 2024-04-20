@@ -26,7 +26,9 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Query\From;
 use Doctrine\DBAL\Query\Join;
+use Doctrine\DBAL\Query\QueryException;
 use Doctrine\DBAL\Query\QueryType;
+use Doctrine\DBAL\Query\UnionType;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -63,6 +65,16 @@ final class QueryBuilderTest extends UnitTestCase
             null,
             $this->concreteQueryBuilder
         );
+    }
+
+    protected function tearDown(): void
+    {
+        unset(
+            $this->concreteQueryBuilder,
+            $this->connection,
+            $this->subject,
+        );
+        parent::tearDown();
     }
 
     #[Test]
@@ -1324,5 +1336,91 @@ final class QueryBuilderTest extends UnitTestCase
         )->willReturn($this->createMock(Result::class));
 
         $subject->executeQuery();
+    }
+
+    #[Test]
+    public function unionWithOneUnionPartThrowException(): void
+    {
+        $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
+        $queryBuilder->union('SELECT 1 AS field_one');
+
+        $this->expectException(QueryException::class);
+        $this->expectExceptionMessage(
+            'Insufficient UNION parts give, need at least 2. '
+            . 'Please use union() and addUnion() to set enough UNION parts.',
+        );
+
+        $queryBuilder->getSQL();
+    }
+
+    #[Test]
+    public function unionAllReturnsUnionAllQuery(): void
+    {
+        $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
+        $queryBuilder
+            ->union('SELECT 1 AS field_one')
+            ->addUnion('SELECT 2 as field_one', UnionType::ALL);
+
+        self::assertSame('SELECT 1 AS field_one UNION ALL SELECT 2 as field_one', $queryBuilder->getSQL());
+    }
+
+    #[Test]
+    public function unionAllAndLimitClauseReturnsUnionAllQuery(): void
+    {
+        $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
+        $queryBuilder
+            ->union('SELECT 1 AS field_one')
+            ->addUnion('SELECT 2 as field_one', UnionType::ALL)
+            ->setMaxResults(10)
+            ->setFirstResult(10);
+
+        self::assertSame('SELECT 1 AS field_one UNION ALL SELECT 2 as field_one LIMIT 10 OFFSET 10', $queryBuilder->getSQL());
+    }
+
+    #[Test]
+    public function unionDistinctQueryReturnsUnionDistinctQuery(): void
+    {
+        $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $qb = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
+        $qb
+            ->union('SELECT 1 AS field_one')
+            ->addUnion('SELECT 2 as field_one', UnionType::DISTINCT);
+
+        self::assertSame('SELECT 1 AS field_one UNION SELECT 2 as field_one', $qb->getSQL());
+    }
+
+    #[Test]
+    public function unionAllQueryWithOrderByReturnsUnionAllQueryWithOrderBy(): void
+    {
+        $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
+        $queryBuilder
+            ->union('SELECT 1 AS field_one')
+            ->addUnion('SELECT 2 as field_one', UnionType::ALL)
+            ->orderBy('field_one', 'ASC');
+
+        self::assertSame('SELECT 1 AS field_one UNION ALL SELECT 2 as field_one ORDER BY `field_one` ASC', $queryBuilder->getSQL());
+    }
+
+    #[Test]
+    public function unionDistinctQueryAndOrderByReturnsUnionQueryWithOrderBy(): void
+    {
+        $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
+        $queryBuilder
+            ->union('SELECT 1 AS field_one')
+            ->addUnion('SELECT 2 as field_one', UnionType::DISTINCT)
+            ->orderBy('field_one', 'ASC');
+
+        self::assertSame('SELECT 1 AS field_one UNION SELECT 2 as field_one ORDER BY `field_one` ASC', $queryBuilder->getSQL());
     }
 }

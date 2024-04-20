@@ -29,6 +29,7 @@ use Doctrine\DBAL\Query\From;
 use Doctrine\DBAL\Query\Join;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Doctrine\DBAL\Query\QueryType;
+use Doctrine\DBAL\Query\UnionType;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\StringType;
@@ -453,6 +454,44 @@ class QueryBuilder extends ConcreteQueryBuilder
     protected function getCountExpression(string $column): string
     {
         return 'COUNT(' . $column . ')';
+    }
+
+    /**
+     * Specifies union parts to be used to build a UNION query.
+     * Replaces any previously specified parts.
+     *
+     * ```php
+     *   $qb = $conn->createQueryBuilder()
+     *     ->union('SELECT 1 AS field1', 'SELECT 2 AS field1');
+     * ```
+     *
+     * @return $this
+     */
+    public function union(string|QueryBuilder|ConcreteQueryBuilder|DoctrineQueryBuilder $part): QueryBuilder
+    {
+        $this->type = QueryType::UNION;
+        $concreteQueryBuilder = $this->getConcreteQueryBuilder();
+        $concreteQueryBuilder->union($part);
+        return $this;
+    }
+
+    /**
+     * Add parts to be used to build a UNION query.
+     *
+     * ```php
+     *   $qb = $conn->createQueryBuilder()
+     *     ->union('SELECT 1 AS field1')
+     *     ->addUnion('SELECT 2 AS field1', 'SELECT 3 AS field1')
+     * ```
+     *
+     * @return $this
+     */
+    public function addUnion(string|QueryBuilder|ConcreteQueryBuilder|DoctrineQueryBuilder $part, UnionType $type = UnionType::DISTINCT): QueryBuilder
+    {
+        $this->type = QueryType::UNION;
+        $concreteQueryBuilder = $this->getConcreteQueryBuilder();
+        $concreteQueryBuilder->addUnion($part, $type);
+        return $this;
     }
 
     /**

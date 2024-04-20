@@ -233,4 +233,12 @@ class MockPlatform extends DoctrineAbstractPlatform
         }
         return $quoteChar . str_replace($quoteChar, $quoteChar . $quoteChar, $str) . $quoteChar;
     }
+
+    /**
+     * Returns the union select query part surrounded by parenthesis if possible for platform.
+     */
+    public function getUnionSelectPartSQL(string $subQuery): string
+    {
+        return $subQuery;
+    }
 }
