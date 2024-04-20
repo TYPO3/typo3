@@ -27,6 +27,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Command\Exception\WizardDoesNotNeedToMakeChangesException;
+use TYPO3\CMS\Install\Command\Exception\WizardMarkedAsDoneException;
+use TYPO3\CMS\Install\Command\Exception\WizardNotFoundException;
 use TYPO3\CMS\Install\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
@@ -102,60 +105,67 @@ class UpgradeWizardRunCommand extends Command
         $this->output = new SymfonyStyle($input, $output);
         $this->input = $input;
         $this->bootstrap();
-
-        if ($input->getArgument('wizardName')) {
-            $wizardToExecute = $input->getArgument('wizardName');
-            $wizardToExecute = is_string($wizardToExecute) ? $wizardToExecute : '';
-            if ($this->upgradeWizardsService->isWizardDone($wizardToExecute)) {
-                $this->output->note(sprintf('Wizard %s marked as done. Skipped.', $wizardToExecute));
-                $result = Command::SUCCESS;
-            } elseif (($upgradeWizard = $this->getWizard($wizardToExecute)) !== null) {
-                $prerequisitesFulfilled = $this->handlePrerequisites([$upgradeWizard]);
-                if ($prerequisitesFulfilled === true) {
-                    $result = $this->runSingleWizard($upgradeWizard);
-                } else {
-                    $result = Command::FAILURE;
-                }
-            } else {
-                $this->output->error('No such wizard: ' . $wizardToExecute);
-                $result = Command::FAILURE;
-            }
-        } else {
-            $result = $this->runAllWizards();
+        $wizardToExecute = (string)$input->getArgument('wizardName');
+        if ($wizardToExecute === '') {
+            return $this->runAllWizards();
         }
-        return $result;
+
+        try {
+            $upgradeWizard = $this->getWizard($wizardToExecute);
+        } catch (WizardMarkedAsDoneException|WizardDoesNotNeedToMakeChangesException $e) {
+            $this->output->note($e->getMessage());
+            return Command::SUCCESS;
+        } catch (WizardNotFoundException $e) {
+            $this->output->error($e->getMessage());
+            return Command::FAILURE;
+        }
+
+        $prerequisitesFulfilled = $this->handlePrerequisites([$upgradeWizard]);
+        if ($prerequisitesFulfilled === true) {
+            return $this->runSingleWizard($upgradeWizard);
+        }
+        return Command::FAILURE;
     }
 
     /**
      * Get Wizard instance by class name and identifier
      * Returns null if wizard is already done
      */
-    protected function getWizard(string $identifier): ?UpgradeWizardInterface
+    protected function getWizard(string $identifier): UpgradeWizardInterface
     {
         // already done
         if ($this->upgradeWizardsService->isWizardDone($identifier)) {
-            return null;
+            throw new WizardMarkedAsDoneException(
+                sprintf('Wizard %s already marked as done', $identifier),
+                1713880347
+            );
         }
-
         $wizard = $this->upgradeWizardsService->getUpgradeWizard($identifier);
         if ($wizard === null) {
-            return null;
+            throw new WizardNotFoundException(
+                sprintf('No such wizard: %s', $identifier),
+                1713880629
+            );
         }
 
         if ($wizard instanceof ChattyInterface) {
             $wizard->setOutput($this->output);
         }
-
         if ($wizard->updateNecessary()) {
             return $wizard;
         }
-        if ($wizard instanceof RepeatableInterface) {
-            $this->output->note('Wizard ' . $identifier . ' does not need to make changes.');
-        } else {
-            $this->output->note('Wizard ' . $identifier . ' does not need to make changes. Marking wizard as done.');
+
+        if (!($wizard instanceof RepeatableInterface)) {
             $this->upgradeWizardsService->markWizardAsDone($wizard);
+            throw new WizardMarkedAsDoneException(
+                sprintf('Wizard %s does not need to make changes. Marking wizard as done.', $identifier),
+                1713880485
+            );
         }
-        return null;
+        throw new WizardDoesNotNeedToMakeChangesException(
+            sprintf('Wizard %s does not need to make changes.', $identifier),
+            1713880493
+        );
     }
 
     /**
@@ -253,9 +263,12 @@ class UpgradeWizardRunCommand extends Command
         $returnCode = Command::SUCCESS;
         $wizardInstances = [];
         foreach ($this->upgradeWizardsService->getUpgradeWizardIdentifiers() as $identifier) {
-            $wizardInstances[] = $this->getWizard($identifier);
+            try {
+                $wizardInstances[] = $this->getWizard($identifier);
+            } catch (WizardMarkedAsDoneException|WizardDoesNotNeedToMakeChangesException|WizardNotFoundException) {
+                // NOOP
+            }
         }
-        $wizardInstances = array_filter($wizardInstances);
         if (count($wizardInstances) > 0) {
             $prerequisitesResult = $this->handlePrerequisites($wizardInstances);
             if ($prerequisitesResult === false) {
