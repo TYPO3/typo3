@@ -71,27 +71,21 @@ class BackendUserController extends ActionController
     ) {}
 
     /**
-     * Override the default action if found in user uc
+     * Store a valid selected action as defaultAction
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
         /** @var Request $request */
         $arguments = $request->getArguments();
         $moduleData = $request->getAttribute('moduleData');
-        if (
-            isset($arguments['action'])
-            && in_array((string)$arguments['action'], ['index', 'groups', 'online', 'filemounts'])
+
+        if (in_array((string)($arguments['action'] ?? ''), ['list', 'groups', 'online', 'filemounts'], true)
             && (string)$moduleData->get('defaultAction') !== (string)$arguments['action']
         ) {
             $moduleData->set('defaultAction', (string)$arguments['action']);
             $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
-        } elseif (
-            !isset($arguments['action'])
-            && $moduleData->has('defaultAction')
-            && in_array((string)$moduleData->get('defaultAction'), ['index', 'groups', 'online', 'filemounts'])
-        ) {
-            $request = $request->withControllerActionName((string)$moduleData->get('defaultAction'));
         }
+
         return parent::processRequest($request);
     }
 
@@ -125,11 +119,27 @@ class BackendUserController extends ActionController
     }
 
     /**
+     * Default action, forwarding the request to either a defined default action or the default entry point "list"
+     */
+    public function indexAction(): ResponseInterface
+    {
+        $moduleData = $this->request->getAttribute('moduleData');
+
+        if ($moduleData->has('defaultAction')
+            && in_array((string)$moduleData->get('defaultAction'), ['list', 'groups', 'online', 'filemounts'], true)
+        ) {
+            return new ForwardResponse((string)$moduleData->get('defaultAction'));
+        }
+
+        return new ForwardResponse('list');
+    }
+
+    /**
      * Displays all BackendUsers
      *
      * @param Demand|null $demand
      */
-    public function indexAction(Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
+    public function listAction(Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
 
@@ -163,7 +173,7 @@ class BackendUserController extends ActionController
             'compareUserList' => !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '',
         ]);
 
-        $this->addMainMenu('index');
+        $this->addMainMenu('list');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $addUserButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-plus', Icon::SIZE_SMALL))
@@ -176,7 +186,7 @@ class BackendUserController extends ActionController
         $buttonBar->addButton($addUserButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('backend_user_management')
-            ->setArguments(['action' => 'index'])
+            ->setArguments(['action' => 'list'])
             ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
@@ -265,7 +275,7 @@ class BackendUserController extends ActionController
     {
         $compareUserList = array_keys((array)$this->moduleData->get('compareUserList', []));
         if (empty($compareUserList)) {
-            return $this->redirect('index');
+            return $this->redirect('list');
         }
 
         $compareData = [];
@@ -324,7 +334,7 @@ class BackendUserController extends ActionController
                 ContextualFeedbackSeverity::OK
             );
         }
-        return new ForwardResponse('index');
+        return new ForwardResponse('list');
     }
 
     /**
@@ -333,7 +343,7 @@ class BackendUserController extends ActionController
     public function addToCompareListAction(int $uid): ResponseInterface
     {
         $this->addToCompareList('compareUserList', $uid);
-        return new ForwardResponse('index');
+        return new ForwardResponse('list');
     }
 
     /**
@@ -345,7 +355,7 @@ class BackendUserController extends ActionController
         if ($redirectToCompare) {
             return $this->redirect('compare');
         }
-        return $this->redirect('index');
+        return $this->redirect('list');
     }
 
     /**
@@ -354,7 +364,7 @@ class BackendUserController extends ActionController
     public function removeAllFromCompareListAction(): ResponseInterface
     {
         $this->cleanCompareList('compareUserList');
-        return $this->redirect('index');
+        return $this->redirect('list');
     }
 
     /**
@@ -561,8 +571,8 @@ class BackendUserController extends ActionController
         $menu->addMenuItem(
             $menu->makeMenuItem()
             ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUsers', 'beuser'))
-            ->setHref($this->uriBuilder->uriFor('index'))
-            ->setActive($currentAction === 'index')
+            ->setHref($this->uriBuilder->uriFor('list'))
+            ->setActive($currentAction === 'list')
         );
         if ($currentAction === 'show') {
             $menu->addMenuItem(
@@ -576,7 +586,7 @@ class BackendUserController extends ActionController
             $menu->addMenuItem(
                 $menu->makeMenuItem()
                 ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compareBackendUsers', 'beuser'))
-                ->setHref($this->uriBuilder->uriFor('index'))
+                ->setHref($this->uriBuilder->uriFor('list'))
                 ->setActive(true)
             );
         }
