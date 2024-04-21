@@ -33,6 +33,7 @@ return [
         'controllerActions' => [
             BackendUserController::class => [
                 'index',
+                'list',
                 'show',
                 'addToCompareList',
                 'removeFromCompareList',
