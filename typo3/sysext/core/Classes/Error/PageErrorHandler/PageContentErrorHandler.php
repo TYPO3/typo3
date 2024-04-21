@@ -17,10 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Error\PageErrorHandler;
 
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -44,6 +47,8 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     protected ResponseFactoryInterface $responseFactory;
     protected SiteFinder $siteFinder;
     protected LinkService $link;
+    protected RequestFactoryInterface $requestFactory;
+    protected GuzzleClientFactory $guzzleClientFactory;
 
     /**
      * PageContentErrorHandler constructor.
@@ -63,6 +68,8 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         $this->responseFactory = $container->get(ResponseFactoryInterface::class);
         $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $this->link = $container->get(LinkService::class);
+        $this->requestFactory = $container->get(RequestFactoryInterface::class);
+        $this->guzzleClientFactory = $container->get(GuzzleClientFactory::class);
     }
 
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
@@ -70,6 +77,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         try {
             $urlParams = $this->link->resolve($this->errorHandlerConfiguration['errorContentSource']);
             $urlParams['pageuid'] = (int)($urlParams['pageuid'] ?? 0);
+            $urlType = $urlParams['type'] ?? LinkService::TYPE_UNKNOWN;
             $resolvedUrl = $this->resolveUrl($request, $urlParams);
 
             // avoid denial-of-service amplification scenario
@@ -78,6 +86,11 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                     'The error page could not be resolved, as the error page itself is not accessible',
                     $this->statusCode
                 );
+            }
+            // External URL most likely pointing to additional hosts or pages not contained in the current instance,
+            // and using internal sub requests would never receive a valid page. Send an external request instead.
+            if ($urlType === LinkService::TYPE_URL) {
+                return $this->sendExternalRequest($resolvedUrl, $request);
             }
             // Create a sub-request and do not take any special query parameters into account
             $subRequest = $request->withQueryParams([])->withUri(new Uri($resolvedUrl))->withMethod('GET');
@@ -126,6 +139,50 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         $request = $request->withAttribute('originalRequest', $originalRequest);
 
         return $this->application->handle($request);
+    }
+
+    /**
+     * Sends an external request to fetch the error page from a remote resource.
+     *
+     * A custom header is added and checked to mitigate request loops, which
+     * indicates additional configuration error in the error handler config.
+     */
+    protected function sendExternalRequest(string $url, ServerRequestInterface $originalRequest): ResponseInterface
+    {
+        if ($originalRequest->hasHeader('Requested-By')
+            && in_array('TYPO3 Error Handler', $originalRequest->getHeader('Requested-By'), true)
+        ) {
+            // If the header is set here, it is a recursive call within the same instance where an
+            // outer error handler called a page that results in another error handler call. To break
+            // the loop, we except here.
+            return new HtmlResponse(
+                'The error page could not be resolved, the error page itself is not accessible',
+                $this->statusCode
+            );
+        }
+        try {
+            $request = $this->requestFactory->createRequest('GET', $url)
+                ->withHeader('Content-Type', 'text/html')
+                ->withHeader('Requested-By', 'TYPO3 Error Handler');
+            $response = $this->guzzleClientFactory->getClient()->send($request);
+            // In case global guzzle configuration has been changed to not throw an exception
+            // for error status codes, the response status code is checked here.
+            if ($response->getStatusCode() >= 300) {
+                return new HtmlResponse(
+                    'The error page could not be resolved, as the error page itself is not accessible',
+                    $this->statusCode
+                );
+            }
+            return $this->responseFactory
+                ->createResponse($this->statusCode)
+                ->withHeader('Content-Type', $response->getHeader('Content-Type'))
+                ->withBody($response->getBody());
+        } catch (GuzzleException) {
+            return new HtmlResponse(
+                'The error page could not be resolved, the error page itself is not accessible',
+                $this->statusCode
+            );
+        }
     }
 
     /**
