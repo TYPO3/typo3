@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Site\Entity;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -190,7 +191,9 @@ final class SiteTest extends UnitTestCase
         $container = new Container();
         $container->set(Application::class, $app);
         $container->set(Features::class, new Features());
+        $container->set(GuzzleClientFactory::class, new GuzzleClientFactory());
         $container->set(RequestFactory::class, new RequestFactory(new GuzzleClientFactory()));
+        $container->set(RequestFactoryInterface::class, new RequestFactory(new GuzzleClientFactory()));
         $container->set(ResponseFactoryInterface::class, new ResponseFactory());
         $container->set(LinkService::class, $link);
         $container->set(SiteFinder::class, $siteFinder);
@@ -267,7 +270,9 @@ final class SiteTest extends UnitTestCase
         $container = new Container();
         $container->set(Application::class, $app);
         $container->set(Features::class, new Features());
+        $container->set(GuzzleClientFactory::class, new GuzzleClientFactory());
         $container->set(RequestFactory::class, new RequestFactory(new GuzzleClientFactory()));
+        $container->set(RequestFactoryInterface::class, new RequestFactory(new GuzzleClientFactory()));
         $container->set(ResponseFactoryInterface::class, new ResponseFactory());
         $container->set(LinkService::class, $link);
         $container->set(SiteFinder::class, $siteFinder);
