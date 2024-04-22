@@ -299,7 +299,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     $tagAttributes['href'] = $linkInformation['href'] ?? $tagAttributes['href'];
                 }
 
-                $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true) . '>'
+                $blockSplit[$k] = '<a ' . GeneralUtility::implodeAttributes($tagAttributes, true, true) . '>'
                     . $this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])) . '</a>';
             }
         }

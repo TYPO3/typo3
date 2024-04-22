@@ -462,6 +462,16 @@ final class ContentObjectRendererTest extends FunctionalTestCase
                 ],
                 '<a href="fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
+            'Link to file with empty attributes' => [
+                'My file',
+                [
+                    'parameter' => 'fileadmin/foo.bar',
+                    'ATagParams' => 'download',
+                    'fileTarget' => '_blank',
+                    'title' => 'Title of the file',
+                ],
+                '<a href="fileadmin/foo.bar" target="_blank" download="" title="Title of the file">My file</a>',
+            ],
             'Link to file with attributes and additional href' => [
                 'My file',
                 [
