@@ -92,7 +92,16 @@
                                     </button>
                                 </td>
                                 <td class="align-top">
-                                    {rootPage.title}
+                                    <f:if condition="{page.siteIdentifier}">
+                                        <f:then>
+                                            <f:be.link route="site_configuration.edit" parameters="{site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.editSiteConfiguration')}">
+                                                {rootPage.title}
+                                            </f:be.link>
+                                        </f:then>
+                                        <f:else>
+                                            {rootPage.title}
+                                        </f:else>
+                                    </f:if>
                                 </td>
                                 <td class="align-top">
                                     <f:if condition="{page.siteIdentifier}">
@@ -137,7 +146,7 @@
                                 <td class="align-top nowrap col-control">
                                     <div class="btn-group">
                                         <f:if condition="{page.siteIdentifier}">
-                                            <f:be.link route="site_configuration.edit" parameters="{site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}" class="btn btn-default">
+                                            <f:be.link route="site_configuration.edit" parameters="{site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.editSiteConfiguration')}" class="btn btn-default">
                                                 <core:icon identifier="actions-open" />
                                             </f:be.link>
                                             <button
