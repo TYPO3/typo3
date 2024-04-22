@@ -38,7 +38,7 @@ final class SiteModuleCest
         $I->see('Site Configuration', 'h1');
 
         $I->amGoingTo('edit an automatically created site configuration');
-        $I->click('Edit');
+        $I->click('Edit site configuration');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->see('Edit Site Configuration', 'h1');
 

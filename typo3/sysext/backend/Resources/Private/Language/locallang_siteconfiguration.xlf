@@ -24,6 +24,9 @@
 			<trans-unit id="overview.addSiteConfiguration" resname="overview.addSiteConfiguration">
 				<source>Add new site configuration for this site</source>
 			</trans-unit>
+			<trans-unit id="overview.editSiteConfiguration" resname="overview.editSiteConfiguration">
+				<source>Edit site configuration</source>
+			</trans-unit>
 			<trans-unit id="overview.deleteSiteConfiguration" resname="overview.deleteSiteConfiguration">
 				<source>Delete site configuration</source>
 			</trans-unit>
