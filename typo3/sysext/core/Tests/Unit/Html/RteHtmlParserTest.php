@@ -21,6 +21,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RteHtmlParserTest extends UnitTestCase
@@ -754,5 +756,24 @@ final class RteHtmlParserTest extends UnitTestCase
             'allowTags' => 'keep,remove',
         ]);
         self::assertEquals($input, $result);
+    }
+
+    #[Test]
+    public function emptyAttributesAreKeptOnAnchorTags(): void
+    {
+        $linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $linkServiceMock->method('resolve')->with('t3://file?uid=123')->willReturn(
+            [
+                'type' => LinkService::TYPE_FILE,
+                'file' => '123',
+            ]
+        );
+        GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceMock);
+        $subject = new RteHtmlParser($this->createMock(EventDispatcherInterface::class));
+        $input = '<a href="t3://file?uid=123" download>Download Image</a>';
+        $result = $subject->transformTextForPersistence($input, [
+            'mode' => 'ts_links',
+        ]);
+        self::assertStringContainsString('download', $result);
     }
 }

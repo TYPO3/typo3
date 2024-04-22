@@ -234,7 +234,7 @@ class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
     {
         return sprintf(
             '<a %s>%s</a>',
-            GeneralUtility::implodeAttributes($this->getAttributes(), true),
+            GeneralUtility::implodeAttributes($this->getAttributes(), true, true),
             $this->linkText
         );
     }
