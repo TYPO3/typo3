@@ -66,6 +66,7 @@ return [
         ],
         'dependencies' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.dependencies',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site.dependencies',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',

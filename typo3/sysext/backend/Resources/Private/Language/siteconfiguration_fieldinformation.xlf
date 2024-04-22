@@ -18,6 +18,9 @@
 			<trans-unit id="site.baseVariants" resname="site.baseVariants">
 				<source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
 			</trans-unit>
+			<trans-unit id="site.dependencies" resname="site.dependencies">
+				<source>Site sets ship parts of site configuration as composable pieces. Sets deliver Settings, TypoScript, and Page TSConfig for the scope of this site.</source>
+			</trans-unit>
 			<trans-unit id="site_language.base" resname="site_language.base">
 				<source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
 			</trans-unit>
