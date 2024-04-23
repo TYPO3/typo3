@@ -449,11 +449,6 @@ module.exports = function (grunt) {
         ]
       }
     },
-    newer: {
-      options: {
-        cache: './.cache/grunt-newer/'
-      }
-    },
     npmcopy: {
       options: {
         clean: false,
@@ -772,7 +767,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-stylelint');
-  grunt.loadNpmTasks('grunt-newer');
   grunt.loadNpmTasks('grunt-concurrent');
 
   /**
@@ -797,7 +791,7 @@ module.exports = function (grunt) {
    * - sass
    * - postcss
    */
-  grunt.registerTask('css', ['exec:stylefix', 'sass', 'newer:postcss']);
+  grunt.registerTask('css', ['exec:stylefix', 'sass', 'postcss']);
 
   /**
    * grunt update task
@@ -815,10 +809,11 @@ module.exports = function (grunt) {
    * call "$ grunt compile-typescript"
    *
    * This task does the following things:
-   * - 1) Check all TypeScript files (*.ts) with ESLint which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
-   * - 2) Compiles all TypeScript files (*.ts) which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
+   * - 1) Remove previously built JS files from local JavaScript directory
+   * - 2) Check all TypeScript files (*.ts) with ESLint which are located in Sources/TypeScript/<EXTKEY>/*.ts
+   * - 3) Compiles all TypeScript files (*.ts) which are located in Sources/TypeScript/<EXTKEY>/*.ts
    */
-  grunt.registerTask('compile-typescript', ['tsconfig', 'eslint', 'exec:ts']);
+  grunt.registerTask('compile-typescript', ['clear-built-js', 'tsconfig', 'eslint', 'exec:ts']);
 
   grunt.registerTask('copy-lit', ['es-module-lexer-init', 'copy:lit']);
 
@@ -832,7 +827,7 @@ module.exports = function (grunt) {
    * - 2) Copy all generated JavaScript files to public folders
    * - 3) Minify build
    */
-  grunt.registerTask('scripts', ['compile-typescript', 'newer:terser:typescript', 'es-module-lexer-init', 'newer:copy:ts_files']);
+  grunt.registerTask('scripts', ['compile-typescript', 'terser:typescript', 'es-module-lexer-init', 'copy:ts_files']);
 
   /**
    * grunt clear-build task
@@ -841,10 +836,24 @@ module.exports = function (grunt) {
    *
    * Removes all build-related assets, e.g. cache and built files
    */
-  grunt.registerTask('clear-build', function () {
-    grunt.option('force');
-    grunt.file.delete('.cache');
-    grunt.file.delete('JavaScript');
+  grunt.registerTask('clear-build', ['clear-build-cache', 'clear-built-js']);
+
+  /**
+   * Removes build-related caching information
+   */
+  grunt.registerTask('clear-build-cache', function () {
+    if (grunt.file.isDir('.cache')) {
+      grunt.file.delete('.cache');
+    }
+  });
+
+  /**
+   * Removes build JavaScript files (incorporated altogether with TypeScript compilations)
+   */
+  grunt.registerTask('clear-built-js', function () {
+    if (grunt.file.isDir('JavaScript')) {
+      grunt.file.delete('JavaScript');
+    }
   });
 
   /**
