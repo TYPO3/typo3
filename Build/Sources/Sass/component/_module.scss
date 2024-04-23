@@ -40,6 +40,7 @@
     // Use overflow-y: auto to ensure ckeditor dropdowns
     // do not conflict with height: 100% on <body>
     overflow-y: auto;
+    scroll-padding-top: calc(var(--module-docheader-height) + .75rem);
 }
 
 .module-dark {

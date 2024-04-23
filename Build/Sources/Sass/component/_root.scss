@@ -2,6 +2,8 @@
 // Global CSS Variables
 //
 :root {
+    scroll-behavior: smooth;
+
     // General
     --typo3-font-family-sans-serif: #{$font-family-sans-serif};
     --typo3-font-family-monospace: #{$font-family-monospace};
