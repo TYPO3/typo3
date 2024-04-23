@@ -1064,12 +1064,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="message.description.folderDeleted" resname="message.description.folderDeleted">
 				<source>The folder "%s" was successfully deleted.</source>
 			</trans-unit>
-			<trans-unit id="message.header.folderNotDeletedHasFiles" resname="message.header.folderNotDeletedHasFiles">
-				<source>Folder not deleted</source>
-			</trans-unit>
-			<trans-unit id="message.description.folderNotDeletedHasFiles" resname="message.description.folderNotDeletedHasFiles">
-				<source>The folder cannot be deleted since it still contains files.</source>
-			</trans-unit>
 
 			<trans-unit id="buttons.logout" resname="buttons.logout">
 				<source>Logout</source>
