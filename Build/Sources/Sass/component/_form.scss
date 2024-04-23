@@ -76,6 +76,12 @@
     }
 }
 
+// Search results can be displayed as badges next to the search input field. Wrap the search
+// result with a .form-group.form-group-search-result to properly align the output.
+.form-group-search-result {
+    padding-bottom: 7px;
+}
+
 //
 // SelectIcons FieldWizard
 //
