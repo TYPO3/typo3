@@ -21,7 +21,7 @@
 		"source": "https://github.com/typo3/typo3"
 	},
 	"require": {
-		"typo3/cms-core": "13.1.0"
+		"typo3/cms-core": "13.2.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -39,7 +39,7 @@
 			"extension-key": "styleguide"
 		},
 		"branch-alias": {
-			"dev-main": "13.1.x-dev"
+			"dev-main": "13.2.x-dev"
 		}
 	}
 }

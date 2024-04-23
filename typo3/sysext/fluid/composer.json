@@ -20,8 +20,8 @@
 	},
 	"require": {
 		"symfony/dependency-injection": "^7.0",
-		"typo3/cms-core": "13.1.0",
-		"typo3/cms-extbase": "13.1.0",
+		"typo3/cms-core": "13.2.*@dev",
+		"typo3/cms-extbase": "13.2.*@dev",
 		"typo3fluid/fluid": "^2.11.0"
 	},
 	"conflict": {
@@ -29,7 +29,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-main": "13.1.x-dev"
+			"dev-main": "13.2.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {
