@@ -28,7 +28,7 @@
 				<source>Workspaces</source>
 			</trans-unit>
 			<trans-unit id="noResults" resname="noResults">
-				<source>No records found</source>
+				<source>No records found.</source>
 			</trans-unit>
 			<trans-unit id="ok" resname="ok">
 				<source>Ok</source>
