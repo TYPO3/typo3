@@ -58,9 +58,10 @@
                 <typo3-workspaces-record-table></typo3-workspaces-record-table>
             </div>
             <div id="workspace-contents-empty" style="display: none">
-                <div class="shadow-sm bg-info bg-gradient p-3">
-                    <f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:noResults" />
-                </div>
+                <f:be.infobox
+                    message="{f:translate(key:'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:noResults')}"
+                    state="-2"
+                />
             </div>
         </div>
         <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages, showEntireWorkspaceDropDown: showEntireWorkspaceDropDown, position: 'bottom'}" />
