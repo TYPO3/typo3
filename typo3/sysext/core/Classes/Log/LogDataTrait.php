@@ -55,17 +55,21 @@ trait LogDataTrait
      */
     protected static function formatLogDetailsStatic(string $detailString, array $substitutes): string
     {
-        // Handle legacy "%s" placeholders
-        if (str_contains($detailString, '%')) {
+        // Handles placeholders with "%" first
+        try {
             $detailString = vsprintf($detailString, $substitutes);
-        } elseif ($substitutes !== []) {
-            // Handles placeholders with "{myPlaceholder}"
-            $detailString = preg_replace_callback('/{([A-z]+)}/', static function ($matches) use ($substitutes) {
-                // $matches[0] contains the unsubstituted placeholder
-                return $substitutes[$matches[1] ?? null] ?? $matches[0];
-            }, $detailString);
+        } catch (\ValueError|\ArgumentCountError) {
+            // Ignore if $substitutes doesn't contain the number of "%" found in $detailString
         }
-        // Remove possible pending other %s
+
+        // Handles placeholders with "{myPlaceholder}"
+        $detailString = preg_replace_callback('/{([A-z]+)}/', static function (array $matches) use ($substitutes) {
+            // $matches[0] contains the unsubstituted placeholder
+            /** @var array{0: string, 1?: string} $matches added to mitigate false-positives PHPStan reportings */
+            return $substitutes[$matches[1] ?? null] ?? $matches[0];
+        }, $detailString);
+
+        // Remove possible pending %s
         return str_replace('%s', '', (string)$detailString);
     }
 }

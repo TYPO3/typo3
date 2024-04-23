@@ -31,11 +31,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/Page/TreeController.php
 
 		-
-			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/EventListener/FailedLoginAttemptNotification.php
-
-		-
 			message: "#^Offset 'eval' on array on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/AbstractNode.php
@@ -231,19 +226,9 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/FooResolver.php
 
 		-
-			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/belog/Classes/Domain/Model/LogEntry.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Belog\\\\Domain\\\\Model\\\\LogEntry\\:\\:\\$newId \\(string\\) does not accept default value of type int\\.$#"
 			count: 1
 			path: ../../typo3/sysext/belog/Classes/Domain/Model/LogEntry.php
-
-		-
-			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/belog/Classes/ViewHelpers/FormatDetailsViewHelper.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
@@ -408,11 +393,6 @@ parameters:
 		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 3
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
@@ -1269,16 +1249,6 @@ parameters:
 			message: "#^Parameter \\#4 \\$lifetime of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\RedisBackend\\:\\:set\\(\\) expects int\\|null, array given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
-
-		-
-			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/DataHandling/AbstractDataHandlerActionTestCase.php
-
-		-
-			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/DataScenarios/AbstractDataHandlerActionTestCase.php
 
 		-
 			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\:\\:\\$where_hid_del\\.$#"
@@ -2876,11 +2846,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Updates/DatabaseRowsUpdateWizard.php
 
 		-
-			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Updates/SysLogSerializationUpdate.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{string, string, string\\} and array\\<TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\> will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
@@ -2914,11 +2879,6 @@ parameters:
 			message: "#^Parameter \\#3 \\$reference of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Linktype\\\\ExternalLinktype\\:\\:checkLink\\(\\) expects TYPO3\\\\CMS\\\\Linkvalidator\\\\LinkAnalyzer, null given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/linkvalidator/Tests/Unit/Linktype/ExternalLinktypeTest.php
-
-		-
-			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Command/ListSysLogCommand.php
 
 		-
 			message: "#^Binary operation \"\\>\\>\" between string and 1 results in an error\\.$#"
@@ -2999,11 +2959,6 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/webhooks/Tests/Functional/WebhookExecutionTest.php
-
-		-
-			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/RemoteServer.php
 
 		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
