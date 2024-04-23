@@ -176,7 +176,7 @@ class MetaDataRepository implements SingletonInterface
         if (array_key_exists('uid', $updateRow)) {
             unset($updateRow['uid']);
         }
-        $updateRow = array_diff($updateRow, $metaDataFromDatabase);
+        $updateRow = array_diff_assoc($updateRow, $metaDataFromDatabase);
         if ($updateRow === []) {
             // Nothing to update - return current database row
             return $metaDataFromDatabase;
