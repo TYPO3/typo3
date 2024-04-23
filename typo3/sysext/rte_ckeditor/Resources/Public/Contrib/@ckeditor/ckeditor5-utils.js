@@ -32,7 +32,7 @@ class m{constructor(t,e){this.source=t,this.name=e,this.path=[],this.stop=functi
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */const b=new Array(256).fill("").map(((t,e)=>("0"+e.toString(16)).slice(-2)));function _(){const t=4294967296*Math.random()>>>0,e=4294967296*Math.random()>>>0,n=4294967296*Math.random()>>>0,o=4294967296*Math.random()>>>0;return"e"+b[t>>0&255]+b[t>>8&255]+b[t>>16&255]+b[t>>24&255]+b[e>>0&255]+b[e>>8&255]+b[e>>16&255]+b[e>>24&255]+b[n>>0&255]+b[n>>8&255]+b[n>>16&255]+b[n>>24&255]+b[o>>0&255]+b[o>>8&255]+b[o>>16&255]+b[o>>24&255]}
+ */const b=new Array(256).fill("").map(((t,e)=>("0"+e.toString(16)).slice(-2)));function _(){const t=4294967296*Math.random()>>>0,e=4294967296*Math.random()>>>0,n=4294967296*Math.random()>>>0,o=4294967296*Math.random()>>>0;return"e"+b[255&t]+b[t>>8&255]+b[t>>16&255]+b[t>>24&255]+b[255&e]+b[e>>8&255]+b[e>>16&255]+b[e>>24&255]+b[255&n]+b[n>>8&255]+b[n>>16&255]+b[n>>24&255]+b[255&o]+b[o>>8&255]+b[o>>16&255]+b[o>>24&255]}
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -191,7 +191,7 @@ function Ct(t,e){t instanceof HTMLTextAreaElement&&(t.value=e),t.innerHTML=e}
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */(t)),t.map((t=>"string"==typeof t?function(t){if(t.endsWith("!"))return oe(t.slice(0,-1));const e=oe(t);return(c.isMac||c.isiOS)&&e==ee.ctrl?ee.cmd:e}(t):t)).reduce(((t,e)=>e+t),0)}function ie(t){let e=re(t);return Object.entries(c.isMac||c.isiOS?Qt:Zt).reduce(((t,[n,o])=>(0!=(e&ee[n])&&(e&=~ee[n],t+=o),t)),"")+(e?ne[e]:"")}function se(t){return t==ee.arrowright||t==ee.arrowleft||t==ee.arrowup||t==ee.arrowdown}function le(t,e){const n="ltr"===e;switch(t){case ee.arrowleft:return n?"left":"right";case ee.arrowright:return n?"right":"left";case ee.arrowup:return"up";case ee.arrowdown:return"down"}}function ce(t,e){const n=le(t,e);return"down"===n||"right"===n}const ae=["ar","ara","dv","div","fa","per","fas","he","heb","ku","kur","ug","uig"];function ue(t){return ae.includes(t)?"rtl":"ltr"}
+ */(t)),t.map((t=>"string"==typeof t?function(t){if(t.endsWith("!"))return oe(t.slice(0,-1));const e=oe(t);return(c.isMac||c.isiOS)&&e==ee.ctrl?ee.cmd:e}(t):t)).reduce(((t,e)=>e+t),0)}function ie(t){let e=re(t);return Object.entries(c.isMac||c.isiOS?Qt:Zt).reduce(((t,[n,o])=>(e&ee[n]&&(e&=~ee[n],t+=o),t)),"")+(e?ne[e]:"")}function se(t){return t==ee.arrowright||t==ee.arrowleft||t==ee.arrowup||t==ee.arrowdown}function le(t,e){const n="ltr"===e;switch(t){case ee.arrowleft:return n?"left":"right";case ee.arrowright:return n?"right":"left";case ee.arrowup:return"up";case ee.arrowdown:return"down"}}function ce(t,e){const n=le(t,e);return"down"===n||"right"===n}const ae=["ar","ara","dv","div","fa","per","fas","he","heb","ku","kur","ug","uig"];function ue(t){return ae.includes(t)?"rtl":"ltr"}
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
