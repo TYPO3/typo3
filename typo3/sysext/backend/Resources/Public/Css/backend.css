@@ -4290,7 +4290,6 @@ pre.ts-hl .ts-condition{background-color:maroon;color:#fff;font-weight:700}
 pre.ts-hl .ts-error{background-color:#ff0;border:1px red dashed;font-weight:700;color:#000}
 pre.ts-hl .ts-linenum{background-color:#eee;color:#212424}
 td.permission-column-name{white-space:nowrap}
-td.permission-column-name a{text-decoration:none}
 td.permission-column-list{white-space:nowrap;width:106px}
 td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap}
 .access-legend{margin-bottom:18px}
