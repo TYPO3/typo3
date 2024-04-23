@@ -204,7 +204,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
 
         $selectedTable = (string)($request->getParsedBody()['table'] ?? $request->getQueryParams()['table'] ?? '');
         $searchWord = (string)($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? '');
-        $searchLevels = (int)($request->getParsedBody()['search_levels'] ?? $request->getQueryParams()['search_levels'] ?? 0);
+        $searchLevels = (int)($request->getParsedBody()['search_levels'] ?? $request->getQueryParams()['search_levels'] ?? $this->modTSconfig['searchLevel.']['default'] ?? 0);
         $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
 
         $dbList->start(

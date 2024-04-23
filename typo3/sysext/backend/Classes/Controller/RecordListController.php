@@ -101,7 +101,6 @@ class RecordListController
         $pointer = max(0, (int)($parsedBody['pointer'] ?? $queryParams['pointer'] ?? 0));
         $this->table = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
         $this->searchTerm = trim((string)($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? ''));
-        $search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? 0);
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
         $cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
         $siteLanguages = $request->getAttribute('site')->getAvailableLanguages($this->getBackendUserAuthentication(), false, $this->id);
@@ -133,6 +132,9 @@ class RecordListController
             $this->allowSearch = true;
             $this->moduleData->set('searchBox', true);
         }
+
+        // Get search levels from request or fall back to default, set in TSconifg
+        $search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? $this->modTSconfig['searchLevel.']['default'] ?? 0);
 
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $dbList->setRequest($request);

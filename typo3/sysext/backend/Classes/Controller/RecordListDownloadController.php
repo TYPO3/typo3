@@ -114,7 +114,7 @@ class RecordListDownloadController
         $perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageinfo = BackendUtility::readPageAccess($this->id, $perms_clause);
         $searchString = (string)($parsedBody['searchString'] ?? '');
-        $searchLevels = (int)($parsedBody['searchLevels'] ?? 0);
+        $searchLevels = (int)($parsedBody['searchLevels'] ?? $this->modTSconfig['searchLevel.']['default'] ?? 0);
         if (!is_array($pageinfo) && !($this->id === 0 && $searchString !== '' && $searchLevels !== 0)) {
             throw new AccessDeniedException('Insufficient permissions for accessing this download', 1623941361);
         }
