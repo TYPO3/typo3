@@ -32,20 +32,23 @@
                 <tr>
                     <f:if condition="{data.row.uid}">
                         <f:then>
-                            <f:variable name="editUrl">
+                            <f:variable name="editUrl"><f:spaceless>
                                 <backend:moduleLink route="permissions_pages" arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', action: 'edit', depth: depth, returnUrl: returnUrl}" />
-                            </f:variable>
+                            </f:spaceless></f:variable>
 
                             <f:comment>
                                 A "normal" page row is rendered, not the root page
                             </f:comment>
 
                             <td class="permission-column-name">
-                                <a href="{editUrl}">
+                                <f:spaceless>
                                     {data.depthData -> f:format.raw()}{data.HTML -> f:format.raw()}
                                     <f:if condition="{data.icon}">{data.icon -> f:format.raw()}</f:if>
-                                    {data.row.title -> f:format.crop(maxCharacters:20)}
-                                </a>
+                                </f:spaceless>
+                                <a
+                                    href="{editUrl}"
+                                    title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
+                                >{data.row.title -> f:format.crop(maxCharacters:20)}</a>
                             </td>
 
                             <td class="permission-column-list">
@@ -119,7 +122,6 @@
                                 </span>
                             </td>
                         </f:then>
-
                         <f:else>
                             <f:comment>
                                 Root page row is rendered
