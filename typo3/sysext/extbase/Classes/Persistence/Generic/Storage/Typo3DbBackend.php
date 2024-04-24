@@ -537,7 +537,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 }
                 // Currently this needs to return the default record (OVERLAYS_MIXED) if no translation is found
                 //however this is a hack and should actually use the overlay functionality as given in the original LanguageAspect.
-                $customLanguageAspect = new LanguageAspect($languageUid, $languageUid, LanguageAspect::OVERLAYS_MIXED);
+                $customLanguageAspect = new LanguageAspect($languageUid, $languageUid, LanguageAspect::OVERLAYS_MIXED, $languageAspect->getFallbackChain());
                 $row = $pageRepository->getLanguageOverlay($tableName, $row, $customLanguageAspect);
             }
         } elseif (is_array($row)) {
