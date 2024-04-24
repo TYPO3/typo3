@@ -96,7 +96,7 @@ export class PageBrowserTree extends PageTree {
       node.recordType,
       node.identifier,
       node.name,
-      node.identifier,
+      '',
       true
     );
   }
