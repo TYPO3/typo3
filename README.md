@@ -9,7 +9,7 @@ This document provides a basic introduction to TYPO3.
 Getting Started
 ---------------
 
-TYPO3 requires a web server with PHP and a database (e.g. MySQL).
+TYPO3 requires a web server with PHP and a database (e.g. MySQL/MariaDB).
 The backend is accessed via a supported browser.
 
 Please see the [Installation Guide](https://docs.typo3.org/installation)
