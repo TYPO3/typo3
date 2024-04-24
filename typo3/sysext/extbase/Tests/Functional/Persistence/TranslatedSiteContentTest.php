@@ -524,12 +524,11 @@ final class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
             ],
             // Expected behaviour:
-            // Element #3 is not translated in PL and it is translated in DA. It's not shown as fallback chain is not related to single CE level
-            // but on page level - and this page is translated to Polish, so no fallback is happening
+            // Element #3 is shown from DA. Element #3 from PL is not translated, but a fallback to DA is defined
             [
                 'fallbackType' => 'fallback',
                 'fallbackChain' => ['DA', 'EN'],
-                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
+                'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', '[Translate to Dansk:] Regular Element #3'],
             ],
             // Expected behaviour:
             // Non translated default language elements are not shown, because of strict mode
