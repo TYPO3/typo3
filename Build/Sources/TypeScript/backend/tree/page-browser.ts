@@ -102,7 +102,7 @@ export class PageBrowserTree extends PageTree {
       node.itemType,
       node.identifier,
       node.name,
-      node.identifier,
+      '',
       true
     );
   }
