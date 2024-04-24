@@ -19,23 +19,24 @@ import Severity from './severity';
  */
 class ProgressBar {
   private readonly template: JQuery = $(
-    '<div class="progress">' +
-      '<div class="t3js-progressbar progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" ' +
-        'aria-valuemin="0" aria-valuemax="100" style="width: 100%"> <span></span>' +
-      '</div>' +
+    '<div class="t3js-progressbar progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">' +
+      '<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>' +
     '</div>');
 
   public render(severity: number, title: string, progress: string): JQuery {
-    const progressBar = this.template.clone();
+    const progressWrapper = this.template.clone();
+    const progressBar = progressWrapper.find('.progress-bar');
+
+    progressWrapper.attr('aria-label', title);
     progressBar.addClass('progress-bar-' + Severity.getCssClass(severity));
     if (progress) {
       progressBar.css('width', progress + '%');
-      progressBar.attr('aria-valuenow', progress);
+      progressWrapper.attr('aria-valuenow', progress);
     }
     if (title) {
-      progressBar.find('span').text(title);
+      progressBar.text(title);
     }
-    return progressBar;
+    return progressWrapper;
   }
 }
 

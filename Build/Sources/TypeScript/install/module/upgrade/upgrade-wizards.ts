@@ -142,7 +142,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   }
 
   private static removeLoadingMessage($container: JQuery): void {
-    $container.find('.alert-loading').remove();
+    $container.find('.t3js-progressbar').remove();
   }
 
   private static renderProgressBar(title: string): JQuery {
@@ -382,7 +382,8 @@ class UpgradeWizards extends AbstractInteractableModule {
               list.find(this.selectorWizardsListRows + ' hr:last').remove();
             }
             let percent: number = 100;
-            const $progressBar = list.find('.progress-bar');
+            const $progressWrapper = list.find('.progress')
+            const $progressBar = $progressWrapper.find('.progress-bar');
             if (numberOfWizardsTodo > 0) {
               percent = Math.round((numberOfWizards - numberOfWizardsTodo) / data.wizards.length * 100);
             } else {
@@ -390,11 +391,11 @@ class UpgradeWizards extends AbstractInteractableModule {
                 .removeClass('progress-bar-info')
                 .addClass('progress-bar-success');
             }
+            $progressWrapper.attr('aria-valuenow', String(percent))
             $progressBar
               .removeClass('progress-bar-striped')
               .css('width', percent + '%')
-              .attr('aria-valuenow', percent)
-              .find('span')
+              .attr('aria-valuenow', String(percent))
               .text(percent + '%');
             modalContent.find(this.selectorOutputWizardsContainer).append(list);
             this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', false);

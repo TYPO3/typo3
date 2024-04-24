@@ -290,8 +290,8 @@
                                             <f:be.link route="scheduler_manage" parameters="{action: 'edit', 'uid': task.uid}">
                                                 <strong>{task.classTitle} ({task.classExtension})</strong>
                                                 <f:if condition="{task.progress}">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{task.progress}" aria-valuemin="0" aria-valuemax="100" style="width: {task.progress}%;">{task.progress}%</div>
+                                                    <div class="progress" role="progressbar" aria-valuenow="{task.progress}" aria-valuemin="0" aria-valuemax="100">
+                                                        <div class="progress-bar progress-bar-striped" style="width: {task.progress}%;">{task.progress}%</div>
                                                     </div>
                                                 </f:if>
                                                 <f:if condition="{task.additionalInformation}">

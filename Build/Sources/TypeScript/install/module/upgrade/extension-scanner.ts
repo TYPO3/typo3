@@ -181,11 +181,17 @@ class ExtensionScanner extends AbstractInteractableModule {
       + '.t3js-extensionscan-finished.panel-danger').length;
     const numberOfScannedExtensions: number = numberOfSuccess + numberOfWarning + numberOfError;
     const percent: number = (numberOfScannedExtensions / numberOfExtensions) * 100;
-    this.findInModal('.t3js-extensionScanner-progress-all-extension .progress-bar')
+
+    const progressLabel = numberOfScannedExtensions + ' of ' + numberOfExtensions + ' scanned';
+    const extensionProgressWrapper = this.findInModal('.t3js-extensionScanner-progress-all-extension');
+    extensionProgressWrapper
+      .attr('aria-valuenow', String(percent))
+      .attr('aria-label', progressLabel);
+
+    const extensionProgress = extensionProgressWrapper.find('.progress-bar');
+    extensionProgress
       .css('width', percent + '%')
-      .attr('aria-valuenow', percent)
-      .find('span')
-      .text(numberOfScannedExtensions + ' of ' + numberOfExtensions + ' scanned');
+      .text(progressLabel);
   }
 
   /**

@@ -332,6 +332,12 @@ class MultiStepWizard {
     this.setup.$carousel.data('currentSlide', nextSlideNumber);
     this.setup.$carousel.data('currentIndex', nextIndex);
 
+    const progressValue = this.setup.$carousel.data('initialStep') * nextSlideNumber;
+    const progressBarWrapper = $modalFooter.find('.progress');
+    progressBarWrapper
+      .attr('aria-valuenow', progressValue.toString(10))
+      .attr('aria-label', this.getProgressBarTitle(nextIndex));
+
     const progressBars = $modalFooter.find('.progress-bar');
 
     // Hide current progress bar section
@@ -342,7 +348,7 @@ class MultiStepWizard {
     // Increase size of next progress bar section
     progressBars
       .eq(nextIndex)
-      .width(this.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
+      .width(progressValue.toString(10) + '%')
       .removeClass('inactive');
 
     this.updateCurrentSeverity($modal, currentIndex, nextIndex);
@@ -375,6 +381,11 @@ class MultiStepWizard {
 
     $nextButton.text(top.TYPO3.lang['wizard.button.next']);
 
+    const progressValue = this.setup.$carousel.data('initialStep') * nextSlideNumber;
+    const progressBarWrapper = $modalFooter.find('.progress');
+    progressBarWrapper.attr('aria-valuenow', progressValue.toString(10));
+    progressBarWrapper.attr('aria-label', this.getProgressBarTitle(nextIndex));
+
     const progressBars = $modalFooter.find('.progress-bar');
 
     // Reset size of current progress bar
@@ -386,7 +397,7 @@ class MultiStepWizard {
     // Enable next (previous) progress bar again
     progressBars
       .eq(nextIndex)
-      .width(this.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
+      .width(progressValue.toString(10) + '%')
       .removeClass('inactive');
 
     this.updateCurrentSeverity($modal, currentIndex, nextIndex);
@@ -420,21 +431,21 @@ class MultiStepWizard {
    * @private
    */
   private getProgressBarTitle(slideIndex: number): string {
-    let progessBarTitle;
+    let progressBarTitle;
 
     if (this.setup.slides[slideIndex].progressBarTitle === null) {
       if (slideIndex === 0) {
-        progessBarTitle = top.TYPO3.lang['wizard.progressStep.start'];
+        progressBarTitle = top.TYPO3.lang['wizard.progressStep.start'];
       } else if (slideIndex >= this.setup.$carousel.data('slideCount') - 1) {
-        progessBarTitle = top.TYPO3.lang['wizard.progressStep.finish'];
+        progressBarTitle = top.TYPO3.lang['wizard.progressStep.finish'];
       } else {
-        progessBarTitle = top.TYPO3.lang['wizard.progressStep'] + String(slideIndex + 1);
+        progressBarTitle = top.TYPO3.lang['wizard.progressStep'] + String(slideIndex + 1);
       }
     } else {
-      progessBarTitle = this.setup.slides[slideIndex].progressBarTitle;
+      progressBarTitle = this.setup.slides[slideIndex].progressBarTitle;
     }
 
-    return progessBarTitle;
+    return progressBarTitle.trim();
   }
 
   /**
@@ -469,7 +480,14 @@ class MultiStepWizard {
 
     // Append progress bar to modal footer
     if (slideCount > 1) {
-      $modalFooter.prepend($('<div />', { class: 'progress' }));
+      $modalFooter.prepend($('<div />', {
+        class: 'progress',
+        role: 'progressbar',
+        'aria-valuemin': 0,
+        'aria-valuenow': initialStep,
+        'aria-valuemax': 100,
+        'aria-label': this.getProgressBarTitle(0)
+      }));
       for (let i = 0; i < this.setup.slides.length; ++i) {
         let classes;
         if (i === 0) {
@@ -481,13 +499,7 @@ class MultiStepWizard {
         }
         $modalFooter.find('.progress')
           .append(
-            $('<div />', {
-              role: 'progressbar',
-              class: classes,
-              'aria-valuemin': 0,
-              'aria-valuenow': initialStep,
-              'aria-valuemax': 100,
-            })
+            $('<div />', { class: classes })
               .width(initialStep + '%')
               .text(this.getProgressBarTitle(i))
           );

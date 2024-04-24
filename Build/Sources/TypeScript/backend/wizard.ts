@@ -187,11 +187,16 @@ class Wizard {
         $modal.find('.modal-header .close').remove();
         $modalFooter.slideUp();
       } else {
+        const progressValue = this.setup.$carousel.data('initialStep') * nextSlideNumber;
+        const progressLabel = top.TYPO3.lang['wizard.progress']
+          .replace('{0}', nextSlideNumber)
+          .replace('{1}', this.setup.$carousel.data('slideCount'));
+        $modalFooter.find('.progress')
+          .attr('aria-valuenow', progressValue.toString(10))
+          .attr('aria-label', progressLabel);
         $modalFooter.find('.progress-bar')
-          .width(this.setup.$carousel.data('initialStep') * nextSlideNumber + '%')
-          .text(top.TYPO3.lang['wizard.progress']
-            .replace('{0}', nextSlideNumber)
-            .replace('{1}', this.setup.$carousel.data('slideCount')));
+          .width(progressValue.toString(10) + '%')
+          .text(progressLabel);
       }
 
       $nextButton
@@ -248,19 +253,19 @@ class Wizard {
 
     // Append progress bar to modal footer
     if (slideCount > 1) {
+      const progressLabel = top.TYPO3.lang['wizard.progress']
+        .replace('{0}', '1')
+        .replace('{1}', slideCount.toString());
       $modalFooter.prepend(
-        $('<div />', { class: 'progress' }).append(
-          $('<div />', {
-            role: 'progressbar',
-            class: 'progress-bar',
-            'aria-valuemin': 0,
-            'aria-valuenow': initialStep,
-            'aria-valuemax': 100,
-          }).width(initialStep + '%').text(
-            top.TYPO3.lang['wizard.progress']
-              .replace('{0}', '1')
-              .replace('{1}', slideCount.toString()),
-          ),
+        $('<div />', {
+          class: 'progress',
+          role: 'progressbar',
+          'aria-valuemin': 0,
+          'aria-valuenow': initialStep,
+          'aria-valuemax': 100,
+          'aria-label': progressLabel
+        }).append(
+          $('<div />', { class: 'progress-bar' }).width(initialStep + '%').text(progressLabel),
         ),
       );
     }

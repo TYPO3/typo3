@@ -115,7 +115,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
           const data: SuggestionsResponse = await response.resolve();
           if (data.success === true) {
             if (Array.isArray(data.status)) {
-              outputContainer.find('.alert-loading').remove();
+              outputContainer.find('.t3js-progressbar').remove();
               data.status.forEach((element: MessageInterface): void => {
                 const message = InfoBox.render(element.severity, element.title, element.message);
                 outputContainer.append(message);

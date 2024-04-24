@@ -468,15 +468,16 @@ export class ProgressBarElement extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <div class="progress">
+      <div
+        class="progress"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuenow=${this.current}
+        aria-valuemax="100"
+      >
         <div
             class="progress-bar progress-bar-warning progress-bar-striped progress-bar-animated"
-            role="progressbar"
-            aria-valuemin="0"
-            aria-valuenow=${this.current}
-            aria-valuemax="100"
             style="width: ${this.current}%">
-          <span class="visually-hidden">${this.current}%</span>
         </div>
       </div>
     `

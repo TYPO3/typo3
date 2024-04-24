@@ -45,7 +45,7 @@ class FolderStructure extends AbstractInteractableModule {
   private readonly selectorPermissionContainer: string = '.t3js-folderStructure-permissions';
 
   private static removeLoadingMessage($container: JQuery): void {
-    $container.find('.alert-loading').remove();
+    $container.find('.t3js-progressbar').remove();
   }
 
   public initialize(currentModal: JQuery): void {

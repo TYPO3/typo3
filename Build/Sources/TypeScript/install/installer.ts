@@ -109,18 +109,23 @@ class Installer {
   }
 
   private setProgress(done: number): void {
-    const $progressBar: JQuery = $(this.selectorProgressBar);
-    const $progressBarSteps: JQuery = $(this.selectorProgressBarSteps);
+    const progressWrapper = document.querySelector(this.selectorProgressBar);
+    if (progressWrapper === null) {
+      return;
+    }
+    const progressBarSteps = document.querySelector(this.selectorProgressBarSteps);
     let percent: number = 0;
     if (done !== 0) {
       percent = (done / 5) * 100;
-      $progressBar.find('.progress-bar').empty().text(percent + '%');
-      $progressBarSteps.find('.progress-steps').text(done + ' of 5');
+      progressWrapper.setAttribute('aria-label', done + ' of 5');
+      progressWrapper.querySelector('.progress-bar').textContent = percent + '%';
+      progressBarSteps.querySelector('.progress-steps').textContent = done + ' of 5';
     }
-    $progressBar
-      .find('.progress-bar')
-      .css('width', percent + '%')
-      .attr('aria-valuenow', percent);
+
+    progressWrapper.setAttribute('aria-valuenow', percent.toString());
+
+    const bar = progressWrapper.querySelector('.progress-bar') as HTMLElement;
+    bar.style.width = percent + '%';
   }
 
   private getMainLayout(): void {

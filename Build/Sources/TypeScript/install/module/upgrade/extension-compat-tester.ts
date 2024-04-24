@@ -105,7 +105,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private unlockModal(): void {
-    this.findInModal(this.selectorOutputContainer).find('.alert-loading').remove();
+    this.findInModal(this.selectorOutputContainer).find('.t3js-progressbar').remove();
     this.setModalButtonsState(true);
   }
 
