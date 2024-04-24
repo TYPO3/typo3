@@ -165,8 +165,17 @@ class ImportMap
         if (!$this->cache->has($this->cacheIdentifier)) {
             return null;
         }
-        $this->importMaps = $this->cache->get($this->cacheIdentifier);
-        return $this->importMaps;
+        $importMaps = $this->cache->get($this->cacheIdentifier);
+        if ($importMaps === false) {
+            // Cache entry has been removed in the meantime
+            return null;
+        }
+        if (!is_array($importMaps)) {
+            // An invalid result is to be ignored (cache will be recreated)
+            return null;
+        }
+        $this->importMaps = $importMaps;
+        return $importMaps;
     }
 
     protected function computeImportMaps(): array

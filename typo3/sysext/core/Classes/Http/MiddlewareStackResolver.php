@@ -67,12 +67,29 @@ class MiddlewareStackResolver
      */
     public function resolve(string $stackName): array
     {
-        // Check if the registered middlewares from all active packages have already been cached
-        $cacheIdentifier = $this->getCacheIdentifier($stackName);
-        if ($this->cache->has($cacheIdentifier)) {
-            return $this->cache->require($cacheIdentifier);
-        }
+        return $this->getFromCache($stackName) ?? $this->computeMiddlewareStack($stackName);
+    }
 
+    protected function getFromCache(string $stackName): ?array
+    {
+        $cacheIdentifier = $this->getCacheIdentifier($stackName);
+        if (!$this->cache->has($cacheIdentifier)) {
+            return null;
+        }
+        $result = $this->cache->require($cacheIdentifier);
+        if ($result === false) {
+            // Cache entry has been removed in the meantime
+            return null;
+        }
+        if (!is_array($result)) {
+            // An invalid result is to be ignored (cache will be recreated)
+            return null;
+        }
+        return $result;
+    }
+
+    protected function computeMiddlewareStack(string $stackName): array
+    {
         $allMiddlewares = $this->loadConfiguration();
         $middlewares = $this->sanitizeMiddlewares($allMiddlewares);
 
