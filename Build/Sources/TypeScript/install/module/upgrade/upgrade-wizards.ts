@@ -402,17 +402,18 @@ class UpgradeWizards extends AbstractInteractableModule {
               });
             }
             let percent: number = 100;
-            const progressBar = list.querySelector<HTMLElement>('.progress-bar');
+            const progressWrapper = list.querySelector<HTMLElement>('.progress')
+            const progressBar = progressWrapper.querySelector<HTMLElement>('.progress-bar');
             if (numberOfWizardsTodo > 0) {
               percent = Math.round((numberOfWizards - numberOfWizardsTodo) / data.wizards.length * 100);
             } else {
               progressBar.classList.remove('progress-bar-info');
               progressBar.classList.add('progress-bar-success');
             }
+            progressWrapper.setAttribute('aria-valuenow', String(percent));
             progressBar.classList.remove('progress-bar-striped');
             progressBar.style.width = percent + '%';
-            progressBar.setAttribute('aria-valuenow', String(percent));
-            progressBar.querySelector('span').innerText = percent + '%';
+            progressBar.textContent = percent + '%';
             modalContent.querySelector(Identifiers.outputWizardsContainer).appendChild(list);
             (this.findInModal(Identifiers.wizardsDoneRowMarkUndone) as HTMLInputElement).disabled = false;
           } else {

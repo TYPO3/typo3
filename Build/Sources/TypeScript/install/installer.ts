@@ -106,21 +106,23 @@ class Installer {
   }
 
   private setProgress(done: number): void {
-    const progressBar = document.querySelector(Identifiers.progressBar);
-    if (progressBar === null) {
+    const progressWrapper = document.querySelector(Identifiers.progressBar);
+    if (progressWrapper === null) {
       return;
     }
     const progressBarSteps = document.querySelector(Identifiers.progressBarSteps);
     let percent: number = 0;
     if (done !== 0) {
       percent = (done / 5) * 100;
-      progressBar.querySelector('.progress-bar').textContent = percent + '%';
+      progressWrapper.setAttribute('aria-label', done + ' of 5');
+      progressWrapper.querySelector('.progress-bar').textContent = percent + '%';
       progressBarSteps.querySelector('.progress-steps').textContent = done + ' of 5';
     }
 
-    const bar = progressBar.querySelector('.progress-bar') as HTMLElement;
+    progressWrapper.setAttribute('aria-valuenow', percent.toString());
+
+    const bar = progressWrapper.querySelector('.progress-bar') as HTMLElement;
     bar.style.width = percent + '%';
-    bar.setAttribute('aria-valuenow', percent.toString());
   }
 
   private getMainLayout(): void {

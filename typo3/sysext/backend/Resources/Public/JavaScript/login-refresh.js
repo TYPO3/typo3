@@ -47,15 +47,16 @@ var MarkupIdentifiers,__decorate=function(e,t,o,s){var i,r=arguments.length,n=r<
           </div>
         </form>
       `});return t.addEventListener("typo3-modal-hidden",(()=>{this.startTask()})),t.addEventListener("typo3-modal-shown",(()=>{this.stopTask()})),t}applyOptions(e){void 0!==e.intervalTime&&this.setIntervalTime(e.intervalTime),void 0!==e.loginFramesetUrl&&this.setLoginFramesetUrl(e.loginFramesetUrl),void 0!==e.logoutUrl&&this.setLogoutUrl(e.logoutUrl),void 0!==e.requestTokenUrl&&(this.requestTokenUrl=e.requestTokenUrl)}}let loginRefreshObject,ProgressBarElement=class extends LitElement{constructor(){super(...arguments),this.current=0,this.max=100,this.advanceProgressBar=()=>{this.current++;this.current>=this.max&&this.dispatchEvent(new Event("progress-bar-overdue"))}}connectedCallback(){super.connectedCallback(),this.intervalId&&clearInterval(this.intervalId),this.intervalId=setInterval(this.advanceProgressBar,300)}disconnectedCallback(){super.disconnectedCallback(),this.intervalId&&(clearInterval(this.intervalId),this.intervalId=null)}createRenderRoot(){return this}render(){return html`
-      <div class="progress">
+      <div
+        class="progress"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuenow=${this.current}
+        aria-valuemax="100"
+      >
         <div
             class="progress-bar progress-bar-warning progress-bar-striped progress-bar-animated"
-            role="progressbar"
-            aria-valuemin="0"
-            aria-valuenow=${this.current}
-            aria-valuemax="100"
             style="width: ${this.current}%">
-          <span class="visually-hidden">${this.current}%</span>
         </div>
       </div>
     `}};__decorate([state()],ProgressBarElement.prototype,"current",void 0),ProgressBarElement=__decorate([customElement("typo3-login-refresh-progress-bar")],ProgressBarElement);export{ProgressBarElement};try{window.opener&&window.opener.TYPO3&&window.opener.TYPO3.LoginRefresh&&(loginRefreshObject=window.opener.TYPO3.LoginRefresh),parent&&parent.window.TYPO3&&parent.window.TYPO3.LoginRefresh&&(loginRefreshObject=parent.window.TYPO3.LoginRefresh),top&&top.TYPO3&&top.TYPO3.LoginRefresh&&(loginRefreshObject=top.TYPO3.LoginRefresh)}catch{}loginRefreshObject||(loginRefreshObject=new LoginRefresh,"undefined"!=typeof TYPO3&&(TYPO3.LoginRefresh=loginRefreshObject));export default loginRefreshObject;

@@ -33,9 +33,9 @@ export class ProgressBar extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <div class="progress progress-bar-${Severity.getCssClass(Severity.loading)}">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="${this.progress}" aria-valuemin="0" aria-valuemax="100" style="width: ${this.progress}%">
-         <span>${this.label}</span>
+      <div class="progress" role="progressbar" aria-valuenow="${this.progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${this.label}">
+        <div class="progress-bar progress-bar-${Severity.getCssClass(Severity.loading)} progress-bar-striped progress-bar-animated" style="width: ${this.progress}%">
+          ${this.label}
         </div>
       </div>
     `;
