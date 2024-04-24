@@ -44,6 +44,9 @@ class PackageStatesPackageCache implements PackageCacheInterface
     public function fetch(): PackageCacheEntry
     {
         $packageData = $this->coreCache->require(self::CACHE_IDENTIFIER_PREFIX . $this->getIdentifier());
+        if ($packageData === false || !is_array($packageData)) {
+            throw new PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1714031925);
+        }
 
         return PackageCacheEntry::fromCache($packageData ?: []);
     }

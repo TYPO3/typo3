@@ -85,7 +85,16 @@ class SetRegistry
             return null;
         }
         try {
-            $this->orderedSets = $this->cache->require($this->cacheIdentifier);
+            $orderedSets = $this->cache->require($this->cacheIdentifier);
+            if ($orderedSets === false) {
+                // Cache entry has been removed in the meantime
+                return null;
+            }
+            if (!is_array($orderedSets)) {
+                // An invalid result is to be ignored (cache will be recreated)
+                return null;
+            }
+            $this->orderedSets = $orderedSets;
         } catch (\Error) {
             return null;
         }
