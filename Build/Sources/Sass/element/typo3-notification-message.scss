@@ -31,7 +31,7 @@ typo3-notification-message {
     display: block;
 
     .alert {
-        box-shadow: var(--typo3-component-box-shadow);
+        box-shadow: var(--typo3-component-box-shadow-dialog);
         margin: 0;
     }
 }

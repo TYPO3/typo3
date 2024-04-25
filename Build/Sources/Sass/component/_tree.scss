@@ -366,6 +366,7 @@
 // Dragging Tooltip
 //
 .dragging-tooltip {
+    color-scheme: light dark;
     pointer-events: none;
     position: fixed;
     left: 0;
@@ -379,7 +380,7 @@
     border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
     border-radius: var(--typo3-component-border-radius);
     background-color: var(--typo3-component-bg);
-    box-shadow: var(--typo3-component-box-shadow-strong);
+    box-shadow: var(--typo3-component-box-shadow-tooltip);
     z-index: 999999;
     max-width: 250px;
 }

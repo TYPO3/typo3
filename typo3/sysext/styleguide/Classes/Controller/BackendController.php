@@ -52,6 +52,7 @@ final class BackendController
         'index',
         'typography',
         'colors',
+        'shadows',
         'trees',
         'tab',
         'tables',
@@ -184,6 +185,17 @@ final class BackendController
             'currentAction' => 'colors',
         ]);
         return $moduleTemplate->renderResponse('Backend/Colors');
+    }
+
+    private function shadowsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->addShortcutButton($moduleTemplate, 'shadows');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'shadows',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Shadows');
     }
 
     private function treesAction(ServerRequestInterface $request): ResponseInterface

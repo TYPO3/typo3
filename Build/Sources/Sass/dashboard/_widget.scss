@@ -4,7 +4,7 @@
     border-radius: $widget-border-radius;
     overflow: hidden;
     background-color: $widget-background;
-    box-shadow: $widget-shadow;
+    box-shadow: var(--typo3-component-box-shadow);
     color: $widget-color;
 
     &:hover {

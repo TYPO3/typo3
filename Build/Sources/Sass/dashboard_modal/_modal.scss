@@ -30,7 +30,7 @@
     padding: $dashboard-modal-block-padding;
     border: $dashboard-modal-block-border;
     background-color: $dashboard-modal-block-background;
-    box-shadow: $dashboard-modal-block-shadow;
+    box-shadow: var(--typo3-component-box-shadow);
     cursor: pointer;
 }
 

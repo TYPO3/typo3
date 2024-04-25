@@ -18,7 +18,7 @@
 .dashboard-tab:focus,.dashboard-tab:hover{text-decoration:none;background:#adadad;color:#000}
 .dashboard-tab--active{background:#ff8700;color:#fff}
 .dashboard-tab--active:focus,.dashboard-tab--active:hover{text-decoration:none;background:#e67a00;color:#f2f2f2}
-.dashboard-button-tab-add{margin:5px}
+.dashboard-button-tab-add{margin:5px;box-shadow:var(--typo3-component-box-shadow)}
 .dashboard-empty{position:relative}
 .dashboard-empty-content{background-color:rgba(0,0,0,.05);border:2px dashed rgba(0,0,0,.15);padding:2.5em;text-align:center}
 .dashboard-empty-content h3{font-size:1.5em;margin-bottom:.5em}
@@ -60,8 +60,8 @@
 .dashboard-button:focus,.dashboard-button:hover{text-decoration:none;background:#ff8700;color:#fff}
 .dashboard-button .dashboard-button-icon .icon{display:block}
 .dashboard-button .dashboard-button-icon+.dashboard-button-text{margin-left:.25em;margin-right:.25em}
-.dashboard-button-add{position:fixed;padding:16px;inset-inline-end:24px;bottom:24px;z-index:2}
-.widget{height:100%;border-radius:2px;overflow:hidden;background-color:#fff;box-shadow:0 2px 2px 0 rgba(0,0,0,.15);color:#000}
+.dashboard-button-add{position:fixed;padding:16px;inset-inline-end:24px;bottom:24px;z-index:2;box-shadow:var(--typo3-component-box-shadow-flyout)}
+.widget{height:100%;border-radius:2px;overflow:hidden;background-color:#fff;box-shadow:var(--typo3-component-box-shadow);color:#000}
 .widget:hover .widget-actions{opacity:1}
 .widget-content{display:flex;flex-direction:column;height:100%}
 .widget-content-title{padding:10px 20px;padding-inline-end:76px;border-bottom:1px solid #d7d7d7;font-family:"Source Sans 3",sans-serif;font-size:16px;font-weight:700;line-height:1.25}

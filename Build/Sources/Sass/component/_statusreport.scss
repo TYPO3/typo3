@@ -37,7 +37,7 @@
 :root {
     --statusreport-border-color: #{$gray-300};
     --statusreport-border-radius: 4px;
-    --statusreport-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
+    --statusreport-box-shadow: var(--typo3-component-box-shadow);
     --statusreport-spacing: .5rem;
     --statusreport-bg: #{$white};
     --statusreport-color: #{$body-color};

@@ -27,6 +27,9 @@
 			<trans-unit id="icons" xml:space="preserve">
 				<source>Icons</source>
 			</trans-unit>
+			<trans-unit id="shadows" xml:space="preserve">
+				<source>Shadows</source>
+			</trans-unit>
 			<trans-unit id="infobox" xml:space="preserve">
 				<source>Infobox</source>
 			</trans-unit>

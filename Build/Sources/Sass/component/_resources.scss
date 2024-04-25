@@ -190,7 +190,7 @@
     outline: 2px solid #fff;
     outline-offset: 0;
     border-radius: 2px;
-    box-shadow: 0 0 4px 4px rgba(0, 0, 0, .05);
+    box-shadow: var(--typo3-component-box-shadow-strong);
 }
 
 .resource-tile-image-icon {

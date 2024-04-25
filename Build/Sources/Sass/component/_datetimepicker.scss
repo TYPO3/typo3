@@ -29,7 +29,7 @@
     width: var(--flatpickr-width);
     touch-action: manipulation;
     background: var(--typo3-component-bg);
-    box-shadow: var(--typo3-component-box-shadow);
+    box-shadow: var(--typo3-component-box-shadow-tooltip);
 
     &:before {
         border-width: 5px;

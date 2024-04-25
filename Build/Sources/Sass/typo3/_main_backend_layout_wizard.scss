@@ -5,7 +5,7 @@
     --grideditor-cell-spacing: 1rem;
     --grideditor-cell-bg: #fff;
     --grideditor-cell-border-radius: 4px;
-    --grideditor-cell-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
+    --grideditor-cell-shadow: var(--typo3-component-box-shadow-strong);
     --grideditor-action-size: 32px;
     --grideditor-action-spacing: 2px;
     --grideditor-action-bg: #fafafa;

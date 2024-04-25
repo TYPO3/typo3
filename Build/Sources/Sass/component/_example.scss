@@ -3,13 +3,16 @@
 // Code and example rendering
 //
 .example {
-    color-scheme: light dark;
     color: var(--typo3-component-color);
     background-color: var(--typo3-component-bg);
     border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
     border-radius: var(--typo3-component-border-radius);
     padding: var(--typo3-spacing);
     margin-bottom: var(--typo3-spacing);
+
+    &:not([data-color-scheme]) {
+        color-scheme: light dark;
+    }
 
     & + *:not(.example) {
         margin-top: var(--typo3-component-spacing);

@@ -6,7 +6,6 @@
     --page-position-cell-spacing: 1rem;
     --page-position-target-bg: #fff;
     --page-position-target-border-radius: 4px;
-    --page-position-target-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
 }
 
 .page-position {
@@ -36,7 +35,7 @@
         background: var(--page-position-target-bg);
         border: 1px solid var(--page-position-target-bg);
         border-radius: var(--page-position-target-border-radius);
-        box-shadow: var(--page-position-target-shadow);
+        box-shadow: var(--typo3-component-box-shadow-strong);
         height: 100%;
         width: 100%;
         display: flex;

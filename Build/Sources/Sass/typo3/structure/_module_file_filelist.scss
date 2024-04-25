@@ -18,8 +18,6 @@ $dropzone-text: #333;
 $dropzone-bg: rgba(222, 235, 255, .48);
 $dropzone-z-index: 10;
 $dropzone-border-color: $info;
-$dropzone-hint-bg: $white;
-$dropzone-hint-box-shadow: 0 .25rem .5rem rgba($black, .15);
 $dropzone-close-height: 2rem;
 $dropzone-close-width: 2rem;
 $dropzone-close-line-height: 1.5rem;
@@ -76,9 +74,11 @@ $dropzone-close-hover-text: $white;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: $dropzone-hint-bg;
+            color: var(--typo3-component-color);
+            background: var(--typo3-component-bg);
             padding: 1rem;
-            box-shadow: $dropzone-hint-box-shadow;
+            border-radius: var(--typo3-component-border-radius);
+            box-shadow: var(--typo3-component-box-shadow-tooltip);
         }
     }
 }

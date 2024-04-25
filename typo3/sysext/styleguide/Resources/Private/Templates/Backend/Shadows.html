@@ -1,0 +1,54 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <div id="tx-styleguide-navigation">
+        <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="tx-styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:shadows" /></h1>
+        <p>Shadows used in the TYPO3 Backend</p>
+
+        <f:asset.css identifier="styleguide-shadow-demo">
+            .shadow-demo {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 3rem;
+                padding: 3rem;
+            }
+
+            .shadow-demo-item {
+                display: flex;
+                font-weight: bold;
+                padding: 2rem;
+                min-height: 200px;
+                color: var(--typo3-component-color);
+                background-color: var(--typo3-component-bg);
+                border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+                border-radius: var(--typo3-component-border-radius);
+                align-items: center;
+                justify-content: center;
+            }
+        </f:asset.css>
+
+        <sg:code language="html" colorschemes="true">
+            <div class="shadow-demo">
+                <div class="shadow-demo-item" style="box-shadow: var(--typo3-component-box-shadow);">default</div>
+                <div class="shadow-demo-item" style="box-shadow: var(--typo3-component-box-shadow-strong);">strong</div>
+                <div class="shadow-demo-item" style="box-shadow: var(--typo3-component-box-shadow-tooltip);">tooltip</div>
+                <div class="shadow-demo-item" style="box-shadow: var(--typo3-component-box-shadow-flyout);">flyout</div>
+                <div class="shadow-demo-item" style="box-shadow: var(--typo3-component-box-shadow-dialog);">dialog</div>
+                <div class="shadow-demo-item" style="box-shadow: var(--typo3-component-box-shadow-window);">window</div>
+            </div>
+        </sg:code>
+    </div>
+
+</f:section>
+
+</html>

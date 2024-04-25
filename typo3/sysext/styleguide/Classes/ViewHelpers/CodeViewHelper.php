@@ -41,6 +41,7 @@ final class CodeViewHelper extends AbstractViewHelper
         $this->registerArgument('language', 'string', 'the language identifier, e.g. html, php, etc.', true);
         $this->registerArgument('codeonly', 'bool', 'if true show only the code but not the example', false, false);
         $this->registerArgument('exampleonly', 'bool', 'if true show only the example but not the code', false, false);
+        $this->registerArgument('colorschemes', 'bool', 'if true show example variants forced in auto, light and dark', false, false);
     }
 
     public function render(): string
@@ -64,9 +65,15 @@ final class CodeViewHelper extends AbstractViewHelper
 
         $markup = [];
         if (!$this->arguments['codeonly']) {
-            $markup[] = '<div class="example">';
-            $markup[] = $content;
-            $markup[] = '</div>';
+            $schemes = ['auto'];
+            if ($this->arguments['colorschemes']) {
+                $schemes = ['light', 'dark'];
+            }
+            foreach ($schemes as $scheme) {
+                $markup[] = '<div class="example" data-color-scheme="' . $scheme . '">';
+                $markup[] = $content;
+                $markup[] = '</div>';
+            }
         }
         if (!$this->arguments['exampleonly']) {
             $markup[] = '<div class="example example--code">';

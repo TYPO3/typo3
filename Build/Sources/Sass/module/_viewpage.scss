@@ -65,7 +65,7 @@ $viewpage-topbar-height: 40px;
     position: relative;
     display: inline-block;
     background-color: $viewpage-item-bg;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, .2);
+    box-shadow: var(--typo3-component-box-shadow-strong);
     color: $viewpage-item-color;
 
     iframe {
