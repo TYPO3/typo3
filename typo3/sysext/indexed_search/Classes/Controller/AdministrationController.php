@@ -270,6 +270,7 @@ class AdministrationController extends ActionController
         }
         $pageRecord = BackendUtility::getRecord('pages', $pageHashRow['data_page_id']);
 
+        // words
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
         $wordRecords = $queryBuilder
             ->select('index_words.*', 'index_rel.*')
@@ -303,64 +304,12 @@ class AdministrationController extends ActionController
             ->executeQuery()
             ->fetchAllAssociative();
 
-        // top words
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
-        $topCountWords = $queryBuilder
-            ->select('index_words.baseword', 'index_rel.*')
-            ->from('index_words')
-            ->from('index_rel')
-            ->setMaxResults(20)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'index_rel.phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'index_words.is_stopword',
-                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'index_words.wid',
-                    $queryBuilder->quoteIdentifier('index_rel.wid')
-                )
-            )
-            ->orderBy('index_rel.count', 'DESC')
-            ->executeQuery()
-            ->fetchAllAssociative();
-
-        // top frequency
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_words');
-        $topFrequency = $queryBuilder
-            ->select('index_words.baseword', 'index_rel.*')
-            ->from('index_words')
-            ->from('index_rel')
-            ->setMaxResults(20)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'index_rel.phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'index_words.is_stopword',
-                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'index_words.wid',
-                    $queryBuilder->quoteIdentifier('index_rel.wid')
-                )
-            )
-            ->orderBy('index_rel.freq', 'DESC')
-            ->executeQuery()
-            ->fetchAllAssociative();
-
         $view->assignMultiple([
             'extensionConfiguration' => $this->indexerConfig,
             'phash' => $pageHash,
             'phashRow' => $pageHashRow,
             'words' => $wordRecords,
             'sections' => $sections,
-            'topCount' => $topCountWords,
-            'topFrequency' => $topFrequency,
             'debug' => $debugInfo,
             'page' => $pageRecord,
         ]);

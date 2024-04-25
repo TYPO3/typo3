@@ -394,19 +394,19 @@
 			</trans-unit>
 
 			<trans-unit id="administration.document.words" resname="administration.document.words">
-				<source>All words found on page</source>
-			</trans-unit>
-			<trans-unit id="administration.document.topCount" resname="administration.document.topCount">
-				<source>Words by top count</source>
-			</trans-unit>
-			<trans-unit id="administration.document.topFrequency" resname="administration.document.topFrequency">
-				<source>Words by frequency</source>
+				<source>Words found on this page</source>
 			</trans-unit>
 			<trans-unit id="administration.stopWords" resname="administration.stopWords">
 				<source>Stopwords</source>
 			</trans-unit>
 			<trans-unit id="administration.stopWords.save" resname="administration.stopWords.save">
 				<source>Save stopwords</source>
+			</trans-unit>
+			<trans-unit id="administration.word" resname="administration.word">
+				<source>Word</source>
+			</trans-unit>
+			<trans-unit id="administration.words" resname="administration.words">
+				<source>Words</source>
 			</trans-unit>
 			<trans-unit id="administration.statistics.sectionRecords" resname="administration.statistics.sectionRecords">
 				<source>Section records for this phash</source>
