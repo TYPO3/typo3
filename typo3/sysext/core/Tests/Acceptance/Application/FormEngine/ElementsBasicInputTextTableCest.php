@@ -83,22 +83,22 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         return [
             [
                 'description' => 'add a column',
-                'click' => 'typo3-backend-table-wizard tr > th:nth-child(2) button[title="Add column to the right"]',
+                'click' => 'typo3-formengine-table-wizard tr > th:nth-child(2) button[title="Add column to the right"]',
                 'expected' => 9,
             ],
             [
                 'description' => 'remove a column',
-                'click' => 'typo3-backend-table-wizard tr > th:nth-child(2) button[title="Remove column"]',
+                'click' => 'typo3-formengine-table-wizard tr > th:nth-child(2) button[title="Remove column"]',
                 'expected' => 6,
             ],
             [
                 'description' => 'add a row',
-                'click' => 'typo3-backend-table-wizard tbody tr:first-child > td button[title="Add row below"]',
+                'click' => 'typo3-formengine-table-wizard tbody tr:first-child > td button[title="Add row below"]',
                 'expected' => 8,
             ],
             [
                 'description' => 'remove a row',
-                'click' => 'typo3-backend-table-wizard tbody tr:first-child > td button[title="Remove row"]',
+                'click' => 'typo3-formengine-table-wizard tbody tr:first-child > td button[title="Remove row"]',
                 'expected' => 6,
             ],
         ];
@@ -112,7 +112,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         foreach ($this->addRemoveTableDataProvider() as $action) {
             $I->amGoingTo($action['description']);
             $formSection->findElement(WebDriverBy::cssSelector($action['click']))->click();
-            $elementCountSelector = count($formSection->findElements(WebDriverBy::cssSelector('typo3-backend-table-wizard td input')));
+            $elementCountSelector = count($formSection->findElements(WebDriverBy::cssSelector('typo3-formengine-table-wizard td input')));
             $formSection->getLocationOnScreenOnceScrolledIntoView();
             $I->assertEquals($elementCountSelector, $action['expected']);
         }
@@ -128,7 +128,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
 
         $I->amGoingTo('move column to the right');
         $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="0"]');
-        $I->click('typo3-backend-table-wizard tr > th:nth-child(2) button[title="Move right"]');
+        $I->click('typo3-formengine-table-wizard tr > th:nth-child(2) button[title="Move right"]');
         $I->click(self::$saveButtonLink);
         try {
             $I->wait(0.2);
@@ -140,7 +140,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
 
         $I->amGoingTo('move column to the left');
         $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="1"]');
-        $I->click('typo3-backend-table-wizard tr > th:nth-child(3) button[title="Move left"]');
+        $I->click('typo3-formengine-table-wizard tr > th:nth-child(3) button[title="Move left"]');
         $I->click(self::$saveButtonLink);
         try {
             $I->wait(0.2);
@@ -152,7 +152,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
 
         $I->amGoingTo('move row down');
         $textOriginColumn = $I->grabValueFrom('input[data-row="0"][data-col="0"]');
-        $I->click('typo3-backend-table-wizard tbody tr:first-child > td button[title="Move down"]');
+        $I->click('typo3-formengine-table-wizard tbody tr:first-child > td button[title="Move down"]');
         $I->click(self::$saveButtonLink);
         try {
             $I->wait(0.2);
@@ -164,7 +164,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
 
         $I->amGoingTo('move row up');
         $textOriginColumn = $I->grabValueFrom('input[data-row="2"][data-col="0"]');
-        $I->click('typo3-backend-table-wizard tbody tr:nth-child(3) > td button[title="Move up"]');
+        $I->click('typo3-formengine-table-wizard tbody tr:nth-child(3) > td button[title="Move up"]');
         $I->click(self::$saveButtonLink);
         try {
             $I->wait(0.2);
@@ -184,13 +184,13 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $formSection = $this->getTable($I);
         $formSection->getLocationOnScreenOnceScrolledIntoView();
 
-        $smallFieldsButton = $this->getTable($I)->findElement(WebDriverBy::cssSelector('typo3-backend-table-wizard button[title="Small fields"]'));
+        $smallFieldsButton = $this->getTable($I)->findElement(WebDriverBy::cssSelector('typo3-formengine-table-wizard button[title="Small fields"]'));
         $smallFieldsButton->click();
 
-        $textareaFields = $this->getTable($I)->findElements(WebDriverBy::cssSelector('typo3-backend-table-wizard td textarea'));
+        $textareaFields = $this->getTable($I)->findElements(WebDriverBy::cssSelector('typo3-formengine-table-wizard td textarea'));
         $I->assertCount($fieldCount, $textareaFields);
         $smallFieldsButton->click();
-        $inputFields = $this->getTable($I)->findElements(WebDriverBy::cssSelector('typo3-backend-table-wizard td input'));
+        $inputFields = $this->getTable($I)->findElements(WebDriverBy::cssSelector('typo3-formengine-table-wizard td input'));
         $I->assertCount($fieldCount, $inputFields);
     }
 
@@ -201,7 +201,7 @@ final class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $I->click('button[title="Remove column"]');
         $I->click('button[title="Remove row"]');
 
-        $fieldCount = count($formSection->findElements(WebDriverBy::cssSelector('typo3-backend-table-wizard input')));
+        $fieldCount = count($formSection->findElements(WebDriverBy::cssSelector('typo3-formengine-table-wizard input')));
 
         // Styleguide creates 3 rows and 2 columns for this field (3*2=6 input fields).
         // Removing 1 row and 1 column means 2 rows and 1 column should be left (2*1=2 input fields).

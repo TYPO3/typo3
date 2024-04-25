@@ -20,16 +20,16 @@ import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 
 /**
- * Module: @typo3/backend/element/table-wizard-element
+ * Module: @typo3/backend/form-engine/element/table-wizard-element
  *
  * @example
- * <typo3-backend-table-wizard table="[["quot;a"quot;,"quot;b"quot;],["quot;c"quot;,"quot;d"quot;]]">
- * </typo3-backend-table-wizard>
+ * <typo3-formengine-table-wizard table="[["quot;a"quot;,"quot;b"quot;],["quot;c"quot;,"quot;d"quot;]]">
+ * </typo3-formengine-table-wizard>
  *
  * This is based on W3C custom elements ("web components") specification, see
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
-@customElement('typo3-backend-table-wizard')
+@customElement('typo3-formengine-table-wizard')
 export class TableWizardElement extends LitElement {
   @property({ type: String }) type: string = 'textarea';
   @property({ type: String }) selectorData: string = '';
@@ -434,6 +434,6 @@ export class TableWizardElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'typo3-backend-table-wizard': TableWizardElement;
+    'typo3-formengine-table-wizard': TableWizardElement;
   }
 }
