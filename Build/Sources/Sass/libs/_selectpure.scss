@@ -24,7 +24,5 @@ select-pure {
     .input-group > & {
         position: relative;
         flex: 1 1 auto;
-        // @todo: Remove once bootstrap's input-group is dark-mode capable
-        color-scheme: only light;
     }
 }
