@@ -216,7 +216,7 @@ class TextTableElement extends AbstractFormElement
             '@typo3/backend/form-engine/element/text-table-element.js'
         )->instance($fieldId);
 
-        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/element/table-wizard-element.js');
+        $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/table-wizard-element.js');
         $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_wizards.xlf';
 
         $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
@@ -235,7 +235,7 @@ class TextTableElement extends AbstractFormElement
         $enclosure = ($row['table_enclosure'][0] ?? false) ? chr((int)$row['table_enclosure'][0]) : '';
 
         return sprintf(
-            '<typo3-backend-table-wizard %s></typo3-backend-table-wizard>',
+            '<typo3-formengine-table-wizard %s></typo3-formengine-table-wizard>',
             GeneralUtility::implodeAttributes([
                 'type' => 'input',
                 'append-rows' => (string)$this->numNewRows,
