@@ -36,17 +36,15 @@ final class ConfigurationModuleProviderCest
     public function selectAndDisplayConfiguration(ApplicationTester $I): void
     {
         // Module can be accessed
-        $I->see('Configuration', 'h1');
-
         // Sorting is applied and TYPO3_CONF_VARS is the default provider to display
-        $I->see('$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)', 'h2');
+        $I->see('Configuration of "$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)"', 'h1');
 
         // Middlewares provider exists
         $I->selectOption('select[name=tree]', 'HTTP Middlewares (PSR-15)');
 
         // Middleware provider can be loaded
         $I->waitForElementVisible('#ConfigurationView');
-        $I->see('HTTP Middlewares (PSR-15)', 'h2');
+        $I->see('Configuration of "HTTP Middlewares (PSR-15)"', 'h1');
 
         // Tree search can be applied
         $I->fillField('#searchValue', 'authentication');
@@ -74,7 +72,7 @@ final class ConfigurationModuleProviderCest
         ];
         foreach ($itemList as $item) {
             $I->selectOption('select[name=tree]', $item);
-            $I->see($item, 'h2');
+            $I->see('Configuration of "' . $item . '"', 'h1');
         }
     }
 }
