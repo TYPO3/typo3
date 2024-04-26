@@ -19,6 +19,9 @@
 			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
 				<source>Configuration to show</source>
 			</trans-unit>
+			<trans-unit id="configuration.headine" resname="configuration.headine">
+				<source>Configuration of "%1s"</source>
+			</trans-unit>
 			<trans-unit id="typo3ConfVars" resname="typo3ConfVars">
 				<source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
 			</trans-unit>
