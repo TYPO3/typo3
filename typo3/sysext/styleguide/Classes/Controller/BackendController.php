@@ -242,7 +242,7 @@ final class BackendController
             ];
         } else {
             $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-            $frontend->create();
+            $frontend->create('', 1, true);
             $json = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkTitle'),
                 'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkBody'),
@@ -263,7 +263,7 @@ final class BackendController
             ];
         } else {
             $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-            $frontend->create('', 1, false);
+            $frontend->create();
             $json = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkTitle'),
                 'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkBody'),
