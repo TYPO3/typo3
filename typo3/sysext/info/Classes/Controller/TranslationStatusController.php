@@ -153,7 +153,9 @@ class TranslationStatusController extends InfoModuleController
             } else {
                 $pageModuleLink = htmlspecialchars($pageTitle);
             }
-            $icon = '<span title="' . BackendUtility::getRecordIconAltText($data['row'], 'pages') . '">' . $this->iconFactory->getIconForRecord('pages', $data['row'], Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . BackendUtility::getRecordIconAltText($data['row'], 'pages') . '">'
+                . $this->iconFactory->getIconForRecord('pages', $data['row'], Icon::SIZE_SMALL)->setTitle(BackendUtility::getRecordIconAltText($data['row'], 'pages', false))->render()
+                . '</span>';
             if ($this->getBackendUser()->recordEditAccessInternals('pages', $data['row'])) {
                 $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $data['row']['uid']);
             }
