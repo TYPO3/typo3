@@ -114,6 +114,9 @@
 			<trans-unit id="filter" xml:space="preserve">
 				<source>Filter</source>
 			</trans-unit>
+			<trans-unit id="progressIndicators" xml:space="preserve">
+				<source>Progress Indicators</source>
+			</trans-unit>
 			<trans-unit id="frontendCreateButtonWithSets" xml:space="preserve">
 				<source>Create page tree with site sets</source>
 			</trans-unit>

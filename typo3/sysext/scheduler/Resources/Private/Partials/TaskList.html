@@ -290,9 +290,7 @@
                                             <f:be.link route="scheduler_manage" parameters="{action: 'edit', 'uid': task.uid}">
                                                 <strong>{task.classTitle} ({task.classExtension})</strong>
                                                 <f:if condition="{task.progress}">
-                                                    <div class="progress" role="progressbar" aria-valuenow="{task.progress}" aria-valuemin="0" aria-valuemax="100">
-                                                        <div class="progress-bar progress-bar-striped" style="width: {task.progress}%;">{task.progress}%</div>
-                                                    </div>
+                                                    <typo3-backend-progress-bar value="{task.progress}" max="100" label="{task.progress}%"></typo3-backend-progress-bar>
                                                 </f:if>
                                                 <f:if condition="{task.additionalInformation}">
                                                     <div class="additional-information"><f:format.nl2br>{task.additionalInformation}</f:format.nl2br></div>

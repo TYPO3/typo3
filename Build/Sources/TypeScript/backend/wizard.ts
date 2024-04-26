@@ -17,6 +17,7 @@ import { Carousel } from 'bootstrap';
 import { default as Modal, ModalElement } from './modal';
 import Severity from './severity';
 import Icons from './icons';
+import { topLevelModuleImport } from './utility/top-level-module-import';
 
 type SlideCallback = ($slide: JQuery, settings: WizardSettings, identifier: string) => void;
 
@@ -129,9 +130,11 @@ class Wizard {
         name: 'next',
       }],
       callback: (modal: ModalElement): void => {
-        this.setup.carousel = new Carousel(modal.querySelector('.carousel'));
-        this.addProgressBar();
-        this.initializeEvents(modal);
+        topLevelModuleImport('@typo3/backend/element/progress-bar-element.js').then((): void => {
+          this.setup.carousel = new Carousel(modal.querySelector('.carousel'));
+          this.addProgressBar();
+          this.initializeEvents(modal);
+        });
       }
     });
 
@@ -197,16 +200,12 @@ class Wizard {
         $modal.find('.modal-header .close').remove();
         $modalFooter.slideUp();
       } else {
-        const progressValue = this.setup.$carousel.data('initialStep') * nextSlideNumber;
-        const progressLabel = top.TYPO3.lang['wizard.progress']
+        const progressBar = $modalFooter.find('typo3-backend-progress-bar');
+        progressBar.attr('value', currentIndex);
+        progressBar.attr('label', top.TYPO3.lang['wizard.progress']
           .replace('{0}', nextSlideNumber)
-          .replace('{1}', this.setup.$carousel.data('slideCount'));
-        $modalFooter.find('.progress')
-          .attr('aria-valuenow', progressValue.toString(10))
-          .attr('aria-label', progressLabel);
-        $modalFooter.find('.progress-bar')
-          .width(progressValue.toString(10) + '%')
-          .text(progressLabel);
+          .replace('{1}', this.setup.$carousel.data('slideCount'))
+        );
       }
 
       $modal
@@ -260,21 +259,13 @@ class Wizard {
 
     // Append progress bar to modal footer
     if (slideCount > 1) {
-      const progressLabel = top.TYPO3.lang['wizard.progress']
+      const progressBar = document.createElement('typo3-backend-progress-bar');
+      progressBar.value = 0;
+      progressBar.max = slideCount - 1; // progress is index-based
+      progressBar.label = top.TYPO3.lang['wizard.progress']
         .replace('{0}', '1')
         .replace('{1}', slideCount.toString());
-      $modalFooter.prepend(
-        $('<div />', {
-          class: 'progress',
-          role: 'progressbar',
-          'aria-valuemin': 0,
-          'aria-valuenow': initialStep,
-          'aria-valuemax': 100,
-          'aria-label': progressLabel
-        }).append(
-          $('<div />', { class: 'progress-bar' }).width(initialStep + '%').text(progressLabel),
-        ),
-      );
+      $modalFooter.prepend(progressBar);
     }
   }
 

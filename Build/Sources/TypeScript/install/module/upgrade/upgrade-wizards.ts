@@ -145,7 +145,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   }
 
   private static removeLoadingMessage(container: HTMLElement): void {
-    container.querySelector('typo3-install-progress-bar').remove();
+    container.querySelector('typo3-backend-progress-bar')?.remove();
   }
 
   public initialize(currentModal: ModalElement): void {
@@ -224,9 +224,9 @@ class UpgradeWizards extends AbstractInteractableModule {
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardBlockingDatabaseCharsetTestResponse = await response.resolve();
-          UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (data.needsUpdate === true) {
+              UpgradeWizards.removeLoadingMessage(outputContainer);
               modalContent.querySelector(Identifiers.outputWizardsContainer)
                 .appendChild(modalContent.querySelector(Identifiers.wizardsBlockingCharsetTemplate)).cloneNode(true);
             } else {
@@ -250,7 +250,6 @@ class UpgradeWizards extends AbstractInteractableModule {
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardBlockingDatabaseCharsetFixResponse = await response.resolve();
-          UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (Array.isArray(data.status) && data.status.length > 0) {
               data.status.forEach((element: MessageInterface): void => {
@@ -279,7 +278,6 @@ class UpgradeWizards extends AbstractInteractableModule {
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardsBlockingDatabaseAddsResponse = await response.resolve();
-          UpgradeWizards.removeLoadingMessage(outputContainer);
           if (data.success === true) {
             if (data.needsUpdate === true) {
               const adds = modalContent.querySelector(Identifiers.wizardsBlockingAddsTemplate).cloneNode(true) as HTMLElement;
@@ -308,6 +306,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               this.wizardsList();
             }
           } else {
+            UpgradeWizards.removeLoadingMessage(outputContainer);
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');
           }
         },
@@ -327,7 +326,6 @@ class UpgradeWizards extends AbstractInteractableModule {
       .then(
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardsBlockingDatabaseExecuteResponse = await response.resolve();
-          UpgradeWizards.removeLoadingMessage(outputContainer);
           if (Array.isArray(data.status) && data.status.length > 0) {
             data.status.forEach((element: MessageInterface): void => {
               outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
@@ -402,18 +400,14 @@ class UpgradeWizards extends AbstractInteractableModule {
               });
             }
             let percent: number = 100;
-            const progressWrapper = list.querySelector<HTMLElement>('.progress')
-            const progressBar = progressWrapper.querySelector<HTMLElement>('.progress-bar');
+            const upgradeWizardProgress = list.querySelector('typo3-backend-progress-bar');
             if (numberOfWizardsTodo > 0) {
               percent = Math.round((numberOfWizards - numberOfWizardsTodo) / data.wizards.length * 100);
             } else {
-              progressBar.classList.remove('progress-bar-info');
-              progressBar.classList.add('progress-bar-success');
+              upgradeWizardProgress.severity = Severity.ok;
             }
-            progressWrapper.setAttribute('aria-valuenow', String(percent));
-            progressBar.classList.remove('progress-bar-striped');
-            progressBar.style.width = percent + '%';
-            progressBar.textContent = percent + '%';
+            upgradeWizardProgress.value = percent;
+            upgradeWizardProgress.label = `${numberOfWizards - numberOfWizardsTodo} of ${numberOfWizards} upgrade wizards executed`;
             modalContent.querySelector(Identifiers.outputWizardsContainer).appendChild(list);
             (this.findInModal(Identifiers.wizardsDoneRowMarkUndone) as HTMLInputElement).disabled = false;
           } else {

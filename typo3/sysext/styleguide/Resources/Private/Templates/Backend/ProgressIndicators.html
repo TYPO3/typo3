@@ -1,0 +1,46 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/element/progress-bar-element.js'
+        }"
+    />
+
+    <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:progressIndicators" /></h1>
+        <p>Progress bars represent a specific state that can be displayed in a percental fashion, e.g. amount of uploaded files, executed Upgrade Wizards or disk space usage.<br>
+            If the exact amount of data being loaded is not known, progress bars may be rendered in an indeterminate state.</p>
+        <p>If applicable, use clear wording that describes the progress bar.</p>
+
+        <f:asset.css identifier="styleguide-shadow-demo">
+            .progress-indicator-demo {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+        </f:asset.css>
+
+        <sg:code language="html" colorschemes="true">
+            <div class="progress-indicator-demo">
+                <typo3-backend-progress-bar label="Indeterminate progress"></typo3-backend-progress-bar>
+                <typo3-backend-progress-bar value="33"></typo3-backend-progress-bar>
+                <typo3-backend-progress-bar value="0.5" max="1" label="Progress with value=0.5, max=1"></typo3-backend-progress-bar>
+                <typo3-backend-progress-bar value="1" max="1" label="Upgrade wizards finished." severity="0"></typo3-backend-progress-bar>
+                <typo3-backend-progress-bar value="10" max="10" label="Done, but optional tasks failed." severity="1"></typo3-backend-progress-bar>
+                <typo3-backend-progress-bar value="10" max="10" label="Failed to download extension update." severity="2"></typo3-backend-progress-bar>
+            </div>
+        </sg:code>
+    </div>
+
+</f:section>
+
+</html>

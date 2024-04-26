@@ -15,12 +15,13 @@ import 'bootstrap';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
+import type { ModalElement } from '@typo3/backend/modal';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxQueue from '../../ajax/ajax-queue';
 import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
-import type { ModalElement } from '@typo3/backend/modal';
+import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 
 enum Identifiers {
   extensionContainer = '.t3js-extensionScanner-extension',
@@ -66,7 +67,12 @@ class ExtensionScanner extends AbstractInteractableModule {
 
   public initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
-    this.getData();
+
+    Promise.all([
+      this.loadModuleFrameAgnostic('@typo3/backend/element/progress-bar-element.js'),
+    ]).then((): void => {
+      this.getData();
+    });
 
     new RegularEvent('typo3-modal-hide', (): void => {
       AjaxQueue.flush();
@@ -186,25 +192,19 @@ class ExtensionScanner extends AbstractInteractableModule {
     panelProgress.querySelector('span').innerText = percent + '%';
   }
 
+  /**
+   * @todo: this method should be called by an event handler with fine-grained information (e.g. is the scan still in progress?)
+   */
   private setProgressForAll(): void {
     const numberOfExtensions: number = this.currentModal.querySelectorAll(Identifiers.extensionContainer).length;
-    const numberOfSuccess: number = this.currentModal.querySelectorAll(Identifiers.extensionContainer
-      + '.t3js-extensionscan-finished.panel-success').length;
-    const numberOfWarning: number = this.currentModal.querySelectorAll(Identifiers.extensionContainer
-      + '.t3js-extensionscan-finished.panel-warning').length;
-    const numberOfError: number = this.currentModal.querySelectorAll(Identifiers.extensionContainer
-      + '.t3js-extensionscan-finished.panel-danger').length;
-    const numberOfScannedExtensions: number = numberOfSuccess + numberOfWarning + numberOfError;
-    const percent: number = (numberOfScannedExtensions / numberOfExtensions) * 100;
+    const numberOfScannedExtensions: number = this.currentModal.querySelectorAll(Identifiers.extensionContainer + '.t3js-extensionscan-finished').length;
 
-    const progressLabel = numberOfScannedExtensions + ' of ' + numberOfExtensions + ' scanned';
-    const extensionProgressWrapper = this.findInModal('.t3js-extensionScanner-progress-all-extension');
-    extensionProgressWrapper.setAttribute('aria-valuenow', String(percent));
-    extensionProgressWrapper.setAttribute('aria-label', progressLabel);
-
-    const extensionProgress = extensionProgressWrapper.querySelector('.progress-bar') as HTMLElement;
-    extensionProgress.style.width = percent + '%';
-    extensionProgress.textContent = progressLabel;
+    const inProgressLabel: string = `Scanning extensions (${numberOfScannedExtensions} of ${numberOfExtensions} done)…`;
+    const extensionProgressBar = this.findInModal('.t3js-extensionScanner-progress-all-extension') as ProgressBarElement;
+    extensionProgressBar.removeAttribute('hidden');
+    extensionProgressBar.max = numberOfExtensions;
+    extensionProgressBar.value = numberOfScannedExtensions;
+    extensionProgressBar.label = inProgressLabel;
   }
 
   /**

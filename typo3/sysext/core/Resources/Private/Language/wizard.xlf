@@ -15,8 +15,8 @@
 			<trans-unit id="wizard.progress" resname="wizard.progress">
 				<source>Step {0} of {1}</source>
 			</trans-unit>
-			<trans-unit id="wizard.progressStep">
-				<source>Step-</source>
+			<trans-unit id="wizard.progressWithLabel" resname="wizard.progress">
+				<source>Step {0} of {1}: {2}</source>
 			</trans-unit>
 			<trans-unit id="wizard.progressStep.start">
 				<source>Start</source>

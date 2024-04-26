@@ -17,6 +17,7 @@ import Modal, { ModalElement, Styles, Sizes } from '@typo3/backend/modal';
 import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '@typo3/backend/notification';
+import '@typo3/backend/element/progress-bar-element';
 
 enum MarkupIdentifiers {
   loginrefresh = 't3js-modal-loginrefresh',
@@ -439,7 +440,7 @@ class LoginRefresh {
 }
 
 @customElement('typo3-login-refresh-progress-bar')
-export class ProgressBarElement extends LitElement {
+export class SelfFillingProgressBarElement extends LitElement {
   @state()
   protected current = 0;
 
@@ -468,18 +469,7 @@ export class ProgressBarElement extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <div
-        class="progress"
-        role="progressbar"
-        aria-valuemin="0"
-        aria-valuenow=${this.current}
-        aria-valuemax="100"
-      >
-        <div
-            class="progress-bar progress-bar-warning progress-bar-striped progress-bar-animated"
-            style="width: ${this.current}%">
-        </div>
-      </div>
+      <typo3-backend-progress-bar value=${100 - this.current} max="100"></typo3-backend-progress-bar>
     `
   }
 
@@ -528,6 +518,6 @@ export default loginRefreshObject;
 
 declare global {
   interface HTMLElementTagNameMap {
-    'typo3-login-refresh-progress-bar': ProgressBarElement;
+    'typo3-login-refresh-progress-bar': SelfFillingProgressBarElement;
   }
 }

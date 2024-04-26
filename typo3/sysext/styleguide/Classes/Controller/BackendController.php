@@ -67,6 +67,7 @@ final class BackendController
         'accordion',
         'pagination',
         'filter',
+        'progressIndicators',
     ];
 
     /**
@@ -454,6 +455,16 @@ final class BackendController
             'dateTimeFormat' => 'h:m d-m-Y',
         ]);
         return $moduleTemplate->renderResponse('Backend/Filter');
+    }
+
+    private function progressIndicatorsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $moduleTemplate = $this->createModuleTemplate($request, 'progressIndicators');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'progressIndicators',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/ProgressIndicators');
     }
 
     private function addShortcutButton(ModuleTemplate $moduleTemplate, string $action): void

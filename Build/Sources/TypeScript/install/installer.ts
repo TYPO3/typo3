@@ -17,17 +17,17 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import PasswordStrength from './module/password-strength';
 import { InfoBox } from './renderable/info-box';
-import './renderable/progress-bar';
 import '@typo3/backend/element/icon-element';
 import MessageInterface from '@typo3/install/message-interface';
 import { selector } from '@typo3/core/literals';
+import '@typo3/backend/element/progress-bar-element';
+import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 
 enum Identifiers {
   body = '.t3js-body',
   moduleContent = '.t3js-module-content',
   mainContent = '.t3js-installer-content',
   progressBar = '.t3js-installer-progress',
-  progressBarSteps = '.t3js-installer-progress-steps',
   databaseConnectOutput = '.t3js-installer-databaseConnect-output',
   databaseSelectOutput = '.t3js-installer-databaseSelect-output',
   databaseDataOutput = '.t3js-installer-databaseData-output'
@@ -106,23 +106,14 @@ class Installer {
   }
 
   private setProgress(done: number): void {
-    const progressWrapper = document.querySelector(Identifiers.progressBar);
-    if (progressWrapper === null) {
+    const progressBar = document.querySelector(Identifiers.progressBar) as ProgressBarElement;
+    if (progressBar === null) {
       return;
     }
-    const progressBarSteps = document.querySelector(Identifiers.progressBarSteps);
-    let percent: number = 0;
     if (done !== 0) {
-      percent = (done / 5) * 100;
-      progressWrapper.setAttribute('aria-label', done + ' of 5');
-      progressWrapper.querySelector('.progress-bar').textContent = percent + '%';
-      progressBarSteps.querySelector('.progress-steps').textContent = done + ' of 5';
+      progressBar.value = done;
+      progressBar.label = `Step ${done} of 5 completed`;
     }
-
-    progressWrapper.setAttribute('aria-valuenow', percent.toString());
-
-    const bar = progressWrapper.querySelector('.progress-bar') as HTMLElement;
-    bar.style.width = percent + '%';
   }
 
   private getMainLayout(): void {

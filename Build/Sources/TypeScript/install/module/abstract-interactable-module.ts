@@ -11,11 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import '../renderable/progress-bar';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
-import type { ProgressBar } from '../renderable/progress-bar';
 import type { ModalElement } from '@typo3/backend/modal';
 import type { WritablePart } from '@typo3/core/utility/types';
+import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 
 enum Identifiers {
   modalBody = '.t3js-modal-body',
@@ -81,16 +80,16 @@ export abstract class AbstractInteractableModule {
 
   protected renderProgressBar(
     target?: HTMLElement,
-    properties?: Partial<WritablePart<ProgressBar>>,
+    properties?: Partial<WritablePart<ProgressBarElement>>,
     mode?: 'replace' | 'prepend' | 'append'
-  ): ProgressBar {
-    this.loadModuleFrameAgnostic('@typo3/install/renderable/progress-bar.js');
+  ): ProgressBarElement {
+    this.loadModuleFrameAgnostic('@typo3/backend/element/progress-bar-element.js');
 
     target = target || this.currentModal;
 
-    const progressBar = target.ownerDocument.createElement('typo3-install-progress-bar');
+    const progressBar = target.ownerDocument.createElement('typo3-backend-progress-bar');
     if (typeof properties === 'object') {
-      Object.keys(properties).forEach((key: keyof WritablePart<ProgressBar>) => {
+      Object.keys(properties).forEach((key: keyof WritablePart<ProgressBarElement>) => {
         (progressBar[key] as unknown) = properties[key]
       });
     }
@@ -102,6 +101,7 @@ export abstract class AbstractInteractableModule {
     } else {
       target.replaceChildren(progressBar)
     }
+
     return progressBar;
   }
 }

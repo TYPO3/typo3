@@ -17,6 +17,7 @@ import { Carousel } from 'bootstrap';
 import Modal, { ModalElement } from './modal';
 import Severity from './severity';
 import Icons from './icons';
+import { topLevelModuleImport } from './utility/top-level-module-import';
 
 type SlideCallback = ($slide: JQuery, settings: MultiStepWizardSettings, identifier: string) => void;
 
@@ -160,10 +161,12 @@ class MultiStepWizard {
       }],
       additionalCssClasses: ['modal-multi-step-wizard'],
       callback: (modal: ModalElement): void => {
-        this.setup.carousel = new Carousel(modal.querySelector('.carousel'));
-        this.addButtonContainer();
-        this.addProgressBar();
-        this.initializeEvents();
+        topLevelModuleImport('@typo3/backend/element/progress-bar-element.js').then((): void => {
+          this.setup.carousel = new Carousel(modal.querySelector('.carousel'));
+          this.addButtonContainer();
+          this.addProgressBar();
+          this.initializeEvents();
+        });
       }
     });
 
@@ -359,24 +362,9 @@ class MultiStepWizard {
     this.setup.$carousel.data('currentSlide', nextSlideNumber);
     this.setup.$carousel.data('currentIndex', nextIndex);
 
-    const progressValue = this.setup.$carousel.data('initialStep') * nextSlideNumber;
-    const progressBarWrapper = $modalFooter.find('.progress');
-    progressBarWrapper
-      .attr('aria-valuenow', progressValue.toString(10))
-      .attr('aria-label', this.getProgressBarTitle(nextIndex));
-
-    const progressBars = $modalFooter.find('.progress-bar');
-
-    // Hide current progress bar section
-    progressBars
-      .eq(currentIndex)
-      .width('0%');
-
-    // Increase size of next progress bar section
-    progressBars
-      .eq(nextIndex)
-      .width(progressValue.toString(10) + '%')
-      .removeClass('inactive');
+    const progressBar = $modalFooter.find('typo3-backend-progress-bar');
+    progressBar.attr('value', nextIndex);
+    progressBar.attr('label', this.getProgressBarTitle(nextIndex));
 
     this.updateCurrentSeverity($modal, currentIndex, nextIndex);
   }
@@ -412,30 +400,11 @@ class MultiStepWizard {
     this.setup.$carousel.data('currentSlide', nextSlideNumber);
     this.setup.$carousel.data('currentIndex', nextIndex);
 
-    $modalFooter.find('.progress-bar.last-step')
-      .width(this.setup.$carousel.data('initialStep') + '%')
-      .text(this.getProgressBarTitle(this.setup.$carousel.data('slideCount') - 1));
-
     $nextButton.text(top.TYPO3.lang['wizard.button.next']);
 
-    const progressValue = this.setup.$carousel.data('initialStep') * nextSlideNumber;
-    const progressBarWrapper = $modalFooter.find('.progress');
-    progressBarWrapper.attr('aria-valuenow', progressValue.toString(10));
-    progressBarWrapper.attr('aria-label', this.getProgressBarTitle(nextIndex));
-
-    const progressBars = $modalFooter.find('.progress-bar');
-
-    // Reset size of current progress bar
-    progressBars
-      .eq(currentIndex)
-      .width(this.setup.$carousel.data('initialStep') + '%')
-      .addClass('inactive');
-
-    // Enable next (previous) progress bar again
-    progressBars
-      .eq(nextIndex)
-      .width(progressValue.toString(10) + '%')
-      .removeClass('inactive');
+    const progressBar = $modalFooter.find('typo3-backend-progress-bar');
+    progressBar.attr('value', nextIndex);
+    progressBar.attr('label', this.getProgressBarTitle(nextIndex));
 
     this.updateCurrentSeverity($modal, currentIndex, nextIndex);
   }
@@ -468,18 +437,31 @@ class MultiStepWizard {
    * @private
    */
   private getProgressBarTitle(slideIndex: number): string {
+    const slideCount = this.setup.$carousel.data('slideCount');
+    const slideNumber = slideIndex + 1;
     let progressBarTitle;
+
+    const defaultReplacements = {
+      0: String(slideNumber),
+      1: String(slideCount),
+    };
+    const replacePlaceholders = (label: string, map: Record<number, string>): string => {
+      for (const [index, replacement] of Object.entries(map)) {
+        label = label.replace(`{${index}}`, replacement);
+      }
+      return label;
+    };
 
     if (this.setup.slides[slideIndex].progressBarTitle === null) {
       if (slideIndex === 0) {
-        progressBarTitle = top.TYPO3.lang['wizard.progressStep.start'];
-      } else if (slideIndex >= this.setup.$carousel.data('slideCount') - 1) {
-        progressBarTitle = top.TYPO3.lang['wizard.progressStep.finish'];
+        progressBarTitle = replacePlaceholders(top.TYPO3.lang['wizard.progressWithLabel'], Object.assign(defaultReplacements, { 2: top.TYPO3.lang['wizard.progressStep.start'] }));
+      } else if (slideNumber >= slideCount) {
+        progressBarTitle = replacePlaceholders(top.TYPO3.lang['wizard.progressWithLabel'], Object.assign(defaultReplacements, { 2: top.TYPO3.lang['wizard.progressStep.finish'] }));
       } else {
-        progressBarTitle = top.TYPO3.lang['wizard.progressStep'] + String(slideIndex + 1);
+        progressBarTitle = replacePlaceholders(top.TYPO3.lang['wizard.progress'], defaultReplacements);
       }
     } else {
-      progressBarTitle = this.setup.slides[slideIndex].progressBarTitle;
+      progressBarTitle = replacePlaceholders(top.TYPO3.lang['wizard.progressWithLabel'], Object.assign(defaultReplacements, { 2: this.setup.slides[slideIndex].progressBarTitle }));
     }
 
     return progressBarTitle.trim();
@@ -517,30 +499,11 @@ class MultiStepWizard {
 
     // Append progress bar to modal footer
     if (slideCount > 1) {
-      $modalFooter.prepend($('<div />', {
-        class: 'progress',
-        role: 'progressbar',
-        'aria-valuemin': 0,
-        'aria-valuenow': initialStep,
-        'aria-valuemax': 100,
-        'aria-label': this.getProgressBarTitle(0)
-      }));
-      for (let i = 0; i < this.setup.slides.length; ++i) {
-        let classes;
-        if (i === 0) {
-          classes = 'progress-bar first-step';
-        } else if (i === this.setup.$carousel.data('slideCount') - 1) {
-          classes = 'progress-bar last-step inactive';
-        } else {
-          classes = 'progress-bar step inactive';
-        }
-        $modalFooter.find('.progress')
-          .append(
-            $('<div />', { class: classes })
-              .width(initialStep + '%')
-              .text(this.getProgressBarTitle(i))
-          );
-      }
+      const progressBar = document.createElement('typo3-backend-progress-bar');
+      progressBar.value = 0;
+      progressBar.max = slideCount - 1; // progress is index-based
+      progressBar.label = this.getProgressBarTitle(0);
+      $modalFooter.prepend(progressBar);
     }
   }
 

@@ -4106,7 +4106,7 @@ span.dragIcon{display:inline-block;height:16px}
 .typo3-install-content>div>:last-child{margin-bottom:0}
 .typo3-install-content-header{padding:35px}
 .typo3-install-content-header-logo{margin:0 auto;margin-bottom:15px}
-.typo3-install-content-progress{padding:15px 35px 20px;border-top:1px solid #eaeaea;background-color:#fafafa}
+.typo3-install-content-progress{padding:25px 35px 20px;border-top:1px solid #eaeaea;background-color:#fafafa}
 .typo3-install-content-progress-text{padding-bottom:7px}
 .typo3-install-content-body{border-top:1px solid #eaeaea;padding:35px}
 .typo3-install-content-body>:first-child{margin-top:0}
