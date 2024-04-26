@@ -203,9 +203,6 @@ module.exports = function (grunt) {
       backend: {
         src: '<%= paths.backend %>Public/Css/*.css'
       },
-      core: {
-        src: '<%= paths.core %>Public/Css/*.css'
-      },
       dashboard: {
         src: '<%= paths.dashboard %>Public/Css/*.css'
       },
@@ -214,9 +211,6 @@ module.exports = function (grunt) {
       },
       form: {
         src: '<%= paths.form %>Public/Css/*.css'
-      },
-      linkvalidator: {
-        src: '<%= paths.linkvalidator %>Public/Css/*.css'
       },
       t3editor: {
         src: '<%= paths.t3editor %>Public/Css/**/*.css'
