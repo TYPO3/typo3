@@ -339,6 +339,9 @@
 			<trans-unit id="actions.delete.noRowFound" resname="actions.delete.noRowFound">
 				<source>Log entry could not be found.</source>
 			</trans-unit>
+			<trans-unit id="info.noRecords.message" resname="info.noRecords.message">
+				<source>No records found.</source>
+			</trans-unit>
 			<trans-unit id="info.selectPage.title" resname="info.selectPage.title">
 				<source>No page selected</source>
 			</trans-unit>
