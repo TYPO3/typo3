@@ -50,23 +50,10 @@ page = PAGE
 page {
   typeNum = 0
   shortcutIcon = EXT:styleguide/Resources/Public/Icons/Extension.svg
-  10 = FLUIDTEMPLATE
+
+  10 = PAGEVIEW
   10 {
-    templateName = StyleguideFrontend
-    #templateName.value = StyleguideFrontend
-
-    // Define template paths
-    templateRootPaths {
-      10 = EXT:styleguide/Resources/Private/Templates/Frontend/
-    }
-
-    partialRootPaths {
-      10 = EXT:styleguide/Resources/Private/Partials/Frontend/
-    }
-
-    layoutRootPaths {
-      10 = EXT:styleguide/Resources/Private/Layouts/Frontend/
-    }
+    paths.10 = EXT:styleguide/Resources/Private/Templates/
 
     // Configure main menu
     dataProcessing {

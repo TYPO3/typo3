@@ -115,6 +115,9 @@ final class GeneratorFrontend extends AbstractGenerator
         ];
 
         if ($useSiteSets) {
+            // Set backend layout on root page
+            $data['pages'][$newIdOfEntryPage]['backend_layout'] = 'pagets__StyleguideFrontend';
+            $data['pages'][$newIdOfEntryPage]['backend_layout_next_level'] = 'pagets__StyleguideFrontend';
             $newIdOfTemplateFolder = StringUtility::getUniqueId('NEW');
             $newIdOfDummyTemplateSubsite = StringUtility::getUniqueId('NEW');
             $newIdOfExtTsTemplate = StringUtility::getUniqueId('NEW');

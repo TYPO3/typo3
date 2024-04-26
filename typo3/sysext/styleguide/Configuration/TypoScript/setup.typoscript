@@ -57,15 +57,15 @@ page {
 
     // Define template paths
     templateRootPaths {
-      10 = EXT:styleguide/Resources/Private/Templates/Frontend/
+      10 = EXT:styleguide/Resources/Private/Templates/Pages/
     }
 
     partialRootPaths {
-      10 = EXT:styleguide/Resources/Private/Partials/Frontend/
+      10 = EXT:styleguide/Resources/Private/Templates/Partials/
     }
 
     layoutRootPaths {
-      10 = EXT:styleguide/Resources/Private/Layouts/Frontend/
+      10 = EXT:styleguide/Resources/Private/Legacy/Layouts/Frontend/
     }
 
     // Configure main menu

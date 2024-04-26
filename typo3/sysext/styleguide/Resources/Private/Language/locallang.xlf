@@ -144,6 +144,12 @@
 			<trans-unit id="itemGroupLabel" xml:space="preserve">
 				<source>Item group from locallang</source>
 			</trans-unit>
+			<trans-unit id="backendLayouts.styleguideFrontend.title" xml:space="preserve">
+				<source>Styleguide Frontend</source>
+			</trans-unit>
+			<trans-unit id="backendLayouts.styleguideFrontend.colpos.0" xml:space="preserve">
+				<source>Main content</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

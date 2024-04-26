@@ -1,0 +1,25 @@
+mod {
+    web_layout {
+        BackendLayouts {
+            StyleguideFrontend {
+                title = LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:backendLayouts.styleguideFrontend.title
+                config {
+                    backend_layout {
+                        colCount = 1
+                        rowCount = 1
+                        rows {
+                            1 {
+                                columns {
+                                    1 {
+                                        name =  LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:backendLayouts.styleguideFrontend.colpos.0
+                                        colPos = 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
