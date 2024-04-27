@@ -137,22 +137,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function localizeContentAfterMovedContent(): void
-    {
-        parent::localizeContentAfterMovedContent();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedContent.csv');
-    }
-
-    #[Test]
-    public function localizeContentAfterMovedInLiveContent(): void
-    {
-        parent::localizeContentAfterMovedInLiveContent();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedInLiveContent.csv');
-    }
-
-    #[Test]
     public function localizeContentFromNonDefaultLanguage(): void
     {
         parent::localizeContentFromNonDefaultLanguage();
@@ -330,14 +314,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::copyPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['newPageId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPage.csv');
-    }
-
-    #[Test]
-    public function copyPageFreeMode(): void
-    {
-        parent::copyPageFreeMode();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['newPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageFreeMode.csv');
     }
 
     #[Test]

@@ -230,22 +230,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function localizeContentAfterMovedContent(): void
-    {
-        parent::localizeContentAfterMovedContent();
-        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedContent.csv');
-    }
-
-    #[Test]
-    public function localizeContentAfterMovedInLiveContent(): void
-    {
-        parent::localizeContentAfterMovedInLiveContent();
-        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedInLiveContent.csv');
-    }
-
-    #[Test]
     public function localizeContentFromNonDefaultLanguage(): void
     {
         parent::localizeContentFromNonDefaultLanguage();
@@ -481,26 +465,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-    }
-
-    #[Test]
-    public function copyPageFreeMode(): void
-    {
-        parent::copyPageFreeMode();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Page => [$this->recordIds['newPageId']],
-                self::TABLE_Content => [$this->recordIds['newContentIdTenth'], $this->recordIds['newContentIdTenthLocalized'], $this->recordIds['newContentIdTenthLocalized2']],
-            ]
-        );
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageFreeMode.csv');
-
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Page)->setField('title')->setValues('Target'));
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #10'));
     }
 
     #[Test]

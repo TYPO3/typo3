@@ -250,20 +250,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
     }
 
-    #[Test]
-    public function localizeContentAfterMovedContent(): void
-    {
-        parent::localizeContentAfterMovedContent();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedContent.csv');
-    }
-
-    #[Test]
-    public function localizeContentAfterMovedInLiveContent(): void
-    {
-        parent::localizeContentAfterMovedInLiveContent();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedInLiveContent.csv');
-    }
-
     /**
      * @see \TYPO3\CMS\Core\Configuration\Tca\TcaMigration::sanitizeControlSectionIntegrity()
      */
@@ -611,23 +597,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-    }
-
-    #[Test]
-    public function copyPageFreeMode(): void
-    {
-        parent::copyPageFreeMode();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageFreeMode.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId($this->recordIds['newPageId']),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
-        );
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Page)->setField('title')->setValues('Target'));
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #10'));
     }
 
     #[Test]

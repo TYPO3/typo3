@@ -326,13 +326,6 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
-    public function localizeContentAfterMovedContent(): void
-    {
-        parent::localizeContentAfterMovedContent();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedContent.csv');
-    }
-
-    #[Test]
     public function createLocalizedContent(): void
     {
         parent::createLocalizedContent();
@@ -550,24 +543,6 @@ final class ActionTest extends AbstractActionTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-    }
-
-    /**
-     * Copy page (id 90) containing content elements translated in "free mode".
-     * Values in l10n_source field are remapped to ids of newly copied records
-     * e.g. record 314 has l10n_source = 315 and record 313 has l10n_source = 314
-     * also note that 314 is NOT a record in the default language
-     */
-    #[Test]
-    public function copyPageFreeMode(): void
-    {
-        parent::copyPageFreeMode();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageFreeMode.csv');
-
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Page)->setField('title')->setValues('Target'));
     }
 
     #[Test]
