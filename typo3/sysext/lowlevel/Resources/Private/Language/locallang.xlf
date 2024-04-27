@@ -19,7 +19,7 @@
 			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
 				<source>Configuration to show</source>
 			</trans-unit>
-			<trans-unit id="configuration.headine" resname="configuration.headine">
+			<trans-unit id="configuration.headline" resname="configuration.headline">
 				<source>Configuration of "%1s"</source>
 			</trans-unit>
 			<trans-unit id="typo3ConfVars" resname="typo3ConfVars">
