@@ -31,20 +31,22 @@ editor:
 
     toolbar:
       items:
-        - clipboard
         - removeFormat
         - undo
         - redo
         # grouping separator
         - '|'
-        - find
-        - selectAll
-        - '|'
+        - findAndReplace
         - link
+        - '|'
         - insertTable
         - tableColumn
         - tableRow
         - mergeTableCells
+        - TableProperties
+        - TableCellProperties
+        - '|'
+        - selectAll
         - '|'
         - sourceEditing
         - showBlocks
