@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\SelectFlex\Modify;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\SelectFlex\AbstractActionTestCase;
 
 final class ActionTest extends AbstractActionTestCase
@@ -25,8 +26,10 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function verifyCleanReferenceIndex()
     {
-        // The test verifies the imported data set has a clean reference index by the check in tearDown()
-        self::assertTrue(true);
+        // Fix refindex, then compare with import csv again to verify nothing changed.
+        // This is to make sure the import csv is 'clean' - important for the other tests.
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $this->assertCSVDataSet(self::SCENARIO_DataSet);
     }
 
     #[Test]

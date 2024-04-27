@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\CategoryOneToMany\Modify;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\CategoryOneToMany\AbstractActionTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\StructureDoesNotHaveRecordConstraint;
@@ -30,8 +31,10 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function verifyCleanReferenceIndex(): void
     {
-        // The test verifies the imported data set has a clean reference index by the check in tearDown()
-        self::assertTrue(true);
+        // Fix refindex, then compare with import csv again to verify nothing changed.
+        // This is to make sure the import csv is 'clean' - important for the other tests.
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $this->assertCSVDataSet(self::SCENARIO_DataSet);
     }
 
     #[Test]
