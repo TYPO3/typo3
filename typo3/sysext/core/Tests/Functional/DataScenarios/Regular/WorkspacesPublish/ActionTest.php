@@ -138,7 +138,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function deleteLocalizedContentAndDeleteContent(): void
     {
-        // this test will not rely on a translated page, because it only tests the act of publishing.
+        // This test does not rely on a translated page, because it only tests the act of publishing.
         // The actual content of frontend response does not matter much, and it would increase the scope
         // of the test, when a translated page is also published here.
         parent::deleteLocalizedContentAndDeleteContent();
@@ -391,7 +391,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['newPageId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndSubPageAndSubPageContent.csv');
 
-        // Sub page is not published together with parent page
+        // Sub-page is not published together with parent page
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newSubPageId']),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
@@ -441,15 +441,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function localizeNestedPagesAndContents(): void
-    {
-        parent::localizeNestedPagesAndContents();
-        // Will publish only the page translation, not it's content elements
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedParentPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNestedPagesAndContents.csv');
-    }
-
-    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
@@ -465,83 +456,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-    }
-
-    #[Test]
-    public function localizePage(): void
-    {
-        parent::localizePage();
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePage.csv');
-
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
-    }
-
-    #[Test]
-    public function localizePageHiddenHideAtCopyFalse(): void
-    {
-        parent::localizePageHiddenHideAtCopyFalse();
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyFalse.csv');
-    }
-
-    #[Test]
-    public function localizePageNotHiddenHideAtCopyFalse(): void
-    {
-        parent::localizePageNotHiddenHideAtCopyFalse();
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyFalse.csv');
-    }
-
-    #[Test]
-    public function localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset(): void
-    {
-        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset();
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset.csv');
-    }
-
-    #[Test]
-    public function localizePageHiddenHideAtCopyDisableHideAtCopyUnset(): void
-    {
-        parent::localizePageHiddenHideAtCopyDisableHideAtCopyUnset();
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopyUnset.csv');
-    }
-
-    #[Test]
-    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
-    {
-        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse();
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
-    }
-
-    #[Test]
-    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
-    {
-        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse();
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
-    }
-
-    #[Test]
-    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
-    {
-        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue();
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
-    }
-
-    #[Test]
-    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
-    {
-        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue();
-        $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
     #[Test]
@@ -614,38 +528,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function movePageLocalizedToDifferentPageTwice(): void
-    {
-        parent::movePageLocalizedToDifferentPageTwice();
-        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedToDifferentPageTwice.csv');
-    }
-
-    #[Test]
-    public function movePageLocalizedInLiveToDifferentPageTwice(): void
-    {
-        parent::movePageLocalizedInLiveToDifferentPageTwice();
-        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveToDifferentPageTwice.csv');
-    }
-
-    #[Test]
-    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice(): void
-    {
-        parent::movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice();
-        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice.csv');
-    }
-
-    #[Test]
-    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice(): void
-    {
-        parent::movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice();
-        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice.csv');
-    }
-
-    #[Test]
     public function movePageToDifferentPageAndChangeSorting(): void
     {
         parent::movePageToDifferentPageAndChangeSorting();
@@ -667,10 +549,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Target', 'Relations', 'DataHandlerTest'));
     }
 
-    /**
-     * @see https://forge.typo3.org/issues/33104
-     * @see https://forge.typo3.org/issues/55573
-     */
     #[Test]
     public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
     {

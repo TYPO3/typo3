@@ -30,9 +30,6 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     public function createContentAndCopyContent(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_PageId);
@@ -42,9 +39,6 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     public function createContentAndLocalize(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $localizedContentId = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
@@ -53,18 +47,12 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     public function changeContentSortingAndDeleteMovedRecord(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
     }
 
     public function changeContentSortingAndDeleteLiveRecord(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         // Switch to live workspace
         $this->setWorkspaceId(0);
@@ -75,49 +63,29 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     public function deleteContentAndPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
     }
 
-    /**
-     * @see https://forge.typo3.org/issues/33104
-     * @see https://forge.typo3.org/issues/55573
-     */
     public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
+        // @see https://forge.typo3.org/issues/33104
+        // @see https://forge.typo3.org/issues/55573
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, -self::VALUE_PageIdTarget, ['title' => 'Testing #1', 'hidden' => 0]);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
     }
 
-    /**
-     * Creates a content element and copies the page in draft workspace.
-     */
     public function createContentAndCopyDraftPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
 
-    /**
-     * Creates a content element and copies the page in live workspace.
-     */
     public function createContentAndCopyLivePage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 
@@ -131,14 +99,8 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    /**
-     * Creates a page in a draft workspace and copies the parent page in draft workspace.
-     */
     public function createPageAndCopyDraftParentPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->backendUser->uc['copyLevels'] = 10;
 
         $newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
@@ -147,14 +109,8 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->recordIds['copiedPageId'] = $newTableIds[static::TABLE_Page][static::VALUE_PageId];
     }
 
-    /**
-     * Creates a page in a draft workspace and copies the parent page in live workspace.
-     */
     public function createPageAndCopyLiveParentPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->backendUser->uc['copyLevels'] = 10;
 
         $newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
@@ -170,14 +126,8 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    /**
-     * Creates nested pages in a draft workspace and copies the parent page in draft workspace.
-     */
     public function createNestedPagesAndCopyDraftParentPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->backendUser->uc['copyLevels'] = 10;
 
         $newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
@@ -190,14 +140,8 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->recordIds['copiedPageIdSecond'] = $newTableIds[static::TABLE_Page][$this->recordIds['newPageIdSecond']];
     }
 
-    /**
-     * Creates nested pages in a draft workspace and copies the parent page in live workspace.
-     */
     public function createNestedPagesAndCopyLiveParentPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->backendUser->uc['copyLevels'] = 10;
 
         $newTableIds = $this->actionService->createNewRecord(static::TABLE_Page, static::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
@@ -215,27 +159,15 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    /**
-     * Deletes a content element and copies the page in draft workspace
-     */
     public function deleteContentAndCopyDraftPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
 
-    /**
-     * Deletes a content element and copies the page in live workspace
-     */
     public function deleteContentAndCopyLivePage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
 
         // Switch to live workspace
@@ -248,27 +180,15 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    /**
-     * Changes content sorting and copies the page in draft workspace.
-     */
     public function changeContentSortingAndCopyDraftPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
 
-    /**
-     * Changes content sorting and copies the page in live workspace.
-     */
     public function changeContentSortingAndCopyLivePage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
 
         // Switch to live workspace
@@ -281,28 +201,16 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    /**
-     * Moves content either from and to the current page and copies the page in draft workspace.
-     */
     public function moveContentAndCopyDraftPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdZero, self::VALUE_PageId);
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['copiedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
 
-    /**
-     * Moves content either from and to the current page and copies the page in draft workspace.
-     */
     public function moveContentAndCopyLivePage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdZero, self::VALUE_PageId);
 
@@ -316,28 +224,16 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    /**
-     * Creates new and move placeholders for pages and deleted the parent page in draft workspace.
-     */
     public function createPlaceholdersAndDeleteDraftParentPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
         $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, ['title' => 'Testing #1']);
         $newTableIds = $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_ParentPageId);
         $this->recordIds['deletedPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_ParentPageId];
     }
 
-    /**
-     * Creates new and move placeholders for pages and deletes the parent page in live workspace.
-     */
     public function createPlaceholdersAndDeleteLiveParentPage(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultTranslations.csv');
-
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
         $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, ['title' => 'Testing #1']);
 

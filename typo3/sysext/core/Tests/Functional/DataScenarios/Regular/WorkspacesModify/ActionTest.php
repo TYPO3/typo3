@@ -250,9 +250,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #2'));
     }
 
-    /**
-     * @see \TYPO3\CMS\Core\Configuration\Tca\TcaMigration::sanitizeControlSectionIntegrity()
-     */
     #[Test]
     public function localizeContentWithEmptyTcaIntegrityColumns(): void
     {
@@ -296,13 +293,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1', '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #3'));
-    }
-
-    #[Test]
-    public function localizeContentFromNonDefaultLanguageWithAllContentElements(): void
-    {
-        parent::localizeContentFromNonDefaultLanguageWithAllContentElements();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguageWithAllContentElements.csv');
     }
 
     #[Test]
@@ -564,27 +554,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function localizePageAndContentsAndDeletePageLocalization(): void
-    {
-        // Create localized page and localize content elements first
-        parent::localizePageAndContentsAndDeletePageLocalization();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAndContentsAndDeletePageLocalization.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId($this->recordIds['localizedPageId']),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
-        );
-        self::assertEquals(404, $response->getStatusCode());
-    }
-
-    #[Test]
-    public function localizeNestedPagesAndContents(): void
-    {
-        parent::localizeNestedPagesAndContents();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNestedPagesAndContents.csv');
-    }
-
-    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
@@ -597,77 +566,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Relations'));
-    }
-
-    #[Test]
-    public function localizePage(): void
-    {
-        parent::localizePage();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePage.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
-        );
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Page)->setField('title')->setValues('[Translate to Dansk:] Relations'));
-    }
-
-    #[Test]
-    public function localizePageHiddenHideAtCopyFalse(): void
-    {
-        parent::localizePageHiddenHideAtCopyFalse();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyFalse.csv');
-    }
-
-    #[Test]
-    public function localizePageNotHiddenHideAtCopyFalse(): void
-    {
-        parent::localizePageNotHiddenHideAtCopyFalse();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyFalse.csv');
-    }
-
-    #[Test]
-    public function localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset(): void
-    {
-        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset.csv');
-    }
-
-    #[Test]
-    public function localizePageHiddenHideAtCopyDisableHideAtCopyUnset(): void
-    {
-        parent::localizePageHiddenHideAtCopyDisableHideAtCopyUnset();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopyUnset.csv');
-    }
-
-    #[Test]
-    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
-    {
-        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
-    }
-
-    #[Test]
-    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
-    {
-        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
-    }
-
-    #[Test]
-    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
-    {
-        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
-    }
-
-    #[Test]
-    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
-    {
-        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
     #[Test]
@@ -743,34 +641,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function movePageLocalizedToDifferentPageTwice(): void
-    {
-        parent::movePageLocalizedToDifferentPageTwice();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedToDifferentPageTwice.csv');
-    }
-
-    #[Test]
-    public function movePageLocalizedInLiveToDifferentPageTwice(): void
-    {
-        parent::movePageLocalizedInLiveToDifferentPageTwice();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveToDifferentPageTwice.csv');
-    }
-
-    #[Test]
-    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice(): void
-    {
-        parent::movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice.csv');
-    }
-
-    #[Test]
-    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice(): void
-    {
-        parent::movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice.csv');
-    }
-
-    #[Test]
     public function movePageToDifferentPageAndChangeSorting(): void
     {
         parent::movePageToDifferentPageAndChangeSorting();
@@ -795,10 +665,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Target', 'Relations', 'DataHandlerTest'));
     }
 
-    /**
-     * @see https://forge.typo3.org/issues/33104
-     * @see https://forge.typo3.org/issues/55573
-     */
     #[Test]
     public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
     {
@@ -815,9 +681,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Target', 'Testing #1', 'DataHandlerTest'));
     }
 
-    /*************************************
-     * Copying page contents and sub-pages
-     *************************************/
     #[Test]
     public function createContentAndCopyDraftPage(): void
     {
@@ -1057,9 +920,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function createLocalizedNotHiddenWorkspaceContentHiddenInLive(): void
     {
-        // Run test with translations
-        $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefaultTranslations.csv');
-
         // Have a hidden live content element
         $this->setWorkspaceId(0);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['hidden' => 1]);
