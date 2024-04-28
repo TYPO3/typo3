@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\Wizard;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -122,6 +123,89 @@ final class SuggestWizardControllerTest extends UnitTestCase
             'false' => [false, ['ctrl' => ['hideTable' => false]]],
             'string with true' => [true, ['ctrl' => ['hideTable' => '1']]],
             'string with false' => [false, ['ctrl' => ['hideTable' => '0']]],
+        ];
+    }
+
+    #[DataProvider('currentBackendUserMayAccessTableIsEvaluatedCorrectlyDataProvider')]
+    #[Test]
+    public function currentBackendUserMayAccessTableIsEvaluatedCorrectly(
+        bool $expected,
+        array $tableConfig,
+        bool $isAdmin
+    ): void {
+        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser->method('isAdmin')->willReturn($isAdmin);
+
+        $subject = $this->getAccessibleMock(SuggestWizardController::class, ['getBackendUser'], [], '', false);
+        $subject->method('getBackendUser')->willReturn($backendUser);
+
+        self::assertEquals($expected, $subject->_call('currentBackendUserMayAccessTable', $tableConfig));
+    }
+
+    public static function currentBackendUserMayAccessTableIsEvaluatedCorrectlyDataProvider(): array
+    {
+        return [
+            'isAdmin' => [
+                true,
+                [],
+                true,
+            ],
+            'adminOnly set' => [
+                false,
+                [
+                    'ctrl' => [
+                        'adminOnly' => true,
+                    ],
+                ],
+                false,
+            ],
+            'adminOnly not set, rootlevel not set and security.ignoreRootLevelRestriction not set' => [
+                true,
+                [],
+                false,
+            ],
+            'adminOnly not set, rootlevel is true and security.ignoreRootLevelRestriction not set' => [
+                false,
+                [
+                    'ctrl' => [
+                        'rootLevel' => true,
+                    ],
+                ],
+                false,
+            ],
+            'adminOnly not set, rootlevel is false and security.ignoreRootLevelRestriction not set' => [
+                true,
+                [
+                    'ctrl' => [
+                        'rootLevel' => false,
+                    ],
+                ],
+                false,
+            ],
+            'adminOnly not set, rootlevel is true and security.ignoreRootLevelRestriction is false' => [
+                false,
+                [
+                    'ctrl' => [
+                        'rootLevel' => true,
+                        'security' => [
+                            'ignoreRootLevelRestriction' => false,
+                        ],
+                    ],
+                ],
+                false,
+            ],
+            'adminOnly not set, rootlevel is true and security.ignoreRootLevelRestriction is true' => [
+                true,
+                [
+                    'ctrl' => [
+                        'rootLevel' => true,
+                        'security' => [
+                            'ignoreRootLevelRestriction' => true,
+                        ],
+                    ],
+                ],
+                false,
+            ],
         ];
     }
 

@@ -211,12 +211,13 @@ class SuggestWizardController
         }
 
         // If the user is no admin, they may not access admin-only tables
-        if ($tableConfig['ctrl']['adminOnly']) {
+        if ($tableConfig['ctrl']['adminOnly'] ?? false) {
             return false;
         }
 
         // allow access to root level pages if security restrictions should be bypassed
-        return !$tableConfig['ctrl']['rootLevel'] || $tableConfig['ctrl']['security']['ignoreRootLevelRestriction'];
+        return !($tableConfig['ctrl']['rootLevel'] ?? false) ||
+            ($tableConfig['ctrl']['security']['ignoreRootLevelRestriction'] ?? false);
     }
 
     /**
