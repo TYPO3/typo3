@@ -220,15 +220,91 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
-    public function copyPasteContent(): void
+    public function copyLocalizedContent(): void
     {
-        parent::copyPasteContent();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPasteContent.csv');
+        parent::copyLocalizedContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1 (copy 1)'));
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1 (copy 1)'));
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1 (copy 1)'));
+    }
+
+    #[Test]
+    public function copyLocalizedContentToLocalizedPage(): void
+    {
+        parent::copyLocalizedContentToLocalizedPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContentToLocalizedPage.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1'));
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1'));
+    }
+
+    #[Test]
+    public function copyLocalizedContentToNonTranslatedPage(): void
+    {
+        parent::copyLocalizedContentToNonTranslatedPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContentToNonTranslatedPage.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1'));
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1'));
+    }
+
+    #[Test]
+    public function copyLocalizedContentToPartiallyLocalizedPage(): void
+    {
+        parent::copyLocalizedContentToPartiallyLocalizedPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContentToPartiallyLocalizedPage.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1'));
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget)->withLanguageId(self::VALUE_LanguageIdSecond));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1'));
     }
 
     #[Test]

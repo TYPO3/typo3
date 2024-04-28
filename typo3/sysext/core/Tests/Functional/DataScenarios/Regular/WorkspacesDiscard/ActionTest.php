@@ -132,6 +132,38 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function copyLocalizedContent(): void
+    {
+        parent::copyLocalizedContent();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContent.csv');
+    }
+
+    #[Test]
+    public function copyLocalizedContentToLocalizedPage(): void
+    {
+        parent::copyLocalizedContentToLocalizedPage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContentToLocalizedPage.csv');
+    }
+
+    #[Test]
+    public function copyLocalizedContentToNonTranslatedPage(): void
+    {
+        parent::copyLocalizedContentToNonTranslatedPage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContentToNonTranslatedPage.csv');
+    }
+
+    #[Test]
+    public function copyLocalizedContentToPartiallyLocalizedPage(): void
+    {
+        parent::copyLocalizedContentToPartiallyLocalizedPage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContentToPartiallyLocalizedPage.csv');
+    }
+
+    #[Test]
     public function localizeContent(): void
     {
         parent::localizeContent();

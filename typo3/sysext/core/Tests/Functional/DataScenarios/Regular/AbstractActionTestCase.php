@@ -140,9 +140,35 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
     }
 
-    public function copyPasteContent(): void
+    public function copyLocalizedContent(): void
     {
-        $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageId, ['header' => 'Testing #1']);
+        $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_PageId);
+        $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+    }
+
+    public function copyLocalizedContentToLocalizedPage(): void
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_LanguageId);
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_LanguageIdSecond);
+
+        $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_PageIdTarget);
+        $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+    }
+
+    public function copyLocalizedContentToPartiallyLocalizedPage(): void
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_LanguageId);
+
+        $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_PageIdTarget);
+        $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+    }
+
+    public function copyLocalizedContentToNonTranslatedPage(): void
+    {
+        $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_PageIdTarget);
+        $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
     }
 
     public function localizeContent(): void
