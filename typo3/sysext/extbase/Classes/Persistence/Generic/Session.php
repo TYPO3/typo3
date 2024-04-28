@@ -71,8 +71,6 @@ class Session
         return $this->reconstitutedEntities;
     }
 
-    // @todo implement the is dirty checking behaviour of the Flow persistence session here
-
     /**
      * Checks whether the given object is known to the identity map
      */

@@ -49,8 +49,6 @@ interface BackendInterface
      */
     public function commit();
 
-    // @todo refactor towards being closer to the Flow backend interface again
-
     /**
      * Returns the (internal) identifier for the object, if it is known to the
      * backend. Otherwise NULL is returned.

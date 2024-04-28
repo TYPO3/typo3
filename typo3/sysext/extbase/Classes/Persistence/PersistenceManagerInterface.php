@@ -44,8 +44,6 @@ interface PersistenceManagerInterface
      */
     public function isNewObject(object $object): bool;
 
-    // @todo realign with Flow PersistenceManager again
-
     /**
      * Returns the (internal) identifier for the object, if it is known to the
      * backend. Otherwise NULL is returned.
