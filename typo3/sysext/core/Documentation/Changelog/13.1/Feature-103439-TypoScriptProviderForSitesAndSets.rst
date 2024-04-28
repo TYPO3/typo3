@@ -14,7 +14,7 @@ Description
 TYPO3 sites have been enhanced to be able to operate as TypoScript template
 provider. They act similar to :sql:`sys_template` records with "clear" and "root"
 flags set. By design a site TypoScript provider always defines a new scope
-("root" flag) and does not inherit from parent sites (foe example, sites up in the
+("root" flag) and does not inherit from parent sites (for example, sites up in the
 root line). That means it behaves as if the "clear" flag is set in a `sys_template`
 record. This behavior is not configurable by design, as TypoScript code sharing
 is intended to be implemented via sharable sets (:ref:`feature-103437-1712062105`).
