@@ -50,7 +50,7 @@ export class InfoBox extends LitElement {
     }
     return html`
       <div class="t3js-infobox callout callout-sm callout-${Severity.getCssClass(this.severity)}">
-        <h4 class="callout-title">${this.subject}</h4>
+        <div class="callout-title">${this.subject}</div>
         ${content}
       </div>
     `;

@@ -43,7 +43,7 @@ final class MaintenanceCest extends AbstractCest
         $I->waitForElementVisible('.modal-dialog');
         $I->see('Analyze Database Structure', '.modal-dialog h4');
         $I->waitForElementVisible('.callout-success');
-        $I->see('Database schema is up to date. Good job!', '.callout-success h4');
+        $I->see('Database schema is up to date. Good job!', '.callout-success .callout-title');
         $I->click('.t3js-modal-close');
         $I->waitForElementNotVisible('.modal-dialog');
     }

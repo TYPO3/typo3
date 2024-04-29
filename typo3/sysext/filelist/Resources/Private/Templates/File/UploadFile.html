@@ -37,9 +37,9 @@
             <input type="hidden" name="data[upload][1][redirect]" value="{returnUrl}" />
             <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_upload.php.submit')}" />
         </div>
-        <div class="callout callout-warning">
+        <f:be.infobox state="1" disableIcon="true">
             <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:uploadMultipleFilesInfo" />
-        </div>
+        </f:be.infobox>
     </form>
 
 </f:section>

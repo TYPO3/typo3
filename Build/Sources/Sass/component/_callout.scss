@@ -8,7 +8,7 @@
 // -------------
 //
 // <div class="callout callout-info">
-//   <h4 class="callout-title">Web&gt;Page module</h4>
+//   <div class="callout-title">Web&gt;Page module</div>
 //   <div class="callout-body">
 //	   <p>Please click the page title in the page tree to the left to edit page content.</p>
 //   </div>
@@ -30,7 +30,7 @@
 //       </span>
 //     </div>
 //     <div class="media-body">
-//       <h4 class="callout-title">...</h4>
+//       <div class="callout-title">...</div>
 //       <div class="callout-body">
 //         <p>..</p>
 //       </div>
@@ -72,6 +72,7 @@ $callout-padding: 1rem;
 
 .callout-title {
     font-size: 1.3em;
+    line-height: 1.2;
     margin: 0 0 .5em;
 }
 
