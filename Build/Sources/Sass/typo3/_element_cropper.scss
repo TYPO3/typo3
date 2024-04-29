@@ -105,6 +105,12 @@
         table,
         label {
             color: $color-white;
+
+            &:has(input[type="radio"]:focus) {
+                color: var(--bs-btn-hover-color);
+                background-color: var(--bs-btn-hover-bg);
+                border-color: var(--bs-btn-hover-border-color);
+            }
         }
         position: relative;
         margin: -15px;
