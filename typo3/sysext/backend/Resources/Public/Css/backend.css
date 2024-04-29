@@ -2816,7 +2816,7 @@ button[aria-expanded=true]:not(:disabled) .modulemenu-indicator:after{transform:
 .nav{padding-inline:0}
 hr.spacer{border-top:none;margin-top:var(--typo3-spacing);margin-bottom:var(--typo3-spacing)}
 .alert a{color:inherit;text-decoration:underline}
-.alert-title{font-size:1.12em;font-weight:700;margin:0 0 .25em}
+.alert-title{font-size:1.12em;line-height:1.2;font-weight:700;margin:0 0 .25em}
 .alert-body,.alert-message{margin:0;font-size:.9em}
 .alert-body>:last-child,.alert-message>:last-child{margin-bottom:0}
 .alert-body>ul,.alert-message>ul{padding-left:0;padding-inline-start:1.5em}
