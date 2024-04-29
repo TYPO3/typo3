@@ -36,6 +36,9 @@
 			<trans-unit id="button.expand" resname="button.expand">
 				<source>Expand record</source>
 			</trans-unit>
+			<trans-unit id="button.dropdown.multiselect" resname="button.dropdown.multiselect">
+				<source>Open context menu for multiselect options</source>
+			</trans-unit>
 			<trans-unit id="button.undoselected" resname="button.undoselected">
 				<source>Recover {0} records</source>
 			</trans-unit>
@@ -101,6 +104,9 @@
 			</trans-unit>
 			<trans-unit id="flashmessage.undo.failure.plural" resname="flashmessage.undo.failure.plural">
 				<source>Could not recover %d records.</source>
+			</trans-unit>
+			<trans-unit id="table.caption.recently_deleted_records" resname="table.caption.recently_deleted_records">
+				<source>Recently deleted records</source>
 			</trans-unit>
 			<trans-unit id="table.header.uid" resname="table.header.uid">
 				<source>UID</source>
