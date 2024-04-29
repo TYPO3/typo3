@@ -3967,6 +3967,7 @@ typo3-rte-ckeditor-ckeditor5 .ck.ck-style-panel .ck-style-grid .ck-style-grid__b
 .cropper .panel-group [aria-expanded=true][data-bs-toggle=collapse]{background-color:#333}
 .cropper .panel-group [aria-expanded=false]{border-inline-start:2px solid #444;position:relative}
 .cropper .panel-group label,.cropper .panel-group table{color:#fff}
+.cropper .panel-group label:has(input[type=radio]:focus),.cropper .panel-group table:has(input[type=radio]:focus){color:var(--bs-btn-hover-color);background-color:var(--bs-btn-hover-bg);border-color:var(--bs-btn-hover-border-color)}
 .cropper .panel-collapse.collapse{background-color:#2c2c2c!important}
 .cropper .panel-heading{padding:0}
 .cropper .panel-heading .panel-title>[data-crop-variant]{display:flex;padding:10px 15px;justify-content:space-between}

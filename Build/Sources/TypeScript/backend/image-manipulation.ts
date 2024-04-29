@@ -304,15 +304,23 @@ class ImageManipulation {
       'click',
       (evt: Event, target: HTMLElement): void => {
         const ratioId: string = target.dataset.bsOption;
-        const temp: CropVariant = Object.assign({}, this.currentCropVariant);
-        const ratio: Ratio = temp.allowedAspectRatios[ratioId];
-        this.setAspectRatio(ratio);
-        // set data explicitly or setAspectRatio upscales the crop
-        this.setCropArea(temp.cropArea);
-        this.currentCropVariant = Object.assign({}, temp, { selectedRatio: ratioId });
-        this.update(this.currentCropVariant);
+        this.handleAspectRatioChange(ratioId);
       }
     ).delegateTo(this.currentModal, 'label[data-method=setAspectRatio]');
+
+    new RegularEvent('keydown', (evt: KeyboardEvent, target: HTMLElement): void => {
+      if (!['Enter', 'Space'].includes(evt.code)) {
+        return;
+      }
+      evt.preventDefault();
+      evt.stopImmediatePropagation();
+
+      const setAspectRatioLabel = target.closest('label[data-method="setAspectRatio"]') as HTMLElement;
+      const ratioId: string = setAspectRatioLabel.dataset.bsOption;
+
+      setAspectRatioLabel.querySelector('input').checked = true;
+      this.handleAspectRatioChange(ratioId);
+    }).delegateTo(this.currentModal, 'label[data-method="setAspectRatio"] input[type="radio"]');
 
     /**
      * Assign EventListener to saveButton
@@ -474,6 +482,17 @@ class ImageManipulation {
     const naturalHeight: number = Math.round(this.currentCropVariant.cropArea.height * this.imageOriginalSizeFactor);
     this.cropInfo.innerText = `${naturalWidth}×${naturalHeight} px`;
   };
+
+  private handleAspectRatioChange(ratioId: string): void {
+    const temp: CropVariant = Object.assign({}, this.currentCropVariant);
+    const ratio: Ratio = temp.allowedAspectRatios[ratioId];
+    this.setAspectRatio(ratio);
+    // set data explicitly or setAspectRatio upscales the crop
+    this.setCropArea(temp.cropArea);
+    this.currentCropVariant = Object.assign({}, temp, { selectedRatio: ratioId });
+
+    this.update(this.currentCropVariant);
+  }
 
   /**
    * @desc Update current cropArea position and size when changing cropVariants
