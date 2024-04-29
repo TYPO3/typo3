@@ -43,6 +43,7 @@
         <f:render section="multiRecordSelectionActions" arguments="{allowDelete: allowDelete}"/>
         <div class="table-fit mb-0">
             <table class="table table-hover" id="itemsInRecycler">
+                <caption class="visually-hidden"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.caption.recently_deleted_records" /></caption>
                 <thead>
                     <tr>
                         <th class="col-checkbox"><f:render section="multiRecordSelectionCheckboxActions" /></th>
@@ -69,6 +70,7 @@
     <div class="btn-group dropdown">
         <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
             <core:icon identifier="actions-selection" size="small" />
+            <span class="visually-hidden"><f:translate id="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.dropdown.multiselect"/></span>
         </button>
         <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
             <li>
