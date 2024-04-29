@@ -79,7 +79,7 @@
 				<source>Return to full view</source>
 			</trans-unit>
 			<trans-unit id="historyRow.actiontype.1" resname="historyRow.actiontype.1">
-				<source>inserted</source>
+				<source>created</source>
 			</trans-unit>
 			<trans-unit id="historyRow.actiontype.2" resname="historyRow.actiontype.2">
 				<source>modified</source>

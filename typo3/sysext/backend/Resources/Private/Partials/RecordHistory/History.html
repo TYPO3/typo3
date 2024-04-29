@@ -66,7 +66,16 @@
                             {historyRow.title -> f:format.raw()} ({historyRow.recordTable}:{historyRow.recordUid})
                         </td>
                         <td class="col-action">
-                            <span class="badge badge-secondary">
+                            <f:variable name="actionTypeClass">
+                                <f:switch expression="{historyRow.actiontype}">
+                                    <f:case value="1">success</f:case>
+                                    <f:case value="2">warning</f:case>
+                                    <f:case value="3">primary</f:case>
+                                    <f:case value="4">danger</f:case>
+                                    <f:defaultCase>secondary</f:defaultCase>
+                                </f:switch>
+                            </f:variable>
+                            <span class="badge badge-{actionTypeClass -> f:spaceless()}">
                                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:historyRow.actiontype.{historyRow.actiontype}" />
                             </span>
                         </td>
