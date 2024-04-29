@@ -64,7 +64,7 @@ function newFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 1
      */
-    MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.info, TYPO3.lang['formManager.newFormWizard.step1.progressLabel'], async function(slide) {
+    MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.notice, TYPO3.lang['formManager.newFormWizard.step1.progressLabel'], async function(slide) {
       const addIconMarkup = await Icons.getIcon('actions-plus', Icons.sizes.small);
       const duplicateIconMarkup = await Icons.getIcon('form-page', Icons.sizes.large);
       const blankIconMarkup = await Icons.getIcon('apps-pagetree-page-default', Icons.sizes.large);
@@ -104,7 +104,7 @@ function newFormSetup(formManagerApp: FormManager): void {
         + '<p class="card-text">' + TYPO3.lang['formManager.blankForm.description'] + '</p>'
         + '</div>'
         + '<div class="card-footer">'
-        + '<button type="button" class="btn btn-success" data-inline="1" value="blank" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + TYPO3.lang['formManager.blankForm.label'] + '</button>'
+        + '<button type="button" class="btn btn-default" data-inline="1" value="blank" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + TYPO3.lang['formManager.blankForm.label'] + '</button>'
         + '</div>'
         + '</div>'
         + '<div class="card card-size-medium">'
@@ -119,7 +119,7 @@ function newFormSetup(formManagerApp: FormManager): void {
         + '<p class="card-text">' + TYPO3.lang['formManager.predefinedForm.description'] + '</p>'
         + '</div>'
         + '<div class="card-footer">'
-        + '<button type="button" class="btn btn-success" data-inline="1" value="predefined" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + TYPO3.lang['formManager.predefinedForm.label'] + '</button>'
+        + '<button type="button" class="btn btn-default" data-inline="1" value="predefined" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + TYPO3.lang['formManager.predefinedForm.label'] + '</button>'
         + '</div>'
         + '</div>';
 
@@ -142,7 +142,7 @@ function newFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 2
      */
-    MultiStepWizard.addSlide('new-form-step-2', TYPO3.lang['formManager.newFormWizard.step2.title'], '', Severity.info, top.TYPO3.lang['wizard.progressStep.configure'], function(slide, settings) {
+    MultiStepWizard.addSlide('new-form-step-2', TYPO3.lang['formManager.newFormWizard.step2.title'], '', Severity.notice, top.TYPO3.lang['wizard.progressStep.configure'], function(slide, settings) {
       let html, savePathSelect;
 
       MultiStepWizard.lockNextStep();
@@ -342,7 +342,7 @@ function newFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 3
      */
-    MultiStepWizard.addSlide('new-form-step-3', TYPO3.lang['formManager.newFormWizard.step3.title'], '', Severity.info, TYPO3.lang['formManager.newFormWizard.step3.progressLabel'], async function(slide, settings) {
+    MultiStepWizard.addSlide('new-form-step-3', TYPO3.lang['formManager.newFormWizard.step3.title'], '', Severity.notice, TYPO3.lang['formManager.newFormWizard.step3.progressLabel'], async function(slide, settings) {
       const formPrototypeIconMarkup = await Icons.getIcon('actions-cog', Icons.sizes.small);
       const formTemplateIconMarkup = await Icons.getIcon('actions-file-t3d', Icons.sizes.small);
       const formNameIconMarkup = await Icons.getIcon('actions-tag', Icons.sizes.small);
@@ -472,7 +472,7 @@ function removeFormSetup(formManagerApp: FormManager): void {
     modalButtons.push({
       text: TYPO3.lang['formManager.remove_form'],
       active: true,
-      btnClass: 'btn-warning',
+      btnClass: 'btn-danger',
       name: 'createform',
       trigger: function(e: Event, modal: ModalElement) {
         document.location = formManagerApp.getAjaxEndpoint('delete') + '&formPersistenceIdentifier=' + that.data('formPersistenceIdentifier');
@@ -482,8 +482,8 @@ function removeFormSetup(formManagerApp: FormManager): void {
 
     Modal.show(
       TYPO3.lang['formManager.remove_form_title'],
-      TYPO3.lang['formManager.remove_form_message'],
-      Severity.warning,
+      TYPO3.lang['formManager.remove_form_message'].replace('{0}', that.data('formName')),
+      Severity.error ,
       modalButtons
     );
   });
@@ -500,7 +500,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 1
      */
-    MultiStepWizard.addSlide('duplicate-form-step-1', TYPO3.lang['formManager.duplicateFormWizard.step1.title'].replace('{0}', that.data('formName')), '', Severity.info, top.TYPO3.lang['wizard.progressStep.configure'], function(slide) {
+    MultiStepWizard.addSlide('duplicate-form-step-1', TYPO3.lang['formManager.duplicateFormWizard.step1.title'].replace('{0}', that.data('formName')), '', Severity.notice, top.TYPO3.lang['wizard.progressStep.configure'], function(slide) {
       let html, savePathSelect;
 
       MultiStepWizard.lockPrevStep();
@@ -585,7 +585,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 2
      */
-    MultiStepWizard.addSlide('duplicate-form-step-2', TYPO3.lang['formManager.duplicateFormWizard.step2.title'], '', Severity.info, TYPO3.lang['formManager.duplicateFormWizard.step2.progressLabel'], async function(slide, settings) {
+    MultiStepWizard.addSlide('duplicate-form-step-2', TYPO3.lang['formManager.duplicateFormWizard.step2.title'], '', Severity.notice, TYPO3.lang['formManager.duplicateFormWizard.step2.progressLabel'], async function(slide, settings) {
       const formTemplateIconMarkup = await Icons.getIcon('actions-file-t3d', Icons.sizes.small);
       const formNameIconMarkup = await Icons.getIcon('actions-tag', Icons.sizes.small);
       const formStorageMarkup = await Icons.getIcon('actions-database', Icons.sizes.small);
@@ -697,7 +697,7 @@ function showReferencesSetup(formManagerApp: FormManager): void {
     const $that = $(e.currentTarget);
     const url = formManagerApp.getAjaxEndpoint('references') + '&formPersistenceIdentifier=' + $that.data('formPersistenceIdentifier');
 
-    $.get(url, function(data) {
+    $.get(url, async function(data) {
       let html;
       const modalButtons = [];
 
@@ -712,28 +712,37 @@ function showReferencesSetup(formManagerApp: FormManager): void {
       });
 
       const referencesLength = data.references.length;
+      const editIconMarkup = await Icons.getIcon('actions-open', Icons.sizes.small);
+
       if (referencesLength > 0) {
         html = '<div>'
           + '<h3>' + TYPO3.lang['formManager.references.headline'].replace('{0}', securityUtility.encodeHtml($that.data('formName'))) + '</h3>'
           + '</div>'
           + '<div class="table-fit">'
-          + '<table id="forms" class="table table-striped table-sm">'
+          + '<table id="forms" class="table table-striped table-hover">'
           + '<thead>'
           + '<tr>'
-          + '<th>' + TYPO3.lang['formManager.page'] + '</th>'
-          + '<th>' + TYPO3.lang['formManager.record'] + '</th>'
+          + '<th class="col-icon"></th>'
+          + '<th class="col-recordtitle">' + TYPO3.lang['formManager.table.field.title'] + '</th>'
+          + '<th>' + TYPO3.lang['formManager.table.field.uid'] + '</th>'
+          + '<th class="col-control nowrap"><span class="visually-hidden">' + TYPO3.lang['formManager.table.field._CONTROL_'] + '</span></th>'
           + '</tr>'
           + '</thead>'
           + '<tbody>';
 
         for (let i = 0, len = data.references.length; i < len; ++i) {
           html += '<tr>'
-            + '<td>' + securityUtility.encodeHtml(data.references[i].recordPageTitle) + '</td>'
-            + '<td>'
-            + data.references[i].recordIcon
-            + '<a href="' + securityUtility.encodeHtml(data.references[i].recordEditUrl) + '" data-identifier="referenceLink">'
-            + securityUtility.encodeHtml(data.references[i].recordTitle) + ' (uid: ' + securityUtility.encodeHtml(data.references[i].recordUid) + ')'
+            + '<td class="col-icon">' + data.references[i].recordIcon + '</td>'
+            + '<td class="col-recordtitle">'
+            + '<a href="' + securityUtility.encodeHtml(data.references[i].recordEditUrl) + '" data-identifier="referenceLink">' + securityUtility.encodeHtml(data.references[i].recordTitle) + '</a>'
+            + '</td>'
+            + '<td>' + securityUtility.encodeHtml(data.references[i].recordUid) + '</td>'
+            + '<td class="col-control">'
+            + '<div class="btn-group" role="group">'
+            + '<a href="' + securityUtility.encodeHtml(data.references[i].recordEditUrl) + '" data-identifier="referenceLink" class="btn btn-default" title="' + TYPO3.lang['formManager.btn.edit.title'] + '">'
+            + editIconMarkup
             + '</a>'
+            + '</div>'
             + '</td>'
             + '</tr>';
         }
@@ -756,9 +765,9 @@ function showReferencesSetup(formManagerApp: FormManager): void {
       });
 
       Modal.show(
-        TYPO3.lang['formManager.references.title'],
+        TYPO3.lang['formManager.references.title'].replace('{0}', $that.data('formName')),
         html,
-        Severity.info,
+        Severity.notice,
         modalButtons
       );
     }).fail(function(jqXHR, textStatus, errorThrown) {

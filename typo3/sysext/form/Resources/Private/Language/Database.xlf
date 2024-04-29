@@ -187,13 +187,10 @@
 				<source>Location</source>
 			</trans-unit>
 			<trans-unit id="formManager.references" resname="formManager.references" xml:space="preserve">
-				<source>References</source>
+				<source>Ref</source>
 			</trans-unit>
 			<trans-unit id="formManager.options" resname="formManager.options" xml:space="preserve">
 				<source>Options</source>
-			</trans-unit>
-			<trans-unit id="formManager.show_references" resname="formManager.show_references" xml:space="preserve">
-				<source>Show references for this form</source>
 			</trans-unit>
 			<trans-unit id="formManager.edit_form" resname="formManager.edit_form" xml:space="preserve">
 				<source>Edit this form</source>

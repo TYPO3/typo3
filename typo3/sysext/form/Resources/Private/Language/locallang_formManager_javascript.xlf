@@ -37,13 +37,13 @@
                 <source>Cancel</source>
             </trans-unit>
             <trans-unit id="formManager.remove_form" resname="formManager.remove_form" xml:space="preserve">
-                <source>Remove</source>
+                <source>Delete</source>
             </trans-unit>
             <trans-unit id="formManager.remove_form_title" resname="formManager.remove_form_title" xml:space="preserve">
-                <source>Remove form</source>
+                <source>Confirm deletion</source>
             </trans-unit>
             <trans-unit id="formManager.remove_form_message" resname="formManager.remove_form_message" xml:space="preserve">
-                <source>Are you sure that you want to remove this form?</source>
+                <source>Do you really want to delete the form "{0}" permanently? You cannot revert this action!</source>
             </trans-unit>
             <trans-unit id="formManager.newFormWizard.step1.title" resname="formManager.newFormWizard.step1.title" xml:space="preserve">
                 <source>Create new form</source>
@@ -97,19 +97,25 @@
                 <source>The form could not be saved</source>
             </trans-unit>
             <trans-unit id="formManager.no_references" resname="formManager.no_references" xml:space="preserve">
-                <source>There are no references yet</source>
+                <source>There are no references yet.</source>
             </trans-unit>
-            <trans-unit id="formManager.page" resname="formManager.page" xml:space="preserve">
-                <source>Page</source>
+            <trans-unit id="formManager.table.field.control" resname="formManager.table.field.control">
+                <source>Control</source>
             </trans-unit>
-            <trans-unit id="formManager.record" resname="formManager.record" xml:space="preserve">
-                <source>Record</source>
+            <trans-unit id="formManager.table.field.uid" resname="formManager.table.field.uid">
+                <source>Uid</source>
+            </trans-unit>
+            <trans-unit id="formManager.table.field.title" resname="formManager.table.field.title" xml:space="preserve">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="formManager.btn.edit.title" resname="formManager.btn.edit.title" xml:space="preserve">
+                <source>Edit</source>
             </trans-unit>
             <trans-unit id="formManager.references.title" resname="formManager.references.title" xml:space="preserve">
-                <source>References</source>
+                <source>Form: {0}</source>
             </trans-unit>
             <trans-unit id="formManager.references.headline" resname="formManager.references.headline" xml:space="preserve">
-                <source>References for "{0}"</source>
+                <source>References to this item</source>
             </trans-unit>
             <trans-unit id="formManager.blankForm.label" resname="formManager.blankForm.label" xml:space="preserve">
                 <source>Blank form</source>

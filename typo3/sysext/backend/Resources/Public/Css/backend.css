@@ -3464,6 +3464,7 @@ typo3-backend-form-selecttree-toolbar{display:block;border-bottom:1px solid rgba
 .table td:first-child,.table th:first-child{padding-inline-start:var(--typo3-component-padding-x)}
 .table td:last-child,.table th:last-child{padding-inline-end:var(--typo3-component-padding-x)}
 .table .col-avatar,.table .col-checkbox,.table .col-icon{padding-inline-end:0}
+.table .col-50{width:50%}
 .table .col-task,.table .col-title{width:99%}
 .table .col-checkbox,.table .col-icon{width:16px;min-width:16px;white-space:nowrap;box-sizing:content-box}
 .table .col-time{width:8ch;white-space:nowrap;box-sizing:content-box}
