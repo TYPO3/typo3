@@ -68,7 +68,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *                </span>
  *             </div>
  *             <div class="media-body">
- *                <h4 class="alert-title">Info - Title for Info message</h4>
+ *                <div class="alert-title">Info - Title for Info message</div>
  *                <p class="alert-message">Message text here.</p>
  *             </div>
  *          </div>

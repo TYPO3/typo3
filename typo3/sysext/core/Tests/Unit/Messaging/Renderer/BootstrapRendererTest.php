@@ -60,7 +60,7 @@ final class BootstrapRendererTest extends UnitTestCase
         self::assertStringContainsString('<div class="typo3-messages">', $output);
         self::assertStringContainsString('<div class="alert alert-notice">', $output);
         self::assertStringContainsString('<div class="media-body">', $output);
-        self::assertStringContainsString('<h4 class="alert-title">messageTitle</h4>', $output);
+        self::assertStringContainsString('<div class="alert-title">messageTitle</div>', $output);
         self::assertStringContainsString('<p class="alert-message">messageBody</p>', $output);
     }
 
@@ -79,6 +79,6 @@ final class BootstrapRendererTest extends UnitTestCase
         self::assertStringContainsString('<div class="alert alert-notice">', $output);
         self::assertStringContainsString('<div class="media-body">', $output);
         self::assertStringContainsString('<p class="alert-message">messageBody</p>', $output);
-        self::assertStringNotContainsString('<h4 class="alert-title">messageTitle</h4>', $output);
+        self::assertStringNotContainsString('<div class="alert-title">messageTitle</div>', $output);
     }
 }

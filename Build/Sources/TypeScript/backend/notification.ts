@@ -220,7 +220,7 @@ export class NotificationMessage extends LitElement {
             </span>
           </div>
           <div class="media-body">
-            <h4 class="alert-title" id="alert-title-${randomSuffix}">${this.notificationTitle}</h4>
+            <div class="alert-title" id="alert-title-${randomSuffix}">${this.notificationTitle}</div>
             <p class="alert-message" id="alert-message-${randomSuffix}">${this.notificationMessage ? this.notificationMessage : ''}</p>
           </div>
         </div>

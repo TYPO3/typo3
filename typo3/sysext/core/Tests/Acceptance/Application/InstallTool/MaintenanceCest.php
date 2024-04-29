@@ -34,7 +34,7 @@ final class MaintenanceCest extends AbstractCest
     {
         $I->click('Flush cache');
         $I->waitForElementVisible('.alert-success');
-        $I->see('Caches cleared', '.alert-success h4');
+        $I->see('Caches cleared', '.alert-success .alert-title');
     }
 
     public function analyzeDatabaseStructureWorks(ApplicationTester $I): void
@@ -62,7 +62,7 @@ final class MaintenanceCest extends AbstractCest
     {
         $I->click('Dump autoload');
         $I->waitForElementVisible('.alert-success');
-        $I->see('Successfully dumped class loading information for extensions.', '.alert-success h4');
+        $I->see('Successfully dumped class loading information for extensions.', '.alert-success .alert-title');
     }
 
     public function clearPersistentTablesWorks(ApplicationTester $I): void
@@ -87,7 +87,7 @@ final class MaintenanceCest extends AbstractCest
     {
         $I->click('Reset backend user preferences');
         $I->waitForElementVisible('.alert-success');
-        $I->see('Reset preferences of all backend users', '.alert-success h4');
+        $I->see('Reset preferences of all backend users', '.alert-success .alert-title');
         $I->see('Preferences of all backend users have been reset', '.alert-success p');
     }
 

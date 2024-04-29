@@ -91,7 +91,7 @@ class BootstrapRenderer implements FlashMessageRendererInterface
             $markup[] = '    </div>';
             $markup[] = '    <div class="media-body">';
             if ($messageTitle !== '') {
-                $markup[] = '      <h4 class="alert-title">' . htmlspecialchars($messageTitle) . '</h4>';
+                $markup[] = '      <div class="alert-title">' . htmlspecialchars($messageTitle) . '</div>';
             }
             $markup[] = '      <p class="alert-message">' . htmlspecialchars($flashMessage->getMessage()) . '</p>';
             $markup[] = '    </div>';
