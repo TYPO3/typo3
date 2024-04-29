@@ -138,8 +138,8 @@
 			<trans-unit id="be_users.languageItemGroups.unavailable" resname="be_users.languageItemGroups.unavailable">
 				<source>Unavailable Languages</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.rights" resname="be_users.tabs.rights">
-				<source>Access Rights</source>
+			<trans-unit id="be_users.tabs.permissions" resname="be_users.tabs.permissions">
+				<source>Permissions</source>
 			</trans-unit>
 			<trans-unit id="be_users.tabs.mounts_and_workspaces" resname="be_users.tabs.mounts_and_workspaces">
 				<source>Mounts and Workspaces</source>
@@ -186,8 +186,11 @@
 			<trans-unit id="be_groups.subgroup" resname="be_groups.subgroup">
 				<source>Inherit settings from groups</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.base_rights" resname="be_groups.tabs.base_rights">
-				<source>Access Rights</source>
+			<trans-unit id="be_groups.tabs.record_permissions" resname="be_groups.tabs.record_permissions">
+				<source>Record Permissions</source>
+			</trans-unit>
+			<trans-unit id="be_groups.tabs.module_permissions" resname="be_groups.tabs.module_permissions">
+				<source>Module Permissions</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tabs.mounts_and_workspaces" resname="be_groups.tabs.mounts_and_workspaces">
 				<source>Mounts and Workspaces</source>

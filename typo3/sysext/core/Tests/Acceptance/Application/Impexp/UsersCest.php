@@ -199,7 +199,7 @@ final class UsersCest extends AbstractCest
         $I->waitForText('Backend user groups');
         $I->click('//table/tbody/tr[descendant::button[@data-contextmenu-uid="' . $userGroupId . '"]]/td[2]/a');
         $I->waitForElementVisible('#EditDocumentController');
-        $I->click('//form[@id="EditDocumentController"]//ul/li[2]/a');
+        $I->click('//form[@id="EditDocumentController"]//ul/li[3]/a');
 
         foreach ($modAccessByName as $modName => $modAccess) {
             if ((bool)$modAccess) {

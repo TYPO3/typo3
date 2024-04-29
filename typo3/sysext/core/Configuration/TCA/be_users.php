@@ -336,7 +336,7 @@ return [
                 admin, username, password, mfa, usergroup, lang, lastlogin,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.personal_data,
                 realName, email, avatar,
-            --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.rights,
+            --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.permissions,
                 userMods, allowed_languages,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces,
                 workspace_perms, db_mountpoints, options, file_mountpoints, file_permissions, category_perms,

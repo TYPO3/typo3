@@ -264,9 +264,11 @@ return [
     'types' => [
         '0' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                title,subgroup,
-            --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.tabs.base_rights,
-                groupMods, mfa_providers, --palette--;;tableRestrictions, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options,
+                title, subgroup,
+            --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.tabs.record_permissions,
+                pagetypes_select, --palette--;;tableRestrictions, non_exclude_fields, explicit_allowdeny, allowed_languages,
+            --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.tabs.module_permissions,
+                groupMods, mfa_providers, custom_options,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.tabs.mounts_and_workspaces,
                 workspace_perms, db_mountpoints, file_mountpoints, file_permissions, category_perms,
             --div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.tabs.options,
