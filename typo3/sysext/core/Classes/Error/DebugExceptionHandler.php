@@ -105,7 +105,7 @@ HTML;
             $exceptionInfo = <<<INFO
             <div class="container">
                 <div class="callout">
-                    <h4 class="callout-title">Get help in the TYPO3 Documentation</h4>
+                    <div class="callout-title">Get help in the TYPO3 Documentation</div>
                     <div class="callout-body">
                         <p>
                             If you need help solving this exception, you can have a look at the TYPO3 Documentation.

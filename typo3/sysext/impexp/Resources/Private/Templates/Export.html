@@ -65,11 +65,11 @@
             </div>
             <f:if condition="{errors -> f:count()} > 0">
                 <div role="tabpanel" class="tab-pane" id="export-errors">
-                    <div class="callout callout-danger">
+                    <f:be.infobox state="2" disableIcon="true">
                         <f:for each="{errors}" as="error">
                             <p>{error}</p>
                         </f:for>
-                    </div>
+                    </f:be.infobox>
                 </div>
             </f:if>
         </div>

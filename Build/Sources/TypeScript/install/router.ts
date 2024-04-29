@@ -235,7 +235,7 @@ class Router {
       const url = this.getUrl(undefined, 'upgrade');
       const message =
         '<div class="t3js-infobox callout callout-sm callout-danger">'
-        + '<h4 class="callout-title">Something went wrong</h4>'
+        + '<div class="callout-title">Something went wrong</div>'
         + '<div class="callout-body">'
         + '<p>Please use <b><a href="' + url + '">Check for broken'
         + ' extensions</a></b> to see if a loaded extension breaks this part of the install tool'

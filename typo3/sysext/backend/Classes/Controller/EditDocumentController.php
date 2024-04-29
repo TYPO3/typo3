@@ -1221,7 +1221,7 @@ class EditDocumentController
                         '</span>' .
                     '</div>' .
                     '<div class="media-body">' .
-                        ($title ? '<h4 class="callout-title">' . htmlspecialchars($title) . '</h4>' : '') .
+                        ($title ? '<div class="callout-title">' . htmlspecialchars($title) . '</div>' : '') .
                         '<div class="callout-body">' . htmlspecialchars($message) . '</div>' .
                     '</div>' .
                 '</div>' .

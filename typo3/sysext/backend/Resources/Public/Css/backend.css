@@ -2938,7 +2938,7 @@ a.dropdown-toggle{text-decoration:none}
 .avatar-icon .icon{--icon-size:calc(var(--avatar-size, 1em) * .5);display:block}
 .callout{--callout-color:var(--typo3-component-color);--callout-bg:var(--typo3-component-bg);--callout-border-radius:var(--typo3-component-border-radius);--callout-border-color:var(--typo3-component-border-color);--callout-box-shadow:var(--typo3-component-box-shadow);color:var(--callout-color);background-color:var(--callout-bg);border-inline-start:.5em solid var(--callout-border-color);border-radius:var(--callout-border-radius);margin-bottom:1rem;padding:1rem;overflow-wrap:break-word;word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}
 .callout-icon{margin-top:-2px}
-.callout-title{font-size:1.3em;margin:0 0 .5em}
+.callout-title{font-size:1.3em;line-height:1.2;margin:0 0 .5em}
 .callout-body>:last-child{margin-bottom:0}
 .callout-sm{margin:10px 0;padding:.5rem}
 .callout-sm .callout-title{font-size:1em;margin:0}

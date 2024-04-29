@@ -20,7 +20,7 @@ import Severity from './severity';
 class InfoBox {
   private readonly template: JQuery = $(
     '<div class="t3js-infobox callout callout-sm">' +
-      '<h4 class="callout-title"></h4>' +
+      '<div class="callout-title"></div>' +
       '<div class="callout-body"></div>' +
     '</div>',
   );
@@ -29,7 +29,7 @@ class InfoBox {
     const infoBox: JQuery = this.template.clone();
     infoBox.addClass('callout-' + Severity.getCssClass(severity));
     if (title) {
-      infoBox.find('h4').text(title);
+      infoBox.find('.callout-title').text(title);
     }
     if (message) {
       infoBox.find('.callout-body').text(message);
