@@ -30,6 +30,9 @@
 			<trans-unit id="allowed_languages" resname="allowed_languages">
 				<source>Limit to languages</source>
 			</trans-unit>
+			<trans-unit id="allowed_languages.description" resname="allowed_languages.description">
+				<source>If no language is selected, all languages will be available by default.</source>
+			</trans-unit>
 			<trans-unit id="category_perms" resname="category_perms">
 				<source>Category Mounts</source>
 			</trans-unit>

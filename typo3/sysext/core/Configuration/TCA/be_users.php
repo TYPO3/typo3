@@ -289,6 +289,7 @@ return [
         ],
         'allowed_languages' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:allowed_languages',
+            'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:allowed_languages.description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
