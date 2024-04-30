@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 
 /**
  * Contains functional tests for the XmlSitemap Index
@@ -26,7 +27,24 @@ use PHPUnit\Framework\Attributes\Test;
 final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
 {
     protected array $configurationToUseInTestInstance = [
+        'SYS' => [
+            'caching' => [
+                // `typo3/testing-framework` uses `NullBackend` per default
+                'cacheConfigurations' => [
+                    'pages' => [
+                        'backend' => Typo3DatabaseBackend::class,
+                    ],
+                    'hash' => [
+                        'backend' => Typo3DatabaseBackend::class,
+                    ],
+                ],
+            ],
+            'features' => [
+                'security.frontend.enforceContentSecurityPolicy' => true,
+            ],
+        ],
         'FE' => [
+            'debug' => true,
             'cacheHash' => [
                 'enforceValidation' => false,
             ],
@@ -166,6 +184,29 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
         self::assertStringContainsString(
             '<loc>http://localhost/dummy-1-3</loc>',
             $xml
+        );
+    }
+
+    #[Test]
+    public function pagesSitemapResponseContainsAdjustedContentSecurityPolicy(): void
+    {
+        $firstResponse = $this->getResponse();
+        self::assertEmpty($firstResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
+        self::assertMatchesRegularExpression(
+            // note: SHA256 hash needs to be updated every time XSL stylesheet changes
+            '#style-src-elem[^;]+\'unsafe-hashes\' \'sha256-d0ax6zoVJBeBpy4l3O2FJ6Y1L4SalCWw2x62uoJH15k=\'#',
+            $firstResponse->getHeaderLine('Content-Security-Policy')
+        );
+
+        $secondResponse = $this->getResponse();
+        self::assertStringStartsWith(
+            'Cached page generated',
+            $secondResponse->getHeaderLine('X-TYPO3-Debug-Cache')
+        );
+        self::assertMatchesRegularExpression(
+            // note: SHA256 hash needs to be updated every time XSL stylesheet changes
+            '#style-src-elem[^;]+\'unsafe-hashes\' \'sha256-d0ax6zoVJBeBpy4l3O2FJ6Y1L4SalCWw2x62uoJH15k=\'#',
+            $secondResponse->getHeaderLine('Content-Security-Policy')
         );
     }
 }

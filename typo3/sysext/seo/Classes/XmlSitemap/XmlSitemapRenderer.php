@@ -20,6 +20,13 @@ namespace TYPO3\CMS\Seo\XmlSitemap;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashValue;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -41,6 +48,7 @@ final readonly class XmlSitemapRenderer
         private TypoScriptService $typoScriptService,
         private ErrorController $errorController,
         private ViewFactoryInterface $viewFactory,
+        private PolicyRegistry $policyRegistry,
     ) {}
 
     /**
@@ -66,10 +74,14 @@ final readonly class XmlSitemapRenderer
         $view->assign('sitemapType', $sitemapType);
         $configConfiguration = $configurationArrayWithoutDots['config'] ?? [];
         if (!empty($sitemapName = ($request->getQueryParams()['sitemap'] ?? null))) {
-            $view->assign('xslFile', $this->getXslFilePath($configConfiguration, $sitemapType, $sitemapName));
+            $xslPath = $this->getXslFilePath($configConfiguration, $sitemapType, $sitemapName);
+            $this->applyDynamicContentSecurityPolicy($xslPath);
+            $view->assign('xslFile', $this->getUriFromFilePath($xslPath));
             return $this->renderSitemap($request, $view, $configConfiguration, $sitemapType, $sitemapName);
         }
-        $view->assign('xslFile', $this->getXslFilePath($configConfiguration, $sitemapType));
+        $xslPath = $this->getXslFilePath($configConfiguration, $sitemapType);
+        $this->applyDynamicContentSecurityPolicy($xslPath);
+        $view->assign('xslFile', $this->getUriFromFilePath($xslPath));
         return $this->renderIndex($request, $view, $configConfiguration, $sitemapType);
     }
 
@@ -132,6 +144,49 @@ final readonly class XmlSitemapRenderer
             ?? $configConfiguration[$sitemapType]['sitemaps']['xslFile']
             ?? $configConfiguration['xslFile']
             ?? 'EXT:seo/Resources/Public/CSS/Sitemap.xsl';
-        return PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($path));
+        return GeneralUtility::getFileAbsFileName($path);
+    }
+
+    private function getUriFromFilePath(string $filePath): string
+    {
+        return PathUtility::getAbsoluteWebPath($filePath);
+    }
+
+    /**
+     * Applies `Content-Security-Policy` mutations for `unsafe-hashes` for XSLT styles.
+     * This is done dynamically, since XSLT styles might change some day...
+     *
+     * The expected hash for the default XSLT styles is `sha256-d0ax6zoVJBeBpy4l3O2FJ6Y1L4SalCWw2x62uoJH15k=`.
+     */
+    private function applyDynamicContentSecurityPolicy(string $xslPath): void
+    {
+        if (!file_exists($xslPath)) {
+            return;
+        }
+        $dom = new \DOMDocument();
+        $dom->load($xslPath);
+        if (!$dom instanceof \DOMDocument) {
+            return;
+        }
+        $hashes = [];
+        foreach ($dom->getElementsByTagName('style') as $node) {
+            if (!$node instanceof \DOMElement || $node->getAttribute('type') !== 'text/css') {
+                continue;
+            }
+            $hashes[] = HashValue::hash($node->textContent);
+        }
+        if ($hashes === []) {
+            return;
+        }
+        $this->policyRegistry->appendMutationCollection(
+            new MutationCollection(
+                new Mutation(
+                    MutationMode::Extend,
+                    Directive::StyleSrcElem,
+                    SourceKeyword::unsafeHashes,
+                    ...$hashes
+                )
+            )
+        );
     }
 }
