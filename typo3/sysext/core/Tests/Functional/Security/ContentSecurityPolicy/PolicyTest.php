@@ -59,12 +59,18 @@ final class PolicyTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function hashValueIsCompiled(): void
+    public function hashValueIsCompiledUsingHashFactory(): void
+    {
+        $policy = (new Policy())->extend(Directive::ScriptSrc, HashValue::hash('test'));
+        self::assertSame("script-src 'sha256-n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='", $policy->compile($this->nonce));
+    }
+
+    #[Test]
+    public function hashValueIsCompiledUsingCreateFactory(): void
     {
         $hash = hash('sha256', 'test', true);
-        $hashB64 = base64_encode($hash);
         $policy = (new Policy())->extend(Directive::ScriptSrc, HashValue::create($hash));
-        self::assertSame("script-src 'sha256-$hashB64'", $policy->compile($this->nonce));
+        self::assertSame("script-src 'sha256-n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg='", $policy->compile($this->nonce));
     }
 
     #[Test]

@@ -27,6 +27,12 @@ final class HashValue implements \Stringable, SourceValueInterface
 {
     public readonly string $value;
 
+    public static function hash(string $payload, HashType $type = HashType::sha256): self
+    {
+        $value = hash($type->value, $payload, true);
+        return self::create($value, $type);
+    }
+
     public static function create(string $value, HashType $type = HashType::sha256): self
     {
         return new self($value, $type);
