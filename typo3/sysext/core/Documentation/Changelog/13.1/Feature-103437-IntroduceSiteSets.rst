@@ -57,6 +57,8 @@ Sets are applied to sites via `dependencies` array in site configuration:
 Site sets can also be edited via the backend module
 :guilabel:`Site Management > Sites`.
 
+A list of available site sets can be retrieved with the console command
+:bash:`bin/typo3 site:sets:list`.
 
 Settings definitions
 --------------------
