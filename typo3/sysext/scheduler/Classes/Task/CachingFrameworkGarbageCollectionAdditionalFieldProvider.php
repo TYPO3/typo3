@@ -81,7 +81,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
     {
         $validData = true;
         $availableBackends = $this->getRegisteredBackends();
-        if (is_array($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
+        if (isset($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends']) && is_array($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'])) {
             $invalidBackends = array_diff($submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'], $availableBackends);
             if (!empty($invalidBackends)) {
                 $this->addMessage($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.selectionOfNonExistingCacheBackends'), ContextualFeedbackSeverity::ERROR);
