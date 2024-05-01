@@ -10,7 +10,7 @@ import{Plugin as e,PendingActions as t}from"@ckeditor/ckeditor5-core";import{Obs
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */class h extends e{static get requires(){return[n]}static get pluginName(){return"Base64UploadAdapter"}init(){this.editor.plugins.get(n).createUploadAdapter=e=>new p(e)}}class p{constructor(e){this.loader=e}upload(){return new Promise(((e,t)=>{const s=this.reader=new window.FileReader;s.addEventListener("load",(()=>{e({default:s.result})})),s.addEventListener("error",(e=>{t(e)})),s.addEventListener("abort",(()=>{t()})),this.loader.file.then((e=>{s.readAsDataURL(e)}))}))}abort(){this.reader.abort()}}
+ */class h extends e{static get requires(){return[n]}static get pluginName(){return"Base64UploadAdapter"}init(){this.editor.plugins.get(n).createUploadAdapter=e=>new p(e)}}let p=class{constructor(e){this.loader=e}upload(){return new Promise(((e,t)=>{const s=this.reader=new window.FileReader;s.addEventListener("load",(()=>{e({default:s.result})})),s.addEventListener("error",(e=>{t(e)})),s.addEventListener("abort",(()=>{t()})),this.loader.file.then((e=>{s.readAsDataURL(e)}))}))}abort(){this.reader.abort()}};
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
