@@ -1,4 +1,5 @@
 import terser from '@rollup/plugin-terser';
+import { createRequire } from 'node:module';
 
 export default {
   input: 'node_modules/select-pure/lib/index.js',
@@ -21,6 +22,7 @@ export default {
           return { id: source.replace('lit-html/', 'lit/'), external: true }
         }
         if (source.startsWith('.') && importer) {
+          const require = createRequire(import.meta.url);
           const path = require('path');
           return require.resolve(path.resolve(path.dirname(importer), source))
         }

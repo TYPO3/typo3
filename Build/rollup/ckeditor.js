@@ -1,4 +1,4 @@
-import resolve from '@rollup/plugin-node-resolve';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import svg from 'rollup-plugin-svg';
@@ -7,9 +7,11 @@ import * as path from 'path';
 import { buildConfigForTranslations } from './ckeditor/build-translations-config.js';
 import { readdirSync, statSync, existsSync } from 'fs';
 import { createRequire } from 'node:module';
+import ckeditor5dev from '@ckeditor/ckeditor5-dev-utils';
 
-const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
-const postCssConfig = styles.getPostCssConfig({
+const require = createRequire(import.meta.url);
+
+const postCssConfig = ckeditor5dev.styles.getPostCssConfig({
   themeImporter: {
     themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
   },
@@ -27,7 +29,6 @@ export default [
   ...packages.map(pkg => {
     const packageName = `@ckeditor/${pkg}`;
     const packageJson = `../node_modules/${packageName}/package.json`;
-    const require = createRequire(import.meta.url);
     let input = `./node_modules/${packageName}/${require(packageJson).main}`;
     if (packageName === '@ckeditor/ckeditor5-link') {
       input = 'Sources/JavaScript/rte_ckeditor/contrib/ckeditor5-link.js';
@@ -107,7 +108,7 @@ export default [
             return `import styleInject from '${importPath}';\n` + `styleInject(${cssVariableName});`;
           },
         }),
-        resolve({
+        nodeResolve({
           extensions: ['.js']
         }),
         commonjs(),
