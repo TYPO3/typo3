@@ -111,8 +111,11 @@ class PageViewContentObject extends AbstractContentObject
         if (!$this->view->hasTemplate()) {
             $configuredTemplateRootPaths = implode(', ', $this->view->getTemplateRootPaths());
             throw new ContentRenderingException(
-                'Could not find template source for "pages/' . $pageLayoutName . '".'
-                . ' Configured templateRootPaths: ' . $configuredTemplateRootPaths,
+                sprintf(
+                    'Could not find template source file "pages/%1$s.html" or "Pages/%1$s.html" in lookup paths: %2$s',
+                    ucfirst($pageLayoutName),
+                    $configuredTemplateRootPaths
+                ),
                 1711797936
             );
         }
