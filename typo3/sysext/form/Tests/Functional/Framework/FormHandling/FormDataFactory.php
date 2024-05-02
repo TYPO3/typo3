@@ -85,10 +85,10 @@ final class FormDataFactory
         if (!$node->hasAttribute('id')) {
             return false;
         }
-        if (!$node->hasAttribute('autocomplete')) {
+        if (!$node->hasAttribute('data-id')) {
             return false;
         }
 
-        return str_ends_with($node->getAttribute('id'), $node->getAttribute('autocomplete'));
+        return str_ends_with($node->getAttribute('id'), $node->getAttribute('data-id'));
     }
 }
