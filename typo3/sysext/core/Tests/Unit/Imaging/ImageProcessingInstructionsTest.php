@@ -28,7 +28,7 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
     /**
      * @return iterable<
      *           string,
-     *           array{int<0, max>, int<0, max>, string, string, array, bool, ImageProcessingInstructions}
+     *           array{int<0, max>, int<0, max>, string|int, string|int, array, bool, ImageProcessingInstructions}
      *         >
      */
     public static function fromCropScaleValuesImageDataProvider(): iterable
@@ -191,6 +191,20 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
             width: 50,
             height: 450,
         );
+        yield 'Incoming instructions use "m" in width with given height as int' => [
+            100,
+            900,
+            '50m',
+            800,
+            [],
+            true,
+            $result,
+        ];
+
+        $result = new ImageProcessingInstructions(
+            width: 50,
+            height: 450,
+        );
         yield 'Incoming instructions use "m" in width without height' => [
             100,
             900,
@@ -271,8 +285,8 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
     public function fromCropScaleValuesTest(
         int $incomingWidth,
         int $incomingHeight,
-        string $width,
-        string $height,
+        int|string $width,
+        int|string $height,
         array $options,
         bool $allowUpscaling,
         ImageProcessingInstructions $expected

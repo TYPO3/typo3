@@ -144,12 +144,12 @@ readonly class ImageProcessingInstructions
         }
 
         if ($useWidthOrHeightAsMaximumLimits) {
-            if (str_contains($width, 'm')) {
+            if (str_contains((string)$width, 'm')) {
                 $options['maxWidth'] = min((int)$width, $options['maxWidth'] ?? PHP_INT_MAX);
                 // width: auto
                 $width = 0;
             }
-            if (str_contains($height, 'm')) {
+            if (str_contains((string)$height, 'm')) {
                 $options['maxHeight'] = min((int)$height, $options['maxHeight'] ?? PHP_INT_MAX);
                 // height: auto
                 $height = 0;
