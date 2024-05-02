@@ -144,9 +144,6 @@
 			<trans-unit id="editThisColumn">
 				<source>Edit the '%s' field of the listed pages</source>
 			</trans-unit>
-			<trans-unit id="editDefaultLanguagePage">
-				<source>Edit default language page properties</source>
-			</trans-unit>
 			<trans-unit id="newRecordGeneral">
 				<source>Create new record</source>
 			</trans-unit>

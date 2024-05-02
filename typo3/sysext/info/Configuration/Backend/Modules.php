@@ -37,6 +37,7 @@ return [
         'moduleData' => [
             'pages' => '0',
             'depth' => 0,
+            'lang' => 0,
         ],
     ],
     'web_info_translations' => [

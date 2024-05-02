@@ -38,6 +38,7 @@ final class PageInformationControllerTest extends FunctionalTestCase
         yield 'first level with one depth level' => [
             'pid' => 1,
             'depth' => 1,
+            'language' => 0,
             'expectedRows' => [
                 0 => [
                     'uid' => 2,
@@ -109,6 +110,7 @@ final class PageInformationControllerTest extends FunctionalTestCase
         yield 'first level with depth of 4 levels' => [
             'pid' => 1,
             'depth' => 4,
+            'language' => 0,
             'expectedRows' => [
                 0 => [
                     'uid' => 2,
@@ -314,10 +316,11 @@ final class PageInformationControllerTest extends FunctionalTestCase
     public function protectedGetPageRecordsRecursiveReturnsExpectedResult(
         int $pid,
         int $depth,
+        int $language,
         array $expectedRows
     ): void {
         $subject = $this->get(PageInformationController::class);
         $getPageRecordsRecursive = new \ReflectionMethod($subject, 'getPageRecordsRecursive');
-        self::assertSame($expectedRows, $getPageRecordsRecursive->invoke($subject, $pid, $depth));
+        self::assertSame($expectedRows, $getPageRecordsRecursive->invoke($subject, $pid, $depth, $language));
     }
 }

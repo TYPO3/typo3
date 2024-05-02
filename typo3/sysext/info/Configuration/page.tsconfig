@@ -1,7 +1,7 @@
 mod.web_info.fieldDefinitions {
     0 {
         label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_0
-        fields = title,uid,slug,starttime,endtime,fe_group,target,url,shortcut,shortcut_mode
+        fields = title,uid,sys_language_uid,slug,starttime,endtime,fe_group,target,url,shortcut,shortcut_mode
     }
     1 {
         label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_1
@@ -9,10 +9,10 @@ mod.web_info.fieldDefinitions {
     }
     2 {
         label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_2
-        fields = title,uid,lastUpdated,newUntil,cache_timeout,php_tree_stop,TSconfig,is_siteroot
+        fields = title,uid,sys_language_uid,lastUpdated,newUntil,cache_timeout,php_tree_stop,TSconfig,is_siteroot
     }
     3 {
         label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_layouts
-        fields = title,uid,actual_backend_layout,backend_layout,backend_layout_next_level,layout
+        fields = title,uid,sys_language_uid,actual_backend_layout,backend_layout,backend_layout_next_level,layout
     }
 }
