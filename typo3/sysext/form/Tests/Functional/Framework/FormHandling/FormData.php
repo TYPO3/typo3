@@ -114,7 +114,7 @@ final class FormData
                 $this->formData['elementData'],
                 fn($elementData) => $elementData['__isHoneypot']
             )
-        )[0]['autocomplete'] ?? null;
+        )[0]['data-id'] ?? null;
     }
 
     public function getSessionId(): ?string
