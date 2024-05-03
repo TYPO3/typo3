@@ -49,18 +49,6 @@ final class MathUtilityTest extends UnitTestCase
         self::assertEquals(42, MathUtility::forceIntegerInRange('', 0, 2000000000, 42));
     }
 
-    #[Test]
-    public function convertToPositiveIntegerReturnsZeroForNegativeValues(): void
-    {
-        self::assertEquals(0, MathUtility::convertToPositiveInteger(-123));
-    }
-
-    #[Test]
-    public function convertToPositiveIntegerReturnsTheInputValueForPositiveValues(): void
-    {
-        self::assertEquals(123, MathUtility::convertToPositiveInteger(123));
-    }
-
     public static function functionCanBeInterpretedAsIntegerValidDataProvider(): array
     {
         return [

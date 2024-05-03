@@ -1613,4 +1613,11 @@ return [
             'Deprecation-100596-GeneralUtility_GET.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-103785-DeprecateMathUtilityConvertToPositiveInteger.rst',
+        ],
+    ],
 ];

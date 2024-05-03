@@ -911,12 +911,12 @@ class EditDocumentController
         $previewPageId = 0;
         $table = ($this->previewData['table'] ?? '') ?: ($this->firstEl['table'] ?? '');
         $recordId = ($this->previewData['id'] ?? '') ?: ($this->firstEl['uid'] ?? '');
-        $pageId = $this->popViewId ?: $this->viewId;
+        $pageId = (int)($this->popViewId ?: $this->viewId);
 
         if ($table === 'pages') {
             $currentPageId = (int)$recordId;
         } else {
-            $currentPageId = MathUtility::convertToPositiveInteger($pageId);
+            $currentPageId = max(0, $pageId);
         }
 
         $previewConfiguration = BackendUtility::getPagesTSconfig($currentPageId)['TCEMAIN.']['preview.'][$table . '.'] ?? [];
