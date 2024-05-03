@@ -36,12 +36,25 @@ class WidgetSelector {
         size: Modal.sizes.medium,
         severity: SeverityEnum.notice,
         content: modalContent,
+        buttons: [{
+          text: TYPO3?.lang?.['button.cancel'] || 'Cancel',
+          active: false,
+          btnClass: 'btn-default',
+          name: 'cancel',
+        }],
         additionalCssClasses: ['dashboard-modal'],
         callback: (modal: ModalElement): void => {
           new RegularEvent('click', (): void => modal.hideModal()).delegateTo(modal, 'a.dashboard-modal-item-block');
         },
       };
-      Modal.advanced(configuration);
+      const modal = Modal.advanced(configuration);
+
+      modal.addEventListener('button.clicked', (e: Event): void => {
+        const button = e.target as HTMLButtonElement;
+        if (button.getAttribute('name') === 'cancel') {
+          modal.hideModal();
+        }
+      });
     }).delegateTo(document, this.selector);
 
     // Display button only if all initialized
