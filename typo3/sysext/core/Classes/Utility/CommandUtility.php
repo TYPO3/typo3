@@ -82,7 +82,7 @@ class CommandUtility
      *
      * Needs to be central to have better control and possible fix for issues
      */
-    public static function exec(string $command, ?array &$output = null, int &$returnValue = 0): string
+    public static function exec(string $command, ?array &$output = null, int &$returnValue = 0): string|false
     {
         return exec($command, $output, $returnValue);
     }
