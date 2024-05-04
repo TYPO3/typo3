@@ -27,7 +27,8 @@
                     <td><strong><f:format.crop maxCharacters="30">{sysNote.subject}</f:format.crop> ({sysNote.pid})</strong><br /><f:format.crop maxCharacters="50">{sysNote.message}</f:format.crop></td>
                     <td><f:format.date format="{dateFormat} {timeFormat}">{sysNote.crdate}</f:format.date></td>
                     <td class="text-end">
-                        <f:be.link class="btn btn-default" route="web_layout" parameters="{id: sysNote.pid}">
+                        <f:variable name="returnUrl" value="{f:be.uri(route:'dashboard')}" />
+                        <f:be.link class="btn btn-default" route="web_layout" parameters="{id: sysNote.pid, returnUrl: returnUrl}">
                             <core:icon identifier="actions-document-view" size="small" /> <f:translate key="goto_page" extensionName="sys_note"/>
                         </f:be.link>
                     </td>

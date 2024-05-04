@@ -496,6 +496,13 @@ class PageLayoutController
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
+        // Close button (show only if returnUrl is set)
+        $returnUrl = $request->getQueryParams()['returnUrl'] ?? '';
+        if ($returnUrl && ($closeButton = $this->makeCloseButton($buttonBar, $returnUrl))) {
+            // use button group -1 so that close button is to the left of other buttons
+            $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, -1);
+        }
+
         // Language
         if ($languageButton = $this->makeLanguageSwitchButton($buttonBar)) {
             $buttonBar->addButton($languageButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
@@ -616,6 +623,15 @@ class PageLayoutController
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-page-open', IconSize::SMALL));
+    }
+
+    protected function makeCloseButton(ButtonBar $buttonBar, string $returnUrl): ?ButtonInterface
+    {
+        return $buttonBar->makeLinkButton()
+            ->setHref($returnUrl)
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.close') ?: 'Close')
+            ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL))
+            ->setShowLabelText(true);
     }
 
     /**
