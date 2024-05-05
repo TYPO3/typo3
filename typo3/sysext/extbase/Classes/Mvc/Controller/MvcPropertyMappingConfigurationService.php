@@ -66,7 +66,7 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
      * @param string $fieldNamePrefix
      *
      * @return string trusted properties token
-     * @throws \TYPO3\CMS\EXTBASE\Security\Exception\InvalidArgumentForHashGenerationException
+     * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function generateTrustedPropertiesToken($formFieldNames, $fieldNamePrefix = '')
     {
