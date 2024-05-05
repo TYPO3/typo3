@@ -36,7 +36,7 @@
       </trans-unit>
       <trans-unit id="afa" resname="afa" approved="yes">
         <source>Afro-Asiatic languages</source>
-        <target>अफ़्रीकी-एशियाई भाषाएँ</target>
+        <target>अफ़्रीकी-एशियाई भाषाएं</target>
       </trans-unit>
       <trans-unit id="afh" resname="afh" approved="yes">
         <source>Afrihili</source>
@@ -60,7 +60,7 @@
       </trans-unit>
       <trans-unit id="alg" resname="alg" approved="yes">
         <source>Algonquian languages</source>
-        <target>अल्गोंक्वियन भाषाएँ</target>
+        <target>अल्गोंक्वियन भाषाएं</target>
       </trans-unit>
       <trans-unit id="alt" resname="alt" approved="yes">
         <source>Southern Altai</source>
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="apa" resname="apa" approved="yes">
         <source>Apache languages</source>
-        <target>अपाचे भाषाएँ</target>
+        <target>अपाचे भाषाएं</target>
       </trans-unit>
       <trans-unit id="ar" resname="ar" approved="yes">
         <source>Arabic</source>
@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="art" resname="art" approved="yes">
         <source>Artificial languages</source>
-        <target>कृत्रिम भाषाएँ</target>
+        <target>कृत्रिम भाषाएं</target>
       </trans-unit>
       <trans-unit id="arw" resname="arw" approved="yes">
         <source>Arawak</source>
@@ -120,11 +120,11 @@
       </trans-unit>
       <trans-unit id="ath" resname="ath" approved="yes">
         <source>Athapascan languages</source>
-        <target>अथापास्कन भाषाएँ</target>
+        <target>अथापास्कन भाषाएं</target>
       </trans-unit>
       <trans-unit id="aus" resname="aus" approved="yes">
         <source>Australian languages</source>
-        <target>ऑस्ट्रेलियाई भाषाएँ</target>
+        <target>ऑस्ट्रेलियाई भाषाएं</target>
       </trans-unit>
       <trans-unit id="av" resname="av" approved="yes">
         <source>Avaric</source>
@@ -148,11 +148,11 @@
       </trans-unit>
       <trans-unit id="bad" resname="bad" approved="yes">
         <source>Banda languages</source>
-        <target>बांदा भाषाएँ</target>
+        <target>बांदा भाषाएं</target>
       </trans-unit>
       <trans-unit id="bai" resname="bai" approved="yes">
         <source>Bamileke languages</source>
-        <target>बामिलेके भाषाएँ</target>
+        <target>बामिलेके भाषाएं</target>
       </trans-unit>
       <trans-unit id="bal" resname="bal" approved="yes">
         <source>Baluchi</source>
@@ -168,7 +168,7 @@
       </trans-unit>
       <trans-unit id="bat" resname="bat" approved="yes">
         <source>Baltic languages</source>
-        <target>बाल्टिक भाषाएँ</target>
+        <target>बाल्टिक भाषाएं</target>
       </trans-unit>
       <trans-unit id="be" resname="be" approved="yes">
         <source>Belarusian</source>
@@ -184,7 +184,7 @@
       </trans-unit>
       <trans-unit id="ber" resname="ber" approved="yes">
         <source>Berber languages</source>
-        <target>बर्बर भाषाएँ</target>
+        <target>बर्बर भाषाएं</target>
       </trans-unit>
       <trans-unit id="bg" resname="bg" approved="yes">
         <source>Bulgarian</source>
@@ -192,7 +192,7 @@
       </trans-unit>
       <trans-unit id="bh" resname="bh" approved="yes">
         <source>Bihari languages</source>
-        <target>बिहारी भाषाएँ</target>
+        <target>बिहारी भाषाएं</target>
       </trans-unit>
       <trans-unit id="bho" resname="bho" approved="yes">
         <source>Bhojpuri</source>
@@ -244,7 +244,7 @@
       </trans-unit>
       <trans-unit id="btk" resname="btk" approved="yes">
         <source>Batak languages</source>
-        <target>बटक भाषाएँ</target>
+        <target>बटक भाषाएं</target>
       </trans-unit>
       <trans-unit id="bua" resname="bua" approved="yes">
         <source>Buriat</source>
@@ -268,7 +268,7 @@
       </trans-unit>
       <trans-unit id="cai" resname="cai" approved="yes">
         <source>Central American Indian languages</source>
-        <target>मध्य अमेरिकी भारतीय भाषाएँ</target>
+        <target>मध्य अमेरिकी भारतीय भाषाएं</target>
       </trans-unit>
       <trans-unit id="car" resname="car" approved="yes">
         <source>Galibi Carib</source>
@@ -276,7 +276,7 @@
       </trans-unit>
       <trans-unit id="cau" resname="cau" approved="yes">
         <source>Caucasian languages</source>
-        <target>कोकेशियान भाषाएँ</target>
+        <target>कोकेशियान भाषाएं</target>
       </trans-unit>
       <trans-unit id="ce" resname="ce" approved="yes">
         <source>Chechen</source>
@@ -288,7 +288,7 @@
       </trans-unit>
       <trans-unit id="cel" resname="cel" approved="yes">
         <source>Celtic languages</source>
-        <target>सेल्टिक भाषाएँ</target>
+        <target>सेल्टिक भाषाएं</target>
       </trans-unit>
       <trans-unit id="ch" resname="ch" approved="yes">
         <source>Chamorro</source>
@@ -332,7 +332,7 @@
       </trans-unit>
       <trans-unit id="cmc" resname="cmc" approved="yes">
         <source>Chamic languages</source>
-        <target>चैमिक भाषाएँ</target>
+        <target>चैमिक भाषाएं</target>
       </trans-unit>
       <trans-unit id="cnr" resname="cnr" approved="yes">
         <source>Montenegrin</source>
@@ -384,7 +384,7 @@
       </trans-unit>
       <trans-unit id="cus" resname="cus" approved="yes">
         <source>Cushitic languages</source>
-        <target>कुशिटिक भाषाएँ</target>
+        <target>कुशिटिक भाषाएं</target>
       </trans-unit>
       <trans-unit id="cv" resname="cv" approved="yes">
         <source>Chuvash</source>
@@ -408,7 +408,7 @@
       </trans-unit>
       <trans-unit id="day" resname="day" approved="yes">
         <source>Land Dayak languages</source>
-        <target>भूमि दयाक भाषाएँ</target>
+        <target>भूमि दयाक भाषाएं</target>
       </trans-unit>
       <trans-unit id="de" resname="de" approved="yes">
         <source>German</source>
@@ -436,7 +436,7 @@
       </trans-unit>
       <trans-unit id="dra" resname="dra" approved="yes">
         <source>Dravidian languages</source>
-        <target>द्रविड़ भाषाएँ</target>
+        <target>द्रविड़ भाषाएं</target>
       </trans-unit>
       <trans-unit id="dsb" resname="dsb" approved="yes">
         <source>Lower Sorbian</source>
@@ -540,7 +540,7 @@
       </trans-unit>
       <trans-unit id="fiu" resname="fiu" approved="yes">
         <source>Finno-Ugrian languages</source>
-        <target>फिनो-उग्रियन भाषाएँ</target>
+        <target>फिनो-उग्रियन भाषाएं</target>
       </trans-unit>
       <trans-unit id="fj" resname="fj" approved="yes">
         <source>Fijian</source>
@@ -604,7 +604,7 @@
       </trans-unit>
       <trans-unit id="gem" resname="gem" approved="yes">
         <source>Germanic languages</source>
-        <target>जर्मनिक भाषाएँ</target>
+        <target>जर्मनिक भाषाएं</target>
       </trans-unit>
       <trans-unit id="gez" resname="gez" approved="yes">
         <source>Geez</source>
@@ -692,7 +692,7 @@
       </trans-unit>
       <trans-unit id="him" resname="him" approved="yes">
         <source>Himachali languages; Western Pahari languages</source>
-        <target>हिमाचली भाषाएँ; पश्चिमी पहाड़ी भाषाएँ</target>
+        <target>हिमाचली भाषाएं; पश्चिमी पहाड़ी भाषाएं</target>
       </trans-unit>
       <trans-unit id="hit" resname="hit" approved="yes">
         <source>Hittite</source>
@@ -760,7 +760,7 @@
       </trans-unit>
       <trans-unit id="ijo" resname="ijo" approved="yes">
         <source>Ijo languages</source>
-        <target>इजो भाषाएँ</target>
+        <target>इजो भाषाएं</target>
       </trans-unit>
       <trans-unit id="ik" resname="ik" approved="yes">
         <source>Inupiaq</source>
@@ -772,11 +772,11 @@
       </trans-unit>
       <trans-unit id="inc" resname="inc" approved="yes">
         <source>Indic languages</source>
-        <target>इंडिक भाषाएँ</target>
+        <target>इंडिक भाषाएं</target>
       </trans-unit>
       <trans-unit id="ine" resname="ine" approved="yes">
         <source>Indo-European languages</source>
-        <target>इंडो-यूरोपीय भाषाएँ</target>
+        <target>इंडो-यूरोपीय भाषाएं</target>
       </trans-unit>
       <trans-unit id="inh" resname="inh" approved="yes">
         <source>Ingush</source>
@@ -788,11 +788,11 @@
       </trans-unit>
       <trans-unit id="ira" resname="ira" approved="yes">
         <source>Iranian languages</source>
-        <target>ईरानी भाषाएँ</target>
+        <target>ईरानी भाषाएं</target>
       </trans-unit>
       <trans-unit id="iro" resname="iro" approved="yes">
         <source>Iroquoian languages</source>
-        <target>इरोक्वोइयन भाषाएँ</target>
+        <target>इरोक्वोइयन भाषाएं</target>
       </trans-unit>
       <trans-unit id="is" resname="is" approved="yes">
         <source>Icelandic</source>
@@ -848,7 +848,7 @@
       </trans-unit>
       <trans-unit id="kar" resname="kar" approved="yes">
         <source>Karen languages</source>
-        <target>करेन भाषाएँ</target>
+        <target>करेन भाषाएं</target>
       </trans-unit>
       <trans-unit id="kaw" resname="kaw" approved="yes">
         <source>Kawi</source>
@@ -868,7 +868,7 @@
       </trans-unit>
       <trans-unit id="khi" resname="khi" approved="yes">
         <source>Khoisan languages</source>
-        <target>खोइसान भाषाएँ</target>
+        <target>खोइसान भाषाएं</target>
       </trans-unit>
       <trans-unit id="kho" resname="kho" approved="yes">
         <source>Khotanese; Sakan</source>
@@ -932,7 +932,7 @@
       </trans-unit>
       <trans-unit id="kro" resname="kro" approved="yes">
         <source>Kru languages</source>
-        <target>क्रु भाषाएँ</target>
+        <target>क्रु भाषाएं</target>
       </trans-unit>
       <trans-unit id="kru" resname="kru" approved="yes">
         <source>Kurukh</source>
@@ -1068,7 +1068,7 @@
       </trans-unit>
       <trans-unit id="map" resname="map" approved="yes">
         <source>Austronesian languages</source>
-        <target>ऑस्ट्रोनेशियन भाषाएँ</target>
+        <target>ऑस्ट्रोनेशियन भाषाएं</target>
       </trans-unit>
       <trans-unit id="mas" resname="mas" approved="yes">
         <source>Masai</source>
@@ -1112,7 +1112,7 @@
       </trans-unit>
       <trans-unit id="mis" resname="mis" approved="yes">
         <source>Uncoded languages</source>
-        <target>अनकोडित भाषाएँ</target>
+        <target>अनकोडित भाषाएं</target>
       </trans-unit>
       <trans-unit id="mk" resname="mk" approved="yes">
         <source>Macedonian</source>
@@ -1120,7 +1120,7 @@
       </trans-unit>
       <trans-unit id="mkh" resname="mkh" approved="yes">
         <source>Mon-Khmer languages</source>
-        <target>मोन-खमेर भाषाएँ</target>
+        <target>मोन-खमेर भाषाएं</target>
       </trans-unit>
       <trans-unit id="ml" resname="ml" approved="yes">
         <source>Malayalam</source>
@@ -1140,7 +1140,7 @@
       </trans-unit>
       <trans-unit id="mno" resname="mno" approved="yes">
         <source>Manobo languages</source>
-        <target>मनोबो भाषाएँ</target>
+        <target>मनोबो भाषाएं</target>
       </trans-unit>
       <trans-unit id="moh" resname="moh" approved="yes">
         <source>Mohawk</source>
@@ -1164,11 +1164,11 @@
       </trans-unit>
       <trans-unit id="mul" resname="mul" approved="yes">
         <source>Multiple languages</source>
-        <target>कई भाषाएँ</target>
+        <target>कई भाषाएं</target>
       </trans-unit>
       <trans-unit id="mun" resname="mun" approved="yes">
         <source>Munda languages</source>
-        <target>मुंडा भाषाएँ</target>
+        <target>मुंडा भाषाएं</target>
       </trans-unit>
       <trans-unit id="mus" resname="mus" approved="yes">
         <source>Creek</source>
@@ -1188,7 +1188,7 @@
       </trans-unit>
       <trans-unit id="myn" resname="myn" approved="yes">
         <source>Mayan languages</source>
-        <target>मायन भाषाएँ</target>
+        <target>मायन भाषाएं</target>
       </trans-unit>
       <trans-unit id="myv" resname="myv" approved="yes">
         <source>Erzya</source>
@@ -1200,11 +1200,11 @@
       </trans-unit>
       <trans-unit id="nah" resname="nah" approved="yes">
         <source>Nahuatl languages</source>
-        <target>नाहुतल भाषाएँ</target>
+        <target>नाहुतल भाषाएं</target>
       </trans-unit>
       <trans-unit id="nai" resname="nai" approved="yes">
         <source>North American Indian languages</source>
-        <target>उत्तर अमेरिकी भारतीय भाषाएँ</target>
+        <target>उत्तर अमेरिकी भारतीय भाषाएं</target>
       </trans-unit>
       <trans-unit id="nap" resname="nap" approved="yes">
         <source>Neapolitan</source>
@@ -1240,7 +1240,7 @@
       </trans-unit>
       <trans-unit id="nic" resname="nic" approved="yes">
         <source>Niger-Kordofanian languages</source>
-        <target>नाइजर-कोर्डोफानियन भाषाएँ</target>
+        <target>नाइजर-कोर्डोफानियन भाषाएं</target>
       </trans-unit>
       <trans-unit id="niu" resname="niu" approved="yes">
         <source>Niuean</source>
@@ -1280,7 +1280,7 @@
       </trans-unit>
       <trans-unit id="nub" resname="nub" approved="yes">
         <source>Nubian languages</source>
-        <target>न्युबियन भाषाएँ</target>
+        <target>न्युबियन भाषाएं</target>
       </trans-unit>
       <trans-unit id="nv" resname="nv" approved="yes">
         <source>Navajo; Navaho</source>
@@ -1340,7 +1340,7 @@
       </trans-unit>
       <trans-unit id="oto" resname="oto" approved="yes">
         <source>Otomian languages</source>
-        <target>ओटोमियन भाषाएँ</target>
+        <target>ओटोमियन भाषाएं</target>
       </trans-unit>
       <trans-unit id="pa" resname="pa" approved="yes">
         <source>Panjabi; Punjabi</source>
@@ -1348,7 +1348,7 @@
       </trans-unit>
       <trans-unit id="paa" resname="paa" approved="yes">
         <source>Papuan languages</source>
-        <target>पापुआन भाषाएँ</target>
+        <target>पापुआन भाषाएं</target>
       </trans-unit>
       <trans-unit id="pag" resname="pag" approved="yes">
         <source>Pangasinan</source>
@@ -1376,7 +1376,7 @@
       </trans-unit>
       <trans-unit id="phi" resname="phi" approved="yes">
         <source>Philippine languages</source>
-        <target>फ़िलिपीनी भाषाएँ</target>
+        <target>फ़िलिपीनी भाषाएं</target>
       </trans-unit>
       <trans-unit id="phn" resname="phn" approved="yes">
         <source>Phoenician</source>
@@ -1396,7 +1396,7 @@
       </trans-unit>
       <trans-unit id="pra" resname="pra" approved="yes">
         <source>Prakrit languages</source>
-        <target>प्राकृत भाषाएँ</target>
+        <target>प्राकृत भाषाएं</target>
       </trans-unit>
       <trans-unit id="pro" resname="pro" approved="yes">
         <source>Provençal, Old (to 1500)</source>
@@ -1444,7 +1444,7 @@
       </trans-unit>
       <trans-unit id="roa" resname="roa" approved="yes">
         <source>Romance languages</source>
-        <target>रोमांस की भाषाएँ</target>
+        <target>रोमांस की भाषाएं</target>
       </trans-unit>
       <trans-unit id="rom" resname="rom" approved="yes">
         <source>Romany</source>
@@ -1480,7 +1480,7 @@
       </trans-unit>
       <trans-unit id="sal" resname="sal" approved="yes">
         <source>Salishan languages</source>
-        <target>सलीशान भाषाएँ</target>
+        <target>सलीशान भाषाएं</target>
       </trans-unit>
       <trans-unit id="sam" resname="sam" approved="yes">
         <source>Samaritan Aramaic</source>
@@ -1520,7 +1520,7 @@
       </trans-unit>
       <trans-unit id="sem" resname="sem" approved="yes">
         <source>Semitic languages</source>
-        <target>सेमेटिक भाषाएँ</target>
+        <target>सेमेटिक भाषाएं</target>
       </trans-unit>
       <trans-unit id="sg" resname="sg" approved="yes">
         <source>Sango</source>
@@ -1532,7 +1532,7 @@
       </trans-unit>
       <trans-unit id="sgn" resname="sgn" approved="yes">
         <source>Sign Languages</source>
-        <target>सांकेतिक भाषाएँ</target>
+        <target>सांकेतिक भाषाएं</target>
       </trans-unit>
       <trans-unit id="shn" resname="shn" approved="yes">
         <source>Shan</source>
@@ -1548,11 +1548,11 @@
       </trans-unit>
       <trans-unit id="sio" resname="sio" approved="yes">
         <source>Siouan languages</source>
-        <target>सिओआन भाषाएँ</target>
+        <target>सिओआन भाषाएं</target>
       </trans-unit>
       <trans-unit id="sit" resname="sit" approved="yes">
         <source>Sino-Tibetan languages</source>
-        <target>चीन-तिब्बती भाषाएँ</target>
+        <target>चीन-तिब्बती भाषाएं</target>
       </trans-unit>
       <trans-unit id="sk" resname="sk" approved="yes">
         <source>Slovak</source>
@@ -1564,7 +1564,7 @@
       </trans-unit>
       <trans-unit id="sla" resname="sla" approved="yes">
         <source>Slavic languages</source>
-        <target>स्लाविक भाषाएँ</target>
+        <target>स्लाविक भाषाएं</target>
       </trans-unit>
       <trans-unit id="sm" resname="sm" approved="yes">
         <source>Samoan</source>
@@ -1576,7 +1576,7 @@
       </trans-unit>
       <trans-unit id="smi" resname="smi" approved="yes">
         <source>Sami languages</source>
-        <target>सामी भाषाएँ</target>
+        <target>सामी भाषाएं</target>
       </trans-unit>
       <trans-unit id="smj" resname="smj" approved="yes">
         <source>Lule Sami</source>
@@ -1608,7 +1608,7 @@
       </trans-unit>
       <trans-unit id="son" resname="son" approved="yes">
         <source>Songhai languages</source>
-        <target>सोंगहाई भाषाएँ</target>
+        <target>सोंगहाई भाषाएं</target>
       </trans-unit>
       <trans-unit id="sq" resname="sq" approved="yes">
         <source>Albanian</source>
@@ -1632,7 +1632,7 @@
       </trans-unit>
       <trans-unit id="ssa" resname="ssa" approved="yes">
         <source>Nilo-Saharan languages</source>
-        <target>निलो-सहारन भाषाएँ</target>
+        <target>निलो-सहारन भाषाएं</target>
       </trans-unit>
       <trans-unit id="st" resname="st" approved="yes">
         <source>Sotho, Southern</source>
@@ -1676,7 +1676,7 @@
       </trans-unit>
       <trans-unit id="tai" resname="tai" approved="yes">
         <source>Tai languages</source>
-        <target>ताई भाषाएँ</target>
+        <target>ताई भाषाएं</target>
       </trans-unit>
       <trans-unit id="te" resname="te" approved="yes">
         <source>Telugu</source>
@@ -1776,11 +1776,11 @@
       </trans-unit>
       <trans-unit id="tup" resname="tup" approved="yes">
         <source>Tupi languages</source>
-        <target>तुपी भाषाएँ</target>
+        <target>तुपी भाषाएं</target>
       </trans-unit>
       <trans-unit id="tut" resname="tut" approved="yes">
         <source>Altaic languages</source>
-        <target>अल्ताईक भाषाएँ</target>
+        <target>अल्ताईक भाषाएं</target>
       </trans-unit>
       <trans-unit id="tvl" resname="tvl" approved="yes">
         <source>Tuvalu</source>
@@ -1856,7 +1856,7 @@
       </trans-unit>
       <trans-unit id="wak" resname="wak" approved="yes">
         <source>Wakashan languages</source>
-        <target>वाकशान भाषाएँ</target>
+        <target>वाकशान भाषाएं</target>
       </trans-unit>
       <trans-unit id="wal" resname="wal" approved="yes">
         <source>Walamo</source>
@@ -1872,7 +1872,7 @@
       </trans-unit>
       <trans-unit id="wen" resname="wen" approved="yes">
         <source>Sorbian languages</source>
-        <target>सोरबियन भाषाएँ</target>
+        <target>सोरबियन भाषाएं</target>
       </trans-unit>
       <trans-unit id="wo" resname="wo" approved="yes">
         <source>Wolof</source>
@@ -1904,7 +1904,7 @@
       </trans-unit>
       <trans-unit id="ypk" resname="ypk" approved="yes">
         <source>Yupik languages</source>
-        <target>युपिक भाषाएँ</target>
+        <target>युपिक भाषाएं</target>
       </trans-unit>
       <trans-unit id="za" resname="za" approved="yes">
         <source>Zhuang; Chuang</source>
@@ -1932,7 +1932,7 @@
       </trans-unit>
       <trans-unit id="znd" resname="znd" approved="yes">
         <source>Zande languages</source>
-        <target>ज़ांडे भाषाएँ</target>
+        <target>ज़ांडे भाषाएं</target>
       </trans-unit>
       <trans-unit id="zu" resname="zu" approved="yes">
         <source>Zulu</source>
