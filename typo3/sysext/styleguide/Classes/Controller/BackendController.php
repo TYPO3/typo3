@@ -103,8 +103,7 @@ final class BackendController
 
     private function indexAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'index');
+        $moduleTemplate = $this->createModuleTemplate($request, 'index');
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/processing-indicator.js');
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         $demoExists = count($finder->findUidsOfStyleguideEntryPages());
@@ -156,8 +155,7 @@ final class BackendController
 
     private function buttonsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'buttons');
+        $moduleTemplate = $this->createModuleTemplate($request, 'buttons');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'buttons',
@@ -167,8 +165,7 @@ final class BackendController
 
     private function typographyAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'typography');
+        $moduleTemplate = $this->createModuleTemplate($request, 'typography');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'typography',
@@ -178,8 +175,7 @@ final class BackendController
 
     private function colorsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'colors');
+        $moduleTemplate = $this->createModuleTemplate($request, 'colors');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'colors',
@@ -189,8 +185,7 @@ final class BackendController
 
     private function shadowsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'shadows');
+        $moduleTemplate = $this->createModuleTemplate($request, 'shadows');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'shadows',
@@ -200,8 +195,7 @@ final class BackendController
 
     private function treesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'trees');
+        $moduleTemplate = $this->createModuleTemplate($request, 'trees');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'trees',
@@ -211,8 +205,7 @@ final class BackendController
 
     private function tablesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'tables');
+        $moduleTemplate = $this->createModuleTemplate($request, 'tables');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'tables',
@@ -222,8 +215,7 @@ final class BackendController
 
     private function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'cards');
+        $moduleTemplate = $this->createModuleTemplate($request, 'cards');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'cards',
@@ -288,8 +280,7 @@ final class BackendController
     private function iconsAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/find-icons.js');
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'icons');
+        $moduleTemplate = $this->createModuleTemplate($request, 'icons');
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $allIcons = $iconRegistry->getAllRegisteredIconIdentifiers();
         $overlays = array_filter(
@@ -310,8 +301,7 @@ final class BackendController
 
     private function infoboxAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'infobox');
+        $moduleTemplate = $this->createModuleTemplate($request, 'infobox');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'infobox',
@@ -321,8 +311,7 @@ final class BackendController
 
     private function flashMessagesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'flashMessages');
+        $moduleTemplate = $this->createModuleTemplate($request, 'flashMessages');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'flashMessages',
@@ -343,8 +332,7 @@ final class BackendController
     private function notificationsAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/render-notifications.js');
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'notifications');
+        $moduleTemplate = $this->createModuleTemplate($request, 'notifications');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'notifications',
@@ -354,8 +342,7 @@ final class BackendController
 
     private function avatarAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'avatar');
+        $moduleTemplate = $this->createModuleTemplate($request, 'avatar');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'avatar',
@@ -366,8 +353,7 @@ final class BackendController
 
     private function tabAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'tab');
+        $moduleTemplate = $this->createModuleTemplate($request, 'tab');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'tab',
@@ -377,8 +363,7 @@ final class BackendController
 
     private function modalAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'modal');
+        $moduleTemplate = $this->createModuleTemplate($request, 'modal');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'modal',
@@ -388,8 +373,7 @@ final class BackendController
 
     private function accordionAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'accordion');
+        $moduleTemplate = $this->createModuleTemplate($request, 'accordion');
         $moduleTemplate->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'accordion',
@@ -399,8 +383,7 @@ final class BackendController
 
     private function paginationAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'pagination');
+        $moduleTemplate = $this->createModuleTemplate($request, 'pagination');
         $page = (int)($request->getQueryParams()['page'] ?? 1);
         // Prepare example data for pagination list
         $itemsToBePaginated = [
@@ -452,8 +435,7 @@ final class BackendController
     private function filterAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/filter.js');
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->addShortcutButton($moduleTemplate, 'filter');
+        $moduleTemplate = $this->createModuleTemplate($request, 'filter');
         // Prepare example data for dropdown
         $userGroupArray = [
             0 => '[All users]',
@@ -486,6 +468,15 @@ final class BackendController
             ->setRouteIdentifier('help_styleguide')
             ->setArguments(['action' => $action]);
         $buttonBar->addButton($shortcutButton);
+    }
+
+    private function createModuleTemplate(ServerRequestInterface $request, string $action): ModuleTemplate
+    {
+        $moduleTemplate = $this->moduleTemplateFactory
+            ->create($request)
+            ->setModuleClass('module-styleguide');
+        $this->addShortcutButton($moduleTemplate, $action);
+        return $moduleTemplate;
     }
 
     private function getLanguageService(): LanguageService
