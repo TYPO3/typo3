@@ -178,10 +178,14 @@ class Scheduler implements SingletonInterface
                 }
             } catch (\Throwable $e) {
                 // Log failed execution
-                $this->logger->error('Task failed to execute successfully. Class: {class}, UID: {uid}', [
-                    'class' => get_class($task),
-                    'uid' => $task->getTaskUid(),
+                $this->logger->error('Task failed to execute successfully. Class: {taskClass}, UID: {taskId}, Code: {code}, "{message}" in {exceptionFile} at line {exceptionLine}', [
+                    'taskClass' => get_class($task),
+                    'taskId' => $task->getTaskUid(),
                     'exception' => $e,
+                    'exceptionFile' => $e->getFile(),
+                    'exceptionLine' => $e->getLine(),
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
                 ]);
                 // Store exception, so that it can be saved to database
                 // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
