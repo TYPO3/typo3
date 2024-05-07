@@ -23,8 +23,10 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Person;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
+use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class UpdateTest extends FunctionalTestCase
@@ -35,6 +37,7 @@ final class UpdateTest extends FunctionalTestCase
 
     private PersistenceManager $persistentManager;
     private PostRepository $postRepository;
+    protected BlogRepository $blogRepository;
 
     protected function setUp(): void
     {
@@ -42,6 +45,7 @@ final class UpdateTest extends FunctionalTestCase
 
         $this->persistentManager = $this->get(PersistenceManager::class);
         $this->postRepository = $this->get(PostRepository::class);
+        $this->blogRepository = $this->get(BlogRepository::class);
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
 
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -89,5 +93,25 @@ final class UpdateTest extends FunctionalTestCase
         $this->persistentManager->persistAll();
 
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultNullableDateTimeProperty.csv');
+    }
+
+    #[Test]
+    public function updateObjectSetsNullAsNullForSimpleTypes(): void
+    {
+        $newBlogTitle = 'aDi1oogh';
+        $newBlog = new Blog();
+        $newBlog->setTitle($newBlogTitle);
+        $newBlog->setSubtitle('subtitle');
+
+        $this->blogRepository->add($newBlog);
+        $this->persistentManager->persistAll();
+
+        // make sure null can be set explicitly
+        $insertedBlog = $this->blogRepository->findByUid(1);
+        $insertedBlog->setSubtitle(null);
+        $this->blogRepository->update($insertedBlog);
+        $this->persistentManager->persistAll();
+
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultUpdateObjectSetsNullAsNullForSimpleTypes.csv');
     }
 }

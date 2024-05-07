@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -52,32 +51,6 @@ final class AddTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function addSimpleObjectTest(): void
-    {
-        $newBlogTitle = 'aDi1oogh';
-        $newBlog = new Blog();
-        $newBlog->setTitle($newBlogTitle);
-
-        $this->blogRepository->add($newBlog);
-        $this->persistentManager->persistAll();
-
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
-        $queryBuilder->getRestrictions()->removeAll();
-        $newBlogCount = $queryBuilder
-            ->count('*')
-            ->from('tx_blogexample_domain_model_blog')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'title',
-                    $queryBuilder->createNamedParameter($newBlogTitle)
-                )
-            )
-            ->executeQuery()
-            ->fetchOne();
-        self::assertEquals(1, $newBlogCount);
-    }
-
-    #[Test]
     public function addObjectSetsDefaultLanguageTest(): void
     {
         $newBlogTitle = 'aDi1oogh';
@@ -87,20 +60,7 @@ final class AddTest extends FunctionalTestCase
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();
 
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
-        $queryBuilder->getRestrictions()->removeAll();
-        $newBlogRecord = $queryBuilder
-            ->select('*')
-            ->from('tx_blogexample_domain_model_blog')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'title',
-                    $queryBuilder->createNamedParameter($newBlogTitle)
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals(0, $newBlogRecord['sys_language_uid']);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultAddObjectSetsDefaultLanguage.csv');
     }
 
     #[Test]
@@ -114,53 +74,7 @@ final class AddTest extends FunctionalTestCase
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();
 
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
-        $queryBuilder->getRestrictions()->removeAll();
-        $newBlogRecord = $queryBuilder
-            ->select('*')
-            ->from('tx_blogexample_domain_model_blog')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'title',
-                    $queryBuilder->createNamedParameter($newBlogTitle)
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertEquals(-1, $newBlogRecord['sys_language_uid']);
-    }
-
-    #[Test]
-    public function addObjectSetsNullAsNullForSimpleTypes(): void
-    {
-        $newBlogTitle = 'aDi1oogh';
-        $newBlog = new Blog();
-        $newBlog->setTitle($newBlogTitle);
-        $newBlog->setSubtitle('subtitle');
-
-        $this->blogRepository->add($newBlog);
-        $this->persistentManager->persistAll();
-
-        // make sure null can be set explicitly
-        $insertedBlog = $this->blogRepository->findByUid(1);
-        $insertedBlog->setSubtitle(null);
-        $this->blogRepository->update($insertedBlog);
-        $this->persistentManager->persistAll();
-
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_blog');
-        $queryBuilder->getRestrictions()->removeAll();
-        $newBlogRecord = $queryBuilder
-            ->select('*')
-            ->from('tx_blogexample_domain_model_blog')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'subtitle',
-                    $queryBuilder->createNamedParameter($newBlogTitle)
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        self::assertNull($newBlogRecord['subtitle'] ?? null);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultAddObjectSetsDefinedLanguage.csv');
     }
 
     #[Test]
