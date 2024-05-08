@@ -73,7 +73,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function pageTapeSourceZeroWithPageTypeSuffixRouteEnhancerIsAddedAsAdditionalSource(): void
+    public function pageTypeSourceZeroWithPageTypeSuffixRouteEnhancerIsAddedAsAdditionalSource(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimpleSiteRootWithPage.csv');
         $this->buildSite([
