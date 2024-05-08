@@ -128,7 +128,12 @@ class IntegrityService
             //       for ex. if PageTypeSuffix routeEnhancer are used and redirects are created based on that.
             $slug = ltrim(($row['slug'] ?? ''), '/');
             $lang = (int)($row[$this->getPagesLanguageFieldName()] ?? 0);
-            $siteLanguage = $site->getLanguageById($lang);
+            try {
+                $siteLanguage = $site->getLanguageById($lang);
+            } catch (\InvalidArgumentException) {
+                // skip invalid languages which might occur due to previous changes in site configuration
+                continue;
+            }
 
             // empty slug root pages has been already handled with language bases above, thus skip them here.
             if (empty($slug)) {
@@ -144,8 +149,7 @@ class IntegrityService
     }
 
     /**
-     * Resolves the sub tree of a page and returns its slugs for language
-     * $languageId
+     * Resolves the subtree of a page and returns its slugs for language $languageId.
      */
     private function getSlugsOfSubPages(int $pageId, Site $site): array
     {
@@ -166,7 +170,12 @@ class IntegrityService
             //       for ex. if PageTypeSuffix routeEnhancer are used and redirects are created based on that.
             $slug = ltrim($row['slug'] ?? '', '/');
             $lang = (int)($row[$this->getPagesLanguageFieldName()] ?? 0);
-            $siteLanguage = $site->getLanguageById($lang);
+            try {
+                $siteLanguage = $site->getLanguageById($lang);
+            } catch (\InvalidArgumentException) {
+                // skip invalid languages which might occur due to previous changes in site configuration
+                continue;
+            }
 
             // empty slugs should to occur here, but to be sure we skip them here, as they were already handled.
             if (empty($slug)) {
