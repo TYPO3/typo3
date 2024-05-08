@@ -1,0 +1,113 @@
+page = PAGE
+page {
+  includeCSS {
+    forceOnTopCSS = {$forceOnTopCSS}
+    forceOnTopCSS.external = 1
+    forceOnTopCSS.excludeFromConcatenation = 1
+    forceOnTopCSS.disableCompression = 1
+    forceOnTopCSS.forceOnTop = 1
+
+    alternateCSS = {$alternateCSS}
+    alternateCSS.external = 1
+    alternateCSS.alternate = yes
+    alternateCSS.media = print
+    alternateCSS.title = Dummy
+
+    dataCSS = {$dataCSS}
+    dataCSS.external = 1
+    dataCSS.somethingCustom = someValue
+    dataCSS.data-attribute = value
+  }
+
+  includeCSSLibs {
+    forceOnTopCSS = {$forceOnTopCSSLib}
+    forceOnTopCSS.external = 1
+    forceOnTopCSS.excludeFromConcatenation = 1
+    forceOnTopCSS.disableCompression = 1
+    forceOnTopCSS.forceOnTop = 1
+
+    alternateCSS = {$alternateCSSLib}
+    alternateCSS.external = 1
+    alternateCSS.alternate = yes
+    alternateCSS.media = print
+    alternateCSS.title = Dummy
+
+    dataCSS = {$dataCSSLib}
+    dataCSS.external = 1
+    dataCSS.somethingCustom = someValue
+    dataCSS.data-attribute = value
+  }
+
+  includeJS {
+    forceOnTopJS = {$forceOnTopJS}
+    forceOnTopJS.external = 1
+    forceOnTopJS.excludeFromConcatenation = 1
+    forceOnTopJS.disableCompression = 1
+    forceOnTopJS.forceOnTop = 1
+
+    alternateJS = {$alternateJS}
+    alternateJS.external = 1
+    alternateJS.type = text/plain
+    alternateJS.crossorigin = example.com
+    alternateJS.integrity = 4711
+    alternateJS.defer = 1
+    alternateJS.nomodule = 1
+
+    dataJS = {$dataJS}
+    dataJS.external = 1
+    # NOTE: Unlike includeJSLibs|includeJSFooterlibs, "somethingCustom" will NOT be emitted here.
+    dataJS.somethingCustom = someValue
+    # NOTE: This notation differs from the includeJSLibs | includeJSFooterlibs.
+    dataJS.data.data-attribute = value
+  }
+
+  includeJSLibs {
+    forceOnTopJS = {$forceOnTopJSLib}
+    forceOnTopJS.external = 1
+    forceOnTopJS.excludeFromConcatenation = 1
+    forceOnTopJS.disableCompression = 1
+    forceOnTopJS.forceOnTop = 1
+
+    alternateJS = {$alternateJSLib}
+    alternateJS.external = 1
+    alternateJS.type = text/plain
+    alternateJS.crossorigin = example.com
+    alternateJS.integrity = 4711
+    alternateJS.defer = 1
+    alternateJS.nomodule = 1
+
+    dataJS = {$dataJSLib}
+    dataJS.external = 1
+    dataJS.somethingCustom = someValue
+    dataJS.data-attribute = value
+  }
+
+  includeJSFooterlibs {
+    forceOnTopJS = {$forceOnTopJSLibFooter}
+    forceOnTopJS.external = 1
+    forceOnTopJS.excludeFromConcatenation = 1
+    forceOnTopJS.disableCompression = 1
+    forceOnTopJS.forceOnTop = 1
+
+    alternateJS = {$alternateJSLibFooter}
+    alternateJS.external = 1
+    alternateJS.type = text/plain
+    alternateJS.crossorigin = example.com
+    alternateJS.integrity = 4711
+    alternateJS.defer = 1
+    alternateJS.nomodule = 1
+
+    dataJS = {$dataJSLibFooter}
+    dataJS.external = 1
+    dataJS.somethingCustom = someValue
+    dataJS.data-attribute = value
+  }
+}
+
+config {
+  concatenateCss = 0
+  concatenateJs = 0
+  compressCss = 0
+  compressJs = 0
+  concatenateJsAndCss = 0
+}
