@@ -82,16 +82,22 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *    {f:translate(key: 'someKey', arguments: {0: 'dog', 1: 'fox'}, default: 'default value')}
  *
  * Value of key ``someKey`` in the current website language
- * with the given arguments (“dog” and “fox”) assigned for the specified
- * ``%s`` conversions (:php:`sprintf()`) in the language file::
+ * with the given arguments (``dog`` and ``fox``) assigned for the specified
+ * ``%s`` conversions, using `PHP sprintf() notation <https://www.php.net/sprintf>`__ in the
+ * language file::
  *
  *    <trans-unit id="someKey" resname="someKey">
  *        <source>Some text about a %s and a %s.</source>
  *    </trans-unit>
  *
- * The output will be "Some text about a dog and a fox".
+ * The output will be :html:`Some text about a dog and a fox`.
  *
- * If the key ``someKey`` is not found in the language file, the output is “default value”.
+ * If the key ``someKey`` is not found in the language file, the output is :html:`default value`.
+ *
+ * As in PHP's :php:`sprintf()` you can order placeholders (:php:`Second %2$s, first %1$s`)
+ * or use specific types like :php:`A padded number: %'.09d`, returning ``000000123`` for a number
+ * passed as ``123``.
+ * See the `sprintf`_ PHP Documentation for more information on possible formatting.
  *
  * Inline notation with extension name
  * -----------------------------------
@@ -102,6 +108,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Value of key ``someKey`` in the current website language.
  * The locallang file of extension "some_extension_name" will be used.
+ *
+ * .. _parseFunc: https://www.php.net/sprintf
  */
 final class TranslateViewHelper extends AbstractViewHelper
 {
