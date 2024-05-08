@@ -372,19 +372,7 @@ class RequestHandler implements RequestHandlerInterface
                         continue;
                     }
                 }
-                unset(
-                    $additionalAttributes['if.'],
-                    $additionalAttributes['alternate'],
-                    $additionalAttributes['media'],
-                    $additionalAttributes['title'],
-                    $additionalAttributes['external'],
-                    $additionalAttributes['inline'],
-                    $additionalAttributes['disableCompression'],
-                    $additionalAttributes['excludeFromConcatenation'],
-                    $additionalAttributes['allWrap'],
-                    $additionalAttributes['allWrap.'],
-                    $additionalAttributes['forceOnTop'],
-                );
+                $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'css');
                 $pageRenderer->addCssFile(
                     $cssResource,
                     ($cssResourceConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
@@ -416,19 +404,7 @@ class RequestHandler implements RequestHandlerInterface
                         continue;
                     }
                 }
-                unset(
-                    $additionalAttributes['if.'],
-                    $additionalAttributes['alternate'],
-                    $additionalAttributes['media'],
-                    $additionalAttributes['title'],
-                    $additionalAttributes['external'],
-                    $additionalAttributes['internal'],
-                    $additionalAttributes['disableCompression'],
-                    $additionalAttributes['excludeFromConcatenation'],
-                    $additionalAttributes['allWrap'],
-                    $additionalAttributes['allWrap.'],
-                    $additionalAttributes['forceOnTop'],
-                );
+                $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'css');
                 $pageRenderer->addCssLibrary(
                     $cssResource,
                     ($cssResourceConfig['alternate'] ?? false) ? 'alternate stylesheet' : 'stylesheet',
@@ -470,20 +446,7 @@ class RequestHandler implements RequestHandlerInterface
                 if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
                     $crossOrigin = 'anonymous';
                 }
-                unset(
-                    $additionalAttributes['if.'],
-                    $additionalAttributes['type'],
-                    $additionalAttributes['crossorigin'],
-                    $additionalAttributes['integrity'],
-                    $additionalAttributes['external'],
-                    $additionalAttributes['allWrap'],
-                    $additionalAttributes['allWrap.'],
-                    $additionalAttributes['disableCompression'],
-                    $additionalAttributes['excludeFromConcatenation'],
-                    $additionalAttributes['integrity'],
-                    $additionalAttributes['defer'],
-                    $additionalAttributes['nomodule'],
-                );
+                $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'js');
                 $pageRenderer->addJsLibrary(
                     $key,
                     $jsResource,
@@ -522,20 +485,7 @@ class RequestHandler implements RequestHandlerInterface
                 if ($crossOrigin === '' && ($jsResourceConfig['integrity'] ?? false) && ($jsResourceConfig['external'] ?? false)) {
                     $crossOrigin = 'anonymous';
                 }
-                unset(
-                    $additionalAttributes['if.'],
-                    $additionalAttributes['type'],
-                    $additionalAttributes['crossorigin'],
-                    $additionalAttributes['integrity'],
-                    $additionalAttributes['external'],
-                    $additionalAttributes['allWrap'],
-                    $additionalAttributes['allWrap.'],
-                    $additionalAttributes['disableCompression'],
-                    $additionalAttributes['excludeFromConcatenation'],
-                    $additionalAttributes['integrity'],
-                    $additionalAttributes['defer'],
-                    $additionalAttributes['nomodule'],
-                );
+                $additionalAttributes = $this->cleanupAdditionalAttributeKeys($additionalAttributes, 'js');
                 $pageRenderer->addJsFooterLibrary(
                     $key,
                     $jsResource,
@@ -948,5 +898,51 @@ class RequestHandler implements RequestHandlerInterface
     protected function getLanguageService(): LanguageService
     {
         return GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
+    }
+
+    /**
+     * Filter out known TypoScript attributes so that they are NOT passed along
+     * to a <link rel...> or <script...> tag as additional attributes.
+     * NOTE: Some keys are unset here even though they are valid attributes to
+     * the <link> or <script> tag. This is because these extra attribute keys are specifically
+     * evaluated, in the addCssFile/addCssLibrary/addJsFile/addJsFooterLibrary methods.
+     *
+     * @param string $cleanupType: Indicate if "css" <link> or "js" <script> is cleaned up.
+     * @internal
+     */
+    private function cleanupAdditionalAttributeKeys(array $additionalAttributes, string $cleanupType): array
+    {
+        // Common (CSS+JS)
+        unset(
+            $additionalAttributes['if.'],
+            $additionalAttributes['external'],
+            $additionalAttributes['allWrap'],
+            $additionalAttributes['allWrap.'],
+            $additionalAttributes['disableCompression'],
+            $additionalAttributes['excludeFromConcatenation'],
+            $additionalAttributes['forceOnTop']
+        );
+
+        if ($cleanupType === 'css') {
+            unset(
+                $additionalAttributes['alternate'],
+                $additionalAttributes['media'],
+                $additionalAttributes['title'],
+                $additionalAttributes['inline'],
+                $additionalAttributes['internal']
+            );
+        }
+
+        if ($cleanupType === 'js') {
+            unset(
+                $additionalAttributes['type'],
+                $additionalAttributes['crossorigin'],
+                $additionalAttributes['integrity'],
+                $additionalAttributes['defer'],
+                $additionalAttributes['nomodule']
+            );
+        }
+
+        return $additionalAttributes;
     }
 }
