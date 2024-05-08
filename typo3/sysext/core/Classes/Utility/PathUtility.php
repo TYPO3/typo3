@@ -66,7 +66,8 @@ class PathUtility
                 // and a public resource is referenced, therefore we can calculate the path to the published assets
                 // This is true for all Composer packages that are installed in vendor folder by Composer, but still recognized by TYPO3
                 $relativePath = substr($targetPath, strlen(Environment::getComposerRootPath()));
-                [$relativePrefix, $relativeAssetPath] = explode('Resources/Public', $relativePath);
+                // The $relativePath might contain multiple occurrences of 'Resources/Public', so only search for first one
+                [$relativePrefix, $relativeAssetPath] = explode('Resources/Public', $relativePath, 2);
                 $targetPath = '_assets/' . md5($relativePrefix) . $relativeAssetPath;
             } else {
                 // At this point it can be ANY path, even an invalid or non existent and it is totally unclear,
