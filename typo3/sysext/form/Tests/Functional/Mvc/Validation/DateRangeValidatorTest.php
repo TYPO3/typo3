@@ -59,7 +59,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function DateRangeValidatorReturnsTrueIfInputIsNoDateTime(): void
+    public function dateRangeValidatorReturnsTrueIfInputIsNoDateTime(): void
     {
         $options = ['minimum' => '2018-03-17', 'maximum' => '2018-03-17'];
         $validator = new DateRangeValidator();
@@ -68,7 +68,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function DateRangeValidatorReturnsTrueIfInputIsLowerThanMinimumOption(): void
+    public function dateRangeValidatorReturnsTrueIfInputIsLowerThanMinimumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-17');
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
@@ -78,7 +78,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function DateRangeValidatorReturnsFalseIfInputIsEqualsMinimumOption(): void
+    public function dateRangeValidatorReturnsFalseIfInputIsEqualsMinimumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-18');
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
@@ -88,7 +88,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function DateRangeValidatorReturnsFalseIfInputIsGreaterThanMinimumOption(): void
+    public function dateRangeValidatorReturnsFalseIfInputIsGreaterThanMinimumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-19');
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
@@ -98,7 +98,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function DateRangeValidatorReturnsFalseIfInputIsLowerThanMaximumOption(): void
+    public function dateRangeValidatorReturnsFalseIfInputIsLowerThanMaximumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-17');
         $options = ['maximum' => '2018-03-18'];
@@ -108,7 +108,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function DateRangeValidatorReturnsFalseIfInputIsEqualsMaximumOption(): void
+    public function dateRangeValidatorReturnsFalseIfInputIsEqualsMaximumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-18');
         $options = ['maximum' => '2018-03-18'];
@@ -118,7 +118,7 @@ final class DateRangeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function DateRangeValidatorReturnsTrueIfInputIsGreaterThanMaximumOption(): void
+    public function dateRangeValidatorReturnsTrueIfInputIsGreaterThanMaximumOption(): void
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-19');
         $options = ['maximum' => '2018-03-18'];

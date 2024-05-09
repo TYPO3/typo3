@@ -39,7 +39,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function FileSizeValidatorThrowsExceptionIfMinimumOptionIsInvalid(): void
+    public function fileSizeValidatorThrowsExceptionIfMinimumOptionIsInvalid(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1505304205);
@@ -50,7 +50,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function FileSizeValidatorThrowsExceptionIfMaximumOptionIsInvalid(): void
+    public function fileSizeValidatorThrowsExceptionIfMaximumOptionIsInvalid(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1505304206);
@@ -61,7 +61,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToSmall(): void
+    public function fileSizeValidatorHasErrorsIfFileResourceSizeIsToSmall(): void
     {
         $options = ['minimum' => '1M', 'maximum' => '10M'];
         $validator = new FileSizeValidator();
@@ -72,7 +72,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToBig(): void
+    public function fileSizeValidatorHasErrorsIfFileResourceSizeIsToBig(): void
     {
         $options = ['minimum' => '1M', 'maximum' => '1M'];
         $validator = new FileSizeValidator();
@@ -83,7 +83,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function FileSizeValidatorHasNoErrorsIfInputIsEmptyString(): void
+    public function fileSizeValidatorHasNoErrorsIfInputIsEmptyString(): void
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];
         $validator = new FileSizeValidator();
@@ -92,7 +92,7 @@ final class FileSizeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function FileSizeValidatorHasErrorsIfInputIsNoFileResource(): void
+    public function fileSizeValidatorHasErrorsIfInputIsNoFileResource(): void
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];
         $validator = new FileSizeValidator();

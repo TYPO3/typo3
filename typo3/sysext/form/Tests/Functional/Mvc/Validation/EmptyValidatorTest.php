@@ -36,7 +36,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function EmptyValidatorReturnsFalseIfInputIsEmptyString(): void
+    public function emptyValidatorReturnsFalseIfInputIsEmptyString(): void
     {
         $validator = new EmptyValidator();
         $validator->setOptions([]);
@@ -45,7 +45,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function EmptyValidatorReturnsFalseIfInputIsNull(): void
+    public function emptyValidatorReturnsFalseIfInputIsNull(): void
     {
         $validator = new EmptyValidator();
         $validator->setOptions([]);
@@ -54,7 +54,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function EmptyValidatorReturnsFalseIfInputIsEmptyArray(): void
+    public function emptyValidatorReturnsFalseIfInputIsEmptyArray(): void
     {
         $validator = new EmptyValidator();
         $validator->setOptions([]);
@@ -63,7 +63,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function EmptyValidatorReturnsFalseIfInputIsZero(): void
+    public function emptyValidatorReturnsFalseIfInputIsZero(): void
     {
         $validator = new EmptyValidator();
         $validator->setOptions([]);
@@ -72,7 +72,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function EmptyValidatorReturnsFalseIfInputIsZeroAsString(): void
+    public function emptyValidatorReturnsFalseIfInputIsZeroAsString(): void
     {
         $validator = new EmptyValidator();
         $validator->setOptions([]);
@@ -81,7 +81,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function EmptyValidatorReturnsTrueIfInputIsNonEmptyString(): void
+    public function emptyValidatorReturnsTrueIfInputIsNonEmptyString(): void
     {
         $validator = new EmptyValidator();
         $validator->setOptions([]);
@@ -90,7 +90,7 @@ final class EmptyValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function EmptyValidatorReturnsTrueIfInputIsNonEmptyArray(): void
+    public function emptyValidatorReturnsTrueIfInputIsNonEmptyArray(): void
     {
         $validator = new EmptyValidator();
         $validator->setOptions([]);

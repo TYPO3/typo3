@@ -36,7 +36,7 @@ final class CountValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMaximum(): void
+    public function countValidatorReturnsFalseIfInputItemsCountIsEqualToMaximum(): void
     {
         $options = ['minimum' => 1, 'maximum' => 2];
         $validator = new CountValidator();
@@ -49,7 +49,7 @@ final class CountValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimum(): void
+    public function countValidatorReturnsFalseIfInputItemsCountIsEqualToMinimum(): void
     {
         $options = ['minimum' => 2, 'maximum' => 3];
         $validator = new CountValidator();
@@ -62,7 +62,7 @@ final class CountValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimumAndMaximum(): void
+    public function countValidatorReturnsFalseIfInputItemsCountIsEqualToMinimumAndMaximum(): void
     {
         $options = ['minimum' => 2, 'maximum' => 2];
         $validator = new CountValidator();
@@ -75,7 +75,7 @@ final class CountValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function CountValidatorReturnsTrueIfInputCountHasMoreItemsAsMaximumValue(): void
+    public function countValidatorReturnsTrueIfInputCountHasMoreItemsAsMaximumValue(): void
     {
         $options = ['minimum' => 1, 'maximum' => 2];
         $validator = new CountValidator();
@@ -89,7 +89,7 @@ final class CountValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function CountValidatorReturnsTrueIfInputCountHasLessItemsAsMinimumValue(): void
+    public function countValidatorReturnsTrueIfInputCountHasLessItemsAsMinimumValue(): void
     {
         $options = ['minimum' => 2, 'maximum' => 3];
         $validator = new CountValidator();

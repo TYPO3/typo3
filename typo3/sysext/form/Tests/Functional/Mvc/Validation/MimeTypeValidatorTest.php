@@ -56,7 +56,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsString(): void
+    public function mimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsString(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1471713296);
@@ -67,7 +67,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsEmptyArray(): void
+    public function mimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsEmptyArray(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1471713296);
@@ -78,7 +78,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function MimeTypeValidatorReturnsTrueIfFileResourceIsNotAllowedMimeType(): void
+    public function mimeTypeValidatorReturnsTrueIfFileResourceIsNotAllowedMimeType(): void
     {
         $options = ['allowedMimeTypes' => ['image/jpeg']];
         $validator = new MimeTypeValidator();
@@ -89,7 +89,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function MimeTypeValidatorReturnsFalseIfInputIsEmptyString(): void
+    public function mimeTypeValidatorReturnsFalseIfInputIsEmptyString(): void
     {
         $options = ['allowedMimeTypes' => ['fake']];
         $validator = new MimeTypeValidator();
@@ -98,7 +98,7 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function MimeTypeValidatorReturnsTrueIfInputIsNoFileResource(): void
+    public function mimeTypeValidatorReturnsTrueIfInputIsNoFileResource(): void
     {
         $options = ['allowedMimeTypes' => ['fake']];
         $validator = new MimeTypeValidator();
