@@ -89,10 +89,16 @@ final class ConfigurationController
         $html .= '<ul class="treelist">';
 
         foreach ($tree as $key => $value) {
+            $callableName = '';
             if ($value instanceof \BackedEnum) {
                 $value = $value->value;
             } elseif ($value instanceof \UnitEnum) {
                 $value = $value->name;
+            } elseif (is_callable($value, false, $callableName)) {
+                $value = $callableName;
+                if ($callableName === 'Closure::__invoke') {
+                    $value .= ' (anonymous callback function: function() {})';
+                }
             } elseif (is_object($value) && !$value instanceof \Traversable) {
                 $value = (array)$value;
             }
