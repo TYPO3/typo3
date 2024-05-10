@@ -50,6 +50,7 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
             $url .= '#' . $linkDetails['fragment'];
         }
         return (new LinkResult($linkDetails['type'], $this->forceAbsoluteUrl($url, $conf)))
+            ->withLinkConfiguration($conf)
             ->withTarget($target ?: $this->resolveTargetAttribute($conf, 'fileTarget'))
             ->withLinkText($linkText);
     }
