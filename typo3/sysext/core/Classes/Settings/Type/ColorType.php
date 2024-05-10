@@ -70,7 +70,6 @@ readonly class ColorType implements SettingsTypeInterface
         }
 
         if (str_starts_with($value, '#')) {
-            $values = GeneralUtility::trimExplode(',', substr(substr($value, 0, -1), 5));
             return $this->normalizeHex(substr($value, 1));
         }
 
