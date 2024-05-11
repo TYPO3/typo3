@@ -109,7 +109,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Value of key ``someKey`` in the current website language.
  * The locallang file of extension "some_extension_name" will be used.
  *
- * .. _parseFunc: https://www.php.net/sprintf
+ * .. _sprintf: https://www.php.net/sprintf
  */
 final class TranslateViewHelper extends AbstractViewHelper
 {
