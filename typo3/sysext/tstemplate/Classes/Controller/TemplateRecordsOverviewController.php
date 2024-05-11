@@ -62,7 +62,7 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
         $pagesWithTemplates = [];
 
         $sites = $this->siteFinder->getAllSites();
-        foreach ($sites as $identifier => $site) {
+        foreach ($sites as $site) {
             if (!$site instanceof Site) {
                 continue;
             }

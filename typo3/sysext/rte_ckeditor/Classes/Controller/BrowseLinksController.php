@@ -154,7 +154,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             ];
 
             if (is_array($this->thisConfig['classesAnchor'] ?? null)) {
-                foreach ($this->thisConfig['classesAnchor'] as $label => $conf) {
+                foreach ($this->thisConfig['classesAnchor'] as $conf) {
                     if (in_array($conf['class'] ?? null, $classesAnchorArray, true)) {
                         $classesAnchor['all'][] = $conf['class'];
                         if ($conf['type'] === $this->displayedLinkHandlerId) {

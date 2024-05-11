@@ -72,7 +72,6 @@ class DriverMiddlewareService
                 1701546655
             );
         }
-        $targetImplements = $target !== '' && class_exists($target) ? (class_implements($target) ?: []) : [];
         return [
             'target' => $target,
             'disabled' => (bool)($middleware['disabled'] ?? false),

@@ -111,7 +111,7 @@ class UserInformationService
         ];
         $data['groups']['diff'] = array_diff($data['groups']['inherit'], $data['groups']['direct']);
         foreach ($data['groups'] as $type => $groups) {
-            foreach ($groups as $key => $id) {
+            foreach ($groups as $id) {
                 $record = BackendUtility::getRecord('be_groups', (int)$id);
                 if (isset($record['uid'])) {
                     $recordId = $record['uid'];

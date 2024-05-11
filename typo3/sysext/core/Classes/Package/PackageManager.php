@@ -222,7 +222,7 @@ class PackageManager implements SingletonInterface
         $activePackages = array_merge($requiredPackages, $activePackages);
 
         if ($activePackages != $previousActivePackages) {
-            foreach ($requiredPackages as $requiredPackageKey => $package) {
+            foreach ($requiredPackages as $package) {
                 $this->registerActivePackage($package);
             }
             $this->sortAndSavePackageStates();

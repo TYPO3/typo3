@@ -152,10 +152,9 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
         }
 
         /**
-         * @var string $routeName
          * @var Route $existingRoute
          */
-        foreach ($collection->all() as $routeName => $existingRoute) {
+        foreach ($collection->all() as $existingRoute) {
             $existingRoutePath = rtrim($existingRoute->getPath(), '/');
             if ($considerIndex && $existingRoutePath === '') {
                 $existingRoutePath = $this->index;

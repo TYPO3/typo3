@@ -42,7 +42,7 @@ class IndexedSearchUtility
             if (is_array($components)) {
                 $i = 0;
                 $lastoper = '';
-                foreach ($components as $key => $val) {
+                foreach ($components as $val) {
                     $operator = self::getOperator($val, $operatorTranslateTable);
                     if ($operator) {
                         $lastoper = $operator;

@@ -765,7 +765,7 @@ class SiteConfigurationController
     {
         $duplicatedEntryPoints = [];
 
-        foreach ($allSites as $identifier => $site) {
+        foreach ($allSites as $site) {
             if (!isset($pages[$site->getRootPageId()])) {
                 continue;
             }

@@ -337,7 +337,7 @@ If you want to get more detailed information, use the --verbose option.')
         SymfonyStyle $io
     ): void {
         // Remove references to offline records
-        foreach ($offlineVersionRecords as $fileName => $references) {
+        foreach ($offlineVersionRecords as $references) {
             if ($io->isVeryVerbose()) {
                 $io->writeln('Removing references in offline versions which there are references pointing towards.');
             }
@@ -347,7 +347,7 @@ If you want to get more detailed information, use the --verbose option.')
         }
 
         // Remove references to non-existing records
-        foreach ($nonExistingRecords as $fileName => $references) {
+        foreach ($nonExistingRecords as $references) {
             if ($io->isVeryVerbose()) {
                 $io->writeln('Removing references to non-existing records.');
             }

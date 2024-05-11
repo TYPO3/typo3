@@ -1171,7 +1171,7 @@ class PageRenderer implements SingletonInterface
         $metaTags = [];
         $metaTagManagers = $this->metaTagRegistry->getAllManagers();
 
-        foreach ($metaTagManagers as $manager => $managerObject) {
+        foreach ($metaTagManagers as $managerObject) {
             $properties = $managerObject->renderAllProperties();
             if (!empty($properties)) {
                 $metaTags[] = $properties;

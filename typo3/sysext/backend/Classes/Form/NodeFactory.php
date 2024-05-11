@@ -167,6 +167,7 @@ class NodeFactory
         if (!empty($this->nodeResolver[$type])) {
             // Resolver with the highest priority is called first. If it returns with a new class name,
             // it will be taken and loop is aborted, otherwise resolver with next lower priority is called.
+            /** @noinspection PhpUnusedLocalVariableInspection leave for debugging purpose */
             foreach ($this->nodeResolver[$type] as $priority => $resolverClassName) {
                 $resolver = $this->initializeNodeResolverClass($resolverClassName, $data);
                 // Resolver classes do NOT receive the name of the already resolved class. Single

@@ -945,7 +945,7 @@ class GeneralUtility
         $name = '';
         $valuemode = false;
         $attributes = [];
-        foreach ($components as $key => $val) {
+        foreach ($components as $val) {
             // Only if $name is set (if there is an attribute, that waits for a value), that valuemode is enabled. This ensures that the attribute is assigned it's value
             if ($val !== '=') {
                 if ($valuemode) {
@@ -1071,13 +1071,12 @@ class GeneralUtility
     {
         $parser = xml_parser_create();
         $vals = [];
-        $index = [];
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
         foreach ($parserOptions as $option => $value) {
             xml_parser_set_option($parser, $option, $value);
         }
-        xml_parse_into_struct($parser, $string, $vals, $index);
+        xml_parse_into_struct($parser, $string, $vals);
         if (xml_get_error_code($parser)) {
             return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
         }
@@ -1291,7 +1290,6 @@ class GeneralUtility
         // Create parser:
         $parser = xml_parser_create();
         $vals = [];
-        $index = [];
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
         // Default output charset is UTF-8, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
@@ -1301,7 +1299,7 @@ class GeneralUtility
         // us-ascii / utf-8 / iso-8859-1
         xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);
         // Parse content:
-        xml_parse_into_struct($parser, $string, $vals, $index);
+        xml_parse_into_struct($parser, $string, $vals);
         // If error, return error message:
         if (xml_get_error_code($parser)) {
             return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
@@ -1314,7 +1312,7 @@ class GeneralUtility
         $tagName = '';
         $documentTag = '';
         // Traverse the parsed XML structure:
-        foreach ($vals as $key => $val) {
+        foreach ($vals as $val) {
             // First, process the tag-name (which is used in both cases, whether "complete" or "close")
             $tagName = $val['tag'];
             if (!$documentTag) {
@@ -1833,6 +1831,7 @@ class GeneralUtility
 
         $valuePathPrefix = $prependPath ? $pathPrefix : '';
         $foundFiles = [];
+        /** @noinspection PhpUnusedLocalVariableInspection key is possibly used with "valueName */
         foreach ($files as $key => $value) {
             // Don't change this ever - extensions may depend on the fact that the hash is an md5 of the path! (import/export extension)
             $foundFiles[md5($pathPrefix . ${$valueName})] = $valuePathPrefix . ${$valueName};

@@ -126,7 +126,6 @@ abstract class AbstractTemplateModuleController
 
     protected function addPreviewButtonToDocHeader(ModuleTemplate $view, int $pageId, int $dokType): void
     {
-        $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
         // Don't add preview button for sysfolders and spacers by default, and look up TS config options

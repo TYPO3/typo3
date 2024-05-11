@@ -855,7 +855,7 @@ class ArrayUtility
     public static function naturalKeySortRecursive(array &$array): bool
     {
         uksort($array, 'strnatcasecmp');
-        foreach ($array as $key => &$value) {
+        foreach ($array as &$value) {
             if (is_array($value)) {
                 self::naturalKeySortRecursive($value);
             }

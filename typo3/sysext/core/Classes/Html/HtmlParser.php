@@ -681,7 +681,7 @@ class HtmlParser
             }
         }
         // Unsetting tags:
-        foreach ($tagRegister as $tag => $positions) {
+        foreach ($tagRegister as $positions) {
             foreach ($positions as $pKey) {
                 unset($newContent[$pKey]);
             }

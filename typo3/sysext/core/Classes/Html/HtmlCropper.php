@@ -101,7 +101,6 @@ class HtmlCropper implements LoggerAwareInterface
                 $fullTempContent = $splittedContent[$offset];
                 $thisStrLen = mb_strlen(html_entity_decode($fullTempContent, ENT_COMPAT, 'UTF-8'), 'utf-8');
                 if ($strLen + $thisStrLen > $absChars) {
-                    $tempProcessedContent = '';
                     $croppedOffset = $offset;
                     $cropPosition = $absChars - $strLen;
                     // The snippet "&[^&\s;]{2,8};" in the RegEx below represents entities.
@@ -114,7 +113,7 @@ class HtmlCropper implements LoggerAwareInterface
                     // and use this new string to count offsets.
                     if ($entityMatches !== []) {
                         $escapedContent = str_replace('$', ' ', $fullTempContent);
-                        $replacedContent = preg_replace($entityPattern, '$', $escapedContent, -1, $count);
+                        $replacedContent = preg_replace($entityPattern, '$', $escapedContent, -1);
                         $croppedContent = !$cropFromRight ? mb_substr($replacedContent, 0, $cropPosition) : mb_substr($replacedContent, $numberOfChars, $cropPosition);
 
                         // In case of negative offsets, we need to reverse everything.

@@ -2464,6 +2464,23 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    public function getFilesInDirRespectsOrderByModificationTime(): void
+    {
+        $path = $this->getTestDirectory('FilesInDirTestsModificationTime');
+
+        touch($path . '/testOne.txt', time() - 3600);
+        touch($path . '/testTwo.txt', time() - 5400);
+        touch($path . '/testThree.txt', time() - 1800);
+
+        $files = GeneralUtility::getFilesInDir($path, '', false, 'mtime');
+        self::assertEquals(array_values($files), [
+            'testTwo.txt',
+            'testOne.txt',
+            'testThree.txt',
+        ]);
+    }
+
+    #[Test]
     public function getFilesInDirCanPrependPath(): void
     {
         $path = $this->getFilesInDirCreateTestDirectory();
@@ -3118,8 +3135,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function getAllFilesAndFoldersInPathReturnsArrayWithMd5Keys(): void
     {
-        $directory = $this->getTestDirectory() . '/' . StringUtility::getUniqueId('directory_');
-        mkdir($directory);
+        $directory = $this->getTestDirectory('directory_');
         $filesAndDirectories = GeneralUtility::getAllFilesAndFoldersInPath([], $directory, '', true);
         $check = true;
         foreach ($filesAndDirectories as $md5 => $path) {
@@ -3127,7 +3143,6 @@ final class GeneralUtilityTest extends UnitTestCase
                 $check = false;
             }
         }
-        GeneralUtility::rmdir($directory);
         self::assertTrue($check);
     }
 

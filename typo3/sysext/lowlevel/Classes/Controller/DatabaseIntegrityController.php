@@ -677,7 +677,7 @@ class DatabaseIntegrityController
         if ($id && $depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $statement = $queryBuilder->select('uid')
+            $queryBuilder->select('uid')
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
@@ -1178,7 +1178,7 @@ class DatabaseIntegrityController
                         }
                     }
 
-                    foreach ($this->tableArray[$from_table] as $key => $val) {
+                    foreach ($this->tableArray[$from_table] as $val) {
                         $this->MOD_SETTINGS['labels_noprefix'] =
                             ($this->MOD_SETTINGS['labels_noprefix'] ?? '') == 1
                                 ? 'on'

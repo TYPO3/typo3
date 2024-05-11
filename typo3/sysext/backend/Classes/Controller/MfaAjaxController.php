@@ -96,7 +96,7 @@ class MfaAjaxController
                     $user
                 );
             }
-            foreach ($providersToDeactivate as $identifier => $provider) {
+            foreach ($providersToDeactivate as $provider) {
                 $propertyManager = MfaProviderPropertyManager::create($provider, $user);
                 if (!$provider->deactivate($request, $propertyManager)) {
                     return $this->getResponseData(

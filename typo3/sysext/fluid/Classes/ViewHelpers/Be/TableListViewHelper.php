@@ -120,7 +120,6 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $clickTitleMode = $this->arguments['clickTitleMode'];
         $enableControlPanels = $this->arguments['enableControlPanels'];
 
-        $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->renderingContext;

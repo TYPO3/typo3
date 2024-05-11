@@ -402,7 +402,7 @@ STYLESHEET;
     {
         $content = '';
 
-        foreach ($trace as $index => $step) {
+        foreach ($trace as $step) {
             $content .= '<div class="trace-step">';
             $args = $this->flattenArgs($step['args'] ?? []);
 

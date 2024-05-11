@@ -32,6 +32,7 @@ class TcaColumnsProcessPlaceholders implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
+        /** @noinspection PhpUnusedLocalVariableInspection leave for debugging purpose */
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
             // Placeholders are only valid for input-like and text-like fields.
             if (!isset($fieldConfig['config']['placeholder'], $fieldConfig['config']['type'])

@@ -1319,7 +1319,7 @@ class QueryBuilder extends ConcreteQueryBuilder
         }
 
         // Loop through all JOIN tables
-        foreach ($this->concreteQueryBuilder->join as $fromTable => $joins) {
+        foreach ($this->concreteQueryBuilder->join as $joins) {
             foreach ($joins as $join) {
                 $tableName = $this->unquoteSingleIdentifier($join->table);
                 $tableAlias = is_string($join->alias) && $join->alias !== '' ? $this->unquoteSingleIdentifier($join->alias) : $tableName;

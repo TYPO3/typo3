@@ -53,7 +53,6 @@ final class WebhookCompilerPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds($this->tagName) as $serviceName => $tags) {
             $service = $container->findDefinition($serviceName);
-            $description = '';
             $identifier = $serviceName;
             $eventIdentifier = null;
             // see if we should also auto-wire the message to the event, and register our main message listener

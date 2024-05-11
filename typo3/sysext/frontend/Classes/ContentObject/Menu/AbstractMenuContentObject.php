@@ -1057,7 +1057,7 @@ abstract class AbstractMenuContentObject
             }
             $items = explode('|', $this->conf['special.']['items']);
             $c = 0;
-            foreach ($items as $k_b => $v_b) {
+            foreach ($items as $v_b) {
                 $v_b = strtolower(trim($v_b));
                 if ((int)($this->conf['special.'][$v_b . '.']['uid'] ?? false)) {
                     $recArr[$v_b] = $this->sys_page->getPage((int)$this->conf['special.'][$v_b . '.']['uid'], $this->disableGroupAccessCheck);

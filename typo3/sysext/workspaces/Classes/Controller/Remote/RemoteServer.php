@@ -319,14 +319,14 @@ class RemoteServer
         $substitutes = [];
 
         // Process live references
-        foreach ($liveFileReferences as $identifier => $liveFileReference) {
+        foreach ($liveFileReferences as $liveFileReference) {
             $identifierWithRandomValue = $randomValue . '__' . $liveFileReference->getUid() . '__' . $randomValue;
             $candidates[$identifierWithRandomValue] = $liveFileReference;
             $liveValues[] = $identifierWithRandomValue;
         }
 
         // Process version references
-        foreach ($versionFileReferences as $identifier => $versionFileReference) {
+        foreach ($versionFileReferences as $versionFileReference) {
             $identifierWithRandomValue = $randomValue . '__' . $versionFileReference->getUid() . '__' . $randomValue;
             $candidates[$identifierWithRandomValue] = $versionFileReference;
             $versionValues[] = $identifierWithRandomValue;

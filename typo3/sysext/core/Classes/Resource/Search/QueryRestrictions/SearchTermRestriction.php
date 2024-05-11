@@ -83,7 +83,6 @@ class SearchTermRestriction implements QueryRestrictionInterface
                 }
                 $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
                 $fieldType = $fieldConfig['type'];
-                $evalRules = $fieldConfig['eval'] ?? '';
 
                 // Check whether search should be case-sensitive or not
                 if (in_array('case', (array)($fieldConfig['search'] ?? []), true)) {

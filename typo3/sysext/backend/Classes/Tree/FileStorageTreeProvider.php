@@ -98,7 +98,7 @@ class FileStorageTreeProvider
     {
         $rootLevelFolders = $this->getMountsInStorage($resourceStorage, $user);
         $items = [];
-        foreach ($rootLevelFolders as $i => $rootLevelFolderInfo) {
+        foreach ($rootLevelFolders as $rootLevelFolderInfo) {
             /** @var Folder $rootLevelFolder */
             $rootLevelFolder = $rootLevelFolderInfo['folder'];
             // Root level is always expanded if not defined otherwise

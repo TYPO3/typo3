@@ -98,7 +98,7 @@ class MassActionHandler
         // workspace might be -98 a.k.a "All Workspaces" but that's safe here
         $publishData = $this->workspaceService->getCmdArrayForPublishWS($workspace, false, $language);
         $recordCount = 0;
-        foreach ($publishData as $table => $recs) {
+        foreach ($publishData as $recs) {
             $recordCount += count($recs);
         }
         if ($recordCount > 0) {
@@ -117,7 +117,7 @@ class MassActionHandler
         // workspace might be -98 a.k.a "All Workspaces" but that's safe here
         $flushData = $this->workspaceService->getCmdArrayForFlushWS($workspace, $language);
         $recordCount = 0;
-        foreach ($flushData as $table => $recs) {
+        foreach ($flushData as $recs) {
             $recordCount += count($recs);
         }
         if ($recordCount > 0) {

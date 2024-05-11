@@ -2884,7 +2884,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 if ($useOptionSplitReplace) {
                     // init for replacement
-                    $splitCount = preg_match_all($search, $content, $matches);
+                    $splitCount = preg_match_all($search, $content);
                     $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
                     $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
                     $replaceCount = 0;
@@ -2902,7 +2902,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $searchPreg = '#' . preg_quote($search, '#') . '#';
 
                 // init for replacement
-                $splitCount = preg_match_all($searchPreg, $content, $matches);
+                $splitCount = preg_match_all($searchPreg, $content);
                 $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
                 $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
                 $replaceCount = 0;

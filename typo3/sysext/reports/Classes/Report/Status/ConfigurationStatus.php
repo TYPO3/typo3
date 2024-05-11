@@ -121,7 +121,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $memcachedServers = [];
         foreach ($configurations as $table => $conf) {
             if (is_array($conf)) {
-                foreach ($conf as $key => $value) {
+                foreach ($conf as $value) {
                     if ($value === MemcachedBackend::class) {
                         $memcachedServers = $configurations[$table]['options']['servers'];
                         break;

@@ -45,7 +45,6 @@ final class LinkController
     public function resourceAction(ServerRequestInterface $request): ResponseInterface
     {
         $identifier = $request->getParsedBody()['identifier'] ?? null;
-        $link = null;
         $resource = null;
 
         if ($identifier) {

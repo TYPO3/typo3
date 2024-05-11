@@ -1039,7 +1039,7 @@ class DefaultTcaSchema
      */
     protected function enrichMmTables($tables): array
     {
-        foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
+        foreach ($GLOBALS['TCA'] as $tableDefinition) {
             if (!is_array($tableDefinition['columns'] ?? false)) {
                 // TCA definition in general is broken if there are no specified columns. Skip to be sure here.
                 continue;

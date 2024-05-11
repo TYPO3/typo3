@@ -353,6 +353,9 @@ class ClassSchema
                         // so that the exception can get caught and recast to a TYPO3-specific exception.
                         /** @var class-string<mixed> $classname */
                         $classname = $reflectionType->getName();
+
+                        // Test if the class can be reflected
+                        /** @noinspection PhpUnusedLocalVariableInspection */
                         $reflection = new \ReflectionClass($classname);
                         // There's a single type declaration that is a class.
                         $this->methods[$methodName]['params'][$parameterName]['type'] = $reflectionType->getName();

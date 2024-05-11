@@ -762,7 +762,7 @@ class PageTreeRepository
      */
     protected function groupAndSortPages(array $pages, array $groupedAndSortedPagesByPid = []): array
     {
-        foreach ($pages as $key => $pageRecord) {
+        foreach ($pages as $pageRecord) {
             $parentPageId = (int)$pageRecord['pid'];
             $sorting = (int)$pageRecord['sorting'];
             // If the page record was already added in another depth level, don't add it another time.

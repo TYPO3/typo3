@@ -524,7 +524,7 @@ class Rfc822AddressesParser
             return true;
         }
         // Check for any char from ASCII 0 - ASCII 127
-        if (!preg_match('/^[\\x00-\\x7E]+$/i', $atom, $matches)) {
+        if (!preg_match('/^[\\x00-\\x7E]+$/i', $atom)) {
             return false;
         }
         // Check for specials:

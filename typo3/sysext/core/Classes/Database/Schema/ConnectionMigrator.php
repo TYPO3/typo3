@@ -566,7 +566,7 @@ class ConnectionMigrator
         $databasePlatform = $this->connection->getDatabasePlatform();
         $updateSuggestions = [];
 
-        foreach ($schemaDiff->alteredTables as $index => $changedTable) {
+        foreach ($schemaDiff->alteredTables as $changedTable) {
             // Treat each changed index with a new diff to get a dedicated suggestions
             // just for this index.
             if (count($changedTable->modifiedIndexes) !== 0) {
@@ -868,7 +868,7 @@ class ConnectionMigrator
     {
         $databasePlatform = $this->connection->getDatabasePlatform();
         $updateSuggestions = [];
-        foreach ($schemaDiff->alteredTables as $tableName => $tableDiff) {
+        foreach ($schemaDiff->alteredTables as $tableDiff) {
             // Skip tables that are not being renamed or where the new name isn't prefixed
             // with the deletion marker.
             if ($tableDiff->getNewName() === null
@@ -1289,7 +1289,7 @@ class ConnectionMigrator
      */
     protected function migrateColumnRenamesToDistinctActions(Typo3SchemaDiff $schemaDiff): Typo3SchemaDiff
     {
-        foreach ($schemaDiff->alteredTables as $index => $changedTable) {
+        foreach ($schemaDiff->alteredTables as $changedTable) {
             if (count($changedTable->getRenamedColumns()) === 0) {
                 continue;
             }
