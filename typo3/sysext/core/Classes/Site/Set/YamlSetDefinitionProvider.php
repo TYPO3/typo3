@@ -63,7 +63,6 @@ class YamlSetDefinitionProvider
             } catch (ParseException $e) {
                 throw new InvalidSetException('Invalid settings definition. Filename: ' . $settingsDefinitionsFile, 1711024374, $e);
             }
-            $version = (int)($settingsDefinitions['version'] ?? 0);
             if (!is_array($settingsDefinitions['settings'] ?? null)) {
                 throw new \RuntimeException('Missing "settings" key in settings definitions. Filename: ' . $settingsDefinitionsFile, 1711024378);
             }
