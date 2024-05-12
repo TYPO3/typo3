@@ -89,7 +89,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
     /**
      * Creates a non equality comparison expression with the given arguments.
      * First argument is considered the left expression and the second is the right expression.
-     * When converted to string, it will generated a <left expr> <> <right expr>. Example:
+     * When converted to string, it will generate a <left expr> <> <right expr>. Example::
      *
      *     [php]
      *     // u.id <> 1
@@ -511,7 +511,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
     }
 
     /**
-     * Creates a expression to alias a value, field value or sub-expression.
+     * Creates an expression to alias a value, field value or sub-expression.
      *
      * **Example:**
      * ```
@@ -693,7 +693,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      * Create a statement to generate a value repeating defined $value for $numberOfRepeats times.
      * This method can be used to provide the repeat number as a sub-expression or calculation.
      *
-     * This method does not quote anything! Ensure proper quoting (value/identifier) for $numberOfRepeates and $value.
+     * This method does not quote anything! Ensure proper quoting (value/identifier) for $numberOfRepeats and $value.
      *
      * **Example:**
      * ```
