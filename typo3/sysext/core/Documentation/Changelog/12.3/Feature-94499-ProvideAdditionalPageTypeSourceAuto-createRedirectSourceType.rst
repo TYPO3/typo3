@@ -121,9 +121,13 @@ The corresponding event listener class:
             RedirectSourceInterface ...$sources
         ): bool {
             foreach ($sources as $existingSource) {
+                $existingHost = $existingSource->getHost();
+                $pageTypeSourceHost = $pageTypeSource->getHost();
+                $existingPath = rtrim($existingSource->getPath(), '/');
+                $pageTypeSourcePath = rtrim($pageTypeSource->getPath(), '/');
                 if ($existingSource instanceof PageTypeSource
-                    && $existingSource->getHost() === $pageTypeSource->getHost()
-                    && $existingSource->getPath() === $pageTypeSource->getPath()
+                    && $existingHost === $pageTypeSourceHost
+                    && $existingPath === $pageTypeSourcePath
                 ) {
                     // we do not check for the type, as that is irrelevant. Same
                     // host+path tuple would lead to duplicated redirects if

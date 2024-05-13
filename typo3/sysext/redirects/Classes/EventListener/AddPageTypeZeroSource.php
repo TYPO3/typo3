@@ -82,7 +82,7 @@ final class AddPageTypeZeroSource
     {
         return $source instanceof PlainSlugReplacementRedirectSource
             && $source->getHost() === $pageTypeZeroSource->getHost()
-            && $source->getPath() === $pageTypeZeroSource->getPath();
+            && rtrim($source->getPath(), '/') === rtrim($pageTypeZeroSource->getPath(), '/');
     }
 
     private function createPageTypeZeroSource(int $pageUid, Site $site, SiteLanguage $siteLanguage): PageTypeSource
