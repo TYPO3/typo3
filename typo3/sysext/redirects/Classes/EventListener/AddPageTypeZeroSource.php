@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\EventListener;
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
@@ -58,6 +59,9 @@ final class AddPageTypeZeroSource
             return;
         }
 
+        // @todo Consider to make creation of source skip-able if page is hidden or scheduled. Should be in sync with
+        //       PlainSlugReplacementSource creation. Eventually configurable OR omitting in SlugRedirectChangeItemFactory.
+
         try {
             $pageTypeZeroSource = $this->createPageTypeZeroSource(
                 $changeItem->getPageId(),
@@ -87,7 +91,7 @@ final class AddPageTypeZeroSource
     private function createPageTypeZeroSource(int $pageUid, Site $site, SiteLanguage $siteLanguage): PageTypeSource
     {
         try {
-            $context = GeneralUtility::makeInstance(Context::class);
+            $context = $this->getAdjustedContext();
             $uri = $site->getRouter($context)->generateUri(
                 $pageUid,
                 [
@@ -115,5 +119,23 @@ final class AddPageTypeZeroSource
                 $e
             );
         }
+    }
+
+    /**
+     * Returns the adjusted current context with modified visibility settings to build
+     * source url for hidden or scheduled pages.
+     */
+    private function getAdjustedContext(): Context
+    {
+        $adjustedVisibility = new VisibilityAspect(
+            true,
+            true,
+            false,
+            true,
+        );
+        $originalContext = GeneralUtility::makeInstance(Context::class);
+        $context = clone $originalContext;
+        $context->setAspect('visibility', $adjustedVisibility);
+        return $context;
     }
 }

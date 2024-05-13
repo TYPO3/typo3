@@ -36,6 +36,7 @@ final class SlugRedirectChangeItemFactory
 
     public function create(int $pageId, ?array $original = null, ?array $changed = null): ?SlugRedirectChangeItem
     {
+        // @todo Consider to omit hidden or scheduled records completly, eventually based on configuration.
         $original ??= BackendUtility::getRecordWSOL('pages', $pageId);
         if (!$original) {
             return null;
