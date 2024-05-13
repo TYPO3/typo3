@@ -112,7 +112,7 @@ class HtmlCropper implements LoggerAwareInterface
                     // If we have found any html entities, these should be counted as 1 character.
                     // Strategy is to replace all found entities with an arbitrary character ($)
                     // and use this new string to count offsets.
-                    if (($entityMatches ?? []) !== []) {
+                    if ($entityMatches !== []) {
                         $escapedContent = str_replace('$', ' ', $fullTempContent);
                         $replacedContent = preg_replace($entityPattern, '$', $escapedContent, -1, $count);
                         $croppedContent = !$cropFromRight ? mb_substr($replacedContent, 0, $cropPosition) : mb_substr($replacedContent, $numberOfChars, $cropPosition);
