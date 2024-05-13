@@ -147,9 +147,23 @@ class PageRepository implements LoggerAwareInterface
 
         // If TRUE, the hidden-field is ignored. Normally this should be FALSE. Is used for previewing.
         $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages');
+        $includeScheduledRecords = $this->context->getPropertyFromAspect('visibility', 'includeScheduledRecords');
 
         $cache = $this->getRuntimeCache();
-        $cacheIdentifier = 'PageRepository_hidDelWhere' . ($includeHiddenPages ? 'ShowHidden' : '') . '_' . $workspaceId . '_' . $frontendUserIdentifier . '_' . $dateTimeIdentifier;
+        $cacheIdentifier = implode(
+            '',
+            [
+                'PageRepository_hidDelWhere',
+                ($includeHiddenPages ? '_ShowHidden' : ''),
+                ($includeScheduledRecords ? '_Scheduled' : ''),
+                '_',
+                (string)$workspaceId,
+                '_',
+                $frontendUserIdentifier,
+                '_',
+                (string)$dateTimeIdentifier,
+            ]
+        );
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry) {
             $this->where_hid_del = $cacheEntry;
