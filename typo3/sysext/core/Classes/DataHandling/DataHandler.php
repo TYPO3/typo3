@@ -4266,13 +4266,31 @@ class DataHandler implements LoggerAwareInterface
             $languageSourceMap = [
                 $uid => $overrideValues[$transOrigPointerField],
             ];
+
+            // Get available page translations
+            if ($table !== 'pages') {
+                $availableLanguages = [];
+                $pageTranslations = BackendUtility::getExistingPageTranslations($destPid < 0 ? $tscPID : $destPid);
+                // Build array with language ids for comparison
+                foreach ($pageTranslations as $translation) {
+                    $availableLanguages[] = $translation[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+                }
+                // Filter records
+                foreach ($l10nRecords as $key => $record) {
+                    // Remove record when target page in not available in the corresponding language
+                    if (!in_array($record[$languageField], $availableLanguages, true)) {
+                        unset($l10nRecords[$key]);
+                    }
+                }
+            }
+
             // Copy the localized records after the corresponding localizations of the destination record
             foreach ($l10nRecords as $record) {
                 $localizedDestPid = (int)($localizedDestPids[$record[$languageField]] ?? 0);
                 if ($localizedDestPid < 0) {
-                    $newUid = $this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+                    $newUid = $this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$languageField]);
                 } else {
-                    $newUid = $this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+                    $newUid = $this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$languageField]);
                 }
                 $languageSourceMap[$record['uid']] = $newUid;
             }
