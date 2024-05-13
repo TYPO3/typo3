@@ -218,6 +218,9 @@ class SetupDatabaseService
             $envVar = 'TYPO3_INSTALL_DB_' . strtoupper($value);
             if (getenv($envVar) !== false) {
                 $envCredentials[$value] = getenv($envVar);
+                if ($value === 'port') {
+                    $envCredentials[$value] = (int)$envCredentials[$value];
+                }
             }
         }
         if (!empty($envCredentials)) {
