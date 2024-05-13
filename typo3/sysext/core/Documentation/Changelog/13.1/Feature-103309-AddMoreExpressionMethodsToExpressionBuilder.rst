@@ -227,7 +227,7 @@ the result of an expression to signed integer type.
     // use TYPO3\CMS\Core\Database\ConnectionPool;
     // use TYPO3\CMS\Core\Utility\GeneralUtility;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-        ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        ->getQueryBuilderForTable(self::TABLE_NAME);
     $queryBuilder
         ->select('uid')
         ->from('pages');
@@ -308,7 +308,7 @@ repeat number as a sub-expression or calculation.
     // use TYPO3\CMS\Core\Database\ConnectionPool;
     // use TYPO3\CMS\Core\Utility\GeneralUtility;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-        ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        ->getQueryBuilderForTable(self::TABLE_NAME);
 
     $expression1 = $queryBuilder->expr()->repeat(
         10,
@@ -388,7 +388,7 @@ Create statement containing :php:`$numberOfSpaces` spaces.
     // use TYPO3\CMS\Core\Database\ConnectionPool;
     // use TYPO3\CMS\Core\Utility\GeneralUtility;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-        ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        ->getQueryBuilderForTable(self::TABLE_NAME);
 
     $expression1 = $queryBuilder->expr()->space(
         '10'
@@ -498,7 +498,7 @@ Extract :php:`$length` character of :php:`$value` from the right side.
     // use TYPO3\CMS\Core\Database\ConnectionPool;
     // use TYPO3\CMS\Core\Utility\GeneralUtility;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-        ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        ->getQueryBuilderForTable(self::TABLE_NAME);
 
     $expression1 = $queryBuilder->expr()->right(
         6,
@@ -567,7 +567,7 @@ length of $length.
     // use TYPO3\CMS\Core\Database\ConnectionPool;
     // use TYPO3\CMS\Core\Utility\GeneralUtility;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-        ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        ->getQueryBuilderForTable(self::TABLE_NAME);
 
     $expression1 = $queryBuilder->expr()->leftPad(
         $queryBuilder->quote('123'),
@@ -651,7 +651,7 @@ total length of :php:`$length`.
     // use TYPO3\CMS\Core\Database\ConnectionPool;
     // use TYPO3\CMS\Core\Utility\GeneralUtility;
     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-        ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        ->getQueryBuilderForTable(self::TABLE_NAME);
 
     $expression1 = $queryBuilder->expr()->rightPad(
         $queryBuilder->quote('123'),
