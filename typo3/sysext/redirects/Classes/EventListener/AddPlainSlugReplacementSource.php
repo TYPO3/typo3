@@ -46,6 +46,9 @@ final class AddPlainSlugReplacementSource
             return;
         }
 
+        // @todo Consider to make creation of source skip-able if page is hidden or scheduled. Should be in sync with
+        //       AddPageTypeZeroSource creation. Eventually configurable OR omitting in SlugRedirectChangeItemFactory.
+
         // We create a plain slug replacement source, which mirrors the behaviour since first implementation. This
         // may vanish anytime. Introducing an event here opens up the possibility to add custom source definitions, for
         // example doing a real URI building to cover route decorators and enhancers, or creating redirects for more

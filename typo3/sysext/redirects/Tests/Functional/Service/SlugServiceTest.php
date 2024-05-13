@@ -544,6 +544,96 @@ final class SlugServiceTest extends FunctionalTestCase
         );
     }
 
+    /**
+     * @see https://forge.typo3.org/issues/103436/
+     * @see https://forge.typo3.org/issues/103798
+     */
+    #[Test]
+    public function pageTypeZeroRedirectCreatesOnlyOneRedirectForHiddenPageSlugChange(): void
+    {
+        $newPageSlug = '/test-new';
+        $this->buildBaseSiteWithLanguages();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_hiddenPage.csv');
+        $this->createSubject();
+
+        /** @var SlugRedirectChangeItem $changeItem */
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
+
+        $this->assertSlugsAndRedirectsExists(
+            [
+                '/',
+                $newPageSlug,
+            ],
+            [
+                ['uid' => 1, 'source_host' => '*', 'source_path' => '/en/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ],
+            true,
+        );
+    }
+
+    /**
+     * @see https://forge.typo3.org/issues/103436/
+     * @see https://forge.typo3.org/issues/103798
+     */
+    #[Test]
+    public function pageTypeZeroRedirectCreatesOnlyOneRedirectForPageWithReachedEndtimePageSlugChange(): void
+    {
+        $newPageSlug = '/test-new';
+        $this->buildBaseSiteWithLanguages();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_endtime.csv');
+        $this->createSubject();
+
+        /** @var SlugRedirectChangeItem $changeItem */
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
+
+        $this->assertSlugsAndRedirectsExists(
+            [
+                '/',
+                $newPageSlug,
+            ],
+            [
+                ['uid' => 1, 'source_host' => '*', 'source_path' => '/en/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ],
+            true,
+        );
+    }
+
+    /**
+     * @see https://forge.typo3.org/issues/103436/
+     * @see https://forge.typo3.org/issues/103798
+     */
+    #[Test]
+    public function pageTypeZeroRedirectCreatesOnlyOneRedirectForPageNotReachedStarttimePageSlugChange(): void
+    {
+        $newPageSlug = '/test-new';
+        $this->buildBaseSiteWithLanguages();
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_starttime.csv');
+        $this->createSubject();
+
+        /** @var SlugRedirectChangeItem $changeItem */
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
+
+        $this->assertSlugsAndRedirectsExists(
+            [
+                '/',
+                $newPageSlug,
+            ],
+            [
+                ['uid' => 1, 'source_host' => '*', 'source_path' => '/en/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ],
+            true,
+        );
+    }
+
     #[Test]
     public function sysFolderWithSubPagesDoesNotCreateAutoRedirectForSysFolderButUpdatesSubpagesIfReasonable(): void
     {

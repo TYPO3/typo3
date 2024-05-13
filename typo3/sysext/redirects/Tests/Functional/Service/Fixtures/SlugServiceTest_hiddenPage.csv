@@ -1,0 +1,4 @@
+"pages",,,,,,,
+,"uid","pid","title","slug","l10n_parent","l10n_source","sys_language_uid","hidden"
+,1,0,"Root 1","/",0,0,0,0
+,2,1,"Dummy 1-2","/dummy-1-2",0,0,0,1

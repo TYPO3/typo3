@@ -150,7 +150,7 @@ The corresponding event listener class:
             }
 
             try {
-                $context = GeneralUtility::makeInstance(Context::class);
+                $context = $this->getAdjustedContext();
                 $uri = $site->getRouter($context)->generateUri(
                     $pageUid,
                     [
@@ -181,8 +181,25 @@ The corresponding event listener class:
                 );
             }
         }
-    }
 
+        /**
+         * Returns the adjusted current context with modified visibility settings
+         * to build source url for hidden or scheduled pages.
+         */
+        private function getAdjustedContext(): Context
+        {
+            $adjustedVisibility = new VisibilityAspect(
+                true,
+                true,
+                false,
+                true,
+            );
+            $originalContext = GeneralUtility::makeInstance(Context::class);
+            $context = clone $originalContext;
+            $context->setAspect('visibility', $adjustedVisibility);
+            return $context;
+        }
+    }
 
 
 Impact
