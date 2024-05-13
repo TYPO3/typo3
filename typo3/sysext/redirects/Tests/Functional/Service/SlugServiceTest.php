@@ -453,11 +453,11 @@ final class SlugServiceTest extends FunctionalTestCase
         self::assertSame($eventOverrideSource, $modifyAutoCreateRedirectRecordBeforePersisting->getRedirectRecord()['source_path']);
 
         $this->assertSlugsAndRedirectsExists(
-            slugs: [
+            [
                 '/',
                 $newPageSlug,
             ],
-            redirects: [
+            [
                 ['source_host' => '*', 'source_path' => $eventOverrideSource, 'target' => 't3://page?uid=2&_language=0'],
             ],
         );
@@ -494,14 +494,53 @@ final class SlugServiceTest extends FunctionalTestCase
         self::assertSame(1, $afterAutoCreateRedirectHasBeenPersisted->getRedirectRecord()['uid'] ?? null);
 
         $this->assertSlugsAndRedirectsExists(
-            slugs: [
+            [
                 '/',
                 $newPageSlug,
             ],
-            redirects: [
+            [
                 ['uid' => 1, 'source_host' => '*', 'source_path' => '/en/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
             ],
-            withRedirectUid: true,
+            true,
+        );
+    }
+
+    /**
+     * Regression test for https://forge.typo3.org/issues/103806
+     */
+    #[Test]
+    public function defaultSlashPageTypeSuffixCreatesOnlyPageTypeZeroSourceRedirect(): void
+    {
+        $newPageSlug = '/test-new';
+        $this->buildBaseSiteWithLanguagesAndAdditionalConfiguration([
+            'routeEnhancers' => [
+                'PageTypeSuffix' => [
+                    'type' => 'PageType',
+                    'default' => '/',
+                    'map' => [
+                        '/' => 0,
+                    ],
+                ],
+            ],
+        ]);
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_defaultSlashPageTypeSuffixCreatesOnlyPageTypeZeroSourceRedirect.csv');
+        $this->createSubject();
+
+        /** @var SlugRedirectChangeItem $changeItem */
+        $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
+        $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
+        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $this->setPageSlug(2, $newPageSlug);
+
+        $this->assertSlugsAndRedirectsExists(
+            [
+                '/',
+                $newPageSlug,
+            ],
+            [
+                ['uid' => 1, 'source_host' => '*', 'source_path' => '/en/dummy-1-2/', 'target' => 't3://page?uid=2&_language=0'],
+            ],
+            true,
         );
     }
 
@@ -617,6 +656,23 @@ final class SlugServiceTest extends FunctionalTestCase
             'base' => '/',
             'languages' => $this->languages,
         ];
+        $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
+        $siteConfiguration->write('testing', $configuration);
+    }
+
+    /**
+     * @param array<string, mixed> $additionalConfiguration
+     */
+    protected function buildBaseSiteWithLanguagesAndAdditionalConfiguration(array $additionalConfiguration): void
+    {
+        $configuration = array_merge_recursive(
+            $additionalConfiguration,
+            [
+                'rootPageId' => 1,
+                'base' => '/',
+                'languages' => $this->languages,
+            ]
+        );
         $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
         $siteConfiguration->write('testing', $configuration);
     }
