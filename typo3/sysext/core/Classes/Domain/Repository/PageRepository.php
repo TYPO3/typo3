@@ -191,8 +191,26 @@ class PageRepository implements LoggerAwareInterface
         // We need to respect the date aspect as we might have subrequests with a different time (e.g. backend preview links)
         $dateTimeIdentifier = $this->context->getAspect('date')->get('timestamp');
 
+        // If TRUE, the hidden-field is ignored. Normally this should be FALSE. Is used for previewing.
+        $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages');
+        $includeScheduledRecords = $this->context->getPropertyFromAspect('visibility', 'includeScheduledRecords');
+
         $cache = $this->getRuntimeCache();
-        $cacheIdentifier = 'PageRepository_hidDelWhere' . ($show_hidden ? 'ShowHidden' : '') . '_' . (int)$this->versioningWorkspaceId . '_' . $frontendUserIdentifier . '_' . $dateTimeIdentifier;
+        $cacheIdentifier = implode(
+            '',
+            [
+                'PageRepository_hidDelWhere',
+                ($includeHiddenPages ? '_ShowHidden' : ''),
+                ($includeScheduledRecords ? '_Scheduled' : ''),
+                '_',
+                (string)$this->versioningWorkspaceId,
+                '_',
+                $frontendUserIdentifier,
+                '_',
+                (string)$dateTimeIdentifier,
+            ]
+        );
+
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry) {
             $this->where_hid_del = $cacheEntry;
