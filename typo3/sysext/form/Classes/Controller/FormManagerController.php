@@ -158,6 +158,7 @@ class FormManagerController extends AbstractBackendController
             'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor'),
         ];
 
+        $form = ArrayUtility::stripTagsFromValuesRecursive($form);
         try {
             $this->formPersistenceManager->save($formPersistenceIdentifier, $form);
         } catch (PersistenceManagerException $e) {
@@ -222,6 +223,7 @@ class FormManagerController extends AbstractBackendController
             'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor'),
         ];
 
+        $formToDuplicate = ArrayUtility::stripTagsFromValuesRecursive($formToDuplicate);
         try {
             $this->formPersistenceManager->save($formPersistenceIdentifier, $formToDuplicate);
         } catch (PersistenceManagerException $e) {
