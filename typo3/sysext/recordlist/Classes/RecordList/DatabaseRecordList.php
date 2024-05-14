@@ -1662,22 +1662,26 @@ class DatabaseRecordList
                     $row['uid'],
                     ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
                 );
+
                 $title = BackendUtility::getRecordTitle($table, $row);
                 $warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" [' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
                 $params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
                 $icon = $this->iconFactory->getIcon('actions-edit-' . $actionName, Icon::SIZE_SMALL)->render();
-                $linkTitle = htmlspecialchars($this->getLanguageService()->getLL($actionName));
+                $linkTitle = $this->getLanguageService()->getLL($actionName);
                 $l10nParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
-                $deleteAction = '<button type="button" class="btn btn-default t3js-record-delete"'
-                                . ' title="' . $linkTitle . '"'
-                                . ' aria-label="' . $linkTitle . '"'
-                                . ' aria-haspopup="dialog"'
-                                . ' data-button-ok-text="' . htmlspecialchars($linkTitle) . '"'
-                                . ' data-l10parent="' . ($l10nParentField ? htmlspecialchars((string)$row[$l10nParentField]) : '') . '"'
-                                . ' data-params="' . htmlspecialchars($params) . '"'
-                                . ' data-message="' . htmlspecialchars($warningText) . '">'
-                                . $icon
-                                . '</button>';
+
+                $deleteActionAttributes = GeneralUtility::implodeAttributes([
+                    'type' => 'button',
+                    'class' => 'btn btn-default t3js-record-delete',
+                    'title' => $linkTitle,
+                    'aria-label' => $linkTitle,
+                    'aria-haspopup' => 'dialog',
+                    'data-button-ok-text' => $linkTitle,
+                    'data-l10parent' => $l10nParentField ? (string)$row[$l10nParentField] : '',
+                    'data-params' => $params,
+                    'data-message' => $warningText,
+                ], true, true);
+                $deleteAction = '<button ' . $deleteActionAttributes . '>' . $icon . '</button>';
             } else {
                 $deleteAction = $this->spaceIcon;
             }
