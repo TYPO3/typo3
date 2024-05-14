@@ -93,12 +93,14 @@ final class ShowImageControllerTest extends FunctionalTestCase
     public function contentIsGeneratedForLocalFiles(int $fileId, array $queryParams): void
     {
         $storageDriver = 'Local';
+        $expectedSrc = '/fileadmin/local-file/' . $fileId . '?&test=""';
+        $expectedTitle = '</title></head></html><!-- "fileProperty::title" -->';
 
         $this->storage->expects(self::atLeastOnce())
             ->method('getDriverType')
             ->willReturn($storageDriver);
         $file = $this->buildFile('/local-file/' . $fileId, $this->storage);
-        $processedFile = $this->buildProcessedFile('/fileadmin/local-file/' . $fileId);
+        $processedFile = $this->buildProcessedFile($expectedSrc);
         $this->resourceFactory->expects(self::atLeastOnce())
             ->method('getFileObject')
             ->with($fileId)
@@ -109,16 +111,17 @@ final class ShowImageControllerTest extends FunctionalTestCase
 
         $request = $this->buildRequest($queryParams);
         $response = $this->subject->processRequest($request);
-        $document = (new HTML5())->loadHTML((string)$response->getBody());
+        $responseBody = (string)$response->getBody();
+        $document = (new HTML5())->loadHTML($responseBody);
 
         $titles = $document->getElementsByTagName('title');
         $images = $document->getElementsByTagName('img');
-        self::assertSame('fileProperty::title', $titles->item(0)->nodeValue);
-        self::assertSame('/fileadmin/local-file/13', $images->item(0)->getAttribute('src'));
-        self::assertSame('fileProperty::alternative', $images->item(0)->getAttribute('alt'));
-        self::assertSame('fileProperty::title', $images->item(0)->getAttribute('title'));
-        self::assertSame('processedProperty::width', $images->item(0)->getAttribute('width'));
-        self::assertSame('processedProperty::height', $images->item(0)->getAttribute('height'));
+        self::assertSame($expectedTitle, $titles->item(0)->nodeValue);
+        self::assertSame($expectedSrc, $images->item(0)->getAttribute('src'));
+        self::assertSame($expectedTitle, $images->item(0)->getAttribute('title'));
+        self::assertSame('<!-- "fileProperty::alternative" -->', $images->item(0)->getAttribute('alt'));
+        self::assertSame('<!-- "processedProperty::width" -->', $images->item(0)->getAttribute('width'));
+        self::assertSame('<!-- "processedProperty::height" -->', $images->item(0)->getAttribute('height'));
     }
 
     /**
@@ -141,7 +144,12 @@ final class ShowImageControllerTest extends FunctionalTestCase
         $file->method('getIdentifier')
             ->willReturn($identifier);
         $file->method('getProperty')
-            ->willReturnCallback($this->buildRoundTripClosure('fileProperty'));
+            ->willReturnCallback(
+                $this->buildRoundTripClosure(
+                    'fileProperty',
+                    ['title' => '</title></head></html>']
+                )
+            );
 
         return $file;
     }
@@ -162,10 +170,15 @@ final class ShowImageControllerTest extends FunctionalTestCase
         return $processedFile;
     }
 
-    private function buildRoundTripClosure(string $prefix): \Closure
+    private function buildRoundTripClosure(string $prefix, array $prependMap = []): \Closure
     {
-        return static function (string ...$args) use ($prefix): string {
-            return sprintf('%s::%s', $prefix, implode(',', $args));
+        return static function (string $name) use ($prefix, $prependMap): string {
+            return sprintf(
+                '%s<!-- "%s::%s" -->',
+                $prependMap[$name] ?? '',
+                $prefix,
+                $name
+            );
         };
     }
 }
