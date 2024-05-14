@@ -768,7 +768,7 @@ define(['jquery',
           referencesLength = data['references'].length;
           if (referencesLength > 0) {
             html = '<div>'
-              + '<h3>' + TYPO3.lang['formManager.references.headline'].replace('{0}', $(that).data('formName')) + '</h3>'
+              + '<h3>' + TYPO3.lang['formManager.references.headline'].replace('{0}', securityUtility.encodeHtml($(that).data('formName'))) + '</h3>'
               + '</div>'
               + '<div class="table-fit">'
               + '<table id="forms" class="table table-striped table-sm">'
@@ -782,11 +782,11 @@ define(['jquery',
 
             for (var i = 0, len = data['references'].length; i < len; ++i) {
               html += '<tr>'
-                + '<td>' + data['references'][i]['recordPageTitle'] + '</td>'
+                + '<td>' + securityUtility.encodeHtml(data['references'][i]['recordPageTitle']) + '</td>'
                 + '<td>'
                 + data['references'][i]['recordIcon']
-                + '<a href="' + data['references'][i]['recordEditUrl'] + '" data-identifier="referenceLink">'
-                + data['references'][i]['recordTitle'] + ' (uid: ' + data['references'][i]['recordUid'] + ')'
+                + '<a href="' + securityUtility.encodeHtml(data['references'][i]['recordEditUrl']) + '" data-identifier="referenceLink">'
+                + securityUtility.encodeHtml(data['references'][i]['recordTitle']) + ' (uid: ' + securityUtility.encodeHtml(data['references'][i]['recordUid']) + ')'
                 + '</a>'
                 + '</td>'
                 + '</tr>';
@@ -797,7 +797,7 @@ define(['jquery',
               + '</div>';
           } else {
             html = '<div>'
-              + '<h1>' + TYPO3.lang['formManager.references.title'].replace('{0}', data['formPersistenceIdentifier']) + '</h1>'
+              + '<h1>' + TYPO3.lang['formManager.references.title'].replace('{0}', securityUtility.encodeHtml(data['formPersistenceIdentifier'])) + '</h1>'
               + '</div>'
               + '<div>' + TYPO3.lang['formManager.no_references'] + '</div>';
           }
