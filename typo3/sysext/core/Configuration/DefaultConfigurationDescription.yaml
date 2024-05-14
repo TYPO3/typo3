@@ -224,6 +224,9 @@ SYS:
               yamlImportsFollowDeclarationOrder:
                 type: bool
                 description: 'If on, the YAML imports are imported in the order they are defined in the importing YAML configuration.'
+              security.frontend.allowInsecureFrameOptionInShowImageController:
+                type: bool
+                description: 'If on, the eID Script "tx_cms_showpic" respects the GET parameter "frame" without being signed. Should not be enabled as this allows uncontrolled resource consumption.'
               security.frontend.allowInsecureSiteResolutionByQueryParameters:
                 type: bool
                 description: 'If on, site resolution can be overwritten by `&id=...&L=...` parameters, URI path & host are just used as default.'

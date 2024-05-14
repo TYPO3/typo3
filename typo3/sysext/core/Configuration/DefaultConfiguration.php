@@ -76,6 +76,7 @@ return [
             'security.frontend.htmlSanitizeParseFuncDefault' => true,
             'security.frontend.enforceLoginSigning' => true,
             'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,
+            'security.frontend.allowInsecureFrameOptionInShowImageController' => false,
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
             'yamlImportsFollowDeclarationOrder' => false,

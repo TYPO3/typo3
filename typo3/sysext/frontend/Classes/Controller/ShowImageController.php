@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\File;
@@ -152,7 +153,12 @@ EOF;
             throw new Exception('File processing for local storage is denied', 1594043425);
         }
 
-        $this->frame = $this->request->getQueryParams()['frame'] ?? null;
+        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('security.frontend.allowInsecureFrameOptionInShowImageController')) {
+            $frameValue = $this->request->getQueryParams()['frame'] ?? null;
+            if ($frameValue !== null && MathUtility::canBeInterpretedAsInteger($frameValue)) {
+                $this->frame = (int)$frameValue;
+            }
+        }
     }
 
     /**
