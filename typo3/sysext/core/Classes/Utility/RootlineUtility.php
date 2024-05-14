@@ -194,7 +194,7 @@ class RootlineUtility
         foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
             if ($this->columnHasRelationToResolve($configuration)) {
                 $resultFieldUidArray[$column] = [];
-                if (!empty($configuration['config']['MM']) && !empty($configuration['config']['MM_opposite_field'] && !empty($configuration['config']['foreign_table']))) {
+                if (!empty($configuration['config']['MM']) && !empty($configuration['config']['MM_opposite_field']) && !empty($configuration['config']['foreign_table'])) {
                     $foreignRelationColumns[] = $column;
                     // This is a solution when multiple fields are on the foreign side in an MM relation to the same local side.
                     // For instance, when there are two category fields in pages.
