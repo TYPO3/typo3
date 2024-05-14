@@ -86,6 +86,7 @@ return [
             'security.backend.enforceReferrer' => true,
             'security.frontend.enforceContentSecurityPolicy' => false,
             'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,
+            'security.frontend.allowInsecureFrameOptionInShowImageController' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

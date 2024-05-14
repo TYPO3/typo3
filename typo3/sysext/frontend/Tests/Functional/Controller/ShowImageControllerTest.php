@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -50,6 +51,7 @@ final class ShowImageControllerTest extends FunctionalTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->subject = $this->getMockBuilder(ShowImageController::class)
+            ->setConstructorArgs([new Features()])
             ->onlyMethods(['processImage'])
             ->getMock();
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $this->resourceFactory);
