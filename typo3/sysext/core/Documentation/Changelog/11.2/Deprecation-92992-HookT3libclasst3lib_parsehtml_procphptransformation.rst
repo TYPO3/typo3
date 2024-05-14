@@ -12,8 +12,8 @@ Description
 ===========
 
 Since the deprecation of several internal functions in the
-:php:`TYPO3\CMS\Core\Html\RteHtmlParser` in TYPO3 10.2 (`Changelog entry #86440
-<https://docs.typo3.org/c/typo3/cms-core/10.2/en-us/Changelog/9.5/Deprecation-86440-InternalMethodsAndPropertiesWithinRteHtmlParser.html>`_)
+:php:`TYPO3\CMS\Core\Html\RteHtmlParser` in TYPO3 10.2 (:ref:`Deprecation:
+#86440 - Internal Methods and properties within RteHtmlParser <changelog:deprecation-86440>`)
 the hook :php:`t3lib/class.t3lib_parsehtml_proc.php:transformation` became quite useless.
 
 It is therefore marked as deprecated and will be removed with TYPO3 v12.
