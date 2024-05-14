@@ -107,11 +107,6 @@ class ShowImageController
 EOF;
 
     /**
-     * @var string
-     */
-    protected $imageTag = '<img src="###publicUrl###" alt="###alt###" title="###title###" width="###width###" height="###height###" />';
-
-    /**
      * Init function, setting the input vars in the global space.
      *
      * @throws \InvalidArgumentException
@@ -166,17 +161,17 @@ EOF;
     public function main()
     {
         $processedImage = $this->processImage();
-        $imageTagMarkers = [
-            '###publicUrl###' => htmlspecialchars($processedImage->getPublicUrl() ?? ''),
-            '###alt###' => htmlspecialchars($this->file->getProperty('alternative') ?: $this->title),
-            '###title###' => htmlspecialchars($this->file->getProperty('title') ?: $this->title),
-            '###width###' => $processedImage->getProperty('width'),
-            '###height###' => $processedImage->getProperty('height'),
+        $imageAttributes = [
+            'src' => $processedImage->getPublicUrl() ?? '',
+            'alt' => $this->file->getProperty('alternative') ?: $this->title,
+            'title' => $this->file->getProperty('title') ?: $this->title,
+            'width' => (string)$processedImage->getProperty('width'),
+            'height' => (string)$processedImage->getProperty('height'),
         ];
-        $this->imageTag = str_replace(array_keys($imageTagMarkers), array_values($imageTagMarkers), $this->imageTag);
+
         $markerArray = [
-            '###TITLE###' => $this->file->getProperty('title') ?: $this->title,
-            '###IMAGE###' => $this->imageTag,
+            '###TITLE###' => htmlspecialchars($this->file->getProperty('title') ?: $this->title),
+            '###IMAGE###' => sprintf('<img %s>', GeneralUtility::implodeAttributes($imageAttributes, true)),
             '###BODY###' => $this->bodyTag,
         ];
 
