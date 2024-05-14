@@ -78,6 +78,7 @@ return [
             'security.frontend.enforceContentSecurityPolicy' => false,
             'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,
             'security.usePasswordPolicyForFrontendUsers' => false,
+            'security.frontend.allowInsecureFrameOptionInShowImageController' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

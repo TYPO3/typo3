@@ -15,6 +15,9 @@ services:
     arguments:
       $cache: '@cache.assets'
 
+  TYPO3\CMS\Frontend\Controller\ShowImageController:
+    public: true
+
   TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor:
     public: true
 
