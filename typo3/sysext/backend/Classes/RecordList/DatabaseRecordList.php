@@ -1705,23 +1705,27 @@ class DatabaseRecordList
                     $row['uid'],
                     LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
                 );
+
                 $warningText = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:' . $actionName . 'Warning'), trim($recordInfo)) . $refCountMsg;
                 $params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
                 $icon = $this->iconFactory->getIcon('actions-edit-' . $actionName, IconSize::SMALL)->render();
-                $linkTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:' . $actionName));
+                $linkTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:' . $actionName);
                 $titleText = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title');
                 $l10nParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
-                $deleteAction = '<button type="button" class="btn btn-default t3js-record-delete"'
-                                . ' title="' . $linkTitle . '"'
-                                . ' aria-label="' . $linkTitle . '"'
-                                . ' aria-haspopup="dialog"'
-                                . ' data-button-ok-text="' . htmlspecialchars($linkTitle) . '"'
-                                . ' data-l10parent="' . ($l10nParentField ? htmlspecialchars((string)$row[$l10nParentField]) : '') . '"'
-                                . ' data-params="' . htmlspecialchars($params) . '"'
-                                . ' data-message="' . htmlspecialchars($warningText) . '"'
-                                . ' data-title="' . htmlspecialchars($titleText) . '">'
-                                . $icon
-                                . '</button>';
+
+                $deleteActionAttributes = GeneralUtility::implodeAttributes([
+                    'type' => 'button',
+                    'class' => 'btn btn-default t3js-record-delete',
+                    'title' => $linkTitle,
+                    'aria-label' => $linkTitle,
+                    'aria-haspopup' => 'dialog',
+                    'data-button-ok-text' => $linkTitle,
+                    'data-l10parent' => $l10nParentField ? (string)$row[$l10nParentField] : '',
+                    'data-params' => $params,
+                    'data-message' => $warningText,
+                    'data-title' => $titleText,
+                ], true, true);
+                $deleteAction = '<button ' . $deleteActionAttributes . '>' . $icon . '</button>';
             } else {
                 $deleteAction = $this->spaceIcon;
             }
