@@ -48,7 +48,8 @@ LICENSE.txt file that was distributed with this source code.
 The TYPO3 project - inspiring people to share!
 COMMENT;
 
-return PhpCsFixer\Config::create()
+return (new \PhpCsFixer\Config())
+    ->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setRiskyAllowed(false)
     ->setRules([
         'header_comment' => [
