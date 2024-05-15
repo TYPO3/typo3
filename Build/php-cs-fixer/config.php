@@ -41,6 +41,7 @@ if (PHP_SAPI !== 'cli') {
 //  - Ensure Concatenation to have at least one whitespace around
 //  - Remove trailing whitespace at the end of blank lines.
 return (new \PhpCsFixer\Config())
+    ->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setFinder(
         (new PhpCsFixer\Finder())
             ->ignoreVCSIgnored(true)

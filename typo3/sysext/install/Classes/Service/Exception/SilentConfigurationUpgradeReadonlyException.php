@@ -27,8 +27,8 @@ use TYPO3\CMS\Core\Exception;
 class SilentConfigurationUpgradeReadonlyException extends Exception
 {
     protected $message = 'The SilentConfigurationUpgradeService needs to make changes to the settings.php but that file is read-only. ' .
-                         'Please (temporarily) clear the read-only status and open the install tool or run the UpgradeWizards command on CLI (typo3 upgrade:run). ' .
-                         'Once the SilentConfigurationUpgrade has been run, you may restrict writing to the settings.php again.';
+        'Please (temporarily) clear the read-only status and open the install tool or run the UpgradeWizards command on CLI (typo3 upgrade:run). ' .
+        'Once the SilentConfigurationUpgrade has been run, you may restrict writing to the settings.php again.';
 
     public function __construct(int $code = 0, ?\Throwable $throwable = null)
     {
