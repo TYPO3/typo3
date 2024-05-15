@@ -33,6 +33,9 @@ final class ListUserCest
         $I->click('Backend Users');
 
         $I->switchToContentFrame();
+        $I->selectOption('div.module-docheader select.t3-js-jumpMenuBox', 'Backend users');
+        $I->waitForElementVisible('table.table-striped');
+        $I->canSee('Backend users', 'h1');
     }
 
     public function showsHeadingAndListsBackendUsers(ApplicationTester $I, Scenario $scenario): void
