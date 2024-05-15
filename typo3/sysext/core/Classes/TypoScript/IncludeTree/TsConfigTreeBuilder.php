@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -59,8 +60,11 @@ final class TsConfigTreeBuilder
 
         $collectedUserTsConfigArray = [];
         $gotPackagesUserTsConfigFromCache = false;
+        $cacheIdentifier = (new PackageDependentCacheIdentifier($this->packageManager))
+            ->withPrefix('usertsconfig-packages-strings')
+            ->toString();
         if ($cache) {
-            $collectedUserTsConfigArrayFromCache = $cache->require('usertsconfig-packages-strings');
+            $collectedUserTsConfigArrayFromCache = $cache->require($cacheIdentifier);
             if ($collectedUserTsConfigArrayFromCache) {
                 $gotPackagesUserTsConfigFromCache = true;
                 $collectedUserTsConfigArray = $collectedUserTsConfigArrayFromCache;
@@ -84,7 +88,7 @@ final class TsConfigTreeBuilder
                     }
                 }
             }
-            $cache?->set('usertsconfig-packages-strings', 'return unserialize(\'' . addcslashes(serialize($collectedUserTsConfigArray), '\'\\') . '\');');
+            $cache?->set($cacheIdentifier, 'return unserialize(\'' . addcslashes(serialize($collectedUserTsConfigArray), '\'\\') . '\');');
         }
         foreach ($collectedUserTsConfigArray as $key => $typoScriptString) {
             $includeTree->addChild($this->getTreeFromString((string)$key, $typoScriptString, $tokenizer, $cache));
@@ -142,8 +146,11 @@ final class TsConfigTreeBuilder
     ): array {
         $collectedPagesTsConfigArray = [];
         $gotPackagesPagesTsConfigFromCache = false;
+        $cacheIdentifier = (new PackageDependentCacheIdentifier($this->packageManager))
+            ->withPrefix('pagestsconfig-packages-strings')
+            ->toString();
         if ($cache) {
-            $collectedPagesTsConfigArrayFromCache = $cache->require('pagestsconfig-packages-strings');
+            $collectedPagesTsConfigArrayFromCache = $cache->require($cacheIdentifier);
             if ($collectedPagesTsConfigArrayFromCache) {
                 $gotPackagesPagesTsConfigFromCache = true;
                 $collectedPagesTsConfigArray = $collectedPagesTsConfigArrayFromCache;
@@ -167,7 +174,7 @@ final class TsConfigTreeBuilder
                     }
                 }
             }
-            $cache?->set('pagestsconfig-packages-strings', 'return unserialize(\'' . addcslashes(serialize($collectedPagesTsConfigArray), '\'\\') . '\');');
+            $cache?->set($cacheIdentifier, 'return unserialize(\'' . addcslashes(serialize($collectedPagesTsConfigArray), '\'\\') . '\');');
         }
         return $collectedPagesTsConfigArray;
     }
@@ -201,7 +208,10 @@ final class TsConfigTreeBuilder
             return [];
         }
 
-        $cacheIdentifier = 'pagestsconfig-site-' . $rootSite->getIdentifier();
+        $cacheIdentifier = (new PackageDependentCacheIdentifier($this->packageManager))
+            ->withPrefix('pagestsconfig-site')
+            ->withAdditionalHashedIdentifier($rootSite->getIdentifier())
+            ->toString();
         $pageTsConfig = $cache?->require($cacheIdentifier) ?: null;
 
         if ($pageTsConfig === null) {
@@ -267,7 +277,10 @@ final class TsConfigTreeBuilder
         ?PhpFrontend $cache = null
     ): TsConfigInclude {
         $lowercaseName = mb_strtolower($name);
-        $identifier = $lowercaseName . '-' . hash('xxh3', $typoScriptString);
+        $identifier = (new PackageDependentCacheIdentifier($this->packageManager))
+            ->withPrefix($lowercaseName)
+            ->withAdditionalHashedIdentifier($typoScriptString)
+            ->toString();
         if ($cache) {
             $includeNode = $cache->require($identifier);
             if ($includeNode instanceof TsConfigInclude) {
