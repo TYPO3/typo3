@@ -31,7 +31,7 @@ the extension:
 
 ..  code-block:: bash
 
-    composer require typo3/cms-adminpanel
+    composer require typo3/cms-scheduler
 
 The given version depends on the version of the TYPO3 Core you are using.
 
@@ -43,13 +43,13 @@ not be activated yet. Activate it as follows:
 
 #.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
     module.
-#.  Click the :guilabel:`Activate` icon for the Admin Panel extension.
+#.  Click the :guilabel:`Activate` icon for the Scheduler extension.
 
 ..  figure:: /Images/InstallActivate.png
     :class: with-border
-    :alt: Extension manager showing Admin Panel extension
+    :alt: Extension manager showing Scheduler extension
 
-    Extension manager showing Admin Panel extension
+    Extension manager showing Scheduler extension
 
 Next steps
 ==========
