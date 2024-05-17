@@ -32,7 +32,7 @@ final class BeforePageIsRetrievedEvent
 
     public function __construct(
         private int $pageId,
-        private readonly bool $skipGroupAccessCheck,
+        private bool $skipGroupAccessCheck,
         private readonly Context $context,
     ) {}
 
@@ -59,6 +59,16 @@ final class BeforePageIsRetrievedEvent
     public function setPageId(int $pageId): void
     {
         $this->pageId = $pageId;
+    }
+
+    public function skipGroupAccessCheck(): void
+    {
+        $this->skipGroupAccessCheck = true;
+    }
+
+    public function respectGroupAccessCheck(): void
+    {
+        $this->skipGroupAccessCheck = false;
     }
 
     public function isGroupAccessCheckSkipped(): bool

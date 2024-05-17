@@ -237,6 +237,7 @@ class PageRepository implements LoggerAwareInterface
             // In case an event listener resolved the page on its own, directly return it
             return $event->getPage()->toArray(true);
         }
+        $disableGroupAccessCheck = $event->isGroupAccessCheckSkipped();
         $uid = $event->getPageId();
         $cacheIdentifier = 'PageRepository_getPage_' . md5(
             implode(
