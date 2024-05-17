@@ -1720,7 +1720,7 @@ class DatabaseRecordList
                     'aria-label' => $linkTitle,
                     'aria-haspopup' => 'dialog',
                     'data-button-ok-text' => $linkTitle,
-                    'data-l10parent' => $l10nParentField ? (string)$row[$l10nParentField] : '',
+                    'data-l10nparent' => $l10nParentField ? (string)$row[$l10nParentField] : '',
                     'data-params' => $params,
                     'data-message' => $warningText,
                     'data-title' => $titleText,

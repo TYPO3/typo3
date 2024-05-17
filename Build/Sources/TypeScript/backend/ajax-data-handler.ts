@@ -259,7 +259,7 @@ class AjaxDataHandler {
         }).bindTo(rowElement);
         rowElement.classList.add('record-deleted');
 
-        if (anchorElement.dataset.l10parent === '0' || anchorElement.dataset.l10parent === '') {
+        if (anchorElement.dataset.l10nparent === '0' || anchorElement.dataset.l10nparent === '') {
           const count = parseInt(panelHeading.querySelector('.t3js-table-total-items').textContent, 10);
           panelHeading.querySelector('.t3js-table-total-items').textContent = (count - 1).toString();
         }
