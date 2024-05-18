@@ -44,7 +44,7 @@ class CacheFlushCommand extends Command
     protected function configure(): void
     {
         $this->setDescription('Flush TYPO3 caches.');
-        $this->setHelp('This command is useful for deployments to clear caches during release postparation.');
+        $this->setHelp('This command can be used to clear the caches, for example after code updates in local development and after deployments.');
         $this->setDefinition([
             new InputOption('group', 'g', InputOption::VALUE_OPTIONAL, 'The cache group to flush (system, pages, di or all)', 'all'),
         ]);
