@@ -954,14 +954,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Sets the cache-timeout in seconds
-     *
-     * @param int $seconds Cache-timeout in seconds
+     * Sets the default page cache timeout in seconds
      * @internal
      */
     public function set_cache_timeout_default(int $seconds): void
     {
-        $seconds = (int)$seconds;
         if ($seconds > 0) {
             $this->cacheTimeOutDefault = $seconds;
         }
