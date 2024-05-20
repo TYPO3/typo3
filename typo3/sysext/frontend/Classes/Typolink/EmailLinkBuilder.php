@@ -97,7 +97,7 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
                     $spamProtectedMailAddress = '';
                 }
             }
-            $linkText = str_ireplace($mailAddress, $spamProtectedMailAddress, $linkText);
+            $linkText = str_ireplace(htmlspecialchars($mailAddress), $spamProtectedMailAddress, $linkText);
         }
 
         return [$mailToUrl, $linkText, $attributes];
