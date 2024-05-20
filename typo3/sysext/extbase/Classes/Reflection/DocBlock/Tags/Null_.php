@@ -21,9 +21,6 @@ use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Factory\StaticMethod;
 use phpDocumentor\Reflection\DocBlock\Tags\Formatter;
 
-/**
- * Class TYPO3\CMS\Extbase\Reflection\DocBlock\Tags\Null_
- */
 class Null_ implements Tag, StaticMethod
 {
     public function getName(): string

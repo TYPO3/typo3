@@ -35,9 +35,6 @@ use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
-/**
- * Class FileDumpController
- */
 class FileDumpController
 {
     protected ResourceFactory $resourceFactory;

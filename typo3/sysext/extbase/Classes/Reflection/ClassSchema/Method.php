@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodParameterException;
 
 /**
- * Class TYPO3\CMS\Extbase\Reflection\ClassSchema\Property
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Method

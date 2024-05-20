@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception;
 
-/**
- * Class TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodException
- */
 class NoSuchMethodException extends \Exception
 {
     public static function create(string $className, string $methodName): NoSuchMethodException

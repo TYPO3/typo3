@@ -26,9 +26,6 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Service\ExtractorService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class IndexerTest
- */
 final class IndexerTest extends UnitTestCase
 {
     #[Test]

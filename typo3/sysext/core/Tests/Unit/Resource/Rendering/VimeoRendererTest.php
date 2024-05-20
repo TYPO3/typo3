@@ -25,9 +25,6 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper;
 use TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class VimeoRendererTest
- */
 final class VimeoRendererTest extends UnitTestCase
 {
     protected VimeoRenderer&MockObject $subject;

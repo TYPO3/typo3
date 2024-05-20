@@ -31,9 +31,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class TYPO3\CMS\Extbase\Tests\Unit\Validation\ValidatorClassNameResolverTest
- */
 final class ValidatorClassNameResolverTest extends UnitTestCase
 {
     #[Test]

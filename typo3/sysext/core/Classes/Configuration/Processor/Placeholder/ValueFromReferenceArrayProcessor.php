@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Configuration\Processor\Placeholder;
 
 /**
  * Returns the value for a placeholder as fetched from the referenceArray
- *
- * Class ValueFromReferenceArrayProcessor
  */
 class ValueFromReferenceArrayProcessor implements PlaceholderProcessorInterface
 {

@@ -30,8 +30,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 
 /**
- * Class TypoScriptWaterfall
- *
  * @internal
  */
 class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherInterface, ModuleSettingsProviderInterface

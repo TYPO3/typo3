@@ -23,7 +23,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
- * Class TYPO3\CMS\Extbase\Reflection\ClassSchema\Property
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Property

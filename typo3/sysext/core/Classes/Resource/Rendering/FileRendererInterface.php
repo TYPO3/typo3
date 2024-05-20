@@ -18,9 +18,6 @@ namespace TYPO3\CMS\Core\Resource\Rendering;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 
-/**
- * Class FileRendererInterface
- */
 interface FileRendererInterface extends SingletonInterface
 {
     /**

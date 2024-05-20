@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 
 /**
- * Class ViewHelperResolver
- *
  * Class whose purpose is dedicated to resolving classes which
  * can be used as ViewHelpers and ExpressionNodes in Fluid.
  *

@@ -49,7 +49,6 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
- * Class RemoteServer
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 class RemoteServer

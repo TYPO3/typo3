@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class PlainTextExtractorTest
- */
 final class PlainTextExtractorTest extends UnitTestCase
 {
     #[Test]

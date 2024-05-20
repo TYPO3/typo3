@@ -41,8 +41,6 @@ use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Form\Slot\ResourcePublicationSlot;
 
 /**
- * Class UploadedFileReferenceConverter
- *
  * Scope: frontend
  * @internal
  */

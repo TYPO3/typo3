@@ -23,8 +23,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test TYPO3\CMS\Form\Domain\Model\FormElements\Section class
- *
- * Class AbstractFormElementTest
  */
 final class SectionTest extends UnitTestCase
 {

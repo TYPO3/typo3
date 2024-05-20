@@ -29,9 +29,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class TYPO3\CMS\Extbase\Tests\Unit\Reflection\MethodParameterTest
- */
 final class MethodParameterTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;

@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotUpdatedException;
 
 /**
- * Class RedisSessionBackend
- *
  * This session backend takes these optional configuration options: 'hostname' (default '127.0.0.1'),
  * 'database' (default 0), 'port' (default 3679) and 'password' (no default value).
  */

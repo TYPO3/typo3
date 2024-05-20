@@ -19,9 +19,6 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class AudioTagRenderer
- */
 class AudioTagRenderer implements FileRendererInterface
 {
     /**

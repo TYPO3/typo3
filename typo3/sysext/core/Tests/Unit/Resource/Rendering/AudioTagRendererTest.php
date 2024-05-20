@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class AudioTagRendererTest
- */
 final class AudioTagRendererTest extends UnitTestCase
 {
     #[Test]

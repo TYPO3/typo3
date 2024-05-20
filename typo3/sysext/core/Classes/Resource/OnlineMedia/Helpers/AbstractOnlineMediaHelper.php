@@ -25,9 +25,6 @@ use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class AbstractOnlineMediaHelper
- */
 abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
 {
     /**

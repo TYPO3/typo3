@@ -21,9 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class TimeTrackerTest
- */
 final class TimeTrackerTest extends UnitTestCase
 {
     #[Test]

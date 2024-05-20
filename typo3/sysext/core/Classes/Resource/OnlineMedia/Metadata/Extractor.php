@@ -20,9 +20,6 @@ use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class Extractor
- */
 class Extractor implements ExtractorInterface
 {
     /**

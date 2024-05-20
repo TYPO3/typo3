@@ -22,9 +22,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\LinkHandling\TelephoneLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class TelephoneLinkHandlerTest
- */
 final class TelephoneLinkHandlerTest extends UnitTestCase
 {
     /**

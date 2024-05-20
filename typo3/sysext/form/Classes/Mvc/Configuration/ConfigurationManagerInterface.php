@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Form\Mvc\Configuration;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 
 /**
- * Class ConfigurationManagerInterface
- *
  * Scope: frontend / backend
  * @internal
  */

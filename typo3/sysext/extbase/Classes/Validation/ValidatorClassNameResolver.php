@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Extbase\Validation;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
-/**
- * Class TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver
- */
 final class ValidatorClassNameResolver
 {
     /**

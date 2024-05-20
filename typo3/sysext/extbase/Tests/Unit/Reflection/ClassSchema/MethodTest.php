@@ -22,9 +22,6 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class TYPO3\CMS\Extbase\Tests\Unit\Reflection\MethodTest
- */
 final class MethodTest extends UnitTestCase
 {
     #[Test]

@@ -17,7 +17,4 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Session\Backend\Exception;
 
-/**
- * Class SessionNotUpdatedException
- */
 class SessionNotUpdatedException extends AbstractBackendException {}

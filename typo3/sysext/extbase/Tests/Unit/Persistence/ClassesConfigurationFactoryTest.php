@@ -27,9 +27,6 @@ use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\B;
 use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Model\C;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class TYPO3\CMS\Extbase\Tests\Unit\Persistence\ClassesConfigurationTest
- */
 final class ClassesConfigurationFactoryTest extends UnitTestCase
 {
     #[Test]

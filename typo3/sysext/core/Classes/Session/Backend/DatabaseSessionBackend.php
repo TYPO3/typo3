@@ -27,8 +27,6 @@ use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotUpdatedException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class DatabaseSessionBackend
- *
  * This session backend requires the 'table' configuration option. If the backend is used to holds non-authenticated
  * sessions (default in frontend application), the 'ses_userid' configuration option must be set to `0`.
  */

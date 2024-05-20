@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Class SourceHost
  * Triggered from DataHandler as TCA formevals hook for validation / sanitation of domain values.
  *
  * @internal

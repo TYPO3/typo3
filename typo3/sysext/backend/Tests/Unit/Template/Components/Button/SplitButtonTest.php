@@ -23,9 +23,6 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\SplitButton;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class BackendModuleRequestHandlerTest
- */
 final class SplitButtonTest extends UnitTestCase
 {
     /**

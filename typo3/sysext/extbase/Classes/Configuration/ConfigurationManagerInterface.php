@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
- * Class ConfigurationManagerInterface
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface ConfigurationManagerInterface extends SingletonInterface
