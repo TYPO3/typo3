@@ -7,11 +7,10 @@ unit javascript pre-merge:
       - schedules
       - main
   cache:
-    key: main-composer-js
+    key: main-js
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unitJavascript
 
 unit php 8.2 random pre-merge:

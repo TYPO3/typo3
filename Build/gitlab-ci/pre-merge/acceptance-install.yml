@@ -1,4 +1,4 @@
-acceptance install mariadb 10.4 php 8.2 pre-merge:
+acceptance install php 8.2 pre-merge:
   stage: main
   tags:
     - metal2
@@ -13,51 +13,6 @@ acceptance install mariadb 10.4 php 8.2 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.4 -p 8.2
-
-acceptance install mysql 8.0 php 8.2 pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.2
-
-acceptance install postgres 10 php 8.2 pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 10 -p 8.2
-
-acceptance install sqlite php 8.2 pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.2

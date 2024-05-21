@@ -56,7 +56,7 @@ functional sqlite php 8.2 pre-merge:
     refs:
       - schedules
       - main
-  parallel: 5
+  parallel: 3
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

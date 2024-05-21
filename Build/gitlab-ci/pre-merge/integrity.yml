@@ -1,15 +1,3 @@
-integrity php 8.2 pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s checkIntegrityPhp -p 8.2
-
 cgl pre-merge:
   stage: main
   tags:
@@ -23,7 +11,41 @@ cgl pre-merge:
     - Build/Scripts/runTests.sh -s cglGit -n -p 8.2
     - Build/Scripts/runTests.sh -s cglHeaderGit -n -p 8.2
 
-grunt clean pre-merge:
+integration various php 8.2 pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - main
+  script:
+    - Build/Scripts/runTests.sh -s composerValidate -p 8.2
+    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.2
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.2
+    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.2
+    - Build/Scripts/runTests.sh -s checkPermissions -p 8.2
+    - Build/Scripts/runTests.sh -s checkRst -p 8.2
+    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.2
+    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.2
+    - Build/Scripts/runTests.sh -s checkBom -p 8.2
+    - Build/Scripts/runTests.sh -s checkComposer -p 8.2
+    - Build/Scripts/runTests.sh -s checkIntegrityPhp -p 8.2
+
+lint php pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - main
+  script:
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.2
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.3
+
+grunt scss ts html pre-merge:
   stage: main
   tags:
     - metal2
@@ -37,67 +59,6 @@ grunt clean pre-merge:
       - .cache
   script:
     - Build/Scripts/runTests.sh -s checkGruntClean
-
-integration various pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  cache:
-    key: main-composer-phpmixed
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerValidate -p 8.2
-    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.2
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.2
-    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.2
-    - Build/Scripts/runTests.sh -s checkPermissions -p 8.2
-    - Build/Scripts/runTests.sh -s checkRst -p 8.2
-    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.2
-    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.2
-    - Build/Scripts/runTests.sh -s checkBom -p 8.2
-    - Build/Scripts/runTests.sh -s checkComposer -p 8.2
-
-lint php 8.2 pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s lintPhp -p 8.2
-
-lint php 8.3 pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s lintPhp -p 8.3
-
-lint scss ts html pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  cache:
-    key: main-js
-    paths:
-      - .cache
-  script:
     - Build/Scripts/runTests.sh -s lintScss
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml
