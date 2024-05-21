@@ -70,17 +70,20 @@ class FinisherOptionsFlexFormOverridesConverter
         $fieldConfiguration = $prototypeFinisherDefinition['FormEngine']['elements'][$optionKey] ?? [];
 
         if ($fieldConfiguration['section'] ?? false) {
+            if (!is_array($value) || $value === []) {
+                // Do not process empty values for sections
+                return;
+            }
+
             $processedOptionValue = [];
 
-            foreach ($value ?: [] as $optionListValue) {
+            foreach ($value as $optionListValue) {
                 $key = $optionListValue[$fieldConfiguration['sectionItemKey']];
                 $value = $optionListValue[$fieldConfiguration['sectionItemValue']];
                 $processedOptionValue[$key] = $value;
             }
 
-            if (!empty($processedOptionValue)) {
-                $value = $processedOptionValue;
-            }
+            $value = $processedOptionValue;
         }
 
         $optionPath = 'options.' . $optionKey;
