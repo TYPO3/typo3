@@ -591,9 +591,16 @@ readonly class Typo3DbBackend implements BackendInterface
                     $row['uid'] = $row[$translationParentPointerField];
                     $row[$languageField] = 0;
                 }
-                // Currently this needs to return the default record (OVERLAYS_MIXED) if no translation is found
-                //however this is a hack and should actually use the overlay functionality as given in the original LanguageAspect.
-                $customLanguageAspect = new LanguageAspect($languageUid, $languageUid, LanguageAspect::OVERLAYS_MIXED, $languageAspect->getFallbackChain());
+                // The overlay type (and fallback chain) of the language aspect is respected, so translation
+                // behavior is consistent with the regular page / content rendering. The content language
+                // however may have been adjusted above to the language of the actually fetched record
+                // (see Note #1 and the respectSysLanguage handling), so a custom aspect is passed here.
+                $customLanguageAspect = new LanguageAspect(
+                    $languageAspect->getId(),
+                    $languageUid,
+                    $languageAspect->getOverlayType(),
+                    $languageAspect->getFallbackChain()
+                );
                 $row = $pageRepository->getLanguageOverlay($tableName, $row, $customLanguageAspect);
             }
         } elseif (is_array($row)) {

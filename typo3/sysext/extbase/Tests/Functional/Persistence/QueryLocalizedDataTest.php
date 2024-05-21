@@ -93,7 +93,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         //this is needed because of https://forge.typo3.org/issues/59992
         $this->persistenceManager->clearState();
 
-        // with feature flag disable, you'll get default language object here too (Post 2).
+        // Fetching a translated record directly by its uid returns the translated record at all
+        // times, regardless of the language configured in the current context (see "Note #1" in
+        // Typo3DbBackend->overlayLanguageAndWorkspaceForSingleRecord()).
         $post2translated = $this->postRepository->findByUid(11);
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
@@ -133,6 +135,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         //this is needed because of https://forge.typo3.org/issues/59992
         $this->persistenceManager->clearState();
 
+        // Fetching a translated record directly by its uid returns the translated record at all
+        // times, regardless of the language configured in the current context (see "Note #1" in
+        // Typo3DbBackend->overlayLanguageAndWorkspaceForSingleRecord()).
         $post2translated = $this->postRepository->findByUid(11);
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
@@ -597,7 +602,8 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                 'languageUid' => 1,
                 'overlay' => LanguageAspect::OVERLAYS_ON,
                 // here we have only 4 items instead of 5 as post "Post DA only" uid:15 has no language 0 parent,
-                // so with overlay enabled it's not shown
+                // so with overlay enabled it's not shown.
+                // Tags without translation are also hidden with OVERLAYS_ON.
                 'expected' => [
                     [
                         'title' => 'Post 5 - DA',
@@ -632,18 +638,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
                         'tags.0.name' => 'Tag 3 DA',
                         'tags.0.' . AbstractDomainObject::PROPERTY_UID => 3,
                         'tags.0.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 18,
-                        'tags.1.name' => 'Tag4',
-                        'tags.1.' . AbstractDomainObject::PROPERTY_UID => 4,
-                        'tags.1.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 4,
-                        'tags.2.name' => 'Tag5',
-                        'tags.2.' . AbstractDomainObject::PROPERTY_UID => 5,
-                        'tags.2.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 5,
-                        'tags.3.name' => 'Tag 6 DA',
-                        'tags.3.' . AbstractDomainObject::PROPERTY_UID => 6,
-                        'tags.3.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 19,
-                        'tags.4.name' => 'Tag7',
-                        'tags.4.' . AbstractDomainObject::PROPERTY_UID => 7,
-                        'tags.4.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 7,
+                        'tags.1.name' => 'Tag 6 DA',
+                        'tags.1.' . AbstractDomainObject::PROPERTY_UID => 6,
+                        'tags.1.' . AbstractDomainObject::PROPERTY_LOCALIZED_UID => 19,
                     ],
                     [
                         'title' => 'Post 7 - DA',

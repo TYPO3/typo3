@@ -163,11 +163,14 @@ class Backend implements BackendInterface
         // This allows to fetch IDs for languages for default language AND language IDs
         // This is especially important when using the PropertyMapper of the Extbase MVC part to get
         // an object of the translated version of the incoming ID of a record.
+        // "Free" mode (OVERLAYS_OFF) is mapped to OVERLAYS_MIXED - overlays need to be enabled for the
+        // identity lookup, but hiding untranslated records is not a configured intent in free mode.
+        // This is consistent with the same handling for related objects in DataMapper->getPreparedQuery().
         $languageAspect = $query->getQuerySettings()->getLanguageAspect();
         $languageAspect = new LanguageAspect(
             $languageAspect->getId(),
             $languageAspect->getContentId(),
-            $languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF ? LanguageAspect::OVERLAYS_ON_WITH_FLOATING : $languageAspect->getOverlayType(),
+            $languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF ? LanguageAspect::OVERLAYS_MIXED : $languageAspect->getOverlayType(),
             $languageAspect->getFallbackChain()
         );
 

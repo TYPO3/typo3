@@ -20,10 +20,13 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\StreamInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -485,6 +488,7 @@ $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'features\'][\'security.system.enforceFi
             ->withAddedHeader('Content-Type', 'multipart/form-data; boundary=' . $boundary);
 
         $response = $this->executeFrontendSubRequest($request, $requestContext);
+        $this->resetLeakedFrontendContextWorkaround();
         self::assertSame($expectation ? 303 : 200, $response->getStatusCode());
 
         if (!$expectation) {
@@ -509,6 +513,25 @@ $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'features\'][\'security.system.enforceFi
             self::assertNull($singlefile);
             @unlink($temporaryFileToUpload);
         }
+    }
+
+    /**
+     * @todo Remove this workaround once typo3/testing-framework properly restores global state
+     *       after executeFrontendSubRequest(): Bootstrap::init() - called for every frontend
+     *       sub-request - builds a fresh DI container and registers it globally via
+     *       GeneralUtility::setContainer(), but FrameworkState::pop() never restores the previous
+     *       container afterwards. As a consequence, everything resolved through
+     *       GeneralUtility::makeInstance() in test scope after the sub-request - such as Extbase
+     *       Typo3QuerySettings and with it the language aspect used by Repository::findByUid()
+     *       below - operates on the Context of the *frontend request* (here: language DE with
+     *       fallbackType=strict) instead of the pristine default Context of the test scope. With
+     *       a strict language aspect, untranslated records created during the request would be
+     *       hidden by the language overlay and findByUid() would return null. Resetting the
+     *       language aspect ensures the persistence assertions run in default language context.
+     */
+    private function resetLeakedFrontendContextWorkaround(): void
+    {
+        GeneralUtility::makeInstance(Context::class)->setAspect('language', new LanguageAspect());
     }
 
     /**
