@@ -55,7 +55,6 @@ abstract class AbstractPhpIntegrityChecker extends NodeVisitorAbstract
     public function startProcessing(\SplFileInfo $file): void
     {
         $this->file = $file;
-        $this->messages = [];
     }
 
     public function finishProcessing(): void
