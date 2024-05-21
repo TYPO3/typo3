@@ -241,7 +241,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
                     297 => [
                         'header' => '[Translate to Dansk:] Regular Element #1',
                         'image' => [],
-                        'categories' => ['[Translate to Dansk:] Category 1', 'Category 4'],
+                        'categories' => ['[Translate to Dansk:] Category 1'],
                     ],
                     299 => [
                         'header' => '[Translate to Dansk:] Regular Element #3',
