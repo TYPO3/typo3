@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class IconRegistry, which makes it possible to register custom icons
+ * Class which makes it possible to register custom icons
  * from within an extension.
  */
 class IconRegistry implements SingletonInterface

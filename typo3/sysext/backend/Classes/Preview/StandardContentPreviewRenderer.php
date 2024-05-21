@@ -33,8 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Class StandardContentPreviewRenderer
- *
  * Legacy preview rendering refactored from PageLayoutView.
  * Provided as default preview rendering mechanism via
  * StandardPreviewRendererResolver which detects the renderer

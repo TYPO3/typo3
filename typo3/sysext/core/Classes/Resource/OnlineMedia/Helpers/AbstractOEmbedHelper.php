@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class AbstractOEmbedHelper
  * See http://oembed.com/ for more on OEmbed specification
  */
 abstract class AbstractOEmbedHelper extends AbstractOnlineMediaHelper

@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Class SvgIconProvider provides icons that are classic <img> tags using vectors as source
+ * Class provides icons that are classic <img> tags using vectors as source
  */
 class SvgIconProvider extends AbstractSvgIconProvider
 {

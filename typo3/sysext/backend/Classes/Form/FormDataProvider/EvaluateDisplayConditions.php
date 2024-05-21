@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Class EvaluateDisplayConditions implements the TCA 'displayCond' option.
+ * Class implements the TCA 'displayCond' option.
  * The display condition is a colon separated string which describes
  * the condition to decide whether a form field should be displayed.
  */

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Class LinkService, responsible to find what kind of resource (type) is used
+ * Class responsible to find what kind of resource (type) is used
  * to link to (email, external url, file, page etc)
  * with the possibility to get a system-wide understandable "urn" to identify
  * what type it actually is, based on the scheme or prefix.

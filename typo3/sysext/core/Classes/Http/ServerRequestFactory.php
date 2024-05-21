@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class ServerRequestFactory to create ServerRequest objects
+ * Class to create ServerRequest objects
  *
  * Highly inspired by https://github.com/phly/http/
  *

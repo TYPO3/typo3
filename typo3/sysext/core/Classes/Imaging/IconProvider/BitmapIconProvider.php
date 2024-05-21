@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Class BitmapIconProvider provides icons that are classic <img> tags using bitmaps as source
+ * Class provides icons that are classic <img> tags using bitmaps as source
  */
 class BitmapIconProvider implements IconProviderInterface
 {
