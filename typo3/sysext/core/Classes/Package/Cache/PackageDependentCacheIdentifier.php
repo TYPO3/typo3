@@ -39,7 +39,7 @@ class PackageDependentCacheIdentifier
 
     public function toString(): string
     {
-        return $this->prefix . sha1($this->baseIdentifier . $this->additionalIdentifier);
+        return $this->prefix . hash('xxh3', $this->baseIdentifier . $this->additionalIdentifier);
     }
 
     public function withPrefix(string $prefix): self
