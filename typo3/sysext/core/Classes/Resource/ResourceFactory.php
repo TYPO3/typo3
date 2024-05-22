@@ -272,7 +272,7 @@ class ResourceFactory implements SingletonInterface
      * - "file:23"
      *
      * @param string $input
-     * @return File|Folder|null
+     * @return ProcessedFile|File|Folder|null
      */
     public function retrieveFileOrFolderObject($input)
     {

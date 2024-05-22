@@ -3649,6 +3649,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $imageResource = ImageResource::createFromProcessedFile($processedFileObject);
                     }
                 }
+            } elseif ($fileObject instanceof ProcessedFile) {
+                $imageResource = ImageResource::createFromProcessedFile($fileObject);
             }
         }
 
