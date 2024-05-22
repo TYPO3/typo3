@@ -31,7 +31,7 @@ final class StringFragmentCollectionTest extends UnitTestCase
         $a = StringFragment::raw('aa');
         $b = StringFragment::raw('bb');
         $collection = new StringFragmentCollection($a, $b);
-        self::assertSame(2, count($collection));
+        self::assertCount(2, $collection);
         self::assertSame([$a, $b], $collection->getFragments());
         self::assertSame(4, $collection->getLength());
         self::assertSame('aabb', (string)$collection);

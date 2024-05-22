@@ -76,7 +76,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         // first execution of prepared statement
         $result1 = $statement->executeQuery();
         $rows1 = $result1->fetchAllAssociative();
-        self::assertSame(2, count($rows1));
+        self::assertCount(2, $rows1);
         self::assertSame(11, (int)($rows1[0]['uid'] ?? 0));
         self::assertSame(12, (int)($rows1[1]['uid'] ?? 0));
 
@@ -84,7 +84,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         $statement->bindValue(1, 20, ParameterType::INTEGER);
         $result2 = $statement->executeQuery();
         $rows2 = $result2->fetchAllAssociative();
-        self::assertSame(2, count($rows2));
+        self::assertCount(2, $rows2);
         self::assertSame(21, (int)($rows2[0]['uid'] ?? 0));
         self::assertSame(22, (int)($rows2[1]['uid'] ?? 0));
     }
@@ -120,7 +120,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
             $rows1[] = $row;
         }
 
-        self::assertSame(2, count($rows1));
+        self::assertCount(2, $rows1);
         self::assertSame(11, (int)($rows1[0]['uid'] ?? 0));
         self::assertSame(12, (int)($rows1[1]['uid'] ?? 0));
 
@@ -131,7 +131,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         while ($row = $result2->fetchAssociative()) {
             $rows2[] = $row;
         }
-        self::assertSame(2, count($rows2));
+        self::assertCount(2, $rows2);
         self::assertSame(21, (int)($rows2[0]['uid'] ?? 0));
         self::assertSame(22, (int)($rows2[1]['uid'] ?? 0));
     }

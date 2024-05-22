@@ -194,7 +194,7 @@ final class ExtensionTest extends UnitTestCase
         ];
         $serializedDependencies = serialize($dependencies);
         $dependencyObjects = Extension::createFromExtensionArray(['key' => 'no-name', 'constraints' => $serializedDependencies])->getDependencies();
-        self::assertSame(0, $dependencyObjects->count());
+        self::assertCount(0, $dependencyObjects);
     }
 
     #[Test]

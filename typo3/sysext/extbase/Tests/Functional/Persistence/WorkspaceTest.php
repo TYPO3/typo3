@@ -129,7 +129,7 @@ final class WorkspaceTest extends FunctionalTestCase
         $querySettings->setRespectStoragePage(false);
         // In workspace all records need to be fetched, thus enableFields is ignored
         // This means we select even hidden (but not deleted) records for count()
-        self::assertSame(6, $query->execute()->count());
+        self::assertCount(6, $query->execute());
     }
 
     #[DataProvider('contextDataProvider')]

@@ -138,7 +138,7 @@ final class CountTest extends FunctionalTestCase
         // QueryResult is lazy, so we have to run valid method to initialize
         $result = $query->execute();
         $result->valid();
-        self::assertSame(10, $result->count());
+        self::assertCount(10, $result);
     }
 
     #[Test]

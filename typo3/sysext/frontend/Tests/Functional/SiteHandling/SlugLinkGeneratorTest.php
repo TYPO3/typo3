@@ -915,7 +915,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
         );
 
         $json = json_decode((string)$response->getBody(), true);
-        self::assertSame($expectedMenuItems, count($json));
+        self::assertCount($expectedMenuItems, $json);
     }
 
     public static function directoryMenuIsGeneratedDataProvider(): array

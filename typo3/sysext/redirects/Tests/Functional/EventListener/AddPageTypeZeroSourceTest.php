@@ -62,7 +62,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
             )
         )->getSlugRedirectChangeItem();
 
-        self::assertSame(1, $changeItem->getSourcesCollection()->count());
+        self::assertCount(1, $changeItem->getSourcesCollection());
 
         $source = $changeItem->getSourcesCollection()->all()[0] ?? null;
         self::assertInstanceOf(PageTypeSource::class, $source);
@@ -109,7 +109,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
             )
         )->getSlugRedirectChangeItem();
 
-        self::assertSame(2, $changeItem->getSourcesCollection()->count());
+        self::assertCount(2, $changeItem->getSourcesCollection());
         $sources = $changeItem->getSourcesCollection()->all();
         $source = $sources[0] ?? null;
         self::assertInstanceOf(PlainSlugReplacementRedirectSource::class, $source);
@@ -215,7 +215,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
             )
         )->getSlugRedirectChangeItem();
 
-        self::assertSame(3, $changeItem->getSourcesCollection()->count());
+        self::assertCount(3, $changeItem->getSourcesCollection());
         $sources = $changeItem->getSourcesCollection()->all();
         $source = $sources[0] ?? null;
         self::assertInstanceOf(PlainSlugReplacementRedirectSource::class, $source);

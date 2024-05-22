@@ -36,7 +36,7 @@ final class RedirectSourceCollectionTest extends UnitTestCase
     {
         $item = $this->createMock(RedirectSourceInterface::class);
         $subject = new RedirectSourceCollection($item, $item, $item);
-        self::assertSame(3, $subject->count());
+        self::assertCount(3, $subject);
     }
 
     #[Test]

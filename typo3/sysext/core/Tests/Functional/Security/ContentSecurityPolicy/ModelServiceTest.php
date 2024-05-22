@@ -42,6 +42,7 @@ final class ModelServiceTest extends FunctionalTestCase
     protected function tearDown(): void
     {
         unset($this->subject);
+        parent::tearDown();
     }
 
     public static function enumSourceInterfaceIsBuiltFromStringDataProvider(): \Generator

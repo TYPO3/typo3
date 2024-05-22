@@ -270,6 +270,6 @@ final class ApcuBackendTest extends FunctionalTestCase
         $backend->set($identifier, 'testData', $tags);
         // Expect exactly 4 entries:
         // 1 data entry, 2 tag-to-identifier indexes, 1 identifier-to-tag index
-        self::assertSame(4, count(apcu_cache_info()['cache_list']));
+        self::assertCount(4, apcu_cache_info()['cache_list']);
     }
 }

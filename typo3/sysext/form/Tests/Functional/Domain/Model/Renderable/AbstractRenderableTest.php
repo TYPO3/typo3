@@ -51,11 +51,11 @@ final class AbstractRenderableTest extends FunctionalTestCase
             ['identifier' => 'EmailAddress'],
         ]]);
 
-        self::assertSame(2, $this->subject->getValidators()->count());
+        self::assertCount(2, $this->subject->getValidators());
 
         $this->subject->setOptions(['validators' => []], true);
 
-        self::assertSame(0, $this->subject->getValidators()->count());
+        self::assertCount(0, $this->subject->getValidators());
     }
 
     private function buildAbstractRenderable(): AbstractRenderable
