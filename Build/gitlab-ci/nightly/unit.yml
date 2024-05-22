@@ -13,37 +13,6 @@ unit javascript:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s unitJavascript
 
-unit php 7.4 locked:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s unit -p 7.4
-unit php 7.4 locked deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
-unit php 7.4 locked random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
-
 unit php 7.4 max:
   stage: unit
   tags:
@@ -51,10 +20,6 @@ unit php 7.4 max:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s unit -p 7.4
@@ -65,27 +30,9 @@ unit php 7.4 max deprecated:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
     - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
-unit php 7.4 max random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
-    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
 
 unit php 7.4 min:
   stage: unit
@@ -94,10 +41,6 @@ unit php 7.4 min:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s unit -p 7.4
@@ -108,27 +51,9 @@ unit php 7.4 min deprecated:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
     - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
-unit php 7.4 min random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
-    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
 
 unit php 8.0 locked:
   stage: unit
@@ -150,16 +75,6 @@ unit php 8.0 locked deprecated:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.0
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.0
-unit php 8.0 locked random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.0
 
 unit php 8.0 max:
   stage: unit
@@ -168,41 +83,9 @@ unit php 8.0 max:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.0
     - Build/Scripts/runTests.sh -s unit -p 8.0
-unit php 8.0 max deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.0
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.0
-unit php 8.0 max random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.0
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.0
 
 unit php 8.0 min:
   stage: unit
@@ -211,101 +94,10 @@ unit php 8.0 min:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.0
     - Build/Scripts/runTests.sh -s unit -p 8.0
-unit php 8.0 min deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.0
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.0
-unit php 8.0 min random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.0
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.0
 
-unit php 8.1 locked:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s unit -p 8.1
-unit php 8.1 locked deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
-unit php 8.1 locked random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.1
-
-unit php 8.1 max:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-    - Build/Scripts/runTests.sh -s unit -p 8.1
-unit php 8.1 max deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
 unit php 8.1 max random:
   stage: unit
   tags:
@@ -313,55 +105,8 @@ unit php 8.1 max random:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.1
-
-unit php 8.1 min:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s unit -p 8.1
-unit php 8.1 min deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
-unit php 8.1 min random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s unitRandom -p 8.1
 
 unit php 8.2 locked:
@@ -384,123 +129,7 @@ unit php 8.2 locked deprecated:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
-unit php 8.2 locked random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.2
 
-unit php 8.2 max:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s unit -p 8.2
-unit php 8.2 max deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
-unit php 8.2 max random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.2
-
-unit php 8.2 min:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s unit -p 8.2
-unit php 8.2 min deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
-unit php 8.2 min random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.2
-
-unit php 8.3 locked:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s unit -p 8.3
-unit php 8.3 locked deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3
 unit php 8.3 locked random:
   stage: unit
   tags:
@@ -519,10 +148,6 @@ unit php 8.3 max:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
     - Build/Scripts/runTests.sh -s unit -p 8.3
@@ -533,27 +158,9 @@ unit php 8.3 max deprecated:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3
-unit php 8.3 max random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-max
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.3
 
 unit php 8.3 min:
   stage: unit
@@ -562,38 +169,6 @@ unit php 8.3 min:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.3
     - Build/Scripts/runTests.sh -s unit -p 8.3
-unit php 8.3 min deprecated:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.3
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3
-unit php 8.3 min random:
-  stage: unit
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-composer-min
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.3
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.3

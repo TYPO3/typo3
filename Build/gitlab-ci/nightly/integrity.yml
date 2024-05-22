@@ -20,20 +20,6 @@ cgl:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s cgl -n -p 7.4
 
-grunt clean:
-  stage: integrity
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 11.5-js
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s checkGruntClean
-
 integration various:
   stage: integrity
   tags:
@@ -41,10 +27,6 @@ integration various:
   needs: []
   only:
     - schedules
-  cache:
-    key: 11.5-composer-phpmixed
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerValidate -p 7.4
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 7.4
@@ -63,7 +45,7 @@ integration various:
     - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 7.4
     - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 7.4
 
-lint php 7.4:
+lint php:
   stage: integrity
   tags:
     - metal2
@@ -72,35 +54,12 @@ lint php 7.4:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 7.4
-lint php 8.0:
-  stage: integrity
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.0
-lint php 8.1:
-  stage: integrity
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.1
-lint php 8.2:
-  stage: integrity
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.2
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.3
 
-lint scss ts html:
+grunt scss ts html:
   stage: integrity
   tags:
     - metal2
@@ -112,6 +71,7 @@ lint scss ts html:
     paths:
       - .cache
   script:
+    - Build/Scripts/runTests.sh -s checkGruntClean
     - Build/Scripts/runTests.sh -s lintScss
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml

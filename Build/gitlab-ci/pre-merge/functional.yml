@@ -1,4 +1,4 @@
-functional deprecated mariadb 10.3 php 8.1 pre-merge:
+functional deprecated mariadb 10.3 php 8.3 pre-merge:
   stage: main
   tags:
     - metal2
@@ -7,9 +7,8 @@ functional deprecated mariadb 10.3 php 8.1 pre-merge:
       - schedules
       - "11.5"
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.3 -p 8.1
-
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.3
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.3 -p 8.3
 functional deprecated postgres 10 php 7.4 pre-merge:
   stage: main
   tags:
@@ -56,7 +55,7 @@ functional sqlite php 7.4 pre-merge:
     refs:
       - schedules
       - "11.5"
-  parallel: 5
+  parallel: 3
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s functional -d sqlite -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

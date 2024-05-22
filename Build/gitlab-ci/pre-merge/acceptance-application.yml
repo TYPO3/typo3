@@ -16,7 +16,7 @@ acceptance application mariadb php 7.4 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s acceptance -p 7.4 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-acceptance application mariadb php 8.3 pre-merge:
+acceptance application composer mariadb php 8.3 pre-merge:
   stage: main
   tags:
     - metal2
@@ -32,4 +32,4 @@ acceptance application mariadb php 8.3 pre-merge:
   parallel: 13
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s acceptance -p 8.3 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptanceComposer -p 8.3 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
