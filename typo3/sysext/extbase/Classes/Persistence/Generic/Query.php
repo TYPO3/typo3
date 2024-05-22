@@ -225,8 +225,8 @@ class Query implements QueryInterface
      * Executes the query against the database and returns the result
      *
      * @param bool $returnRawQueryResult avoids the object mapping by the persistence
-     * @return QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
-     * @phpstan-return ($returnRawQueryResult is true ? list<T> : QueryResultInterface<int,T>)
+     * @return QueryResultInterface|list<array<string,mixed>> The query result object or an array if $returnRawQueryResult is TRUE
+     * @phpstan-return ($returnRawQueryResult is true ? list<array<string,mixed>> : QueryResultInterface<int,T>)
      */
     public function execute($returnRawQueryResult = false)
     {
