@@ -21,20 +21,6 @@ cgl:
     - Build/Scripts/runTests.sh -s cgl -n -p 8.1
     - Build/Scripts/runTests.sh -s cglHeader -n -p 8.1
 
-grunt clean:
-  stage: integrity
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 12.4-js
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s checkGruntClean
-
 integration various:
   stage: integrity
   tags:
@@ -42,10 +28,6 @@ integration various:
   needs: []
   only:
     - schedules
-  cache:
-    key: 12.4-composer-phpmixed
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerValidate -p 8.1
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
@@ -69,15 +51,11 @@ iso database max:
   needs: []
   only:
     - schedules
-  cache:
-    key: 12.4-composer-max
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s checkIsoDatabase -p 8.1
 
-lint php 8.1:
+lint php:
   stage: integrity
   tags:
     - metal2
@@ -86,8 +64,10 @@ lint php 8.1:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.1
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.2
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.3
 
-lint scss ts html:
+grunt scss ts html:
   stage: integrity
   tags:
     - metal2
@@ -99,6 +79,7 @@ lint scss ts html:
     paths:
       - .cache
   script:
+    - Build/Scripts/runTests.sh -s checkGruntClean
     - Build/Scripts/runTests.sh -s lintScss
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml
@@ -121,10 +102,6 @@ phpstan php 8.1 max:
   needs: []
   only:
     - schedules
-  cache:
-    key: 12.4-composer-max
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s phpstan -p 8.1

@@ -23,21 +23,6 @@ cgl pre-merge:
     - Build/Scripts/runTests.sh -s cglGit -n -p 8.1
     - Build/Scripts/runTests.sh -s cglHeaderGit -n -p 8.1
 
-grunt clean pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - "12.4"
-  cache:
-    key: 12.4-js
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s checkGruntClean
-
 integration various pre-merge:
   stage: main
   tags:
@@ -46,10 +31,6 @@ integration various pre-merge:
     refs:
       - schedules
       - "12.4"
-  cache:
-    key: 12.4-composer-phpmixed
-    paths:
-      - .cache
   script:
     - Build/Scripts/runTests.sh -s composerValidate -p 8.1
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
@@ -66,7 +47,19 @@ integration various pre-merge:
     - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.1
     - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.1
 
-lint scss ts html pre-merge:
+lint php pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - "12.4"
+  script:
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.1
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.3
+
+grunt scss ts html pre-merge:
   stage: main
   tags:
     - metal2
@@ -79,6 +72,7 @@ lint scss ts html pre-merge:
     paths:
       - .cache
   script:
+    - Build/Scripts/runTests.sh -s checkGruntClean
     - Build/Scripts/runTests.sh -s lintScss
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml

@@ -1,32 +1,28 @@
-acceptance install mariadb 10.10 php 8.2 max:
+acceptance install php 8.3 max:
   stage: acceptance
   tags:
     - metal2
   needs: []
   only:
     - schedules
-  cache:
-    key: 12.4-composer-max
-    paths:
-      - .cache
   artifacts:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.2
-acceptance install mariadb 10.3 php 8.1 min:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.3
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.3
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 15 -p 8.3
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.3
+
+acceptance install php 8.1 min:
   stage: acceptance
   tags:
     - metal2
   needs: []
   only:
     - schedules
-  cache:
-    key: 12.4-composer-min
-    paths:
-      - .cache
   artifacts:
     when: on_failure
     paths:
@@ -34,114 +30,6 @@ acceptance install mariadb 10.3 php 8.1 min:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
-
-acceptance install mysql 8.0 php 8.2 max:
-  stage: acceptance
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 12.4-composer-max
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.2
-acceptance install mysql 8.0 php 8.1 min:
-  stage: acceptance
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 12.4-composer-min
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.1
-
-acceptance install postgres 15 php 8.2 max:
-  stage: acceptance
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 12.4-composer-max
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 15 -p 8.2
-acceptance install postgres 10 php 8.1 min:
-  stage: acceptance
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 12.4-composer-min
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 10 -p 8.1
-
-acceptance install sqlite php 8.2 max:
-  stage: acceptance
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 12.4-composer-max
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.2
-acceptance install sqlite php 8.1 min:
-  stage: acceptance
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: 12.4-composer-min
-    paths:
-      - .cache
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/AcceptanceReports
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.1

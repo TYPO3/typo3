@@ -48,7 +48,7 @@ functional postgres 10 php 8.1 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s functional -d postgres -i 10 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-functional sqlite php 8.1 pre-merge:
+functional sqlite php 8.2 pre-merge:
   stage: main
   tags:
     - metal2
@@ -56,7 +56,7 @@ functional sqlite php 8.1 pre-merge:
     refs:
       - schedules
       - "12.4"
-  parallel: 5
+  parallel: 3
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
