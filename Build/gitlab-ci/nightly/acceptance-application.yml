@@ -31,7 +31,7 @@ acceptance application mariadb 10.4 php 8.2 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.4 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-acceptance application mysql 8.0 php 8.3 max:
+acceptance application sys_template mysql 8.0 php 8.3 max:
   stage: acceptance
   tags:
     - metal2
@@ -46,23 +46,7 @@ acceptance application mysql 8.0 php 8.3 max:
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s acceptance -d mysql -i 8.0 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance application mysql 8.0 php 8.2 min:
-  stage: acceptance
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/acceptance/typo3temp/var/log
-      - typo3temp/var/tests/AcceptanceReports
-  parallel: 8
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s acceptance -d mysql -i 8.0 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptance -d mysql -i 8.0 -t systemplate -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 acceptance application sqlite php 8.3 max:
   stage: acceptance
@@ -80,7 +64,7 @@ acceptance application sqlite php 8.3 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
     - Build/Scripts/runTests.sh -s acceptance -d sqlite -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance application sqlite php 8.2 min:
+acceptance application sys_template sqlite php 8.2 min:
   stage: acceptance
   tags:
     - metal2
@@ -95,7 +79,7 @@ acceptance application sqlite php 8.2 min:
   parallel: 8
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s acceptance -d sqlite -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptance -d sqlite -t systemplate -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 acceptance application postgres 15 php 8.3 max:
   stage: acceptance
@@ -113,19 +97,3 @@ acceptance application postgres 15 php 8.3 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
     - Build/Scripts/runTests.sh -s acceptance -d postgres -i 15 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
-acceptance application postgres 10 php 8.2 min:
-  stage: acceptance
-  tags:
-    - metal2
-  needs: []
-  only:
-    - schedules
-  artifacts:
-    when: on_failure
-    paths:
-      - typo3temp/var/tests/acceptance/typo3temp/var/log
-      - typo3temp/var/tests/AcceptanceReports
-  parallel: 8
-  script:
-    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s acceptance -d postgres -i 10 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
