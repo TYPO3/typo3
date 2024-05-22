@@ -296,7 +296,7 @@ class SetupModuleController
                     $this->passwordIsUpdated = self::PASSWORD_NOT_THE_SAME;
                 }
 
-                $this->setAvatarFileUid($beUserId, $be_user_data['avatar'], $storeRec);
+                $this->setAvatarFileUid($beUserId, $be_user_data['avatar'] ?? null, $storeRec);
 
                 $doSaveData = true;
             }
@@ -834,7 +834,7 @@ class SetupModuleController
      * Set avatar fileUid for backend user
      *
      * @param int $beUserId
-     * @param numeric-string|''|'delete' $fileUid either a file UID, an empty string, or `delete`
+     * @param numeric-string|''|'delete'|null $fileUid either null, a file UID, an empty string, or `delete`
      */
     protected function setAvatarFileUid($beUserId, $fileUid, array &$storeRec)
     {
