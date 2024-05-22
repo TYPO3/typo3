@@ -86,7 +86,7 @@ interface BackendInterface
     /**
      * Returns the object data matching the $query.
      *
-     * @return array
+     * @return list<array<string,mixed>>
      */
     public function getObjectDataByQuery(QueryInterface $query);
 }

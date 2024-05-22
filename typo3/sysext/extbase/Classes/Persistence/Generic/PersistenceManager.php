@@ -73,6 +73,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
 
     /**
      * Returns the object data matching the $query.
+     * @return list<array<string,mixed>>
      */
     public function getObjectDataByQuery(QueryInterface $query): array
     {
