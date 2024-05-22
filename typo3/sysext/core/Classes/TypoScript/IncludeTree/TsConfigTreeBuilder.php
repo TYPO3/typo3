@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent as LegacyModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
@@ -76,8 +77,11 @@ final class TsConfigTreeBuilder
     ): RootInclude {
         $collectedPagesTsConfigArray = [];
         $gotPackagesPagesTsConfigFromCache = false;
+        $cacheIdentifier = (new PackageDependentCacheIdentifier($this->packageManager))
+            ->withPrefix('pagestsconfig-packages-strings')
+            ->toString();
         if ($cache) {
-            $collectedPagesTsConfigArrayFromCache = $cache->require('pagestsconfig-packages-strings');
+            $collectedPagesTsConfigArrayFromCache = $cache->require($cacheIdentifier);
             if ($collectedPagesTsConfigArrayFromCache) {
                 $gotPackagesPagesTsConfigFromCache = true;
                 $collectedPagesTsConfigArray = $collectedPagesTsConfigArrayFromCache;
@@ -99,7 +103,7 @@ final class TsConfigTreeBuilder
                     }
                 }
             }
-            $cache?->set('pagestsconfig-packages-strings', 'return unserialize(\'' . addcslashes(serialize($collectedPagesTsConfigArray), '\'\\') . '\');');
+            $cache?->set($cacheIdentifier, 'return unserialize(\'' . addcslashes(serialize($collectedPagesTsConfigArray), '\'\\') . '\');');
         }
 
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] ?? '')) {
@@ -158,7 +162,10 @@ final class TsConfigTreeBuilder
         ?PhpFrontend $cache = null
     ): TsConfigInclude {
         $lowercaseName = mb_strtolower($name);
-        $identifier = $lowercaseName . '-' . hash('xxh3', $typoScriptString);
+        $identifier = (new PackageDependentCacheIdentifier($this->packageManager))
+            ->withPrefix($lowercaseName)
+            ->withAdditionalHashedIdentifier($typoScriptString)
+            ->toString();
         if ($cache) {
             $includeNode = $cache->require($identifier);
             if ($includeNode instanceof TsConfigInclude) {
