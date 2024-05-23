@@ -82,14 +82,20 @@ class SessionService
         $normalizedParams = $request->getAttribute('normalizedParams') ?? NormalizedParams::createFromRequest($request);
         session_set_save_handler($sessionHandler);
         session_name($this->cookieName);
-        ini_set('session.cookie_secure', $normalizedParams->isHttps() ? 'On' : 'Off');
-        ini_set('session.cookie_httponly', 'On');
-        ini_set('session.cookie_samesite', Cookie::SAMESITE_STRICT);
-        ini_set('session.cookie_path', $normalizedParams->getSitePath());
-        // Always call the garbage collector to clean up stale session files
-        ini_set('session.gc_probability', (string)100);
-        ini_set('session.gc_divisor', (string)100);
-        ini_set('session.gc_maxlifetime', (string)($this->expireTimeInMinutes * 2 * 60));
+        try {
+            ini_set('session.cookie_secure', $normalizedParams->isHttps() ? 'On' : 'Off');
+            ini_set('session.cookie_httponly', 'On');
+            ini_set('session.cookie_samesite', Cookie::SAMESITE_STRICT);
+            ini_set('session.cookie_path', $normalizedParams->getSitePath());
+            // Always call the garbage collector to clean up stale session files
+            ini_set('session.gc_probability', (string)100);
+            ini_set('session.gc_divisor', (string)100);
+            ini_set('session.gc_maxlifetime', (string)($this->expireTimeInMinutes * 2 * 60));
+        } catch (\Error) {
+            // In case function "ini_set" is disabled within php.ini, we catch the error and allow TYPO3 to run
+            // anyway, see https://www.php.net/manual/en/ini.core.php#ini.disable-functions
+        }
+        $this->logInsecureSessionCookieSettings($normalizedParams->isHttps());
         if ($this->isSessionAutoStartEnabled()) {
             $sessionCreationError = 'Error: session.auto-start is enabled.<br />';
             $sessionCreationError .= 'The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:<br />';
@@ -407,6 +413,41 @@ class SessionService
     protected function isSessionAutoStartEnabled()
     {
         return $this->getIniValueBoolean('session.auto_start');
+    }
+
+    /**
+     * Most of the session settings above are best practice, and the install tool keeps working
+     * without them. These two are not: They keep the session cookie from being sent over plain
+     * HTTP and from being readable by JavaScript.
+     *
+     * "ini_set" does not necessarily apply them. It returns false without any error if an option
+     * can not be changed at runtime, and throws if the function is disabled altogether, so the
+     * values are read back rather than relying on the calls having had an effect.
+     */
+    protected function logInsecureSessionCookieSettings(bool $https): void
+    {
+        $ineffective = [];
+        try {
+            if ($https && $this->getIniValueBoolean('session.cookie_secure') !== true) {
+                $ineffective[] = 'session.cookie_secure';
+            }
+            if ($this->getIniValueBoolean('session.cookie_httponly') !== true) {
+                $ineffective[] = 'session.cookie_httponly';
+            }
+        } catch (\Error) {
+            $this->logger->error(
+                'Vital session settings of the install tool can not be verified, because the PHP '
+                . 'function "ini_get" is disabled. TYPO3 security is impacted.'
+            );
+            return;
+        }
+        if ($ineffective !== []) {
+            $this->logger->error(
+                'Vital session settings of the install tool are not in effect: {settings}. '
+                . 'TYPO3 security is impacted.',
+                ['settings' => implode(', ', $ineffective)]
+            );
+        }
     }
 
     /**

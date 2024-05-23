@@ -332,7 +332,12 @@ readonly class Bootstrap
                     1476046290
                 );
         }
-        @ini_set('display_errors', (string)$displayErrors);
+        try {
+            @ini_set('display_errors', (string)$displayErrors);
+        } catch (\Error) {
+            // In case function "ini_set" is disabled within php.ini, we catch the error and allow TYPO3 to run
+            // anyway, see https://www.php.net/manual/en/ini.core.php#ini.disable-functions
+        }
 
         if (!empty($errorHandlerClassName)) {
             // Register an error handler for the given errorHandlerError
@@ -363,7 +368,12 @@ readonly class Bootstrap
     protected static function setMemoryLimit(): void
     {
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] > 16) {
-            @ini_set('memory_limit', (string)((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] . 'm'));
+            try {
+                @ini_set('memory_limit', (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] . 'm');
+            } catch (\Error) {
+                // In case function "ini_set" is disabled within php.ini, we catch the error and allow TYPO3 to run
+                // anyway, see https://www.php.net/manual/en/ini.core.php#ini.disable-functions
+            }
         }
     }
 
