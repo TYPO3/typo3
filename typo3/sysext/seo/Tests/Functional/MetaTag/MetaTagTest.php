@@ -82,7 +82,7 @@ final class MetaTagTest extends AbstractTestCase
         $body = (string)$uncachedResponse->getBody();
 
         foreach ($expectedMetaTags as $expectedMetaTag) {
-            self::assertStringContainsString('<meta ' . $expectedMetaTag['type'] . '="' . $expectedMetaTag['tag'] . '" content="' . $expectedMetaTag['content'] . '" />', $body);
+            self::assertStringContainsString('<meta ' . $expectedMetaTag['type'] . '="' . $expectedMetaTag['tag'] . '" content="' . $expectedMetaTag['content'] . '">', $body);
         }
     }
 }

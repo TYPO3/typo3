@@ -106,7 +106,7 @@ final class PluginsTest extends AbstractTestCase
         $body = (string)$uncachedResponse->getBody();
         self::assertStringContainsString('<title>' . $expectedTitle . '</title>', $body);
         if ($expectedMetaOgTitle !== '') {
-            self::assertStringContainsString('<meta name="og:title" content="' . $expectedMetaOgTitle . '" />', $body, 'first hit, not cached');
+            self::assertStringContainsString('<meta name="og:title" content="' . $expectedMetaOgTitle . '">', $body, 'first hit, not cached');
         }
 
         // Second hit to check the cached version
@@ -118,7 +118,7 @@ final class PluginsTest extends AbstractTestCase
         $body = (string)$cachedResponse->getBody();
         self::assertStringContainsString('<title>' . $expectedTitle . '</title>', $body);
         if ($expectedMetaOgTitle !== '') {
-            self::assertStringContainsString('<meta name="og:title" content="' . $expectedMetaOgTitle . '" />', $body, 'second hit, cached');
+            self::assertStringContainsString('<meta name="og:title" content="' . $expectedMetaOgTitle . '">', $body, 'second hit, cached');
         }
     }
 }

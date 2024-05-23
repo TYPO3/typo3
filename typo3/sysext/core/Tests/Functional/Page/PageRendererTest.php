@@ -153,15 +153,15 @@ final class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedCssFileString, $renderedString);
         self::assertStringContainsString($expectedCssInlineBlockOnTopString, $renderedString);
         self::assertStringContainsString($expectedBodyContent, $renderedString);
-        self::assertStringContainsString('<meta property="og:type" content="foobar" />', $renderedString);
-        self::assertStringContainsString('<meta name="author" content="foobar" />', $renderedString);
-        self::assertStringContainsString('<meta http-equiv="refresh" content="5" />', $renderedString);
-        self::assertStringContainsString('<meta name="dc.author" content="&lt;evil tag&gt;" />', $renderedString);
+        self::assertStringContainsString('<meta property="og:type" content="foobar">', $renderedString);
+        self::assertStringContainsString('<meta name="author" content="foobar">', $renderedString);
+        self::assertStringContainsString('<meta http-equiv="refresh" content="5">', $renderedString);
+        self::assertStringContainsString('<meta name="dc.author" content="&lt;evil tag&gt;">', $renderedString);
         self::assertStringNotContainsString('<meta name="randomtag" content="foobar">', $renderedString);
         self::assertStringNotContainsString('<meta name="randomtag" content="foobar" />', $renderedString);
-        self::assertStringContainsString('<meta name="generator" content="TYPO3 CMS" />', $renderedString);
-        self::assertStringContainsString('<meta property="og:image" content="/path/to/image1.jpg" />', $renderedString);
-        self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg" />', $renderedString);
+        self::assertStringContainsString('<meta name="generator" content="TYPO3 CMS">', $renderedString);
+        self::assertStringContainsString('<meta property="og:image" content="/path/to/image1.jpg">', $renderedString);
+        self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg">', $renderedString);
 
         $stateBasedSubject = $this->createPageRenderer();
         $stateBasedSubject->updateState(unserialize($state, ['allowed_classes' => [Locale::class]]));
@@ -180,15 +180,15 @@ final class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedCssFileString, $stateBasedRenderedString);
         self::assertStringContainsString($expectedCssInlineBlockOnTopString, $stateBasedRenderedString);
         self::assertStringContainsString($expectedBodyContent, $stateBasedRenderedString);
-        self::assertStringContainsString('<meta property="og:type" content="foobar" />', $stateBasedRenderedString);
-        self::assertStringContainsString('<meta name="author" content="foobar" />', $stateBasedRenderedString);
-        self::assertStringContainsString('<meta http-equiv="refresh" content="5" />', $stateBasedRenderedString);
-        self::assertStringContainsString('<meta name="dc.author" content="&lt;evil tag&gt;" />', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta property="og:type" content="foobar">', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta name="author" content="foobar">', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta http-equiv="refresh" content="5">', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta name="dc.author" content="&lt;evil tag&gt;">', $stateBasedRenderedString);
         self::assertStringNotContainsString('<meta name="randomtag" content="foobar">', $stateBasedRenderedString);
         self::assertStringNotContainsString('<meta name="randomtag" content="foobar" />', $stateBasedRenderedString);
-        self::assertStringContainsString('<meta name="generator" content="TYPO3 CMS" />', $stateBasedRenderedString);
-        self::assertStringContainsString('<meta property="og:image" content="/path/to/image1.jpg" />', $stateBasedRenderedString);
-        self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg" />', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta name="generator" content="TYPO3 CMS">', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta property="og:image" content="/path/to/image1.jpg">', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg">', $stateBasedRenderedString);
     }
 
     public static function pageRendererRendersFooterValuesDataProvider(): array
