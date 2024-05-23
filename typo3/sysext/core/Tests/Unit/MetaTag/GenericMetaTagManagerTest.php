@@ -20,10 +20,22 @@ namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\MetaTag\GenericMetaTagManager;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\DocType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GenericMetaTagManagerTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->disableOriginalConstructor()->onlyMethods([])->getMock();
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
+    }
+
     #[Test]
     public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray(): void
     {
@@ -113,10 +125,10 @@ final class GenericMetaTagManagerTest extends UnitTestCase
             );
         }
 
-        $expected = '<meta name="description" content="This is a description" />' . PHP_EOL .
-            '<meta property="og:image" content="/path/to/image2" />' . PHP_EOL .
-            '<meta property="og:image:height" content="200" />' . PHP_EOL .
-            '<meta name="twitter:card" content="This is the Twitter card" />';
+        $expected = '<meta name="description" content="This is a description">' . PHP_EOL .
+            '<meta property="og:image" content="/path/to/image2">' . PHP_EOL .
+            '<meta property="og:image:height" content="200">' . PHP_EOL .
+            '<meta name="twitter:card" content="This is the Twitter card">';
 
         self::assertEquals($expected, $manager->renderAllProperties());
     }
@@ -176,7 +188,7 @@ final class GenericMetaTagManagerTest extends UnitTestCase
                         'subProperties' => [],
                     ],
                 ],
-                '<meta name="custom-tag" content="Test title" />',
+                '<meta name="custom-tag" content="Test title">',
             ],
             [
                 [
@@ -192,7 +204,7 @@ final class GenericMetaTagManagerTest extends UnitTestCase
                         'subProperties' => [],
                     ],
                 ],
-                '<meta name="description" content="Custom description" />',
+                '<meta name="description" content="Custom description">',
             ],
             [
                 [
@@ -208,7 +220,7 @@ final class GenericMetaTagManagerTest extends UnitTestCase
                         'subProperties' => [],
                     ],
                 ],
-                '<meta property="og:image" content="/path/to/image" />',
+                '<meta property="og:image" content="/path/to/image">',
             ],
             [
                 [
@@ -224,8 +236,8 @@ final class GenericMetaTagManagerTest extends UnitTestCase
                         'subProperties' => ['width' => 100],
                     ],
                 ],
-                '<meta property="og:image" content="/path/to/image" />' . PHP_EOL .
-                    '<meta property="og:image:width" content="100" />',
+                '<meta property="og:image" content="/path/to/image">' . PHP_EOL .
+                    '<meta property="og:image:width" content="100">',
             ],
             [
                 [
@@ -241,8 +253,18 @@ final class GenericMetaTagManagerTest extends UnitTestCase
                         'subProperties' => [],
                     ],
                 ],
-                '<meta property="og:image:width" content="100" />',
+                '<meta property="og:image:width" content="100">',
             ],
         ];
+    }
+
+    #[Test]
+    public function checkRenderAllPropertiesUsesCorrectEndingSlash(): void
+    {
+        GeneralUtility::makeInstance(PageRenderer::class)->setDocType(DocType::xhtml11);
+
+        $manager = new GenericMetaTagManager();
+        $manager->addProperty('description', 'Description');
+        self::assertEquals('<meta name="description" content="Description" />', $manager->renderProperty('description'));
     }
 }

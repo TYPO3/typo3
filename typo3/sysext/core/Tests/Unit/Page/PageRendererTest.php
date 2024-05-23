@@ -55,6 +55,7 @@ final class PageRendererTest extends UnitTestCase
             ->getMock();
 
         $pageRenderer->expects(self::once())->method('reset');
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
         $pageRenderer->render();
     }
 

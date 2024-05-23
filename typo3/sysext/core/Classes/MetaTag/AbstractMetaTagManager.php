@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\MetaTag;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 abstract class AbstractMetaTagManager implements MetaTagManagerInterface
 {
     /**
@@ -207,6 +210,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
     public function renderProperty(string $property): string
     {
         $property = strtolower($property);
+        $endingSlash = GeneralUtility::makeInstance(PageRenderer::class)->getDocType()->isXmlCompliant() ? ' /' : '';
         $metaTags = [];
 
         $nameAttribute = $this->defaultNameAttribute;
@@ -225,7 +229,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
             foreach ($this->getProperty($property) as $propertyItem) {
                 $metaTags[] = '<meta ' .
                     htmlspecialchars($nameAttribute) . '="' . htmlspecialchars($property) . '" ' .
-                    htmlspecialchars($contentAttribute) . '="' . htmlspecialchars($propertyItem['content']) . '" />';
+                    htmlspecialchars($contentAttribute) . '="' . htmlspecialchars($propertyItem['content']) . '"' . $endingSlash . '>';
 
                 if (!count($propertyItem['subProperties'])) {
                     continue;
@@ -234,7 +238,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
                     foreach ($subPropertyItems as $subPropertyItem) {
                         $metaTags[] = '<meta ' .
                             htmlspecialchars($nameAttribute) . '="' . htmlspecialchars($property . $this->subPropertySeparator . $subProperty) . '" ' .
-                            htmlspecialchars($contentAttribute) . '="' . htmlspecialchars((string)$subPropertyItem) . '" />';
+                            htmlspecialchars($contentAttribute) . '="' . htmlspecialchars((string)$subPropertyItem) . '"' . $endingSlash . '>';
                     }
                 }
             }

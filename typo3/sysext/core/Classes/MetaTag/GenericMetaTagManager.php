@@ -17,9 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\MetaTag;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Handles typical meta tags (non-grouped). Use AbstractMetaTagManager
- * to create you own MetaTags, this class is final by design
+ * to create your own MetaTags, this class is final by design
  */
 final class GenericMetaTagManager implements MetaTagManagerInterface
 {
@@ -96,13 +99,14 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
     public function renderProperty(string $property): string
     {
         $property = strtolower($property);
+        $endingSlash = GeneralUtility::makeInstance(PageRenderer::class)->getDocType()->isXmlCompliant() ? ' /' : '';
 
         $metaTags = [];
         foreach ((array)$this->properties[$property] as $type => $propertyItems) {
             foreach ($propertyItems as $propertyItem) {
                 $metaTags[] = '<meta ' .
                     htmlspecialchars($type) . '="' . htmlspecialchars($property) . '" ' .
-                    'content="' . htmlspecialchars($propertyItem['content']) . '" />';
+                    'content="' . htmlspecialchars($propertyItem['content']) . '"' . $endingSlash . '>';
 
                 if (!count($propertyItem['subProperties'])) {
                     continue;
@@ -110,7 +114,7 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
                 foreach ($propertyItem['subProperties'] as $subProperty => $value) {
                     $metaTags[] = '<meta ' .
                         htmlspecialchars($type) . '="' . htmlspecialchars($property . $this->subPropertySeparator . $subProperty) . '" ' .
-                        'content="' . htmlspecialchars((string)$value) . '" />';
+                        'content="' . htmlspecialchars((string)$value) . '"' . $endingSlash . '>';
                 }
             }
         }
