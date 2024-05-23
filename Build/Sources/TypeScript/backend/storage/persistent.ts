@@ -33,8 +33,7 @@ class Persistent {
    */
   public get(key: string): any {
     if (this.data === null) {
-      const response = this.loadFromServer();
-      return this.getRecursiveDataByDeepKey(response, key.split('.'));
+      this.data = this.loadFromServer();
     }
 
     return this.getRecursiveDataByDeepKey(this.data, key.split('.'));
@@ -133,9 +132,7 @@ class Persistent {
     request.send();
 
     if (request.status === 200) {
-      const response = JSON.parse(request.responseText);
-      this.data = response;
-      return response;
+      return JSON.parse(request.responseText);
     }
 
     throw `Unexpected response code ${request.status}, reason: ${request.responseText}`;
