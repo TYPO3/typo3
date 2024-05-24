@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\DashboardPreset;
 use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,9 +30,7 @@ final class DashboardPresetRegistryTest extends UnitTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->subject = GeneralUtility::makeInstance(
-            DashboardPresetRegistry::class
-        );
+        $this->subject = new DashboardPresetRegistry();
     }
 
     #[Test]

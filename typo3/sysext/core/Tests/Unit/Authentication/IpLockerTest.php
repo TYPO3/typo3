@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\IpLocker;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -140,8 +139,8 @@ final class IpLockerTest extends UnitTestCase
     #[Test]
     public function getSessionIpLock(string $ipAddress, int $lockIPv4PartCount, int $lockIPv6PartCount, string $expectedLock): void
     {
-        $ipLocker = GeneralUtility::makeInstance(IpLocker::class, $lockIPv4PartCount, $lockIPv6PartCount);
-        $lock = $ipLocker->getSessionIpLock($ipAddress);
+        $subject = new IpLocker($lockIPv4PartCount, $lockIPv6PartCount);
+        $lock = $subject->getSessionIpLock($ipAddress);
 
         self::assertEquals($expectedLock, $lock);
     }

@@ -49,14 +49,13 @@ final class BootstrapRendererTest extends UnitTestCase
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessage(): void
     {
-        $rendererClass = GeneralUtility::makeInstance(BootstrapRenderer::class);
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $subject = new BootstrapRenderer();
+        $flashMessage = new FlashMessage(
             'messageBody',
             'messageTitle',
             ContextualFeedbackSeverity::NOTICE
         );
-        $output = $rendererClass->render([$flashMessage]);
+        $output = $subject->render([$flashMessage]);
         self::assertStringContainsString('<div class="typo3-messages">', $output);
         self::assertStringContainsString('<div class="alert alert-notice">', $output);
         self::assertStringContainsString('<div class="media-body">', $output);
@@ -67,14 +66,13 @@ final class BootstrapRendererTest extends UnitTestCase
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessageWithoutTitle(): void
     {
-        $rendererClass = GeneralUtility::makeInstance(BootstrapRenderer::class);
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $subject = new BootstrapRenderer();
+        $flashMessage = new FlashMessage(
             'messageBody',
             '',
             ContextualFeedbackSeverity::NOTICE
         );
-        $output = $rendererClass->render([$flashMessage]);
+        $output = $subject->render([$flashMessage]);
         self::assertStringContainsString('<div class="typo3-messages">', $output);
         self::assertStringContainsString('<div class="alert alert-notice">', $output);
         self::assertStringContainsString('<div class="media-body">', $output);

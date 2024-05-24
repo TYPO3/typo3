@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
@@ -28,21 +29,18 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class AssetRendererTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected ?AssetRenderer $assetRenderer;
-    protected ?EventDispatcherInterface $eventDispatcher;
+    protected AssetRenderer $subject;
+    protected MockObject&EventDispatcherInterface $eventDispatcher;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $this->assetRenderer = GeneralUtility::makeInstance(
-            AssetRenderer::class,
-            null,
-            $this->eventDispatcher
-        );
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->subject = new AssetRenderer(null, $eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'filesDataProvider')]
+    #[DataProviderExternal(AssetDataProvider::class, 'filesDataProvider')]
     #[Test]
     public function styleSheets(array $files, array $expectedResult, array $expectedMarkup): void
     {
@@ -51,11 +49,11 @@ final class AssetRendererTest extends UnitTestCase
             [$identifier, $source, $attributes, $options] = $file;
             $assetCollector->addStyleSheet($identifier, $source, $attributes, $options);
         }
-        self::assertSame($expectedMarkup['css_no_prio'], $this->assetRenderer->renderStyleSheets());
-        self::assertSame($expectedMarkup['css_prio'], $this->assetRenderer->renderStyleSheets(true));
+        self::assertSame($expectedMarkup['css_no_prio'], $this->subject->renderStyleSheets());
+        self::assertSame($expectedMarkup['css_prio'], $this->subject->renderStyleSheets(true));
     }
 
-    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'filesDataProvider')]
+    #[DataProviderExternal(AssetDataProvider::class, 'filesDataProvider')]
     #[Test]
     public function javaScript(array $files, array $expectedResult, array $expectedMarkup): void
     {
@@ -64,11 +62,11 @@ final class AssetRendererTest extends UnitTestCase
             [$identifier, $source, $attributes, $options] = $file;
             $assetCollector->addJavaScript($identifier, $source, $attributes, $options);
         }
-        self::assertSame($expectedMarkup['js_no_prio'], $this->assetRenderer->renderJavaScript());
-        self::assertSame($expectedMarkup['js_prio'], $this->assetRenderer->renderJavaScript(true));
+        self::assertSame($expectedMarkup['js_no_prio'], $this->subject->renderJavaScript());
+        self::assertSame($expectedMarkup['js_prio'], $this->subject->renderJavaScript(true));
     }
 
-    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'inlineDataProvider')]
+    #[DataProviderExternal(AssetDataProvider::class, 'inlineDataProvider')]
     #[Test]
     public function inlineJavaScript(array $sources, array $expectedResult, array $expectedMarkup): void
     {
@@ -77,11 +75,11 @@ final class AssetRendererTest extends UnitTestCase
             [$identifier, $source, $attributes, $options] = $source;
             $assetCollector->addInlineJavaScript($identifier, $source, $attributes, $options);
         }
-        self::assertSame($expectedMarkup['js_no_prio'], $this->assetRenderer->renderInlineJavaScript());
-        self::assertSame($expectedMarkup['js_prio'], $this->assetRenderer->renderInlineJavaScript(true));
+        self::assertSame($expectedMarkup['js_no_prio'], $this->subject->renderInlineJavaScript());
+        self::assertSame($expectedMarkup['js_prio'], $this->subject->renderInlineJavaScript(true));
     }
 
-    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'inlineDataProvider')]
+    #[DataProviderExternal(AssetDataProvider::class, 'inlineDataProvider')]
     #[Test]
     public function inlineStyleSheets(array $sources, array $expectedResult, array $expectedMarkup): void
     {
@@ -90,11 +88,11 @@ final class AssetRendererTest extends UnitTestCase
             [$identifier, $source, $attributes, $options] = $source;
             $assetCollector->addInlineStyleSheet($identifier, $source, $attributes, $options);
         }
-        self::assertSame($expectedMarkup['css_no_prio'], $this->assetRenderer->renderInlineStyleSheets());
-        self::assertSame($expectedMarkup['css_prio'], $this->assetRenderer->renderInlineStyleSheets(true));
+        self::assertSame($expectedMarkup['css_no_prio'], $this->subject->renderInlineStyleSheets());
+        self::assertSame($expectedMarkup['css_prio'], $this->subject->renderInlineStyleSheets(true));
     }
 
-    #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'renderMethodsAndEventsDataProvider')]
+    #[DataProviderExternal(AssetDataProvider::class, 'renderMethodsAndEventsDataProvider')]
     #[Test]
     public function beforeRenderingEvent(
         string $renderMethodName,
@@ -114,6 +112,6 @@ final class AssetRendererTest extends UnitTestCase
             ->method('dispatch')
             ->with($event);
 
-        $this->assetRenderer->$renderMethodName($priority);
+        $this->subject->$renderMethodName($priority);
     }
 }

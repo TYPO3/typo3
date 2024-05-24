@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\PlaintextRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PlaintextRendererTest extends UnitTestCase
@@ -29,26 +28,24 @@ final class PlaintextRendererTest extends UnitTestCase
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessage(): void
     {
-        $rendererClass = GeneralUtility::makeInstance(PlaintextRenderer::class);
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $subject = new PlaintextRenderer();
+        $flashMessage = new FlashMessage(
             'messageBody',
             'messageTitle',
             ContextualFeedbackSeverity::NOTICE
         );
-        self::assertSame('[NOTICE] messageTitle: messageBody', $rendererClass->render([$flashMessage]));
+        self::assertSame('[NOTICE] messageTitle: messageBody', $subject->render([$flashMessage]));
     }
 
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessageWithoutTitle(): void
     {
-        $rendererClass = GeneralUtility::makeInstance(PlaintextRenderer::class);
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $subject = new PlaintextRenderer();
+        $flashMessage = new FlashMessage(
             'messageBody',
             '',
             ContextualFeedbackSeverity::NOTICE
         );
-        self::assertSame('[NOTICE] messageBody', $rendererClass->render([$flashMessage]));
+        self::assertSame('[NOTICE] messageBody', $subject->render([$flashMessage]));
     }
 }

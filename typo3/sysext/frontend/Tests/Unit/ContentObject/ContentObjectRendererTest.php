@@ -148,7 +148,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                 '',
                 false
             );
-        $this->frontendControllerMock->_set('context', GeneralUtility::makeInstance(Context::class));
+        $this->frontendControllerMock->_set('context', new Context());
         $this->frontendControllerMock->config = [];
         $this->frontendControllerMock->page = [];
         $this->frontendControllerMock->sys_page = $pageRepositoryMock;

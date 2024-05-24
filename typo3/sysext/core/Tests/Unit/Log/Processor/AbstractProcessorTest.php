@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Processor\ProcessorInterface;
 use TYPO3\CMS\Core\Log\Writer\NullWriter;
 use TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\ProcessorFixture;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AbstractProcessorTest extends UnitTestCase
@@ -39,7 +38,7 @@ final class AbstractProcessorTest extends UnitTestCase
         $invalidConfiguration = [
             'foo' => 'bar',
         ];
-        GeneralUtility::makeInstance(ProcessorFixture::class, $invalidConfiguration);
+        new ProcessorFixture($invalidConfiguration);
     }
 
     #[Test]

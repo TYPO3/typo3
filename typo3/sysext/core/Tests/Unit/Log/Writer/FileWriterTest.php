@@ -21,8 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Writer\FileWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,24 +41,13 @@ final class FileWriterTest extends UnitTestCase
         $this->testFilesToDelete[] = $this->testRoot;
     }
 
-    protected function createLogger(string $name = ''): Logger
-    {
-        if (empty($name)) {
-            $name = StringUtility::getUniqueId('test.core.log.');
-        }
-        GeneralUtility::makeInstance(LogManager::class)->registerLogger($name);
-        return GeneralUtility::makeInstance(LogManager::class)->getLogger($name);
-    }
-
     protected function createWriter(string $prependName = ''): FileWriter
     {
         $logFileName = $this->getDefaultFileName($prependName);
         if (file_exists($logFileName)) {
             unlink($logFileName);
         }
-        return GeneralUtility::makeInstance(FileWriter::class, [
-            'logFile' => $logFileName,
-        ]);
+        return new FileWriter(['logFile' => $logFileName]);
     }
 
     /**
@@ -74,7 +61,7 @@ final class FileWriterTest extends UnitTestCase
     #[Test]
     public function setLogFileSetsLogFile(): void
     {
-        $writer = GeneralUtility::makeInstance(FileWriter::class);
+        $writer = new FileWriter();
         $writer->setLogFile($this->getDefaultFileName());
         self::assertEquals($this->getDefaultFileName(), $writer->getLogFile());
     }
@@ -82,7 +69,7 @@ final class FileWriterTest extends UnitTestCase
     #[Test]
     public function setLogFileAcceptsAbsolutePath(): void
     {
-        $writer = GeneralUtility::makeInstance(FileWriter::class);
+        $writer = new FileWriter();
         $tempFile = rtrim(sys_get_temp_dir(), '/\\') . '/typo3.log';
         $writer->setLogFile($tempFile);
         self::assertEquals($tempFile, $writer->getLogFile());
@@ -104,8 +91,8 @@ final class FileWriterTest extends UnitTestCase
 
     public static function logsToFileDataProvider(): array
     {
-        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
-        $recordWithData = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'), LogLevel::ALERT, 'test record with data', ['foo' => ['bar' => 'baz']]);
+        $simpleRecord = new LogRecord(StringUtility::getUniqueId('test.core.log.fileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
+        $recordWithData = new LogRecord(StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'), LogLevel::ALERT, 'test record with data', ['foo' => ['bar' => 'baz']]);
         return [
             'simple record' => [$simpleRecord, trim((string)$simpleRecord)],
             'record with data' => [$recordWithData, trim((string)$recordWithData)],
@@ -141,8 +128,7 @@ final class FileWriterTest extends UnitTestCase
     #[Test]
     public function logsToFileWithUnescapedCharacters(): void
     {
-        $recordWithData = GeneralUtility::makeInstance(
-            LogRecord::class,
+        $recordWithData = new LogRecord(
             StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'),
             LogLevel::INFO,
             'test record with unicode and slash in data to encode',

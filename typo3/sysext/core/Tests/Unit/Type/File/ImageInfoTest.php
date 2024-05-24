@@ -57,10 +57,10 @@ final class ImageInfoTest extends UnitTestCase
         $loggerMock->expects(self::once())->method('warning')
             ->with('I could not retrieve the image size for file {file}', ['file' => $testFile]);
 
-        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $testFile);
-        $imageInfo->setLogger($loggerMock);
-        self::assertEquals(0, $imageInfo->getHeight());
-        self::assertEquals(0, $imageInfo->getWidth());
+        $subject = new ImageInfo($testFile);
+        $subject->setLogger($loggerMock);
+        self::assertEquals(0, $subject->getHeight());
+        self::assertEquals(0, $subject->getWidth());
     }
 
     public static function doesNotBreakOnImageInfoWithInvalidSvgDataProvider(): array

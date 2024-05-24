@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -40,7 +39,7 @@ final class BitmapIconProviderTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = new BitmapIconProvider();
-        $this->icon = GeneralUtility::makeInstance(Icon::class);
+        $this->icon = new Icon();
         $this->icon->setIdentifier('foo');
         $this->icon->setSize(Icon::SIZE_SMALL);
     }

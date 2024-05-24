@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\AssetCollector;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AssetCollectorTest extends UnitTestCase
@@ -31,7 +30,7 @@ final class AssetCollectorTest extends UnitTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
+        $this->assetCollector = new AssetCollector();
     }
 
     #[DataProviderExternal(\TYPO3\CMS\Core\Tests\Unit\Page\AssetDataProvider::class, 'filesDataProvider')]

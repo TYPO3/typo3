@@ -40,7 +40,7 @@ final class SvgSpriteIconProviderTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = new SvgSpriteIconProvider();
-        $this->icon = GeneralUtility::makeInstance(Icon::class);
+        $this->icon = new Icon();
         $this->icon->setIdentifier('foo');
         $this->icon->setSize(Icon::SIZE_SMALL);
     }

@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\ListRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ListRendererTest extends UnitTestCase
@@ -29,26 +28,24 @@ final class ListRendererTest extends UnitTestCase
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessage(): void
     {
-        $rendererClass = GeneralUtility::makeInstance(ListRenderer::class);
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $subject = new ListRenderer();
+        $flashMessage = new FlashMessage(
             'messageBody',
             'messageTitle',
             ContextualFeedbackSeverity::NOTICE
         );
-        self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><h4 class="alert-title">messageTitle</h4><p class="alert-message">messageBody</p></li></ul>', $rendererClass->render([$flashMessage]));
+        self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><h4 class="alert-title">messageTitle</h4><p class="alert-message">messageBody</p></li></ul>', $subject->render([$flashMessage]));
     }
 
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessageWithoutTitle(): void
     {
-        $rendererClass = GeneralUtility::makeInstance(ListRenderer::class);
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $subject = new ListRenderer();
+        $flashMessage = new FlashMessage(
             'messageBody',
             '',
             ContextualFeedbackSeverity::NOTICE
         );
-        self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><p class="alert-message">messageBody</p></li></ul>', $rendererClass->render([$flashMessage]));
+        self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><p class="alert-message">messageBody</p></li></ul>', $subject->render([$flashMessage]));
     }
 }
