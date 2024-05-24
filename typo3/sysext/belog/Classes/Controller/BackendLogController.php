@@ -217,26 +217,17 @@ class BackendLogController extends ActionController
      * Create options for the user / group drop down.
      * This is not moved to a repository by intention to not mix up this 'meta' data
      * with real repository work.
-     *
-     * @return array Key is the option name, value its label
      */
     protected function createUserAndGroupListForSelectOptions(): array
     {
-        $userGroupArray = [];
-        // Two meta entries: 'all' and 'self'
-        $userGroupArray[0] = LocalizationUtility::translate('allUsers', 'Belog');
-        $userGroupArray[-1] = LocalizationUtility::translate('self', 'Belog');
-        // List of groups, key is gr-'uid'
-        $groups = BackendUtility::getGroupNames();
-        foreach ($groups as $group) {
-            $userGroupArray['gr-' . $group['uid']] = LocalizationUtility::translate('group', 'Belog') . ' ' . $group['title'];
+        $items = [];
+        foreach (BackendUtility::getGroupNames() as $group) {
+            $items['groups']['gr-' . $group['uid']] = BackendUtility::getRecordTitle('be_groups', $group);
         }
-        // List of users, key is us-'uid'
-        $users = BackendUtility::getUserNames();
-        foreach ($users as $user) {
-            $userGroupArray['us-' . $user['uid']] = LocalizationUtility::translate('user', 'Belog') . ' ' . $user['username'];
+        foreach (BackendUtility::getUserNames() as $user) {
+            $items['users']['us-' . $user['uid']] = BackendUtility::getRecordTitle('be_users', $user);
         }
-        return $userGroupArray;
+        return $items;
     }
 
     /**

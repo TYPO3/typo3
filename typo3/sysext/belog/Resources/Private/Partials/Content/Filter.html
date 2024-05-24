@@ -11,10 +11,22 @@
             <label for="belog-users" class="form-label"><f:translate key="users" /></label>
             <f:form.select
                 property="userOrGroup"
-                options="{userGroups}"
                 class="form-select"
                 id="belog-users"
-            />
+            >
+                <f:form.select.option value="0">{f:translate(key:'allUsers')}</f:form.select.option>
+                <f:form.select.option value="-1">{f:translate(key:'self')}</f:form.select.option>
+                <f:form.select.optgroup label="{f:translate(key:'group')}">
+                    <f:for each="{userGroups.groups}" as="label" key="key">
+                        <f:form.select.option value="{key}">{label}</f:form.select.option>
+                    </f:for>
+                </f:form.select.optgroup>
+                <f:form.select.optgroup label="{f:translate(key:'user')}">
+                    <f:for each="{userGroups.users}" as="label" key="key">
+                        <f:form.select.option value="{key}">{label}</f:form.select.option>
+                    </f:for>
+                </f:form.select.optgroup>
+            </f:form.select>
         </div>
 
         <div class="form-group">
