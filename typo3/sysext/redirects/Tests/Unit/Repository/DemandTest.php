@@ -30,47 +30,47 @@ final class DemandTest extends UnitTestCase
         return [
             [
                 [1, '', '', [], '', '', []],
-                ['integrity_status' => RedirectConflict::NO_CONFLICT],
+                [],
             ],
             [
                 [2, '', '', ['host'], '', '', []],
-                ['source_host' => 'host', 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['source_host' => 'host'],
             ],
             [
                 [3, '', '', [], 'path', '', []],
-                ['source_path' => 'path', 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['source_path' => 'path'],
             ],
             [
                 [4, '', '', [], '', 'target', []],
-                ['target' => 'target', 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['target' => 'target'],
             ],
             [
                 [5, '', '', [], '', '', [301]],
-                ['target_statuscode' => 301, 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['target_statuscode' => 301],
             ],
             [
                 [6, '', '', ['host'], '', 'target'],
-                ['source_host' => 'host', 'target' => 'target', 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['source_host' => 'host', 'target' => 'target'],
             ],
             [
                 [7, '', '', [], 'path', '', [302]],
-                ['source_path' => 'path', 'target_statuscode' => 302, 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['source_path' => 'path', 'target_statuscode' => 302],
             ],
             [
                 [8, '', '', ['host'], 'path', 'target', [307]],
-                ['source_path' => 'path', 'source_host' => 'host', 'target' => 'target', 'target_statuscode' => 307, 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['source_path' => 'path', 'source_host' => 'host', 'target' => 'target', 'target_statuscode' => 307],
             ],
             [
                 [9, '', '', [], '', '', [], 100],
-                ['max_hits' => 100, 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['max_hits' => 100],
             ],
             [
                 [10, '', '', [], '', '', [], 0, null, 1],
-                ['creation_type' => 1, 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['creation_type' => 1],
             ],
             [
                 [11, '', '', [], '', '', [], 0, null, -1, 1],
-                ['protected' => 1, 'integrity_status' => RedirectConflict::NO_CONFLICT],
+                ['protected' => 1],
             ],
             [
                 [12, '', '', [], '', '', [], 0, null, null, null, 'self_reference'],

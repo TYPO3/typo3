@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Redirects\Repository;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Console\Input\InputInterface;
-use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
 /**
  * Demand Object for filtering redirects in the backend module
@@ -54,7 +53,7 @@ class Demand
     private ?\DateTimeInterface $olderThan;
     protected ?int $creationType = -1;
     protected ?int $protected = -1;
-    protected ?string $integrityStatus = RedirectConflict::NO_CONFLICT;
+    protected ?string $integrityStatus = null;
 
     public function __construct(
         int $page = 1,
@@ -68,7 +67,7 @@ class Demand
         \DateTimeInterface $olderThan = null,
         ?int $creationType = -1,
         ?int $protected = -1,
-        ?string $integrityStatus = RedirectConflict::NO_CONFLICT
+        ?string $integrityStatus = null
     ) {
         $this->page = $page;
         if (!in_array($orderField, self::ORDER_FIELDS, true)) {
@@ -109,7 +108,7 @@ class Demand
         $maxHits = (int)($demand['max_hits'] ?? 0);
         $creationType = isset($demand['creation_type']) ? ((int)$demand['creation_type']) : -1;
         $protected = isset($demand['protected']) ? ((int)$demand['protected']) : -1;
-        $integrityStatus = isset($demand['integrity_status']) ? ((string)$demand['integrity_status']) : RedirectConflict::NO_CONFLICT;
+        $integrityStatus = isset($demand['integrity_status']) ? ((string)$demand['integrity_status']) : null;
         return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType, $protected, $integrityStatus);
     }
 
@@ -129,7 +128,7 @@ class Demand
                 : new \DateTimeImmutable('90 days ago'),
             $input->hasOption('creationType') ? (int)($input->getOption('creationType')) : null,
             $input->hasOption('protected') ? (int)($input->getOption('protected')) : null,
-            $input->hasOption('integrityStatus') ? (string)($input->getOption('integrityStatus')) : RedirectConflict::NO_CONFLICT
+            $input->hasOption('integrityStatus') ? (string)($input->getOption('integrityStatus')) : null
         );
     }
 
