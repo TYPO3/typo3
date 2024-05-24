@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Composer;
 
+use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Repository\PlatformRepository;
 use Composer\Script\Event;
 use Composer\Util\Filesystem;
 use Composer\Util\Platform;
+use Symfony\Component\Filesystem\Exception\IOException;
 use TYPO3\CMS\Composer\Plugin\Config;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 use TYPO3\CMS\Composer\Plugin\Util\ExtensionKeyResolver;
@@ -30,6 +32,7 @@ use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
+use TYPO3\CMS\Core\Package\Exception\PackageAssetsPublishingFailedException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -43,12 +46,13 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * All ext_emconf.php files will be completely ignored in this context, which means all extensions
  * are required to have a composer.json file, which works out naturally with a Composer setup.
  *
+ * @template packageMap of array<int, array{PackageInterface, string, non-empty-string}>
+ * @template IOMessage of array{severity: 'title'|'info'|'warning', verbosity: int, message: string}
+ *
  * @internal This class is an implementation detail and does not represent public API
  */
 class PackageArtifactBuilder extends PackageManager implements InstallerScript
 {
-    private const LEGACY_EXTENSION_INSTALL_PATH = '/typo3conf/ext';
-
     /**
      * @var Event $event
      */
@@ -91,13 +95,23 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      */
     public function run(Event $event): bool
     {
+        $io = $event->getIO();
         $this->event = $event;
-        $this->config = Config::load($this->event->getComposer(), $this->event->getIO());
+        $this->config = Config::load($this->event->getComposer(), $io);
         $this->fileSystem = new Filesystem();
         $composer = $this->event->getComposer();
         $basePath = $this->config->get('base-dir');
         $this->packagesBasePath = $basePath . '/';
-        foreach ($this->extractPackageMapFromComposer() as [$composerPackage, $path, $extensionKey]) {
+        $installedTypo3Packages = $this->extractPackageMapFromComposer();
+        $messages = $this->publishResources($installedTypo3Packages);
+        foreach ($messages as $message) {
+            $io->writeError(
+                $this->formatMessage($message),
+                true,
+                $message['verbosity'],
+            );
+        }
+        foreach ($installedTypo3Packages as [$composerPackage, $path, $extensionKey]) {
             $packagePath = PathUtility::sanitizeTrailingSeparator($path);
             $package = new Package($this, $extensionKey, $packagePath, true);
             $this->setTitleFromExtEmConf($package);
@@ -155,6 +169,8 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     /**
      * Fetch a map of all installed packages and filter them, when they apply
      * for TYPO3.
+     *
+     * @return packageMap
      */
     private function extractPackageMapFromComposer(): array
     {
@@ -164,8 +180,8 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         $localRepo = $composer->getRepositoryManager()->getLocalRepository();
         $usedExtensionKeys = [];
 
-        $installedTypo3Packages = array_map(
-            function (array $packageAndPath) use ($rootPackage, &$usedExtensionKeys) {
+        return array_map(
+            function (array $packageAndPath) use (&$usedExtensionKeys): array {
                 [$composerPackage, $packagePath] = $packageAndPath;
                 $packageName = $composerPackage->getName();
                 $packagePath = GeneralUtility::fixWindowsFilePath($packagePath);
@@ -194,9 +210,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 $usedExtensionKeys[$extensionKey] = $packageName;
                 unset($this->availableComposerPackageKeys[$packageName]);
                 $this->composerNameToPackageKeyMap[$packageName] = $extensionKey;
-                if ($composerPackage === $rootPackage) {
-                    return $this->handleRootPackage($rootPackage, $extensionKey);
-                }
                 // Add extension key to the package map for later reference
                 return [$composerPackage, $packagePath, $extensionKey];
             },
@@ -215,92 +228,127 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 }
             )
         );
-
-        $this->publishResources($installedTypo3Packages);
-
-        return $installedTypo3Packages;
     }
 
     /**
-     * TYPO3 can not handle public resources of extensions, that do not reside in typo3conf/ext
-     * Therefore, if the root package is of type typo3-cms-extension and has the folder Resources/Public,
-     * we fake the path of this extension to be in typo3conf/ext
-     *
-     * For root packages of other types or extensions without public resources, no symlink is created
-     * and the package path stays to be the composer root path.
-     *
-     * If extensions are installed into vendor folder, linking is skipped, because public resources
-     * are published anyway.
-     * Linking could be skipped altogether, but is kept to stay consistent:
-     * extensions in typo3conf/ext: root package is linked
-     * extensions in vendor: public resources of all packages are published
-     * @todo: remove this method in TYPO3 v12
-     *
-     * @param PackageInterface $rootPackage
-     * @param string $extensionKey
+     * @param IOMessage $message
+     * @return string
      */
-    private function handleRootPackage(PackageInterface $rootPackage, string $extensionKey): array
+    private function formatMessage(array $message): string
     {
-        $baseDir = $this->config->get('base-dir');
-        $composer = $this->event->getComposer();
-        if ($rootPackage->getType() !== 'typo3-cms-extension'
-            || !file_exists($baseDir . '/Resources/Public/')
-        ) {
-            return [$rootPackage, $baseDir, $extensionKey];
-        }
-        $typo3ExtensionInstallPath = $composer->getInstallationManager()->getInstaller('typo3-cms-extension')->getInstallPath($rootPackage);
-        if (!str_contains($typo3ExtensionInstallPath, self::LEGACY_EXTENSION_INSTALL_PATH)) {
-            return [$rootPackage, $baseDir, $extensionKey];
-        }
-        if (!file_exists($typo3ExtensionInstallPath) && !$this->fileSystem->isSymlinkedDirectory($typo3ExtensionInstallPath)) {
-            $this->fileSystem->ensureDirectoryExists(dirname($typo3ExtensionInstallPath));
-            $this->fileSystem->relativeSymlink($baseDir, $typo3ExtensionInstallPath);
-        }
-        if (realpath($baseDir) !== realpath($typo3ExtensionInstallPath)) {
-            $this->event->getIO()->warning('The root package is of type "typo3-cms-extension" and has public resources, but could not be linked to "' . self::LEGACY_EXTENSION_INSTALL_PATH . '" directory, because target directory already exits.');
+        if ($message['severity'] === 'title') {
+            return sprintf('<info>%s</info>', $message['message']);
         }
 
-        return [$rootPackage, $typo3ExtensionInstallPath, $extensionKey];
+        return sprintf(
+            ' * <%2$s>%s</%2$s>',
+            sprintf(str_replace(chr(10), '</%1$s>' . chr(10) . '   <%1$s>', $message['message']), $message['severity']),
+            $message['severity'],
+        );
     }
 
-    private function publishResources(array $installedTypo3Packages): void
+    /**
+     * @param packageMap $installedTypo3Packages
+     * @return array<int, IOMessage>
+     */
+    private function publishResources(array $installedTypo3Packages): array
     {
+        $publishingMessages = [
+            [
+                'severity' => 'title',
+                'verbosity' => IOInterface::NORMAL,
+                'message' => 'Publishing public assets of TYPO3 extensions',
+            ],
+        ];
         $baseDir = $this->config->get('base-dir');
         foreach ($installedTypo3Packages as [$composerPackage, $path, $extensionKey]) {
-            $fileSystemResourcesPath = $path . '/Resources/Public';
-            // skip non-composer installation extension paths, or if resource paths does not exist.
-            if (str_ends_with($path, self::LEGACY_EXTENSION_INSTALL_PATH . '/' . $extensionKey) || !file_exists($fileSystemResourcesPath)) {
+            $fileSystemResourcesPath = ($path === '' ? $baseDir : $path) . '/Resources/Public';
+            $relativePath = substr($fileSystemResourcesPath, strlen($baseDir));
+            if (!file_exists($fileSystemResourcesPath)) {
+                $publishingMessages[] = [
+                    'severity' => 'info',
+                    'verbosity' => IOInterface::VERBOSE,
+                    'message' => sprintf(
+                        'Skipping assets publishing for extension "%s",'
+                            . chr(10) . 'because its public resources directory "%s" does not exist.',
+                        $composerPackage->getName(),
+                        '.' . $relativePath,
+                    ),
+                ];
                 continue;
             }
-            $relativePath = substr($fileSystemResourcesPath, strlen($baseDir));
             [$relativePrefix] = explode('Resources/Public', $relativePath);
             $publicResourcesPath = $this->fileSystem->normalizePath($this->config->get('web-dir') . '/_assets/' . md5($relativePrefix));
             $this->fileSystem->ensureDirectoryExists(dirname($publicResourcesPath));
-            if (Platform::isWindows()) {
-                $this->ensureJunctionExists($fileSystemResourcesPath, $publicResourcesPath);
-            } else {
-                $this->ensureSymlinkExists($fileSystemResourcesPath, $publicResourcesPath);
+            try {
+                if (Platform::isWindows()) {
+                    $this->ensureJunctionExists($fileSystemResourcesPath, $publicResourcesPath, $composerPackage);
+                } else {
+                    $this->ensureSymlinkExists($fileSystemResourcesPath, $publicResourcesPath, $composerPackage);
+                }
+            } catch (PackageAssetsPublishingFailedException $e) {
+                $publishingMessages[] = [
+                    'severity' => 'warning',
+                    'verbosity' => IOInterface::NORMAL,
+                    'message' => sprintf(
+                        'Could not publish public resources for extension "%s" by using the "%s" strategy.'
+                        . chr(10) . 'Check whether the target directory "%s" already exists'
+                        . chr(10) . 'and Composer has permissions to write inside the "_assets" directory.',
+                        $e->packageName,
+                        $e->publishingStrategy,
+                        '.' . substr($publicResourcesPath, strlen($baseDir)),
+                    ),
+                ];
             }
         }
+        $publishingMessages[] =             [
+            'severity' => 'title',
+            'verbosity' => IOInterface::NORMAL,
+            'message' => 'Published public assets',
+        ];
+
+        return $publishingMessages;
     }
 
-    private function ensureJunctionExists(string $target, string $junction): void
+    /**
+     * @throws PackageAssetsPublishingFailedException
+     */
+    private function ensureJunctionExists(string $target, string $junction, PackageInterface $package): void
     {
+        $e = null;
         if (!$this->fileSystem->isJunction($junction)) {
-            // Cleanup a possible symlink that might have been installed by ourselves prior to #98434
-            // Note: Unprivileged deletion of symlinks is allowed, even if they were created by a
-            // privileged user
-            if (is_link($junction)) {
-                $this->fileSystem->unlink($junction);
+            try {
+                $this->fileSystem->junction($target, $junction);
+            } catch (IOException $e) {
             }
-            $this->fileSystem->junction($target, $junction);
+        }
+
+        if ($e !== null || realpath($target) !== realpath($junction)) {
+            throw new PackageAssetsPublishingFailedException(
+                'junction',
+                $package->getName(),
+                1717488535,
+                $e,
+            );
         }
     }
 
-    private function ensureSymlinkExists(string $target, string $link): void
+    /**
+     * @throws PackageAssetsPublishingFailedException
+     */
+    private function ensureSymlinkExists(string $target, string $link, PackageInterface $package): void
     {
+        $success = true;
         if (!$this->fileSystem->isSymlinkedDirectory($link)) {
-            $this->fileSystem->relativeSymlink($target, $link);
+            $success = $this->fileSystem->relativeSymlink($target, $link);
+        }
+
+        if (!$success || realpath($target) !== realpath($link)) {
+            throw new PackageAssetsPublishingFailedException(
+                'symlink',
+                $package->getName(),
+                1717488536,
+            );
         }
     }
 }
