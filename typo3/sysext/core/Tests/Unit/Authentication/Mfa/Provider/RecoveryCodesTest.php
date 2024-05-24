@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodes;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Tests\Unit\Authentication\Mfa\Provider\Fixtures\Crypto\PasswordHashing\NoopPasswordHash;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RecoveryCodesTest extends UnitTestCase
@@ -34,7 +33,7 @@ final class RecoveryCodesTest extends UnitTestCase
         parent::setUp();
 
         NoopPasswordHash::registerNoopPasswordHash();
-        $this->subject = GeneralUtility::makeInstance(RecoveryCodes::class, 'BE');
+        $this->subject = new RecoveryCodes('BE');
     }
 
     protected function tearDown(): void

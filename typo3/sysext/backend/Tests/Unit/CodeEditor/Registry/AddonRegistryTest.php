@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\CodeEditor\Registry;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\CodeEditor\Addon;
 use TYPO3\CMS\Backend\CodeEditor\Registry\AddonRegistry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -43,13 +42,13 @@ final class AddonRegistryTest extends UnitTestCase
     protected function registerAddons(): void
     {
         $this->subject
-            ->register(GeneralUtility::makeInstance(Addon::class, 'addon/global'))
+            ->register(new Addon('addon/global'))
             ->register(
-                GeneralUtility::makeInstance(Addon::class, 'addon/another/global')
+                (new Addon('addon/another/global'))
                     ->setCssFiles(['EXT:foobar/Resources/Public/Css/Addon.css'])
             )
             ->register(
-                GeneralUtility::makeInstance(Addon::class, 'addon/with/same/cssfile')
+                (new Addon('addon/with/same/cssfile'))
                     ->setOptions([
                         'foobar' => true,
                         'husel' => 'pusel',
@@ -57,7 +56,7 @@ final class AddonRegistryTest extends UnitTestCase
                     ->setCssFiles(['EXT:foobar/Resources/Public/Css/Addon.css'])
             )
             ->register(
-                GeneralUtility::makeInstance(Addon::class, 'addon/with/settings')
+                (new Addon('addon/with/settings'))
                     ->setOptions([
                         'foobar' => false,
                         'randomInt' => 4, // chosen by fair dice roll

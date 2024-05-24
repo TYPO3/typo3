@@ -144,7 +144,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                 '',
                 false
             );
-        $this->frontendControllerMock->_set('context', GeneralUtility::makeInstance(Context::class));
+        $this->frontendControllerMock->_set('context', new Context());
         $this->frontendControllerMock->config = [];
 
         $this->cacheManagerMock = $this->getMockBuilder(CacheManager::class)->disableOriginalConstructor()->getMock();
@@ -3534,10 +3534,10 @@ final class ContentObjectRendererTest extends UnitTestCase
             }
         );
 
-        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
-        $listenerProdiver->addListener(BeforeStdWrapContentStoredInCacheEvent::class, 'before-stdWrap-content-stored-in-cache-listener');
-        $container->set(ListenerProvider::class, $listenerProdiver);
-        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProdiver));
+        $listenerProvider = new ListenerProvider($container);
+        $listenerProvider->addListener(BeforeStdWrapContentStoredInCacheEvent::class, 'before-stdWrap-content-stored-in-cache-listener');
+        $container->set(ListenerProvider::class, $listenerProvider);
+        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProvider));
 
         $content = StringUtility::getUniqueId('content');
         $tags = [StringUtility::getUniqueId('tags')];

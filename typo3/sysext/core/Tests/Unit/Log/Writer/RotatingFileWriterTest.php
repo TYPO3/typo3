@@ -49,9 +49,7 @@ final class RotatingFileWriterTest extends UnitTestCase
         if (file_exists($logFileName)) {
             unlink($logFileName);
         }
-        return GeneralUtility::makeInstance(RotatingFileWriter::class, [
-            'logFile' => $logFileName,
-        ]);
+        return new RotatingFileWriter(['logFile' => $logFileName]);
     }
 
     /**
@@ -70,7 +68,7 @@ final class RotatingFileWriterTest extends UnitTestCase
         touch($logFileName);
 
         $writer = $this->createWriter();
-        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
+        $simpleRecord = new LogRecord(StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
         $writer->writeLog($simpleRecord);
 
         $rotatedFiles = glob($logFileName . '.*');
@@ -84,9 +82,9 @@ final class RotatingFileWriterTest extends UnitTestCase
 
         file_put_contents($logFileName, 'fooo');
 
-        $writer = GeneralUtility::makeInstance(RotatingFileWriter::class);
+        $writer = new RotatingFileWriter();
         $writer->setLogFile($logFileName);
-        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
+        $simpleRecord = new LogRecord(StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
         $writer->writeLog($simpleRecord);
 
         $rotatedFiles = glob($logFileName . '.*');
@@ -116,11 +114,11 @@ final class RotatingFileWriterTest extends UnitTestCase
         file_put_contents($logFileName, 'fooo');
         file_put_contents($logFileName . '.' . $rotationDate, 'fooo');
 
-        $writer = GeneralUtility::makeInstance(RotatingFileWriter::class, [
+        $writer = new RotatingFileWriter([
             'interval' => $interval,
             'logFile' => $logFileName,
         ]);
-        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
+        $simpleRecord = new LogRecord(StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
         $writer->writeLog($simpleRecord);
 
         $rotatedFiles = glob($logFileName . '.*');
@@ -162,11 +160,11 @@ final class RotatingFileWriterTest extends UnitTestCase
         file_put_contents($logFileName, 'fooo');
         file_put_contents($logFileName . '.' . $rotationDate, 'fooo');
 
-        $writer = GeneralUtility::makeInstance(RotatingFileWriter::class, [
+        $writer = new RotatingFileWriter([
             'interval' => $interval,
             'logFile' => $logFileName,
         ]);
-        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
+        $simpleRecord = new LogRecord(StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
         $writer->writeLog($simpleRecord);
 
         $rotatedFiles = glob($logFileName . '.*');
@@ -183,12 +181,12 @@ final class RotatingFileWriterTest extends UnitTestCase
         file_put_contents($logFileName . '.20230608093215', 'fooo');
         file_put_contents($logFileName . '.20230607093215', 'fooo');
 
-        $writer = GeneralUtility::makeInstance(RotatingFileWriter::class, [
+        $writer = new RotatingFileWriter([
             'interval' => Interval::DAILY,
             'logFile' => $logFileName,
             'maxFiles' => 3,
         ]);
-        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
+        $simpleRecord = new LogRecord(StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
         $writer->writeLog($simpleRecord);
 
         self::assertFileDoesNotExist($logFileName . '.20230607093215');

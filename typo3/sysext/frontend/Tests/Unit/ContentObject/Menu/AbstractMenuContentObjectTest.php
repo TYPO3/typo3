@@ -105,8 +105,9 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
                 'type' => 'all',
             ],
         ];
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = new Context();
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
+        GeneralUtility::setSingletonInstance(Context::class, $context);
         $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context])->onlyMethods(['init', 'getPage', 'getLanguageOverlay'])->getMock();
         $pageRepository->expects(self::once())->method('getPage')->willReturn(['sys_language_uid' => 1]);
         $pageRepository->expects(self::once())->method('getLanguageOverlay')->willReturn(['uid' => 0, 'header' => 'OVERLAID']);

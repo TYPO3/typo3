@@ -794,7 +794,7 @@ final class FormPersistenceManagerTest extends UnitTestCase
             }
         );
 
-        $listenerProvider = GeneralUtility::makeInstance(ListenerProvider::class, $container);
+        $listenerProvider = new ListenerProvider($container);
         $listenerProvider->addListener(AfterFormDefinitionLoadedEvent::class, 'after-form-definition-loaded-listener');
 
         $controllerMock = $this->getAccessibleMock(FormPersistenceManager::class, null, [], '', false);

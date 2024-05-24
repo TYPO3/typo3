@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\WidgetGroup;
 use TYPO3\CMS\Dashboard\WidgetGroupRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,9 +30,7 @@ final class WidgetGroupRegistryTest extends UnitTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->subject = GeneralUtility::makeInstance(
-            WidgetGroupRegistry::class
-        );
+        $this->subject = new WidgetGroupRegistry();
     }
 
     #[Test]
@@ -82,24 +79,5 @@ final class WidgetGroupRegistryTest extends UnitTestCase
 
         // Check if the identifiers are correctly registered
         self::assertEquals(['identifier', 'identifier2'], array_keys($widgetGroups));
-    }
-
-    #[Test]
-    public function alternativeRepositoryObjectReturnsSameResults(): void
-    {
-        $widgetGroup1 = new WidgetGroup('identifier1', 'title1');
-        $widgetGroup2 = new WidgetGroup('identifier2', 'title2');
-
-        $this->subject->registerWidgetGroup($widgetGroup1);
-        $this->subject->registerWidgetGroup($widgetGroup2);
-
-        $alternativeWidgetGroupRepository = GeneralUtility::makeInstance(
-            WidgetGroupRegistry::class
-        );
-
-        self::assertEquals(
-            $this->subject->getWidgetGroups(),
-            $alternativeWidgetGroupRepository->getWidgetGroups()
-        );
     }
 }

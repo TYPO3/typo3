@@ -67,7 +67,7 @@ final class SiteWriterTest extends UnitTestCase
         copy($configFixture, $siteConfig);
 
         // load with resolved imports as the module does
-        $configuration = GeneralUtility::makeInstance(YamlFileLoader::class)
+        $configuration = (new YamlFileLoader())
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS
@@ -96,7 +96,7 @@ final class SiteWriterTest extends UnitTestCase
         copy($configFixture, $siteConfig);
 
         // load with resolved imports as the module does
-        $configuration = GeneralUtility::makeInstance(YamlFileLoader::class)
+        $configuration = (new YamlFileLoader())
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS
@@ -153,7 +153,7 @@ final class SiteWriterTest extends UnitTestCase
         $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
         copy($configFixture, $siteConfig);
         // load with resolved imports as the module does
-        $configuration = GeneralUtility::makeInstance(YamlFileLoader::class)
+        $configuration = (new YamlFileLoader())
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS

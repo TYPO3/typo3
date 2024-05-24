@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\LinkHandling\Event\AfterTypoLinkDecodedEvent;
 use TYPO3\CMS\Core\LinkHandling\Event\BeforeTypoLinkEncodedEvent;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TypoLinkCodecServiceTest extends UnitTestCase
@@ -196,10 +195,10 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
             }
         );
 
-        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
-        $listenerProdiver->addListener(BeforeTypoLinkEncodedEvent::class, 'before-typo-link-encoded-listener');
+        $listenerProvider = new ListenerProvider($container);
+        $listenerProvider->addListener(BeforeTypoLinkEncodedEvent::class, 'before-typo-link-encoded-listener');
 
-        $result = (new TypoLinkCodecService(new EventDispatcher($listenerProdiver)))->encode([
+        $result = (new TypoLinkCodecService(new EventDispatcher($listenerProvider)))->encode([
             'url' => 'https://example.com',
         ]);
 
@@ -225,10 +224,10 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
             }
         );
 
-        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
-        $listenerProdiver->addListener(AfterTypoLinkDecodedEvent::class, 'after-typo-link-decoded-listener');
+        $listenerProvider = new ListenerProvider($container);
+        $listenerProvider->addListener(AfterTypoLinkDecodedEvent::class, 'after-typo-link-decoded-listener');
 
-        $result = (new TypoLinkCodecService(new EventDispatcher($listenerProdiver)))->decode('https://example.com');
+        $result = (new TypoLinkCodecService(new EventDispatcher($listenerProvider)))->decode('https://example.com');
 
         $expected = [
             'url' => 'https://example.com',

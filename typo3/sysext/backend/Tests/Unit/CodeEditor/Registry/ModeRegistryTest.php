@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\CodeEditor\Mode;
 use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -41,8 +40,8 @@ final class ModeRegistryTest extends UnitTestCase
     public function latestDefaultModeIsReturned(): void
     {
         $module = JavaScriptModuleInstruction::create('@test/foo', 'bar')->invoke();
-        $firstDefaultMode = GeneralUtility::makeInstance(Mode::class, $module)->setAsDefault();
-        $expected = GeneralUtility::makeInstance(Mode::class, $module)->setAsDefault();
+        $firstDefaultMode = (new Mode($module))->setAsDefault();
+        $expected = (new Mode($module))->setAsDefault();
         $this->subject->register($firstDefaultMode)->register($expected);
         $actual = $this->subject->getDefaultMode();
 
@@ -53,7 +52,7 @@ final class ModeRegistryTest extends UnitTestCase
     public function formatCodeReturnsCorrectMode(): void
     {
         $module = JavaScriptModuleInstruction::create('@test/mode', 'formatCode')->invoke();
-        $expected = GeneralUtility::makeInstance(Mode::class, $module)->setFormatCode('code');
+        $expected = (new Mode($module))->setFormatCode('code');
         $this->subject->register($expected);
         $actual = $this->subject->getByFormatCode('code');
 
@@ -64,7 +63,7 @@ final class ModeRegistryTest extends UnitTestCase
     public function modeIsFetchedByFileExtension(): void
     {
         $module = JavaScriptModuleInstruction::create('@test/mode', 'extension')->invoke();
-        $expected = GeneralUtility::makeInstance(Mode::class, $module)->bindToFileExtensions(['ext', 'fext']);
+        $expected = (new Mode($module))->bindToFileExtensions(['ext', 'fext']);
         $this->subject->register($expected);
         $actual = $this->subject->getByFileExtension('fext');
 

@@ -44,7 +44,7 @@ final class TotpTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1611748791);
-        GeneralUtility::makeInstance(Totp::class, 'some-secret', 'md5');
+        new Totp('some-secret', 'md5');
     }
 
     #[Test]
@@ -52,7 +52,7 @@ final class TotpTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1611748792);
-        GeneralUtility::makeInstance(Totp::class, 'some-secret', 'sha1', 4);
+        new Totp('some-secret', 'sha1', 4);
     }
 
     #[DataProvider('totpDataProvider')]
@@ -63,7 +63,7 @@ final class TotpTest extends UnitTestCase
 
         self::assertEquals(
             $expectedTotp,
-            GeneralUtility::makeInstance(Totp::class, $this->secret, ...$arguments)->generateTotp($counter)
+            (new Totp($this->secret, ...$arguments))->generateTotp($counter)
         );
     }
 
@@ -71,11 +71,12 @@ final class TotpTest extends UnitTestCase
     #[Test]
     public function verifyTotpTest(string $totp, array $arguments): void
     {
-        GeneralUtility::makeInstance(Context::class)
-            ->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $this->timestamp)));
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $this->timestamp)));
+        GeneralUtility::setSingletonInstance(Context::class, $context);
 
         self::assertTrue(
-            GeneralUtility::makeInstance(Totp::class, $this->secret, ...$arguments)->verifyTotp($totp)
+            (new Totp($this->secret, ...$arguments))->verifyTotp($totp)
         );
     }
 
@@ -91,10 +92,11 @@ final class TotpTest extends UnitTestCase
     #[Test]
     public function verifyTotpWithGracePeriodTest(): void
     {
-        GeneralUtility::makeInstance(Context::class)
-            ->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $this->timestamp)));
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $this->timestamp)));
+        GeneralUtility::setSingletonInstance(Context::class, $context);
 
-        $totpInstance = GeneralUtility::makeInstance(Totp::class, $this->secret);
+        $totpInstance = new Totp($this->secret);
 
         $totpFuture = $totpInstance->generateTotp((int)floor((($this->timestamp + 90) - 0) / 30));
         self::assertFalse($totpInstance->verifyTotp($totpFuture, 3));
@@ -119,7 +121,7 @@ final class TotpTest extends UnitTestCase
     #[Test]
     public function getTotpAuthUrlTest(array $constructorArguments, array $methodArguments, string $expected): void
     {
-        $totp = GeneralUtility::makeInstance(Totp::class, ...$constructorArguments);
+        $totp = new Totp(...$constructorArguments);
 
         self::assertEquals($expected, $totp->getTotpAuthUrl(...$methodArguments));
     }

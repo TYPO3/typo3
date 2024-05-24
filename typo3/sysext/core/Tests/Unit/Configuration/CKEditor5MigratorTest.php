@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\CKEditor5Migrator;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CKEditor5MigratorTest extends UnitTestCase
@@ -1984,10 +1983,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
     #[Test]
     public function migrationTests(array $configuration, array $expectation): void
     {
-        $finalConfiguration = GeneralUtility::makeInstance(
-            CKEditor5Migrator::class,
-            $configuration
-        )->get();
-        self::assertEquals($expectation, $finalConfiguration);
+        self::assertEquals($expectation, (new CKEditor5Migrator($configuration))->get());
     }
 }

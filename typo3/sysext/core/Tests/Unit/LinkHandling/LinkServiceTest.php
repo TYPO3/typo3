@@ -245,10 +245,10 @@ final class LinkServiceTest extends UnitTestCase
             }
         );
 
-        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
-        $listenerProdiver->addListener(AfterLinkResolvedByStringRepresentationEvent::class, 'after-link-resolved-by-string-representation-listener');
-        $container->set(ListenerProvider::class, $listenerProdiver);
-        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProdiver));
+        $listenerProvider = new ListenerProvider($container);
+        $listenerProvider->addListener(AfterLinkResolvedByStringRepresentationEvent::class, 'after-link-resolved-by-string-representation-listener');
+        $container->set(ListenerProvider::class, $listenerProvider);
+        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProvider));
 
         // Note: The $urn will trigger the UnknownLinkHandlerException. This exception is
         // being caught and since the event listener sets a "type" the exception is not thrown.

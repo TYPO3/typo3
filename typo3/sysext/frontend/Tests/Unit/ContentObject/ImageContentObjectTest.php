@@ -434,10 +434,10 @@ final class ImageContentObjectTest extends UnitTestCase
             }
         );
 
-        $listenerProdiver = GeneralUtility::makeInstance(ListenerProvider::class, $container);
-        $listenerProdiver->addListener(ModifyImageSourceCollectionEvent::class, 'modify-image-source-collection-listener');
-        $container->set(ListenerProvider::class, $listenerProdiver);
-        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProdiver));
+        $listenerProvider = new ListenerProvider($container);
+        $listenerProvider->addListener(ModifyImageSourceCollectionEvent::class, 'modify-image-source-collection-listener');
+        $container->set(ListenerProvider::class, $listenerProvider);
+        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProvider));
 
         $configuration = [
             'layoutKey' => 'data',
