@@ -263,31 +263,31 @@
 .alwan__input {
     display: block;
     width: 100%;
-    padding: 8px 5px;
+    padding: .375rem .75rem;
     text-align: center;
     color: var(--typo3-input-color);
     font-family: var(--typo3-font-family-monospace);
     border: var(--typo3-input-border-width) solid var(--typo3-input-border-color);
-    margin-bottom: 3px;
+    margin-bottom: 6px;
     background-color: var(--typo3-input-bg);
-    line-height: 1;
-    border-radius: 2px;
-    transition: border-color .2s, background-color .2s;
+    line-height: 1.5;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
 .alwan__input::selection {
     color: #fff;
-    background-color: #117ce0;
+    background-color: var(--typo3-input-focus-border-color);
 }
 
 .alwan__input:focus {
     outline: 0;
-    border-color: #117ce0;
-    background-color: var(--typo3-component-bg);
+    border-color: var(--typo3-input-focus-border-color);
+    box-shadow: var(--bs-box-shadow-inset), 0 0 0 .25rem rgba(0, 120, 230, .25);
 }
 
 .alwan__input:focus + span {
-    color: #117ce0;
+    color: var(--typo3-input-focus-border-color);
 }
 
 .alwan__input:disabled,
