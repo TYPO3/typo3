@@ -115,7 +115,13 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
         }
 
         if (!$this->selectedFolder) {
-            $this->selectedFolder = $resourceFactory->getDefaultStorage()?->getRootLevelFolder();
+            $allStorages = $this->getBackendUser()->getFileStorages();
+            $defaultStorage = $resourceFactory->getDefaultStorage();
+            if ($defaultStorage && array_key_exists($defaultStorage->getUid(), $allStorages)) {
+                $this->selectedFolder = $defaultStorage->getRootLevelFolder();
+            } else {
+                $this->selectedFolder = reset($allStorages)->getRootLevelFolder();
+            }
         }
     }
 
