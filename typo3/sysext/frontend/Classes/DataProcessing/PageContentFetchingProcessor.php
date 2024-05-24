@@ -48,6 +48,10 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
         $pageLayout = $pageInformation->getPageLayout();
 
         $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, 'content');
+        $groupedContents = [];
+
+        $contentAreasWithSlideMode = [];
+        $contentAreasWithoutSlideMode = [];
         foreach ($pageLayout?->getContentAreas() ?? [] as $contentAreaData) {
             if (!isset($contentAreaData['colPos'])) {
                 continue;
@@ -55,6 +59,43 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
             if (!isset($contentAreaData['identifier'])) {
                 continue;
             }
+            if (!isset($contentAreaData['slideMode'])) {
+                $contentAreasWithoutSlideMode[(int)$contentAreaData['colPos']] = $contentAreaData;
+            } else {
+                $contentAreasWithSlideMode[] = $contentAreaData;
+            }
+            // Create the content for the $groupedContents array
+            $contentAreaName = $contentAreaData['identifier'];
+            $contentAreaData['records'] = [];
+            $groupedContents[$contentAreaName] = $contentAreaData;
+        }
+
+        // 1. Content Areas without slide mode can be fetched with one SQL query, so let's do that first
+        $allUsedColPositionsWithoutSlideMode = array_column($contentAreasWithoutSlideMode, 'colPos');
+        if ($allUsedColPositionsWithoutSlideMode !== []) {
+            // 1a. Make the SQL query for all colPos
+            $flatRecords = $this->recordCollector->collect(
+                'tt_content',
+                [
+                    'where' => sprintf(
+                        '{#colPos} in (%s)',
+                        implode(',', array_map(intval(...), $allUsedColPositionsWithoutSlideMode))
+                    ),
+                    'orderBy' => 'colPos, sorting',
+                ],
+                ContentSlideMode::None,
+                $cObj,
+            );
+            // 1b. Sort the records into the contentArea they belong to
+            foreach ($flatRecords as $recordToSort) {
+                $colPosOfRecord = (int)$recordToSort['colPos'];
+                $groupIdentifier = $contentAreasWithoutSlideMode[$colPosOfRecord]['identifier'];
+                $groupedContents[$groupIdentifier]['records'][] = $recordToSort;
+            }
+        }
+
+        // 2. Slide Mode elements need to be fetched one by one
+        foreach ($contentAreasWithSlideMode as $contentAreaData) {
             $records = $this->recordCollector->collect(
                 'tt_content',
                 [
@@ -66,8 +107,9 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
             );
             $contentAreaData['records'] = $records;
             $contentAreaName = $contentAreaData['identifier'];
-            $processedData[$targetVariableName][$contentAreaName] = $contentAreaData;
+            $groupedContents[$contentAreaName] = $contentAreaData;
         }
+        $processedData[$targetVariableName] = $groupedContents;
         return $processedData;
     }
 }
