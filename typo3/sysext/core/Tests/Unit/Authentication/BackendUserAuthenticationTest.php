@@ -676,41 +676,21 @@ class BackendUserAuthenticationTest extends UnitTestCase
 
     /**
      * Data provider to test page permissions constraints
-     * returns an array of test conditions:
-     *  - permission bit(s) as integer
-     *  - admin flag
-     *  - groups for user
-     *  - expected SQL fragment
-     *
-     * @return array
+     * cares for non-admin users
      */
-    public function getPagePermissionsClauseWithValidUserDataProvider(): array
+    public function getPagePermissionsClauseWithValidNonAdminUserDataProvider(): array
     {
         return [
-            'for admin' => [
-                1,
-                true,
-                [],
-                ' 1=1',
-            ],
-            'for admin with groups' => [
-                11,
-                true,
-                [1, 2],
-                ' 1=1',
-            ],
             'for user' => [
-                2,
-                false,
-                [],
-                ' ((`pages`.`perms_everybody` & 2 = 2) OR' .
+                'perms' => 2,
+                'groups' => [],
+                'expected' => ' ((`pages`.`perms_everybody` & 2 = 2) OR' .
                 ' ((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 2 = 2)))',
             ],
             'for user with groups' => [
-                8,
-                false,
-                [1, 2],
-                ' ((`pages`.`perms_everybody` & 8 = 8) OR' .
+                'perms' => 8,
+                'groups' => [1, 2],
+                'expected' => ' ((`pages`.`perms_everybody` & 8 = 8) OR' .
                 ' ((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 8 = 8))' .
                 ' OR ((`pages`.`perms_groupid` IN (1, 2)) AND (`pages`.`perms_group` & 8 = 8)))',
             ],
@@ -719,46 +699,62 @@ class BackendUserAuthenticationTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider getPagePermissionsClauseWithValidUserDataProvider
-     * @param int $perms
-     * @param bool $admin
-     * @param array $groups
-     * @param string $expected
+     * @dataProvider getPagePermissionsClauseWithValidNonAdminUserDataProvider
      */
-    public function getPagePermissionsClauseWithValidUser(int $perms, bool $admin, array $groups, string $expected): void
+    public function getPagePermissionsClauseWithValidUser(int $perms, array $groups, string $expected): void
     {
-        // We only need to setup the mocking for the non-admin cases
-        // If this setup is done for admin cases the FIFO behavior
-        // of GeneralUtility::addInstance will influence other tests
-        // as the ConnectionPool is never used!
-        if (!$admin) {
-            $connectionProphecy = $this->prophesize(Connection::class);
-            $connectionProphecy->getDatabasePlatform()->willReturn(new MockPlatform());
-            $connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
-                return '`' . str_replace('.', '`.`', $args[0]) . '`';
-            });
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('getDatabasePlatform')->willReturn(new MockPlatform());
+        $connectionMock->method('quoteIdentifier')
+            ->willReturnCallback(fn(string $identifier): string => '`' . str_replace('.', '`.`', $identifier) . '`');
 
-            $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
-            $queryBuilderProphecy->expr()->willReturn(
-                new ExpressionBuilder($connectionProphecy->reveal())
-            );
+        $queryBuilderMock = $this->createMock(QueryBuilder::class);
+        $queryBuilderMock->method('expr')->willReturn(
+            new ExpressionBuilder($connectionMock)
+        );
 
-            $databaseProphecy = $this->prophesize(ConnectionPool::class);
-            $databaseProphecy->getQueryBuilderForTable('pages')->willReturn($queryBuilderProphecy->reveal());
-            // Shift previously added instance
-            GeneralUtility::makeInstance(ConnectionPool::class);
-            GeneralUtility::addInstance(ConnectionPool::class, $databaseProphecy->reveal());
-        }
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolMock->method('getQueryBuilderForTable')->with('pages')->willReturn($queryBuilderMock);
+        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
 
-        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
-            ->onlyMethods(['isAdmin'])
-            ->getMock();
+        $subject = new BackendUserAuthentication();
         $subject->setLogger(new NullLogger());
-        $subject
-            ->method('isAdmin')
-            ->willReturn($admin);
-
         $subject->user = ['uid' => 123];
+        $subject->userGroupsUID = $groups;
+
+        self::assertEquals($expected, $subject->getPagePermsClause($perms));
+    }
+
+    /**
+     * Data provider to test page permissions constraints
+     * cares for privileged (admin) users
+     */
+    public static function getPagePermissionsClauseWithValidAdminUserDataProvider(): array
+    {
+        return [
+            'for admin' => [
+                'perms' => 1,
+                'groups' => [],
+                'expected' => ' 1=1',
+            ],
+            'for admin with groups' => [
+                'perms' => 11,
+                'groups' => [1, 2],
+                'expected' => ' 1=1',
+            ],
+
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getPagePermissionsClauseWithValidAdminUserDataProvider
+     */
+    public function getPagePermissionsClauseWithValidAdminUser(int $perms, array $groups, string $expected): void
+    {
+        $subject = new BackendUserAuthentication();
+        $subject->setLogger(new NullLogger());
+        $subject->user = ['uid' => 123, 'admin' => 1];
         $subject->userGroupsUID = $groups;
 
         self::assertEquals($expected, $subject->getPagePermsClause($perms));
