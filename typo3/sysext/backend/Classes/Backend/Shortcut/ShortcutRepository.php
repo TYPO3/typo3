@@ -534,6 +534,9 @@ class ShortcutRepository
                 $iconIdentifier = '';
                 if ($module = $this->moduleProvider->getModule($moduleName, null, false)) {
                     $iconIdentifier = $module->getIconIdentifier();
+                    if ($iconIdentifier === '' && $module->getParentModule()) {
+                        $iconIdentifier = $module->getParentModule()->getIconIdentifier();
+                    }
                 }
                 if ($iconIdentifier === '') {
                     $iconIdentifier = 'empty-empty';
