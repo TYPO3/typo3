@@ -85,7 +85,7 @@ final class PageTsConfigRecordsOverviewController
             }
             $view->assign('id', $pageId);
             // Setting up the buttons and the module menu for the doc header
-            $this->getButtons($view, $currentModule, $pageId, $pageRecord);
+            $this->addShortcutButtonToDocHeader($view, $currentModule, $pageId);
         }
         $view->assign('accessContent', $accessContent);
         $pagesUsingTSConfig = $this->getOverviewOfPagesUsingTSConfig($currentModule);
@@ -198,7 +198,7 @@ final class PageTsConfigRecordsOverviewController
         return $lines;
     }
 
-    private function getButtons(ModuleTemplate $view, ModuleInterface $currentModule, ?int $pageId, ?array $pageRecord): void
+    private function addShortcutButtonToDocHeader(ModuleTemplate $view, ModuleInterface $currentModule, ?int $pageId): void
     {
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
