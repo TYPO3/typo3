@@ -7,7 +7,7 @@
 
 <f:section name="Content">
 
-    <div class="container-small about-module">
+    <div class="container about-module">
         <f:render partial="About/Logo" arguments="{_all}" />
 
         <f:for each="{messages}" as="message">
@@ -18,6 +18,8 @@
 
         <f:render partial="About/About" arguments="{_all}" />
         <f:render partial="About/Modules" arguments="{_all}" />
+
+        <h2><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:donation.sectionHeadline" /></h2>
         <f:render partial="About/Donation" arguments="{_all}" />
         <f:render partial="About/Credits" arguments="{_all}" />
         <f:render partial="About/CoreTeam" arguments="{_all}" />
@@ -25,7 +27,7 @@
         <f:render partial="About/Extensions" arguments="{_all}" />
 
         <p>
-            <em class="text-body-secondary">
+            <em>
                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:endText" />
             </em>
         </p>

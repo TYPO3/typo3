@@ -1,50 +1,38 @@
 <f:if condition="{loadedExtensions}">
-    <div class="card">
-        <div class="card-body">
-            <h2 class="h3 card-title">
-                <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension_authors" />
-            </h2>
-            <p>
-                <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension_list_info" />
-            </p>
-        </div>
-        <div class="table-fit">
-            <table class="table">
-                <thead>
+    <h2>
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension_authors" />
+    </h2>
+    <p>
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension_list_info" />
+    </p>
+
+    <div class="table-fit">
+        <table class="table table-striped table-hover table-vertical-top">
+            <thead>
+                <tr>
+                    <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension" /></th>
+                    <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension_author" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                <f:for each="{loadedExtensions}" as="loadedExtension">
                     <tr>
-                        <th width="60%"><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension" /></th>
-                        <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:extension_author" /></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <f:for each="{loadedExtensions}" as="loadedExtension">
-                        <tr>
-                            <td>
-                                {loadedExtension.title} ({loadedExtension.key})
-                            </td>
-                            <td>
+                        <td>
+                            {loadedExtension.title} ({loadedExtension.key})
+                        </td>
+                        <td>
+                            <f:if condition="{loadedExtension.authors}">
                                 <f:for each="{loadedExtension.authors}" as="extensionAuthor" iteration="i">
-                                    <f:if condition="{extensionAuthor.email}">
-                                        <f:then>
-                                            <f:link.email
-                                                email="{extensionAuthor.email}?subject={f:format.urlencode(value:'Thanks for your {loadedExtension.title} extension')}"
-                                            >
-                                                {extensionAuthor.name}
-                                            </f:link.email>
-                                        </f:then>
-                                        <f:else>
-                                            {extensionAuthor.name}
-                                        </f:else>
-                                    </f:if>
+                                    {extensionAuthor.name} <f:if condition="{extensionAuthor.email}">({extensionAuthor.email})</f:if>
                                     <f:if condition="{i.isLast} == false">
                                         <br>
                                     </f:if>
                                 </f:for>
-                            </td>
-                        </tr>
-                    </f:for>
-                </tbody>
-            </table>
-        </div>
+                            </f:if>
+                        </td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
     </div>
 </f:if>

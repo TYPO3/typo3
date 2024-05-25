@@ -54,6 +54,9 @@
 			<trans-unit id="extension_author" resname="extension_author">
 				<source>Author</source>
 			</trans-unit>
+			<trans-unit id="donation.sectionHeadline" resname="donation.sectionHeadline">
+				<source>TYPO3 Donation and community</source>
+			</trans-unit>
 			<trans-unit id="donation_header" resname="donation_header">
 				<source>TYPO3 Donation</source>
 			</trans-unit>
@@ -69,10 +72,19 @@
 			<trans-unit id="external_thanks" resname="external_thanks">
 				<source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
 			</trans-unit>
+			<trans-unit id="external_libraries.table.column.name" resname="external_libraries.table.column.name">
+				<source>Project name</source>
+			</trans-unit>
+			<trans-unit id="external_libraries.table.column.website" resname="external_libraries.table.column.website">
+				<source>Website</source>
+			</trans-unit>
 			<trans-unit id="introtext" resname="introtext">
 				<source>Web Content Management System</source>
 			</trans-unit>
-			<trans-unit id="introtext2" resname="introtext2">
+			<trans-unit id="modules.headline" resname="modules.headline">
+				<source>Modules</source>
+			</trans-unit>
+			<trans-unit id="modules.introtext" resname="modules.introtext">
 				<source>This is a brief description of the available modules.</source>
 			</trans-unit>
 			<trans-unit id="endText" resname="endText">
@@ -80,6 +92,12 @@
 			</trans-unit>
 			<trans-unit id="userInfo" resname="userInfo">
 				<source>You're logged in as user</source>
+			</trans-unit>
+			<trans-unit id="link.openModule" resname="link.openModule">
+				<source>Open module</source>
+			</trans-unit>
+			<trans-unit id="link.openModuleWithTitle" resname="link.openModuleWithTitle">
+				<source>Open %1s module</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -1,0 +1,12 @@
+//
+// Links
+//
+.about-module {
+    a:not([class]) {
+        color: var(--typo3-component-link-color);
+
+        &:hover {
+            color: var(--typo3-component-link-hover-color);
+        }
+    }
+}

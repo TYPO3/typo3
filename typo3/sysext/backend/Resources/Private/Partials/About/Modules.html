@@ -1,49 +1,64 @@
+<h2>
+    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:modules.headline" />
+</h2>
 <p>
-    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:introtext2" />
+    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:modules.introtext" />
 </p>
 <f:for each="{modules}" as="mainModule">
     <f:if condition="{mainModule.subModules}">
         <f:if condition="{mainModule.title}">
-            <h2><f:translate key="{mainModule.title}">{mainModule.title}</f:translate></h2>
+            <h3><f:translate key="{mainModule.title}">{mainModule.title}</f:translate></h3>
         </f:if>
         <section class="card-container">
             <f:for each="{mainModule.subModules}" as="subModule">
-                <f:variable name="titleAttribute" value="" />
-                <f:if condition="{subModule.shortDescription}">
-                    <f:variable name="titleAttribute" value="{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}" />
-                </f:if>
-                <a
-                    href="#"
-                    data-dispatch-action="TYPO3.ModuleMenu.showModule"
-                    data-dispatch-args-list="{subModule.identifier}"
-                    title="{titleAttribute}"
-                    class="card card-size-medium"
-                >
+                <div class="card card-size-small">
                     <div class="card-header">
                         <div class="card-icon">
-                            <core:icon identifier="{subModule.iconIdentifier}" size="medium" />
+                            <core:icon identifier="{subModule.iconIdentifier}" size="large" />
                         </div>
-                        <f:if condition="{subModule.title}">
+                        <f:if condition="{subModule.title} || {subModule.shortDescription}">
                             <div class="card-header-body">
-                                <h3 class="card-title">
-                                    <f:translate key="{subModule.title}">{subModule.title}</f:translate>
-                                </h3>
+                                <f:if condition="{subModule.title}">
+                                    <h4 class="card-title">
+                                        <f:translate key="{subModule.title}">{subModule.title}</f:translate>
+                                    </h4>
+                                </f:if>
                                 <f:if condition="{subModule.shortDescription}">
                                     <span class="card-subtitle">
                                         <f:translate key="{subModule.shortDescription}">{subModule.shortDescription}</f:translate>
                                     </span>
                                 </f:if>
-                                <f:if condition="{subModule.description}">
-                                    <div class="card-longdesc">
-                                        <f:sanitize.html>
-                                            <f:translate key="{subModule.description}">{subModule.description}</f:translate>
-                                        </f:sanitize.html>
-                                    </div>
-                                </f:if>
                             </div>
                         </f:if>
                     </div>
-                </a>
+                    <f:if condition="{subModule.description}">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <f:sanitize.html>
+                                    <f:translate key="{subModule.description}">{subModule.description}</f:translate>
+                                </f:sanitize.html>
+                            </p>
+                        </div>
+                    </f:if>
+                    <div class="card-footer">
+                        <a
+                            href="#"
+                            data-dispatch-action="TYPO3.ModuleMenu.showModule"
+                            data-dispatch-args-list="{subModule.identifier}"
+                            class="btn btn-default"
+                        >
+                            <f:if condition="{subModule.title}">
+                                <f:then>
+                                    <f:variable name="submoduleTitle"><f:translate key="{subModule.title}">{subModule.title}</f:translate></f:variable>
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:link.openModuleWithTitle" arguments="{0: submoduleTitle}" />
+                                </f:then>
+                                <f:else>
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:link.openModule" />
+                                </f:else>
+                            </f:if>
+                        </a>
+                    </div>
+                </div>
             </f:for>
         </section>
     </f:if>
