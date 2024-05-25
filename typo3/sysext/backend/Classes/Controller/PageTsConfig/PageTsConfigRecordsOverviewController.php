@@ -203,7 +203,7 @@ final class PageTsConfigRecordsOverviewController
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier($currentModule->getIdentifier())
-            ->setDisplayName($currentModule->getTitle())
+            ->setDisplayName($this->getLanguageService()->sL($currentModule->getTitle()))
             ->setArguments(['id' => $pageId]);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
