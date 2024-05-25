@@ -157,7 +157,7 @@ class InfoModuleController
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier($this->currentModule->getIdentifier())
-            ->setDisplayName($this->currentModule->getTitle())
+            ->setDisplayName($this->getLanguageService()->sL($this->currentModule->getTitle()))
             ->setArguments(['id' => $this->id]);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
