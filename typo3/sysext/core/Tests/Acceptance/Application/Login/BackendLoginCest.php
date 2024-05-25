@@ -31,10 +31,8 @@ final class BackendLoginCest
      */
     public function loginButtonMouseOver(ApplicationTester $I): void
     {
-        $I->wantTo('check login functions');
         $I->amOnPage('/typo3');
         $I->waitForElement('#t3-username', 10);
-        $I->wantTo('mouse over css change login button');
 
         // Make sure mouse is not over submit button from a previous test
         $I->moveMouseOver('#t3-username');
@@ -56,11 +54,10 @@ final class BackendLoginCest
      */
     public function loginDeniedWithInvalidCredentials(ApplicationTester $I): void
     {
-        $I->wantTo('check login functions');
         $I->amOnPage('/typo3');
         $I->waitForElement('#t3-username');
 
-        $I->wantTo('check empty credentials');
+        // check empty credentials
         $required = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector('#t3-username'))->getAttribute('required');
         });
@@ -71,7 +68,7 @@ final class BackendLoginCest
         });
         $I->assertEquals('true', $required, '#t3-password');
 
-        $I->wantTo('use bad credentials');
+        // use bad credentials
         $I->fillField('#t3-username', 'testify');
         $I->fillField('#t3-password', '123456');
         $I->click('#t3-login-submit-section > button');
@@ -84,7 +81,6 @@ final class BackendLoginCest
      */
     public function loginWorksAsAdminUser(ApplicationTester $I): void
     {
-        $I->wantTo('login with admin');
         $this->login($I, 'admin', 'password');
 
         // user must see the 'System' section in module menu

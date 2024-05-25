@@ -31,8 +31,6 @@ final class ModuleMenuButtonCest
 
     public function checkModelMenuButtonFromBigToSmallScreen(ApplicationTester $I): void
     {
-        $I->wantTo('see the module menu button behavior when shrinking the window');
-
         $I->seeElement('.scaffold-modulemenu-expanded');
         $I->seeElement('.modulemenu-indicator');
         $I->seeElement('.modulemenu-icon');
@@ -59,8 +57,6 @@ final class ModuleMenuButtonCest
 
     public function checkModelMenuButtonFromSmallToBigScreen(ApplicationTester $I): void
     {
-        $I->wantTo('see the module menu button behavior when enlarging the window');
-
         $I->amGoingTo('shrink the window');
         $I->resizeWindow(320, 400);
         $I->expectTo('see the module menu');

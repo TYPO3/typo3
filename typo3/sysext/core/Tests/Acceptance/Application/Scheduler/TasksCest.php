@@ -48,7 +48,6 @@ final class TasksCest
         $I->seeElement('#task_SystemStatusUpdateNotificationEmail');
         $I->selectOption('#task_type', 'Single');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
-        $I->wantTo('Click "Save"');
         $I->click('button[value="save"]');
         $I->waitForText('The task was added successfully.');
         $I->click('a[title="Close"]');
@@ -69,18 +68,15 @@ final class TasksCest
         $I->waitForText('Edit scheduled task "System Status Update (reports)"');
         $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
-        $I->wantTo('Click "Save"');
         $I->click('button[value="save"]');
         $I->waitForText('The task was updated successfully.');
     }
 
     public function canEnableAndDisableTask(ApplicationTester $I): void
     {
-        $I->wantTo('See an enable button for a task');
         $I->click('//button[contains(@title, "Enable")]', '#tx_scheduler_form_0');
         $I->dontSeeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
         $I->dontSee('disabled');
-        $I->wantTo('See a disable button for a task');
         // Give tooltips some time to fully init
         $I->wait(1);
         $I->moveMouseOver('//button[contains(@title, "Disable")]');
@@ -93,18 +89,17 @@ final class TasksCest
 
     public function canDeleteTask(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->wantTo('See a delete button for a task');
         $I->seeElement('//button[contains(@title, "Delete")]');
         $I->click('//button[contains(@title, "Delete")]');
-        $I->wantTo('Cancel the delete dialog');
 
+        // Cancel the delete dialog
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
         $modalDialog->canSeeDialog();
         $I->click('Cancel', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
 
         $I->switchToContentFrame();
-        $I->wantTo('Still see and can click the Delete button as the deletion has been canceled');
+        // Still see and can click the Delete button as the deletion has been canceled
         $I->click('//button[contains(@title, "Delete")]');
         $modalDialog->clickButtonInDialog('OK');
         $I->switchToContentFrame();

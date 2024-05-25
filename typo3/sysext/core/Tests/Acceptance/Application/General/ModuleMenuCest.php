@@ -36,14 +36,12 @@ final class ModuleMenuCest
         $I->seeElement('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
 
         // Collapse web module and verify sub elements are hidden
-        $I->wantTo('collapse the menu element');
         $I->waitForElementVisible('[data-modulemenu-identifier="web"]');
         $I->click('[data-modulemenu-identifier="web"]');
         $I->waitForElementNotVisible('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
         $I->dontSeeElement('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
 
         // Expand again and verify sub elements are shown
-        $I->wantTo('expand the menu element again');
         $I->click('[data-modulemenu-identifier="web"]');
         $I->waitForElementVisible('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
         $I->seeElement('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action');
@@ -52,12 +50,8 @@ final class ModuleMenuCest
     public function selectingAModuleDoesHighlightIt(ApplicationTester $I): void
     {
         $I->seeNumberOfElements('[data-modulemenu-identifier="web"] + .modulemenu-group-container .modulemenu-action', [2, 20]);
-
-        $I->wantTo('check that the second element has no "modulemenu-action-active" class\'');
         $I->cantSeeElement('[data-modulemenu-identifier="web"].modulemenu-action-active');
         $I->click('[data-modulemenu-identifier="web_list"]');
-
-        $I->wantTo('see that the second element has an "modulemenu-action-active" class');
         $I->canSeeElement('[data-modulemenu-identifier="web_list"].modulemenu-action-active');
     }
 }

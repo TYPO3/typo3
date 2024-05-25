@@ -33,8 +33,6 @@ final class RecordDownloadCest
 
     public function recordsCanBeExported(ApplicationTester $I, PageTree $pageTree, ModalDialog $modalDialog): void
     {
-        $I->wantToTest('whether records can be downloaded in the recordlist');
-
         $I->amGoingTo('download a record');
         $I->click('List');
         $I->waitForElementNotVisible('#nprogress');

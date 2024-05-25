@@ -35,7 +35,6 @@ final class TemplateCest
 
     public function pagesWithNoTemplateShouldShowButtonsToCreateTemplates(ApplicationTester $I): void
     {
-        $I->wantTo('show TypoScript records overview on root page (uid = 0)');
         // Select the root page
         $I->switchToMainFrame();
         // click on PID=0
@@ -45,7 +44,6 @@ final class TemplateCest
         $I->waitForElementVisible('#ts-overview');
         $I->see('Global overview of all pages in the database containing one or more TypoScript records.');
 
-        $I->wantTo('show TypoScript records overview on website root page (uid = 1 and pid = 0)');
         $I->switchToMainFrame();
         // click on website root page
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
@@ -61,7 +59,6 @@ final class TemplateCest
     public function addANewSiteTemplate(ApplicationTester $I): void
     {
         $I->waitForText('TypoScript records');
-        $I->wantTo('create a new root TypoScript record');
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
@@ -72,7 +69,7 @@ final class TemplateCest
         $I->waitForText('Root TypoScript record');
         $I->click("//input[@name='newWebsite']");
 
-        $I->wantTo('change to Override TypoScript and see the TypoScript record overview table');
+        // change to Override TypoScript and see the TypoScript record overview table
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
@@ -85,7 +82,7 @@ final class TemplateCest
         $I->see('Edit the whole TypoScript record');
         $I->click('Edit the whole TypoScript record');
 
-        $I->wantTo('change the title and save the TypoScsript record');
+        // change the title and save the TypoScsript record
         $I->waitForElement('#EditDocumentController');
         // fill title input field
         $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_template]") and contains(@data-formengine-input-name, "[title]")]', 'Acceptance Test Site');
@@ -96,7 +93,7 @@ final class TemplateCest
 
         $codeMirrorSelector = 'typo3-t3editor-codemirror[name$="[config]"]';
 
-        $I->wantTo('change the setup, save the TypoScript record and close the form');
+        // change the setup, save the TypoScript record and close the form
         $I->waitForElementVisible($codeMirrorSelector);
         $I->executeJS("const codeMirror = document.querySelector('" . $codeMirrorSelector . "'); const config = codeMirror.getContent().replace('HELLO WORLD!', 'Hello Acceptance Test!'); codeMirror.setContent(config)");
         $I->switchToMainFrame();
@@ -107,11 +104,10 @@ final class TemplateCest
         $I->waitForElement('a.t3js-editform-close');
         $I->click('a.t3js-editform-close');
 
-        $I->wantTo('see the changed title');
         $I->waitForElement('.table-striped');
         $I->see('Acceptance Test Site');
 
-        $I->wantTo('change the TypoScript record within the TypoScript Object Browser');
+        // change the TypoScript record within the TypoScript Object Browser
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Active TypoScript');
@@ -137,7 +133,6 @@ final class TemplateCest
 
     public function checkClosestTemplateButton(ApplicationTester $I, PageTree $pageTree, Scenario $scenario): void
     {
-        $I->wantTo('click on the button to go to the closest page with a TypoScript record');
         $I->switchToMainFrame();
 
         $usesSiteSets = str_contains($scenario->current('env'), 'sets');
@@ -156,7 +151,7 @@ final class TemplateCest
         $I->seeLink('Select this TypoScript record');
         $I->clickWithLeftButton('//a[text()[normalize-space(.) = "Select this TypoScript record"]]');
 
-        $I->wantTo('see that the page has a TypoScript record');
+        // see the page has a TypoScript record
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
@@ -180,7 +175,6 @@ final class TemplateCest
 
     public function createExtensionTemplate(ApplicationTester $I, PageTree $pageTree): void
     {
-        $I->wantTo('see the button to create an additional TypoScript record');
         $I->switchToMainFrame();
         $pageTree->openPath(['styleguide frontend demo', 'menu_sitemap_pages']);
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
@@ -192,7 +186,7 @@ final class TemplateCest
         $I->see('No TypoScript record on the current page');
         $I->see('You need to create a TypoScript record in order to edit your configuration.');
         $I->clickWithLeftButton('//input[@name=\'createExtension\']');
-        $I->wantTo('see that the page has a TypoScript record');
+        // see the page has a TypoScript record
         $I->waitForElementVisible('.t3-js-jumpMenuBox');
         $I->waitForElementNotVisible('#nprogress', 120);
         $I->selectOption('.t3-js-jumpMenuBox', 'Edit TypoScript Record');
@@ -217,7 +211,6 @@ final class TemplateCest
      */
     public function searchInTypoScriptActive(ApplicationTester $I): void
     {
-        $I->wantTo('Open the TypoScript Object Browser and search a keyword.');
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();

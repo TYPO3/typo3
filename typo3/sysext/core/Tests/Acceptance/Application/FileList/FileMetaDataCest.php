@@ -31,7 +31,6 @@ final class FileMetaDataCest
 
     public function metaDataCanBeEdited(ApplicationTester $I): void
     {
-        $I->wantToTest('Metadata can be edited through search list results');
         $I->click('Filelist');
 
         $I->switchToContentFrame();

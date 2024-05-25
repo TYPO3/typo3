@@ -33,8 +33,6 @@ final class SysNoteCest
 
     public function notesEntryCanBeEdited(ApplicationTester $I, PageTree $pageTree): void
     {
-        $I->wantToTest('whether sysnote entries can be edited via the Internal Notes section in List View');
-
         $I->amGoingTo('create a record');
         $I->click('List');
         $I->waitForElementNotVisible('#nprogress');

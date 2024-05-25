@@ -73,7 +73,6 @@ final class InstalledExtensionsCest
     #[Env('classic')]
     public function checkUninstallingAndInstallingAnExtension(ApplicationTester $I): void
     {
-        $I->wantTo('Check if uninstalling and installing an extension with backend module removes and adds the module from the module menu.');
         $I->amGoingTo('uninstall extension belog');
         $I->switchToMainFrame();
         $I->seeElement('[data-modulemenu-identifier="system_BelogLog"]');

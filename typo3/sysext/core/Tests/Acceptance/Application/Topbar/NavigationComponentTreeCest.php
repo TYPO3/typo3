@@ -32,17 +32,14 @@ final class NavigationComponentTreeCest
     public function checkTreeExpandsAndCollapseByPageModule(ApplicationTester $I): void
     {
         $treeArea = '.scaffold-content-navigation-expanded';
-        $I->wantTo('check Page Module for Expands And Collapse');
         $I->click('Page');
         $I->waitForElement($treeArea);
         $I->see('New TYPO3 site', $treeArea);
 
-        $I->wantTo('check Page Module for Collapse');
         $I->click('button.scaffold-content-navigation-switcher-close');
         $I->waitForElementNotVisible($treeArea);
         $I->cantSee('New TYPO3 site', $treeArea);
 
-        $I->wantTo('check Page Module for Expands');
         $I->click('button.scaffold-content-navigation-switcher-open');
         $I->waitForElement($treeArea);
         $I->see('New TYPO3 site', $treeArea);
@@ -52,7 +49,6 @@ final class NavigationComponentTreeCest
     {
         $treeArea = '.scaffold-content-navigation-expanded';
 
-        $I->wantTo('check File Module for Expands And Collapse');
         $I->click('Filelist');
 
         // Make sure 'fileadmin' is selected since FileClipboardCest clicks around on file tree, too.
@@ -63,12 +59,10 @@ final class NavigationComponentTreeCest
         $I->waitForElement($treeArea);
         $I->see('fileadmin', $treeArea);
 
-        $I->wantTo('check File Module for Collapse');
         $I->click('button.scaffold-content-navigation-switcher-close');
         $I->waitForElementNotVisible($treeArea);
         $I->cantSee('fileadmin', $treeArea);
 
-        $I->wantTo('check File Module for Expands');
         $I->click('button.scaffold-content-navigation-switcher-open');
         $I->waitForElement($treeArea);
         $I->see('fileadmin', $treeArea);
