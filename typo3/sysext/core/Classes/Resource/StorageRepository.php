@@ -255,6 +255,7 @@ class StorageRepository implements LoggerAwareInterface
             'driver' => 'Local',
             'configuration' => $flexFormXml,
             'is_online' => 1,
+            'auto_extract_metadata' => 1,
             'is_browsable' => 1,
             'is_public' => 1,
             'is_writable' => 1,

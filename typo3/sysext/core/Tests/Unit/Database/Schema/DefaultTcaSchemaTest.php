@@ -1093,6 +1093,79 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     }
 
     #[Test]
+    public function enrichAddsCheckWithSpecificDefault(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['check'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'check',
+                'default' => 3,
+            ],
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`check`',
+            Type::getType('smallint'),
+            [
+                'default' => 3,
+                'notnull' => true,
+                'unsigned' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('check')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsCheckWithDefaultAsOne(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['check'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'check',
+                'default' => 1,
+            ],
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`check`',
+            Type::getType('smallint'),
+            [
+                'default' => 1,
+                'notnull' => true,
+                'unsigned' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('check')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsCheckWithDefaultAsNull(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['check'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'check',
+                'default' => null,
+            ],
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`check`',
+            Type::getType('smallint'),
+            [
+                'default' => 0,
+                'notnull' => true,
+                'unsigned' => true,
+            ]
+        );
+        // Expectation is "0" because checkboxes are defined as NOT NULL
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('check')->toArray());
+    }
+
+    #[Test]
     public function enrichAddsFolder(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();

@@ -643,7 +643,7 @@ class DefaultTcaSchema
                     $this->quote($fieldName),
                     Types::SMALLINT,
                     [
-                        'default' => 0,
+                        'default' => $fieldConfig['config']['default'] ?? 0,
                         'notnull' => true,
                         'unsigned' => true,
                     ]
