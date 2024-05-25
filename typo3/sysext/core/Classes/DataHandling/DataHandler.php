@@ -4202,29 +4202,25 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Find l10n-overlay records and perform the requested copy action for these records.
      *
-     * @param string $table Record Table
-     * @param int $uid UID of the record in the default language
+     * @param int $uid uid default language record
      * @param int $destPid Position to copy to
      * @param bool $first
      * @param array $overrideValues
      * @param string $excludeFields
-     * @internal should only be used from within DataHandler
      */
-    public function copyL10nOverlayRecords($table, $uid, $destPid, $first = false, $overrideValues = [], $excludeFields = ''): void
+    protected function copyL10nOverlayRecords(string $table, int $uid, $destPid, $first = false, $overrideValues = [], $excludeFields = ''): void
     {
-        // There's no need to perform this for tables that are not localizable
-        if (!BackendUtility::isTableLocalizable($table)) {
-            return;
-        }
-
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null;
         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null;
+        // Nothing to do if records of this table are not localizable
+        if (empty($languageField) || empty($transOrigPointerField)) {
+            return;
+        }
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->BE_USER->workspace));
-
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->BE_USER->workspace));
         $queryBuilder->select('*')
             ->from($table)
             ->where(
@@ -4246,56 +4242,59 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // If $destPid is < 0, get the pid of the record with uid equal to abs($destPid)
+        // @todo: getTSconfig_pidValue() may return -1 or -2, which is an ugly interface and not handled below properly.
         $tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid) ?? 0;
         // Get the localized records to be copied
         $l10nRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
-        if (is_array($l10nRecords)) {
-            $localizedDestPids = [];
-            // If $destPid < 0, then it is the uid of the original language record we are inserting after
-            if ($destPid < 0) {
-                // Get the localized records of the record we are inserting after
-                $queryBuilder->setParameter('pointer', abs($destPid), Connection::PARAM_INT);
-                $destL10nRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
-                // Index the localized record uids by language
-                if (is_array($destL10nRecords)) {
-                    foreach ($destL10nRecords as $record) {
-                        $localizedDestPids[$record[$languageField]] = -$record['uid'];
-                    }
-                }
-            }
-            $languageSourceMap = [
-                $uid => $overrideValues[$transOrigPointerField],
-            ];
-
-            // Get available page translations
-            if ($table !== 'pages') {
-                $availableLanguages = [];
-                $pageTranslations = BackendUtility::getExistingPageTranslations($destPid < 0 ? $tscPID : $destPid);
-                // Build array with language ids for comparison
-                foreach ($pageTranslations as $translation) {
-                    $availableLanguages[] = $translation[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
-                }
-                // Filter records
-                foreach ($l10nRecords as $key => $record) {
-                    // Remove record when target page in not available in the corresponding language
-                    if (!in_array($record[$languageField], $availableLanguages, true)) {
-                        unset($l10nRecords[$key]);
-                    }
-                }
-            }
-
-            // Copy the localized records after the corresponding localizations of the destination record
-            foreach ($l10nRecords as $record) {
-                $localizedDestPid = (int)($localizedDestPids[$record[$languageField]] ?? 0);
-                if ($localizedDestPid < 0) {
-                    $newUid = $this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$languageField]);
-                } else {
-                    $newUid = $this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$languageField]);
-                }
-                $languageSourceMap[$record['uid']] = $newUid;
-            }
-            $this->copy_remapTranslationSourceField($table, $l10nRecords, $languageSourceMap);
+        if (empty($l10nRecords)) {
+            return;
         }
+
+        $localizedDestPids = [];
+        // If $destPid < 0, then it is the uid of the original language record we are inserting after
+        if ($destPid < 0) {
+            // Get the localized records of the record we are inserting after
+            $queryBuilder->setParameter('pointer', abs($destPid), Connection::PARAM_INT);
+            $destL10nRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
+            // Index the localized record uids by language
+            if (is_array($destL10nRecords)) {
+                foreach ($destL10nRecords as $record) {
+                    $localizedDestPids[$record[$languageField]] = -$record['uid'];
+                }
+            }
+        }
+        $languageSourceMap = [
+            $uid => $overrideValues[$transOrigPointerField],
+        ];
+
+        // Get available page translations
+        if ($table !== 'pages') {
+            $availableLanguages = [];
+            $pageTranslations = BackendUtility::getExistingPageTranslations($destPid < 0 ? $tscPID : $destPid);
+            // Build array with language ids for comparison
+            foreach ($pageTranslations as $translation) {
+                $availableLanguages[] = $translation[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+            }
+            // Filter records
+            foreach ($l10nRecords as $key => $record) {
+                // Remove record when target page in not available in the corresponding language
+                if (!in_array($record[$languageField], $availableLanguages, true)) {
+                    unset($l10nRecords[$key]);
+                }
+            }
+        }
+
+        // Copy the localized records after the corresponding localizations of the destination record
+        foreach ($l10nRecords as $record) {
+            $localizedDestPid = (int)($localizedDestPids[$record[$languageField]] ?? 0);
+            if ($localizedDestPid < 0) {
+                $newUid = $this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$languageField]);
+            } else {
+                $newUid = $this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$languageField]);
+            }
+            $languageSourceMap[$record['uid']] = $newUid;
+        }
+        $this->copy_remapTranslationSourceField($table, $l10nRecords, $languageSourceMap);
     }
 
     /**
