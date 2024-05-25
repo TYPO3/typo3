@@ -114,7 +114,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
                 // The FormDataProviders already resolved the select items to an array of uids,
                 // filter out empty values that occur when no related record has been selected.
                 $possibleUids = array_filter($value);
-                $foreignTableName = $fieldConfig['foreign_table'];
+                $foreignTableName = $fieldConfig['foreign_table'] ?? '';
                 break;
             case 'group':
                 $possibleUids = $this->getRelatedGroupFieldUids($fieldConfig, $value);
