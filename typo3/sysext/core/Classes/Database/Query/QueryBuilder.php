@@ -304,13 +304,7 @@ class QueryBuilder extends ConcreteQueryBuilder
     /**
      * Sets a query parameter for the query being constructed.
      *
-     * @param string|int $key The parameter position or name.
-     * @param mixed $value The parameter value.
-     * @param string|ParameterType|Type|ArrayParameterType $type One of the Connection::PARAM_* constants.
-     *
-     * @return QueryBuilder This QueryBuilder instance.
-     *
-     * @deprecated Null and integer value for $type deprecated since v12. Remove from signature in v13.
+     * @param int<0, max>|string $key Parameter position or name
      */
     public function setParameter(
         int|string $key,
