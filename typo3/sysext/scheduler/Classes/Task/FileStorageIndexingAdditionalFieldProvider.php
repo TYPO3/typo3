@@ -50,11 +50,16 @@ class FileStorageIndexingAdditionalFieldProvider implements AdditionalFieldProvi
     /**
      * Add a select field of available storages.
      *
-     * @param FileStorageIndexingTask $task When editing, reference to the current task object. NULL when adding.
-     * @param array $taskInfo
-     * @return array Array containing all the information pertaining to the additional fields
+     * @param FileStorageIndexingTask|null $task When editing, reference to the current task object. NULL when adding.
+     * @param array $taskInfo Reference to the array containing the info used in the add/edit form
+     * @return array{
+     *     code: string,
+     *     label: string,
+     *     cshKey: string,
+     *     cshLabel: string,
+     * }
      */
-    protected function getAllStoragesField(FileStorageIndexingTask $task = null, $taskInfo)
+    protected function getAllStoragesField(?FileStorageIndexingTask $task, array $taskInfo): array
     {
         /** @var ResourceStorage[] $storages */
         $storages = GeneralUtility::makeInstance(StorageRepository::class)->findAll();
