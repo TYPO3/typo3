@@ -1906,11 +1906,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Utility/InstallUtility.php
 
 		-
-			message: "#^Method PHPUnit\\\\Framework\\\\TestCase\\:\\:count\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Domain/Repository/ExtensionRepositoryTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extensionmanager\\\\Tests\\\\Unit\\\\Fixtures\\\\LatestCompatibleExtensionObjectStorageFixture\\:\\:\\$position is never read, only written\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Fixtures/LatestCompatibleExtensionObjectStorageFixture.php
