@@ -27,6 +27,7 @@ waitFor() {
 }
 
 cleanUp() {
+    echo "Remove container for network \"${NETWORK}\""
     ATTACHED_CONTAINERS=$(${CONTAINER_BIN} ps --filter network=${NETWORK} --format='{{.Names}}')
     for ATTACHED_CONTAINER in ${ATTACHED_CONTAINERS}; do
         ${CONTAINER_BIN} kill ${ATTACHED_CONTAINER} >/dev/null
@@ -404,9 +405,13 @@ CONTAINER_INTERACTIVE="-it --init"
 HOST_UID=$(id -u)
 HOST_PID=$(id -g)
 USERSET=""
-SUFFIX=$(echo $RANDOM)
-NETWORK="typo3-core-${SUFFIX}"
 CI_PARAMS="${CI_PARAMS:-}"
+CI_JOB_ID=${CI_JOB_ID:-}
+SUFFIX=$(echo $RANDOM)
+if [ ${CI_JOB_ID} ]; then
+    SUFFIX="${CI_JOB_ID}-${SUFFIX}"
+fi
+NETWORK="typo3-core-${SUFFIX}"
 CONTAINER_HOST="host.docker.internal"
 
 # Option parsing updates above default vars
@@ -1088,6 +1093,7 @@ echo "" >&2
 echo "###########################################################################" >&2
 echo "Result of ${TEST_SUITE}" >&2
 echo "Container runtime: ${CONTAINER_BIN}" >&2
+echo "Container suffix: ${SUFFIX}"
 echo "PHP: ${PHP_VERSION}" >&2
 if [[ ${TEST_SUITE} =~ ^(functional|functionalDeprecated|acceptance|acceptanceComposer|acceptanceInstall)$ ]]; then
     case "${DBMS}" in
