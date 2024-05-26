@@ -899,13 +899,6 @@ class CKEditor5Migrator
         )) {
             // Remove toolbar items
             $this->removeToolbarItem('softhyphen');
-
-            return;
-        }
-
-        // Add button if missing
-        if (!in_array('softhyphen', $this->configuration['editor']['config']['toolbar']['items'], true)) {
-            $this->configuration['editor']['config']['toolbar']['items'][] = 'softhyphen';
         }
     }
 

@@ -213,9 +213,7 @@ final class RichtextTest extends UnitTestCase
                         'my.css',
                     ],
                     'toolbar' => [
-                        'items' => [
-                            'softhyphen',
-                        ],
+                        'items' => [],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -301,9 +299,7 @@ final class RichtextTest extends UnitTestCase
                         'my.css',
                     ],
                     'toolbar' => [
-                        'items' => [
-                            'softhyphen',
-                        ],
+                        'items' => [],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -403,9 +399,7 @@ final class RichtextTest extends UnitTestCase
                         'your.css',
                     ],
                     'toolbar' => [
-                        'items' => [
-                            'softhyphen',
-                        ],
+                        'items' => [],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
@@ -474,9 +468,7 @@ final class RichtextTest extends UnitTestCase
                         ],
                     ],
                     'toolbar' => [
-                        'items' => [
-                            'softhyphen',
-                        ],
+                        'items' => [],
                         'removeItems' => [],
                         'shouldNotGroupWhenFull' => true,
                     ],
