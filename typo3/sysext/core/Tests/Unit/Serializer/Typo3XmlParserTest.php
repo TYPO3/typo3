@@ -620,15 +620,12 @@ final class Typo3XmlParserTest extends UnitTestCase
     #[Test]
     public function encodeDecodePingPongFailsForEmptyArray(): void
     {
-        self::markTestSkipped(
-            'Currently an empty array results in a string "\n" if encoded and decoded. ' .
-            'This is probably not intended and not required for backward compatibility.'
-        );
-        $result = [];
+        // @todo: decoding an encoded empty array returns '\n'. This is probably
+        //        not intended and not required for backward compatibility.
         $xmlEncoder = new Typo3XmlSerializer();
         $xmlDecoder = new Typo3XmlParser();
-        $arrayEncoded = $xmlEncoder->encode($result);
+        $arrayEncoded = $xmlEncoder->encode([]);
         $arrayEncodedDecoded = $xmlDecoder->decode($arrayEncoded);
-        self::assertEquals($result, $arrayEncodedDecoded);
+        self::assertEquals(chr(10), $arrayEncodedDecoded);
     }
 }

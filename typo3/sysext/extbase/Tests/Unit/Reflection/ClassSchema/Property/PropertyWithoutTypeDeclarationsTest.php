@@ -246,6 +246,14 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
     #[Test]
     public function arrayAccessAndTraversableProperty(): void
     {
-        self::markTestSkipped('Current version of phpdoc reflection cannot detect intersection types');
+        $propertyTypes = (new ClassSchema(DummyEntityWithoutTypeDeclarations::class))
+            ->getProperty('arrayAccessAndTraversable')->getTypes();
+
+        self::assertCount(1, $propertyTypes);
+        self::assertSame('ArrayAccess&\Traversable', $propertyTypes[0]->getClassName());
+        // @todo: current version of phpdoc reflection cannot detect intersection types
+        // self::assertCount(2, $propertyTypes);
+        // self::assertSame(\ArrayAccess::class, $propertyTypes[0]->getClassName());
+        // self::assertSame(\Traversable::class, $propertyTypes[1]->getClassName());
     }
 }
