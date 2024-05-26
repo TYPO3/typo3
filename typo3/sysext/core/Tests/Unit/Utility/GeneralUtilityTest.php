@@ -3126,12 +3126,7 @@ final class GeneralUtilityTest extends UnitTestCase
     public function callUserFunctionCanCallClosure(): void
     {
         $inputData = ['foo' => 'bar'];
-        $result = GeneralUtility::callUserFunction(
-            static fn(): string => 'Worked fine',
-            $inputData,
-            $this,
-            ''
-        );
+        $result = GeneralUtility::callUserFunction(static fn(): string => 'Worked fine', $inputData, $this);
         self::assertEquals('Worked fine', $result);
     }
 

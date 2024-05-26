@@ -1386,11 +1386,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/TreeDataProviderFactoryTest.php
 
 		-
-			message: "#^Static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:callUserFunction\\(\\) invoked with 4 parameters, 2\\-3 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\UnitDeprecated\\\\Compatibility\\\\Fixtures\\\\PublicMethodDeprecationTraitTextFixture\\:\\:doesNotExist\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/UnitDeprecated/Compatibility/PublicMethodDeprecationTraitTest.php
