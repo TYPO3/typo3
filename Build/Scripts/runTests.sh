@@ -191,7 +191,6 @@ Options:
             - cglGit: test and fix latest committed patch for CGL compliance
             - cglHeader: test and fix file header for all core php files
             - cglHeaderGit: test and fix latest committed patch for CGL file header compliance
-            - checkIntegrity: check php code for with registered integrity rules
             - checkBom: check UTF-8 files do not contain BOM
             - checkComposer: check composer.json files for version integrity
             - checkExceptionCodes: test core for duplicate exception codes
@@ -199,6 +198,7 @@ Options:
             - checkFilePathLength: test core file paths do not exceed maximum length
             - checkGitSubmodule: test core git has no sub modules defined
             - checkGruntClean: Verify "grunt build" is clean. Warning: Executes git commands! Usually used in CI only.
+            - checkIntegrityPhp: check php code for with registered integrity rules
             - checkIsoDatabase: Verify "updateIsoDatabase.php" does not change anything.
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
