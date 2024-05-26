@@ -37,11 +37,11 @@ class DatabaseRecordException extends Exception
      *
      * @param string $message Human readable error message
      * @param int $code Exception code timestamp
-     * @param \Exception $previousException Possible exception from database layer
+     * @param \Exception|null $previousException Possible exception from database layer
      * @param string $tableName Table name query was working on
      * @param int $uid Table row uid
      */
-    public function __construct($message, $code, \Exception $previousException = null, $tableName, $uid)
+    public function __construct($message, $code, ?\Exception $previousException, string $tableName, int $uid)
     {
         parent::__construct($message, $code, $previousException);
         $this->tableName = $tableName;

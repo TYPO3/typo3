@@ -42,6 +42,8 @@ abstract class AbstractDatabaseRecordProvider implements LoggerAwareInterface
      */
     protected function getRecordFromDatabase($tableName, $uid)
     {
+        // @todo Remove int cast after making method parameters native typed.
+        $uid = (int)$uid;
         if ($uid <= 0) {
             throw new \InvalidArgumentException(
                 '$uid must be positive integer, ' . $uid . ' given',
@@ -57,7 +59,7 @@ abstract class AbstractDatabaseRecordProvider implements LoggerAwareInterface
                 1437656081,
                 null,
                 $tableName,
-                (int)$uid
+                $uid
             );
         }
         return $row;
