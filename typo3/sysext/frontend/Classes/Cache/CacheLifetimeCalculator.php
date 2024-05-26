@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Cache;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -35,11 +37,13 @@ use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForPageEvent;
  *
  * @internal This class is not part of the TYPO3 Core API
  */
+#[Autoconfigure(public: true)]
 class CacheLifetimeCalculator
 {
     protected int $defaultCacheTimeout = 86400;
 
     public function __construct(
+        #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ConnectionPool $connectionPool

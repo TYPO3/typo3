@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -41,6 +43,7 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  * Scope: frontend / backend
  * @internal
  */
+#[Autoconfigure(public: true)]
 class TranslationService implements SingletonInterface
 {
     /**
@@ -53,6 +56,7 @@ class TranslationService implements SingletonInterface
     public function __construct(
         protected readonly ConfigurationManagerInterface $configurationManager,
         protected readonly LanguageServiceFactory $languageServiceFactory,
+        #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
         protected readonly Locales $locales
     ) {}

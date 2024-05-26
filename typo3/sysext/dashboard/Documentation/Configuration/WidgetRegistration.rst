@@ -53,7 +53,6 @@ the following service registration can be used inside of :file:`Configuration/Se
        class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
        arguments:
          $buttonProvider: '@dashboard.buttons.t3news'
-         $cache: '@cache.dashboard.rss'
          $options:
            feedUrl: 'https://www.typo3.org/rss'
        tags:
@@ -207,7 +206,6 @@ An example to split up all Widget related configuration would look like:
        class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
        arguments:
          $buttonProvider: '@dashboard.buttons.t3news'
-         $cache: '@cache.dashboard.rss'
          $options:
            feedUrl: 'https://www.typo3.org/rss'
        tags:

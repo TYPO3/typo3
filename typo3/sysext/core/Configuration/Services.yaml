@@ -7,8 +7,8 @@ services:
   TYPO3\CMS\Core\:
     resource: '../Classes/*'
     # glob for services that have been previously available as
-    # container entries and have been removed in the mean time
-    # (e.g. because factories are to be used instead)
+    # container entries and have been removed in the meantime,
+    # e.g. because factories are to be used instead.
     exclude: '../Classes/{Localization/LanguageService.php}'
 
   TYPO3\CMS\Core\DependencyInjection\EnvVarProcessor:
@@ -182,34 +182,8 @@ services:
       - name: softreference.parser
         parserKey: url
 
-  TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory:
-    public: true
-    arguments:
-      $runtimeCache: '@cache.runtime'
-
-  TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory:
-    public: true
-    arguments:
-      $codeCache: '@cache.core'
-
-  TYPO3\CMS\Core\Configuration\Extension\ExtTablesFactory:
-    public: true
-    arguments:
-      $codeCache: '@cache.core'
-
-  TYPO3\CMS\Core\Configuration\Tca\TcaFactory:
-    public: true
-    arguments:
-      $codeCache: '@cache.core'
-
   TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider:
     public: true
-
-  TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader:
-    public: true
-    arguments:
-      $coreCache: '@cache.core'
-      $cacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").withPrefix("ExpressionLanguageProviders").toString()'
 
   TYPO3\CMS\Core\Locking\ResourceMutex:
     public: true
@@ -217,20 +191,10 @@ services:
   TYPO3\CMS\Core\Page\PageLayoutResolver:
     public: true
 
-  TYPO3\CMS\Core\Page\PageRenderer:
-    arguments:
-      $assetsCache: '@cache.assets'
-
   TYPO3\CMS\Core\Page\AssetRenderer:
     public: true
     arguments:
       $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
-
-  TYPO3\CMS\Core\Page\ImportMapFactory:
-    public: true
-    arguments:
-      $assetsCache: '@cache.assets'
-      $cacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").withPrefix("ImportMap").toString()'
 
   TYPO3\CMS\Core\Resource\FileRepository:
     public: true
@@ -252,12 +216,6 @@ services:
 
   TYPO3\CMS\Core\Domain\Access\RecordAccessVoter:
     public: true
-
-  TYPO3\CMS\Core\Service\MarkerBasedTemplateService:
-    public: true
-    arguments:
-      $hashCache: '@cache.assets'
-      $runtimeCache: '@cache.runtime'
 
   TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface:
     alias: TYPO3\CMS\Core\TypoScript\AST\AstBuilder
@@ -304,16 +262,6 @@ services:
 
   TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface:
     alias: TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer
-
-  TYPO3\CMS\Core\TypoScript\PageTsConfigFactory:
-    public: true
-    arguments:
-      $cache: '@cache.typoscript'
-
-  TYPO3\CMS\Core\TypoScript\UserTsConfigFactory:
-    public: true
-    arguments:
-      $cache: '@cache.typoscript'
 
   TYPO3\CMS\Core\Utility\DiffUtility:
     shared: false
@@ -457,8 +405,8 @@ services:
     alias: GuzzleHttp\Client
     public: true
   Symfony\Contracts\EventDispatcher\EventDispatcherInterface:
-      alias: TYPO3\CMS\Core\Adapter\EventDispatcherAdapter
-      public: true
+    alias: TYPO3\CMS\Core\Adapter\EventDispatcherAdapter
+    public: true
   TYPO3\CMS\Core\Mail\MailerInterface:
     alias: TYPO3\CMS\Core\Mail\Mailer
     public: true

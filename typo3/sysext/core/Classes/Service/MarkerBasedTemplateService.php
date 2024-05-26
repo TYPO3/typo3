@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Service;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -23,11 +25,14 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Helper functionality for subparts and marker substitution
  * ###MYMARKER###
  */
-class MarkerBasedTemplateService
+#[Autoconfigure(public: true)]
+readonly class MarkerBasedTemplateService
 {
     public function __construct(
-        protected readonly FrontendInterface $hashCache,
-        protected readonly FrontendInterface $runtimeCache,
+        #[Autowire(service: 'cache.assets')]
+        protected FrontendInterface $hashCache,
+        #[Autowire(service: 'cache.runtime')]
+        protected FrontendInterface $runtimeCache,
     ) {}
 
     /**

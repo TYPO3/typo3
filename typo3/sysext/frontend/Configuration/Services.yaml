@@ -11,15 +11,6 @@ services:
     # (e.g. because factories are to be used instead)
     exclude: '../Classes/{Frontend/Controller/TypoScriptFrontendController.php}'
 
-  TYPO3\CMS\Frontend\Middleware\ContentSecurityPolicyHeaders:
-    arguments:
-      $cache: '@cache.assets'
-
-  TYPO3\CMS\Frontend\Middleware\PrepareTypoScriptFrontendRendering:
-    arguments:
-      $pageCache: '@cache.pages'
-      $typoScriptCache: '@cache.typoscript'
-
   TYPO3\CMS\Frontend\Controller\ShowImageController:
     public: true
 
@@ -54,11 +45,6 @@ services:
 
   TYPO3\CMS\Frontend\Html\HtmlWorker:
     public: true
-
-  TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator:
-    public: true
-    arguments:
-      $runtimeCache: '@cache.runtime'
 
   # Register all available content objects
   TYPO3\CMS\Frontend\ContentObject\TextContentObject:
@@ -145,11 +131,6 @@ services:
     tags:
       - name: frontend.contentobject
         identifier: 'SVG'
-
-  TYPO3\CMS\Frontend\Typolink\LinkFactory:
-    public: true
-    arguments:
-      $runtimeCache: '@cache.runtime'
 
   TYPO3\CMS\Frontend\DataProcessing\CommaSeparatedValueProcessor:
     tags:

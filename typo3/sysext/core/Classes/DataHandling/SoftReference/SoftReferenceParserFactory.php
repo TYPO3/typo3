@@ -18,23 +18,21 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\DataHandling\SoftReference;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Factory class for soft reference parsers
- */
+#[Autoconfigure(public: true)]
 class SoftReferenceParserFactory
 {
     protected array $softReferenceParsers = [];
-    protected FrontendInterface $runtimeCache;
-    protected LoggerInterface $logger;
 
-    public function __construct(FrontendInterface $runtimeCache, LoggerInterface $logger)
-    {
-        $this->runtimeCache = $runtimeCache;
-        $this->logger = $logger;
-    }
+    public function __construct(
+        #[Autowire(service: 'cache.runtime')]
+        protected readonly FrontendInterface $runtimeCache,
+        protected readonly LoggerInterface $logger,
+    ) {}
 
     /**
      * Adds a parser via DI.
@@ -116,9 +114,6 @@ class SoftReferenceParserFactory
      *     tags:
      *       - name: softreference.parser
      *         parserKey: userdefined
-     *
-     *
-     * @param string $softReferenceParserKey
      */
     public function getSoftReferenceParser(string $softReferenceParserKey): SoftReferenceParserInterface
     {

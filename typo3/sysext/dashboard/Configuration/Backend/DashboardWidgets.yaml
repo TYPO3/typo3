@@ -58,7 +58,6 @@ services:
   dashboard.widget.t3news:
     class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
     arguments:
-      $cache: '@cache.dashboard.rss'
       $buttonProvider: '@dashboard.buttons.t3news'
       $options:
         feedUrl: 'https://typo3.org/rss'
@@ -162,7 +161,6 @@ services:
   dashboard.widget.t3securityAdvisories:
     class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
     arguments:
-      $cache: '@cache.dashboard.rss'
       $buttonProvider: '@dashboard.buttons.t3securityAdvisories'
       $options:
         feedUrl: 'https://typo3.org/rss-security'

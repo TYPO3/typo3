@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -122,6 +123,7 @@ class PageRenderer implements SingletonInterface
     protected bool $applyNonceHint = false;
 
     public function __construct(
+        #[Autowire(service: 'cache.assets')]
         protected readonly FrontendInterface $assetsCache,
         protected readonly MarkerBasedTemplateService $templateService,
         protected readonly MetaTagManagerRegistry $metaTagRegistry,
@@ -133,7 +135,6 @@ class PageRenderer implements SingletonInterface
         protected readonly StreamFactoryInterface $streamFactory,
     ) {
         $this->reset();
-
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
 

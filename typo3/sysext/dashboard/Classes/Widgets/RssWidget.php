@@ -18,8 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard\Widgets;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as Cache;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -46,7 +47,8 @@ class RssWidget implements WidgetInterface, RequestAwareWidgetInterface
 
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
-        private readonly Cache $cache,
+        #[Autowire(service: 'cache.dashboard.rss')]
+        private readonly FrontendInterface $cache,
         private readonly BackendViewFactory $backendViewFactory,
         private readonly ?ButtonProviderInterface $buttonProvider = null,
         array $options = [],

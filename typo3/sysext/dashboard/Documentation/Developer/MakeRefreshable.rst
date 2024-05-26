@@ -21,7 +21,6 @@ registration. Below is an example of a RSS widget with the refresh option enable
    dashboard.widget.myOwnRSSWidget:
      class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
      arguments:
-       $cache: '@cache.dashboard.rss'
        $options:
          rssFile: 'https://typo3.org/rss'
          lifeTime: 43200

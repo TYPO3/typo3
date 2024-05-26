@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\TypoScript;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
@@ -34,13 +36,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal Internal for now until API stabilized. Use backendUser->getTSConfig().
  */
-final class UserTsConfigFactory
+#[Autoconfigure(public: true)]
+final readonly class UserTsConfigFactory
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly TokenizerInterface $tokenizer,
-        private readonly TsConfigTreeBuilder $tsConfigTreeBuilder,
-        private readonly PhpFrontend $cache,
+        private ContainerInterface $container,
+        private TokenizerInterface $tokenizer,
+        private TsConfigTreeBuilder $tsConfigTreeBuilder,
+        #[Autowire(service: 'cache.typoscript')]
+        private PhpFrontend $cache,
     ) {}
 
     public function create(BackendUserAuthentication $backendUser): UserTsConfig

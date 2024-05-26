@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Configuration;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -65,6 +67,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
+#[Autoconfigure(public: true)]
 class BackendConfigurationManager implements SingletonInterface
 {
     /**
@@ -95,7 +98,9 @@ class BackendConfigurationManager implements SingletonInterface
 
     public function __construct(
         private readonly TypoScriptService $typoScriptService,
+        #[Autowire(service: 'cache.typoscript')]
         private readonly PhpFrontend $typoScriptCache,
+        #[Autowire(service: 'cache.runtime')]
         private readonly FrontendInterface $runtimeCache,
         private readonly SysTemplateRepository $sysTemplateRepository,
         private readonly SiteFinder $siteFinder,

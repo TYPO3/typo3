@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -59,6 +60,7 @@ class RedirectService
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly PageInformationFactory $pageInformationFactory,
         private readonly FrontendTypoScriptFactory $frontendTypoScriptFactory,
+        #[Autowire(service: 'cache.typoscript')]
         private readonly PhpFrontend $typoScriptCache,
         private readonly LoggerInterface $logger,
     ) {}

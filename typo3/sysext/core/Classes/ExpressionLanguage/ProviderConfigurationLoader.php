@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -25,12 +27,15 @@ use TYPO3\CMS\Core\Package\PackageManager;
 /**
  * This class resolves the expression language provider configuration and store in a cache.
  */
-class ProviderConfigurationLoader
+#[Autoconfigure(public: true)]
+readonly class ProviderConfigurationLoader
 {
     public function __construct(
-        private readonly PackageManager $packageManager,
-        private readonly PhpFrontend $coreCache,
-        private readonly string $cacheIdentifier,
+        private PackageManager $packageManager,
+        #[Autowire(service: 'cache.core')]
+        private PhpFrontend $coreCache,
+        #[Autowire(expression: 'service("package-dependent-cache-identifier").withPrefix("ExpressionLanguageProviders").toString()')]
+        private string $cacheIdentifier,
     ) {}
 
     public function getExpressionLanguageProviders(): array

@@ -11,12 +11,6 @@ services:
     public: true
     shared: false
 
-  TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager:
-    public: true
-    arguments:
-      $typoScriptCache: '@cache.typoscript'
-      $runtimeCache: '@cache.runtime'
-
   # formerly in EXT:extbase/ext_localconf.php
   TYPO3\CMS\Extbase\Persistence\QueryInterface:
     alias: TYPO3\CMS\Extbase\Persistence\Generic\Query
@@ -74,11 +68,6 @@ services:
 
   TYPO3\CMS\Extbase\Persistence\ClassesConfiguration:
     factory: ['@TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory', 'createClassesConfiguration']
-
-  TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory:
-    arguments:
-      $cache: '@cache.extbase'
-      $cacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").withPrefix("PersistenceClasses").toString()'
 
   TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory:
     arguments:

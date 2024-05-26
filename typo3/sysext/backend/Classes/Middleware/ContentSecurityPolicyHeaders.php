@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
@@ -33,13 +34,14 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
  *
  * @internal
  */
-final class ContentSecurityPolicyHeaders implements MiddlewareInterface
+final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
 {
     public function __construct(
-        private readonly RequestId $requestId,
-        private readonly LoggerInterface $logger,
-        private readonly FrontendInterface $cache,
-        private readonly PolicyProvider $policyProvider,
+        private RequestId $requestId,
+        private LoggerInterface $logger,
+        #[Autowire(service: 'cache.assets')]
+        private FrontendInterface $cache,
+        private PolicyProvider $policyProvider,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

@@ -17,26 +17,22 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 
-final class ClassesConfigurationFactory
+final readonly class ClassesConfigurationFactory
 {
-    private FrontendInterface $cache;
-
-    private PackageManager $packageManager;
-
-    private string $cacheIdentifier;
-
-    public function __construct(FrontendInterface $cache, PackageManager $packageManager, string $cacheIdentifier)
-    {
-        $this->cache = $cache;
-        $this->packageManager = $packageManager;
-        $this->cacheIdentifier = $cacheIdentifier;
-    }
+    public function __construct(
+        #[Autowire(service: 'cache.extbase')]
+        private FrontendInterface $cache,
+        private PackageManager $packageManager,
+        #[Autowire(expression: 'service("package-dependent-cache-identifier").withPrefix("PersistenceClasses").toString()')]
+        private string $cacheIdentifier,
+    ) {}
 
     public function createClassesConfiguration(): ClassesConfiguration
     {

@@ -36,7 +36,6 @@ Example
      dashboard.widget.t3news:
        class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
        arguments:
-         $cache: '@cache.dashboard.rss'
          $buttonProvider: '@dashboard.buttons.t3news'
          $options:
            feedUrl: 'https://www.typo3.org/rss'
@@ -86,8 +85,3 @@ Dependencies
    This button should be provided by a ButtonProvider that implements the interface :php:`ButtonProviderInterface`.
 
    See :ref:`adding-buttons` for further info and configuration options.
-
-.. option:: $cache
-
-   Used to cache fetched RSS items.
-   This should not be changed.

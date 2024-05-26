@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
@@ -49,7 +50,9 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
         private FrontendTypoScriptFactory $frontendTypoScriptFactory,
+        #[Autowire(service: 'cache.typoscript')]
         private PhpFrontend $typoScriptCache,
+        #[Autowire(service: 'cache.pages')]
         private FrontendInterface $pageCache,
         private ResourceMutex $lock,
         private Context $context,

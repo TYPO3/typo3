@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Frontend\Typolink;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -36,6 +38,7 @@ use TYPO3\CMS\Frontend\Event\AfterLinkIsGeneratedEvent;
  * Main class for generating any kind of frontend links.
  * Contains all logic for the infamous typolink() functionality.
  */
+#[Autoconfigure(public: true)]
 class LinkFactory implements LoggerAwareInterface
 {
     use DefaultJavaScriptAssetTrait;
@@ -45,6 +48,7 @@ class LinkFactory implements LoggerAwareInterface
         protected readonly LinkService $linkService,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly TypoLinkCodecService $typoLinkCodecService,
+        #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
         protected readonly SiteFinder $siteFinder,
     ) {}

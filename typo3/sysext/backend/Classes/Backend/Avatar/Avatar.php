@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\Avatar;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -31,6 +33,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * See render() and getImgTag() as main entry points
  */
+#[Autoconfigure(public: true)]
 class Avatar
 {
     /**
@@ -41,6 +44,7 @@ class Avatar
     protected array $avatarProviders = [];
 
     public function __construct(
+        #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $cache,
         protected readonly DependencyOrderingService $dependencyOrderingService,
         protected readonly IconFactory $iconFactory

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Recycler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -52,6 +53,7 @@ class RecyclerAjaxController
 
     public function __construct(
         protected readonly BackendViewFactory $backendViewFactory,
+        #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
         protected readonly IconFactory $iconFactory,
         protected readonly ConnectionPool $connectionPool,

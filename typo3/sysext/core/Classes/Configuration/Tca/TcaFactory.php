@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration\Tca;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
@@ -30,12 +32,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @internal Bootstrap related base TCA loading. Extensions must not use this.
  */
-final class TcaFactory
+#[Autoconfigure(public: true)]
+final readonly class TcaFactory
 {
     public function __construct(
-        private readonly PackageManager $packageManager,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly PhpFrontend $codeCache,
+        private PackageManager $packageManager,
+        private EventDispatcherInterface $eventDispatcher,
+        #[Autowire(service: 'cache.core')]
+        private PhpFrontend $codeCache,
     ) {}
 
     /**

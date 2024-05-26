@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration\Extension;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -24,11 +26,13 @@ use TYPO3\CMS\Core\Package\PackageManager;
 /**
  * @internal Bootstrap related ext_localconf loading. Extensions must not use this.
  */
-final class ExtLocalconfFactory
+#[Autoconfigure(public: true)]
+final readonly class ExtLocalconfFactory
 {
     public function __construct(
-        private readonly PackageManager $packageManager,
-        private readonly PhpFrontend $codeCache,
+        private PackageManager $packageManager,
+        #[Autowire(service: 'cache.core')]
+        private PhpFrontend $codeCache,
     ) {}
 
     /**
