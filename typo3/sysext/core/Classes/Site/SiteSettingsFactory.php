@@ -39,7 +39,7 @@ readonly class SiteSettingsFactory
         protected SettingsTypeRegistry $settingsTypeRegistry,
         protected YamlFileLoader $yamlFileLoader,
         #[Autowire(service: 'cache.core')]
-        protected readonly PhpFrontend $cache,
+        protected PhpFrontend $cache,
         #[Autowire(expression: 'service("package-dependent-cache-identifier").withPrefix("SiteSettings")')]
         protected PackageDependentCacheIdentifier $cacheIdentifier,
         protected string $settingsFileName = 'settings.yaml',
