@@ -38,9 +38,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -80,9 +78,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 ],
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -128,9 +124,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 ],
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -171,9 +165,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [
                                     'superscript',
                                     'subscript',
@@ -213,9 +205,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [
                                     'superscript',
                                     'subscript',
@@ -622,7 +612,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                         'icon' => 'threeVerticalDots',
                                         'items' => ['strikethrough', 'superscript', 'subscript'],
                                     ],
-                                    'softhyphen',
                                 ],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
@@ -669,7 +658,6 @@ final class CKEditor5MigratorTest extends UnitTestCase
                             'toolbar' => [
                                 'items' => [
                                     'bold',
-                                    'softhyphen',
                                 ],
                                 'removeItems' => [
                                     'subscript',
@@ -709,9 +697,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => false,
                             ],
@@ -976,9 +962,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 'EXT:example/Resources/Public/Css/ckeditor.css',
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1010,9 +994,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1053,9 +1035,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 'EXT:example/Resources/Public/Css/ckeditor2.css',
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1105,9 +1085,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 ],
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1141,9 +1119,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1177,9 +1153,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1254,9 +1228,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 ],
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1351,9 +1323,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 ],
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1393,9 +1363,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 ],
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [
                                     'alignment',
                                     'alignment:left',
@@ -1430,9 +1398,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1467,9 +1433,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1508,9 +1472,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1547,9 +1509,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1715,9 +1675,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 ],
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1748,9 +1706,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1785,9 +1741,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1822,9 +1776,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1858,9 +1810,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                     'editor' => [
                         'config' => [
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
@@ -1945,9 +1895,7 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                 ],
                             ],
                             'toolbar' => [
-                                'items' => [
-                                    'softhyphen',
-                                ],
+                                'items' => [],
                                 'removeItems' => [],
                                 'shouldNotGroupWhenFull' => true,
                             ],
