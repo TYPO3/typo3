@@ -89,7 +89,8 @@ final class SimpleLockStrategyTest extends UnitTestCase
     #[Test]
     public function releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory(string $file): void
     {
-        // Create test file
+        // Make sure directory exists and create test file
+        GeneralUtility::mkdir_deep(dirname($file));
         touch($file);
         // Create instance, set lock file to invalid path
         $lock = $this->getAccessibleMock(SimpleLockStrategy::class, null, ['999999999']);
