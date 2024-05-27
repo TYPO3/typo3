@@ -1,6 +1,3 @@
-imports:
-  - { resource: Backend/DashboardWidgets.yaml }
-
 services:
   _defaults:
     autowire: true
@@ -9,4 +6,186 @@ services:
 
   TYPO3\CMS\Dashboard\:
     resource: '../Classes/*'
-    exclude: '../Classes/Widgets/*'
+
+  TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration:
+    autowire: false
+
+  TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider:
+    arguments:
+      $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.buttonText'
+
+  cache.dashboard.rss:
+    class: 'TYPO3\CMS\Core\Cache\Frontend\FrontendInterface'
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments:
+      $identifier: 'dashboard_rss'
+
+  dashboard.buttons.t3news:
+    class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
+    arguments:
+      $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems'
+      $link: 'https://typo3.org/project/news'
+      $target: '_blank'
+
+  dashboard.buttons.t3securityAdvisories:
+    class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
+    arguments:
+      $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.moreItems'
+      $link: 'https://typo3.org/help/security-advisories'
+      $target: '_blank'
+
+  dashboard.buttons.docGettingStarted:
+    class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
+    arguments:
+      $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.content.label'
+      $link: 'https://docs.typo3.org/m/typo3/tutorial-getting-started/main/en-us/Index.html'
+      $target: '_blank'
+
+  dashboard.buttons.docTypoScriptReference:
+    class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
+    arguments:
+      $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.typoscriptReference.content.label'
+      $link: 'https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Index.html'
+      $target: '_blank'
+
+  dashboard.buttons.docTSconfig:
+    class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
+    arguments:
+      $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.TSconfigReference.content.label'
+      $link: 'https://docs.typo3.org/m/typo3/reference-tsconfig/main/en-us/Index.html'
+      $target: '_blank'
+
+  dashboard.widget.t3news:
+    class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
+    arguments:
+      $buttonProvider: '@dashboard.buttons.t3news'
+      $options:
+        feedUrl: 'https://typo3.org/rss'
+    tags:
+      - name: dashboard.widget
+        identifier: 't3news'
+        groupNames: 'news'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description'
+        iconIdentifier: 'content-widget-rss'
+        height: 'large'
+        width: 'medium'
+
+  dashboard.widget.sysLogErrors:
+    class: 'TYPO3\CMS\Dashboard\Widgets\BarChartWidget'
+    arguments:
+      $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogErrorsDataProvider'
+      $buttonProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider'
+      $options:
+        refreshAvailable: true
+    tags:
+      - name: dashboard.widget
+        identifier: 'sysLogErrors'
+        groupNames: 'systemInfo'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.description'
+        iconIdentifier: 'content-widget-chart-bar'
+        height: 'medium'
+        width: 'medium'
+
+  dashboard.widget.docGettingStarted:
+    class: 'TYPO3\CMS\Dashboard\Widgets\CtaWidget'
+    arguments:
+      $buttonProvider: '@dashboard.buttons.docGettingStarted'
+      $options:
+        text: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.text'
+    tags:
+      - name: dashboard.widget
+        identifier: 'docGettingStarted'
+        groupNames: 'documentation'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.description'
+        iconIdentifier: 'content-widget-text'
+        height: 'small'
+
+  dashboard.widget.docTypoScriptReference:
+    class: 'TYPO3\CMS\Dashboard\Widgets\CtaWidget'
+    arguments:
+      $buttonProvider: '@dashboard.buttons.docTypoScriptReference'
+      $options:
+        text: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.typoscriptReference.text'
+    tags:
+      - name: dashboard.widget
+        identifier: 'docTypoScriptReference'
+        groupNames: 'documentation'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.typoscriptReference.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.typoscriptReference.description'
+        iconIdentifier: 'content-widget-text'
+        height: 'small'
+
+  dashboard.widget.docTSconfig:
+    class: 'TYPO3\CMS\Dashboard\Widgets\CtaWidget'
+    arguments:
+      $buttonProvider: '@dashboard.buttons.docTSconfig'
+      $options:
+        text: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.TSconfigReference.text'
+    tags:
+      - name: dashboard.widget
+        identifier: 'docTSconfig'
+        groupNames: 'documentation'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.TSconfigReference.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.TSconfigReference.description'
+        iconIdentifier: 'content-widget-text'
+        height: 'small'
+
+  dashboard.widget.t3information:
+    class: 'TYPO3\CMS\Dashboard\Widgets\T3GeneralInformationWidget'
+    tags:
+      - name: dashboard.widget
+        identifier: 't3information'
+        groupNames: 'general'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3information.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3information.description'
+        iconIdentifier: 'content-widget-text'
+        height: 'medium'
+        width: 'medium'
+
+  dashboard.widget.typeOfUsers:
+    class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
+    arguments:
+      $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\TypeOfUsersChartDataProvider'
+    tags:
+      - name: dashboard.widget
+        identifier: 'typeOfUsers'
+        groupNames: 'systemInfo'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.description'
+        iconIdentifier: 'content-widget-chart-pie'
+        height: 'medium'
+
+  dashboard.widget.t3securityAdvisories:
+    class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
+    arguments:
+      $buttonProvider: '@dashboard.buttons.t3securityAdvisories'
+      $options:
+        feedUrl: 'https://typo3.org/rss-security'
+    tags:
+      - name: dashboard.widget
+        identifier: 't3securityAdvisories'
+        groupNames: 'news'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3securityAdvisories.description'
+        iconIdentifier: 'content-widget-rss'
+        height: 'large'
+        width: 'medium'
+
+  dashboard.widget.failedLogins:
+    class: 'TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget'
+    arguments:
+      $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\NumberOfFailedLoginsDataProvider'
+      $options:
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
+        subtitle: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle'
+        icon: 'content-elements-login'
+    tags:
+      - name: dashboard.widget
+        identifier: 'failedLogins'
+        groupNames: 'systemInfo'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.description'
+        iconIdentifier: 'content-widget-number'
