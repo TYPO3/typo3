@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Asset;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -43,6 +44,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  * Some available attributes are defaults but do not make sense for this ViewHelper. Relevant attributes specific
  * for this ViewHelper are: as, crossorigin, disabled, href, hreflang, importance, integrity, media, referrerpolicy,
  * sizes, type, nonce.
+ *
+ * Using the "inline" argument, the file content of the referenced file is added as inline style.
  */
 final class CssViewHelper extends AbstractTagBasedViewHelper
 {
@@ -89,6 +92,7 @@ final class CssViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('useNonce', 'bool', 'Whether to use the global nonce value', false, false);
         $this->registerArgument('identifier', 'string', 'Use this identifier within templates to only inject your CSS once, even though it is added multiple times.', true);
         $this->registerArgument('priority', 'boolean', 'Define whether the CSS should be included before other CSS. CSS will always be output in the <head> tag.', false, false);
+        $this->registerArgument('inline', 'bool', 'Define whether or not the referenced file should be loaded as inline styles (Only to be used if \'href\' is set).', false, false);
     }
 
     public function render(): string
@@ -108,7 +112,14 @@ final class CssViewHelper extends AbstractTagBasedViewHelper
             'useNonce' => $this->arguments['useNonce'],
         ];
         if ($file !== null) {
-            $this->assetCollector->addStyleSheet($identifier, $file, $attributes, $options);
+            if ($this->arguments['inline'] ?? false) {
+                $content = @file_get_contents(GeneralUtility::getFileAbsFileName(trim($file)));
+                if ($content !== false) {
+                    $this->assetCollector->addInlineStyleSheet($identifier, $content, $attributes, $options);
+                }
+            } else {
+                $this->assetCollector->addStyleSheet($identifier, $file, $attributes, $options);
+            }
         } else {
             $content = (string)$this->renderChildren();
             if ($content !== '') {

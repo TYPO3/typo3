@@ -28,6 +28,10 @@ final class ScriptViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
+    protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ScriptViewHelper.js' => 'test.js',
+    ];
+
     public static function sourceDataProvider(): array
     {
         return [
@@ -60,5 +64,18 @@ final class ScriptViewHelperTest extends FunctionalTestCase
         $collectedJavaScripts = $this->get(AssetCollector::class)->getJavaScripts();
         self::assertSame($collectedJavaScripts['test']['source'], 'my.js');
         self::assertSame($collectedJavaScripts['test']['attributes'], ['async' => 'async', 'defer' => 'defer', 'nomodule' => 'nomodule']);
+    }
+
+    #[Test]
+    public function inlineRendersFileContentsInline(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.script identifier="test" src="test.js" inline="1" priority="0"/>');
+
+        (new TemplateView($context))->render();
+
+        $collectedInlineJavaScripts = $this->get(AssetCollector::class)->getInlineJavaScripts();
+        self::assertSame("alert('test');\n", $collectedInlineJavaScripts['test']['source']);
+        self::assertSame([], $collectedInlineJavaScripts['test']['attributes']);
     }
 }

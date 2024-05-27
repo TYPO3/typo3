@@ -28,6 +28,10 @@ final class CssViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
+    protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/CssViewHelper.css' => 'test.css',
+    ];
+
     public static function sourceDataProvider(): array
     {
         return [
@@ -132,5 +136,18 @@ final class CssViewHelperTest extends FunctionalTestCase
 
         $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
         self::assertSame($expectation, $collectedInlineStyleSheets['test']['source']);
+    }
+
+    #[Test]
+    public function inlineRendersFileContentsInline(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:asset.css identifier="test" href="test.css" inline="1" priority="0"/>');
+
+        (new TemplateView($context))->render();
+
+        $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
+        self::assertSame(".foo {\n    color: black;\n}\n", $collectedInlineStyleSheets['test']['source']);
+        self::assertSame([], $collectedInlineStyleSheets['test']['attributes']);
     }
 }
