@@ -230,7 +230,7 @@ final class LossyTokenizer implements TokenizerInterface
     {
         $this->currentLineString = trim(substr($this->currentLineString, 7));
 
-        // Next char should be the opening tick or doubletick, otherwise we create a comment until end of line
+        // Next char should be the opening tick or doubletick, otherwise treat it as ignored comment
         $nextChar = substr($this->currentLineString, 0, 1);
         if ($nextChar !== '\'' && $nextChar !== '"') {
             return;
@@ -277,6 +277,8 @@ final class LossyTokenizer implements TokenizerInterface
         $importBody = '';
         $importBodyCharCount = 0;
         $importBodyChars = mb_str_split($this->currentLineString, 1, 'UTF-8');
+        $isWithinDoubleTick = false;
+        $previousCharWasQuote = false;
         while (true) {
             $nextChar = $importBodyChars[$importBodyCharCount] ?? null;
             if ($nextChar === null) {
@@ -288,7 +290,11 @@ final class LossyTokenizer implements TokenizerInterface
                 }
                 return;
             }
-            if ($nextChar === '>') {
+            if ($nextChar === '"' && !$previousCharWasQuote) {
+                $isWithinDoubleTick = !$isWithinDoubleTick;
+            }
+            $previousCharWasQuote = $nextChar === '\\';
+            if ($nextChar === '>' && !$isWithinDoubleTick) {
                 if ($importBodyCharCount) {
                     $importBodyToken = new Token(TokenType::T_VALUE, $importBody);
                     $this->lineStream->append((new ImportOldLine())->setValueToken($importBodyToken));
