@@ -17,11 +17,9 @@ namespace TYPO3\CMS\Impexp\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Impexp\Export;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 final class ExportTest extends AbstractImportExportTestCase
 {
@@ -32,8 +30,6 @@ final class ExportTest extends AbstractImportExportTestCase
     protected array $testExtensionsToLoad = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
-
-    protected Export&MockObject&AccessibleObjectInterface $exportMock;
 
     protected array $recordTypesIncludeFields =
         [
@@ -69,22 +65,17 @@ final class ExportTest extends AbstractImportExportTestCase
         ]
     ;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->exportMock = $this->getAccessibleMock(Export::class, ['setMetaData']);
-    }
-
     #[Test]
     public function creationAndDeletionOfTemporaryFolderSucceeds(): void
     {
-        $temporaryFolderName = $this->exportMock->getOrCreateTemporaryFolderName();
+        $subject = $this->get(Export::class);
+        $temporaryFolderName = $subject->getOrCreateTemporaryFolderName();
         $temporaryFileName = $temporaryFolderName . '/export_file.txt';
         file_put_contents($temporaryFileName, 'Hello TYPO3 World.');
         self::assertDirectoryExists($temporaryFolderName);
         self::assertTrue(is_file($temporaryFileName));
 
-        $this->exportMock->removeTemporaryFolderName();
+        $subject->removeTemporaryFolderName();
         self::assertDirectoryDoesNotExist($temporaryFolderName);
         self::assertFalse(is_file($temporaryFileName));
     }
@@ -92,13 +83,14 @@ final class ExportTest extends AbstractImportExportTestCase
     #[Test]
     public function creationAndDeletionOfDefaultImportExportFolderSucceeds(): void
     {
-        $exportFolder = $this->exportMock->getOrCreateDefaultImportExportFolder();
+        $subject = $this->get(Export::class);
+        $exportFolder = $subject->getOrCreateDefaultImportExportFolder();
         $exportFileName = 'export_file.txt';
         $exportFolder->createFile($exportFileName);
         self::assertDirectoryExists(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl());
         self::assertTrue(is_file(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl() . $exportFileName));
 
-        $this->exportMock->removeDefaultImportExportFolder();
+        $subject->removeDefaultImportExportFolder();
         self::assertDirectoryDoesNotExist(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl());
         self::assertFalse(is_file(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl() . $exportFileName));
     }
@@ -106,8 +98,9 @@ final class ExportTest extends AbstractImportExportTestCase
     #[Test]
     public function renderPreviewWithoutArgumentsReturnsBasicArray(): void
     {
-        $this->exportMock->process();
-        $previewData = $this->exportMock->renderPreview();
+        $subject = $this->get(Export::class);
+        $subject->process();
+        $previewData = $subject->renderPreview();
         self::assertEquals([
             'update' => false,
             'showDiff' => false,
@@ -127,19 +120,13 @@ final class ExportTest extends AbstractImportExportTestCase
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecords.php';
 
-        $this->exportMock->setPid(0);
-        $this->exportMock->setLevels(Export::LEVELS_INFINITE);
-        $this->exportMock->setTables(['_ALL']);
-        $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
-        $this->exportMock->process();
-        $previewData = $this->exportMock->renderPreview();
-        //        file_put_contents(
-        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecords.php',
-        //            str_replace(
-        //                ['array (', '),', ');'],
-        //                ['[', '],', '];'],
-        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-        //        );
+        $subject = $this->get(Export::class);
+        $subject->setPid(0);
+        $subject->setLevels(Export::LEVELS_INFINITE);
+        $subject->setTables(['_ALL']);
+        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
+        $subject->process();
+        $previewData = $subject->renderPreview();
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
@@ -153,19 +140,13 @@ final class ExportTest extends AbstractImportExportTestCase
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecordsWithSoftRefs.php';
 
-        $this->exportMock->setPid(0);
-        $this->exportMock->setLevels(Export::LEVELS_INFINITE);
-        $this->exportMock->setTables(['_ALL']);
-        $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
-        $this->exportMock->process();
-        $previewData = $this->exportMock->renderPreview();
-        //        file_put_contents(
-        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecordsWithSoftRefs.php',
-        //            str_replace(
-        //                ['array (', '),', ');'],
-        //                ['[', '],', '];'],
-        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-        //        );
+        $subject = $this->get(Export::class);
+        $subject->setPid(0);
+        $subject->setLevels(Export::LEVELS_INFINITE);
+        $subject->setTables(['_ALL']);
+        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
+        $subject->process();
+        $previewData = $subject->renderPreview();
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
@@ -179,17 +160,11 @@ final class ExportTest extends AbstractImportExportTestCase
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportTable.php';
 
-        $this->exportMock->setList(['tt_content:1']);
-        $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
-        $this->exportMock->process();
-        $previewData = $this->exportMock->renderPreview();
-        //        file_put_contents(
-        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportTable.php',
-        //            str_replace(
-        //                ['array (', '),', ');'],
-        //                ['[', '],', '];'],
-        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-        //        );
+        $subject = $this->get(Export::class);
+        $subject->setList(['tt_content:1']);
+        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
+        $subject->process();
+        $previewData = $subject->renderPreview();
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
@@ -203,47 +178,46 @@ final class ExportTest extends AbstractImportExportTestCase
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportRecords.php';
 
-        $this->exportMock->setRecord(['tt_content:1', 'tt_content:2']);
-        $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
-        $this->exportMock->process();
-        $previewData = $this->exportMock->renderPreview();
-        //        file_put_contents(
-        //            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportRecords.php',
-        //            str_replace(
-        //                ['array (', '),', ');'],
-        //                ['[', '],', '];'],
-        //                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
-        //        );
+        $subject = $this->get(Export::class);
+        $subject->setRecord(['tt_content:1', 'tt_content:2']);
+        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
+        $subject->process();
+        $previewData = $subject->renderPreview();
         self::assertEquals($renderPreviewExport, $previewData);
     }
 
     public static function addFilesSucceedsDataProvider(): array
     {
         return [
-            ['dat' => [
-                'header' => [
-                    'files' => [
-                        '123456789' => [
-                            'filename' => 'filename.jpg',
-                            'relFileName' => 'filename.jpg',
+            [
+                'dat' => [
+                    'header' => [
+                        'files' => [
+                            '123456789' => [
+                                'filename' => 'filename.jpg',
+                                'relFileName' => 'filename.jpg',
+                            ],
                         ],
                     ],
                 ],
-            ], 'relations' => [
-                '123456789',
-            ], 'expected' => [
-                [
-                    'ref' => 'FILE',
-                    'type' => 'file',
-                    'msg' => '',
-                    'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard" aria-hidden="true">
-' . "\t" . '<span class="icon-markup">
-<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png" width="16" height="16" alt="" />
-' . "\t" . '</span>' . "\n\t\n" . '</span>',
-                    'title' => 'filename.jpg',
-                    'showDiffContent' => '',
+                'relations' => [
+                    '123456789',
                 ],
-            ]],
+                'expected' => [
+                    [
+                        'ref' => 'FILE',
+                        'type' => 'file',
+                        'msg' => '',
+                        'preCode' =>
+                            '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard" aria-hidden="true">'
+                            . "\n" . "\t" . '<span class="icon-markup">'
+                            . "\n" . '<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png" width="16" height="16" alt="" />'
+                            . "\n" . "\t" . '</span>' . "\n\t\n" . '</span>',
+                        'title' => 'filename.jpg',
+                        'showDiffContent' => '',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -254,35 +228,29 @@ final class ExportTest extends AbstractImportExportTestCase
     #[Test]
     public function addFilesSucceeds(array $dat, array $relations, array $expected): void
     {
-        $exportMock = $this->getAccessibleMock(
-            Export::class,
-            ['addError'],
-            [],
-            '',
-            true
-        );
-
+        $subject = $this->getAccessibleMock(Export::class, ['addError']);
         $lines = [];
-        $exportMock->_set('dat', $dat);
-        $exportMock->addFiles($relations, $lines, 0);
+        $subject->_set('dat', $dat);
+        $subject->addFiles($relations, $lines, 0);
         self::assertEquals($expected, $lines);
     }
 
     #[Test]
     public function renderSucceedsWithoutArguments(): void
     {
-        $this->exportMock->process();
-        $actual = $this->exportMock->render();
-
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject->process();
+        $actual = $subject->render();
         self::assertXmlStringEqualsXmlFile(__DIR__ . '/Fixtures/XmlExports/empty.xml', $actual);
     }
 
     #[Test]
     public function saveXmlToFileIsDefaultAndSucceeds(): void
     {
-        $this->exportMock->setExportFileName('export');
-        $this->exportMock->process();
-        $file = $this->exportMock->saveToFile();
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject->setExportFileName('export');
+        $subject->process();
+        $file = $subject->saveToFile();
         $filePath = Environment::getPublicPath() . '/' . $file->getPublicUrl();
 
         $this->testFilesToDelete[] = $filePath;
@@ -294,10 +262,11 @@ final class ExportTest extends AbstractImportExportTestCase
     #[Test]
     public function saveT3dToFileSucceeds(): void
     {
-        $this->exportMock->setExportFileName('export');
-        $this->exportMock->setExportFileType(Export::FILETYPE_T3D);
-        $this->exportMock->process();
-        $file = $this->exportMock->saveToFile();
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject->setExportFileName('export');
+        $subject->setExportFileType(Export::FILETYPE_T3D);
+        $subject->process();
+        $file = $subject->saveToFile();
         $filePath = Environment::getPublicPath() . '/' . $file->getPublicUrl();
 
         $this->testFilesToDelete[] = $filePath;
@@ -317,10 +286,11 @@ final class ExportTest extends AbstractImportExportTestCase
             self::markTestSkipped('The function gzcompress() is not available for compression.');
         }
 
-        $this->exportMock->setExportFileName('export');
-        $this->exportMock->setExportFileType(Export::FILETYPE_T3DZ);
-        $this->exportMock->process();
-        $file = $this->exportMock->saveToFile();
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject->setExportFileName('export');
+        $subject->setExportFileType(Export::FILETYPE_T3DZ);
+        $subject->process();
+        $file = $subject->saveToFile();
         $filePath = Environment::getPublicPath() . '/' . $file->getPublicUrl();
 
         $this->testFilesToDelete[] = $filePath;
@@ -344,20 +314,21 @@ final class ExportTest extends AbstractImportExportTestCase
         $fileDirectory = Environment::getVarPath() . '/transient';
         $numTemporaryFilesAndFoldersBeforeImport = iterator_count(new \FilesystemIterator($fileDirectory, \FilesystemIterator::SKIP_DOTS));
 
-        $this->exportMock->setPid(1);
-        $this->exportMock->setLevels(1);
-        $this->exportMock->setTables(['_ALL']);
-        $this->exportMock->setRelOnlyTables(['sys_file']);
-        $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
-        $this->exportMock->setSaveFilesOutsideExportFile(true);
-        $this->exportMock->setExportFileName('export');
-        $this->exportMock->process();
-        $file = $this->exportMock->saveToFile();
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject->setPid(1);
+        $subject->setLevels(1);
+        $subject->setTables(['_ALL']);
+        $subject->setRelOnlyTables(['sys_file']);
+        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
+        $subject->setSaveFilesOutsideExportFile(true);
+        $subject->setExportFileName('export');
+        $subject->process();
+        $file = $subject->saveToFile();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $file->getPublicUrl();
 
         self::assertCount($numTemporaryFilesAndFoldersBeforeImport, new \FilesystemIterator($fileDirectory, \FilesystemIterator::SKIP_DOTS));
-        self::assertEmpty($this->exportMock->_get('temporaryFolderName'));
+        self::assertEmpty($subject->_get('temporaryFolderName'));
     }
 
     #[Test]
@@ -368,24 +339,25 @@ final class ExportTest extends AbstractImportExportTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
 
-        $this->exportMock->setPid(1);
-        $this->exportMock->setLevels(1);
-        $this->exportMock->setTables(['_ALL']);
-        $this->exportMock->setRelOnlyTables(['sys_file']);
-        $this->exportMock->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
-        $this->exportMock->setSaveFilesOutsideExportFile(true);
-        $this->exportMock->setExportFileName('export');
-        $this->exportMock->process();
-        $this->exportMock->saveToFile();
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject->setPid(1);
+        $subject->setLevels(1);
+        $subject->setTables(['_ALL']);
+        $subject->setRelOnlyTables(['sys_file']);
+        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
+        $subject->setSaveFilesOutsideExportFile(true);
+        $subject->setExportFileName('export');
+        $subject->process();
+        $subject->saveToFile();
 
         /** @var Folder $importExportFolder */
-        $importExportFolder = $this->exportMock->_get('defaultImportExportFolder');
+        $importExportFolder = $subject->_get('defaultImportExportFolder');
         $filesFolderName = 'export.xml.files';
         self::assertTrue($importExportFolder->hasFolder($filesFolderName));
 
-        $this->exportMock->setSaveFilesOutsideExportFile(false);
-        $this->exportMock->process();
-        $file = $this->exportMock->saveToFile();
+        $subject->setSaveFilesOutsideExportFile(false);
+        $subject->process();
+        $file = $subject->saveToFile();
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $file->getPublicUrl();
 
