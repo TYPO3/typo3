@@ -386,7 +386,7 @@ final class TreeFromLineStreamBuilder
             if (str_starts_with($candidate, 'condition="')) {
                 $candidate = trim(substr($candidate, 10), '"');
                 if (str_starts_with($candidate, '[') && str_ends_with($candidate, ']')) {
-                    // Cut off '[' and ']' if exist.
+                    // Cut off '[' and ']' if condition body is surrounded by them.
                     $candidate = mb_substr($candidate, 1, -1);
                 }
                 $condition = stripslashes($candidate);

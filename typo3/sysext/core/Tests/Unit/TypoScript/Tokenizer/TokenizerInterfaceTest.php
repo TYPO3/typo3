@@ -7842,7 +7842,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             ->setTokenStream(
                                 (new TokenStream())
                                     ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD, '<INCLUDE_TYPOSCRIPT:', 0, 0))
-                                    // Note whitespace is include in 'T_VALUE' here, and not parsed
+                                    // Note whitespace is included in 'T_VALUE' here, and not parsed
                                     ->append(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="..."', 0, 20))
                                     ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD_STOP, '>', 0, 53)),
                             )
@@ -7852,6 +7852,66 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ->append(
                         (new ImportOldLine())
                             ->setValueToken(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="..."'))
+                    ),
+            ],
+            'old import keyword, condition, stop' => [
+                '<INCLUDE_TYPOSCRIPT: source="DIR:..." condition="[tree.level = 2]">',
+                (new LineStream())
+                    ->append(
+                        (new ImportOldLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD, '<INCLUDE_TYPOSCRIPT:', 0, 0))
+                                    // Note whitespace is included in 'T_VALUE' here, and not parsed
+                                    ->append(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="[tree.level = 2]"', 0, 20))
+                                    ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD_STOP, '>', 0, 66)),
+                            )
+                            ->setValueToken(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="[tree.level = 2]"', 0, 20))
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new ImportOldLine())
+                            ->setValueToken(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="[tree.level = 2]"'))
+                    ),
+            ],
+            'old import keyword, condition syntax with greater sign, stop' => [
+                '<INCLUDE_TYPOSCRIPT: source="DIR:..." condition="[tree.level >= 2]">',
+                (new LineStream())
+                    ->append(
+                        (new ImportOldLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD, '<INCLUDE_TYPOSCRIPT:', 0, 0))
+                                    // Note whitespace is included in 'T_VALUE' here, and not parsed
+                                    ->append(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="[tree.level >= 2]"', 0, 20))
+                                    ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD_STOP, '>', 0, 67)),
+                            )
+                            ->setValueToken(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="[tree.level >= 2]"', 0, 20))
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new ImportOldLine())
+                            ->setValueToken(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="[tree.level >= 2]"'))
+                    ),
+            ],
+            'old import keyword, condition syntax with greater sign and quoted doubleticks, stop' => [
+                '<INCLUDE_TYPOSCRIPT: source="DIR:..." condition="[traverse(page, \"title\") == \"fo>o\"]">',
+                (new LineStream())
+                    ->append(
+                        (new ImportOldLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD, '<INCLUDE_TYPOSCRIPT:', 0, 0))
+                                    // Note whitespace is included in 'T_VALUE' here, and not parsed
+                                    ->append(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="[traverse(page, \"title\") == \"fo>o\"]"', 0, 20))
+                                    ->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD_STOP, '>', 0, 89)),
+                            )
+                            ->setValueToken(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="[traverse(page, \"title\") == \"fo>o\"]"', 0, 20))
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new ImportOldLine())
+                            ->setValueToken(new Token(TokenType::T_VALUE, ' source="DIR:..." condition="[traverse(page, \"title\") == \"fo>o\"]"'))
                     ),
             ],
             'old import keyword, value, stop, comment' => [
