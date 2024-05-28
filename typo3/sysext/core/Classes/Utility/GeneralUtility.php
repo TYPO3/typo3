@@ -1654,9 +1654,9 @@ class GeneralUtility
     public static function mkdir_deep(string $directory): void
     {
         // Ensure there is only one slash
-        $fullPath = rtrim($directory, '/') . '/';
-        if ($fullPath !== '/' && !is_dir($fullPath)) {
-            $firstCreatedPath = static::createDirectoryPath($fullPath);
+        $fullPath = rtrim($directory, '/');
+        if ($fullPath !== '' && !is_dir($fullPath)) {
+            $firstCreatedPath = static::createDirectoryPath($fullPath . '/');
             if ($firstCreatedPath !== '') {
                 static::fixPermissions($firstCreatedPath, true);
             }
