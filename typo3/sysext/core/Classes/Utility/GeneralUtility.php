@@ -1916,9 +1916,9 @@ class GeneralUtility
             throw new \InvalidArgumentException('The specified directory is of type "' . gettype($directory) . '" but a string is expected.', 1303662955);
         }
         // Ensure there is only one slash
-        $fullPath = rtrim($directory, '/') . '/';
-        if ($fullPath !== '/' && !is_dir($fullPath)) {
-            $firstCreatedPath = static::createDirectoryPath($fullPath);
+        $fullPath = rtrim($directory, '/');
+        if ($fullPath !== '' && !is_dir($fullPath)) {
+            $firstCreatedPath = static::createDirectoryPath($fullPath . '/');
             if ($firstCreatedPath !== '') {
                 static::fixPermissions($firstCreatedPath, true);
             }
