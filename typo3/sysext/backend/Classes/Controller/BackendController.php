@@ -266,19 +266,21 @@ class BackendController
             $redirect = RouteRedirect::createFromRequest($request);
             if ($redirect !== null && $request->getMethod() === 'GET') {
                 // Only redirect to existing non-ajax routes with no restriction to a specific method
-                $redirect->resolve(GeneralUtility::makeInstance(Router::class));
+                $router = GeneralUtility::makeInstance(Router::class);
+                $redirect->resolve($router);
+                $module = $router->getRoute($redirect->getName())->getOption('module');
                 if ($this->isSpecialNoModuleRoute($redirect->getName())
-                    || $this->moduleProvider->accessGranted($redirect->getName(), $this->getBackendUser())
+                    || $this->moduleProvider->accessGranted($module->getIdentifier(), $this->getBackendUser())
                 ) {
                     // Only add start module from request in case user has access or it's a no module route,
                     // e.g. to FormEngine where permissions are checked by the corresponding component.
                     // Access might temporarily be blocked. e.g. due to being in a workspace.
                     $startModuleIdentifier = $redirect->getName();
                     $moduleParameters = $redirect->getParameters();
-                } elseif ($this->moduleProvider->isModuleRegistered($redirect->getName())) {
+                } elseif ($this->moduleProvider->isModuleRegistered($module->getIdentifier())) {
                     // A redirect is set, however, the user is not allowed to access the module.
                     // Store the requested module to later inform the user about the forced redirect.
-                    $inaccessibleRedirectModule = $this->moduleProvider->getModule($redirect->getName());
+                    $inaccessibleRedirectModule = $this->moduleProvider->getModule($module->getIdentifier());
                 }
             }
         } finally {
@@ -322,7 +324,7 @@ class BackendController
             try {
                 $deepLink = $this->uriBuilder->buildUriFromRoute($startModuleIdentifier, $parameters);
                 if ($startModule !== null && $inaccessibleRedirectModule !== null) {
-                    $this->enqueueRedirectMessage($startModule, $inaccessibleRedirectModule);
+                    $this->enqueueRedirectMessage($inaccessibleRedirectModule, $startModule);
                 }
                 return [$startModuleIdentifier, (string)$deepLink];
             } catch (RouteNotFoundException $e) {
