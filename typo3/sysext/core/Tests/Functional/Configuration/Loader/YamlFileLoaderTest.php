@@ -155,7 +155,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
         putenv('foo=%firstset.myinitialversion%');
         $output = (new YamlFileLoader())->load($fileName);
-        putenv('foo=');
+        putenv('foo');
         self::assertSame($expected, $output);
     }
 
@@ -169,7 +169,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
 
         putenv('foo=barbaz');
         $output = $loader->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/Env/Berta.yaml');
-        putenv('foo=');
+        putenv('foo');
 
         $expected = [
             'loadedWithEnvVars' => 1,
@@ -177,6 +177,48 @@ final class YamlFileLoaderTest extends FunctionalTestCase
                 'optionBefore',
                 'option1',
                 'option2',
+            ],
+        ];
+
+        self::assertSame($expected, $output);
+    }
+
+    /**
+     * Method checking for imports with env vars that they have been processed properly
+     */
+    #[Test]
+    public function loadWithEnvVarsSetToFalsyValuesReturnsTheseValues(): void
+    {
+        $loader = new YamlFileLoader();
+
+        putenv('optionFalse=false');
+        putenv('optionNull1=0');
+        putenv('optionNull2="0"');
+        putenv('optionNull3=');
+        putenv('optionFilled=barbaz');
+        putenv('optionEmptyString1=""');
+        putenv('optionEmptyString2=\'\'');
+
+        $output = $loader->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/Env/NullAndFalse.yaml');
+
+        putenv('optionFalse');
+        putenv('optionNull1');
+        putenv('optionNull2');
+        putenv('optionNull3');
+        putenv('optionFilled');
+        putenv('optionEmptyString1');
+        putenv('optionEmptyString2');
+
+        $expected = [
+            'options' => [
+                'optionFalse' => 'false',
+                'optionNull1' => '0',
+                'optionNull2' => '"0"',
+                'optionNull3' => '',
+                'optionFilled' => 'barbaz',
+                'optionEmptyString1' => '""',
+                'optionEmptyString2' => '\'\'',
+                'optionInvalidReference' => '%env("doesNotExist")%',
             ],
         ];
 
