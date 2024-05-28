@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\HelpCommand;
+use Symfony\Component\Yaml\Command\LintCommand as SymfonyLintCommand;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -57,6 +58,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return [
             SymfonyEventDispatcher::class => self::getSymfonyEventDispatcher(...),
+            SymfonyLintCommand::class => self::getSymfonyLintCommand(...),
             Cache\CacheManager::class => self::getCacheManager(...),
             Database\ConnectionPool::class => self::getConnectionPool(...),
             Database\DriverMiddlewareService::class => self::getDriverMiddlewaresService(...),
@@ -212,6 +214,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getHelpCommand(ContainerInterface $container): HelpCommand
     {
         return new HelpCommand();
+    }
+
+    public static function getSymfonyLintCommand(ContainerInterface $container): SymfonyLintCommand
+    {
+        return new SymfonyLintCommand();
     }
 
     public static function getCacheFlushCommand(ContainerInterface $container): Command\CacheFlushCommand
@@ -657,6 +664,8 @@ class ServiceProvider extends AbstractServiceProvider
         $commandRegistry->addLazyCommand('dumpautoload', Command\DumpAutoloadCommand::class, 'Updates class loading information in non-composer mode.', Environment::isComposerMode());
         $commandRegistry->addLazyCommand('extensionmanager:extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');
         $commandRegistry->addLazyCommand('extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');
+
+        $commandRegistry->addLazyCommand('lint:yaml', SymfonyLintCommand::class, 'Lint yaml files.');
 
         return $commandRegistry;
     }
