@@ -68,8 +68,7 @@ final class LossyTokenizer implements TokenizerInterface
     {
         $this->lineStream = new LineStream();
         $this->currentLineNumber = -1;
-        $this->lines = [];
-        $this->splitLines($source);
+        $this->lines = $this->splitLines($source);
 
         while (true) {
             $this->currentLineNumber++;
@@ -117,10 +116,10 @@ final class LossyTokenizer implements TokenizerInterface
         return $this->lineStream;
     }
 
-    private function splitLines($source): void
+    private function splitLines($source): array
     {
         $vanillaLines = explode(chr(10), $source);
-        $this->lines = array_map(
+        return array_map(
             fn(int $lineNumber, string $vanillaLine): array => [
                 'line' => rtrim($vanillaLine, "\r"),
             ],
@@ -365,8 +364,7 @@ final class LossyTokenizer implements TokenizerInterface
     private function parseOperatorAssignment(): void
     {
         $this->currentLineString = trim(substr($this->currentLineString, 1));
-        $this->valueStream = new TokenStream();
-        $this->parseValueForConstants();
+        $this->valueStream = $this->parseValueForConstants(new TokenStream(), $this->currentLineString);
         $this->lineStream->append((new IdentifierAssignmentLine())->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
     }
 
@@ -394,14 +392,14 @@ final class LossyTokenizer implements TokenizerInterface
             if ($isFirstLine && str_ends_with($this->currentLineString, ')')) {
                 $this->currentLineString = substr($this->currentLineString, 0, -1);
                 if (strlen($this->currentLineString) > 1) {
-                    $this->parseValueForConstants();
+                    $this->valueStream = $this->parseValueForConstants($this->valueStream, $this->currentLineString);
                     $this->lineStream->append((new IdentifierAssignmentLine())->setIdentifierTokenStream($this->identifierStream)->setValueTokenStream($this->valueStream));
                     return;
                 }
                 return;
             }
             if ($isFirstLine && strlen($this->currentLineString)) {
-                $this->parseValueForConstants();
+                $this->valueStream = $this->parseValueForConstants($this->valueStream, $this->currentLineString);
                 $valueOnFirstLine = true;
             }
             if (($isFirstLine && $valueOnFirstLine)
@@ -410,7 +408,7 @@ final class LossyTokenizer implements TokenizerInterface
                 $this->valueStream->append(new Token(TokenType::T_NEWLINE, "\n"));
             }
             if (!$isFirstLine && strlen($this->currentLineString)) {
-                $this->parseValueForConstants();
+                $this->valueStream = $this->parseValueForConstants($this->valueStream, $this->currentLineString);
             }
             if (!array_key_exists($this->currentLineNumber + 1, $this->lines)) {
                 return;
@@ -494,8 +492,7 @@ final class LossyTokenizer implements TokenizerInterface
             $this->ignoreUntilEndOfMultilineComment();
             return 0;
         }
-        $charsHandled = $this->parseIdentifierUntilStopChar($splitLine, $isRelative);
-        return $charsHandled;
+        return $this->parseIdentifierUntilStopChar($splitLine, $isRelative);
     }
 
     private function parseIdentifierUntilStopChar(array $splitLine, bool $isRelative = false): int
@@ -607,14 +604,13 @@ final class LossyTokenizer implements TokenizerInterface
         }
     }
 
-    private function parseValueForConstants(): void
+    private function parseValueForConstants(TokenStreamInterface $valueStream, string $value): TokenStreamInterface
     {
-        if (!str_contains($this->currentLineString, '{$')) {
-            $valueToken = new Token(TokenType::T_VALUE, $this->currentLineString);
-            $this->valueStream->append($valueToken);
-            return;
+        if (!str_contains($value, '{$')) {
+            $valueStream->append(new Token(TokenType::T_VALUE, $value));
+            return $valueStream;
         }
-        $splitLine = mb_str_split($this->currentLineString, 1, 'UTF-8');
+        $splitLine = mb_str_split($value, 1, 'UTF-8');
         $isInConstant = false;
         $currentPosition = 0;
         $currentString = '';
@@ -624,7 +620,7 @@ final class LossyTokenizer implements TokenizerInterface
             if ($char === null) {
                 if ($currentStringLength) {
                     $valueToken = new Token(TokenType::T_VALUE, $currentString);
-                    $this->valueStream->append($valueToken);
+                    $valueStream->append($valueToken);
                 }
                 break;
             }
@@ -633,7 +629,7 @@ final class LossyTokenizer implements TokenizerInterface
                 $isInConstant = true;
                 if ($currentStringLength) {
                     $valueToken = new Token(TokenType::T_VALUE, $currentString);
-                    $this->valueStream->append($valueToken);
+                    $valueStream->append($valueToken);
                 }
                 $currentString = '{$';
                 $currentPosition += 2;
@@ -641,10 +637,10 @@ final class LossyTokenizer implements TokenizerInterface
             }
             if ($isInConstant && $char === '}') {
                 $valueToken = new Token(TokenType::T_CONSTANT, $currentString . '}');
-                if (!$this->valueStream instanceof ConstantAwareTokenStream) {
-                    $this->valueStream = (new ConstantAwareTokenStream())->setAll($this->valueStream->getAll());
+                if (!$valueStream instanceof ConstantAwareTokenStream) {
+                    $valueStream = (new ConstantAwareTokenStream())->setAll($valueStream->getAll());
                 }
-                $this->valueStream->append($valueToken);
+                $valueStream->append($valueToken);
                 $currentPosition++;
                 $currentString = '';
                 $currentStringLength = 0;
@@ -655,5 +651,6 @@ final class LossyTokenizer implements TokenizerInterface
             $currentStringLength++;
             $currentString .= $char;
         }
+        return $valueStream;
     }
 }
