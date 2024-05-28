@@ -104,9 +104,9 @@ final class YamlFileLoaderTest extends UnitTestCase
         $subject->expects(self::once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
         self::assertSame($expected, $output);
-        putenv('foo=');
-        putenv('bar=');
-        putenv('baz=');
+        putenv('foo');
+        putenv('bar');
+        putenv('baz');
     }
 
     /**

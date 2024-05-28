@@ -1,0 +1,9 @@
+options:
+  optionFalse: '%env("optionFalse")%'
+  optionNull1: '%env("optionNull1")%'
+  optionNull2: '%env("optionNull2")%'
+  optionNull3: '%env("optionNull3")%'
+  optionFilled: '%env("optionFilled")%'
+  optionEmptyString1: '%env("optionEmptyString1")%'
+  optionEmptyString2: '%env("optionEmptyString2")%'
+  optionInvalidReference: '%env("doesNotExist")%'

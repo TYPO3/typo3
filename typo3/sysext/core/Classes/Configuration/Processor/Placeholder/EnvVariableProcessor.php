@@ -35,7 +35,7 @@ class EnvVariableProcessor implements PlaceholderProcessorInterface
     public function process(string $value, array $referenceArray)
     {
         $envVar = getenv($value);
-        if (!$envVar) {
+        if ($envVar === false) {
             throw new \UnexpectedValueException('Value not found', 1581501124);
         }
         return $envVar;
