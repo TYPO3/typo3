@@ -2030,7 +2030,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_stripHtml($content = '')
     {
-        return strip_tags($content);
+        return strip_tags((string)$content);
     }
 
     /**
@@ -2070,9 +2070,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_htmlSpecialChars($content = '', $conf = [])
     {
         if (!empty($conf['htmlSpecialChars.']['preserveEntities'])) {
-            $content = htmlspecialchars($content, ENT_COMPAT, 'UTF-8', false);
+            $content = htmlspecialchars((string)$content, ENT_COMPAT, 'UTF-8', false);
         } else {
-            $content = htmlspecialchars($content);
+            $content = htmlspecialchars((string)$content);
         }
         return $content;
     }
