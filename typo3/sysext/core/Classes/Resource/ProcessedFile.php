@@ -507,9 +507,9 @@ class ProcessedFile extends AbstractFile
     public function getSize(): int
     {
         if ($this->usesOriginalFile()) {
-            return $this->getOriginalFile()->getSize();
+            return (int)$this->getOriginalFile()->getSize();
         }
-        return parent::getSize();
+        return (int)parent::getSize();
     }
 
     /**
