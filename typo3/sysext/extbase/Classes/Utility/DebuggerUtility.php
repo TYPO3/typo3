@@ -99,13 +99,13 @@ class DebuggerUtility
     {
         $dump = '';
         if (is_string($value)) {
-            $croppedValue = strlen($value) > 2000 ? substr($value, 0, 2000) . '...' : $value;
+            $croppedValue = mb_strlen($value) > 2000 ? mb_substr($value, 0, 2000) . '...' : $value;
             if ($plainText) {
-                $dump = self::ansiEscapeWrap('"' . implode(PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level + 1), str_split($croppedValue, 76)) . '"', '33', $ansiColors) . ' (' . strlen($value) . ' chars)';
+                $dump = self::ansiEscapeWrap('"' . implode(PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level + 1), mb_str_split($croppedValue, 76)) . '"', '33', $ansiColors) . ' (' . mb_strlen($value) . ' chars)';
             } else {
-                $lines = str_split($croppedValue, 76);
+                $lines = mb_str_split($croppedValue, 76);
                 $lines = array_map(static fn(string $line): string => htmlspecialchars($line, ENT_COMPAT), $lines);
-                $dump = sprintf('\'<span class="extbase-debug-string">%s</span>\' (%s chars)', implode('<br />' . str_repeat(self::HTML_INDENT, $level + 1), $lines), strlen($value));
+                $dump = sprintf('\'<span class="extbase-debug-string">%s</span>\' (%s chars)', implode('<br />' . str_repeat(self::HTML_INDENT, $level + 1), $lines), mb_strlen($value));
             }
         } elseif (is_numeric($value)) {
             $dump = sprintf('%s (%s)', self::ansiEscapeWrap((string)$value, '35', $ansiColors), gettype($value));

@@ -182,4 +182,53 @@ final class DebuggerUtilityTest extends UnitTestCase
         self::assertTrue(DebuggerUtilityAccessibleProxy::getStylesheetEchoed());
         self::assertMatchesRegularExpression('#<style nonce="[^"]+">[^>]+</style>#m', $result);
     }
+
+    #[Test]
+    public function varDumpIsSimpleUTF8Aware(): void
+    {
+        DebuggerUtilityAccessibleProxy::setStylesheetEchoed(true);
+        $reallyLongInputWithUTF8 = str_repeat('ÄÖÜ', 669);
+        // Wraps at 76 chars, limit of 2000.
+        $resultPlaintext = DebuggerUtility::var_dump($reallyLongInputWithUTF8, null, 8, true, false, true);
+        self::assertStringEqualsFile(
+            __DIR__ . '/Fixtures/Utf8OutputSimple.expected.txt',
+            $resultPlaintext,
+            'Plaintext'
+        );
+
+        $resultHtml = DebuggerUtility::var_dump($reallyLongInputWithUTF8, null, 8, false, false, true);
+        // Note: trim()ing needed because otherwise trailing whitespace from a file is cut by IDE optimizations and would not match
+        self::assertStringEqualsFile(
+            __DIR__ . '/Fixtures/Utf8OutputSimple.expected.html',
+            trim($resultHtml) . "\n",
+            'HTML'
+        );
+        DebuggerUtilityAccessibleProxy::setStylesheetEchoed(false);
+    }
+
+    #[Test]
+    public function varDumpIsComplexUTF8Aware(): void
+    {
+        DebuggerUtilityAccessibleProxy::setStylesheetEchoed(true);
+        $reallyLongInputWithUTF8 = str_repeat('ÄÖÜ😂👩‍👩‍👦‍👦', 337);
+        // Funny sidenote. Splitting this family-emoji results in code-points:👩‍|👦|👦|👩‍👩‍👦‍
+        // This is part of the expectation to ensure proper splitting!
+        // Wraps at 76 chars, limit of 2000.
+        $resultPlaintext = DebuggerUtility::var_dump($reallyLongInputWithUTF8, null, 8, true, false, true);
+
+        self::assertStringEqualsFile(
+            __DIR__ . '/Fixtures/Utf8OutputComplex.expected.txt',
+            $resultPlaintext,
+            'Plaintext'
+        );
+
+        $resultHtml = DebuggerUtility::var_dump($reallyLongInputWithUTF8, null, 8, false, false, true);
+        // Note: trim()ing needed because otherwise trailing whitespace from a file is cut by IDE optimizations and would not match
+        self::assertStringEqualsFile(
+            __DIR__ . '/Fixtures/Utf8OutputComplex.expected.html',
+            trim($resultHtml) . "\n",
+            'HTML'
+        );
+        DebuggerUtilityAccessibleProxy::setStylesheetEchoed(false);
+    }
 }
