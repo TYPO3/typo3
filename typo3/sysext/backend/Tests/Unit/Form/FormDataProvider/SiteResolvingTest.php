@@ -32,14 +32,13 @@ final class SiteResolvingTest extends UnitTestCase
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteMock = $this->createMock(Site::class);
-        $siteMockRevelation = $siteMock;
-        $siteFinderMock->method('getSiteByPageId')->with(23)->willReturn($siteMockRevelation);
+        $siteFinderMock->method('getSiteByPageId')->with(23)->willReturn($siteMock);
         $input = [
             'defaultLanguagePageRow' => [
                 'uid' => 23,
             ],
             'effectivePid' => 42,
-            'site' => $siteMockRevelation,
+            'site' => $siteMock,
         ];
         $expected = $input;
         $expected['site'] = $siteMock;
@@ -51,11 +50,10 @@ final class SiteResolvingTest extends UnitTestCase
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteMock = $this->createMock(Site::class);
-        $siteMockRevelation = $siteMock;
-        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteMockRevelation);
+        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteMock);
         $input = [
             'effectivePid' => 42,
-            'site' => $siteMockRevelation,
+            'site' => $siteMock,
         ];
         $expected = $input;
         $expected['site'] = $siteMock;
