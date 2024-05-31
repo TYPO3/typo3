@@ -82,9 +82,10 @@ class SetupCheck implements CheckInterface
                 $this->messageQueue->enqueue(new FlashMessage(
                     'The trusted hosts pattern will be configured to allow all header values. This is because your $SERVER_NAME:$SERVER_PORT'
                         . ' is "' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . '" while your HTTP_HOST is "'
-                        . $_SERVER['HTTP_HOST'] . '". Check the pattern defined in Admin'
+                        . $_SERVER['HTTP_HOST'] . '", which can happen in specific proxy-routing setups.'
+                        . ' After installation, you may want to adapt the pattern defined in Admin'
                         . ' Tools -> Settings -> Configure Installation-Wide Options -> System -> trustedHostsPattern'
-                        . ' and adapt it to expected host value(s).',
+                        . ' to reflect the expected host value(s).',
                     'Trusted hosts pattern mismatch',
                     ContextualFeedbackSeverity::ERROR
                 ));
