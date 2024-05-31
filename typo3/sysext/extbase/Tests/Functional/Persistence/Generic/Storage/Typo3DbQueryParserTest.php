@@ -767,4 +767,21 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         self::assertStringNotContainsString('hidden', (string)$compositeExpression);
         self::assertStringNotContainsString('deleted', (string)$compositeExpression);
     }
+
+    #[Test]
+    public function generatedLikeExpressionIsCaseInsensitive(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbQueryParserTestImport.csv');
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+
+        $query->matching($query->like('title', '%BlOg%'));
+        self::assertCount(2, $query->execute());
+    }
 }

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
@@ -466,7 +467,11 @@ class Typo3DbQueryParser
                 break;
             case QueryInterface::OPERATOR_LIKE:
                 $placeHolder = $this->createTypedNamedParameter($value, Connection::PARAM_STR);
-                $expr = $exprBuilder->comparison($fieldName, 'LIKE', $placeHolder);
+                if ($this->queryBuilder->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+                    $expr = $exprBuilder->comparison($fieldName, 'ILIKE', $placeHolder);
+                } else {
+                    $expr = $exprBuilder->comparison($fieldName, 'LIKE', $placeHolder);
+                }
                 break;
             default:
                 throw new Exception(
