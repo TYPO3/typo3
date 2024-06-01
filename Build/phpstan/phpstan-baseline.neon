@@ -1176,6 +1176,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
+			message: "#^Strict comparison using \\=\\=\\= between class\\-string\\<T of object\\> and '' will always evaluate to false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
+
+		-
 			message: "#^Binary operation \"&\" between string and string\\|false results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/IpAnonymizationUtility.php
