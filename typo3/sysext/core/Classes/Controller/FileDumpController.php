@@ -35,24 +35,14 @@ use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
-class FileDumpController
+readonly class FileDumpController
 {
-    protected ResourceFactory $resourceFactory;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected ResponseFactoryInterface $responseFactory;
-    protected HashService $hashService;
-
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        ResourceFactory $resourceFactory,
-        ResponseFactoryInterface $responseFactory,
-        HashService $hashService
-    ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->resourceFactory = $resourceFactory;
-        $this->responseFactory = $responseFactory;
-        $this->hashService = $hashService;
-    }
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ResourceFactory $resourceFactory,
+        protected ResponseFactoryInterface $responseFactory,
+        protected HashService $hashService
+    ) {}
 
     /**
      * Main method to dump a file
