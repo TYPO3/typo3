@@ -79,7 +79,7 @@ class TestController extends ActionController
     }
 
     /**
-     * @Extbase\Validate("TYPO3.CMS.Extbase.Tests.Functional.Mvc.Controller.Fixture:CustomValidator", param="barParam")
+     * @Extbase\Validate("\TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\Custom", param="barParam")
      */
     public function barAction(string $barParam): ResponseInterface
     {

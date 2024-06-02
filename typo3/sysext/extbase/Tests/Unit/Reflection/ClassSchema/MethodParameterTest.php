@@ -24,7 +24,6 @@ use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMeth
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyController;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithIgnoreValidationDoctrineAnnotation;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithIgnoreValidationDoctrineAttribute;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\Validation\Validator\DummyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -111,16 +110,6 @@ final class MethodParameterTest extends UnitTestCase
                     'className' => NotEmptyValidator::class,
                 ],
                 [
-                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
-                    'options' => [],
-                    'className' => DummyValidator::class,
-                ],
-                [
                     'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
                     'options' => [],
                     'className' => NotEmptyValidator::class,
@@ -153,16 +142,6 @@ final class MethodParameterTest extends UnitTestCase
                     'name' => 'NotEmpty',
                     'options' => [],
                     'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
-                    'options' => [],
-                    'className' => DummyValidator::class,
                 ],
                 [
                     'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',

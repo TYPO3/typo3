@@ -84,7 +84,7 @@ class ArgumentTestController extends ActionController
     }
 
     /**
-     * @Extbase\Validate("TYPO3Tests.ActionControllerArgumentTest.Domain:FailingValidator", param="model")
+     * @Extbase\Validate("TYPO3Tests\ActionControllerArgumentTest\Domain\Validation\Validator\Failing", param="model")
      */
     public function validateModelAction(Model $model): ResponseInterface
     {
@@ -95,7 +95,7 @@ class ArgumentTestController extends ActionController
     }
 
     /**
-     * @Extbase\Validate("TYPO3Tests.ActionControllerArgumentTest.Domain:FailingValidator", param="dto")
+     * @Extbase\Validate("TYPO3Tests\ActionControllerArgumentTest\Domain\Validation\Validator\Failing", param="dto")
      */
     public function validateDtoAction(ModelDto $dto): ResponseInterface
     {

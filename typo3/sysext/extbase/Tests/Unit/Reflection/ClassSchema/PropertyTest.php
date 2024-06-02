@@ -23,7 +23,6 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithLazyDoctrineAnnotation;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyModel;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\Validation\Validator\DummyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -168,16 +167,6 @@ final class PropertyTest extends UnitTestCase
                     'className' => NotEmptyValidator::class,
                 ],
                 [
-                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
-                    'options' => [],
-                    'className' => DummyValidator::class,
-                ],
-                [
                     'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
                     'options' => [],
                     'className' => NotEmptyValidator::class,
@@ -211,16 +200,6 @@ final class PropertyTest extends UnitTestCase
                     'name' => 'NotEmpty',
                     'options' => [],
                     'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
-                    'options' => [],
-                    'className' => DummyValidator::class,
                 ],
                 [
                     'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
@@ -257,16 +236,6 @@ final class PropertyTest extends UnitTestCase
                     'name' => 'NotEmpty',
                     'options' => [],
                     'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
-                    'options' => [],
-                    'className' => NotEmptyValidator::class,
-                ],
-                [
-                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
-                    'options' => [],
-                    'className' => DummyValidator::class,
                 ],
                 [
                     'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',

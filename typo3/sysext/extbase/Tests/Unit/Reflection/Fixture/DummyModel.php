@@ -31,8 +31,6 @@ class DummyModel extends AbstractEntity
     /**
      * @Extbase\Validate("StringLength", options={"minimum": 1, "maximum": 10})
      * @Extbase\Validate("NotEmpty")
-     * @Extbase\Validate("TYPO3.CMS.Extbase:NotEmpty")
-     * @Extbase\Validate("TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator")
      * @Extbase\Validate("\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
      * @Extbase\Validate("TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator")
      */
@@ -40,8 +38,6 @@ class DummyModel extends AbstractEntity
 
     #[Extbase\Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 10]])]
     #[Extbase\Validate(['validator' => 'NotEmpty'])]
-    #[Extbase\Validate(['validator' => 'TYPO3.CMS.Extbase:NotEmpty'])]
-    #[Extbase\Validate(['validator' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator'])]
     #[Extbase\Validate(['validator' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator'])]
     #[Extbase\Validate(['validator' => NotEmptyValidator::class])]
     protected $propertyWithValidateAttributes;
@@ -49,8 +45,6 @@ class DummyModel extends AbstractEntity
     public function __construct(
         #[Extbase\Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 10]])]
         #[Extbase\Validate(['validator' => 'NotEmpty'])]
-        #[Extbase\Validate(['validator' => 'TYPO3.CMS.Extbase:NotEmpty'])]
-        #[Extbase\Validate(['validator' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator'])]
         #[Extbase\Validate(['validator' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator'])]
         #[Extbase\Validate(['validator' => NotEmptyValidator::class])]
         public readonly string $dummyPromotedProperty
