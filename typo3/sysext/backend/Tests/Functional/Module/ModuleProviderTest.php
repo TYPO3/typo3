@@ -94,4 +94,53 @@ final class ModuleProviderTest extends FunctionalTestCase
 
         self::assertTrue($moduleProvider->accessGranted('all_workspaces', $user)); // 1=workspace is allowed
     }
+
+    #[Test]
+    public function moduleAccessOfUserIsChecked(): void
+    {
+        $parentModule = $this->get(ModuleFactory::class)->createModule(
+            'parent_module',
+            [
+                'access' => 'admin',
+            ]
+        );
+
+        $subModule = $this->get(ModuleFactory::class)->createModule(
+            'sub_module',
+            [
+                'parent' => 'parent_module',
+                'access' => 'user',
+            ]
+        );
+
+        $anotherSubModule = $this->get(ModuleFactory::class)->createModule(
+            'another_sub_module',
+            [
+                'parent' => 'parent_module',
+                'access' => 'user',
+            ]
+        );
+
+        $subModuleWithAlias = $this->get(ModuleFactory::class)->createModule(
+            'sub_module_with_alias',
+            [
+                'parent' => 'parent_module',
+                'aliases' => ['sub_module_alias'],
+                'access' => 'user',
+            ]
+        );
+
+        $moduleRegistry = new ModuleRegistry([$parentModule, $subModule, $anotherSubModule, $subModuleWithAlias]);
+        $moduleProvider = new ModuleProvider($moduleRegistry);
+
+        $user = new BackendUserAuthentication();
+        $user->workspace = 0;
+        $user->groupData['modules'] = 'another_sub_module,sub_module_alias';
+
+        self::assertFalse($moduleProvider->accessGranted('parent_module', $user));
+        self::assertFalse($moduleProvider->accessGranted('sub_module', $user));
+        self::assertTrue($moduleProvider->accessGranted('another_sub_module', $user));
+        self::assertTrue($moduleProvider->accessGranted('sub_module_with_alias', $user));
+        self::assertTrue($moduleProvider->accessGranted('sub_module_alias', $user));
+    }
 }

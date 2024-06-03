@@ -231,9 +231,13 @@ class ModuleProvider
             return $user->isAdmin();
         }
 
-        // This checks if a user is permitted to access the module, being
-        // either admin or having necessary module access permissions set.
-        if ($user->isAdmin() || $user->check('modules', $identifier)) {
+        // This checks if a user is permitted to access the module as admin
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        // This checks if the user is having necessary module access permissions by either identifier or alias
+        if ($this->checkModuleAccess($user, $identifier)) {
             return true;
         }
 
@@ -265,5 +269,19 @@ class ModuleProvider
     public function getUserModules(): array
     {
         return array_filter($this->moduleRegistry->getModules(), static fn($module) => $module->getAccess() === 'user');
+    }
+
+    /**
+     * Check if user has access to module based on the identifier or an alias for the identifier
+     */
+    protected function checkModuleAccess(BackendUserAuthentication $user, string $identifier): bool
+    {
+        if ($user->check('modules', $identifier)) {
+            return true;
+        }
+
+        $alias = array_search($identifier, $this->moduleRegistry->getModuleAliases(), true);
+
+        return $alias !== false && $user->check('modules', $alias);
     }
 }
