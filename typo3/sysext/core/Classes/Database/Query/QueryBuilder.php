@@ -27,6 +27,7 @@ use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\From;
 use Doctrine\DBAL\Query\Join;
+use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Doctrine\DBAL\Query\QueryType;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
@@ -1329,6 +1330,78 @@ class QueryBuilder extends ConcreteQueryBuilder
             }
         }
         return $queriedTables;
+    }
+
+    /**
+     * @param string[] $fields
+     * @param string[] $dependsOn
+     *
+     * @internal not part of public API, experimental and may change at any given time.
+     */
+    public function typo3_with(
+        string $name,
+        string|DoctrineQueryBuilder|ConcreteQueryBuilder|QueryBuilder $expression,
+        array $fields = [],
+        array $dependsOn = [],
+    ): self {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->typo3_with($name, $expression, $fields, $dependsOn);
+        return $this;
+    }
+
+    /**
+     * @param string[] $fields
+     * @param string[] $dependsOn
+     *
+     * @internal not part of public API, experimental and may change at any given time.
+     */
+    public function typo3_addWith(
+        string $name,
+        string|DoctrineQueryBuilder|ConcreteQueryBuilder|QueryBuilder $expression,
+        array $fields = [],
+        array $dependsOn = [],
+    ): self {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->typo3_addWith($name, $expression, $fields, $dependsOn);
+        return $this;
+    }
+
+    /**
+     * @param string[] $fields
+     * @param string[] $dependsOn
+     *
+     * @internal not part of public API, experimental and may change at any given time.
+     */
+    public function typo3_withRecursive(
+        string $name,
+        bool $uniqueRows,
+        string|DoctrineQueryBuilder|ConcreteQueryBuilder|QueryBuilder $expression,
+        string|DoctrineQueryBuilder|ConcreteQueryBuilder|QueryBuilder $initialExpression,
+        array $fields = [],
+        array $dependsOn = [],
+    ): self {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->typo3_withRecursive($name, $uniqueRows, $expression, $initialExpression, $fields, $dependsOn);
+        return $this;
+    }
+
+    /**
+     * @param string[] $fields
+     * @param string[] $dependsOn
+     *
+     * @internal not part of public API, experimental and may change at any given time.
+     */
+    public function typo3_addWithRecursive(
+        string $name,
+        bool $uniqueRows,
+        string|DoctrineQueryBuilder|ConcreteQueryBuilder|QueryBuilder $expression,
+        string|DoctrineQueryBuilder|ConcreteQueryBuilder|QueryBuilder $initialExpression,
+        array $fields = [],
+        array $dependsOn = [],
+    ): self {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        $concreteQueryBuilder->typo3_addWithRecursive($name, $uniqueRows, $expression, $initialExpression, $fields, $dependsOn);
+        return $this;
     }
 
     /**

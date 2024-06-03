@@ -17,10 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQL80Platform as DoctrineMySQL80Platform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
+use Doctrine\DBAL\Query\ForUpdate;
+use Doctrine\DBAL\Query\ForUpdate\ConflictResolutionMode;
 use Doctrine\DBAL\Query\From;
 use Doctrine\DBAL\Query\Join;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
+use Doctrine\DBAL\Query\QueryException;
 use Doctrine\DBAL\Query\QueryType;
 use TYPO3\CMS\Core\Database\Connection;
 
@@ -39,6 +46,11 @@ use TYPO3\CMS\Core\Database\Connection;
  */
 class ConcreteQueryBuilder extends DoctrineQueryBuilder
 {
+    /**
+     * The complete SQL string for this query.
+     */
+    protected ?string $sql = null;
+
     /**
      * The type of query this is. Can be select, update or delete.
      */
@@ -62,6 +74,8 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
      * @var From[]
      */
     protected array $from = [];
+
+    protected ?ForUpdate $forUpdate = null;
 
     /**
      * The list of joins, indexed by from alias.
@@ -95,6 +109,11 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     protected array $orderBy = [];
 
     /**
+     * The WITH query parts.
+     */
+    protected WithCollection $typo3_with;
+
+    /**
      * Initializes a new <tt>QueryBuilder</tt>.
      *
      * @param Connection $connection The DBAL Connection.
@@ -102,6 +121,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     public function __construct(protected readonly Connection $connection)
     {
         parent::__construct($this->connection);
+        $this->typo3_with = new WithCollection();
     }
 
     /**
@@ -149,6 +169,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
             return $this;
         }
         $this->select = $expressions;
+        $this->sql = null;
         return $this;
     }
 
@@ -168,6 +189,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::distinct($distinct);
         $this->distinct = $distinct;
+        $this->sql = null;
         return $this;
     }
 
@@ -192,6 +214,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
         parent::addSelect($expression, ...$expressions);
         $this->type = QueryType::SELECT;
         $this->select = array_merge($this->select, [$expression], $expressions);
+        $this->sql = null;
         return $this;
     }
 
@@ -214,6 +237,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::delete($table);
         $this->type = QueryType::DELETE;
+        $this->sql = null;
         return $this;
     }
 
@@ -236,6 +260,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::update($table);
         $this->type = QueryType::UPDATE;
+        $this->sql = null;
         return $this;
     }
 
@@ -262,6 +287,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::insert($table);
         $this->type = QueryType::INSERT;
+        $this->sql = null;
         return $this;
     }
 
@@ -284,6 +310,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::from($table, $alias);
         $this->from[] = new From($table, $alias);
+        $this->sql = null;
         return $this;
     }
 
@@ -308,6 +335,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::innerJoin($fromAlias, $join, $alias, $condition);
         $this->join[$fromAlias][] = Join::inner($join, $alias, $condition);
+        $this->sql = null;
         return $this;
     }
 
@@ -332,6 +360,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::leftJoin($fromAlias, $join, $alias, $condition);
         $this->join[$fromAlias][] = Join::left($join, $alias, $condition);
+        $this->sql = null;
         return $this;
     }
 
@@ -356,6 +385,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::rightJoin($fromAlias, $join, $alias, $condition);
         $this->join[$fromAlias][] = Join::right($join, $alias, $condition);
+        $this->sql = null;
         return $this;
     }
 
@@ -390,6 +420,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         $where = $this->where = $this->createPredicate($predicate, ...$predicates);
         parent::where($where);
+        $this->sql = null;
         return $this;
     }
 
@@ -470,6 +501,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         $groupBy = $this->groupBy = array_merge([$expression], $expressions);
         parent::groupBy(...$groupBy);
+        $this->sql = null;
         return $this;
     }
 
@@ -509,6 +541,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         $having = $this->having = $this->createPredicate($predicate, ...$predicates);
         parent::having($having);
+        $this->sql = null;
         return $this;
     }
 
@@ -605,6 +638,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
             $orderBy .= ' ' . $order;
         }
         $this->orderBy = [$orderBy];
+        $this->sql = null;
         return $this;
     }
 
@@ -624,6 +658,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
             $orderBy .= ' ' . $order;
         }
         $this->orderBy[] = $orderBy;
+        $this->sql = null;
         return $this;
     }
 
@@ -636,6 +671,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::resetWhere();
         $this->where = null;
+        $this->sql = null;
         return $this;
     }
 
@@ -648,6 +684,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::resetGroupBy();
         $this->groupBy = [];
+        $this->sql = null;
         return $this;
     }
 
@@ -660,6 +697,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         $this->resetHaving();
         $this->having = null;
+        $this->sql = null;
         return $this;
     }
 
@@ -672,12 +710,123 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
     {
         parent::resetOrderBy();
         $this->orderBy = [];
+        $this->sql = '';
         return $this;
+    }
+
+    public function setMaxResults(?int $maxResults): ConcreteQueryBuilder
+    {
+        parent::setMaxResults($maxResults);
+        $this->sql = null;
+        return $this;
+    }
+
+    public function setFirstResult(int $firstResult): ConcreteQueryBuilder
+    {
+        parent::setFirstResult($firstResult);
+        $this->sql = null;
+        return $this;
+    }
+
+    public function forUpdate(ConflictResolutionMode $conflictResolutionMode = ConflictResolutionMode::ORDINARY): DoctrineQueryBuilder
+    {
+        parent::forUpdate($conflictResolutionMode);
+        $this->forUpdate = new ForUpdate($conflictResolutionMode);
+
+        $this->sql = null;
+
+        return $this;
+    }
+
+    public function getSQL(): string
+    {
+        if ($this->typo3_with->isEmpty()) {
+            return parent::getSQL();
+        }
+        return $this->sql ??= $this->prependWith(parent::getSQL());
     }
 
     //##################################################################################################################
     // Below are added methods not originated from Doctrine DBAL QueryBuilder
     //##################################################################################################################
+
+    /**
+     * @param string[] $fields
+     * @param string[] $dependsOn
+     *
+     * @internal not part of public API, experimental and may change at any given time.
+     */
+    public function typo3_with(
+        string $name,
+        string|QueryBuilder $expression,
+        array $fields = [],
+        array $dependsOn = [],
+    ): self {
+        $this->typo3_with->set(new With($name, $fields, $dependsOn, $expression, false));
+
+        return $this;
+    }
+
+    /**
+     * @param string[] $fields
+     * @param string[] $dependsOn
+     *
+     * @internal not part of public API, experimental and may change at any given time.
+     */
+    public function typo3_addWith(
+        string $name,
+        string|QueryBuilder $expression,
+        array $fields = [],
+        array $dependsOn = [],
+    ): self {
+        $this->typo3_with->add(new With($name, $fields, $dependsOn, $expression, false));
+
+        return $this;
+    }
+
+    /**
+     * @param string[] $fields
+     * @param string[] $dependsOn
+     *
+     * @internal not part of public API, experimental and may change at any given time.
+     */
+    public function typo3_withRecursive(
+        string $name,
+        bool $uniqueRows,
+        string|QueryBuilder $initialExpression,
+        string|QueryBuilder $recursiveExpression,
+        array $fields = [],
+        array $dependsOn = [],
+    ): self {
+        // @todo Switch to UNION QueryBuilder once https://review.typo3.org/c/Packages/TYPO3.CMS/+/83943 has been added.
+        $unionPattern = ($uniqueRows ? '%s UNION %s' : '%s UNION ALL %s');
+        $unionExpression = sprintf($unionPattern, $initialExpression, $recursiveExpression);
+        $this->typo3_with->set(new With($name, $fields, $dependsOn, $unionExpression, true));
+
+        return $this;
+    }
+
+    /**
+     * @param string[] $fields
+     * @param string[] $dependsOn
+     *
+     * @internal not part of public API, experimental and may change at any given time.
+     */
+    public function typo3_addWithRecursive(
+        string $name,
+        bool $uniqueRows,
+        string|QueryBuilder $initialExpression,
+        string|QueryBuilder $recursiveExpression,
+        array $fields = [],
+        array $dependsOn = [],
+    ): self {
+        // @todo Switch to UNION QueryBuilder once https://review.typo3.org/c/Packages/TYPO3.CMS/+/83943 has been added.
+        $unionPattern = ($uniqueRows ? '%s UNION %s' : '%s UNION ALL %s');
+        $unionExpression = sprintf($unionPattern, $initialExpression, $recursiveExpression);
+        $this->typo3_with->add(new With($name, $fields, $dependsOn, $unionExpression, true));
+
+        return $this;
+    }
 
     /**
      * Determine if a query part used for where or having is empty. Used as array_filter in ConcreteQueryBuilder
@@ -699,5 +848,30 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
             || ($value instanceof CompositeExpression && $value->count() === 0)
             || trim((string)$value, '() ') === ''
         ;
+    }
+
+    /**
+     * @todo Should be handled in {@see AbstractPlatform} class hierarchy directly in doctrine directly if support gets
+     *       accepted or handled internally here to avoid the force to extend and replace platform classes.
+     */
+    private function supportsCommonTableExpressions(): bool
+    {
+        $platform = $this->connection->getDatabasePlatform();
+        return $platform instanceof DoctrineMariaDBPlatform
+            || $platform instanceof DoctrineMySQL80Platform
+            || $platform instanceof DoctrineSQLitePlatform
+            || $platform instanceof DoctrinePostgreSQLPlatform
+        ;
+    }
+
+    private function prependWith(string $sql): string
+    {
+        if (!$this->typo3_with->isEmpty() && !$this->supportsCommonTableExpressions()) {
+            throw new QueryException(
+                'WITH not supported for current connection.',
+                1717762530,
+            );
+        }
+        return $this->typo3_with . $sql;
     }
 }
