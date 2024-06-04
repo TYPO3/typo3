@@ -19,10 +19,10 @@
 				<source>DB Mounts</source>
 			</trans-unit>
 			<trans-unit id="userMods" resname="userMods">
-				<source>Modules</source>
+				<source>Allowed modules</source>
 			</trans-unit>
 			<trans-unit id="availableWidgets" resname="userMods">
-				<source>Dashboard widgets</source>
+				<source>Allowed dashboard widgets</source>
 			</trans-unit>
 			<trans-unit id="mfa_providers" resname="mfa_providers">
 				<source>Allowed multi-factor authentication providers</source>
@@ -157,10 +157,10 @@
 				<source>Personal Data</source>
 			</trans-unit>
 			<trans-unit id="be_groups.title" resname="be_groups.title">
-				<source>Grouptitle</source>
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="be_groups.pagetypes_select" resname="be_groups.pagetypes_select">
-				<source>Page types</source>
+				<source>Allowed page types</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tables_modify" resname="be_groups.tables_modify">
 				<source>Table permissions</source>
@@ -181,7 +181,10 @@
 				<source>Tables (listing)</source>
 			</trans-unit>
 			<trans-unit id="be_groups.non_exclude_fields" resname="be_groups.non_exclude_fields">
-				<source>Allowed excludefields</source>
+				<source>Allowed fields</source>
+			</trans-unit>
+			<trans-unit id="be_groups.non_exclude_fields.description" resname="be_groups.non_exclude_fields.description">
+				<source>Allow fields that are excluded in forms by default for non-admin users. This option refers to the 'exclude' configuration set in TCA (Table Configuration Array).</source>
 			</trans-unit>
 			<trans-unit id="be_groups.explicit_allowdeny" resname="be_groups.explicit_allowdeny">
 				<source>Explicitly allow field values</source>

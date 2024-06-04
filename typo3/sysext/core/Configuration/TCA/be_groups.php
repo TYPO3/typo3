@@ -145,6 +145,7 @@ return [
         ],
         'non_exclude_fields' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields',
+            'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields.description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
