@@ -86,11 +86,25 @@ return [
             ],
         ],
 
+        'inline_2' => [
+            'label' => 'inline_2',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_styleguide_inline_expandsingle_inline_2_child',
+                'foreign_field' => 'parentid',
+                'foreign_table_field' => 'parenttable',
+                'appearance' => [
+                    'collapseAll' => true,
+                    'expandSingle' => true,
+                    'newRecordLinkAddTitle' => true,
+                ],
+            ],
+        ],
     ],
 
     'types' => [
         '0' => [
-            'showitem' => 'inline_1',
+            'showitem' => 'inline_1, inline_2',
         ],
     ],
 
