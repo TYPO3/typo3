@@ -509,7 +509,7 @@ class ImageManipulation {
     this.setAspectRatio(selectedRatio);
     this.setCropArea(temp.cropArea);
     this.currentCropVariant = Object.assign({}, temp, cropVariant);
-    this.cropBox?.querySelector(this.coverAreaSelector)?.remove();
+    this.cropBox?.querySelectorAll(this.coverAreaSelector)?.forEach((el: HTMLElement) => el.remove());
 
     // if the current container has a focus area element, deregister and cleanup prior to initialization
     if (this.cropBox?.querySelectorAll(this.focusAreaSelector)?.length > 0) {
