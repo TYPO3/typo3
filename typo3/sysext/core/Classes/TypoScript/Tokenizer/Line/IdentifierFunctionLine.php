@@ -32,11 +32,11 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
  */
 final class IdentifierFunctionLine extends AbstractLine
 {
-    private IdentifierTokenStream $identifierTokenStream;
-    private Token $functionNameToken;
+    private ?IdentifierTokenStream $identifierTokenStream = null;
+    private ?Token $functionNameToken = null;
     private ?Token $functionValueToken = null;
 
-    public function setIdentifierTokenStream(IdentifierTokenStream $tokenStream): static
+    public function setIdentifierTokenStream(IdentifierTokenStream $tokenStream): IdentifierFunctionLine
     {
         if ($tokenStream->isEmpty()) {
             throw new \LogicException('Identifier token stream must not be empty', 1655825120);
@@ -47,10 +47,13 @@ final class IdentifierFunctionLine extends AbstractLine
 
     public function getIdentifierTokenStream(): IdentifierTokenStream
     {
+        if ($this->identifierTokenStream === null) {
+            throw new \RuntimeException('Identifier token stream has not been set', 1717495444);
+        }
         return $this->identifierTokenStream;
     }
 
-    public function setFunctionNameToken(Token $token): static
+    public function setFunctionNameToken(Token $token): IdentifierFunctionLine
     {
         if ($token->getType() !== TokenType::T_FUNCTION_NAME) {
             throw new \LogicException('Function name token must be of type T_FUNCTION_NAME', 1655825121);
@@ -61,10 +64,13 @@ final class IdentifierFunctionLine extends AbstractLine
 
     public function getFunctionNameToken(): Token
     {
+        if ($this->functionNameToken === null) {
+            throw new \RuntimeException('Function name token has not been set', 1717495576);
+        }
         return $this->functionNameToken;
     }
 
-    public function setFunctionValueToken(Token $token): static
+    public function setFunctionValueToken(Token $token): IdentifierFunctionLine
     {
         if ($token->getType() !== TokenType::T_VALUE) {
             throw new \LogicException('Function value token must be of type T_VALUE', 1655825122);
