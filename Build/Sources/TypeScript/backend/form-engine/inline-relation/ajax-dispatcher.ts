@@ -98,19 +98,16 @@ export class AjaxDispatcher {
       }
     }
 
-    // If there are elements they should be added to the <HEAD> tag (e.g. for RTEhtmlarea):
     if (json.stylesheetFiles) {
-      for (const [index, stylesheetFile] of json.stylesheetFiles.entries()) {
-        if (!stylesheetFile) {
-          break;
-        }
-        const element = document.createElement('link');
-        element.rel = 'stylesheet';
-        element.type = 'text/css';
-        element.href = stylesheetFile;
-        document.querySelector('head').appendChild(element);
-        json.stylesheetFiles.splice(index, 1);
-      }
+      document.querySelector('head').append(
+        ...json.stylesheetFiles.filter(file => file).map(file => {
+          const element = document.createElement('link');
+          element.rel = 'stylesheet';
+          element.type = 'text/css';
+          element.href = file;
+          return element;
+        })
+      );
     }
 
     if (typeof json.inlineData === 'object') {
