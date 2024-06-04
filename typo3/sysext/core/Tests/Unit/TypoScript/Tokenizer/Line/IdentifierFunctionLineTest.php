@@ -35,11 +35,27 @@ final class IdentifierFunctionLineTest extends UnitTestCase
     }
 
     #[Test]
+    public function getIdentifierTokenStreamThrowsIfNotSet(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1717495444);
+        (new IdentifierFunctionLine())->getIdentifierTokenStream();
+    }
+
+    #[Test]
     public function setFunctionNameTokenThrowsIfTokenIsNotOfTypeFunction(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1655825121);
         (new IdentifierFunctionLine())->setFunctionNameToken(new Token(TokenType::T_BLANK, ''));
+    }
+
+    #[Test]
+    public function getFunctionNameTokenThrowsIfNotSet(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1717495576);
+        (new IdentifierFunctionLine())->getFunctionNameToken();
     }
 
     #[Test]
