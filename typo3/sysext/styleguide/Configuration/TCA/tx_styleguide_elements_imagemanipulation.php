@@ -287,6 +287,74 @@ return [
                 ],
             ],
         ],
+        'crop_9' => [
+            'label' => 'crop_9',
+            'description' => 'crop variant with multiple cover areas',
+            'config' => [
+                'type' => 'imageManipulation',
+                'file_field' => 'group_db_3',
+                'cropVariants' => [
+                    'desktop_wide' => [
+                        'title' => 'Desktop wide',
+                        'allowedAspectRatios' => [
+                            'default' => [
+                                'title' => 'Default',
+                                'value' => 1920 / 680,
+                            ],
+                        ],
+                        'selectedRatio' => 'default',
+                        'coverAreas' => [
+                            [
+                                'x' => 0,
+                                'y' => 0,
+                                'width' => 1,
+                                'height' => 0.25,
+                            ],
+                            [
+                                'x' => 0.2,
+                                'y' => 0.35,
+                                'width' => 0.25,
+                                'height' => 0.5,
+                            ],
+                        ],
+                    ],
+                    'desktop' => [
+                        'title' => 'Desktop',
+                        'allowedAspectRatios' => [
+                            'default' => [
+                                'title' => 'Default',
+                                'value' => 1370 / 680,
+                            ],
+                        ],
+                        'selectedRatio' => 'default',
+                        'coverAreas' => [
+                            [
+                                'x' => 0,
+                                'y' => 0,
+                                'width' => 1,
+                                'height' => 0.25,
+                            ],
+                            [
+                                'x' => 0.08,
+                                'y' => 0.35,
+                                'width' => 0.45,
+                                'height' => 0.5,
+                            ],
+                        ],
+                    ],
+                    'small' => [
+                        'title' => 'Tablet / Smartphone',
+                        'allowedAspectRatios' => [
+                            'default' => [
+                                'title' => 'Default',
+                                'value' => 16 / 9,
+                            ],
+                        ],
+                        'selectedRatio' => 'default',
+                    ],
+                ],
+            ],
+        ],
     ],
 
     'types' => [
@@ -294,7 +362,7 @@ return [
             'showitem' => '
                 --div--;crop,
                     group_db_1, crop_1, group_db_2, crop_2, crop_4, group_db_3,
-                    crop_3, crop_5, crop_6, crop_7, crop_8,
+                    crop_3, crop_5, crop_6, crop_7, crop_8, crop_9,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,
             ',
