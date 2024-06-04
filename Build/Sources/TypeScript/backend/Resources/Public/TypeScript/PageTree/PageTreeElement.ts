@@ -636,6 +636,7 @@ class ToolbarDragHandler implements DragDropHandler {
   }
 
   public dragStart(event: TreeNodeDragEvent): boolean {
+    (event.sourceEvent as MouseEvent).preventDefault();
     this.isDragged = false;
     this.startDrag = false;
     this.startPageX = event.sourceEvent.pageX;
