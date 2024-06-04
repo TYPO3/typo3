@@ -83,8 +83,8 @@ interface NodeInterface
     public function getPreviousValue(): ?string;
 
     /**
-     * Helper method mostly for backend object browser to retrieve the original
-     * stream when a constant substitution happened.
+     * Helper method for backend object browser to retrieve the original
+     * stream when a constant substitution happened, only set by CommentAwareAstBuilder.
      */
     public function setOriginalValueTokenStream(?TokenStreamInterface $tokenStream): void;
     public function getOriginalValueTokenStream(): ?TokenStreamInterface;

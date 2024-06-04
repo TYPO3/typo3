@@ -2122,6 +2122,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     #[Test]
     public function buildConstant(string $source, array $constants, RootNode $expectedAst): void
     {
+        $this->registerComparator(new AbstractNodeWithoutOriginalValueTokenStreamIdentifierComparator());
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
         $ast = (new AstBuilder($noopEventDispatcher))->build($tokens, new RootNode(), $constants);

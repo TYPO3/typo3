@@ -99,7 +99,6 @@ final class AstBuilder extends AbstractAstBuilder implements AstBuilderInterface
             $valueTokenStream->setFlatConstants($this->flatConstants);
             $node->setValue((string)$valueTokenStream);
             $valueTokenStream->setFlatConstants(null);
-            $node->setOriginalValueTokenStream($valueTokenStream);
             return;
         }
         $node->setValue((string)$valueTokenStream);
