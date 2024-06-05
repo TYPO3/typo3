@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Helper;
 use Codeception\Module;
 use Codeception\Module\WebDriver;
 use Codeception\Util\Locator;
+use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\WebDriverKeys;
 
 /**
@@ -54,18 +55,22 @@ final class PasswordLogin extends Module
         $webDriver->wait($waitTime);
 
         if (!$hasSession) {
-            $webDriver->waitForElement('body[data-typo3-login-ready]');
-            $password = $this->_getConfig('passwords')[$role];
-            $webDriver->fillField('#t3-username', $role);
-            $webDriver->fillField('#t3-password', $password);
-            $webDriver->pressKey('#t3-password', WebDriverKeys::ENTER);
-            $webDriver->waitForElement('.t3js-scaffold-toolbar');
-            $webDriver->saveSessionSnapshot('login.' . $role);
+            $this->login($role);
         }
 
         // Ensure main content frame is fully loaded, otherwise there are load-race-conditions ..
         $webDriver->debugSection('IFRAME', 'Switch to list_frame');
-        $webDriver->waitForElement('iframe[name="list_frame"]');
+        try {
+            $webDriver->waitForElement('iframe[name="list_frame"]');
+        } catch (TimeoutException) {
+            // We don't know why, but it seems loading an existing session fails sometimes.
+            // In this case, the BE is not loaded and the system "hangs" in login.
+            // Catch this here and login again.
+            $webDriver->debugSection('Session lost', 'Log in again');
+            $this->login($role);
+            $webDriver->debugSection('IFRAME', 'Switch to list_frame');
+            $webDriver->waitForElement('iframe[name="list_frame"]');
+        }
         $webDriver->switchToIFrame('list_frame');
         $webDriver->waitForElement(Locator::firstElement('div.module'));
         $webDriver->wait($waitTime);
@@ -81,7 +86,19 @@ final class PasswordLogin extends Module
         $webDriver = $this->getWebDriver();
         $webDriver->webDriver->manage()->deleteCookieNamed('be_typo_user');
         $webDriver->webDriver->manage()->deleteCookieNamed('be_lastLoginProvider');
-        return $webDriver->loadSessionSnapshot('login.' . $role, false);
+        return $webDriver->loadSessionSnapshot('login.' . $role);
+    }
+
+    private function login(string $role): void
+    {
+        $webDriver = $this->getWebDriver();
+        $webDriver->waitForElement('body[data-typo3-login-ready]');
+        $password = $this->_getConfig('passwords')[$role];
+        $webDriver->fillField('#t3-username', $role);
+        $webDriver->fillField('#t3-password', $password);
+        $webDriver->pressKey('#t3-password', WebDriverKeys::ENTER);
+        $webDriver->waitForElement('.t3js-scaffold-toolbar');
+        $webDriver->saveSessionSnapshot('login.' . $role);
     }
 
     private function getWebDriver(): WebDriver
