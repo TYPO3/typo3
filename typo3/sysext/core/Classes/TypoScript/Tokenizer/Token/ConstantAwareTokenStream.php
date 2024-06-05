@@ -34,7 +34,7 @@ final class ConstantAwareTokenStream extends AbstractTokenStream
     /**
      * Set by the AstBuilder to resolve constant values. Never cached.
      */
-    public function setFlatConstants(?array $flatConstants = []): void
+    public function setFlatConstants(array $flatConstants): void
     {
         $this->flatConstants = $flatConstants;
     }

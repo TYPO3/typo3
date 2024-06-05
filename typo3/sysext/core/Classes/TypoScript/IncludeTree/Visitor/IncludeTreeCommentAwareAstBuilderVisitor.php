@@ -57,7 +57,7 @@ final class IncludeTreeCommentAwareAstBuilderVisitor implements IncludeTreeVisit
      *
      * @param array<string, string> $flatConstants
      */
-    public function setFlatConstants(array $flatConstants)
+    public function setFlatConstants(array $flatConstants): void
     {
         $this->flatConstants = $flatConstants;
     }

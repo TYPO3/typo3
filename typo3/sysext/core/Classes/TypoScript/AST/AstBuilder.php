@@ -96,9 +96,9 @@ final class AstBuilder extends AbstractAstBuilder implements AstBuilderInterface
         $node = $this->getOrAddNodeFromIdentifierStream($currentObjectPath, $line->getIdentifierTokenStream());
         $valueTokenStream = $line->getValueTokenStream();
         if ($valueTokenStream instanceof ConstantAwareTokenStream) {
+            $valueTokenStream = clone $valueTokenStream;
             $valueTokenStream->setFlatConstants($this->flatConstants);
             $node->setValue((string)$valueTokenStream);
-            $valueTokenStream->setFlatConstants(null);
             return;
         }
         $node->setValue((string)$valueTokenStream);
