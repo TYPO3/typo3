@@ -65,6 +65,34 @@ some details:
       # This does NOT resolve to "fooValue", but to the string literal "{$foo}"
       myValue = {$bar}
 
+* Similar to the above restriction, constants can be used in Frontend TypoScript *setup* conditions,
+  but not in Frontend TypoScript *constants* conditions. As example, a :sql:`sys_template` record with
+  the below content set in the :sql:`constants` field always evaluates the condition to false:
+
+  .. code-block:: typoscript
+
+      my.constant = myValue
+      ['{$my.constant}' == 'myValue']
+        # Never executed since the above constant usage is NOT substituted to 'myValue'
+        other.constant = otherValue
+      [global]
+
+  If something like this is really needed, integrators can potentially work around by accessing
+  a :ref:`site setting <t3coreapi:sitehandling-settings>` directly in a constants condition:
+
+  .. code-block:: typoscript
+
+      The sites settings.yaml:
+      some:
+        setting: someValue
+
+      A sys_template record constants field within this site:
+      my.constant = myValue
+      [traverse(site('configuration'), 'settings/some/setting') == 'someValue']
+        # This works but is rather ugly to rely on
+        other.constant = otherValue
+      [global]
+
 * Constants are now restricted to "assignments" and "conditions". Using a constant to
   substitute an "identifier" / "object path" is no longer allowed. This has never been
   clarified in the docs before and instances abusing constants to specify object paths
