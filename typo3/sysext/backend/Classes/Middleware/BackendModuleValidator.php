@@ -165,7 +165,7 @@ class BackendModuleValidator implements MiddlewareInterface
         // Check for module data, send via GET/POST parameters.
         // Only consider the configured keys from the module configuration.
         $requestModuleData = [];
-        foreach ($module->getDefaultModuleData() as $name => $value) {
+        foreach (array_keys($module->getDefaultModuleData()) as $name) {
             $newValue = $request->getParsedBody()[$name] ?? $request->getQueryParams()[$name] ?? null;
             if ($newValue !== null) {
                 $requestModuleData[$name] = $newValue;

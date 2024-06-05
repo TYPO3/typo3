@@ -295,6 +295,11 @@ class FileListController implements LoggerAwareInterface
         } elseif (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'deactivated') {
             $this->moduleData->set('clipBoard', false);
         }
+        // Set predefined value for viewMode:
+        $viewMode = ViewMode::tryFrom($this->moduleData->get('viewMode') ?? '')
+            ?? ViewMode::tryFrom($userTsConfig['options.']['defaultResourcesViewMode'] ?? '')
+            ?? ViewMode::TILES;
+        $this->moduleData->set('viewMode', $viewMode->value);
     }
 
     protected function initializeFileList(ServerRequestInterface $request): void
