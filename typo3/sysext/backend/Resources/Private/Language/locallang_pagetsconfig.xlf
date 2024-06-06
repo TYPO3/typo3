@@ -150,6 +150,9 @@
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionElse" resname="module.pagetsconfig_includes.tree.child.type.ConditionElse">
 				<source>Condition (else)</source>
 			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionStop" resname="module.pagetsconfig_includes.tree.child.type.ConditionStop">
+				<source>Condition (end)</source>
+			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionIncludeTyposcript" resname="module.pagetsconfig_includes.tree.child.type.ConditionIncludeTyposcript">
 				<source>Included via "INCLUDE_TYPOSCRIPT" (with condition)</source>
 			</trans-unit>

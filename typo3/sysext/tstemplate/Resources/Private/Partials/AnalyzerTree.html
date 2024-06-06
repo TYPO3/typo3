@@ -38,6 +38,15 @@
                                         <f:else if="{child.type} == 'DefaultTypoScriptMagicKey'">
                                             <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.type.DefaultTypoScriptMagicKey_formlabel" />
                                         </f:else>
+                                        <f:else if="{child.type} == 'Condition'">
+                                            {child.lineStream}
+                                        </f:else>
+                                        <f:else if="{child.type} == 'ConditionElse'">
+                                            {child.lineStream}
+                                        </f:else>
+                                        <f:else if="{child.type} == 'ConditionStop'">
+                                            {child.lineStream}
+                                        </f:else>
                                         <f:else>{child.name}</f:else>
                                     </f:if>
                                 </span>

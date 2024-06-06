@@ -96,6 +96,9 @@
 			<trans-unit id="tree.child.type.ConditionIncludeTyposcript" resname="tree.child.type.ConditionIncludeTyposcript">
 				<source>Included via "INCLUDE_TYPOSCRIPT" (with condition)</source>
 			</trans-unit>
+			<trans-unit id="tree.child.type.ConditionStop" resname="tree.child.type.ConditionStop">
+				<source>Condition (end)</source>
+			</trans-unit>
 			<trans-unit id="tree.child.type.DefaultTypoScript" resname="tree.child.type.DefaultTypoScript">
 				<source>Included via "$GLOBALS"</source>
 			</trans-unit>

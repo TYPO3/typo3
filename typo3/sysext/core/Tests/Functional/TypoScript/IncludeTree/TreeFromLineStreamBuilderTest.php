@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\AtImportInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionElseInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionIncludeTyposcriptInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionStopInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\DefaultTypoScriptMagicKeyInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\FileInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
@@ -91,7 +92,12 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $expectedTree = new FileInclude();
         $expectedTree->setLineStream($typoScriptLineStream);
         $expectedTree->setName('foo');
-        yield 'condition end not in condition context is just kept' => [
+        $expectedTree->setSplit();
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream($typoScriptLineStream);
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
+        yield 'condition end not in condition context adds condition stop include' => [
             $tree,
             $expectedTree,
         ];
@@ -104,7 +110,56 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $expectedTree = new FileInclude();
         $expectedTree->setLineStream($typoScriptLineStream);
         $expectedTree->setName('foo');
-        yield 'condition global not in condition context is just kept' => [
+        $expectedTree->setSplit();
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream($typoScriptLineStream);
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
+        yield 'condition global not in condition context adds condition stop include' => [
+            $tree,
+            $expectedTree,
+        ];
+
+        $typoScript = "[GLOBAL]\n" .
+            "foo = fooValue\n" .
+            "[END]\n" .
+            "bar = barValue\n" .
+            "[GLOBAL]\n" .
+            "[END]\n";
+        $typoScriptLineStream = (new LosslessTokenizer())->tokenize($typoScript);
+        $typoScriptLineStreamArray = iterator_to_array($typoScriptLineStream->getNextLine());
+        $tree = new FileInclude();
+        $tree->setLineStream($typoScriptLineStream);
+        $tree->setName('foo');
+        $expectedTree = new FileInclude();
+        $expectedTree->setLineStream($typoScriptLineStream);
+        $expectedTree->setName('foo');
+        $expectedTree->setSplit();
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[0]));
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
+        $subNode = new SegmentInclude();
+        $subNode->setName('foo');
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[1]));
+        $expectedTree->addChild($subNode);
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[2]));
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
+        $subNode = new SegmentInclude();
+        $subNode->setName('foo');
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[3]));
+        $expectedTree->addChild($subNode);
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[4]));
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[5]));
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
+        yield 'condition global and end not in condition context split' => [
             $tree,
             $expectedTree,
         ];
@@ -156,8 +211,12 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $expectedTree->addChild($subNode);
         $subSubNode = new SegmentInclude();
         $subSubNode->setName('foo');
-        $subSubNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[1])->append($typoScriptLineStreamArray[2]));
+        $subSubNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[1]));
         $subNode->addChild($subSubNode);
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[2]));
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
         $subNode = new SegmentInclude();
         $subNode->setName('foo');
         $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[3]));
@@ -188,8 +247,12 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $expectedTree->addChild($subNode);
         $subSubNode = new SegmentInclude();
         $subSubNode->setName('foo');
-        $subSubNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[1])->append($typoScriptLineStreamArray[2]));
+        $subSubNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[1]));
         $subNode->addChild($subSubNode);
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[2]));
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
         $subNode = new SegmentInclude();
         $subNode->setName('foo');
         $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[3]));
@@ -232,8 +295,12 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $expectedTree->addChild($subNode);
         $subSubNode = new SegmentInclude();
         $subSubNode->setName('foo');
-        $subSubNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[3])->append($typoScriptLineStreamArray[4]));
+        $subSubNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[3]));
         $subNode->addChild($subSubNode);
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[4]));
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
         $subNode = new SegmentInclude();
         $subNode->setName('foo');
         $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[5]));
@@ -275,8 +342,12 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         $expectedTree->addChild($subNode);
         $subSubNode = new SegmentInclude();
         $subSubNode->setName('foo');
-        $subSubNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[3])->append($typoScriptLineStreamArray[4]));
+        $subSubNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[3]));
         $subNode->addChild($subSubNode);
+        $subNode = new ConditionStopInclude();
+        $subNode->setLineStream((new LineStream())->append($typoScriptLineStreamArray[4]));
+        $subNode->setName('foo');
+        $expectedTree->addChild($subNode);
         yield 'second condition finishes first condition' => [
             $tree,
             $expectedTree,

@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
  *
  * Nodes may have children, and a single stream of lines from the tokenizer
  * may be split into multiple children: Each @import creates an own child node,
- * and condition trigger splitting as well.
+ * and conditions trigger splitting as well.
  *
  * @internal: Internal tree structure.
  */
@@ -64,7 +64,7 @@ interface IncludeInterface
     public function getName(): string;
 
     /**
-     * This is set to non-empty string for includes that represent files. The file location
+     * This is set to a non-empty string for includes that represent files. The file location
      * is stored here, typically something like "EXT:my_extension/path/to/foo.typoscript".
      * This is used when resolving file includes relative to a parent include, so a
      * potential child node knows where to look relative to its parent path.

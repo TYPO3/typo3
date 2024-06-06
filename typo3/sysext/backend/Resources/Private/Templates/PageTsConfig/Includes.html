@@ -130,6 +130,15 @@
                                             <f:then>
                                                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.tree.child.type.Segment" />
                                             </f:then>
+                                            <f:else if="{child.type} == 'Condition'">
+                                                {child.lineStream}
+                                            </f:else>
+                                            <f:else if="{child.type} == 'ConditionElse'">
+                                                {child.lineStream}
+                                            </f:else>
+                                            <f:else if="{child.type} == 'ConditionStop'">
+                                                {child.lineStream}
+                                            </f:else>
                                             <f:else>
                                                 {child.name}
                                             </f:else>

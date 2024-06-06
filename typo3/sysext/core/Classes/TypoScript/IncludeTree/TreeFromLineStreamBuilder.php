@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\AtImportInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionElseInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionIncludeTyposcriptInclude;
+use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionStopInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\DefaultTypoScriptMagicKeyInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeTyposcriptInclude;
@@ -165,10 +166,32 @@ final class TreeFromLineStreamBuilder
             ) {
                 // Finish condition segment due to [end] or [global] line
                 $node->setSplit();
-                $lineStream->append($line);
                 $childNode->setLineStream($lineStream);
                 $node->addChild($childNode);
                 $node = $parentNode;
+                $childNode = new ConditionStopInclude();
+                $childNode->setName($node->getName());
+                $childNode->setLineStream((new LineStream())->append($line));
+                $node->addChild($childNode);
+                $childNode = new SegmentInclude();
+                $childNode->setName($node->getName());
+                $childNode->setPath($node->getPath());
+                $lineStream = new LineStream();
+                continue;
+            }
+
+            if ($line instanceof ConditionStopLine) {
+                // [end] or [global] not within open condition context. Fishy. Still finish current
+                // segment, mark node split, add new ConditionStopInclude(), open a new segment.
+                $node->setSplit();
+                if (!$lineStream->isEmpty()) {
+                    $childNode->setLineStream($lineStream);
+                    $node->addChild($childNode);
+                }
+                $childNode = new ConditionStopInclude();
+                $childNode->setName($node->getName());
+                $childNode->setLineStream((new LineStream())->append($line));
+                $node->addChild($childNode);
                 $childNode = new SegmentInclude();
                 $childNode->setName($node->getName());
                 $childNode->setPath($node->getPath());
