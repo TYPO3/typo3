@@ -82,7 +82,7 @@ editor.config
         - "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
 
    This is the default, as defined in `EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml
-   <https://github.com/typo3/typo3/blob/main/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Base.yaml>`__.
+   <https://github.com/TYPO3/typo3/blob/35cc4e3f0ae949dc87ee3279688ffe9343f04a7a/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Base.yaml>`__.
 
    .. note::
       When adding custom styling and fonts, all CSS declarations need to be
