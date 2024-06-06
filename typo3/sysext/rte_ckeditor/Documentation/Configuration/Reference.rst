@@ -81,8 +81,7 @@ editor.config
       editor.config.contentsCss:
         - "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
 
-   This is the default, as defined in `EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml
-   <https://github.com/typo3/typo3/blob/main/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Base.yaml>`__.
+   This is the default, as defined in :t3src:`rte_ckeditor/Configuration/RTE/Editor/Base.yaml`.
 
    .. note::
       When adding custom styling and fonts, all CSS declarations need to be
@@ -113,7 +112,7 @@ editor.config
 
 .. option:: editor.config.importModules
 
-   Imports custom CKEditor plugins. See :file:`EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml`
+   Imports custom CKEditor plugins. See :t3src:`rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml`
    or :ref:`How do I create a custom plugin? <config-example-customplugin>`
    for examples.
 
