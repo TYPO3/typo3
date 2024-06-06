@@ -102,9 +102,7 @@ class SuggestWizardDefaultReceiver
         $this->queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            // if table is versionized, only get the records from the Live Workspace
-            // the overlay itself of WS-records is done below
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, 0));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
         $this->table = $table;
         $this->config = $config;
         // get a list of all the pages that should be looked on
