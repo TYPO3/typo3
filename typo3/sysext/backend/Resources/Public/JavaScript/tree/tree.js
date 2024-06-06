@@ -36,9 +36,9 @@ var __decorate=function(e,t,i,o){var s,n=arguments.length,r=n<3?t:null===o?o=Obj
             role="treeitem"
             draggable="true"
             title="${this.getNodeTitle(e)}"
-            aria-owns="${e.hasChildren?"group-identifier-"+this.getNodeIdentifier(e):null}"
-            aria-expanded="${e.hasChildren?e.__expanded?"1":"0":null}"
-            aria-level="${this.getNodeDepth(e)}"
+            aria-owns="${ifDefined(e.hasChildren?"group-identifier-"+this.getNodeIdentifier(e):null)}"
+            aria-expanded="${ifDefined(e.hasChildren?e.__expanded?"1":"0":null)}"
+            aria-level="${this.getNodeDepth(e)+1}"
             aria-setsize="${this.getNodeSetsize(e)}"
             aria-posinset="${this.getNodePositionInSet(e)}"
             data-id="${this.getNodeIdentifier(e)}"
@@ -77,7 +77,7 @@ var __decorate=function(e,t,i,o){var s,n=arguments.length,r=n<3?t:null===o?o=Obj
           data-position="${this.getNodePositionInSet(t)}"
           >
         </div>
-      `}));return this.getNodeSetsize(e)===this.getNodePositionInSet(e)?t.push(html`<div class="node-treeline node-treeline--last" data-origin="${this.getNodeTreeIdentifier(e)}"></div>`):t.push(html`<div class="node-treeline node-treeline--connect" data-origin="${this.getNodeTreeIdentifier(e)}"></div>`),html`<span class="node-treelines">${t}</span>`}createNodeLoader(e){return!0===e.__loading?html`
+      `}));return this.getNodeSetsize(e)===this.getNodePositionInSet(e)?t.push(html`<div class="node-treeline node-treeline--last" data-origin="${this.getNodeTreeIdentifier(e)}"></div>`):t.push(html`<div class="node-treeline node-treeline--connect" data-origin="${this.getNodeTreeIdentifier(e)}"></div>`),html`<div class="node-treelines">${t}</div>`}createNodeLoader(e){return!0===e.__loading?html`
           <span class="node-loading">
             <typo3-backend-icon
               identifier="spinner-circle"
@@ -92,11 +92,11 @@ var __decorate=function(e,t,i,o){var s,n=arguments.length,r=n<3?t:null===o?o=Obj
             ></typo3-backend-icon>
           </span>
         `:null}createNodeContent(e){return html`
-      <span class="node-content">
+      <div class="node-content">
         ${this.createNodeContentIcon(e)}
         ${this.editingNode===e?this.createNodeForm(e):this.createNodeContentLabel(e)}
         ${this.createNodeContentAction(e)}
-      </span>
+      </div>
     `}createNodeContentIcon(e){return this.settings.showIcons?html`
         <span class="node-icon"
           @click="${t=>{t.preventDefault(),t.stopImmediatePropagation(),this.dispatchEvent(new CustomEvent("typo3:tree:node-context",{detail:{node:e,originalEvent:t}}))}}"
