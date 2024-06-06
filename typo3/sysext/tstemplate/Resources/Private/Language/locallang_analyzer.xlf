@@ -132,6 +132,9 @@
 			<trans-unit id="tree.child.type.Site" resname="tree.child.type.Site">
 				<source>Site</source>
 			</trans-unit>
+			<trans-unit id="tree.child.type.SiteTemplate" resname="tree.child.type.SiteTemplate">
+				<source>Site configuration</source>
+			</trans-unit>
 			<trans-unit id="tree.child.type.SysTemplate" resname="tree.child.type.SysTemplate">
 				<source>TypoScript record</source>
 			</trans-unit>
