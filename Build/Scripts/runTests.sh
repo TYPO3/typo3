@@ -303,7 +303,7 @@ Options:
         Example -e "-d memory_limit=-1 --filter filterByValueRecursiveCorrectlyFiltersArray" to enable verbose output AND filter tests
         named "canRetrieveValueWithGP"
 
-        DEPRECATED - pass arguments after the `--` separator directly. For example, instead of
+        DEPRECATED - pass arguments after the "--" separator directly. For example, instead of
             Build/Scripts/runTests.sh -s unit -e "--filter filterByValueRecursiveCorrectlyFiltersArray"
         use
             Build/Scripts/runTests.sh -s unit -- --filter filterByValueRecursiveCorrectlyFiltersArray
