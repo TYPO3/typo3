@@ -612,9 +612,9 @@ export class Tree extends LitElement {
             role="treeitem"
             draggable="true"
             title="${this.getNodeTitle(node)}"
-            aria-owns="${(node.hasChildren ? 'group-identifier-' + this.getNodeIdentifier(node) : null)}"
-            aria-expanded="${(node.hasChildren ? (node.__expanded ? '1' : '0') : null)}"
-            aria-level="${this.getNodeDepth(node)}"
+            aria-owns="${ifDefined(node.hasChildren ? 'group-identifier-' + this.getNodeIdentifier(node) : null)}"
+            aria-expanded="${ifDefined(node.hasChildren ? (node.__expanded ? '1' : '0') : null)}"
+            aria-level="${(this.getNodeDepth(node) + 1)}"
             aria-setsize="${this.getNodeSetsize(node)}"
             aria-posinset="${this.getNodePositionInSet(node)}"
             data-id="${this.getNodeIdentifier(node)}"
@@ -972,7 +972,7 @@ export class Tree extends LitElement {
       guides.push(html`<div class="node-treeline node-treeline--connect" data-origin="${this.getNodeTreeIdentifier(node)}"></div>`);
     }
 
-    return html`<span class="node-treelines">${guides}</span>`;
+    return html`<div class="node-treelines">${guides}</div>`;
   }
 
   protected createNodeLoader(node: TreeNodeInterface): TemplateResult|null
@@ -1009,11 +1009,11 @@ export class Tree extends LitElement {
   protected createNodeContent(node: TreeNodeInterface): TemplateResult
   {
     return html`
-      <span class="node-content">
+      <div class="node-content">
         ${this.createNodeContentIcon(node)}
         ${this.editingNode === node ? this.createNodeForm(node) : this.createNodeContentLabel(node)}
         ${this.createNodeContentAction(node)}
-      </span>
+      </div>
     `;
   }
 
