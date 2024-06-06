@@ -155,7 +155,7 @@ cleanTestFiles() {
 cleanRenderedDocumentationFiles() {
     echo -n "Clean rendered documentation files ... "
     rm -rf \
-        ../../../typo3/sysext/*/Documentation-GENERATED-temp
+        typo3/sysext/*/Documentation-GENERATED-temp
     echo "done"
 }
 
