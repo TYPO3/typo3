@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -312,6 +313,40 @@ class Locales implements SingletonInterface
             return false;
         }
         return self::setLocale($locale, $locale);
+    }
+
+    /**
+     * @internal not part of TYPO3 Core API, don't use outside of TYPO3 Core
+     */
+    public static function getAllSystemLocales(): array
+    {
+        $disabledFunctions = GeneralUtility::trimExplode(',', (string)ini_get('disable_functions'), true);
+        if (in_array('exec', $disabledFunctions, true)) {
+            return [];
+        }
+
+        $rawOutput = [];
+        CommandUtility::exec('locale -a', $rawOutput);
+
+        sort($rawOutput, SORT_NATURAL);
+        $locales = [];
+        $usedLocaleBasenames = [];
+        foreach ($rawOutput as $item) {
+            // do not show C/POSIX in the list of locales, as this is the default anyway
+            $obj = new Locale($item);
+            if ($obj->getPosixCodeSet() === 'C' || $obj->getPosixCodeSet() === 'POSIX') {
+                continue;
+            }
+            // Skip locales with appended language or country code (e.g. "de_DE.UTF-8", "de_DE.ISO8859-1").
+            // The user should only choose "de_DE".
+            if (in_array($obj->getName(), $usedLocaleBasenames, true)) {
+                continue;
+            }
+            $locales[] = $item;
+            $usedLocaleBasenames[] = $obj->getName();
+        }
+
+        return $locales;
     }
 
     /**

@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -281,7 +282,7 @@ class SettingsController extends AbstractController
         $view->assignMultiple([
             'isWritable' => $isWritable,
             'localConfigurationWriteToken' => $formProtection->generateToken('installTool', 'localConfigurationWrite'),
-            'localConfigurationData' => $localConfigurationValueService->getCurrentConfigurationData(),
+            'localConfigurationData' => $this->enrichConfigurationData($localConfigurationValueService->getCurrentConfigurationData()),
         ]);
 
         $buttons = [
@@ -616,5 +617,25 @@ class SettingsController extends AbstractController
             'success' => true,
             'status' => [$message],
         ]);
+    }
+
+    private function enrichConfigurationData(array $data): array
+    {
+        foreach ($data['SYS']['items'] as &$item) {
+            if ($item['key'] === 'systemLocale') {
+                $locales = Locales::getAllSystemLocales();
+                if ($locales === []) {
+                    // Install tool operates in English context only, no xlf language label here.
+                    $item['description'] .= 'N/A (locale listing could not be fetched)';
+                } else {
+                    $locales = array_map(static function ($locale) {
+                        return '<code>' . $locale . '</code>';
+                    }, $locales);
+                    $item['description'] .= implode(', ', $locales);
+                }
+            }
+        }
+
+        return $data;
     }
 }
