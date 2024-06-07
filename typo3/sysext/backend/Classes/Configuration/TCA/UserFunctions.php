@@ -18,9 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Configuration\TCA;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Utility\CommandUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Localization\Locales;
 
 /**
  * This class provides user functions for the usage in TCA definition
@@ -97,32 +95,10 @@ class UserFunctions
 
     public static function getAllSystemLocales(): array
     {
-        $disabledFunctions = GeneralUtility::trimExplode(',', (string)ini_get('disable_functions'), true);
-        if (in_array('exec', $disabledFunctions, true)) {
-            return [];
-        }
-
-        $rawOutput = [];
-        CommandUtility::exec('locale -a', $rawOutput);
-
-        sort($rawOutput, SORT_NATURAL);
         $locales = [];
-        $usedLocales = [];
-        foreach ($rawOutput as $item) {
-            // do not show C/POSIX in the list of locales, as this is the default anyway
-            $obj = new Locale($item);
-            if ($obj->getPosixCodeSet() === 'C' || $obj->getPosixCodeSet() === 'POSIX') {
-                continue;
-            }
-            // Skip locales with appended language or country code (e.g. "de_DE.UTF-8", "de_DE.ISO8859-1").
-            // The user should only choose "de_DE".
-            if (in_array($obj->getName(), $usedLocales, true)) {
-                continue;
-            }
-            $locales[] = [$item, $item];
-            $usedLocales[] = $obj->getName();
+        foreach (Locales::getAllSystemLocales() as $locale) {
+            $locales[] = [$locale, $locale];
         }
-
         return $locales;
     }
 
