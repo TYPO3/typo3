@@ -1,0 +1,31 @@
+# Default backend Page TSConfig
+# This is intentionally different from Configuration/Sets/Styleguide/page.tsconfig
+# due to that file only being applied in SiteSet frontend context, but this code here
+# is needed for the backend.
+
+colorPalettes {
+  colors {
+    styleguideTypo3 {
+      value = #ff8700
+    }
+    styleguideBlue {
+      value = #0080c9
+    }
+    styleguideDarkgrey {
+      value = #515151
+    }
+    styleguideValid {
+      value = #5abc55
+    }
+    styleguideError {
+      value = #dd123d
+    }
+  }
+
+  palettes {
+    styleguidePalette = styleguideTypo3, styleguideBlue, styleguideDarkgrey, styleguideValid, styleguideError
+    limitedStyleguidePalette = styleguideTypo3, styleguideValid, styleguideError
+  }
+}
+
+TCEFORM.tx_styleguide_elements_basic.color_palpreset.colorPalette = limitedStyleguidePalette
