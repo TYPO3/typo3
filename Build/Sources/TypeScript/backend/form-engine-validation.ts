@@ -33,7 +33,7 @@ import coreCoreLabels from '~labels/core.core';
 import listLabels from '~labels/core.mod_web_list';
 
 type CustomEvaluationCallback = (value: string) => string;
-type FormEngineInputParams = { field: string, evalList?: string, is_in?: string };
+type FormEngineInputParams = { field: string, evalList?: string, is_in?: string, scale?: number };
 
 export interface PostValidationEvent {
   field: FormEngineFieldElement,
@@ -462,7 +462,7 @@ export default class FormEngineValidation {
         break;
       case 'decimal':
         if (value !== '') {
-          returnValue = FormEngineValidation.parseDouble(value);
+          returnValue = FormEngineValidation.parseDouble(value, config.scale);
         }
         break;
       case 'trim':
@@ -532,8 +532,12 @@ export default class FormEngineValidation {
 
   /**
    * Parse value to double
+   *
+   * The value is rounded on its digits and not as a number, since a number can not hold
+   * the precision of values with a high scale: (2.000000001).toFixed(30) would return
+   * "2.000000001000000082740370999090".
    */
-  public static parseDouble(value: number|string|boolean, precision: number = 2): string {
+  public static parseDouble(value: number|string|boolean, scale: number = 2): string {
     let theVal = '' + value;
     theVal = theVal.replace(/[^0-9,.-]/g, '');
     const negative = theVal.startsWith('-');
@@ -543,14 +547,23 @@ export default class FormEngineValidation {
       theVal += '.0';
     }
     const parts = theVal.split('.');
-    const dec = parts.pop();
-    let theNumberVal = Number(parts.join('') + '.' + dec);
-    if (negative) {
-      theNumberVal *= -1;
-    }
-    theVal = theNumberVal.toFixed(precision);
+    let decimalDigits = parts.pop();
+    let integerDigits = parts.join('');
 
-    return theVal;
+    if (decimalDigits.length > scale) {
+      const roundUp = Number(decimalDigits.charAt(scale)) >= 5;
+      decimalDigits = decimalDigits.substring(0, scale);
+      if (roundUp) {
+        const rounded = (BigInt(integerDigits + decimalDigits) + 1n).toString().padStart(integerDigits.length + scale, '0');
+        integerDigits = rounded.substring(0, rounded.length - scale);
+        decimalDigits = rounded.substring(rounded.length - scale);
+      }
+    }
+    decimalDigits = decimalDigits.padEnd(scale, '0');
+    integerDigits = integerDigits.replace(/^0+(?=\d)/, '') || '0';
+    theVal = integerDigits + '.' + decimalDigits;
+
+    return (negative && /[1-9]/.test(theVal) ? '-' : '') + theVal;
   }
 
   /**

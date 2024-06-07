@@ -30,6 +30,16 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class NumberElement extends AbstractFormElement
 {
     /**
+     * Highest scale a browser still validates the "step" attribute for.
+     *
+     * Step validation is done in double precision, and below 1e-18 Chromium and WebKit report a
+     * step mismatch for every value other than zero, regardless of its magnitude. An invalid field
+     * makes the browser refuse the form submission FormEngine triggers with requestSubmit(), so the
+     * record could not be saved at all. Above this scale the step is left to the browser instead.
+     */
+    private const MAXIMUM_VALIDATABLE_SCALE = 18;
+
+    /**
      * Default field wizards enabled for this element.
      *
      * @var array
@@ -65,19 +75,20 @@ class NumberElement extends AbstractFormElement
         $resultArray = $this->initializeResultArray();
         $config = $parameterArray['fieldConf']['config'];
 
-        $format = $config['format'] ?? 'integer';
-        if ($format !== 'integer' && $format !== 'decimal') {
-            throw new \UnexpectedValueException(
-                'Format "' . $format . '" for field "' . $fieldName . '" in table "' . $table . '" is '
-                . 'not valid. Must be either empty or set to one of: "integer", "decimal".',
-                1649124682
-            );
-        }
-
-        // @todo This should be configurable (e.g. [config][precision])
-        $precision = 2;
+        $scale = MathUtility::forceIntegerInRange(
+            (int)($config['scale'] ?? 0),
+            0,
+            30
+        );
 
         $itemValue = $parameterArray['itemFormElValue'];
+        if ($scale > 0 && is_numeric(trim((string)$itemValue))) {
+            // A stored value with more decimal digits than the configured scale is no multiple of
+            // the "step" attribute below. The browser then refuses to submit the whole form, and
+            // does so silently if the field sits on an inactive tab. DataHandler rounds to the
+            // scale on save anyway, so this renders the value that is actually going to be stored.
+            $itemValue = MathUtility::roundDecimalString(trim((string)$itemValue), $scale);
+        }
         $width = $this->formMaxWidth(
             MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth)
         );
@@ -109,6 +120,10 @@ class NumberElement extends AbstractFormElement
         $languageService = $this->getLanguageService();
 
         // Always add the format.
+        $format = 'integer';
+        if ($scale > 0) {
+            $format = 'decimal';
+        }
         $evalList = [$format];
         if ($config['nullable'] ?? false) {
             $evalList[] = 'null';
@@ -121,6 +136,7 @@ class NumberElement extends AbstractFormElement
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $itemName,
                 'evalList' => implode(',', $evalList),
+                'scale' => $scale,
             ], JSON_THROW_ON_ERROR),
             'data-formengine-input-name' => $itemName,
         ];
@@ -134,13 +150,13 @@ class NumberElement extends AbstractFormElement
 
         $valueSliderHtml = [];
         if (is_array($config['slider'] ?? false)) {
-            if ($format === 'decimal') {
+            if ($scale > 0) {
                 $itemValue = (float)$itemValue;
             } else {
                 $itemValue = (int)$itemValue;
             }
             $valueSliderConfiguration = [
-                'precision' => (string)$precision,
+                'scale' => (string)$scale,
                 'format' =>  $format,
                 'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
             ];
@@ -179,8 +195,10 @@ class NumberElement extends AbstractFormElement
             $attributes['max'] = (string)(float)$config['range']['upper'];
         }
 
-        if ($format === 'decimal') {
-            $attributes['step'] = '0.' . str_repeat('0', $precision - 1) . '1';
+        if ($scale > 0) {
+            $attributes['step'] = $scale <= self::MAXIMUM_VALIDATABLE_SCALE
+                ? sprintf('0.%0' . $scale . 'd', 1)
+                : 'any';
         }
 
         $mainFieldHtml = [];

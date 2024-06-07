@@ -165,6 +165,30 @@ defined('TYPO3') or die();
                 ],
             ],
         ],
+        'tx_testdatahandler_number_decimal' => [
+            'exclude' => true,
+            'label' => 'Decimal number field with scale 2',
+            'config' => [
+                'type' => 'number',
+                'scale' => 2,
+            ],
+        ],
+        'tx_testdatahandler_number_decimal_scale' => [
+            'exclude' => true,
+            'label' => 'Decimal number field with scale set to 4',
+            'config' => [
+                'type' => 'number',
+                'scale' => 4,
+            ],
+        ],
+        'tx_testdatahandler_number_decimal_scale_max' => [
+            'exclude' => true,
+            'label' => 'Decimal number field with the maximum scale of 30',
+            'config' => [
+                'type' => 'number',
+                'scale' => 30,
+            ],
+        ],
         'tx_testdatahandler_input_minvalue' => [
             'exclude' => true,
             'label' => 'Normal input field with min value set to 10',
@@ -211,5 +235,7 @@ defined('TYPO3') or die();
     . 'tx_testdatahandler_checkbox_undefined_items,tx_testdatahandler_checkbox_failing_items,'
     . 'tx_testdatahandler_radio_failing_items,'
     . 'tx_testdatahandler_email,tx_testdatahandler_email_lower,tx_testdatahandler_email_lower_unique,'
+    . 'tx_testdatahandler_number_decimal,tx_testdatahandler_number_decimal_scale,'
+    . 'tx_testdatahandler_number_decimal_scale_max,'
     . 'tx_testdatahandler_input_minvalue,tx_testdatahandler_input_minvalue_zero, tx_testdatahandler_text_minvalue,tx_testdatahandler_richttext_minvalue '
 );

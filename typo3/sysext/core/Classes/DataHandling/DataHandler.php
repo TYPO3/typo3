@@ -1527,39 +1527,37 @@ class DataHandler
      */
     protected function checkValueForNumber(mixed $value, array $tcaFieldConf): array
     {
-        $format = $tcaFieldConf['format'] ?? 'integer';
-        if ($format !== 'integer' && $format !== 'decimal') {
-            // Early return if format is not valid
-            return [];
-        }
-
         if (!$this->validateValueForRequired($tcaFieldConf, (string)$value)) {
             return [];
         }
+        $scale = MathUtility::forceIntegerInRange(
+            (int)($tcaFieldConf['scale'] ?? 0),
+            0,
+            30
+        );
 
-        if ($format === 'decimal') {
-            // @todo Make precision configurable
-            $precision = 2;
-            $value = preg_replace('/[^0-9,\\.-]/', '', $value);
-            $negative = substr($value, 0, 1) === '-';
+        if ($scale > 0) {
+            $value = preg_replace('/[^0-9,\\.-]/', '', (string)$value);
+            $negative = str_starts_with($value, '-');
             $value = strtr($value, [',' => '.', '-' => '']);
             if (!str_contains($value, '.')) {
                 $value .= '.0';
             }
             $valueArray = explode('.', $value);
-            $dec = array_pop($valueArray);
-            $value = (float)(implode('', $valueArray) . '.' . $dec);
-            if ($negative) {
-                $value = $value * -1;
-            }
-            $result['value'] = number_format($value, $precision, '.', '');
+            $decimalDigits = array_pop($valueArray);
+            // The leading zero and the fallback keep a value of "." or "-" a valid number,
+            // roundDecimalString() rejects anything that carries no digit at all.
+            $result['value'] = MathUtility::roundDecimalString(
+                ($negative ? '-' : '') . '0' . implode('', $valueArray) . '.' . ($decimalDigits === '' ? '0' : $decimalDigits),
+                $scale
+            );
         } else {
             $result['value'] = (int)$value;
         }
 
         // Checking range of value:
         if (is_array($tcaFieldConf['range'] ?? false)) {
-            if ($format === 'decimal') {
+            if ($scale > 0) {
                 if (isset($tcaFieldConf['range']['upper']) && ceil((float)$result['value']) > (float)$tcaFieldConf['range']['upper']) {
                     $result['value'] = (float)$tcaFieldConf['range']['upper'];
                 }

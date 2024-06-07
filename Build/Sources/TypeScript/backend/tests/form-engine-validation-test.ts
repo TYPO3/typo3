@@ -307,5 +307,32 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     it('works for value null', () => {
       expect(FormEngineValidation.parseDouble(null)).to.equal('0.00');
     });
+    it('works for value 0.5 with scale 4', () => {
+      expect(FormEngineValidation.parseDouble(0.5, 4)).to.equal('0.5000');
+    });
+    it('works for value "1.23456" with scale 4', () => {
+      expect(FormEngineValidation.parseDouble('1.23456', 4)).to.equal('1.2346');
+    });
+    it('works for value "1.23456" with scale 1', () => {
+      expect(FormEngineValidation.parseDouble('1.23456', 1)).to.equal('1.2');
+    });
+    it('keeps the exact digits with scale 30', () => {
+      expect(FormEngineValidation.parseDouble('2.000000001', 30)).to.equal('2.000000001000000000000000000000');
+    });
+    it('keeps all given digits with scale 30', () => {
+      expect(FormEngineValidation.parseDouble('2.000000001000000082740370999091', 30)).to.equal('2.000000001000000082740370999091');
+    });
+    it('carries the rounding over to the integer digits', () => {
+      expect(FormEngineValidation.parseDouble('1.999', 2)).to.equal('2.00');
+    });
+    it('rounds up to an integer digit', () => {
+      expect(FormEngineValidation.parseDouble('0.999', 2)).to.equal('1.00');
+    });
+    it('does not return a negative zero', () => {
+      expect(FormEngineValidation.parseDouble('-0.001', 2)).to.equal('0.00');
+    });
+    it('rounds a negative value away from zero', () => {
+      expect(FormEngineValidation.parseDouble('-1.005', 2)).to.equal('-1.01');
+    });
   });
 });

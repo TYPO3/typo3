@@ -888,8 +888,9 @@ readonly class DefaultTcaSchema
                         break;
 
                     case $fieldType instanceof NumberFieldType:
-                        $type = $fieldType->getFormat() === 'decimal' ? Types::DECIMAL : Types::INTEGER;
+                        $type = $fieldType->getScale() > 0 ? Types::DECIMAL : Types::INTEGER;
                         $lowerRange = $fieldTypeConfiguration['range']['lower'] ?? -1;
+                        $scale = $fieldType->getScale();
                         // Integer type for all database platforms.
                         if ($type === Types::INTEGER) {
                             $tables[$tableName]->addColumn(
@@ -915,23 +916,25 @@ readonly class DefaultTcaSchema
                                 $this->quote($fieldName),
                                 Types::STRING,
                                 [
-                                    'default' => $fieldType->isNullable() === true ? null : '0.00',
+                                    'default' => $fieldType->isNullable() === true ? null : number_format(0, $scale, '.', ''),
                                     'notnull' => !$fieldType->isNullable(),
                                     'length' => 255,
                                 ]
                             );
                             break;
                         }
-                        // Decimal for all supported platforms except SQLite
+                        // Decimal for all supported platforms except SQLite. The number of digits in
+                        // front of the decimal point is always eight, the configured scale is added
+                        // on top: The default scale of two results in decimal(10,2).
                         $tables[$tableName]->addColumn(
                             $this->quote($fieldName),
                             Types::DECIMAL,
                             [
-                                'default' => $fieldType->isNullable() === true ? null : 0.00,
+                                'default' => $fieldType->isNullable() === true ? null : 0.0,
                                 'notnull' => !$fieldType->isNullable(),
                                 'unsigned' => $lowerRange >= 0,
-                                'precision' => 10,
-                                'scale' => 2,
+                                'precision' => 8 + $scale,
+                                'scale' => $scale,
                             ]
                         );
                         break;

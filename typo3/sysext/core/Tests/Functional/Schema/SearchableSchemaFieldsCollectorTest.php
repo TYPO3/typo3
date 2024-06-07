@@ -85,8 +85,8 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
             [
                 'aTable' => [
                     'columns' => [
-                        'numberInteger' => ['config' => ['type' => 'number', 'format' => 'integer']],
-                        'numberFloat' => ['config' => ['type' => 'number', 'format' => 'decimal']],
+                        'numberInteger' => ['config' => ['type' => 'number', 'scale' => 0]],
+                        'numberFloat' => ['config' => ['type' => 'number', 'scale' => 2]],
                         'datetimeWithoutDbType' => ['config' => ['type' => 'datetime']],
                         'datetimeWithDbType' => ['config' => ['type' => 'datetime', 'dbType' => 'datetime']],
                     ],
@@ -105,7 +105,7 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
         $number = $fieldsArray['numberInteger'];
         self::assertEquals('numberInteger', $number->getName());
         self::assertEquals('number', $number->getType());
-        self::assertEquals('integer', $number->getFormat());
+        self::assertEquals(0, $number->getScale());
         /** @var DateTimeFieldType $datetime */
         $datetime = $fieldsArray['datetimeWithoutDbType'];
         self::assertEquals('datetimeWithoutDbType', $datetime->getName());

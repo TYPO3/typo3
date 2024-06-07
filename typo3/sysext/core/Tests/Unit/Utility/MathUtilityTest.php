@@ -270,4 +270,84 @@ final class MathUtilityTest extends UnitTestCase
     {
         self::assertFalse(MathUtility::isIntegerInRange($inputValue, 0, 10));
     }
+
+    public static function roundDecimalStringDataProvider(): iterable
+    {
+        yield 'value with less decimal digits is padded' => ['1.5', 2, '1.50'];
+        yield 'value without decimal digits is padded' => ['1', 2, '1.00'];
+        yield 'empty value becomes zero' => ['', 2, '0.00'];
+        yield 'leading zeros are stripped' => ['007.5', 2, '7.50'];
+        yield 'value is rounded down' => ['1.234', 2, '1.23'];
+        yield 'value is rounded up' => ['1.235', 2, '1.24'];
+        yield 'rounding up carries over to the integer digits' => ['1.999', 2, '2.00'];
+        yield 'rounding up creates an integer digit' => ['0.999', 2, '1.00'];
+        yield 'rounding up carries over multiple digits' => ['99.999', 2, '100.00'];
+        yield 'negative value keeps its sign' => ['-1.5', 2, '-1.50'];
+        yield 'negative value is rounded away from zero' => ['-1.005', 2, '-1.01'];
+        yield 'negative value rounded to zero is not negative' => ['-0.001', 2, '0.00'];
+        yield 'scale zero rounds to an integer' => ['1.9', 0, '2'];
+        yield 'negative scale is treated as zero' => ['1.9', -5, '2'];
+        yield 'digits beyond float precision are kept' => [
+            '2.000000001000000082740370999091',
+            30,
+            '2.000000001000000082740370999091',
+        ];
+        yield 'value is padded beyond float precision' => [
+            '2.000000001',
+            30,
+            '2.' . str_pad('000000001', 30, '0'),
+        ];
+        yield 'large value is not distorted by float precision' => [
+            '12345678.1234567891',
+            10,
+            '12345678.1234567891',
+        ];
+        yield 'leading plus sign is accepted' => ['+1.5', 2, '1.50'];
+        yield 'value without integer digits is accepted' => ['.5', 2, '0.50'];
+        yield 'value without decimal digits after the point is accepted' => ['5.', 2, '5.00'];
+        yield 'negative exponent moves the decimal point to the right' => ['1.0e-7', 7, '0.0000001'];
+        yield 'negative exponent is not distorted by float precision' => [
+            '1.234567890123456789e-10',
+            28,
+            '0.0000000001234567890123456789',
+        ];
+        yield 'positive exponent moves the decimal point to the left' => ['1.5e3', 2, '1500.00'];
+        yield 'positive exponent beyond the given digits is padded' => ['1.5E5', 0, '150000'];
+        yield 'exponent of a negative value keeps the sign' => ['-2.5e-2', 3, '-0.025'];
+        yield 'exponent is rounded to the scale' => ['1.29e-1', 2, '0.13'];
+    }
+
+    public static function roundDecimalStringRejectsDataProvider(): iterable
+    {
+        yield 'decimal comma' => ['1,5'];
+        yield 'thousands separator' => ['1,234.56'];
+        yield 'letters' => ['abc'];
+        yield 'unit appended to a number' => ['1.5px'];
+        yield 'two decimal points' => ['1.2.3'];
+        yield 'sign only' => ['-'];
+        yield 'decimal point only' => ['.'];
+        yield 'surrounding whitespace' => [' 1.5 '];
+        yield 'exponent without digits' => ['1.5e'];
+        yield 'exponent with decimal digits' => ['1.5e1.5'];
+    }
+
+    /**
+     * Reinterpreting a value that is not a number silently turns "1,5" into 15, so it is rejected.
+     */
+    #[DataProvider('roundDecimalStringRejectsDataProvider')]
+    #[Test]
+    public function roundDecimalStringThrowsExceptionOnInvalidValue(string $value): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1788293269);
+
+        MathUtility::roundDecimalString($value, 2);
+    }
+
+    #[DataProvider('roundDecimalStringDataProvider')]
+    #[Test]
+    public function roundDecimalStringReturnsExpectedValue(string $value, int $scale, string $expected): void
+    {
+        self::assertSame($expected, MathUtility::roundDecimalString($value, $scale));
+    }
 }

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema\Field;
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 final readonly class NumberFieldType extends AbstractFieldType
 {
     public function getType(): string
@@ -26,12 +28,39 @@ final readonly class NumberFieldType extends AbstractFieldType
 
     public function isSearchable(): bool
     {
-        return $this->getFormat() === 'integer';
+        return $this->getScale() === 0;
     }
 
+    /**
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0.
+     */
     public function getFormat(): string
     {
-        return $this->configuration['format'] ?? '';
+        trigger_error(
+            'NumberFieldType->getFormat() is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0. Use getScale() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if ($this->getScale() === 0) {
+            return 'integer';
+        }
+        return 'decimal';
+    }
+
+    /**
+     * Get the number of decimal places of the number element.
+     * 0 decimal places means, it is an integer.
+     * More than 0 decimal places means, it is a float.
+     * Maximum of 30 decimal places is possible.
+     * Defaults to 0.
+     */
+    public function getScale(): int
+    {
+        return MathUtility::forceIntegerInRange(
+            (int)($this->configuration['scale'] ?? 0),
+            0,
+            30
+        );
     }
 
     public function getSoftReferenceKeys(): false

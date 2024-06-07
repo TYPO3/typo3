@@ -23,7 +23,7 @@ enum Format {
  * Module @typo3/backend/form-engine/field-wizard/value-slider
  *
  * @example
- * <typo3-formengine-valueslider linked-field="css-selector" format="integer" precision="2">
+ * <typo3-formengine-valueslider linked-field="css-selector" format="integer" scale="2">
  *   <input>
  * </typo3-formengine-valueslider>
  *
@@ -72,7 +72,8 @@ export class ValueSlider extends HTMLElement {
 
     switch (this.getAttribute('format')) {
       case Format.decimal:
-        renderedValue = parseFloat(value).toFixed(Number(this.getAttribute('precision')) || 2);
+        // "precision" is the former name of "scale" and kept as fallback for third-party usages
+        renderedValue = parseFloat(value).toFixed(Number(this.getAttribute('scale') ?? this.getAttribute('precision')) || 2);
         break;
       case Format.integer:
       default:

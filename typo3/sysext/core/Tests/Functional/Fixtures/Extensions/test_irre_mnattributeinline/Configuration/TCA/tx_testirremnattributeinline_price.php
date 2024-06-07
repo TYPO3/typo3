@@ -44,7 +44,7 @@ return [
             'label' => 'LLL:EXT:test_irre_mnattributeinline/Resources/Private/Language/locallang_db.xlf:tx_testirremnattributeinline__price.price',
             'config' => [
                 'type' => 'number',
-                'format' => 'decimal',
+                'scale' => 2,
                 'size' => 30,
             ],
         ],

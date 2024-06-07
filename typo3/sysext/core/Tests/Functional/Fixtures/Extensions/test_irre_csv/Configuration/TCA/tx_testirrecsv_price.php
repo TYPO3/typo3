@@ -40,7 +40,7 @@ return [
             'label' => 'LLL:EXT:test_irre_csv/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_price.price',
             'config' => [
                 'type' => 'number',
-                'format' => 'decimal',
+                'scale' => 2,
                 'size' => 30,
             ],
         ],

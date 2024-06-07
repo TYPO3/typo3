@@ -31,7 +31,7 @@ final class TypeNumberFormatDecimal extends AbstractFieldGenerator implements Fi
         'fieldConfig' => [
             'config' => [
                 'type' => 'number',
-                'format' => 'decimal',
+                'scale' => 2,
             ],
         ],
     ];

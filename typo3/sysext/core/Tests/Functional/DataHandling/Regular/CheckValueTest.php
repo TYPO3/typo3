@@ -52,6 +52,15 @@ final class CheckValueTest extends FunctionalTestCase
         return BackendUtility::getRecord('tt_content', $recordUid);
     }
 
+    private function insertRecordWithFieldValues(array $values): array
+    {
+        // pid 88 comes from ImportDefault
+        $actionService = new ActionService();
+        $result = $actionService->createNewRecord('tt_content', 88, $values);
+        $recordUid = $result['tt_content'][0];
+        return BackendUtility::getRecord('tt_content', $recordUid);
+    }
+
     #[Test]
     public function radioButtonValueMustBeDefinedInTcaItems(): void
     {
@@ -71,5 +80,27 @@ final class CheckValueTest extends FunctionalTestCase
     {
         $record = $this->insertRecordWithRadioFieldValue('some other value');
         self::assertEquals('', $record['tx_testdatahandler_radio']);
+    }
+
+    #[Test]
+    public function decimalNumberIsPersistedWithTwoDecimalsIfNoScaleIsConfigured(): void
+    {
+        $record = $this->insertRecordWithFieldValues(['tx_testdatahandler_number_decimal' => '1,23456']);
+        self::assertSame('1.23', (string)$record['tx_testdatahandler_number_decimal']);
+    }
+
+    #[Test]
+    public function decimalNumberIsPersistedWithConfiguredScale(): void
+    {
+        $record = $this->insertRecordWithFieldValues(['tx_testdatahandler_number_decimal_scale' => '1,23456']);
+        self::assertSame('1.2346', (string)$record['tx_testdatahandler_number_decimal_scale']);
+    }
+
+    #[Test]
+    public function decimalNumberWithHighScaleKeepsItsExactValue(): void
+    {
+        $value = '2.000000001000000082740370999091';
+        $record = $this->insertRecordWithFieldValues(['tx_testdatahandler_number_decimal_scale_max' => $value]);
+        self::assertSame($value, (string)$record['tx_testdatahandler_number_decimal_scale_max']);
     }
 }

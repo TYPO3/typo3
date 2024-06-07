@@ -759,15 +759,15 @@ return [
 
         'number_1' => [
             'label' => 'number_1',
-            'description' => 'format=decimal',
+            'description' => 'scale=2',
             'config' => [
                 'type' => 'number',
-                'format' => 'decimal',
+                'scale' => 2,
             ],
         ],
         'number_2' => [
             'label' => 'number_2',
-            'description' => 'format=integer (default)',
+            'description' => 'scale=0, integer (default)',
             'config' => [
                 'type' => 'number',
             ],
@@ -806,7 +806,7 @@ return [
             'description' => 'slider default=14.5 step=0.5 width=150 format=decimal',
             'config' => [
                 'type' => 'number',
-                'format' => 'decimal',
+                'scale' => 2,
                 'size' => 5,
                 'range' => [
                     'lower' => -90.5,
@@ -839,6 +839,58 @@ return [
                         [ 'value' => 2024, 'label' => 'First TYPO3 Surfcamp'],
                     ],
                 ],
+            ],
+        ],
+        'number_9' => [
+            'label' => 'number_9',
+            'description' => 'scale=1',
+            'config' => [
+                'type' => 'number',
+                'scale' => 1,
+            ],
+        ],
+        'number_10' => [
+            'label' => 'number_10',
+            'description' => 'scale=2',
+            'config' => [
+                'type' => 'number',
+                'scale' => 2,
+            ],
+        ],
+        'number_11' => [
+            'label' => 'number_11',
+            'description' => 'scale=4',
+            'config' => [
+                'type' => 'number',
+                'scale' => 4,
+            ],
+        ],
+        'number_12' => [
+            'label' => 'number_12',
+            'description' => 'scale=4 slider step=0.0001 width=150',
+            'config' => [
+                'type' => 'number',
+                'scale' => 4,
+                'size' => 10,
+                'range' => [
+                    'lower' => -90.5,
+                    'upper' => 90.5,
+                ],
+                'default' => 14.5,
+                'slider' => [
+                    'step' => 0.0001,
+                    'width' => 150,
+                ],
+            ],
+        ],
+        'number_13' => [
+            'label' => 'number_13',
+            'description' => 'scale=30 (maximum) nullable=true',
+            'config' => [
+                'type' => 'number',
+                'scale' => 30,
+                'nullable' => true,
+                'size' => 40,
             ],
         ],
 
@@ -1919,6 +1971,14 @@ backend_layout {
                                                 </range>
                                             </config>
                                         </number_1>
+                                        <number_2>
+                                            <label>number_2</label>
+                                            <description>number_2 format=decimal scale=4</description>
+                                            <config>
+                                                <type>number</type>
+                                                <scale>4</scale>
+                                            </config>
+                                        </number_2>
                                     </el>
                                 </ROOT>
                             </sNumber>
@@ -2101,7 +2161,7 @@ backend_layout {
                 --div--;color,
                     color_1,color_2,color_3,color_4,color_5,color_palpreset,
                 --div--;number,
-                    number_1, number_2, number_3, number_4, number_5, number_7,number_8,
+                    number_1, number_2, number_3, number_4, number_5, number_7, number_8, number_9, number_10, number_11, number_12, number_13,
                 --div--;email,
                     email_1, email_2, email_3, email_4, email_5,
                 --div--;text,

@@ -15,7 +15,7 @@ return [
         'third_property' => [
             'config' => [
                 'type' => 'number',
-                'format' => 'decimal',
+                'scale' => 2,
             ],
         ],
         'fourth_property' => [

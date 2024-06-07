@@ -399,10 +399,178 @@ final class DataHandlerTest extends UnitTestCase
     {
         $tcaFieldConf = [
             'type' => 'number',
-            'format' => 'decimal',
+            'scale' => 2,
         ];
         $returnValue = $this->subject->_call('checkValueForNumber', $input, $tcaFieldConf);
         self::assertSame($expected, $returnValue['value']);
+    }
+
+    public static function numberValueCheckRespectsScaleDataProvider(): iterable
+    {
+        yield 'scale zero decimals, decimal separator comma' => [
+            'config' => ['scale' => 0],
+            'input' => '1000,123456',
+            'expected' => '1000',
+        ];
+
+        yield 'scale one decimals, decimal separator comma' => [
+            'config' => ['scale' => 1],
+            'input' => '1000,123456',
+            'expected' => '1000.1',
+        ];
+
+        yield 'scale two decimals, decimal separator comma' => [
+            'config' => ['scale' => 2],
+            'input' => '1000,123456',
+            'expected' => '1000.12',
+        ];
+
+        yield 'scale of four keeps four decimals, decimal separator comma' => [
+            'config' => ['scale' => 4],
+            'input' => '1000,1234',
+            'expected' => '1000.1234',
+        ];
+
+        yield 'scale of four pads values with less decimals, decimal separator comma' => [
+            'config' => ['scale' => 4],
+            'input' => '1000,5',
+            'expected' => '1000.5000',
+        ];
+
+        yield 'scale given as string is casted to integer, decimal separator comma' => [
+            'config' => ['scale' => 3],
+            'input' => '1000,5',
+            'expected' => '1000.500',
+        ];
+
+        yield 'scale above the maximum is capped at 30, decimal separator comma' => [
+            'config' => ['scale' => 99],
+            'input' => '0,5',
+            'expected' => '0.' . str_pad('5', 30, '0'),
+        ];
+
+        yield 'high scale keeps the exact digits and does not fall back to float precision, decimal separator comma' => [
+            'config' => ['scale' => 30],
+            'input' => '2,000000001',
+            'expected' => '2.' . str_pad('000000001', 30, '0'),
+        ];
+
+        yield 'high scale keeps all given digits, decimal separator comma' => [
+            'config' => ['scale' => 30],
+            'input' => '2,000000001000000082740370999091',
+            'expected' => '2.000000001000000082740370999091',
+        ];
+
+        yield 'rounding up carries over to the integer digits, decimal separator comma' => [
+            'config' => ['scale' => 2],
+            'input' => '1,999',
+            'expected' => '2.00',
+        ];
+
+        yield 'rounding up creates an integer digit, decimal separator comma' => [
+            'config' => ['scale' => 2],
+            'input' => '0,999',
+            'expected' => '1.00',
+        ];
+
+        yield 'a value rounded to zero is not negative, decimal separator comma' => [
+            'config' => ['scale' => 2],
+            'input' => '-0,001',
+            'expected' => '0.00',
+        ];
+
+        yield 'a negative value is rounded away from zero, decimal separator comma' => [
+            'config' => ['scale' => 2],
+            'input' => '-1,005',
+            'expected' => '-1.01',
+        ];
+        yield 'scale zero decimals, decimal separator point' => [
+            'config' => ['scale' => 0],
+            'input' => '1000.123456',
+            'expected' => '1000',
+        ];
+
+        yield 'scale one decimals, decimal separator point' => [
+            'config' => ['scale' => 1],
+            'input' => '1000.123456',
+            'expected' => '1000.1',
+        ];
+
+        yield 'scale two decimals, decimal separator point' => [
+            'config' => ['scale' => 2],
+            'input' => '1000.123456',
+            'expected' => '1000.12',
+        ];
+
+        yield 'scale of four keeps four decimals, decimal separator point' => [
+            'config' => ['scale' => 4],
+            'input' => '1000.1234',
+            'expected' => '1000.1234',
+        ];
+
+        yield 'scale of four pads values with less decimals, decimal separator point' => [
+            'config' => ['scale' => 4],
+            'input' => '1000.5',
+            'expected' => '1000.5000',
+        ];
+
+        yield 'scale given as string is casted to integer, decimal separator point' => [
+            'config' => ['scale' => 3],
+            'input' => '1000.5',
+            'expected' => '1000.500',
+        ];
+
+        yield 'scale above the maximum is capped at 30, decimal separator point' => [
+            'config' => ['scale' => 99],
+            'input' => '0.5',
+            'expected' => '0.' . str_pad('5', 30, '0'),
+        ];
+
+        yield 'high scale keeps the exact digits and does not fall back to float precision, decimal separator point' => [
+            'config' => ['scale' => 30],
+            'input' => '2.000000001',
+            'expected' => '2.' . str_pad('000000001', 30, '0'),
+        ];
+
+        yield 'high scale keeps all given digits, decimal separator point' => [
+            'config' => ['scale' => 30],
+            'input' => '2.000000001000000082740370999091',
+            'expected' => '2.000000001000000082740370999091',
+        ];
+
+        yield 'rounding up carries over to the integer digits, decimal separator point' => [
+            'config' => ['scale' => 2],
+            'input' => '1.999',
+            'expected' => '2.00',
+        ];
+
+        yield 'rounding up creates an integer digit, decimal separator point' => [
+            'config' => ['scale' => 2],
+            'input' => '0.999',
+            'expected' => '1.00',
+        ];
+
+        yield 'a value rounded to zero is not negative, decimal separator point' => [
+            'config' => ['scale' => 2],
+            'input' => '-0.001',
+            'expected' => '0.00',
+        ];
+
+        yield 'a negative value is rounded away from zero, decimal separator point' => [
+            'config' => ['scale' => 2],
+            'input' => '-1.005',
+            'expected' => '-1.01',
+        ];
+
+    }
+
+    #[DataProvider('numberValueCheckRespectsScaleDataProvider')]
+    #[Test]
+    public function numberValueCheckRespectsScale(array $config, string $input, string $expected): void
+    {
+        $tcaFieldConf = array_replace(['type' => 'number'], $config);
+        $returnValue = $this->subject->_call('checkValueForNumber', $input, $tcaFieldConf);
+        self::assertEquals($expected, $returnValue['value']);
     }
 
     public static function inputValuesRangeDoubleDataProvider(): array
@@ -441,7 +609,7 @@ final class DataHandlerTest extends UnitTestCase
     {
         $tcaFieldConf = [
             'type' => 'number',
-            'format' => 'decimal',
+            'scale' => 2,
             'range' => [
                 'lower' => '0',
                 'upper' => '42',
@@ -457,7 +625,7 @@ final class DataHandlerTest extends UnitTestCase
     {
         $tcaFieldConf = [
             'type' => 'number',
-            'format' => 'decimal',
+            'scale' => 2,
             'range' => [
                 'lower' => '0',
                 'upper' => '42',

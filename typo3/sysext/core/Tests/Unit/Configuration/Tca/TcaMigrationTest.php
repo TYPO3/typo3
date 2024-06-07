@@ -2768,7 +2768,7 @@ final class TcaMigrationTest extends UnitTestCase
                                 'slider' => [
                                     'step' => 10,
                                 ],
-                                'format' => 'decimal',
+                                'scale' => 2,
                             ],
                         ],
                     ],
@@ -2821,7 +2821,7 @@ final class TcaMigrationTest extends UnitTestCase
                         'aColumn' => [
                             'config' => [
                                 'type' => 'number',
-                                'format' => 'decimal',
+                                'scale' => 2,
                             ],
                         ],
                     ],
@@ -4360,4 +4360,147 @@ final class TcaMigrationTest extends UnitTestCase
         self::assertStringContainsString('\'1\'', $result->getMessages()[0]);
         self::assertStringContainsString('\'default\'', $result->getMessages()[0]);
     }
+
+    #[Test]
+    #[DataProvider('numberFormatDataProvider')]
+    public function numberFormatMigration(array $input, array $expected): void
+    {
+        $result = new TcaMigration()->migrate($input);
+        self:self::assertEquals($expected, $result->getTca());
+    }
+
+    public static function numberFormatDataProvider(): iterable
+    {
+        yield 'type=number format=integer' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'format' => 'integer',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'scale' => 0,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'type=number format=decimal' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'format' => 'decimal',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'scale' => 2,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'type=number no format' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'type=number scale already set and format integer given' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'scale' => 5,
+                                'format' => 'integer',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'scale' => 5,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'type=number scale already set and format decimal given' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'scale' => 5,
+                                'format' => 'decimal',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'scale' => 5,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
 }

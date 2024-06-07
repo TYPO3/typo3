@@ -98,6 +98,7 @@ readonly class TcaMigration
         $tcaProcessingResult = $this->migrateSingleDataStructureConfiguration($tcaProcessingResult);
         $tcaProcessingResult = $this->removeValuePickerMode($tcaProcessingResult);
         $tcaProcessingResult = $this->migrateSysRedirectDefaultType($tcaProcessingResult);
+        $tcaProcessingResult = $this->migrateNumberFormat($tcaProcessingResult);
 
         return $tcaProcessingResult;
     }
@@ -141,6 +142,56 @@ readonly class TcaMigration
                     $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages('TCA table "' . $table . '" columns field "' . $fieldName . '"'
                         . ' had no mandatory "config" section. This has been added with default type "none":'
                         . ' TCA "' . $table . '[\'columns\'][\'' . $fieldName . '\'][\'config\'][\'type\'] = \'none\'"');
+                }
+            }
+        }
+        return $tcaProcessingResult->withTca($tca);
+    }
+
+    /**
+     * Migrate number columns with format integer to scale 0
+     * Migrate number columns with format decimal to scale 2
+     */
+    protected function migrateNumberFormat(TcaProcessingResult $tcaProcessingResult): TcaProcessingResult
+    {
+        $tca = $tcaProcessingResult->getTca();
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (!((string)($fieldConfig['config']['type'] ?? '') === 'number')) {
+                    continue;
+                }
+                if (!isset($fieldConfig['config']['format'])) {
+                    continue;
+                }
+                // Unset format, if scale is already set
+                if (isset($fieldConfig['config']['scale'])) {
+                    $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages('The TCA setting \'format\' has been removed  '
+                        . '  from table ' . $table . ' [\'columns\']'
+                        . '[\'' . $fieldName . '\'][\'config\'][\'format\'] as [\'columns\']'
+                        . '[\'' . $fieldName . '\'][\'config\'][\'scale\'] is already set.');
+
+                    unset($fieldConfig['config']['format']);
+                    continue;
+                }
+                if ($fieldConfig['config']['format'] === 'integer') {
+                    $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages('The TCA setting \'format\' has been removed  '
+                        . ' from table ' . $table . ' [\'columns\']'
+                        . '[\'' . $fieldName . '\'][\'config\'][\'format\']=\'integer\' and has been replaced with [\'columns\']'
+                        . '[\'' . $fieldName . '\'][\'config\'][\'scale\'] = 0.');
+                    $fieldConfig['config']['scale'] = 0;
+                    unset($fieldConfig['config']['format']);
+                    continue;
+                }
+                if ($fieldConfig['config']['format'] === 'decimal') {
+                    $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages('The TCA setting \'format\' has been removed  '
+                        . ' from table ' . $table . ' [\'columns\']'
+                        . '[\'' . $fieldName . '\'][\'config\'][\'format\']=\'decimal\' and has been replaced with [\'columns\']'
+                        . '[\'' . $fieldName . '\'][\'config\'][\'scale\'] = 2.');
+                    $fieldConfig['config']['scale'] = 2;
+                    unset($fieldConfig['config']['format']);
                 }
             }
         }

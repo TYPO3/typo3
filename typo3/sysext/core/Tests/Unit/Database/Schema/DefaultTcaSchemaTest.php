@@ -2645,7 +2645,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'label' => 'aLabel',
             'config' => [
                 'type' => 'number',
-                'format' => 'decimal',
+                'scale' => 2,
             ],
         ];
         $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($tca));
@@ -2671,7 +2671,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'label' => 'aLabel',
             'config' => [
                 'type' => 'number',
-                'format' => 'decimal',
+                'scale' => 2,
             ],
         ];
         $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($tca));
@@ -2689,6 +2689,83 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     }
 
     #[Test]
+    public function enrichAddsNumberAsDecimalWithScaleForNonSqlite(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $tca['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+                'scale' => 4,
+            ],
+        ];
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('decimal'),
+            [
+                'default' => 0.0,
+                'notnull' => true,
+                'precision' => 12,
+                'scale' => 4,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsNumberAsDecimalWithScaleForSqlite(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool(SQLitePlatform::class);
+        $tca['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+                'scale' => 4,
+            ],
+        ];
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('string'),
+            [
+                'default' => '0.0000',
+                'notnull' => true,
+                'length' => 255,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsNumberAsDecimalWithScaleCappedToMaximum(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $tca['aTable']['columns']['number'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'number',
+                'scale' => 99,
+            ],
+        ];
+        $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`number`',
+            Type::getType('decimal'),
+            [
+                'default' => 0.0,
+                'notnull' => true,
+                'precision' => 38,
+                'scale' => 30,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('number')->toArray());
+    }
+
+    #[Test]
     public function enrichAddsNumberAsInteger(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2696,7 +2773,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'label' => 'aLabel',
             'config' => [
                 'type' => 'number',
-                'format' => 'integer',
+                'scale' => 0,
             ],
         ];
         $subject = new DefaultTcaSchema($this->connectionPool, $this->getPreparedTcaSchemaFactory($tca));

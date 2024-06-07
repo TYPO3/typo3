@@ -214,4 +214,90 @@ class MathUtility
         ]);
         return is_int($value);
     }
+
+    /**
+     * Round a decimal number given as string to $scale decimal digits and return it as string,
+     * padded with zeros if it has less decimal digits. Values exactly in the middle are rounded
+     * away from zero, a result of zero is never negative.
+     *
+     * The calculation is done on the digits and not on a float, since a float can only hold
+     * about 15 significant digits: number_format(12345678.1234567891, 10) returns
+     * "12345678.1234567892", while this method keeps the given digits.
+     *
+     * @param string $value A number like "-1234.5678" or "1.0e-7": digits with an optional sign,
+     *                      decimal point and exponent. An empty string is treated as zero, since
+     *                      that is how an empty form field arrives here. Anything else, a decimal
+     *                      comma for instance, is rejected instead of being silently reinterpreted.
+     * @param int $scale Number of decimal digits of the result, negative values are treated as zero
+     * @throws \InvalidArgumentException if $value is neither empty nor a decimal number
+     */
+    public static function roundDecimalString(string $value, int $scale): string
+    {
+        $scale = max(0, $scale);
+        if ($value === '') {
+            $value = '0';
+        }
+        if (!preg_match('/^([+-]?)(\d+(?:\.\d*)?|\.\d+)(?:[eE]([+-]?\d+))?$/', $value, $matches)) {
+            throw new \InvalidArgumentException(
+                '"' . $value . '" is not a decimal number. Expected are digits with an optional '
+                . 'sign, decimal point and exponent, for instance "-12.34" or "1.0e-7".',
+                1788293269
+            );
+        }
+        $negative = $matches[1] === '-';
+        [$integerDigits, $decimalDigits] = self::shiftDecimalPoint($matches[2], (int)($matches[3] ?? 0));
+
+        if (strlen($decimalDigits) > $scale) {
+            $roundUp = (int)$decimalDigits[$scale] >= 5;
+            $decimalDigits = substr($decimalDigits, 0, $scale);
+            if ($roundUp) {
+                $rounded = self::incrementDigits($integerDigits . $decimalDigits);
+                $integerDigits = substr($rounded, 0, strlen($rounded) - $scale);
+                $decimalDigits = substr($rounded, strlen($rounded) - $scale);
+            }
+        }
+
+        $result = ltrim($integerDigits, '0') ?: '0';
+        if ($scale > 0) {
+            $result .= '.' . str_pad($decimalDigits, $scale, '0');
+        }
+        return ($negative && strpbrk($result, '123456789') !== false ? '-' : '') . $result;
+    }
+
+    /**
+     * Resolve the exponent of a number like "1.0e-7" by moving its decimal point, and return the
+     * integer and the decimal digits separately. Done on the digits to keep the full precision a
+     * float would lose.
+     *
+     * @return array{0: string, 1: string}
+     */
+    private static function shiftDecimalPoint(string $number, int $exponent): array
+    {
+        [$integerDigits, $decimalDigits] = array_pad(explode('.', $number, 2), 2, '');
+        if ($exponent > 0) {
+            $decimalDigits = str_pad($decimalDigits, $exponent, '0');
+            $integerDigits .= substr($decimalDigits, 0, $exponent);
+            $decimalDigits = substr($decimalDigits, $exponent);
+        } elseif ($exponent < 0) {
+            $integerDigits = str_pad($integerDigits, -$exponent, '0', STR_PAD_LEFT);
+            $decimalDigits = substr($integerDigits, $exponent) . $decimalDigits;
+            $integerDigits = substr($integerDigits, 0, $exponent);
+        }
+        return [$integerDigits, $decimalDigits];
+    }
+
+    /**
+     * Add one to a string of digits, taking care of the carry: "199" becomes "200".
+     */
+    private static function incrementDigits(string $digits): string
+    {
+        for ($i = strlen($digits) - 1; $i >= 0; $i--) {
+            if ($digits[$i] !== '9') {
+                $digits[$i] = (string)((int)$digits[$i] + 1);
+                return $digits;
+            }
+            $digits[$i] = '0';
+        }
+        return '1' . $digits;
+    }
 }
