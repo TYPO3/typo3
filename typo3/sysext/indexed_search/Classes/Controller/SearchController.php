@@ -1327,11 +1327,11 @@ class SearchController extends ActionController
         $pageLanguage = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'contentId', 0);
         // Parameters for link
         $urlParameters = [];
-        if ($row['static_page_arguments'] !== null) {
+        if (isset($row['static_page_arguments'])) {
             $urlParameters = json_decode($row['static_page_arguments'], true);
         }
         // Add &type and &MP variable:
-        if ($row['data_page_mp']) {
+        if (!empty($row['data_page_mp'] ?? false)) {
             $urlParameters['MP'] = $row['data_page_mp'];
         }
         if (($pageLanguage === 0 && $row['sys_language_uid'] > 0) || $pageLanguage > 0) {
