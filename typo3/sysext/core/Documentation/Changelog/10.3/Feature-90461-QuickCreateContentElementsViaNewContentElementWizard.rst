@@ -37,7 +37,7 @@ This definition can be put into PageTSconfig (e.g. :file:`EXT:my_extension/Confi
                    CType = my_element
                    header = Hello my friend
                }
-               saveAndClose = true
+               saveAndClose = 1
            }
        }
    }
