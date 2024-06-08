@@ -172,10 +172,10 @@
 				<source>Not assigned</source>
 			</trans-unit>
 			<trans-unit id="emptyColPos" resname="emptyColPos">
-				<source>Empty Colpos</source>
+				<source>Empty section</source>
 			</trans-unit>
 			<trans-unit id="emptyColPos.message" resname="emptyColPos.message">
-				<source>This column has no "colPos". This is only for display Purposes.</source>
+				<source>This section is only for display purposes, no "colPos" configuration is set.</source>
 			</trans-unit>
 			<trans-unit id="unusedColPos" resname="unusedColPos">
 				<source>Unused</source>
