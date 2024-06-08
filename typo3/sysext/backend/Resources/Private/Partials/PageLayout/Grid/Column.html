@@ -4,6 +4,16 @@
 </f:comment>
 <f:variable name="colpos" value="{f:if(condition: column.unused, then: 'unused', else: column.columnNumber)}"/>
 
+<f:if condition="{languageColumns}">
+    <f:then>
+        <f:comment><!-- Language comparison view --></f:comment>
+        <f:variable name="columnIdentifier" value="columnIdentifier_language-{column.context.siteLanguage.languageId}_column-{colpos}" />
+    </f:then>
+    <f:else>
+        <f:comment><!-- Grid / Column view --></f:comment>
+        <f:variable name="columnIdentifier" value="columnIdentifier_column-{colpos}" />
+    </f:else>
+</f:if>
 <td valign="top" colspan="{column.colSpan}" rowspan="{column.rowSpan}"
     data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
     class="t3js-page-lang-column-{column.context.siteLanguage.languageId} t3js-page-column t3-grid-cell t3-page-column t3-page-column-{colpos}
@@ -11,7 +21,7 @@
         {f:if(condition: '!{column.active} && !{column.unused}', then: 't3-grid-cell-restricted')}
         {f:if(condition: '!{column.active} && {hideRestrictedColumns} && !{column.unused}', then: 't3-grid-cell-hidden')}
         t3-gridCell-width{column.colSpan}
-        t3-gridCell-height{column.rowSpan}">
+        t3-gridCell-height{column.rowSpan}" role="group" aria-labelledby="{columnIdentifier}">
     <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
     <f:if condition="{column.active} || {column.unused}">
         <div data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
