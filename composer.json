@@ -1,7 +1,12 @@
 {
 	"name": "typo3/cms",
 	"description": "TYPO3 CMS is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.",
-	"keywords": ["typo3", "cms", "content management system", "extbase"],
+	"keywords": [
+		"typo3",
+		"cms",
+		"content management system",
+		"extbase"
+	],
 	"homepage": "https://typo3.org/",
 	"type": "typo3-cms-core",
 	"license": "GPL-2.0-or-later",
@@ -307,7 +312,7 @@
 			"TYPO3Tests\\TestEid\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_eid/Classes/",
 			"TYPO3Tests\\FluidTest\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/",
 			"TYPO3Tests\\TestTranslate\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/test_translate/Classes/",
-			"TYPO3Tests\\FormCachingTests\\" : "typo3/sysext/form/Tests/Functional/RequestHandling/Fixtures/Extensions/form_caching_tests/Classes/",
+			"TYPO3Tests\\FormCachingTests\\": "typo3/sysext/form/Tests/Functional/RequestHandling/Fixtures/Extensions/form_caching_tests/Classes/",
 			"TYPO3Tests\\RequestMirror\\": "typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_request_mirror/Classes/",
 			"TYPO3Tests\\TestValidators\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_validators/Classes/",
 			"TYPO3Tests\\TestDatahandler\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler/Classes/",
@@ -325,5 +330,8 @@
 			"TYPO3Tests\\ViewhelperLibrary\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Libraries/viewhelper_library/src/",
 			"TYPO3\\CMS\\PHPStan\\": "Build/phpstan/src/"
 		}
+	},
+	"conflict": {
+		"phpunit/phpunit": "11.2.0"
 	}
 }
