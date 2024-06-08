@@ -53,7 +53,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * 						}
  * 					}
  * 				}
- * 				icon = EXT:example_extension/Resources/Public/Images/BackendLayouts/default.gif
+ * 				icon = content-container-columns-2
  * 			}
  * 		}
  * 	}
