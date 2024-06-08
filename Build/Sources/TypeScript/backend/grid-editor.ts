@@ -436,7 +436,7 @@ export class GridEditor extends LitElement {
     const content = 'mod.web_layout.BackendLayouts {\n' +
       '  exampleKey {\n' +
       '    title = Example\n' +
-      '    icon = EXT:example_extension/Resources/Public/Images/BackendLayouts/default.gif\n' +
+      '    icon = content-container-columns-2\n' +
       '    config {\n' +
       config.replace(new RegExp('\\t', 'g'), '  ') +
       '    }\n' +
