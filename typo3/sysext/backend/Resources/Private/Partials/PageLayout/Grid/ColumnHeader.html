@@ -8,16 +8,16 @@
                     </a>
                 </f:if>
             </div>
-            {column.title}
+            <span id="{columnIdentifier}">{column.title}</span>
         </f:then>
         <f:else if="{column.unused}">
-            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:unusedColPos"/>
+            <span id="{columnIdentifier}"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:unusedColPos"/></span>
         </f:else>
         <f:else if="{column.unassigned}">
-            {column.titleUnassigned}
+            <span id="{columnIdentifier}">{column.titleUnassigned}</span>
         </f:else>
         <f:else>
-            {column.titleInaccessible}
+            <span id="{columnIdentifier}">{column.titleInaccessible}</span>
         </f:else>
     </f:if>
 </div>
