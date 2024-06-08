@@ -75,7 +75,7 @@ The :typoscript:`saveAndClose` option is now defined through TCA as well:
     mod.wizards.newContentElement.wizardItems {
         special.elements {
             div {
-                saveAndClose = true
+                saveAndClose = 1
             }
         }
     }
