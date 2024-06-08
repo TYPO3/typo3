@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Service\ExtractorService;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtractorServiceTest extends UnitTestCase
@@ -104,7 +105,7 @@ final class ExtractorServiceTest extends UnitTestCase
         $fileMock->method('getType')->willReturn(File::FILETYPE_IMAGE);
         $fileMock->method('getStorage')->willReturn($storageMock);
 
-        $extractorClass1 = md5('1');
+        $extractorClass1 = StringUtility::getUniqueId('extractor');
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
@@ -119,7 +120,7 @@ final class ExtractorServiceTest extends UnitTestCase
             'height' => 600,
         ]);
 
-        $extractorClass2 = md5('2');
+        $extractorClass2 = StringUtility::getUniqueId('extractor');
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
@@ -223,7 +224,7 @@ final class ExtractorServiceTest extends UnitTestCase
         $fileMock->expects(self::any())->method('getType')->willReturn(File::FILETYPE_IMAGE);
         $fileMock->expects(self::any())->method('getStorage')->willReturn($storageMock);
 
-        $extractorClass1 = md5('1');
+        $extractorClass1 = StringUtility::getUniqueId('extractor');
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
@@ -238,7 +239,7 @@ final class ExtractorServiceTest extends UnitTestCase
             'bar' => 'first',
         ]);
 
-        $extractorClass2 = md5('2');
+        $extractorClass2 = StringUtility::getUniqueId('extractor');
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();

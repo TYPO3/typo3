@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -31,7 +32,7 @@ final class ExtractorRegistryTest extends UnitTestCase
     #[Test]
     public function registeredExtractorClassCanBeRetrieved(): void
     {
-        $extractorClass = 'a9f4d5e4ebb4b03547a2a6094e1170ac';
+        $extractorClass = StringUtility::getUniqueId('extractor');
         $extractorObject = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass)
             ->getMock();
@@ -67,19 +68,19 @@ final class ExtractorRegistryTest extends UnitTestCase
     #[Test]
     public function registerExtractorClassWithHighestPriorityIsFirstInResult(): void
     {
-        $extractorClass1 = 'db76010e5c24658c35ea1605cce2391d';
+        $extractorClass1 = StringUtility::getUniqueId('extractor');
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
         $extractorObject1->method('getExecutionPriority')->willReturn(1);
 
-        $extractorClass2 = 'ad9195e2487eea33c8a2abd5cf33cba4';
+        $extractorClass2 = StringUtility::getUniqueId('extractor');
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
         $extractorObject2->method('getExecutionPriority')->willReturn(10);
 
-        $extractorClass3 = 'cef9aa4e1cd3aa7ff05dcdccb117156a';
+        $extractorClass3 = StringUtility::getUniqueId('extractor');
         $extractorObject3 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass3)
             ->getMock();
@@ -106,13 +107,13 @@ final class ExtractorRegistryTest extends UnitTestCase
     #[Test]
     public function registeredExtractorClassWithSamePriorityAreAllReturned(): void
     {
-        $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
+        $extractorClass1 = StringUtility::getUniqueId('extractor');
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
         $extractorObject1->method('getExecutionPriority')->willReturn(1);
 
-        $extractorClass2 = 'ac318f1659d278b79b38262f23a78d5d';
+        $extractorClass2 = StringUtility::getUniqueId('extractor');
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
@@ -135,14 +136,14 @@ final class ExtractorRegistryTest extends UnitTestCase
     #[Test]
     public function registeredExtractorsCanBeFilteredByDriverTypeButNoTyeREstrictionIsTreatedAsCompatible(): void
     {
-        $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
+        $extractorClass1 = StringUtility::getUniqueId('extractor');
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
         $extractorObject1->method('getExecutionPriority')->willReturn(1);
         $extractorObject1->method('getDriverRestrictions')->willReturn([]);
 
-        $extractorClass2 = 'ac318f1659d278b79b38262f23a78d5d';
+        $extractorClass2 = StringUtility::getUniqueId('extractor');
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
@@ -166,14 +167,14 @@ final class ExtractorRegistryTest extends UnitTestCase
     #[Test]
     public function registeredExtractorsCanBeFilteredByDriverType(): void
     {
-        $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
+        $extractorClass1 = StringUtility::getUniqueId('extractor');
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
         $extractorObject1->method('getExecutionPriority')->willReturn(1);
         $extractorObject1->method('getDriverRestrictions')->willReturn(['Foo']);
 
-        $extractorClass2 = 'ac318f1659d278b79b38262f23a78d5d';
+        $extractorClass2 = StringUtility::getUniqueId('extractor');
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();

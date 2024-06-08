@@ -1346,26 +1346,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Pagination/SimplePaginationTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<ad9195e2487eea33c8a2abd5cf33cba4\\>, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<cef9aa4e1cd3aa7ff05dcdccb117156a\\>, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<db76010e5c24658c35ea1605cce2391d\\>, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$name of method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\ExtractorInterface\\>\\:\\:setMockClassName\\(\\) expects class\\-string, string given\\.$#"
-			count: 10
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Index/ExtractorRegistryTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractRepository\\<object\\>\\:\\:findByUid\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Repository/AbstractRepositoryTest.php
