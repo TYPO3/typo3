@@ -522,11 +522,13 @@ class ConnectionMigrator
                 // just for this index.
                 foreach ($changedTable->renamedIndexes as $key => $renamedIndex) {
                     $indexDiff = clone $tableDiff;
-                    $indexDiff->renamedIndexes = [$key => $renamedIndex];
+                    $indexDiff->renamedIndexes = [
+                        $changedTable->getOldTable()->getIndex($key)->getQuotedName($databasePlatform) => $renamedIndex,
+                    ];
 
                     $temporarySchemaDiff = new SchemaDiff(
                         [],
-                        [$indexDiff],
+                        [$indexDiff->getOldTable()->getQuotedName($databasePlatform) => $indexDiff],
                         [],
                         $schemaDiff->fromSchema
                     );
@@ -634,6 +636,7 @@ class ConnectionMigrator
      */
     protected function getUnusedTableUpdateSuggestions(SchemaDiff $schemaDiff): array
     {
+        $databasePlatform = $this->connection->getDatabasePlatform();
         $updateSuggestions = [];
         foreach ($schemaDiff->changedTables as $tableDiff) {
             // Skip tables that are not being renamed or where the new name isn't prefixed
@@ -643,15 +646,10 @@ class ConnectionMigrator
             ) {
                 continue;
             }
-            // Build a new schema diff that only contains this table
-            $changedFieldDiff = new SchemaDiff(
-                [],
-                [$tableDiff],
-                [],
-                $schemaDiff->fromSchema
+            $statements = $databasePlatform->getRenameTableSQL(
+                $tableDiff->getOldTable()->getQuotedName($databasePlatform),
+                $tableDiff->newName
             );
-
-            $statements = $changedFieldDiff->toSql($this->connection->getDatabasePlatform());
             foreach ($statements as $statement) {
                 $updateSuggestions['change_table'][md5($statement)] = $statement;
             }
@@ -674,21 +672,21 @@ class ConnectionMigrator
     {
         $changedTables = [];
 
+        $databasePlatform = $this->connection->getDatabasePlatform();
         foreach ($schemaDiff->changedTables as $index => $changedTable) {
             if (count($changedTable->changedColumns) === 0) {
                 continue;
             }
 
-            $databasePlatform = $this->getDatabasePlatform($index);
-
             // Treat each changed column with a new diff to get a dedicated suggestions
             // just for this single column.
-            foreach ($changedTable->changedColumns as $oldFieldName => $changedColumn) {
+            foreach ($changedTable->changedColumns as $index => $changedColumn) {
                 // Field has not been renamed
                 if ($changedColumn->getOldColumnName()->getName() === $changedColumn->column->getName()) {
                     continue;
                 }
 
+                $oldFieldName = $changedColumn->getOldColumn()->getQuotedName($databasePlatform);
                 $renameColumnTableDiff = new TableDiff(
                     $changedTable->name,
                     [],
@@ -699,12 +697,12 @@ class ConnectionMigrator
                     [],
                     $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name))
                 );
-                if ($databasePlatform === 'postgresql') {
+                if ($databasePlatform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
                     $renameColumnTableDiff->renamedColumns[$oldFieldName] = $changedColumn->column;
                 }
                 $changedTables[$index . ':' . $changedColumn->column->getName()] = $renameColumnTableDiff;
 
-                if ($databasePlatform === 'sqlite') {
+                if ($databasePlatform instanceof SqlitePlatform) {
                     break;
                 }
             }
