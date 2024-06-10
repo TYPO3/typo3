@@ -200,31 +200,28 @@
 // Styleguide component.card.4
 //
 
-//
-// Variables
-//
-$card-bg-scale: -95%;
-$card-border-scale: -60%;
-$card-hover-border-scale: -40%;
-
 :root {
     --typo3-card-grid-gap: 1rem;
-    --typo3-card-color: #{$body-color};
     --typo3-card-padding: 1rem;
-    --typo3-card-bg: #{$body-bg};
-    --typo3-card-border-color: #{shade-color($body-bg, 20%)};
-    --typo3-card-hover-border-color: #{shade-color($body-bg, 30%)};
 }
 
 //
 // Component
 //
 .card {
-    --#{$prefix}body-color: var(--typo3-card-color);
-    --#{$prefix}card-bg: var(--typo3-card-bg);
-    --#{$prefix}card-border-color: var(--typo3-card-border-color);
-    --#{$prefix}card-border-radius: var(--typo3-component-border-radius);
-    --#{$prefix}card-box-shadow: var(--typo3-component-box-shadow);
+    --typo3-card-color: var(--typo3-text-color-base);
+    --typo3-card-color-subtle: var(--typo3-text-color-variant);
+    --typo3-card-bg: var(--typo3-surface-container-low);
+    --typo3-card-border-color: color-mix(in srgb, var(--typo3-card-bg), var(--typo3-card-color) 15%);
+    --typo3-card-hover-border-color: color-mix(in srgb, var(--typo3-card-bg), var(--typo3-card-color) 30%);
+    color: var(--typo3-card-color);
+    background: var(--typo3-card-bg);
+    border: 1px solid var(--typo3-card-border-color);
+    border-radius: var(--typo3-component-border-radius);
+    box-shadow: var(--typo3-component-box-shadow);
+    position: relative;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     margin-bottom: var(--typo3-spacing);
     transition: all .2s ease-in-out;
@@ -389,16 +386,23 @@ a.card {
     }
 
     .card-subtitle {
+        color: var(--typo3-card-color-subtle);
         display: block;
         margin-top: .5em;
         font-size: 1em;
         line-height: 1.2em;
-        opacity: .5;
     }
 
     .card-longdesc {
         margin-top: 1em;
     }
+}
+
+//
+// Body
+//
+.card-body {
+    flex: 1 1 auto;
 }
 
 //
@@ -418,39 +422,9 @@ a.card {
 //
 // Color Variants
 //
-@mixin card-variant($background, $border, $border-hover, $text-color) {
-    --typo3-card-color: #{$text-color};
-    --typo3-card-bg: #{$background};
-    --typo3-card-border-color: #{$border};
-    --typo3-card-hover-border-color: #{$border-hover};
-}
-
-@each $state, $value in $theme-colors {
-    @if $state != light and $state != default {
-        $card-background: shift-color($value, $card-bg-scale);
-        $card-border: shift-color($value, $card-border-scale);
-        $card-hover-border: shift-color($value, $card-hover-border-scale);
-        $card-color: color-contrast($card-background);
-
-        .card-#{$state} {
-            @include card-variant($card-background, $card-border, $card-hover-border, $card-color);
-        }
+@each $variant in $base-variants {
+    .card-#{$variant} {
+        --typo3-card-color: var(--typo3-surface-container-#{$variant}-text);
+        --typo3-card-bg: var(--typo3-surface-container-#{$variant});
     }
-}
-
-//
-// The light variants have problems beeing generated, they need manual correction.
-//
-.card-light {
-    --typo3-card-color: #{$body-color};
-    --typo3-card-bg: #{$light};
-    --typo3-card-border-color: #{shade-color($light, 10%)};
-    --typo3-card-hover-border-color: #{shade-color($light, 20%)};
-}
-
-.card-default {
-    --typo3-card-color: #{$body-color};
-    --typo3-card-bg: #{$default};
-    --typo3-card-border-color: #{shade-color($default, 10%)};
-    --typo3-card-hover-border-color: #{shade-color($default, 20%)};
 }
