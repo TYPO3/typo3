@@ -212,7 +212,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
                 for ($i = 1; $i <= $rowCount; $i++) {
                     $cells = [];
                     $row = array_shift($dataRows);
-                    $columns = $row['columns.'];
+                    $columns = $row['columns.'] ?? [];
                     for ($j = 1; $j <= $colCount; $j++) {
                         $cellData = [];
                         if (!($spannedMatrix[$i][$j] ?? false)) {
