@@ -94,7 +94,7 @@ class BackendLayoutRenderer
             'context' => $pageLayoutContext,
             'hideRestrictedColumns' => (bool)(BackendUtility::getPagesTSconfig($pageLayoutContext->getPageId())['mod.']['web_layout.']['hideRestrictedCols'] ?? false),
             'newContentTitle' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement'),
-            'newContentTitleShort' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content'),
+            'newContentTitleShort' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:createNewContent'),
             'allowEditContent' => $backendUser->check('tables_modify', 'tt_content'),
             'maxTitleLength' => $backendUser->uc['titleLen'] ?? 20,
         ]);
