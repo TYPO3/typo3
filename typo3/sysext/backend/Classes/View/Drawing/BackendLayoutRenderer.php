@@ -63,7 +63,7 @@ class BackendLayoutRenderer
         ksort($rows);
         foreach ($rows as $row) {
             $rowObject = GeneralUtility::makeInstance(GridRow::class, $context);
-            foreach ($row['columns.'] as $column) {
+            foreach (($row['columns.'] ?? []) as $column) {
                 $columnObject = GeneralUtility::makeInstance(GridColumn::class, $context, $column);
                 $rowObject->addColumn($columnObject);
                 if (isset($column['colPos'])) {
