@@ -49,8 +49,8 @@ config.admPanel
 User TSconfig settings
 ======================
 
-The options below can be set in the user TSconfig of a backend backend user or
-group. See also
+The options below can be set in the user TSconfig of a backend user or
+backend user group. See also
 :ref:`Using and setting user TSconfig <t3tsconfig:setting-user-tsconfig>`.
 
 
