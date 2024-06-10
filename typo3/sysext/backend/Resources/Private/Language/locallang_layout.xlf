@@ -93,6 +93,9 @@
 			<trans-unit id="content" resname="content">
 				<source>Content</source>
 			</trans-unit>
+			<trans-unit id="createNewContent" resname="createNewContent">
+				<source>Create new content</source>
+			</trans-unit>
 			<trans-unit id="newInColumn" resname="newInColumn">
 				<source>Create new record in top of this column</source>
 			</trans-unit>
