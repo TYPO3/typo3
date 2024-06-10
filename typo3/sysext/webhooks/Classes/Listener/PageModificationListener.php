@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Webhooks\Listener;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Webhooks\Message\PageModificationMessage;
  *
  * @internal not part of TYPO3 Core API
  */
+#[Autoconfigure(public: true)]
 class PageModificationListener
 {
     public function __construct(

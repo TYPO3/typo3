@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Seo\Canonical;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Seo\Exception\CanonicalGenerationDisabledException;
  *
  * @internal this class is not part of TYPO3's Core API.
  */
+#[Autoconfigure(public: true)]
 readonly class CanonicalGenerator
 {
     public function __construct(

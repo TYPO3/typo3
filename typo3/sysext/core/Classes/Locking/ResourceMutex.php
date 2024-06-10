@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Locking;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireException;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
@@ -50,6 +51,7 @@ use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
  *
  * Note that the access lock resources are NEVER deleted/destroyed, otherwise the whole thing would be broken.
  */
+#[Autoconfigure(public: true)]
 class ResourceMutex
 {
     /**

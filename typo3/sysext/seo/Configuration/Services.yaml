@@ -7,15 +7,6 @@ services:
   TYPO3\CMS\Seo\:
     resource: '../Classes/*'
 
-  TYPO3\CMS\Seo\MetaTag\MetaTagGenerator:
-    public: true
-
-  TYPO3\CMS\Seo\Canonical\CanonicalGenerator:
-    public: true
-
-  TYPO3\CMS\Seo\XmlSitemap\XmlSitemapRenderer:
-    public: true
-
   TYPO3\CMS\Seo\Widgets\Provider\PagesWithoutDescriptionDataProvider:
     arguments:
       $excludedDoktypes: [ 3, 4, 6, 7, 199, 254 ]

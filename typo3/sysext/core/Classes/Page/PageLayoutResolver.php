@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Page;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
@@ -40,6 +41,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This is not part of TYPO3 Core API.
  */
+#[Autoconfigure(public: true)]
 class PageLayoutResolver
 {
     public function __construct(

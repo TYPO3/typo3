@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\StringInclude;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class StringTreeBuilder
 {
     public function __construct(

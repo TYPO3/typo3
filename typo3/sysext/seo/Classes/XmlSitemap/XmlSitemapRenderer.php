@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Seo\XmlSitemap;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,6 +33,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
  *
  * @internal this class is not part of TYPO3's Core API.
  */
+#[Autoconfigure(public: true)]
 final class XmlSitemapRenderer
 {
     public function __construct(

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Html;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -36,6 +37,7 @@ use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
  * line breaks to LFs internally, however when all transformations are done, all LFs are transformed to CRLFs.
  * This means: RteHtmlParser always returns CRLFs to be maximum compatible with all formats.
  */
+#[Autoconfigure(public: true)]
 class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

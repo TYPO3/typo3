@@ -6,16 +6,3 @@ services:
 
   TYPO3\CMS\Webhooks\:
     resource: '../Classes/*'
-
-  TYPO3\CMS\Webhooks\WebhookTypesRegistry:
-    public: true
-
-  TYPO3\CMS\Webhooks\Listener\PageModificationListener:
-    public: true
-
-  # public true is required in ajax backend calls (e.g. when adding a file)
-  TYPO3\CMS\Webhooks\Listener\MessageListener:
-    public: true
-
-  TYPO3\CMS\Webhooks\Tca\ItemsProcFunc\WebhookTypesItemsProcFunc:
-    public: true

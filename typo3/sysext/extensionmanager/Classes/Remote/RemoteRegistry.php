@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Remote;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+
 /**
  * Registry of remote connectors.
  *
  * @internal This class is a specific implementation and is not part of the Public TYPO3 API.
  */
+#[Autoconfigure(public: true)]
 class RemoteRegistry
 {
     /**

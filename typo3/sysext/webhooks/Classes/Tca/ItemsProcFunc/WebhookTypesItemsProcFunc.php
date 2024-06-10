@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Webhooks\Tca\ItemsProcFunc;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
 
@@ -25,6 +26,7 @@ use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
  *
  * @internal not part of TYPO3's Core API
  */
+#[Autoconfigure(public: true)]
 class WebhookTypesItemsProcFunc
 {
     public function __construct(

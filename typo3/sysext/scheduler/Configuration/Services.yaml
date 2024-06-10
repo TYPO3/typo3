@@ -7,9 +7,6 @@ services:
   TYPO3\CMS\Scheduler\:
     resource: '../Classes/*'
 
-  TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository:
-    public: true
-
   TYPO3\CMS\Scheduler\Command\SchedulerCommand:
     tags:
       - name: 'console.command'

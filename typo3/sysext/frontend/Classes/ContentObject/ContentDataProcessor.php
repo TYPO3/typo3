@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
@@ -23,6 +24,7 @@ use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
 /**
  * A class that contains methods that can be used to use the dataProcessing functionality
  */
+#[Autoconfigure(public: true)]
 class ContentDataProcessor
 {
     public function __construct(

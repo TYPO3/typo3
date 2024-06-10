@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Package;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
 use TYPO3\CMS\Core\Configuration\Extension\ExtTablesFactory;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class PackageActivationService
 {
     public function __construct(

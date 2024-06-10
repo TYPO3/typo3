@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ContextMenu;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ItemProvidersRegistry;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
 
@@ -24,6 +25,7 @@ use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
  * Class for generating the click menu
  * @internal
  */
+#[Autoconfigure(public: true)]
 class ContextMenu
 {
     protected ItemProvidersRegistry $itemProvidersRegistry;

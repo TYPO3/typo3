@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Information\Typo3Version;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class DefaultProvider extends AbstractProvider
 {
     public function __construct(

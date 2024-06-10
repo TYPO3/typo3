@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Mail;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\TransportInterface;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Core\Utility\MailUtility;
  * This will use the setting in TYPO3_CONF_VARS to choose the correct transport
  * for it to work out-of-the-box.
  */
+#[Autoconfigure(public: true)]
 class Mailer implements MailerInterface
 {
     protected array $mailSettings = [];

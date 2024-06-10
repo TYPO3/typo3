@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Hooks;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Redirects\Service\SlugService;
 /**
  * @internal This class is a specific TYPO3 hook implementation and is not part of the Public TYPO3 API.
  */
+#[Autoconfigure(public: true)]
 class DataHandlerSlugUpdateHook
 {
     /**

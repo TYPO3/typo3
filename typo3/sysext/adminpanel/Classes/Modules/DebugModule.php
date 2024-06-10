@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Modules;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Debug Module of the AdminPanel
  */
+#[Autoconfigure(public: true)]
 class DebugModule extends AbstractModule implements ShortInfoProviderInterface
 {
     public function getIdentifier(): string

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\DataHandling;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Provides services around item processing
  */
+#[Autoconfigure(public: true)]
 class ItemProcessingService
 {
     public function __construct(

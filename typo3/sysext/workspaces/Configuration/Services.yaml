@@ -12,24 +12,6 @@ services:
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['workspaces_cache']
 
-  TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer:
-    public: true
-
-  TYPO3\CMS\Workspaces\Notification\StageChangeNotification:
-    public: true
-
-  TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder:
-    public: true
-
-  TYPO3\CMS\Workspaces\Service\GridDataService:
-    public: true
-
   TYPO3\CMS\Workspaces\Service\WorkspaceService:
     public: true
     shared: true
-
-  TYPO3\CMS\Workspaces\Controller\Remote\ActionHandler:
-    public: true
-
-  TYPO3\CMS\Workspaces\Hook\DataHandlerHook:
-    public: true

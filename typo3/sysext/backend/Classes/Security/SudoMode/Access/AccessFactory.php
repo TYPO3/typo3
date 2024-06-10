@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Security\SudoMode\Access;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class AccessFactory
 {
     protected const DEFAULT_CLAIM_LIFETIME = 300;

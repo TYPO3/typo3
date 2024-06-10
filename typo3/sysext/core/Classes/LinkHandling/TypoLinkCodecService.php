@@ -18,12 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\LinkHandling;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\LinkHandling\Event\AfterTypoLinkDecodedEvent;
 use TYPO3\CMS\Core\LinkHandling\Event\BeforeTypoLinkEncodedEvent;
 
 /**
  * This class provides basic functionality to encode and decode typolink strings
  */
+#[Autoconfigure(public: true)]
 final readonly class TypoLinkCodecService
 {
     /**

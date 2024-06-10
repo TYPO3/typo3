@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Domain\Access;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 
 /**
@@ -25,6 +26,7 @@ use TYPO3\CMS\Core\Context\Context;
  *
  * Not related to "write permissions" etc.
  */
+#[Autoconfigure(public: true)]
 class RecordAccessVoter
 {
     public function __construct(

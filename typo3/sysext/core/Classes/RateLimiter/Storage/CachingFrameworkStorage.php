@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\RateLimiter\Storage;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\RateLimiter\LimiterStateInterface;
 use Symfony\Component\RateLimiter\Policy\SlidingWindow;
 use Symfony\Component\RateLimiter\Policy\TokenBucket;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
  *
  * @internal This is not part of the official TYPO3 Core API due to a limitation of the experimental Symfony Rate Limiter API.
  */
+#[Autoconfigure(public: true)]
 class CachingFrameworkStorage implements StorageInterface
 {
     private FrontendInterface $cacheInstance;

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Workspaces\Notification;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
  *
  * @internal This is a concrete implementation of sending out emails, and not part of the public TYPO3 Core API
  */
+#[Autoconfigure(public: true)]
 class StageChangeNotification implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

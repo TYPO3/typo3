@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * It is however recommended to use the ResourceFactory instead of this class,
  * as it is more flexible.
  */
+#[Autoconfigure(public: true)]
 class FileRepository
 {
     public function __construct(

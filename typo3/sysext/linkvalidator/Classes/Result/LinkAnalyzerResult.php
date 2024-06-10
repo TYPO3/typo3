@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Result;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class LinkAnalyzerResult
 {
     protected array $brokenLinks = [];

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Scheduler\Domain\Repository;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 /**
  * Repository class to fetch tasks available in the systems ready to be executed
  */
+#[Autoconfigure(public: true)]
 class SchedulerTaskRepository
 {
     protected const TABLE_NAME = 'tx_scheduler_task';

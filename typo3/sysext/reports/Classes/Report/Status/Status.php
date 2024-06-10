@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Reports\Report\Status;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Reports\Status as ReportStatus;
 /**
  * The status report
  */
+#[Autoconfigure(public: true)]
 class Status implements RequestAwareReportInterface
 {
     /**

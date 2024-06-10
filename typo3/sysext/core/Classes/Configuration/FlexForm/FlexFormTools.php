@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration\FlexForm;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This service provides various helpers to determine the data structure of flex form
  * fields and to maintain integrity of flex form related details in general.
  */
+#[Autoconfigure(public: true)]
 class FlexFormTools
 {
     public function __construct(

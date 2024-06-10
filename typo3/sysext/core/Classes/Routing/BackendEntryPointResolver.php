@@ -19,12 +19,14 @@ namespace TYPO3\CMS\Core\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
 
 /**
  * This class helps to resolve the virtual path to the main entry point of the TYPO3 Backend.
  */
+#[Autoconfigure(public: true)]
 class BackendEntryPointResolver
 {
     protected string $entryPoint = '/typo3';

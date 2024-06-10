@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @internal this is not part of the TYPO3 Core public API, as it serves as an internal
  * bridge between symfony/routing component and PSR-7 requests
  */
+#[Autoconfigure(public: true)]
 class RequestContextFactory
 {
     public function __construct(

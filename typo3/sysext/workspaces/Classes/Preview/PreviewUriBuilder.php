@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Workspaces\Preview;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder as BackendPreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -43,6 +44,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class PreviewUriBuilder
 {
     /**

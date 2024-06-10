@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Event\AfterFileProcessingEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
  * to be processed. If processing is required, a valid Processor is searched for to process the
  * Task object (which is retrieved from ProcessedFile->getTask()).
  */
+#[Autoconfigure(public: true)]
 class FileProcessingService
 {
     public function __construct(

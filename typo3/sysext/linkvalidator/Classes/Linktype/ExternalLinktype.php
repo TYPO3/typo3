@@ -23,6 +23,7 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\TooManyRedirectsException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
  * - no caching of results (except for a runtime cache during link checking which will be invalid on next run)
  * see "Known Problems" in the linkvalidator documentation
  */
+#[Autoconfigure(public: true)]
 class ExternalLinktype extends AbstractLinktype
 {
     // HTTP status code was delivered (and can be found in $errorParams['errno'])

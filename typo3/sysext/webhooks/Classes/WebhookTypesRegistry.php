@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Webhooks;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Webhooks\Model\WebhookType;
 
 /**
@@ -25,6 +26,7 @@ use TYPO3\CMS\Webhooks\Model\WebhookType;
  *
  * @internal not part of TYPO3's Core API
  */
+#[Autoconfigure(public: true)]
 class WebhookTypesRegistry
 {
     /**

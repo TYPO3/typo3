@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\View;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class AuthenticationStyleInformation implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

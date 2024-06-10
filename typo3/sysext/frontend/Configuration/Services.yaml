@@ -11,12 +11,6 @@ services:
     # (e.g. because factories are to be used instead)
     exclude: '../Classes/{Frontend/Controller/TypoScriptFrontendController.php}'
 
-  TYPO3\CMS\Frontend\Controller\ShowImageController:
-    public: true
-
-  TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor:
-    public: true
-
   TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory:
     public: true
     arguments: [!tagged_locator { tag: 'frontend.contentobject', index_by: 'identifier' }]
@@ -34,17 +28,11 @@ services:
   TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry:
     arguments: [!tagged_locator { tag: 'data.processor', index_by: 'identifier' }]
 
-  TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer:
-    public: true
-
   TYPO3\CMS\Frontend\Resource\FileCollector:
     public: true
     # @todo The file collector is used for intermediate collection in scoped places. Therefore, the collector can't be
     # @todo shared. Evaluate if the collector can be build scope aware and made sharable again.
     shared: false
-
-  TYPO3\CMS\Frontend\Html\HtmlWorker:
-    public: true
 
   # Register all available content objects
   TYPO3\CMS\Frontend\ContentObject\TextContentObject:

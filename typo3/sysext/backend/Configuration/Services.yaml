@@ -15,14 +15,8 @@ services:
     tags:
       - { name: 'console.command', command: 'backend:user:create', description: 'Create a backend user', schedulable: false }
 
-  TYPO3\CMS\Backend\Authentication\PasswordReset:
-    public: true
-
   TYPO3\CMS\Backend\Clipboard\Clipboard:
     shared: false
-    public: true
-
-  TYPO3\CMS\Backend\ContextMenu\ContextMenu:
     public: true
 
   TYPO3\CMS\Backend\ContextMenu\ItemProviders\ItemProvidersRegistry:
@@ -39,15 +33,6 @@ services:
     shared: false
     public: true
 
-  TYPO3\CMS\Backend\History\RecordHistoryRollback:
-    public: true
-
-  TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository:
-    public: true
-
-  TYPO3\CMS\Backend\View\AuthenticationStyleInformation:
-    public: true
-
   TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry:
     arguments:
       - !tagged_iterator livesearch.provider
@@ -60,17 +45,8 @@ services:
     tags:
       - { name: 'livesearch.provider', priority: 60 }
 
-  TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl:
-    public: true
-
-  TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow:
-    public: true
-
   TYPO3\CMS\Backend\Form\InlineStackProcessor:
     shared: false
-
-  TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor:
-    public: true
 
   TYPO3\CMS\Backend\RecordList\DatabaseRecordList:
     shared: false
@@ -87,32 +63,8 @@ services:
     arguments:
       - !tagged_iterator recordlist.elementbrowser
 
-  TYPO3\CMS\Backend\Resource\PublicUrlPrefixer:
-    public: true
-
-  TYPO3\CMS\Backend\Backend\ToolbarItems\ClearCacheToolbarItem:
-    public: true
-
-  TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem:
-    public: true
-
-  TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem:
-    public: true
-
   TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler:
     shared: false
-    public: true
-
-  TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap:
-    public: true
-
-  TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap:
-    public: true
-
-  TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory:
-    public: true
-
-  TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage:
     public: true
 
   TYPO3\CMS\Backend\View\RecordSearchBoxComponent:

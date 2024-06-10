@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Authentication\Mfa;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
 /**
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
  *
  * @internal should only be used by the TYPO3 Core
  */
+#[Autoconfigure(public: true)]
 class MfaProviderRegistry
 {
     /**

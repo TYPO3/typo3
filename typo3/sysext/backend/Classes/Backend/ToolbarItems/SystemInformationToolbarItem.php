@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus as DeprectaedInformationStatus;
 use TYPO3\CMS\Backend\Toolbar\InformationStatus;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Render system information toolbar item and drop-down.
  * Provides some events for other extensions to add information.
  */
+#[Autoconfigure(public: true)]
 class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
     private ServerRequestInterface $request;

@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Context\Context;
@@ -61,6 +62,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this is a concrete implementation for User/Password login and not part of public TYPO3 Core API.
  */
+#[Autoconfigure(public: true)]
 class PasswordReset implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

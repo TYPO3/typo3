@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class AjaxController
 {
     protected array $adminPanelModuleConfiguration;

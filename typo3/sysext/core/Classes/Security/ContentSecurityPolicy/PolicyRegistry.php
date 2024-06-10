@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+
 /**
  * A shared service registry to hold additional adjustments that were collected during
  * processing the current request. For instance, it would be used to temporarily(!) allow
@@ -24,6 +26,7 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class PolicyRegistry
 {
     /**

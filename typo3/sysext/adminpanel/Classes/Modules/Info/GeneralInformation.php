@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Modules\Info;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class GeneralInformation extends AbstractSubModule implements DataProviderInterface
 {
     public function __construct(

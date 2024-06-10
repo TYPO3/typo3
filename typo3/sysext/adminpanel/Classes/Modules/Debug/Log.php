@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Modules\Debug;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class Log extends AbstractSubModule implements DataProviderInterface, ModuleSettingsProviderInterface, RequestEnricherInterface
 {
     protected int $logLevel;

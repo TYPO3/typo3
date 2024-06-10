@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Adminpanel\Modules\Debug;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\AbstractDumper;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Shows all dispatched Events of the current request
  */
+#[Autoconfigure(public: true)]
 class Events extends AbstractSubModule implements DataProviderInterface
 {
     public function __construct(private readonly RequestId $requestId) {}

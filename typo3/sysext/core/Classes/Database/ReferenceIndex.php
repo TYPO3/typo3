@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Database;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ProgressListenerInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal Extensions shouldn't fiddle with the reference index themselves, it's task of DataHandler to do this.
  */
+#[Autoconfigure(public: true)]
 class ReferenceIndex
 {
     /**

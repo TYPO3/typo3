@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Webhooks\Listener;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TYPO3\CMS\Webhooks\Message\WebhookMessageFactory;
 
@@ -29,6 +30,7 @@ use TYPO3\CMS\Webhooks\Message\WebhookMessageFactory;
  *
  * @internal not part of TYPO3 Core API
  */
+#[Autoconfigure(public: true)]
 class MessageListener
 {
     public function __construct(

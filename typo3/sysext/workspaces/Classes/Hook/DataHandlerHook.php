@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Workspaces\Hook;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -47,6 +48,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  * to interact with the TYPO3 Core Engine
  * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
+#[Autoconfigure(public: true)]
 class DataHandlerHook
 {
     /**

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Property;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
  * Scope: frontend
  * @internal
  */
+#[Autoconfigure(public: true)]
 class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
 {
     public function __construct(protected readonly ValidatorResolver $validatorResolver) {}

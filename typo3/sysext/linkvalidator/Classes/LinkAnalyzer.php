@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Linkvalidator;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
  * This class provides Processing plugin implementation
  * @internal
  */
+#[Autoconfigure(public: true)]
 class LinkAnalyzer
 {
     /**

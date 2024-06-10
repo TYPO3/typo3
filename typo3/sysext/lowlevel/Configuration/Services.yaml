@@ -14,9 +14,6 @@ services:
         description: 'Show entries from the sys_log database table of the last 24 hours.'
         schedulable: false
 
-  TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry:
-    public: true
-
   lowlevel.configuration.module.provider.confvars:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
     tags:

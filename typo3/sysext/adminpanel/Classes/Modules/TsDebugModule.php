@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Modules;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Admin Panel TypoScript Debug Module
  */
+#[Autoconfigure(public: true)]
 class TsDebugModule extends AbstractModule implements ShortInfoProviderInterface
 {
     public function getIdentifier(): string

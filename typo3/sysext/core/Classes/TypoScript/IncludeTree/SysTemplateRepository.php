@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal: Internal structure. There is optimization potential and especially getSysTemplateRowsByRootline() will probably vanish later.
  */
+#[Autoconfigure(public: true)]
 final class SysTemplateRepository
 {
     public function __construct(

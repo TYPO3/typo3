@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource\OnlineMedia\Processing;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Event\AfterVideoPreviewFetchedEvent;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 /**
  * Preview of Online Media item Processing
  */
+#[Autoconfigure(public: true)]
 final class PreviewProcessing implements ProcessorInterface
 {
     public function __construct(

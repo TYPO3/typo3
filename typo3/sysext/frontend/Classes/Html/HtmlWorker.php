@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Html;
 
 use Masterminds\HTML5;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 /**
  * @internal API still might change
  */
+#[Autoconfigure(public: true)]
 class HtmlWorker
 {
     /**

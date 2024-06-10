@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\History;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\History\Event\AfterHistoryRollbackFinishedEvent;
 use TYPO3\CMS\Backend\History\Event\BeforeHistoryRollbackStartEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+#[Autoconfigure(public: true)]
 class RecordHistoryRollback
 {
     /**

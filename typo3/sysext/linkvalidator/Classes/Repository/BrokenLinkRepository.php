@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Linkvalidator\Repository;
 
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Linkvalidator\QueryRestrictions\EditableRestriction;
 /**
  * Repository for finding broken links that were detected previously.
  */
+#[Autoconfigure(public: true)]
 class BrokenLinkRepository
 {
     protected const TABLE = 'tx_linkvalidator_link';

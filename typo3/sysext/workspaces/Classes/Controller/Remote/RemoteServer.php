@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -51,6 +52,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 /**
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Autoconfigure(public: true)]
 class RemoteServer
 {
     use LogDataTrait;

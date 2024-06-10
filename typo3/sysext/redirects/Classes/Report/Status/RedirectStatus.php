@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Report\Status;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
 /**
  * Performs checks regarding redirects
  */
+#[Autoconfigure(public: true)]
 class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProviderInterface
 {
     public function __construct(

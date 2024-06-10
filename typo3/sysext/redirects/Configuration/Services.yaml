@@ -15,12 +15,6 @@ services:
     arguments:
       - 'redirects'
 
-  TYPO3\CMS\Redirects\Report\Status\RedirectStatus:
-    public: true
-
-  TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook:
-    public: true
-
   TYPO3\CMS\Redirects\Configuration\CheckIntegrityConfiguration:
     arguments:
       $extensionConfiguration: '@extension.configuration.redirects'

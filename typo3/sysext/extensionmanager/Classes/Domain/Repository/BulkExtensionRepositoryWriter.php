@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Extensionmanager\Parser\ExtensionXmlParser;
  *
  * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
  */
+#[Autoconfigure(public: true)]
 class BulkExtensionRepositoryWriter implements \SplObserver
 {
     /**

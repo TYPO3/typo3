@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Core\Environment;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TsConfigTreeBuilder
 {
     public function __construct(

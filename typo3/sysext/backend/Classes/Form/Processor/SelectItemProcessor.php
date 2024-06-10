@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Processor;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal ext:backend internal implementation and not part of the public core API.
  * @todo Move additional shareable code from form-engine into here.
  */
+#[Autoconfigure(public: true)]
 final class SelectItemProcessor
 {
     public function __construct(protected readonly LanguageServiceFactory $languageServiceFactory) {}

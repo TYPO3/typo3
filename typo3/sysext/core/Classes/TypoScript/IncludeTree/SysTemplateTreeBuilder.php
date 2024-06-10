@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -70,6 +71,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal: Internal tree structure.
  */
+#[Autoconfigure(public: true)]
 final class SysTemplateTreeBuilder
 {
     /**

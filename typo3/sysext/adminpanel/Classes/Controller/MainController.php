@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection;
@@ -45,6 +46,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class MainController
 {
     /** @var array<string, ModuleInterface> */

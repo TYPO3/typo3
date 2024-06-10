@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Configuration;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService as CoreTypoScriptService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -25,6 +26,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * Scope: frontend
  */
+#[Autoconfigure(public: true)]
 class TypoScriptService
 {
     protected CoreTypoScriptService $coreTypoScriptService;

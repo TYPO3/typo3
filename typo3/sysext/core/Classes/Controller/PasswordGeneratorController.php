@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Exception\InvalidPasswordRulesException;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 /**
  * @internal Only to be used within TYPO3. Might change in the future.
  */
+#[Autoconfigure(public: true)]
 class PasswordGeneratorController
 {
     public function __construct(

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class PolicyProvider
 {
     protected const REPORTING_URI = '@http-reporting';

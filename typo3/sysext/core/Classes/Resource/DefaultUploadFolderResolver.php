@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
  * Finds the best matching upload folder for a specific backend user
  * when uploading or selecting files, based on UserTSconfig or PageTSconfig
  */
+#[Autoconfigure(public: true)]
 class DefaultUploadFolderResolver
 {
     public function __construct(

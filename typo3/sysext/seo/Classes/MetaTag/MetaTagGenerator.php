@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Seo\MetaTag;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Frontend\Resource\FileCollector;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 readonly class MetaTagGenerator
 {
     public function __construct(

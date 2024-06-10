@@ -42,9 +42,6 @@ services:
         alias: true
         schedulable: false
 
-  TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry:
-    public: true
-
   TYPO3\CMS\Extensionmanager\Report\ExtensionComposerStatus:
     public: true
     tags:
@@ -53,9 +50,6 @@ services:
   TYPO3\CMS\Extensionmanager\Report\ExtensionStatus:
     tags:
       - name: reports.status
-
-  TYPO3\CMS\Extensionmanager\Domain\Repository\BulkExtensionRepositoryWriter:
-    public: true
 
   extension.remote.ter:
     class: 'TYPO3\CMS\Extensionmanager\Remote\TerExtensionRemote'

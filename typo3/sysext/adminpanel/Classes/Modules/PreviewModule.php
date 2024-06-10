@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 /**
  * Admin Panel Preview Module
  */
+#[Autoconfigure(public: true)]
 class PreviewModule extends AbstractModule implements RequestEnricherInterface, PageSettingsProviderInterface, ResourceProviderInterface, OnSubmitActorInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
