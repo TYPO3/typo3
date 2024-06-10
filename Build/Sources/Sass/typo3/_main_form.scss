@@ -248,13 +248,8 @@ select {
     }
 }
 
-.tab-pane {
-    > .form-section:first-child {
-        border-top: none;
-    }
-}
-
 .form-section-headline {
+    font-size: $h4-font-size;
     margin-top: 0;
     margin-bottom: 10px;
 

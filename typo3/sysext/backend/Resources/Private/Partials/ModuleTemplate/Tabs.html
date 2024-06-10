@@ -28,6 +28,7 @@
         <f:for each="{items}" as="item" iteration="iteration">
             <f:if condition="{item.content}">
                 <div role="tabpanel" class="tab-pane{f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}" id="{id}-{iteration.cycle}">
+                    <h2 class="visually-hidden">{item.label}</h2>
                     <f:if condition="{item.description}">
                         <div class="form-section">
                             <p><f:format.nl2br>{item.description}</f:format.nl2br></p>
