@@ -657,7 +657,9 @@ class ConnectionMigrator
                 // just for this index.
                 foreach ($changedTable->renamedIndexes as $key => $renamedIndex) {
                     $indexDiff = clone $tableDiff;
-                    $indexDiff->renamedIndexes = [$key => $renamedIndex];
+                    $indexDiff->renamedIndexes = [
+                        $changedTable->getOldTable()->getIndex($key)->getQuotedName($databasePlatform) => $renamedIndex,
+                    ];
 
                     $temporarySchemaDiff = new Typo3SchemaDiff(
                         // createdSchemas
@@ -667,7 +669,7 @@ class ConnectionMigrator
                         // createdTables
                         [],
                         // alteredTables
-                        [$indexDiff->getOldTable()->getName() => $indexDiff],
+                        [$indexDiff->getOldTable()->getQuotedName($databasePlatform) => $indexDiff],
                         // droppedTables
                         [],
                         // createdSequences
@@ -862,6 +864,7 @@ class ConnectionMigrator
      */
     protected function getUnusedTableUpdateSuggestions(Typo3SchemaDiff $schemaDiff): array
     {
+        $databasePlatform = $this->connection->getDatabasePlatform();
         $updateSuggestions = [];
         foreach ($schemaDiff->alteredTables as $tableName => $tableDiff) {
             // Skip tables that are not being renamed or where the new name isn't prefixed
@@ -872,8 +875,8 @@ class ConnectionMigrator
                 continue;
             }
 
-            $statement = $this->connection->getDatabasePlatform()->getRenameTableSQL(
-                $tableDiff->getOldTable()->getName(),
+            $statement = $databasePlatform->getRenameTableSQL(
+                $tableDiff->getOldTable()->getQuotedName($databasePlatform),
                 $tableDiff->newName
             );
             $updateSuggestions['change_table'][md5($statement)] = $statement;
@@ -894,23 +897,22 @@ class ConnectionMigrator
      */
     protected function getUnusedFieldUpdateSuggestions(Typo3SchemaDiff $schemaDiff): array
     {
+        $databasePlatform = $this->connection->getDatabasePlatform();
         $changedTables = [];
-
         foreach ($schemaDiff->alteredTables as $tableName => $changedTable) {
             if (count($changedTable->modifiedColumns) === 0) {
                 continue;
             }
 
-            $databasePlatform = $this->getDatabasePlatformForTable($tableName);
-
             // Treat each changed column with a new diff to get a dedicated suggestions
             // just for this single column.
-            foreach ($changedTable->modifiedColumns as $oldFieldName => $changedColumn) {
+            foreach ($changedTable->modifiedColumns as $index => $changedColumn) {
                 // Field has not been renamed
                 if ($changedColumn->getOldColumn()->getName() === $changedColumn->getNewColumn()->getName()) {
                     continue;
                 }
 
+                $oldFieldName = $changedColumn->getOldColumn()->getQuotedName($databasePlatform);
                 $renameColumnTableDiff = new Typo3TableDiff(
                     // oldTable
                     $this->buildQuotedTable($changedTable->getOldTable()),
