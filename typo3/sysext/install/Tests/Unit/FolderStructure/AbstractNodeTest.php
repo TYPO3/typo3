@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\AbstractNode;
-use TYPO3\CMS\Install\FolderStructure\Exception;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\NodeInterface;
 use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
@@ -134,7 +133,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
     }
 
     #[Test]
-    public function fixPermissionThrowsExceptionIfPermissionAreAlreadyCorrect(): void
+    public function fixPermissionReturnsOkIfPermissionAreAlreadyCorrect(): void
     {
         $node = $this->getAccessibleMock(
             AbstractNode::class,
@@ -143,11 +142,9 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
             '',
             false
         );
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1366744035);
         $node->method('getAbsolutePath')->willReturn('');
         $node->expects(self::once())->method('isPermissionCorrect')->willReturn(true);
-        $node->_call('fixPermission');
+        self::assertEquals(ContextualFeedbackSeverity::OK, $node->_call('fixPermission')->getSeverity());
     }
 
     #[Test]
