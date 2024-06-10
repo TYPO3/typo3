@@ -180,7 +180,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                 $html = [];
                 $html[] = '<fieldset class="form-section' . ($isHiddenPalette ? ' hide' : '') . '">';
                 if (!empty($element['paletteLegend'])) {
-                    $html[] = '<h4 class="form-section-headline">' . htmlspecialchars($element['paletteLegend']) . '</h4>';
+                    $html[] = '<h3 class="form-section-headline">' . htmlspecialchars($element['paletteLegend']) . '</h3>';
                 }
                 if (!empty($element['paletteDescription'])) {
                     $html[] = '<p class="form-section-description text-body-secondary">' . nl2br(htmlspecialchars($element['paletteDescription'])) . '</p>';

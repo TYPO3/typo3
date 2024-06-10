@@ -322,6 +322,7 @@ $panel-heading-bg-scale: -85%;
 }
 
 .tab-pane {
+    > h2 + .form-section,
     > .panel-tab:first-child {
         border-top: none;
     }
