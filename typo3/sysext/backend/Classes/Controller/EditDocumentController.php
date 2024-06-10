@@ -31,6 +31,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -347,6 +348,7 @@ class EditDocumentController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly BackendEntryPointResolver $backendEntryPointResolver,
+        protected readonly ModuleProvider $moduleProvider,
         private readonly FormDataCompiler $formDataCompiler,
     ) {}
 
@@ -429,7 +431,7 @@ class EditDocumentController
         $this->addSlugFieldsToColumnsOnly($queryParams);
 
         // Set final return URL
-        $this->retUrl = $this->returnUrl ?: (string)$this->uriBuilder->buildUriFromRoute('dummy');
+        $this->retUrl = $this->returnUrl ?: $this->resolveDefaultReturnUrl();
 
         // Change $this->editconf if versioning applies to any of the records
         $this->fixWSversioningInEditConf();
@@ -2441,6 +2443,13 @@ class EditDocumentController
         }
 
         return $defaultTitle;
+    }
+
+    protected function resolveDefaultReturnUrl(): string
+    {
+        $module = $this->moduleProvider->getFirstAccessibleModule($this->getBackendUser());
+        $routeName = $module ? $module->getIdentifier() : 'dummy';
+        return (string)$this->uriBuilder->buildUriFromRoute($routeName);
     }
 
     /**
