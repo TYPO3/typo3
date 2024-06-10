@@ -141,6 +141,27 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function invalidRowBackendLayoutDoesNotFail(): void
+    {
+        $configuration['__config']['backend_layout.'] = [
+            'rows.' => [
+                0 => [
+                    // Note: No "columns." array key
+                ],
+                1 => [
+                    'columns.' => [],
+                ],
+            ],
+        ];
+        $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
+        $subject = $this->getSubject($pageLayoutContext);
+        self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
+        self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
+    }
+
+    /**
+     * @test
+     */
     public function multipleRowsBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
