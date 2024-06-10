@@ -36,7 +36,7 @@ The method then receives a parameter array with the following values:
         'slug' ... the slug to be used
         'workspaceId' ... the workspace ID, "0" if in live workspace
         'configuration' ... the configuration of the TCA field
-        'record' ... the full record to be used
+        'record' ... important fields of the record (available fields might differ from usage type)
         'pid' ... the resolved parent page ID
         'prefix' ... the prefix that was added
         'tableName' ... the table of the slug field
