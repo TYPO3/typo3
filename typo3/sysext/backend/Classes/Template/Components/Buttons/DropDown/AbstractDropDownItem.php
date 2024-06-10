@@ -26,7 +26,7 @@ abstract class AbstractDropDownItem implements \Stringable
     protected ?string $title = null;
     protected ?string $href = null;
     protected array $attributes = [];
-
+    protected bool $active = false;
     public function setTag(string $tag): self
     {
         $this->$tag = htmlspecialchars(trim($tag));
@@ -99,6 +99,16 @@ abstract class AbstractDropDownItem implements \Stringable
     {
         return $this->attributes;
     }
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+        return $this;
+    }
 
     public function isValid(): bool
     {
@@ -114,6 +124,9 @@ abstract class AbstractDropDownItem implements \Stringable
     {
         $attributes = $this->getAttributes();
         $attributes['class'] = 'dropdown-item dropdown-item-spaced';
+        if ($this->isActive()) {
+            $attributes['aria-selected'] = 'true';
+        }
         if ($this->getHref()) {
             $attributes['href'] = $this->getHref();
         }
