@@ -7,7 +7,7 @@ Inspecting a page
 =================
 
 For every page, the Admin Panel displays information about TypoScript, load
-time and requests, and errors and warnings.
+time, requests, errors and warnings.
 
 .. toctree::
    :maxdepth: 3
