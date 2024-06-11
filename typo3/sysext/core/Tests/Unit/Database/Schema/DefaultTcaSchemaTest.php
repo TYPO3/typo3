@@ -989,11 +989,11 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`slug`',
-            Type::getType('string'),
+            Type::getType('text'),
             [
                 'default' => null,
                 'notnull' => false,
-                'length' => 2048,
+                'length' => 65535,
             ]
         );
         self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('slug')->toArray());

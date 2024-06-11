@@ -537,9 +537,9 @@ class DefaultTcaSchema
                 }
                 $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
-                    Types::STRING,
+                    Types::TEXT,
                     [
-                        'length' => 2048,
+                        'length' => 65535,
                         'notnull' => false,
                     ]
                 );
