@@ -33,8 +33,11 @@
 			<trans-unit id="btn.editTypoScriptRecord" resname="btn.editTypoScriptRecord">
 				<source>Edit the whole TypoScript record</source>
 			</trans-unit>
-			<trans-unit id="label.infoTypoScriptRecordFromSite" resname="label.infoTypoScriptRecordFromSite">
-				<source>The site TypoScript record from "%s" can be edited on filesystem level.</source>
+			<trans-unit id="infoTypoScriptRecordFromSite.title" resname="infoTypoScriptRecordFromSite.title">
+				<source>Includes via site sets</source>
+			</trans-unit>
+			<trans-unit id="infoTypoScriptRecordFromSite.message" resname="infoTypoScriptRecordFromSite.message">
+				<source>The site configuration '%s' has one or more dependencies on site sets. The TypoScript definitions can be edited on the file system.</source>
 			</trans-unit>
 		</body>
 	</file>

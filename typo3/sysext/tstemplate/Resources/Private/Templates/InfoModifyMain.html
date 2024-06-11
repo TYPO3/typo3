@@ -76,14 +76,17 @@
     </f:if>
 
     <f:if condition="{templateRecord.type} == 'site'">
-        <p class="alert alert-info">
+        <f:be.infobox
+            state="-1"
+            title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoTypoScriptRecordFromSite.title')}"
+        >
             <f:translate
-                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:label.infoTypoScriptRecordFromSite"
+                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoTypoScriptRecordFromSite.message"
                 arguments="{
-                    0: 'site:{templateRecord.site.identifier}'
+                    0: '{templateRecord.site.identifier}'
                 }"
             />
-        </p>
+        </f:be.infobox>
     </f:if>
 
     <div class="table-fit">
