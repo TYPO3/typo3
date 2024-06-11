@@ -57,17 +57,13 @@
     <f:if condition="{module.title}">
         <f:variable name="moduleTitle" value="{f:translate(key: module.title, default: module.title)}" />
     </f:if>
-    <f:variable name="buttonTitle" value="{moduleTitle}" />
-    <f:if condition="{module.shortDescription}">
-        <f:variable name="buttonTitle" value="{f:translate(key: module.shortDescription, default: module.shortDescription)}" />
-    </f:if>
     <{f:if(condition: module.shouldBeLinked, then: 'a', else: 'button')}
         <f:if condition="{module.shouldBeLinked}">
             href="{f:be.uri(route: module.identifier)}"
             data-moduleroute-identifier="{module.identifier}"
         </f:if>
         role="menuitem"
-        title="{buttonTitle}"
+        title="{moduleTitle}"
         class="modulemenu-action"
         tabindex="{tabIndex}"
         data-modulemenu-identifier="{module.identifier}"
