@@ -110,7 +110,7 @@ class SuggestWizardDefaultReceiver
             $pageIds = GeneralUtility::intExplode(',', (string)$config['pidList'], true);
             $depth = (int)($config['pidDepth'] ?? 0);
             $availablePageIds = $this->getAvailablePageIds($pageIds, $depth);
-            $this->allowedPages = array_unique(array_merge($this->allowedPages, ...$availablePageIds));
+            $this->allowedPages = array_unique(array_merge($this->allowedPages, $availablePageIds));
         }
         if (isset($config['maxItemsInResultList'])) {
             $this->maxItems = $config['maxItemsInResultList'];
