@@ -115,7 +115,7 @@
 				<source>Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</source>
 			</trans-unit>
 			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
-				<source>Access</source>
+				<source>Permissions</source>
 			</trans-unit>
 			<trans-unit id="WorkspaceWarning" resname="WorkspaceWarning">
 				<source>Workspace Warning</source>

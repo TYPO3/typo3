@@ -174,7 +174,7 @@ final class UsersCest extends AbstractCest
     private function setPageAccess(ApplicationTester $I, PageTree $pageTree, array $pagePath, int $userGroupId, int $recursionLevel = 1): void
     {
         $I->switchToMainFrame();
-        $I->click('Access');
+        $I->click('Permissions');
         $pageTree->openPath($pagePath);
         $I->switchToContentFrame();
         $I->wait(1);
