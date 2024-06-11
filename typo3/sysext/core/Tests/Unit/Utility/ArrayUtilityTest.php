@@ -1042,6 +1042,82 @@ final class ArrayUtilityTest extends UnitTestCase
                     ],
                 ],
             ],
+            'order by integers as string' => [
+                [
+                    0 => [
+                        'uid' => '23',
+                        'title' => 'b',
+                        'dummy' => 4,
+                    ],
+                    1 => [
+                        'uid' => '22',
+                        'title' => 'c',
+                        'dummy' => 2,
+                    ],
+                    2 => [
+                        'uid' => '24',
+                        'title' => 'a',
+                        'dummy' => 3,
+                    ],
+                ],
+                'uid',
+                true,
+                [
+                    1 => [
+                        'uid' => '22',
+                        'title' => 'c',
+                        'dummy' => 2,
+                    ],
+                    0 => [
+                        'uid' => '23',
+                        'title' => 'b',
+                        'dummy' => 4,
+                    ],
+                    2 => [
+                        'uid' => '24',
+                        'title' => 'a',
+                        'dummy' => 3,
+                    ],
+                ],
+            ],
+            'order by integers' => [
+                [
+                    0 => [
+                        'uid' => 23,
+                        'title' => 'b',
+                        'dummy' => 4,
+                    ],
+                    1 => [
+                        'uid' => 22,
+                        'title' => 'c',
+                        'dummy' => 2,
+                    ],
+                    2 => [
+                        'uid' => 24,
+                        'title' => 'a',
+                        'dummy' => 3,
+                    ],
+                ],
+                'uid',
+                true,
+                [
+                    1 => [
+                        'uid' => 22,
+                        'title' => 'c',
+                        'dummy' => 2,
+                    ],
+                    0 => [
+                        'uid' => 23,
+                        'title' => 'b',
+                        'dummy' => 4,
+                    ],
+                    2 => [
+                        'uid' => 24,
+                        'title' => 'a',
+                        'dummy' => 3,
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -1065,6 +1141,48 @@ final class ArrayUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1373727309);
 
         ArrayUtility::sortArraysByKey([['a'], ['a']], 'dummy');
+    }
+
+    #[Test]
+    public function sortArraysByKeyThrowsExceptionForNonScalarKeyA(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1373727310);
+
+        ArrayUtility::sortArraysByKey(
+            [
+                [
+                    'uid' => '23',
+                    'value' => new \stdClass(),
+                ],
+                22 => [
+                    'uid' => '22',
+                    'value' => 123,
+                ],
+            ],
+            'value'
+        );
+    }
+
+    #[Test]
+    public function sortArraysByKeyThrowsExceptionForNonScalarKeyB(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1373727311);
+
+        ArrayUtility::sortArraysByKey(
+            [
+                [
+                    'uid' => '23',
+                    'value' => 123,
+                ],
+                22 => [
+                    'uid' => '22',
+                    'value' => [],
+                ],
+            ],
+            'value'
+        );
     }
 
     ///////////////////////
