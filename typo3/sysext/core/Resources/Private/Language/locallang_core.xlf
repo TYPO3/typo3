@@ -535,6 +535,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.editingLiveRecordsWarning" resname="labels.editingLiveRecordsWarning">
 				<source>Caution! These records are not versioned, you will edit the live records.</source>
 			</trans-unit>
+			<trans-unit id="labels.th.name" resname="labels.th.name">
+				<source>Name</source>
+			</trans-unit>
 			<trans-unit id="alttext.suggestSearching" resname="alttext.suggestSearching">
 				<source>Searching...</source>
 			</trans-unit>
