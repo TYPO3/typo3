@@ -22,11 +22,13 @@ import Router from '../../router';
 import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
+import SecurityUtility from '@typo3/core/security-utility';
 
 enum Identifiers {
   analyzeTrigger = '.t3js-databaseAnalyzer-analyze',
   executeTrigger = '.t3js-databaseAnalyzer-execute',
   outputContainer = '.t3js-databaseAnalyzer-output',
+  notificationContainer = '.t3js-databaseAnalyzer-notification',
   suggestionBlock = '#t3js-databaseAnalyzer-suggestion-block',
   suggestionBlockCheckbox = '.t3js-databaseAnalyzer-suggestion-block-checkbox',
   suggestionBlockLegend = '.t3js-databaseAnalyzer-suggestion-block-legend',
@@ -80,11 +82,13 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
+      this.clearNotifications();
       this.analyze();
     }).delegateTo(currentModal, Identifiers.analyzeTrigger);
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
+      this.clearNotifications();
       this.execute();
     }).delegateTo(currentModal, Identifiers.executeTrigger);
   }
@@ -195,6 +199,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.databaseAnalyzerExecuteToken;
     const outputContainer: HTMLElement = modalContent.querySelector(Identifiers.outputContainer);
+    const notificationContainer: HTMLElement = modalContent.querySelector(Identifiers.notificationContainer);
 
     const selectedHashes: string[] = [];
     outputContainer.querySelectorAll('.t3js-databaseAnalyzer-suggestion-line input:checked').forEach((element: HTMLElement): void => {
@@ -214,9 +219,33 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: SuggestionsExecutedResponse = await response.resolve();
           if (Array.isArray(data.status)) {
+            let groupedErrors: string = '';
             data.status.forEach((element: MessageInterface): void => {
-              Notification.showMessage(element.title, element.message, element.severity);
+              if(element.severity === Severity.error) {
+                const securityUtility = new SecurityUtility();
+                groupedErrors += '<li>' + securityUtility.encodeHtml(element.message) + '</li>';
+              } else {
+                Notification.showMessage(element.title, element.message, element.severity);
+              }
             });
+
+            if(groupedErrors !== '') {
+              notificationContainer.innerHTML = `<div class="alert alert-danger">
+                <div class="alert-inner">
+                  <div class="alert-icon">
+                      <span class="icon-emphasized">
+                          <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+                      </span>
+                  </div>
+                  <div class="alert-content">
+                      <div class="alert-title">Database update failed</div>
+                      <div class="alert-message">
+                        <ul>${groupedErrors}</ul>
+                      </div>
+                  </div>
+                </div>
+              </div>`;
+            }
           }
           this.analyze();
         },
@@ -227,6 +256,10 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
         this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.analyzeTrigger), true);
         this.setModalButtonState(this.getModalFooter().querySelector<HTMLButtonElement>(Identifiers.executeTrigger), false);
       });
+  }
+
+  private clearNotifications() {
+    this.currentModal.querySelector(Identifiers.notificationContainer).replaceChildren('');
   }
 }
 
