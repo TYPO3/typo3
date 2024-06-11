@@ -19,7 +19,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
+use TYPO3\CMS\Core\Slug\SlugNormalizer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SlugHelperTest extends UnitTestCase
@@ -140,6 +143,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function sanitizeConvertsString(array $configuration, string $input, string $expected): void
     {
+        GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter()));
         $subject = new SlugHelper(
             'dummyTable',
             'dummyField',
@@ -177,6 +181,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateNeverDeliversEmptySlug(string $input, string $expected): void
     {
+        GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter()));
         $GLOBALS['dummyTable']['ctrl'] = [];
         $subject = new SlugHelper(
             'dummyTable',
@@ -328,6 +333,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function sanitizeConvertsStringForPages(array $configuration, string $input, string $expected): void
     {
+        GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter()));
         $subject = new SlugHelper(
             'pages',
             'slug',
@@ -365,6 +371,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateNeverDeliversEmptySlugForPages(string $input, string $expected): void
     {
+        GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter()));
         $GLOBALS['dummyTable']['ctrl'] = [];
         $subject = new SlugHelper(
             'pages',
@@ -464,6 +471,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generatePrependsSlugsForPages(string $input, string $expected, array $options): void
     {
+        GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter()));
         $GLOBALS['dummyTable']['ctrl'] = [];
         $parentPage = [
             'uid' => '13',
@@ -603,6 +611,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateSlugWithNavTitleAndFallbackForPages(array $input, string $expected, array $options): void
     {
+        GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter()));
         $GLOBALS['dummyTable']['ctrl'] = [];
         $subject = new SlugHelper(
             'pages',
@@ -624,6 +633,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateSlugWithHookModifiers(): void
     {
+        GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter()));
         $options = [];
         $options['fallbackCharacter'] = '-';
         $options['generatorOptions'] = [
@@ -674,6 +684,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateSlugWithPid0(array $input, string $expected)
     {
+        GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter()));
         if (empty($GLOBALS[$input['table']]['ctrl'])) {
             $GLOBALS[$input['table']]['ctrl'] = [];
         }
@@ -708,6 +719,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generatePrependsSlugsForNonPages(string $input, string $expected, array $options): void
     {
+        GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter()));
         $GLOBALS['dummyTable']['ctrl'] = [];
         $parentPage = [
             'uid' => '0',

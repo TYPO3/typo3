@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -30,6 +29,7 @@ use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Slug\SlugNormalizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -75,6 +75,8 @@ class SlugHelper
      */
     protected $prependSlashInSlug;
 
+    protected SlugNormalizer $slugNormalizer;
+
     /**
      * Slug constructor.
      *
@@ -97,6 +99,7 @@ class SlugHelper
         }
 
         $this->workspaceEnabled = BackendUtility::isTableWorkspaceEnabled($tableName);
+        $this->slugNormalizer = GeneralUtility::makeInstance(SlugNormalizer::class);
     }
 
     /**
@@ -104,41 +107,12 @@ class SlugHelper
      */
     public function sanitize(string $slug): string
     {
-        // Convert to lowercase + remove tags
-        $slug = mb_strtolower($slug, 'utf-8');
-        $slug = strip_tags($slug);
-
-        // Convert some special tokens (space, "_" and "-") to the space character
-        $fallbackCharacter = (string)($this->configuration['fallbackCharacter'] ?? '-');
-        $slug = (string)preg_replace('/[ \t\x{00A0}\-+_]+/u', $fallbackCharacter, $slug);
-
-        if (!\Normalizer::isNormalized($slug)) {
-            $slug = \Normalizer::normalize($slug) ?: $slug;
+        $value = $this->slugNormalizer->normalize($slug, $this->configuration['fallbackCharacter'] ?? '-');
+        if (($value[0] ?? '') !== '/' && $this->prependSlashInSlug) {
+            $value = '/' . $value;
         }
 
-        // Convert extended letters to ascii equivalents
-        // The specCharsToASCII() converts "€" to "EUR"
-        $slug = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII('utf-8', $slug);
-
-        // Get rid of all invalid characters, but allow slashes
-        $slug = (string)preg_replace('/[^\p{L}\p{M}0-9\/' . preg_quote($fallbackCharacter) . ']/u', '', $slug);
-
-        // Convert multiple fallback characters to a single one
-        if ($fallbackCharacter !== '') {
-            $slug = (string)preg_replace('/' . preg_quote($fallbackCharacter) . '{2,}/', $fallbackCharacter, $slug);
-        }
-
-        // Ensure slug is lower cased after all replacement was done
-        $slug = mb_strtolower($slug, 'utf-8');
-        // Extract slug, thus it does not have wrapping fallback and slash characters
-        $extractedSlug = $this->extract($slug);
-        // Remove trailing and beginning slashes, except if the trailing slash was added, then we'll re-add it
-        $appendTrailingSlash = $extractedSlug !== '' && substr($slug, -1) === '/';
-        $slug = $extractedSlug . ($appendTrailingSlash ? '/' : '');
-        if ($this->prependSlashInSlug && ($slug[0] ?? '') !== '/') {
-            $slug = '/' . $slug;
-        }
-        return $slug;
+        return $value;
     }
 
     /**
@@ -587,12 +561,16 @@ class SlugHelper
                 $site = $siteFinder->getSiteByPageId($pid);
                 $siteLanguage = $site->getLanguageById($languageId);
                 $languageIds = array_merge($languageIds, $siteLanguage->getFallbackLanguageIds());
-            } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+            } catch (SiteNotFoundException|\InvalidArgumentException $e) {
                 // no site or requested language available - move on
             }
 
             foreach ($languageIds as $languageId) {
-                $localizedParentPageRecord = BackendUtility::getRecordLocalization('pages', $parentPageRecord['uid'], $languageId);
+                $localizedParentPageRecord = BackendUtility::getRecordLocalization(
+                    'pages',
+                    $parentPageRecord['uid'],
+                    $languageId
+                );
                 if (!empty($localizedParentPageRecord)) {
                     $parentPageRecord = reset($localizedParentPageRecord);
                     break;
