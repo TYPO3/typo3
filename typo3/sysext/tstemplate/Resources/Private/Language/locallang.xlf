@@ -10,7 +10,7 @@
 				<source>TypoScript tools</source>
 			</trans-unit>
 			<trans-unit id="module.typoscript.description" resname="module.typoscript.description">
-				<source>Here you manage the TypoScript records which are in charge of the look of your website on the frontend. The module provides specialized features like a TypoScript tree, a constant editor and raw editing facilities.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+				<source>Here you manage the TypoScript records which are in charge of the look of your website on the frontend. The module provides specialized features like a TypoScript tree, a constant editor and raw editing facilities.</source>
 			</trans-unit>
 			<trans-unit id="submodules.option.constantEditor" resname="submodules.option.constantEditor">
 				<source>Constant Editor</source>

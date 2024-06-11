@@ -10,7 +10,7 @@
 				<source>Styleguide of the TYPO3 CMS</source>
 			</trans-unit>
 			<trans-unit id="module.configuration.description" resname="module.configuration.description">
-				<source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</source>
+				<source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.</source>
 			</trans-unit>
 			<trans-unit id="styleguide" xml:space="preserve">
 				<source>Styleguide</source>
