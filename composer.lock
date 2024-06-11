@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82c43b81d9f17d2a286049ff4217372c",
+    "content-hash": "ff6f85fb4f3b888b0b0dc5835bdd77cb",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7124,16 +7124,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.0.3",
+            "version": "11.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "de24e7e7c67fbf437f7b6cd7bc919f2dc6fd89d4"
+                "reference": "1b8775732e9c401bda32df3ffbdf90dec7533ceb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/de24e7e7c67fbf437f7b6cd7bc919f2dc6fd89d4",
-                "reference": "de24e7e7c67fbf437f7b6cd7bc919f2dc6fd89d4",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1b8775732e9c401bda32df3ffbdf90dec7533ceb",
+                "reference": "1b8775732e9c401bda32df3ffbdf90dec7533ceb",
                 "shasum": ""
             },
             "require": {
@@ -7172,7 +7172,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "11.0-dev"
+                    "dev-main": "11.2-dev"
                 }
             },
             "autoload": {
@@ -7204,7 +7204,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.0.3"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.2.1"
             },
             "funding": [
                 {
@@ -7220,7 +7220,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-10T06:31:16+00:00"
+            "time": "2024-06-11T07:30:35+00:00"
         },
         {
             "name": "psy/psysh",
@@ -9476,5 +9476,5 @@
     "platform-overrides": {
         "php": "8.2.0"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
