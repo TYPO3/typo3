@@ -23,7 +23,7 @@ enum Identifier {
 class SelectCheckBoxElement {
   private readonly checkBoxId: string = '';
   private table: HTMLTableElement = null;
-  private checkedBoxes: NodeListOf<HTMLInputElement> = null;
+  private initiallyCheckedItems: NodeListOf<HTMLInputElement> = null;
 
   /**
    * @param {string} checkBoxId
@@ -32,7 +32,7 @@ class SelectCheckBoxElement {
     this.checkBoxId = checkBoxId;
     DocumentService.ready().then((document: Document): void => {
       this.table = document.getElementById(checkBoxId).closest('table');
-      this.checkedBoxes = this.table.querySelectorAll(Identifier.singleItem + ':checked');
+      this.initiallyCheckedItems = this.getCheckedItems();
 
       this.enableTriggerCheckBox();
       this.registerEventHandler();
@@ -62,17 +62,20 @@ class SelectCheckBoxElement {
         checkBox.checked = checkIt;
       });
       currentTarget.checked = checkIt;
+      this.setRevertSelection();
     }).delegateTo(this.table, Identifier.toggleAll);
 
     new RegularEvent('change', this.setToggleAllState.bind(this)).delegateTo(this.table, Identifier.singleItem);
+    new RegularEvent('change', this.setRevertSelection.bind(this)).delegateTo(this.table, Identifier.singleItem);
 
     new RegularEvent('click', (): void => {
       const checkBoxes = this.table.querySelectorAll(Identifier.singleItem);
-      const checkedCheckBoxesAsArray = Array.from(this.checkedBoxes);
+      const checkedCheckBoxesAsArray = Array.from(this.initiallyCheckedItems);
       checkBoxes.forEach((checkBox: HTMLInputElement): void => {
         checkBox.checked = checkedCheckBoxesAsArray.includes(checkBox);
       });
       this.setToggleAllState();
+      this.setRevertSelection();
     }).delegateTo(this.table, Identifier.revertSelection);
   }
 
@@ -81,12 +84,26 @@ class SelectCheckBoxElement {
     (this.table.querySelector(Identifier.toggleAll) as HTMLInputElement).checked = SelectCheckBoxElement.allCheckBoxesAreChecked(checkBoxes);
   }
 
+  private setRevertSelection(): void {
+    const revertSelectionButton: HTMLButtonElement = this.table.querySelector(Identifier.revertSelection);
+    if (revertSelectionButton !== null) {
+      const currentSelectedCheckboxIds = Array.from(this.getCheckedItems()).sort().map((checkbox: HTMLInputElement) => checkbox.getAttribute('id'));
+      const initiallyCheckedCheckboxIds = Array.from(this.initiallyCheckedItems).sort().map((checkbox: HTMLInputElement) => checkbox.getAttribute('id'));
+      const isChanged = JSON.stringify(currentSelectedCheckboxIds) === JSON.stringify(initiallyCheckedCheckboxIds);
+      revertSelectionButton.toggleAttribute('disabled', isChanged);
+    }
+  }
+
   /**
    * Enables the "Toggle all" checkbox on document load if all child checkboxes are checked
    */
   private enableTriggerCheckBox(): void {
     const checkBoxes: NodeListOf<HTMLInputElement> = this.table.querySelectorAll(Identifier.singleItem);
     (document.getElementById(this.checkBoxId) as HTMLInputElement).checked = SelectCheckBoxElement.allCheckBoxesAreChecked(checkBoxes);
+  }
+
+  private getCheckedItems(): NodeListOf<HTMLInputElement> {
+    return this.table.querySelectorAll(Identifier.singleItem + ':checked');
   }
 }
 

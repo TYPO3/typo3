@@ -235,7 +235,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] =                    '</th>';
                     $html[] =                    '<th class="col-title"><label for="' . $checkboxId . '">' . $title . '</label></th>';
                     $html[] =                    '<th class="text-end">';
-                    $html[] =                       '<button type="button" class="btn btn-default btn-sm t3js-revert-selection">';
+                    $html[] =                       '<button type="button" class="btn btn-default btn-sm t3js-revert-selection" disabled>';
                     $html[] =                           $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . ' ';
                     $html[] =                           htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.revertSelection'));
                     $html[] =                       '</button>';
