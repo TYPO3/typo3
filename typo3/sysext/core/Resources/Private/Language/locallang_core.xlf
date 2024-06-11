@@ -16,13 +16,13 @@
 				<source>Create a shortcut to this page?</source>
 			</trans-unit>
 			<trans-unit id="labels.makeBookmark" resname="labels.makeBookmark">
-				<source>Create a bookmark to this page</source>
+				<source>Create a bookmark to this record</source>
 			</trans-unit>
 			<trans-unit id="labels.alreadyBookmarked" resname="labels.alreadyBookmarked">
-				<source>This page is already bookmarked</source>
+				<source>This record is already bookmarked</source>
 			</trans-unit>
 			<trans-unit id="labels.copyCurrentUrl" resname="labels.copyCurrentUrl">
-				<source>Copy URL of this page</source>
+				<source>Copy URL of this record</source>
 			</trans-unit>
 			<trans-unit id="labels.lockedRecord" resname="labels.lockedRecord">
 				<source>The user '%s' began to edit this record %s ago.</source>
