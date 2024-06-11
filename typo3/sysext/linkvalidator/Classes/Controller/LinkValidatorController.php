@@ -371,12 +371,14 @@ class LinkValidatorController
         $hookObj = $this->linktypeRegistry->getLinktype($row['link_type'] ?? '');
 
         // Try to resolve the field label from TCA
-        if ($GLOBALS['TCA'][$table]['columns'][$row['field']]['label'] ?? false) {
+        if ($GLOBALS['TCA'][$table]['types'][$row['element_type']]['columnsOverrides'][$row['field']]['label'] ?? false) {
+            $fieldLabel = $languageService->sL($GLOBALS['TCA'][$table]['types'][$row['element_type']]['columnsOverrides'][$row['field']]['label']);
+        } elseif ($GLOBALS['TCA'][$table]['columns'][$row['field']]['label'] ?? false) {
             $fieldLabel = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']);
-            // Crop colon from end if present
-            if (str_ends_with($fieldLabel, ':')) {
-                $fieldLabel = substr($fieldLabel, 0, -1);
-            }
+        }
+        // Crop colon from end if present
+        if (str_ends_with($fieldLabel, ':')) {
+            $fieldLabel = substr($fieldLabel, 0, -1);
         }
 
         return [
