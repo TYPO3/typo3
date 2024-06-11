@@ -16,12 +16,12 @@ All the following fields are part of the page record.
 
 You can reach it by:
 
-* Open the Web > Page module
-* Use the pen in the top bar icon to edit the page record
+* Open the :guilabel:`Web > Page` module
+* Use the pen (`Edit page properties`) in the top bar icon to edit the page record
 
 An alternative way is to use the context menu.
 
-* Open Web > Page module
+* Open :guilabel:`Web > Page` module
 * Right click the page you want to edit in the page tree
 * Select the Edit action
 
@@ -32,17 +32,17 @@ General tab
    :class: with-shadow
    :alt: General Tab in the TYPO3 Backend
 
-   General Tab in the TYPO3 Backend
+   `General` Tab in the TYPO3 Backend
 
 Page Title
 ----------
 
 The page title field is used for several purposes. From a SEO perspective it is mainly used to define the default
-URL segment and as a fallback title if you don't set a specific SEO title. More information about the usage of the title
+URL segment and as a fallback title, if you don't set a specific SEO title. More information about the usage of the title
 fields can be found at :ref:`title-for-search-engines`.
 
-URL Segment
------------
+URL Segment (slug)
+------------------
 
 The URL segment is the part of the URL the user enters to access your page. Depending on your use case URLs have to
 fulfill certain criteria.
@@ -50,7 +50,7 @@ fulfill certain criteria.
 By default the URL segment is based on the page tree and page title, but you can override this and set it yourself.
 
 If you want to optimize your page for search engines, it is recommended to have at least the keyword you want to be
-found on in your URL segment. Please make sure to check other best practises with your SEO specialist.
+found on in your URL segment. Please make sure to check other best practices with your SEO specialist.
 
 SEO Tab
 =======
@@ -59,14 +59,14 @@ SEO Tab
    :class: with-shadow
    :alt: SEO Tab in the TYPO3 Backend
 
-   SEO Tab in the TYPO3 Backend
+   `SEO` Tab in the TYPO3 Backend
 
 .. _title-for-search-engines:
 
 Title for search engines
 ------------------------
 
-The :guilabel:`Title for search engines` field is used in the `<title>...</title>` tag of your web page. This title is used in the
+The :guilabel:`Title for search engines` field is used for the `<title>...</title>` tag of your web page. This title is used in the
 search results of search engines. There are some best practices for the value of this field.
 
 * Use a speaking title, which targets your audience
@@ -84,6 +84,26 @@ By default the title will have the name of the site as a suffix, separated by a 
    :alt: Google result preview
 
    Google result preview
+
+.. _description:
+
+Description
+-----------
+
+The description field is important for SEO purposes. This field is used to instruct search engines to use
+this text to show as a teaser of your page in the search result snippets. With this description, you can
+give the user a clear overview of the topic of this page.
+
+.. figure:: ../Images/google-preview.png
+   :class: with-shadow
+   :alt: Google result preview
+
+   Google result preview
+
+.. hint::
+
+   It is best practice to use at least the keywords you want to be found on in this description. Make sure the
+   description is not too long, so it fits in the search result snippets.
 
 .. _index-page:
 
@@ -134,35 +154,6 @@ and records get a priority of 0.5 by default.
    they think they have better information regarding the change frequency.
 
 
-Metadata Tab
-============
-
-.. figure:: ../Images/tab-meta-data.png
-   :class: with-shadow
-   :alt: Metadata Tab in the TYPO3 Backend
-
-   Metadata tab in the TYPO3 Backend
-
-.. _description:
-
-Description
------------
-
-The description field is important for SEO purposes. This field is used to instruct search engines to use
-this text to show as a teaser of your page in the search result snippets. With this description, you can
-give the user a clear overview of the topic of this page.
-
-.. figure:: ../Images/google-preview.png
-   :class: with-shadow
-   :alt: Google result preview
-
-   Google result preview
-
-.. hint::
-
-   It is best practises to at least use the keywords you want to be found on in this description. Make sure the
-   description is not too long, so it fits in the search result snippets.
-
 Social media
 ============
 
@@ -170,13 +161,13 @@ Social media
    :class: with-shadow
    :alt: Social Media Tab in the TYPO3 Backend
 
-   Social Media Tab in the TYPO3 Backend
+   `Social media` Tab in the TYPO3 Backend
 
-The social media tab contains information which is used to enrich the snippet that is shown when visitors share your URLs
+The `social media` tab contains information which is used to enrich the snippet that is shown when visitors share your URLs
 in social networks, modern browsers etc.
 
-TYPO3 offers to have different content for OpenGraph (used for example by Facebook and LinkedIn) and X / Twitter Cards
-(used on X / Twitter of course). Both implementations allow you to set a title, a description and to provide an image. When this
+TYPO3 offers to have different content for OpenGraph (used for example by Facebook and LinkedIn) and X (formerly Twitter) Cards.
+Both implementations allow you to set a title, a description and to provide an image. When this
 information is not set manually, the social network will decide itself what to show. Most probably it will use the
 information from :ref:`title-for-search-engines` and :ref:`description`.
 
@@ -207,7 +198,7 @@ to have more dimensions, please let your integrator add more dimensions.
 
 .. hint::
 
-   It is best practise to add an image for social networks so your result will stand out and will be easily recognizable.
+   It is best practice to add an image for social networks so your result will stand out and will be easily recognizable.
 
 
 .. figure:: ../Images/social-preview-image.png
@@ -215,3 +206,18 @@ to have more dimensions, please let your integrator add more dimensions.
    :alt: Facebook preview with image
 
    Facebook preview with image
+
+Metadata Tab
+============
+
+.. figure:: ../Images/tab-meta-data.png
+   :class: with-shadow
+   :alt: Metadata Tab in the TYPO3 Backend
+
+   `Metadata` tab in the TYPO3 Backend
+
+The `Metadata` tab contains a list of elements like `Abstract`, `Keywords` and editorial information.
+
+Some extensions may utilize this for embedding within your frontend, but `EXT:seo` by default does not make
+use of them.
+

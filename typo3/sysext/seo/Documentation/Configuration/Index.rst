@@ -13,7 +13,7 @@ Target group: **Developers, Integrators**
 TypoScript Settings
 ===================
 
-There are a couple of TypoScript settings that can influence the output regarding search engine optimization.
+There are a couple of TypoScript settings that can influence the output regarding SEO.
 
 -   :ref:`config.pageTitleFirst <t3tsref:setup-config-pagetitlefirst>`
 -   :ref:`config.pageTitleSeparator <t3tsref:setup-config-pagetitleseparator>`
@@ -23,8 +23,8 @@ There are a couple of TypoScript settings that can influence the output regardin
 Site configuration
 ==================
 
-From version 9 of TYPO3, the configuration of sites is done with the Site Management module. As the settings for
-your websites are important for SEO purposes as well, please make sure you check the following fields.
+The configuration of sites is done with the :guilabel:`Site Management > Sites` module.
+As the settings for your websites are important for SEO purposes as well, please make sure you check the following fields.
 
 .. figure:: ../Images/site.png
    :class: with-shadow
@@ -34,38 +34,39 @@ your websites are important for SEO purposes as well, please make sure you check
 
 To get more in depth information about the site handling please refer to the :ref:`t3coreapi:sitehandling` docs.
 
-Domains
--------
+Entry Point
+-----------
 
 Please ensure, that you have configured your sites so that they all have an entry point. This is used for
-generating the canonical tags, for example.
+properly generating the canonical tags, for example.
 
 .. warning::
 
-   Please be aware that for SEO purposes it is best practise to use a fully qualified domain (for example: https://www.example.com).
-   Therefor we don't support the SEO enhancements in TYPO3 without a full domain. It might work, but it is not officially
-   supported.
+   Please be aware that for SEO purposes it is best practice to use a fully qualified domain name (for example:
+   `https://www.example.com/en/`).
+   Therefore TYPO3 requires to enter such a full domain name for your `Entry Point` configuration to support
+   SEO enhancements as intended.
 
-Language
---------
+Languages
+---------
 
-Ensure, that you setup the languages correctly. All languages should have the right information in the :guilabel:`Locale`
-and :guilabel:`Language Tag` field. When set correctly, TYPO3 will automatically connect your page in the different languages
-for search engines. This it to ensure that the search engine knows which page to show when someone is searching in a
-specific language.
+Ensure, that you setup the site languages correctly. All languages should have the right information in the :guilabel:`Locale`
+and other language-dependant input fields. When set correctly, TYPO3 will automatically connect your page in the different languages
+so that search engines understand their relations. This it to ensure that the search engine knows which page to show
+when someone is searching in a specific language.
 
 .. hint::
 
-   Even if you have only one language, make sure your :guilabel:`Locale` and :guilabel:`Language Tag` fields are set correctly.
+   Even if you have only one language, make sure all language input fields in the :guilabel:`Locale` tab are also set correctly.
    Giving wrong information to search engines will not help you to rank higher.
 
 See :ref:`t3coreapi:sitehandling-addingLanguages` for more details.
 
-Error pages
------------
+Error Handling
+--------------
 
-Although TYPO3 will respond with a HTTP status code 404 (Not found) when a page is not found, it is best practise to
-have a proper message telling the user that the page they requested is not available and to guide them to another
+Although TYPO3 will respond with a HTTP status code `404 (Not found)` when a page is not found, it is best practice to
+have a proper content telling the user that the page they requested is not available. This can guide them to another
 page or for example to a search function of your website.
 
 See :ref:`t3coreapi:sitehandling-errorHandling` for more details.
@@ -73,11 +74,11 @@ See :ref:`t3coreapi:sitehandling-errorHandling` for more details.
 robots.txt
 ----------
 
-The robots.txt is a powerful tool and should be used with care. It will deny or allow search engines to access your pages.
+The :file:`robots.txt` file is a powerful feature and should be used with care. It will deny or allow search engines to access your pages.
 By blocking access to your pages, search engines won't crawl these pages. You should make sure that this will not
 prevent the search engines from finding important pages.
 
-It is best practise to keep your robots.txt as clean as possible. An example of a minimal version of your robots.txt:
+It is best practice to keep your robots.txt as clean as possible. An example of a minimal version of your robots.txt:
 
 .. code-block:: php
 
@@ -85,13 +86,13 @@ It is best practise to keep your robots.txt as clean as possible. An example of 
    User-agent: *
 
 On :ref:`t3coreapi:sitehandling-staticRoutes` you can find more details on how to create a static route that will show
-this information when visiting https://www.example.com/robots.txt.
+this information when visiting `https://www.example.com/robots.txt`.
 
 When you want to disallow specific URLs, you can use the :ref:`index-page` option in the backend or set the robot HTTP
 header `X-Robots-tag` manually.
 
-Redirects
----------
+Static Routes and redirects
+---------------------------
 
 Having correct redirects and choosing the appropriate
 :ref:`status code <ext_redirects:http-status-codes>` is a very important part of SEO.
@@ -108,14 +109,14 @@ Tags
 
 .. _config-hreflang-tags:
 
-Hreflang Tags
--------------
+Hreflang link-tags
+------------------
 
 The generation of the :html:`<link rel="alternate" hreflang="" href="" />`
 tags is done automatically if the page is available in other languages.
 This feature should work correctly in almost all cases.
 
-TYPO3 is using PSR-14 events to handle the generation of those hreflang tags.
+TYPO3 is using PSR-14 events to handle the generation of those `hreflang` link-tags.
 If, for some reason, you would like to alter or remove the automatically generated
 tags, you can register your own EventListener. This EventListener should listen
 to the :php:`TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent` event. Just make
@@ -129,9 +130,9 @@ More information how to work with EventListeners can be found in the documentati
 Canonical Tag
 -------------
 
-Just like the hreflang tags, the :html:`<link rel="canonical" href="" />` tag is also generated automatically.
+Just like the `hreflang` link-tags, the :html:`<link rel="canonical" href="" />` link-tag is also generated automatically.
 If you have a specific edge case, and you don't want TYPO3 to render the tag, you can disable rendering completely.
-You just have to put this line in the :file:`ext_localconf.php` of an extension and make sure your extension is loaded after EXT:seo.
+You can put this line in the :file:`ext_localconf.php` of an extension and also make sure your extension is loaded after `EXT:seo`:
 
 .. code-block:: php
 
@@ -141,20 +142,20 @@ Working links
 =============
 
 Links in your website are quite important. You can use third party applications to check all your links, but you can
-also use the core extension linkvalidator to ensure, all the links in your site are working as expected.
+also use the core extension `EXT:linkvalidator` to ensure all the links in your site are working as expected.
 
 Please check the documentation of :doc:`ext_linkvalidator:Index` .
 
 TypoScript examples
 ===================
 
-This section will provide you examples on how to configure several behaviours in the frontend.
+This section will provide you with examples on how to configure several behaviours in the frontend.
 
-Setting missing OpenGraph tags
-------------------------------
+Setting missing OpenGraph meta tags
+-----------------------------------
 
-Most of the OpenGraph tags are rendered automatically when EXT:seo is installed. If you
-want to add other fields as og:title, og:description and og:image, you can use some
+Most of the OpenGraph meta tags are rendered automatically when `EXT:seo` is installed. If you
+want to add meta tags properties such as `og:title`, `og:description` and `og:image`, you can use
 TypoScript code like this:
 
 .. code-block:: typoscript
@@ -177,16 +178,17 @@ TypoScript code like this:
 
 Setting fallbacks for meta tags
 -------------------------------
+
 As you can see on :ref:`t3coreapi:metatagapi-configuration` the tags are first
-set by PHP and after that the TypoScript config is handled. As EXT:seo is only
-adding the meta tags for the SEO and Social Media fields if they are filled in
-the page properties, you have some possibilities to add fallbacks.
+set by PHP and after that the TypoScript config is handled. As `EXT:seo` is only
+adding the meta tags for the `SEO` and `Social media` fields (if they are filled in
+the page properties), you have some possibilities to add fallbacks.
 
-Because the EXT:seo is handling the tags by PHP, you are able to add those
-fallbacks by TypoScript. You can just add those tags by TypoScript and those will
-only be rendered when EXT:seo will not render it.
+Because `EXT:seo` is handling the tags in PHP-scope, you are able to add those
+fallbacks using TypoScript. You can add those tags with TypoScript and those will
+only be rendered when `EXT:seo` has not rendered them.
 
-An example to set a fallback description and og:description:
+An example to set a fallback `description` and `og:description`:
 
 .. code-block:: typoscript
 
@@ -204,12 +206,12 @@ An example to set a fallback description and og:description:
    or social networks, what the page is about. Social networks also have their own
    fallbacks. Setting a fallback for og:description to the description field might
    not be needed as the social networks have such a fallback as well. So please consider
-   if you want to add those tags if they does not bring additional information.
+   if you want to add those tags if they do not bring additional valuable information.
 
 Setting fallbacks for og:image and twitter:image
 ------------------------------------------------
 
-If you want to have a fallback og:image or twitter:image, you can use this little snippet.
+If you want to have a fallback `og:image` or `twitter:image`, you can use this little snippet.
 
 .. code-block:: typoscript
 
@@ -238,7 +240,7 @@ If you want to have a fallback og:image or twitter:image, you can use this littl
      }
    }
 
-More information about the Meta Tag Api can be found on:
+More information about the Meta Tag API can be found on:
 
 * PHP :ref:`t3coreapi:metatagapi`
 * TypoScript :ref:`t3tsref:meta`
