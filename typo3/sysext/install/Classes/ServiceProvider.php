@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
@@ -105,9 +106,11 @@ class ServiceProvider extends AbstractServiceProvider
             Command\UpgradeWizardRunCommand::class => self::getUpgradeWizardRunCommand(...),
             Command\UpgradeWizardListCommand::class => self::getUpgradeWizardListCommand(...),
             Command\UpgradeWizardMarkUndoneCommand::class => self::getUpgradeWizardMarkUndoneCommand(...),
+            Command\PasswordSetCommand::class => self::getPasswordGenerateCommand(...),
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
+            Random::class => self::getRandom(...),
         ];
     }
 
@@ -422,9 +425,24 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
+    public function getPasswordGenerateCommand(ContainerInterface $container): Command\PasswordSetCommand
+    {
+        return new Command\PasswordSetCommand(
+            'install:password:set',
+            $container->get(PasswordHashFactory::class),
+            $container->get(ConfigurationManager::class),
+            $container->get(Random::class)
+        );
+    }
+
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
+    }
+
+    public static function getRandom(ContainerInterface $container): Random
+    {
+        return self::new($container, Random::class);
     }
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry
@@ -460,6 +478,11 @@ class ServiceProvider extends AbstractServiceProvider
             'setup:begroups:default',
             Command\SetupDefaultBackendUserGroupsCommand::class,
             'Setup default backend user groups "Editor" and "Advanced Editor".'
+        );
+        $commandRegistry->addLazyCommand(
+            'install:password:set',
+            Command\PasswordSetCommand::class,
+            'Set or generate a new install tool password'
         );
         return $commandRegistry;
     }

@@ -91,6 +91,7 @@ final class CliCommandTest extends AbstractCommandTestCase
             ['command' => 'completion zsh', 'args' => [], 'expectedExitCode' => 0],
             // unsupported shell (not detected)
             ['command' => 'completion', 'args' => [], 'expectedExitCode' => 2],
+            ['command' => 'install:password:set', 'args' => [], 'expectedExitCode' => 1],
         ];
     }
 
