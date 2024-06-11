@@ -44,10 +44,8 @@ To create your own Admin Panel module
    .. code-block:: php
 
       $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']['mynamespace_modulename'] = [
-          'module' => [
-              \Your\Namespace\Adminpanel\Modules\YourModule::class,
-              'before' => ['cache'],
-          ]
+          'module' => \Your\Namespace\Adminpanel\Modules\YourModule::class,
+          'before' => ['cache'],
       ];
 
 Using `before` or `after` you can influence where your module will be
