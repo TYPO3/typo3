@@ -74,6 +74,11 @@ class ExternalLinktype extends AbstractLinktype
     ];
 
     /**
+     * See HTTP redirect responses as success
+     */
+    protected bool $allowRedirects = true;
+
+    /**
      * Preferred method of fetching (HEAD | GET).
      * If HEAD is used, we fallback to GET
      *
@@ -126,6 +131,10 @@ class ExternalLinktype extends AbstractLinktype
             $this->headers['User-Agent'] .= ';' . $email;
         }
 
+        if (isset($config['allowRedirects'])) {
+            $this->allowRedirects = (bool)$config['allowRedirects'];
+        }
+
         if ($config['method'] ?? false) {
             $this->method = $config['method'];
         }
@@ -156,7 +165,7 @@ class ExternalLinktype extends AbstractLinktype
         }
         $options = [
             'cookies' => GeneralUtility::makeInstance(CookieJar::class),
-            'allow_redirects' => ['strict' => true],
+            'allow_redirects' => $this->allowRedirects ? ['strict' => true] : false,
             'headers'         => $this->headers,
         ];
         if ($this->timeout > 0) {
@@ -266,6 +275,15 @@ class ExternalLinktype extends AbstractLinktype
                 switch ($errno) {
                     case 300:
                         $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.error.httpstatuscode.300');
+                        break;
+                    case 301:
+                    case 308:
+                        $message = sprintf($lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.error.redirectPermanently'), $errno);
+                        break;
+                    case 302:
+                    case 303:
+                    case 307:
+                        $message = sprintf($lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.error.redirectTemporary'), $errno);
                         break;
                     case 305:
                         $message = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.error.httpstatuscode.305');

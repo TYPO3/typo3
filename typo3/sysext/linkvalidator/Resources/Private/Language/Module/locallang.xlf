@@ -151,6 +151,12 @@
 			<trans-unit id="list.report.error.httpstatuscode.305">
 				<source>Use proxy (305).</source>
 			</trans-unit>
+			<trans-unit id="list.report.error.redirectPermanently">
+				<source>URL permanently redirects to another URL (%d).</source>
+			</trans-unit>
+			<trans-unit id="list.report.error.redirectTemporary">
+				<source>URL temporarily redirects to another URL (%d).</source>
+			</trans-unit>
 			<trans-unit id="list.report.pageforbidden403">
 				<source>Accessing this address is not allowed (403).</source>
 			</trans-unit>
