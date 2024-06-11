@@ -521,7 +521,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
       }
 
       html = '<div class="duplicate-form-modal">'
-        + '<h5 class="form-section-headline">' + TYPO3.lang['formManager.new_form_name'] + '</h5>'
+        + '<h2 class="h3 form-section-headline">' + TYPO3.lang['formManager.new_form_name'] + '</h2>'
         + '<div class="mb-3">'
         + '<label for="duplicate-form-name">' + '<strong>' + TYPO3.lang['formManager.form_name'] + '</strong>' + '</label>'
         + '<div class="formengine-field-item t3js-formengine-field-item">'
@@ -712,7 +712,7 @@ function showReferencesSetup(formManagerApp: FormManager): void {
 
       if (referencesLength > 0) {
         html = '<div>'
-          + '<h3>' + TYPO3.lang['formManager.references.headline'].replace('{0}', securityUtility.encodeHtml($that.data('formName'))) + '</h3>'
+          + '<h2 class="h3">' + TYPO3.lang['formManager.references.headline'].replace('{0}', securityUtility.encodeHtml($that.data('formName'))) + '</h2>'
           + '</div>'
           + '<div class="table-fit">'
           + '<table id="forms" class="table table-striped table-hover">'
