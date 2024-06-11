@@ -2,9 +2,9 @@
 <div id="t3-form-insert-elements-panel">
     <f:for each="{insertRenderablesPanelConfiguration}" as="insertRenderablePanelConfiguration">
         <f:if condition="{insertRenderablePanelConfiguration.key} != 'page'">
-            <h4 class="t3-form-group-{insertRenderablePanelConfiguration.key}">
+            <h2 class="h3 t3-form-group-{insertRenderablePanelConfiguration.key}">
                 <span>{insertRenderablePanelConfiguration.label}</span>
-            </h4>
+            </h2>
             <div class="row">
                 <f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
                     <div class="col-4 mb-3">

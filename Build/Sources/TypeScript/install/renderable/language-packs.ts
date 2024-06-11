@@ -71,7 +71,7 @@ export class LanguageMatrixElement extends LitElement {
   public render(): TemplateResult {
     return html`
       <div>
-        <h3>Active languages</h3>
+        <h2>Active languages</h2>
         <div class="table-fit">
           <table class="table table-striped">
             <thead>
@@ -199,7 +199,7 @@ export class ExtensionMatrixElement extends LitElement {
 
     return html`
       <div>
-        <h3>Translation status</h3>
+        <h2>Translation status</h2>
         <div class="table-fit">
           <table class="table table-striped">
             <thead>

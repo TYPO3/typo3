@@ -8,17 +8,14 @@
 
 <f:render partial="Generic/ConfigurationNotWritable" arguments="{_all}"/>
 
-<p>
-    <strong>Available features:</strong>
-</p>
-
+<h2>Available features</h2>
 <div class="t3js-module-content" data-features-save-token="{featuresSaveToken}">
     <form method="post">
         <div class="card-container">
             <f:for each="{features}" as="feature" iteration="iterator">
                 <div class="card card-size-large">
                     <div class="card-header">
-                        <h4>{feature.label}</h4>
+                        <h3>{feature.label}</h3>
                     </div>
                     <div class="card-body">
                         <div class="form-check form-switch">
