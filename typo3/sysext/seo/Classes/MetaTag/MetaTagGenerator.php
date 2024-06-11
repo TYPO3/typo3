@@ -88,15 +88,15 @@ readonly class MetaTagGenerator
             }
         }
 
-        $manager = $this->metaTagManagerRegistry->getManagerForProperty('twitter:card');
-        $manager->addProperty('twitter:card', $pageRecord['twitter_card'] ?: 'summary');
-
+        $twitterCardTagRequired = false;
         if (!empty($pageRecord['twitter_title'])) {
+            $twitterCardTagRequired = true;
             $manager = $this->metaTagManagerRegistry->getManagerForProperty('twitter:title');
             $manager->addProperty('twitter:title', $pageRecord['twitter_title']);
         }
 
         if (!empty($pageRecord['twitter_description'])) {
+            $twitterCardTagRequired = true;
             $manager = $this->metaTagManagerRegistry->getManagerForProperty('twitter:description');
             $manager->addProperty('twitter:description', $pageRecord['twitter_description']);
         }
@@ -108,6 +108,7 @@ readonly class MetaTagGenerator
 
             $twitterImages = $this->generateSocialImages($fileCollector->getFiles());
             foreach ($twitterImages as $twitterImage) {
+                $twitterCardTagRequired = true;
                 $subProperties = [];
 
                 if (!empty($twitterImage['alternative'])) {
@@ -120,6 +121,12 @@ readonly class MetaTagGenerator
                     $subProperties
                 );
             }
+        }
+
+        $twitterCard = $pageRecord['twitter_card'] ?: ($twitterCardTagRequired ? 'summary' : '');
+        if (!empty($twitterCard)) {
+            $manager = $this->metaTagManagerRegistry->getManagerForProperty('twitter:card');
+            $manager->addProperty('twitter:card', $twitterCard);
         }
 
         $noIndex = ($pageRecord['no_index']) ? 'noindex' : 'index';

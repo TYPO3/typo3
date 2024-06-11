@@ -265,8 +265,9 @@ $tca = [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'default' => 'summary',
+                'default' => '',
                 'items' => [
+                    ['label' => '', 'value' => ''],
                     ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary', 'value' => 'summary'],
                     ['label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary_large_image', 'value' => 'summary_large_image'],
                 ],
