@@ -77,6 +77,7 @@ export class Tree extends LitElement {
   protected indentWidth: number = 20;
   protected displayNodes: TreeNodeInterface[] = [];
   protected focusedNode: TreeNodeInterface|null = null;
+  protected lastFocusedNode: TreeNodeInterface|null = null;
   protected editingNode: TreeNodeInterface|null = null;
 
   protected openNodeTimeout: { targetNode: TreeNodeInterface|null, timeout: number|null } = { targetNode: null, timeout: null };
@@ -274,12 +275,13 @@ export class Tree extends LitElement {
 
   public async focusNode(node: TreeNodeInterface): Promise<void>
   {
+    this.lastFocusedNode = this.focusedNode;
     this.focusedNode = node;
+    this.requestUpdate();
     const element = this.getElementFromNode(this.focusedNode);
     if (element) {
       element.focus();
     } else {
-      this.requestUpdate();
       this.updateComplete.then(() => {
         this.getElementFromNode(this.focusedNode)?.focus();
       });
@@ -581,7 +583,16 @@ export class Tree extends LitElement {
     const visibleRows = Math.ceil(this.currentVisibleHeight / this.nodeHeight);
     const position = Math.floor(this.currentScrollPosition / this.nodeHeight);
     const visibleNodes = this.displayNodes.filter((node: TreeNodeInterface, index: number) => {
+      // first node is fallback target for tabindex, needs to be available every time
+      if (this.getFirstNode() === node) {
+        return true;
+      }
+      // focused node always needs to be available
       if (this.focusedNode === node) {
+        return true;
+      }
+      // last focused node needs to be available for re-focus after scrolling (can have tabindex="0")
+      if (this.lastFocusedNode === node) {
         return true;
       }
       return index + 2 >= position && index - 2 < position + visibleRows;
@@ -603,7 +614,7 @@ export class Tree extends LitElement {
             data-id="${this.getNodeIdentifier(node)}"
             data-tree-id="${this.getNodeTreeIdentifier(node)}"
             style="top: ${node.__y}px; height: ${this.nodeHeight}px;"
-            tabindex="0"
+            tabindex="${this.getNodeTabindex(node)}"
 
             @dragover="${(event: DragEvent) => { this.handleNodeDragOver(event); }}"
             @dragstart="${(event: DragEvent) => { this.handleNodeDragStart(event, node); }}"
@@ -614,7 +625,7 @@ export class Tree extends LitElement {
             @click="${(event: PointerEvent) => { this.handleNodeClick(event, node); }}"
             @dblclick="${(event: PointerEvent) => { this.handleNodeDoubleClick(event, node); }}"
             @focusin="${() => { this.focusedNode = node; }}"
-            @focusout="${() => { if (this.focusedNode === node) { this.focusedNode = null; } }}"
+            @focusout="${() => { if (this.focusedNode === node) { this.lastFocusedNode = node; this.focusedNode = null; } }}"
             @contextmenu="${(event: MouseEvent) => { event.preventDefault(); event.stopPropagation(); this.dispatchEvent(new CustomEvent('typo3:tree:node-context', { detail: { node, originalEvent: event } })); }}"
           >
             ${this.createNodeLabel(node)}
@@ -1228,6 +1239,16 @@ export class Tree extends LitElement {
 
   protected getNodeDepth(node: TreeNodeInterface): number {
     return node.depth;
+  }
+
+  protected getNodeTabindex(node: TreeNodeInterface): number {
+    if (this.focusedNode) {
+      return this.focusedNode === node ? 0 : -1;
+    }
+    if (this.lastFocusedNode) {
+      return this.lastFocusedNode === node ? 0 : -1;
+    }
+    return this.getFirstNode() === node ? 0 : -1;
   }
 
   protected getNodeChildren(node: TreeNodeInterface): TreeNodeInterface[] {
