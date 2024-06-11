@@ -20,7 +20,7 @@ A new User TSconfig option :typoscript:`options.defaultResourcesViewMode` has
 been introduced, which allows to define the initial display mode. Valid
 values are therefore `list` and `tiles`, e.g.:
 
-.. code-block:: typoscript:
+..  code-block:: typoscript
 
     options.defaultResourcesViewMode = list
 

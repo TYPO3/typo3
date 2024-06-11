@@ -12,7 +12,7 @@ Description
 ===========
 
 HMENU setting :typoscript:`showAccessRestrictedPages = NONE` now acts as documented in
-:ref:`TypoScript reference <t3tsref:menu-common-properties-showaccessrestrictedpages>`.
+:confval:`TypoScript reference <t3tsref:menu-common-properties-showaccessrestrictedpages>`.
 
 Before: using the option renders :html:`<a>Page title</a>` when page is inaccessible.
 
