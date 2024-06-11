@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Utility;
 
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Process\Exception\RuntimeException;
+use Symfony\Component\Process\Process;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Class to handle system commands.
@@ -78,13 +82,35 @@ class CommandUtility
     protected static ?array $paths = null;
 
     /**
-     * Wrapper function for php exec function
+     * Execute a shell command.
      *
-     * Needs to be central to have better control and possible fix for issues
+     * Needs to be central to have better control and possible fix for issues. Is a wrapper for Symfony's Process
+     * component.
+     *
+     * @see Process
      */
-    public static function exec(string $command, ?array &$output = null, int &$returnValue = 0): string|false
+    public static function exec(string|array $command, ?array &$output = null, int &$returnValue = 0): string|false
     {
-        return exec($command, $output, $returnValue);
+        if (is_string($command)) {
+            $process = Process::fromShellCommandline($command);
+        } else {
+            $process = new Process($command);
+        }
+
+        try {
+            $returnValue = $process->run();
+        } catch (RuntimeException $runtimeException) {
+            self::getLogger()->warning('Executing command "{command}" failed.', [
+                'command' => $command,
+                'exception' => $runtimeException,
+            ]);
+
+            return false;
+        }
+
+        $output = explode(PHP_EOL, $process->getOutput());
+
+        return $output[count($output) - 1] ?? '';
     }
 
     /**
@@ -503,5 +529,10 @@ class CommandUtility
     public static function escapeShellArgument(string $input): string
     {
         return self::escapeShellArguments([$input])[0];
+    }
+
+    protected static function getLogger(): LoggerInterface
+    {
+        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 }

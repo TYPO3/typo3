@@ -65,6 +65,7 @@
 		"symfony/messenger": "^7.1",
 		"symfony/mime": "^7.1",
 		"symfony/options-resolver": "^7.1",
+		"symfony/process": "^7.1",
 		"symfony/rate-limiter": "^7.1",
 		"symfony/routing": "^7.1",
 		"symfony/uid": "^7.1",
