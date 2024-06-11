@@ -898,6 +898,8 @@ class PageTreeNodeDragHandler implements DragDropHandler {
   }
 
   public onDragStart(event: MouseEvent, draggingNode: TreeNode | null): boolean {
+    event.preventDefault();
+
     if (this.tree.settings.allowDragMove !== true || draggingNode.depth === 0) {
       return false;
     }
