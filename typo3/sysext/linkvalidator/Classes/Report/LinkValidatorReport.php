@@ -556,7 +556,7 @@ class LinkValidatorReport
         ]);
         $variables['editUrl'] = $url;
         // Get the language label for the field from TCA
-        if ($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']) {
+        if (isset($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']) && $GLOBALS['TCA'][$table]['columns'][$row['field']]['label']) {
             $fieldName = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']);
             // Crop colon from end if present
             if (substr($fieldName, -1, 1) === ':') {
