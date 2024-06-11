@@ -153,6 +153,14 @@ final class CategoryCollectionTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function canLoadADummyCollectionFromNotExistingCategory(): void
+    {
+        $collection = CategoryCollection::load(-1, false, 'tx_test_test');
+        // Check the number of record
+        self::assertEquals(0, $collection->count());
+    }
+
+    #[Test]
     public function canLoadADummyCollectionFromDatabaseAfterRemoveOneRelation(): void
     {
         // Remove one relation
