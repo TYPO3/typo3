@@ -114,11 +114,13 @@ class RecordListController
 
         // Check if Clipboard is allowed to be shown:
         if (($this->modTSconfig['enableClipBoard'] ?? '') === 'activated') {
-            $this->allowClipboard = true;
+            $this->allowClipboard = false;
+            $this->moduleData->set('clipBoard', true);
         } elseif (($this->modTSconfig['enableClipBoard'] ?? '') === 'selectable') {
             $this->allowClipboard = true;
         } elseif (($this->modTSconfig['enableClipBoard'] ?? '') === 'deactivated') {
             $this->allowClipboard = false;
+            $this->moduleData->set('clipBoard', false);
         }
 
         // Check if SearchBox is allowed to be shown:
@@ -155,7 +157,7 @@ class RecordListController
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $dbList->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($this->modTSconfig['tableDisplayOrder.']));
         }
-        $clipboard = $this->initializeClipboard($request, $this->allowClipboard && (bool)$this->moduleData->get('clipBoard'));
+        $clipboard = $this->initializeClipboard($request, (bool)$this->moduleData->get('clipBoard'));
         $dbList->clipObj = $clipboard;
         $additionalRecordListEvent = $this->eventDispatcher->dispatch(new RenderAdditionalContentToRecordListEvent($request));
 
@@ -191,7 +193,7 @@ class RecordListController
             $searchBoxHtml = $this->renderSearchBox($request, $dbList, $this->searchTerm, $search_levels);
         }
         $clipboardHtml = '';
-        if ($this->allowClipboard && $this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
+        if ($this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
             $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
 
