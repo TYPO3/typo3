@@ -31,7 +31,7 @@ describe('@typo3/backend/notification:', () => {
   afterEach((): void => {
     getIconStub.restore();
 
-    const alertContainer = document.getElementById('alert-container');
+    const alertContainer = document.querySelector('#alert-container .alert-list');
     while (alertContainer !== null && alertContainer.firstChild) {
       alertContainer.removeChild(alertContainer.firstChild);
     }

@@ -19,6 +19,7 @@ import { AbstractAction } from './action-button/abstract-action';
 import { SeverityEnum } from './enum/severity';
 import Severity from './severity';
 import '@typo3/backend/element/icon-element';
+import { lll } from '@typo3/core/lit-helper';
 
 interface Action {
   label: string;
@@ -31,7 +32,11 @@ interface Action {
  */
 class Notification {
   private static readonly duration: number = 5;
+  private static readonly showClearAllButtonCount: number = 2;
+  private static totalNotifications: number = 0;
   private static messageContainer: HTMLElement = null;
+  private static notificationList: HTMLElement = null;
+  private static clearAllButton: HTMLElement = null;
 
   /**
    * Show a notice notification
@@ -114,7 +119,30 @@ class Notification {
     if (this.messageContainer === null || document.getElementById('alert-container') === null) {
       this.messageContainer = document.createElement('div');
       this.messageContainer.setAttribute('id', 'alert-container');
+      this.notificationList = document.createElement('div');
+      this.notificationList.setAttribute('class', 'alert-list')
+      // Enable focusing for keyboard scrolling (accessibility)
+      this.notificationList.setAttribute('tabindex', '0')
+      this.messageContainer.appendChild(this.notificationList);
+
+      this.clearAllButton = <ClearNotificationMessages>document.createElement('typo3-notification-clear-all');
+      this.containerItemVisibility();
+      this.messageContainer.prepend(this.clearAllButton);
       document.body.appendChild(this.messageContainer);
+
+      document.addEventListener('typo3-notification-open', () => {
+        this.totalNotifications++;
+        this.containerItemVisibility();
+      })
+
+      document.addEventListener('typo3-notification-clear', () => {
+        // Avoid negative value
+        if(this.totalNotifications > 0) {
+          this.totalNotifications--;
+        }
+
+        this.containerItemVisibility();
+      })
     }
 
     const box = <NotificationMessage>document.createElement('typo3-notification-message');
@@ -126,8 +154,43 @@ class Notification {
     box.setAttribute('notification-severity', severity.toString());
     box.setAttribute('notification-duration', duration.toString());
     box.actions = actions;
-    this.messageContainer.appendChild(box);
+
+    // Wait for the animation to finish, before scrolling into view
+    setTimeout(() => {
+      this.notificationList.querySelector('typo3-notification-message:last-child').scrollIntoView();
+    }, Number(duration))
+
+    this.notificationList.appendChild(box);
   }
+
+  protected static containerItemVisibility() {
+    this.clearAllButton.hidden = this.totalNotifications < this.showClearAllButtonCount;
+    this.messageContainer.hidden = this.totalNotifications === 0;
+  }
+}
+
+@customElement('typo3-notification-clear-all')
+export class ClearNotificationMessages extends LitElement {
+  @property({ type: String, attribute: 'notification-container' }) notificationId: string;
+
+  public async clearAll() {
+    this.dispatchEvent(
+      new CustomEvent('typo3-notification-clear-all', { bubbles: true, composed: true })
+    );
+
+    this.hidden = true
+  }
+
+  protected createRenderRoot(): HTMLElement | DocumentFragment {
+    return this;
+  }
+
+  protected render() {
+    return html`<div><button @click=${() => this.clearAll()} class="btn btn-default">
+      <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon> ${lll('button.clearAll') || 'Clear all'}
+    </button></div>`;
+  }
+
 }
 
 @customElement('typo3-notification-message')
@@ -142,15 +205,26 @@ export class NotificationMessage extends LitElement {
   @state() executingAction: number = -1;
 
   public async firstUpdated(): Promise<void> {
+    document.addEventListener('typo3-notification-clear-all', async () => {
+      this.clear();
+    });
+
+    const event = new CustomEvent('typo3-notification-open', { bubbles: true, composed: true });
+    this.dispatchEvent(event);
+
     await new Promise(resolve => window.setTimeout(resolve, 200));
     await this.requestUpdate();
     if (this.notificationDuration > 0) {
       await new Promise(resolve => window.setTimeout(resolve, this.notificationDuration * 1000));
-      this.close();
+      this.clear();
     }
   }
 
-  public async close(): Promise<void> {
+  public async clear(): Promise<void> {
+    this.dispatchEvent(
+      new CustomEvent('typo3-notification-clear', { bubbles: true, composed: true })
+    );
+
     const onfinish = () => {
       this.parentNode && this.parentNode.removeChild(this);
     };
@@ -209,7 +283,7 @@ export class NotificationMessage extends LitElement {
         aria-labelledby="alert-title-${randomSuffix}"
         aria-describedby="alert-message-${randomSuffix}"
       >
-        <button type="button" class="close" @click="${async () => this.close()}">
+        <button type="button" class="close" @click="${async () => this.clear()}">
           <span aria-hidden="true"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></span>
           <span class="visually-hidden">Close</span>
         </button>
@@ -236,7 +310,7 @@ export class NotificationMessage extends LitElement {
                    if ('action' in action) {
                      await action.action.execute(event.currentTarget as HTMLAnchorElement);
                    }
-                   this.close();
+                   this.clear();
                  }}"
                  class="${classMap({
                    executing: this.executingAction === index,

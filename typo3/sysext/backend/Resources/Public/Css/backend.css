@@ -3894,7 +3894,10 @@ typo3-backend-table-wizard{display:inline-block}
 @media (min-width:768px){
 #alert-container{right:calc(var(--typo3-spacing) * 1.5)}
 }
+#alert-container .alert-list{display:block;max-height:calc(100vh - 45px - var(--typo3-spacing) - var(--module-docheader-height) * 2);overflow-y:auto}
 #alert-container typo3-notification-message{margin-top:5px}
+#alert-container typo3-notification-clear-all{text-align:right}
+#alert-container typo3-notification-clear-all div{display:block;padding-bottom:calc(var(--typo3-spacing)/ 2)}
 typo3-notification-message{display:block}
 typo3-notification-message .alert{box-shadow:var(--typo3-component-box-shadow-dialog);margin:0}
 typo3-rte-ckeditor-ckeditor5 .ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled{display:none}

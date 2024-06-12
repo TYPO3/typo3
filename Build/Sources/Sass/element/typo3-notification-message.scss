@@ -22,8 +22,23 @@
         right: calc(var(--typo3-spacing) * 1.5);
     }
 
+    .alert-list {
+        display: block;
+        max-height: calc(100vh - $toolbar-height - var(--typo3-spacing) - var(--module-docheader-height) * 2);
+        overflow-y: auto;
+    }
+
     typo3-notification-message {
         margin-top: 5px;
+    }
+
+    typo3-notification-clear-all {
+        text-align: right;
+
+        div {
+            display: block;
+            padding-bottom: calc(var(--typo3-spacing) / 2);
+        }
     }
 }
 
