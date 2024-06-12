@@ -1644,9 +1644,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`link`',
-            Type::getType('string'),
+            Type::getType('text'),
             [
-                'length' => 2048,
+                'length' => 65535,
                 'default' => '',
                 'notnull' => true,
             ]
@@ -1667,9 +1667,9 @@ final class DefaultTcaSchemaTest extends UnitTestCase
         $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedColumn = new Column(
             '`link`',
-            Type::getType('string'),
+            Type::getType('text'),
             [
-                'length' => 2048,
+                'length' => 65535,
                 'default' => null,
                 'notnull' => false,
             ]

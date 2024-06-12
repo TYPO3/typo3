@@ -889,9 +889,9 @@ class DefaultTcaSchema
                 $nullable = $fieldConfig['config']['nullable'] ?? false;
                 $tables[$tableName]->addColumn(
                     $this->quote($fieldName),
-                    Types::STRING,
+                    Types::TEXT,
                     [
-                        'length' => 2048,
+                        'length' => 65535,
                         'default' => $nullable ? null : '',
                         'notnull' => !$nullable,
                     ]
