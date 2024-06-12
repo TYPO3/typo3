@@ -69,6 +69,12 @@
     margin-bottom: var(--typo3-spacing);
 }
 
+.form-text {
+    .file-extension-list {
+        padding-left: 0;
+    }
+}
+
 .form-group-dashed {
     & + .form-group-dashed {
         padding-top: var(--typo3-spacing);

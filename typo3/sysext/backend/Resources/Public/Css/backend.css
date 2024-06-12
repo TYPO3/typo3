@@ -3682,6 +3682,7 @@ a.card:hover{--typo3-card-border-color:var(--typo3-card-hover-border-color);text
 .form-description{opacity:.75;margin-bottom:.5rem}
 .form-label+.form-description{margin-top:-.25rem}
 .form-group{margin-bottom:var(--typo3-spacing)}
+.form-text .file-extension-list{padding-left:0}
 .form-group-dashed+.form-group-dashed{padding-top:var(--typo3-spacing);border-top:1px dashed rgba(0,0,0,.15)}
 .form-group-search-result{padding-bottom:7px}
 .form-wizard-icon-list{color-scheme:light dark;color:var(--typo3-component-color);background:var(--typo3-component-bg);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);border-radius:var(--bs-border-radius);margin-top:.25rem;padding:calc(var(--typo3-spacing)/ 4);display:flex;flex-wrap:wrap;gap:2px}
