@@ -22,10 +22,12 @@
                                 <input required class="form-control" type="text" id="newMedia" name="data[newMedia][0][url]"
                                     placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')}" />
                                 <div class="form-text">
-                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders" /><br>
-                                    <f:for each="{fileExtList}" as="fileExt">
-                                        <span class="badge badge-success">{fileExt}</span>
-                                    </f:for>
+                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders" />
+                                    <ul class="file-extension-list">
+                                        <f:for each="{fileExtList}" as="fileExt">
+                                            <li class="badge badge-success">{fileExt}</li>
+                                        </f:for>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -50,9 +52,11 @@
                                 <input required class="form-control" type="text" id="newfile" name="data[newfile][0][data]" />
                                 <div class="form-text">
                                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedEditableTextFileExtensions" /><br>
-                                    <f:for each="{txtFileExtList}" as="fileExt">
-                                        <span class="badge badge-success">{fileExt}</span>
-                                    </f:for>
+                                    <ul class="file-extension-list">
+                                        <f:for each="{txtFileExtList}" as="fileExt">
+                                            <li class="badge badge-success">{fileExt}</li>
+                                        </f:for>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

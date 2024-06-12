@@ -123,7 +123,7 @@ class FolderUtilityRenderer
         $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
         foreach ($list as $fileExt) {
             if (($fileExt === '*' && !$denyList) || $fileNameVerifier->isValid('.' . $fileExt)) {
-                $allowedOnlineMediaList[] = '<span class="badge badge-' . ($denyList ? 'danger' : 'success') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+                $allowedOnlineMediaList[] = '<li class="badge badge-' . ($denyList ? 'danger' : 'success') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
             }
         }
         $markup = [];
@@ -132,7 +132,7 @@ class FolderUtilityRenderer
             $markup[] = '    <label>';
             $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($denyList ? 'disallowedFileExtensions' : 'allowedFileExtensions'))) . '<br/>';
             $markup[] = '    </label>';
-            $markup[] = '    <div>' . implode(' ', $allowedOnlineMediaList) . '</div>';
+            $markup[] = '    <ul>' . implode(' ', $allowedOnlineMediaList) . '</ul>';
             $markup[] = '</div>';
         }
 
@@ -178,7 +178,7 @@ class FolderUtilityRenderer
             if ($fileNameVerifier->isValid('.' . $supportedFileExtension)
                 && ($fileExtensionFilter === null || $fileExtensionFilter->isAllowed($supportedFileExtension))
             ) {
-                $allowedOnlineMediaList[$supportedFileExtension] = '<span class="badge badge-success">' . strtoupper(htmlspecialchars($supportedFileExtension)) . '</span>';
+                $allowedOnlineMediaList[$supportedFileExtension] = '<li class="badge badge-success">' . strtoupper(htmlspecialchars($supportedFileExtension)) . '</li>';
             }
         }
         if (!empty($allowedOnlineMediaList)) {
@@ -203,9 +203,9 @@ class FolderUtilityRenderer
             $markup[] = '<div class="col-auto">';
             $markup[] = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders');
             $markup[] = '</div>';
-            $markup[] = '<div class="col">';
+            $markup[] = '<ul>';
             $markup[] = implode(' ', $allowedOnlineMediaList);
-            $markup[] = '</div>';
+            $markup[] = '</ul>';
             $markup[] = '</div>';
             $markup[] = '</div>';
             $markup[] = '</form>';
