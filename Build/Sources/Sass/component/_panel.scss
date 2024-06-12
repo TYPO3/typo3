@@ -127,6 +127,7 @@ $panel-heading-bg-scale: -85%;
     margin-block-end: var(--typo3-spacing);
     transition: all .2s ease-in-out;
     transition-property: box-shadow, border, transform;
+    position: relative;
 
     .table-fit {
         box-shadow: none;
