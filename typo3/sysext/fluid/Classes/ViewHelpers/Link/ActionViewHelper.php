@@ -76,7 +76,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute');
         $this->registerArgument('addQueryString', 'string', 'If set, the current query parameters will be kept in the URL. If set to "untrusted", then ALL query parameters will be added. Be aware, that this might lead to problems when the generated link is cached.', false, false);
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE');
-        $this->registerArgument('arguments', 'array', 'Arguments for the controller action, associative array');
+        $this->registerArgument('arguments', 'array', 'Arguments for the controller action, associative array (do not use reserved keywords "action", "controller" or "format" if not referring to these internal variables specifically)');
     }
 
     public function render(): string
