@@ -42,6 +42,9 @@
 			<trans-unit id="widget.error" resname="widget.error" xml:space="preserve">
 				<source>An error occurred while retrieving information for this widget. Please try again, and if the problem persists, contact your administrator.</source>
 			</trans-unit>
+			<trans-unit id="dashboard.headline" resname="dashboard.headline">
+				<source>Dashboard "%s"</source>
+			</trans-unit>
 			<trans-unit id="dashboard.default" resname="dashboard.default" xml:space="preserve">
 				<source>My dashboard</source>
 			</trans-unit>

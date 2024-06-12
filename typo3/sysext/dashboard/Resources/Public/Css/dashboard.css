@@ -11,10 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 .module.module{background-color:#eaeaea}
-.module.module h1{line-height:1.5;margin-bottom:20px;font-weight:900;font-size:32px}
-.dashboard-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:calc(-1 * var(--module-body-padding-y)) calc(-1 * var(--module-body-padding-x)) var(--module-body-padding-y);padding:var(--module-body-padding-y) var(--module-body-padding-x) 0;background:#dadada;border-bottom:1px solid #cdcdcd}
+.dashboard-header{background:#dadada;border-bottom:1px solid #cdcdcd;margin:calc(-1 * var(--module-body-padding-y)) calc(-1 * var(--module-body-padding-x)) var(--module-body-padding-y);padding:var(--module-body-padding-y) var(--module-body-padding-x) 0}
+.dashboard-header-container{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between}
 .dashboard-tabs{display:flex;flex-wrap:wrap;align-items:center}
-.dashboard-tab{border-radius:5px 5px 0 0;display:inline-block;padding:12px;margin-inline-end:2px;background:#bababa;color:#000}
+.dashboard-tabs-menu{display:flex;list-style:none;margin:0;padding:0}
+.dashboard-tabs-menu .dashboard-tabs-menuitem{margin-inline-end:2px}
+.dashboard-tab{border-radius:5px 5px 0 0;display:inline-block;padding:12px;background:#bababa;color:#000}
 .dashboard-tab:focus,.dashboard-tab:hover{text-decoration:none;background:#adadad;color:#000}
 .dashboard-tab--active{background:#ff8700;color:#fff}
 .dashboard-tab--active:focus,.dashboard-tab--active:hover{text-decoration:none;background:#e67a00;color:#f2f2f2}
@@ -66,6 +68,7 @@
 .widget-content{display:flex;flex-direction:column;height:100%}
 .widget-content-title{padding:10px 20px;padding-inline-end:76px;border-bottom:1px solid #d7d7d7;font-family:"Source Sans 3",sans-serif;font-size:16px;font-weight:700;line-height:1.25}
 .widget-content-title span{overflow:hidden;display:block;white-space:nowrap;text-overflow:ellipsis}
+.widget-content-title h2{margin-bottom:0}
 .widget-content-main{flex-grow:1;overflow-y:auto;padding:20px}
 .widget-content-footer{padding:20px;padding-top:0}
 .widget-actions{position:absolute;display:flex;top:calc(16px * 1.25 / 2 + 20px / 2);inset-inline-end:10px;transform:translate(0,-50%);opacity:0;transition:opacity .2s ease-in-out}
