@@ -17,15 +17,16 @@
         <caption class="hidden">System overview</caption>
         <f:for each="{systemInformation}" as="info">
             <tr>
-                <td data-type="icon">
+                <th data-type="title">
                     <f:if condition="{info.iconIdentifier}">
                         <f:then>
                             <core:icon identifier="{info.iconIdentifier}" size="small" alternativeMarkupIdentifier="inline" />
                         </f:then>
-                        <f:else>{info.icon -> f:format.raw()}</f:else>
+                        <f:else if="{info.icon}" >{info.icon -> f:format.raw()}</f:else>
+                        <f:else>
+                            <core:icon identifier="empty-empty" size="small" alternativeMarkupIdentifier="inline" />
+                        </f:else>
                     </f:if>
-                </td>
-                <th data-type="title">
                     <f:translate key="{info.title}" default="{info.title}"/>
                     <f:if condition="{info.titleAddition}"> ({info.titleAddition -> f:format.htmlspecialchars()})</f:if>
                 </th>
