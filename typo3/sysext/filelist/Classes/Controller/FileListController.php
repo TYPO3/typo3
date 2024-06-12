@@ -77,6 +77,7 @@ class FileListController implements LoggerAwareInterface
     protected string $cmd = '';
     protected string $searchTerm = '';
     protected int $currentPage = 1;
+    protected bool $allowClipboard = true;
 
     protected ?Folder $folderObject = null;
     protected ?DuplicationBehavior $overwriteExistingFiles = null;
@@ -292,8 +293,12 @@ class FileListController implements LoggerAwareInterface
         // Set predefined value for Clipboard:
         if (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'activated') {
             $this->moduleData->set('clipBoard', true);
+            $this->allowClipboard = false;
+        } elseif (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'selectable') {
+            $this->allowClipboard = true;
         } elseif (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'deactivated') {
             $this->moduleData->set('clipBoard', false);
+            $this->allowClipboard = false;
         }
         // Set predefined value for viewMode:
         $viewMode = ViewMode::tryFrom($this->moduleData->get('viewMode') ?? '')
@@ -460,9 +465,10 @@ class FileListController implements LoggerAwareInterface
     {
         $lang = $this->getLanguageService();
         $userTsConfig = $this->getBackendUser()->getTSConfig();
+        $enableClipBoard = ($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '');
 
         $this->view->assign('enableClipBoard', [
-            'enabled' => ($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'selectable',
+            'enabled' => $enableClipBoard === 'activated' || $enableClipBoard === 'selectable',
             'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clipBoard')),
             'mode' => $this->filelist->clipObj->current,
         ]);
@@ -503,11 +509,13 @@ class FileListController implements LoggerAwareInterface
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
                 ->setIcon($this->iconFactory->getIcon('actions-image'));
         }
-        $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
-            ->setActive((bool)$this->moduleData->get('clipBoard'))
-            ->setHref($this->filelist->createModuleUri(['clipBoard' => $this->moduleData->get('clipBoard') ? 0 : 1]))
-            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showClipboard'))
-            ->setIcon($this->iconFactory->getIcon('actions-clipboard'));
+        if ($this->allowClipboard) {
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+                ->setActive((bool)$this->moduleData->get('clipBoard'))
+                ->setHref($this->filelist->createModuleUri(['clipBoard' => $this->moduleData->get('clipBoard') ? 0 : 1]))
+                ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showClipboard'))
+                ->setIcon($this->iconFactory->getIcon('actions-clipboard'));
+        }
         if (($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true)
             && $this->moduleData->get('viewMode') === ViewMode::LIST->value) {
             $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
