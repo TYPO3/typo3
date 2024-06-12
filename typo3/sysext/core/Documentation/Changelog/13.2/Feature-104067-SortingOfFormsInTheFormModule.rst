@@ -11,8 +11,8 @@ See :issue:`104067`
 Description
 ===========
 
-The lisiting of exisiting forms in the :guilabel:`Form` backend module has
-been extended for a sort functionality.
+The listing of existing forms in the :guilabel:`Form` backend module has
+been extended to provide sorting functionality.
 
 Impact
 ======
