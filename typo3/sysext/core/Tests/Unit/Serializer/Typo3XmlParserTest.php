@@ -357,45 +357,12 @@ class Typo3XmlParserTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array[]
-     */
     public static function decodeHandlesBigXmlContentDataProvider(): array
     {
         return [
-            '1mb' => [
-                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-                <T3FlexForms>
-                    <data>
-                        <field index="settings.persistenceIdentifier">
-                            <value index="vDEF">' . str_repeat('1', 1024 * 1024) . '</value>
-                        </field>
-                    </data>
-                </T3FlexForms>',
-                str_repeat('1', 1024 * 1024),
-            ],
-            '5mb' => [
-                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-                <T3FlexForms>
-                    <data>
-                        <field index="settings.persistenceIdentifier">
-                            <value index="vDEF">' . str_repeat('1', 5 * 1024 * 1024) . '</value>
-                        </field>
-                    </data>
-                </T3FlexForms>',
-                str_repeat('1', 5 * 1024 * 1024),
-            ],
-            '10mb' => [
-                '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-                <T3FlexForms>
-                    <data>
-                        <field index="settings.persistenceIdentifier">
-                            <value index="vDEF">' . str_repeat('1', 10 * 1024 * 1024) . '</value>
-                        </field>
-                    </data>
-                </T3FlexForms>',
-                str_repeat('1', 10 * 1024 * 1024),
-            ],
+            '1mb' => [1],
+            '5mb' => [5],
+            '10mb' => [10],
         ];
     }
 
@@ -403,8 +370,17 @@ class Typo3XmlParserTest extends UnitTestCase
      * @test
      * @dataProvider decodeHandlesBigXmlContentDataProvider
      */
-    public function decodeHandlesBigXmlContent(string $input, string $testValue): void
+    public function decodeHandlesBigXmlContent(int $megabytes): void
     {
+        $input = '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+            <T3FlexForms>
+                <data>
+                    <field index="settings.persistenceIdentifier">
+                        <value index="vDEF">' . str_repeat('1', $megabytes * 1024 * 1024) . '</value>
+                    </field>
+                </data>
+            </T3FlexForms>';
+        $testValue = str_repeat('1', $megabytes * 1024 * 1024);
         $xmlDecoder = new Typo3XmlParser();
         $expected = [
             'data' => [
