@@ -190,6 +190,15 @@ Have a nice day.</source>
 			<trans-unit id="liveSearch.pageRecordProvider.typeLabel" resname="liveSearch.pageRecordProvider.typeLabel">
 				<source>Page</source>
 			</trans-unit>
+			<trans-unit id="liveSearch.backendModuleProvider.filterLabel" resname="liveSearch.backendModuleProvider.filterLabel">
+				<source>Backend modules</source>
+			</trans-unit>
+			<trans-unit id="liveSearch.backendModuleProvider.typeLabel" resname="liveSearch.backendModuleProvider.typeLabel">
+				<source>Backend module</source>
+			</trans-unit>
+			<trans-unit id="resultItem.backendModuleProvider.openModule" resname="resultItem.backendModuleProvider.openModule">
+				<source>Open module</source>
+			</trans-unit>
 			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
 				<source>Module action</source>
 			</trans-unit>
