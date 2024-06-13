@@ -173,7 +173,7 @@ export class ModalElement extends LitElement {
                       ${this.hideCloseButton ? nothing : html`
                           <button class="t3js-modal-close close" @click=${() => this.bootstrapModal.hide()}>
                               <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
-                              <span class="visually-hidden">${TYPO3?.lang?.['button.close'] || 'Close'}</span>
+                              <span class="visually-hidden">${TYPO3?.lang?.['button.close'] || 'Close'} ${this.modalTitle}</span>
                           </button>
                       `}
                   </div>
