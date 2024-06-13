@@ -19,6 +19,9 @@ Only if one of the following fields is filled, the meta tag :html:`<meta name="t
 - `twitter_description`
 - `twitter_image`
 - `twitter_card`
+- `og_title`
+- `og_description`
+- `og_image`
 
 If no twitter card is selected, the fallback value is `summary`.
 
