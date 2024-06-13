@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Renderer;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
@@ -123,6 +124,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  * **This class is NOT meant to be sub classed by developers.**
  * @internal
  */
+#[Autoconfigure(public: true, shared: false)]
 class FluidFormRenderer extends AbstractElementRenderer
 {
     /**

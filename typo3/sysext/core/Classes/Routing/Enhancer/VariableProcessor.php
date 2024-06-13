@@ -17,9 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Routing\Enhancer;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+
 /**
  * Helper for processing various variables within a Route Enhancer
  */
+#[Autoconfigure(public: true, shared: false)]
 class VariableProcessor
 {
     protected const LEVEL_DELIMITER = '__';

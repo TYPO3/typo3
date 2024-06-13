@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
@@ -33,6 +34,7 @@ use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
  *
  * @internal This class is a specific hook implementation and is not part of the TYPO3's Core API.
  */
+#[Autoconfigure(public: true)]
 class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
     private ServerRequestInterface $request;

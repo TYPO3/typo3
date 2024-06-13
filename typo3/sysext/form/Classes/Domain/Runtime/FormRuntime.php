@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
@@ -102,6 +103,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * @internal High cohesion to FormDefinition, may change any time
  * @todo: Declare final in v12
  */
+#[Autoconfigure(public: true, shared: false)]
 class FormRuntime implements RootRenderableInterface, \ArrayAccess
 {
     public const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';

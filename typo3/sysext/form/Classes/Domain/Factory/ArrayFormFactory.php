@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Factory;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface;
  *
  * Scope: frontend / backend
  */
+#[Autoconfigure(public: true, shared: false)]
 class ArrayFormFactory extends AbstractFormFactory
 {
     /**

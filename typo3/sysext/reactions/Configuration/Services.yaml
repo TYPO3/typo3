@@ -10,6 +10,3 @@ services:
   TYPO3\CMS\Reactions\ReactionRegistry:
     arguments:
       $registeredReactions: !tagged_iterator { tag: 'reactions.reaction', default_index_method: 'getType' }
-
-  TYPO3\CMS\Reactions\Form\ReactionItemsProcFunc:
-    public: true

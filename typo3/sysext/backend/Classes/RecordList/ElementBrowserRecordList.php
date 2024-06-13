@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\RecordList;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
@@ -23,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Displays the page tree for browsing database records.
  */
+#[Autoconfigure(public: true, shared: false)]
 class ElementBrowserRecordList extends DatabaseRecordList
 {
     /**

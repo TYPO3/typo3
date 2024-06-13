@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\ContentObject\Exception;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
  * Exception handler class for content object rendering
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
+#[Autoconfigure(public: true, shared: false)]
 class ProductionExceptionHandler implements ExceptionHandlerInterface
 {
     protected array $configuration = [];

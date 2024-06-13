@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 /**
  * Query settings, reflects the settings unique to TYPO3 CMS.
  */
+#[Autoconfigure(public: true, shared: false)]
 class Typo3QuerySettings implements QuerySettingsInterface
 {
     protected ConfigurationManagerInterface $configurationManager;

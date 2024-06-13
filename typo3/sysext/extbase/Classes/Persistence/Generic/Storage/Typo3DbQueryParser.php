@@ -22,6 +22,7 @@ use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -66,6 +67,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * QueryParser, converting the qom to string representation
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
+#[Autoconfigure(public: true, shared: false)]
 class Typo3DbQueryParser
 {
     protected DataMapper $dataMapper;

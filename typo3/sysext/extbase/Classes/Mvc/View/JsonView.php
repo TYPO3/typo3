@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -25,6 +26,7 @@ use TYPO3Fluid\Fluid\View\AbstractView;
 /**
  * A JSON view
  */
+#[Autoconfigure(public: true, shared: false)]
 class JsonView extends AbstractView
 {
     /**

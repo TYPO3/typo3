@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Service;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 /**
  * @internal
  */
+#[Autoconfigure(public: true)]
 class WorkspaceService implements SingletonInterface
 {
     protected array $versionsOnPageCache = [];

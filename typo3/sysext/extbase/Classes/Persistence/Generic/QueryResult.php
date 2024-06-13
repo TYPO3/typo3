@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -28,6 +29,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * @template TValue of object
  * @implements QueryResultInterface<mixed,TValue>
  */
+#[Autoconfigure(public: true, shared: false)]
 class QueryResult implements QueryResultInterface
 {
     protected DataMapper $dataMapper;

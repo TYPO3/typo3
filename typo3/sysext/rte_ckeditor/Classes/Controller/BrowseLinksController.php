@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\RteCKEditor\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
  * Extended controller for link browser
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[Autoconfigure(public: true, shared: false)]
 class BrowseLinksController extends AbstractLinkBrowserController
 {
     protected string $editorId;

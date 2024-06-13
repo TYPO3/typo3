@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3Tests\ActionControllerArgumentTest\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -27,6 +28,7 @@ use TYPO3Tests\ActionControllerArgumentTest\Domain\Model\ModelDto;
 /**
  * Fixture controller
  */
+#[Autoconfigure(public: true)]
 class ArgumentTestController extends ActionController
 {
     /**

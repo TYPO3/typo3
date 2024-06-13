@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reactions\Form;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Reactions\Validation\CreateRecordReactionTable;
 
 /**
@@ -24,6 +25,7 @@ use TYPO3\CMS\Reactions\Validation\CreateRecordReactionTable;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class ReactionItemsProcFunc
 {
     /**

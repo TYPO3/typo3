@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Resource;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -43,6 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @todo The file collector is used for intermediate collection in scoped places. Therefore, the collector
  *       can't be shared. Evaluate if the collector can be build scope aware and made sharable again.
  */
+#[Autoconfigure(public: true, shared: false)]
 class FileCollector implements \Countable, LoggerAwareInterface
 {
     use LoggerAwareTrait;

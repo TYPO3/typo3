@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use Doctrine\Instantiator\InstantiatorInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -54,6 +55,7 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  * A mapper to map database tables configured in $TCA on domain objects.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
+#[Autoconfigure(public: true, shared: false)]
 class DataMapper
 {
     /**

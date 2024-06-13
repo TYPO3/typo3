@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Tstemplate\Hooks;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 
 /**
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class DataHandlerClearCachePostProcHook
 {
     /**

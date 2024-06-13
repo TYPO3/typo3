@@ -7,10 +7,6 @@ services:
   TYPO3\CMS\Extbase\:
     resource: '../Classes/*'
 
-  TYPO3\CMS\Extbase\Core\Bootstrap:
-    public: true
-    shared: false
-
   # formerly in EXT:extbase/ext_localconf.php
   TYPO3\CMS\Extbase\Persistence\QueryInterface:
     alias: TYPO3\CMS\Extbase\Persistence\Generic\Query
@@ -30,26 +26,6 @@ services:
     alias: TYPO3\CMS\Extbase\Configuration\ConfigurationManager
     public: true
 
-  TYPO3\CMS\Extbase\Persistence\Generic\Query:
-    public: true
-    shared: false
-
-  TYPO3\CMS\Extbase\Persistence\Generic\QueryResult:
-    public: true
-    shared: false
-
-  TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser:
-    public: true
-    shared: false
-
-  TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings:
-    public: true
-    shared: false
-
-  TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper:
-    public: true
-    shared: false
-
   cache.extbase:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
@@ -57,14 +33,6 @@ services:
 
   TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver: ~
   TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface: '@TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver'
-
-  TYPO3\CMS\Extbase\Mvc\View\JsonView:
-    public: true
-    shared: false
-
-  TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder:
-    public: true
-    shared: false
 
   TYPO3\CMS\Extbase\Persistence\ClassesConfiguration:
     factory: ['@TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory', 'createClassesConfiguration']

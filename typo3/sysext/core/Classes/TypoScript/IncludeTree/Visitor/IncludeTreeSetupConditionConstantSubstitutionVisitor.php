@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeConditionInterface;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
@@ -32,6 +33,9 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
  *
  * @internal: Internal tree structure.
  */
+
+// This visitor creates state and should not be re-used
+#[Autoconfigure(public: true, shared: false)]
 final class IncludeTreeSetupConditionConstantSubstitutionVisitor implements IncludeTreeVisitorInterface
 {
     /**

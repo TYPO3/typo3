@@ -18,12 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
  * Renders the search box for the record listing and the element browser.
  *
  * @internal
  */
+#[Autoconfigure(public: true, shared: false)]
 class RecordSearchBoxComponent
 {
     protected array $allowedSearchLevels = [];

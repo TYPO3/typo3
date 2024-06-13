@@ -87,22 +87,6 @@ services:
         defaultProviderAllowed: false
         after: 'totp'
 
-  TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider:
-    shared: false
-    public: true
-
-  TYPO3\CMS\Core\Authentication\GroupResolver:
-    shared: false
-    public: true
-
-  TYPO3\CMS\Core\RateLimiter\RateLimiterFactory:
-    shared: false
-    public: true
-
-  TYPO3\CMS\Core\Routing\Enhancer\VariableProcessor:
-    public: true
-    shared: false
-
   TYPO3\CMS\Core\Routing\Enhancer\VariableProcessorCache:
     shared: true
 
@@ -144,31 +128,6 @@ services:
 
   TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface:
     alias: TYPO3\CMS\Core\TypoScript\AST\AstBuilder
-
-  TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor:
-    public: true
-    # Ast builder visitor creates state and should not be re-used
-    shared: false
-
-  TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeCommentAwareAstBuilderVisitor:
-    public: true
-    # This Ast builder visitor creates state and should not be re-used
-    shared: false
-
-  TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionIncludeListAccumulatorVisitor:
-    public: true
-    # This visitor creates state and should not be re-used
-    shared: false
-
-  TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionMatcherVisitor:
-    public: true
-    # This visitor creates state and should not be re-used
-    shared: false
-
-  TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor:
-    public: true
-    # This visitor creates state and should not be re-used
-    shared: false
 
   TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface:
     alias: TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer

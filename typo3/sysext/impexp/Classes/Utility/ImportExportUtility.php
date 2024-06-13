@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Impexp\Utility;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Event\BeforeImportEvent;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Impexp\Import;
  *
  * @internal This class is not considered part of the public TYPO3 API.
  */
+#[Autoconfigure(public: true)]
 class ImportExportUtility
 {
     protected ?Import $import = null;

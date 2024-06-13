@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\LinkHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Controller\AbstractLinkBrowserController;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
@@ -54,6 +55,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal This class is a specific LinkHandler implementation and is not part of the TYPO3's Core API.
  */
+#[Autoconfigure(public: true, shared: false)]
 final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface, LinkParameterProviderInterface
 {
     /**

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  * @template T of object
  * @implements QueryInterface<T>
  */
+#[Autoconfigure(public: true, shared: false)]
 class Query implements QueryInterface
 {
     /**

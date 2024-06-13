@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
@@ -35,6 +36,9 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SysTemplateInclude;
  *
  * @internal: Internal tree structure.
  */
+
+// Ast builder visitor creates state and should not be re-used
+#[Autoconfigure(public: true, shared: false)]
 final class IncludeTreeAstBuilderVisitor implements IncludeTreeVisitorInterface
 {
     private RootNode $ast;

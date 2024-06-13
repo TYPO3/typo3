@@ -11,7 +11,3 @@ services:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['workspaces_cache']
-
-  TYPO3\CMS\Workspaces\Service\WorkspaceService:
-    public: true
-    shared: true

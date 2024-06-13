@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\RateLimiter;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\RateLimiter\LimiterInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory as SymfonyRateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @internal This is not part of the official TYPO3 Core API due to a limitation of the experimental Symfony Rate Limiter API.
  */
+#[Autoconfigure(public: true, shared: false)]
 class RateLimiterFactory
 {
     public function createLoginRateLimiter(AbstractUserAuthentication $userAuthentication, ServerRequestInterface $request): LimiterInterface

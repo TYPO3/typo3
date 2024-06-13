@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
  * **This class is NOT meant to be sub classed by developers.**
  * @internal
  */
+#[Autoconfigure(public: true, shared: false)]
 class ProcessingRule
 {
     /**
