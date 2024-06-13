@@ -1,0 +1,53 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<form method="post" id="linkValidatorReportController">
+    <div class="form-row-md align-items-md-end t3js-linkvalidator-settings">
+        <div class="form-group">
+            <label class="form-label" for="check_search_levels"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:filter.depth" /></label>
+            <select name="check_search_levels" id="check_search_levels" class="form-select">
+                <option value="0"{f:if(condition: '{selectedLevelCheck} == 0', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+                <option value="1"{f:if(condition: '{selectedLevelCheck} == 1', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
+                <option value="2"{f:if(condition: '{selectedLevelCheck} == 2', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
+                <option value="3"{f:if(condition: '{selectedLevelCheck} == 3', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
+                <option value="4"{f:if(condition: '{selectedLevelCheck} == 4', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
+                <option value="999"{f:if(condition: '{selectedLevelCheck} == 999', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="form-row-md">
+                <f:for each="{optionsCheck.optionsByType}" as="optionByType">
+                    <div class="form-group" id="broken{optionByType.id}">
+                        <div class="form-check form-switch form-check-size-input">
+                            <input
+                                type="checkbox"
+                                class="form-check-input options-by-type-check"
+                                value="1"
+                                id="check-{optionByType.id}"
+                                name="{optionByType.name}"
+                                {f:if(condition: '{optionByType.checked}', then: 'checked')}
+                            />
+                            <label class="form-check-label" for="check-{optionByType.id}">{optionByType.label}</label>
+                        </div>
+                    </div>
+                </f:for>
+                <input type="hidden" name="check_values" value="1">
+            </div>
+        </div>
+    </div>
+    <div class="form-row-md">
+        <div class="form-group">
+            <input
+                type="submit"
+                class="btn btn-default t3js-linkvalidator-action-button-check"
+                name="updateLinkList"
+                value="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_update')}"
+                data-notification-message="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_update-link-list')}"
+            />
+        </div>
+    </div>
+</form>
+
+</html>

@@ -1,0 +1,63 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<div class="form-row-md align-items-md-end t3js-linkvalidator-settings">
+    <div class="form-group">
+        <label class="form-label" for="report_search_levels"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:filter.depth" /></label>
+        <select name="report_search_levels" id="report_search_levels" class="form-select">
+            <option value="0"{f:if(condition: '{selectedLevelReport} == 0', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+            <option value="1"{f:if(condition: '{selectedLevelReport} == 1', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
+            <option value="2"{f:if(condition: '{selectedLevelReport} == 2', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
+            <option value="3"{f:if(condition: '{selectedLevelReport} == 3', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
+            <option value="4"{f:if(condition: '{selectedLevelReport} == 4', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
+            <option value="999"{f:if(condition: '{selectedLevelReport} == 999', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <div class="form-row-md">
+            <div class="form-group">
+                <div class="form-check form-switch form-check-size-input">
+                    <input
+                        id="options-by-type-toggle-all-report"
+                        class="options-by-type-toggle-all-report form-check-input"
+                        type="checkbox"
+                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall')}"
+                        {f:if(condition: '{optionsReport.allOptionsChecked}', then: 'checked')}
+                    >
+                    <label class="form-check-label" for="options-by-type-toggle-all-report"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleall"/></label>
+                </div>
+            </div>
+            <f:for each="{optionsReport.optionsByType}" as="optionByType">
+                <div class="form-group">
+                    <div class="form-check form-switch form-check-size-input">
+                        <input
+                            type="checkbox"
+                            class="form-check-input options-by-type-report"
+                            value="1"
+                            id="report-{optionByType.id}"
+                            name="{optionByType.name}"
+                            {f:if(condition: '{optionByType.checked}', then: 'checked')}
+                        />
+                        <label class="form-check-label" for="report-{optionByType.id}">{optionByType.label} <span class="badge">{optionByType.count}</span></label>
+                    </div>
+                </div>
+            </f:for>
+            <input type="hidden" name="report_values" value="1">
+        </div>
+    </div>
+</div>
+<div class="form-row-md">
+    <div class="form-group">
+        <input
+            type="submit"
+            class="btn btn-default t3js-linkvalidator-action-button-report"
+            name="refreshLinkList"
+            value="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_refresh')}"
+            data-notification-message="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_refresh-link-list')}"
+        />
+    </div>
+</div>
+
+</html>

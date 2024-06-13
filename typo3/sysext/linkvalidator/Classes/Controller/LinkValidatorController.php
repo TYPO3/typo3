@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -59,14 +57,14 @@ class LinkValidatorController
 
     /**
      * Depth for the recursive traversal of pages for the link validation
-     * For "Report" and "Check link" tab.
+     * For "Report" and "Check link" form
      */
     protected array $searchLevel = ['report' => 0, 'check' => 0];
 
     /**
      * List of link types currently chosen in the statistics table
      * Used to show broken links of these types only
-     * For "Report" and "Check link" tab
+     * For "Report" and "Check link" form
      */
     protected array $checkOpt = ['report' => [], 'check' => []];
 
@@ -152,34 +150,26 @@ class LinkValidatorController
         $action = $moduleData->get('action');
 
         $this->addDocHeaderShortCutButton($view, $action);
-        if ($this->modTS['showCheckLinkTab'] ?? false) {
-            // Add doc header drop down if user is allowed to see both 'report' and 'check'
-            $this->addDocHeaderDropDown($view, $action);
+
+        $checkFormEnabled = false;
+        if (($this->modTS['showCheckLinkTab'] ?? '') === '1') {
+            $checkFormEnabled = true;
         }
 
-        if ($action === 'report') {
-            $view->assignMultiple([
-                'title' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
-                'prefix' => 'report',
-                'selectedLevel' => $this->searchLevel['report'],
-                'options' => $this->getCheckOptions('report'),
-                'brokenLinks' => $this->getBrokenLinks(),
-                'tableheadPath' =>        $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.path'),
-                'tableheadElement' =>     $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.element'),
-                'tableheadHeadlink' =>    $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.headlink'),
-                'tableheadLinktarget' =>  $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linktarget'),
-                'tableheadLinkmessage' => $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linkmessage'),
-                'tableheadLastcheck' =>   $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.lastCheck'),
-            ]);
-            return $view->renderResponse('Backend/Report');
-        }
+        $brokenLinksInformation = $this->linkAnalyzer->getLinkCounts();
+
         $view->assignMultiple([
-            'title' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
-            'prefix' => 'check',
-            'selectedLevel' => $this->searchLevel['check'],
-            'options' => $this->getCheckOptions('check'),
+            'pageUid' => $this->id,
+            'pageTitle' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
+            'checkFormEnabled' => $checkFormEnabled,
+            'selectedLevelCheck' => $this->searchLevel['check'],
+            'selectedLevelReport' => $this->searchLevel['report'],
+            'optionsCheck' => $this->getCheckOptions('check'),
+            'optionsReport' => $this->getCheckOptions('report'),
+            'brokenLinks' => $this->getBrokenLinks(),
+            'brokenLinkTotalCount' => $brokenLinksInformation['total'] ?: '0',
         ]);
-        return $view->renderResponse('Backend/CheckLinks');
+        return $view->renderResponse('Backend/Report');
     }
 
     /**
@@ -311,9 +301,6 @@ class LinkValidatorController
                 $items[] = $this->generateTableRow($row);
             }
         }
-        if (empty($items)) {
-            $this->createFlashMessagesForNoBrokenLinks();
-        }
         return $items;
     }
 
@@ -342,24 +329,6 @@ class LinkValidatorController
             $checkForHiddenPages
         );
         return array_merge($pageList, $pageTranslations);
-    }
-
-    /**
-     * Used when there are no broken links found.
-     */
-    protected function createFlashMessagesForNoBrokenLinks(): void
-    {
-        $languageService = $this->getLanguageService();
-        $message = GeneralUtility::makeInstance(
-            FlashMessage::class,
-            $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.no.broken.links'),
-            $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.no.broken.links.title'),
-            ContextualFeedbackSeverity::OK,
-            false
-        );
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier('linkvalidator');
-        $defaultFlashMessageQueue->enqueue($message);
     }
 
     /**
@@ -425,15 +394,12 @@ class LinkValidatorController
     /**
      * Builds the checkboxes to show which types of links are available
      *
-     * @param string $prefix "report" or "check" for "Report" and "Check links" tab
+     * @param string $prefix "report" or "check" for "Report" and "Check links" form
      */
     protected function getCheckOptions(string $prefix): array
     {
         $brokenLinksInformation = $this->linkAnalyzer->getLinkCounts();
         $options = [
-            'anyOptionChecked' => false,
-            'totalCountLabel' => $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:overviews.nbtotal'),
-            'totalCount' => $brokenLinksInformation['total'] ?: '0',
             'optionsByType' => [],
         ];
         $linkTypes = GeneralUtility::trimExplode(',', $this->modTS['linktypes'] ?? '', true);
@@ -442,9 +408,6 @@ class LinkValidatorController
                 continue;
             }
             $isChecked = !empty($this->checkOpt[$prefix][$type]);
-            if ($isChecked) {
-                $options['anyOptionChecked'] = true;
-            }
             $options['optionsByType'][$type] = [
                 'id' => $prefix . '_SET_' . $type,
                 'name' => $prefix . '_SET[' . $type . ']',
@@ -465,31 +428,6 @@ class LinkValidatorController
             ->setDisplayName($this->getModuleTitle())
             ->setArguments(['id' => $this->id, 'action' => $action]);
         $buttonBar->addButton($shortcutButton);
-    }
-
-    protected function addDocHeaderDropDown(ModuleTemplate $view, string $currentAction): void
-    {
-        $languageService = $this->getLanguageService();
-        $actionMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $actionMenu->setIdentifier('reportLinkvalidatorSelector');
-        $actionMenu->setLabel(
-            $languageService->sL(
-                'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:moduleMenu.dropdown.label'
-            )
-        );
-        $actionMenu->addMenuItem(
-            $actionMenu->makeMenuItem()
-                ->setTitle($languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:Report'))
-                ->setHref($this->getModuleUri('report'))
-                ->setActive($currentAction === 'report')
-        );
-        $actionMenu->addMenuItem(
-            $actionMenu->makeMenuItem()
-                ->setTitle($languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:CheckLink'))
-                ->setHref($this->getModuleUri('check'))
-                ->setActive($currentAction === 'check')
-        );
-        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
     }
 
     protected function getModuleUri(string $action = null, array $additionalPramaters = []): string

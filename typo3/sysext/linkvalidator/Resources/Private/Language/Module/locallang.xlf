@@ -6,62 +6,11 @@
 			<trans-unit id="linkvalidator" resname="linkvalidator">
 				<source>LinkValidator</source>
 			</trans-unit>
-			<trans-unit id="menu.introduction" resname="menu.introduction">
-				<source>Introduction</source>
+			<trans-unit id="overview.headline" resname="overview.headline">
+				<source>Link check</source>
 			</trans-unit>
-			<trans-unit id="menu.checkLinks" resname="menu.checkLinks">
-				<source>Check links for validity</source>
-			</trans-unit>
-			<trans-unit id="menu.overview" resname="menu.overview">
-				<source>Overview of links on website</source>
-			</trans-unit>
-			<trans-unit id="overview.header" resname="overview.header">
-				<source>Overview - choose options to check the links</source>
-			</trans-unit>
-			<trans-unit id="overview.all.header" resname="overview.all.header">
-				<source>Total amounts in tt_content</source>
-			</trans-unit>
-			<trans-unit id="overview.all.records" resname="overview.all.records">
-				<source>Records with ext. links</source>
-			</trans-unit>
-			<trans-unit id="overview.all.links" resname="overview.all.links">
-				<source>External links</source>
-			</trans-unit>
-			<trans-unit id="overview.branch.header" resname="overview.branch.header">
-				<source>Amounts from actual branch in tt_content</source>
-			</trans-unit>
-			<trans-unit id="overview.branch.records" resname="overview.branch.records">
-				<source>Records with ext. links</source>
-			</trans-unit>
-			<trans-unit id="overview.branch.links" resname="overview.branch.links">
-				<source>External links</source>
-			</trans-unit>
-			<trans-unit id="overview.attention.header" resname="overview.attention.header">
-				<source>Attention</source>
-			</trans-unit>
-			<trans-unit id="overview.attention.text" resname="overview.attention.text">
-				<source>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</source>
-			</trans-unit>
-			<trans-unit id="Report" resname="Report">
-				<source>Report</source>
-			</trans-unit>
-			<trans-unit id="CheckLink" resname="CheckLink">
-				<source>Check Links</source>
-			</trans-unit>
-			<trans-unit id="report.statistics.header" resname="report.statistics.header">
-				<source>Show these types of broken links</source>
-			</trans-unit>
-			<trans-unit id="checklinks.statistics.header" resname="checklinks.statistics.header">
-				<source>Check these types of broken links</source>
-			</trans-unit>
-			<trans-unit id="report.func.title" resname="report.func.title">
-				<source>Show this level</source>
-			</trans-unit>
-			<trans-unit id="checklinks.func.title" resname="checklinks.func.title">
-				<source>Check this level</source>
-			</trans-unit>
-			<trans-unit id="overviews.nbtotal" resname="overviews.nbtotal">
-				<source>Broken links total</source>
+			<trans-unit id="overview.headlineWithPageTitle" resname="overview.headlineWithPageTitle">
+				<source>Link check of page "%s"</source>
 			</trans-unit>
 			<trans-unit id="hooks.db" resname="hooks.db">
 				<source>Internal Links</source>
@@ -71,6 +20,9 @@
 			</trans-unit>
 			<trans-unit id="hooks.external" resname="hooks.external">
 				<source>External Links</source>
+			</trans-unit>
+			<trans-unit id="filter.depth" resname="filter.depth">
+				<source>Depth</source>
 			</trans-unit>
 			<trans-unit id="label_refresh" resname="label_refresh">
 				<source>Refresh display</source>
@@ -102,44 +54,53 @@
 			<trans-unit id="list.edit" resname="list.edit">
 				<source>Edit element containing this broken link</source>
 			</trans-unit>
+			<trans-unit id="list.tableFoot.record" resname="list.tableFoot.record">
+				<source>Records</source>
+			</trans-unit>
+			<trans-unit id="list.tableFoot.records" resname="list.tableFoot.records">
+				<source>Records</source>
+			</trans-unit>
 			<trans-unit id="list.field" resname="list.field">
 				<source>(Field: %s)</source>
 			</trans-unit>
 			<trans-unit id="list.no.headline" resname="list.no.headline">
 				<source>no headline</source>
 			</trans-unit>
+			<trans-unit id="list.check.headline" resname="list.check.headline">
+				<source>Configuration</source>
+			</trans-unit>
 			<trans-unit id="list.report.pagedeleted" resname="list.report.pagedeleted">
-				<source>Page '###title###' (###uid###) is deleted.</source>
+				<source>Page '###title###' (id=###uid###) is deleted.</source>
 			</trans-unit>
 			<trans-unit id="list.report.pagenotvisible" resname="list.report.pagenotvisible">
-				<source>Page '###title###' (###uid###) is not visible.</source>
+				<source>Page '###title###' (id=###uid###) is not visible.</source>
 			</trans-unit>
 			<trans-unit id="list.report.pagenotexisting" resname="list.report.pagenotexisting">
-				<source>Page (###uid###) does not exist.</source>
+				<source>Page (id=###uid###) does not exist.</source>
 			</trans-unit>
 			<trans-unit id="list.report.contentmoved" resname="list.report.contentmoved">
-				<source>Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
+				<source>Element '###title###' (id=###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
 			</trans-unit>
 			<trans-unit id="list.report.contentdeleted" resname="list.report.contentdeleted">
-				<source>Element '###title###' (###uid###) is deleted.</source>
+				<source>Element '###title###' (id=###uid###) is deleted.</source>
 			</trans-unit>
 			<trans-unit id="list.report.contentnotvisible" resname="list.report.contentnotvisible">
-				<source>Element '###title###' (###uid###) is not visible.</source>
+				<source>Element '###title###' (id=###uid###) is not visible.</source>
 			</trans-unit>
 			<trans-unit id="list.report.contentnotexisting" resname="list.report.contentnotexisting">
-				<source>Element (###uid###) does not exist.</source>
+				<source>Element (id=###uid###) does not exist.</source>
 			</trans-unit>
 			<trans-unit id="list.report.rownotvisible" resname="list.report.rownotvisible">
-				<source>###title### row (###uid###) is not visible.</source>
+				<source>###title### row (id=###uid###) is not visible.</source>
 			</trans-unit>
 			<trans-unit id="list.report.rowdeleted" resname="list.report.rowdeleted">
-				<source>###title### row (###uid###) is deleted.</source>
+				<source>###title### row (id=###uid###) is deleted.</source>
 			</trans-unit>
 			<trans-unit id="list.report.rowdeleted.default.title" resname="list.report.rowdeleted.default.title">
 				<source>Linked</source>
 			</trans-unit>
 			<trans-unit id="list.report.rownotexisting" resname="list.report.rownotexisting">
-				<source>Row (###uid###) does not exist.</source>
+				<source>Row (id=###uid###) does not exist.</source>
 			</trans-unit>
 			<trans-unit id="list.report.noinformation" resname="list.report.noinformation">
 				<source>No information about the error is available.</source>
@@ -191,7 +152,7 @@
 				<source>Accessing this address is not allowed (403).</source>
 			</trans-unit>
 			<trans-unit id="list.report.pagenotfound404" resname="list.report.pagenotfound404">
-				<source>The requested url was not found (404).</source>
+				<source>The requested URL was not found (404).</source>
 			</trans-unit>
 			<trans-unit id="list.report.internalerror500" resname="list.report.internalerror500">
 				<source>Internal Server Error (500)</source>
@@ -263,10 +224,10 @@
 				<source>%1$s %2$s</source>
 			</trans-unit>
 			<trans-unit id="list.no.broken.links.title" resname="list.no.broken.links.title">
-				<source>No broken links to show!</source>
+				<source>No broken links found</source>
 			</trans-unit>
 			<trans-unit id="list.no.broken.links" resname="list.no.broken.links">
-				<source>There are no broken links to be displayed.</source>
+				<source>There are no broken links for the selected link type restriction.</source>
 			</trans-unit>
 			<trans-unit id="no.access.title" resname="no.access.title">
 				<source>No access!</source>
@@ -282,6 +243,9 @@
 			</trans-unit>
 			<trans-unit id="needs-recheck" resname="needs-recheck">
 				<source>Needs recheck</source>
+			</trans-unit>
+			<trans-unit id="info.noPageSelected.message" resname="info.noPageSelected.message">
+				<source>Please select a page in the page tree.</source>
 			</trans-unit>
 		</body>
 	</file>

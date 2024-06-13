@@ -15,13 +15,18 @@ import Notification from '@typo3/backend/notification';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Selectors {
-  actionButtonSelector = '.t3js-linkvalidator-action-button',
-  toggleAllLinktypesSelector = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type-toggle-all',
-  linktypesSelector = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type'
+  // Check
+  linktypesSelectorCheck = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type-check',
+  actionButtonSelectorCheck = '.t3js-linkvalidator-action-button-check',
+
+  // Report
+  toggleAllLinktypesSelectorReport = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type-toggle-all-report',
+  linktypesSelectorReport = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type-report',
+  actionButtonSelectorReport = '.t3js-linkvalidator-action-button-report'
 }
 
 enum Identifier {
-  toggleAllLinktypesId = 'options-by-type-toggle-all'
+  toggleAllLinktypesIdReport = 'options-by-type-toggle-all-report'
 }
 
 /**
@@ -37,8 +42,8 @@ class Linkvalidator {
     return checkBoxes.length === checkboxArray.filter((checkBox: HTMLInputElement) => checkBox.checked).length;
   }
 
-  private toggleActionButton(): void {
-    document.querySelector(Selectors.actionButtonSelector)?.toggleAttribute(
+  private toggleActionButtonReport(): void {
+    document.querySelector(Selectors.actionButtonSelectorReport)?.toggleAttribute(
       'disabled',
       !document.querySelectorAll('input[type="checkbox"]:checked').length
     );
@@ -47,33 +52,37 @@ class Linkvalidator {
   /**
    * Enables the "Toggle all" checkbox on document load if all child checkboxes are checked
    */
-  private toggleTriggerCheckBox(): void {
-    const checkBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.linktypesSelector);
-    (document.getElementById(Identifier.toggleAllLinktypesId) as HTMLInputElement).checked = Linkvalidator.allCheckBoxesAreChecked(checkBoxes);
+  private toggleTriggerCheckBoxReport(): void {
+    const checkBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.linktypesSelectorReport);
+    (document.getElementById(Identifier.toggleAllLinktypesIdReport) as HTMLInputElement).checked = Linkvalidator.allCheckBoxesAreChecked(checkBoxes);
   }
 
   private initializeEvents(): void {
     // toggleAll (checkboxes): on change
     new RegularEvent('change', (e: Event, currentTarget: HTMLInputElement): void => {
-      const checkBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.linktypesSelector);
+      const checkBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.linktypesSelectorReport);
       const checkIt = !Linkvalidator.allCheckBoxesAreChecked(checkBoxes);
 
       checkBoxes.forEach((checkBox: HTMLInputElement): void => {
         checkBox.checked = checkIt;
       });
       currentTarget.checked = checkIt;
-      this.toggleActionButton();
-    }).delegateTo(document, Selectors.toggleAllLinktypesSelector);
+      this.toggleActionButtonReport();
+    }).delegateTo(document, Selectors.toggleAllLinktypesSelectorReport);
 
     // toggle (checkbox): on change
     new RegularEvent('change', (): void => {
-      this.toggleTriggerCheckBox();
-      this.toggleActionButton();
-    }).delegateTo(document, Selectors.linktypesSelector);
+      this.toggleTriggerCheckBoxReport();
+      this.toggleActionButtonReport();
+    }).delegateTo(document, Selectors.linktypesSelectorReport);
 
     new RegularEvent('click', (e: PointerEvent, actionButton: HTMLInputElement): void => {
       Notification.success(actionButton.dataset.notificationMessage || 'Event triggered', '', 2);
-    }).delegateTo(document, Selectors.actionButtonSelector);
+    }).delegateTo(document, Selectors.actionButtonSelectorCheck);
+
+    new RegularEvent('click', (e: PointerEvent, actionButton: HTMLInputElement): void => {
+      Notification.success(actionButton.dataset.notificationMessage || 'Event triggered', '', 2);
+    }).delegateTo(document, Selectors.actionButtonSelectorReport);
   }
 }
 
