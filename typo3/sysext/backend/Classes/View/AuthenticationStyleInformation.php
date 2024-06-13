@@ -61,7 +61,7 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
             .typo3-login-carousel-control.left,
             .card-login { border: 0; }
             .typo3-login { background-image: url("' . GeneralUtility::sanitizeCssVariableValue($backgroundImageUri) . '"); }
-            .typo3-login-footnote { background-color: #000000; color: #ffffff; opacity: 0.5; }
+            .typo3-login-footnote { background-color: #000000; color: #ffffff; }
         ';
     }
 
