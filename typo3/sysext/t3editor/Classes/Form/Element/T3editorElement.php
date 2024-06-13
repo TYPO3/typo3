@@ -115,7 +115,7 @@ class T3editorElement extends AbstractFormElement
 
         $settings = [];
         if ($parameterArray['fieldConf']['config']['readOnly'] ?? false) {
-            $settings['readOnly'] = true;
+            $settings['readonly'] = true;
         }
 
         $editorHtml = $this->getHTMLCodeForEditor(
@@ -213,13 +213,12 @@ class T3editorElement extends AbstractFormElement
                 $keymaps[] = $keymap;
             }
         }
-        $codeMirrorConfig = [
+        $codeMirrorConfig = array_merge($settings, [
             'name' => $name,
             'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
             'addons' => GeneralUtility::jsonEncodeForHtmlAttribute($addons, false),
             'keymaps' => GeneralUtility::jsonEncodeForHtmlAttribute($keymaps, false),
-            'options' => GeneralUtility::jsonEncodeForHtmlAttribute($settings, false),
-        ];
+        ]);
 
         $code[] = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
         $code[] = '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($content) . '</textarea>';
