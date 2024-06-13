@@ -15,12 +15,12 @@ editor:
     style:
       definitions:
         # block level styles
-        - { name: 'Orange title H2', element: 'h2', classes: [], styles: { color: 'orange', background: 'blue' } }
-        - { name: 'Orange title H3', element: 'h3', classes: [], styles: { color: 'orange', background: 'blue' } }
-        - { name: 'Quote / Citation', element: 'blockquote', classes: [],  }
-        - { name: 'Code block', element: 'code', classes: [],  }
+        - { name: 'Orange title H2', element: 'h2', classes: ['orange'] }
+        - { name: 'Orange title H3', element: 'h3', classes: ['orange'] }
+        - { name: 'Quote / Citation', element: 'blockquote' }
+        - { name: 'Code block', element: 'code'  }
         # Inline styles
-        - { name: 'Yellow marker', element: 'span', classes: [], styles: { background-color: 'yellow' } }
+        - { name: 'Yellow marker', element: 'span', classes: ['yellow-marker'] }
 
     heading:
       options:

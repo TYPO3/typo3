@@ -263,6 +263,7 @@ class CKEditor5Migrator
             $this->handleAlignmentPlugin();
             $this->handleWhitespacePlugin();
             $this->handleWordCountPlugin();
+            $this->handleStyleDefinitions();
 
             // sort by key
             ksort($this->configuration['editor']['config']);
@@ -942,6 +943,24 @@ class CKEditor5Migrator
             'displayCharacters' => $this->configuration['editor']['config']['wordCount']['displayCharacters'] ?? true,
             'displayWords' => $this->configuration['editor']['config']['wordCount']['displayWords'] ?? true,
         ];
+    }
+
+    protected function handleStyleDefinitions(): void
+    {
+        if (isset($this->configuration['editor']['config']['style']['definitions'])
+            && is_array($this->configuration['editor']['config']['style']['definitions'])
+        ) {
+            foreach ($this->configuration['editor']['config']['style']['definitions'] as $definitionIndex => $definition) {
+                $classes = $definition['classes'] ?? [];
+                if ($classes === []) {
+                    // See CKeditor5Migrator::migrateStylesSetToStyleDefinitions - an empty array is not allowed.
+                    // The "classes" attribute must always either be a string (even using `true` will lead to class="true"),
+                    // or "['']" (array with empty string, leading to class=""). CKEditor5 requires this attribute to
+                    // be set, see https://ckeditor.com/docs/ckeditor5/latest/api/module_style_styleconfig-StyleDefinition.html
+                    $this->configuration['editor']['config']['style']['definitions'][$definitionIndex]['classes'] = [''];
+                }
+            }
+        }
     }
 
     protected function addLinkClassesToStyleSets(): void
