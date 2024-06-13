@@ -43,6 +43,11 @@ export class CodeMirrorElement extends LitElement {
       }
     }
 
+    :host {
+      position: relative;
+      display: block;
+    }
+
     :host([fullscreen]) {
       position: fixed;
       inset: 64px 0 0;

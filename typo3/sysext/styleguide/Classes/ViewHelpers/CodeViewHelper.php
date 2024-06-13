@@ -17,6 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\ViewHelpers;
 
+use TYPO3\CMS\Backend\CodeEditor\CodeEditor;
+use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -36,6 +40,13 @@ final class CodeViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
+    protected PageRenderer $pageRenderer;
+
+    public function injectPageRenderer(PageRenderer $pageRenderer): void
+    {
+        $this->pageRenderer = $pageRenderer;
+    }
+
     public function initializeArguments(): void
     {
         $this->registerArgument('language', 'string', 'the language identifier, e.g. html, php, etc.', true);
@@ -46,6 +57,10 @@ final class CodeViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/code-editor/element/code-mirror-element.js');
+        // Compile and register code editor configuration
+        GeneralUtility::makeInstance(CodeEditor::class)->registerConfiguration();
+
         $content = $this->renderChildren();
         $_lines = explode("\n", $content);
         $lines = [];
@@ -76,12 +91,25 @@ final class CodeViewHelper extends AbstractViewHelper
             }
         }
         if (!$this->arguments['exampleonly']) {
+            $registry = GeneralUtility::makeInstance(ModeRegistry::class);
+            if ($registry->isRegistered($this->arguments['language'])) {
+                $mode = $registry->getByFormatCode($this->arguments['language']);
+            } else {
+                $mode = $registry->getDefaultMode();
+            }
+
+            $codeMirrorConfig = [
+                'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
+                'readonly' => true,
+            ];
+            $attributes = [
+                'wrap' => 'off',
+            ];
+
             $markup[] = '<div class="example example--code">';
-            $markup[] = '<pre>';
-            $markup[] = '<code class="language-' . htmlspecialchars($this->arguments['language']) . '">';
-            $markup[] = htmlspecialchars($content);
-            $markup[] = '</code>';
-            $markup[] = '</pre>';
+            $markup[] = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
+            $markup[] = '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($content) . '</textarea>';
+            $markup[] = '</typo3-t3editor-codemirror>';
             $markup[] = '</div>';
         }
         return implode('', $markup);

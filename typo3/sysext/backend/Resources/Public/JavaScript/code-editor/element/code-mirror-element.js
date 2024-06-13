@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,o,r){var i,a=arguments.length,l=a<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,o):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(e,t,o,r);else for(var n=e.length-1;n>=0;n--)(i=e[n])&&(l=(a<3?i(l):a>3?i(t,o,l):i(t,o))||l);return a>3&&l&&Object.defineProperty(t,o,l),l};import{LitElement,html,css}from"lit";import{customElement,property,state}from"lit/decorators.js";import{EditorView,lineNumbers,highlightSpecialChars,drawSelection,keymap,placeholder}from"@codemirror/view";import{EditorState,Compartment}from"@codemirror/state";import{syntaxHighlighting,defaultHighlightStyle}from"@codemirror/language";import{defaultKeymap,indentWithTab}from"@codemirror/commands";import{oneDark}from"@codemirror/theme-one-dark";import{executeJavaScriptModuleInstruction,loadModule,resolveSubjectRef}from"@typo3/core/java-script-item-processor.js";import"@typo3/backend/element/spinner-element.js";let CodeMirrorElement=class extends LitElement{constructor(){super(...arguments),this.mode=null,this.addons=[],this.keymaps=[],this.lineDigits=0,this.autoheight=!1,this.nolazyload=!1,this.readonly=!1,this.fullscreen=!1,this.panel="bottom",this.editorTheme=null,this.editorView=null}render(){return html`
+var __decorate=function(e,t,o,r){var i,a=arguments.length,l=a<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,o):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(e,t,o,r);else for(var s=e.length-1;s>=0;s--)(i=e[s])&&(l=(a<3?i(l):a>3?i(t,o,l):i(t,o))||l);return a>3&&l&&Object.defineProperty(t,o,l),l};import{LitElement,html,css}from"lit";import{customElement,property,state}from"lit/decorators.js";import{EditorView,lineNumbers,highlightSpecialChars,drawSelection,keymap,placeholder}from"@codemirror/view";import{EditorState,Compartment}from"@codemirror/state";import{syntaxHighlighting,defaultHighlightStyle}from"@codemirror/language";import{defaultKeymap,indentWithTab}from"@codemirror/commands";import{oneDark}from"@codemirror/theme-one-dark";import{executeJavaScriptModuleInstruction,loadModule,resolveSubjectRef}from"@typo3/core/java-script-item-processor.js";import"@typo3/backend/element/spinner-element.js";let CodeMirrorElement=class extends LitElement{constructor(){super(...arguments),this.mode=null,this.addons=[],this.keymaps=[],this.lineDigits=0,this.autoheight=!1,this.nolazyload=!1,this.readonly=!1,this.fullscreen=!1,this.panel="bottom",this.editorTheme=null,this.editorView=null}render(){return html`
       ${this.label&&"top"===this.panel?html`<div class="codemirror-label codemirror-label-top">${this.label}</div>`:""}
       <div id="codemirror-parent" @keydown=${e=>this.onKeydown(e)}></div>
       ${this.label&&"bottom"===this.panel?html`<div class="codemirror-label codemirror-label-bottom">${this.label}</div>`:""}
@@ -20,6 +20,11 @@ var __decorate=function(e,t,o,r){var i,a=arguments.length,l=a<3?t:null===r?r=Obj
       :host {
         color-scheme: dark;
       }
+    }
+
+    :host {
+      position: relative;
+      display: block;
     }
 
     :host([fullscreen]) {
