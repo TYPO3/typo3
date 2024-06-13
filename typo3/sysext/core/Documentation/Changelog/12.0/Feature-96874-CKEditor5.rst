@@ -114,12 +114,14 @@ from `editor.config.wordcount` to `editor.config.wordCount`:
             # block level styles
             - { name: "Lead", element: "p", classes: ['lead'] }
             - { name: "Multiple", element: "p", classes: ['first', 'second'] }
-            - { name: "Small", element: "small", classes: [] }
+            - { name: "Small", element: "small" }
             # Inline styles
             - { name: "Muted", element: "span", classes: ['text-muted'] }
 
     Please note that as of today, the "classes" attribute must be used,
-    and custom "style" attribute does not work.
+    and custom "style" attribute is no longer supported. Also note that an empty
+    class list is migrated to `classes: ['']` and will render `class=""`, as
+    CKEditor5 internals require this attribute to be set.
 
 *   `editor.config.toolbarGroups` was previously used to create the buttons in the
     toolbar. This was used in conjunction with `editor.config.removeButtons`.

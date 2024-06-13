@@ -51,7 +51,7 @@ editor:
     style:
       definitions:
         - { name: "Lead", element: "p", classes: ['lead'] }
-        - { name: "Small", element: "small", classes: [] }
+        - { name: "Small", element: "small" }
         - { name: "Muted", element: "span", classes: ['text-muted'] }
 
     alignment:
