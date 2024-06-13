@@ -32,6 +32,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
+use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -3164,22 +3165,34 @@ class DatabaseRecordList
 
         // Add actions in case table can be modified by the current user
         if ($editPermission && $this->isEditable($table)) {
-            $editActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
+            $editActionConfiguration = [
                 'idField' => 'uid',
                 'tableName' => $table,
                 'returnUrl' =>  $this->listURL(),
-            ], true);
+            ];
             $actions['edit'] = '
-                <button
-                    type="button"
-                    title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '"
-                    class="btn btn-sm btn-default"
-                    data-multi-record-selection-action="edit"
-                    data-multi-record-selection-action-config="' . $editActionConfiguration . '"
-                >
-                    ' . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '
-                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '
-                </button>';
+                <div class="btn-group">
+                    <button
+                        type="button"
+                        title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '"
+                        class="btn btn-sm btn-default"
+                        data-multi-record-selection-action="edit"
+                        data-multi-record-selection-action-config="' . GeneralUtility::jsonEncodeForHtmlAttribute($editActionConfiguration) . '"
+                    >
+                        ' . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '
+                        ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '
+                    </button>
+                    <button
+                        type="button"
+                        title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editColumns')) . '"
+                        class="btn btn-sm btn-default"
+                        data-multi-record-selection-action="edit"
+                        data-multi-record-selection-action-config="' . GeneralUtility::jsonEncodeForHtmlAttribute(array_merge($editActionConfiguration, ['columnsOnly' => implode(',', $this->getColumnsToRender($table, false))])) . '"
+                    >
+                        ' . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '
+                        ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editColumns')) . '
+                    </button>
+                </div>';
 
             if (!(bool)trim((string)($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? ''))) {
                 $deleteActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([

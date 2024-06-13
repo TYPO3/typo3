@@ -41,6 +41,7 @@ interface DataHandlerEventPayload {
 }
 interface EditRecordsConfiguration extends ActionConfiguration {
   tableName: string;
+  columnsOnly: string;
   returnUrl: string;
 }
 interface DeleteRecordsConfiguration extends ActionConfiguration {
@@ -151,6 +152,7 @@ class Recordlist {
       const eventDetails: ActionEventDetails = (event as CustomEvent).detail as ActionEventDetails;
       const configuration: EditRecordsConfiguration = eventDetails.configuration;
       returnUrl = configuration.returnUrl || '';
+      columnsOnly = configuration.columnsOnly || '';
       tableName = configuration.tableName || '';
       if (tableName === '') {
         return;

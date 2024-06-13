@@ -1146,6 +1146,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.editMetadata" resname="cm.editMetadata">
 				<source>Edit Metadata of this file</source>
 			</trans-unit>
+			<trans-unit id="cm.editColumns" resname="cm.editColumns">
+				<source>Edit columns</source>
+			</trans-unit>
 			<trans-unit id="cm.new" resname="cm.new">
 				<source>New</source>
 			</trans-unit>
