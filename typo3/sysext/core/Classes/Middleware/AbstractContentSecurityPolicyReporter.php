@@ -95,7 +95,11 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
 
     protected function anonymizeUri(string $value): string
     {
-        $uri = new Uri($value);
+        try {
+            $uri = Uri::fromAnyScheme($value);
+        } catch (\Throwable) {
+            return '';
+        }
         if ($uri->getQuery() === '') {
             return $value;
         }
