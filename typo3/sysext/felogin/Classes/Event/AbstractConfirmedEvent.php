@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\FrontendLogin\Controller\LoginController;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
@@ -26,14 +27,11 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 abstract class AbstractConfirmedEvent
 {
-    private LoginController $controller;
-    private ViewInterface $view;
-
-    public function __construct(LoginController $controller, ViewInterface $view)
-    {
-        $this->controller = $controller;
-        $this->view = $view;
-    }
+    public function __construct(
+        protected readonly LoginController $controller,
+        protected readonly ViewInterface $view,
+        protected readonly ServerRequestInterface $request
+    ) {}
 
     public function getController(): LoginController
     {
@@ -43,5 +41,10 @@ abstract class AbstractConfirmedEvent
     public function getView(): ViewInterface
     {
         return $this->view;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }

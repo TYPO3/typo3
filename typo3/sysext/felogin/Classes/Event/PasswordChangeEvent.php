@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Informal event that contains information about the password which was set, and is about to be stored in the database.
@@ -28,9 +29,10 @@ final class PasswordChangeEvent implements StoppableEventInterface
     private ?string $errorMessage = null;
 
     public function __construct(
-        private readonly array $user,
+        private array $user,
         private string $passwordHash,
-        private readonly string $rawPassword
+        private string $rawPassword,
+        private ServerRequestInterface $request
     ) {}
 
     public function getUser(): array
@@ -95,5 +97,10 @@ final class PasswordChangeEvent implements StoppableEventInterface
             E_USER_DEPRECATED
         );
         return $this->invalid;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }

@@ -17,7 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * A notification if something went wrong while trying to log in a user.
  */
-final class LoginErrorOccurredEvent {}
+final class LoginErrorOccurredEvent
+{
+    public function __construct(
+        protected ServerRequestInterface $request
+    ) {}
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
+    }
+}

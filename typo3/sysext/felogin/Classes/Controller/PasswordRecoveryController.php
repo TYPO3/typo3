@@ -37,6 +37,7 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
@@ -217,7 +218,8 @@ class PasswordRecoveryController extends ActionController
         if (($hashedPassword = $this->notifyPasswordChange(
             $newPass,
             $hashedPassword,
-            $hash
+            $hash,
+            $this->request
         )) instanceof ForwardResponse) {
             return $hashedPassword;
         }
@@ -319,11 +321,11 @@ class PasswordRecoveryController extends ActionController
      * @param string $hash Forgot password hash
      * @return ForwardResponse|string
      */
-    protected function notifyPasswordChange(string $newPassword, string $hashedPassword, string $hash)
+    protected function notifyPasswordChange(string $newPassword, string $hashedPassword, string $hash, RequestInterface $request)
     {
         $user = $this->userRepository->findOneByForgotPasswordHash(GeneralUtility::hmac($hash));
         if (is_array($user)) {
-            $event = new PasswordChangeEvent($user, $hashedPassword, $newPassword);
+            $event = new PasswordChangeEvent($user, $hashedPassword, $newPassword, $request);
             $this->eventDispatcher->dispatch($event);
             $hashedPassword = $event->getHashedPassword();
             if ($event->isPropagationStopped()) {
