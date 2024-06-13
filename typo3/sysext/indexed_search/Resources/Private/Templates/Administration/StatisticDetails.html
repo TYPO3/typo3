@@ -43,11 +43,6 @@
 
             <f:render section="wordlisting" arguments="{words: words, phash: phash}" />
 
-            <f:if condition="{debug}">
-                <h2><f:translate key="administration.statistics.debug" /></h2>
-                <f:debug inline="1" title="">{debug}</f:debug>
-            </f:if>
-
             <f:if condition="{sections}">
                 <h2><f:translate key="administration.statistics.sectionRecords" /></h2>
                 <div class="table-fit">

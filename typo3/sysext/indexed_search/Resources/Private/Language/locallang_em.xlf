@@ -24,9 +24,6 @@
 			<trans-unit id="indexedsearch.config.unrtf" resname="indexedsearch.config.unrtf">
 				<source>Path to RTF parser: The indexer uses the application 'unrtf' for extracting content from RTF files. The application must be installed in this path. Otherwise leave the field empty.</source>
 			</trans-unit>
-			<trans-unit id="indexedsearch.config.debugMode" resname="indexedsearch.config.debugMode">
-				<source>Debug mode: If set, debugging information is collected during indexing and can be shown in the backend. Only for debugging since it slows down the system and fills the database with crap.</source>
-			</trans-unit>
 			<trans-unit id="indexedsearch.config.fullTextDataLength" resname="indexedsearch.config.fullTextDataLength">
 				<source>Full Text Data Length: If set, the full text data stored will be limited to this byte length. It means you can save some database space but to the degree you cut the length down you also limit possibilities to search for sentences and the search result resume will be limited.</source>
 			</trans-unit>

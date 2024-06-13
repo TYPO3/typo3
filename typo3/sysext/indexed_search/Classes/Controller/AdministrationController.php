@@ -252,22 +252,6 @@ class AdministrationController extends ActionController
             return $this->redirect('statistic');
         }
 
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('index_debug');
-        $debugRow = $queryBuilder
-            ->select('debuginfo')
-            ->from('index_debug')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'phash',
-                    $queryBuilder->createNamedParameter($pageHash, Connection::PARAM_STR)
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        $debugInfo = [];
-        if (is_array($debugRow)) {
-            $debugInfo = json_decode($debugRow['debuginfo'], true);
-        }
         $pageRecord = BackendUtility::getRecord('pages', $pageHashRow['data_page_id']);
 
         // words
@@ -310,7 +294,6 @@ class AdministrationController extends ActionController
             'phashRow' => $pageHashRow,
             'words' => $wordRecords,
             'sections' => $sections,
-            'debug' => $debugInfo,
             'page' => $pageRecord,
         ]);
 

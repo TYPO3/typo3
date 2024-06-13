@@ -712,7 +712,6 @@ class AdministrationRepository
                     'index_section',
                     'index_grlist',
                     'index_fulltext',
-                    'index_debug',
                 ];
                 foreach ($tableArr as $table) {
                     GeneralUtility::makeInstance(ConnectionPool::class)

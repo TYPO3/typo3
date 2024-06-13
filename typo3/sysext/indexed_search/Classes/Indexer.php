@@ -98,7 +98,6 @@ class Indexer
      * Content of TYPO3 page
      */
     public string $content_md5h = '';
-    public array $internal_log = [];
     public string $indexExternalUrl_content = '';
     public int $freqRange = 32000;
     public float $freqMax = 0.1;
@@ -681,7 +680,6 @@ class Indexer
                 $fileInfo = stat($absFile);
                 $cParts = $this->fileContentParts($ext, $absFile);
                 foreach ($cParts as $cPKey) {
-                    $this->internal_log = [];
                     $this->timeTracker->push('Index: ' . str_replace('.', '_', PathUtility::basename($file)) . ($cPKey ? '#' . $cPKey : ''));
                     $Pstart = $this->milliseconds();
                     $subinfo = ['key' => $cPKey];
@@ -1011,20 +1009,6 @@ class Indexer
         }
         $connection = $this->connectionPool->getConnectionForTable('index_fulltext');
         $connection->insert('index_fulltext', $fields);
-        // PROCESSING index_debug
-        if ($this->indexerConfig['debugMode'] ?? false) {
-            $fields = [
-                'phash' => $this->hash['phash'],
-                'debuginfo' => json_encode([
-                    'external_parsers initialized' => array_keys($this->external_parsers),
-                    'conf' => array_merge($this->conf, ['content' => substr($this->conf['content'], 0, 1000)]),
-                    'contentParts' => array_merge($this->indexingDataStringDto->toArray(), ['body' => substr($this->indexingDataStringDto->body, 0, 1000)]),
-                    'logs' => $this->internal_log,
-                ], JSON_THROW_ON_ERROR),
-            ];
-            $connection = $this->connectionPool->getConnectionForTable('index_debug');
-            $connection->insert('index_debug', $fields);
-        }
     }
 
     /**
@@ -1074,7 +1058,7 @@ class Indexer
     {
         // Removing old registrations for all tables. Because the pages are TYPO3 pages
         // there can be nothing else than 1-1 relations here.
-        $tableArray = ['index_phash', 'index_section', 'index_grlist', 'index_fulltext', 'index_debug'];
+        $tableArray = ['index_phash', 'index_section', 'index_grlist', 'index_fulltext'];
         foreach ($tableArray as $table) {
             $this->connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
         }
@@ -1148,19 +1132,6 @@ class Indexer
         }
         $connection = $this->connectionPool->getConnectionForTable('index_fulltext');
         $connection->insert('index_fulltext', $fields);
-        // PROCESSING index_debug
-        if ($this->indexerConfig['debugMode'] ?? false) {
-            $fields = [
-                'phash' => $hash['phash'],
-                'debuginfo' => json_encode([
-                    'static_page_arguments' => $subinfo,
-                    'contentParts' => array_merge($indexingDataDto->toArray(), ['body' => substr($indexingDataDto->body, 0, 1000)]),
-                    'logs' => $this->internal_log,
-                ], JSON_THROW_ON_ERROR),
-            ];
-            $connection = $this->connectionPool->getConnectionForTable('index_debug');
-            $connection->insert('index_debug', $fields);
-        }
     }
 
     /**
@@ -1200,7 +1171,7 @@ class Indexer
     public function removeOldIndexedFiles(string $phash): void
     {
         // Removing old registrations for tables.
-        $tableArray = ['index_phash', 'index_grlist', 'index_fulltext', 'index_debug'];
+        $tableArray = ['index_phash', 'index_grlist', 'index_fulltext'];
         foreach ($tableArray as $table) {
             $this->connectionPool->getConnectionForTable($table)->delete($table, ['phash' => $phash]);
         }
@@ -1609,10 +1580,6 @@ class Indexer
     public function log_setTSlogMessage(string $msg, string $logLevel = LogLevel::INFO): void
     {
         $this->timeTracker->setTSlogMessage($msg, $logLevel);
-
-        if ($this->indexerConfig['debugMode'] ?? false) {
-            $this->internal_log[] = $msg;
-        }
     }
 
     /**

@@ -2067,7 +2067,6 @@ class ConnectionMigrator
             'index_words' => ['wid'],
             'index_section' => ['phash', 'phash_t3'],
             'index_grlist' => ['phash', 'phash_x', 'hash_gr_list'],
-            'index_debug' => ['phash'],
         ];
         $tableName = $this->trimIdentifierQuotes($changedTable->getOldTable()->getName());
         $oldType = $modifiedColumn->getOldColumn()->getType();

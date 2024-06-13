@@ -200,6 +200,8 @@ class SilentConfigurationUpgradeService
         'BE/flexformForceCDATA',
         // #103752
         'FE/addRootLineFields',
+        // #104104
+        'EXTENSIONS/indexed_search/debugMode',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}

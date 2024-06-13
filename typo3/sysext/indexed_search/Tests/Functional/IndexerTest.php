@@ -58,7 +58,6 @@ final class IndexerTest extends FunctionalTestCase
             </html>',
             'indexedDocTitle' => '',
         ]);
-        $indexer->indexerConfig['debugMode'] = false;
         $indexer->indexTypo3PageContent();
         self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/index_dataset.csv');
     }
@@ -93,7 +92,6 @@ final class IndexerTest extends FunctionalTestCase
             </html>',
             'indexedDocTitle' => '',
         ]);
-        $indexer->indexerConfig['debugMode'] = false;
 
         try {
             $indexer->indexTypo3PageContent();
@@ -135,13 +133,11 @@ final class IndexerTest extends FunctionalTestCase
 
         $indexer = $this->get(Indexer::class);
         $indexer->init($indexerConfig);
-        $indexer->indexerConfig['debugMode'] = false;
         $indexer->indexTypo3PageContent();
         self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/indexing_words_twice_first.csv');
 
         $indexer = $this->get(Indexer::class);
         $indexer->init($indexerConfig);
-        $indexer->indexerConfig['debugMode'] = false;
         $indexer->forceIndexing = true;
         $indexer->indexTypo3PageContent();
         self::assertCSVDataSet(__DIR__ . '/Fixtures/Indexer/indexing_words_twice_second.csv');

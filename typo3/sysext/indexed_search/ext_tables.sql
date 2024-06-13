@@ -84,13 +84,6 @@ CREATE TABLE index_grlist (
   KEY phash_grouping (phash_x,hash_gr_list)
 ) ENGINE=InnoDB;
 
-# Define table and fields since it has no TCA
-CREATE TABLE index_debug (
-  phash varchar(32) NOT NULL,
-  debuginfo mediumtext,
-  PRIMARY KEY (phash)
-);
-
 CREATE TABLE index_config (
   # @todo: Change TCA type from input to something better
   set_id int(11) DEFAULT '0' NOT NULL,

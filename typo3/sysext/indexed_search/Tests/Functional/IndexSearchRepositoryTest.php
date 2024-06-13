@@ -67,7 +67,6 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
             </html>',
             'indexedDocTitle' => '',
         ]);
-        $indexer->indexerConfig['debugMode'] = false;
         $indexer->indexTypo3PageContent();
         GeneralUtility::makeInstance(Context::class)->setAspect('frontend.user', new UserAspect(null, [0, -1]));
     }
