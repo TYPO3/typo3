@@ -337,6 +337,14 @@ final class UriTest extends UnitTestCase
 
     #[DataProvider('invalidSchemesDataProvider')]
     #[Test]
+    public function fromAnySchemeWithUnsupportedSchemeIsAllowed($scheme): void
+    {
+        $uri = Uri::fromAnyScheme($scheme . '://example.com/path?query');
+        self::assertSame($scheme . '://example.com/path?query', (string)$uri);
+    }
+
+    #[DataProvider('invalidSchemesDataProvider')]
+    #[Test]
     public function withSchemeUsingUnsupportedSchemeRaisesAnException($scheme): void
     {
         $uri = new Uri('http://example.com');

@@ -93,6 +93,29 @@ class Uri implements UriInterface
     protected string $fragment = '';
 
     /**
+     * Instructs the parser to skip the scheme validation.
+     */
+    protected bool $allowAnyScheme = false;
+
+    /**
+     * Instructs the parser to skip the validation for `$supportedSchemes`.
+     * Use this factory method carefully in web contexts, since URIs
+     * might contain PHP stream wrappers (`phar://`, `php://`), which
+     * have a different meaning and are not considered as URI.
+     *
+     * @param string $uri The full URI including query string and fragment
+     */
+    public static function fromAnyScheme(string $uri = ''): self
+    {
+        $target = new self();
+        $target->allowAnyScheme = true;
+        if (!empty($uri)) {
+            $target->parseUri($uri);
+        }
+        return $target;
+    }
+
+    /**
      * @param string $uri The full URI including query string and fragment
      * @throws \InvalidArgumentException when the URI is not a string
      */
@@ -594,7 +617,7 @@ class Uri implements UriInterface
             return '';
         }
 
-        if (!array_key_exists($scheme, $this->supportedSchemes)) {
+        if (!$this->allowAnyScheme && !array_key_exists($scheme, $this->supportedSchemes)) {
             throw new \InvalidArgumentException('Unsupported scheme "' . $scheme . '"; must be any empty string or in the set (' . implode(', ', array_keys($this->supportedSchemes)) . ')', 1436717338);
         }
 
