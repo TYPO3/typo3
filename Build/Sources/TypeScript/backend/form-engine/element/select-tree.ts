@@ -100,10 +100,10 @@ export class SelectTree extends Tree
    * Finds and show all parents of node
    */
   public showParents(node: any): void {
-    if (node.parents.length === 0) {
+    if (node.__parents.length === 0) {
       return;
     }
-    const parent = this.nodes[node.parents[0]];
+    const parent = this.nodes[node.__parents[0]];
     parent.__hidden = false;
     parent.__expanded = true;
     this.showParents(parent);
