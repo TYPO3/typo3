@@ -451,6 +451,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.setAllCheckboxes" resname="labels.setAllCheckboxes">
 				<source>Select All Checkboxes</source>
 			</trans-unit>
+			<trans-unit id="labels.openSelectionOptions" resname="labels.openSelectionOptions">
+				<source>Open selection options</source>
+			</trans-unit>
 			<trans-unit id="labels.checkAll" resname="labels.checkAll">
 				<source>Check all</source>
 			</trans-unit>

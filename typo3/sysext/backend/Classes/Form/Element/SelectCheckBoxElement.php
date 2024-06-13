@@ -306,45 +306,46 @@ class SelectCheckBoxElement extends AbstractFormElement
 
     protected function getRecordSelectionCheckActions(): string
     {
+        $lang = $this->getLanguageService();
         return '
             <div class="btn-group dropdown">
-                <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openSelectionOptions')) . '">
                     <core:icon identifier="actions-selection" size="small" />
                     ' . $this->iconFactory->getIcon('actions-selection', IconSize::SMALL)->render() . '
                 </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                     <li>
-                        <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll') . '">
+                        <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
                             <span class="dropdown-item-columns">
                                 <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                                     ' . $this->iconFactory->getIcon('actions-selection-elements-all', IconSize::SMALL)->render() . '
                                 </span>
                                 <span class="dropdown-item-column dropdown-item-column-title">
-                                    ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll') . '
+                                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '
                                 </span>
                             </span>
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll') . '">
+                        <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
                             <span class="dropdown-item-columns">
                                 <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                                     ' . $this->iconFactory->getIcon('actions-selection-elements-none', IconSize::SMALL)->render() . '
                                 </span>
                                 <span class="dropdown-item-column dropdown-item-column-title">
-                                    ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll') . '
+                                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '
                                 </span>
                             </span>
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item" data-multi-record-selection-check-action="toggle" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection') . '">
+                        <button type="button" class="dropdown-item" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
                             <span class="dropdown-item-columns">
                                 <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                                     ' . $this->iconFactory->getIcon('actions-selection-elements-invert', IconSize::SMALL)->render() . '
                                 </span>
                                 <span class="dropdown-item-column dropdown-item-column-title">
-                                    ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection') . '
+                                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '
                                 </span>
                             </span>
                         </button>

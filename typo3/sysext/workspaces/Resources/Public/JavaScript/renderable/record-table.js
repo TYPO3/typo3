@@ -17,7 +17,7 @@ var __decorate=function(e,t,n,a){var o,l=arguments.length,i=l<3?t:null===a?a=Obj
           <tr>
             <th>
               <div class="btn-group dropdown">
-                <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="${TYPO3.lang["labels.openSelectionOptions"]}">
                   <typo3-backend-icon identifier="actions-selection" size="small"></typo3-backend-icon>
                 </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
