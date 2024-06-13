@@ -33,6 +33,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -405,6 +406,19 @@ class FileListController implements LoggerAwareInterface
                         'returnUrl' => $this->filelist->createModuleUri(),
                     ])
                 );
+                $allowedFields = BackendUtility::getAllowedFieldsForTable('sys_file_metadata');
+                $columnsOnly = array_filter($this->filelist->fieldArray, static fn($field) => in_array($field, $allowedFields, true));
+                if ($columnsOnly !== []) {
+                    $this->view->assign(
+                        'editColumnsActionConfiguration',
+                        GeneralUtility::jsonEncodeForHtmlAttribute([
+                            'idField' => 'filelistMetaUid',
+                            'table' => 'sys_file_metadata',
+                            'columnsOnly' => implode(',', $columnsOnly),
+                            'returnUrl' => $this->filelist->createModuleUri(),
+                        ])
+                    );
+                }
             }
 
             // Assign meta information for the multi record selection

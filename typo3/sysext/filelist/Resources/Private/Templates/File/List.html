@@ -98,11 +98,20 @@
                         </div>
                         <f:if condition="{editActionConfiguration}">
                             <div class="col">
-                                <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration -> f:format.raw()}">
-                                <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked')}">
-                                    <core:icon identifier="actions-open" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked" />
-                                </span>
-                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration -> f:format.raw()}">
+                                        <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked')}">
+                                            <core:icon identifier="actions-open" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked" />
+                                        </span>
+                                    </button>
+                                    <f:if condition="{editColumnsActionConfiguration}">
+                                        <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editColumnsActionConfiguration -> f:format.raw()}">
+                                            <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editColumns')}">
+                                                <core:icon identifier="actions-open" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editColumns" />
+                                            </span>
+                                        </button>
+                                    </f:if>
+                                </div>
                             </div>
                         </f:if>
                         <f:if condition="{downloadActionConfiguration}">

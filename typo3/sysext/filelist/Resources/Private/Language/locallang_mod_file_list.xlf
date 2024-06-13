@@ -15,6 +15,9 @@
 			<trans-unit id="editMarked" resname="editMarked">
 				<source>Edit Metadata</source>
 			</trans-unit>
+			<trans-unit id="editColumns" resname="editColumns">
+				<source>Edit specific Metadata</source>
+			</trans-unit>
 			<trans-unit id="clip_selectMarked" resname="clip_selectMarked">
 				<source>Transfer to clipboard</source>
 			</trans-unit>
