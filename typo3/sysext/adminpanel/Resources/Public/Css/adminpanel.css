@@ -82,7 +82,7 @@ to{transform:rotate(1turn)}}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-module-group{display:flex;width:100%}
 @media (max-width:1200px){
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-module-group{overflow:hidden}}
-#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-module-trigger,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel a.typo3-adminPanel-backend-url{align-items:center;color:#fff;display:flex;font-size:12px;height:36px;margin-left:-10px;margin-right:-10px;padding:0 10px;text-decoration:none}
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-module-trigger,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel a.typo3-adminPanel-backend-url{align-items:center;color:#fff;display:flex;height:36px;margin-left:-10px;margin-right:-10px;padding:0 10px;text-decoration:none}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-module-trigger>span,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel a.typo3-adminPanel-backend-url>span{white-space:nowrap}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-module-trigger>span+span,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel a.typo3-adminPanel-backend-url>span+span{margin-left:4px}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .typo3-adminPanel-module-active .typo3-adminPanel-module-trigger{background-color:#525252}

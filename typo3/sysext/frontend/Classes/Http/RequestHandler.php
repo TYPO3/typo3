@@ -859,7 +859,7 @@ class RequestHandler implements RequestHandlerInterface
             $styles[] = 'background: #fff3cd';
             $styles[] = 'border: 1px solid #ffeeba';
             $styles[] = 'font-family: sans-serif';
-            $styles[] = 'font-size: 14px';
+            $styles[] = 'font-size: .875em';
             $styles[] = 'font-weight: bold';
             $styles[] = 'color: #856404';
             $styles[] = 'z-index: 20000';

@@ -93,7 +93,7 @@ final class RenderViewHelper extends AbstractViewHelper
         $cssRules[] = 'color: #000';
         $cssRules[] = 'overflow: hidden';
         $cssWrapper = implode(';', $cssRules);
-        $cssRules[] = 'font-size: 11px';
+        $cssRules[] = 'font-size: 0.75em';
         $cssRules[] = 'font-family: Monospace';
         $cssTitle = implode(';', $cssRules);
 
