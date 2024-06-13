@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Informal event that contains information about the password which was set, and is about to be stored in the database.
  */
@@ -25,7 +27,8 @@ final readonly class PasswordChangeEvent
     public function __construct(
         private array $user,
         private string $passwordHash,
-        private string $rawPassword
+        private string $rawPassword,
+        private ServerRequestInterface $request
     ) {}
 
     public function getUser(): array
@@ -41,5 +44,10 @@ final readonly class PasswordChangeEvent
     public function getRawPassword(): string
     {
         return $this->rawPassword;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }

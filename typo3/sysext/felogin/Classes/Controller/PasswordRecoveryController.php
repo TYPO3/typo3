@@ -210,7 +210,7 @@ class PasswordRecoveryController extends ActionController
             ->getHashedPassword($newPass);
 
         $user = $this->userRepository->findOneByForgotPasswordHash($this->hashService->hmac($hash, self::class));
-        $event = new PasswordChangeEvent($user, $hashedPassword, $newPass);
+        $event = new PasswordChangeEvent($user, $hashedPassword, $newPass, $this->request);
         $this->eventDispatcher->dispatch($event);
 
         $this->userRepository->updatePasswordAndInvalidateHash($this->hashService->hmac($hash, self::class), $hashedPassword);

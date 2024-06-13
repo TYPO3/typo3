@@ -82,9 +82,9 @@ class LoginController extends ActionController
     public function loginAction(): ResponseInterface
     {
         if ($this->isLogoutSuccessful()) {
-            $this->eventDispatcher->dispatch(new LogoutConfirmedEvent($this, $this->view));
+            $this->eventDispatcher->dispatch(new LogoutConfirmedEvent($this, $this->view, $this->request));
         } elseif ($this->hasLoginErrorOccurred()) {
-            $this->eventDispatcher->dispatch(new LoginErrorOccurredEvent());
+            $this->eventDispatcher->dispatch(new LoginErrorOccurredEvent($this->request));
         }
 
         if (($forwardResponse = $this->handleLoginForwards()) !== null) {
@@ -94,7 +94,7 @@ class LoginController extends ActionController
             return $redirectResponse;
         }
 
-        $this->eventDispatcher->dispatch(new ModifyLoginFormViewEvent($this->view));
+        $this->eventDispatcher->dispatch(new ModifyLoginFormViewEvent($this->view, $this->request));
 
         $storagePageIds = ($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false)
             ? $this->pageRepository->getPageIdsRecursive(GeneralUtility::intExplode(',', (string)($this->settings['pages'] ?? ''), true), (int)($this->settings['recursive'] ?? 0))
@@ -124,7 +124,7 @@ class LoginController extends ActionController
         if (!$this->userAspect->isLoggedIn()) {
             return new ForwardResponse('login');
         }
-        $this->eventDispatcher->dispatch(new LoginConfirmedEvent($this, $this->view));
+        $this->eventDispatcher->dispatch(new LoginConfirmedEvent($this, $this->view, $this->request));
         if (($redirectResponse = $this->handleRedirect()) !== null) {
             return $redirectResponse;
         }

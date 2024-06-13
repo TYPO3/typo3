@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -24,10 +25,18 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 final readonly class ModifyLoginFormViewEvent
 {
-    public function __construct(private ViewInterface $view) {}
+    public function __construct(
+        private ViewInterface $view,
+        private ServerRequestInterface $request
+    ) {}
 
     public function getView(): ViewInterface
     {
         return $this->view;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }
