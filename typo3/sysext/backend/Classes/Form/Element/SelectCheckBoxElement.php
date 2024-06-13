@@ -310,7 +310,6 @@ class SelectCheckBoxElement extends AbstractFormElement
         return '
             <div class="btn-group dropdown">
                 <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openSelectionOptions')) . '">
-                    <core:icon identifier="actions-selection" size="small" />
                     ' . $this->iconFactory->getIcon('actions-selection', IconSize::SMALL)->render() . '
                 </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
