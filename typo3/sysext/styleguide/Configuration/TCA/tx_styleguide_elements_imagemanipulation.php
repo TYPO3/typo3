@@ -142,6 +142,10 @@ return [
                                 'title' => '16 / 9',
                                 'value' => 16 / 9,
                             ],
+                            '1:7.50 [special {characters}]' => [
+                                'title' => '1:7.50 [special {characters}]',
+                                'value' => 1 / 7.5,
+                            ],
                             '3:2' => [
                                 'title' => '3 / 2',
                                 'value' => 3 / 2,

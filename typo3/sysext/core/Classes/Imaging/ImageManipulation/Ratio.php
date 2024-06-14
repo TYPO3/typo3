@@ -34,7 +34,7 @@ class Ratio
 
     public function __construct(string $id, string $title, float $value)
     {
-        $this->id = str_replace('.', '_', $id);
+        $this->id = self::prepareAspectRatioId($id);
         $this->title = $title;
         $this->value = $value;
     }
@@ -42,6 +42,24 @@ class Ratio
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * Adjust names of Ratios for special character replacement.
+     *
+     * @todo in 14 - Rework the ImageManipulationElement.html logic to actually allow dot keys.
+     * Ratio names are referenced through fluid, see https://forge.typo3.org/issues/80214
+     * Should be possible by iterating {cropVariant.allowedAspectRatios.{cropVariant.selectedRatio}.title}
+     * in the controller, and assigning a distinct, un-nested variable.
+     * This is a breaking change because then aspect ratios defined with a key
+     * will be referred to differently and wouldn't be resolved as before. Probably a migration wizard
+     * would be needed.
+     *
+     * @internal not part of TYPO3 Core API as this method might vanish soon.
+     */
+    public static function prepareAspectRatioId(string $id): string
+    {
+        return str_replace('.', '_', $id);
     }
 
     /**
