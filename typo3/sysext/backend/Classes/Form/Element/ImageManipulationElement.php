@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\Ratio;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -263,6 +264,14 @@ class ImageManipulationElement extends AbstractFormElement
             $cropVariant['allowedAspectRatios'] = array_filter($cropVariant['allowedAspectRatios'] ?? [], static function ($aspectRatio) {
                 return !(bool)($aspectRatio['disabled'] ?? false);
             });
+
+            // Aspect ratios may not contain a "." character, see Ratio::__construct()
+            // To match them again properly, same replacement is required here.
+            $preparedAllowedAspectRatios = [];
+            foreach ($cropVariant['allowedAspectRatios'] as $aspectRatio => $aspectRatioDefinition) {
+                $preparedAllowedAspectRatios[Ratio::prepareAspectRatioId($aspectRatio)] = $aspectRatioDefinition;
+            }
+            $cropVariant['allowedAspectRatios'] = $preparedAllowedAspectRatios;
 
             // Ignore disabled crop variants
             if (!empty($cropVariant['disabled'])) {
