@@ -51,6 +51,7 @@ final class MethodArgumentDroppedMatcherTest extends UnitTestCase
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
             28,
+            47,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

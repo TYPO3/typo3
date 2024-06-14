@@ -53,6 +53,7 @@ final class MethodArgumentUnusedMatcherTest extends UnitTestCase
         $expectedHitLineNumbers = [
             28,
             29,
+            47,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

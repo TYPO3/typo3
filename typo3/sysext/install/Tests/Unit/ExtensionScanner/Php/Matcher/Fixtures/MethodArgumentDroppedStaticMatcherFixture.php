@@ -42,5 +42,7 @@ class MethodArgumentDroppedStaticMatcherFixture
         $foo::getFileAbsFileName(...$args1, ...$args2);
         // @extensionScannerIgnoreLine
         $foo::getFileAbsFileName('foo', 'bar');
+        // Match (again). No longer ignored.
+        \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('foo', 'bar');
     }
 }

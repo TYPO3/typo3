@@ -35,5 +35,11 @@ class ArrayGlobalMatcherFixture
         $foo['TYPO3_DB'];
         // @extensionScannerIgnoreLine
         $GLOBALS['TYPO3_DB'];
+
+        // Match (again). No longer ignored.
+        $GLOBALS['TYPO3_DB'];
+        // Ignore match (again).
+        // @extensionScannerIgnoreLine
+        $GLOBALS['TYPO3_DB'];
     }
 }

@@ -43,5 +43,7 @@ class MethodArgumentRequiredMatcherFixture
         $foo::searchWhere('arg1', 'arg2', 'arg3', 'arg4', 'arg5');
         // @extensionScannerIgnoreLine
         $this->searchWhere('arg1', 'arg2');
+        // Match (again). No longer ignored.
+        \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('foo', 'bar');
     }
 }

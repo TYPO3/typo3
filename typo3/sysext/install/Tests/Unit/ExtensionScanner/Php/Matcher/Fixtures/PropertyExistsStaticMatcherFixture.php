@@ -47,6 +47,8 @@ class PropertyExistsStaticMatcherFixture4
     // Not a match: suppressed
     // @extensionScannerIgnoreLine
     public static $iAmAMatch;
+    // Match (again). No longer ignored.
+    public static $iAmAnUnignoredMatch;
 }
 
 class PropertyExistsStaticMatcherFixture5
@@ -58,6 +60,8 @@ class PropertyExistsStaticMatcherFixture5
      * @var string|null
      */
     public static $iAmAMatch;
+    // Match (again). No longer ignored.
+    public static $iAmAnUnignoredMatch;
 }
 
 class PropertyExistsStaticMatcherFixture6

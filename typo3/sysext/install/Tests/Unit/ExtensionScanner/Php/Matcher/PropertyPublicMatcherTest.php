@@ -51,6 +51,7 @@ final class PropertyPublicMatcherTest extends UnitTestCase
         $expectedHitLineNumbers = [
             28,
             29,
+            49,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

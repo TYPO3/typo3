@@ -37,5 +37,7 @@ class MethodCallStaticMatcherFixture
         $foo->getAjaxUrl('bar');
         // @extensionScannerIgnoreLine
         $foo::getAjaxUrl('bar');
+        // Match (again). No longer ignored.
+        BackendUtility::getAjaxUrl();
     }
 }

@@ -55,6 +55,7 @@ final class MethodCallMatcherTest extends UnitTestCase
             30,
             33,
             35,
+            62,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

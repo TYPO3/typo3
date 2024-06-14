@@ -32,5 +32,6 @@ class CodeStatisticsFixture
 
         // @extensionScannerIgnoreLine
         $some = 'other ignored line';
+        $somethingNotIgnored = 'not ignored';
     }
 }

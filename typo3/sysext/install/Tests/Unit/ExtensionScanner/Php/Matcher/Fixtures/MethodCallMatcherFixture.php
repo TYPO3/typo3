@@ -58,5 +58,7 @@ class MethodCallMatcherFixture
         $foo->confirmMsg('arg1', 'arg2', 'arg3', 'arg4', 'arg5');
         // @extensionScannerIgnoreLine
         $bar->bar($foo->confirmMsg('arg1', 'arg2', 'arg3', 'arg4', 'arg5'));
+        // Match (again). No longer ignored.
+        $foo->confirmMsg('arg1', 'arg2', 'arg3', 'arg4');
     }
 }

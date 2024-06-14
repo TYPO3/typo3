@@ -55,5 +55,8 @@ class ClassNameMatcherFixture extends App2 implements App3, Con\Application
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\\TYPO3\CMS\Backend\Console\Application')->foo();
         // @extensionScannerIgnoreLine
         $bar = \RemoveXSS::class;
+
+        // Match (again). No longer ignored.
+        $foo = new \RemoveXSS();
     }
 }

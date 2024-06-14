@@ -51,6 +51,7 @@ final class FunctionCallMatcherTest extends UnitTestCase
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
             28,
+            43,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

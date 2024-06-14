@@ -50,6 +50,7 @@ final class ArrayGlobalMatcherTest extends UnitTestCase
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
             28,
+            40,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

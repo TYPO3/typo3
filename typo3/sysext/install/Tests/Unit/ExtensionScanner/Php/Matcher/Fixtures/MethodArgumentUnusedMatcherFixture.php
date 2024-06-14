@@ -43,5 +43,7 @@ class MethodArgumentUnusedMatcherFixture
         $foo->RTE_transform(...$args1, ...$args2, ...$args3);
         // @extensionScannerIgnoreLine
         $foo->RTE_transform('arg1', 'arg2');
+        // Match (again). No longer ignored.
+        $foo->RTE_transform('arg1', 'arg2');
     }
 }

@@ -51,6 +51,7 @@ final class PropertyProtectedMatcherTest extends UnitTestCase
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
             28,
+            49,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {
