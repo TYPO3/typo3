@@ -42,5 +42,6 @@ class MethodArgumentRequiredStaticMatcherFixture
         $foo::addNavigationComponent(...'foo');
         // @extensionScannerIgnoreLine
         ExtensionManagementUtility::addNavigationComponent('foo', 'bar');
+        // Match (again). No longer ignored.
     }
 }

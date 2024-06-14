@@ -185,6 +185,11 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
         if ($startLineOfNode === $this->currentCodeLine) {
             return $this->isCurrentLineIgnored;
         }
+        if ($this->isCurrentLineIgnored) {
+            // "ignoreMode" is still active, but we're past the line
+            // where it was enabled. Reset this beauty.
+            $this->isCurrentLineIgnored = false;
+        }
 
         $currentLineIsIgnored = false;
         if ($startLineOfNode !== $this->currentCodeLine) {

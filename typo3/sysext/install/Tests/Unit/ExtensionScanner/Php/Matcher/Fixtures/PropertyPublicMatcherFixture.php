@@ -45,5 +45,7 @@ class PropertyPublicMatcherFixture
         static::$foo();
         // @extensionScannerIgnoreLine
         $foo->localizationMode;
+        // Match (again). No longer ignored.
+        $foo->localizationMode;
     }
 }

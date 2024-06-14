@@ -43,5 +43,7 @@ class MethodArgumentDroppedMatcherFixture
         $foo->euc_char_mapping('arg1', 'arg2');
         // @extensionScannerIgnoreLine
         $foo->euc_char_mapping('arg1', 'arg2', 'arg3');
+        // Match (again). No longer ignored.
+        $foo->euc_char_mapping('arg1', 'arg2', 'arg3');
     }
 }

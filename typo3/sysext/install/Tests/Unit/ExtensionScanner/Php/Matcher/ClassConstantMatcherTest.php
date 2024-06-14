@@ -58,6 +58,7 @@ final class ClassConstantMatcherTest extends UnitTestCase
             30,
             31,
             32,
+            41,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

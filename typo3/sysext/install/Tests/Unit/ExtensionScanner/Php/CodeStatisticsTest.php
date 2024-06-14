@@ -39,6 +39,6 @@ final class CodeStatisticsTest extends UnitTestCase
 
         self::assertTrue($subject->isFileIgnored());
         self::assertEquals(2, $subject->getNumberOfIgnoredLines());
-        self::assertEquals(6, $subject->getNumberOfEffectiveCodeLines());
+        self::assertEquals(7, $subject->getNumberOfEffectiveCodeLines());
     }
 }

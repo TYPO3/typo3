@@ -36,5 +36,8 @@ class ClassConstantMatcherFixture
         $foo = \My\Different\SystemEnvironmentBuilder::REQUESTTYPE_FE;
         // @extensionScannerIgnoreLine
         $foo = SystemEnvironmentBuilder::REQUESTTYPE_FE;
+
+        // Match (again). No longer ignored.
+        $foo = \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE;
     }
 }

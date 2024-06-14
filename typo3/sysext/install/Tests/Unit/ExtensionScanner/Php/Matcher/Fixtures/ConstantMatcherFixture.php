@@ -31,5 +31,8 @@ class ConstantMatcherFixture
         $foo = \My\Project\AClass::TYPO3_DLOG;
         // @extensionScannerIgnoreLine
         $foo = TYPO3_DLOG;
+
+        // Match (again). No longer ignored.
+        $foo = TYPO3_DLOG;
     }
 }

@@ -53,6 +53,7 @@ final class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
             30,
             32,
             34,
+            46,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

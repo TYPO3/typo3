@@ -51,6 +51,7 @@ final class ConstantMatcherTest extends UnitTestCase
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
             28,
+            36,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

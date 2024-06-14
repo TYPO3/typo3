@@ -55,6 +55,7 @@ final class MethodCallStaticMatcherTest extends UnitTestCase
         $expectedHitLineNumbers = [
             30,
             32,
+            41,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

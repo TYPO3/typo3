@@ -38,5 +38,8 @@ class FunctionCallMatcherFixture
         debugBegin();
         // @extensionScannerIgnoreLine
         $bar->bar(\debugBegin());
+
+        // Match (again). No longer ignored.
+        \debugBegin();
     }
 }

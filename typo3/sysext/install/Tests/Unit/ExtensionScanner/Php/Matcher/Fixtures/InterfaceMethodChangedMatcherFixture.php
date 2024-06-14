@@ -45,8 +45,8 @@ class InterfaceMethodChangedMatcherFixture
      */
     public function like2($arg1, $arg2, $arg3): void
     {
-        // @extensionScannerIgnoreLine
         // Match: Call to ->like() with three arguments has been removed
+        // @extensionScannerIgnoreLine
         $foo->like2('arg1', 'arg2', 'arg3');
     }
 

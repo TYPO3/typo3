@@ -35,5 +35,11 @@ class ArrayDimensionMatcherFixture
         $foo::maxSessionDataSize;
         // @extensionScannerIgnoreLine
         $foo['maxSessionDataSize'];
+
+        // Match (again). No longer ignored.
+        $foo['bar']['maxSessionDataSize'];
+        // Ignore match (again). Done only once here for all fixtures.
+        // @extensionScannerIgnoreLine
+        $foo['bar']['maxSessionDataSize'];
     }
 }

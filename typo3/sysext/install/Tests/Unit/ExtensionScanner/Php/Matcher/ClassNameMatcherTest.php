@@ -72,6 +72,7 @@ final class ClassNameMatcherTest extends UnitTestCase
             44,
             47,
             48,
+            60,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $match) {

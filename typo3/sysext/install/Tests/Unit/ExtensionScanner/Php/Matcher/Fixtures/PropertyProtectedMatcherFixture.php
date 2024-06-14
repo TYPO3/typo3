@@ -45,5 +45,7 @@ class PropertyProtectedMatcherFixture
         static::$foo();
         // @extensionScannerIgnoreLine
         $foo->recUpdateAccessCache;
+        // Match (again). No longer ignored.
+        $foo->recUpdateAccessCache;
     }
 }
