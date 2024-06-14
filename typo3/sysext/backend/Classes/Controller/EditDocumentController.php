@@ -496,11 +496,19 @@ class EditDocumentController
                             $fieldGroups = [$fieldGroups];
                         }
                         foreach ($fieldGroups as $fields) {
-                            $this->columnsOnly[$table] = array_merge($this->columnsOnly[$table], (is_array($fields) ? $fields : GeneralUtility::trimExplode(',', $fields, true)));
+                            $this->columnsOnly['__hiddenGeneratorFields'][$table] = array_merge(
+                                $this->columnsOnly['__hiddenGeneratorFields'][$table] ?? [],
+                                (is_array($fields) ? $fields : GeneralUtility::trimExplode(',', $fields, true))
+                            );
                         }
                     }
                 }
-                $this->columnsOnly[$table] = array_unique($this->columnsOnly[$table]);
+                if (!empty($this->columnsOnly['__hiddenGeneratorFields'][$table])) {
+                    $this->columnsOnly['__hiddenGeneratorFields'][$table] = array_diff(
+                        array_unique($this->columnsOnly['__hiddenGeneratorFields'][$table]),
+                        $this->columnsOnly[$table]
+                    );
+                }
             }
         }
     }
@@ -1185,6 +1193,9 @@ class EditDocumentController
                         // ListOfFieldsContainer instead of FullRecordContainer in OuterWrapContainer
                         if (!empty($this->columnsOnly[$table])) {
                             $formData['fieldListToRender'] = implode(',', $this->columnsOnly[$table]);
+                            if (!empty($this->columnsOnly['__hiddenGeneratorFields'][$table])) {
+                                $formData['hiddenFieldListToRender'] = implode(',', $this->columnsOnly['__hiddenGeneratorFields'][$table]);
+                            }
                         }
 
                         $formData['renderType'] = 'outerWrapContainer';

@@ -24,6 +24,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This is an entry container called from FormEngine to handle a
  * list of specific fields. Access rights are checked here and globalOption array
  * is prepared for further processing of single fields by PaletteAndSingleContainer.
+ *
+ * Using "hiddenFieldListToRender" it's also possible to render additional fields as
+ * hidden fields, which is e.g. used for the "generatorFields" of TCA type "slug".
  */
 class ListOfFieldsContainer extends AbstractContainer
 {
@@ -34,20 +37,41 @@ class ListOfFieldsContainer extends AbstractContainer
      */
     public function render(): array
     {
-        $fieldListToRender = $this->data['fieldListToRender'];
-        $recordTypeValue = $this->data['recordTypeValue'];
+        $options = $this->data;
+        $options['fieldsArray'] = $this->sanitizeFieldList($this->data['fieldListToRender']);
 
-        $fieldListToRender = array_unique(GeneralUtility::trimExplode(',', $fieldListToRender, true));
+        if ($this->data['hiddenFieldListToRender'] ?? false) {
+            $hiddenFieldList = array_diff(
+                $this->sanitizeFieldList($this->data['hiddenFieldListToRender']),
+                $options['fieldsArray']
+            );
+            if ($hiddenFieldList !== []) {
+                $hiddenFieldList = implode(',', $hiddenFieldList);
+                $hiddenPaletteName = 'hiddenFieldsPalette' . md5($hiddenFieldList);
+                $options['processedTca']['palettes'][$hiddenPaletteName] = [
+                    'isHiddenPalette' => true,
+                    'showitem' => $hiddenFieldList,
+                ];
+                $options['fieldsArray'][] = '--palette--;;' . $hiddenPaletteName;
+            }
+        }
 
-        $fieldsByShowitem = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
+        $options['renderType'] = 'paletteAndSingleContainer';
+        return $this->nodeFactory->create($options)->render();
+    }
+
+    protected function sanitizeFieldList(string $fieldList): array
+    {
+        $fields = array_unique(GeneralUtility::trimExplode(',', $fieldList, true));
+        $fieldsByShowitem = $this->data['processedTca']['types'][$this->data['recordTypeValue']]['showitem'];
         $fieldsByShowitem = GeneralUtility::trimExplode(',', $fieldsByShowitem, true);
 
-        $finalFieldsList = [];
-        foreach ($fieldListToRender as $fieldName) {
+        $allowedFields = [];
+        foreach ($fields as $fieldName) {
             foreach ($fieldsByShowitem as $fieldByShowitem) {
                 $fieldByShowitemArray = $this->explodeSingleFieldShowItemConfiguration($fieldByShowitem);
                 if ($fieldByShowitemArray['fieldName'] === $fieldName) {
-                    $finalFieldsList[] = implode(';', $fieldByShowitemArray);
+                    $allowedFields[] = implode(';', $fieldByShowitemArray);
                     break;
                 }
                 if ($fieldByShowitemArray['fieldName'] === '--palette--'
@@ -59,18 +83,14 @@ class ListOfFieldsContainer extends AbstractContainer
                     foreach ($paletteFields as $paletteField) {
                         $paletteFieldArray = $this->explodeSingleFieldShowItemConfiguration($paletteField);
                         if ($paletteFieldArray['fieldName'] === $fieldName) {
-                            $finalFieldsList[] = implode(';', $paletteFieldArray);
+                            $allowedFields[] = implode(';', $paletteFieldArray);
                             break;
                         }
                     }
                 }
             }
         }
-
-        $options = $this->data;
-        $options['fieldsArray'] = $finalFieldsList;
-        $options['renderType'] = 'paletteAndSingleContainer';
-        return $this->nodeFactory->create($options)->render();
+        return $allowedFields;
     }
 
     protected function getLanguageService(): LanguageService
