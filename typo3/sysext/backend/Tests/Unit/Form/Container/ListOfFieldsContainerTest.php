@@ -164,4 +164,50 @@ final class ListOfFieldsContainerTest extends UnitTestCase
         $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
         (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
     }
+
+    #[Test]
+    public function renderAddsHiddenFields(): void
+    {
+        $nodeFactoryMock = $this->createMock(NodeFactory::class);
+        $paletteAndSingleContainerMock = $this->createMock(PaletteAndSingleContainer::class);
+        $paletteAndSingleContainerMock->expects(self::atLeastOnce())->method('render')->withAnyParameters()->willReturn([]);
+
+        $input = [
+            'tableName' => 'aTable',
+            'recordTypeValue' => 'aType',
+            'processedTca' => [
+                'types' => [
+                    'aType' => [
+                        'showitem' => '--palette--;;aPalette,uniqueField,hiddenField,--palette--;;bPalette,',
+                    ],
+                ],
+                'palettes' => [
+                    'aPalette' => [
+                        'showitem' => 'aField',
+                    ],
+                    'bPalette' => [
+                        'showitem' => 'hiddenInPalette',
+                    ],
+                ],
+            ],
+            'fieldListToRender' => 'aField,uniqueField',
+            'hiddenFieldListToRender' => 'hiddenField,uniqueField,iDontExist,hiddenInPalette',
+        ];
+
+        $expected = $input;
+        $expected['renderType'] = 'paletteAndSingleContainer';
+        $expected['processedTca']['palettes']['hiddenFieldsPalette' . md5('hiddenField;;,hiddenInPalette;;')] = [
+            'isHiddenPalette' => true,
+            'showitem' => 'hiddenField;;,hiddenInPalette;;',
+        ];
+        // "uniqueField" is onl rendered once and "iDontExist" is not rendered at all
+        $expected['fieldsArray'] = [
+            'aField;;',
+            'uniqueField;;',
+            '--palette--;;' . 'hiddenFieldsPalette' . md5('hiddenField;;,hiddenInPalette;;'),
+        ];
+
+        $nodeFactoryMock->method('create')->with($expected)->willReturn($paletteAndSingleContainerMock);
+        (new ListOfFieldsContainer($nodeFactoryMock, $input))->render();
+    }
 }

@@ -43,14 +43,15 @@ final class EditDocumentControllerTest extends UnitTestCase
         ];
         $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
 
-        self::assertEquals($result, array_values($editDocumentControllerMock->_get('columnsOnly')[$tableName]));
+        self::assertEquals($selectedFields, array_values($editDocumentControllerMock->_get('columnsOnly')[$tableName] ?? []));
+        self::assertEquals($result, array_values($editDocumentControllerMock->_get('columnsOnly')['__hiddenGeneratorFields'][$tableName] ?? []));
     }
 
     public static function slugDependentFieldsAreAddedToColumnsOnlyDataProvider(): array
     {
         return [
             'fields in string' => [
-                ['fo', 'bar', 'slug', 'title'],
+                ['title'],
                 ['fo', 'bar', 'slug'],
                 'fake',
                 [
@@ -65,7 +66,7 @@ final class EditDocumentControllerTest extends UnitTestCase
                 ],
             ],
             'fields in string and array' => [
-                ['slug', 'fo', 'title', 'nav_title', 'other_field'],
+                ['nav_title', 'other_field'],
                 ['slug', 'fo', 'title'],
                 'fake',
                 [
@@ -80,7 +81,7 @@ final class EditDocumentControllerTest extends UnitTestCase
                 ],
             ],
             'unique fields' => [
-                ['slug', 'fo', 'title', 'some_field'],
+                ['some_field'],
                 ['slug', 'fo', 'title'],
                 'fake',
                 [
@@ -95,7 +96,7 @@ final class EditDocumentControllerTest extends UnitTestCase
                 ],
             ],
             'fields as comma-separated list' => [
-                ['slug', 'fo', 'title', 'nav_title', 'some_field'],
+                ['nav_title', 'some_field'],
                 ['slug', 'fo', 'title'],
                 'fake',
                 [
@@ -110,7 +111,7 @@ final class EditDocumentControllerTest extends UnitTestCase
                 ],
             ],
             'no slug field given' => [
-                ['slug', 'fo'],
+                [],
                 ['slug', 'fo'],
                 'fake',
                 [
@@ -168,8 +169,10 @@ final class EditDocumentControllerTest extends UnitTestCase
         ];
         $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
 
-        self::assertEquals(['aField', 'aTitle'], array_values($editDocumentControllerMock->_get('columnsOnly')['aTable']));
-        self::assertEquals(['bField', 'bTitle'], array_values($editDocumentControllerMock->_get('columnsOnly')['bTable']));
+        self::assertEquals(['aField'], array_values($editDocumentControllerMock->_get('columnsOnly')['aTable']));
+        self::assertEquals(['aTitle'], array_values($editDocumentControllerMock->_get('columnsOnly')['__hiddenGeneratorFields']['aTable']));
+        self::assertEquals(['bField'], array_values($editDocumentControllerMock->_get('columnsOnly')['bTable']));
+        self::assertEquals(['bTitle'], array_values($editDocumentControllerMock->_get('columnsOnly')['__hiddenGeneratorFields']['bTable']));
     }
 
     public static function resolvePreviewRecordIdDataProvider(): array
