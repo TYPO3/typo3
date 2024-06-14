@@ -28,12 +28,12 @@ final class EditDocumentControllerTest extends UnitTestCase
 
     #[DataProvider('slugDependentFieldsAreAddedToColumnsOnlyDataProvider')]
     #[Test]
-    public function slugDependentFieldsAreAddedToColumnsOnly(string $result, string $selectedFields, string $tableName, array $configuration): void
+    public function slugDependentFieldsAreAddedToColumnsOnly(array $result, array $selectedFields, string $tableName, array $configuration): void
     {
         $GLOBALS['TCA'][$tableName]['columns'] = $configuration;
 
         $editDocumentControllerMock = $this->getAccessibleMock(EditDocumentController::class, null, [], '', false);
-        $editDocumentControllerMock->_set('columnsOnly', $selectedFields);
+        $editDocumentControllerMock->_set('columnsOnly', [$tableName => $selectedFields]);
         $queryParams = [
             'edit' => [
                 $tableName => [
@@ -43,15 +43,15 @@ final class EditDocumentControllerTest extends UnitTestCase
         ];
         $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
 
-        self::assertEquals($result, $editDocumentControllerMock->_get('columnsOnly'));
+        self::assertEquals($result, array_values($editDocumentControllerMock->_get('columnsOnly')[$tableName]));
     }
 
     public static function slugDependentFieldsAreAddedToColumnsOnlyDataProvider(): array
     {
         return [
             'fields in string' => [
-                'fo,bar,slug,title',
-                'fo,bar,slug',
+                ['fo', 'bar', 'slug', 'title'],
+                ['fo', 'bar', 'slug'],
                 'fake',
                 [
                     'slug' => [
@@ -65,8 +65,8 @@ final class EditDocumentControllerTest extends UnitTestCase
                 ],
             ],
             'fields in string and array' => [
-                'slug,fo,title,nav_title,title,other_field',
-                'slug,fo,title',
+                ['slug', 'fo', 'title', 'nav_title', 'other_field'],
+                ['slug', 'fo', 'title'],
                 'fake',
                 [
                     'slug' => [
@@ -79,9 +79,39 @@ final class EditDocumentControllerTest extends UnitTestCase
                     ],
                 ],
             ],
+            'unique fields' => [
+                ['slug', 'fo', 'title', 'some_field'],
+                ['slug', 'fo', 'title'],
+                'fake',
+                [
+                    'slug' => [
+                        'config' => [
+                            'type' => 'slug',
+                            'generatorOptions' => [
+                                'fields' => ['title', 'some_field'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'fields as comma-separated list' => [
+                ['slug', 'fo', 'title', 'nav_title', 'some_field'],
+                ['slug', 'fo', 'title'],
+                'fake',
+                [
+                    'slug' => [
+                        'config' => [
+                            'type' => 'slug',
+                            'generatorOptions' => [
+                                'fields' => 'nav_title,some_field',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
             'no slug field given' => [
-                'slug,fo',
-                'slug,fo',
+                ['slug', 'fo'],
+                ['slug', 'fo'],
                 'fake',
                 [
                     'slug' => [
@@ -95,6 +125,51 @@ final class EditDocumentControllerTest extends UnitTestCase
                 ],
             ],
         ];
+    }
+
+    #[Test]
+    public function addSlugFieldsToColumnsOnlySupportsMultipleTables(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns'] = [
+            'aField' => [
+                'config' => [
+                    'type' => 'slug',
+                    'generatorOptions' => [
+                        'fields' => ['aTitle'],
+                    ],
+                ],
+            ],
+        ];
+        $GLOBALS['TCA']['bTable']['columns'] = [
+            'bField' => [
+                'config' => [
+                    'type' => 'slug',
+                    'generatorOptions' => [
+                        'fields' => ['bTitle'],
+                    ],
+                ],
+            ],
+        ];
+
+        $editDocumentControllerMock = $this->getAccessibleMock(EditDocumentController::class, null, [], '', false);
+        $editDocumentControllerMock->_set('columnsOnly', [
+            'aTable' => ['aField'],
+            'bTable' => ['bField'],
+        ]);
+        $queryParams = [
+            'edit' => [
+                'aTable' => [
+                    '123' => 'edit',
+                ],
+                'bTable' => [
+                    '456' => 'edit',
+                ],
+            ],
+        ];
+        $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
+
+        self::assertEquals(['aField', 'aTitle'], array_values($editDocumentControllerMock->_get('columnsOnly')['aTable']));
+        self::assertEquals(['bField', 'bTitle'], array_values($editDocumentControllerMock->_get('columnsOnly')['bTable']));
     }
 
     public static function resolvePreviewRecordIdDataProvider(): array

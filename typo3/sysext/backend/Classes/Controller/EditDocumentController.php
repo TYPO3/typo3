@@ -93,12 +93,10 @@ class EditDocumentController
     protected $editconf = [];
 
     /**
-     * Comma list of field names to edit. If specified, only those fields will be rendered.
-     * Otherwise all (available) fields in the record are shown according to the TCA type.
-     *
-     * @var string|null
+     * Array of tables with a lists of field names to edit for those tables. If specified, only those fields
+     * will be rendered. Otherwise all (available) fields in the record are shown according to the TCA type.
      */
-    protected $columnsOnly;
+    protected ?array $columnsOnly = null;
 
     /**
      * Default values for fields
@@ -417,11 +415,29 @@ class EditDocumentController
         $this->editconf = $parsedBody['edit'] ?? $queryParams['edit'] ?? [];
         $this->defVals = $parsedBody['defVals'] ?? $queryParams['defVals'] ?? null;
         $this->overrideVals = $parsedBody['overrideVals'] ?? $queryParams['overrideVals'] ?? null;
-        $this->columnsOnly = $parsedBody['columnsOnly'] ?? $queryParams['columnsOnly'] ?? null;
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         $this->closeDoc = (int)($parsedBody['closeDoc'] ?? $queryParams['closeDoc'] ?? self::DOCUMENT_CLOSE_MODE_DEFAULT);
         $this->doSave = ($parsedBody['doSave'] ?? false) && $request->getMethod() === 'POST';
         $this->returnEditConf = (bool)($parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? false);
+
+        $columnsOnly = $parsedBody['columnsOnly'] ?? $queryParams['columnsOnly'] ?? null;
+        if (is_string($columnsOnly) && $columnsOnly !== '') {
+            // @deprecated remove fallback in v14
+            // Store given columns for the first table - only for b/w compatibility
+            trigger_error(
+                'Providing columnsOnly with no table context is deprecated and will be removed in v14. Define columnsOnly[table][]=field instead.',
+                E_USER_DEPRECATED
+            );
+            $tables = array_keys($this->editconf);
+            foreach ($tables as $table) {
+                $this->columnsOnly[$table] = GeneralUtility::trimExplode(',', $columnsOnly, true);
+            }
+        }
+        if (is_array($columnsOnly) && $columnsOnly !== []) {
+            foreach ($columnsOnly as $table => $fields) {
+                $this->columnsOnly[$table] = is_array($fields) ? $fields : GeneralUtility::trimExplode(',', $fields, true);
+            }
+        }
 
         // Set overrideVals as default values if defVals does not exist.
         // @todo: Why?
@@ -465,20 +481,26 @@ class EditDocumentController
     protected function addSlugFieldsToColumnsOnly(array $queryParams): void
     {
         $data = $queryParams['edit'] ?? [];
-        $data = array_keys($data);
-        $table = reset($data);
-        if ($this->columnsOnly && $table !== false && isset($GLOBALS['TCA'][$table])) {
-            $fields = GeneralUtility::trimExplode(',', $this->columnsOnly, true);
-            foreach ($fields as $field) {
-                $postModifiers = $GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['postModifiers'] ?? [];
-                if (isset($GLOBALS['TCA'][$table]['columns'][$field])
-                    && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'slug'
-                    && (!is_array($postModifiers) || $postModifiers === [])
-                ) {
-                    foreach ($GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['fields'] ?? [] as $fields) {
-                        $this->columnsOnly .= ',' . (is_array($fields) ? implode(',', $fields) : $fields);
+        $tables = array_keys($data);
+        foreach ($tables as $table) {
+            if (!empty($this->columnsOnly[$table]) && isset($GLOBALS['TCA'][$table])) {
+                foreach ($this->columnsOnly[$table] as $field) {
+                    $postModifiers = $GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['postModifiers'] ?? [];
+                    if (isset($GLOBALS['TCA'][$table]['columns'][$field])
+                        && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'slug'
+                        && (!is_array($postModifiers) || $postModifiers === [])
+                    ) {
+
+                        $fieldGroups = $GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['fields'] ?? [];
+                        if (is_string($fieldGroups)) {
+                            $fieldGroups = [$fieldGroups];
+                        }
+                        foreach ($fieldGroups as $fields) {
+                            $this->columnsOnly[$table] = array_merge($this->columnsOnly[$table], (is_array($fields) ? $fields : GeneralUtility::trimExplode(',', $fields, true)));
+                        }
                     }
                 }
+                $this->columnsOnly[$table] = array_unique($this->columnsOnly[$table]);
             }
         }
     }
@@ -1161,12 +1183,8 @@ class EditDocumentController
 
                         // Set list if only specific fields should be rendered. This will trigger
                         // ListOfFieldsContainer instead of FullRecordContainer in OuterWrapContainer
-                        if ($this->columnsOnly) {
-                            if (is_array($this->columnsOnly)) {
-                                $formData['fieldListToRender'] = $this->columnsOnly[$table];
-                            } else {
-                                $formData['fieldListToRender'] = $this->columnsOnly;
-                            }
+                        if (!empty($this->columnsOnly[$table])) {
+                            $formData['fieldListToRender'] = implode(',', $this->columnsOnly[$table]);
                         }
 
                         $formData['renderType'] = 'outerWrapContainer';

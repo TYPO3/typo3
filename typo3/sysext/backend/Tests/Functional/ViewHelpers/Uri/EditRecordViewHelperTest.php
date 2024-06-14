@@ -89,7 +89,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][43]=edit', $result);
-        self::assertStringContainsString('columnsOnly=canonical_url', $result);
+        self::assertStringContainsString('columnsOnly[c_table][0]=canonical_url', $result);
     }
 
     #[Test]
@@ -103,7 +103,8 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][43]=edit', $result);
-        self::assertStringContainsString('columnsOnly=canonical_url,title', $result);
+        self::assertStringContainsString('columnsOnly[c_table][0]=canonical_url', $result);
+        self::assertStringContainsString('columnsOnly[c_table][1]=title', $result);
     }
 
     #[Test]

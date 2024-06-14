@@ -6,11 +6,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
 		-
-			message: "#^If condition is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
-
-		-
 			message: "#^Offset 2 does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php

@@ -56,7 +56,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="/typo3/record/edit?edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly=title,subtitle">
+ *    <a href="/typo3/record/edit?edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly[pages]=title,subtitle">
  *        Edit record
  *    </a>
  */
@@ -73,7 +73,7 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
         $this->registerUniversalTagAttributes();
         $this->registerArgument('uid', 'int', 'uid of record to be edited', true);
         $this->registerArgument('table', 'string', 'target database table', true);
-        $this->registerArgument('fields', 'string', 'Edit only these fields (comma separated list)', false);
+        $this->registerArgument('fields', 'string', 'Edit only these fields (comma separated list)');
         $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the edit dialog', false, '');
     }
 
@@ -101,7 +101,9 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
             'returnUrl' => $this->arguments['returnUrl'],
         ];
         if ($this->arguments['fields'] ?? false) {
-            $params['columnsOnly'] = $this->arguments['fields'];
+            $params['columnsOnly'] = [
+                $this->arguments['table'] => GeneralUtility::trimExplode(',', $this->arguments['fields'], true),
+            ];
         }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
