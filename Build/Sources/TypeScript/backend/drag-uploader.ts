@@ -402,7 +402,6 @@ export default class DragUploader {
     button.addEventListener('click', (event: Event) => {
       event.preventDefault();
       this.fileInput.click();
-      this.showDropzone();
       // In case user manually triggers the dropzone, we add a flag
       this.manuallyTriggered = true;
     });
