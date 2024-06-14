@@ -292,7 +292,9 @@ class TranslationStatusController extends InfoModuleController
                         implode(',', $langRecUids[0]) => 'edit',
                     ],
                 ],
-                'columnsOnly' => 'title,nav_title,l18n_cfg,hidden',
+                'columnsOnly' => [
+                    'pages' => ['title', 'nav_title', 'l18n_cfg', 'hidden'],
+                ],
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
             ]);
             $editIco = '<a href="' . htmlspecialchars($editUrl)
@@ -324,7 +326,9 @@ class TranslationStatusController extends InfoModuleController
                                 implode(',', $langRecUids[$languageId]) => 'edit',
                             ],
                         ],
-                        'columnsOnly' => 'title,nav_title,hidden',
+                        'columnsOnly' => [
+                            'pages' =>  ['title', 'nav_title', 'hidden'],
+                        ],
                         'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                     ]);
                     $editButton = '<a href="' . htmlspecialchars($editUrl)

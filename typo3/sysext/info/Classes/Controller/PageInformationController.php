@@ -204,7 +204,9 @@ class PageInformationController extends InfoModuleController
                                 $editIdList => 'edit',
                             ],
                         ],
-                        'columnsOnly' => $field,
+                        'columnsOnly' => [
+                            'pages' => [$field],
+                        ],
                         'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                     ];
                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);

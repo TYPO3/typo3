@@ -404,7 +404,9 @@ class LinkValidatorController
                         $row['record_uid'] => 'edit',
                     ],
                 ],
-                'columnsOnly' => $row['field'],
+                'columnsOnly' => [
+                    $table => [$row['field']],
+                ],
                 'returnUrl' => $this->getModuleUri(
                     'report',
                     [

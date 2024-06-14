@@ -46,7 +46,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <be:uri.editRecord uid="42" table="pages" fields="title,subtitle" returnUrl="foo/bar" />
  *
- * ``<a href="/typo3/record/edit&edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly=title,subtitle">``
+ * ``<a href="/typo3/record/edit&edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly[pages]=title,subtitle">``
  */
 final class EditRecordViewHelper extends AbstractViewHelper
 {
@@ -82,7 +82,9 @@ final class EditRecordViewHelper extends AbstractViewHelper
             'returnUrl' => $arguments['returnUrl'],
         ];
         if ($arguments['fields'] ?? false) {
-            $params['columnsOnly'] = $arguments['fields'];
+            $params['columnsOnly'] = [
+                $arguments['table'] => GeneralUtility::trimExplode(',', $arguments['fields'], true),
+            ];
         }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
