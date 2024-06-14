@@ -253,8 +253,8 @@
 				<field index="l10n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Root</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Root</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -269,8 +269,8 @@
 				<field index="l10n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy with 3 languages, two translations [DEFAULT]</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy with 3 languages, two translations [DEFAULT]</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -285,8 +285,8 @@
 				<field index="l10n_parent" type="integer">7</field>
 				<field index="l10n_source" type="integer">7</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy with 3 languages, two languages [GERMAN]</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy with 3 languages, two languages [GERMAN]</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="l10n_parent" type="array">
@@ -318,8 +318,8 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
-				<field index="header">Test content #2 pid=7 &#039;Dummy with 3 languages, two translations&#039; (default language=0)</field>
                 <field index="CType">text</field>
+                <field index="header">Test content #2 pid=7 &#039;Dummy with 3 languages, two translations&#039; (default language=0)</field>
             </fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -332,8 +332,8 @@
 				<field index="sys_language_uid" type="integer">1</field>
 				<field index="l18n_parent" type="integer">2</field>
 				<field index="l10n_source" type="integer">2</field>
-				<field index="header">Test content #7 pid=7 &#039;Dummy with 3 languages, two translations&#039; (german=1)</field>
                 <field index="CType">text</field>
+                <field index="header">Test content #7 pid=7 &#039;Dummy with 3 languages, two translations&#039; (german=1)</field>
             </fieldlist>
 			<related index="rels" type="array">
 				<field index="l18n_parent" type="array">
@@ -367,8 +367,8 @@
 				<field index="l10n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy with 3 languages, only default content [DEFAULT]</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy with 3 languages, only default content [DEFAULT]</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -381,8 +381,8 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
-				<field index="header">Test content #6 pid=6 &#039;Dummy with 3 languages, only default content&#039; (default language=0)</field>
                 <field index="CType">text</field>
+                <field index="header">Test content #6 pid=6 &#039;Dummy with 3 languages, only default content&#039; (default language=0)</field>
             </fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -397,8 +397,8 @@
 				<field index="l10n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy with 3 languages, fully translated [DEFAULT]</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy with 3 languages, fully translated [DEFAULT]</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -413,8 +413,8 @@
 				<field index="l10n_parent" type="integer">5</field>
 				<field index="l10n_source" type="integer">5</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy with 3 languages, fully translated [GERMAN]</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy with 3 languages, fully translated [GERMAN]</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="l10n_parent" type="array">
@@ -448,8 +448,8 @@
 				<field index="l10n_parent" type="integer">5</field>
 				<field index="l10n_source" type="integer">5</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy with 3 languages, fully translated [FRENCH]</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy with 3 languages, fully translated [FRENCH]</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="l10n_parent" type="array">
@@ -481,8 +481,8 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
-				<field index="header">Test content #3 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (default language=0)</field>
                 <field index="CType">text</field>
+                <field index="header">Test content #3 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (default language=0)</field>
             </fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -495,8 +495,8 @@
 				<field index="sys_language_uid" type="integer">1</field>
 				<field index="l18n_parent" type="integer">3</field>
 				<field index="l10n_source" type="integer">3</field>
-				<field index="header">Test content #4 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (german=1)</field>
                 <field index="CType">text</field>
+                <field index="header">Test content #4 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (german=1)</field>
             </fieldlist>
 			<related index="rels" type="array">
 				<field index="l18n_parent" type="array">
@@ -528,8 +528,8 @@
 				<field index="sys_language_uid" type="integer">2</field>
 				<field index="l18n_parent" type="integer">3</field>
 				<field index="l10n_source" type="integer">3</field>
-				<field index="header">Test content #5 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (french=2)</field>
                 <field index="CType">text</field>
+                <field index="header">Test content #5 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (french=2)</field>
             </fieldlist>
 			<related index="rels" type="array">
 				<field index="l18n_parent" type="array">
@@ -563,8 +563,8 @@
 				<field index="l10n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy with 3 languages, no content [DEFAULT]</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy with 3 languages, no content [DEFAULT]</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -579,8 +579,8 @@
 				<field index="l10n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy only default language</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy only default language</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -593,8 +593,8 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
-				<field index="header">Test content #1 pid=3 &#039;Dummy only default language&#039; (default language=0)</field>
                 <field index="CType">text</field>
+                <field index="header">Test content #1 pid=3 &#039;Dummy only default language&#039; (default language=0)</field>
             </fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -609,8 +609,8 @@
 				<field index="l10n_parent" type="integer">0</field>
 				<field index="l10n_source" type="integer">0</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy no content</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy no content</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>

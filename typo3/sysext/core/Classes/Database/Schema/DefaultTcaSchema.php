@@ -453,515 +453,115 @@ class DefaultTcaSchema
             if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
                 continue;
             }
+            $tableConnectionPlatform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->getDatabasePlatform();
 
-            // Add category fields for all tables, defining category columns (TCA type=category)
             foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'category'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
+                if ($this->isColumnDefinedForTable($tables, $tableName, $fieldName)) {
+                    continue;
+                }
+                $type = (string)($fieldConfig['config']['type'] ?? '');
+                if ($type === '') {
                     continue;
                 }
 
-                if (($fieldConfig['config']['relationship'] ?? '') === 'oneToMany') {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::TEXT,
-                        [
-                            'notnull' => false,
-                        ]
-                    );
-                } else {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::INTEGER,
-                        [
-                            'default' => 0,
-                            'notnull' => true,
-                            'unsigned' => true,
-                        ]
-                    );
-                }
-            }
+                switch ($type) {
+                    case 'category':
+                        if (($fieldConfig['config']['relationship'] ?? '') === 'oneToMany') {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::TEXT,
+                                [
+                                    'notnull' => false,
+                                ]
+                            );
+                        } else {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::INTEGER,
+                                [
+                                    'default' => 0,
+                                    'notnull' => true,
+                                    'unsigned' => true,
+                                ]
+                            );
+                        }
+                        break;
 
-            // Add datetime fields for all tables, defining datetime columns (TCA type=datetime), except
-            // those columns, which had already been added due to definition in "ctrl", e.g. "starttime".
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'datetime'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
+                    case 'datetime':
+                        // Add datetime fields for all tables, defining datetime columns (TCA type=datetime), except
+                        // those columns, which had already been added due to definition in "ctrl", e.g. "starttime".
+                        if (in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                $fieldConfig['config']['dbType'],
+                                [
+                                    'notnull' => false,
+                                ]
+                            );
+                        } else {
+                            // int unsigned:            from 1970 to 2106.
+                            // int signed:              from 1901 to 2038.
+                            // bigint unsigned/signed:  from whenever to whenever
+                            //
+                            // Anything like crdate,tstamp,starttime,endtime is good with
+                            //  "int unsigned" and can survive the 2038 apocalypse (until 2106).
+                            //
+                            // However, anything that has birthdates or dates
+                            // from the past (sys_file_metadata.content_creation_date) was saved
+                            // as a SIGNED INT. It allowed birthdays of people older than 1970,
+                            // but with the downside that it ends in 2038.
+                            //
+                            // This is now changed to utilize BIGINT everywhere, even when smaller
+                            // date ranges are requested. To reduce complexity, we specifically
+                            // do not evaluate "range.upper/lower" fields and use a unified type here.
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::BIGINT,
+                                [
+                                    'default' => 0,
+                                    'notnull' => !($fieldConfig['config']['nullable'] ?? false),
+                                    'unsigned' => false,
+                                ]
+                            );
+                        }
+                        break;
 
-                if (in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        $fieldConfig['config']['dbType'],
-                        [
-                            'notnull' => false,
-                        ]
-                    );
-                } else {
-                    // int unsigned:            from 1970 to 2106.
-                    // int signed:              from 1901 to 2038.
-                    // bigint unsigned/signed:  from whenever to whenever
-                    //
-                    // Anything like crdate,tstamp,starttime,endtime is good with
-                    //  "int unsigned" and can survive the 2038 apocalypse (until 2106).
-                    //
-                    // However, anything that has birthdates or dates
-                    // from the past (sys_file_metadata.content_creation_date) was saved
-                    // as a SIGNED INT. It allowed birthdays of people older than 1970,
-                    // but with the downside that it ends in 2038.
-                    //
-                    // This is now changed to utilize BIGINT everywhere, even when smaller
-                    // date ranges are requested. To reduce complexity, we specifically
-                    // do not evaluate "range.upper/lower" fields and use a unified type here.
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::BIGINT,
-                        [
-                            'default' => 0,
-                            'notnull' => !($fieldConfig['config']['nullable'] ?? false),
-                            'unsigned' => false,
-                        ]
-                    );
-                }
-            }
+                    case 'slug':
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::TEXT,
+                            [
+                                'length' => 65535,
+                                'notnull' => false,
+                            ]
+                        );
+                        break;
 
-            // Add slug fields for all tables, defining slug columns (TCA type=slug)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'slug'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::TEXT,
-                    [
-                        'length' => 65535,
-                        'notnull' => false,
-                    ]
-                );
-            }
+                    case 'json':
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::JSON,
+                            [
+                                'notnull' => false,
+                            ]
+                        );
+                        break;
 
-            // Add json fields for all tables, defining json columns (TCA type=json)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'json'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::JSON,
-                    [
-                        'notnull' => false,
-                    ]
-                );
-            }
-
-            // Add uuid fields for all tables, defining uuid columns (TCA type=uuid)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'uuid'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::STRING,
-                    [
-                        'length' => 36,
-                        'default' => '',
-                        'notnull' => true,
-                    ]
-                );
-            }
-
-            // Add file fields for all tables, defining file columns (TCA type=file)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'file'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::INTEGER,
-                    [
-                        'default' => 0,
-                        'notnull' => true,
-                        'unsigned' => true,
-                    ]
-                );
-            }
-
-            // Add folder fields for all tables, defining file columns (TCA type=folder)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'folder'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::TEXT,
-                    [
-                        'notnull' => false,
-                    ]
-                );
-            }
-
-            // Add email fields for all tables, defining email columns (TCA type=email)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'email'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $isNullable = (bool)($fieldConfig['config']['nullable'] ?? false);
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::STRING,
-                    [
-                        'length' => 255,
-                        'default' => ($isNullable ? null : ''),
-                        'notnull' => !$isNullable,
-                    ]
-                );
-            }
-
-            // Add check fields for all tables, defining check columns (TCA type=check)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'check'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::SMALLINT,
-                    [
-                        'default' => $fieldConfig['config']['default'] ?? 0,
-                        'notnull' => true,
-                        'unsigned' => true,
-                    ]
-                );
-            }
-
-            // Add file fields for all tables, defining crop columns (TCA type=imageManipulation)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'imageManipulation'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::TEXT,
-                    [
-                        'notnull' => false,
-                    ]
-                );
-            }
-
-            // Add fields for all tables, defining language columns (TCA type=language)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'language'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::INTEGER,
-                    [
-                        'default' => 0,
-                        'notnull' => true,
-                        'unsigned' => false,
-                    ]
-                );
-            }
-
-            // Add fields for all tables, defining group columns (TCA type=group)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'group'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                if (isset($fieldConfig['config']['MM'])) {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::INTEGER,
-                        [
-                            'default' => 0,
-                            'notnull' => true,
-                            'unsigned' => true,
-                        ]
-                    );
-                } else {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::TEXT,
-                        [
-                            'notnull' => false,
-                        ]
-                    );
-                }
-            }
-
-            // Add fields for all tables, defining flex columns (TCA type=flex)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'flex'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::TEXT,
-                    [
-                        'notnull' => false,
-                    ]
-                );
-            }
-
-            // Add fields for all tables, defining text columns (TCA type=text)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'text'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::TEXT,
-                    [
-                        'notnull' => false,
-                    ]
-                );
-            }
-
-            // Add fields for all tables, defining password columns (TCA type=password)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'password'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                if ($fieldConfig['config']['nullable'] ?? false) {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::STRING,
-                        [
-                            'default' => null,
-                            'notnull' => false,
-                        ]
-                    );
-                } else {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::STRING,
-                        [
-                            'default' => '',
-                            'notnull' => true,
-                        ]
-                    );
-                }
-            }
-
-            // Add fields for all tables, defining color columns (TCA type=color)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'color'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                if ($fieldConfig['config']['nullable'] ?? false) {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::STRING,
-                        [
-                            'length' => 7,
-                            'default' => null,
-                            'notnull' => false,
-                        ]
-                    );
-                } else {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::STRING,
-                        [
-                            'length' => 7,
-                            'default' => '',
-                            'notnull' => true,
-                        ]
-                    );
-                }
-            }
-
-            // Add fields for all tables, defining radio columns (TCA type=radio)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'radio'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $hasItemsProcFunc = ($fieldConfig['config']['itemsProcFunc'] ?? '') !== '';
-                $items = $fieldConfig['config']['items'] ?? [];
-
-                // With itemsProcFunc we can't be sure, which values are persisted. Use type string.
-                if ($hasItemsProcFunc) {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::STRING,
-                        [
-                            'length' => 255,
-                            'default' => '',
-                            'notnull' => true,
-                        ]
-                    );
-                    continue;
-                }
-
-                // If no items are configured, use type string to be safe for values added directly.
-                if ($items === []) {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::STRING,
-                        [
-                            'length' => 255,
-                            'default' => '',
-                            'notnull' => true,
-                        ]
-                    );
-                    continue;
-                }
-
-                // If only one value is NOT an integer use type string.
-                foreach ($items as $item) {
-                    if (!MathUtility::canBeInterpretedAsInteger($item['value'])) {
+                    case 'uuid':
                         $tables[$tableName]->addColumn(
                             $this->quote($fieldName),
                             Types::STRING,
                             [
-                                'length' => 255,
+                                'length' => 36,
                                 'default' => '',
                                 'notnull' => true,
                             ]
                         );
-                        // continue with next $tableDefinition['columns']
-                        // see: DefaultTcaSchemaTest->enrichAddsRadioStringVerifyThatCorrectLoopIsContinued()
-                        continue 2;
-                    }
-                }
+                        break;
 
-                // Use integer type.
-                $allValues = array_map(fn(array $item): int => (int)$item['value'], $items);
-                $minValue = min($allValues);
-                $maxValue = max($allValues);
-                // Try to safe some bytes - can be reconsidered to simply use Types::INTEGER.
-                $integerType = ($minValue >= -32768 && $maxValue < 32768)
-                    ? Types::SMALLINT
-                    : Types::INTEGER;
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    $integerType,
-                    [
-                        'default' => 0,
-                        'notnull' => true,
-                    ]
-                );
-
-                // Keep the house clean.
-                unset($items, $allValues, $minValue, $maxValue, $integerType);
-            }
-
-            // Add fields for all tables, defining link columns (TCA type=link)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'link'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $nullable = $fieldConfig['config']['nullable'] ?? false;
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::TEXT,
-                    [
-                        'length' => 65535,
-                        'default' => $nullable ? null : '',
-                        'notnull' => !$nullable,
-                    ]
-                );
-            }
-
-            // Add fields for all tables, defining input columns (TCA type=input)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'input'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $length = $fieldConfig['config']['max'] ?? null;
-                $nullable = $fieldConfig['config']['nullable'] ?? false;
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::STRING,
-                    [
-                        'length' => $length ?? 255,
-                        'default' => '',
-                        'notnull' => !$nullable,
-                    ]
-                );
-            }
-
-            // Add fields for all tables, defining inline columns (TCA type=inline)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'inline'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                if (($fieldConfig['config']['MM'] ?? '') !== '' || ($fieldConfig['config']['foreign_field'] ?? '') !== '') {
-                    // Parent "count" field
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::INTEGER,
-                        [
-                            'default' => 0,
-                            'notnull' => true,
-                            'unsigned' => true,
-                        ]
-                    );
-                } else {
-                    // Inline "csv"
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::STRING,
-                        [
-                            'default' => '',
-                            'notnull' => true,
-                            'length' => 255,
-                        ]
-                    );
-                }
-                if (($fieldConfig['config']['foreign_field'] ?? '') !== '') {
-                    // Add definition for "foreign_field" (contains parent uid) in the child table if it is not defined
-                    // in child TCA or if it is "just" a "passthrough" field, and not manually configured in ext_tables.sql
-                    $childTable = $fieldConfig['config']['foreign_table'];
-                    if (!(($tables[$childTable] ?? null) instanceof Table)) {
-                        throw new DefaultTcaSchemaTablePositionException('Table ' . $childTable . ' not found in schema list', 1527854474);
-                    }
-                    $childTableForeignFieldName = $fieldConfig['config']['foreign_field'];
-                    $childTableForeignFieldConfig = $GLOBALS['TCA'][$childTable]['columns'][$childTableForeignFieldName] ?? [];
-                    if (($childTableForeignFieldConfig === [] || ($childTableForeignFieldConfig['config']['type'] ?? '') === 'passthrough')
-                        && !$this->isColumnDefinedForTable($tables, $childTable, $childTableForeignFieldName)
-                    ) {
-                        $tables[$childTable]->addColumn(
-                            $this->quote($childTableForeignFieldName),
+                    case 'file':
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
                             Types::INTEGER,
                             [
                                 'default' => 0,
@@ -969,209 +569,448 @@ class DefaultTcaSchema
                                 'unsigned' => true,
                             ]
                         );
-                    }
-                    // Add definition for "foreign_table_field" (contains name of parent table) in the child table if it is not
-                    // defined in child TCA or if it is "just" a "passthrough" field, and not manually configured in ext_tables.sql
-                    $childTableForeignTableFieldName = $fieldConfig['config']['foreign_table_field'] ?? '';
-                    $childTableForeignTableFieldConfig = $GLOBALS['TCA'][$childTable]['columns'][$childTableForeignTableFieldName] ?? [];
-                    if ($childTableForeignTableFieldName !== ''
-                        && ($childTableForeignTableFieldConfig === [] || ($childTableForeignTableFieldConfig['config']['type'] ?? '') === 'passthrough')
-                        && !$this->isColumnDefinedForTable($tables, $childTable, $childTableForeignTableFieldName)
-                    ) {
-                        $tables[$childTable]->addColumn(
-                            $this->quote($childTableForeignTableFieldName),
-                            Types::STRING,
+                        break;
+
+                    case 'folder':
+                    case 'imageManipulation':
+                    case 'flex':
+                    case 'text':
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::TEXT,
                             [
-                                'default' => '',
-                                'notnull' => true,
-                                'length' => 255,
+                                'notnull' => false,
                             ]
                         );
-                    }
-                }
-            }
+                        break;
 
-            // Add fields for all tables, defining number columns (TCA type=number)
-            $tableConnectionPlatform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->getDatabasePlatform();
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'number'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                $type = ($fieldConfig['config']['format'] ?? '') === 'decimal' ? Types::DECIMAL : Types::INTEGER;
-                $nullable = $fieldConfig['config']['nullable'] ?? false;
-                $lowerRange = $fieldConfig['config']['range']['lower'] ?? -1;
-                // Integer type for all database platforms.
-                if ($type === Types::INTEGER) {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::INTEGER,
-                        [
-                            'default' => $nullable === true ? null : 0,
-                            'notnull' => !$nullable,
-                            'unsigned' => $lowerRange >= 0,
-                        ]
-                    );
-                    continue;
-                }
-                // SQLite internally defines NUMERIC() fields as real, and therefore as floating numbers. pdo_sqlite
-                // then returns PHP float which can lead to rounding issues. See https://bugs.php.net/bug.php?id=81397
-                // for more details. We create a 'string' field on SQLite as workaround.
-                // @todo Database schema should be created with MySQL in mind and not mixed. Transforming to the
-                //       concrete database platform is handled in the database compare area. Sadly, this is not
-                //       possible right now but upcoming preparation towards doctrine/dbal 4 makes it possible to
-                //       move this "hack" to a different place.
-                if ($tableConnectionPlatform instanceof DoctrineSQLitePlatform) {
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::STRING,
-                        [
-                            'default' => $nullable === true ? null : '0.00',
-                            'notnull' => !$nullable,
-                            'length' => 255,
-                        ]
-                    );
-                    continue;
-                }
-                // Decimal for all supported platforms except SQLite
-                $tables[$tableName]->addColumn(
-                    $this->quote($fieldName),
-                    Types::DECIMAL,
-                    [
-                        'default' => $nullable === true ? null : 0.00,
-                        'notnull' => !$nullable,
-                        'unsigned' => $lowerRange >= 0,
-                        'precision' => 10,
-                        'scale' => 2,
-                    ]
-                );
-            }
-            // Cleanup
-            unset($tableConnectionPlatform, $type, $nullable, $lowerRange);
+                    case 'email':
+                        $isNullable = (bool)($fieldConfig['config']['nullable'] ?? false);
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::STRING,
+                            [
+                                'length' => 255,
+                                'default' => ($isNullable ? null : ''),
+                                'notnull' => !$isNullable,
+                            ]
+                        );
+                        break;
 
-            // Add fields for all tables, defining select columns (TCA type=select)
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if ((string)($fieldConfig['config']['type'] ?? '') !== 'select'
-                    || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
-                ) {
-                    continue;
-                }
-                if (($fieldConfig['config']['MM'] ?? '') !== '') {
-                    // MM relation, this is a "parent count" field. Have an int.
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::INTEGER,
-                        [
-                            'notnull' => true,
-                            'default' => 0,
-                            'unsigned' => true,
-                        ]
-                    );
-                    continue;
-                }
+                    case 'check':
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::SMALLINT,
+                            [
+                                'default' => $fieldConfig['config']['default'] ?? 0,
+                                'notnull' => true,
+                                'unsigned' => true,
+                            ]
+                        );
+                        break;
 
-                $dbFieldLength = (int)($fieldConfig['config']['dbFieldLength'] ?? 0);
+                    case 'language':
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::INTEGER,
+                            [
+                                'default' => 0,
+                                'notnull' => true,
+                                'unsigned' => false,
+                            ]
+                        );
+                        break;
 
-                // If itemsProcFunc is not set, check the item values
-                if (($fieldConfig['config']['itemsProcFunc'] ?? '') === '') {
-                    $items = $fieldConfig['config']['items'] ?? [];
-                    $itemsContainsOnlyIntegers = true;
-                    foreach ($items as $item) {
-                        if (!MathUtility::canBeInterpretedAsInteger($item['value'])) {
-                            $itemsContainsOnlyIntegers = false;
+                    case 'group':
+                        if (isset($fieldConfig['config']['MM'])) {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::INTEGER,
+                                [
+                                    'default' => 0,
+                                    'notnull' => true,
+                                    'unsigned' => true,
+                                ]
+                            );
+                        } else {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::TEXT,
+                                [
+                                    'notnull' => false,
+                                ]
+                            );
+                        }
+                        break;
+
+                    case 'password':
+                        if ($fieldConfig['config']['nullable'] ?? false) {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::STRING,
+                                [
+                                    'default' => null,
+                                    'notnull' => false,
+                                ]
+                            );
+                        } else {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::STRING,
+                                [
+                                    'default' => '',
+                                    'notnull' => true,
+                                ]
+                            );
+                        }
+                        break;
+
+                    case 'color':
+                        if ($fieldConfig['config']['nullable'] ?? false) {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::STRING,
+                                [
+                                    'length' => 7,
+                                    'default' => null,
+                                    'notnull' => false,
+                                ]
+                            );
+                        } else {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::STRING,
+                                [
+                                    'length' => 7,
+                                    'default' => '',
+                                    'notnull' => true,
+                                ]
+                            );
+                        }
+                        break;
+
+                    case 'radio':
+                        $hasItemsProcFunc = ($fieldConfig['config']['itemsProcFunc'] ?? '') !== '';
+                        $items = $fieldConfig['config']['items'] ?? [];
+                        // With itemsProcFunc we can't be sure, which values are persisted. Use type string.
+                        if ($hasItemsProcFunc) {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::STRING,
+                                [
+                                    'length' => 255,
+                                    'default' => '',
+                                    'notnull' => true,
+                                ]
+                            );
                             break;
                         }
-                    }
-                    $itemsAreAllPositive = true;
-                    foreach ($items as $item) {
-                        if ($item['value'] < 0) {
-                            $itemsAreAllPositive = false;
+                        // If no items are configured, use type string to be safe for values added directly.
+                        if ($items === []) {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::STRING,
+                                [
+                                    'length' => 255,
+                                    'default' => '',
+                                    'notnull' => true,
+                                ]
+                            );
                             break;
                         }
-                    }
-                    // @todo: The dependency to renderType is unfortunate here. It's only purpose is to potentially have int fields
-                    //        instead of string when this is a 'single' relation / value. However, renderType should usually not
-                    //        influence DB layer at all. Maybe 'selectSingle' should be changed to an own 'type' instead to make
-                    //        this more explicit. Maybe DataHandler could benefit from this as well?
-                    if (($fieldConfig['config']['renderType'] ?? '') === 'selectSingle' || ($fieldConfig['config']['maxitems'] ?? 0) === 1) {
-                        // With 'selectSingle' or with 'maxitems = 1', only a single value can be selected.
-                        if (
-                            !is_array($fieldConfig['config']['fileFolderConfig'] ?? false)
-                            && ($items !== [] || ($fieldConfig['config']['foreign_table'] ?? '') !== '')
-                            && $itemsContainsOnlyIntegers === true
-                        ) {
-                            // If the item list is empty, or if it contains only int values, an int field is enough.
-                            // Also, the config must not be a 'fileFolderConfig' field which takes string values.
+                        // If only one value is NOT an integer use type string.
+                        foreach ($items as $item) {
+                            if (!MathUtility::canBeInterpretedAsInteger($item['value'])) {
+                                $tables[$tableName]->addColumn(
+                                    $this->quote($fieldName),
+                                    Types::STRING,
+                                    [
+                                        'length' => 255,
+                                        'default' => '',
+                                        'notnull' => true,
+                                    ]
+                                );
+                                // continue with next $tableDefinition['columns']
+                                // see: DefaultTcaSchemaTest->enrichAddsRadioStringVerifyThatCorrectLoopIsContinued()
+                                break 2;
+                            }
+                        }
+                        // Use integer type.
+                        $allValues = array_map(fn(array $item): int => (int)$item['value'], $items);
+                        $minValue = min($allValues);
+                        $maxValue = max($allValues);
+                        // Try to safe some bytes - can be reconsidered to simply use Types::INTEGER.
+                        $integerType = ($minValue >= -32768 && $maxValue < 32768)
+                            ? Types::SMALLINT
+                            : Types::INTEGER;
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            $integerType,
+                            [
+                                'default' => 0,
+                                'notnull' => true,
+                            ]
+                        );
+                        break;
+
+                    case 'link':
+                        $nullable = $fieldConfig['config']['nullable'] ?? false;
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::TEXT,
+                            [
+                                'length' => 65535,
+                                'default' => $nullable ? null : '',
+                                'notnull' => !$nullable,
+                            ]
+                        );
+                        break;
+
+                    case 'input':
+                        $length = $fieldConfig['config']['max'] ?? null;
+                        $nullable = $fieldConfig['config']['nullable'] ?? false;
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::STRING,
+                            [
+                                'length' => $length ?? 255,
+                                'default' => '',
+                                'notnull' => !$nullable,
+                            ]
+                        );
+                        break;
+
+                    case 'inline':
+                        if (($fieldConfig['config']['MM'] ?? '') !== '' || ($fieldConfig['config']['foreign_field'] ?? '') !== '') {
+                            // Parent "count" field
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::INTEGER,
+                                [
+                                    'default' => 0,
+                                    'notnull' => true,
+                                    'unsigned' => true,
+                                ]
+                            );
+                        } else {
+                            // Inline "csv"
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::STRING,
+                                [
+                                    'default' => '',
+                                    'notnull' => true,
+                                    'length' => 255,
+                                ]
+                            );
+                        }
+                        if (($fieldConfig['config']['foreign_field'] ?? '') !== '') {
+                            // Add definition for "foreign_field" (contains parent uid) in the child table if it is not defined
+                            // in child TCA or if it is "just" a "passthrough" field, and not manually configured in ext_tables.sql
+                            $childTable = $fieldConfig['config']['foreign_table'];
+                            if (!(($tables[$childTable] ?? null) instanceof Table)) {
+                                throw new DefaultTcaSchemaTablePositionException('Table ' . $childTable . ' not found in schema list', 1527854474);
+                            }
+                            $childTableForeignFieldName = $fieldConfig['config']['foreign_field'];
+                            $childTableForeignFieldConfig = $GLOBALS['TCA'][$childTable]['columns'][$childTableForeignFieldName] ?? [];
+                            if (($childTableForeignFieldConfig === [] || ($childTableForeignFieldConfig['config']['type'] ?? '') === 'passthrough')
+                                && !$this->isColumnDefinedForTable($tables, $childTable, $childTableForeignFieldName)
+                            ) {
+                                $tables[$childTable]->addColumn(
+                                    $this->quote($childTableForeignFieldName),
+                                    Types::INTEGER,
+                                    [
+                                        'default' => 0,
+                                        'notnull' => true,
+                                        'unsigned' => true,
+                                    ]
+                                );
+                            }
+                            // Add definition for "foreign_table_field" (contains name of parent table) in the child table if it is not
+                            // defined in child TCA or if it is "just" a "passthrough" field, and not manually configured in ext_tables.sql
+                            $childTableForeignTableFieldName = $fieldConfig['config']['foreign_table_field'] ?? '';
+                            $childTableForeignTableFieldConfig = $GLOBALS['TCA'][$childTable]['columns'][$childTableForeignTableFieldName] ?? [];
+                            if ($childTableForeignTableFieldName !== ''
+                                && ($childTableForeignTableFieldConfig === [] || ($childTableForeignTableFieldConfig['config']['type'] ?? '') === 'passthrough')
+                                && !$this->isColumnDefinedForTable($tables, $childTable, $childTableForeignTableFieldName)
+                            ) {
+                                $tables[$childTable]->addColumn(
+                                    $this->quote($childTableForeignTableFieldName),
+                                    Types::STRING,
+                                    [
+                                        'default' => '',
+                                        'notnull' => true,
+                                        'length' => 255,
+                                    ]
+                                );
+                            }
+                        }
+                        break;
+
+                    case 'number':
+                        $type = ($fieldConfig['config']['format'] ?? '') === 'decimal' ? Types::DECIMAL : Types::INTEGER;
+                        $nullable = $fieldConfig['config']['nullable'] ?? false;
+                        $lowerRange = $fieldConfig['config']['range']['lower'] ?? -1;
+                        // Integer type for all database platforms.
+                        if ($type === Types::INTEGER) {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::INTEGER,
+                                [
+                                    'default' => $nullable === true ? null : 0,
+                                    'notnull' => !$nullable,
+                                    'unsigned' => $lowerRange >= 0,
+                                ]
+                            );
+                            break;
+                        }
+                        // SQLite internally defines NUMERIC() fields as real, and therefore as floating numbers. pdo_sqlite
+                        // then returns PHP float which can lead to rounding issues. See https://bugs.php.net/bug.php?id=81397
+                        // for more details. We create a 'string' field on SQLite as workaround.
+                        // @todo: Database schema should be created with MySQL in mind and not mixed. Transforming to the
+                        //        concrete database platform is handled in the database compare area. Sadly, this is not
+                        //        possible right now but upcoming preparation towards doctrine/dbal 4 makes it possible to
+                        //        move this "hack" to a different place.
+                        if ($tableConnectionPlatform instanceof DoctrineSQLitePlatform) {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::STRING,
+                                [
+                                    'default' => $nullable === true ? null : '0.00',
+                                    'notnull' => !$nullable,
+                                    'length' => 255,
+                                ]
+                            );
+                            break;
+                        }
+                        // Decimal for all supported platforms except SQLite
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::DECIMAL,
+                            [
+                                'default' => $nullable === true ? null : 0.00,
+                                'notnull' => !$nullable,
+                                'unsigned' => $lowerRange >= 0,
+                                'precision' => 10,
+                                'scale' => 2,
+                            ]
+                        );
+                        break;
+
+                    case 'select':
+                        if (($fieldConfig['config']['MM'] ?? '') !== '') {
+                            // MM relation, this is a "parent count" field. Have an int.
                             $tables[$tableName]->addColumn(
                                 $this->quote($fieldName),
                                 Types::INTEGER,
                                 [
                                     'notnull' => true,
                                     'default' => 0,
-                                    'unsigned' => $itemsAreAllPositive,
+                                    'unsigned' => true,
                                 ]
                             );
-                            continue;
+                            break;
                         }
-                        // If int is no option, have a string field.
-                        $tables[$tableName]->addColumn(
-                            $this->quote($fieldName),
-                            Types::STRING,
-                            [
-                                'notnull' => true,
-                                'default' => '',
-                                'length' => $dbFieldLength > 0 ? $dbFieldLength : 255,
-                            ]
-                        );
-                        continue;
-                    }
-                    if ($itemsContainsOnlyIntegers) {
-                        // Multiple values can be selected and will be stored comma separated. When manual item values are
-                        // all integers, or if there is a foreign_table, we end up with a comma separated list of integers.
-                        // Using string / varchar 255 here should be long enough to store plenty of values, and can be
-                        // changed by setting 'dbFieldLength'.
-                        $tables[$tableName]->addColumn(
-                            $this->quote($fieldName),
-                            Types::STRING,
-                            [
-                                // @todo: nullable = true is not a good default here. This stems from the fact that this
-                                //        if triggers a lot of TEXT->VARCHAR() field changes during upgrade, where TEXT
-                                //        is always nullable, but varchar() is not. As such, we for now declare this
-                                //        nullable, but could have a look at it later again when a value upgrade
-                                //        for such cases is in place that updates existing null fields to empty string.
-                                'notnull' => false,
-                                'default' => '',
-                                'length' => $dbFieldLength > 0 ? $dbFieldLength : 255,
-                            ]
-                        );
-                        continue;
-                    }
-                }
-
-                if ($dbFieldLength > 0) {
-                    // If nothing else matches, but there is a dbFieldLength set, have varchar with that length.
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::STRING,
-                        [
-                            'notnull' => true,
-                            'default' => '',
-                            'length' => $dbFieldLength,
-                        ]
-                    );
-                } else {
-                    // Final fallback creates a (nullable) text field.
-                    $tables[$tableName]->addColumn(
-                        $this->quote($fieldName),
-                        Types::TEXT,
-                        [
-                            'notnull' => false,
-                        ]
-                    );
+                        $dbFieldLength = (int)($fieldConfig['config']['dbFieldLength'] ?? 0);
+                        // If itemsProcFunc is not set, check the item values
+                        if (($fieldConfig['config']['itemsProcFunc'] ?? '') === '') {
+                            $items = $fieldConfig['config']['items'] ?? [];
+                            $itemsContainsOnlyIntegers = true;
+                            foreach ($items as $item) {
+                                if (!MathUtility::canBeInterpretedAsInteger($item['value'])) {
+                                    $itemsContainsOnlyIntegers = false;
+                                    break;
+                                }
+                            }
+                            $itemsAreAllPositive = true;
+                            foreach ($items as $item) {
+                                if ($item['value'] < 0) {
+                                    $itemsAreAllPositive = false;
+                                    break;
+                                }
+                            }
+                            // @todo: The dependency to renderType is unfortunate here. It's only purpose is to potentially have int fields
+                            //        instead of string when this is a 'single' relation / value. However, renderType should usually not
+                            //        influence DB layer at all. Maybe 'selectSingle' should be changed to an own 'type' instead to make
+                            //        this more explicit. Maybe DataHandler could benefit from this as well?
+                            if (($fieldConfig['config']['renderType'] ?? '') === 'selectSingle' || ($fieldConfig['config']['maxitems'] ?? 0) === 1) {
+                                // With 'selectSingle' or with 'maxitems = 1', only a single value can be selected.
+                                if (
+                                    !is_array($fieldConfig['config']['fileFolderConfig'] ?? false)
+                                    && ($items !== [] || ($fieldConfig['config']['foreign_table'] ?? '') !== '')
+                                    && $itemsContainsOnlyIntegers === true
+                                ) {
+                                    // If the item list is empty, or if it contains only int values, an int field is enough.
+                                    // Also, the config must not be a 'fileFolderConfig' field which takes string values.
+                                    $tables[$tableName]->addColumn(
+                                        $this->quote($fieldName),
+                                        Types::INTEGER,
+                                        [
+                                            'notnull' => true,
+                                            'default' => 0,
+                                            'unsigned' => $itemsAreAllPositive,
+                                        ]
+                                    );
+                                    break;
+                                }
+                                // If int is no option, have a string field.
+                                $tables[$tableName]->addColumn(
+                                    $this->quote($fieldName),
+                                    Types::STRING,
+                                    [
+                                        'notnull' => true,
+                                        'default' => '',
+                                        'length' => $dbFieldLength > 0 ? $dbFieldLength : 255,
+                                    ]
+                                );
+                                break;
+                            }
+                            if ($itemsContainsOnlyIntegers) {
+                                // Multiple values can be selected and will be stored comma separated. When manual item values are
+                                // all integers, or if there is a foreign_table, we end up with a comma separated list of integers.
+                                // Using string / varchar 255 here should be long enough to store plenty of values, and can be
+                                // changed by setting 'dbFieldLength'.
+                                $tables[$tableName]->addColumn(
+                                    $this->quote($fieldName),
+                                    Types::STRING,
+                                    [
+                                        // @todo: nullable = true is not a good default here. This stems from the fact that this
+                                        //        if triggers a lot of TEXT->VARCHAR() field changes during upgrade, where TEXT
+                                        //        is always nullable, but varchar() is not. As such, we for now declare this
+                                        //        nullable, but could have a look at it later again when a value upgrade
+                                        //        for such cases is in place that updates existing null fields to empty string.
+                                        'notnull' => false,
+                                        'default' => '',
+                                        'length' => $dbFieldLength > 0 ? $dbFieldLength : 255,
+                                    ]
+                                );
+                                break;
+                            }
+                        }
+                        if ($dbFieldLength > 0) {
+                            // If nothing else matches, but there is a dbFieldLength set, have varchar with that length.
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::STRING,
+                                [
+                                    'notnull' => true,
+                                    'default' => '',
+                                    'length' => $dbFieldLength,
+                                ]
+                            );
+                        } else {
+                            // Final fallback creates a (nullable) text field.
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::TEXT,
+                                [
+                                    'notnull' => false,
+                                ]
+                            );
+                        }
+                        break;
                 }
             }
-
         }
 
         return $tables;

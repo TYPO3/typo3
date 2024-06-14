@@ -86,8 +86,8 @@
 				<field index="l10n_parent" type="integer">5</field>
 				<field index="l10n_source" type="integer">5</field>
 				<field index="perms_everybody" type="integer">15</field>
-				<field index="title">Dummy with 3 languages, fully translated [GERMAN]</field>
-				<field index="doktype" type="integer">1</field>
+                <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy with 3 languages, fully translated [GERMAN]</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="l10n_parent" type="array">
@@ -119,8 +119,8 @@
 				<field index="sys_language_uid" type="integer">1</field>
 				<field index="l18n_parent" type="integer">3</field>
 				<field index="l10n_source" type="integer">3</field>
-				<field index="header">Test content #4 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (german=1)</field>
                 <field index="CType">text</field>
+                <field index="header">Test content #4 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (german=1)</field>
             </fieldlist>
 			<related index="rels" type="array">
 				<field index="l18n_parent" type="array">
@@ -154,8 +154,8 @@
 				<field index="l10n_parent">0</field>
 				<field index="l10n_source">0</field>
 				<field index="perms_everybody">15</field>
-				<field index="title">Dummy with 3 languages, fully translated [DEFAULT]</field>
-				<field index="doktype">1</field>
+                <field index="doktype">1</field>
+                <field index="title">Dummy with 3 languages, fully translated [DEFAULT]</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
@@ -168,8 +168,8 @@
 				<field index="sys_language_uid">0</field>
 				<field index="l18n_parent">0</field>
 				<field index="l10n_source">0</field>
-				<field index="header">Test content #3 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (default language=0)</field>
                 <field index="CType">text</field>
+                <field index="header">Test content #3 pid=5 &#039;Dummy with 3 languages, fully translated&#039; (default language=0)</field>
             </fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>

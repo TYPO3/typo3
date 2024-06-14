@@ -195,8 +195,8 @@
                 <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="perms_everybody" type="integer">15</field>
-                <field index="title">Root</field>
                 <field index="doktype" type="integer">1</field>
+                <field index="title">Root</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>
@@ -207,12 +207,12 @@
                 <field index="uid_local" type="integer">1</field>
                 <field index="title" type="NULL"></field>
                 <field index="alternative" type="NULL"></field>
-                <field index="description" type="NULL"></field>
-                <field index="link"/>
+                <field index="uid_foreign" type="integer">1</field>
                 <field index="tablenames">tt_content</field>
                 <field index="fieldname">image</field>
-                <field index="uid_foreign" type="integer">1</field>
                 <field index="sorting_foreign" type="integer">0</field>
+                <field index="link"/>
+                <field index="description" type="NULL"></field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="uid_local" type="array">
@@ -233,10 +233,10 @@
                 <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="t3ver_oid" type="integer">0</field>
-                <field index="image" type="integer">1</field>
-                <field index="header_link">file:1</field>
-                <field index="header">Test content</field>
                 <field index="CType">textpic</field>
+                <field index="header">Test content</field>
+                <field index="header_link">file:1</field>
+                <field index="image" type="integer">1</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="header_link" type="array">
@@ -275,8 +275,8 @@
                 <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">1</field>
                 <field index="perms_everybody" type="integer">15</field>
-                <field index="title">Dummy 1-3</field>
                 <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy 1-3</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>
@@ -287,8 +287,8 @@
                 <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="perms_everybody" type="integer">15</field>
-                <field index="title">Dummy 1-2</field>
                 <field index="doktype" type="integer">1</field>
+                <field index="title">Dummy 1-2</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>
@@ -303,11 +303,11 @@
                 <field index="sha1">da9acdf1e105784a57bbffec9520969578287797</field>
                 <field index="creation_date">1389878273</field>
                 <field index="modification_date">1389878273</field>
-                <field index="mime_type">image/jpeg</field>
-                <field index="metadata">0</field>
-                <field index="size">1958</field>
                 <field index="storage">1</field>
                 <field index="type">2</field>
+                <field index="mime_type">image/jpeg</field>
+                <field index="size">1958</field>
+                <field index="metadata">0</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">
@@ -340,10 +340,12 @@
                 <field index="pid">0</field>
                 <field index="description" type="NULL"></field>
                 <field index="is_public">1</field>
+                <field index="name">fileadmin</field>
                 <field index="is_browsable">1</field>
                 <field index="is_default">0</field>
                 <field index="is_writable">1</field>
                 <field index="is_online">1</field>
+                <field index="driver">Local</field>
                 <field index="configuration">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
 &lt;T3FlexForms&gt;
 	&lt;data&gt;
@@ -362,8 +364,6 @@
 		&lt;/sheet&gt;
 	&lt;/data&gt;
 &lt;/T3FlexForms&gt;</field>
-                <field index="name">fileadmin</field>
-                <field index="driver">Local</field>
             </fieldlist>
             <related index="rels" type="array"/>
         </tablerow>
@@ -375,10 +375,10 @@
                 <field index="l10n_parent">0</field>
                 <field index="title">Dummy image</field>
                 <field index="alternative">Photo of program code</field>
+                <field index="file">1</field>
                 <field index="description">This is a dummy image.</field>
                 <field index="width">400</field>
                 <field index="height">300</field>
-                <field index="file">1</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="file" type="array">
@@ -400,10 +400,10 @@
                 <field index="l10n_parent">1</field>
                 <field index="title">Beispiel Bild</field>
                 <field index="alternative">Foto von Programmcode</field>
+                <field index="file">1</field>
                 <field index="description">Nur ein Beispielbild.</field>
                 <field index="width">400</field>
                 <field index="height">300</field>
-                <field index="file">1</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="l10n_parent" type="array">
