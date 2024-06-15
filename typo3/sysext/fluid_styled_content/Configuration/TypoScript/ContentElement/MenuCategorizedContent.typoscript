@@ -10,8 +10,7 @@ tt_content.menu_categorized_content {
         10 = database-query
         10 {
             table = tt_content
-            selectFields = {#tt_content}.*
-            groupBy = uid
+            selectFields = DISTINCT {#tt_content}.*
             pidInList.data = leveluid : 0
             recursive = 99
             join.data = field:selected_categories
