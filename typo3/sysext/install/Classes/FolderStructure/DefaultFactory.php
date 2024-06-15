@@ -98,6 +98,33 @@ class DefaultFactory
                             ],
                         ],
                     ],
+                    [
+                        'name' => 'typo3conf',
+                        'type' => DirectoryNode::class,
+                        'targetPermission' => $directoryPermission,
+                        'children' => [
+                            [
+                                'name' => 'ext',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ],
+                            [
+                                'name' => 'l10n',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ],
+                            [
+                                'name' => 'sites',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ],
+                            [
+                                'name' => 'system',
+                                'type' => DirectoryNode::class,
+                                'targetPermission' => $directoryPermission,
+                            ],
+                        ],
+                    ],
                     $this->getFileadminStructure(),
                 ],
             ];
@@ -116,36 +143,6 @@ class DefaultFactory
                     'type' => FileNode::class,
                     'targetPermission' => $filePermission,
                     'targetContentFile' => self::TEMPLATE_PATH . '/root-web-config',
-                ];
-            }
-
-            if (!Environment::isComposerMode()) {
-                $structure['children'][] = [
-                    'name' => 'typo3conf',
-                    'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission,
-                    'children' => [
-                        [
-                            'name' => 'ext',
-                            'type' => DirectoryNode::class,
-                            'targetPermission' => $directoryPermission,
-                        ],
-                        [
-                            'name' => 'l10n',
-                            'type' => DirectoryNode::class,
-                            'targetPermission' => $directoryPermission,
-                        ],
-                        [
-                            'name' => 'sites',
-                            'type' => DirectoryNode::class,
-                            'targetPermission' => $directoryPermission,
-                        ],
-                        [
-                            'name' => 'system',
-                            'type' => DirectoryNode::class,
-                            'targetPermission' => $directoryPermission,
-                        ],
-                    ],
                 ];
             }
         } else {
@@ -167,6 +164,11 @@ class DefaultFactory
                         $this->getTemporaryAssetsFolderStructure(),
                     ],
                 ],
+                [
+                    'name' => 'typo3conf',
+                    'type' => DirectoryNode::class,
+                    'targetPermission' => $directoryPermission,
+                ],
                 $this->getFileadminStructure(),
             ];
 
@@ -184,14 +186,6 @@ class DefaultFactory
                     'type' => FileNode::class,
                     'targetPermission' => $filePermission,
                     'targetContentFile' => self::TEMPLATE_PATH . '/root-web-config',
-                ];
-            }
-
-            if (!Environment::isComposerMode()) {
-                $publicPathSubStructure[] = [
-                    'name' => 'typo3conf',
-                    'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission,
                 ];
             }
 
