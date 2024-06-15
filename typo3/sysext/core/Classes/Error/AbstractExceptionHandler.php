@@ -48,6 +48,9 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         1616175847, // Frontend login request is rate limited
         1436717275, // Request with unsupported HTTP method
         1699604555, // Outdated __trustedProperties format in extbase property mapping
+        1517949792, // The IP address of your client does not match the list of allowed IP addresses
+        1517949793, // Backend access by browser is locked for maintenance
+        1517949794, // Backend and Install Tool are locked for maintenance
     ];
 
     public const IGNORED_HMAC_EXCEPTION_CODES = [
