@@ -479,7 +479,7 @@ return [
             ],
         ],
         'inputdatetime_26' => [
-            'label' => 'inputdatetime_6',
+            'label' => 'inputdatetime_26',
             'description' => 'format=timesec nullable=true',
             'config' => [
                 'type' => 'datetime',
@@ -586,7 +586,7 @@ return [
             ],
         ],
         'link_4' => [
-            'label' => 'link_2',
+            'label' => 'link_4',
             'description' => 'type=link linkBrowser disabled',
             'config' => [
                 'type' => 'link',
@@ -1412,7 +1412,7 @@ backend_layout {
             ],
         ],
         'checkbox_26' => [
-            'label' => 'checkbox_26 description',
+            'label' => 'checkbox_26',
             'description' => 'renderType=checkboxLabeledToggle single readOnly',
             'config' => [
                 'type' => 'check',
@@ -1429,7 +1429,7 @@ backend_layout {
         ],
 
         'radio_1' => [
-            'label' => 'description',
+            'label' => 'radio_1',
             'description' => 'radio_1 three options, one without label',
             'config' => [
                 'type' => 'radio',
