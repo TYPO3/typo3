@@ -102,6 +102,8 @@ final class FieldGeneratorResolver
         FieldGenerator\TypePassthrough::class,
         // General type=user generator
         FieldGenerator\TypeUser::class,
+        // General type=uuid generator
+        FieldGenerator\TypeUuid::class,
 
         // type=group
         FieldGenerator\TypeGroupFal::class,

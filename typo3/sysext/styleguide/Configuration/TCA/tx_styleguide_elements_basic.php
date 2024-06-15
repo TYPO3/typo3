@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'Form engine elements - input, text, checkbox, radio, none, passthrough, user',
+        'title' => 'Form engine elements - input, text, uuid, checkbox, radio, none, passthrough, user',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -1088,6 +1088,30 @@ backend_layout {
             ],
         ],
 
+        'uuid_1' => [
+            'label' => 'uuid_1',
+            'description' => 'uuid',
+            'config' => [
+                'type' => 'uuid',
+            ],
+        ],
+        'uuid_2' => [
+            'label' => 'uuid_2',
+            'description' => 'uuid without copy icon',
+            'config' => [
+                'type' => 'uuid',
+                'enableCopyToClipboard' => false,
+            ],
+        ],
+        'uuid_3' => [
+            'label' => 'uuid_3',
+            'description' => 'uuid version 7',
+            'config' => [
+                'type' => 'uuid',
+                'version' => 7,
+            ],
+        ],
+
         'checkbox_1' => [
             'label' => 'checkbox_1',
             'description' => 'field description',
@@ -1897,6 +1921,8 @@ backend_layout {
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
                     text_20,
+                --div--;uuid,
+                    uuid_1, uuid_2, uuid_3,
                 --div--;check,
                     checkbox_1, checkbox_9, checkbox_2, checkbox_17, checkbox_25, checkbox_18, checkbox_24, checkbox_19, checkbox_26,
                     checkbox_20, checkbox_21, checkbox_22, checkbox_23, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8,

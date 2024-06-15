@@ -26,8 +26,6 @@ final class KauderwelschService
 {
     /**
      * Lorem ipsum test with fixed length.
-     *
-     * @return string
      */
     public function getLoremIpsum(): string
     {
@@ -36,8 +34,6 @@ final class KauderwelschService
 
     /**
      * Lorem ipsum test with fixed length and HTML in it.
-     *
-     * @return string
      */
     public function getLoremIpsumHtml(): string
     {
@@ -46,8 +42,6 @@ final class KauderwelschService
 
     /**
      * Get a single word
-     *
-     * @return string
      */
     public function getWord(): string
     {
@@ -64,8 +58,6 @@ final class KauderwelschService
 
     /**
      * Get an integer
-     *
-     * @return int
      */
     public function getInteger(): int
     {
@@ -74,8 +66,6 @@ final class KauderwelschService
 
     /**
      * Timestamp of a day before 1970
-     *
-     * @return int
      */
     public function getDateTimestamp(): int
     {
@@ -85,8 +75,6 @@ final class KauderwelschService
 
     /**
      * Timestamp of a day before 1970 with seconds
-     *
-     * @return int
      */
     public function getDatetimeTimestamp(): int
     {
@@ -96,8 +84,6 @@ final class KauderwelschService
 
     /**
      * Date before 1970 as string
-     *
-     * @return string
      */
     public function getDateString(): string
     {
@@ -107,8 +93,6 @@ final class KauderwelschService
 
     /**
      * Date before 1970 with seconds as string
-     *
-     * @return string
      */
     public function getDatetimeString(): string
     {
@@ -118,8 +102,6 @@ final class KauderwelschService
 
     /**
      * Get a float
-     *
-     * @return float
      */
     public function getFloat(): float
     {
@@ -128,8 +110,6 @@ final class KauderwelschService
 
     /**
      * Get a link
-     *
-     * @return string
      */
     public function getLink(): string
     {
@@ -138,8 +118,6 @@ final class KauderwelschService
 
     /**
      * Get a valid email
-     *
-     * @return string
      */
     public function getEmail(): string
     {
@@ -147,9 +125,15 @@ final class KauderwelschService
     }
 
     /**
+     * Get a valid uuid v4 / v7 - both have same format
+     */
+    public function getUuid(): string
+    {
+        return '2cc152d0-08b4-438b-92e5-4b6e8d90b465';
+    }
+
+    /**
      * Get a color as hex string
-     *
-     * @return string
      */
     public function getHexColor(): string
     {
