@@ -88,6 +88,7 @@ Subproperties
 
 .. toctree::
 
+   form/Index
    formElements/Index
    finishersDefinition/Index
    validatorsDefinition/Index
