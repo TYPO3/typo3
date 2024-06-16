@@ -81,7 +81,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
                 self::CONFIG_LAYOUTROOTPATHS => $this->layoutRootPaths,
             ];
         } else {
-            $typoScript = (array)$this->getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+            $typoScript = $this->getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
             $signature = str_replace('_', '', $extensionKey);
             if ($this->isBackendMode() && isset($typoScript['module.']['tx_' . $signature . '.']['view.'])) {
                 $configuredPaths = (array)$typoScript['module.']['tx_' . $signature . '.']['view.'];
