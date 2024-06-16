@@ -812,7 +812,6 @@ Concrete configurations
     formElementTypes/Email
     formElementTypes/Fieldset
     formElementTypes/FileUpload
-    formElementTypes/Form
     formElementTypes/GridRow
     formElementTypes/Hidden
     formElementTypes/Honeypot

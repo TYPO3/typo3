@@ -1,0 +1,22 @@
+..  include:: /Includes.rst.txt
+
+renderingOptions.fluidAdditionalAttributes
+------------------------------------------
+
+:aspect:`Option path`
+    prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.fluidAdditionalAttributes
+
+:aspect:`Data type`
+    array
+
+:aspect:`Needed by`
+    Frontend/ Backend (form editor)
+
+:aspect:`Mandatory`
+    No
+
+:aspect:`Good to know`
+    - :ref:`"Translate form definition"<concepts-frontendrendering-translation-formdefinition>`
+
+:aspect:`Description`
+    The values within this array are directly used within the form element ViewHelper's property ``additionalAttributes``.
