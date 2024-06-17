@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c939df5f9ea3bfccace283efe50c7bbb",
+    "content-hash": "d3a7605892c78c72f4c4f050ae471215",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7208,16 +7208,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.2.1",
+            "version": "11.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "1b8775732e9c401bda32df3ffbdf90dec7533ceb"
+                "reference": "3e1843a58adc9c433ee6170bdee7d615f7ccc20b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1b8775732e9c401bda32df3ffbdf90dec7533ceb",
-                "reference": "1b8775732e9c401bda32df3ffbdf90dec7533ceb",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3e1843a58adc9c433ee6170bdee7d615f7ccc20b",
+                "reference": "3e1843a58adc9c433ee6170bdee7d615f7ccc20b",
                 "shasum": ""
             },
             "require": {
@@ -7288,7 +7288,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.2.1"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.2.2"
             },
             "funding": [
                 {
@@ -7304,7 +7304,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-11T07:30:35+00:00"
+            "time": "2024-06-15T09:14:53+00:00"
         },
         {
             "name": "psy/psysh",
