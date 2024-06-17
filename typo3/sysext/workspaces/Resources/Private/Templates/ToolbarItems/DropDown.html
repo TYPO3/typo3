@@ -1,39 +1,52 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p class="h3 dropdown-headline"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace" /></p>
-<ul class="dropdown-list">
-    <f:if condition="{topItem}">
-        <f:then>
-            <f:render section="workspaceItem" arguments="{item: topItem}" />
-        </f:then>
-        <f:else>
-            <li>
-                <f:comment>no items on top (= no workspace to work in)</f:comment>
-                <p class="dropdown-item-text">
-                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_noWSfound" />
-                </p>
-            </li>
-        </f:else>
+<p class="dropdown-item-text">
+    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace.intro.text" />
+    <f:if condition="{showLinkToModule}">
+        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace.intro.link.description" />
+        <a href="#" target="list_frame" data-module="workspaces_admin" class="link-primary t3js-workspaces-modulelink">
+            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace.intro.link" />
+        </a>
     </f:if>
-    <f:if condition="{additionalItems}">
-        <f:for each="{additionalItems}" as="item">
-            <f:render section="workspaceItem" arguments="{item: item}" />
-        </f:for>
-    </f:if>
-</ul>
+</p>
 
-
-<f:if condition="{showLinkToModule}">
-    <hr class="dropdown-divider" aria-hidden="true">
-    <a href="#" target="list_frame" data-module="workspaces_admin" class="dropdown-item t3js-workspaces-modulelink">
-        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_workspace" />
-    </a>
+<f:if condition="{topItem} || {additionalItems}">
+    <f:then>
+        <ul class="dropdown-list">
+            <f:if condition="{topItem}">
+                <f:render section="workspaceItem" arguments="{item: topItem}" />
+            </f:if>
+            <f:if condition="{additionalItems}">
+                <f:for each="{additionalItems}" as="item">
+                    <f:render section="workspaceItem" arguments="{item: item}" />
+                </f:for>
+            </f:if>
+        </ul>
+    </f:then>
+    <f:else>
+        <f:comment><!-- No workspace to work in --></f:comment>
+        <hr class="dropdown-divider" aria-hidden="true">
+        <div class="dropdown-row">
+            <div>
+                <span class="text-danger">
+                    <core:icon identifier="actions-exclamation-circle-alt" />
+                </span>
+            </div>
+            <div>
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace.noWorkspaceFound" />
+            </div>
+        </div>
+    </f:else>
 </f:if>
 
 <f:section name="workspaceItem">
     <li class="t3js-workspace-item">
         <a href="{item.link}" data-workspaceid="{item.workspaceId}" class="dropdown-item t3js-workspaces-switchlink {item.isActive ? 'active' : ''}">
             <span class="dropdown-item-columns">
+                <span class="dropdown-item-column dropdown-item-column-icon">
+                    <core:icon identifier="mimetypes-x-sys_workspace" size="small" />
+                </span>
                 <span class="dropdown-item-column dropdown-item-column-title">
                     {item.label -> f:format.htmlspecialchars()}
                 </span>

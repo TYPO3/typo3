@@ -35,7 +35,7 @@
 </f:if>
 <f:if condition="{f:count(subject: recentUsers)} > 0">
     <hr class="dropdown-divider" aria-hidden="true">
-    <p class="h3 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.list" /></p>
+    <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.list" /></p>
     <ul class="modulemenu-group-container">
         <f:for each="{recentUsers}" as="user">
             <li>
@@ -57,34 +57,24 @@
             </li>
         </f:for>
     </ul>
-    <hr class="dropdown-divider" aria-hidden="true">
 </f:if>
+<hr class="dropdown-divider" aria-hidden="true">
 <f:if condition="{switchUserMode}">
     <f:then>
-        <typo3-backend-switch-user
-            class="dropdown-item"
-            mode="exit">
-            <span class="dropdown-item-columns">
-                <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                    <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
-                </span>
-                <span class="dropdown-item-column dropdown-item-column-title">
-                    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exitSwitchUser')}
-                </span>
-            </span>
-        </typo3-backend-switch-user>
+        <div class="dropdown-item-text">
+            <typo3-backend-switch-user class="btn btn-sm btn-default" mode="exit">
+                <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exitSwitchUser" />
+            </typo3-backend-switch-user>
+        </div>
     </f:then>
     <f:else>
-        <f:be.link route="logout" class="dropdown-item" target="_top">
-            <span class="dropdown-item-columns">
-                <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                    <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
-                </span>
-                <span class="dropdown-item-column dropdown-item-column-title">
-                    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout')}
-                </span>
-            </span>
-        </f:be.link>
+        <div class="dropdown-item-text">
+            <f:be.link route="logout" class="btn btn-sm btn-default" target="_top">
+                <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout" />
+            </f:be.link>
+        </div>
     </f:else>
 </f:if>
 </html>

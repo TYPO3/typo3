@@ -159,17 +159,11 @@
 			<trans-unit id="bookmark_inactive" resname="bookmark_inactive">
 				<source>inactive</source>
 			</trans-unit>
-			<trans-unit id="bookmark_noWSfound" resname="bookmark_noWSfound">
-				<source>ERROR: No workspaces found!</source>
-			</trans-unit>
 			<trans-unit id="bookmark_FEPreview" resname="bookmark_FEPreview">
 				<source>Enable Frontend Preview</source>
 			</trans-unit>
 			<trans-unit id="bookmark_workspaceComparisonView" resname="bookmark_workspaceComparisonView">
 				<source>Enable comparison view</source>
-			</trans-unit>
-			<trans-unit id="bookmark_workspace" resname="bookmark_workspace">
-				<source>Go to Workspace Module</source>
 			</trans-unit>
 			<trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles">
 				<source>Overwrite existing files</source>

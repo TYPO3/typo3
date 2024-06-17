@@ -65,8 +65,8 @@ final class WorkspaceModuleCest
 
         $I->switchToMainFrame();
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('Go to Workspace Module', self::$topBarModuleSelector);
-        $I->click('Go to Workspace Module', self::$topBarModuleSelector);
+        $I->canSee('Workspaces Module', self::$topBarModuleSelector);
+        $I->click('Workspaces Module', self::$topBarModuleSelector);
 
         $I->comment('See the new page title in Workspace module');
         $I->switchToContentFrame();

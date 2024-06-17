@@ -5,68 +5,81 @@
     }"
 />
 
-<p class="h3 dropdown-headline">{f:translate(key: 'LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbaritem')}</p>
-<f:if condition="{noDocs}">
-    <p class="dropdown-item-text"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:no_docs" /></p>
-</f:if>
+<p class="h3 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.headline" /></p>
 
-<f:if condition="{noDocs}">
-    <f:else>
-        <f:if condition="{openDocuments}">
-            <hr class="dropdown-divider" aria-hidden="true">
-            <ul class="dropdown-list" data-open-docs="{openDocuments->f:count()}">
+<p class="h4 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.openDocuments.headline" /></p>
+<f:if condition="{openDocuments}">
+    <f:then>
+        <ul class="dropdown-list" data-open-docs="{openDocuments->f:count()}">
+            <f:for each="{openDocuments}" as="openDocument">
                 <li>
-                    <p class="h3 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:open_docs" /></p>
-                    <a href="#" class="dropdown-item dropdown-item-action t3js-topbar-opendocs-close"
-                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeAllDocs')}">
+                    <a href="{openDocument.uri}" class="dropdown-item dropdown-item-title t3js-open-doc"
+                        data-pid="{openDocument.label}"
+                        title="{openDocument.label}">
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon">
+                                <core:iconForRecord table="{openDocument.table}" row="{openDocument.record}"/>
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                {openDocument.label}
+                            </span>
+                        </span>
+                    </a>
+                    <a
+                        href="#"
+                        class="dropdown-item dropdown-item-action t3js-topbar-opendocs-close"
+                        data-opendocsidentifier="{openDocument.md5sum}"
+                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc')}: {openDocument.label}"
+                        role="button"
+                    >
                         <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
                     </a>
                 </li>
-                <f:for each="{openDocuments}" as="openDocument">
-                    <li>
-                        <a href="{openDocument.uri}" class="dropdown-item dropdown-item-title t3js-open-doc"
-                            data-pid="{openDocument.label}"
-                            title="{openDocument.label}">
-                            <span class="dropdown-item-columns">
-                                <span class="dropdown-item-column dropdown-item-column-icon">
-                                    <core:iconForRecord table="{openDocument.table}" row="{openDocument.record}"/>
-                                </span>
-                                <span class="dropdown-item-column dropdown-item-column-title">
-                                    {openDocument.label}
-                                </span>
-                            </span>
-                        </a>
-                        <a href="#" class="dropdown-item dropdown-item-action t3js-topbar-opendocs-close"
-                            data-opendocsidentifier="{openDocument.md5sum}"
-                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc')}: {openDocument.label}">
-                            <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
-                        </a>
-                    </li>
-                </f:for>
-            </ul>
-        </f:if>
-        <f:if condition="{recentDocuments}">
-            <hr class="dropdown-divider" aria-hidden="true">
-            <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:recent_docs" /></p>
-            <ul class="dropdown-list">
-                <f:for each="{recentDocuments}" as="recentDocument">
-                    <li>
-                        <a href="{recentDocument.uri}" class="dropdown-item t3js-open-doc"
-                            data-pid="{recentDocument.pid}"
-                            title="{recentDocument.label}">
-                            <span class="dropdown-item-columns">
-                                <span class="dropdown-item-column dropdown-item-column-icon">
-                                    <core:iconForRecord table="{recentDocument.table}" row="{recentDocument.record}"/>
-                                </span>
-                                <span class="dropdown-item-column dropdown-item-column-title">
-                                    {recentDocument.label}
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                </f:for>
-            </ul>
-        </f:if>
+            </f:for>
+        </ul>
+        <div class="dropdown-item-text">
+            <a
+                href="#"
+                class="btn btn-sm btn-default t3js-topbar-opendocs-close"
+                role="button"
+            >
+                <core:icon identifier="actions-close" alternativeMarkupIdentifier="inline"/>
+                {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeAllDocs')}
+            </a>
+        </div>
+    </f:then>
+    <f:else>
+        <p class="dropdown-item-text"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.openDocuments.emptyList" /></p>
     </f:else>
 </f:if>
+
+<hr class="dropdown-divider" aria-hidden="true">
+
+<p class="h4 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.recentDocuments.headline" /></p>
+<f:if condition="{recentDocuments}">
+    <f:then>
+        <ul class="dropdown-list">
+            <f:for each="{recentDocuments}" as="recentDocument">
+                <li>
+                    <a href="{recentDocument.uri}" class="dropdown-item t3js-open-doc"
+                        data-pid="{recentDocument.pid}"
+                        title="{recentDocument.label}">
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon">
+                                <core:iconForRecord table="{recentDocument.table}" row="{recentDocument.record}"/>
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                {recentDocument.label}
+                            </span>
+                        </span>
+                    </a>
+                </li>
+            </f:for>
+        </ul>
+    </f:then>
+    <f:else>
+        <p class="dropdown-item-text"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.recentDocuments.emptyList" /></p>
+    </f:else>
+</f:if>
+
 </html>

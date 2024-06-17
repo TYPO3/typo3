@@ -13,7 +13,12 @@
                 <hr class="dropdown-divider" aria-hidden="true">
             </f:if>
             <f:if condition="{group.title}">
-                <p class="h3 dropdown-headline" id="shortcut-group-{group.id}">{group.title}</p>
+                <f:then>
+                    <p class="h4 dropdown-headline" id="shortcut-group-{group.id}">{group.title}</p>
+                </f:then>
+                <f:else if="{shortcutMenu -> f:count()} > 1">
+                    <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarks.notGrouped" /></p>
+                </f:else>
             </f:if>
             <ul class="dropdown-list" data-shortcutgroup="{group.id}">
                 <f:for each="{group.shortcuts}" as="shortcut">
@@ -33,13 +38,19 @@
                                 </span>
                             </span>
                         </a>
-                        <a href="#" class="dropdown-item dropdown-item-action t3js-shortcut-edit"
+                        <a
+                            href="#"
+                            class="dropdown-item dropdown-item-action t3js-shortcut-edit"
                             title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksEdit')}"
+                            role="button"
                         >
                             <core:icon identifier="actions-open" alternativeMarkupIdentifier="inline"/>
                         </a>
-                        <a href="#" class="dropdown-item dropdown-item-action t3js-shortcut-delete"
+                        <a
+                            href="#"
+                            class="dropdown-item dropdown-item-action t3js-shortcut-delete"
                             title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksDelete')}"
+                            role="button"
                         >
                             <core:icon identifier="actions-delete" alternativeMarkupIdentifier="inline"/>
                         </a>

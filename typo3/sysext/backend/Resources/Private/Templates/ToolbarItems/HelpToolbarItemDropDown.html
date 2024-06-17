@@ -1,7 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <p class="h3 dropdown-headline" id="help-dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.help')}</p>
 <f:if condition="{modules}">
-    <hr class="dropdown-divider" aria-hidden="true">
     <nav class="t3js-helpmenu">
         <ul class="dropdown-list" role="menu" aria-labelledby="help-dropdown-headline">
             <f:for each="{modules}" as="module">
