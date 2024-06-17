@@ -245,7 +245,7 @@ Options:
             - unit (default): PHP unit tests
             - unitDeprecated: deprecated PHP unit tests
             - unitJavascript: JavaScript unit tests
-            - unitRandom: PHP unit tests in random order, add -o <number> to use specific seed
+            - unitRandom: PHP unit tests in random order, "-- --random-order-seed=<number>" to use specific seed
 
     -b <docker|podman>
         Container environment:
@@ -346,12 +346,6 @@ Options:
         Send xdebug information to a different port than default 9003 if an IDE like PhpStorm
         is not listening on default port.
 
-    -o <number>
-        Only with -s unitRandom
-        Set specific random seed to replay a random run in this order again. The phpunit randomizer
-        outputs the used seed at the end (in gitlab core testing logs, too). Use that number to
-        replay the unit tests in that order.
-
     -n
         Only with -s cgl|cglGit|cglHeader|cglHeaderGit
         Activate dry-run in CGL check that does not actively change files and only prints broken ones.
@@ -375,10 +369,7 @@ Examples:
     ./Build/Scripts/runTests.sh -x -p 8.0 -- --filter filterByValueRecursiveCorrectlyFiltersArray
 
     # Run functional tests in phpunit with a filtered test method name in a specified file
-    # example will currently execute two tests, both of which start with the search term
-    ./Build/Scripts/runTests.sh -s functional -- \
-      --filter datetimeInstanceCanBePersistedToDatabaseIfTypeIsExplicitlySpecified \
-      typo3/sysext/core/Tests/Functional/Database/ConnectionTest.php
+    ./Build/Scripts/runTests.sh -s functional -- --filter aTestName path/to/fileTest.php
 
     # Run unit tests with PHP 8.0 and have xdebug enabled
     ./Build/Scripts/runTests.sh -x -p 8.0
@@ -436,7 +427,6 @@ PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 ACCEPTANCE_HEADLESS=1
 EXTRA_TEST_OPTIONS=""
-PHPUNIT_RANDOM=""
 CGLCHECK_DRY_RUN=""
 DATABASE_DRIVER=""
 CHUNKS=0
@@ -459,7 +449,7 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=()
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":a:b:s:c:d:i:p:e:xy:o:nhug" OPT; do
+while getopts ":a:b:s:c:d:i:p:e:xy:nhug" OPT; do
     case ${OPT} in
         s)
             TEST_SUITE=${OPTARG}
@@ -505,9 +495,6 @@ while getopts ":a:b:s:c:d:i:p:e:xy:o:nhug" OPT; do
             ;;
         y)
             PHP_XDEBUG_PORT=${OPTARG}
-            ;;
-        o)
-            PHPUNIT_RANDOM="--random-order-seed=${OPTARG}"
             ;;
         n)
             CGLCHECK_DRY_RUN="-n"
@@ -1115,7 +1102,7 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     unitRandom)
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name unit-random-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} bin/phpunit -c Build/phpunit/UnitTests.xml --order-by=random ${EXTRA_TEST_OPTIONS} ${PHPUNIT_RANDOM} "$@"
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name unit-random-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} bin/phpunit -c Build/phpunit/UnitTests.xml --order-by=random ${EXTRA_TEST_OPTIONS} "$@"
         SUITE_EXIT_CODE=$?
         ;;
     update)
