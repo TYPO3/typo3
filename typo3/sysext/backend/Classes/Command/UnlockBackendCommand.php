@@ -20,7 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Backend\Authentication\BackendLocker;
 
 /**
  * Core function for unlocking the TYPO3 Backend
@@ -28,6 +28,11 @@ use TYPO3\CMS\Core\Core\Environment;
 #[AsCommand('backend:unlock', 'Unlock the TYPO3 Backend')]
 class UnlockBackendCommand extends Command
 {
+    public function __construct(protected readonly BackendLocker $lockService, ?string $name = null)
+    {
+        parent::__construct($name);
+    }
+
     /**
      * Executes the command for removing the lock file
      */
@@ -35,10 +40,10 @@ class UnlockBackendCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
-        $lockFile = $this->getLockFileName();
-        if (@is_file($lockFile)) {
-            unlink($lockFile);
-            if (@is_file($lockFile)) {
+        $lockFile = $this->lockService->getAbsolutePathToLockFile();
+        if ($this->lockService->isLocked()) {
+            $this->lockService->unlock();
+            if ($this->lockService->isLocked()) {
                 $io->caution('Could not remove lock file "' . $lockFile . '"!');
                 return Command::FAILURE;
             }
@@ -47,15 +52,5 @@ class UnlockBackendCommand extends Command
             $io->note('No lock file "' . $lockFile . '" was found.' . LF . 'Hence no lock can be removed.');
         }
         return Command::SUCCESS;
-    }
-
-    /**
-     * Location of the file name
-     *
-     * @return string
-     */
-    protected function getLockFileName()
-    {
-        return Environment::getLegacyConfigPath() . '/LOCK_BACKEND';
     }
 }

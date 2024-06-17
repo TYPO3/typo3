@@ -232,6 +232,9 @@ BE:
         lockRootPath:
             type: array
             description: 'List of absolute root path prefixes to be allowed for file operations (including FAL storages). The project root path is allowed in any case and does not need to be defined here. Ending slashes are enforced!'
+        lockBackendFile:
+            type: text
+            description: 'Optional file location to check whether the backend shall be locked. When not specified, uses the former default locations (legacy: "typo3conf/LOCK_BACKEND", composer "var/lock/LOCK_BACKEND"). Directory must be relative to the project root and must include the file name. The file must be writable for the PHP user and should be stored in a location that does not change between TYPO3 deployments (shared directory).'
         userHomePath:
             type: text
             description: 'Combined folder identifier of the directory where TYPO3 backend-users have their home-dirs. A combined folder identifier looks like this: [storageUid]:[folderIdentifier]. Eg. <code>2:users/</code>. A home for backend user 2 would be: <code>2:users/2/</code>. Ending slash required!'

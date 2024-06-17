@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Authentication\BackendLocker;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\LoginType;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -36,7 +36,8 @@ use TYPO3\CMS\Core\Session\UserSessionManager;
 class AjaxLoginController
 {
     public function __construct(
-        protected readonly FormProtectionFactory $formProtectionFactory
+        protected readonly FormProtectionFactory $formProtectionFactory,
+        protected readonly BackendLocker $lockService,
     ) {}
 
     /**
@@ -114,7 +115,7 @@ class AjaxLoginController
             'locked' => false,
         ];
         $backendUser = $this->getBackendUser();
-        if (@is_file(Environment::getLegacyConfigPath() . '/LOCK_BACKEND')) {
+        if ($this->lockService->isLocked()) {
             $session['locked'] = true;
         } elseif (!isset($backendUser->user['uid'])) {
             $session['timed_out'] = true;

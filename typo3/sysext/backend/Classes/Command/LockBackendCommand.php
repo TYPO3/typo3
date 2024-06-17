@@ -21,8 +21,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Authentication\BackendLocker;
 
 /**
  * Core function for locking the TYPO3 Backend
@@ -30,6 +29,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[AsCommand('backend:lock', 'Lock the TYPO3 Backend')]
 class LockBackendCommand extends Command
 {
+    public function __construct(protected readonly BackendLocker $lockService, ?string $name = null)
+    {
+        parent::__construct($name);
+    }
+
     /**
      * Configure the command by defining the name, options and arguments
      */
@@ -39,7 +43,7 @@ class LockBackendCommand extends Command
             ->addArgument(
                 'redirect',
                 InputArgument::OPTIONAL,
-                'If set, then the TYPO3 Backend will redirect to the locking state (only used when locking the TYPO3 Backend'
+                'If set, a locked TYPO3 Backend will redirect to URI specified with this argument. The URI is saved as a string in the lockfile that is specified in the system configuration.'
             );
     }
 
@@ -50,31 +54,20 @@ class LockBackendCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
-        $lockFile = $this->getLockFileName();
-        if (@is_file($lockFile)) {
+        if ($this->lockService->isLocked()) {
             $io->note('A lock file already exists. Overwriting it.');
         }
-        $output = 'Wrote lock file to "' . $lockFile . '"';
+        $output = 'Wrote lock file to "' . $this->lockService->getAbsolutePathToLockFile() . '"';
         if ($input->getArgument('redirect')) {
-            $lockFileContent = $input->getArgument('redirect');
-            $lockFileContent = is_string($lockFileContent) ? $lockFileContent : '';
-            $output .= LF . 'with content "' . $lockFileContent . '".';
+            $redirectUriFromLockFileContent = $input->getArgument('redirect');
+            $redirectUriFromLockFileContent = is_string($redirectUriFromLockFileContent) ? $redirectUriFromLockFileContent : '';
+            $output .= LF . 'with target URI "' . $redirectUriFromLockFileContent . '".';
         } else {
-            $lockFileContent = '';
+            $redirectUriFromLockFileContent = '';
             $output .= '.';
         }
-        GeneralUtility::writeFile($lockFile, $lockFileContent);
+        $this->lockService->lockBackend($redirectUriFromLockFileContent);
         $io->success($output);
         return Command::SUCCESS;
-    }
-
-    /**
-     * Location of the file name
-     *
-     * @return string
-     */
-    protected function getLockFileName()
-    {
-        return Environment::getLegacyConfigPath() . '/LOCK_BACKEND';
     }
 }

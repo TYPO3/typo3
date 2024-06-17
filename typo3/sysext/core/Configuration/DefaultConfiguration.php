@@ -1309,6 +1309,7 @@ return [
         'entryPoint' => '/typo3',
         'fileadminDir' => 'fileadmin/',
         'lockRootPath' => '',
+        'lockBackendFile' => '',
         'userHomePath' => '',
         'groupHomePath' => '',
         'userUploadDir' => '',

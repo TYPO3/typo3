@@ -21,9 +21,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Backend\Authentication\BackendLocker;
 use TYPO3\CMS\Backend\Exception\BackendAccessDeniedException;
 use TYPO3\CMS\Backend\Exception\BackendLockedException;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,8 +39,13 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  */
 class LockedBackendGuard implements MiddlewareInterface
 {
+    public function __construct(
+        protected readonly BackendLocker $lockService
+    ) {}
+
     /**
-     * Checks the client's IP address and if typo3conf/LOCK_BACKEND is available
+     * Checks the client's IP address and the availability of LOCK_BACKEND file,
+     * location may vary, @see BackendLocker->isLocked().
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -72,7 +77,8 @@ class LockedBackendGuard implements MiddlewareInterface
     }
 
     /**
-     * Check adminOnly configuration variable and redirects to an URL in file typo3conf/LOCK_BACKEND
+     * Check adminOnly configuration variable and redirects to an URL in file
+     * LOCK_BACKEND. Location may vary, @see BackendLocker->isLocked().
      *
      * @throws BackendLockedException
      */
@@ -86,14 +92,14 @@ class LockedBackendGuard implements MiddlewareInterface
                 1517949794
             );
         }
-        if (@is_file(Environment::getLegacyConfigPath() . '/LOCK_BACKEND')) {
-            $fileContent = file_get_contents(Environment::getLegacyConfigPath() . '/LOCK_BACKEND');
-            if ($fileContent) {
-                return $fileContent;
+        if ($this->lockService->isLocked()) {
+            $redirectUri = $this->lockService->getRedirectUriFromLockContents();
+            if ($redirectUri) {
+                return $redirectUri;
             }
             throw new BackendLockedException(
                 HttpUtility::HTTP_STATUS_403,
-                'Backend access by browser is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.',
+                'Backend access by browser is locked for maintenance. Remove lock by removing the file "LOCK_BACKEND" as configured in TYPO3_CONF_VARS[BE][lockBackendFile]. Or (better) use CLI-script "bin/typo3 backend:unlock".',
                 'TYPO3 Backend locked',
                 1517949793
             );
@@ -104,10 +110,8 @@ class LockedBackendGuard implements MiddlewareInterface
 
     /**
      * Compare client IP with IPmaskList and throw an exception
-     *
-     * @throws \RuntimeException
      */
-    protected function validateVisitorsIpAgainstIpMaskList(string $ipAddress, string $ipMaskList = '')
+    protected function validateVisitorsIpAgainstIpMaskList(string $ipAddress, string $ipMaskList = ''): void
     {
         if ($ipMaskList !== '' && !GeneralUtility::cmpIP($ipAddress, $ipMaskList)) {
             throw new BackendAccessDeniedException(
