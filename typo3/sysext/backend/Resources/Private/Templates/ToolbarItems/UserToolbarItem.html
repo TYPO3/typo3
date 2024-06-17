@@ -4,9 +4,9 @@
     <f:then>
         <span
             class="toolbar-item-name"
-            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtouser')} {currentUser.username}"
+            title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.user.account.switchToUserMode.tooltip')} {currentUser.username}"
         >
-            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtousershort')}
+            {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.user.account.switchToUserMode.account.prefix')}
             {f:if(condition: '{currentUser.realName}', then: '{currentUser.realName} ({currentUser.username})', else: '{currentUser.username}')}
         </span>
     </f:then>

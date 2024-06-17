@@ -215,7 +215,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     protected function addTypo3Version(): void
     {
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.typo3-version',
             'value' => $this->typo3Version->getVersion(),
             'iconIdentifier' => 'information-typo3-version',
         ];
@@ -224,7 +224,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     protected function addWebServer(): void
     {
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver',
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.webserver',
             'value' => $_SERVER['SERVER_SOFTWARE'] ?? '',
             'iconIdentifier' => 'information-webserver',
         ];
@@ -233,7 +233,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     protected function addPhpVersion(): void
     {
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.phpversion',
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.phpversion',
             'value' => PHP_VERSION,
             'iconIdentifier' => 'information-php-version',
         ];
@@ -246,7 +246,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
             if (extension_loaded($debugger)) {
                 $debuggerVersion = phpversion($debugger) ?: '';
                 $this->systemInformation[] = [
-                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.debugger',
+                    'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.debugger',
                     'value' => sprintf('%s %s', $debugger, $debuggerVersion),
                     'iconIdentifier' => 'information-debugger',
                 ];
@@ -257,7 +257,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     protected function addDatabase(): void
     {
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
-            $serverVersion = '[' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database.offline') . ']';
+            $serverVersion = '[' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.database.offline') . ']';
             $success = true;
             try {
                 $serverVersion = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -267,7 +267,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
                 $success = false;
             }
             $this->systemInformation[] = [
-                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database',
+                'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.database',
                 'titleAddition' => $connectionName,
                 'value' => $serverVersion,
                 'status' => $success ?: InformationStatus::WARNING->value,
@@ -280,7 +280,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     {
         $applicationContext = Environment::getContext();
         $this->systemInformation[] = [
-            'title'  => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext',
+            'title'  => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.applicationcontext',
             'value'  => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::OK->value : InformationStatus::WARNING->value,
             'iconIdentifier' => 'information-application-context',
@@ -296,7 +296,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
             return;
         }
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.composerMode',
             'value' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'),
             'iconIdentifier' => 'information-composer-mode',
         ];
@@ -322,7 +322,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
         $branch = trim(CommandUtility::exec('git rev-parse --abbrev-ref HEAD'));
         if (!empty($revision) && !empty($branch)) {
             $this->systemInformation[] = [
-                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.gitrevision',
+                'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.gitrevision',
                 'value' => sprintf('%s [%s]', $revision, $branch),
                 'iconIdentifier' => 'information-git',
             ];
@@ -348,7 +348,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
                 $icon = 'unknown';
         }
         $this->systemInformation[] = [
-            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem',
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.operatingsystem',
             'value' => PHP_OS . ' ' . php_uname('r'),
             'iconIdentifier' => 'information-os-' . $icon,
         ];

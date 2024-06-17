@@ -84,9 +84,6 @@
 			<trans-unit id="shortcut_workspace" resname="shortcut_workspace">
 				<source>Go to Workspace Module</source>
 			</trans-unit>
-			<trans-unit id="bookmark_description" resname="bookmark_description">
-				<source>This is the bookmarks menu. You do not have any bookmarks added yet. You can add one by clicking the bookmark icon %s, which you can find on all pages in the backend.</source>
-			</trans-unit>
 			<trans-unit id="bookmark_edit" resname="bookmark_edit">
 				<source>Edit</source>
 			</trans-unit>
@@ -299,12 +296,6 @@
 			</trans-unit>
 			<trans-unit id="pageTree_filter" resname="pageTree_filter">
 				<source>Filter</source>
-			</trans-unit>
-			<trans-unit id="switchtouser" resname="switchtouser">
-				<source>Switch to User</source>
-			</trans-unit>
-			<trans-unit id="switchtousershort" resname="switchtousershort">
-				<source>SU</source>
 			</trans-unit>
 			<trans-unit id="fileUpload_windowTitle" resname="fileUpload_windowTitle">
 				<source>File Upload Progress</source>

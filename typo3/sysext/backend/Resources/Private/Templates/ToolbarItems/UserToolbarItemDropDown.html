@@ -35,7 +35,7 @@
 </f:if>
 <f:if condition="{f:count(subject: recentUsers)} > 0">
     <hr class="dropdown-divider" aria-hidden="true">
-    <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.list" /></p>
+    <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.user.recentlySwitchedUsers" /></p>
     <ul class="modulemenu-group-container">
         <f:for each="{recentUsers}" as="user">
             <li>
@@ -43,7 +43,7 @@
                     class="dropdown-item"
                     mode="switch"
                     targetUser="{user.uid}"
-                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.tooltip', arguments: '{0: user.username}')}"
+                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.user.recentlySwitchedUsers.su.tooltip', arguments: '{0: user.username}')}"
                 >
                     <span class="dropdown-item-columns">
                         <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
@@ -64,7 +64,7 @@
         <div class="dropdown-item-text">
             <typo3-backend-switch-user class="btn btn-sm btn-default" mode="exit">
                 <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
-                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.exitSwitchUser" />
+                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.user.btn.exitSwitchUser" />
             </typo3-backend-switch-user>
         </div>
     </f:then>
@@ -72,7 +72,7 @@
         <div class="dropdown-item-text">
             <f:be.link route="logout" class="btn btn-sm btn-default" target="_top">
                 <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
-                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout" />
+                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.user.btn.logout" />
             </f:be.link>
         </div>
     </f:else>

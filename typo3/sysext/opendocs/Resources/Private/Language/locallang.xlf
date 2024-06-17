@@ -12,6 +12,9 @@
 			<trans-unit id="toolbarItems.openDocuments.emptyList" resname="toolbarItems.openDocuments.emptyList">
 				<source>There are currently no open documents.</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.openDocuments.btn.closeAllDocs" resname="toolbarItems.openDocuments.btn.closeAllDocs">
+				<source>Close all open documents</source>
+			</trans-unit>
 			<trans-unit id="toolbarItems.recentDocuments.headline" resname="toolbarItems.recentDocuments.headline">
 				<source>Recently used documents</source>
 			</trans-unit>

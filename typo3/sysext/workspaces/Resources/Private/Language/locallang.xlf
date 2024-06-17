@@ -396,6 +396,21 @@
 			<trans-unit id="action.switchToWorkspace" resname="action.switchToWorkspace">
 				<source>Switch to workspace</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.workspace" resname="toolbarItems.workspace">
+				<source>Workspace</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.workspace.intro.text" resname="toolbarItems.workspace.intro.text">
+				<source>The following workspaces are available to you.</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.workspace.intro.link" resname="toolbarItems.workspace.intro.link">
+				<source>Workspaces Module</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.workspace.intro.link.description" resname="toolbarItems.workspace.intro.link.description">
+				<source>To view changes made in a workspace, please go to:</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.workspace.noWorkspaceFound" resname="toolbarItems.workspace.noWorkspaceFound">
+				<source>No workspaces found.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

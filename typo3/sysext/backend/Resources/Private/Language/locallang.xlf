@@ -15,25 +15,6 @@
 			<trans-unit id="show_references" resname="show_references">
 				<source>Show references</source>
 			</trans-unit>
-			<trans-unit id="systemInformation.header" resname="systemInformation.header">
-				<source>System Information</source>
-			</trans-unit>
-			<trans-unit id="systemmessage.intro.text" resname="systemmessage.intro.text">
-				<source>This is a short system overview. For advanced information please head to: </source>
-			</trans-unit>
-			<trans-unit id="systemmessage.intro.link" resname="systemmessage.intro.link">
-				<source>Environment Module</source>
-			</trans-unit>
-			<trans-unit id="systemmessage.allgood" resname="systemmessage.allgood" xml:space="preserve">
-				<source>Your system is fully operational.
-Have a nice day.</source>
-			</trans-unit>
-			<trans-unit id="usermodule.su.list" resname="usermodule.su.list">
-				<source>Recently switched to</source>
-			</trans-unit>
-			<trans-unit id="usermodule.su.tooltip" resname="usermodule.su.tooltip">
-				<source>Switch to user %s</source>
-			</trans-unit>
 			<trans-unit id="config.loginLogo" resname="config.loginLogo">
 				<source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png).</source>
 			</trans-unit>
