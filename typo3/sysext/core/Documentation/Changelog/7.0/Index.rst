@@ -1,4 +1,4 @@
-
+:template: changelogOverview.html
 .. include:: /Includes.rst.txt
 
 7.0 Changes
