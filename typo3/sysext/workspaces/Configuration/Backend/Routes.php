@@ -4,7 +4,7 @@
  */
 return [
     'workspace_previewcontrols' => [
-        'path' => '/workspace/preview-control/',
+        'path' => '/workspace/preview-control',
         'target' => \TYPO3\CMS\Workspaces\Controller\PreviewController::class . '::handleRequest',
     ],
 ];
