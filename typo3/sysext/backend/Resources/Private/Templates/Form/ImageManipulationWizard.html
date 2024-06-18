@@ -10,7 +10,7 @@
 <div class="modal-panel-sidebar">
     <div class="panel-group" id="accordion-cropper-variants" role="tablist" aria-multiselectable="false">
         <f:for each="{cropVariants}" as="cropVariant" iteration="cropVariantIterator">
-            <div class="panel panel-default">
+            <div class="panel panel-default" data-crop-variant-container="{cropVariant.id}">
                 <div class="panel-heading" role="tab" id="cropper-accordion-heading-{cropVariantIterator.cycle}">
                     <h4 class="panel-title">
                         <a

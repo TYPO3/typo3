@@ -408,6 +408,7 @@ class ImageManipulation {
       );
       const variant: CropVariant = Object.assign({}, this.data[cropVariantId], { cropArea });
       this.updatePreviewThumbnail(variant, elem);
+      this.currentModal.querySelector(`[data-crop-variant-container="${variant.id}"]`)?.querySelector(`[data-bs-option="${variant.selectedRatio}"]`)?.classList.add('active');
     });
 
     this.currentCropVariant.cropArea = this.convertRelativeToAbsoluteCropArea(
@@ -501,8 +502,13 @@ class ImageManipulation {
   private update(cropVariant: CropVariant): void {
     const temp: CropVariant = Object.assign({}, cropVariant);
     const selectedRatio: Ratio = cropVariant.allowedAspectRatios[cropVariant.selectedRatio];
-    this.currentModal.querySelector('[data-bs-option].active')?.classList.remove('active');
-    this.currentModal.querySelector(`[data-bs-option="${cropVariant.selectedRatio}"]`)?.classList.add('active');
+
+    // Set cropInfo to current container context
+    this.cropInfo = this.currentModal.querySelector(`[data-crop-variant-container="${cropVariant.id}"]`)?.querySelector(this.cropInfoSelector);
+    // highlight the currently selected ratio of the active cropping variant
+    this.currentModal.querySelector(`[data-crop-variant-container="${cropVariant.id}"]`)?.querySelector('[data-bs-option].active')?.classList.remove('active');
+    this.currentModal.querySelector(`[data-crop-variant-container="${cropVariant.id}"]`)?.querySelector(`[data-bs-option="${cropVariant.selectedRatio}"]`)?.classList.add('active');
+
     /**
      * Setting the aspect ratio cause a redraw of the crop area so we need to manually reset it to last data
      */
