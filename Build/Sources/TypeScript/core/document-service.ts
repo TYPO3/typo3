@@ -16,42 +16,18 @@
  * @exports @typo3/core/document-service
  */
 class DocumentService {
-  private readonly windowRef: Window;
-  private readonly documentRef: Document;
+  private promise: Promise<Document> = null;
 
-  /**
-   * @param {Window} windowRef
-   * @param {Document} documentRef
-   */
-  constructor(windowRef: Window = window, documentRef: Document = document) {
-    this.windowRef = windowRef;
-    this.documentRef = documentRef;
+  public ready(): Promise<Document> {
+    return this.promise ?? (this.promise = this.createPromise());
   }
 
-  ready(): Promise<Document> {
-    return new Promise<Document>((resolve: (document: Document) => void, reject: (document: Document) => void) => {
-      if (this.documentRef.readyState === 'complete') {
-        resolve(this.documentRef);
-      } else {
-        // timeout & reject after 30 seconds
-        const timer = setTimeout((): void => {
-          clearListeners();
-          reject(this.documentRef);
-        }, 30000);
-        const clearListeners = (): void => {
-          this.windowRef.removeEventListener('load', delegate);
-          this.documentRef.removeEventListener('DOMContentLoaded', delegate);
-        };
-        const delegate = (): void => {
-          clearListeners();
-          clearTimeout(timer);
-          resolve(this.documentRef);
-        };
-        this.windowRef.addEventListener('load', delegate);
-        this.documentRef.addEventListener('DOMContentLoaded', delegate);
-      }
-
-    });
+  private async createPromise(): Promise<Document> {
+    if (document.readyState !== 'loading') {
+      return document;
+    }
+    await new Promise<void>(resolve => document.addEventListener('DOMContentLoaded', () => resolve(), { once: true }));
+    return document;
   }
 }
 

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-class DocumentService{constructor(e=window,t=document){this.windowRef=e,this.documentRef=t}ready(){return new Promise(((e,t)=>{if("complete"===this.documentRef.readyState)e(this.documentRef);else{const n=setTimeout((()=>{o(),t(this.documentRef)}),3e4),o=()=>{this.windowRef.removeEventListener("load",d),this.documentRef.removeEventListener("DOMContentLoaded",d)},d=()=>{o(),clearTimeout(n),e(this.documentRef)};this.windowRef.addEventListener("load",d),this.documentRef.addEventListener("DOMContentLoaded",d)}}))}}const documentService=new DocumentService;export default documentService;
+class DocumentService{constructor(){this.promise=null}ready(){return this.promise??(this.promise=this.createPromise())}async createPromise(){return"loading"!==document.readyState||await new Promise((e=>document.addEventListener("DOMContentLoaded",(()=>e()),{once:!0}))),document}}const documentService=new DocumentService;export default documentService;
