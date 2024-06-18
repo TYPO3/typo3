@@ -102,6 +102,18 @@
 			<trans-unit id="moduleFunctions.lang" resname="moduleFunctions.lang">
 				<source>Language</source>
 			</trans-unit>
+			<trans-unit id="error.noAccess.title" resname="error.noAccess.title">
+				<source>No access</source>
+			</trans-unit>
+			<trans-unit id="error.noAccess.message" resname="error.noAccess.message">
+				<source>You don't have access to this module.</source>
+			</trans-unit>
+			<trans-unit id="info.noContent.message" resname="info.noContent.message">
+				<source>There are no page information available.</source>
+			</trans-unit>
+			<trans-unit id="info.noPageSelected.message" resname="info.noPageSelected.message">
+				<source>Please select a page in the page tree.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
