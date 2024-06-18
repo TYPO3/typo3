@@ -75,8 +75,16 @@ final class SearchRepository
         $remainingItems = $searchDemand->getLimit();
 
         foreach ($this->getViableSearchProviders($searchDemand) as $provider) {
+            // Initialize remaining-items and offset for current iteration
+            $mutableSearchDemand
+                ->setProperty(DemandPropertyName::limit, $remainingItems)
+                ->setProperty(DemandPropertyName::offset, $offset);
+
             $count = $provider->count($mutableSearchDemand->freeze());
+            // Total count is relevant outside of this loop:
+            // Paginator calculates number of pages and fills up its result set with stub-entries.
             $totalCount += $count;
+
             if ($count < $offset) {
                 // The number of potential results is smaller than the offset, do not query results
                 $offset -= $count;
@@ -87,9 +95,6 @@ final class SearchRepository
                 continue;
             }
 
-            $mutableSearchDemand
-                ->setProperty(DemandPropertyName::limit, $remainingItems)
-                ->setProperty(DemandPropertyName::offset, $offset);
             $providerResult = $provider->find($mutableSearchDemand->freeze());
             if ($providerResult !== []) {
                 foreach ($providerResult as $key => $resultItem) {
@@ -97,7 +102,10 @@ final class SearchRepository
                     $providerResult[$key] = $modifyRecordEvent->getResultItem();
                 }
                 $remainingItems -= count($providerResult);
-                // We got a result here, offset became irrelevant for next iteration
+                // We have got a first usable result from the current SearchProvider here. The offset is thereby fulfilled.
+                // All follow-up SearchProviders must run with offset=0 to start with their first item:
+                // * to generate a correct item-count and
+                // * to provide more items if there are still open remaining-items.
                 $offset = 0;
 
                 $searchResults[] = $providerResult;
