@@ -77,11 +77,14 @@ class MultiRecordSelection {
   }
 
   private static changeCheckboxState(checkbox: HTMLInputElement, check: boolean): void {
-    if (checkbox.checked === check || checkbox.dataset.manuallyChanged) {
-      // Return in case state did not change or another component has already changed it
+    if (checkbox.disabled || checkbox.checked === check || checkbox.dataset.manuallyChanged) {
+      // Return in case the checkbox is disabled, the state did not change or another component has already changed it
       return;
     }
     checkbox.checked = check;
+    // Dispatch the standard "change" event, which might be used by form components, e.g. FormEngine
+    checkbox.dispatchEvent(new CustomEvent('change', { bubbles: true }));
+    // Dispatch custom event, which might be used by components to keep track of external state changes
     checkbox.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed',{
       detail: { identifier: MultiRecordSelection.getIdentifier(checkbox) }, bubbles: true, cancelable: false
     }));
