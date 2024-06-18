@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Icons from '@typo3/backend/icons';
 
@@ -24,18 +23,27 @@ enum IconIdentifier {
   expand = 'actions-view-list-expand',
 }
 
-class SelectCheckBoxElement {
-  constructor() {
-    DocumentService.ready().then((): void => {
-      this.registerEventHandler();
-    });
+/**
+ * Module: @typo3/backend/form-engine/element/select-check-box-element
+ *
+ * Functionality for the selectCheckBox element
+ *
+ * @example
+ * <typo3-formengine-element-select-check-box>
+ *   ...
+ * </typo3-formengine-element-select-check-box>
+ *
+ * This is based on W3C custom elements ("web components") specification, see
+ * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+ */
+class SelectCheckBoxElement extends HTMLElement {
+
+  public connectedCallback(): void {
+    this.registerEventHandler();
   }
 
-  /**
-   * Registers the events for the header collapse icon toggling
-   */
   private registerEventHandler(): void {
-    new RegularEvent('click', this.toggleGroup).delegateTo(document, Identifier.toggleGroup);
+    new RegularEvent('click', this.toggleGroup).delegateTo(this, Identifier.toggleGroup);
   }
 
   private toggleGroup(e: MouseEvent, targetEl: HTMLElement): void {
@@ -51,4 +59,4 @@ class SelectCheckBoxElement {
   }
 }
 
-export default SelectCheckBoxElement;
+window.customElements.define('typo3-formengine-element-select-check-box', SelectCheckBoxElement);

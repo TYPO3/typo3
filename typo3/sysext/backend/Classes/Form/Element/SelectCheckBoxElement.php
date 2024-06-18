@@ -152,7 +152,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
-        $html[] = '<div class="formengine-field-item t3js-formengine-field-item" data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '">';
+        $html[] = '<typo3-formengine-element-select-check-box class="formengine-field-item t3js-formengine-field-item" data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '">';
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
         $html[] =       '<div class="form-wizards-element">';
@@ -249,7 +249,7 @@ class SelectCheckBoxElement extends AbstractFormElement
 
                     // Add JavaScript module. This is only needed, in case the element
                     // is not readOnly, since otherwise no checkbox changes take place.
-                    $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/select-check-box-element.js')->instance();
+                    $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/select-check-box-element.js');
                     $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/multi-record-selection.js');
                 }
                 $html[] =            '<tbody>' . implode(LF, $tableRows) . '</tbody>';
@@ -269,7 +269,7 @@ class SelectCheckBoxElement extends AbstractFormElement
             $html[] =   '</div>';
         }
         $html[] =   '</div>';
-        $html[] = '</div>';
+        $html[] = '</typo3-formengine-element-select-check-box>';
 
         $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         return $resultArray;
