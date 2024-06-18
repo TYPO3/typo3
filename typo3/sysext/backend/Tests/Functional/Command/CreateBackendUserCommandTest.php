@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\Command\AbstractCommandTestCase;
 
@@ -41,7 +42,7 @@ final class CreateBackendUserCommandTest extends AbstractCommandTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_groups_multiple.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users_create_backend_command.csv');
     }
 
     #[Test]
@@ -145,16 +146,24 @@ final class CreateBackendUserCommandTest extends AbstractCommandTestCase
         self::assertEquals(255, $result['status']);
     }
 
+    public static function existingUsernameFailsDataProvider(): \Generator
+    {
+        yield 'existing admin' => ['username' => 'admin'];
+        yield 'disabled admin' => ['username' => 'admin_disabled'];
+        yield 'deleted editor' => ['username' => 'editor_deleted'];
+    }
+
     #[Test]
-    public function existingUsernameFails(): void
+    #[DataProvider('existingUsernameFailsDataProvider')]
+    public function existingUsernameFails(string $username): void
     {
         $result = $this->executeConsoleCommand(
             'backend:user:create --username %s --password %s --no-interaction',
-            '--username=admin',
+            $username,
             $this->userDefaults['password'],
         );
 
-        self::assertEquals(1, $result['status']);
+        self::assertEquals(255, $result['status']);
     }
 
     #[Test]
