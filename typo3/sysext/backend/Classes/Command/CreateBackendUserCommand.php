@@ -145,11 +145,13 @@ EOT
     {
         // Taking deleted users into account as we want the username to be unique.
         // So in case a user was deleted and will be restored, this could cause duplicated usernames.
-        $queryBuilder = $this->connectionPool->getConnectionForTable('be_users');
-        $userList = $queryBuilder->select(['username'], 'be_users')->fetchAllAssociative();
-        $usernames = array_map(static function (array $user): string {
-            return $user['username'];
-        }, $userList);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_users');
+        $queryBuilder->getRestrictions()->removeAll();
+        $usernames = $queryBuilder
+            ->select('username')
+            ->from('be_users')
+            ->executeQuery()
+            ->fetchFirstColumn();
 
         $usernameValidator = static function ($username) use ($usernames) {
             if (empty($username)) {
