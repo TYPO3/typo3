@@ -793,6 +793,7 @@ class EditDocumentController
         $this->R_URI = $this->R_URL_parts['path'] . HttpUtility::buildQueryString($this->R_URL_getvars, '?');
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
+        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
 
         // Set context sensitive menu
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
