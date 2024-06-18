@@ -27,32 +27,53 @@
     <f:if condition="{accessContent}">
         <f:then>
             <h1><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_title" /></h1>
-            <f:if condition="{content}">
-                <form action="{f:be.uri(route: 'web_info_translations', parameters: '{id: pageUid}')}" method="post" id="InfoModuleController" name="webinfoForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label" for="depth">
-                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth" />
-                            </label>
-                            <f:render partial="DropdownMenu" arguments="{name: 'depth', id: 'depth', options: depthDropdownOptions, currentValue: depthDropdownCurrentValue}"/>
-                        </div>
-                        <f:if condition="{displayLangDropdown}">
-                            <div class="form-group">
-                                <label class="form-label" for="lang">
-                                    <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.lang" />
-                                </label>
-                                <f:render partial="DropdownMenu" arguments="{name: 'lang', id: 'lang', options: langDropdownOptions, currentValue: langDropdownCurrentValue}"/>
-                            </div>
-                        </f:if>
-                    </div>
-                    <f:format.raw>{content}</f:format.raw>
-                </form>
+            <f:if condition="{pageUid}">
+                <f:then>
+                    <f:if condition="{content}">
+                        <f:then>
+                            <form action="{f:be.uri(route: 'web_info_translations', parameters: '{id: pageUid}')}" method="post" id="InfoModuleController" name="webinfoForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="depth">
+                                            <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth" />
+                                        </label>
+                                        <f:render partial="DropdownMenu" arguments="{name: 'depth', id: 'depth', options: depthDropdownOptions, currentValue: depthDropdownCurrentValue}"/>
+                                    </div>
+                                    <f:if condition="{displayLangDropdown}">
+                                        <div class="form-group">
+                                            <label class="form-label" for="lang">
+                                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.lang" />
+                                            </label>
+                                            <f:render partial="DropdownMenu" arguments="{name: 'lang', id: 'lang', options: langDropdownOptions, currentValue: langDropdownCurrentValue}"/>
+                                        </div>
+                                    </f:if>
+                                </div>
+                                <f:format.raw>{content}</f:format.raw>
+                            </form>
+                        </f:then>
+                        <f:else>
+                            <f:be.infobox
+                                message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:info.noContent.message')}"
+                                state="-2"
+                            />
+                        </f:else>
+                    </f:if>
+                </f:then>
+                <f:else>
+                    <f:be.infobox
+                        message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:info.noPageSelected.message')}"
+                        state="-1"
+                    />
+                </f:else>
             </f:if>
         </f:then>
         <f:else>
-            <f:be.infobox title="{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:title')}" state="2">
-                <p><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:message" /></p>
-            </f:be.infobox>
+            <f:be.infobox
+                title="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:error.noAccess.title')}"
+                message="{f:translate(key:'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:error.noAccess.message')}"
+                state="2"
+            />
+
         </f:else>
     </f:if>
 
