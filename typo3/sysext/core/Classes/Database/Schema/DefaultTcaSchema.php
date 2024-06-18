@@ -767,13 +767,25 @@ class DefaultTcaSchema
                         break;
 
                     case 'input':
-                        $length = $fieldConfig['config']['max'] ?? null;
+                        $length = $fieldConfig['config']['max'] ?? 255;
                         $nullable = $fieldConfig['config']['nullable'] ?? false;
+                        if ($length > 255) {
+                            $tables[$tableName]->addColumn(
+                                $this->quote($fieldName),
+                                Types::TEXT,
+                                [
+                                    'length' => 65535,
+                                    'default' => $nullable ? null : '',
+                                    'notnull' => !$nullable,
+                                ]
+                            );
+                            break;
+                        }
                         $tables[$tableName]->addColumn(
                             $this->quote($fieldName),
                             Types::STRING,
                             [
-                                'length' => $length ?? 255,
+                                'length' => $length,
                                 'default' => '',
                                 'notnull' => !$nullable,
                             ]

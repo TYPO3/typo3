@@ -1709,7 +1709,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'label' => 'aLabel',
             'config' => [
                 'type' => 'input',
-                'max' => 512,
+                'max' => 123,
             ],
         ];
         $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
@@ -1717,7 +1717,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             '`input`',
             Type::getType('string'),
             [
-                'length' => 512,
+                'length' => 123,
                 'default' => '',
                 'notnull' => true,
             ]
@@ -1743,6 +1743,55 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             [
                 'length' => 255,
                 'default' => '',
+                'notnull' => false,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('input')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsInputAndUsesTextForLongColumns(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['input'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'input',
+                'max' => 256,
+            ],
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`input`',
+            Type::getType('text'),
+            [
+                'length' => 65535,
+                'default' => '',
+                'notnull' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('input')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsInputAndUsesTextForLongColumnsAndNullable(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['input'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'input',
+                'max' => 512,
+                'nullable' => true,
+            ],
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`input`',
+            Type::getType('text'),
+            [
+                'length' => 65535,
+                'default' => null,
                 'notnull' => false,
             ]
         );
