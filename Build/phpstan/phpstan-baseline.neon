@@ -601,12 +601,17 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:imageCreateFromFile\\(\\) should return resource but returns GdImage\\|false\\.$#"
-			count: 4
+			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:imageCreateFromFile\\(\\) should return resource but returns \\(GdImage\\|false\\)\\.$#"
+			count: 1
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
 		-
-			message: "#^Parameter \\#1 \\$destImg of method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:ImageWrite\\(\\) expects resource, GdImage\\|false given\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:imageCreateFromFile\\(\\) should return resource but returns GdImage\\|false\\.$#"
+			count: 3
+			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
+
+		-
+			message: "#^Parameter \\#1 \\$destImg of method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:ImageWrite\\(\\) expects resource, \\(GdImage\\|false\\) given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
