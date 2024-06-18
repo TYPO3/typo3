@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],(function(e,t){"use strict";return new class{constructor(e=window,t=document){this.windowRef=e,this.documentRef=t}ready(){return new Promise((e,t)=>{if("complete"===this.documentRef.readyState)e(this.documentRef);else{const n=setTimeout(()=>{o(),t(this.documentRef)},3e4),o=()=>{this.windowRef.removeEventListener("load",i),this.documentRef.removeEventListener("DOMContentLoaded",i)},i=()=>{o(),clearTimeout(n),e(this.documentRef)};this.windowRef.addEventListener("load",i),this.documentRef.addEventListener("DOMContentLoaded",i)}})}}}));
+define(["require","exports"],(function(e,t){"use strict";return new class{constructor(){this.promise=null}ready(){var e;return null!==(e=this.promise)&&void 0!==e?e:this.promise=this.createPromise()}async createPromise(){return"loading"!==document.readyState||await new Promise(e=>document.addEventListener("DOMContentLoaded",()=>e(),{once:!0})),document}}}));
