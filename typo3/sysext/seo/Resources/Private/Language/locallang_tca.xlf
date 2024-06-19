@@ -41,16 +41,16 @@
 				<source>Image</source>
 			</trans-unit>
 			<trans-unit id="pages.palettes.twittercards" resname="pages.palettes.twittercards">
-				<source>Twitter Cards</source>
+				<source>X / Twitter Cards</source>
 			</trans-unit>
 			<trans-unit id="pages.twitter_title" resname="pages.twitter_title">
-				<source>Twitter Title</source>
+				<source>X / Twitter Title</source>
 			</trans-unit>
 			<trans-unit id="pages.twitter_description" resname="pages.twitter_description">
-				<source>Twitter Description</source>
+				<source>X / Twitter Description</source>
 			</trans-unit>
 			<trans-unit id="pages.twitter_image" resname="pages.twitter_image">
-				<source>Twitter Image</source>
+				<source>X / Twitter Image</source>
 			</trans-unit>
 			<trans-unit id="pages.twitter_card" resname="pages.twitter_card">
 				<source>Type of card to show</source>

@@ -175,8 +175,8 @@ Social media
 The social media tab contains information which is used to enrich the snippet that is shown when visitors share your URLs
 in social networks, modern browsers etc.
 
-TYPO3 offers to have different content for OpenGraph (used for example by Facebook and LinkedIn) and Twitter Cards
-(used on Twitter of course). Both implementations allow you to set a title, a description and to provide an image. When this
+TYPO3 offers to have different content for OpenGraph (used for example by Facebook and LinkedIn) and X / Twitter Cards
+(used on X / Twitter of course). Both implementations allow you to set a title, a description and to provide an image. When this
 information is not set manually, the social network will decide itself what to show. Most probably it will use the
 information from :ref:`title-for-search-engines` and :ref:`description`.
 
