@@ -75,8 +75,11 @@ class Utility {
    * @param {string} key
    * @param {string} value
    * @returns {string}
+   * @deprecated will be removed in TYPO3 v14
    */
   public static updateQueryStringParameter(url: string, key: string, value: string): string {
+    console.warn('Utility.updateQueryStringParameter() has been marked as deprecated and will be removed in TYPO3 v14.');
+
     const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
     const separator = url.includes('?') ? '&' : '?';
 
