@@ -13,6 +13,7 @@ return [
         'iconIdentifier' => 'module-form',
         'inheritNavigationComponentFromMainModule' => false,
         'labels' => 'LLL:EXT:form/Resources/Private/Language/locallang_module.xlf',
+        'path' => '/module/manage/forms',
         'extensionName' => 'Form',
         'controllerActions' => [
             FormManagerController::class => [
