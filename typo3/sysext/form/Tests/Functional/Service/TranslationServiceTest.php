@@ -160,7 +160,10 @@ final class TranslationServiceTest extends FunctionalTestCase
     #[Test]
     public function translateValuesRecursiveTranslateRecursive(): void
     {
-        $xlfPaths = ['EXT:form_labels/Resources/Private/Language/locallang_form.xlf'];
+        $xlfPaths = [
+            10 => 'EXT:form_labels/Resources/Private/Language/locallang_form.xlf',
+            100 => 'EXT:form_labels/Resources/Private/Language/locallang_form_overrides.xlf',
+        ];
         $input = [
             'Stan' => [
                 'Steve' => 'Roger',
@@ -168,6 +171,7 @@ final class TranslationServiceTest extends FunctionalTestCase
             [
                 'Francine' => [
                     'Klaus' => 'element.Page.renderingOptions.nextButtonLabel',
+                    'Lisa' => 'form-runtime-identifier.element.form-element-identifier.properties.label',
                 ],
             ],
         ];
@@ -177,7 +181,8 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
             [
                 'Francine' => [
-                    'Klaus' => 'FORM EN',
+                    'Klaus' => 'FORM EN OVERRIDE',
+                    'Lisa' => 'form-runtime-identifier form-element-identifier LABEL EN',
                 ],
             ],
         ];
