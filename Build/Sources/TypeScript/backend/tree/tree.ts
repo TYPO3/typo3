@@ -1038,7 +1038,8 @@ export class Tree extends LitElement {
     labelNode.textContent = label;
     label = labelNode.innerHTML;
     if (this.searchTerm) {
-      const regexp = new RegExp(this.searchTerm, 'gi');
+      // Escape all meta characters of regular expressions: ( ) [ ] $ * + ? . { } / | ^ -
+      const regexp = new RegExp(this.searchTerm.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi');
       label = label.replace(regexp, '<span class="node-highlight-text">$&</span>');
     }
 

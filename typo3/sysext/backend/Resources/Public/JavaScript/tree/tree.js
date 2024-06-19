@@ -108,7 +108,7 @@ var __decorate=function(e,t,i,o){var s,n=arguments.length,r=n<3?t:null===o?o=Obj
             size="small"
           ></typo3-backend-icon>
         </span>
-        `:html`${nothing}`}createNodeContentLabel(e){let t=(e.prefix||"")+e.name+(e.suffix||"");const i=document.createElement("div");if(i.textContent=t,t=i.innerHTML,this.searchTerm){const e=new RegExp(this.searchTerm,"gi");t=t.replace(e,'<span class="node-highlight-text">$&</span>')}return html`
+        `:html`${nothing}`}createNodeContentLabel(e){let t=(e.prefix||"")+e.name+(e.suffix||"");const i=document.createElement("div");if(i.textContent=t,t=i.innerHTML,this.searchTerm){const e=new RegExp(this.searchTerm.replace(/[/\-\\^$*+?.()|[\]{}]/g,"\\$&"),"gi");t=t.replace(e,'<span class="node-highlight-text">$&</span>')}return html`
       <div class="node-contentlabel">
       <div class="node-name" .innerHTML="${t}"></div>
       ${e.note?html`<div class="node-note">${e.note}</div>`:nothing}
