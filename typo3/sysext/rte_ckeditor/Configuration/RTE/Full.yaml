@@ -115,7 +115,14 @@ editor:
         - 18
         - 21
 
+    list:
+      properties:
+        styles: true
+        startIndex: true
+        reversed: true
+
     importModules:
       - { 'module': '@ckeditor/ckeditor5-font', 'exports': ['Font'] }
       - { 'module': '@ckeditor/ckeditor5-show-blocks', 'exports': ['ShowBlocks'] }
       - { 'module': '@ckeditor/ckeditor5-word-count', 'exports': ['WordCount'] }
+      - { 'module': '@ckeditor/ckeditor5-list', 'exports': [ 'ListProperties' ] }
