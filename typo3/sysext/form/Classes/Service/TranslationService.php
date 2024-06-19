@@ -134,7 +134,7 @@ class TranslationService implements SingletonInterface
             if (is_array($value)) {
                 $result[$key] = $this->translateValuesRecursive($value, $translationFiles);
             } else {
-                $this->sortArrayWithIntegerKeysDescending($translationFiles);
+                $translationFiles = $this->sortArrayWithIntegerKeysDescending($translationFiles);
 
                 if (!empty($translationFiles)) {
                     foreach ($translationFiles as $translationFile) {
