@@ -99,4 +99,7 @@ Columns are auto-created for these TCA :php:`columns` types:
 See :ref:`Breaking: DateTime column definitions <breaking-99937-1691166389>`
 for a change in the :sql:`datetime` column definition calculation.
 
+Also see :ref:`Important: About database error "row size too large" <important-104153-1718790066>`
+for limits imposed by MySQL / MariaDB on table length.
+
 .. index:: TCA, ext:core, NotScanned
