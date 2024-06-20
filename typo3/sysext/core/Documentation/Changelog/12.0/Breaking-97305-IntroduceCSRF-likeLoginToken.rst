@@ -18,7 +18,7 @@ create an actual server-side user session.
 The request-token has to be submitted by one of these ways:
 
 * HTTP body, e.g. in `<form>` via parameter `__request_token`
-* HTTP header, e.g. in XHR via header `X-TYPO3-Request-Token`
+* HTTP header, e.g. in XHR via header `X-TYPO3-RequestToken`
 
 Impact
 ======
