@@ -34,7 +34,7 @@ Session cookie names involved for providing the nonce value:
 Submitting request-token value to application:
 
 * HTTP body, e.g. in `<form>` via parameter `__RequestToken`
-* HTTP header, e.g. in XHR via header `X-TYPO3-Request-Token`
+* HTTP header, e.g. in XHR via header `X-TYPO3-RequestToken`
 
 The sequence looks like the following:
 
@@ -133,7 +133,7 @@ needs to verify that the request-token has the expected `'my/process'` scope.
                 $this->doTheMagic();
                 // middleware takes care to remove the the cookie in case no other
                 // nonce value shall be emitted during the current HTTP request
-                $requestToken->getSigningSecretIdentifier() !== null) {
+                if ($requestToken->getSigningSecretIdentifier() !== null) {
                     $securityAspect->getSigningSecretResolver()->revokeIdentifier(
                         $requestToken->getSigningSecretIdentifier()
                     );
