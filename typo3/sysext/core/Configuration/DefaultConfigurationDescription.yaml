@@ -183,7 +183,7 @@ SYS:
               '0': 'Disabled - Do not modify IP addresses at all'
               '1': 'Mask the last byte for IPv4 addresses / Mask the Interface ID for IPv6 addresses (default)'
               '2': 'Mask the last two bytes for IPv4 addresses / Mask the Interface ID and SLA ID for IPv6 addresses'
-            description: 'Configures if and how IP addresses stored via TYPO3''s API should be anonymized ("masked") with a zero-numbered replacement. This is respected within anonymization Task, not while creating new log entries.'
+            description: 'Configures if and how IP addresses stored via TYPO3''s API should be anonymized ("masked") with a zero-numbered replacement.'
         systemMaintainers:
             type: array
             description: 'A list of backend user IDs allowed to access the Install Tool'
