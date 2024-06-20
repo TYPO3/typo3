@@ -68,7 +68,7 @@ final class SystemInformationController
 
         if ($count > 0) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $moduleIdentifier = 'system_BelogLog';
+            $moduleIdentifier = 'system_log';
             $moduleParams = ['constraint' => ['channel' => 'php']];
             $systemInformationToolbarItem->addSystemMessage(
                 sprintf(

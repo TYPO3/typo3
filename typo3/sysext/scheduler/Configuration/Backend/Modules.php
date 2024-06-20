@@ -9,7 +9,7 @@ return [
     'scheduler' => [
         'parent' => 'system',
         'access' => 'admin',
-        'path' => '/module/scheduler',
+        'path' => '/module/system/scheduler',
         'iconIdentifier' => 'module-scheduler',
         'labels' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf',
         'routes' => [
@@ -21,7 +21,7 @@ return [
     'scheduler_manage' => [
         'parent' => 'scheduler',
         'access' => 'admin',
-        'path' => '/module/scheduler/manage',
+        'path' => '/module/system/scheduler/manage',
         'labels' => ['title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'],
         'routes' => [
             '_default' => [
@@ -33,7 +33,7 @@ return [
     'scheduler_availabletasks' => [
         'parent' => 'scheduler',
         'access' => 'admin',
-        'path' => '/module/scheduler/available-tasks',
+        'path' => '/module/system/scheduler/available-tasks',
         'labels' => ['title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info'],
         'routes' => [
             '_default' => [
@@ -44,7 +44,7 @@ return [
     'scheduler_setupcheck' => [
         'parent' => 'scheduler',
         'access' => 'admin',
-        'path' => '/module/scheduler/check-setup',
+        'path' => '/module/system/scheduler/check-setup',
         'labels' => ['title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check'],
         'routes' => [
             '_default' => [

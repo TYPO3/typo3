@@ -75,15 +75,15 @@ final class InstalledExtensionsCest
     {
         $I->amGoingTo('uninstall extension belog');
         $I->switchToMainFrame();
-        $I->seeElement('[data-modulemenu-identifier="system_BelogLog"]');
+        $I->seeElement('[data-modulemenu-identifier="system_log"]');
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
         $I->click('a[title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
 
         $I->switchToMainFrame();
-        $I->waitForElementNotVisible('[data-modulemenu-identifier="system_BelogLog"]');
-        $I->cantSeeElement('[data-modulemenu-identifier="system_BelogLog"]');
+        $I->waitForElementNotVisible('[data-modulemenu-identifier="system_log"]');
+        $I->cantSeeElement('[data-modulemenu-identifier="system_log"]');
 
         $I->amGoingTo('install extension belog');
         $I->switchToContentFrame();
@@ -91,7 +91,7 @@ final class InstalledExtensionsCest
         $I->click('a[title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
 
         $I->switchToMainFrame();
-        $I->waitForElementVisible('[data-modulemenu-identifier="system_BelogLog"]');
-        $I->seeElement('[data-modulemenu-identifier="system_BelogLog"]');
+        $I->waitForElementVisible('[data-modulemenu-identifier="system_log"]');
+        $I->seeElement('[data-modulemenu-identifier="system_log"]');
     }
 }

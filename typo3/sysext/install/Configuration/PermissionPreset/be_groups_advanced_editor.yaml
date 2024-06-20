@@ -13,7 +13,7 @@ groupMods:
   - media_management
   - site_redirects
   - user_setup
-  - system_BelogLog
+  - system_log
 pageTypesSelect:
   - 1 # Standard
   - 3 # Link

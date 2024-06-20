@@ -26,10 +26,11 @@ return [
         'parent' => 'system',
         'position' => ['after' => 'permissions_pages'],
         'access' => 'admin',
+        'path' => '/module/system/user-management',
         'iconIdentifier' => 'module-beuser',
         'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf',
-        'extensionName' => 'Beuser',
         'aliases' => ['system_BeuserTxBeuser'],
+        'extensionName' => 'Beuser',
         'controllerActions' => [
             BackendUserController::class => [
                 'index',

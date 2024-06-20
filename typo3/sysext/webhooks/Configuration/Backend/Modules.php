@@ -11,7 +11,7 @@ return [
         'position' => ['after' => 'system_BeuserTxBeuser'],
         'access' => 'admin',
         'workspaces' => 'live',
-        'path' => '/module/webhooks',
+        'path' => '/module/system/webhooks',
         'iconIdentifier' => 'module-webhooks',
         'labels' => 'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf',
         'routes' => [
