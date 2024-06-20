@@ -83,10 +83,7 @@
 			</trans-unit>
 
 			<trans-unit id="record_disabled" resname="record_disabled">
-				<source>Redirect is not activated!</source>
-			</trans-unit>
-			<trans-unit id="redirect_protected" resname="redirect_protected">
-				<source>Redirect is protected</source>
+				<source>Disabled</source>
 			</trans-unit>
 			<trans-unit id="source_path.placeholder" resname="source_path.placeholder">
 				<source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
@@ -97,20 +94,14 @@
 			<trans-unit id="destination_status_code" resname="destination_status_code">
 				<source>Status Code</source>
 			</trans-unit>
-			<trans-unit id="hit_text" resname="hit_text">
-				<source>%s hit</source>
-			</trans-unit>
-			<trans-unit id="hits_text" resname="hits_text">
-				<source>%s hits</source>
-			</trans-unit>
 			<trans-unit id="hit_reset" resname="hit_reset">
-				<source>Reset Hit Counter (!)</source>
+				<source>Reset hit counter</source>
 			</trans-unit>
 			<trans-unit id="hit_reset.confirm.title" resname="hit_reset.confirm.title">
-				<source>Reset the hitcounter of this record?</source>
+				<source>Reset the hit counter of this record?</source>
 			</trans-unit>
 			<trans-unit id="hit_reset.confirm.content" resname="hit_reset.confirm.content">
-				<source>Are you sure you want to reset the hitcounter of this record?</source>
+				<source>Are you sure you want to reset the hit counter of this record?</source>
 			</trans-unit>
 			<trans-unit id="hit_last_never" resname="hit_last_never">
 				<source>Never</source>
@@ -120,6 +111,15 @@
 			</trans-unit>
 			<trans-unit id="view_redirect" resname="view_redirect">
 				<source>View redirect</source>
+			</trans-unit>
+			<trans-unit id="overview.tableHead.protected" resname="overview.tableHead.protected">
+				<source>Protected</source>
+			</trans-unit>
+			<trans-unit id="overview.tableField.protected.no" resname="overview.tableField.protected.no">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="overview.tableField.protected.yes" resname="overview.tableField.protected.yes">
+				<source>Yes</source>
 			</trans-unit>
 
 			<trans-unit id="labels.delete.title" resname="labels.delete.title">

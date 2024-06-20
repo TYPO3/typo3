@@ -58,7 +58,7 @@
 				<source>Change HTTP method to GET</source>
 			</trans-unit>
 			<trans-unit id="sys_redirect.hitcount" resname="sys_redirect.hitcount">
-				<source>Count</source>
+				<source>Hit count</source>
 			</trans-unit>
 			<trans-unit id="sys_redirect.lasthiton" resname="sys_redirect.lasthiton">
 				<source>Last Hit on</source>
