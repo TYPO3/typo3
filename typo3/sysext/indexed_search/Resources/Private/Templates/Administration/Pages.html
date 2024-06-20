@@ -73,9 +73,7 @@
                                     <td>{data.sys_language_uid}</td>
                                     <td>
                                         <f:if condition="{data.static_page_arguments}">
-                                            <f:for each="{data.static_page_arguments}" as="value" key="key">
-                                                {key}={value}<br>
-                                            </f:for>
+                                            {data.static_page_arguments -> f:format.json()}
                                         </f:if>
                                     </td>
                                     <td>{data.phash}</td>
