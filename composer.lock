@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ac90cd7e12db378c9cbf5898984e4cc",
+    "content-hash": "37401530308b0d4b8e4228d0083ef2d1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7311,16 +7311,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.5.21",
+            "version": "10.5.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "ac837816fa52078f7a5e17ed774f256a72a51af6"
+                "reference": "5f124e3e3e561006047b532fd0431bf5bb6b9015"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ac837816fa52078f7a5e17ed774f256a72a51af6",
-                "reference": "ac837816fa52078f7a5e17ed774f256a72a51af6",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/5f124e3e3e561006047b532fd0431bf5bb6b9015",
+                "reference": "5f124e3e3e561006047b532fd0431bf5bb6b9015",
                 "shasum": ""
             },
             "require": {
@@ -7392,7 +7392,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.21"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.24"
             },
             "funding": [
                 {
@@ -7408,7 +7408,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-15T09:13:15+00:00"
+            "time": "2024-06-20T13:09:54+00:00"
         },
         {
             "name": "psy/psysh",
@@ -9634,29 +9634,28 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "8.0.9",
+            "version": "8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "7f4a539b3ad90b935741fe4d260561de4595de0b"
+                "reference": "ee9f3da59b95a9c07c583d3db02807b342e234f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/7f4a539b3ad90b935741fe4d260561de4595de0b",
-                "reference": "7f4a539b3ad90b935741fe4d260561de4595de0b",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/ee9f3da59b95a9c07c583d3db02807b342e234f6",
+                "reference": "ee9f3da59b95a9c07c583d3db02807b342e234f6",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^2.5.0",
                 "php": "^8.1",
-                "phpunit/phpunit": "^10.1",
+                "phpunit/phpunit": "^10.1 || ^11.0",
                 "psr/container": "^1.1.0 || ^2.0.0",
                 "typo3/cms-backend": "12.*.*@dev || 13.*.*@dev",
                 "typo3/cms-core": "12.*.*@dev || 13.*.*@dev",
                 "typo3/cms-extbase": "12.*.*@dev || 13.*.*@dev",
                 "typo3/cms-fluid": "12.*.*@dev || 13.*.*@dev",
-                "typo3/cms-frontend": "12.*.*@dev || 13.*.*@dev",
-                "typo3/cms-install": "12.*.*@dev || 13.*.*@dev"
+                "typo3/cms-frontend": "12.*.*@dev || 13.*.*@dev"
             },
             "replace": {
                 "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "*"
@@ -9701,9 +9700,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/8.0.9"
+                "source": "https://github.com/TYPO3/testing-framework/tree/8.1.0"
             },
-            "time": "2024-01-31T12:14:00+00:00"
+            "time": "2024-06-20T14:57:38+00:00"
         }
     ],
     "aliases": [],
