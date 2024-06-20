@@ -53,7 +53,7 @@ class DefaultFactory
                 'children' => [
                     [
                         'name' => 'typo3temp',
-                        'type' => DirectoryNode::class,
+                        'type' => LinkOrDirectoryNode::class,
                         'targetPermission' => $directoryPermission,
                         'children' => [
                             [
@@ -65,7 +65,7 @@ class DefaultFactory
                             $this->getTemporaryAssetsFolderStructure(),
                             [
                                 'name' => 'var',
-                                'type' => DirectoryNode::class,
+                                'type' => LinkOrDirectoryNode::class,
                                 'targetPermission' => $directoryPermission,
                                 'children' => [
                                     [
@@ -289,7 +289,7 @@ class DefaultFactory
         $directoryPermission = $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'];
         return [
             'name' => !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') : 'fileadmin',
-            'type' => DirectoryNode::class,
+            'type' => LinkOrDirectoryNode::class,
             'targetPermission' => $directoryPermission,
             'children' => [
                 [
@@ -319,7 +319,7 @@ class DefaultFactory
                 ],
                 [
                     'name' => 'user_upload',
-                    'type' => DirectoryNode::class,
+                    'type' => LinkOrDirectoryNode::class,
                     'targetPermission' => $directoryPermission,
                     'children' => [
                         [
