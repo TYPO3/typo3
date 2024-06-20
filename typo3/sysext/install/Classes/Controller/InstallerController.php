@@ -636,7 +636,7 @@ final class InstallerController
                 'login',
                 [],
                 RouteRedirect::create(
-                    'tools_ExtensionmanagerExtensionmanager',
+                    'extensionmanager',
                     [
                         'action' => 'distributions',
                     ]

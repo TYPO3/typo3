@@ -13,11 +13,13 @@ use TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController;
  * Definitions for modules provided by EXT:extensionmanager
  */
 return [
-    'tools_ExtensionmanagerExtensionmanager' => [
+    'extensionmanager' => [
         'parent' => 'tools',
         'access' => 'systemMaintainer',
         'iconIdentifier' => 'module-extensionmanager',
         'labels' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf',
+        'aliases' => ['tools_ExtensionmanagerExtensionmanager'],
+        'path' => '/module/tools/extensionmanager',
         'extensionName' => 'Extensionmanager',
         'controllerActions' => [
             ListController::class => [
