@@ -337,6 +337,7 @@ class BackendController
             $menuModule = new MenuModule(clone $module);
             $modules[$identifier] = [
                 'name' => $identifier,
+                'aliases' => $module->getAliases(),
                 'component' => $menuModule->getComponent(),
                 'navigationComponentId' => $menuModule->getNavigationComponent(),
                 'parent' => $menuModule->hasParentModule() ? $menuModule->getParentIdentifier() : '',

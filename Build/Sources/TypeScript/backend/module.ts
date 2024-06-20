@@ -26,6 +26,7 @@ export interface ModuleState {
  */
 export interface Module {
   name: string;
+  aliases: Array<string>;
   component: string;
   navigationComponentId: string;
   parent: string;
@@ -68,6 +69,7 @@ export class ModuleUtility {
     if (parsedRecord === null) {
       return {
         name: name,
+        aliases: [],
         component: '',
         navigationComponentId: '',
         parent: '',
@@ -76,6 +78,7 @@ export class ModuleUtility {
     }
     return {
       name: name,
+      aliases: parsedRecord.aliases || [],
       component: parsedRecord.component || '',
       navigationComponentId: parsedRecord.navigationComponentId || '',
       parent: parsedRecord.parent || '',
@@ -118,9 +121,13 @@ function getParsedInformation(): ParsedInformation|null {
 }
 
 function getParsedRecordFromName(name: string): Partial<Module>|null {
-  const parsedModuleInformation = getParsedInformation();
-  if (parsedModuleInformation !== null && name in parsedModuleInformation) {
-    return parsedModuleInformation[name];
+  const parsedModuleInformation: ParsedInformation = getParsedInformation();
+  if (parsedModuleInformation !== null) {
+    for (const [key, module] of Object.entries(parsedModuleInformation)) {
+      if (name === key || module.aliases.includes(name)) {
+        return parsedModuleInformation[key];
+      }
+    }
   }
   return null;
 }
