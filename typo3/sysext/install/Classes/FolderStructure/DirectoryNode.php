@@ -129,7 +129,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      *
      * @return FlashMessage[]
      */
-    protected function fixSelf()
+    protected function fixSelf(): array
     {
         $result = [];
         if (!$this->exists()) {
