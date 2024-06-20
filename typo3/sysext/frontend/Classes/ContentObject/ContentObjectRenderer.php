@@ -5100,7 +5100,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $includeRecordsWithoutDefaultTranslation = isset($conf['includeRecordsWithoutDefaultTranslation.'])
                     ? $this->stdWrap($conf['includeRecordsWithoutDefaultTranslation'], $conf['includeRecordsWithoutDefaultTranslation.'])
                     : $conf['includeRecordsWithoutDefaultTranslation'];
-                $includeRecordsWithoutDefaultTranslation = trim($includeRecordsWithoutDefaultTranslation) !== '';
+                $includeRecordsWithoutDefaultTranslation = trim((string)$includeRecordsWithoutDefaultTranslation);
+                $includeRecordsWithoutDefaultTranslation = $includeRecordsWithoutDefaultTranslation !== '' && $includeRecordsWithoutDefaultTranslation !== '0';
             } else {
                 // Option was not explicitly set, check what's in for the language overlay type.
                 $includeRecordsWithoutDefaultTranslation = $languageAspect->getOverlayType() === $languageAspect::OVERLAYS_ON_WITH_FLOATING;
