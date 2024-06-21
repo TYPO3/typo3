@@ -24,7 +24,6 @@ enum Identifiers {
   activeMenuItemLinkSelector = '.t3js-workspaces-switchlink.active',
   menuItemLinkSelector = '.t3js-workspaces-switchlink',
   toolbarItemSelector = '.dropdown-toggle',
-  workspaceModuleLinkSelector = '.t3js-workspaces-modulelink',
 }
 
 enum Classes {
@@ -144,11 +143,6 @@ class WorkspacesMenu {
 
   private initializeEvents(): void {
     const toolbarItemContainer = document.querySelector(Identifiers.containerSelector);
-
-    new RegularEvent('click', (e: Event): void => {
-      e.preventDefault();
-      ModuleMenu.App.showModule((e.target as HTMLAnchorElement).dataset.module);
-    }).delegateTo(toolbarItemContainer, Identifiers.workspaceModuleLinkSelector);
 
     new RegularEvent('click', (e: Event, menuItem: HTMLAnchorElement): void => {
       e.preventDefault();
