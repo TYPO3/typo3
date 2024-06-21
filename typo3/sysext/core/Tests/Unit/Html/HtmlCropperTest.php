@@ -44,13 +44,14 @@ final class HtmlCropperTest extends UnitTestCase
         self::assertEquals('бла', $actual);
     }
 
-    public static function cropWorksDataProvicer(): \Generator
+    public static function cropWorksDataProvider(): \Generator
     {
         $plainText = 'Kasper Sk' . chr(229) . 'rh' . chr(248)
             . 'j implemented the original version of the crop function.';
         $textWithMarkup = '<strong><a href="mailto:kasper@typo3.org">Kasper Sk'
             . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> the '
             . 'original version of the crop function.';
+        $textWithImgMarkup = '<p>A nice picture</p><img src="#" width="128" height="128" title="nice" alt="sonne"><p>Beautiful, right?</p>';
         $textWithEntities = 'Kasper Sk&aring;rh&oslash;j implemented the; '
             . 'original version of the crop function.';
         $textWithLinebreaks = "Lorem ipsum dolor sit amet,\n"
@@ -222,6 +223,16 @@ final class HtmlCropperTest extends UnitTestCase
                 . 'ersion of the crop function.',
             'content' => $textWithMarkup,
             'numberOfChars' => -66,
+            'replacementForEllipsis' => '...',
+            'cropToSpace' => true,
+        ];
+
+        yield 'text with image markup; 20|...|1' => [
+            'expected' => '<p>A nice picture</p>'
+                . '<img src="#" width="128" height="128" title="nice" alt="sonne">'
+                . '<p>...</p>',
+            'content' => $textWithImgMarkup,
+            'numberOfChars' => 20,
             'replacementForEllipsis' => '...',
             'cropToSpace' => true,
         ];
@@ -479,7 +490,7 @@ final class HtmlCropperTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('cropWorksDataProvicer')]
+    #[DataProvider('cropWorksDataProvider')]
     #[Test]
     public function cropWorks(string $expected, string $content, int $numberOfChars, string $replacementForEllipsis, bool $cropToSpace): void
     {
