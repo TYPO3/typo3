@@ -44,7 +44,7 @@ final class SysRedirectRootPageMoveMigrationTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->actionService = GeneralUtility::makeInstance(ActionService::class);
+        $this->actionService = new ActionService();
         // Register only WorkspaceNewPlaceholderRemovalMigration in the row updater wizard
         $this->subject = $this->getAccessibleMock(DatabaseRowsUpdateWizard::class, null);
         $this->subject->_set('rowUpdater', [SysRedirectRootPageMoveMigration::class]);

@@ -162,8 +162,8 @@ final class SlugServiceTest extends FunctionalTestCase
         $this->get(SiteFinder::class)->getAllSites(false);
         $subject = new SlugService(
             context: $this->get(Context::class),
-            pageRepository: GeneralUtility::makeInstance(PageRepository::class),
-            linkService: GeneralUtility::makeInstance(LinkService::class),
+            pageRepository: $this->get(PageRepository::class),
+            linkService: $this->get(LinkService::class),
             redirectCacheService: $this->get(RedirectCacheService::class),
             slugRedirectChangeItemFactory: $this->get(SlugRedirectChangeItemFactory::class),
             eventDispatcher: $this->get(EventDispatcherInterface::class),
@@ -817,7 +817,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $this->buildBaseSite();
 
         // For testing scenario we need to allow redirect records be added to normal pages.
-        $dokTypeRegistry = GeneralUtility::makeInstance(PageDoktypeRegistry::class);
+        $dokTypeRegistry = $this->get(PageDoktypeRegistry::class);
         $dokTypeRegistry->addAllowedRecordTypes(['sys_redirect'], PageRepository::DOKTYPE_DEFAULT);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);

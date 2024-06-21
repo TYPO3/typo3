@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\NotCurrentPasswordValidator;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class NotCurrentPasswordValidatorTest extends FunctionalTestCase
@@ -44,7 +43,7 @@ final class NotCurrentPasswordValidatorTest extends FunctionalTestCase
     #[Test]
     public function validatorReturnsFalseIfPasswordIsEqualToCurrentPasswordForBackendUser(): void
     {
-        $knownPasswordHash = GeneralUtility::makeInstance(PasswordHashFactory::class)
+        $knownPasswordHash = $this->get(PasswordHashFactory::class)
             ->getDefaultHashInstance('BE')
             ->getHashedPassword('password');
 
@@ -68,7 +67,7 @@ final class NotCurrentPasswordValidatorTest extends FunctionalTestCase
     #[Test]
     public function validatorReturnsFalseIfPasswordIsEqualToCurrentPasswordForFrontendUser(): void
     {
-        $knownPasswordHash = GeneralUtility::makeInstance(PasswordHashFactory::class)
+        $knownPasswordHash = $this->get(PasswordHashFactory::class)
             ->getDefaultHashInstance('FE')
             ->getHashedPassword('password');
 

@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\RteCKEditor\Controller\BrowseLinksController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -70,7 +69,7 @@ final class BrowseLinksControllerTest extends FunctionalTestCase
             }
         );
 
-        $eventListener = GeneralUtility::makeInstance(ListenerProvider::class);
+        $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(ModifyLinkHandlersEvent::class, 'modify-link-handler-listener');
         $eventListener->addListener(ModifyAllowedItemsEvent::class, 'modify-allowed-items-listener');
 

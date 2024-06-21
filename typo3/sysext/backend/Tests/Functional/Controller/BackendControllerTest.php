@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendControllerTest extends FunctionalTestCase
@@ -63,7 +62,7 @@ final class BackendControllerTest extends FunctionalTestCase
             }
         );
 
-        $eventListener = GeneralUtility::makeInstance(ListenerProvider::class);
+        $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(AfterBackendPageRenderEvent::class, 'after-backend-page-render-listener');
 
         $request = (new ServerRequest('https://example.com/typo3/main'))

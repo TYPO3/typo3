@@ -52,7 +52,7 @@ final class ContentContentObjectTest extends FunctionalTestCase
         $eventListener->addListener(ModifyRecordsAfterFetchingContentEvent::class, 'modify-records-after-fetching-content-listener');
 
         $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
+        $contentObjectRenderer = new ContentObjectRenderer($typoScriptFrontendController);
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
         $pageInformation->setContentFromPid(1);

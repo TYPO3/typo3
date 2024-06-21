@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FlexFormValueFormatterTest extends FunctionalTestCase
@@ -41,7 +40,7 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
         $expectedOutput = trim(file_get_contents(__DIR__ . '/Fixtures/FlexFormValueFormatter/ValuePreview.txt'));
         $flexFormData = file_get_contents(__DIR__ . '/Fixtures/FlexFormValueFormatter/FlexFormValue.xml');
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content');
         $connection->insert('tt_content', ['pi_flexform' => $flexFormData]);
 
         $flexFormValueFormatter = new FlexFormValueFormatter();

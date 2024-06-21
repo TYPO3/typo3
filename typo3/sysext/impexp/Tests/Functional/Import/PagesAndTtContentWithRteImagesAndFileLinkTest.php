@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -32,7 +31,7 @@ final class PagesAndTtContentWithRteImagesAndFileLinkTest extends AbstractImport
     #[Test]
     public function importPagesAndRelatedTtContentWithRteImagesAndFileLink(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-rte-image-n-file-link.xml');

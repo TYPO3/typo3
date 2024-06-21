@@ -141,7 +141,7 @@ final class MfaProviderPropertyManagerTest extends FunctionalTestCase
     #[Test]
     public function createProviderEntryTest(): void
     {
-        $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+        $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
         $propertyManager = $this->createPropertyManager('recovery-codes');
 
         // Ensure entry does not yet exist

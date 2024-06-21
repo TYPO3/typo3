@@ -23,7 +23,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Updates\FeLoginModeExtractionUpdate;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -40,7 +39,7 @@ final class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
     #[Test]
     public function functionalityUsedTest(string $csvDataSet, bool $updateNecessary): void
     {
-        $schemaManager = GeneralUtility::makeInstance(ConnectionPool::class)
+        $schemaManager = $this->get(ConnectionPool::class)
             ->getConnectionForTable('pages')
             ->createSchemaManager();
 

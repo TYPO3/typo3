@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\LanguageContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\TestSet;
@@ -146,8 +145,8 @@ final class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTestCase
             ],
         ]);
 
-        GeneralUtility::makeInstance(SiteConfiguration::class)->resolveAllExistingSites(false);
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('archive-acme-com');
+        $this->get(SiteConfiguration::class)->resolveAllExistingSites(false);
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('archive-acme-com');
         $uri = $site->getRouter()->generateUri(3000);
         self::assertEquals('https://archive.acme.com/', (string)$uri);
         $uri = $site->getRouter()->generateUri(3000, ['type' => '1533906435']);

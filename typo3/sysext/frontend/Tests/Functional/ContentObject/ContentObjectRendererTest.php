@@ -210,7 +210,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         ];
 
         $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
+        $subject = new ContentObjectRenderer($typoScriptFrontendController);
         $request = $this->getPreparedRequest();
         $pageInformation = new PageInformation();
         $pageInformation->setId(0);
@@ -1000,7 +1000,7 @@ And another one';
     #[Test]
     public function checkIfReturnsExpectedValues(array $configuration, bool $expected): void
     {
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject = new ContentObjectRenderer();
         $subject->data = [
             'known' => 'somevalue',
         ];
@@ -1183,7 +1183,7 @@ And another one';
         ];
         $fileReference = new FileReference($fileReferenceData);
         $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $typoScriptFrontendController);
+        $subject = new ContentObjectRenderer($typoScriptFrontendController);
         $subject->setCurrentFile($fileReference);
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
@@ -1222,7 +1222,7 @@ And another one';
         ];
         $fileReference = new FileReference($fileReferenceData);
 
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject = new ContentObjectRenderer();
         $result = $subject->getImgResource($fileReference, []);
 
         $expectedWidth = 512;
@@ -1251,7 +1251,7 @@ And another one';
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(AfterContentObjectRendererInitializedEvent::class, 'after-content-object-renderer-initialized-listener');
 
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject = new ContentObjectRenderer();
         $subject->start(['foo' => 'bar'], 'aTable');
 
         self::assertInstanceOf(AfterContentObjectRendererInitializedEvent::class, $afterContentObjectRendererInitializedEvent);
@@ -1288,7 +1288,7 @@ And another one';
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(AfterGetDataResolvedEvent::class, 'after-get-data-resolved-listener');
 
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject = new ContentObjectRenderer();
         $subject->start(['foo' => 'bar'], 'aTable');
         $subject->getData('field:title', ['title' => 'title']);
 
@@ -1318,7 +1318,7 @@ And another one';
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(AfterImageResourceResolvedEvent::class, 'after-image-resource-resolved-listener');
 
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject = new ContentObjectRenderer();
         $subject->start(['foo' => 'bar'], 'aTable');
         $subject->getImgResource('GIFBUILDER', ['foo' => 'bar']);
 
@@ -1348,7 +1348,7 @@ And another one';
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(EnhanceStdWrapEvent::class, 'enhance-stdWrap-listener');
 
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject = new ContentObjectRenderer();
         $result = $subject->stdWrap('Test', ['wrap' => $wrap]);
 
         self::assertInstanceOf(EnhanceStdWrapEvent::class, $enhanceStdWrapEvent);
@@ -1360,7 +1360,7 @@ And another one';
 
     public function getDataWithTypeAssetReturnsVersionedUri(): void
     {
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $subject = new ContentObjectRenderer();
         Environment::initialize(
             Environment::getContext(),
             true,

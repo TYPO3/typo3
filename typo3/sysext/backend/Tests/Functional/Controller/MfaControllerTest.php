@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaControllerTest extends FunctionalTestCase
@@ -258,11 +257,8 @@ final class MfaControllerTest extends FunctionalTestCase
             'totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB'],
         ]);
 
-        $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
-        $totp = GeneralUtility::makeInstance(
-            Totp::class,
-            'KRMVATZTJFZUC53FONXW2ZJB'
-        )->generateTotp((int)floor($timestamp / 30));
+        $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
+        $totp = (new Totp('KRMVATZTJFZUC53FONXW2ZJB'))->generateTotp((int)floor($timestamp / 30));
 
         $queryParams = [
             'action' => 'verify',

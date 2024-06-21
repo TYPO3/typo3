@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Domain\Event\ModifyDefaultConstraintsForDatabaseQueryEvent;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -407,7 +406,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $subject = new PageRepository(new Context());
 
         $conditions = $subject->getDefaultConstraints($table);
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable($table);
         $expr = $connection->getExpressionBuilder();
 
         self::assertThat(
@@ -437,7 +436,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $subject = new PageRepository($context);
 
         $conditions = $subject->getDefaultConstraints($table);
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable($table);
         $expr = $connection->getExpressionBuilder();
 
         self::assertThat(
@@ -467,7 +466,7 @@ final class PageRepositoryTest extends FunctionalTestCase
         $subject = new PageRepository($context);
 
         $conditions = $subject->getDefaultConstraints($table);
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable($table);
         $expr = $connection->getExpressionBuilder();
 
         self::assertThat(

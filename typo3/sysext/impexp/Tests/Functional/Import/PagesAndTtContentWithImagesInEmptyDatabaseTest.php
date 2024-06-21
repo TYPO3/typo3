@@ -28,7 +28,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     #[Test]
     public function importPagesAndRelatedTtContentWithImagesOnCaseSensitiveFilesystems(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         if (!$this->isCaseSensitiveFilesystem()) {
@@ -48,7 +48,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     #[Test]
     public function importPagesAndRelatedTtContentWithImagesOnCaseInsensitiveFilesystems(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         if ($this->isCaseSensitiveFilesystem()) {
@@ -68,7 +68,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     #[Test]
     public function importPagesAndRelatedTtContentWithImagesButWithoutStorageOnCaseSensitiveFilesystems(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         if (!$this->isCaseSensitiveFilesystem()) {
@@ -88,7 +88,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     #[Test]
     public function importPagesAndRelatedTtContentWithImagesButWithoutStorageOnCaseInsensitiveFilesystems(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         if ($this->isCaseSensitiveFilesystem()) {
@@ -108,7 +108,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     #[Test]
     public function importPagesAndRelatedTtContentWithImagesWithSpacesInPath(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-spaces-in-path.xml');
@@ -126,7 +126,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     #[Test]
     public function importPagesAndRelatedTtContentWithImagesButNotIncluded(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         // Files are parallel to the fixture .xml file in a folder - impexp tests for /../ not allowed in path, so we set an absolute path here
@@ -143,7 +143,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     #[Test]
     public function importPagesAndRelatedTtContentWithImageWithForcedUids(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         try {
@@ -171,7 +171,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     {
         GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin_invalid_path');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-invalid-storage.xml');
         $subject->importData();
@@ -185,7 +185,7 @@ final class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImpor
     #[Test]
     public function importPagesAndRelatedTtContentWithMissingImageRemovesSysFileReferenceToo(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         try {
             $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-missing-image.xml');

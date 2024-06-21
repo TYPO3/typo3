@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\Repository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -169,7 +168,7 @@ final class RedirectRepositoryTest extends FunctionalTestCase
 
     private function getRedirectCount(): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->get(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_redirect');
         return (int)$queryBuilder
             ->count('uid')

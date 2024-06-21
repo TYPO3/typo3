@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class GroupResolverTest extends FunctionalTestCase
@@ -73,7 +72,7 @@ final class GroupResolverTest extends FunctionalTestCase
     #[Test]
     public function findAllUsersOfGroupsHandlesRecursiveCalls(array $groupIds, array $expectedUsers): void
     {
-        $subject = GeneralUtility::makeInstance(GroupResolver::class);
+        $subject = $this->get(GroupResolver::class);
         $users = $subject->findAllUsersInGroups($groupIds, 'be_groups', 'be_users');
         self::assertEquals($expectedUsers, array_map(intval(...), array_column($users, 'uid')));
     }

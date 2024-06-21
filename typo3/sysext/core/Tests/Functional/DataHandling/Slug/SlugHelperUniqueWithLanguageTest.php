@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SlugHelperUniqueWithLanguageTest extends FunctionalTestCase
@@ -101,8 +100,7 @@ final class SlugHelperUniqueWithLanguageTest extends FunctionalTestCase
     #[Test]
     public function buildSlugForUniqueRespectsLanguage(string $expectedSlug, array $recordData): void
     {
-        $subject = GeneralUtility::makeInstance(
-            SlugHelper::class,
+        $subject = new SlugHelper(
             'tx_testdatahandler_slug',
             'slug',
             [

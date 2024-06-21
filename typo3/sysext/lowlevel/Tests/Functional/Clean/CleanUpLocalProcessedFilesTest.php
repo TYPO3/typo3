@@ -54,7 +54,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSet/sys_file_processedfile.csv');
-        $this->subject = GeneralUtility::makeInstance(CleanUpLocalProcessedFilesCommand::class);
+        $this->subject = $this->get(CleanUpLocalProcessedFilesCommand::class);
 
         $helperSet = new HelperSet();
         $helperSet->set(new QuestionHelper(), 'question');
@@ -64,7 +64,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
 
         // create fileadmin (1) and an additional absolute local storage (2)
-        $subject = GeneralUtility::makeInstance(StorageRepository::class);
+        $subject = $this->get(StorageRepository::class);
         $subject->createLocalStorage(
             'fileadmin',
             'fileadmin/',

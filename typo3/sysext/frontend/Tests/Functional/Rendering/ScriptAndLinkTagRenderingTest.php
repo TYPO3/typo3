@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -121,7 +120,7 @@ final class ScriptAndLinkTagRenderingTest extends FunctionalTestCase
      */
     protected function setTypoScriptConstantsToTemplateRecord(int $pageId, string $constants, bool $append = false): void
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_template');
 
         $template = $connection->select(['uid', 'constants'], 'sys_template', ['pid' => $pageId, 'root' => 1])->fetchAssociative();
         if (empty($template)) {

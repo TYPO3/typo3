@@ -42,7 +42,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/base.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/sys_file_storage.csv');
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
     }
 
@@ -1220,7 +1220,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = [];
 
         $result = (new TcaSelectItems())->addData($input);
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $flashMessageService = $this->get(FlashMessageService::class);
         $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 
         self::assertEquals($expected, $result);
@@ -2274,7 +2274,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
 
         (new TcaSelectItems())->addData($input);
 
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $flashMessageService = $this->get(FlashMessageService::class);
         $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         self::assertCount(0, $flashMessageQueue->getAllMessages());
     }
@@ -2331,7 +2331,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
 
         (new TcaSelectItems())->addData($input);
 
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $flashMessageService = $this->get(FlashMessageService::class);
         $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         self::assertCount(1, $flashMessageQueue->getAllMessages());
     }

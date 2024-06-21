@@ -22,7 +22,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
 use TYPO3\CMS\Redirects\EventListener\AddPageTypeZeroSource;
 use TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource;
@@ -39,7 +38,7 @@ final class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimpleSiteRoot.csv');
         $this->buildBaseSite([]);
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId(1);
+        $site = $this->get(SiteFinder::class)->getSiteByRootPageId(1);
         $siteLanguage = $site->getDefaultLanguage();
 
         // Removing AddPageTypeZeroSource event is needed to avoid cross dependency here for this test.

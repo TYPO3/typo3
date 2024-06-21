@@ -125,7 +125,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         self::assertEquals('t3://page?uid=2', $redirectMatch['target']);
 
         // Ensure we deal with an unauthorized request!
-        self::assertFalse(GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'isLoggedIn'));
+        self::assertFalse($this->get(Context::class)->getPropertyFromAspect('frontend.user', 'isLoggedIn'));
 
         // Assert link to access restricted page is build
         $targetUrl = $redirectService->getTargetUrl($redirectMatch, $request);

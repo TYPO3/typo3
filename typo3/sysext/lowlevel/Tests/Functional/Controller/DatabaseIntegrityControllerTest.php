@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -342,15 +341,15 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
         $iconFactoryMock = $this->getMockBuilder(IconFactory::class)->disableOriginalConstructor()->getMock();
         $iconFactoryMock->method('getIcon')->willReturn($iconMock);
 
-        $route = GeneralUtility::makeInstance(Router::class)->getRoute('system_dbint');
+        $route = $this->get(Router::class)->getRoute('system_dbint');
         $route->setOption('_identifier', 'system_dbint');
         $request = (new ServerRequest())->withAttribute('route', $route);
 
         $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [
             $iconFactoryMock,
-            GeneralUtility::makeInstance(UriBuilder::class),
-            GeneralUtility::makeInstance(ModuleTemplateFactory::class),
-            GeneralUtility::makeInstance(PlatformHelper::class),
+            $this->get(UriBuilder::class),
+            $this->get(ModuleTemplateFactory::class),
+            $this->get(PlatformHelper::class),
         ]);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings, $request);

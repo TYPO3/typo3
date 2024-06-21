@@ -31,7 +31,7 @@ final class ImagesWithStoragesTest extends AbstractImportExportTestCase
         GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin-1');
         GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin-3');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/images-with-storages.xml');
         $subject->importData();
@@ -48,7 +48,7 @@ final class ImagesWithStoragesTest extends AbstractImportExportTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storages.csv');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/images-with-static-and-fallback-storages.xml');
         $subject->importData();

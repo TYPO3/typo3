@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -43,7 +42,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-different-image.xml');
         $subject->importData();
@@ -66,7 +65,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         try {
             $subject->setPid(0);
             $subject->setUpdate(true);
@@ -98,7 +97,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         try {
             $subject->setPid(0);
             $subject->setUpdate(true);
@@ -134,7 +133,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         try {
             $subject->setPid(0);
             $subject->setUpdate(true);
@@ -165,7 +164,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-existing-same-image.xml');
         $subject->importData();
@@ -204,7 +203,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         // Import file with sys_file:1 and sys_file:2, where sys_file:1 has one connected
         // content element, and sys_file:2 has two connected content elements.
@@ -225,7 +224,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storages.csv');
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml');
         $subject->checkImportPrerequisites();
@@ -256,7 +255,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
     </ROOT>
 </T3DataStructure>';
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(1);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-flexform-relation.xml');
         $subject->importData();
@@ -282,7 +281,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = $this->getFlexFormSoftReferenceDataStructure();
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent-with-flexform-softrefs.xml');
         $subject->importData();
@@ -304,7 +303,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = $this->getFlexFormSoftReferenceDataStructure();
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent-with-flexform-softrefs.xml');
         $subject->setSoftrefCfg(['2f9299a90b56944746e4cadb753a6a70' => ['mode' => Import::SOFTREF_IMPORT_MODE_EXCLUDE]]);
@@ -327,7 +326,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = $this->getFlexFormSoftReferenceDataStructure();
 
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent-with-flexform-softrefs.xml');
         $subject->setSoftrefCfg(['2f9299a90b56944746e4cadb753a6a70' => ['mode' => Import::SOFTREF_IMPORT_MODE_EDITABLE]]);

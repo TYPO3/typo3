@@ -101,7 +101,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
     #[Test]
     public function bestStorageIsResolved(string $sourceIdentifier, string $expectedCombinedIdentifier): void
     {
-        $subject = GeneralUtility::makeInstance(StorageRepository::class);
+        $subject = $this->get(StorageRepository::class);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
         $publicPath = Environment::getPublicPath();
@@ -143,14 +143,14 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         $subject->setEvaluatePermissions(false);
         mkdir(Environment::getPublicPath() . '/fileadmin/_processed_');
         mkdir(Environment::getPublicPath() . '/fileadmin/aDirectory');
         mkdir(Environment::getPublicPath() . '/typo3temp/assets/_processed_');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/aDirectory/bar.txt', 'myData');
         $subject->addFileMount('/aDirectory/', ['read_only' => false]);
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/aDirectory/bar.txt');
+        $file = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/aDirectory/bar.txt');
         $rootProcessingFolder = $subject->getProcessingFolder();
         $processingFolder = $subject->getProcessingFolder($file);
         self::assertInstanceOf(Folder::class, $processingFolder);
@@ -223,8 +223,8 @@ final class StorageRepositoryTest extends FunctionalTestCase
             mkdir(Environment::getPublicPath() . '/fileadmin/' . $fileMountFolder);
         }
         file_put_contents(Environment::getPublicPath() . '/fileadmin/' . $targetDirectory . '/' . $fileName, 'myData');
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/' . $targetDirectory . '/' . $fileName);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $file = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/' . $targetDirectory . '/' . $fileName);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         $subject->setEvaluatePermissions(true);
         // read_only = true -> no write access for user, so checking for second argument true should assert false
         $subject->addFileMount('/' . $fileMountFolder . '/', ['read_only' => $isFileMountReadOnly]);
@@ -237,7 +237,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         $processingFolder = $subject->getProcessingFolder();
         self::assertInstanceOf(Folder::class, $processingFolder);
     }
@@ -249,7 +249,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         $folder = new Folder($subject, '/foo/' . $folderIdentifier . '/', $folderIdentifier);
         $role = $subject->getRole($folder);
         self::assertSame(FolderInterface::ROLE_DEFAULT, $role);
@@ -261,10 +261,10 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $file = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1325842622);
         $subject->replaceFile($file, Environment::getPublicPath() . '/' . StringUtility::getUniqueId());
@@ -276,7 +276,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1325689164);
         $subject->createFolder('newFolder', new Folder($subject, '/foo/', 'foo'));
@@ -288,11 +288,11 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
         mkdir(Environment::getPublicPath() . '/fileadmin/_recycler_');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $file = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
         self::assertFileExists(Environment::getPublicPath() . '/fileadmin/_recycler_/bar.txt');
         self::assertFileDoesNotExist(Environment::getPublicPath() . '/fileadmin/foo/bar.txt');
@@ -304,10 +304,10 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
-        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $file = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
         self::assertFileDoesNotExist(Environment::getPublicPath() . '/fileadmin/foo/bar.txt');
     }
@@ -445,7 +445,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/FileSearch.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         $subject->setFileAndFolderNameFilters($filters);
         mkdir(Environment::getPublicPath() . '/fileadmin/bar');
         mkdir(Environment::getPublicPath() . '/fileadmin/bar/bla');
@@ -454,7 +454,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         file_put_contents(Environment::getPublicPath() . '/fileadmin/bar/bla/foo.txt', 'myData');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/baz/bla/baz.txt', 'myData');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/bar/blupp.txt', 'myData');
-        $folder = $searchFolder ? GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:' . $searchFolder) : null;
+        $folder = $searchFolder ? $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:' . $searchFolder) : null;
         $search = FileSearchDemand::createForSearchTerm($searchTerm);
         if ($recursive) {
             $search = $search->withRecursive();
@@ -479,10 +479,10 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
-        $folderToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
-        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+        $folderToCopy = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
+        $targetParentFolder = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
         $this->expectException(InvalidTargetFolderException::class);
         $this->expectExceptionCode(1422723059);
         $subject->copyFolder($folderToCopy, $targetParentFolder, null, $conflictMode);
@@ -495,12 +495,12 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
-        $folderToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
-        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+        $folderToCopy = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo');
+        $targetParentFolder = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
         $subject->copyFolder($folderToCopy, $targetParentFolder, null, $conflictMode);
-        $newFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo_01');
+        $newFolder = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/foo_01');
         self::assertInstanceOf(Folder::class, $newFolder);
     }
 
@@ -514,9 +514,9 @@ final class StorageRepositoryTest extends FunctionalTestCase
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/bar.txt', 'Temp file 2');
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-        $fileToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
-        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
+        $fileToCopy = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $targetParentFolder = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
         $this->expectException(ExistingTargetFileNameException::class);
         $this->expectExceptionCode(1320291064);
         $subject->copyFile($fileToCopy, $targetParentFolder, null, $conflictMode);
@@ -532,11 +532,11 @@ final class StorageRepositoryTest extends FunctionalTestCase
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file 1');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/bar.txt', 'Temp file 2');
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
-        $fileToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
-        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
+        $fileToCopy = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $targetParentFolder = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
         $subject->copyFile($fileToCopy, $targetParentFolder, null, $conflictMode);
-        $newFile = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/bar_01.txt');
+        $newFile = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/bar_01.txt');
         self::assertInstanceOf(File::class, $newFile);
     }
 
@@ -548,15 +548,15 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->setUpBackendUser(1);
         mkdir(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'Temp file');
-        $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $subject = $this->get(StorageRepository::class)->findByUid(1);
         $fileToCopyMetaData = [
             'title' => 'Temp file title',
             'description' => 'Temp file description',
         ];
         /** @var File $fileToCopy */
-        $fileToCopy = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $fileToCopy = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $fileToCopy->getMetaData()->add($fileToCopyMetaData);
-        $targetParentFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
+        $targetParentFolder = $this->get(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:/');
         /** @var File $newFile */
         $newFile = $subject->copyFile($fileToCopy, $targetParentFolder);
         self::assertNotEquals($fileToCopy->getMetaData()->get()['file'], $newFile->getMetaData()->get()['file']);

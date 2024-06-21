@@ -59,7 +59,7 @@ final class LinkServiceTest extends FunctionalTestCase
         string $linkParameter,
         array $expected,
     ): void {
-        $subject = GeneralUtility::makeInstance(LinkService::class);
+        $subject = $this->get(LinkService::class);
 
         self::assertSame($expected, $subject->resolve($linkParameter));
     }

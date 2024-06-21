@@ -82,7 +82,7 @@ final class RecordFactoryTest extends FunctionalTestCase
     #[Test]
     public function overlaidRecordContainsRelevantInformation(): void
     {
-        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context = clone $this->get(Context::class);
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]));
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $dbRow = $pageRepository->getPage(3);
@@ -98,7 +98,7 @@ final class RecordFactoryTest extends FunctionalTestCase
     #[Test]
     public function overlaidRecordContainsVersionStateAndLanguageState(): void
     {
-        $context = clone GeneralUtility::makeInstance(Context::class);
+        $context = clone $this->get(Context::class);
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]));
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $dbRow = $pageRepository->getPage(3);

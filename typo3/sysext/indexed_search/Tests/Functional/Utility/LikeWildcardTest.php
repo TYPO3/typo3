@@ -23,7 +23,6 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -33,7 +32,7 @@ final class LikeWildcardTest extends FunctionalTestCase
     #[Test]
     public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, LikeWildcard $subject, string $expected): void
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable($tableName);
         $databasePlatform = $connection->getDatabasePlatform();
         if ($databasePlatform instanceof DoctrinePostgreSQLPlatform) {
             $expected = str_replace('LIKE', 'ILIKE', $expected);

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Form\Tests\Functional\Domain\Model\Renderable;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
@@ -60,8 +59,8 @@ final class AbstractRenderableTest extends FunctionalTestCase
 
     private function buildAbstractRenderable(): AbstractRenderable
     {
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class, $configurationManager);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationService = new ConfigurationService($configurationManager);
         $prototypeConfiguration = $configurationService->getPrototypeConfiguration('standard');
 
         $subject = new class () extends AbstractRenderable {};

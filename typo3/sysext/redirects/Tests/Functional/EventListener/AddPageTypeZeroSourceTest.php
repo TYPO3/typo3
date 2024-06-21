@@ -44,7 +44,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimpleSiteRoot.csv');
         $this->buildBaseSite([]);
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId(1);
+        $site = $this->get(SiteFinder::class)->getSiteByRootPageId(1);
         $siteLanguage = $site->getDefaultLanguage();
 
         /** @var SlugRedirectChangeItem $changeItem */
@@ -91,7 +91,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
                 ],
             ],
         ]);
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId(1);
+        $site = $this->get(SiteFinder::class)->getSiteByRootPageId(1);
         $siteLanguage = $site->getDefaultLanguage();
 
         /** @var SlugRedirectChangeItem $changeItem */
@@ -145,7 +145,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
                 ],
             ],
         ]);
-        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId(1);
+        $site = $this->get(SiteFinder::class)->getSiteByRootPageId(1);
         $siteLanguage = $site->getDefaultLanguage();
 
         /** @var Container $container */

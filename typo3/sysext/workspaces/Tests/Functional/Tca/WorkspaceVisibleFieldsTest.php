@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\Tca;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class WorkspaceVisibleFieldsTest extends FunctionalTestCase
@@ -63,7 +62,7 @@ final class WorkspaceVisibleFieldsTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_filemounts.csv');
     }
@@ -71,7 +70,7 @@ final class WorkspaceVisibleFieldsTest extends FunctionalTestCase
     #[Test]
     public function workspaceFormContainsExpectedFields(): void
     {
-        $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
+        $formEngineTestService = new FormTestService();
         $formResult = $formEngineTestService->createNewRecordForm('sys_workspace');
 
         foreach (static::$workspaceFields as $expectedField) {

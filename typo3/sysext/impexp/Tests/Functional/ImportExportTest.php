@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Impexp\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -46,7 +45,7 @@ final class ImportExportTest extends AbstractImportExportTestCase
     {
         $recordTypesIncludeFields = include __DIR__ . '/Fixtures/IrreRecordsIncludeFields.php';
 
-        $import = GeneralUtility::makeInstance(Import::class);
+        $import = $this->get(Import::class);
         $import->setPid(0);
         $import->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/irre-records.xml');
         $import->setForceAllUids(true);

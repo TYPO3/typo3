@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -73,7 +72,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
     #[Test]
     public function findByUidOverlayModeOnDefaultLanguage(): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = $this->get(Context::class);
         $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
 
         $post2 = $this->postRepository->findByUid(2);
@@ -114,7 +113,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
     #[Test]
     public function findByUidNoOverlaysDefaultLanguage(): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = $this->get(Context::class);
         $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
 
         $post2 = $this->postRepository->findByUid(2);
@@ -153,7 +152,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
     #[Test]
     public function findByUidOverlayModeOnLanguage(): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = $this->get(Context::class);
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
 
         $post2 = $this->postRepository->findByUid(2);
@@ -191,7 +190,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
     #[Test]
     public function findByUidNoOverlaysLanguage(): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = $this->get(Context::class);
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
 
         $post2 = $this->postRepository->findByUid(2);
@@ -1084,7 +1083,7 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
     public function postsWithoutRespectingSysLanguage(int $languageUid, string $overlay, array $expected): void
     {
         $languageAspect = new LanguageAspect($languageUid, $languageUid, $overlay);
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = $this->get(Context::class);
         $context->setAspect('language', $languageAspect);
 
         $blogRepository = $this->get(BlogRepository::class);

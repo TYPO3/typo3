@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SlugHelperUniqueTest extends FunctionalTestCase
@@ -49,8 +48,7 @@ final class SlugHelperUniqueTest extends FunctionalTestCase
     #[Test]
     public function buildSlugForUniqueInSiteRespectsMaxRetryOverflow(): void
     {
-        $subject = GeneralUtility::makeInstance(
-            SlugHelper::class,
+        $subject = new SlugHelper(
             'pages',
             'slug',
             [
@@ -73,8 +71,7 @@ final class SlugHelperUniqueTest extends FunctionalTestCase
     #[Test]
     public function buildSlugForUniqueInPidRespectsMaxRetryOverflow(): void
     {
-        $subject = GeneralUtility::makeInstance(
-            SlugHelper::class,
+        $subject = new SlugHelper(
             'pages',
             'slug',
             [
@@ -97,8 +94,7 @@ final class SlugHelperUniqueTest extends FunctionalTestCase
     #[Test]
     public function buildSlugForUniqueInTableRespectsMaxRetryOverflow(): void
     {
-        $subject = GeneralUtility::makeInstance(
-            SlugHelper::class,
+        $subject = new SlugHelper(
             'pages',
             'slug',
             [

@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Log\LogDataTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -74,7 +73,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     protected function setWorkspaceId(int $workspaceId): void
     {
         $this->backendUser->workspace = $workspaceId;
-        GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 
     /**
@@ -116,7 +115,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      */
     private function assertCleanReferenceIndex(): void
     {
-        $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+        $referenceIndex = $this->get(ReferenceIndex::class);
         $referenceIndexFixResult = $referenceIndex->updateIndex(true);
         if (count($referenceIndexFixResult['errors']) > 0) {
             self::fail('Reference index not clean. ' . LF . implode(LF, $referenceIndexFixResult['errors']));

@@ -34,7 +34,7 @@ final class GetUniqueTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('pages');
         $connection->insert('pages', ['title' => 'ExistingPage']);
         $connection->insert('pages', ['title' => 'ManyPages']);
         for ($i = 0; $i <= 100; $i++) {
@@ -47,7 +47,7 @@ final class GetUniqueTest extends FunctionalTestCase
      */
     public static function getUniqueDataProvider(): array
     {
-        $randomValue = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(10);
+        $randomValue = (new Random())->generateRandomHexString(10);
 
         return [
             'unique value' => [$randomValue, $randomValue],

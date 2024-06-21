@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PasswordPolicyValidatorTest extends FunctionalTestCase
@@ -47,8 +46,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         $this->setDefaultPasswordPolicy();
         $passwordPolicy = 'default';
 
-        $passwordPolicyValidator = GeneralUtility::makeInstance(
-            PasswordPolicyValidator::class,
+        $passwordPolicyValidator = new PasswordPolicyValidator(
             PasswordPolicyAction::NEW_USER_PASSWORD,
             $passwordPolicy
         );
@@ -62,8 +60,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies'] = [];
         $passwordPolicy = 'default';
 
-        $passwordPolicyValidator = GeneralUtility::makeInstance(
-            PasswordPolicyValidator::class,
+        $passwordPolicyValidator = new PasswordPolicyValidator(
             PasswordPolicyAction::NEW_USER_PASSWORD,
             $passwordPolicy
         );
@@ -77,8 +74,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         $this->setDefaultPasswordPolicy();
         $passwordPolicy = 'unknown';
 
-        $passwordPolicyValidator = GeneralUtility::makeInstance(
-            PasswordPolicyValidator::class,
+        $passwordPolicyValidator = new PasswordPolicyValidator(
             PasswordPolicyAction::NEW_USER_PASSWORD,
             $passwordPolicy
         );
@@ -92,8 +88,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         $this->setDefaultPasswordPolicy();
         $passwordPolicy = 'default';
 
-        $passwordPolicyValidator = GeneralUtility::makeInstance(
-            PasswordPolicyValidator::class,
+        $passwordPolicyValidator = new PasswordPolicyValidator(
             PasswordPolicyAction::NEW_USER_PASSWORD,
             $passwordPolicy
         );
@@ -107,8 +102,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         $this->setDefaultPasswordPolicy();
         $passwordPolicy = 'default';
 
-        $passwordPolicyValidator = GeneralUtility::makeInstance(
-            PasswordPolicyValidator::class,
+        $passwordPolicyValidator = new PasswordPolicyValidator(
             PasswordPolicyAction::NEW_USER_PASSWORD,
             $passwordPolicy
         );
@@ -123,8 +117,7 @@ final class PasswordPolicyValidatorTest extends FunctionalTestCase
         $this->setDefaultPasswordPolicy();
         $passwordPolicy = 'default';
 
-        $passwordPolicyValidator = GeneralUtility::makeInstance(
-            PasswordPolicyValidator::class,
+        $passwordPolicyValidator = new PasswordPolicyValidator(
             PasswordPolicyAction::NEW_USER_PASSWORD,
             $passwordPolicy
         );

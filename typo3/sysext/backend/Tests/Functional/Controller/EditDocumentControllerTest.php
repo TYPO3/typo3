@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class EditDocumentControllerTest extends FunctionalTestCase
@@ -47,7 +46,7 @@ final class EditDocumentControllerTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $this->subject = GeneralUtility::makeInstance(EditDocumentController::class);
+        $this->subject = $this->get(EditDocumentController::class);
         $this->normalizedParams = new NormalizedParams([], [], '', '');
     }
 

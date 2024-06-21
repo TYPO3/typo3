@@ -43,7 +43,7 @@ final class SecurityTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $backendUser = $this->setUpBackendUser(1);
         $backendUser->workspace = 0;
-        GeneralUtility::makeInstance(Context::class)
+        $this->get(Context::class)
             ->setAspect('workspace', new WorkspaceAspect(0));
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
@@ -247,7 +247,7 @@ final class SecurityTest extends FunctionalTestCase
         $contentId = current($newIds['tt_content'] ?? 0);
         self::assertGreaterThan(0, $contentId, 'Could not resolve content id');
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+        $connection = $this->get(ConnectionPool::class)
             ->getConnectionForTable('tt_content');
         $record = $connection->select(['bodytext'], 'tt_content', ['uid' => (int)$contentId])->fetchAssociative();
         $bodytext = $record['bodytext'] ?? null;
@@ -273,7 +273,7 @@ final class SecurityTest extends FunctionalTestCase
         $contentId = current($newIds['tt_content'] ?? 0);
         self::assertGreaterThan(0, $contentId, 'Could not resolve content id');
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+        $connection = $this->get(ConnectionPool::class)
             ->getConnectionForTable('tt_content');
         $record = $connection->select(['bodytext'], 'tt_content', ['uid' => (int)$contentId])->fetchAssociative();
         $bodytext = $record['bodytext'] ?? null;

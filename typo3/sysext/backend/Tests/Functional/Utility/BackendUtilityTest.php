@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendUtilityTest extends FunctionalTestCase
@@ -211,7 +210,7 @@ final class BackendUtilityTest extends FunctionalTestCase
     #[Test]
     public function enableFieldsStatementIsCorrect(array $enableColumns, bool $inverted, string $expectation): void
     {
-        $platform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->getDatabasePlatform();
+        $platform = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->getDatabasePlatform();
         $tableName = uniqid('table');
         $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'] = $enableColumns;
         $GLOBALS['SIM_ACCESS_TIME'] = 1234567890;

@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\Image\GraphicsMagickPreset;
 use TYPO3\CMS\Seo\MetaTag\MetaTagGenerator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -43,8 +42,8 @@ final class MetaTagGeneratorTest extends FunctionalTestCase
         parent::setUp();
         // functional tests use GraphicMagick per default, resolve the corresponding path in current OS
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'] = $this->determineGraphicMagickBinaryPath();
-        $this->subject = GeneralUtility::makeInstance(MetaTagGenerator::class);
-        $this->defaultStorage = GeneralUtility::makeInstance(StorageRepository::class)->getDefaultStorage();
+        $this->subject = $this->get(MetaTagGenerator::class);
+        $this->defaultStorage = $this->get(StorageRepository::class)->getDefaultStorage();
     }
 
     public static function socialImageIsProcessedDataProvider(): \Generator
@@ -171,7 +170,7 @@ final class MetaTagGeneratorTest extends FunctionalTestCase
             $cropVariantCollection = $cropVariantCollection->applyRatioRestrictionToSelectedCropArea($file);
             $fileReferenceProperties['crop'] = (string)$cropVariantCollection;
         }
-        $fileReference = GeneralUtility::makeInstance(ResourceFactory::class)
+        $fileReference = $this->get(ResourceFactory::class)
             ->createFileReferenceObject($fileReferenceProperties);
         // invoke processing of social image
         $reflectionSubject = new \ReflectionObject($this->subject);
@@ -198,7 +197,7 @@ final class MetaTagGeneratorTest extends FunctionalTestCase
 
     private function determineGraphicMagickBinaryPath(): string
     {
-        $values = GeneralUtility::makeInstance(GraphicsMagickPreset::class)->getConfigurationValues();
+        $values = (new GraphicsMagickPreset())->getConfigurationValues();
         return $values['GFX/processor_path'] ?? $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'];
     }
 

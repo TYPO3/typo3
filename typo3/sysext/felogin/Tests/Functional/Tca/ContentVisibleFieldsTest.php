@@ -20,7 +20,6 @@ namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Tca;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ContentVisibleFieldsTest extends FunctionalTestCase
@@ -49,9 +48,9 @@ final class ContentVisibleFieldsTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
 
-        $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
+        $formEngineTestService = new FormTestService();
         $formResult = $formEngineTestService->createNewRecordForm('tt_content', ['CType' => 'felogin_login']);
 
         foreach (static::$contentFields as $expectedField) {

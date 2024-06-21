@@ -102,7 +102,7 @@ final class GifBuilderTest extends FunctionalTestCase
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj-gifbuilder.jpg'
         );
 
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer = new ContentObjectRenderer();
         $result = $contentObjectRenderer->cObjGetSingle(
             'IMAGE',
             [
@@ -132,7 +132,7 @@ final class GifBuilderTest extends FunctionalTestCase
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj-gifbuilder-imageresource.jpg'
         );
 
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer = new ContentObjectRenderer();
         $result = $contentObjectRenderer->cObjGetSingle(
             'IMG_RESOURCE',
             [
@@ -162,7 +162,7 @@ final class GifBuilderTest extends FunctionalTestCase
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj-gifbuilder.jpg'
         );
 
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer = new ContentObjectRenderer();
         $result = $contentObjectRenderer->cObjGetSingle(
             'IMAGE',
             [
@@ -219,7 +219,7 @@ final class GifBuilderTest extends FunctionalTestCase
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj1.jpg'
         );
 
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
+        $storageRepository = $this->get(StorageRepository::class)->findByUid(1);
         $file = $storageRepository->getFile('kasper-skarhoj1.jpg');
 
         self::assertInstanceOf(File::class, $file);

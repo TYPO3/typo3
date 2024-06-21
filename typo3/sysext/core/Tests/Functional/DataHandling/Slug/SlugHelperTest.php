@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -112,8 +111,7 @@ final class SlugHelperTest extends FunctionalTestCase
     #[Test]
     public function generateRespectsFallbackLanguageOfParentPageSlug(string $expected, array $page): void
     {
-        $slugHelper = GeneralUtility::makeInstance(
-            SlugHelper::class,
+        $slugHelper = new SlugHelper(
             'pages',
             'slug',
             [

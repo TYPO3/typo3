@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
@@ -198,7 +197,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             unset($GLOBALS['TCA'][self::TABLE_Content]['columns'][$integrityFieldName]);
         }
         // After TCA changes, refindex is not ok anymore for imported rows. Update it before performing other actions.
-        $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
+        $referenceIndex = $this->get(ReferenceIndex::class);
         $referenceIndex->updateIndex(false);
 
         // explicitly call TcaMigration (which was executed already earlier in functional testing bootstrap)

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -68,7 +67,7 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
             new Blog(),
             'administrator',
             0,
-            GeneralUtility::makeInstance(DataMapper::class)
+            $this->get(DataMapper::class)
         );
         // Directly using the magic `__get()` method here to avoid PHPStan complaining
         // about the dynamic property issue and spare an ignore pattern or annotation.

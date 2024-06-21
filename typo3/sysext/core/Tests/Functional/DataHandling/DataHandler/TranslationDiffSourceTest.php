@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\History\RecordHistoryRollback;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -84,9 +83,9 @@ final class TranslationDiffSourceTest extends FunctionalTestCase
         );
 
         $element = 'pages:' . self::PAGE_DATAHANDLER;
-        $recordHistory = GeneralUtility::makeInstance(RecordHistory::class, $element);
+        $recordHistory = new RecordHistory($element);
         $changeLog = $recordHistory->getChangeLog();
-        $recordHistoryRollback = GeneralUtility::makeInstance(RecordHistoryRollback::class);
+        $recordHistoryRollback = $this->get(RecordHistoryRollback::class);
         $recordHistoryRollback->performRollback($element, $recordHistory->getDiff($changeLog));
 
         $record = BackendUtility::getRecord('pages', self::PAGE_DATAHANDLER);

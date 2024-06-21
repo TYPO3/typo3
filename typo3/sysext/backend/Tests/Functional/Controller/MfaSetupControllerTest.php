@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaSetupControllerTest extends FunctionalTestCase
@@ -276,13 +275,10 @@ final class MfaSetupControllerTest extends FunctionalTestCase
             'redirectParams' => 'some=param',
         ];
 
-        $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+        $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
         $parsedBody = [
             'identifier' => 'totp',
-            'totp' => GeneralUtility::makeInstance(
-                Totp::class,
-                'KRMVATZTJFZUC53FONXW2ZJB'
-            )->generateTotp((int)floor($timestamp / 30)),
+            'totp' => (new Totp('KRMVATZTJFZUC53FONXW2ZJB'))->generateTotp((int)floor($timestamp / 30)),
             'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
             'checksum' => $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
         ];
@@ -305,13 +301,13 @@ final class MfaSetupControllerTest extends FunctionalTestCase
         // Successful activation will add a flash message
         self::assertEquals(
             'MFA setup successful',
-            GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0]->getTitle()
+            $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0]->getTitle()
         );
 
         // Flash message properly resolves the provider title
         self::assertStringContainsString(
             'You have successfully activated MFA provider Time-based one-time password.',
-            GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0]->getMessage()
+            $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0]->getMessage()
         );
 
         // Also redirect parameters are still kept

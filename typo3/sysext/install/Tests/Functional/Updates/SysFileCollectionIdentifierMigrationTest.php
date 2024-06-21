@@ -23,7 +23,6 @@ use Doctrine\DBAL\Types\StringType;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\SysFileCollectionIdentifierMigration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -39,7 +38,7 @@ final class SysFileCollectionIdentifierMigrationTest extends FunctionalTestCase
     {
         $subject = new SysFileCollectionIdentifierMigration();
 
-        $schemaManager = GeneralUtility::makeInstance(ConnectionPool::class)
+        $schemaManager = $this->get(ConnectionPool::class)
             ->getConnectionForTable(self::TABLE_NAME)
             ->createSchemaManager();
 

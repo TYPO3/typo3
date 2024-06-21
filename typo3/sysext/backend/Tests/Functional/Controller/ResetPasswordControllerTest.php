@@ -37,7 +37,6 @@ use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ResetPasswordControllerTest extends FunctionalTestCase
@@ -81,7 +80,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->initializeUserSessionManager();
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
     #[Test]
@@ -89,7 +88,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
     {
         $backendUser = new BackendUserAuthentication();
         $backendUser->user['uid'] = 13;
-        GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($backendUser));
+        $this->get(Context::class)->setAspect('backend.user', new UserAspect($backendUser));
 
         $this->expectExceptionCode(1618342858);
         $this->expectException(PropagateResponseException::class);

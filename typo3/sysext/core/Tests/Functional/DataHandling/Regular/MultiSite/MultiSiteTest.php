@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -65,8 +64,8 @@ final class MultiSiteTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         // Warm up caches for the root line utility to identify side effects
-        GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId(self::VALUE_PageIdWebsite);
-        GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId(self::VALUE_PageIdSecondSite);
+        $this->get(SiteMatcher::class)->matchByPageId(self::VALUE_PageIdWebsite);
+        $this->get(SiteMatcher::class)->matchByPageId(self::VALUE_PageIdSecondSite);
 
         // URL is now "/1" for the second site
         $actionService = new ActionService();

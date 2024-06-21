@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FileReferenceTest extends FunctionalTestCase
@@ -34,7 +33,7 @@ final class FileReferenceTest extends FunctionalTestCase
     #[Test]
     public function fileReferenceCanBeDeleted(): void
     {
-        $fileReference = GeneralUtility::makeInstance(FileReference::class, ['uid' => 1, 'uid_local' => 1]);
+        $fileReference = new FileReference(['uid' => 1, 'uid_local' => 1]);
         self::assertTrue($fileReference->delete());
 
         // Ensure file reference is really deleted in table

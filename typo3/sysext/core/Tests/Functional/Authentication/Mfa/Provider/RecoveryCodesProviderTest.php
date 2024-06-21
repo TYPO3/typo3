@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RecoveryCodesProviderTest extends FunctionalTestCase
@@ -60,7 +59,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->user = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
-        $this->hashService = GeneralUtility::makeInstance(HashService::class);
+        $this->hashService = $this->get(HashService::class);
         $this->subject = $this->get(MfaProviderRegistry::class)->getProvider('recovery-codes');
     }
 
@@ -104,7 +103,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
     public function verifyTest(): void
     {
         $code = '12345678';
-        $hash = GeneralUtility::makeInstance(PasswordHashFactory::class)
+        $hash = $this->get(PasswordHashFactory::class)
             ->getDefaultHashInstance('BE')
             ->getHashedPassword($code);
 
@@ -138,7 +137,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
 
         // Setup form data to activate provider
         $this->setupUser(['recovery-codes' => ['active' => false]]);
-        $codes = GeneralUtility::makeInstance(RecoveryCodes::class, 'BE')->generatePlainRecoveryCodes();
+        $codes = (new RecoveryCodes('BE'))->generatePlainRecoveryCodes();
         $parsedBody = [
             'recoveryCodes' => implode(PHP_EOL, $codes),
             'checksum' => $this->hashService->hmac(json_encode($codes) ?: '', 'recovery-codes-setup'),
@@ -172,7 +171,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         // Only an active and locked provider can be unlocked
         $this->setupUser(['recovery-codes' => ['active' => true, 'codes' => [], 'attempts' => 3]]);
         self::assertTrue($this->subject->unlock($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
-        $message = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0];
+        $message = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0];
         self::assertEquals('Your recovery codes were automatically updated!', $message->getTitle());
     }
 
@@ -189,7 +188,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
         $this->setupUser(['recovery-codes' => ['active' => true, 'codes' => ['some-code'], 'attempts' => 0]]);
         $request = $request->withParsedBody(['name' => 'some name', 'regenerateCodes' => true]);
         self::assertTrue($this->subject->update($request, MfaProviderPropertyManager::create($this->subject, $this->user)));
-        $message = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0];
+        $message = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0];
         self::assertEquals('Recovery codes successfully regenerated', $message->getTitle());
     }
 

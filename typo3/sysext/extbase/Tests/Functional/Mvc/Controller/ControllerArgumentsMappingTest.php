@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -82,7 +81,7 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
     #[Test]
     public function actionGetsBlogFromUidArgument(int $language, int $blogUid, string $expectedTitle): void
     {
-        $context = GeneralUtility::makeInstance(Context::class);
+        $context = $this->get(Context::class);
         $context->setAspect('language', new LanguageAspect($language, $language, LanguageAspect::OVERLAYS_ON));
         $this->request = $this->request->withControllerActionName('details');
         $this->request = $this->request->withArgument('blog', $blogUid);

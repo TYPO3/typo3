@@ -144,7 +144,7 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
         $cache = $this->get('cache.core');
         $eventDispatcher = $this->get(EventDispatcherInterface::class);
         GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
-        GeneralUtility::makeInstance(SiteWriter::class, $path, $eventDispatcher, $cache)->write($site->getIdentifier(), $site->getConfiguration());
+        (new SiteWriter($path, $eventDispatcher, $cache))->write($site->getIdentifier(), $site->getConfiguration());
     }
 
     public static function languageAwareRecordsAreResolvedDataProvider(): array

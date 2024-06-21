@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class MfaConfigurationControllerTest extends FunctionalTestCase
@@ -111,7 +110,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
 
         $response->getBody()->rewind();
         $responseContent = $response->getBody()->getContents();
-        foreach (GeneralUtility::makeInstance(MfaProviderRegistry::class)->getProviders() as $provider) {
+        foreach ($this->get(MfaProviderRegistry::class)->getProviders() as $provider) {
             self::assertStringContainsString('id="' . $provider->getIdentifier() . '-provider"', $responseContent);
         }
     }
@@ -192,7 +191,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         $redirect = parse_url($response->getHeaderLine('location'));
         $query = [];
         parse_str($redirect['query'] ?? '', $query);
-        $message = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0];
+        $message = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0];
 
         self::assertEquals(302, $response->getStatusCode());
         self::assertEquals('/typo3/mfa', $redirect['path']);
@@ -278,11 +277,8 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         }
 
         if ($action === 'activate') {
-            $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
-            $parsedBody['totp'] = GeneralUtility::makeInstance(
-                Totp::class,
-                'KRMVATZTJFZUC53FONXW2ZJB'
-            )->generateTotp((int)floor($timestamp / 30));
+            $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
+            $parsedBody['totp'] = (new Totp('KRMVATZTJFZUC53FONXW2ZJB'))->generateTotp((int)floor($timestamp / 30));
             $parsedBody['secret'] = 'KRMVATZTJFZUC53FONXW2ZJB';
             $parsedBody['checksum'] = $this->hashService->hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup');
         }
@@ -296,7 +292,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
 
         if ($redirect) {
             self::assertEquals(302, $response->getStatusCode());
-            $messages = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0];
+            $messages = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0];
             self::assertEquals($searchString, $messages->getMessage());
         } else {
             self::assertEquals(200, $response->getStatusCode());

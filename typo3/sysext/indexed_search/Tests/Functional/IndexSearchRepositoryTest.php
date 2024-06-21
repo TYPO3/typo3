@@ -20,7 +20,6 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Functional;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Type\SearchType;
@@ -68,7 +67,7 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
             'indexedDocTitle' => '',
         ]);
         $indexer->indexTypo3PageContent();
-        GeneralUtility::makeInstance(Context::class)->setAspect('frontend.user', new UserAspect(null, [0, -1]));
+        $this->get(Context::class)->setAspect('frontend.user', new UserAspect(null, [0, -1]));
     }
 
     #[Test]

@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\EventListener\PageTreeItemsHighlighter;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -162,6 +161,6 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
     protected function setWorkspaceId(int $workspaceId): void
     {
         $GLOBALS['BE_USER']->workspace = $workspaceId;
-        GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 }

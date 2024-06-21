@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -28,7 +27,7 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
     #[Test]
     public function importPagesAndRelatedTtContent(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml');

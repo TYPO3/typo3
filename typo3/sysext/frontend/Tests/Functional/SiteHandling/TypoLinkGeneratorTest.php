@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkHandlingController;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\TestSanitizerBuilder;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
@@ -63,7 +62,7 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);
             static::failIfArrayIsNotEmpty($writer->getErrors());
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
+            $connection = $this->get(ConnectionPool::class)->getConnectionForTable('pages');
             $connection->update(
                 'pages',
                 ['TSconfig' => implode(chr(10), [
@@ -80,7 +79,7 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
 
     private function setUpFileStorage(): void
     {
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+        $storageRepository = $this->get(StorageRepository::class);
         $storageId = $storageRepository->createLocalStorage(
             'fileadmin',
             'fileadmin/',

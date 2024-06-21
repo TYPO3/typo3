@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ProcessedFileTest extends FunctionalTestCase
@@ -46,7 +45,7 @@ final class ProcessedFileTest extends FunctionalTestCase
     #[Test]
     public function processedFileArrayCanBeSerialized(): void
     {
-        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $resourceFactory = $this->get(ResourceFactory::class);
         $originalFile = $resourceFactory->retrieveFileOrFolderObject(self::TEST_IMAGE);
         $someProcessedFile = new ProcessedFile(
             $originalFile,

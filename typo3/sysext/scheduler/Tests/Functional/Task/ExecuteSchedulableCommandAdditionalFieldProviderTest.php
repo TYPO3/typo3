@@ -34,7 +34,7 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends Functio
     #[Test]
     public function argumentsAndOptionsWithSameNameAreAdded(): void
     {
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
 
         // Create a fake command and register it.
         $command = new class () extends Command {
@@ -53,7 +53,7 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends Functio
         );
         GeneralUtility::setSingletonInstance(CommandRegistry::class, $mockCommandRegistry);
 
-        $task = GeneralUtility::makeInstance(ExecuteSchedulableCommandTask::class);
+        $task = new ExecuteSchedulableCommandTask();
         $task->setCommandIdentifier('some:test:command');
         $task->setDescription('Some test command');
         $task->setArguments(['action' => '']);

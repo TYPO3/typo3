@@ -51,7 +51,7 @@ final class PagesTsConfigGuardTest extends FunctionalTestCase
             ]
         );
         // define page create permissions for backend user group 9 on page 1
-        GeneralUtility::makeInstance(ConnectionPool::class)
+        $this->get(ConnectionPool::class)
             ->getConnectionForTable('pages')
             ->update(
                 'pages',

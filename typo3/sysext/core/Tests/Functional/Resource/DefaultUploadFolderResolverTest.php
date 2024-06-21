@@ -47,7 +47,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/page_upload/');
         $backendUser = $this->setUpBackendUser(1);
 
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         self::assertEquals(
             '1:/page_upload/',
@@ -61,7 +61,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/admin_upload/');
         $backendUser = $this->setUpBackendUser(1);
 
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         self::assertEquals(
             '1:/admin_upload/',
@@ -74,7 +74,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
     {
         $backendUser = $this->setUpBackendUser(2);
 
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         self::assertEquals(
             '1:/user_upload/',
@@ -88,7 +88,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/admin_upload/');
         $backendUser = $this->setUpBackendUser(1);
 
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         self::assertEquals('1:/admin_upload/', $subject->getDefaultUploadFolderForUser($backendUser)->getCombinedIdentifier());
     }
@@ -98,7 +98,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
     {
         $backendUser = $this->setUpBackendUser(2);
 
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         self::assertNull($subject->getDefaultUploadFolderForUser($backendUser));
     }
@@ -108,7 +108,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
     {
         $backendUser = $this->setUpBackendUser(1);
 
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         self::assertNull($subject->getDefaultUploadFolderForUser($backendUser));
     }
@@ -118,7 +118,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
     {
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/page_upload/');
 
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         self::assertEquals('1:/page_upload/', $subject->getDefaultUploadFolderForPage(1)->getCombinedIdentifier());
     }
@@ -126,7 +126,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
     #[Test]
     public function getDefaultUploadFolderForPageWithoutExistingFolderTest(): void
     {
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         self::assertNull($subject->getDefaultUploadFolderForPage(1));
     }
@@ -137,7 +137,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/admin_upload/');
         $backendUser = $this->setUpBackendUser(1);
 
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         /** @var Container $container */
         $container = $this->get('service_container');
@@ -161,7 +161,7 @@ final class DefaultUploadFolderResolverTest extends FunctionalTestCase
         GeneralUtility::mkdir($this->instancePath . '/fileadmin/admin_upload/');
         $backendUser = $this->setUpBackendUser(1);
 
-        $subject = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class);
+        $subject = $this->get(DefaultUploadFolderResolver::class);
 
         /** @var Container $container */
         $container = $this->get('service_container');

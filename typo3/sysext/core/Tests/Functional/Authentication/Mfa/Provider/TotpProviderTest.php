@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TotpProviderTest extends FunctionalTestCase
@@ -43,7 +42,7 @@ final class TotpProviderTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->user = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
-        $this->hashService = GeneralUtility::makeInstance(HashService::class);
+        $this->hashService = $this->get(HashService::class);
         $this->subject = $this->get(MfaProviderRegistry::class)->getProvider('totp');
     }
 
@@ -97,11 +96,8 @@ final class TotpProviderTest extends FunctionalTestCase
     public function verifyTest(): void
     {
         $request = (new ServerRequest('https://example.com', 'POST'));
-        $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
-        $totp = GeneralUtility::makeInstance(
-            Totp::class,
-            'KRMVATZTJFZUC53FONXW2ZJB'
-        )->generateTotp((int)floor($timestamp / 30));
+        $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
+        $totp = (new Totp('KRMVATZTJFZUC53FONXW2ZJB'))->generateTotp((int)floor($timestamp / 30));
 
         // Provider is inactive (secret missing)
         $this->setupUser(['active' => true]);
@@ -150,9 +146,9 @@ final class TotpProviderTest extends FunctionalTestCase
 
         // Setup form data to activate provider
         $secret = 'KRMVATZTJFZUC53FONXW2ZJB';
-        $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+        $timestamp = $this->get(Context::class)->getPropertyFromAspect('date', 'timestamp');
         $parsedBody = [
-            'totp' => GeneralUtility::makeInstance(Totp::class, $secret)->generateTotp((int)floor($timestamp / 30)),
+            'totp' => (new Totp($secret))->generateTotp((int)floor($timestamp / 30)),
             'secret' => $secret,
             'checksum' => $this->hashService->hmac($secret, 'totp-setup'),
 

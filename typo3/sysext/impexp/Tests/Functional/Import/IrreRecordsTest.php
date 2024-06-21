@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -36,7 +35,7 @@ final class IrreRecordsTest extends AbstractImportExportTestCase
     #[Test]
     public function importIrreRecords(): void
     {
-        $subject = GeneralUtility::makeInstance(Import::class);
+        $subject = $this->get(Import::class);
         $subject->setPid(0);
 
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/irre-records.xml');
