@@ -12,6 +12,97 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_cms_showpic'] = ShowImageCo
 
 ExtensionManagementUtility::addTypoScriptSetup(
     '
+# Creates persistent ParseFunc setup for non-HTML content.
+lib.parseFunc {
+    tags {
+        a = TEXT
+        a {
+            current = 1
+            typolink {
+                parameter.data = parameters:href
+                title.data = parameters:title
+                target.data = parameters:target
+                ATagParams.data = parameters:allParams
+            }
+        }
+    }
+    allowTags = a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, figcaption, figure, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, s, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var
+    denyTags = *
+    nonTypoTagStdWrap {
+        HTMLparser = 1
+        HTMLparser {
+            keepNonMatchedTags = 1
+            htmlSpecialChars = 2
+        }
+    }
+}
+
+# Creates persistent ParseFunc setup for RTE content (which is mainly HTML) based on the "default" transformation.
+lib.parseFunc_RTE < lib.parseFunc
+lib.parseFunc_RTE {
+    # Processing <ol>, <ul> and <table> blocks separately
+    externalBlocks = article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul, pre, figure, figcaption
+    externalBlocks {
+        ol {
+            stripNL = 1
+            stdWrap.parseFunc = < lib.parseFunc
+        }
+        ul {
+            stripNL = 1
+            stdWrap.parseFunc = < lib.parseFunc
+        }
+        pre {
+            stdWrap.parseFunc < lib.parseFunc
+        }
+        table {
+            stripNL = 1
+            stdWrap {
+                HTMLparser = 1
+                HTMLparser {
+                    keepNonMatchedTags = 1
+                }
+            }
+            HTMLtableCells = 1
+            HTMLtableCells {
+                # Recursive call to self but without wrapping non-wrapped cell content
+                default.stdWrap {
+                    parseFunc = < lib.parseFunc_RTE
+                    parseFunc.nonTypoTagStdWrap.encapsLines {
+                        nonWrappedTag =
+                        innerStdWrap_all.ifBlank =
+                    }
+                }
+            }
+        }
+        # ideally, "div" is not calling itself recursive, but instead uses a similar approach as ol/ul/pre
+        # so it is a container with content, which does not need to be wrapping <p> tags in it.
+        div {
+            stripNL = 1
+            callRecursive = 1
+        }
+        article < .div
+        aside < .div
+        figure < .div
+        figcaption {
+            stripNL = 1
+        }
+        blockquote < .div
+        footer < .div
+        header < .div
+        nav < .div
+        section < .div
+        dl < .div
+        dd < .div
+    }
+    nonTypoTagStdWrap {
+        encapsLines {
+            encapsTagList = p,pre,h1,h2,h3,h4,h5,h6,hr,dt
+            nonWrappedTag = P
+            innerStdWrap_all.ifBlank = &nbsp;
+        }
+    }
+}
+
 # Content selection
 styles.content.get = CONTENT
 styles.content.get {

@@ -504,7 +504,7 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9912',
-                '<a href="/test/good-a-b-spaced">&lt;good a=&quot;a/&quot; b=&quot;thing(1)&quot;&gt;</a>',
+                '<a href="/test/good-a-b-spaced">&lt;good a="a/" b="thing(1)"&gt;</a>',
                 false,
             ],
             [
@@ -514,7 +514,7 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9913',
-                '<a href="/test/good-a-b-enc-a">&lt;good%20a=&quot;a/&quot;%20b=&quot;thing(1)&quot;&gt;</a>',
+                '<a href="/test/good-a-b-enc-a">&lt;good%20a="a/"%20b="thing(1)"&gt;</a>',
                 false,
             ],
             [
@@ -524,7 +524,7 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9914',
-                '<a href="/test/good-a-b-enc-b">&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;</a>',
+                '<a href="/test/good-a-b-enc-b">&lt;good/a="a/"/b="thing(1)"&gt;</a>',
                 false,
             ],
             [
