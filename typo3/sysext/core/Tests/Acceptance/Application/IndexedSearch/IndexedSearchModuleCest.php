@@ -31,7 +31,7 @@ final class IndexedSearchModuleCest
 
     public function checkExpectedTextOnIndexedSearchPages(ApplicationTester $I): void
     {
-        $I->click('[data-modulemenu-identifier="web_IndexedSearchIsearch"]');
+        $I->click('[data-modulemenu-identifier="manage_search_index"]');
         // click on PID=0
         $I->clickWithLeftButton('#typo3-pagetree-treeContainer [role="treeitem"][data-id="0"] .node-contentlabel');
         $I->switchToContentFrame();
