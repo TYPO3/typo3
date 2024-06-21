@@ -127,7 +127,7 @@ class SchemaMigrator
                 }
             }
         }
-        Bootstrap::createCache('database_schema')->flush();
+        $this->flushDatabaseSchemaCache();
 
         return $result;
     }
@@ -154,7 +154,7 @@ class SchemaMigrator
             $lastResult = $connectionMigrator->install($createOnly);
             $result = array_merge($result, $lastResult);
         }
-        Bootstrap::createCache('database_schema')->flush();
+        $this->flushDatabaseSchemaCache();
 
         return $result;
     }
@@ -204,7 +204,7 @@ class SchemaMigrator
      * Parse CREATE TABLE statements into Doctrine Table objects.
      *
      * @param string[] $statements The SQL CREATE TABLE statements
-     * @return Table[]
+     * @return array<non-empty-string, Table>
      * @throws SchemaException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
@@ -212,74 +212,11 @@ class SchemaMigrator
      */
     protected function parseCreateTableStatements(array $statements): array
     {
-        $tables = [];
-        foreach ($statements as $statement) {
-            // We need to keep multiple table definitions at this point so
-            // that Extensions can modify existing tables.
-            try {
-                $tables[] = $this->parser->parse($statement);
-            } catch (StatementException $statementException) {
-                // Enrich the error message with the full invalid statement
-                throw new StatementException(
-                    $statementException->getMessage() . ' in statement: ' . LF . $statement,
-                    1476171315,
-                    $statementException
-                );
-            }
-        }
-
-        // Flatten the array of arrays by one level
-        $tables = array_merge(...$tables);
-
-        // Ensure we have a table definition for all tables within TCA, add missing ones
-        // as "empty" tables without columns. This is needed for DefaultTcaSchema: It goes
-        // through TCA to add columns automatically, but needs a table definition of all
-        // TCA tables. We're not doing this in DefaultTcaSchema to not introduce a dependency
-        // to the Parser class in there, which we have here so conveniently already.
-        $tableNamesFromTca = array_keys($GLOBALS['TCA']);
-        $tableNamesFromExtTables = [];
-        foreach ($tables as $table) {
-            $tableNamesFromExtTables[] = $table->getName();
-        }
-        $tableNamesFromExtTables = array_unique($tableNamesFromExtTables);
-        $missingTableNames = array_diff($tableNamesFromTca, $tableNamesFromExtTables);
-        foreach ($missingTableNames as $tableName) {
-            $createTableSql = 'CREATE TABLE ' . $tableName . '();';
-            $tables[] = $this->parser->parse($createTableSql)[0];
-        }
-
-        // Add default TCA fields
+        $tables = $this->prepareTablesFromStatements($statements);
+        $tables = $this->ensureTableDefinitionForAllTCAManagedTables($tables);
         $tables = $this->mergeTableDefinitions($tables);
-        $tables = $this->defaultTcaSchema->enrich($tables);
-        // Ensure the default TCA fields are ordered
-        foreach ($tables as $k => $table) {
-            $prioritizedColumnNames = $this->getPrioritizedFieldNames($table->getName());
-            // no TCA table
-            if (empty($prioritizedColumnNames)) {
-                continue;
-            }
-
-            $prioritizedColumns = [];
-            $nonPrioritizedColumns = [];
-
-            foreach ($table->getColumns() as $columnObject) {
-                if (in_array($columnObject->getName(), $prioritizedColumnNames, true)) {
-                    $prioritizedColumns[] = $columnObject;
-                } else {
-                    $nonPrioritizedColumns[] = $columnObject;
-                }
-            }
-
-            $tables[$k] = new Table(
-                $table->getName(),
-                array_merge($prioritizedColumns, $nonPrioritizedColumns),
-                $table->getIndexes(),
-                [],
-                $table->getForeignKeys(),
-                $table->getOptions()
-            );
-        }
-
+        $tables = $this->enrichTablesFromDefaultTCASchema($tables);
+        $tables = $this->ensureDefaultTCAFieldsAreOrdered($tables);
         return $tables;
     }
 
@@ -427,5 +364,115 @@ class SchemaMigrator
     private function trimIdentifierQuotes(string $identifier): string
     {
         return str_replace(['`', '"', '[', ']'], '', $identifier);
+    }
+
+    /**
+     * @param string[] $statements
+     * @return Table[]
+     * @throws SchemaException
+     * @throws StatementException
+     */
+    protected function prepareTablesFromStatements(array $statements): array
+    {
+        $tables = [];
+        foreach ($statements as $statement) {
+            // We need to keep multiple table definitions at this point so
+            // that Extensions can modify existing tables.
+            try {
+                $tables[] = $this->parser->parse($statement);
+            } catch (StatementException $statementException) {
+                // Enrich the error message with the full invalid statement
+                throw new StatementException(
+                    $statementException->getMessage() . ' in statement: ' . LF . $statement,
+                    1476171315,
+                    $statementException
+                );
+            }
+        }
+
+        // Flatten the array of arrays by one level
+        $tables = array_merge(...$tables);
+
+        return $tables;
+    }
+
+    /**
+     * Ensure we have a table definition for all tables within TCA, add missing ones
+     * as "empty" tables without columns. This is needed for DefaultTcaSchema: It goes
+     * through TCA to add columns automatically, but needs a table definition of all
+     * TCA tables. We're not doing this in DefaultTcaSchema to not introduce a dependency
+     * to the Parser class in there, which we have here so conveniently already.
+     *
+     * @param Table[] $tables
+     * @return Table[]
+     * @throws SchemaException
+     * @throws StatementException
+     */
+    protected function ensureTableDefinitionForAllTCAManagedTables(array $tables): array
+    {
+        $tableNamesFromTca = array_keys($GLOBALS['TCA']);
+        $tableNamesFromExtTables = [];
+        foreach ($tables as $table) {
+            $tableNamesFromExtTables[] = $table->getName();
+        }
+        $tableNamesFromExtTables = array_unique($tableNamesFromExtTables);
+        $missingTableNames = array_diff($tableNamesFromTca, $tableNamesFromExtTables);
+        foreach ($missingTableNames as $tableName) {
+            $createTableSql = 'CREATE TABLE ' . $tableName . '();';
+            $tables[] = $this->parser->parse($createTableSql)[0];
+        }
+        return $tables;
+    }
+
+    /**
+     * @param array<non-empty-string, Table> $tables
+     * @return array<non-empty-string, Table>
+     */
+    protected function enrichTablesFromDefaultTCASchema(array $tables): array
+    {
+        return $this->defaultTcaSchema->enrich($tables);
+    }
+
+    /**
+     * Ensure the default TCA fields are ordered.
+     *
+     * @param array<non-empty-string, Table> $tables
+     * @return array<non-empty-string, Table>
+     */
+    protected function ensureDefaultTCAFieldsAreOrdered(array $tables): array
+    {
+        foreach ($tables as $k => $table) {
+            $prioritizedColumnNames = $this->getPrioritizedFieldNames($table->getName());
+            // no TCA table
+            if (empty($prioritizedColumnNames)) {
+                continue;
+            }
+
+            $prioritizedColumns = [];
+            $nonPrioritizedColumns = [];
+
+            foreach ($table->getColumns() as $columnObject) {
+                if (in_array($columnObject->getName(), $prioritizedColumnNames, true)) {
+                    $prioritizedColumns[] = $columnObject;
+                } else {
+                    $nonPrioritizedColumns[] = $columnObject;
+                }
+            }
+
+            $tables[$k] = new Table(
+                $table->getName(),
+                array_merge($prioritizedColumns, $nonPrioritizedColumns),
+                $table->getIndexes(),
+                [],
+                $table->getForeignKeys(),
+                $table->getOptions()
+            );
+        }
+        return $tables;
+    }
+
+    protected function flushDatabaseSchemaCache(): void
+    {
+        Bootstrap::createCache('database_schema')->flush();
     }
 }
