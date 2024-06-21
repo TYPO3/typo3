@@ -1336,7 +1336,7 @@ class DatabaseRecordList
                             . ' title="' . $label . '"'
                             . ' aria-label="' . $label . '"'
                             . ' data-return-url="' . htmlspecialchars($this->listURL()) . '"'
-                            . ' data-columns-only="' . htmlspecialchars(implode(',', $this->fieldArray)) . '">'
+                            . ' data-columns-only="' . GeneralUtility::jsonEncodeForHtmlAttribute(array_values($this->fieldArray)) . '">'
                             . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render()
                             . '</button>';
                     }
@@ -1406,7 +1406,7 @@ class DatabaseRecordList
                                 . ' title="' . htmlspecialchars($iTitle) . '"'
                                 . ' aria-label="' . htmlspecialchars($iTitle) . '"'
                                 . ' data-return-url="' . htmlspecialchars($this->listURL()) . '"'
-                                . ' data-columns-only="' . htmlspecialchars($fCol) . '">'
+                                . ' data-columns-only="' . GeneralUtility::jsonEncodeForHtmlAttribute([$fCol]) . '">'
                                 . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render()
                                 . '</button>';
                         }
@@ -3187,7 +3187,7 @@ class DatabaseRecordList
                         title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editColumns')) . '"
                         class="btn btn-sm btn-default"
                         data-multi-record-selection-action="edit"
-                        data-multi-record-selection-action-config="' . GeneralUtility::jsonEncodeForHtmlAttribute(array_merge($editActionConfiguration, ['columnsOnly' => implode(',', $this->getColumnsToRender($table, false))])) . '"
+                        data-multi-record-selection-action-config="' . GeneralUtility::jsonEncodeForHtmlAttribute(array_merge($editActionConfiguration, ['columnsOnly' => array_values($this->getColumnsToRender($table, false))])) . '"
                     >
                         ' . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '
                         ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editColumns')) . '

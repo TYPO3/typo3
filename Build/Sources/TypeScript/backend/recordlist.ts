@@ -41,7 +41,7 @@ interface DataHandlerEventPayload {
 }
 interface EditRecordsConfiguration extends ActionConfiguration {
   tableName: string;
-  columnsOnly: string;
+  columnsOnly: Array<string>;
   returnUrl: string;
 }
 interface DeleteRecordsConfiguration extends ActionConfiguration {
@@ -143,7 +143,7 @@ class Recordlist {
     event.preventDefault();
     let tableName: string = '';
     let returnUrl: string = '';
-    let columnsOnly: string = '';
+    let columnsOnly: Array<string> = [];
     const entityIdentifiers: Array<string> = [];
 
     if (event.type === 'multiRecordSelection:action:edit') {
@@ -152,7 +152,7 @@ class Recordlist {
       const eventDetails: ActionEventDetails = (event as CustomEvent).detail as ActionEventDetails;
       const configuration: EditRecordsConfiguration = eventDetails.configuration;
       returnUrl = configuration.returnUrl || '';
-      columnsOnly = configuration.columnsOnly || '';
+      columnsOnly = configuration.columnsOnly || [];
       tableName = configuration.tableName || '';
       if (tableName === '') {
         return;
@@ -175,7 +175,7 @@ class Recordlist {
         return;
       }
       returnUrl = target.dataset.returnUrl || '';
-      columnsOnly = target.dataset.columnsOnly || '';
+      columnsOnly = JSON.parse(target.dataset.columnsOnly || '{}');
       // Check if there are selected records, which would limit the records to edit
       const selection: NodeListOf<HTMLElement> = tableContainer.querySelectorAll(
         this.identifier.entity + '[data-uid][data-table="' + tableName + '"] td.col-checkbox input[type="checkbox"]:checked'
@@ -206,8 +206,8 @@ class Recordlist {
       + '&edit[' + tableName + '][' + entityIdentifiers.join(',') + ']=edit'
       + '&returnUrl=' + Recordlist.getReturnUrl(returnUrl);
 
-    if (columnsOnly !== '') {
-      editUrl += '&columnsOnly=' + columnsOnly;
+    if (columnsOnly.length > 0) {
+      editUrl += columnsOnly.map((column: string, i: number): string => '&columnsOnly[' + tableName + '][' + i + ']=' + column).join('');
     }
 
     window.location.href = editUrl;

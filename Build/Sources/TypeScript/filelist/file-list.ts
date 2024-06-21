@@ -36,7 +36,7 @@ type QueryParameters = Record<string, string>;
 
 interface EditFileMetadataConfiguration extends ActionConfiguration {
   table: string;
-  columnsOnly: string;
+  columnsOnly: Array<string>;
   returnUrl: string;
 }
 interface DownloadConfiguration extends ActionConfiguration {
@@ -283,9 +283,9 @@ export default class Filelist {
       let uri = top.TYPO3.settings.FormEngine.moduleUrl
         + '&edit[' + configuration.table + '][' + list.join(',') + ']=edit'
         + '&returnUrl=' + Filelist.getReturnUrl(configuration.returnUrl || '');
-      const columnsOnly = configuration.columnsOnly || '';
-      if (columnsOnly !== '') {
-        uri += '&columnsOnly=' + columnsOnly;
+      const columnsOnly = configuration.columnsOnly || [];
+      if (columnsOnly.length > 0) {
+        uri += columnsOnly.map((column: string, i: number): string => '&columnsOnly[' + configuration.table + '][' + i + ']=' + column).join('');
       }
       window.location.href = uri;
     } else {

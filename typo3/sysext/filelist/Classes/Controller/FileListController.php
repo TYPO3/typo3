@@ -414,7 +414,7 @@ class FileListController implements LoggerAwareInterface
                         GeneralUtility::jsonEncodeForHtmlAttribute([
                             'idField' => 'filelistMetaUid',
                             'table' => 'sys_file_metadata',
-                            'columnsOnly' => implode(',', $columnsOnly),
+                            'columnsOnly' => array_values($columnsOnly),
                             'returnUrl' => $this->filelist->createModuleUri(),
                         ])
                     );
