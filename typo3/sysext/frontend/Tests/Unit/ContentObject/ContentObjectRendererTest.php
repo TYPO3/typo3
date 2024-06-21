@@ -2084,7 +2084,7 @@ final class ContentObjectRendererTest extends UnitTestCase
             ],
             // @todo documenting the current behavior of allowTags/denyTags=*
             // @todo probably denyTags should take precedence, which might be breaking
-            'No tags are allowed, using allowTags=* and denyTags=*' => [
+            'All tags are allowed, using allowTags=* and denyTags=*' => [
                 '<p><em>Example</em> <u>underlined</u> text</p>',
                 [
                     'parseFunc' => '1',
@@ -2093,7 +2093,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                         'denyTags' => '*',
                     ],
                 ],
-                '&lt;p&gt;&lt;em&gt;Example&lt;/em&gt; &lt;u&gt;underlined&lt;/u&gt; text&lt;/p&gt;',
+                '<p><em>Example</em> <u>underlined</u> text</p>',
                 false,
             ],
             'Only u tags are allowed, so all others are escaped' => [
@@ -2119,7 +2119,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                 '&lt;p&gt;&lt;em&gt;Example&lt;/em&gt; &lt;u&gt;underlined&lt;/u&gt; text&lt;/p&gt;',
                 false,
             ],
-            'No tags are denied, so all tags are accepted' => [
+            'No tags are denied, so all are escaped except the ones defined' => [
                 '<p><em>Example</em> <u>underlined</u> text</p>',
                 [
                     'parseFunc' => '1',
@@ -2127,7 +2127,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                         'allowTags' => 'u',
                     ],
                 ],
-                '<p><em>Example</em> <u>underlined</u> text</p>',
+                '&lt;p&gt;&lt;em&gt;Example&lt;/em&gt; <u>underlined</u> text&lt;/p&gt;',
                 false,
             ],
             'No tags are allowed, but some are explicitly denied' => [

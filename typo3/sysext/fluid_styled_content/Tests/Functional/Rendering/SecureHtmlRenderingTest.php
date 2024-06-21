@@ -101,7 +101,8 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
             ],
             '#05' => [
                 '05: <img/src="img"/onerror="alert(1)">',
-                '<p>05: &lt;img/src="img"/onerror="alert(1)"&gt;</p>',
+                // parsed by Masterminds parser and disarmed by HTML sanitizer
+                '<p>05: <img src="img"></p>',
             ],
             '#06' => [
                 '06: <strong>Given that x < y and y > z...</strong>',
@@ -144,7 +145,9 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
             '#01 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
                 self::TYPE_DISABLE_HTML_SANITIZE,
                 '01: <script>alert(1)</script>',
-                '<p>01: &lt;script&gt;alert(1)&lt;/script&gt;</p>',
+                // passing insecure HTML here is the consequence of not having any
+                // allowTags/denyTags in lib.parseFunc AND having HTML sanitizer disabled
+                '<p>01: <script>alert(1)</script></p>',
             ],
             '#03 ' . self::TYPE_PLAIN => [
                 self::TYPE_PLAIN,
@@ -235,11 +238,11 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
             ],
             '#05' => [
                 '05: <img/src="img"/onerror="alert(1)">',
-                '<p>05: <img src="img"></p>',
+                '<p>05: &lt;img/src="img"/onerror="alert(1)"&gt;</p>',
             ],
             '#06' => [
                 '06: <strong>Given that x < y and y > z...</strong>',
-                '<p>06: <strong>Given that x  y and y &gt; z...</strong></p>',
+                '<p>06: &lt;strong&gt;Given that x  y and y &gt; z...&lt;/strong&gt;</p>',
             ],
             '#07' => [
                 '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',

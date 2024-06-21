@@ -3281,8 +3281,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $contentAccum[$contentAccumP] = $contentAccum[$contentAccumP] ?? '';
                     // If a tag was not a typo tag, then it is just added to the content
                     $stripNL = false;
-                    if (in_array((string)$tag[0], $allowTags, true) ||
-                        ($denyTags !== ['*'] && !in_array((string)$tag[0], $denyTags))) {
+                    if (
+                        // Neither allowTags or denyTags set, thus everything is allowed
+                        ($denyTags === [] && $allowTags === [])
+                        // Explicitly allowed
+                        || ($allowTags !== [] && in_array((string)$tag[0], $allowTags, true))
+                        // Explicitly denied or everything "denied" (except for the explicitly allowed)
+                        || ($denyTags !== [] && $denyTags !== ['*'] && !in_array((string)$tag[0], $denyTags))
+                        // All tags are allowed, but not in the denied list above, so this is OK
+                        || ($allowTags === ['*'] && !in_array((string)$tag[0], $denyTags))
+                    ) {
                         $contentAccum[$contentAccumP] .= $data;
                     } else {
                         $contentAccum[$contentAccumP] .= htmlspecialchars($data);

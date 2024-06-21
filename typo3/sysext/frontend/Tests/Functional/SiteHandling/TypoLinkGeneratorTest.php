@@ -494,7 +494,8 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
         return [
             [
                 't3://page?uid=9911',
-                '<a href="/test/good">&lt;good&gt;</a>',
+                // the Masterminds parser (via sanitizer) expands this to `<good></good>`
+                '<a href="/test/good">&lt;good&gt;&lt;/good&gt;</a>',
                 false,
             ],
             [
@@ -504,7 +505,8 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9912',
-                '<a href="/test/good-a-b-spaced">&lt;good a="a/" b="thing(1)"&gt;</a>',
+                // the Masterminds parser (via sanitizer) expands this to `<good ...></good>`
+                '<a href="/test/good-a-b-spaced">&lt;good a="a/" b="thing(1)"&gt;&lt;/good&gt;</a>',
                 false,
             ],
             [
@@ -514,7 +516,8 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9913',
-                '<a href="/test/good-a-b-enc-a">&lt;good%20a="a/"%20b="thing(1)"&gt;</a>',
+                // the Masterminds parser (via sanitizer) ignores the invalid `%20a=... %20b=...` arguments
+                '<a href="/test/good-a-b-enc-a">&lt;good&gt;&lt;/good&gt;</a>',
                 false,
             ],
             [
@@ -524,7 +527,8 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9914',
-                '<a href="/test/good-a-b-enc-b">&lt;good/a="a/"/b="thing(1)"&gt;</a>',
+                // the Masterminds parser (via sanitizer) converts the invalid delimiter token `/` to spaces
+                '<a href="/test/good-a-b-enc-b">&lt;good a="a/" b="thing(1)"&gt;&lt;/good&gt;</a>',
                 false,
             ],
             [
@@ -534,11 +538,12 @@ final class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://page?uid=9921',
-                '<a href="/test/bad">&lt;bad&gt;</a>',
+                '<a href="/test/bad">&lt;bad&gt;&lt;/bad&gt;</a>',
                 false,
             ],
             [
                 't3://page?uid=9921',
+                // the Masterminds parser (via sanitizer) expands this to `<bad></bad>`
                 '<a href="/test/bad">&lt;bad&gt;</a>',
                 true,
             ],

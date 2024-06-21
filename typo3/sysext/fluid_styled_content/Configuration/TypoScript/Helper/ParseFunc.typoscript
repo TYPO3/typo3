@@ -30,8 +30,6 @@ lib.parseFunc {
             }
         }
     }
-    allowTags = {$styles.content.allowTags}
-    denyTags = *
     nonTypoTagStdWrap {
         HTMLparser = 1
         HTMLparser {
@@ -39,7 +37,6 @@ lib.parseFunc {
             htmlSpecialChars = 2
         }
     }
-    htmlSanitize = 1
 }
 
 
