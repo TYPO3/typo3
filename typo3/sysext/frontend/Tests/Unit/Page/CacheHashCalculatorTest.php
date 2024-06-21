@@ -25,35 +25,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CacheHashCalculatorTest extends UnitTestCase
 {
-    protected CacheHashCalculator $subject;
-
-    protected array $configuration = [
+    private array $configuration = [
         'excludedParameters' => ['exclude1', 'exclude2'],
         'cachedParametersWhiteList' => [],
         'requireCacheHashPresenceParameters' => ['req1', 'req2'],
         'excludedParametersIfEmpty' => [],
         'excludeAllEmptyParameters' => false,
     ];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-        $this->subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration));
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->subject);
-        parent::tearDown();
-    }
-
-    #[DataProvider('cacheHashCalculationDataProvider')]
-    #[Test]
-    public function cacheHashCalculationWorks(array $params, string $expected): void
-    {
-        self::assertEquals($expected, $this->subject->calculateCacheHash($params));
-    }
 
     public static function cacheHashCalculationDataProvider(): array
     {
@@ -80,15 +58,16 @@ final class CacheHashCalculatorTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('getRelevantParametersDataprovider')]
+    #[DataProvider('cacheHashCalculationDataProvider')]
     #[Test]
-    public function getRelevantParametersWorks(string $params, array $expected): void
+    public function cacheHashCalculationWorks(array $params, string $expected): void
     {
-        $actual = $this->subject->getRelevantParameters($params);
-        self::assertEquals($expected, array_keys($actual));
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
+        $subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration));
+        self::assertEquals($expected, $subject->calculateCacheHash($params));
     }
 
-    public static function getRelevantParametersDataprovider(): array
+    public static function getRelevantParametersDataProvider(): array
     {
         return [
             'Empty list should be passed through' => ['', []],
@@ -115,11 +94,14 @@ final class CacheHashCalculatorTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('canGenerateForParametersDataProvider')]
+    #[DataProvider('getRelevantParametersDataProvider')]
     #[Test]
-    public function canGenerateForParameters(string $params, string $expected): void
+    public function getRelevantParametersWorks(string $params, array $expected): void
     {
-        self::assertEquals($expected, $this->subject->generateForParameters($params));
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
+        $subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration));
+        $actual = $subject->getRelevantParameters($params);
+        self::assertEquals($expected, array_keys($actual));
     }
 
     #[Test]
@@ -127,7 +109,9 @@ final class CacheHashCalculatorTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1467983513);
-        $this->subject->generateForParameters('&key=x');
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
+        $subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration));
+        $subject->generateForParameters('&key=x');
     }
 
     public static function canGenerateForParametersDataProvider(): array
@@ -147,14 +131,16 @@ final class CacheHashCalculatorTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('parametersRequireCacheHashDataprovider')]
+    #[DataProvider('canGenerateForParametersDataProvider')]
     #[Test]
-    public function parametersRequireCacheHashWorks(string $params, bool $expected): void
+    public function canGenerateForParameters(string $params, string $expected): void
     {
-        self::assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
+        $subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration));
+        self::assertEquals($expected, $subject->generateForParameters($params));
     }
 
-    public static function parametersRequireCacheHashDataprovider(): array
+    public static function parametersRequireCacheHashDataProvider(): array
     {
         return [
             'Empty parameter strings should not require anything.' => ['', false],
@@ -165,18 +151,13 @@ final class CacheHashCalculatorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * In case the $TYPO3_CONF_VARS[FE][cacheHash][cachedParametersWhiteList] is set, other parameters should not
-     * influence the cHash (except the encryption key of course)
-     */
-    #[DataProvider('canWhitelistParametersDataProvider')]
+    #[DataProvider('parametersRequireCacheHashDataProvider')]
     #[Test]
-    public function canWhitelistParameters(string $params, string $expected): void
+    public function parametersRequireCacheHashWorks(string $params, bool $expected): void
     {
-        $this->subject->setConfiguration([
-            'cachedParametersWhiteList' => ['whitep1', 'whitep2'],
-        ]);
-        self::assertEquals($expected, $this->subject->generateForParameters($params));
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
+        $subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration));
+        self::assertEquals($expected, $subject->doParametersRequireCacheHash($params));
     }
 
     public static function canWhitelistParametersDataProvider(): array
@@ -192,13 +173,20 @@ final class CacheHashCalculatorTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('canSkipParametersWithEmptyValuesDataProvider')]
+    /**
+     * In case the $TYPO3_CONF_VARS[FE][cacheHash][cachedParametersWhiteList] is set, other parameters should not
+     * influence the cHash (except the encryption key of course)
+     */
+    #[DataProvider('canWhitelistParametersDataProvider')]
     #[Test]
-    public function canSkipParametersWithEmptyValues(string $params, array $settings, array $expected): void
+    public function canWhitelistParameters(string $params, string $expected): void
     {
-        $this->subject->setConfiguration($settings);
-        $actual = $this->subject->getRelevantParameters($params);
-        self::assertEquals($expected, array_keys($actual));
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
+        $subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration));
+        $subject->setConfiguration([
+            'cachedParametersWhiteList' => ['whitep1', 'whitep2'],
+        ]);
+        self::assertEquals($expected, $subject->generateForParameters($params));
     }
 
     public static function canSkipParametersWithEmptyValuesDataProvider(): array
@@ -230,5 +218,16 @@ final class CacheHashCalculatorTest extends UnitTestCase
                 ['encryptionKey', 'id', 'key1'],
             ],
         ];
+    }
+
+    #[DataProvider('canSkipParametersWithEmptyValuesDataProvider')]
+    #[Test]
+    public function canSkipParametersWithEmptyValues(string $params, array $settings, array $expected): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
+        $subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration));
+        $subject->setConfiguration($settings);
+        $actual = $subject->getRelevantParameters($params);
+        self::assertEquals($expected, array_keys($actual));
     }
 }

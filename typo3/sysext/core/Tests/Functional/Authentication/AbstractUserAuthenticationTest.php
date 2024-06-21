@@ -24,51 +24,39 @@ use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Tests\Functional\Authentication\Fixtures\AnyUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class AbstractUserAuthenticationTest extends FunctionalTestCase
 {
-    private string $sessionId;
-    private AnyUserAuthentication $subject;
-    private UserSession $userSession;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
-        $this->sessionId = bin2hex(random_bytes(20));
-        $this->userSession = UserSession::createNonFixated($this->sessionId);
-        $this->subject = new AnyUserAuthentication($this->userSession);
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->sessionId, $this->userSession, $this->subject);
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-        parent::tearDown();
-    }
-
     #[Test]
     public function pushModuleDataDoesNotRevealPlainSessionId(): void
     {
-        $this->subject->pushModuleData(self::class, true);
-        self::assertNotContains($this->sessionId, $this->subject->uc['moduleSessionID']);
+        $sessionId = bin2hex(random_bytes(20));
+        $userSession = UserSession::createNonFixated($sessionId);
+        $subject = new AnyUserAuthentication($userSession);
+        $subject->pushModuleData(self::class, true);
+        self::assertNotContains($sessionId, $subject->uc['moduleSessionID']);
     }
 
     #[Test]
     public function getModuleDataResolvesHashedSessionId(): void
     {
-        $this->subject->pushModuleData(self::class, true);
-        self::assertTrue($this->subject->getModuleData(self::class));
+        $sessionId = bin2hex(random_bytes(20));
+        $userSession = UserSession::createNonFixated($sessionId);
+        $subject = new AnyUserAuthentication($userSession);
+        $subject->pushModuleData(self::class, true);
+        self::assertTrue($subject->getModuleData(self::class));
     }
 
     #[Test]
     public function getModuleDataFallsBackToPlainSessionId(): void
     {
-        $this->subject->uc['moduleData'][self::class] = true;
-        $this->subject->uc['moduleSessionID'][self::class] = $this->sessionId;
-        self::assertTrue($this->subject->getModuleData(self::class));
+        $sessionId = bin2hex(random_bytes(20));
+        $userSession = UserSession::createNonFixated($sessionId);
+        $subject = new AnyUserAuthentication($userSession);
+        $subject->uc['moduleData'][self::class] = true;
+        $subject->uc['moduleSessionID'][self::class] = $sessionId;
+        self::assertTrue($subject->getModuleData(self::class));
     }
 
     public static function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGivenDataProvider(): array
@@ -88,22 +76,19 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
         int|null|string $checkPid_value,
         string $expectedPids
     ): void {
-        $this->subject->user_table = 'be_users';
-        $this->subject->checkPid_value = $checkPid_value;
-
-        $authInfoArray = $this->subject->getAuthInfoArray(new ServerRequest('https://example.com'));
-
+        $sessionId = bin2hex(random_bytes(20));
+        $userSession = UserSession::createNonFixated($sessionId);
+        $subject = new AnyUserAuthentication($userSession);
+        $subject->user_table = 'be_users';
+        $subject->checkPid_value = $checkPid_value;
+        $authInfoArray = $subject->getAuthInfoArray(new ServerRequest('https://example.com'));
         $enableClause = $authInfoArray['db_user']['enable_clause'];
         self::assertInstanceOf(CompositeExpression::class, $enableClause);
-
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
-
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
         $expectedEnableClause = '';
-
         if ($expectedPids !== '') {
             $expectedEnableClause = $connection->quoteIdentifier('be_users.pid') . ' IN (' . $expectedPids . ')';
         }
-
         self::assertSame($expectedEnableClause, (string)$enableClause);
     }
 }

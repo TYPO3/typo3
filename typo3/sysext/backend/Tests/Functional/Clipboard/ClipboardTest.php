@@ -26,14 +26,10 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Functional database test for Clipboard behaviour
- */
 final class ClipboardTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
@@ -44,7 +40,6 @@ final class ClipboardTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    private Clipboard $subject;
     private BackendUserAuthentication $backendUser;
 
     protected function setUp(): void
@@ -54,7 +49,6 @@ final class ClipboardTest extends FunctionalTestCase
         $requestContextFactory = $this->get(RequestContextFactory::class);
         $uriBuilder = $this->get(UriBuilder::class);
         $uriBuilder->setRequestContext($requestContextFactory->fromBackendRequest($request));
-        $this->subject = GeneralUtility::makeInstance(Clipboard::class);
         $this->withDatabaseSnapshot(
             function () {
                 $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -71,12 +65,6 @@ final class ClipboardTest extends FunctionalTestCase
                 $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
             }
         );
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->subject, $this->backendUser);
-        parent::tearDown();
     }
 
     public static function localizationsAreResolvedDataProvider(): array
@@ -153,9 +141,10 @@ final class ClipboardTest extends FunctionalTestCase
         array $expectation
     ): void {
         $this->backendUser->workspace = $workspaceId;
-        $this->subject->clipData['normal']['el'] = ["pages|$pageId" => 'some value'];
-        $this->subject->current = 'normal';
-        $normalTab = $this->subject->getClipboardData($table)['tabs'][0];
+        $subject = $this->get(Clipboard::class);
+        $subject->clipData['normal']['el'] = ["pages|$pageId" => 'some value'];
+        $subject->current = 'normal';
+        $normalTab = $subject->getClipboardData($table)['tabs'][0];
         array_shift($normalTab['items']);
         $actualTitles = [];
         foreach ($normalTab['items'] as $item) {

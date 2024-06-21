@@ -21,9 +21,9 @@ use Masterminds\HTML5;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -34,120 +34,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShowImageControllerTest extends FunctionalTestCase
 {
-    private const ENCRYPTION_KEY = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
-    private ResourceFactory&MockObject $resourceFactory;
-    private ResourceStorage&MockObject $storage;
-    private ShowImageController&MockObject $subject;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = self::ENCRYPTION_KEY;
-        $this->resourceFactory = $this->getMockBuilder(ResourceFactory::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->storage = $this->getMockBuilder(ResourceStorage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->subject = $this->getMockBuilder(ShowImageController::class)
-            ->setConstructorArgs([new Features()])
-            ->onlyMethods(['processImage'])
-            ->getMock();
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $this->resourceFactory);
-    }
-
-    protected function tearDown(): void
-    {
-        GeneralUtility::removeSingletonInstance(ResourceFactory::class, $this->resourceFactory);
-        unset($this->resourceFactory, $this->storage, $this->subject);
-        parent::tearDown();
-    }
-
-    public static function contentIsGeneratedForLocalFilesDataProvider(): \Generator
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = self::ENCRYPTION_KEY;
-        $fileId = 13;
-        $parameters = [];
-        $serializedParameters = serialize($parameters);
-        $jsonEncodedParameters = json_encode($parameters);
-        $hashService = GeneralUtility::makeInstance(HashService::class);
-        yield 'numeric fileId, json encoded' => [
-            $fileId,
-            [
-                'file' => $fileId,
-                'parameters' => [$jsonEncodedParameters],
-                'md5' => $hashService->hmac(implode('|', [$fileId, $jsonEncodedParameters]), 'tx_cms_showpic'),
-            ],
-        ];
-        yield 'numeric fileId, outdated (valid) PHP encoded' => [
-            $fileId,
-            [
-                'file' => $fileId,
-                'parameters' => [$serializedParameters],
-                'md5' => $hashService->hmac(implode('|', [$fileId, $serializedParameters]), 'tx_cms_showpic'),
-            ],
-        ];
-    }
-
-    /**
-     * @param array<string, int|string> $queryParams
-     */
-    #[DataProvider('contentIsGeneratedForLocalFilesDataProvider')]
-    #[Test]
-    public function contentIsGeneratedForLocalFiles(int $fileId, array $queryParams): void
-    {
-        $storageDriver = 'Local';
-        $expectedSrc = '/fileadmin/local-file/' . $fileId . '?&test=""';
-        $expectedTitle = '</title></head></html><!-- "fileProperty::title" -->';
-
-        $this->storage->expects(self::atLeastOnce())
-            ->method('getDriverType')
-            ->willReturn($storageDriver);
-        $file = $this->buildFile('/local-file/' . $fileId, $this->storage);
-        $processedFile = $this->buildProcessedFile($expectedSrc);
-        $this->resourceFactory->expects(self::atLeastOnce())
-            ->method('getFileObject')
-            ->with($fileId)
-            ->willReturn($file);
-        $this->subject->expects(self::once())
-            ->method('processImage')
-            ->willReturn($processedFile);
-
-        $request = $this->buildRequest($queryParams);
-        $response = $this->subject->processRequest($request);
-        $responseBody = (string)$response->getBody();
-        $document = (new HTML5())->loadHTML($responseBody);
-
-        $titles = $document->getElementsByTagName('title');
-        $images = $document->getElementsByTagName('img');
-        self::assertSame($expectedTitle, $titles->item(0)->nodeValue);
-        self::assertSame($expectedSrc, $images->item(0)->getAttribute('src'));
-        self::assertSame($expectedTitle, $images->item(0)->getAttribute('title'));
-        self::assertSame('<!-- "fileProperty::alternative" -->', $images->item(0)->getAttribute('alt'));
-        self::assertSame('<!-- "processedProperty::width" -->', $images->item(0)->getAttribute('width'));
-        self::assertSame('<!-- "processedProperty::height" -->', $images->item(0)->getAttribute('height'));
-    }
-
-    /**
-     * @param array<string, int|string> $queryParams
-     */
-    private function buildRequest(array $queryParams): ServerRequestInterface&MockObject
-    {
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getQueryParams')
-            ->willReturn($queryParams);
-
-        return $request;
-    }
-
     private function buildFile(string $identifier, ResourceStorage $storage): FileInterface&MockObject
     {
         $file = $this->createMock(FileInterface::class);
-        $file->method('getStorage')
-            ->willReturn($storage);
-        $file->method('getIdentifier')
-            ->willReturn($identifier);
+        $file->method('getStorage')->willReturn($storage);
+        $file->method('getIdentifier')->willReturn($identifier);
         $file->method('getProperty')
             ->willReturnCallback(
                 $this->buildRoundTripClosure(
@@ -155,15 +46,12 @@ final class ShowImageControllerTest extends FunctionalTestCase
                     ['title' => '</title></head></html>']
                 )
             );
-
         return $file;
     }
 
     private function buildProcessedFile(string $publicUrl): ProcessedFile&MockObject
     {
-        $processedFile = $this->getMockBuilder(ProcessedFile::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $processedFile = $this->createMock(ProcessedFile::class);
         $processedFile
             ->method('getPublicUrl')
             ->willReturn($publicUrl);
@@ -185,5 +73,73 @@ final class ShowImageControllerTest extends FunctionalTestCase
                 $name
             );
         };
+    }
+
+    public static function contentIsGeneratedForLocalFilesDataProvider(): \Generator
+    {
+        yield 'numeric fileId, json encoded' => [
+            13,
+            [
+                'file' => 13,
+                'parameters' => [json_encode([])],
+            ],
+        ];
+        yield 'numeric fileId, outdated (valid) PHP encoded' => [
+            13,
+            [
+                'file' => 13,
+                'parameters' => [serialize([])],
+            ],
+        ];
+    }
+
+    /**
+     * @param array<string, int|string> $queryParams
+     */
+    #[DataProvider('contentIsGeneratedForLocalFilesDataProvider')]
+    #[Test]
+    public function contentIsGeneratedForLocalFiles(int $fileId, array $queryParams): void
+    {
+        $storageDriver = 'Local';
+        $expectedSrc = '/fileadmin/local-file/' . $fileId . '?&test=""';
+        $expectedTitle = '</title></head></html><!-- "fileProperty::title" -->';
+
+        $storage = $this->createMock(ResourceStorage::class);
+        $storage->expects(self::atLeastOnce())
+            ->method('getDriverType')
+            ->willReturn($storageDriver);
+        $file = $this->buildFile('/local-file/' . $fileId, $storage);
+        $processedFile = $this->buildProcessedFile($expectedSrc);
+        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory->expects(self::atLeastOnce())
+            ->method('getFileObject')
+            ->with($fileId)
+            ->willReturn($file);
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+        $subject = $this->getMockBuilder(ShowImageController::class)
+            ->setConstructorArgs([new Features()])
+            ->onlyMethods(['processImage'])
+            ->getMock();
+        $subject->expects(self::once())
+            ->method('processImage')
+            ->willReturn($processedFile);
+
+        $hashService = $this->get(HashService::class);
+        $queryParams['md5'] = $hashService->hmac(implode('|', [$fileId, $queryParams['parameters'][0]]), 'tx_cms_showpic');
+        $request = new ServerRequest();
+        $request = $request->withQueryParams($queryParams);
+
+        $response = $subject->processRequest($request);
+        $responseBody = (string)$response->getBody();
+        $document = (new HTML5())->loadHTML($responseBody);
+
+        $titles = $document->getElementsByTagName('title');
+        $images = $document->getElementsByTagName('img');
+        self::assertSame($expectedTitle, $titles->item(0)->nodeValue);
+        self::assertSame($expectedSrc, $images->item(0)->getAttribute('src'));
+        self::assertSame($expectedTitle, $images->item(0)->getAttribute('title'));
+        self::assertSame('<!-- "fileProperty::alternative" -->', $images->item(0)->getAttribute('alt'));
+        self::assertSame('<!-- "processedProperty::width" -->', $images->item(0)->getAttribute('width'));
+        self::assertSame('<!-- "processedProperty::height" -->', $images->item(0)->getAttribute('height'));
     }
 }

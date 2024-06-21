@@ -19,12 +19,10 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\Hook;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -36,53 +34,36 @@ final class DataHandlerHookTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    protected BackendUserAuthentication $backendUser;
-    protected ActionService $actionService;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
-        $this->actionService = new ActionService();
-        $this->setWorkspaceId(0);
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->actionService, $this->backendUser);
-        parent::tearDown();
-    }
-
-    protected function setWorkspaceId(int $workspaceId): void
-    {
-        $this->backendUser->workspace = $workspaceId;
-        GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
-    }
-
     #[Test]
     public function deletingSysWorkspaceDeletesWorkspaceRecords(): void
     {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
         $this->importCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecords.csv');
 
-        $this->setWorkspaceId(1);
+        $backendUser->workspace = 1;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+        $actionService = new ActionService();
         // Create a pages move placeholder uid:93 and a versioned record uid:94 - both should be fully deleted after deleting ws1
-        $this->actionService->moveRecord('pages', 92, -1);
+        $actionService->moveRecord('pages', 92, -1);
         // Create a versioned record uid:311 - should be fully deleted after deleting ws1
-        $this->actionService->createNewRecord('tt_content', 89, ['header' => 'Testing #1']);
+        $actionService->createNewRecord('tt_content', 89, ['header' => 'Testing #1']);
         // Create a versioned record of a translated record uid:313 - should be fully deleted after deleting ws1
-        $this->actionService->modifyRecord('tt_content', 301, ['header' => '[Translate to Dansk:] Regular Element #1 Changed']);
+        $actionService->modifyRecord('tt_content', 301, ['header' => '[Translate to Dansk:] Regular Element #1 Changed']);
         // Create a delete placeholder uid:314 - should be fully deleted after deleting ws1
-        $this->actionService->deleteRecord('tt_content', 310);
+        $actionService->deleteRecord('tt_content', 310);
 
-        $this->setWorkspaceId(2);
+        $backendUser->workspace = 2;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(2));
         // Create a versioned record uid:314 in ws2 - should be kept after deleting ws1
-        $this->actionService->modifyRecord('tt_content', 301, ['header' => '[Translate to Dansk:] Regular Element #1 Changed in ws2']);
+        $actionService->modifyRecord('tt_content', 301, ['header' => '[Translate to Dansk:] Regular Element #1 Changed in ws2']);
 
         // Switch to live and delete sys_workspace record 1
-        $this->setWorkspaceId(0);
-        $this->actionService->deleteRecord('sys_workspace', 1);
+        $backendUser->workspace = 0;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(0));
+        $actionService->deleteRecord('sys_workspace', 1);
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecordsResult.csv');
     }
@@ -90,6 +71,10 @@ final class DataHandlerHookTest extends FunctionalTestCase
     #[Test]
     public function flushByTagEventIsTriggered(): void
     {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
         $afterRecordPublishedEvent = null;
 
         /** @var Container $container */
@@ -106,17 +91,15 @@ final class DataHandlerHookTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecords.csv');
 
-        $workspaceId = 1;
-        $tableName = 'tt_content';
-        $recordId = 301;
-
-        $this->setWorkspaceId($workspaceId);
-        $this->actionService->modifyRecord($tableName, $recordId, ['header' => '[Translate to Dansk:] Regular Element #1 Changed']);
-        $this->actionService->publishRecord($tableName, $recordId);
+        $backendUser->workspace = 1;
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect(1));
+        $actionService = new ActionService();
+        $actionService->modifyRecord('tt_content', 301, ['header' => '[Translate to Dansk:] Regular Element #1 Changed']);
+        $actionService->publishRecord('tt_content', 301);
 
         self::assertInstanceOf(AfterRecordPublishedEvent::class, $afterRecordPublishedEvent);
-        self::assertEquals($tableName, $afterRecordPublishedEvent->getTable());
-        self::assertEquals($recordId, $afterRecordPublishedEvent->getRecordId());
-        self::assertEquals($workspaceId, $afterRecordPublishedEvent->getWorkspaceId());
+        self::assertEquals('tt_content', $afterRecordPublishedEvent->getTable());
+        self::assertEquals(301, $afterRecordPublishedEvent->getRecordId());
+        self::assertEquals(1, $afterRecordPublishedEvent->getWorkspaceId());
     }
 }

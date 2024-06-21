@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Controller\Page\TreeController;
@@ -32,8 +31,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -49,9 +46,7 @@ final class TreeControllerTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    private TreeController&MockObject&AccessibleObjectInterface $subject;
     private BackendUserAuthentication $backendUser;
-    private Context $context;
 
     protected function setUp(): void
     {
@@ -74,20 +69,13 @@ final class TreeControllerTest extends FunctionalTestCase
 
         // Regular editor, non admin
         $this->backendUser = $this->setUpBackendUser(9);
-        $this->context = GeneralUtility::makeInstance(Context::class);
-        $this->subject = $this->getAccessibleMock(TreeController::class, null);
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->subject, $this->backendUser, $this->context);
-        parent::tearDown();
     }
 
     #[Test]
     public function getAllEntryPointPageTrees(): void
     {
-        $actual = $this->subject->_call('getAllEntryPointPageTrees');
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -201,7 +189,8 @@ final class TreeControllerTest extends FunctionalTestCase
     public function getAllEntryPointPageTreesWithRootPageAsMountPoint(): void
     {
         $this->backendUser->setWebMounts([0, 7000]);
-        $actual = $this->subject->_call('getAllEntryPointPageTrees');
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -312,7 +301,8 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getAllEntryPointPageTreesWithSearch(): void
     {
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 0, 'Groups');
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees', 0, 'Groups');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -355,7 +345,8 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getSubtreeForAccessiblePage(): void
     {
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 1200);
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees', 1200);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -386,7 +377,8 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getSubtreeForNonAccessiblePage(): void
     {
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 1510);
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees', 1510);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -398,7 +390,8 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getSubtreeForPageOutsideMountPoint(): void
     {
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 7000);
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees', 7000);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -411,7 +404,8 @@ final class TreeControllerTest extends FunctionalTestCase
     public function getAllEntryPointPageTreesWithMountPointPreservesOrdering(): void
     {
         $this->backendUser->setWebmounts([1210, 1100]);
-        $actual = $this->subject->_call('getAllEntryPointPageTrees');
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -442,8 +436,11 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getAllEntryPointPageTreesInWorkspace(): void
     {
-        $this->setWorkspace(1);
-        $actual = $this->subject->_call('getAllEntryPointPageTrees');
+        $this->backendUser->workspace = 1;
+        $context = $this->get(Context::class);
+        $context->setAspect('workspace', new WorkspaceAspect(1));
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -623,9 +620,12 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getAllEntryPointPageTreesInWorkspaceWithSearch(string $search, array $expectedChildren): void
     {
-        $this->setWorkspace(1);
+        $this->backendUser->workspace = 1;
+        $context = $this->get(Context::class);
+        $context->setAspect('workspace', new WorkspaceAspect(1));
         // the record was changed from live "Groups" to "Teams modified" in a workspace
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 0, $search);
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees', 0, $search);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -655,8 +655,11 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getSubtreeForAccessiblePageInWorkspace(): void
     {
-        $this->setWorkspace(1);
-        $actual = $this->subject->_call('getAllEntryPointPageTrees', 1200);
+        $this->backendUser->workspace = 1;
+        $context = $this->get(Context::class);
+        $context->setAspect('workspace', new WorkspaceAspect(1));
+        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $actual = $subject->_call('getAllEntryPointPageTrees', 1200);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
@@ -715,11 +718,5 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertCount(12, $afterPageTreeItemsPreparedEvent->getItems());
         self::assertEquals('1000', $afterPageTreeItemsPreparedEvent->getItems()[1]['identifier']);
         self::assertEquals('ACME Inc', $afterPageTreeItemsPreparedEvent->getItems()[1]['name']);
-    }
-
-    private function setWorkspace(int $workspaceId): void
-    {
-        $this->backendUser->workspace = $workspaceId;
-        $this->context->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 }

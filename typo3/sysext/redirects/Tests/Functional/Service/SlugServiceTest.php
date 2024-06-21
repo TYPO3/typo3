@@ -49,16 +49,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class SlugServiceTest extends FunctionalTestCase
 {
-    /**
-     * @var SlugService
-     */
-    private $subject;
-
-    /**
-     * @var CorrelationId
-     */
-    private $correlationId;
-
     private array $languages = [
         [
             'title' => 'English',
@@ -94,16 +84,135 @@ final class SlugServiceTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->correlationId = CorrelationId::forScope(StringUtility::getUniqueId('test'));
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
-    protected function tearDown(): void
+    private function buildBaseSite(): void
     {
-        unset($this->subject, $this->correlationId);
-        parent::tearDown();
+        $configuration = [
+            'rootPageId' => 1,
+            'base' => '/',
+        ];
+        $siteWriter = $this->get(SiteWriter::class);
+        $siteWriter->write('testing', $configuration);
+    }
+
+    private function buildBaseSiteInSubfolder(): void
+    {
+        $configuration = [
+            'rootPageId' => 1,
+            'base' => '/sub-folder',
+        ];
+        $siteWriter = $this->get(SiteWriter::class);
+        $siteWriter->write('testing', $configuration);
+    }
+
+    private function buildBaseSiteWithLanguages(): void
+    {
+        $configuration = [
+            'rootPageId' => 1,
+            'base' => '/',
+            'languages' => $this->languages,
+        ];
+        $siteWriter = $this->get(SiteWriter::class);
+        $siteWriter->write('testing', $configuration);
+    }
+
+    /**
+     * @param array<string, mixed> $additionalConfiguration
+     */
+    private function buildBaseSiteWithLanguagesAndAdditionalConfiguration(array $additionalConfiguration): void
+    {
+        $configuration = array_merge_recursive(
+            $additionalConfiguration,
+            [
+                'rootPageId' => 1,
+                'base' => '/',
+                'languages' => $this->languages,
+            ]
+        );
+        $siteWriter = $this->get(SiteWriter::class);
+        $siteWriter->write('testing', $configuration);
+    }
+
+    private function buildBaseSiteWithLanguagesInSubFolder(): void
+    {
+        $languages = $this->languages;
+        array_walk($languages, static function (&$languageData) {
+            $languageData['base'] = (
+                !str_contains($languageData['base'], 'http')
+                ? $languageData['base']
+                : $languageData['base'] . 'sub-folder/'
+            );
+        });
+        $configuration = [
+            'rootPageId' => 1,
+            'base' => '/sub-folder',
+            'languages' => $languages,
+        ];
+        $siteWriter = $this->get(SiteWriter::class);
+        $siteWriter->write('testing', $configuration);
+    }
+
+    private function createSubject(): SlugService
+    {
+        $this->get(SiteMatcher::class)->refresh();
+        $this->get(SiteFinder::class)->getAllSites(false);
+        $subject = new SlugService(
+            context: $this->get(Context::class),
+            pageRepository: GeneralUtility::makeInstance(PageRepository::class),
+            linkService: GeneralUtility::makeInstance(LinkService::class),
+            redirectCacheService: $this->get(RedirectCacheService::class),
+            slugRedirectChangeItemFactory: $this->get(SlugRedirectChangeItemFactory::class),
+            eventDispatcher: $this->get(EventDispatcherInterface::class),
+            connectionPool: $this->getConnectionPool(),
+        );
+        $subject->setLogger(new NullLogger());
+        return $subject;
+    }
+
+    private function assertSlugsAndRedirectsExists(array $slugs, array $redirects, bool $withRedirectUid = false): void
+    {
+        $pageRecords = $this->getAllRecords('pages');
+        self::assertCount(count($slugs), $pageRecords);
+        foreach ($pageRecords as $record) {
+            self::assertContains($record['slug'], $slugs, 'unexpected slug: ' . $record['slug']);
+        }
+
+        $redirectRecords = $this->getAllRecords('sys_redirect');
+        self::assertCount(count($redirects), $redirectRecords);
+        foreach ($redirectRecords as $record) {
+            $combination = [
+                'source_host' => $record['source_host'],
+                'source_path' => $record['source_path'],
+                'target' => $record['target'],
+            ];
+            if ($withRedirectUid) {
+                $combination = [
+                    'uid' => $record['uid'],
+                    'source_host' => $record['source_host'],
+                    'source_path' => $record['source_path'],
+                    'target' => $record['target'],
+                ];
+            }
+            self::assertContains($combination, $redirects, 'wrong redirect found');
+        }
+    }
+
+    private function setPageSlug(int $pageId, string $slug): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('pages')
+            ->update(
+                'pages',
+                [
+                    'slug' => $slug,
+                ],
+                [
+                    'uid' => $pageId,
+                ]
+            );
     }
 
     /**
@@ -117,11 +226,11 @@ final class SlugServiceTest extends FunctionalTestCase
     {
         $newPageSlug = '/test-new';
         $this->buildBaseSite();
-        $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
+        $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -160,11 +269,11 @@ final class SlugServiceTest extends FunctionalTestCase
     {
         $newPageSlug = '/new-home';
         $this->buildBaseSite();
-        $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test2.csv');
+        $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(1);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(1, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(1, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(1, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -209,11 +318,11 @@ final class SlugServiceTest extends FunctionalTestCase
     {
         $newPageSlug = '/test-new';
         $this->buildBaseSiteInSubfolder();
-        $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
+        $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -252,11 +361,11 @@ final class SlugServiceTest extends FunctionalTestCase
     {
         $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguages();
-        $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
+        $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(31, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(31, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(31, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -295,11 +404,11 @@ final class SlugServiceTest extends FunctionalTestCase
     {
         $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguagesInSubFolder();
-        $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
+        $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(31, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(31, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(31, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -338,11 +447,11 @@ final class SlugServiceTest extends FunctionalTestCase
     {
         $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguagesInSubFolder();
-        $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
+        $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(3);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(3, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(3, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(3, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -382,11 +491,11 @@ final class SlugServiceTest extends FunctionalTestCase
     {
         $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguages();
-        $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test4.csv');
+        $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(5);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(5, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(5, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(5, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -441,12 +550,12 @@ final class SlugServiceTest extends FunctionalTestCase
         );
         $listenerProvider = $container->get(ListenerProvider::class);
         $listenerProvider->addListener(ModifyAutoCreateRedirectRecordBeforePersistingEvent::class, 'modify-auto-create-redirect-record-before-persisting');
-        $this->createSubject();
 
+        $subject = $this->createSubject();
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         self::assertInstanceOf(ModifyAutoCreateRedirectRecordBeforePersistingEvent::class, $modifyAutoCreateRedirectRecordBeforePersisting);
@@ -482,12 +591,12 @@ final class SlugServiceTest extends FunctionalTestCase
         );
         $listenerProvider = $container->get(ListenerProvider::class);
         $listenerProvider->addListener(AfterAutoCreateRedirectHasBeenPersistedEvent::class, 'after-auto-create-redirect-has-been-persisted');
-        $this->createSubject();
 
+        $subject = $this->createSubject();
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         self::assertInstanceOf(AfterAutoCreateRedirectHasBeenPersistedEvent::class, $afterAutoCreateRedirectHasBeenPersisted);
@@ -524,12 +633,12 @@ final class SlugServiceTest extends FunctionalTestCase
             ],
         ]);
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_defaultSlashPageTypeSuffixCreatesOnlyPageTypeZeroSourceRedirect.csv');
-        $this->createSubject();
 
+        $subject = $this->createSubject();
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         $this->assertSlugsAndRedirectsExists(
@@ -554,12 +663,12 @@ final class SlugServiceTest extends FunctionalTestCase
         $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguages();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_hiddenPage.csv');
-        $this->createSubject();
 
+        $subject = $this->createSubject();
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         $this->assertSlugsAndRedirectsExists(
@@ -584,12 +693,12 @@ final class SlugServiceTest extends FunctionalTestCase
         $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguages();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_endtime.csv');
-        $this->createSubject();
 
+        $subject = $this->createSubject();
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         $this->assertSlugsAndRedirectsExists(
@@ -614,12 +723,12 @@ final class SlugServiceTest extends FunctionalTestCase
         $newPageSlug = '/test-new';
         $this->buildBaseSiteWithLanguages();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_starttime.csv');
-        $this->createSubject();
 
+        $subject = $this->createSubject();
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         $this->assertSlugsAndRedirectsExists(
@@ -639,11 +748,11 @@ final class SlugServiceTest extends FunctionalTestCase
     {
         $newPageSlug = '/test-new';
         $this->buildBaseSite();
-        $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysFolderSubPages_Test1.csv');
+        $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -666,11 +775,11 @@ final class SlugServiceTest extends FunctionalTestCase
     {
         $newPageSlug = '/test-new';
         $this->buildBaseSite();
-        $this->createSubject();
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SpacerSubPages_Test1.csv');
+        $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $this->subject->rebuildSlugsForSlugChange(2, $changeItem, $this->correlationId);
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
         $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -717,130 +826,5 @@ final class SlugServiceTest extends FunctionalTestCase
 
         self::assertSame([], $dataHandler->errorLog);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/AssertionDataSets/RelativeTargetDataHandler.csv');
-    }
-
-    protected function buildBaseSite(): void
-    {
-        $configuration = [
-            'rootPageId' => 1,
-            'base' => '/',
-        ];
-        $siteWriter = $this->get(SiteWriter::class);
-        $siteWriter->write('testing', $configuration);
-    }
-
-    protected function buildBaseSiteInSubfolder(): void
-    {
-        $configuration = [
-            'rootPageId' => 1,
-            'base' => '/sub-folder',
-        ];
-        $siteWriter = $this->get(SiteWriter::class);
-        $siteWriter->write('testing', $configuration);
-    }
-
-    protected function buildBaseSiteWithLanguages(): void
-    {
-        $configuration = [
-            'rootPageId' => 1,
-            'base' => '/',
-            'languages' => $this->languages,
-        ];
-        $siteWriter = $this->get(SiteWriter::class);
-        $siteWriter->write('testing', $configuration);
-    }
-
-    /**
-     * @param array<string, mixed> $additionalConfiguration
-     */
-    protected function buildBaseSiteWithLanguagesAndAdditionalConfiguration(array $additionalConfiguration): void
-    {
-        $configuration = array_merge_recursive(
-            $additionalConfiguration,
-            [
-                'rootPageId' => 1,
-                'base' => '/',
-                'languages' => $this->languages,
-            ]
-        );
-        $siteWriter = $this->get(SiteWriter::class);
-        $siteWriter->write('testing', $configuration);
-    }
-
-    protected function buildBaseSiteWithLanguagesInSubFolder(): void
-    {
-        $languages = $this->languages;
-        array_walk($languages, static function (&$languageData) {
-            $languageData['base'] = (
-                !str_contains($languageData['base'], 'http')
-                    ? $languageData['base']
-                    : $languageData['base'] . 'sub-folder/'
-            );
-        });
-        $configuration = [
-            'rootPageId' => 1,
-            'base' => '/sub-folder',
-            'languages' => $languages,
-        ];
-        $siteWriter = $this->get(SiteWriter::class);
-        $siteWriter->write('testing', $configuration);
-    }
-
-    protected function createSubject(): void
-    {
-        $this->get(SiteMatcher::class)->refresh();
-        $this->get(SiteFinder::class)->getAllSites(false);
-        $this->subject = new SlugService(
-            context: GeneralUtility::makeInstance(Context::class),
-            pageRepository: GeneralUtility::makeInstance(PageRepository::class),
-            linkService: GeneralUtility::makeInstance(LinkService::class),
-            redirectCacheService: GeneralUtility::makeInstance(RedirectCacheService::class),
-            slugRedirectChangeItemFactory: $this->get(SlugRedirectChangeItemFactory::class),
-            eventDispatcher: $this->get(EventDispatcherInterface::class),
-            connectionPool: $this->getConnectionPool(),
-        );
-        $this->subject->setLogger(new NullLogger());
-    }
-
-    protected function assertSlugsAndRedirectsExists(array $slugs, array $redirects, bool $withRedirectUid = false): void
-    {
-        $pageRecords = $this->getAllRecords('pages');
-        self::assertCount(count($slugs), $pageRecords);
-        foreach ($pageRecords as $record) {
-            self::assertContains($record['slug'], $slugs, 'unexpected slug: ' . $record['slug']);
-        }
-
-        $redirectRecords = $this->getAllRecords('sys_redirect');
-        self::assertCount(count($redirects), $redirectRecords);
-        foreach ($redirectRecords as $record) {
-            $combination = [
-                'source_host' => $record['source_host'],
-                'source_path' => $record['source_path'],
-                'target' => $record['target'],
-            ];
-            if ($withRedirectUid) {
-                $combination = [
-                    'uid' => $record['uid'],
-                    'source_host' => $record['source_host'],
-                    'source_path' => $record['source_path'],
-                    'target' => $record['target'],
-                ];
-            }
-            self::assertContains($combination, $redirects, 'wrong redirect found');
-        }
-    }
-
-    protected function setPageSlug(int $pageId, string $slug): void
-    {
-        $this->getConnectionPool()->getConnectionForTable('pages')
-            ->update(
-                'pages',
-                [
-                    'slug' => $slug,
-                ],
-                [
-                    'uid' => $pageId,
-                ]
-            );
     }
 }

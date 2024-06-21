@@ -68,9 +68,6 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     {
         $this->assertErrorLogEntries();
         $this->assertCleanReferenceIndex();
-        unset($this->actionService);
-        unset($this->recordIds);
-        unset($this->backendUser);
         parent::tearDown();
     }
 

@@ -68,14 +68,9 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
     ];
 
     /**
-     * @var PersistedPatternMapper
-     */
-    private $subject;
-
-    /**
      * @var Site[]
      */
-    private $sites;
+    private array $sites;
 
     protected function setUp(): void
     {
@@ -145,15 +140,16 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
         ];
         $this->writeSiteConfiguration($this->sites['acme']);
         $this->writeSiteConfiguration($this->sites['other']);
-        $this->subject = new PersistedPatternMapper(self::ASPECT_CONFIGURATION);
-        $this->subject->setSiteLanguage($this->sites['acme']->getLanguageById(0));
-        $this->subject->setSite($this->sites['acme']);
     }
 
-    protected function tearDown(): void
+    private function writeSiteConfiguration(Site $site): void
     {
-        unset($this->subject, $this->sites);
-        parent::tearDown();
+        // ensure no previous site configuration influences the test
+        $path = $this->instancePath . '/typo3conf/sites';
+        $cache = $this->get('cache.core');
+        $eventDispatcher = $this->get(EventDispatcherInterface::class);
+        GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
+        GeneralUtility::makeInstance(SiteWriter::class, $path, $eventDispatcher, $cache)->write($site->getIdentifier(), $site->getConfiguration());
     }
 
     public static function languageAwareRecordsAreResolvedDataProvider(): array
@@ -208,16 +204,17 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
     #[Test]
     public function languageAwareRecordsAreResolved(string $identifier, string $requestValue, string $language, ?string $expectation): void
     {
-        $this->subject->setSiteLanguage(
+        $subject = new PersistedPatternMapper(self::ASPECT_CONFIGURATION);
+        $subject->setSiteLanguage(
             $this->sites[$identifier]->getLanguageById(self::LANGUAGE_MAP[$language])
         );
-        $this->subject->setSite(
+        $subject->setSite(
             $this->sites[$identifier]
         );
         if ($expectation !== null) {
             $expectation = (string)((int)$expectation + self::SITE_ADDITION[$identifier]);
         }
-        self::assertSame($expectation, $this->subject->resolve($requestValue));
+        self::assertSame($expectation, $subject->resolve($requestValue));
     }
 
     public static function recordVisibilityDataProvider(): array
@@ -281,7 +278,10 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
     {
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $expectedResult = $expectation ? $parameters['uid'] : null;
-        self::assertSame($expectedResult, $this->subject->resolve($parameters['slug']));
+        $subject = new PersistedPatternMapper(self::ASPECT_CONFIGURATION);
+        $subject->setSiteLanguage($this->sites['acme']->getLanguageById(0));
+        $subject->setSite($this->sites['acme']);
+        self::assertSame($expectedResult, $subject->resolve($parameters['slug']));
     }
 
     #[DataProvider('recordVisibilityDataProvider')]
@@ -290,36 +290,29 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
     {
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $expectedResult = $expectation ? $parameters['slug'] : null;
-        self::assertSame($expectedResult, $this->subject->generate($parameters['uid']));
+        $subject = new PersistedPatternMapper(self::ASPECT_CONFIGURATION);
+        $subject->setSiteLanguage($this->sites['acme']->getLanguageById(0));
+        $subject->setSite($this->sites['acme']);
+        self::assertSame($expectedResult, $subject->generate($parameters['uid']));
     }
 
     #[Test]
     public function generateWithUidOfExistingPageReturnsPageSlug(): void
     {
-        $result = $this->subject->generate('3010');
-
+        $subject = new PersistedPatternMapper(self::ASPECT_CONFIGURATION);
+        $subject->setSiteLanguage($this->sites['acme']->getLanguageById(0));
+        $subject->setSite($this->sites['acme']);
+        $result = $subject->generate('3010');
         self::assertSame('30xx-slug-0', $result);
     }
 
     #[Test]
     public function generateWithUidOfExistingPageSuffixedWithGarbageStringReturnsNull(): void
     {
-        $result = $this->subject->generate('3010-i-am-garbage');
-
+        $subject = new PersistedPatternMapper(self::ASPECT_CONFIGURATION);
+        $subject->setSiteLanguage($this->sites['acme']->getLanguageById(0));
+        $subject->setSite($this->sites['acme']);
+        $result = $subject->generate('3010-i-am-garbage');
         self::assertNull($result);
-    }
-
-    private function writeSiteConfiguration(Site $site): void
-    {
-        try {
-            // ensure no previous site configuration influences the test
-            $path = $this->instancePath . '/typo3conf/sites';
-            $cache = $this->get('cache.core');
-            $eventDispatcher = $this->get(EventDispatcherInterface::class);
-            GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
-            GeneralUtility::makeInstance(SiteWriter::class, $path, $eventDispatcher, $cache)->write($site->getIdentifier(), $site->getConfiguration());
-        } catch (\Exception $exception) {
-            self::markTestSkipped($exception->getMessage());
-        }
     }
 }
