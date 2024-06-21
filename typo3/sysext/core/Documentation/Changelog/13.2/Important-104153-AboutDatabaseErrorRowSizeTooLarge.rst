@@ -113,7 +113,7 @@ with multi-byte characters.
 Note that column types that do not store characters (like :sql:`INT`) do not have
 a charset set at all. An overview of current charsets can be retrieved:
 
-.. code-block::sql
+.. code-block:: sql
 
     # Default charset of the database, new tables use this charset when no
     # explicit charset is given with a "CREATE TABLE" statement:
