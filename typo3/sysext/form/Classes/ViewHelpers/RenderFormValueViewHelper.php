@@ -21,7 +21,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers;
 
+use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
@@ -96,6 +98,12 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
     ) {
         $properties = $element->getProperties();
         $options = $properties['options'] ?? null;
+        if ($element->getType() === 'CountrySelect') {
+            $country = GeneralUtility::makeInstance(CountryProvider::class)->getByIsoCode($value);
+            if ($country !== null) {
+                return $country->getName();
+            }
+        }
         if (is_array($options)) {
             $options = (array)$this->renderingContext->getViewHelperInvoker()->invoke(
                 TranslateElementPropertyViewHelper::class,
