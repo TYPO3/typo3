@@ -15,7 +15,7 @@
                typo3-core-preferred="main"
                interlink-shortcode="changelog"
     />
-    <project title="Core"
+    <project title="TYPO3 Core Changelog"
              release="main (development)"
              version="main (development)"
              copyright="since 1997 by the TYPO3 contributors"
