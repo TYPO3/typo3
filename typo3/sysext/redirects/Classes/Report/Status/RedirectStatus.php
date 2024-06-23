@@ -39,7 +39,7 @@ class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProvi
      *
      * @return Status[]
      */
-    public function getStatus(ServerRequestInterface $request = null): array
+    public function getStatus(?ServerRequestInterface $request = null): array
     {
         return $request !== null ? ['Conflicts' => $this->getConflictingRedirects($request)] : [];
     }

@@ -40,7 +40,7 @@ class IntegrityService
      */
     private $siteFinder;
 
-    public function __construct(RedirectService $redirectService = null, SiteFinder $siteFinder = null)
+    public function __construct(?RedirectService $redirectService = null, ?SiteFinder $siteFinder = null)
     {
         $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
         $this->redirectService = $redirectService ?? GeneralUtility::makeInstance(

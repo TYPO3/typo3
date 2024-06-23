@@ -32,7 +32,7 @@ class ValuePickerItemDataProvider implements FormDataProviderInterface
      */
     protected $siteFinder;
 
-    public function __construct(SiteFinder $siteFinder = null)
+    public function __construct(?SiteFinder $siteFinder = null)
     {
         $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
     }
