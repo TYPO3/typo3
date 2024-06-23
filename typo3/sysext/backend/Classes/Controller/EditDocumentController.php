@@ -639,17 +639,23 @@ class EditDocumentController
             // Find the current table
             reset($this->editconf);
             $nTable = (string)key($this->editconf);
-            // Finding the first id, getting the records pid+uid
+            // Determine insertion mode: 'top' is self-explaining,
+            // otherwise new elements are inserted after one using a negative uid
+            $insertRecordOnTop = ($this->getTsConfigOption($nTable, 'saveDocNew') === 'top');
+            // Fetching id's - might be a comma-separated list
             reset($this->editconf[$nTable]);
-            $nUid = (int)key($this->editconf[$nTable]);
+            $ids = GeneralUtility::trimExplode(',', (string)key($this->editconf[$nTable]), true);
+            // Depending on $insertRecordOnTop, retrieve either the first or last id to get the records' pid+uid
+            if ($insertRecordOnTop) {
+                $nUid = (int)reset($ids);
+            } else {
+                $nUid = (int)end($ids);
+            }
             $recordFields = 'pid,uid';
             if (BackendUtility::isTableWorkspaceEnabled($nTable)) {
                 $recordFields .= ',t3ver_oid';
             }
             $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
-            // Determine insertion mode: 'top' is self-explaining,
-            // otherwise new elements are inserted after one using a negative uid
-            $insertRecordOnTop = ($this->getTsConfigOption($nTable, 'saveDocNew') === 'top');
             // Setting a blank editconf array for a new record:
             $this->editconf = [];
             // Determine related page ID for regular live context
