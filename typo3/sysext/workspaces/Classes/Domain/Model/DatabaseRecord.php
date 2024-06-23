@@ -53,7 +53,7 @@ class DatabaseRecord
         return GeneralUtility::makeInstance(DatabaseRecord::class, $table, $row['uid'], $row);
     }
 
-    public function __construct(string $table, int $uid, array $row = null)
+    public function __construct(string $table, int $uid, ?array $row = null)
     {
         $this->setTable($table);
         $this->setUid($uid);

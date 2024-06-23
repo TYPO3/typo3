@@ -93,7 +93,7 @@ class MassActionHandler
     /**
      * Initializes the command map to be used for publishing.
      */
-    protected function initPublishData(int $workspace, int $language = null): int
+    protected function initPublishData(int $workspace, ?int $language = null): int
     {
         // workspace might be -98 a.k.a "All Workspaces" but that's safe here
         $publishData = $this->workspaceService->getCmdArrayForPublishWS($workspace, false, $language);
@@ -112,7 +112,7 @@ class MassActionHandler
     /**
      * Initializes the command map to be used for flushing.
      */
-    protected function initFlushData(int $workspace, int $language = null): int
+    protected function initFlushData(int $workspace, ?int $language = null): int
     {
         // workspace might be -98 a.k.a "All Workspaces" but that's safe here
         $flushData = $this->workspaceService->getCmdArrayForFlushWS($workspace, $language);

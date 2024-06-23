@@ -240,7 +240,7 @@ class ReviewController
         }
     }
 
-    protected function getModuleUri(int $pageUid, int $workspaceId = null): string
+    protected function getModuleUri(int $pageUid, ?int $workspaceId = null): string
     {
         $parameters = [
             'id' => $pageUid,

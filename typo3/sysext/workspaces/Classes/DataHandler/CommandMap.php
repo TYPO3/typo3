@@ -304,7 +304,7 @@ class CommandMap
     /**
      * Removes an element from the command map.
      */
-    protected function remove(string $table, int|string $id, string $command = null): void
+    protected function remove(string $table, int|string $id, ?string $command = null): void
     {
         if (is_string($command)) {
             unset($this->commandMap[$table][$id][$command]);

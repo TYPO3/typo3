@@ -143,7 +143,7 @@ class WorkspaceService implements SingletonInterface
      * @param int|null $language Select specific language only
      * @return array Command array for DataHandler
      */
-    public function getCmdArrayForPublishWS(int $wsid, bool $_ = false, int $language = null): array
+    public function getCmdArrayForPublishWS(int $wsid, bool $_ = false, ?int $language = null): array
     {
         $cmd = [];
         if ($wsid > 0) {
@@ -181,7 +181,7 @@ class WorkspaceService implements SingletonInterface
      * @param int|null $language Select specific language only
      * @return array Command array for DataHandler
      */
-    public function getCmdArrayForFlushWS(int $wsid, int $language = null)
+    public function getCmdArrayForFlushWS(int $wsid, ?int $language = null)
     {
         $cmd = [];
         if ($wsid > 0) {
@@ -219,7 +219,7 @@ class WorkspaceService implements SingletonInterface
      * @param int $language Select specific language only
      * @return array Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
      */
-    public function selectVersionsInWorkspace(int $wsid, int $stage = -99, int $pageId = -1, int $recursionLevel = 0, string $selectionType = 'tables_select', int $language = null): array
+    public function selectVersionsInWorkspace(int $wsid, int $stage = -99, int $pageId = -1, int $recursionLevel = 0, string $selectionType = 'tables_select', ?int $language = null): array
     {
         $backendUser = $this->getBackendUser();
         $output = [];
@@ -272,7 +272,7 @@ class WorkspaceService implements SingletonInterface
     /**
      * Find all versionized elements except moved and new records.
      */
-    protected function selectAllVersionsFromPages(string $table, string $pageList, int $wsid, int $stage, int $language = null): array
+    protected function selectAllVersionsFromPages(string $table, string $pageList, int $wsid, int $stage, ?int $language = null): array
     {
         // Include root level page as there might be some records with where root level
         // restriction is ignored (e.g. FAL records)

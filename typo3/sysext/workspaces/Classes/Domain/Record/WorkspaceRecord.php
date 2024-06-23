@@ -58,7 +58,7 @@ class WorkspaceRecord extends AbstractRecord
      */
     protected ?array $stages;
 
-    public static function get(int $uid, array $record = null): WorkspaceRecord
+    public static function get(int $uid, ?array $record = null): WorkspaceRecord
     {
         if (empty($uid)) {
             $record = [];

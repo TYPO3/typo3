@@ -28,12 +28,12 @@ class StageRecord extends AbstractRecord
 {
     protected WorkspaceRecord $workspace;
     protected bool $internal = false;
-    protected array|null $responsiblePersons;
-    protected array|null $defaultRecipients;
-    protected array|null $preselectedRecipients;
-    protected array|null $allRecipients;
+    protected ?array $responsiblePersons;
+    protected ?array $defaultRecipients;
+    protected ?array $preselectedRecipients;
+    protected ?array $allRecipients;
 
-    public static function get(int $uid, array $record = null): ?StageRecord
+    public static function get(int $uid, ?array $record = null): ?StageRecord
     {
         if (empty($record)) {
             $record = static::fetch('sys_workspace_stage', $uid);
@@ -41,7 +41,7 @@ class StageRecord extends AbstractRecord
         return WorkspaceRecord::get($record['parentid'])->getStage($uid);
     }
 
-    public static function build(WorkspaceRecord $workspace, int $uid, array $record = null): StageRecord
+    public static function build(WorkspaceRecord $workspace, int $uid, ?array $record = null): StageRecord
     {
         if (empty($record)) {
             $record = static::fetch('sys_workspace_stage', $uid);

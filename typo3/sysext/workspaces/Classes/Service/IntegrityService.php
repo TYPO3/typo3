@@ -150,7 +150,7 @@ class IntegrityService
      *
      * @param string|null $identifier Record identifier (table:id) for look-ups
      */
-    public function getStatus(string $identifier = null): int
+    public function getStatus(?string $identifier = null): int
     {
         $status = self::STATUS_Success;
         if ($identifier === null) {
@@ -178,7 +178,7 @@ class IntegrityService
      * @param string|null $identifier Record identifier (table:id) for look-ups
      * @return string One out of success, info, warning, error
      */
-    public function getStatusRepresentation(string $identifier = null): string
+    public function getStatusRepresentation(?string $identifier = null): string
     {
         return $this->statusRepresentation[$this->getStatus($identifier)];
     }
@@ -188,7 +188,7 @@ class IntegrityService
      *
      * @param string|null $identifier Record identifier (table:id) for look-ups
      */
-    public function getIssues(string $identifier = null): array
+    public function getIssues(?string $identifier = null): array
     {
         if ($identifier === null) {
             return $this->issues;
@@ -204,7 +204,7 @@ class IntegrityService
      *
      * @param string|null $identifier Record identifier (table:id) for look-ups
      */
-    public function getIssueMessages(string $identifier = null): array
+    public function getIssueMessages(?string $identifier = null): array
     {
         $messages = [];
         if ($identifier === null) {
