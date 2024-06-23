@@ -64,7 +64,7 @@ class Demand
         string $target = '',
         array $statusCodes = [],
         int $maxHits = 0,
-        \DateTimeInterface $olderThan = null,
+        ?\DateTimeInterface $olderThan = null,
         ?int $creationType = -1,
         ?int $protected = -1,
         ?string $integrityStatus = null

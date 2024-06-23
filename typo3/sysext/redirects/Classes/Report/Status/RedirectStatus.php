@@ -61,7 +61,7 @@ class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProvi
      *
      * @return Status[]
      */
-    public function getStatus(ServerRequestInterface $request = null): array
+    public function getStatus(?ServerRequestInterface $request = null): array
     {
         if ($request === null) {
             return [];
