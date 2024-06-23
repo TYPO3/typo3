@@ -67,7 +67,7 @@ class DatabaseRecord
      * @param int $uid Id of the database record row
      * @param array|null $row The relevant database record row
      */
-    public function __construct($table, $uid, array $row = null)
+    public function __construct($table, $uid, ?array $row = null)
     {
         $this->setTable($table);
         $this->setUid($uid);

@@ -413,7 +413,7 @@ class WorkspacePreview implements MiddlewareInterface
     /**
      * Register or override the backend user as aspect, as well as the workspace information the user object is holding
      */
-    protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user = null)
+    protected function setBackendUserAspect(Context $context, ?BackendUserAuthentication $user = null)
     {
         $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
         $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));

@@ -280,7 +280,7 @@ class ReviewController
      * @param int $workspaceId
      * @return string
      */
-    protected function getModuleUri(int $workspaceId = null): string
+    protected function getModuleUri(?int $workspaceId = null): string
     {
         $parameters = [
             'id' => $this->pageId,
