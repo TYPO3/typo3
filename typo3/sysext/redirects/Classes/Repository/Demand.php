@@ -96,7 +96,7 @@ class Demand
         string $target = '',
         array $statusCodes = [],
         int $maxHits = 0,
-        \DateTimeInterface $olderThan = null
+        ?\DateTimeInterface $olderThan = null
     ) {
         $this->page = $page;
         if (!in_array($orderField, self::ORDER_FIELDS, true)) {
