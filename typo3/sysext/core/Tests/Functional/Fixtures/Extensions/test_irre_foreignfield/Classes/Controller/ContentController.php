@@ -65,7 +65,7 @@ class ContentController extends AbstractController
      * @param \TYPO3\TestIrreForeignfield\Domain\Model\Content $newContent
      * @Extbase\IgnoreValidation("newContent")
      */
-    public function newAction(Content $newContent = null): void
+    public function newAction(?Content $newContent = null): void
     {
         $this->view->assign('newContent', $newContent);
     }

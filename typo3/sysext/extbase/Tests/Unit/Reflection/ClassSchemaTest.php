@@ -276,7 +276,7 @@ class ClassSchemaTest extends UnitTestCase
     public function classSchemaCanHandleSelfMethodReturnTypes(): void
     {
         $class = new class () {
-            public function __construct(self $copy = null) {}
+            public function __construct(?self $copy = null) {}
             public function injectCopy(self $copy): void {}
             public function foo($copy): self
             {

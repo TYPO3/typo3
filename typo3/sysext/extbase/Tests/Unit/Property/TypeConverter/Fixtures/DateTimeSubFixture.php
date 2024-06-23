@@ -28,7 +28,7 @@ class DateTimeSubFixture extends \DateTime
      * @param \DateTimeZone|null $timezone
      * @return DateTimeSubFixture
      */
-    public static function createFromFormat($format, $time, \DateTimeZone $timezone = null): DateTimeSubFixture
+    public static function createFromFormat($format, $time, ?\DateTimeZone $timezone = null): DateTimeSubFixture
     {
         return new self();
     }

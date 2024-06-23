@@ -305,7 +305,7 @@ class FailsafeContainerTest extends UnitTestCase
     public function extendingNonExistingFactory(): void
     {
         $this->providerProphecy->getExtensions()->willReturn([
-            'service' => static function (ContainerInterface $c, Service $s = null) {
+            'service' => static function (ContainerInterface $c, ?Service $s = null) {
                 if ($s === null) {
                     $s = new Service();
                 }

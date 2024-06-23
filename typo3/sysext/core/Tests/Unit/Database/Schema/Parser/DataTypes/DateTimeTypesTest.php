@@ -88,7 +88,7 @@ class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
      * @param string $className
      * @param int $length
      */
-    public function canParseDataType(string $columnDefinition, string $className, int $length = null): void
+    public function canParseDataType(string $columnDefinition, string $className, ?int $length = null): void
     {
         $subject = $this->createSubject($columnDefinition);
 

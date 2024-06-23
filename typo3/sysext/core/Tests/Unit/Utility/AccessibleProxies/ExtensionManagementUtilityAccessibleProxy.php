@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class ExtensionManagementUtilityAccessibleProxy extends ExtensionManagementUtility
 {
-    public static function setCacheManager(CacheManager $cacheManager = null): void
+    public static function setCacheManager(?CacheManager $cacheManager = null): void
     {
         static::$cacheManager = $cacheManager;
     }

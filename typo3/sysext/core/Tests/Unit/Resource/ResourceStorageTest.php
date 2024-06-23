@@ -94,8 +94,8 @@ class ResourceStorageTest extends BaseTestCase
     protected function prepareSubject(
         array $configuration,
         bool $mockPermissionChecks = false,
-        AbstractDriver $driverObject = null,
-        ResourceFactory $resourceFactory = null,
+        ?AbstractDriver $driverObject = null,
+        ?ResourceFactory $resourceFactory = null,
         array $storageRecord = [],
         array $mockedMethods = []
     ): void {
@@ -162,7 +162,7 @@ class ResourceStorageTest extends BaseTestCase
      */
     protected function createDriverMock(
         array $driverConfiguration,
-        ResourceStorage $storageObject = null,
+        ?ResourceStorage $storageObject = null,
         array $mockedDriverMethods = []
     ) {
         $this->initializeVfs();

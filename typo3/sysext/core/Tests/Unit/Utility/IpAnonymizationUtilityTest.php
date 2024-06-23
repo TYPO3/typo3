@@ -56,7 +56,7 @@ class IpAnonymizationUtilityTest extends UnitTestCase
      * @param int|null $mask
      * @param string $expected
      */
-    public function anonymizeIpReturnsCorrectValue(string $address, int $mask = null, string $expected): void
+    public function anonymizeIpReturnsCorrectValue(string $address, ?int $mask, string $expected): void
     {
         // set the default if $mask is null
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ipAnonymization'] = 1;

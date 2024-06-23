@@ -433,7 +433,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      * @param int|null $pageId
      * @return ConditionMatcher
      */
-    protected function getConditionMatcher(int $pageId = null): ConditionMatcher
+    protected function getConditionMatcher(?int $pageId = null): ConditionMatcher
     {
         $conditionMatcher = new ConditionMatcher(null, $pageId);
         $conditionMatcher->setLogger($this->prophesize(Logger::class)->reveal());

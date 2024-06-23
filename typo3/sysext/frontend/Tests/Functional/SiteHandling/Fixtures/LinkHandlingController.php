@@ -62,7 +62,7 @@ class LinkHandlingController
      * @param array|null $configuration
      * @return string
      */
-    public function dumpPageArgumentsAction(?string $content, array $configuration = null): string
+    public function dumpPageArgumentsAction(?string $content, ?array $configuration = null): string
     {
         /** @var ServerRequestInterface $request */
         $request = $GLOBALS['TYPO3_REQUEST'];

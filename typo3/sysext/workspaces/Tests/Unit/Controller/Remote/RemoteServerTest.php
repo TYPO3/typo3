@@ -112,7 +112,7 @@ class RemoteServerTest extends UnitTestCase
      * @dataProvider prepareFileReferenceDifferencesAreCorrectDataProvider
      * @test
      */
-    public function prepareFileReferenceDifferencesAreCorrect(string $fileFileReferenceList, string $versionFileReferenceList, bool $useThumbnails, array $expected = null): void
+    public function prepareFileReferenceDifferencesAreCorrect(string $fileFileReferenceList, string $versionFileReferenceList, bool $useThumbnails, ?array $expected = null): void
     {
         $liveFileReferences = $this->getFileReferenceMocks($fileFileReferenceList);
         $versionFileReferences = $this->getFileReferenceMocks($versionFileReferenceList);

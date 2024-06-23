@@ -100,7 +100,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
      * @param callable|null $callback
      * @return array
      */
-    protected function keysFromTemplate(array $array, string $template, callable $callback = null): array
+    protected function keysFromTemplate(array $array, string $template, ?callable $callback = null): array
     {
         $keys = array_unique(
             array_map(

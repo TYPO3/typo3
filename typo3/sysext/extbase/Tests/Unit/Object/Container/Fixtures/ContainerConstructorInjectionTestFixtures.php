@@ -54,7 +54,7 @@ class OptionalConstructorArgument
     /**
      * @param ArgumentTestClass|null $argumentTestClass
      */
-    public function __construct(ArgumentTestClass $argumentTestClass = null)
+    public function __construct(?ArgumentTestClass $argumentTestClass = null)
     {
         $this->argumentTestClass = $argumentTestClass;
     }
@@ -85,7 +85,7 @@ class TwoConstructorArgumentsSecondOptional
      * @param ArgumentTestClass $argumentTestClass
      * @param ArgumentTestClass|null $argumentTestClassTwo
      */
-    public function __construct(ArgumentTestClass $argumentTestClass, ArgumentTestClass $argumentTestClassTwo = null)
+    public function __construct(ArgumentTestClass $argumentTestClass, ?ArgumentTestClass $argumentTestClassTwo = null)
     {
         $this->argumentTestClass = $argumentTestClass;
         $this->argumentTestClassTwo = $argumentTestClassTwo;
@@ -109,7 +109,7 @@ class TwoConstructorArgumentsFirstOptional
      * @param ArgumentTestClass|null $argumentTestClass
      * @param ArgumentTestClass $argumentTestClassTwo
      */
-    public function __construct(ArgumentTestClass $argumentTestClass = null, ArgumentTestClass $argumentTestClassTwo)
+    public function __construct(?ArgumentTestClass $argumentTestClass, ArgumentTestClass $argumentTestClassTwo)
     {
         $this->argumentTestClass = $argumentTestClass;
         $this->argumentTestClassTwo = $argumentTestClassTwo;
@@ -125,7 +125,7 @@ class TwoConstructorArgumentsBothOptional
      * @param ArgumentTestClass|null $argumentTestClass
      * @param ArgumentTestClass|null $argumentTestClassTwo
      */
-    public function __construct(ArgumentTestClass $argumentTestClass = null, ArgumentTestClass $argumentTestClassTwo = null)
+    public function __construct(?ArgumentTestClass $argumentTestClass = null, ?ArgumentTestClass $argumentTestClassTwo = null)
     {
         $this->argumentTestClass = $argumentTestClass;
         $this->argumentTestClassTwo = $argumentTestClassTwo;

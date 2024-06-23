@@ -69,7 +69,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         return $serviceProviderRegistryProphecy->reveal();
     }
 
-    protected function getContainer(array $serviceProviders, callable $configure = null): ContainerBuilder
+    protected function getContainer(array $serviceProviders, ?callable $configure = null): ContainerBuilder
     {
         static $id = 0;
 

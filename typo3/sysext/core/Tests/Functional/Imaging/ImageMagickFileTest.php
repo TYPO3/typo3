@@ -267,7 +267,7 @@ class ImageMagickFileTest extends FunctionalTestCase
      * @test
      * @dataProvider fileStatementIsDeniedDataProvider
      */
-    public function fileStatementIsDenied(string $fileName, string $mimeType = null): void
+    public function fileStatementIsDenied(string $fileName, ?string $mimeType = null): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1550060977);

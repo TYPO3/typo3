@@ -145,7 +145,7 @@ class PropertyMapperTest extends FunctionalTestCase
             protected $sourceTypes = ['integer'];
             protected $targetType = \Countable::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): bool
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): bool
             {
                 return true;
             }
@@ -156,7 +156,7 @@ class PropertyMapperTest extends FunctionalTestCase
             protected $sourceTypes = ['integer'];
             protected $targetType = ExtendedCountableInterface::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): bool
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): bool
             {
                 return true;
             }
@@ -199,7 +199,7 @@ class PropertyMapperTest extends FunctionalTestCase
     public function findTypeConverterReturnsTheConverterFromThePropertyMappingConfiguration(): void
     {
         $class = new class () extends IntegerConverter {
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): int
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): int
             {
                 return 1575648246;
             }
@@ -259,7 +259,7 @@ class PropertyMapperTest extends FunctionalTestCase
             protected $sourceTypes = ['string'];
             protected $targetType = Cat::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): Cat
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): Cat
             {
                 return new Cat();
             }
@@ -282,7 +282,7 @@ class PropertyMapperTest extends FunctionalTestCase
             protected $sourceTypes = ['string'];
             protected $targetType = Animal::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): Animal
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): Animal
             {
                 return new Animal();
             }
@@ -305,7 +305,7 @@ class PropertyMapperTest extends FunctionalTestCase
             protected $sourceTypes = ['integer'];
             protected $targetType = \Countable::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): array
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): array
             {
                 return [];
             }

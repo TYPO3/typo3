@@ -207,7 +207,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         return $document;
     }
 
-    private function buildRequest(string $actionName, array $arguments = null): Request
+    private function buildRequest(string $actionName, ?array $arguments = null): Request
     {
         $request = new Request();
         $request->setPluginName($this->pluginName);

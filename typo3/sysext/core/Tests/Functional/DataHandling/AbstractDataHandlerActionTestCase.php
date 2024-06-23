@@ -178,7 +178,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      *
      * @param string[]|null $expectedMessages
      */
-    protected function assertErrorLogEntries(array $expectedMessages = null): void
+    protected function assertErrorLogEntries(?array $expectedMessages = null): void
     {
         if ($this->expectedErrorLogEntries === null && $expectedMessages === null) {
             return;

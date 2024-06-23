@@ -327,7 +327,7 @@ class LocalizationUtilityTest extends UnitTestCase
      * @dataProvider translateDataProvider
      * @test
      */
-    public function translateTestWithBackendUserLanguage($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null): void
+    public function translateTestWithBackendUserLanguage($key, $languageKey, $expected, array $altLanguageKeys = [], ?array $arguments = null): void
     {
         $this->configurationManagerInterfaceProphecy
             ->getConfiguration('Framework', 'core', null)
@@ -359,7 +359,7 @@ class LocalizationUtilityTest extends UnitTestCase
      * @dataProvider translateDataProvider
      * @test
      */
-    public function translateTestWithExplicitLanguageParameters($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null): void
+    public function translateTestWithExplicitLanguageParameters($key, $languageKey, $expected, array $altLanguageKeys = [], ?array $arguments = null): void
     {
         $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $this->configurationManagerInterfaceProphecy

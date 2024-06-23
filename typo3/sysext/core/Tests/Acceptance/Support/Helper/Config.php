@@ -59,7 +59,7 @@ class Config extends Module
      * @return array|string|null
      * @throws \Codeception\Exception\ModuleException
      */
-    public function grabConfig(string $parameter = null)
+    public function grabConfig(?string $parameter = null)
     {
         return $this->grab($parameter);
     }
@@ -72,7 +72,7 @@ class Config extends Module
      * @return array|string|null
      * @throws \Codeception\Exception\ModuleException
      */
-    public function grabModuleConfig(string $moduleName, string $parameter = null)
+    public function grabModuleConfig(string $moduleName, ?string $parameter = null)
     {
         return $this->grab($parameter, $moduleName);
     }
@@ -85,7 +85,7 @@ class Config extends Module
      * @return array|string|null
      * @throws \Codeception\Exception\ModuleException
      */
-    protected function grab(string $parameter = null, string $moduleName = null)
+    protected function grab(?string $parameter = null, ?string $moduleName = null)
     {
         $module = is_string($moduleName) ? $this->getModule($moduleName) : $this;
         return $module->_getConfig($parameter);

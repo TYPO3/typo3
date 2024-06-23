@@ -62,7 +62,7 @@ class ThumbnailControllerTest extends UnitTestCase
      * @test
      * @dataProvider exceptionIsThrownOnInvalidHMACDataProvider
      */
-    public function exceptionIsThrownOnInvalidHMAC(string $hmac = null): void
+    public function exceptionIsThrownOnInvalidHMAC(?string $hmac = null): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1534484203);
@@ -95,7 +95,7 @@ class ThumbnailControllerTest extends UnitTestCase
      * @test
      * @dataProvider generateThumbnailIsInvokedDataProvider
      */
-    public function generateThumbnailIsInvoked(array $parameters = null): void
+    public function generateThumbnailIsInvoked(?array $parameters = null): void
     {
         $this->subject->expects(self::once())
             ->method('generateThumbnail')
