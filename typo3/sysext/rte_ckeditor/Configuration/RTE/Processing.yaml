@@ -43,6 +43,7 @@ processing:
     - kbd
     - label
     - li
+    - mark
     - nav
     - ol
     - p
@@ -69,7 +70,7 @@ processing:
     - var
 
   ## Tags that are allowed outside of paragraphs
-  allowTagsOutside: [address, article, aside, blockquote, figure, figcaption, footer, header, hr, nav, section, div]
+  allowTagsOutside: [address, article, aside, blockquote, figure, figcaption, footer, header, hr, mark, nav, section, div]
 
   ## allowed default attributes
   allowAttributes: [class, id, title, dir, lang, xml:lang, itemscope, itemtype, itemprop]
