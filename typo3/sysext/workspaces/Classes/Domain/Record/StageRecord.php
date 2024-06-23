@@ -56,7 +56,7 @@ class StageRecord extends AbstractRecord
      * @param int $uid
      * @return StageRecord|null
      */
-    public static function get($uid, array $record = null)
+    public static function get($uid, ?array $record = null)
     {
         if (empty($record)) {
             $record = static::fetch('sys_workspace_stage', $uid);
@@ -68,7 +68,7 @@ class StageRecord extends AbstractRecord
      * @param int $uid
      * @return StageRecord
      */
-    public static function build(WorkspaceRecord $workspace, $uid, array $record = null)
+    public static function build(WorkspaceRecord $workspace, $uid, ?array $record = null)
     {
         if (empty($record)) {
             $record = static::fetch('sys_workspace_stage', $uid);
