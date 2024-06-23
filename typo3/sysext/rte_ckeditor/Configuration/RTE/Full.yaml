@@ -76,6 +76,9 @@ editor:
         - fontBackgroundColor
         - fontColor
         - fontSize
+        - textPartLanguage
+        - highlight
+        - highlight:greenMarker
 
     alignment:
       options:
@@ -121,8 +124,34 @@ editor:
         startIndex: true
         reversed: true
 
+    language:
+      textPartLanguage: [
+        { title: 'English', languageCode: 'en' },
+        { title: 'French', languageCode: 'fr' },
+        { title: 'German', languageCode: 'de' }
+      ]
+
+    highlight:
+      options:
+        - { model: 'yellowMarker', class: 'marker-yellow', title: 'Yellow marker', type: 'marker', color: 'var(--ck-highlight-marker-yellow)' }
+        - { model: 'greenMarker', class: 'marker-green', title: 'Green marker', type: 'marker', color: 'var(--ck-highlight-marker-green)' }
+        - { model: 'redPen', class: 'pen-red', title: 'Red pen', type: 'pen', color: 'var(--ck-highlight-pen-red)' }
+
+    mention:
+      feeds:
+        -
+          marker: '@'
+          feed:
+            - '@TYPO3'
+          minimumCharacters: 1
+
     importModules:
-      - { 'module': '@ckeditor/ckeditor5-font', 'exports': ['Font'] }
-      - { 'module': '@ckeditor/ckeditor5-show-blocks', 'exports': ['ShowBlocks'] }
-      - { 'module': '@ckeditor/ckeditor5-word-count', 'exports': ['WordCount'] }
-      - { 'module': '@ckeditor/ckeditor5-list', 'exports': [ 'ListProperties' ] }
+      - { module: '@ckeditor/ckeditor5-word-count', exports: ['WordCount'] }
+      # Provides fontFamily, fontSize, fontColor, and fontBackgroundColor toolbar items
+      - { module: '@ckeditor/ckeditor5-font', exports: ['Font'] }
+      # Provides showBlocks toolbar item
+      - { module: '@ckeditor/ckeditor5-show-blocks', exports: ['ShowBlocks'] }
+      # Provides textPartLanguage toolbar item
+      - { module: '@ckeditor/ckeditor5-language', exports: ['TextPartLanguage'] }
+      - { module: '@ckeditor/ckeditor5-mention', exports: ['Mention'] }
+      - { module: '@ckeditor/ckeditor5-highlight', exports: ['Highlight'] }
