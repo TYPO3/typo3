@@ -46,11 +46,11 @@ class WebhookInstructionFactory
         string $method = 'POST',
         bool $verifySSL = true,
         array $additionalHeaders = [],
-        string $name = null,
-        string $description = null,
-        WebhookType $webhookType = null,
-        string $identifier = null,
-        int $uid = null,
+        ?string $name = null,
+        ?string $description = null,
+        ?WebhookType $webhookType = null,
+        ?string $identifier = null,
+        ?int $uid = null,
     ): WebhookInstruction {
         return new WebhookInstruction(
             $url,
