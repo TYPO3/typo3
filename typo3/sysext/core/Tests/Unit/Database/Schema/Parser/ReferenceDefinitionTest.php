@@ -180,9 +180,9 @@ final class ReferenceDefinitionTest extends UnitTestCase
         string $columnAttribute,
         string $table,
         array $columns,
-        string $match = null,
-        string $onDelete = null,
-        string $onUpdate = null
+        ?string $match = null,
+        ?string $onDelete = null,
+        ?string $onUpdate = null
     ): void {
         $statement = sprintf('CREATE TABLE `aTable`(`aField` INT(11) %s);', $columnAttribute);
         $subject = $this->createSubject($statement);

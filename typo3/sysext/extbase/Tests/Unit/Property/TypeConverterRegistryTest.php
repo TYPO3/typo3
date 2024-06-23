@@ -185,14 +185,14 @@ final class TypeConverterRegistryTest extends UnitTestCase
         );
 
         $countableConverter = new class () extends AbstractTypeConverter {
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
             {
                 return null;
             }
         };
 
         $arrayAccessConverter = new class () extends AbstractTypeConverter {
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
             {
                 return null;
             }

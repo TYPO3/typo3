@@ -51,7 +51,7 @@ class TestSet
     /**
      * @return Applicable[]
      */
-    public function getApplicables(string $type = null): array
+    public function getApplicables(?string $type = null): array
     {
         if ($type === null) {
             return $this->applicables;

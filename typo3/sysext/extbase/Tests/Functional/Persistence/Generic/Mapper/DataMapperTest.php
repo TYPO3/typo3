@@ -364,7 +364,7 @@ final class DataMapperTest extends FunctionalTestCase
 
     #[DataProvider('mapDateTimeHandlesDifferentFieldEvaluationsDataProvider')]
     #[Test]
-    public function mapDateTimeHandlesDifferentFieldEvaluations(string|int|null $value, string|null $storageFormat, string|null $expectedValue): void
+    public function mapDateTimeHandlesDifferentFieldEvaluations(string|int|null $value, ?string $storageFormat, ?string $expectedValue): void
     {
         $GLOBALS['TCA']['tx_testdatamapper_domain_model_example']['columns']['initialized_date_time_property']['config']['dbType'] = $storageFormat;
         $rows = [

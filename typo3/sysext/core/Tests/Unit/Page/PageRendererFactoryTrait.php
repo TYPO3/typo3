@@ -44,8 +44,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 trait PageRendererFactoryTrait
 {
     protected function getPageRendererConstructorArgs(
-        PackageManager $packageManager = null,
-        CacheManager $cacheManager = null,
+        ?PackageManager $packageManager = null,
+        ?CacheManager $cacheManager = null,
     ): array {
         $packageManager ??= new PackageManager(new DependencyOrderingService());
         $cacheManager ??= $this->createMock(CacheManager::class);

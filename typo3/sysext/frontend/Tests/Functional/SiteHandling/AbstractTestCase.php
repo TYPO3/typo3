@@ -83,7 +83,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
      *     '11->22 (user:33)' => [11, 22, 33],
      *   ]
      */
-    protected static function keysFromTemplate(array $array, string $template, callable $callback = null): array
+    protected static function keysFromTemplate(array $array, string $template, ?callable $callback = null): array
     {
         $keys = array_unique(
             array_map(

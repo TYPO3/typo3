@@ -157,7 +157,7 @@ final class StatusTest extends UnitTestCase
                     private readonly string $label,
                 ) {}
 
-                public function getStatus(ServerRequestInterface $request = null): array
+                public function getStatus(?ServerRequestInterface $request = null): array
                 {
                     $statuses = [];
                     foreach ($request->getHeaders() as $key => $header) {

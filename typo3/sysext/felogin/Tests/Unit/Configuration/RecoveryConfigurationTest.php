@@ -60,7 +60,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
         parent::setUp();
     }
 
-    protected function setupSubject(Context $context = null): void
+    protected function setupSubject(?Context $context = null): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'bar';
 

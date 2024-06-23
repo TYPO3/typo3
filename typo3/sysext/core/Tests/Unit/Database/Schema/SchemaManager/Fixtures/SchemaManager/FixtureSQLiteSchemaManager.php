@@ -38,7 +38,7 @@ class FixtureSQLiteSchemaManager extends SQLiteSchemaManager
     /**
      * @param array<string, mixed> $tableColumn
      */
-    public function callProcessCustomDoctrineTypesColumnDefinitionFromTraitDirectly(array $tableColumn): Column|null
+    public function callProcessCustomDoctrineTypesColumnDefinitionFromTraitDirectly(array $tableColumn): ?Column
     {
         return $this->processCustomDoctrineTypesColumnDefinition(
             tableColumn: $tableColumn,

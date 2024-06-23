@@ -447,7 +447,7 @@ final class RouteTest extends AbstractEnhancerSiteRequestTestCase
 
     #[DataProvider('routeIdentifiersAreResolvedDataProvider')]
     #[Test]
-    public function routeIdentifiersAreResolved(string $namespace, string $argumentName, string $queryPath, string $failureReason = null): void
+    public function routeIdentifiersAreResolved(string $namespace, string $argumentName, string $queryPath, ?string $failureReason = null): void
     {
         $query = [];
         $routeValue = 'route-value';

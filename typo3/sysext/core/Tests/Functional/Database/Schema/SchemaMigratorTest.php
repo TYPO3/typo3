@@ -462,7 +462,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         string $table,
         string $fieldName,
         string $assertionFileName,
-        string|null $expectedDefaultValue,
+        ?string $expectedDefaultValue,
         bool $expectedNotNull,
         bool $expectDefaultValue,
     ): void {
@@ -569,7 +569,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         string $table,
         string $fieldName,
         string $assertionFileName,
-        string|null $expectedDefaultValue,
+        ?string $expectedDefaultValue,
         bool $expectedNotNull,
         bool $expectDefaultValue,
     ): void {

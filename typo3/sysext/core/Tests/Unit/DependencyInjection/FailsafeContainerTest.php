@@ -269,7 +269,7 @@ final class FailsafeContainerTest extends UnitTestCase
         $providerMock = $this->createMock(ServiceProviderInterface::class);
         $providerMock->method('getFactories')->willReturn([]);
         $providerMock->method('getExtensions')->willReturn([
-            'service' => static function (ContainerInterface $c, Service $s = null) {
+            'service' => static function (ContainerInterface $c, ?Service $s = null) {
                 if ($s === null) {
                     $s = new Service();
                 }

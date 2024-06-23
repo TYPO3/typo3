@@ -489,7 +489,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
     #[DataProvider('renderReturnsExpectedMarkupDataProvider')]
     #[Test]
-    public function renderReturnsExpectedMarkup(string $template, string $expected, string|null $cropResult, bool $expectProcessedFile = true): void
+    public function renderReturnsExpectedMarkup(string $template, string $expected, ?string $cropResult, bool $expectProcessedFile = true): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
@@ -520,7 +520,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
         }
     }
 
-    protected function verifySvg(array $file, string|null $cropResult)
+    protected function verifySvg(array $file, ?string $cropResult)
     {
         if ($file['storage'] == 1) {
             $dir = Environment::getPublicPath() . '/fileadmin';

@@ -3767,7 +3767,7 @@ final class ContentObjectRendererTest extends UnitTestCase
 
     #[DataProvider('stdWrap_formattedDateProvider')]
     #[Test]
-    public function stdWrap_formattedDate(string $expected, mixed $pattern, string $locale = null, string $givenDate = null): void
+    public function stdWrap_formattedDate(string $expected, mixed $pattern, ?string $locale = null, ?string $givenDate = null): void
     {
         $context = new Context();
         $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('2023-02-02 13:05:00')));

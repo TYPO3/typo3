@@ -66,12 +66,12 @@ final class ProcessedFileTest extends UnitTestCase
         ];
     }
 
-    protected function getFileFixture(array $dbRow = null, ResourceStorage $storageMock = null): File
+    protected function getFileFixture(?array $dbRow = null, ?ResourceStorage $storageMock = null): File
     {
         return new File($dbRow ?: $this->databaseRow, $storageMock ?: $this->storageMock);
     }
 
-    protected function getProcessedFileFixture(array $dbRow = null, File $originalFile = null): ProcessedFile
+    protected function getProcessedFileFixture(?array $dbRow = null, ?File $originalFile = null): ProcessedFile
     {
         if ($originalFile === null) {
             $originalFile = $this->getFileFixture();

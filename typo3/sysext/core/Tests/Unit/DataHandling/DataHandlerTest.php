@@ -576,7 +576,7 @@ final class DataHandlerTest extends UnitTestCase
      */
     #[DataProvider('inputValueCheckNativeDbTypeDataProvider')]
     #[Test]
-    public function inputValueCheckNativeDbType(string|null $value, string $dbType, string $format, bool $nullable, $expectedOutput): void
+    public function inputValueCheckNativeDbType(?string $value, string $dbType, string $format, bool $nullable, $expectedOutput): void
     {
         $tcaFieldConf = [
             'input' => [],

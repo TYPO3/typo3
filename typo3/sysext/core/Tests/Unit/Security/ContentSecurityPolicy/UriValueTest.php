@@ -52,7 +52,7 @@ final class UriValueTest extends UnitTestCase
 
     #[DataProvider('uriIsParsedAndSerializedDataProvider')]
     #[Test]
-    public function uriIsParsedAndSerialized(string $value, string $expectation = null): void
+    public function uriIsParsedAndSerialized(string $value, ?string $expectation = null): void
     {
         $uri = new UriValue($value);
         self::assertSame($expectation ?? $value, (string)$uri);

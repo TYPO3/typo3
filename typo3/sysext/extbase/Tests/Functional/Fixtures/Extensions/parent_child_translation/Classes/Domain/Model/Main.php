@@ -32,7 +32,7 @@ class Main extends AbstractEntity
     /**
      * child
      */
-    protected Child|null $child = null;
+    protected ?Child $child = null;
 
     /**
      * squeeze
@@ -84,7 +84,7 @@ class Main extends AbstractEntity
     /**
      * Returns the child
      */
-    public function getChild(): Child|null
+    public function getChild(): ?Child
     {
         return $this->child;
     }

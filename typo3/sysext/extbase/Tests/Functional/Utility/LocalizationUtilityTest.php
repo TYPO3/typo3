@@ -96,7 +96,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
 
     #[DataProvider('translateDataProvider')]
     #[Test]
-    public function translateTestWithBackendUserLanguage(string $key, string $languageKey, string $expected, array $arguments = null): void
+    public function translateTestWithBackendUserLanguage(string $key, string $languageKey, string $expected, ?array $arguments = null): void
     {
         // No TypoScript overrides
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
@@ -117,7 +117,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         string $key,
         string $languageKey,
         string $expected,
-        array $arguments = null
+        ?array $arguments = null
     ): void {
         // No TypoScript overrides
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);

@@ -231,7 +231,7 @@ final class RepositoryTest extends FunctionalTestCase
 
     #[DataProvider('findOneByRespectsSingleCriteriaDataProvider')]
     #[Test]
-    public function findOneByRespectsSingleCriteria(array $criteria, int|null $expectedUid): void
+    public function findOneByRespectsSingleCriteria(array $criteria, ?int $expectedUid): void
     {
         /** @var Post|null $post */
         $post = $this->get(PostRepository::class)->findOneBy($criteria);

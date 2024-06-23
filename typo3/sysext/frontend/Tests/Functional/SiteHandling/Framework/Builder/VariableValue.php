@@ -35,21 +35,21 @@ class VariableValue
      */
     private array $requiredDefinedVariableNames;
 
-    public static function create(string $value, Variables $defaultVariables = null): self
+    public static function create(string $value, ?Variables $defaultVariables = null): self
     {
         return new static($value, $defaultVariables);
     }
 
     public static function createUrlEncodedParams(
         string $value,
-        Variables $defaultVariables = null,
+        ?Variables $defaultVariables = null,
         string $prefix = '&'
     ): self {
         $value = self::urlEncodeParams($value, $prefix);
         return self::create($value, $defaultVariables);
     }
 
-    private function __construct(string $value, Variables $defaultVariables = null)
+    private function __construct(string $value, ?Variables $defaultVariables = null)
     {
         $variableNames = self::extractVariableNames($value);
         if ($variableNames === []) {

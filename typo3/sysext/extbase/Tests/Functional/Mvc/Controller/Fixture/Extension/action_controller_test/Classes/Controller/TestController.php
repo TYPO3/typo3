@@ -57,7 +57,7 @@ class TestController extends ActionController
         parent::setViewConfiguration($view);
     }
 
-    public function getFlashMessageQueue(string $identifier = null): FlashMessageQueue
+    public function getFlashMessageQueue(?string $identifier = null): FlashMessageQueue
     {
         return parent::getFlashMessageQueue($identifier);
     }

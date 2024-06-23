@@ -32,9 +32,9 @@ class Example extends AbstractEntity
     protected ?CustomDateTime $customDateTime = null;
     public $unknownType;
     public Enum\StringBackedEnum $stringBackedEnum;
-    public Enum\StringBackedEnum|null $nullableStringBackedEnum = null;
+    public ?Enum\StringBackedEnum $nullableStringBackedEnum = null;
     public Enum\IntegerBackedEnum $integerBackedEnum;
-    public Enum\IntegerBackedEnum|null $nullableIntegerBackedEnum = null;
+    public ?Enum\IntegerBackedEnum $nullableIntegerBackedEnum = null;
 
     public function getFirstProperty(): string
     {
