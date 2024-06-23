@@ -193,7 +193,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
         );
     }
 
-    private function buildSubject(string $requestUri, string $referrer, ConsumableNonce $nonce = null): ReferrerEnforcer
+    private function buildSubject(string $requestUri, string $referrer, ?ConsumableNonce $nonce = null): ReferrerEnforcer
     {
         $requestUriInstance = new Uri($requestUri);
         $host = sprintf(

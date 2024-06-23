@@ -58,7 +58,7 @@ class BlogController extends ActionController
         return $this->htmlResponse();
     }
 
-    public function detailsAction(Blog $blog = null): ResponseInterface
+    public function detailsAction(?Blog $blog = null): ResponseInterface
     {
         return $this->htmlResponse($blog ? $blog->getTitle() : '');
     }

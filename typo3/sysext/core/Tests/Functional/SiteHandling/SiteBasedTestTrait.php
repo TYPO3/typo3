@@ -107,7 +107,7 @@ trait SiteBasedTestTrait
         string $identifier,
         string $base,
         array $fallbackIdentifiers = [],
-        string $fallbackType = null
+        ?string $fallbackType = null
     ): array {
         $preset = $this->resolveLanguagePreset($identifier);
 

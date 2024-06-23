@@ -22,5 +22,5 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures;
  */
 class Subject
 {
-    public function __construct(string $a = null, string $b = null, string $c = null) {}
+    public function __construct(?string $a = null, ?string $b = null, ?string $c = null) {}
 }

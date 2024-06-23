@@ -75,7 +75,7 @@ final class ListenerProviderTest extends UnitTestCase
 
     #[DataProvider('listeners')]
     #[Test]
-    public function dispatchesEvent($listener, string $method = null): void
+    public function dispatchesEvent($listener, ?string $method = null): void
     {
         $event = new \stdClass();
         $event->invoked = 0;
@@ -92,7 +92,7 @@ final class ListenerProviderTest extends UnitTestCase
 
     #[DataProvider('listeners')]
     #[Test]
-    public function associatesToEventParentClass($listener, string $method = null): void
+    public function associatesToEventParentClass($listener, ?string $method = null): void
     {
         $extendedEvent = new class () extends \stdClass {
             public int $invoked = 0;
@@ -109,7 +109,7 @@ final class ListenerProviderTest extends UnitTestCase
 
     #[DataProvider('listeners')]
     #[Test]
-    public function associatesToImplementedInterfaces($listener, string $method = null): void
+    public function associatesToImplementedInterfaces($listener, ?string $method = null): void
     {
         $eventImplementation = new class () implements \IteratorAggregate {
             public int $invoked = 0;

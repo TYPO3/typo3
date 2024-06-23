@@ -29,7 +29,7 @@ class Squeeze extends AbstractEntity
     /**
      * child
      */
-    protected Child|null $child = null;
+    protected ?Child $child = null;
 
     /**
      * Returns the title

@@ -56,7 +56,7 @@ final class MailerTest extends UnitTestCase
             }
         };
         $this->eventDispatcher = new class () implements EventDispatcherInterface {
-            public function dispatch(object $event, string $eventName = null): object
+            public function dispatch(object $event, ?string $eventName = null): object
             {
                 return $event;
             }

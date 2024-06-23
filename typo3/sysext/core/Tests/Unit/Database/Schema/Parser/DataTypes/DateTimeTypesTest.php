@@ -83,7 +83,7 @@ final class DateTimeTypesTest extends AbstractDataTypeBaseTestCase
 
     #[DataProvider('canParseDateTimeTypeProvider')]
     #[Test]
-    public function canParseDataType(string $columnDefinition, string $className, int $length = null): void
+    public function canParseDataType(string $columnDefinition, string $className, ?int $length = null): void
     {
         $subject = $this->createSubject($columnDefinition);
 

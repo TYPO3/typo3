@@ -23,7 +23,7 @@ use TYPO3Tests\TypeConverterTest\Domain\Model\Animal;
 
 class AnimalTypeConverter extends AbstractTypeConverter
 {
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         return new Animal();
     }

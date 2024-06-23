@@ -412,7 +412,7 @@ final class ConditionMatcherTest extends FunctionalTestCase
     /**
      * @param int|null $pageId
      */
-    protected function getConditionMatcher(int $pageId = null): ConditionMatcher
+    protected function getConditionMatcher(?int $pageId = null): ConditionMatcher
     {
         $conditionMatcher = new ConditionMatcher(null, $pageId);
         $conditionMatcher->setLogger(new NullLogger());

@@ -190,7 +190,7 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
         return $document;
     }
 
-    private function buildRequest(string $actionName, array $arguments = null): Request
+    private function buildRequest(string $actionName, ?array $arguments = null): Request
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
         $frontendTypoScript->setSetupArray([]);

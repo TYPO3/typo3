@@ -61,7 +61,7 @@ class ContentController extends AbstractController
     /**
      * @Extbase\IgnoreValidation("newContent")
      */
-    public function newAction(Content $newContent = null): void
+    public function newAction(?Content $newContent = null): void
     {
         $this->view->assign('newContent', $newContent);
     }

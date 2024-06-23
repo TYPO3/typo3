@@ -140,7 +140,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     public function findTypeConverterReturnsTheConverterFromThePropertyMappingConfiguration(): void
     {
         $class = new class () extends IntegerConverter {
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): int
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): int
             {
                 return 1575648246;
             }

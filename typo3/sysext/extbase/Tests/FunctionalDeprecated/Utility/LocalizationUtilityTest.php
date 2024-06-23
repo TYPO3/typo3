@@ -53,7 +53,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         string $languageKey,
         string $expected,
         array $altLanguageKeys = [],
-        array $arguments = null
+        ?array $arguments = null
     ): void {
         // No TypoScript overrides
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
@@ -75,7 +75,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         string $languageKey,
         string $expected,
         array $altLanguageKeys = [],
-        array $arguments = null
+        ?array $arguments = null
     ): void {
         // No TypoScript overrides
         $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);

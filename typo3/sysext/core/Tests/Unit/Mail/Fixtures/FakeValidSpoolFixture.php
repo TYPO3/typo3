@@ -40,7 +40,7 @@ class FakeValidSpoolFixture implements DelayedTransportInterface
         return $this->settings;
     }
 
-    public function send(RawMessage $message, Envelope $envelope = null): ?SentMessage
+    public function send(RawMessage $message, ?Envelope $envelope = null): ?SentMessage
     {
         // Don't do anything
         return null;

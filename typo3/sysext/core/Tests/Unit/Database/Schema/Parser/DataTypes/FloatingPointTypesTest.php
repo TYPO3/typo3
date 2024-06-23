@@ -97,8 +97,8 @@ final class FloatingPointTypesTest extends AbstractDataTypeBaseTestCase
     public function canParseDataType(
         string $columnDefinition,
         string $className,
-        int $precision = null,
-        int $scale = null
+        ?int $precision = null,
+        ?int $scale = null
     ): void {
         $subject = $this->createSubject($columnDefinition);
 
