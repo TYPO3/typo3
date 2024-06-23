@@ -107,6 +107,7 @@ class RedirectService implements LoggerAwareInterface
                 }
             }
 
+            // @todo Evaluate if regexp patterns could be validated on creation/edit to give feedback on creation.
             // check all regex redirects respecting query arguments
             if (!empty($redirects['regexp_query_parameters'])) {
                 $allRegexps = array_keys($redirects['regexp_query_parameters']);
@@ -130,6 +131,7 @@ class RedirectService implements LoggerAwareInterface
                 }
             }
 
+            // @todo Evaluate if regexp patterns could be validated on creation/edit to give feedback on creation.
             // check all redirects that are registered as regex
             if (!empty($redirects['regexp_flat'])) {
                 $allRegexps = array_keys($redirects['regexp_flat']);
@@ -158,7 +160,7 @@ class RedirectService implements LoggerAwareInterface
                 // preg_match would have found it.
                 if (!empty($query)) {
                     foreach ($allRegexps as $regexp) {
-                        $matchResult = preg_match((string)$regexp, $path);
+                        $matchResult = @preg_match((string)$regexp, $path);
                         if ($matchResult > 0) {
                             if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['regexp_flat'][$regexp])) {
                                 return $matchedRedirect;
@@ -429,7 +431,7 @@ class RedirectService implements LoggerAwareInterface
         if (($matchedRedirect['respect_query_parameters'] ?? false) && $uri->getQuery()) {
             $uriToCheck .= '?' . rawurldecode($uri->getQuery());
         }
-        $matchResult = preg_match($matchedRedirect['source_path'], $uriToCheck, $matches);
+        $matchResult = @preg_match($matchedRedirect['source_path'], $uriToCheck, $matches);
         if ($matchResult > 0) {
             foreach ($matches as $key => $val) {
                 // Unsafe regexp captching group may lead to adding query parameters to result url, which we need
