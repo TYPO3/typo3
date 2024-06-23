@@ -2043,6 +2043,11 @@ class ResourceStorage implements ResourceStorageInterface
         if ($file->getName() === $sanitizedTargetFileName) {
             return $file;
         }
+
+        if (pathinfo($sanitizedTargetFileName, PATHINFO_EXTENSION) === '') {
+            $sanitizedTargetFileName .= '.' . $file->getExtension();
+        }
+
         $this->assureFileRenamePermissions($file, $sanitizedTargetFileName);
         $this->eventDispatcher->dispatch(
             new BeforeFileRenamedEvent($file, $sanitizedTargetFileName)
