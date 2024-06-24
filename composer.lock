@@ -9467,33 +9467,33 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "ee9f3da59b95a9c07c583d3db02807b342e234f6"
+                "reference": "962ce9f0b67ccf2808327cbc696d637dd5fa5b10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/ee9f3da59b95a9c07c583d3db02807b342e234f6",
-                "reference": "ee9f3da59b95a9c07c583d3db02807b342e234f6",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/962ce9f0b67ccf2808327cbc696d637dd5fa5b10",
+                "reference": "962ce9f0b67ccf2808327cbc696d637dd5fa5b10",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^2.5.0",
-                "php": "^8.1",
-                "phpunit/phpunit": "^10.1 || ^11.0",
-                "psr/container": "^1.1.0 || ^2.0.0",
-                "typo3/cms-backend": "12.*.*@dev || 13.*.*@dev",
-                "typo3/cms-core": "12.*.*@dev || 13.*.*@dev",
-                "typo3/cms-extbase": "12.*.*@dev || 13.*.*@dev",
-                "typo3/cms-fluid": "12.*.*@dev || 13.*.*@dev",
-                "typo3/cms-frontend": "12.*.*@dev || 13.*.*@dev"
+                "php": "^8.2",
+                "phpunit/phpunit": "^11.2.5",
+                "psr/container": "^2.0",
+                "typo3/cms-backend": "13.*.*@dev",
+                "typo3/cms-core": "13.*.*@dev",
+                "typo3/cms-extbase": "13.*.*@dev",
+                "typo3/cms-fluid": "13.*.*@dev",
+                "typo3/cms-frontend": "13.*.*@dev"
             },
             "replace": {
                 "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "*"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.37.1",
-                "phpstan/phpstan": "^1.9.2",
-                "phpstan/phpstan-phpunit": "^1.1.1",
-                "typo3/cms-workspaces": "12.*.*@dev || 13.*.*@dev"
+                "friendsofphp/php-cs-fixer": "^3.59.3",
+                "phpstan/phpstan": "^1.11.5",
+                "phpstan/phpstan-phpunit": "^1.4.0",
+                "typo3/cms-workspaces": "13.*.*@dev"
             },
             "default-branch": true,
             "type": "library",
@@ -9530,9 +9530,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/8.1.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2024-06-20T14:57:38+00:00"
+            "time": "2024-06-25T23:36:55+00:00"
         }
     ],
     "aliases": [],
