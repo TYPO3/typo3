@@ -33,7 +33,7 @@ abstract class AbstractXmlSitemapDataProvider implements XmlSitemapDataProviderI
     protected int $numberOfItemsPerPage = 1000;
     protected ServerRequestInterface $request;
 
-    public function __construct(ServerRequestInterface $request, string $key, array $config = [], ContentObjectRenderer $cObj = null)
+    public function __construct(ServerRequestInterface $request, string $key, array $config = [], ?ContentObjectRenderer $cObj = null)
     {
         $this->key = $key;
         $this->config = $config;
