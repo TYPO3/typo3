@@ -50,7 +50,7 @@ class NoteController
      * @param int|null $position null for no restriction, integer for defined position
      * @return string
      */
-    public function listAction($pids, int $position = null): string
+    public function listAction($pids, ?int $position = null): string
     {
         $backendUser = $this->getBackendUser();
         if (empty($pids)

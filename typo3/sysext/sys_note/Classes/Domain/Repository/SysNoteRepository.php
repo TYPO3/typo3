@@ -39,7 +39,7 @@ class SysNoteRepository
      * @param int|null $position null for no restriction, integer for defined position
      * @return array
      */
-    public function findByPidsAndAuthorId($pids, int $author, int $position = null): array
+    public function findByPidsAndAuthorId($pids, int $author, ?int $position = null): array
     {
         $pids = GeneralUtility::intExplode(',', (string)$pids);
 
