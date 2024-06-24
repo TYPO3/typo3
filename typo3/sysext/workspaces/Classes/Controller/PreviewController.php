@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Information\Typo3Information;
+use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
@@ -70,9 +71,14 @@ class PreviewController
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $backendUser->uc['moduleData']['Workspaces']['States'] ?? []);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
+
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ['dd-MM-yyyy', 'HH:mm dd-MM-yyyy'];
+        $formatter = new DateFormatter();
+        $dateFormat = [];
+        $dateFormat[0] = $formatter->convertPhpFormatToLuxon($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'Y-m-d');
+        $dateFormat[1] = $formatter->convertPhpFormatToLuxon($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i') . ' ' . $dateFormat[0];
         $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+
         // @todo Most likely the inline configuration can be removed. Seems to be unused in the JavaScript module
         $this->pageRenderer->addInlineSetting('TYPO3', 'configuration', [
             'username' => htmlspecialchars($backendUser->user['username']),

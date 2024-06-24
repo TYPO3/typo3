@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -213,7 +214,10 @@ class FormResultCompiler
         }
 
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ['dd-MM-yyyy', 'HH:mm dd-MM-yyyy'];
+        $formatter = new DateFormatter();
+        $dateFormat = [];
+        $dateFormat[0] = $formatter->convertPhpFormatToLuxon($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'Y-m-d');
+        $dateFormat[1] = $formatter->convertPhpFormatToLuxon($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i') . ' ' . $dateFormat[0];
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');

@@ -244,7 +244,7 @@ abstract class AbstractFormElement extends AbstractNode
                             $value = date($option, (int)$itemValue);
                         }
                     } else {
-                        $value = date('d-m-Y', (int)$itemValue);
+                        $value = BackendUtility::date((int)$itemValue);
                     }
                 } else {
                     $value = '';
