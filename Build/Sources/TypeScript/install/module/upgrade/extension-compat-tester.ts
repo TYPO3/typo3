@@ -106,7 +106,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private unlockModal(): void {
-    this.findInModal(Identifiers.outputContainer)?.querySelector('typo3-install-progress-bar')?.remove();
+    this.findInModal(Identifiers.outputContainer)?.querySelector('typo3-backend-progress-bar')?.remove();
     this.setModalButtonsState(true);
   }
 

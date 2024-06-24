@@ -430,7 +430,7 @@ class Installer {
     for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
     }
-    const progressBar = document.createElement('typo3-install-progress-bar');
+    const progressBar = document.createElement('typo3-backend-progress-bar');
     outputContainer.replaceChildren(progressBar);
     (new AjaxRequest(this.getUrl()))
       .post(postData)

@@ -46,7 +46,7 @@ type FolderStructureResponse = ModuleLoadedResponseWithButtons & {
  */
 class FolderStructure extends AbstractInteractableModule {
   private static removeLoadingMessage(container: HTMLElement): void {
-    container.querySelector('typo3-install-progress-bar').remove();
+    container.querySelector('typo3-backend-progress-bar').remove();
   }
 
   public initialize(currentModal: ModalElement): void {
