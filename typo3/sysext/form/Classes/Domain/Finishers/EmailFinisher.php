@@ -246,6 +246,8 @@ class EmailFinisher extends AbstractFinisher
                 }
             }
 
+            $address = trim((string)$address);
+
             if (!GeneralUtility::validEmail($address)) {
                 // Drop entries without valid address
                 continue;
