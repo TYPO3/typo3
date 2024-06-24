@@ -46,7 +46,7 @@ class NoteRenderer
      * @param int|null $position null for no restriction, integer for defined position
      * @param string $returnUrl Url to return to when editing and closing a notes record again
      */
-    public function renderList(ServerRequestInterface $request, int $pid, int $position = null, string $returnUrl = ''): string
+    public function renderList(ServerRequestInterface $request, int $pid, ?int $position = null, string $returnUrl = ''): string
     {
         $backendUser = $this->getBackendUser();
         if ($pid <= 0

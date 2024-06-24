@@ -39,7 +39,7 @@ class SysNoteRepository
      * @param int $author Author uid
      * @param int|null $position null for no restriction, integer for defined position
      */
-    public function findByPidAndAuthorId(int $pid, int $author, int $position = null): array
+    public function findByPidAndAuthorId(int $pid, int $author, ?int $position = null): array
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_note');
         $queryBuilder->getRestrictions()->removeAll();
