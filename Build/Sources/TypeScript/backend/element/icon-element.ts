@@ -84,9 +84,3 @@ declare global {
     'typo3-backend-icon': IconElement;
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'typo3-backend-icon': IconElement;
-  }
-}
