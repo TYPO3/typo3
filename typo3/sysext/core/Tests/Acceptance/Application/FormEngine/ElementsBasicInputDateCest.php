@@ -57,16 +57,16 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         return [
             [
                 'label' => 'inputdatetime_2',
-                'inputValue' => '29-01-2016',
-                'expectedValue' => '29-01-2016',
+                'inputValue' => '2016-01-29',
+                'expectedValue' => '2016-01-29',
                 'expectedInternalValue' => '2016-01-29T00:00:00Z',
                 'expectedValueAfterSave' => '2016-01-29T00:00:00+00:00',
                 'comment' => 'inputdatetime_2 dbType=date eval=date simple input',
             ],
             [
                 'label' => 'inputdatetime_2',
-                'inputValue' => '29-02-2016',
-                'expectedValue' => '29-02-2016',
+                'inputValue' => '2016-02-29',
+                'expectedValue' => '2016-02-29',
                 'expectedInternalValue' => '2016-02-29T00:00:00Z',
                 'expectedValueAfterSave' => '2016-02-29T00:00:00+00:00',
                 'comment' => 'inputdatetime_2 dbType=date eval=date Check valid leap year input',
@@ -85,16 +85,16 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         return [
             [
                 'label' => 'inputdatetime_3',
-                'inputValue' => '05:23 29-01-2016',
-                'expectedValue' => '05:23 29-01-2016',
+                'inputValue' => '05:23 2016-01-29',
+                'expectedValue' => '05:23 2016-01-29',
                 'expectedInternalValue' => '2016-01-29T05:23:00Z',
                 'expectedValueAfterSave' => '2016-01-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_3 eval=datetime simple input',
             ],
             [
                 'label' => 'inputdatetime_3',
-                'inputValue' => '05:23 29-02-2016',
-                'expectedValue' => '05:23 29-02-2016',
+                'inputValue' => '05:23 2016-02-29',
+                'expectedValue' => '05:23 2016-02-29',
                 'expectedInternalValue' => '2016-02-29T05:23:00Z',
                 'expectedValueAfterSave' => '2016-02-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_3 eval=datetime Check valid leap year input',
@@ -141,16 +141,16 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         return [
             [
                 'label' => 'inputdatetime_4',
-                'inputValue' => '05:23 29-01-2016',
-                'expectedValue' => '05:23 29-01-2016',
+                'inputValue' => '05:23 2016-01-29',
+                'expectedValue' => '05:23 2016-01-29',
                 'expectedInternalValue' => '2016-01-29T05:23:00Z',
                 'expectedValueAfterSave' => '2016-01-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_4 dbType=datetime eval=datetime no transformation',
             ],
             [
                 'label' => 'inputdatetime_4',
-                'inputValue' => '05:23 29-02-2016',
-                'expectedValue' => '05:23 29-02-2016',
+                'inputValue' => '05:23 2016-02-29',
+                'expectedValue' => '05:23 2016-02-29',
                 'expectedInternalValue' => '2016-02-29T05:23:00Z',
                 'expectedValueAfterSave' => '2016-02-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_4 dbType=datetime eval=datetime Check valid leap year input',

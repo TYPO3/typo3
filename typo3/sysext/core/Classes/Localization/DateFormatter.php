@@ -258,4 +258,72 @@ class DateFormatter
         }, $format);
         return str_replace('%%', '%', $out);
     }
+
+    /**
+     * @internal
+     */
+    public function convertPhpFormatToLuxon(string $phpFormat): string
+    {
+        $phpToLuxonMapping = [
+            // Day
+            'd' => 'dd',
+            'D' => 'EEE',
+            'j' => 'd',
+            'l' => 'EEEE',
+            'N' => 'E',
+            'S' => 'o', // Note: Luxon doesn't directly support ordinal suffixes
+            'w' => 'E', // Luxon uses 1-7 for day of the week (1 = Monday, 7 = Sunday)
+            'z' => 'o',
+
+            // Week
+            'W' => 'WW',
+
+            // Month
+            'F' => 'MMMM',
+            'm' => 'MM',
+            'M' => 'MMM',
+            'n' => 'M',
+            't' => '', // Luxon doesn't have a token for the number of days in the month
+
+            // Year
+            'L' => '', // Luxon doesn't have a token for leap year
+            'o' => 'GGGG',
+            'Y' => 'yyyy',
+            'y' => 'yy',
+
+            // Time
+            'a' => 'a',
+            'A' => 'a',
+            'B' => '', // Luxon doesn't support Swatch Internet time
+            'g' => 'h',
+            'G' => 'H',
+            'h' => 'hh',
+            'H' => 'HH',
+            'i' => 'mm',
+            's' => 'ss',
+            'u' => 'SSS', // Note: Luxon uses SSS for milliseconds
+
+            // Timezone
+            'e' => 'ZZZZ',
+            'I' => '', // Luxon doesn't have a token for DST
+            'O' => 'ZZ',
+            'P' => 'ZZ',
+            'p' => 'ZZ',
+            'T' => 'ZZZ',
+            'Z' => 'ZZ',
+
+            // Full Date/Time
+            'c' => 'yyyy-MM-dd\'T\'HH:mm:ssZZ',
+            'r' => 'EEE, dd MMM yyyy HH:mm:ss ZZ',
+            'U' => 'X',
+        ];
+
+        $luxonFormat = '';
+        $length = strlen($phpFormat);
+        for ($i = 0; $i < $length; $i++) {
+            $char = $phpFormat[$i];
+            $luxonFormat .= $phpToLuxonMapping[$char] ?? ("'" . $char . "'");
+        }
+        return $luxonFormat;
+    }
 }
