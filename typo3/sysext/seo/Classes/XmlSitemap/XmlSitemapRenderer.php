@@ -121,7 +121,7 @@ final class XmlSitemapRenderer
         );
     }
 
-    private function getXslFilePath(array $configConfiguration, string $sitemapType, string $sitemapName = null): string
+    private function getXslFilePath(array $configConfiguration, string $sitemapType, ?string $sitemapName = null): string
     {
         $path = $configConfiguration[$sitemapType]['sitemaps'][$sitemapName]['config']['xslFile']
             ?? $configConfiguration[$sitemapType]['sitemaps']['xslFile']

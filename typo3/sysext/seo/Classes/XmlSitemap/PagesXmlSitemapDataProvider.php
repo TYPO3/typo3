@@ -32,7 +32,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 {
-    public function __construct(ServerRequestInterface $request, string $key, array $config = [], ContentObjectRenderer $cObj = null)
+    public function __construct(ServerRequestInterface $request, string $key, array $config = [], ?ContentObjectRenderer $cObj = null)
     {
         parent::__construct($request, $key, $config, $cObj);
 
