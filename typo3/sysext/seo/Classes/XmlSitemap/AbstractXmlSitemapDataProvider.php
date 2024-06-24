@@ -69,7 +69,7 @@ abstract class AbstractXmlSitemapDataProvider implements XmlSitemapDataProviderI
      * @param array $config
      * @param ContentObjectRenderer $cObj
      */
-    public function __construct(ServerRequestInterface $request, string $key, array $config = [], ContentObjectRenderer $cObj = null)
+    public function __construct(ServerRequestInterface $request, string $key, array $config = [], ?ContentObjectRenderer $cObj = null)
     {
         $this->key = $key;
         $this->config = $config;

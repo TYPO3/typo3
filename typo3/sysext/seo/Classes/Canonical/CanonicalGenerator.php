@@ -47,7 +47,7 @@ class CanonicalGenerator
      */
     protected $eventDispatcher;
 
-    public function __construct(TypoScriptFrontendController $typoScriptFrontendController = null, EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(?TypoScriptFrontendController $typoScriptFrontendController = null, ?EventDispatcherInterface $eventDispatcher = null)
     {
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $this->typoScriptFrontendController = $typoScriptFrontendController ?? $this->getTypoScriptFrontendController();

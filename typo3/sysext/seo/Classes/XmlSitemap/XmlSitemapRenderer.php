@@ -173,7 +173,7 @@ class XmlSitemapRenderer
      * @param string|null $sitemap
      * @return string
      */
-    protected function getXslFilePath(string $sitemapType = null, string $sitemap = null): string
+    protected function getXslFilePath(?string $sitemapType = null, ?string $sitemap = null): string
     {
         $path = $this->configuration['config']['xslFile'] ?? 'EXT:seo/Resources/Public/CSS/Sitemap.xsl';
         $path = ($sitemapType !== null) ? ($this->configuration['config'][$sitemapType]['sitemaps']['xslFile'] ?? $path) : $path;
