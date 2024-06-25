@@ -92,6 +92,7 @@ class TextElement extends AbstractFormElement
             $width = $this->formMaxWidth(MathUtility::forceIntegerInRange($config['cols'], $this->minimumInputWidth, $this->maxInputWidth));
         }
         $fieldId = StringUtility::getUniqueId('formengine-textarea-');
+        $itemName = (string)$parameterArray['itemFormElName'];
         $renderedLabel = $this->renderLabel($fieldId);
 
         // Setting number of rows
@@ -121,7 +122,7 @@ class TextElement extends AbstractFormElement
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
-            $html[] =               '<textarea class="form-control" id="' . htmlspecialchars($fieldId) . '" rows="' . $rows . '" disabled>';
+            $html[] =               '<textarea class="form-control" id="' . htmlspecialchars($fieldId) . '" name="' . htmlspecialchars($itemName) . '" rows="' . $rows . '" disabled>';
             $html[] =                   htmlspecialchars((string)$itemValue);
             $html[] =               '</textarea>';
             $html[] =           '</div>';
@@ -133,7 +134,6 @@ class TextElement extends AbstractFormElement
         }
 
         $languageService = $this->getLanguageService();
-        $itemName = (string)$parameterArray['itemFormElName'];
 
         // @todo: The whole eval handling is a mess and needs refactoring - Especially for this element,
         //        since the resolved $evalList is currently not used at all, because FormEngineValidation

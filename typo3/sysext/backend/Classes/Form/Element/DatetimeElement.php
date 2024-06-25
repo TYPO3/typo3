@@ -94,6 +94,7 @@ class DatetimeElement extends AbstractFormElement
             $this->maxInputWidth
         ));
         $fieldId = StringUtility::getUniqueId('formengine-input-');
+        $itemName = (string)$parameterArray['itemFormElName'];
         $renderedLabel = $this->renderLabel($fieldId);
 
         $fieldInformationResult = $this->renderFieldInformation();
@@ -114,7 +115,7 @@ class DatetimeElement extends AbstractFormElement
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-            $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" value="' . htmlspecialchars($itemValue) . '" type="text" disabled>';
+            $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" name="' . htmlspecialchars($itemName) . '" value="' . htmlspecialchars($itemValue) . '" type="text" disabled>';
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
@@ -124,7 +125,6 @@ class DatetimeElement extends AbstractFormElement
         }
 
         $languageService = $this->getLanguageService();
-        $itemName = (string)$parameterArray['itemFormElName'];
 
         // Always add the format to the eval list.
         $evalList = [$format];
