@@ -110,7 +110,6 @@ class PasswordElement extends AbstractFormElement
                 'form-control',
                 'form-control-clearable',
                 't3js-clearable',
-                'hasDefaultValue',
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([

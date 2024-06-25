@@ -150,7 +150,6 @@ class LinkElement extends AbstractFormElement
                 'form-control-clearable',
                 't3js-clearable',
                 't3js-form-field-link-input',
-                'hasDefaultValue',
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([
