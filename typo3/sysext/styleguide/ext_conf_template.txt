@@ -137,6 +137,17 @@ compat_default_1 = value
 compat_default_2 =
 
 ##########################
+### Zero-indexed order ###
+##########################
+
+# cat=ZeroIndex//0; type=input; label=Input 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+zeroorder_input_1 = value
+# cat=ZeroIndex//2; type=input; label=Input 3 - no value
+zeroorder_input_3 =
+# cat=ZeroIndex//1; type=input; label=Input 2 - no value
+zeroorder_input_2 =
+
+##########################
 ### Nested declaration ###
 ##########################
 
