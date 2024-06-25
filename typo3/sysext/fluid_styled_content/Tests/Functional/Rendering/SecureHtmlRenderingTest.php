@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\InstructionInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -262,7 +262,7 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
-    private function invokeFrontendRendering(AbstractInstruction ...$instructions): ResponseInterface
+    private function invokeFrontendRendering(InstructionInterface ...$instructions): ResponseInterface
     {
         $sourcePageId = 1100;
 
