@@ -183,7 +183,9 @@ PolicyMutatedEvent
 The :php:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent` will
 be dispatched once all mutations have been applied to the current policy object, just
 before the corresponding HTTP header is added to the HTTP response object.
-This allows individual changes for custom implementations.
+This allows individual changes for custom implementations. Next to the :php:`Scope`, the
+:php:`Policy`'s and the :php:`MutationCollection`'s does the Event also provide
+the current PSR-7 :php:`ServerRequestInterface` for additional context.
 
 InvestigateMutationsEvent
 -------------------------

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
@@ -33,6 +34,7 @@ final class PolicyMutatedEvent implements StoppableEventInterface
 
     public function __construct(
         public readonly Scope $scope,
+        public readonly ServerRequestInterface $request,
         public readonly Policy $defaultPolicy,
         Policy $currentPolicy,
         MutationCollection ...$mutationCollections

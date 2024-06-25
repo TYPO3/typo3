@@ -81,7 +81,7 @@ class CspAjaxController
         }
         // reports
         if ($action === 'fetchReports') {
-            return $this->fetchReportsAction($scope);
+            return $this->fetchReportsAction($scope, $request);
         }
         if ($action === 'muteReport' && is_array($summaries)) {
             return $this->muteReportAction(...$summaries);
@@ -93,7 +93,7 @@ class CspAjaxController
             return $this->deleteReportsAction($scope);
         }
         if ($action === 'handleReport' && $uuid !== null) {
-            return $this->handleReportAction($uuid);
+            return $this->handleReportAction($uuid, $request);
         }
         if ($action === 'mutateReport'
             && $scope !== null
@@ -106,15 +106,15 @@ class CspAjaxController
         return null;
     }
 
-    protected function fetchReportsAction(?Scope $scope): ResponseInterface
+    protected function fetchReportsAction(?Scope $scope, ServerRequestInterface $request): ResponseInterface
     {
         $demand = ReportDemand::create();
         $demand->scope = $scope;
         $reports = $this->reportRepository->findAllSummarized($demand);
         // @todo not sure whether this is a good idea performance-wise
         $reports = array_map(
-            function (SummarizedReport $report): SummarizedReport {
-                $event = $this->dispatchInvestigateMutationsEvent($report);
+            function (SummarizedReport $report) use ($request): SummarizedReport {
+                $event = $this->dispatchInvestigateMutationsEvent($report, $request);
                 if ($event->getMutationSuggestions() !== []) {
                     $mutationHashes = array_map(
                         static fn(MutationSuggestion $suggestion): string => $suggestion->hash(),
@@ -152,13 +152,13 @@ class CspAjaxController
         return new JsonResponse(['amount' => $amount]);
     }
 
-    protected function handleReportAction(UuidV4 $uuid): ResponseInterface
+    protected function handleReportAction(UuidV4 $uuid, ServerRequestInterface $request): ResponseInterface
     {
         $report = $this->reportRepository->findByUuid($uuid);
         if ($report === null) {
             return new JsonResponse();
         }
-        $event = $this->dispatchInvestigateMutationsEvent($report);
+        $event = $this->dispatchInvestigateMutationsEvent($report, $request);
         $suggestions = $event->getMutationSuggestions();
         // reverse sort by priority (higher priorities take precedence)
         usort($suggestions, static fn(MutationSuggestion $a, MutationSuggestion $b) => $b->priority <=> $a->priority);
@@ -180,9 +180,9 @@ class CspAjaxController
         return new JsonResponse(['initiators' => $initiators, 'uuids' => $reportUuids]);
     }
 
-    protected function dispatchInvestigateMutationsEvent(Report $report): InvestigateMutationsEvent
+    protected function dispatchInvestigateMutationsEvent(Report $report, ServerRequestInterface $request): InvestigateMutationsEvent
     {
-        $policy = $this->policyProvider->provideFor($report->scope);
+        $policy = $this->policyProvider->provideFor($report->scope, $request);
         $event = new InvestigateMutationsEvent($policy, $report);
         $this->eventDispatcher->dispatch($event);
         return $event;
