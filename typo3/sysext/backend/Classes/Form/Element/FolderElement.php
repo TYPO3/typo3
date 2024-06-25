@@ -227,9 +227,9 @@ class FolderElement extends AbstractFormElement
                 $html[] =               $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
                 $html[] =           '</a>';
             }
+            $html[] =           '</div>';
+            $html[] =       '</div>';
         }
-        $html[] =           '</div>';
-        $html[] =       '</div>';
         if ($fieldControlHtml !== '') {
             $html[] =       '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $html[] =           '<div class="btn-group-vertical">';
