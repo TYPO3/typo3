@@ -1,0 +1,12 @@
+firstset:
+  myinitialversion: 13
+  mysecondversion: 12
+options:
+  - option1
+  - option2
+mysteriousKey: 'mysterious13'
+betterthanbefore: '%firstset.myinitialversion%'
+muchbetterthanbefore: 'some::%options.0%::option'
+'%mysteriousKey%': '%firstset.mysecondversion%'
+'%env("env")%': '%firstset.myinitialversion%'
+'%env("bar")%': bar value

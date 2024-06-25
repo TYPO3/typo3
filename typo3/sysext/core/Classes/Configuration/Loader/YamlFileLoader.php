@@ -188,6 +188,24 @@ class YamlFileLoader implements LoggerAwareInterface
     protected function processPlaceholders(array $content, array $referenceArray): array
     {
         foreach ($content as $k => $v) {
+            if ($this->containsPlaceholder($k)) {
+                $resolvedKey = $this->processPlaceholderLine($k, $referenceArray);
+                if (isset($content[$resolvedKey])) {
+                    if ($k === $resolvedKey) {
+                        throw new \UnexpectedValueException(
+                            'Unresolvable placeholder key "' . $k . '" could not be substituted.',
+                            1719672440
+                        );
+                    }
+                    throw new \UnexpectedValueException(
+                        'Placeholder key "' . $k . '" can not be substituted with "' . $resolvedKey . '" because key already exists',
+                        1719316250
+                    );
+                }
+                unset($content[$k]);
+                $k = $resolvedKey;
+                $content[$k] = $v;
+            }
             if (is_array($v)) {
                 $content[$k] = $this->processPlaceholders($v, $referenceArray);
             } elseif ($this->containsPlaceholder($v)) {
