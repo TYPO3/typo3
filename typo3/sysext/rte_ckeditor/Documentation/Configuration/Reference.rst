@@ -116,6 +116,271 @@ editor.config
    or :ref:`How do I create a custom plugin? <config-example-customplugin>`
    for examples.
 
+..  _config-linkbrowser:
+Link Browser specific options
+-----------------------------
+
+There are more configuration options that can be defined in the YAML file of an RTE preset
+related to the Link Browser, when managing hyperlinks inside the CKEditor.
+
+Note that the Link Browser can also be displayed based on FormEngine TCA definitions. These
+use similar configuration, but from their TCA PHP configuration, and unrelated to the YAML
+definition.
+
+The additional example file :t3src:`rte_ckeditor/Configuration/RTE/Editor/LinkBrowser.yaml`
+lists all of the following options as an example.
+
+These options are a bit fragmented, it is important to watch for the proper indentation as well
+the proper option relation.
+
+..  important::
+    Please note that these options are set at the topmost level, and **not** nested inside
+    the `editor` YAML structure.
+
+A short overview:
+
+*   `allowedOptions` - allowed list of additional attribute boxes
+*   `allowedTypes` - list of allowed Link Types inside the RTE
+*   `classesAnchor` - list of default CSS and link target values per Link Type
+*   `buttons` - Additional sub-configuration array for specific dropdowns
+*   `buttons.link.options` - Global options for the Link Browser
+*   `buttons.link.relAttribute` - Configuration for the `rel` attribute block
+*   `buttons.link.queryParametersSelector` - Configuration for the `queryParameter` (URI arguments) attribute block
+*   `buttons.link.targetSelector` - Configuration for the `target` attribute block
+*   `buttons.link.properties.class.allowedClasses` - Allowed additional CSS classes in the `CSS` attribute block
+*   `buttons.link.[LinkType].properties.class.default` - Default CSS class per Link Type
+*   `classes` - Label definitions for CSS class names
+
+allowedOptions
+~~~~~~~~~~~~~~
+
+This string contains a comma separated list of additional attributes used in the Link Browser.
+Available field lists can be found in :t3src:`backend/Classes/Controller/AbstractLinkBrowserController.php`,
+method :php:`getLinkAttributeFieldDefinitions()`.
+
+Note that the attributes `target`, `class` and `rel` are displayed differently depending on
+whether the Link Browser was opened for a TCA element, or a RTE element. See
+:t3src:`rte_ckeditor/Classes/Controller/BrowseLinksController.php` in method
+`getLinkAttributeFieldDefinitions()`.
+
+Valid attributes keys are:
+
+..  option:: target
+
+   If set, an input box for link target (for example "_blank") is available.
+
+..  option:: title
+
+   If set, entering the link title is available.
+
+..  option:: class
+
+   If set, allowing to enter a CSS class name for the link is available.
+   This needs to match the CSS classes made available to the CKEDitor instance.
+
+..  option:: params
+
+   If set, additional parameters are allowed to be set for a link.
+
+..  option:: rel
+
+   If set, relations (:html:`rel` attribute) for links can be set.
+
+To set all of them, you can use:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    allowedOptions: 'target,title,class,params,rel'
+
+To remove all options you can use an empty string:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    allowedOptions: ''
+
+allowedTypes
+~~~~~~~~~~~~
+
+This string contains a comma-separated list of all allowed Link Types
+for the Link Browser. These are currently:
+
+*   `page`
+*   `url`
+*   `file`
+*   `folder`
+*   `email`
+*   `...` any custom Link Type
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    allowedTypes: 'page,url,file,folder,email,customType'
+
+To remove all types you can use an empty string:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    allowedTypes: ''
+
+classesAnchor
+~~~~~~~~~~~~~
+
+This is a sub-array of default CSS classes and target attributes, per Link Type:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+   classesAnchor:
+    - { class: "customPageCssClass", type: "page", target: "" }
+    - { class: "customUrlCssClass", type: "url", target: "_blank" }
+    - { class: "customFileCssClass", type: "file", target: "_parent" }
+    - { class: "customFolderCssClass", type: "folder" }
+    - { class: "customTelephoneCssClass", type: "telephone" }
+    - { class: "customEmailCssClass", type: "email" }
+
+Note that the available CSS class here must also be part of the
+`buttons.link.properties.class.allowedClasses` definition.
+
+buttons.link
+~~~~~~~~~~~~
+
+This structure defines both global options as well as Link Type-specific
+options:
+
+buttons.link.options.removeItems
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Can be set to exclude certain Link Types:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    buttons:
+        link:
+            options:
+                removeItems: 'telephone'
+
+buttons.link.relAttribute.enabled
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the `allowedOptions` string list contains `rel` for setting relation
+attributes, this option must also be enabled:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    buttons:
+        link:
+            relAttribute:
+                enabled: true
+
+buttons.link.queryParametersSelector.enabled
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the `allowedOptions` string list contains `params` for setting URI argument
+attributes, this option must also be enabled:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    buttons:
+        link:
+            queryParametersSelector:
+                enabled: true
+
+
+buttons.link.targetSelector.disabled
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the `allowedOptions` string list contains `target`, a dropdown is displayed by
+default. If you want to hide it, you must set this option to `true`:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    buttons:
+        link:
+            targetSelector:
+                disabled: true
+
+buttons.link.properties.class.required
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A CSS class selection can be forced, so that it may not be empty:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    buttons:
+        link:
+            properties:
+                class:
+                    required: true
+
+buttons.link.properties.class.allowedClasses
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is the most vital CSS class selection list, based on a comma-separated
+string naming all CSS classes that are allowed. Default CSS classes per Link Type
+can only be selected, if they are part of this list.
+
+The names of the CSS classes can be adjusted via the `classes` top-level configuration
+hierarchy (see below)
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    buttons:
+        link:
+            properties:
+                class:
+                    allowedClasses: 'globalCss1,globalCss1,CustomPageCssClass'
+
+buttons.link.[linkType].properties.class.default
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For each Link Type, a default CSS class can be defined, using the name of the
+Link Type as a key:
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    buttons:
+        link:
+            telephone:
+                class:
+                    default: "customTelephoneCssClass"
+            email:
+                class:
+                    default: "customEmailCssClass"
+
+Note that the CSS class listed here must also be contained in
+`buttons.link.properties.class.allowedClasses`.
+
+classes.[CssClassName]
+~~~~~~~~~~~~~~~~~~~~~~
+
+The list of CSS classes defined in `buttons.link.properties.class.allowedClasses`
+can set a custom label as well as a styling the select option. Note that styling
+select options does not work in every browser, and is not suggested to use.
+
+The name of the structure key must match the CSS class name, with a sub-structure
+defining `name` (the actual label) and `value` (the possible CSS styling of the option
+inside the dropdown):
+
+..  code-block:: yaml
+    :caption: MyCKPreset.yml
+
+    classes:
+        globalCss1:
+            name: "A Label for globalCss1"
+            value: "color: red"
+        customEmailCssClass:
+            name: "An email-specific class for VIPs"
+
 .. _config-ref-tsconfig:
 
 Page TSconfig

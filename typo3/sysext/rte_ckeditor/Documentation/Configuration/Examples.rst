@@ -131,6 +131,17 @@ More information can be found in the
 
 .. _config-example-customplugin:
 
+How do I configure the Link Browser?
+====================================
+
+The TYPO3 Link Browser can be utilized in both the RTE and for FormEngine TCA fields. The latter
+is configured through `TCA` settings, and the RTE editor itself is configured via the central
+YAML file.
+
+There are several configuration options available. Please see :ref:`config-linkbrowser` for
+the detailed reference, and :t3src:`rte_ckeditor/Configuration/RTE/Editor/LinkBrowser.yaml`
+for an example configuration.
+
 How do I create a custom plugin?
 ================================
 
