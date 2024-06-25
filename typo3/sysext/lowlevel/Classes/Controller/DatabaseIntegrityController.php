@@ -1604,7 +1604,7 @@ class DatabaseIntegrityController
         return $first;
     }
 
-    protected function getFormElements(int $subLevel = 0, string|array $queryConfig = null, string $parent = ''): array
+    protected function getFormElements(int $subLevel = 0, string|array|null $queryConfig = null, string $parent = ''): array
     {
         $codeArr = [];
         if (!is_array($queryConfig)) {
