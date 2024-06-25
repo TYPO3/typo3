@@ -3,6 +3,9 @@ imports:
     - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Processing.yaml' }
     - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml' }
     - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml' }
+    #- { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/LinkBrowser.yaml' }
+# Additional optional TYPO3 specific configuration is available via ./Editor/LinkBrowser.yaml
+# See https://docs.typo3.org/c/typo3/cms-rte-ckeditor/main/en-us/Configuration/Reference.html
 
 # Add configuration for the editor
 # For complete documentation see https://ckeditor.com/docs/ckeditor5/latest/features/index.html

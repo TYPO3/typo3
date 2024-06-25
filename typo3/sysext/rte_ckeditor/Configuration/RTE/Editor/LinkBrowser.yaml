@@ -1,0 +1,98 @@
+# Additional TYPO3 specific configuration comes here.
+# See https://docs.typo3.org/c/typo3/cms-rte-ckeditor/main/en-us/Configuration/Reference.html
+# This is unrelated to CKEditor itself, but applies to Link Browser usage:
+
+# Which fields can be shown with additional attributes for a link? (comma separated list)
+# - target: Link target (allows to use "_blank", "_self", "_top" or a framename)
+# - title:  Link title attribute (not the link text itself)
+# - class:  Custom CSS class selection
+# - params: Additional URL query arguments (see "queryParametersSelector" below when used)
+# - rel:    Link relation attribute ("rel", see "relAttribute" below when used)
+allowedOptions: 'target,title,class,params,rel'
+
+# Comma-separated list of allowed Link Types
+# Valid LinkTypes:
+# - page:   Internal TYPO3 page
+# - url:    External URL
+# - file:   TYPO3 file relation
+# - folder: TYPO3 folder relation
+# - email:  Mail address
+# - ...:    Custom Link Types, when implemented, with their name.
+allowedTypes: 'page,url,file,folder,telephone,email'
+
+# Which class definitions and targets are allowed per LinkType (array)
+# Each array element has attributes:
+# - "class":  Default CSS class to apply to this LinkType
+# - "type":   LinkType as listed above
+# - "target": Default link target to apply to this LinkType
+classesAnchor:
+  - { class: "customPageCssClass", type: "page", target: "" }
+  - { class: "customUrlCssClass", type: "url", target: "_blank" }
+  - { class: "customFileCssClass", type: "file", target: "_parent" }
+  - { class: "customFolderCssClass", type: "folder" }
+  - { class: "customTelephoneCssClass", type: "telephone" }
+  - { class: "customEmailCssClass", type: "email" }
+
+buttons:
+  link:
+    # Global Link Browser options
+    options:
+      # Optional comma-separated list of Link Types to be specifically removed
+      removeItems: 'telephone'
+    # Specifically enable the "rel" attribute entry, needed when set in "allowedOptions"
+    relAttribute:
+        enabled: true
+    # Specifically enable the "params" (URL query arguments) attribute entry, needed when set in "allowedOptions"
+    queryParametersSelector:
+        enabled: true
+    # Optionally disable showing the "target" field (even though when set in "allowedOptions")
+    targetSelector:
+      disabled: false
+
+    # Define general CSS options for the Link Browser
+    # This is needed to perform any of the link classing below!
+    properties:
+      class:
+        # If set to "true", a CSS class must be selected
+        required: false
+        # Available CSS classes
+        allowedClasses: 'globalCss1,globalCss2,customPageCssClass,customUrlCssClass,customFileCssClass,customFolderCssClass,customTelephoneCssClass,customEmailCssClass'
+
+    # Define default CSS classes per LinkType. The CSS class name listed here
+    # must also be part of the "allowedClasses" attribute above.
+    # The attribute "required" is also available for each block.
+    page:
+      properties:
+        class:
+          default: "customPageCssClass"
+    url:
+      properties:
+        class:
+          default: "customUrlCssClass"
+    file:
+      properties:
+        class:
+          default: "customFileCssClass"
+    folder:
+      properties:
+        class:
+          default: "customFolderCssClass"
+    telephone:
+      properties:
+        class:
+          default: "customTelephoneCssClass"
+    email:
+      properties:
+        class:
+          default: "customEmailCssClass"
+
+# Optionally define labels for all classes listed in buttons.link.properties.class.allowedClasses
+# Also the style of a CSS class choice can be applied via "value" (deprecated, does not work in all browsers).
+# Any label missing in this setup just uses the CSS classname as a label, without special formatting.
+classes:
+  globalCss1:
+    name: Label for globalCss1
+  customPageCssClass:
+    name: Label for customPageCssClass
+    value: "color: red; background-color: blue"
+
