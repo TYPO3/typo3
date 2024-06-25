@@ -58,7 +58,7 @@ abstract class AbstractPreset implements PresetInterface
     /**
      * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
      */
-    public function __construct(ConfigurationManager $configurationManager = null)
+    public function __construct(?ConfigurationManager $configurationManager = null)
     {
         $this->configurationManager = $configurationManager ?: GeneralUtility::makeInstance(ConfigurationManager::class);
     }
