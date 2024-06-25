@@ -471,7 +471,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * @param int $executionID Id of the execution to remove.
      * @param \Throwable $e An exception to signal a failed execution
      */
-    public function unmarkExecution($executionID, \Throwable $e = null)
+    public function unmarkExecution($executionID, ?\Throwable $e = null)
     {
         // Get the executions for the task
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
