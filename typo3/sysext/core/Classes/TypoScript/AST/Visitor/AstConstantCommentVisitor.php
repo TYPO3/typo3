@@ -402,7 +402,8 @@ final class AstConstantCommentVisitor implements AstVisitorInterface
                     $sortIdentifier = empty($subCategoryOrder) ? $this->subCategoryCounter : $subCategoryOrder;
                     $parsedCommentArray['subcat_sorting_first'] = $this->subCategories[$subCategory]['sorting'];
                     $parsedCommentArray['subcat_sorting_second'] = $sortIdentifier . 'z';
-                } elseif ($subCategoryOrder) {
+                } elseif ($subCategoryOrder !== '') {
+                    // "0" is a valid key for an assignment like "# cat=foo//0; type=boolean; label=some config"
                     $parsedCommentArray['subcat_name'] = 'other';
                     $parsedCommentArray['subcat_label'] = 'Other';
                     $parsedCommentArray['subcat_sorting_first'] = 'o';
