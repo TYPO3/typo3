@@ -26,7 +26,7 @@ To create your own Admin Panel module
 =====================================
 
 #. Create a new PHP class extending
-   `\TYPO3\CMS\Adminpanel\Modules\AbstractModule`.
+   `\TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule`.
 
 #. Implement at least the following methods:
 
