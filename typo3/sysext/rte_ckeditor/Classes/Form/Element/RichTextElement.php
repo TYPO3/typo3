@@ -91,7 +91,7 @@ class RichTextElement extends AbstractFormElement
      * @param array $data
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(NodeFactory $nodeFactory, array $data, EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(NodeFactory $nodeFactory, array $data, ?EventDispatcherInterface $eventDispatcher = null)
     {
         parent::__construct($nodeFactory, $data);
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
