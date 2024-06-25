@@ -484,7 +484,7 @@ class LinkValidatorController
         $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
     }
 
-    protected function getModuleUri(string $action = null, array $additionalPramaters = []): string
+    protected function getModuleUri(?string $action = null, array $additionalPramaters = []): string
     {
         $parameters = [
             'id' => $this->id,
