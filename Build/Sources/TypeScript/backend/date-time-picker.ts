@@ -16,38 +16,19 @@ import ShortcutButtonsPlugin from 'flatpickr/plugins/shortcut-buttons.min';
 import { DateTime } from 'luxon';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 
+
+const ISO8601_UTC = 'ISO8601_UTC';
+
 interface FlatpickrInputElement extends HTMLInputElement {
   _flatpickr: flatpickr.Instance;
 }
 
 /**
  * Module: @typo3/backend/date-time-picker
- * contains all logic for the date time picker used in FormEngine
- * and EXT:belog and EXT:scheduler
+ * contains all logic for the date time picker used in FormEngine, EXT:belog and EXT:scheduler
  */
 class DateTimePicker {
   private readonly format: string = (typeof opener?.top?.TYPO3 !== 'undefined' ? opener.top : top).TYPO3.settings.DateTimePicker.DateFormat;
-
-  /**
-   * Format a given date for the hidden FormEngine field
-   *
-   * Format the value for the hidden field that is passed on to the backend, i.e. most likely DataHandler.
-   * The format for that is the timestamp for time fields, and a full-blown ISO-8601 timestamp for all date-related fields.
-   *
-   * @param {DateTime} date
-   * @param {string} type
-   * @returns {string}
-   */
-  private static formatDateForHiddenField(date: DateTime, type: string): string {
-    if (type === 'time' || type === 'timesec') {
-      date = date.set({
-        year: 1970,
-        month: 1,
-        day: 1
-      });
-    }
-    return date.toISO({ suppressMilliseconds: true });
-  }
 
   /**
    * initialize date fields to add a datepicker to each field
@@ -92,43 +73,26 @@ class DateTimePicker {
 
     // initialize the date time picker on this element
     const dateTimePicker = flatpickr(inputElement, options);
+    if (dateTimePicker.altInput instanceof HTMLInputElement) {
+      // Explicitly handle clearing input (invoked by clearable control) if altInput is available
+      dateTimePicker.input.addEventListener('typo3:internal:clear', (): void => {
+        // @todo The `typo3:internal:clear` event is a hack and must fall again
+        dateTimePicker.clear();
+      });
+    }
 
-    inputElement.addEventListener('input', (): void => {
-      // Update selected date in picker
-      const value = dateTimePicker._input.value;
-      const parsedDate = dateTimePicker.parseDate(value);
-      const formattedDate = dateTimePicker.formatDate(parsedDate, dateTimePicker.config.dateFormat);
+    dateTimePicker._input.addEventListener('change', (e: Event): void => {
+      // Update selected date in picker after manually entering a value
+      const value = (e.target as HTMLInputElement).value;
+      const parsedDate: Date = dateTimePicker.parseDate(value, dateTimePicker.config.altFormat);
 
-      if (value === formattedDate) {
-        dateTimePicker.setDate(value);
-      }
+      dateTimePicker.setDate(parsedDate, true);
     });
 
-    inputElement.addEventListener('keyup', (e: KeyboardEvent): void => {
+    dateTimePicker._input.addEventListener('keyup', (e: KeyboardEvent): void => {
       if (e.key === 'Escape') {
         dateTimePicker.close();
       }
-    });
-
-    inputElement.addEventListener('change', (e: Event): void => {
-      e.stopImmediatePropagation();
-
-      const target = (e.target as FlatpickrInputElement);
-      const hiddenField = inputElement.parentElement.parentElement.querySelector('input[type="hidden"]') as HTMLInputElement;
-
-      if (target.value !== '') {
-        const type = target.dataset.dateType;
-        const date = DateTime.fromFormat(target.value, target._flatpickr.config.dateFormat, { zone: 'utc' });
-        if (date.isValid) {
-          hiddenField.value = DateTimePicker.formatDateForHiddenField(date, type);
-        } else {
-          target.value = DateTimePicker.formatDateForHiddenField(DateTime.fromISO(hiddenField.value, { zone: 'utc' }), type);
-        }
-      } else {
-        hiddenField.value = '';
-      }
-
-      target.dispatchEvent(new Event('formengine.dp.change'));
     });
   }
 
@@ -169,30 +133,75 @@ class DateTimePicker {
 
   /**
    * Initialize a single field
+   *
+   * @param {HTMLInputElement} inputElement
    */
   private getDateOptions(inputElement: HTMLInputElement): flatpickr.Options.Options {
+
     const format = this.format;
     const type = inputElement.dataset.dateType;
     const now = new Date();
     const options: flatpickr.Options.Options = {
+      altFormat: '',
       allowInput: true,
+      altInput: true,
       ariaDateFormat: 'DDDD',
-      dateFormat: '',
-      defaultDate: inputElement.value,
+      // We configure a dummy dateFormat token and use luxon parsing/formatting
+      // internally, as flatpickr cannot be configured to ignore timezones
+      // (in order to behave similar to <input type=datetime-local>)
+      dateFormat: ISO8601_UTC,
       defaultHour: now.getHours(),
       defaultMinute: now.getMinutes(),
       enableSeconds: false,
       enableTime: false,
       formatDate: (date: Date, format: string) => {
-        return DateTime.fromJSDate(date).toFormat(format);
+        const dt = DateTime.fromJSDate(date);
+        if (format === ISO8601_UTC) {
+          // JS dates are always encoded in localtime (flatpickr can only operate in localtime) and are now "intepreted" as UTC:
+          // We discard the intermediate local-time offset; that means the hours and minutes from localtime are rendered as-is
+          return dt.toUTC().plus(dt.offset * 60 * 1000).toISO({ suppressMilliseconds: true });
+        }
+        return dt.toFormat(format);
       },
-      parseDate: (datestr: string, format: string): Date => {
-        return DateTime.fromFormat(datestr, format).toJSDate();
+      parseDate: (currentDateString: string, format: string): Date => {
+        if (format === ISO8601_UTC) {
+          const isoDt = DateTime.fromISO(currentDateString, { zone: 'utc' });
+          if (!isoDt.isValid) {
+            throw new Error('Invalid ISO8601 date: ' + currentDateString);
+          }
+          const localDate = isoDt.toLocal();
+          // This is the reverse operation of the formatting in `formatDate`:
+          // We substract the localtime offset to generate a local-time JS Date instance,
+          // that will contain the same local-time hour/time values as the UTC input.
+          return localDate.minus(localDate.offset * 60 * 1000).toJSDate();
+        }
+        return DateTime.fromFormat(currentDateString, format).toJSDate();
+      },
+      onReady: (dates: Date[], currentDateString: string, self: flatpickr.Instance): void => {
+        if (self.altInput !== undefined) {
+          // Transfer the id of the original input to the altInput
+          // This is a hack for the picker button - one would use `{wrap: true}` in flatpickr, but this apparently
+          // collides with using altInput – sigh.
+          self.altInput.id = self.input.id;
+          self.input.removeAttribute('id');
+          if (self.input.dataset.formengineInputName !== undefined) {
+            self.altInput.dataset.formengineDatepickerRealInputName = self.input.dataset.formengineInputName;
+          }
+        }
+      },
+      onChange: (dates: Date[], currentDateString: string, self: flatpickr.Instance): void => {
+        self.input.dispatchEvent(new Event('formengine.dp.change'));
       },
       maxDate: '',
       minDate: '',
       minuteIncrement: 1,
       noCalendar: false,
+      showMonths: 1,
+      // Disable month dropdown in `time`, `timesec` or `year` fields to fix:
+      //   `TypeError: Cannot set properties of undefined (setting 'tabIndex')` in flatpickr
+      // Rproducible when entering an arbitrary time (e.g. "13:30")
+      // and pressing the TAB key in a time field.
+      monthSelectorType: type.startsWith('date') ? 'dropdown' : 'static',
       weekNumbers: true,
       time_24hr: !Intl.DateTimeFormat(navigator.language, { hour: 'numeric' }).resolvedOptions().hour12,
       plugins: [
@@ -213,25 +222,25 @@ class DateTimePicker {
     // set options based on type
     switch (type) {
       case 'datetime':
-        options.dateFormat = format[1];
+        options.altFormat = format[1];
         options.enableTime = true;
         break;
       case 'date':
-        options.dateFormat = format[0];
+        options.altFormat = format[0];
         break;
       case 'time':
-        options.dateFormat = 'HH:mm';
+        options.altFormat = 'HH:mm';
         options.enableTime = true;
         options.noCalendar = true;
         break;
       case 'timesec':
-        options.dateFormat = 'HH:mm:ss';
+        options.altFormat = 'HH:mm:ss';
         options.enableSeconds = true;
         options.enableTime = true;
         options.noCalendar = true;
         break;
       case 'year':
-        options.dateFormat = 'yyyy';
+        options.altFormat = 'yyyy';
         break;
       default:
     }

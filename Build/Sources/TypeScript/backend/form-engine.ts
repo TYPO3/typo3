@@ -562,7 +562,7 @@ export default (function() {
    */
   FormEngine.initializeRemainingCharacterViews = function() {
     // all fields with a "maxlength" attribute
-    const elementsWithMaxLengths: NodeListOf<HTMLInputElement|HTMLTextAreaElement> = document.querySelectorAll('[maxlength]:not(.t3js-datetimepicker):not(.t3js-color-picker)');
+    const elementsWithMaxLengths: NodeListOf<HTMLInputElement|HTMLTextAreaElement> = document.querySelectorAll('[maxlength]:not([data-input-type="datetimepicker"]):not(.t3js-color-picker)');
     elementsWithMaxLengths.forEach((element): void => {
       const fieldItem = element.closest('.t3js-formengine-field-item');
       if (fieldItem !== null && fieldItem.querySelector('typo3-backend-formengine-char-counter') === null) {
@@ -607,7 +607,7 @@ export default (function() {
       }
     };
 
-    const minlengthElements = document.querySelectorAll('[minlength]:not(.t3js-datetimepicker):not(.t3js-charcounter-min-initialized)');
+    const minlengthElements = document.querySelectorAll('[minlength]:not([data-input-type="datetimepicker"]):not(.t3js-charcounter-min-initialized)');
     minlengthElements.forEach((field: HTMLInputElement|HTMLTextAreaElement) => {
       field.addEventListener('focus', (event) => {
         const minCharacterCountLeft = FormEngine.getMinCharacterLeftCount(field);

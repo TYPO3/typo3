@@ -4,6 +4,8 @@
     data-namespace-typo3-fluid="true"
 >
 
+<f:variable name="dateFormat">Y-m-d\TH:i:sp</f:variable>
+
 <div class="row">
     <div class="form-group col-sm-6" id="task_start_col">
         <label class="form-label" for="tceforms-datetimefield-task_start_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.start"/></label>
@@ -12,15 +14,14 @@
                 <div class="form-wizards-element">
                     <div class="input-group" id="tceforms-datetimefield-task_start_row-wrapper">
                         <input
-                            name="tx_scheduler[start]_hr"
-                            value="{f:format.date(format:'H:i d-m-Y', date:currentData.start)}"
+                            name="tx_scheduler[start]"
+                            value="{f:format.date(format: dateFormat, date: currentData.start)}"
                             class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
                             data-date-type="datetime"
                             data-date-offset="0"
                             type="text"
                             id="tceforms-datetimefield-task_start_row"
                         >
-                        <input name="tx_scheduler[start]" value="{currentData.start}" type="hidden">
                         <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#tceforms-datetimefield-task_start_row">
                             <core:icon identifier="actions-edit-pick-date" />
                         </button>
@@ -35,9 +36,9 @@
             <div class="form-wizards-wrap">
                 <div class="form-wizards-element">
                     <div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">
-                        <f:variable name="formattedEnd"><f:if condition="{currentData.end}"><f:then>{f:format.date(format:'H:i d-m-Y', date:currentData.end)}</f:then><f:else></f:else></f:if></f:variable>
+                        <f:variable name="formattedEnd"><f:if condition="{currentData.end}"><f:then>{f:format.date(format: dateFormat, date: currentData.end)}</f:then><f:else></f:else></f:if></f:variable>
                         <input
-                            name="tx_scheduler[end]_hr"
+                            name="tx_scheduler[end]"
                             value="{formattedEnd}"
                             class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
                             data-date-type="datetime"
@@ -45,9 +46,6 @@
                             type="text"
                             id="tceforms-datetimefield-task_end_row"
                         >
-                        <f:if condition="{currentData.end}">
-                            <input name="tx_scheduler[end]" value="{currentData.end}" type="hidden">
-                        </f:if>
                         <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#tceforms-datetimefield-task_end_row">
                             <core:icon identifier="actions-edit-pick-date" />
                         </button>

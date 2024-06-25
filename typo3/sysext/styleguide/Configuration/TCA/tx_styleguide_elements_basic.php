@@ -297,7 +297,7 @@ return [
         ],
         'inputdatetime_4' => [
             'label' => 'inputdatetime_4',
-            'description' => 'format=datetime eval=datetime',
+            'description' => 'dbType=datetime format=datetime',
             'config' => [
                 'type' => 'datetime',
                 'dbType' => 'datetime',
@@ -367,20 +367,20 @@ return [
         ],
         'inputdatetime_12' => [
             'label' => 'inputdatetime_12',
-            'description' => 'format=time dbType=time',
+            'description' => 'dbType=time format=time',
             'config' => [
                 'type' => 'datetime',
-                'format' => 'time',
                 'dbType' => 'time',
+                'format' => 'time',
             ],
         ],
         'inputdatetime_13' => [
             'label' => 'inputdatetime_13',
-            'description' => 'format=timesec dbType=time',
+            'description' => 'dbType=time format=timesec',
             'config' => [
                 'type' => 'datetime',
-                'format' => 'timesec',
                 'dbType' => 'time',
+                'format' => 'timesec',
             ],
         ],
 
@@ -413,7 +413,7 @@ return [
         ],
         'inputdatetime_24' => [
             'label' => 'inputdatetime_24',
-            'description' => 'format=datetime eval=datetime nullable=true',
+            'description' => 'format=datetime dbType=datetime nullable=true',
             'config' => [
                 'type' => 'datetime',
                 'dbType' => 'datetime',

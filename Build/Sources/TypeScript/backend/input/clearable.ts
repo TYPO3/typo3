@@ -97,6 +97,8 @@ class Clearable {
         }
 
         this.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+        // This is a temporary solution thanks to the date picker. Do not rely on it.
+        this.dispatchEvent(new CustomEvent('typo3:internal:clear'));
         toggleClearButtonVisibility();
       });
       wrap.appendChild(clearButton);

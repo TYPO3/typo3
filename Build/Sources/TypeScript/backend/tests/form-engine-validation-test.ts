@@ -1,6 +1,5 @@
 import FormEngineValidation from '@typo3/backend/form-engine-validation.js';
 import { expect } from '@open-wc/testing';
-import type { } from 'mocha';
 
 interface FormEngineConfig {
   [x: string]: any;
@@ -10,7 +9,6 @@ interface FormatValueData {
   description: string,
   type: string,
   value: number|string,
-  config: FormEngineConfig,
   result: string
 }
 
@@ -64,85 +62,91 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       'description': 'returns empty string with string 0',
       'type': 'date',
       'value': '0',
-      'config': {},
       'result': ''
     },
     {
       'description': 'returns date with int 0',
       'type': 'date',
       'value': 0,
-      'config': {},
-      'result': '01-01-1970'
+      'result': '1970-01-01T00:00:00Z'
     },
     {
       'description': 'works for type date with timestamp',
       'type': 'date',
       'value': 10000000,
-      'config': {},
-      'result': '26-04-1970'
+      'result': '1970-04-26T17:46:40Z'
     },
     {
       'description': 'works for type date with iso date',
       'type': 'date',
-      'value': '2016-12-02T11:16:06+00:00',
-      'config': {},
-      'result': '02-12-2016'
+      'value': '2016-12-02T11:16:06Z',
+      'result': '2016-12-02T11:16:06Z'
+    },
+    {
+      'description': 'works for type date with iso date with milliseconds',
+      'type': 'date',
+      'value': '2016-12-02T11:16:06.000Z',
+      'result': '2016-12-02T11:16:06Z'
+    },
+    {
+      'description': 'returns empty string with non-iso date',
+      'type': 'date',
+      'value': 'foo',
+      'result': ''
     },
     {
       'description': 'works for type datetime',
       'type': 'datetime',
       'value': '0',
-      'config': {},
       'result': ''
     },
     {
       'description': 'works for type datetime with timestamp',
       'type': 'datetime',
       'value': 10000000,
-      'config': {},
-      'result': '17:46 26-04-1970'
+      'result': '1970-04-26T17:46:40Z'
     },
     {
       'description': 'works for type datetime with iso date',
       'type': 'datetime',
-      'value': '2016-12-02T11:16:06+00:00',
-      'config': {},
-      'result': '11:16 02-12-2016'
+      'value': '2016-12-02T11:16:06Z',
+      'result': '2016-12-02T11:16:06Z'
+    },
+    {
+      'description': 'works for type datetime with iso date with milliseconds',
+      'type': 'datetime',
+      'value': '2016-12-02T11:16:06.000Z',
+      'result': '2016-12-02T11:16:06Z'
     },
     {
       'description': 'resolves to empty result for zero value',
       'type': 'datetime',
       'value': '0',
-      'config': {},
       'result': ''
     },
     {
       'description': 'resolves to empty result for invalid value',
       'type': 'datetime',
       'value': 'invalid',
-      'config': {},
       'result': ''
     },
     {
       'description': 'works for type time',
       'type': 'time',
       'value': 0,
-      'config': {},
-      'result': '00:00'
+      'result': '1970-01-01T00:00:00Z'
     },
     {
       'description': 'works for type time with timestamp',
       'type': 'time',
       'value': 10000000,
-      'config': {},
-      'result': '17:46'
+      'result': '1970-04-26T17:46:40Z'
     },
     {
       'description': 'works for type time with iso date',
       'type': 'time',
-      'value': '2016-12-02T11:16:06+00:00',
-      'config': {},
-      'result': '11:16'
+      'value': '2016-12-02T11:16:06.000Z',
+      'result': '2016-12-02T11:16:06Z'
     }
   ];
 
@@ -150,7 +154,7 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     using(formatValueDataProvider, function(testCase: FormatValueData) {
       it(testCase.description, () => {
         FormEngineValidation.initialize(document.createElement('form'));
-        const result = FormEngineValidation.formatValue(testCase.type, testCase.value, testCase.config);
+        const result = FormEngineValidation.formatValue(testCase.type, testCase.value);
         expect(result).to.equal(testCase.result);
       });
     });
@@ -271,24 +275,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     });
     it('works for value null', () => {
       expect(FormEngineValidation.parseDouble(null)).to.equal('0.00');
-    });
-  });
-
-  describe('tests for getYear', () => {
-    it('works for current date', () => {
-      const date = new Date();
-      expect(FormEngineValidation.getYear(date)).to.equal(date.getFullYear());
-    });
-    it('works for year 2013', () => {
-      const baseTime = new Date(2013, 9, 23, 1, 0, 0);
-      expect(FormEngineValidation.getYear(baseTime)).to.equal(2013);
-    });
-  });
-
-  describe('tests for getDate', () => {
-    xit('works for year 2013', () => {
-      const baseTime = new Date(2013, 9, 23, 13, 13, 13);
-      expect(FormEngineValidation.getDate(baseTime)).to.equal(1382486400);
     });
   });
 });

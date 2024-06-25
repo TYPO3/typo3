@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
 use Codeception\Attribute\DataProvider;
 use Codeception\Example;
+use Facebook\WebDriver\Remote\RemoteWebElement;
+use Facebook\WebDriver\WebDriverBy;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -168,5 +170,34 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
     public function checkThatValidationWorks_EvalDateTime_DbTypeDateTime(ApplicationTester $I, Example $testData): void
     {
         $this->runInputFieldTest($I, $testData);
+    }
+
+    /**
+     * Overridden from AbstractElementsInBasicCest to cope with flatpickr, until it's gone
+     */
+    protected function runInputFieldTest(ApplicationTester $I, Example $testData, ?string $initializedInputFieldXpath = null): void
+    {
+        $initializedInputFieldXpath = '(//label/code[contains(text(),"[' . $testData['label'] . ']")]/..)'
+            . '[1]/parent::*//*/input[@data-formengine-datepicker-real-input-name]';
+
+        parent::runInputFieldTest($I, $testData, $initializedInputFieldXpath);
+    }
+
+    /**
+     * Return the visible input field of element in question.
+     * Overridden from AbstractElementsInBasicCest to cope with flatpickr, until it's gone
+     */
+    protected function getInputField(RemoteWebElement $formSection): RemoteWebElement
+    {
+        return $formSection->findElement(WebDriverBy::xpath('.//*/input[@data-formengine-datepicker-real-input-name]'));
+    }
+
+    /**
+     * Overridden from AbstractElementsInBasicCest to cope with flatpickr, until it's gone
+     */
+    protected function getHiddenField(RemoteWebElement $formSection, RemoteWebElement $inputField): RemoteWebElement
+    {
+        $hiddenFieldXPath = './/*/input[@name="' . $inputField->getAttribute('data-formengine-datepicker-real-input-name') . '"]';
+        return $formSection->findElement(WebDriverBy::xpath($hiddenFieldXPath));
     }
 }

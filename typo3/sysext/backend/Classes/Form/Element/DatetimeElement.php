@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
@@ -135,20 +134,15 @@ class DatetimeElement extends AbstractFormElement
             $evalList[] = 'null';
         }
 
-        // Always add "integer" eval in case non or an invalid dbType is specified (Used for JS processing)
-        if (!in_array($config['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
-            $evalList = array_merge($evalList, ['integer']);
-        }
-
         $attributes = [
             'value' => '',
             'id' => $fieldId,
             'class' => implode(' ', [
-                't3js-datetimepicker',
                 'form-control',
                 'form-control-clearable',
                 't3js-clearable',
             ]),
+            'data-input-type' => 'datetimepicker',
             'data-date-type' => $format,
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([
