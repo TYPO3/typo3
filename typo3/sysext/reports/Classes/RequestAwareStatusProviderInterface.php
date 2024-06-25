@@ -30,5 +30,5 @@ interface RequestAwareStatusProviderInterface extends StatusProviderInterface
      * @param ServerRequestInterface|null $request the currently handled request
      * @return Status[]
      */
-    public function getStatus(ServerRequestInterface $request = null): array;
+    public function getStatus(?ServerRequestInterface $request = null): array;
 }
