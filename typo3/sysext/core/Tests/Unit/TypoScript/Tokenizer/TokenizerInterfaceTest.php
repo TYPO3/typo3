@@ -3455,6 +3455,185 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             )
                     ),
             ],
+            'identifier, function, function name, value with constants and values separated with comma' => [
+                'foo := addToList(23, {$some.constant}, {$other.constant}, 42)',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_FUNCTION, ':=', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                    ->append(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_START, '(', 0, 16))
+                                    ->append(new Token(TokenType::T_VALUE, '23, ', 0, 17))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}', 0, 21))
+                                    ->append(new Token(TokenType::T_VALUE, ', ', 0, 37))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 0, 39))
+                                    ->append(new Token(TokenType::T_VALUE, ', 42', 0, 56))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_STOP, ')', 0, 60))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                            ->setFunctionValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, '23, ', 0, 17))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}', 0, 21))
+                                    ->append(new Token(TokenType::T_VALUE, ', ', 0, 37))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 0, 39))
+                                    ->append(new Token(TokenType::T_VALUE, ', 42', 0, 56))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
+                            ->setFunctionValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, '23, '))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}'))
+                                    ->append(new Token(TokenType::T_VALUE, ', '))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}'))
+                                    ->append(new Token(TokenType::T_VALUE, ', 42'))
+                            )
+                    ),
+            ],
+            'identifier, function, function name, value with constants and values and parenthesis arguments, separated with comma' => [
+                'foo := addToList({$some.constant}uidList in (1,2,3) or pid in (4,5,6){$other.constant})',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_FUNCTION, ':=', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                    ->append(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_START, '(', 0, 16))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}', 0, 17))
+                                    ->append(new Token(TokenType::T_VALUE, 'uidList in (1,2,3) or pid in (4,5,6)', 0, 33))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 0, 69))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_STOP, ')', 0, 86))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                            ->setFunctionValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}', 0, 17))
+                                    ->append(new Token(TokenType::T_VALUE, 'uidList in (1,2,3) or pid in (4,5,6)', 0, 33))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}', 0, 69))
+                            ),
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
+                            ->setFunctionValueTokenStream(
+                                (new ConstantAwareTokenStream())
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$some.constant}'))
+                                    ->append(new Token(TokenType::T_VALUE, 'uidList in (1,2,3) or pid in (4,5,6)'))
+                                    ->append(new Token(TokenType::T_CONSTANT, '{$other.constant}'))
+                            ),
+                    ),
+            ],
+            'identifier, function, function name, value with parenthesis arguments, separated with comma' => [
+                'foo := addToList(uidList in (1,2,3) or pid in (4,5,6))',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_FUNCTION, ':=', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                    ->append(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_START, '(', 0, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'uidList in (1,2,3) or pid in (4,5,6)', 0, 17))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_STOP, ')', 0, 53))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                            ->setFunctionValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'uidList in (1,2,3) or pid in (4,5,6)', 0, 17))
+                            ),
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
+                            ->setFunctionValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'uidList in (1,2,3) or pid in (4,5,6)'))
+                            ),
+                    ),
+            ],
+            'identifier, function, function name, value with invalid parenthesis arguments, separated with comma' => [
+                'foo := addToList(uidList in (1,(2))))),3( or pid in (4,5,6))',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_FUNCTION, ':=', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                    ->append(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_START, '(', 0, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'uidList in (1,(2))', 0, 17))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_STOP, ')', 0, 35))
+                                    ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, ')),3( or pid in (4,5,6))', 0, 36))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                            ->setFunctionValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'uidList in (1,(2))', 0, 17))
+                            ),
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
+                            ->setFunctionValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'uidList in (1,(2))'))
+                            ),
+                    ),
+            ],
             'identifier, function, function name with value, hash comment' => [
                 'foo := addToList(1) # a comment',
                 (new LineStream())
