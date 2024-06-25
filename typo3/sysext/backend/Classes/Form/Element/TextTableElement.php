@@ -105,6 +105,7 @@ class TextTableElement extends AbstractFormElement
             }
         }
         $fieldId = StringUtility::getUniqueId('formengine-textarea-');
+        $itemName = (string)$parameterArray['itemFormElName'];
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
@@ -118,7 +119,7 @@ class TextTableElement extends AbstractFormElement
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="overflow: auto;">';
-            $html[] =               '<textarea class="form-control" id="' . htmlspecialchars($fieldId) . '" rows="' . $rows . '" disabled>';
+            $html[] =               '<textarea class="form-control" id="' . htmlspecialchars($fieldId) . '" name="' . htmlspecialchars($itemName) . '" rows="' . $rows . '" disabled>';
             $html[] =                   htmlspecialchars($itemValue);
             $html[] =               '</textarea>';
             $html[] =           '</div>';
@@ -151,9 +152,9 @@ class TextTableElement extends AbstractFormElement
         $attributes = array_merge(
             [
                 'id' => $fieldId,
-                'name' => htmlspecialchars($parameterArray['itemFormElName']),
+                'name' => htmlspecialchars($itemName),
                 'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-                'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
+                'data-formengine-input-name' => htmlspecialchars($itemName),
                 'rows' => (string)$rows,
                 'wrap' => (string)(($config['wrap'] ?? 'virtual') ?: 'virtual'),
             ],

@@ -219,7 +219,7 @@ class SlugElement {
     for (const [fieldName, selector] of Object.entries(this.fieldsToListenOn)) {
       let field = document.querySelector('[data-formengine-input-name="' + selector + '"]') as HTMLElement;
       if (field === null) {
-        // Also check for fields, which do not point to a hidden input field (e.g. "input type=hidden" or select fields)
+        // Also check for fields, which do not point to a hidden input field (e.g. "input type=hidden", readOnly, or select fields)
         field = document.querySelector('[name="' + selector + '"]') as HTMLElement;
       }
       if (field !== null) {
