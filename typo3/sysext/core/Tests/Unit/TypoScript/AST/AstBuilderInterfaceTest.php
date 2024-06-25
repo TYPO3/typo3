@@ -953,6 +953,97 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
 
         $fooNode = new ChildNode('foo');
+        $fooNode->setValue('abc Some Random String with more stuff');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier appendString with longer value and space' => [
+            "foo = abc\n" .
+            'foo := appendString( Some Random String with more stuff)',
+            $expectedAst,
+            [
+                'foo' => 'abc Some Random String with more stuff',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('abc uidList in (1,2,3) or pid in (4,5,6)');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier appendString with longer value and parentheses' => [
+            "foo = abc\n" .
+            'foo := appendString( uidList in (1,2,3) or pid in (4,5,6))',
+            $expectedAst,
+            [
+                'foo' => 'abc uidList in (1,2,3) or pid in (4,5,6)',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('abc');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier appendString with longer value and invalid missing closing parentheses' => [
+            "foo = abc\n" .
+            'foo := appendString( uidList in (1,(2,3( or pid in (4,5,6))',
+            $expectedAst,
+            [
+                'foo' => 'abc',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('abc uidList in (1,(2))');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier appendString with longer value and invalid missing opening parentheses' => [
+            "foo = abc\n" .
+            'foo := appendString( uidList in (1,(2))))),3( or pid in (4,5,6))',
+            $expectedAst,
+            [
+                'foo' => 'abc uidList in (1,(2))',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('abc');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier appendString with linebreak before+after' => [
+            "foo = abc\n" .
+            "foo := appendString(\n!\n)",
+            $expectedAst,
+            [
+                'foo' => 'abc',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('abc');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier appendString with linebreak before' => [
+            "foo = abc\n" .
+            "foo := appendString(\n!)",
+            $expectedAst,
+            [
+                'foo' => 'abc',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('abc');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier appendString with linebreak after' => [
+            "foo = abc\n" .
+            "foo := appendString(!\n)",
+            $expectedAst,
+            [
+                'foo' => 'abc',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
         $fooNode->setValue('adef');
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);

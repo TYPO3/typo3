@@ -532,17 +532,29 @@ final class LossyTokenizer implements TokenizerInterface
         $functionBodyPart = '';
         $functionBodyCharCount = 0;
         $functionValueStream = new TokenStream();
+        $parenthesesLevel = 0;
         while (true) {
             $nextChar = $functionChars[$functionBodyStartPosition + $functionBodyCharCount] ?? null;
             if ($nextChar === null) {
                 return;
             }
+            if ($nextChar === '(') {
+                // In case of a function call like "appendString(something(somethingelse))"
+                // we shall only stop processing when the last bracket was evaluated.
+                $parenthesesLevel++;
+            }
             if ($nextChar === ')') {
-                if ($functionBodyCharCount) {
-                    $functionValueStream = $this->parseValueForConstants($functionValueStream, $functionBodyPart);
-                    $functionBodyCharCount++;
+                if ($parenthesesLevel > 0) {
+                    $parenthesesLevel--;
+                    // Continue collecting characters from the (...) argument stream.
+                    // Also, ")" will be appended, thus intentionally no "break" occurs.
+                } else {
+                    if ($functionBodyCharCount) {
+                        $functionValueStream = $this->parseValueForConstants($functionValueStream, $functionBodyPart);
+                        $functionBodyCharCount++;
+                    }
+                    break;
                 }
-                break;
             }
             $functionBodyPart .= $nextChar;
             $functionBodyCharCount++;
