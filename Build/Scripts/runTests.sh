@@ -50,7 +50,7 @@ handleDbmsOptions() {
                 exit 1
             fi
             [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10.3"
-            if ! [[ ${DBMS_VERSION} =~ ^(10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1)$ ]]; then
+            if ! [[ ${DBMS_VERSION} =~ ^(10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1|11.2|11.3|11.4)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
                 echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
@@ -66,7 +66,7 @@ handleDbmsOptions() {
                 exit 1
             fi
             [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="8.0"
-            if ! [[ ${DBMS_VERSION} =~ ^(8.0|8.1|8.2|8.3)$ ]]; then
+            if ! [[ ${DBMS_VERSION} =~ ^(8.0|8.1|8.2|8.3|8.4)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
                 echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
@@ -272,12 +272,16 @@ Options:
             - 10.10  short-term, maintained until 2023-11
             - 10.11  long-term, maintained until 2028-02
             - 11.0   development series
-            - 11.1   short-term development series
+            - 11.1   short-term development series, maintained until 2024-08
+            - 11.2   short-term development series, maintained until 2024-11
+            - 11.3   short-term development series, rolling release
+            - 11.4   long-term, maintained until 2029-05
         With "-d mysql":
             - 8.0   maintained until 2026-04 (default) LTS
             - 8.1   unmaintained since 2023-10
             - 8.2   unmaintained since 2024-01
             - 8.3   maintained until 2024-04
+            - 8.4   maintained until 2032-04 LTS
         With "-d postgres":
             - 10    unmaintained since 2022-11-10 (default)
             - 11    unmaintained since 2023-11-09
