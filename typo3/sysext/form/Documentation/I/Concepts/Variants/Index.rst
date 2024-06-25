@@ -210,6 +210,29 @@ For example:
 :yaml:`finisherIdentifier == "EmailToSender"`.
 
 
+``site`` (object)
+^^^^^^^^^^^^^^^^^
+
+You can access every public method from :php:`\TYPO3\CMS\Core\Site\Entity\Site`
+to access the following important ones:
+
+* getSettings() / The site settings array
+* getDefaultLanguage() / The default language object for the current site
+* getConfiguration() / The whole configuration of the current site
+* getIdentifier() / The identifier for the current site
+* getBase() / The base URL for the current site
+* getRootPageId() / The ID of the root page of the current site
+* getLanguages() / An array of available language for the current site
+* getSets() / Configured sets of a site (new in TYPO3 v13+)
+
+For example:
+
+:yaml:`site("settings").get("myVariable") == "something"`.
+:yaml:`site("rootPageId") == "42"`.
+
+More details on the `Site` object can be found in
+:ref:`Using site configuration in conditions <t3coreapi:sitehandling-inConditions>`.
+
 ``siteLanguage`` (object)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
