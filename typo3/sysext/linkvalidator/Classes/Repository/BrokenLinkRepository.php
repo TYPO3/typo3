@@ -327,7 +327,7 @@ class BrokenLinkRepository
      * @throws \UnexpectedValueException
      * @todo Make default value of $errorParams [] instead of null and add strict typing in v13
      */
-    public function addBrokenLink($record, bool $isValid, array $errorParams = null): void
+    public function addBrokenLink($record, bool $isValid, ?array $errorParams = null): void
     {
         $response = ['valid' => $isValid];
         $response['errorParams'] = $errorParams ?? [];

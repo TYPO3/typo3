@@ -154,11 +154,11 @@ class LinkValidatorReport
     protected PageRenderer $pageRenderer;
 
     public function __construct(
-        PagesRepository $pagesRepository = null,
-        BrokenLinkRepository $brokenLinkRepository = null,
-        ModuleTemplateFactory $moduleTemplateFactory = null,
-        IconFactory $iconFactory = null,
-        PageRenderer $pageRecord = null
+        ?PagesRepository $pagesRepository = null,
+        ?BrokenLinkRepository $brokenLinkRepository = null,
+        ?ModuleTemplateFactory $moduleTemplateFactory = null,
+        ?IconFactory $iconFactory = null,
+        ?PageRenderer $pageRecord = null
     ) {
         $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
         $this->pagesRepository = $pagesRepository ?? GeneralUtility::makeInstance(PagesRepository::class);
