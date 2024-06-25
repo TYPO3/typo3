@@ -145,7 +145,6 @@ class DatetimeElement extends AbstractFormElement
                 'form-control',
                 'form-control-clearable',
                 't3js-clearable',
-                'hasDefaultValue',
             ]),
             'data-date-type' => $format,
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),

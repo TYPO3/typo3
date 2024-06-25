@@ -119,7 +119,6 @@ class ColorElement extends AbstractFormElement
             'class' => implode(' ', [
                 'form-control',
                 't3js-color-picker',
-                'hasDefaultValue',
             ]),
             'maxlength' => '7', // #XXXXXX (/#[0-9a-fA-F]{3,6}/)
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
