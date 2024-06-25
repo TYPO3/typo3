@@ -51,7 +51,7 @@ class Status implements RequestAwareReportInterface
      * @param ServerRequestInterface|null $request the currently handled request
      * @return string The status report as HTML
      */
-    public function getReport(ServerRequestInterface $request = null)
+    public function getReport(?ServerRequestInterface $request = null)
     {
         $status = $this->getSystemStatus($request);
         $registry = GeneralUtility::makeInstance(Registry::class);
@@ -81,7 +81,7 @@ class Status implements RequestAwareReportInterface
      * @param ServerRequestInterface $request
      * @return \TYPO3\CMS\Reports\Status[][]
      */
-    public function getSystemStatus(ServerRequestInterface $request = null)
+    public function getSystemStatus(?ServerRequestInterface $request = null)
     {
         $status = [];
         foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
