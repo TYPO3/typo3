@@ -45,7 +45,7 @@ class GeneratorClassesResolver extends NodeVisitorAbstract
      */
     protected $builderFactory;
 
-    public function __construct(BuilderFactory $builderFactory = null)
+    public function __construct(?BuilderFactory $builderFactory = null)
     {
         $this->builderFactory = $builderFactory ?? new BuilderFactory();
     }

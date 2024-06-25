@@ -48,7 +48,7 @@ class ContentSecurityPolicyHeader
         return empty($this->directives);
     }
 
-    public function mitigatesCrossSiteScripting(string $fileName = null): bool
+    public function mitigatesCrossSiteScripting(?string $fileName = null): bool
     {
         $isSvg = str_ends_with($fileName ?? '', '.svg');
         $defaultSrc = isset($this->directives['default-src'])
