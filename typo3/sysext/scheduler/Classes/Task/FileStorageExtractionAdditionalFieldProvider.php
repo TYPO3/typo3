@@ -58,7 +58,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
      * @param FileStorageExtractionTask|null $task When editing, reference to the current task object. NULL when adding.
      * @return array Array containing all the information pertaining to the additional fields
      */
-    protected function getAllStoragesField(FileStorageExtractionTask $task = null)
+    protected function getAllStoragesField(?FileStorageExtractionTask $task = null)
     {
         /** @var ResourceStorage[] $storages */
         $storages = GeneralUtility::makeInstance(StorageRepository::class)->findAll();
@@ -92,7 +92,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
      * @param FileStorageExtractionTask|null $task When editing, reference to the current task object. NULL when adding.
      * @return array Array containing all the information pertaining to the additional fields
      */
-    protected function getFileCountField(FileStorageExtractionTask $task = null)
+    protected function getFileCountField(?FileStorageExtractionTask $task = null)
     {
         $fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_fileCount]';
         $fieldId = 'scheduler_fileStorageIndexing_fileCount';
@@ -116,7 +116,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
      * @param FileStorageExtractionTask|null $task When editing, reference to the current task object. NULL when adding.
      * @return array Array containing all the information pertaining to the additional fields
      */
-    protected function getRegisteredExtractorsField(FileStorageExtractionTask $task = null)
+    protected function getRegisteredExtractorsField(?FileStorageExtractionTask $task = null)
     {
         $extractors = GeneralUtility::makeInstance(ExtractorRegistry::class)->getExtractors();
 
