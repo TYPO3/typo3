@@ -70,7 +70,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
     /**
      * @return array{act: string, P: array, editorId: string, contentsLanguage: string} Array of parameters which have to be added to URLs
      */
-    public function getUrlParameters(array $overrides = null): array
+    public function getUrlParameters(?array $overrides = null): array
     {
         return [
             'act' => $overrides['act'] ?? $this->displayedLinkHandlerId,
