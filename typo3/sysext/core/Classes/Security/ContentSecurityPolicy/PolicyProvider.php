@@ -48,7 +48,7 @@ final class PolicyProvider
     /**
      * Provides the complete, dynamically mutated policy to be used in HTTP responses.
      */
-    public function provideFor(Scope $scope): Policy
+    public function provideFor(Scope $scope, ServerRequestInterface $request): Policy
     {
         // @todo add policy cache per scope
         $defaultPolicy = new Policy();
@@ -66,7 +66,7 @@ final class PolicyProvider
         // apply all mutations to current policy
         $currentPolicy = $defaultPolicy->mutate(...$mutationCollections);
         // allow other components to modify the current policy individually via PSR-14 event
-        $event = new PolicyMutatedEvent($scope, $defaultPolicy, $currentPolicy, ...$mutationCollections);
+        $event = new PolicyMutatedEvent($scope, $request, $defaultPolicy, $currentPolicy, ...$mutationCollections);
         $this->eventDispatcher->dispatch($event);
         return $event->getCurrentPolicy();
     }

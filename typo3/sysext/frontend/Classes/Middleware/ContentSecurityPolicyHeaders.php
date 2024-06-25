@@ -64,7 +64,7 @@ final class ContentSecurityPolicyHeaders implements MiddlewareInterface
             return $response;
         }
 
-        $policy = $this->policyProvider->provideFor($scope);
+        $policy = $this->policyProvider->provideFor($scope, $request);
         if ($policy->isEmpty()) {
             return $response;
         }
