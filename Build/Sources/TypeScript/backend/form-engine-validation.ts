@@ -70,10 +70,6 @@ export default (function() {
       FormEngineValidation.registerSubmitCallback();
     });
 
-    const today = new Date();
-    FormEngineValidation.lastYear = FormEngineValidation.getYear(today);
-    FormEngineValidation.lastDate = FormEngineValidation.getDate(today);
-    FormEngineValidation.lastTime = 0;
     FormEngineValidation.validate();
   };
 
@@ -141,7 +137,7 @@ export default (function() {
     if (config.evalList !== undefined) {
       const evalList = FormEngineValidation.trimExplode(',', config.evalList);
       for (const evalInstruction of evalList) {
-        value = FormEngineValidation.formatValue(evalInstruction, value, config);
+        value = FormEngineValidation.formatValue(evalInstruction, value);
       }
     }
     return value;
@@ -150,58 +146,29 @@ export default (function() {
   /**
    * Format field value
    */
-  FormEngineValidation.formatValue = function(type: string, value: string|number, config: object): string {
+  FormEngineValidation.formatValue = function(type: string, value: string|number): string {
     let theString = '';
-    let parsedInt: number;
-    let theTime: Date;
     switch (type) {
       case 'date':
-        // poor man’s ISO-8601 detection: if we have a "-" in it, it apparently is not an integer.
-        if (value.toString().indexOf('-') > 0) {
-          const date = DateTime.fromISO(value.toString(), { zone: 'utc' });
-          theString = date.toFormat('dd-MM-yyyy');
-        } else {
-          if (value === '' || value === '0') {
-            return '';
-          }
-          parsedInt = parseInt(value.toString(), 10);
-          if (isNaN(parsedInt)) {
-            return '';
-          }
-          theTime = new Date(parsedInt * 1000);
-          const day = (theTime.getUTCDate()).toString(10).padStart(2, '0');
-          const month = (theTime.getUTCMonth() + 1).toString(10).padStart(2, '0');
-          const year = this.getYear(theTime);
-          theString = day + '-' + month + '-' + year;
-        }
-        break;
       case 'datetime':
-        if (value === '' || value === '0') {
-          // if value is '0' (string), it's supposed to be empty
-          return '';
-        }
-        theString = (FormEngineValidation.formatValue('time', value, config) + ' ' + FormEngineValidation.formatValue('date', value, config)).trim();
-        break;
       case 'time':
       case 'timesec':
-        let dateValue;
-        if (value.toString().indexOf('-') > 0) {
-          dateValue = DateTime.fromISO(value.toString(), { zone: 'utc' });
-        } else {
-          if (value === '' || value === '0') {
-            return '';
-          }
-          // eslint-disable-next-line radix
-          parsedInt = typeof value === 'number' ? value : parseInt(value);
-          if (isNaN(parsedInt)) {
-            return '';
-          }
-          dateValue = DateTime.fromSeconds(parsedInt, { zone: 'utc' });
+        // if value is '0' (string), it's supposed to be empty
+        if (value === '' || value === '0') {
+          return '';
         }
-        if (type === 'timesec') {
-          theString = dateValue.toFormat('HH:mm:ss');
+
+        const isoDt = DateTime.fromISO(String(value), { zone: 'utc' });
+        if (isoDt.isValid) {
+          return isoDt.toISO({ suppressMilliseconds: true });
+        }
+
+        const parsedInt = typeof value === 'number' ? value : parseInt(value, 10);
+        if (isNaN(parsedInt)) {
+          theString = '';
         } else {
-          theString = dateValue.toFormat('HH:mm');
+          const dt = DateTime.fromSeconds(parsedInt, { zone: 'utc' });
+          theString = dt.toISO({ suppressMilliseconds: true });
         }
         break;
       case 'password':
@@ -507,25 +474,24 @@ export default (function() {
       case 'trim':
         returnValue = String(value).trim();
         break;
-      case 'datetime':
-        if (value !== '') {
-          returnValue = FormEngineValidation.parseDateTime(value);
-        }
-        break;
-      case 'date':
-        if (value !== '') {
-          returnValue = FormEngineValidation.parseDate(value);
-        }
-        break;
       case 'time':
       case 'timesec':
         if (value !== '') {
-          returnValue = FormEngineValidation.parseTime(value, command);
+          const dt = DateTime.fromISO(value, { zone: 'utc' }).set({
+            year: 1970,
+            month: 1,
+            day: 1
+          });
+          returnValue = dt.toISO({ suppressMilliseconds: true });
         }
         break;
       case 'year':
         if (value !== '') {
-          returnValue = FormEngineValidation.parseYear(value);
+          let year = parseInt(value, 10);
+          if (isNaN(year)) {
+            year = new Date().getUTCFullYear();
+          }
+          returnValue = year.toString(10);
         }
         break;
       case 'null':
@@ -671,144 +637,10 @@ export default (function() {
     return theVal;
   };
 
-  /**
-   * Parse datetime value
-   *
-   * @param {String} value
-   * @returns {*}
-   */
-  FormEngineValidation.parseDateTime = function(value: string): number {
-    const index = value.indexOf(' ');
-    if (index !== -1) {
-      const dateVal = FormEngineValidation.parseDate(value.substring(index + 1));
-      FormEngineValidation.lastTime = dateVal + FormEngineValidation.parseTime(value.substring(0, index), 'time');
-    } else {
-      // only date, no time
-      FormEngineValidation.lastTime = FormEngineValidation.parseDate(value);
-    }
-    return FormEngineValidation.lastTime;
-  };
-
-  /**
-   * Parse date value
-   *
-   * @param {String} value
-   * @returns {*}
-   */
-  FormEngineValidation.parseDate = function(value: string): number {
-    FormEngineValidation.lastDate = DateTime.fromFormat(value, 'dd-MM-yyyy', { zone: 'utc' }).toUnixInteger();
-
-    return FormEngineValidation.lastDate;
-  };
-
-  /**
-   * Parse time value
-   *
-   * @param {String} value
-   * @param {String} type
-   * @returns {*}
-   */
-  FormEngineValidation.parseTime = function(value: string, type: string): number {
-    const format = type === 'timesec' ? 'HH:mm:ss' : 'HH:mm';
-    FormEngineValidation.lastTime = DateTime.fromFormat(value, format, { zone: 'utc' }).set({
-      year: 1970,
-      month: 1,
-      day: 1
-    }).toUnixInteger();
-    if (FormEngineValidation.lastTime < 0) {
-      FormEngineValidation.lastTime += 24 * 60 * 60;
-    }
-    return FormEngineValidation.lastTime;
-  };
-
-  /**
-   * Parse year value
-   *
-   * @param {String} value
-   * @returns {*}
-   */
-  FormEngineValidation.parseYear = function(value: string): number {
-    let year = parseInt(value, 10);
-    if (isNaN(year)) {
-      year = FormEngineValidation.getYear(new Date());
-    }
-
-    FormEngineValidation.lastYear = year;
-    return FormEngineValidation.lastYear;
-  };
-
-  /**
-   * Get year from date object
-   *
-   * @param {Date} timeObj
-   * @returns {?number}
-   */
-  FormEngineValidation.getYear = function(timeObj: Date|null): number|null {
-    if (timeObj === null) {
-      return null;
-    }
-    return timeObj.getUTCFullYear();
-  };
-
-  /**
-   * Get date as timestamp from Date object
-   *
-   * @param {Date} timeObj
-   * @returns {Number}
-   */
-  FormEngineValidation.getDate = function(timeObj: Date): number {
-    const theTime = new Date(FormEngineValidation.getYear(timeObj), timeObj.getUTCMonth(), timeObj.getUTCDate());
-    return FormEngineValidation.getTimestamp(theTime);
-  };
-
-  /**
-   *
-   * @param {String} foreign
-   * @param {String} value
-   * @returns {Object}
-   */
   FormEngineValidation.pol = function(foreign: string, value: string): object {
     // @todo deprecate
     // eslint-disable-next-line no-eval
     return eval(((foreign == '-') ? '-' : '') + value);
-  };
-
-  /**
-   * Parse date string or object and return unix timestamp
-   *
-   * @param {(String|Date)} timeObj
-   * @returns {Number}
-   */
-  FormEngineValidation.getTimestamp = function(timeObj: string|Date): number {
-    return Date.parse(timeObj instanceof Date ? timeObj.toISOString() : timeObj) / 1000;
-  };
-
-  /**
-   * Seconds since midnight
-   *
-   * @param timeObj
-   * @returns {*}
-   */
-  FormEngineValidation.getTime = function(timeObj: Date): number {
-    return timeObj.getUTCHours() * 60 * 60 + timeObj.getUTCMinutes() * 60 + FormEngineValidation.getSecs(timeObj);
-  };
-
-  /**
-   *
-   * @param timeObj
-   * @returns {Number}
-   */
-  FormEngineValidation.getSecs = function(timeObj: Date): number {
-    return timeObj.getUTCSeconds();
-  };
-
-  /**
-   *
-   * @param timeObj
-   * @returns {Number}
-   */
-  FormEngineValidation.getTimeSecs = function(timeObj: Date): number {
-    return timeObj.getHours() * 60 * 60 + timeObj.getMinutes() * 60 + timeObj.getSeconds();
   };
 
   /**

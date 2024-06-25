@@ -115,16 +115,12 @@
             <label for="manualDateStart" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:from" /></label>
             <div class="input-group">
                 <f:form.textfield
-                    name="manualDateStart"
-                    value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'{settings.dateTimeFormat}', date: '{constraint.manualDateStart}')}\")}"
+                    property="manualDateStart"
+                    value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'c', date: '{constraint.manualDateStart}')}\")}"
                     id="manualDateStart"
                     additionalAttributes="{'autocomplete': 'off'}"
                     class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
                     data="{date-type: 'datetime'}"
-                />
-                <f:form.hidden
-                    property="manualDateStart"
-                    value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'c', date: '{constraint.manualDateStart}')}\")}"
                 />
                 <label class="btn btn-default" for="manualDateStart">
                     <core:icon identifier="actions-calendar" />
@@ -136,16 +132,12 @@
             <label for="manualDateStop" class="form-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:to" /></label>
             <div class="input-group">
                 <f:form.textfield
-                    name="manualDateStop"
-                    value="{f:format.date(format:'{settings.dateTimeFormat}', date: '{constraint.manualDateStop}')}"
+                    property="manualDateStop"
+                    value="{f:format.date(format:'c', date: '{constraint.manualDateStop}')}"
                     additionalAttributes="{'autocomplete': 'off'}"
                     id="manualDateStop"
                     class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
                     data="{date-type: 'datetime'}"
-                />
-                <f:form.hidden
-                    property="manualDateStop"
-                    value="{f:format.date(format:'c', date: '{constraint.manualDateStop}')}"
                 />
                 <label class="btn btn-default" for="manualDateStop">
                     <core:icon identifier="actions-calendar" />

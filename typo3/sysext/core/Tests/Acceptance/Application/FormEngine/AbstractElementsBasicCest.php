@@ -31,15 +31,17 @@ abstract class AbstractElementsBasicCest
 {
     /**
      * Method to run basic elements input field test details
+     *
+     * @param string|null $initializedInputFieldXpath - only used in ElementsBasicInputDateCest until flatpickr is gone
      */
-    protected function runInputFieldTest(ApplicationTester $I, Example $testData): void
+    protected function runInputFieldTest(ApplicationTester $I, Example $testData, ?string $initializedInputFieldXpath = null): void
     {
         $fieldLabel = $testData['label'];
-        $initializedInputFieldXpath = '(//label/code[contains(text(),"[' . $fieldLabel . ']")]/..)'
+        $initializedInputFieldXpath ??= '(//label/code[contains(text(),"[' . $fieldLabel . ']")]/..)'
             . '[1]/parent::*//*/input[@data-formengine-input-name][@data-formengine-input-initialized]';
 
         // Wait until JS initialized everything
-        $I->waitForElement($initializedInputFieldXpath, 30);
+        $I->waitForElement($initializedInputFieldXpath, 10);
 
         $formSection = $this->getFormSectionByFieldLabel($I, $fieldLabel);
         $inputField = $this->getInputField($formSection);
@@ -56,7 +58,7 @@ abstract class AbstractElementsBasicCest
         $inputField->sendKeys(WebDriverKeys::ESCAPE);
         $I->waitForElementNotVisible('#t3js-ui-block');
 
-        $I->comment('Test value of visible and hidden field');
+        $I->comment('Test value of visible and hidden field before save');
         $I->seeInField($inputField, $testData['expectedValue']);
         $I->seeInField($hiddenField, $testData['expectedInternalValue']);
 
@@ -74,7 +76,7 @@ abstract class AbstractElementsBasicCest
         $hiddenField = $this->getHiddenField($formSection, $inputField);
 
         // Validate save was successful
-        $I->comment('Test value of visible and hidden field');
+        $I->comment('Test value of visible and hidden field after save');
         $I->seeInField($inputField, $testData['expectedInternalValueAfterSave'] ?? $testData['expectedValue']);
         $I->seeInField($hiddenField, $testData['expectedValueAfterSave']);
     }

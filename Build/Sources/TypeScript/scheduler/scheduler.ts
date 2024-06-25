@@ -56,6 +56,12 @@ class Scheduler {
     }
   }
 
+  private static updateDateTimePickers(): void {
+    (document.querySelectorAll('#tx_scheduler_form .t3js-datetimepicker') as NodeListOf<HTMLInputElement>).forEach(
+      (dateTimePickerElement: HTMLInputElement) => DateTimePicker.initialize(dateTimePickerElement)
+    );
+  }
+
   private static updateElementBrowserTriggers(): void {
     const triggers = document.querySelectorAll('.t3js-element-browser');
 
@@ -208,10 +214,6 @@ class Scheduler {
       new SortableTable(table);
     });
 
-    (<NodeListOf<HTMLInputElement>>document.querySelectorAll('#tx_scheduler_form .t3js-datetimepicker')).forEach(
-      (dateTimePickerElement: HTMLInputElement) => DateTimePicker.initialize(dateTimePickerElement)
-    );
-
     new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
       e.preventDefault();
 
@@ -246,6 +248,7 @@ class Scheduler {
     if (taskClass !== null) {
       this.actOnChangedTaskClass(taskClass);
       Scheduler.updateClearableInputs();
+      Scheduler.updateDateTimePickers();
       Scheduler.updateElementBrowserTriggers();
     }
   }
