@@ -426,7 +426,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * @param \Throwable|null $e An exception to signal a failed execution
      * @deprecated will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.
      */
-    public function unmarkExecution($executionID, \Throwable $e = null)
+    public function unmarkExecution($executionID, ?\Throwable $e = null)
     {
         trigger_error('AbstractTask->' . __METHOD__ . ' will be removed in TYPO3 v13.0. Use SchedulerTaskRepository instead.', E_USER_DEPRECATED);
         if ($e != null) {

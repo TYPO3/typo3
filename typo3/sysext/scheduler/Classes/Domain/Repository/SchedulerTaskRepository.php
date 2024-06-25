@@ -490,7 +490,7 @@ class SchedulerTaskRepository
      * @param int $executionID Id of the execution to remove.
      * @param string|array|null $failureReason Details of an exception to signal a failed execution
      */
-    public function removeExecutionOfTask(AbstractTask $task, int $executionID, array|string $failureReason = null): void
+    public function removeExecutionOfTask(AbstractTask $task, int $executionID, array|string|null $failureReason = null): void
     {
         $row = $this->findRecordByUid($task->getTaskUid());
         if ($row && $row['serialized_executions'] !== '') {
