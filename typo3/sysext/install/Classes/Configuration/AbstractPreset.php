@@ -55,7 +55,7 @@ abstract class AbstractPreset implements PresetInterface
      */
     protected $postValues = [];
 
-    public function __construct(ConfigurationManager $configurationManager = null)
+    public function __construct(?ConfigurationManager $configurationManager = null)
     {
         $this->configurationManager = $configurationManager ?: GeneralUtility::makeInstance(ConfigurationManager::class);
     }

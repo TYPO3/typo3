@@ -28,7 +28,7 @@ interface NodeInterface
      * @param array $structure Structure
      * @param NodeInterface $parent Parent
      */
-    public function __construct(array $structure, NodeInterface $parent = null);
+    public function __construct(array $structure, ?NodeInterface $parent = null);
 
     /**
      * Get node name

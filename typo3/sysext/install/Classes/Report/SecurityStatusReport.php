@@ -35,7 +35,7 @@ final class SecurityStatusReport implements RequestAwareStatusProviderInterface
      *
      * @return Status[]
      */
-    public function getStatus(ServerRequestInterface $request = null): array
+    public function getStatus(?ServerRequestInterface $request = null): array
     {
         if ($request !== null) {
             $this->removeInstallToolEnableFilesIfRequested($request);

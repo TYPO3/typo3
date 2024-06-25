@@ -38,7 +38,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
      * @param NodeInterface $parent Parent object
      * @throws Exception\InvalidArgumentException
      */
-    public function __construct(array $structure, NodeInterface $parent = null)
+    public function __construct(array $structure, ?NodeInterface $parent = null)
     {
         if ($parent === null) {
             throw new InvalidArgumentException(
