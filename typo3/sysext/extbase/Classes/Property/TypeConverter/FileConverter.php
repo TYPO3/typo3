@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 
 /**
@@ -29,11 +31,11 @@ class FileConverter extends AbstractFileFolderConverter
     /**
      * @var string
      */
-    protected $expectedObjectType = \TYPO3\CMS\Core\Resource\File::class;
+    protected $expectedObjectType = File::class;
 
     /**
      * @param string|int $source
-     * @return \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder|null
+     * @throws ResourceDoesNotExistException
      */
     protected function getOriginalResource($source): ?ResourceInterface
     {

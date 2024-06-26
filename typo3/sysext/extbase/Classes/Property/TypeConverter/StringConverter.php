@@ -29,9 +29,14 @@ class StringConverter extends AbstractTypeConverter
      * built $convertedChildProperties and $configuration.
      *
      * @param string $source
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): string
-    {
+    public function convertFrom(
+        $source,
+        string $targetType,
+        array $convertedChildProperties = [],
+        ?PropertyMappingConfigurationInterface $configuration = null
+    ): string {
         return (string)$source;
     }
 }

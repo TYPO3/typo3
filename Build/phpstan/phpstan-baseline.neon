@@ -941,11 +941,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/AbstractFileFolderConverter.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\IntegerConverter\\:\\:convertFrom\\(\\) should return int\\|TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Error but returns null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/IntegerConverter.php
-
-		-
 			message: "#^Parameter \\#2 \\$key of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfigurationInterface\\:\\:getConfigurationValue\\(\\) expects string, int given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/ObjectConverter.php

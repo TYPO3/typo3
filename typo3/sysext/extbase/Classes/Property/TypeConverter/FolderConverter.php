@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 
 /**
@@ -29,11 +30,10 @@ class FolderConverter extends AbstractFileFolderConverter
     /**
      * @var string
      */
-    protected $expectedObjectType = \TYPO3\CMS\Core\Resource\Folder::class;
+    protected $expectedObjectType = Folder::class;
 
     /**
      * @param string $source
-     * @return \TYPO3\CMS\Core\Resource\Folder
      */
     protected function getOriginalResource($source): ?ResourceInterface
     {

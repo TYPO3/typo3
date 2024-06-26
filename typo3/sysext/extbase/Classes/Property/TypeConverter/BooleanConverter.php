@@ -28,9 +28,14 @@ class BooleanConverter extends AbstractTypeConverter
      * Actually convert from $source to $targetType
      *
      * @param mixed $source
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): bool
-    {
+    public function convertFrom(
+        $source,
+        string $targetType,
+        array $convertedChildProperties = [],
+        ?PropertyMappingConfigurationInterface $configuration = null
+    ): bool {
         return (bool)$source;
     }
 }

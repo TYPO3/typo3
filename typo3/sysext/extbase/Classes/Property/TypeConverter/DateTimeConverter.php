@@ -82,13 +82,15 @@ class DateTimeConverter extends AbstractTypeConverter
      * @param string|int|array $source the string to be converted to a \DateTime object
      * @param string $targetType must be "DateTime"
      * @param array $convertedChildProperties not used currently
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return \DateTime|\TYPO3\CMS\Extbase\Error\Error|null
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
+     * @throws TypeConverterException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ?object
-    {
+    public function convertFrom(
+        $source,
+        string $targetType,
+        array $convertedChildProperties = [],
+        ?PropertyMappingConfigurationInterface $configuration = null
+    ): null|\DateTime|Error {
         $dateFormat = $this->getDefaultDateFormat($configuration);
         if (is_string($source)) {
             $dateAsString = $source;
@@ -156,16 +158,15 @@ class DateTimeConverter extends AbstractTypeConverter
      */
     protected function isDatePartKeysProvided(array $source): bool
     {
-        return isset($source['day']) && ctype_digit($source['day'])
-            && isset($source['month']) && ctype_digit($source['month'])
-            && isset($source['year']) && ctype_digit($source['year']);
+        return isset($source['day'], $source['month'], $source['year']) &&
+            ctype_digit($source['day']) && ctype_digit($source['month']) && ctype_digit($source['year']);
     }
 
     /**
      * Determines the default date format to use for the conversion.
      * If no format is specified in the mapping configuration DEFAULT_DATE_FORMAT is used.
      *
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
+     * @throws InvalidPropertyMappingConfigurationException
      */
     protected function getDefaultDateFormat(PropertyMappingConfigurationInterface $configuration = null): string
     {
@@ -177,7 +178,7 @@ class DateTimeConverter extends AbstractTypeConverter
         if ($dateFormat === null) {
             return self::DEFAULT_DATE_FORMAT;
         }
-        if ($dateFormat !== null && !is_string($dateFormat)) {
+        if (!is_string($dateFormat)) {
             throw new InvalidPropertyMappingConfigurationException('CONFIGURATION_DATE_FORMAT must be of type string, "' . get_debug_type($dateFormat) . '" given', 1307719569);
         }
         return $dateFormat;

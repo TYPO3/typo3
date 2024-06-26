@@ -29,11 +29,14 @@ class IntegerConverter extends AbstractTypeConverter
      * Actually convert from $source to $targetType, in fact a noop here.
      *
      * @param int|string|null $source
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return int|\TYPO3\CMS\Extbase\Error\Error
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
-    {
+    public function convertFrom(
+        $source,
+        string $targetType,
+        array $convertedChildProperties = [],
+        ?PropertyMappingConfigurationInterface $configuration = null
+    ): int|Error|null {
         if ($source === null || (string)$source === '') {
             return null;
         }

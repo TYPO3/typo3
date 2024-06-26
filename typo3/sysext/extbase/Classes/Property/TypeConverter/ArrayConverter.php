@@ -36,11 +36,14 @@ class ArrayConverter extends AbstractTypeConverter
      * If the type converter has a configuration, it can convert non-empty strings, too
      *
      * @param string|array $source
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return array|string
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
-    {
+    public function convertFrom(
+        $source,
+        string $targetType,
+        array $convertedChildProperties = [],
+        ?PropertyMappingConfigurationInterface $configuration = null
+    ): array|string {
         if (!is_string($source)) {
             return $source;
         }
@@ -56,8 +59,7 @@ class ArrayConverter extends AbstractTypeConverter
         if (!is_string($delimiter)) {
             throw new TypeConverterException('No delimiter configured for ' . self::class . ' and non-empty value given.', 1582877555);
         }
-        $source = GeneralUtility::trimExplode($delimiter, $source, $removeEmptyValues, $limit);
 
-        return $source;
+        return GeneralUtility::trimExplode($delimiter, $source, $removeEmptyValues, $limit);
     }
 }

@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+use TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FloatConverterTest extends FunctionalTestCase
@@ -39,5 +41,27 @@ final class FloatConverterTest extends FunctionalTestCase
         self::assertSame(10000.0, $propertyMapper->convert('10E3', 'float'));
         self::assertNull($propertyMapper->convert('string', 'float'));
         self::assertNull($propertyMapper->convert('', 'float'));
+    }
+
+    #[Test]
+    public function configurationIsRespectedOnStringToFloatConversion(): void
+    {
+        $propertyMapper = $this->get(PropertyMapper::class);
+
+        $propertyMappingConfiguration = new PropertyMappingConfiguration();
+        $propertyMappingConfiguration->setTypeConverterOption(
+            FloatConverter::class,
+            FloatConverter::CONFIGURATION_THOUSANDS_SEPARATOR,
+            '.'
+        );
+        $propertyMappingConfiguration->setTypeConverterOption(
+            FloatConverter::class,
+            FloatConverter::CONFIGURATION_DECIMAL_POINT,
+            ','
+        );
+        self::assertSame(
+            1000.01,
+            $propertyMapper->convert('1.000,01', 'float', $propertyMappingConfiguration)
+        );
     }
 }

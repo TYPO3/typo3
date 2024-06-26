@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 /**
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\File.
  *
- * @internal
+ * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 abstract class AbstractFileFolderConverter extends AbstractTypeConverter
 {
@@ -38,10 +38,7 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
      */
     protected $expectedObjectType;
 
-    /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceFactory
-     */
-    protected $fileFactory;
+    protected ResourceFactory $fileFactory;
 
     public function injectFileFactory(ResourceFactory $fileFactory): void
     {
@@ -53,14 +50,13 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
      * built $convertedChildProperties and $configuration.
      *
      * @param string|int $source
-     * @param PropertyMappingConfigurationInterface|null $configuration
      * @throws Exception
      */
     public function convertFrom(
         $source,
         string $targetType,
         array $convertedChildProperties = [],
-        PropertyMappingConfigurationInterface $configuration = null
+        ?PropertyMappingConfigurationInterface $configuration = null
     ): File|FileReference|Folder {
         $object = $this->getOriginalResource($source);
         if (empty($this->expectedObjectType) || !$object instanceof $this->expectedObjectType) {

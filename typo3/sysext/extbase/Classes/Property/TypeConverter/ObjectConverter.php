@@ -46,17 +46,14 @@ class ObjectConverter extends AbstractTypeConverter
 
     protected ContainerInterface $container;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    protected $reflectionService;
+    protected ReflectionService $reflectionService;
 
     public function injectReflectionService(ReflectionService $reflectionService): void
     {
         $this->reflectionService = $reflectionService;
     }
 
-    public function injectContainer(ContainerInterface $container)
+    public function injectContainer(ContainerInterface $container): void
     {
         $this->container = $container;
     }
@@ -81,9 +78,13 @@ class ObjectConverter extends AbstractTypeConverter
      * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getTypeOfChildProperty(string $targetType, string $propertyName, PropertyMappingConfigurationInterface $configuration): string
-    {
-        $configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, self::CONFIGURATION_TARGET_TYPE);
+    public function getTypeOfChildProperty(
+        string $targetType,
+        string $propertyName,
+        PropertyMappingConfigurationInterface $configuration
+    ): string {
+        $configuredTargetType = $configuration->getConfigurationFor($propertyName)
+            ->getConfigurationValue(ObjectConverter::class, self::CONFIGURATION_TARGET_TYPE);
         if ($configuredTargetType !== null) {
             return $configuredTargetType;
         }
@@ -102,7 +103,7 @@ class ObjectConverter extends AbstractTypeConverter
             }
             $property = $classSchema->getProperty($propertyName);
             $primaryCollectionValueType = $property->getPrimaryCollectionValueType();
-            if ($primaryCollectionValueType instanceof Type) {
+            if ($primaryCollectionValueType) {
                 return $methodParameter->getType() . '<' . ($primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType()) . '>';
             }
             return $methodParameter->getType();
@@ -138,8 +139,12 @@ class ObjectConverter extends AbstractTypeConverter
      * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ?object
-    {
+    public function convertFrom(
+        $source,
+        string $targetType,
+        array $convertedChildProperties = [],
+        ?PropertyMappingConfigurationInterface $configuration = null
+    ): ?object {
         $object = $this->buildObject($convertedChildProperties, $targetType);
         foreach ($convertedChildProperties as $propertyName => $propertyValue) {
             $result = ObjectAccess::setProperty($object, $propertyName, $propertyValue);
@@ -162,13 +167,16 @@ class ObjectConverter extends AbstractTypeConverter
      * XCLASS overrides of the target type.
      *
      * @param mixed $source
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
+     * @throws InvalidDataTypeException
+     * @throws InvalidPropertyMappingConfigurationException
      * @throws \InvalidArgumentException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string
-    {
+    public function getTargetTypeForSource(
+        $source,
+        string $originalTargetType,
+        PropertyMappingConfigurationInterface $configuration = null
+    ): string {
         $targetType = $originalTargetType;
 
         if (is_array($source) && array_key_exists('__type', $source)) {
@@ -178,7 +186,7 @@ class ObjectConverter extends AbstractTypeConverter
                 // todo: this is impossible to achieve since this methods is always called via (convert -> doMapping -> getTargetTypeForSource) and convert and doMapping create configuration objects if missing.
                 throw new \InvalidArgumentException('A property mapping configuration must be given, not NULL.', 1326277369);
             }
-            if ($configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, self::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED) !== true) {
+            if ($configuration->getConfigurationValue(ObjectConverter::class, self::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED) !== true) {
                 throw new InvalidPropertyMappingConfigurationException('Override of target type not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED" to TRUE.', 1317050430);
             }
 

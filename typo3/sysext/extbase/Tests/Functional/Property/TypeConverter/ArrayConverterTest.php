@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ArrayConverterTest extends FunctionalTestCase
@@ -31,8 +33,67 @@ final class ArrayConverterTest extends FunctionalTestCase
         $propertyMapper = $this->get(PropertyMapper::class);
 
         self::assertSame([], $propertyMapper->convert([], 'array'));
-
         self::assertSame([], $propertyMapper->convert('', 'array'));
-        // todo: ArrayConverter can only convert empty strings to array. Adjust tests once that has been fixed.
+    }
+
+    #[Test]
+    public function delemiterConfigurationIsRespectedOnStringToArrayConversion(): void
+    {
+        $propertyMapper = $this->get(PropertyMapper::class);
+
+        $propertyMappingConfiguration = new PropertyMappingConfiguration();
+        $propertyMappingConfiguration->setTypeConverterOption(
+            ArrayConverter::class,
+            ArrayConverter::CONFIGURATION_DELIMITER,
+            ','
+        );
+        self::assertSame(
+            ['foo', 'bar', 'baz'],
+            $propertyMapper->convert('foo,bar,baz', 'array', $propertyMappingConfiguration)
+        );
+    }
+
+    #[Test]
+    public function removeEmptyValuesConfigurationIsRespectedOnStringToArrayConversion(): void
+    {
+        $propertyMapper = $this->get(PropertyMapper::class);
+
+        $propertyMappingConfiguration = new PropertyMappingConfiguration();
+        $propertyMappingConfiguration->setTypeConverterOption(
+            ArrayConverter::class,
+            ArrayConverter::CONFIGURATION_DELIMITER,
+            ','
+        );
+        $propertyMappingConfiguration->setTypeConverterOption(
+            ArrayConverter::class,
+            ArrayConverter::CONFIGURATION_REMOVE_EMPTY_VALUES,
+            true
+        );
+        self::assertSame(
+            ['foo', 'bar', 'baz'],
+            $propertyMapper->convert('foo,bar,baz,,,', 'array', $propertyMappingConfiguration)
+        );
+    }
+
+    #[Test]
+    public function limitConfigurationIsRespectedOnStringToArrayConversion(): void
+    {
+        $propertyMapper = $this->get(PropertyMapper::class);
+
+        $propertyMappingConfiguration = new PropertyMappingConfiguration();
+        $propertyMappingConfiguration->setTypeConverterOption(
+            ArrayConverter::class,
+            ArrayConverter::CONFIGURATION_DELIMITER,
+            ','
+        );
+        $propertyMappingConfiguration->setTypeConverterOption(
+            ArrayConverter::class,
+            ArrayConverter::CONFIGURATION_LIMIT,
+            2
+        );
+        self::assertSame(
+            ['foo', 'bar,baz'],
+            $propertyMapper->convert('foo,bar,baz', 'array', $propertyMappingConfiguration)
+        );
     }
 }

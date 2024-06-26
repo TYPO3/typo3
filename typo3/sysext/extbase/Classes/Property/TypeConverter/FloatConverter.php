@@ -41,10 +41,14 @@ class FloatConverter extends AbstractTypeConverter
      * Actually convert from $source to $targetType, by doing a typecast.
      *
      * @param mixed $source
-     * @return float|\TYPO3\CMS\Extbase\Error\Error|null
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
-    {
+    public function convertFrom(
+        $source,
+        string $targetType,
+        array $convertedChildProperties = [],
+        ?PropertyMappingConfigurationInterface $configuration = null
+    ): float|Error|null {
         if ($source === null || (string)$source === '') {
             return null;
         }

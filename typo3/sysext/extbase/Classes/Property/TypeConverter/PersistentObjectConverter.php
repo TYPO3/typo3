@@ -52,10 +52,7 @@ class PersistentObjectConverter extends ObjectConverter
      */
     public const CONFIGURATION_CREATION_ALLOWED = 2;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-     */
-    protected $persistenceManager;
+    protected PersistenceManagerInterface $persistenceManager;
 
     /**
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -86,12 +83,16 @@ class PersistentObjectConverter extends ObjectConverter
      * The type of a property is determined by the reflection service.
      *
      * @param string $targetType
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
+     * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getTypeOfChildProperty($targetType, string $propertyName, PropertyMappingConfigurationInterface $configuration): string
-    {
-        $configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, self::CONFIGURATION_TARGET_TYPE);
+    public function getTypeOfChildProperty(
+        $targetType,
+        string $propertyName,
+        PropertyMappingConfigurationInterface $configuration
+    ): string {
+        $configuredTargetType = $configuration->getConfigurationFor($propertyName)
+            ->getConfigurationValue(PersistentObjectConverter::class, self::CONFIGURATION_TARGET_TYPE);
         if ($configuredTargetType !== null) {
             return $configuredTargetType;
         }
@@ -101,7 +102,7 @@ class PersistentObjectConverter extends ObjectConverter
             throw new InvalidTargetException('Property "' . $propertyName . '" was not found in target object of type "' . $targetType . '".', 1297978366);
         }
         $primaryType = $schema->getProperty($propertyName)->getPrimaryType();
-        if (!$primaryType instanceof Type) {
+        if (!$primaryType) {
             throw NoPropertyTypesException::create($targetType, $propertyName);
         }
 
@@ -120,12 +121,15 @@ class PersistentObjectConverter extends ObjectConverter
      *
      * @param mixed $source
      * @throws \InvalidArgumentException
-     * @return object|null the target type
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
+     * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ?object
-    {
+    public function convertFrom(
+        $source,
+        string $targetType,
+        array $convertedChildProperties = [],
+        ?PropertyMappingConfigurationInterface $configuration = null
+    ): ?object {
         if (is_array($source)) {
             if (
                 class_exists($targetType)
@@ -164,18 +168,22 @@ class PersistentObjectConverter extends ObjectConverter
     /**
      * Handle the case if $source is an array.
      *
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
+     * @throws InvalidPropertyMappingConfigurationException
      */
-    protected function handleArrayData(array $source, string $targetType, array &$convertedChildProperties, PropertyMappingConfigurationInterface $configuration = null): object
-    {
+    protected function handleArrayData(
+        array $source,
+        string $targetType,
+        array &$convertedChildProperties,
+        PropertyMappingConfigurationInterface $configuration = null
+    ): object {
         if (isset($source['__identity'])) {
             $object = $this->fetchObjectFromPersistence($source['__identity'], $targetType);
 
-            if (count($source) > 1 && ($configuration === null || $configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, self::CONFIGURATION_MODIFICATION_ALLOWED) !== true)) {
+            if (count($source) > 1 && ($configuration === null || $configuration->getConfigurationValue(PersistentObjectConverter::class, self::CONFIGURATION_MODIFICATION_ALLOWED) !== true)) {
                 throw new InvalidPropertyMappingConfigurationException('Modification of persistent objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_MODIFICATION_ALLOWED" to TRUE.', 1297932028);
             }
         } else {
-            if ($configuration === null || $configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, self::CONFIGURATION_CREATION_ALLOWED) !== true) {
+            if ($configuration === null || $configuration->getConfigurationValue(PersistentObjectConverter::class, self::CONFIGURATION_CREATION_ALLOWED) !== true) {
                 throw new InvalidPropertyMappingConfigurationException(
                     'Creation of objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_CREATION_ALLOWED" to TRUE',
                     1476044961
@@ -189,11 +197,10 @@ class PersistentObjectConverter extends ObjectConverter
     /**
      * Fetch an object from persistence layer.
      *
-     * @param mixed $identity
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
+     * @throws TargetNotFoundException
+     * @throws InvalidSourceException
      */
-    protected function fetchObjectFromPersistence($identity, string $targetType): object
+    protected function fetchObjectFromPersistence(mixed $identity, string $targetType): object
     {
         if (ctype_digit((string)$identity)) {
             $object = $this->persistenceManager->getObjectByIdentifier($identity, $targetType);
