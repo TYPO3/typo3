@@ -691,6 +691,7 @@ class ExtendedFileUtility extends BasicFileUtility
         // Moving the file
         if ($sourceFileObject instanceof File) {
             try {
+                $sourcePath = $sourceFileObject->getIdentifier();
                 if ($alternativeName !== '') {
                     // Don't allow overwriting existing files, but find a new name
                     $resultObject = $sourceFileObject->moveTo($targetFolderObject, $alternativeName, DuplicationBehavior::RENAME);
@@ -698,8 +699,8 @@ class ExtendedFileUtility extends BasicFileUtility
                     // Don't allow overwriting existing files
                     $resultObject = $sourceFileObject->moveTo($targetFolderObject, null, DuplicationBehavior::CANCEL);
                 }
-                $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::MESSAGE, 'File "{identifier}" moved to "{destination}"', ['identifier' => $sourceFileObject->getIdentifier(), 'destination' => $resultObject->getIdentifier()]);
-                $this->addMessageToFlashMessageQueue('FileUtility.FileMovedTo', [$sourceFileObject->getIdentifier(), $resultObject->getIdentifier()], ContextualFeedbackSeverity::OK);
+                $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::MESSAGE, 'File "{identifier}" moved to "{destination}"', ['identifier' => $sourcePath, 'destination' => $resultObject->getIdentifier()]);
+                $this->addMessageToFlashMessageQueue('FileUtility.FileMovedTo', [$sourcePath, $resultObject->getIdentifier()], ContextualFeedbackSeverity::OK);
             } catch (InsufficientUserPermissionsException $e) {
                 $this->writeLog(SystemLogFileAction::MOVE, SystemLogErrorClassification::USER_ERROR, 'You are not allowed to move files');
                 $this->addMessageToFlashMessageQueue('FileUtility.YouAreNotAllowedToMoveFiles');
