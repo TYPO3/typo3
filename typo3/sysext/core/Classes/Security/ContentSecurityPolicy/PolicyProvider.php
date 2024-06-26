@@ -48,7 +48,7 @@ final class PolicyProvider
     /**
      * Provides the complete, dynamically mutated policy to be used in HTTP responses.
      */
-    public function provideFor(Scope $scope, ServerRequestInterface $request): Policy
+    public function provideFor(Scope $scope, ?ServerRequestInterface $request = null): Policy
     {
         // @todo add policy cache per scope
         $defaultPolicy = new Policy();
