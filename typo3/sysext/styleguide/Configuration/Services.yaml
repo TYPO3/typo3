@@ -63,6 +63,9 @@ services:
         # General type=datetime generator
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetime'
 
+        # Specific type=link generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeLinkFile'
+
         # General type=link generator
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeLink'
 

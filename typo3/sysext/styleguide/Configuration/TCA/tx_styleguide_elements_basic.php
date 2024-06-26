@@ -531,12 +531,12 @@ return [
         ],
         'link_2' => [
             'label' => 'link_2',
-            'description' => 'type=link allowedTypes=file allowedOptions=allowedFileExtensions=png',
+            'description' => 'type=link allowedTypes=file allowedOptions=allowedFileExtensions=jpg,png',
             'config' => [
                 'type' => 'link',
                 'allowedTypes' => ['file'],
                 'appearance' => [
-                    'allowedFileExtensions' => ['png'],
+                    'allowedFileExtensions' => ['jpg', 'png'],
                 ],
             ],
         ],
