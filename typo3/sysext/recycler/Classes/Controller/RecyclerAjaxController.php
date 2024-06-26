@@ -174,7 +174,7 @@ class RecyclerAjaxController
             foreach ($rows as $row) {
                 $pageTitle = $this->getPageTitle((int)$row['pid']);
                 $ownerInformation = $this->recordHistory->getCreationInformationForRecord($table, $row);
-                $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['actiontype'] === 'BE' ? $ownerInformation['userid'] : 0);
+                $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['usertype'] === 'BE' ? $ownerInformation['userid'] : 0);
                 $backendUserName = $this->getBackendUserInformation($ownerUid);
                 $deleteUserUid = $this->recordHistory->getUserIdFromDeleteActionForRecord($table, (int)$row['uid']);
 
