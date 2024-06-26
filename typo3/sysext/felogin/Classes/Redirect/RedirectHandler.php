@@ -200,6 +200,11 @@ class RedirectHandler
             return '';
         }
 
+        // Early return, if redirectReferrer is not enabled in current context (e.g., after a password reset)
+        if (($request->getQueryParams()['tx_felogin_login']['redirectReferrer'] ?? '') === 'off') {
+            return '';
+        }
+
         $referrer = (string)(
             $request->getParsedBody()['referer'] ??
             $request->getQueryParams()['referer'] ??

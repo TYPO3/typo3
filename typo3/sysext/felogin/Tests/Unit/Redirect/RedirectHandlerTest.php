@@ -258,4 +258,21 @@ final class RedirectHandlerTest extends UnitTestCase
         $settings = ['redirectMode' => RedirectMode::REFERRER];
         self::assertEquals($expectedReferrer, $this->subject->getReferrerForLoginForm($request, $settings));
     }
+
+    #[Test]
+    public function getReferrerForLoginFormReturnsNoUrlIfRedirectReferrerIsOff(): void
+    {
+        $serverRequest = (new ServerRequest(
+            '/login',
+            'GET',
+            'php://input',
+            [],
+            ['HTTP_REFERER' => 'https://example.com/page-referrer']
+        ))->withQueryParams(['tx_felogin_login' => ['redirectReferrer' => 'off']])
+            ->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($serverRequest);
+        $this->redirectUrlValidator->expects(self::never())->method('isValid');
+        $settings = ['redirectMode' => RedirectMode::REFERRER];
+        self::assertEquals('', $this->subject->getReferrerForLoginForm($request, $settings));
+    }
 }

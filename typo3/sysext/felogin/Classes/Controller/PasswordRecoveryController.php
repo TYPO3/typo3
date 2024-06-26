@@ -218,7 +218,7 @@ class PasswordRecoveryController extends ActionController
 
         $this->addFlashMessage($this->getTranslation('change_password_done_message'));
 
-        return $this->redirect('login', 'Login', 'felogin');
+        return $this->redirect('login', 'Login', 'felogin', ['redirectReferrer' => 'off']);
     }
 
     /**
