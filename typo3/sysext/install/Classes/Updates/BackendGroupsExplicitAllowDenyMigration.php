@@ -76,6 +76,7 @@ final class BackendGroupsExplicitAllowDenyMigration implements UpgradeWizardInte
         $connection = $this->getConnectionPool()->getConnectionForTable(self::TABLE_NAME);
         $queryBuilder = $this->getPreparedQueryBuilder();
         $result = $queryBuilder->select('uid', 'explicit_allowdeny')->from(self::TABLE_NAME)->executeQuery();
+        $success = true;
         while ($row = $result->fetchAssociative()) {
             $tuples = GeneralUtility::trimExplode(',', (string)$row['explicit_allowdeny'], true);
             $newTuples = [];
@@ -92,6 +93,7 @@ final class BackendGroupsExplicitAllowDenyMigration implements UpgradeWizardInte
                             . ' had explicit DENY set for the table/field/value combination "' . $newTupleString . '".'
                             . ' This is not allowed anymore. This be_groups row needs a manual update to fix access rights.</error>'
                         );
+                        $success = false;
                         continue;
                     }
                     $newTuples[] = $newTupleString;
@@ -108,7 +110,7 @@ final class BackendGroupsExplicitAllowDenyMigration implements UpgradeWizardInte
                 );
             }
         }
-        return true;
+        return $success;
     }
 
     public function setOutput(OutputInterface $output): void
