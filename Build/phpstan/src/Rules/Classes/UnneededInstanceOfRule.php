@@ -34,8 +34,7 @@ class UnneededInstanceOfRule implements Rule
 {
     public function __construct(
         private readonly bool $treatPhpDocTypesAsCertain,
-    ) {
-    }
+    ) {}
 
     public function getNodeType(): string
     {
