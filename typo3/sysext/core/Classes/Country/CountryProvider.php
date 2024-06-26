@@ -17,11 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Country;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Country\Event\BeforeCountriesEvaluatedEvent;
+
 /**
  * A class providing information about all countries.
  *
  * Country data is generated from "Build/Scripts/updateIsoDatabase.php" (which in turn stems from https://github.com/sokil/php-isocodes-db-i18n)
  */
+#[AsAlias('country.provider', public: true)]
+#[Autoconfigure(public: true)]
 class CountryProvider
 {
     // $rawData generated from "Build/Scripts/updateIsoDatabase.php", do not change this directly !!!
@@ -1711,7 +1718,7 @@ class CountryProvider
      */
     private array $countries = [];
 
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         foreach ($this->rawData as $alpha2Code => $countryData) {
             $this->countries[$alpha2Code] = new Country(
@@ -1723,6 +1730,9 @@ class CountryProvider
                 $countryData['official_name'] ?? null,
             );
         }
+        $event = new BeforeCountriesEvaluatedEvent($this->countries);
+        $eventDispatcher->dispatch($event);
+        $this->countries = $event->getCountries();
     }
 
     /**

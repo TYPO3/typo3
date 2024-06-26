@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Core\Country\CountryFilter;
 use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CountryProviderTest extends UnitTestCase
@@ -29,7 +30,7 @@ final class CountryProviderTest extends UnitTestCase
     #[Test]
     public function findAllCountriesReturnsCountryObjects(): void
     {
-        $subject = new CountryProvider();
+        $subject = new CountryProvider(new NoopEventDispatcher());
         $countries = $subject->getAll();
         self::assertGreaterThan(150, count($countries));
     }
@@ -37,7 +38,7 @@ final class CountryProviderTest extends UnitTestCase
     #[Test]
     public function findByIsoCodeReturnsValidObject(): void
     {
-        $subject = new CountryProvider();
+        $subject = new CountryProvider(new NoopEventDispatcher());
         $countryIsoCode2LowerCase = $subject->getByIsoCode('fr');
         $countryIsoCode2 = $subject->getByIsoCode('FR');
         self::assertInstanceOf(Country::class, $countryIsoCode2);
@@ -49,7 +50,7 @@ final class CountryProviderTest extends UnitTestCase
     #[Test]
     public function findByThreeLetterIsoCodeReturnsValidObject(): void
     {
-        $subject = new CountryProvider();
+        $subject = new CountryProvider(new NoopEventDispatcher());
         $countryIsoCode3LowerCase = $subject->getByIsoCode('fra');
         $countryIsoCode3 = $subject->getByIsoCode('FRA');
         $countryIsoCode2 = $subject->getByIsoCode('FR');
@@ -68,7 +69,7 @@ final class CountryProviderTest extends UnitTestCase
     #[Test]
     public function findByFilterReturnsValidObject(int $expectedCount, array $excludedCountries, array $includedCountries): void
     {
-        $subject = new CountryProvider();
+        $subject = new CountryProvider(new NoopEventDispatcher());
         $filter = new CountryFilter();
         $filter
             ->setOnlyCountries($includedCountries)

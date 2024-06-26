@@ -229,10 +229,8 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
     protected function getCountryList(): array
     {
         $filter = new CountryFilter();
-        $filter
-            ->setOnlyCountries($this->arguments['onlyCountries'] ?? [])
+        $filter->setOnlyCountries($this->arguments['onlyCountries'] ?? [])
             ->setExcludeCountries($this->arguments['excludeCountries'] ?? []);
-
         return GeneralUtility::makeInstance(CountryProvider::class)->getFiltered($filter);
     }
 }

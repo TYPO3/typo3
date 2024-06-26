@@ -166,10 +166,6 @@ services:
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['typoscript']
 
-  country.provider:
-    class: TYPO3\CMS\Core\Country\CountryProvider
-    public: true
-
   ## messenger
 
   Symfony\Component\Messenger\Middleware\SendMessageMiddleware:
