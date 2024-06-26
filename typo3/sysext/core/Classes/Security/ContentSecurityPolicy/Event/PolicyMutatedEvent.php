@@ -34,7 +34,7 @@ final class PolicyMutatedEvent implements StoppableEventInterface
 
     public function __construct(
         public readonly Scope $scope,
-        public readonly ServerRequestInterface $request,
+        public readonly ?ServerRequestInterface $request,
         public readonly Policy $defaultPolicy,
         Policy $currentPolicy,
         MutationCollection ...$mutationCollections
