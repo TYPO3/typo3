@@ -2082,6 +2082,99 @@ final class ContentObjectRendererTest extends UnitTestCase
                 '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
                 false,
             ],
+            // @todo documenting the current behavior of allowTags/denyTags=*
+            // @todo probably denyTags should take precedence, which might be breaking
+            'No tags are allowed, using allowTags=* and denyTags=*' => [
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                [
+                    'parseFunc' => '1',
+                    'parseFunc.' => [
+                        'allowTags' => '*',
+                        'denyTags' => '*',
+                    ],
+                ],
+                '&lt;p&gt;&lt;em&gt;Example&lt;/em&gt; &lt;u&gt;underlined&lt;/u&gt; text&lt;/p&gt;',
+                false,
+            ],
+            'Only u tags are allowed, so all others are escaped' => [
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                [
+                    'parseFunc' => '1',
+                    'parseFunc.' => [
+                        'allowTags' => 'u',
+                        'denyTags' => '*',
+                    ],
+                ],
+                '&lt;p&gt;&lt;em&gt;Example&lt;/em&gt; <u>underlined</u> text&lt;/p&gt;',
+                false,
+            ],
+            'No tags are allowed, so all are escaped' => [
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                [
+                    'parseFunc' => '1',
+                    'parseFunc.' => [
+                        'denyTags' => '*',
+                    ],
+                ],
+                '&lt;p&gt;&lt;em&gt;Example&lt;/em&gt; &lt;u&gt;underlined&lt;/u&gt; text&lt;/p&gt;',
+                false,
+            ],
+            'No tags are denied, so all tags are accepted' => [
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                [
+                    'parseFunc' => '1',
+                    'parseFunc.' => [
+                        'allowTags' => 'u',
+                    ],
+                ],
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                false,
+            ],
+            'No tags are allowed, but some are explicitly denied' => [
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                [
+                    'parseFunc' => '1',
+                    'parseFunc.' => [
+                        'denyTags' => 'em',
+                    ],
+                ],
+                '<p>&lt;em&gt;Example&lt;/em&gt; <u>underlined</u> text</p>',
+                false,
+            ],
+            'No tags are allowed or denied - allow everything, do not escape anything' => [
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                [
+                    'parseFunc' => '1',
+                    'parseFunc.' => [
+                        'somethingElse' => '',
+                    ],
+                ],
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                false,
+            ],
+            'All tags are allowed' => [
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                [
+                    'parseFunc' => '1',
+                    'parseFunc.' => [
+                        'allowTags' => '*',
+                    ],
+                ],
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                false,
+            ],
+            'All tags are allowed except a list of unwanted tags' => [
+                '<p><em>Example</em> <u>underlined</u> text</p>',
+                [
+                    'parseFunc' => '1',
+                    'parseFunc.' => [
+                        'allowTags' => '*',
+                        'denyTags' => 'em',
+                    ],
+                ],
+                '<p>&lt;em&gt;Example&lt;/em&gt; <u>underlined</u> text</p>',
+                false,
+            ],
         ];
     }
 
