@@ -8564,6 +8564,12 @@ class DataHandler
             return '';
         }
 
+        foreach (($configuration['items'] ?? []) as $item) {
+            if ($item['value'] === $value) {
+                return $value;
+            }
+        }
+
         if (array_key_exists('default', $configuration)) {
             return $configuration['default'];
         }

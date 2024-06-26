@@ -173,7 +173,7 @@ final class DataHandlerTest extends UnitTestCase
         $oldTimezone = date_default_timezone_get();
         date_default_timezone_set($serverTimezone);
 
-        $output =  $this->subject->_call('checkValueForDatetime', $input, ['type' => 'datetime']);
+        $output = $this->subject->_call('checkValueForDatetime', $input, ['type' => 'datetime']);
 
         // set before the assertion is performed, so it is restored even for failing tests
         date_default_timezone_set($oldTimezone);
@@ -1243,6 +1243,15 @@ final class DataHandlerTest extends UnitTestCase
             ],
             'use default value' => [
                 '', ['default' => 13], true, 13,
+            ],
+            'use empty value if available as option' => [
+                '', [
+                    'items' => [
+                        ['label' => 'labelA', 'value' => 'someValue'],
+                        ['default' => 'default', 'value' => ''],
+                    ],
+                    'default' => 'somevalue',
+                ], false, '',
             ],
         ];
     }
