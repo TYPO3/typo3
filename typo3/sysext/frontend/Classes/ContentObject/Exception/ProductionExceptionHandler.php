@@ -56,7 +56,7 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
      * @param array $contentObjectConfiguration
      * @throws \Exception
      */
-    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = []): string
+    public function handle(\Exception $exception, ?AbstractContentObject $contentObject = null, $contentObjectConfiguration = []): string
     {
         // ImmediateResponseException (and the derived PropagateResponseException) should work similar to
         // exit / die and must therefore not be handled by this ExceptionHandler.
