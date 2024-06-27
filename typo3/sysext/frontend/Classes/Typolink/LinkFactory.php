@@ -111,7 +111,7 @@ class LinkFactory implements LoggerAwareInterface
      * Creates a link result for a given URL (usually something like "19 _blank css-class "testtitle with whitespace" &X=y").
      * Helpful if you want to create any kind of URL (also possible in TYPO3 Backend).
      */
-    public function createUri(string $urlParameter, ContentObjectRenderer $contentObjectRenderer = null): LinkResultInterface
+    public function createUri(string $urlParameter, ?ContentObjectRenderer $contentObjectRenderer = null): LinkResultInterface
     {
         $contentObjectRenderer = $contentObjectRenderer ?? GeneralUtility::makeInstance(ContentObjectRenderer::class);
         return $this->create('', ['parameter' => $urlParameter], $contentObjectRenderer);

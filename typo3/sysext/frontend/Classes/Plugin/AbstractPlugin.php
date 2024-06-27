@@ -224,7 +224,7 @@ class AbstractPlugin
      *
      * @param null $_ unused,
      */
-    public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
+    public function __construct($_ = null, ?TypoScriptFrontendController $frontendController = null)
     {
         trigger_error(
             'AbstractPlugin "pibase" is deprecated since TYPO3 v12.4 and will be removed with v13.0',

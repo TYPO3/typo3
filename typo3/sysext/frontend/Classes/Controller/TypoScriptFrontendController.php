@@ -1069,7 +1069,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string|null $failureReasonCode the error code to be attached (optional), see PageAccessFailureReasons list for details
      * @return array Summary of why page access was not allowed.
      */
-    public function getPageAccessFailureReasons(string $failureReasonCode = null)
+    public function getPageAccessFailureReasons(?string $failureReasonCode = null)
     {
         $output = [];
         if ($failureReasonCode) {
@@ -2465,7 +2465,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param ServerRequestInterface|null $request
      */
-    public function newCObj(ServerRequestInterface $request = null)
+    public function newCObj(?ServerRequestInterface $request = null)
     {
         $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
         $this->cObj->setRequest($request);

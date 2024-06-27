@@ -107,7 +107,7 @@ abstract class AbstractMenuContentObject
     /**
      * @deprecated since v12: Remove property and usages in v13 when TemplateService is removed
      */
-    protected TemplateService|null $tmpl;
+    protected ?TemplateService $tmpl;
 
     /**
      * @var PageRepository
@@ -625,7 +625,7 @@ abstract class AbstractMenuContentObject
      * Builds PageRepository instance without depending on global context, e.g.
      * not automatically overlaying records based on current request language.
      */
-    protected function buildPageRepository(LanguageAspect $languageAspect = null): PageRepository
+    protected function buildPageRepository(?LanguageAspect $languageAspect = null): PageRepository
     {
         // clone global context object (singleton)
         $context = clone GeneralUtility::makeInstance(Context::class);

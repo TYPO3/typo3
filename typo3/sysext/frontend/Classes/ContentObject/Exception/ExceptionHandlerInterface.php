@@ -30,7 +30,7 @@ interface ExceptionHandlerInterface
      * @param array $contentObjectConfiguration
      * @return string
      */
-    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = []);
+    public function handle(\Exception $exception, ?AbstractContentObject $contentObject = null, $contentObjectConfiguration = []);
 
     /**
      * Used to pass the TypoScript configuration to the exception handler

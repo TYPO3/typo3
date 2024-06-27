@@ -410,7 +410,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public const OBJECTTYPE_USER = 2;
 
-    public function __construct(TypoScriptFrontendController $typoScriptFrontendController = null, ContainerInterface $container = null)
+    public function __construct(?TypoScriptFrontendController $typoScriptFrontendController = null, ?ContainerInterface $container = null)
     {
         $this->typoScriptFrontendController = $typoScriptFrontendController;
         $this->container = $container;

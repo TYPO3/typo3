@@ -40,7 +40,7 @@ abstract class AbstractTypolinkBuilder
     protected ContentObjectRenderer $contentObjectRenderer;
     protected ?TypoScriptFrontendController $typoScriptFrontendController = null;
 
-    public function __construct(ContentObjectRenderer $contentObjectRenderer, TypoScriptFrontendController $typoScriptFrontendController = null)
+    public function __construct(ContentObjectRenderer $contentObjectRenderer, ?TypoScriptFrontendController $typoScriptFrontendController = null)
     {
         $this->contentObjectRenderer = $contentObjectRenderer;
         $this->typoScriptFrontendController = $typoScriptFrontendController ?? $GLOBALS['TSFE'] ?? null;

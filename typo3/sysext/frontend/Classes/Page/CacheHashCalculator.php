@@ -33,7 +33,7 @@ class CacheHashCalculator implements SingletonInterface
      *
      * @param CacheHashConfiguration|null $configuration
      */
-    public function __construct(CacheHashConfiguration $configuration = null)
+    public function __construct(?CacheHashConfiguration $configuration = null)
     {
         $this->configuration = $configuration ?? GeneralUtility::makeInstance(CacheHashConfiguration::class);
     }

@@ -39,7 +39,7 @@ class UnableToLinkException extends Exception
      * @param string $linkText [optional]
      * @todo Make the signature strictly typed in TYPO3 v13
      */
-    public function __construct($message = '', $code = 0, \Throwable $previous = null, $linkText = '')
+    public function __construct($message = '', $code = 0, ?\Throwable $previous = null, $linkText = '')
     {
         parent::__construct($message, $code, $previous);
         $this->linkText = $linkText;

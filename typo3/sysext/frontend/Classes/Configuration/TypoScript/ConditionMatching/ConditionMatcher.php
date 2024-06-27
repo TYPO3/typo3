@@ -53,7 +53,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * @todo: Refactor to be properly DI-aware. Get $context injected, but use
      *        setters for pageId and the (two) different rootLines.
      */
-    public function __construct(Context $context = null, int $pageId = null, array $rootLine = null, array $fullRootLine = null)
+    public function __construct(?Context $context = null, ?int $pageId = null, ?array $rootLine = null, ?array $fullRootLine = null)
     {
         trigger_error(
             'The FE condition matcher has been deprecated and will be removed with TYPO3 v13. This logic' .
