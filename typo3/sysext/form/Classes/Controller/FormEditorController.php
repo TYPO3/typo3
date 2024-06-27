@@ -86,7 +86,7 @@ class FormEditorController extends AbstractBackendController
      * @throws PersistenceManagerException
      * @internal
      */
-    public function indexAction(string $formPersistenceIdentifier, string $prototypeName = null): ResponseInterface
+    public function indexAction(string $formPersistenceIdentifier, ?string $prototypeName = null): ResponseInterface
     {
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
             throw new PersistenceManagerException(sprintf('Read "%s" is not allowed', $formPersistenceIdentifier), 1614500662);
@@ -256,7 +256,7 @@ class FormEditorController extends AbstractBackendController
     public function renderFormPageAction(
         FormDefinitionArray $formDefinition,
         int $pageIndex,
-        string $prototypeName = null
+        ?string $prototypeName = null
     ): ResponseInterface {
         $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
         $formDefinition = $formDefinition->getArrayCopy();

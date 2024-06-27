@@ -107,9 +107,9 @@ class TranslationService implements SingletonInterface
      */
     public function translate(
         $key,
-        array $arguments = null,
-        string $locallangPathAndFilename = null,
-        string $language = null,
+        ?array $arguments = null,
+        ?string $locallangPathAndFilename = null,
+        ?string $language = null,
         $defaultValue = ''
     ) {
         $value = null;
@@ -219,7 +219,7 @@ class TranslationService implements SingletonInterface
      */
     public function translateToAllBackendLanguages(
         string $key,
-        array $arguments = null,
+        ?array $arguments = null,
         array $translationFiles = []
     ): array {
         $result = [];
@@ -546,8 +546,8 @@ class TranslationService implements SingletonInterface
      */
     protected function processTranslationChain(
         array $translationKeyChain,
-        string $language = null,
-        array $arguments = null
+        ?string $language = null,
+        ?array $arguments = null
     ) {
         $translatedValue = null;
         foreach ($translationKeyChain as $translationKey) {

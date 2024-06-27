@@ -153,7 +153,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      * @return AbstractFileFolder|Error|null
      * @internal
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         // slot/listener using `FileDumpController` instead of direct public URL in (later) rendering process
         $resourcePublicationSlot = GeneralUtility::makeInstance(ResourcePublicationSlot::class);
@@ -263,7 +263,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      */
     protected function createFileReferenceFromFalFileObject(
         File $file,
-        int $resourcePointer = null
+        ?int $resourcePointer = null
     ): PseudoFileReference {
         $fileReference = $this->resourceFactory->createFileReferenceObject(
             [
@@ -287,7 +287,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      */
     protected function createFileReferenceFromFalFileReferenceObject(
         CoreFileReference $falFileReference,
-        int $resourcePointer = null
+        ?int $resourcePointer = null
     ): PseudoFileReference {
         if ($resourcePointer === null) {
             $fileReference = GeneralUtility::makeInstance(PseudoFileReference::class);
