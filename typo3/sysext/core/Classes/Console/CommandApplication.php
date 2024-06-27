@@ -179,7 +179,7 @@ class CommandApplication implements ApplicationInterface
                 (new \DateTimeImmutable())->setTimestamp($GLOBALS['EXEC_TIME'])
             )
         );
-        $this->context->setAspect('visibility', new VisibilityAspect(true, true));
+        $this->context->setAspect('visibility', new VisibilityAspect(true, true, false, true));
         $this->context->setAspect('workspace', new WorkspaceAspect(0));
         $this->context->setAspect('backend.user', new UserAspect(null));
     }

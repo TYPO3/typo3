@@ -220,9 +220,6 @@ class RootlineUtility
         //        be do-able when the main rootline query switches to a CTE and does not need the cache anymore), OR we
         //        remove the starttime/endtime handling here again, and let consumers sort out timed records on their own,
         //        which would be a pity.
-        // @todo: Bug: The BE uses RootlineUtility as well, and the BE should usually *not* hide scheduled records. However,
-        //        BE currently does *not* set visibility includeScheduledRecords() to true, which probably should be changed
-        //        in a BE middleware. BE *does* init includeHiddenContent() and includeHiddenPages() to true, though.
         // @todo: We could potentially handle ['enablecolumns']['fe_group'] here as well. This however is more work
         //        since we then need two further fields in refindex to track it. Also fe_group is one of those CSV
         //        fields that has "virtual" db connections "-2" and "-1" that don't point to true records. refindex
@@ -234,7 +231,7 @@ class RootlineUtility
         //        executed often. This requires storing the prepared query in runtime cache, and requires switching from
         //        named parameters to positional parameters.
         // @todo: Note the entire thing currently handles only non-CSV relations (there must be a TCA foreign_field or MM),
-        //        CSV alues are not "filtered" and processed regarding hidden, starttime and similar at all. This could be
+        //        CSV values are not "filtered" and processed regarding hidden, starttime and similar at all. This could be
         //        added later, but needs a careful implementation, for instance because of "allowNonIdValues", and combined
         //        "table_uid" in type=group, and fe_group "virtual" -2 fields.
         // @todo: This operation always returns already workspace uids if they exist. It however does *not* return localization

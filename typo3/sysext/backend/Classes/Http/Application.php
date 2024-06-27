@@ -62,6 +62,6 @@ class Application extends AbstractApplication
                 (new \DateTimeImmutable())->setTimestamp($GLOBALS['EXEC_TIME'])
             )
         );
-        $this->context->setAspect('visibility', new VisibilityAspect(true, true));
+        $this->context->setAspect('visibility', new VisibilityAspect(true, true, false, true));
     }
 }
