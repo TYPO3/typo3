@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Domain;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
@@ -40,7 +41,7 @@ final class RecordFactoryTest extends UnitTestCase
             $cacheMock
         );
         $schemaFactory->load(['existing_schema' => ['ctrl' => [], 'columns' => []]]);
-        $subject = new RecordFactory($schemaFactory);
+        $subject = new RecordFactory($schemaFactory, $this->createMock(RecordFieldTransformer::class));
         $subject->createFromDatabaseRow('foo', ['foo' => 1]);
     }
 
@@ -62,7 +63,7 @@ final class RecordFactoryTest extends UnitTestCase
                 'types' => ['bar' => ['showitem' => 'type']],
             ],
         ]);
-        $subject = new RecordFactory($schemaFactory);
+        $subject = new RecordFactory($schemaFactory, $this->createMock(RecordFieldTransformer::class));
         $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'bar']);
         self::assertEquals('bar', $recordObject->toArray()['type']);
     }
@@ -85,7 +86,7 @@ final class RecordFactoryTest extends UnitTestCase
                 'types' => ['foo' => ['showitem' => 'foo']],
             ],
         ]);
-        $subject = new RecordFactory($schemaFactory);
+        $subject = new RecordFactory($schemaFactory, $this->createMock(RecordFieldTransformer::class));
         $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'foo', 'foo' => 'fooValue', 'bar' => 'barValue']);
         self::assertFalse($recordObject->offsetExists('bar'));
         self::assertTrue($recordObject->offsetExists('foo'));

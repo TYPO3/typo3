@@ -1051,6 +1051,7 @@ class BackendUtility
      * @param int|string $size Optional: $size is [w]x[h] of the thumbnail. 64 is default.
      * @param bool $linkInfoPopup Whether to wrap with a link opening the info popup
      * @return string Thumbnail image tag.
+     * @todo Unused in Core deprecate it!
      */
     public static function thumbCode(
         $row,

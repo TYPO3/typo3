@@ -46,7 +46,7 @@ final class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator im
             'label' => 'fal_1 selicon_field',
             'config' => [
                 'type' => 'file',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
     ];

@@ -1,0 +1,9 @@
+"test_record"
+,"uid","pid","title","record_collection"
+,1,1,"Record 1",0
+,2,1,"Record 2",0
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"f36643910656b91d77a0640a92dec881","tt_content",260,"typo3tests_contentelementb_select_foreign",0,0,"test_record",1
+,"1cac14244432b984e356dd3a7a1e6cbf","tt_content",260,"typo3tests_contentelementb_select_foreign_multiple",0,0,"test_record",1
+,"5e6ed22d795e28d598703907f1d7574f","tt_content",260,"typo3tests_contentelementb_select_foreign_multiple",1,0,"test_record",2

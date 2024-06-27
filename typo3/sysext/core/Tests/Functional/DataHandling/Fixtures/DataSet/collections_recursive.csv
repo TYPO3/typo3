@@ -1,0 +1,17 @@
+"typo3tests_contentelementb_collection_recursive"
+,"uid","pid","fieldA","collection_inner","foreign_table_parent_uid"
+,1,1,"lorem foo bar A",2,260
+,2,1,"lorem foo bar A2",0,260
+"collection_inner"
+,"uid","pid","fieldB","foreign_table_parent_uid"
+,1,1,"lorem foo bar B",1
+,2,1,"lorem foo bar B2",1
+"tt_content"
+,"uid","pid","t3ver_oid","t3ver_wsid","typo3tests_contentelementb_collection_recursive","CType"
+,1,1,0,0,2,"typo3tests_contentelementb"
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"bf519eea10aaf2c85976a6622a7ed88b","tt_content",260,"typo3tests_contentelementb_collection_recursive",0,0,"typo3tests_contentelementb_collection_recursive",1
+,"e8e5539ae8691d1045d5beca3ca7b480","tt_content",260,"typo3tests_contentelementb_collection_recursive",1,0,"typo3tests_contentelementb_collection_recursive",2
+,"7142cce84a4d688bca9a30075a7aea7d","typo3tests_contentelementb_collection_recursive",1,"collection_inner",0,0,"collection_inner",1
+,"b40eeb513311e4f465d9455466cfd410","typo3tests_contentelementb_collection_recursive",1,"collection_inner",1,0,"collection_inner",2

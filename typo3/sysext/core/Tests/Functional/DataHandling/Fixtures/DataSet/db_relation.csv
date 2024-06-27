@@ -1,0 +1,9 @@
+"pages"
+,"uid","pid","title","t3ver_oid","t3ver_wsid","hidden"
+,1906,1,"Page 1",0,0,0
+"tt_content"
+,"uid","pid","t3ver_oid","t3ver_wsid","typo3tests_contentelementb_pages_relation"
+,260,1,0,0,"1"
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"367a388427279ea5b203c37fbfb6b71c","tt_content",260,"typo3tests_contentelementb_pages_relation",0,0,"pages",1906

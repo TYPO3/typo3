@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Frontend\Typolink;
 /**
  * This class represents an object containing the resolved parameters of a typolink
  */
-readonly class TypolinkParameter implements \JsonSerializable
+final readonly class TypolinkParameter implements \JsonSerializable
 {
     public function __construct(
         public string $url = '',

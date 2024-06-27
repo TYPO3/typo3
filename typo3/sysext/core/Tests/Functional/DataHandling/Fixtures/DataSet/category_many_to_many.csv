@@ -1,0 +1,18 @@
+"sys_category"
+,"uid","pid","title","t3ver_oid","t3ver_wsid"
+,2,1,"Category 1",0,0
+,11,1,"Category 2",0,0
+,12,1,"Category 1 ws",2,1
+,13,1,"Category 2 ws",11,1
+"sys_category_record_mm",
+,"uid_local","uid_foreign","tablenames","fieldname","sorting"
+,2,260,"tt_content","typo3tests_contentelementb_categories_mm",1
+,11,260,"tt_content","typo3tests_contentelementb_categories_mm",0
+,12,263,"tt_content","typo3tests_contentelementb_categories_mm",2
+,13,263,"tt_content","typo3tests_contentelementb_categories_mm",1
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid","ref_field","ref_sorting"
+,"2c5724d09ec962d1e2f91f95b8c09aca","sys_category",2,"items",1,0,"tt_content",260,"typo3tests_contentelementb_categories_mm",1
+,"92c238672948a46154e0d92e554863d8","sys_category",11,"items",0,0,"tt_content",260,"typo3tests_contentelementb_categories_mm",2
+,"9639b2368a6e342fb05b6973bf0d4e9b","sys_category",12,"items",0,1,"tt_content",263,"typo3tests_contentelementb_categories_mm",2
+,"aca02beed00d6e3f32efe78945bc9d63","sys_category",13,"items",0,1,"tt_content",263,"typo3tests_contentelementb_categories_mm",1

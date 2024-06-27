@@ -453,7 +453,7 @@ class DataHandlerHook
         if ($fieldInformation->isType(TableColumnType::INLINE) && !$fieldInformation->isMovingChildrenEnabled()) {
             return;
         }
-        if ($fieldInformation->getRelationshipType() !== RelationshipType::ForeignField && $fieldInformation->getRelationshipType() !== RelationshipType::List) {
+        if (!$fieldInformation->getRelationshipType()->isSingularRelationship()) {
             return;
         }
         $configuration = $fieldInformation->getConfiguration();
@@ -892,7 +892,7 @@ class DataHandlerHook
      */
     protected function version_swap_processFields($tableName, array $configuration, array $liveData, array $versionData, DataHandler $dataHandler)
     {
-        if (RelationshipType::fromTcaConfiguration($configuration) !== RelationshipType::ForeignField) {
+        if (RelationshipType::fromTcaConfiguration($configuration) !== RelationshipType::OneToMany) {
             return;
         }
         $foreignTable = $configuration['foreign_table'];

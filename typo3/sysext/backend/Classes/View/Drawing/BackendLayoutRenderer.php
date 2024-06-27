@@ -74,7 +74,7 @@ class BackendLayoutRenderer
                         // @todo: ideally we hand in the record object into the GridColumnItem in the future
                         if (!$recordIdentityMap->hasIdentifier('tt_content', (int)($contentRecord['uid'] ?? null))) {
                             try {
-                                $recordObject = $this->recordFactory->createFromDatabaseRow('tt_content', $contentRecord);
+                                $recordObject = $this->recordFactory->createResolvedRecordFromDatabaseRow('tt_content', $contentRecord);
                                 $recordIdentityMap->add($recordObject);
                             } catch (UndefinedSchemaException) {
                             }

@@ -1,0 +1,9 @@
+"test_record"
+,"uid","pid","title"
+,1,1,"Record 1"
+"tt_content"
+,"uid","pid","t3ver_oid","t3ver_wsid","typo3tests_contentelementb_select_one_to_one"
+,260,1,0,0,"1"
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"f36643910656b91d77a0640a92dec881","tt_content",260,"typo3tests_contentelementb_select_one_to_one",0,0,"test_record",1

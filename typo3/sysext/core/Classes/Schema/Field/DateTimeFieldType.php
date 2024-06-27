@@ -37,6 +37,11 @@ final readonly class DateTimeFieldType extends AbstractFieldType implements Fiel
         return $this->configuration['dbtype'] ?? null;
     }
 
+    public function isNullable(): bool
+    {
+        return (bool)($this->configuration['nullable'] ?? false);
+    }
+
     public static function __set_state(array $state): self
     {
         return new self(...$state);

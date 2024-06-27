@@ -45,7 +45,7 @@ return [
             'config' => [
                 'type' => 'file',
                 'allowed' => 'common-image-types',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'appearance' => [
                     'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
                 ],

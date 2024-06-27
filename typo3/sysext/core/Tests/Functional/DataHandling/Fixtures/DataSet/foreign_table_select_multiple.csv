@@ -1,0 +1,14 @@
+"pages"
+,"uid","pid","title","doktype"
+,2,1,"Record Storage",254
+"test_record"
+,"uid","pid","title","record_collection"
+,1,2,"Record 1",1
+"record_collection"
+,"uid","pid","text","foreign_table_parent_uid",
+,1,2,"Collection 1",1
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"1cac14244432b984e356dd3a7a1e6cbf","tt_content",260,"typo3tests_contentelementb_select_foreign_multiple",0,0,"test_record",1
+,"493dc67b404141c0ca3aa1b43409647c","tt_content",260,"typo3tests_contentelementb_select_foreign_multiple",1,0,"test_record",1
+,"90e9e109fbcd06ef38430673574ca426","test_record",1,"record_collection",0,0,"record_collection",1

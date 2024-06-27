@@ -32,7 +32,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'size' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'allowed' => 'sys_file',
                 'hideSuggest' => true,
             ],

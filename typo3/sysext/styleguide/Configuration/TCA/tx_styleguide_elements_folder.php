@@ -39,11 +39,11 @@ return [
             ],
         ],
         'folder_3' => [
-            'label' => 'folder_3 maxitems=1',
+            'label' => 'folder_3 relationship=manyToOne',
             'description' => 'field description',
             'config' => [
                 'type' => 'folder',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'size' => 1,
             ],
         ],

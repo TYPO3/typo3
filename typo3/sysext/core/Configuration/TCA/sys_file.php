@@ -118,7 +118,7 @@ return [
                 'foreign_field' => 'file',
                 'size' => 1,
                 'minitems' => 1,
-                'maxitems' => 1,
+                'relationship' => 'oneToOne',
             ],
         ],
     ],

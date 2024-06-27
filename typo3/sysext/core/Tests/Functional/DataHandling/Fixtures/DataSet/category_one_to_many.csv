@@ -1,0 +1,8 @@
+"sys_category"
+,"uid","pid","title"
+,2,1,"Category 1"
+,11,1,"Category 2"
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid","ref_field","ref_sorting"
+,"41d028c84304886e4e2e2e8800297890","tt_content",260,"typo3tests_contentelementb_categories_1m",0,0,"sys_category",2,"",0
+,"448bd2548af7b53f1ce3da31153fae47","tt_content",260,"typo3tests_contentelementb_categories_1m",1,0,"sys_category",11,"",0

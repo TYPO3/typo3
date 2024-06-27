@@ -1,0 +1,17 @@
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","sorting_foreign","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid"
+,2161,1,1,260,"tt_content","image",1,0,0,0,0
+,2162,1,1,260,"tt_content","image",2,0,0,0,0
+,2163,1,1,260,"tt_content","media",1,0,0,0,0
+,2164,1,1,260,"tt_content","media",2,0,0,0,0
+,2165,1,1,260,"tt_content","assets",1,0,0,0,0
+"sys_file",,,,,,,,,,,,,,,,,,,
+,"uid","pid","type","storage","identifier","extension","mime_type","name","sha1","size","creation_date","modification_date","missing","metadata","identifier_hash","folder_hash","last_indexed"
+,1,0,2,1,"/kasper-skarhoj1.jpg","jpg","image/jpeg","kasper-skarhoj1.jpg","05d8c6dda534a0b9e7023c3031e60e4b49c3da40",39037,1677330452,1658395918,0,0,"98576a90d58d51fcfe91c41f4c571fd600e1190e","42099b4af021e53fd8fd4e056c2568d7c2e3ffa8",0
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"01df57e9d30506cb7ec9cd2724b985eb","tt_content",260,"image",0,0,"sys_file_reference",2161
+,"1cac14244432b984e356dd3a7a1e6cbf","tt_content",260,"image",0,0,"sys_file_reference",2162
+,"bd99dcda6d449ad66d1be20499f31056","tt_content",260,"media",0,0,"sys_file_reference",2163
+,"3032602f676415aee093600bb17a3fd6","tt_content",260,"media",0,0,"sys_file_reference",2164
+,"2fe787ec710ceeb6470cb3da40c66f81","tt_content",260,"assets",0,0,"sys_file_reference",2165

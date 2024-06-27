@@ -44,7 +44,7 @@ final class RelationMap
                         $fromFieldName,
                         $toTable,
                         $fieldConfig['MM'],
-                        $fieldConfig['MM_opposite'] ?? null,
+                        $fieldConfig['MM_opposite_field'] ?? null,
                         $flexPointer
                     );
                 } else {
@@ -58,10 +58,10 @@ final class RelationMap
                     $fromFieldName,
                     $fieldConfig['foreign_table'],
                     $fieldConfig['MM'],
-                    $fieldConfig['MM_opposite'] ?? null,
+                    $fieldConfig['MM_opposite_field'] ?? null,
                     $flexPointer
                 );
-            } elseif (isset($fieldConfig['foreign_table']) && isset($fieldConfig['foreign_field'])) {
+            } elseif (isset($fieldConfig['foreign_table'], $fieldConfig['foreign_field'])) {
                 $this->addActiveRelationWithField(
                     $fromTable,
                     $fromFieldName,
@@ -81,12 +81,12 @@ final class RelationMap
         }
     }
 
-    protected function addMMRelation(string $fromTable, string $fromField, string $toTable, string $mm, ?string $mmOpposite = null, ?string $flexPointer = null): void
+    protected function addMMRelation(string $fromTable, string $fromField, string $toTable, string $mm, ?string $mmOppositeField = null, ?string $flexPointer = null): void
     {
         $this->relations[$fromTable][$fromField][] = [
             'target' => $toTable,
             'mm' => $mm,
-            'mmOpposite' => $mmOpposite,
+            'mmOppositeField' => $mmOppositeField,
             'flexPointer' => $flexPointer,
         ];
     }
@@ -111,21 +111,14 @@ final class RelationMap
     /**
      * @return ActiveRelation[]
      */
-    public function getActiveRelations(string $tableName, ?string $fieldName = null, ?string $flexPointer = null): array
+    public function getActiveRelations(string $tableName, string $fieldName): array
     {
-        if ($fieldName === null) {
-            $relations = [];
-            foreach ($this->relations[$tableName] as $fieldRelations) {
-                $relations = array_merge($relations, $fieldRelations);
-            }
-            return array_map([$this, 'makeActiveRelation'], $relations);
-        }
         return array_map([$this, 'makeActiveRelation'], $this->relations[$tableName][$fieldName] ?? []);
     }
 
     protected function makeActiveRelation(array $relation): ActiveRelation
     {
-        return new ActiveRelation($relation['target'], $relation['targetField'] ?? null);
+        return new ActiveRelation($relation['mm'] ?? $relation['target'], $relation['mmOppositeField'] ?? $relation['targetField'] ?? null);
     }
 
     /**

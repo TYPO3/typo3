@@ -22,9 +22,15 @@ namespace TYPO3\CMS\Core\Schema;
  */
 enum RelationshipType: string
 {
-    // The reference to the parent is stored in a pointer field in the child record
-    // Typically used when 'foreign_field' is set
-    case ForeignField = 'field';
+    // A direct relation, e.g. sys_file.metadata => sys_file_metadata
+    case OneToOne = '1:1';
+
+    // A record with active relations, e.g. inline elements blog_article.comments => comment. The reference
+    // to the left side is stored in a pointer field in the right side. Typically used when 'foreign_field' is set.
+    case OneToMany = '1:n';
+
+    // One item is selected on the active site, e.g. be_users.avatar => file, while file can be selected by any user
+    case ManyToOne = 'n:1';
 
     // Regular MM intermediate table is used to store data
     case ManyToMany = 'mm';
@@ -32,10 +38,7 @@ enum RelationshipType: string
     // An item list (separated by comma) is stored (like select type is doing)
     case List = 'list';
 
-    // Do we really need this?
-    // @todo check if we need this
-    case Static = 'static';
-
+    // Type can not be defined
     case Undefined = '';
 
     public static function fromTcaConfiguration(array $configuration): self
@@ -46,18 +49,36 @@ enum RelationshipType: string
         if (isset($configuration['MM'])) {
             return self::ManyToMany;
         }
+        if (isset($configuration['relationship'])) {
+            return match ($configuration['relationship']) {
+                'oneToOne' => self::OneToOne,
+                'oneToMany' => self::OneToMany,
+                'manyToOne' => self::ManyToOne,
+                default => throw new \UnexpectedValueException('Invalid relationship type: ' . $configuration['relationship'], 1724661829),
+            };
+        }
         if (isset($configuration['foreign_field'])) {
-            return self::ForeignField;
+            return self::OneToMany;
         }
         if (isset($configuration['foreign_table'])) {
+            // ManyToOne (as with `renderType=selectSingle`) is
+            // handled by `relationship` configuration above.
+            // See `TcaPreparation::configureSelectSingle()`.
             return self::List;
         }
         if (($configuration['type'] ?? '') === 'group') {
             return self::List;
         }
-        if (($configuration['type'] ?? '') === 'select') {
-            return self::Static;
-        }
         return self::Undefined;
+    }
+
+    public function isToOne(): bool
+    {
+        return in_array($this, [self::OneToOne, self::ManyToOne], true);
+    }
+
+    public function isSingularRelationship(): bool
+    {
+        return in_array($this, [self::OneToOne, self::ManyToOne, self::OneToMany, self::List], true);
     }
 }

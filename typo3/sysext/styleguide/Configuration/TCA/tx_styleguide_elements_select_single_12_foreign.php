@@ -28,7 +28,7 @@ return [
             'config' => [
                 'type' => 'file',
                 'allowed' => 'common-media-types',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
     ],

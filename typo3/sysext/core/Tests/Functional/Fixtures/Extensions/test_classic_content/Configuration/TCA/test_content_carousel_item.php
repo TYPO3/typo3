@@ -51,7 +51,7 @@ return [
             'label' => 'Image',
             'config' => [
                 'type' => 'file',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
     ],

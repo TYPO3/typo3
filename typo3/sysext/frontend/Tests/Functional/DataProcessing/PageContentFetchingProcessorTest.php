@@ -81,6 +81,7 @@ final class PageContentFetchingProcessorTest extends FunctionalTestCase
         $body = (string)$response->getBody();
         self::assertStringContainsString('Welcome to ACME guitars', $body);
         self::assertStringContainsString('Carousel Items will show up: 2', $body);
+        self::assertStringContainsString('Meet us at Guitar Brussels in 2035', $body);
         self::assertStringContainsString('Great to see you here', $body);
         self::assertStringContainsString('If you read this you are at the end.', $body);
     }

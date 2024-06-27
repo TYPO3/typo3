@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
-use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Frontend\Content\ContentSlideMode;
 use TYPO3\CMS\Frontend\Content\RecordCollector;
@@ -53,7 +52,6 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
     public function __construct(
         protected RecordCollector $recordCollector,
         protected PageLayoutResolver $pageLayoutResolver,
-        protected RecordIdentityMap $recordIdentityMap,
     ) {}
 
     public function process(
@@ -105,8 +103,7 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
                     'orderBy' => 'colPos, sorting',
                 ],
                 ContentSlideMode::None,
-                $cObj,
-                $this->recordIdentityMap
+                $cObj
             );
             // 1b. Sort the records into the contentArea they belong to
             foreach ($flatRecords as $recordToSort) {
@@ -125,8 +122,7 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
                     'orderBy' => 'sorting',
                 ],
                 ContentSlideMode::tryFrom($contentAreaData['slideMode'] ?? null),
-                $cObj,
-                $this->recordIdentityMap
+                $cObj
             );
             $contentAreaData['records'] = $records;
             $contentAreaName = $contentAreaData['identifier'];

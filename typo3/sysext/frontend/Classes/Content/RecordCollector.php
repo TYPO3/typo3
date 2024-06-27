@@ -26,14 +26,16 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 readonly class RecordCollector
 {
-    public function __construct(protected RecordFactory $recordFactory) {}
+    public function __construct(
+        protected RecordFactory $recordFactory,
+        protected RecordIdentityMap $recordIdentityMap
+    ) {}
 
     public function collect(
         string $table,
         array $select,
         ContentSlideMode $slideMode,
-        ContentObjectRenderer $contentObjectRenderer,
-        ?RecordIdentityMap $recordIdentityMap = null,
+        ContentObjectRenderer $contentObjectRenderer
     ): array {
         $slideCollectReverse = false;
         $collect = false;
@@ -59,12 +61,12 @@ readonly class RecordCollector
         do {
             $recordsOnPid = $contentObjectRenderer->getRecords($table, $select);
             $recordsOnPid = array_map(
-                function ($record) use ($recordIdentityMap, $table) {
-                    if ($recordIdentityMap !== null && $recordIdentityMap->hasIdentifier($table, (int)$record['uid'])) {
-                        return $recordIdentityMap->findByIdentifier($table, (int)$record['uid']);
+                function ($record) use ($table) {
+                    if ($this->recordIdentityMap->hasIdentifier($table, (int)$record['uid'])) {
+                        return $this->recordIdentityMap->findByIdentifier($table, (int)$record['uid']);
                     }
-                    $obj = $this->recordFactory->createFromDatabaseRow($table, $record);
-                    $recordIdentityMap?->add($obj);
+                    $obj = $this->recordFactory->createResolvedRecordFromDatabaseRow($table, $record);
+                    $this->recordIdentityMap->add($obj);
                     return $obj;
                 },
                 $recordsOnPid

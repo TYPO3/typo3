@@ -578,7 +578,7 @@ class ReferenceIndex
                 $itemArray = $fieldRelations['itemArray'];
                 if ($field->isType(TableColumnType::INLINE, TableColumnType::FILE)
                     && $field instanceof RelationalFieldTypeInterface
-                    && ($field->getRelationshipType() === RelationshipType::List || $field->getRelationshipType() === RelationshipType::ForeignField)
+                    && $field->getRelationshipType()->isSingularRelationship()
                 ) {
                     // RelationHandler does not return info on hidden, starttime, endtime for inline non-MM, yet. Add this now.
                     // @todo: Refactor RelationHandler / PlainDataResolver to (optionally?) return full child row record

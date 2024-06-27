@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -42,7 +43,8 @@ final class FluidBasedContentPreviewRenderer implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        protected readonly FlexFormService $flexFormService
+        protected readonly FlexFormService $flexFormService,
+        protected readonly RecordFactory $recordFactory,
     ) {}
 
     #[AsEventListener('typo3-backend/fluid-preview/content')]
@@ -89,6 +91,7 @@ final class FluidBasedContentPreviewRenderer implements LoggerAwareInterface
             if ($table === 'tt_content' && !empty($row['pi_flexform'])) {
                 $view->assign('pi_flexform_transformed', $this->flexFormService->convertFlexFormContentToArray($row['pi_flexform']));
             }
+            $view->assign('record', $this->recordFactory->createResolvedRecordFromDatabaseRow($table, $row));
             return $view->render();
         } catch (\Exception $e) {
             $this->logger->warning('The backend preview for content element {uid} can not be rendered using the Fluid template file "{file}"', [

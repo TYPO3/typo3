@@ -54,7 +54,7 @@ return [
                 'foreign_table' => 'tx_parentchildtranslation_domain_model_squeeze',
                 'foreign_table_where' => 'AND {#tx_parentchildtranslation_domain_model_squeeze}.{#sys_language_uid} IN (0,-1)',
                 'foreign_field' => 'parent',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'default' => 0,
             ],
         ],

@@ -47,6 +47,7 @@ readonly class TcaPreparation
         $tca = $this->configureEmailSoftReferences($tca);
         $tca = $this->configureLinkSoftReferences($tca);
         $tca = $this->configureSelectSingle($tca);
+        $tca = $this->configureRelationshipToOne($tca);
         return $tca;
     }
 
@@ -330,7 +331,12 @@ readonly class TcaPreparation
     }
 
     /**
-     * Add "'maxitems' => 1" to all "'type' => 'select'" column fields with "'renderType' => 'selectSingle'".
+     * Add "'relationship' for TCA type "select" fields, having "selectSingle" set as renderType and are
+     * pointing to a "foreign_table". Depending on further configuration, this will set the "relationship"
+     * to either "manyToMany" (in case "MM" is set) or to "manyToOne".
+     * Already defined "relationship" is not overwritten!
+     *
+     * This is mainly done to prevent checks on the renderType, which should be avoided.
      */
     protected function configureSelectSingle(array $tca): array
     {
@@ -339,11 +345,40 @@ readonly class TcaPreparation
                 continue;
             }
             foreach ($tableDefinition['columns'] as &$fieldConfig) {
-                if (($fieldConfig['config']['type'] ?? null) === 'select' && ($fieldConfig['config']['renderType'] ?? null) === 'selectSingle') {
-                    // Hard set/override: 'maxitems' to 1, since selectSingle - as the name suggests - only
-                    // allows a single item to be selected. Setting this config option allows to prevent
-                    // further checks for the renderType, which should be avoided.
-                    // @todo This should be solved by using a dedicated TCA type for selectSingle instead.
+                if (($fieldConfig['config']['type'] ?? null) !== 'select'
+                    || ($fieldConfig['config']['renderType'] ?? null) !== 'selectSingle'
+                    || !isset($fieldConfig['config']['foreign_table'])
+                    || isset($fieldConfig['config']['relationship'])
+                ) {
+                    continue;
+                }
+
+                if (isset($fieldConfig['config']['MM'])) {
+                    $fieldConfig['config']['relationship'] = 'manyToMany';
+                } else {
+                    $fieldConfig['config']['relationship'] = 'manyToOne';
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Add "'maxitems' => 1" to all relation type column fields with 'relationship' set to 'oneToOne' or 'manyToOne'.
+     */
+    protected function configureRelationshipToOne(array $tca): array
+    {
+        foreach ($tca as &$tableDefinition) {
+            if (!is_array($tableDefinition['columns'] ?? null)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as &$fieldConfig) {
+                $type = $fieldConfig['config']['type'] ?? null;
+                if (in_array($type, ['select', 'inline', 'group', 'folder', 'file'], true)
+                    && in_array($fieldConfig['config']['relationship'] ?? null, ['oneToOne', 'manyToOne'], true)
+                ) {
+                    // Hard set/override: 'maxitems' to 1, since relationship [x]ToOne - as the name suggests -
+                    // only allows a single item to be selected.
                     $fieldConfig['config']['maxitems'] = 1;
                 }
             }

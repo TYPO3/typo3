@@ -34,6 +34,10 @@ final class RelationshipTypeTest extends UnitTestCase
             ['config' => []],
             RelationshipType::Undefined,
         ];
+        yield 'detect select as static list - this is no relation => undefined' => [
+            ['type' => 'select'],
+            RelationshipType::Undefined,
+        ];
         yield 'use MM if given' => [
             ['type' => 'text', 'config' => ['type' => 'text', 'MM' => 1]],
             RelationshipType::ManyToMany,
@@ -45,10 +49,6 @@ final class RelationshipTypeTest extends UnitTestCase
         yield 'detect group in main level' => [
             ['type' => 'group'],
             RelationshipType::List,
-        ];
-        yield 'detect select as static list' => [
-            ['type' => 'select'],
-            RelationshipType::Static,
         ];
         yield 'detect select with MM' => [
             ['type' => 'select', 'MM' => true],
@@ -64,7 +64,15 @@ final class RelationshipTypeTest extends UnitTestCase
         ];
         yield 'detect inline with foreign field' => [
             ['type' => 'inline', 'foreign_table' => 'sys_file_reference', 'foreign_field' => 'uid_foreign'],
-            RelationshipType::ForeignField,
+            RelationshipType::OneToMany,
+        ];
+        yield 'detect relationship set to "oneToOne"' => [
+            ['type' => 'select', 'foreign_table' => 'sys_file_metadata', 'relationship' => 'oneToOne'],
+            RelationshipType::OneToOne,
+        ];
+        yield 'detect relationship set to "manyToOne"' => [
+            ['type' => 'group', 'allowed' => 'pages', 'relationship' => 'manyToOne'],
+            RelationshipType::ManyToOne,
         ];
         yield 'subarray key overloads main level key' => [
             ['type' => 'group', 'config' => ['type' => 'text']],

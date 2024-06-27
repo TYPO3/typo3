@@ -103,7 +103,7 @@ return [
                 'type' => 'group',
                 'allowed' => 'tx_styleguide_staticdata',
                 'size' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
         'group_db_5' => [
@@ -127,7 +127,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'allowed' => 'pages',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'minitems' => 0,
                 'size' => 1,
                 'suggestOptions' => [

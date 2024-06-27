@@ -1,0 +1,13 @@
+"test_record"
+,"uid","pid","title","record_collection"
+,1,1,"Record 1",1
+,2,1,"Record 2",1
+"record_collection"
+,"uid","pid","text","foreign_table_parent_uid",
+,3,1,"Collection 1",1
+,2,1,"Collection 2",2,
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"f36643910656b91d77a0640a92dec881","tt_content",260,"typo3tests_contentelementb_select_foreign",0,0,"test_record",1
+,"90e9e109fbcd06ef38430673574ca426","test_record",1,"record_collection",0,0,"record_collection",3
+,"e933eac5cddb5176f87431f03c78e18c","test_record",2,"record_collection",0,0,"record_collection",2

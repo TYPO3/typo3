@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Domain;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Domain\Record\LanguageInfo;
 use TYPO3\CMS\Core\Domain\Record\SystemProperties;
@@ -32,10 +34,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
- * Creates record objects out of TCA-based database rows,
- * by evaluating the TCA columns, and splits everything which is not a declared column
- * for a TCA type. This is usually the case when a TCA table has a 'typeField' defined,
- * such as "pages", "be_users" and "tt_content".
+ * Creates record objects out of TCA-based database rows by evaluating the TCA columns and splitting
+ * everything which is not a declared column for a TCA type. This is usually the case when a TCA table
+ * has a 'typeField' defined, such as "pages", "be_users" and "tt_content".
+ *
+ * In addition, the RecordFactory can create "Resolved records" by utilizing the RecordFieldTransformer.
+ * A "Resolved record" is checked for the actual type (TCA field column type) and is then resolved to
+ * - a relation (records, files or folders - wrapped in collections)
+ * - an exploded list (e.g. static select)
+ * - a FlexForm field
+ * - a DateTime field.
+ *
+ * This means that the field value of a "Resolved Record" is expanded to the actual types (Date objects etc.)
  *
  * @internal not part of TYPO3 Core API yet.
  */
@@ -43,14 +53,77 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 readonly class RecordFactory
 {
     public function __construct(
-        protected TcaSchemaFactory $schemaFactory
+        protected TcaSchemaFactory $schemaFactory,
+        protected RecordFieldTransformer $fieldTransformer,
     ) {}
 
     /**
-     * Takes a full database record (the whole row), and creates a Record object out of it, based on the type
-     * of the record.
+     * Takes a full database record (the whole row), and creates a Record object out of it,
+     * based on the type of the record.
+     *
+     * This method does not handle special expansion of fields.
+     * @todo Now unused - we might want to remove this again
      */
     public function createFromDatabaseRow(string $table, array $record): Record
+    {
+        $rawRecord = $this->createRawRecord($table, $record);
+        $schema = $this->schemaFactory->get($table);
+        $subSchema = null;
+        if ($schema->hasSubSchema($rawRecord->getRecordType() ?? '')) {
+            $subSchema = $schema->getSubSchema($rawRecord->getRecordType());
+        }
+
+        // Only use the fields that are defined in the schema
+        $properties = [];
+        foreach ($record as $fieldName => $fieldValue) {
+            if ($subSchema && !$subSchema->hasField($fieldName)) {
+                continue;
+            }
+            $properties[$fieldName] = $fieldValue;
+        }
+        return $this->createRecord($rawRecord, $properties);
+    }
+
+    /**
+     * Create a "resolved" record. Resolved means that the fields will have
+     * their values resolved and extended. A typical use-case is resolving
+     * of related records, or using \DateTimeImmutable objects for datetime fields.
+     */
+    public function createResolvedRecordFromDatabaseRow(string $table, array $record, ?Context $context = null): Record
+    {
+        $context = $context ?? GeneralUtility::makeInstance(Context::class);
+        $properties = [];
+        $rawRecord = $this->createRawRecord($table, $record);
+        $schema = $this->schemaFactory->get($table);
+        $subSchema = null;
+        if ($schema->hasSubSchema($rawRecord->getRecordType() ?? '')) {
+            $subSchema = $schema->getSubSchema($rawRecord->getRecordType());
+        }
+
+        // Only use the fields that are defined in the schema
+        foreach ($record as $fieldName => $fieldValue) {
+            if ($subSchema) {
+                if (!$subSchema->hasField($fieldName)) {
+                    continue;
+                }
+                $schema = $subSchema;
+            } elseif (!$schema->hasField($fieldName)) {
+                continue;
+            }
+            $fieldInformation = $schema->getField($fieldName);
+            $properties[$fieldName] = $this->fieldTransformer->transformField(
+                $fieldInformation,
+                $rawRecord,
+                $context
+            );
+        }
+        return $this->createRecord($rawRecord, $properties);
+    }
+
+    /**
+     * Creates a raw record object from a table and a record array.
+     */
+    public function createRawRecord(string $table, array $record): RawRecord
     {
         if (!$this->schemaFactory->has($table)) {
             throw new \InvalidArgumentException(
@@ -60,30 +133,28 @@ readonly class RecordFactory
         }
         $schema = $this->schemaFactory->get($table);
         $fullType = $table;
-        $properties = [];
-        $subSchema = null;
-        $typeFieldDefinition = $schema->getSubSchemaDivisorField();
-        if ($typeFieldDefinition !== null) {
-            if (!isset($record[$typeFieldDefinition->getName()])) {
+        $subSchemaDivisorField = $schema->getSubSchemaDivisorField();
+        if ($subSchemaDivisorField !== null) {
+            $subSchemaDivisorFieldName = $subSchemaDivisorField->getName();
+            if (!isset($record[$subSchemaDivisorFieldName])) {
                 throw new \InvalidArgumentException(
-                    'Missing typeField "' . $typeFieldDefinition->getName() . '" in record of requested table "' . $table . '".',
+                    'Missing typeField "' . $subSchemaDivisorFieldName . '" in record of requested table "' . $table . '".',
                     1715267513,
                 );
             }
-            $recordType = (string)$record[$typeFieldDefinition->getName()];
+            $recordType = (string)$record[$subSchemaDivisorFieldName];
             $fullType .= '.' . $recordType;
-            $subSchema = $schema->getSubSchema($recordType);
         }
         $computedProperties = $this->extractComputedProperties($record);
-        $rawRecord = new RawRecord((int)$record['uid'], (int)$record['pid'], $record, $computedProperties, $fullType);
+        return new RawRecord((int)$record['uid'], (int)$record['pid'], $record, $computedProperties, $fullType);
+    }
 
-        // Only use the fields that are defined in the schema
-        foreach ($record as $fieldName => $fieldValue) {
-            if ($subSchema && !$subSchema->hasField($fieldName)) {
-                continue;
-            }
-            $properties[$fieldName] = $fieldValue;
-        }
+    /**
+     * Quick helper function in order to avoid duplicate code.
+     */
+    protected function createRecord(RawRecord $rawRecord, array $properties): Record
+    {
+        $schema = $this->schemaFactory->get($rawRecord->getMainType());
         [$properties, $systemProperties] = $this->extractSystemInformation(
             $schema,
             $rawRecord,

@@ -392,7 +392,7 @@ return [
                 'type' => 'group',
                 'allowed' => 'pages',
                 'size' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'suggestOptions' => [
                     'default' => [
                         'additionalSearchFields' => 'nav_title, url',
@@ -442,7 +442,7 @@ return [
                 'type' => 'group',
                 'allowed' => 'pages',
                 'size' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'suggestOptions' => [
                     'default' => [
                         'additionalSearchFields' => 'nav_title, url',
@@ -462,7 +462,7 @@ return [
                 'type' => 'group',
                 'allowed' => 'pages',
                 'size' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'default' => 0,
             ],
         ],

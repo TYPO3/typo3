@@ -101,7 +101,7 @@ return [
                 'type' => 'group',
                 'allowed' => 'tx_blogexample_domain_model_person',
                 'foreign_table' => 'tx_blogexample_domain_model_person',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'fieldControl' => [
                     'editPopup' => [
                         'disabled' => false,
@@ -195,7 +195,7 @@ return [
             'config' => [
                 'type' => 'inline', // this will store the info uid in the additional_name field (CSV)
                 'foreign_table' => 'tx_blogexample_domain_model_info',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'default' => 0,
             ],
         ],
@@ -206,7 +206,7 @@ return [
                 'type' => 'inline', // this will store the post uid in the post field of the info table
                 'foreign_table' => 'tx_blogexample_domain_model_info',
                 'foreign_field' => 'post',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'default' => 0,
             ],
         ],

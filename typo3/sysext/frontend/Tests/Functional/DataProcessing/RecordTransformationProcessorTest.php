@@ -58,7 +58,7 @@ final class RecordTransformationProcessorTest extends FunctionalTestCase
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);
-            static::failIfArrayIsNotEmpty($writer->getErrors());
+            self::failIfArrayIsNotEmpty($writer->getErrors());
             $connection = $this->get(ConnectionPool::class)->getConnectionForTable('pages');
 
             $pageLayoutFileContents[] = file_get_contents(__DIR__ . '/Fixtures/PageLayouts/Default.tsconfig');
@@ -80,6 +80,8 @@ final class RecordTransformationProcessorTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/'))->withPageId(1000));
         $body = (string)$response->getBody();
         self::assertStringContainsString('Welcome to ACME guitars', $body);
+        self::assertStringContainsString('Carousel Items will show up: 2', $body);
+        self::assertStringContainsString('Meet us at Guitar Brussels in 2035', $body);
         self::assertStringContainsString('Great to see you here', $body);
         self::assertStringContainsString('If you read this you are at the end.', $body);
     }

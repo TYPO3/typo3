@@ -38,7 +38,7 @@ return [
             'config' => [
                 'type' => 'folder',
                 'required' => true,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'size' => 1,
             ],
         ],

@@ -107,7 +107,7 @@ return [
                 'type' => 'group',
                 'allowed' => 'be_users',
                 'size' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
         // "table_name" is not referenced in this TCA but needs to be defined here to ensure extensions can

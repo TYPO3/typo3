@@ -60,7 +60,7 @@ return [
             'config' => [
                 'type' => 'folder',
                 'minitems' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'size' => 1,
             ],
         ],

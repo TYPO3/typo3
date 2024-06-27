@@ -1,0 +1,12 @@
+"pages"
+,"uid","pid","title"
+,3207,1,"Page 1"
+,3208,1,"Page 2"
+"block_pages_mm"
+,"uid_local","uid_foreign","sorting"
+,263,3207,1
+,263,3208,2
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"6b6b81550679e1783f44989f4fb19193","tt_content",263,"typo3tests_contentelementb_pages_mm",1,0,"pages",3208
+,"f59806ad6a2c2d46ebe07df3a49e384b","tt_content",263,"typo3tests_contentelementb_pages_mm",0,0,"pages",3207

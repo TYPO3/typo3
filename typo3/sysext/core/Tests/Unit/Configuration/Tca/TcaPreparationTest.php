@@ -757,10 +757,61 @@ final class TcaPreparationTest extends UnitTestCase
         self::assertEquals('jpg,png,gif', $subjectMethodReflection->invoke($subject, ['common-image-types,jpg,gif']));
     }
 
+    public static function prepareSelectSingleAddsRelationshipDataProvider(): iterable
+    {
+        yield [
+            [
+                'MM' => 'select_table_mm',
+            ],
+            'manyToMany',
+        ];
+        yield [
+            [],
+            'manyToOne',
+        ];
+    }
+
+    #[DataProvider('prepareSelectSingleAddsRelationshipDataProvider')]
     #[Test]
-    public function prepareSelectSingleAddsMaxItems(): void
+    public function prepareSelectSingleAddsRelationship(array $configuration, $expectedRelation): void
+    {
+        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['select' => ['config' => array_merge(['type' => 'select', 'renderType' => 'selectSingle', 'foreign_table' => 'tx_myextension_bar'], $configuration)]]]]);
+        self::assertEquals($expectedRelation, $subject['foo']['columns']['select']['config']['relationship']);
+    }
+
+    #[Test]
+    public function prepareSelectSingleDoesNotOverwriteRelationship(): void
+    {
+        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['select' => ['config' => ['type' => 'select', 'renderType' => 'selectSingle', 'foreign_table' => 'tx_myextension_bar', 'relationship' => 'oneToOne']]]]]);
+        self::assertEquals('oneToOne', $subject['foo']['columns']['select']['config']['relationship']);
+    }
+
+    #[Test]
+    public function prepareSelectSingleDoesNotAddRelationshipOnMissingForeignTable(): void
     {
         $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['select' => ['config' => ['type' => 'select', 'renderType' => 'selectSingle']]]]]);
-        self::assertEquals(1, $subject['foo']['columns']['select']['config']['maxitems']);
+        self::assertNull($subject['foo']['columns']['select']['config']['relationship'] ?? null);
+    }
+
+    public static function prepareRelationshipToOneAddsMaxItemsDataProvider(): iterable
+    {
+        yield ['select'];
+        yield ['inline'];
+        yield ['file'];
+        yield ['folder'];
+        yield ['group'];
+        yield ['input', 0];
+    }
+
+    #[DataProvider('prepareRelationshipToOneAddsMaxItemsDataProvider')]
+    #[Test]
+    public function prepareRelationshipToOneAddsMaxItems(string $type, int $maxitems = 1): void
+    {
+        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['relation' => ['config' => ['type' => $type, 'relationship' => 'oneToOne']]]]]);
+        self::assertEquals($maxitems, $subject['foo']['columns']['relation']['config']['maxitems'] ?? 0);
+        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['relation' => ['config' => ['type' => $type, 'relationship' => 'manyToOne']]]]]);
+        self::assertEquals($maxitems, $subject['foo']['columns']['relation']['config']['maxitems'] ?? 0);
+        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['relation' => ['config' => ['type' => $type, 'relationship' => 'manyToMany']]]]]);
+        self::assertEquals(0, $subject['foo']['columns']['relation']['config']['maxitems'] ?? 0);
     }
 }

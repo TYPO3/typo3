@@ -157,13 +157,13 @@ return [
             ],
         ],
         'group_2' => [
-            'label' => 'group_2 db, minitems = 1, maxitems=1, size=1',
+            'label' => 'group_2 db, minitems = 1, relationship=manyToOne, size=1',
             'config' => [
                 'type' => 'group',
                 'allowed' => 'tx_styleguide_staticdata',
                 'size' => 1,
                 'minitems' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
 
@@ -188,14 +188,14 @@ return [
         ],
 
         'inline_1' => [
-            'label' => 'inline_1 minitems=1, maxitems=1',
+            'label' => 'inline_1 minitems=1, relationship=manyToOne',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_styleguide_required_inline_1_child',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
                 'minitems' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
         'inline_2' => [

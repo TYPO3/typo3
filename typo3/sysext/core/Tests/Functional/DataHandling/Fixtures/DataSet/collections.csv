@@ -1,0 +1,16 @@
+"typo3tests_contentelementb_collection"
+,"uid","pid","fieldA","foreign_table_parent_uid","t3ver_oid","t3ver_wsid"
+,1,1,"lorem foo bar",260,0,0
+,2,1,"lorem foo bar 2",260,0,0
+,3,1,"lorem foo bar WS",260,1,1
+,4,1,"lorem foo bar 2 WS",260,2,1
+"tt_content"
+,"uid","pid","t3ver_oid","t3ver_wsid","typo3tests_contentelementb_collection","CType"
+,260,1,0,0,2,"typo3tests_contentelementb"
+,261,1,1,1,2,"typo3tests_contentelementb"
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"4a0b3d6b5dbe434c6d0c4571a08a9ae4","tt_content",260,"typo3tests_contentelementb_collection",0,0,"typo3tests_contentelementb_collection",1
+,"92c238672948a46154e0d92e554863d8","tt_content",260,"typo3tests_contentelementb_collection",1,0,"typo3tests_contentelementb_collection",2
+,"5cff181b1eb5b95ef7d6459477d59b0f","tt_content",261,"typo3tests_contentelementb_collection",0,1,"typo3tests_contentelementb_collection",3
+,"0739f14b25a651517c31d1da0c41b751","tt_content",261,"typo3tests_contentelementb_collection",1,1,"typo3tests_contentelementb_collection",4

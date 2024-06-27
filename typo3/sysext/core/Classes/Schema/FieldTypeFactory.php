@@ -104,15 +104,16 @@ class FieldTypeFactory
                 // Build all schemata first
                 return $this->createFlexFormField($parentSchemaName ?? $schemaName, $fieldName, $configuration, $relationMap, $parentSchemaName ? $schemaName : null);
             case 'select':
-                if (RelationshipType::fromTcaConfiguration($configuration) !== RelationshipType::Static) {
-                    return $this->createFromTca(SelectRelationFieldType::class, $fieldName, $configuration, $relationMap->getActiveRelations($parentSchemaName ?? $schemaName, $parentFieldName ?? $fieldName, $parentFieldName ? $fieldName : null));
+                // In case type "select" is used without any relationship information, it's a static list
+                if (RelationshipType::fromTcaConfiguration($configuration) === RelationshipType::Undefined) {
+                    return $this->createFromTca(StaticSelectFieldType::class, $fieldName, $configuration);
                 }
-                return $this->createFromTca(StaticSelectFieldType::class, $fieldName, $configuration);
+                return $this->createFromTca(SelectRelationFieldType::class, $fieldName, $configuration, $relationMap->getActiveRelations($parentSchemaName ?? $schemaName, $parentFieldName ?? $fieldName));
             default:
                 if ($this->hasFieldType($fieldType)) {
                     $fieldTypeClass = $this->availableFieldTypes[$fieldType];
                     if (is_a($fieldTypeClass, RelationalFieldTypeInterface::class, true)) {
-                        return $this->createFromTca($fieldTypeClass, $fieldName, $configuration, $relationMap->getActiveRelations($parentSchemaName ?? $schemaName, $parentFieldName ?? $fieldName, $parentFieldName ? $fieldName : null));
+                        return $this->createFromTca($fieldTypeClass, $fieldName, $configuration, $relationMap->getActiveRelations($parentSchemaName ?? $schemaName, $parentFieldName ?? $fieldName));
                     }
                     return $this->createFromTca($fieldTypeClass, $fieldName, $configuration);
 

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema;
 
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Struct\FlexSheet;
 
 /**
@@ -38,6 +39,23 @@ final readonly class FlexFormSchema implements SchemaInterface
     public function getName(): string
     {
         return $this->structIdentifier;
+    }
+
+    public function getField(string $fieldName, string $sheetName = 'sDEF'): ?FieldTypeInterface
+    {
+        if (!isset($this->sheets[$sheetName])) {
+            return null;
+        }
+        if ($this->sheets[$sheetName]->hasField($sheetName . '/' . $fieldName)) {
+            return $this->sheets[$sheetName]->getField($sheetName . '/' . $fieldName);
+        }
+        // Look for any kind of field that has the same name, regardless of the sheet name
+        foreach ($this->sheets as $sheetName => $sheet) {
+            if ($sheet->hasField($sheetName . '/' . $fieldName)) {
+                return $sheet->getField($sheetName . '/' . $fieldName);
+            }
+        }
+        return null;
     }
 
     public static function __set_state(array $state): self

@@ -1,0 +1,3 @@
+"sys_file",,,,,,,,,,,,,,,,,,,
+,"uid","pid","type","storage","identifier","extension","mime_type","name","sha1","size","creation_date","modification_date","missing","metadata","identifier_hash","folder_hash","last_indexed"
+,1,0,2,1,"/kasper-skarhoj1.jpg","jpg","image/jpeg","kasper-skarhoj1.jpg","05d8c6dda534a0b9e7023c3031e60e4b49c3da40",39037,1677330452,1658395918,0,0,"98576a90d58d51fcfe91c41f4c571fd600e1190e","42099b4af021e53fd8fd4e056c2568d7c2e3ffa8",0

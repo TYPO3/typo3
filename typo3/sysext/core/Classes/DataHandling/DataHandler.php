@@ -68,7 +68,6 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\FieldTranslationBehaviour;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
-use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -6101,7 +6100,7 @@ class DataHandler
                 ) {
                     continue;
                 }
-                if (in_array($fieldType->getRelationshipType(), [RelationshipType::List, RelationshipType::ForeignField], true)) {
+                if ($fieldType->getRelationshipType()->isSingularRelationship()) {
                     $dbAnalysis = $this->createRelationHandlerInstance();
                     $dbAnalysis->start($value, $fieldConfig['foreign_table'], '', (int)$record['uid'], $table, $fieldConfig);
                     $dbAnalysis->undeleteRecord = true;

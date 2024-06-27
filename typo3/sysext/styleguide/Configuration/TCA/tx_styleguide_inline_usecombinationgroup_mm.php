@@ -37,7 +37,7 @@ return [
                 'allowed' => 'tx_styleguide_inline_usecombinationgroup_child',
                 'size' => 1,
                 'minitems' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
     ],

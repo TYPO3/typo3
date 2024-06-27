@@ -27,8 +27,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'size' => 1,
-                'eval' => 'int',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'minitems' => 0,
                 'allowed' => 'tx_styleguide_inline_mngroup',
                 'hideSuggest' => true,
@@ -44,8 +43,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'size' => 1,
-                'eval' => 'int',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'minitems' => 0,
                 'allowed' => 'tx_styleguide_inline_mngroup_child',
                 'hideSuggest' => true,

@@ -96,11 +96,11 @@ readonly class RecordTransformationProcessor implements DataProcessorInterface
         $output = [];
         if (array_is_list($input)) {
             foreach ($input as $record) {
-                $output[] = $this->recordFactory->createFromDatabaseRow($table, $record);
+                $output[] = $this->recordFactory->createResolvedRecordFromDatabaseRow($table, $record);
             }
             $defaultTargetVariableName = 'records';
         } else {
-            $output = $this->recordFactory->createFromDatabaseRow($table, $input);
+            $output = $this->recordFactory->createResolvedRecordFromDatabaseRow($table, $input);
             $defaultTargetVariableName = 'record';
         }
         $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, $defaultTargetVariableName);

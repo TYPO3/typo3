@@ -32,7 +32,7 @@ return [
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
             ],
-            'maxitems' => 1,
+            'relationship' => 'manyToOne',
         ],
     ],
 

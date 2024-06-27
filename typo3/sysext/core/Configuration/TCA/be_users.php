@@ -92,7 +92,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
             'config' => [
                 'type' => 'file',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'allowed' => 'common-image-types',
             ],
         ],

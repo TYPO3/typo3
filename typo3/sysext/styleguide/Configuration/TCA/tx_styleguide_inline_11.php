@@ -33,7 +33,7 @@ return [
                     'showAllLocalizationLink' => true,
                     'showPossibleLocalizationRecords' => true,
                 ],
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
     ],

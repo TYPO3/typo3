@@ -386,11 +386,11 @@ return [
             ],
         ],
         'select_checkbox_2' => [
-            'label' => 'select_checkbox_2, maxitems=1',
+            'label' => 'select_checkbox_2, relationship=manyToOne',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'items' => [
                     ['label' => 'foo 1', 'value' => 1],
                     ['label' => 'foo 2', 'value' => 2],
@@ -609,11 +609,11 @@ return [
             ],
         ],
         'select_multiplesidebyside_9' => [
-            'label' => 'select_multiplesidebyside_9 maxitems=1',
+            'label' => 'select_multiplesidebyside_9 relationship=manyToOne',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'items' => [
                     ['label' => 'foo 1', 'value' => 1],
                     ['label' => 'foo 2', 'value' => 2],

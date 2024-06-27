@@ -19,12 +19,15 @@ namespace TYPO3\CMS\Core\Schema;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
+use TYPO3\CMS\Core\Schema\Field\FlexFormFieldType;
 use TYPO3\CMS\Core\Schema\Struct\FlexSectionContainer;
 use TYPO3\CMS\Core\Schema\Struct\FlexSheet;
 
 /**
- * Parses all possibles schemas of all sheets of a field
+ * Parses all possibles schemas of all sheets of a field.
+ *
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 #[Autoconfigure(public: true, shared: true)]
@@ -36,9 +39,43 @@ final readonly class FlexFormSchemaFactory
     ) {}
 
     /**
+     * Currently this mixes Schema and Record Information, and could be handled in a cleaner way, especially
+     * with the list_type resolving. This method signature will most likely change.
+     */
+    public function getSchemaForRecord(RawRecord $record, FlexFormFieldType $field, RelationMap $relationMap): ?FlexFormSchema
+    {
+        $allSchemata = $this->createSchemataForFlexField(
+            $field->getConfiguration(),
+            $record->getMainType(),
+            $field->getName(),
+            $relationMap
+        );
+
+        $structIdentifierParts = [
+            $record->getMainType(),
+            $field->getName(),
+        ];
+        $alternativeIdentifierParts = $structIdentifierParts;
+        if ($record->getRecordType()) {
+            $structIdentifierParts[] = $record->getRecordType();
+            $alternativeIdentifierParts[] = '*,' . $record->getRecordType();
+        }
+
+        $structIdentifier = implode('/', $structIdentifierParts);
+        $alternativeIdentifier = implode('/', $alternativeIdentifierParts);
+
+        foreach ($allSchemata as $schema) {
+            if ($schema->getName() === $structIdentifier || $schema->getName() === $alternativeIdentifier) {
+                return $schema;
+            }
+        }
+        return null;
+    }
+
+    /**
      * @return FlexFormSchema[]
      */
-    public function createSchemataForFlexField(array $tcaConfig, string $tableName, string $fieldName, RelationMap $relationMap): array
+    protected function createSchemataForFlexField(array $tcaConfig, string $tableName, string $fieldName, RelationMap $relationMap): array
     {
         // Create schema for each possibility we have
         $flexSchemas = [];

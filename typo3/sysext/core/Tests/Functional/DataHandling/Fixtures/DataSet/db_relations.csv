@@ -1,0 +1,17 @@
+"pages"
+,"uid","pid","title","t3ver_oid","t3ver_wsid","hidden"
+,1906,1,"Page 1",0,0,0
+,3389,1,"Page 2",0,0,0
+,3391,1,"Page 1 ws",1906,1,0
+,3393,1,"Page 2 ws",3389,1,0
+,5,1,"Page 3",0,0,1
+"tt_content"
+,"uid","pid","t3ver_oid","t3ver_wsid","typo3tests_contentelementb_pages_relations"
+,260,1,0,0,"1,2"
+,261,1,1,1,"1,2"
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"367a388427279ea5b203c37fbfb6b71c","tt_content",260,"typo3tests_contentelementb_pages_relations",0,0,"pages",1906
+,"978725a067d15a001f9770b19a70669d","tt_content",260,"typo3tests_contentelementb_pages_relations",1,0,"pages",3389
+,"0ea740965dd56db56d18acf0bdb0bc15","tt_content",261,"typo3tests_contentelementb_pages_relations",0,1,"pages",1906
+,"85acf9c1c591795353d8faf79544faf5","tt_content",261,"typo3tests_contentelementb_pages_relations",1,1,"pages",3389

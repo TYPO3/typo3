@@ -187,7 +187,7 @@ class RelationHandler
         string $tableName,
         array|FieldTypeInterface $fieldConfiguration,
         array|string|int|null $baseRecordOrUid,
-        string|array|null $currentValue = null
+        string|int|float|array|null $currentValue = null
     ): void {
         if ($fieldConfiguration instanceof FieldTypeInterface) {
             $fieldConfiguration = $fieldConfiguration->getConfiguration();

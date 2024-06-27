@@ -1,0 +1,6 @@
+"tt_content"
+,"uid","pid","t3ver_oid","t3ver_wsid","typo3tests_contentelementb_circular_relation","CType"
+,260,1,0,0,"260","typo3tests_contentelementb"
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"83f48fc0812d5b6a2f26df9a21617edd","tt_content",260,"typo3tests_contentelementb_circular_relation",1,0,"tt_content",260

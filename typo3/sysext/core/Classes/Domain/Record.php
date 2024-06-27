@@ -27,12 +27,12 @@ use TYPO3\CMS\Core\Domain\Record\VersionInfo;
  *
  * @internal not part of public API, as this needs to be streamlined and proven
  */
-readonly class Record implements \ArrayAccess, RecordInterface
+class Record implements \ArrayAccess, RecordInterface
 {
     public function __construct(
-        protected RawRecord $rawRecord,
+        protected readonly RawRecord $rawRecord,
         protected array $properties,
-        protected ?SystemProperties $systemProperties
+        protected readonly ?SystemProperties $systemProperties
     ) {}
 
     public function getUid(): int
@@ -62,6 +62,11 @@ readonly class Record implements \ArrayAccess, RecordInterface
 
     public function toArray(bool $includeSpecialProperties = false): array
     {
+        foreach ($this->properties as $key => $property) {
+            if ($property instanceof RecordPropertyClosure) {
+                $this->properties[$key] = $property->instantiate();
+            }
+        }
         if ($includeSpecialProperties) {
             return ['uid' => $this->getUid(), 'pid' => $this->getPid()] + $this->properties + ($this->systemProperties?->toArray() ?? []);
         }
@@ -86,7 +91,17 @@ readonly class Record implements \ArrayAccess, RecordInterface
     public function offsetGet(mixed $offset): mixed
     {
         if (isset($this->properties[$offset])) {
-            return $this->properties[$offset];
+            $property = $this->properties[$offset];
+            if ($property instanceof RecordPropertyClosure) {
+                $property = $property->instantiate();
+                $this->properties[$offset] = $property;
+            }
+            return $property;
+        }
+
+        if (in_array($offset, ['uid', 'pid'], true)) {
+            // Enable access of uid and pid via array access
+            return $this->rawRecord[$offset];
         }
 
         if ($this->getRecordType() === null && isset($this->rawRecord[$offset])) {

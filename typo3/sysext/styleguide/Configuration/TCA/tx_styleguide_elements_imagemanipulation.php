@@ -28,7 +28,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'allowed' => 'sys_file',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'minitems' => 0,
                 'size' => 1,
             ],
@@ -38,7 +38,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'allowed' => 'sys_file',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'minitems' => 0,
                 'size' => 1,
             ],
@@ -48,7 +48,7 @@ return [
             'config' => [
                 'type' => 'group',
                 'allowed' => 'sys_file',
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
                 'minitems' => 0,
                 'size' => 1,
             ],

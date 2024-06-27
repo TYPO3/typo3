@@ -1,0 +1,18 @@
+"sys_category"
+,"uid","pid","title","sys_language_uid","l10n_parent"
+,2,1,"Category 1",0,0
+,11,1,"Category 2",0,0
+,12,1,"Category 1 translated",1,2
+,13,1,"Category 2 translated",1,11
+"sys_category_record_mm"
+,"uid_local","uid_foreign","tablenames","fieldname"
+,2,260,"tt_content","typo3tests_contentelementb_categories_mm"
+,11,260,"tt_content","typo3tests_contentelementb_categories_mm"
+,12,381,"tt_content","typo3tests_contentelementb_categories_mm"
+"tt_content"
+,"uid","pid","typo3tests_contentelementb_categories_mm","sys_language_uid","l18n_parent"
+,260,1,2,0,0
+,381,1,1,1,260
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid","ref_field","ref_sorting"
+,"f25cbb70441772d669dfc0052fc047f8","sys_category",2,"items",0,0,"tt_content",381,"typo3tests_contentelementb_categories_mm",1

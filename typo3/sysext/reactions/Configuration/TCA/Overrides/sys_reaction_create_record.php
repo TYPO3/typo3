@@ -10,7 +10,7 @@
                 'type' => 'group',
                 'allowed' => 'pages',
                 'size' => 1,
-                'maxitems' => 1,
+                'relationship' => 'manyToOne',
             ],
         ],
         'fields' => [
