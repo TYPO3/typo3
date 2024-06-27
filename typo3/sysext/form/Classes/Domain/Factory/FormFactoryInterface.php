@@ -45,5 +45,5 @@ interface FormFactoryInterface
      * @param string $prototypeName The name of the "PrototypeName" to use; it is factory-specific to implement this.
      * @return FormDefinition a newly built form definition
      */
-    public function build(array $configuration, string $prototypeName = null): FormDefinition;
+    public function build(array $configuration, ?string $prototypeName = null): FormDefinition;
 }

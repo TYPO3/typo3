@@ -64,7 +64,7 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
      * @return FormDefinitionArray
      * @throws PropertyException
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         $rawFormDefinitionArray = json_decode($source, true);
 

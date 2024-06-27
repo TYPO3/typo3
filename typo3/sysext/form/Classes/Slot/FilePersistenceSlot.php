@@ -67,7 +67,7 @@ final class FilePersistenceSlot implements SingletonInterface
      * @param string $command
      * @param bool|null $type
      */
-    public function defineInvocation(string $command, bool $type = null)
+    public function defineInvocation(string $command, ?bool $type = null)
     {
         $this->definedInvocations[$command] = $type;
         if ($type === null) {
@@ -85,7 +85,7 @@ final class FilePersistenceSlot implements SingletonInterface
     public function allowInvocation(
         string $command,
         string $combinedFileIdentifier,
-        string $contentSignature = null
+        ?string $contentSignature = null
     ): bool {
         $index = $this->searchAllowedInvocation(
             $command,
@@ -207,7 +207,7 @@ final class FilePersistenceSlot implements SingletonInterface
     protected function assertFileName(
         string $command,
         string $combinedFileIdentifier,
-        string $content = null
+        ?string $content = null
     ): void {
         if (!$this->isFormDefinition($combinedFileIdentifier)) {
             return;
@@ -257,7 +257,7 @@ final class FilePersistenceSlot implements SingletonInterface
     protected function searchAllowedInvocation(
         string $command,
         string $combinedFileIdentifier,
-        string $contentSignature = null
+        ?string $contentSignature = null
     ): ?int {
         foreach ($this->allowedInvocations as $index => $allowedInvocation) {
             if (

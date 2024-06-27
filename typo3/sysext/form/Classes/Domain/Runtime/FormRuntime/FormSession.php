@@ -37,7 +37,7 @@ class FormSession
      * @param string|null $authenticatedIdentifier
      * @throws BadRequestException
      */
-    public function __construct(string $authenticatedIdentifier = null)
+    public function __construct(?string $authenticatedIdentifier = null)
     {
         if ($authenticatedIdentifier === null) {
             $this->identifier = $this->generateIdentifier();

@@ -59,7 +59,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
      * @return array The configuration
      * @internal
      */
-    public function getConfiguration(string $configurationType, string $extensionName = null, string $pluginName = null): array
+    public function getConfiguration(string $configurationType, ?string $extensionName = null, ?string $pluginName = null): array
     {
         switch ($configurationType) {
             case self::CONFIGURATION_TYPE_YAML_SETTINGS:

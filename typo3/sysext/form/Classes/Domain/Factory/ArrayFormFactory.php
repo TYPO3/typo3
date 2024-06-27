@@ -43,7 +43,7 @@ class ArrayFormFactory extends AbstractFormFactory
      * @throws RenderingException
      * @internal
      */
-    public function build(array $configuration, string $prototypeName = null): FormDefinition
+    public function build(array $configuration, ?string $prototypeName = null): FormDefinition
     {
         if (empty($prototypeName)) {
             $prototypeName = $configuration['prototypeName'] ?? 'standard';
