@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 /**
  * Helper class for DataHandler to gather requests for reference index updates
@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal should only be used by the TYPO3 Core
  */
+#[Autoconfigure(public: true, shared: false)]
 class ReferenceIndexUpdater
 {
     /**
@@ -57,6 +58,12 @@ class ReferenceIndexUpdater
      */
     protected array $dropRegistry = [];
 
+    public function __construct(
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly ConnectionPool $connectionPool,
+        private readonly ReferenceIndex $referenceIndex,
+    ) {}
+
     /**
      * Register a workspace/table/uid row for update
      *
@@ -66,7 +73,7 @@ class ReferenceIndexUpdater
      */
     public function registerForUpdate(string $table, int $uid, int $workspace): void
     {
-        if ($workspace && !BackendUtility::isTableWorkspaceEnabled($table)) {
+        if ($workspace && !$this->tcaSchemaFactory->get($table)->isWorkspaceAware()) {
             // If a user is in some workspace and changes relations of not workspace aware
             // records, the reference index update needs to be performed as if the user
             // is in live workspace. This is detected here and the update is registered for live.
@@ -93,7 +100,7 @@ class ReferenceIndexUpdater
      */
     public function registerUpdateForReferencesToItem(string $table, int $uid, int $workspace, int $targetWorkspace = null): void
     {
-        if ($workspace && !BackendUtility::isTableWorkspaceEnabled($table)) {
+        if ($workspace && !$this->tcaSchemaFactory->get($table)->isWorkspaceAware()) {
             // If a user is in some workspace and changes relations of not workspace aware
             // records, the reference index update needs to be performed as if the user
             // is in live workspace. This is detected here and the update is registered for live.
@@ -126,7 +133,7 @@ class ReferenceIndexUpdater
      */
     public function registerForDrop(string $table, int $uid, int $workspace): void
     {
-        if ($workspace && !BackendUtility::isTableWorkspaceEnabled($table)) {
+        if ($workspace && !$this->tcaSchemaFactory->get($table)->isWorkspaceAware()) {
             // If a user is in some workspace and changes relations of not workspace aware
             // records, the reference index update needs to be performed as if the user
             // is in live workspace. This is detected here and the update is registered for live.
@@ -149,7 +156,7 @@ class ReferenceIndexUpdater
         foreach ($this->updateRegistryToItem as $workspace => $tableArray) {
             foreach ($tableArray as $table => $recordArray) {
                 foreach ($recordArray as $item) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+                    $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
                     $statement = $queryBuilder
                         ->select('tablename', 'recuid')
                         ->from('sys_refindex')
@@ -174,7 +181,7 @@ class ReferenceIndexUpdater
         foreach ($this->dropRegistry as $workspace => $tableArray) {
             foreach ($tableArray as $table => $uidArray) {
                 foreach ($uidArray as $uid) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+                    $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
                     $queryBuilder->delete('sys_refindex')
                         ->where(
                             $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)),
@@ -196,11 +203,10 @@ class ReferenceIndexUpdater
         $this->dropRegistry = [];
 
         // Perform reference index updates
-        $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
         foreach ($this->updateRegistry as $workspace => $tableArray) {
             foreach ($tableArray as $table => $uidArray) {
                 foreach ($uidArray as $uid) {
-                    $referenceIndex->updateRefIndexTable($table, $uid, false, $workspace);
+                    $this->referenceIndex->updateRefIndexTable($table, $uid, false, $workspace);
                 }
             }
         }

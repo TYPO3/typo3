@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\DataHandling\PagePermissionAssembler;
+use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -92,7 +93,7 @@ final class DataHandlerTest extends UnitTestCase
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
         $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
-        $this->subject->start([], [], $this->backendUserMock);
+        $this->subject->start([], [], $this->backendUserMock, $this->createMock(ReferenceIndexUpdater::class));
     }
 
     #[Test]
@@ -837,7 +838,7 @@ final class DataHandlerTest extends UnitTestCase
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
         );
-        $subject->start([], [], $this->createMock(BackendUserAuthentication::class));
+        $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = StringUtility::getUniqueId('details');
         $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
@@ -863,7 +864,7 @@ final class DataHandlerTest extends UnitTestCase
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
         );
-        $subject->start([], [], $this->createMock(BackendUserAuthentication::class));
+        $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
         $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
         // UID is kept as non-replaced, and other properties are not replaced.
