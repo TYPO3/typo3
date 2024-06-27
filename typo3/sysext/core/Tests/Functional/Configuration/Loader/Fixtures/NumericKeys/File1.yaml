@@ -1,0 +1,15 @@
+#file1.yaml:
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          formElementsDefinition:
+            Form:
+              formEditor:
+                editors:
+                  900:
+                    selectOptions:
+                      35:
+                        value: 'FirstValue'
+                        label: 'First option'

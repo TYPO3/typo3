@@ -1,0 +1,4 @@
+#imports.yaml:
+imports:
+  - { resource: './File1.yaml' }
+  - { resource: './File2.yaml' }

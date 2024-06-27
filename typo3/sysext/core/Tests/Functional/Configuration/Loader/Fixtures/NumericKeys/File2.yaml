@@ -1,0 +1,14 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          formElementsDefinition:
+            Form:
+              formEditor:
+                editors:
+                  900:
+                    selectOptions:
+                      45:
+                        value: 'SecondValue'
+                        label: 'Second option'

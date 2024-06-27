@@ -265,6 +265,50 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     }
 
     /**
+     * Method checking for multiple imports with numeric keys
+     */
+    #[Test]
+    public function loadImportsWithNumericKeys(): void
+    {
+        $output = (new YamlFileLoader())->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/NumericKeys/Base.yaml');
+
+        $expected = [
+            'TYPO3' => [
+                'CMS' => [
+                    'Form' => [
+                        'prototypes' => [
+                            'standard' => [
+                                'formElementsDefinition' => [
+                                    'Form' => [
+                                        'formEditor' => [
+                                            'editors' => [
+                                                900 => [
+                                                    'selectOptions' => [
+                                                        35 => [
+                                                            'value' => 'FirstValue',
+                                                            'label' => 'First option',
+                                                        ],
+                                                        45 => [
+                                                            'value' => 'SecondValue',
+                                                            'label' => 'Second option',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertSame($expected, $output);
+    }
+
+    /**
      * Method checking for path traversal imports via glob() call
      */
     #[Test]
