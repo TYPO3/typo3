@@ -35,7 +35,7 @@ enum TableColumnType: string
     case USER = 'user';
     case FLEX = 'flex';
     case INLINE = 'inline';
-    case IMAGEMANIPULATION = 'imagemanipulation';
+    case IMAGEMANIPULATION = 'imageManipulation';
     case SLUG = 'slug';
     case CATEGORY = 'category';
     case EMAIL = 'email';

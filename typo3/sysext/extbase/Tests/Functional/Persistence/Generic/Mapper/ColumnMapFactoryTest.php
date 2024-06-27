@@ -464,6 +464,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ['user', TableColumnType::USER],
             ['flex', TableColumnType::FLEX],
             ['inline', TableColumnType::INLINE],
+            ['imageManipulation', TableColumnType::IMAGEMANIPULATION],
             ['slug', TableColumnType::SLUG],
             ['email', TableColumnType::EMAIL],
             ['link', TableColumnType::LINK],
