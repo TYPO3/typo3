@@ -24,10 +24,8 @@ use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent;
-use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal Bootstrap related base TCA loading. Extensions must not use this.
@@ -54,15 +52,6 @@ final readonly class TcaFactory
             $tca = $this->create();
             $this->createBaseTcaCacheFile($tca);
         }
-
-        // @todo: The placement in this method is a hack and should be moved elsewhere.
-        $allowedRecordTypesForDefault = [];
-        foreach ($tca as $table => $tableConfiguration) {
-            if ($tableConfiguration['ctrl']['security']['ignorePageTypeRestriction'] ?? false) {
-                $allowedRecordTypesForDefault[] = $table;
-            }
-        }
-        GeneralUtility::makeInstance(PageDoktypeRegistry::class)->addAllowedRecordTypes($allowedRecordTypesForDefault);
 
         return $tca;
     }

@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,7 +32,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * You can fully use this once TCA is properly loaded (e.g. in ext_tables.php).
  */
-class PageDoktypeRegistry implements SingletonInterface
+#[Autoconfigure(public: true)]
+class PageDoktypeRegistry
 {
     protected array $pageTypes = [
         PageRepository::DOKTYPE_BE_USER_SECTION => [
@@ -53,11 +55,20 @@ class PageDoktypeRegistry implements SingletonInterface
     ];
 
     /**
+     * @todo Using this to keep track of the initialization is just an intermediate solution.
+     *       TCA should be extended so the add() and addAllowedRecordTypes() methods can be removed.
+     */
+    private bool $tcaHasBeenInitialized = false;
+
+    public function __construct(protected readonly TcaSchemaFactory $tcaSchemaFactory) {}
+
+    /**
      * Adds a specific configuration for a doktype. By default, it is NOT restricted to only allow tables that
      * have been explicitly added via addAllowedRecordTypes().
      */
     public function add(int $dokType, array $configuration): void
     {
+        $this->initializeTca();
         $this->pageTypes[$dokType] = array_replace(['onlyAllowedTables' => false], $configuration);
     }
 
@@ -66,6 +77,7 @@ class PageDoktypeRegistry implements SingletonInterface
         if ($recordTypes === []) {
             return;
         }
+        $this->initializeTca();
         $doktype ??= 'default';
         if (!isset($this->pageTypes[$doktype]['allowedTables'])) {
             $this->pageTypes[$doktype]['allowedTables'] = '';
@@ -78,6 +90,7 @@ class PageDoktypeRegistry implements SingletonInterface
      */
     public function isRecordTypeAllowedForDoktype(string $type, ?int $doktype): bool
     {
+        $this->initializeTca();
         $doktype ??= 'default';
         $allowedTableList = $this->pageTypes[$doktype]['allowedTables'] ?? $this->pageTypes['default']['allowedTables'];
         return str_contains($allowedTableList, '*') || GeneralUtility::inList($allowedTableList, $type);
@@ -88,6 +101,7 @@ class PageDoktypeRegistry implements SingletonInterface
      */
     public function getRegisteredDoktypes(): array
     {
+        $this->initializeTca();
         $items = $this->pageTypes;
         unset($items['default']);
         return array_keys($items);
@@ -99,6 +113,7 @@ class PageDoktypeRegistry implements SingletonInterface
      */
     public function doesDoktypeOnlyAllowSpecifiedRecordTypes(int $doktype = null): bool
     {
+        $this->initializeTca();
         $doktype = $doktype ?? 'default';
         return $this->pageTypes[$doktype]['onlyAllowedTables'] ?? false;
     }
@@ -108,6 +123,7 @@ class PageDoktypeRegistry implements SingletonInterface
      */
     public function getAllowedTypesForDoktype(int $doktype): array
     {
+        $this->initializeTca();
         $allowedTableList = $this->pageTypes[$doktype]['allowedTables'] ?? $this->pageTypes['default']['allowedTables'];
         return explode(',', $allowedTableList);
     }
@@ -117,6 +133,22 @@ class PageDoktypeRegistry implements SingletonInterface
      */
     public function exportConfiguration(): array
     {
+        $this->initializeTca();
         return $this->pageTypes;
+    }
+
+    private function initializeTca(): void
+    {
+        if ($this->tcaHasBeenInitialized) {
+            return;
+        }
+        $allowedRecordTypesForDefault = [];
+        foreach ($this->tcaSchemaFactory->all() as $schemaName => $schema) {
+            if ($schema->getRawConfiguration()['security']['ignorePageTypeRestriction'] ?? false) {
+                $allowedRecordTypesForDefault[] = $schemaName;
+            }
+        }
+        $this->tcaHasBeenInitialized = true;
+        $this->addAllowedRecordTypes($allowedRecordTypesForDefault);
     }
 }
