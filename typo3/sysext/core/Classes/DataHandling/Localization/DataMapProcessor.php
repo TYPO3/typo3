@@ -593,8 +593,8 @@ class DataMapProcessor
         }
         // execute copy, localize and delete actions on persisted child records
         if (!empty($localCommandMap)) {
-            $localDataHandler = GeneralUtility::makeInstance(DataHandler::class, $this->referenceIndexUpdater);
-            $localDataHandler->start([], $localCommandMap, $this->backendUser);
+            $localDataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $localDataHandler->start([], $localCommandMap, $this->backendUser, $this->referenceIndexUpdater);
             $localDataHandler->process_cmdmap();
             // update copied or localized ids
             foreach ($createAncestorIds as $createAncestorId) {

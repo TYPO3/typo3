@@ -491,21 +491,13 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Sets up the data handler cache and some additional options, the main logic is done in the start() method.
-     *
-     * @param ReferenceIndexUpdater|null $referenceIndexUpdater Hand over from outermost instance to sub instances
      */
-    public function __construct(ReferenceIndexUpdater $referenceIndexUpdater = null)
+    public function __construct()
     {
         $this->cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->runtimeCache = $this->cacheManager->getCache('runtime');
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $this->pagePermissionAssembler = GeneralUtility::makeInstance(PagePermissionAssembler::class, $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']);
-        if ($referenceIndexUpdater === null) {
-            // Create ReferenceIndexUpdater object. This should only happen on outermost instance,
-            // sub instances should receive the reference index updater from a parent.
-            $referenceIndexUpdater = GeneralUtility::makeInstance(ReferenceIndexUpdater::class);
-        }
-        $this->referenceIndexUpdater = $referenceIndexUpdater;
         $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
@@ -526,12 +518,19 @@ class DataHandler implements LoggerAwareInterface
      * @param array $commandMap Commands to copy, move, delete, localize, versionize records.
      * @param BackendUserAuthentication|null $backendUser An alternative user, default is $GLOBALS['BE_USER']
      */
-    public function start(array $dataMap, array $commandMap, ?BackendUserAuthentication $backendUser = null): void
-    {
+    public function start(
+        array $dataMap,
+        array $commandMap,
+        ?BackendUserAuthentication $backendUser = null,
+        ?ReferenceIndexUpdater $referenceIndexUpdater = null
+    ): void {
         // Initializing BE_USER
         $this->BE_USER = $backendUser ?: $GLOBALS['BE_USER'];
         $this->userid = (int)($this->BE_USER->user['uid'] ?? 0);
         $this->admin = $this->BE_USER->user['admin'] ?? false;
+        // Sub instances should receive ReferenceIndexUpdater via start() and not from __construct() DI since
+        // it is a stateful object for *this* DH chain run. If this is the outermost instance, a new one is created.
+        $this->referenceIndexUpdater = $referenceIndexUpdater ?? GeneralUtility::makeInstance(ReferenceIndexUpdater::class);
 
         // set correlation id for each new set of data or commands
         $this->correlationId = CorrelationId::forScope(
@@ -944,7 +943,7 @@ class DataHandler implements LoggerAwareInterface
                                 // new version of a record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
                                 $this->pagetreeNeedsRefresh = true;
 
-                                $tce = GeneralUtility::makeInstance(self::class, $this->referenceIndexUpdater);
+                                $tce = GeneralUtility::makeInstance(self::class);
                                 $tce->enableLogging = $this->enableLogging;
                                 // Setting up command for creating a new version of the record:
                                 $cmd = [];
@@ -953,7 +952,7 @@ class DataHandler implements LoggerAwareInterface
                                     // Default is to create a version of the individual records
                                     'label' => 'Auto-created for WS #' . $this->BE_USER->workspace,
                                 ];
-                                $tce->start([], $cmd, $this->BE_USER);
+                                $tce->start([], $cmd, $this->BE_USER, $this->referenceIndexUpdater);
                                 $tce->process_cmdmap();
                                 $this->errorLog = array_merge($this->errorLog, $tce->errorLog);
                                 // If copying was successful, share the new uids (also of related children):
@@ -3514,7 +3513,7 @@ class DataHandler implements LoggerAwareInterface
             }
         }
         $copyTCE = $this->getLocalTCE();
-        $copyTCE->start($pasteDatamap, [], $this->BE_USER);
+        $copyTCE->start($pasteDatamap, [], $this->BE_USER, $this->referenceIndexUpdater);
         $copyTCE->process_datamap();
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
         unset($copyTCE);
@@ -3655,7 +3654,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // Do the copy by simply submitting the array through DataHandler:
         $copyTCE = $this->getLocalTCE();
-        $copyTCE->start($data, [], $this->BE_USER);
+        $copyTCE->start($data, [], $this->BE_USER, $this->referenceIndexUpdater);
         $copyTCE->process_datamap();
         // Getting the new UID:
         $theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID] ?? null;
@@ -4968,7 +4967,7 @@ class DataHandler implements LoggerAwareInterface
             }
             $temporaryId = StringUtility::getUniqueId('NEW');
             $copyTCE = $this->getLocalTCE();
-            $copyTCE->start([$table => [$temporaryId => $overrideValues]], [], $this->BE_USER);
+            $copyTCE->start([$table => [$temporaryId => $overrideValues]], [], $this->BE_USER, $this->referenceIndexUpdater);
             $copyTCE->process_datamap();
             // Getting the new UID as if it had been copied:
             $theNewSQLID = $copyTCE->substNEWwithIDs[$temporaryId];
@@ -5110,9 +5109,9 @@ class DataHandler implements LoggerAwareInterface
         $this->registerDBList[$table][$id][$field] = $value;
         // Remove child records (if synchronization requested it):
         if (is_array($removeArray) && !empty($removeArray)) {
-            $tce = GeneralUtility::makeInstance(self::class, $this->referenceIndexUpdater);
+            $tce = GeneralUtility::makeInstance(self::class);
             $tce->enableLogging = $this->enableLogging;
-            $tce->start([], $removeArray, $this->BE_USER);
+            $tce->start([], $removeArray, $this->BE_USER, $this->referenceIndexUpdater);
             $tce->process_cmdmap();
             unset($tce);
         }
@@ -6538,7 +6537,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function getLocalTCE(): DataHandler
     {
-        $copyTCE = GeneralUtility::makeInstance(DataHandler::class, $this->referenceIndexUpdater);
+        $copyTCE = GeneralUtility::makeInstance(DataHandler::class);
         $copyTCE->copyTree = $this->copyTree;
         $copyTCE->enableLogging = $this->enableLogging;
         // Transformations should NOT be carried out during copy
