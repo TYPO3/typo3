@@ -51,6 +51,7 @@ type FormEngineType = {
   openedPopupWindow: Window | null,
   legacyFieldChangedCb: () => void,
   browserUrl: string,
+  doSaveFieldName: string,
 };
 
 type OnChangeFieldHandlerCallback = (data: object, e: Event) => void;
@@ -155,7 +156,8 @@ export default (function() {
         TYPO3.settings.FormEngine.legacyFieldChangedCb();
       }
     },
-    browserUrl: ''
+    browserUrl: '',
+    doSaveFieldName: ''
   };
 
   Object.defineProperty(
@@ -498,7 +500,7 @@ export default (function() {
       }
 
       if (e.submitter !== null && (e.submitter.tagName === 'A' || e.submitter.hasAttribute('form')) && !e.defaultPrevented) {
-        const saveField = form.doSave as HTMLInputElement|null;
+        const saveField = form.querySelector(selector`input[name="${FormEngine.doSaveFieldName}"]`) as HTMLInputElement|null;
         if (saveField !== null) {
           saveField.value = '1';
         }
@@ -1265,7 +1267,10 @@ export default (function() {
       currentlyFocussed.blur();
     }
 
-    FormEngine.formElement.doSave.value = 1;
+    const saveField = FormEngine.formElement.querySelector(selector`input[name="${FormEngine.doSaveFieldName}"]`) as HTMLInputElement|null;
+    if (saveField !== null) {
+      saveField.value = '1';
+    }
     FormEngine.formElement.requestSubmit();
   };
 
@@ -1285,9 +1290,12 @@ export default (function() {
    * Sets some options and registers the DOMready handler to initialize further things
    *
    * @param {String} browserUrl
+   * @param {String} doSaveFieldName
    */
-  FormEngine.initialize = function(browserUrl: string): void {
+  FormEngine.initialize = function(browserUrl: string, doSaveFieldName: string): void {
     FormEngine.browserUrl = browserUrl;
+    // Add doSaveFieldName - fall back to to `doSave` for b/w compatibility
+    FormEngine.doSaveFieldName = doSaveFieldName || 'doSave';
 
     DocumentService.ready().then((): void => {
       FormEngine.initializeEvents();

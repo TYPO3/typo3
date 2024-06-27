@@ -52,6 +52,8 @@ declare namespace TYPO3 {
     export namespace FormEngine {
       export const moduleUrl: string;
       export const formName: string;
+
+      export const doSaveFieldName: string;
       export const legacyFieldChangedCb: () => void;
     }
     export namespace FormEngineInline {
