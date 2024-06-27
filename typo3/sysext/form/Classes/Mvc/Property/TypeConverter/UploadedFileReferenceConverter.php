@@ -131,7 +131,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      * @return File|FileReference|Folder|Error|null
      * @internal
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($source instanceof UploadedFile) {
             $source = $this->convertUploadedFileToUploadInfoArray($source);
@@ -235,7 +235,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
 
     protected function createFileReferenceFromFalFileObject(
         File $file,
-        int $resourcePointer = null
+        ?int $resourcePointer = null
     ): PseudoFileReference {
         $fileReference = $this->resourceFactory->createFileReferenceObject(
             [
@@ -255,7 +255,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      */
     protected function createFileReferenceFromFalFileReferenceObject(
         CoreFileReference $falFileReference,
-        int $resourcePointer = null
+        ?int $resourcePointer = null
     ): PseudoFileReference {
         if ($resourcePointer === null) {
             $fileReference = GeneralUtility::makeInstance(PseudoFileReference::class);

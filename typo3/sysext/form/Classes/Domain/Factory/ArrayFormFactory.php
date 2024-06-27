@@ -48,8 +48,8 @@ class ArrayFormFactory extends AbstractFormFactory
      */
     public function build(
         array $configuration,
-        string $prototypeName = null,
-        ServerRequestInterface $request = null
+        ?string $prototypeName = null,
+        ?ServerRequestInterface $request = null
     ): FormDefinition {
         if (empty($prototypeName)) {
             $prototypeName = $configuration['prototypeName'] ?? 'standard';

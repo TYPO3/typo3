@@ -52,12 +52,12 @@ class ValidationDto
     protected $propertyCollectionElementIdentifier;
 
     public function __construct(
-        string $prototypeName = null,
-        string $formElementType = null,
-        string $formElementIdentifier = null,
-        string $propertyPath = null,
-        string $propertyCollectionName = null,
-        string $propertyCollectionElementIdentifier = null
+        ?string $prototypeName = null,
+        ?string $formElementType = null,
+        ?string $formElementIdentifier = null,
+        ?string $propertyPath = null,
+        ?string $propertyCollectionName = null,
+        ?string $propertyCollectionElementIdentifier = null
     ) {
         $this->prototypeName = $prototypeName;
         $this->formElementType = $formElementType;

@@ -49,7 +49,7 @@ interface FormFactoryInterface
      */
     public function build(
         array $configuration,
-        string $prototypeName = null,
-        ServerRequestInterface $request = null
+        ?string $prototypeName = null,
+        ?ServerRequestInterface $request = null
     ): FormDefinition;
 }

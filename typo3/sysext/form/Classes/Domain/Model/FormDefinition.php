@@ -300,7 +300,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
         string $identifier,
         array $prototypeConfiguration = [],
         string $type = 'Form',
-        string $persistenceIdentifier = null
+        ?string $persistenceIdentifier = null
     ) {
         $this->typeDefinitions = $prototypeConfiguration['formElementsDefinition'] ?? [];
         $this->validatorsDefinition = $prototypeConfiguration['validatorsDefinition'] ?? [];
