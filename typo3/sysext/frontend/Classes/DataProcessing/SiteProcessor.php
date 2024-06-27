@@ -38,7 +38,7 @@ class SiteProcessor implements DataProcessorInterface
 {
     protected ?TypoScriptFrontendController $tsfe;
 
-    public function __construct(TypoScriptFrontendController $tsfe = null)
+    public function __construct(?TypoScriptFrontendController $tsfe = null)
     {
         $this->tsfe = $tsfe ?? $GLOBALS['TSFE'] ?? null;
     }

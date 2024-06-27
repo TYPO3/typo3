@@ -232,7 +232,7 @@ class AbstractPlugin
      * @param null $_ unused,
      * @param TypoScriptFrontendController $frontendController
      */
-    public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
+    public function __construct($_ = null, ?TypoScriptFrontendController $frontendController = null)
     {
         $this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);

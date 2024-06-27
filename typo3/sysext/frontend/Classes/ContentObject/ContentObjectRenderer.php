@@ -473,7 +473,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param TypoScriptFrontendController $typoScriptFrontendController
      * @param ContainerInterface $container
      */
-    public function __construct(TypoScriptFrontendController $typoScriptFrontendController = null, ContainerInterface $container = null)
+    public function __construct(?TypoScriptFrontendController $typoScriptFrontendController = null, ?ContainerInterface $container = null)
     {
         $this->typoScriptFrontendController = $typoScriptFrontendController;
         $this->contentObjectClassMap = $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] ?? [];

@@ -101,7 +101,7 @@ class SiteBaseRedirectResolver implements MiddlewareInterface
      * @param BackendUserAuthentication|null $user
      * @return bool
      */
-    protected function isLanguageEnabled(SiteLanguage $language, BackendUserAuthentication $user = null): bool
+    protected function isLanguageEnabled(SiteLanguage $language, ?BackendUserAuthentication $user = null): bool
     {
         // language is hidden, check if a possible backend user is allowed to access the language
         if ($language->enabled() || ($user instanceof BackendUserAuthentication && $user->checkLanguageAccess($language->getLanguageId()))) {

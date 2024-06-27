@@ -37,7 +37,7 @@ class UnableToLinkException extends Exception
      * @param \Throwable $previous [optional] The previous throwable used for the exception chaining.
      * @param LinkResult|string $linkText [optional]
      */
-    public function __construct($message = '', $code = 0, \Throwable $previous = null, $linkText = '')
+    public function __construct($message = '', $code = 0, ?\Throwable $previous = null, $linkText = '')
     {
         parent::__construct($message, $code, $previous);
         if ($linkText instanceof LinkResult) {

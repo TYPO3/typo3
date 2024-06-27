@@ -47,7 +47,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * @param array|null $rootLine
      * @param array<int, array<string, mixed>>|null $fullRootLine
      */
-    public function __construct(Context $context = null, int $pageId = null, array $rootLine = null, array $fullRootLine = null)
+    public function __construct(?Context $context = null, ?int $pageId = null, ?array $rootLine = null, ?array $fullRootLine = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageId = $pageId;

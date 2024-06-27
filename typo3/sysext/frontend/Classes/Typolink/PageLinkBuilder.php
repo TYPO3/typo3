@@ -769,7 +769,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * Builds PageRepository instance without depending on global context, e.g.
      * not automatically overlaying records based on current request language.
      */
-    protected function buildPageRepository(LanguageAspect $languageAspect = null): PageRepository
+    protected function buildPageRepository(?LanguageAspect $languageAspect = null): PageRepository
     {
         // clone global context object (singleton)
         $context = clone GeneralUtility::makeInstance(Context::class);

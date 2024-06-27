@@ -739,7 +739,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param ServerRequestInterface|null $request
      */
-    public function determineId(ServerRequestInterface $request = null)
+    public function determineId(?ServerRequestInterface $request = null)
     {
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         // Call pre processing function for id determination
@@ -963,7 +963,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @internal
      * @param ServerRequestInterface|null $request
      */
-    protected function fetch_the_id(ServerRequestInterface $request = null)
+    protected function fetch_the_id(?ServerRequestInterface $request = null)
     {
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $timeTracker = $this->getTimeTracker();
@@ -1464,7 +1464,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param string $failureReasonCode the error code to be attached (optional), see PageAccessFailureReasons list for details
      * @return array Summary of why page access was not allowed.
      */
-    public function getPageAccessFailureReasons(string $failureReasonCode = null)
+    public function getPageAccessFailureReasons(?string $failureReasonCode = null)
     {
         $output = [];
         if ($failureReasonCode) {
@@ -1577,7 +1577,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param ServerRequestInterface|null $request if given this is used to determine values in headerNoCache() instead of the superglobal $_SERVER
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
-    public function getFromCache(ServerRequestInterface $request = null)
+    public function getFromCache(?ServerRequestInterface $request = null)
     {
         // clearing the content-variable, which will hold the pagecontent
         $this->content = '';
@@ -1730,7 +1730,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param ServerRequestInterface|null $request
      * @return bool If shift-reload in client browser has been clicked, disable getting cached page (and regenerate it).
      */
-    public function headerNoCache(ServerRequestInterface $request = null)
+    public function headerNoCache(?ServerRequestInterface $request = null)
     {
         if ($request instanceof ServerRequestInterface) {
             $serverParams = $request->getServerParams();
@@ -1830,7 +1830,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @throws \TYPO3\CMS\Core\Error\Http\InternalServerErrorException
      * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
      */
-    public function getConfigArray(ServerRequestInterface $request = null)
+    public function getConfigArray(?ServerRequestInterface $request = null)
     {
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         if (!$this->tmpl instanceof TemplateService) {
@@ -2759,7 +2759,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param ServerRequestInterface|null $request
      */
-    public function INTincScript(ServerRequestInterface $request = null)
+    public function INTincScript(?ServerRequestInterface $request = null)
     {
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'];
         $this->additionalHeaderData = $this->config['INTincScript_ext']['additionalHeaderData'] ?? [];
@@ -3027,7 +3027,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param ServerRequestInterface|null $request
      */
-    public function newCObj(ServerRequestInterface $request = null)
+    public function newCObj(?ServerRequestInterface $request = null)
     {
         $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
         $this->cObj->start($this->page, 'pages', $request);

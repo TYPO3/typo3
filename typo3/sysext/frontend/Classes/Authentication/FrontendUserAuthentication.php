@@ -267,7 +267,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      *
      * @param ServerRequestInterface|null $request (will become a requirement in v12.0)
      */
-    public function fetchGroupData(ServerRequestInterface $request = null)
+    public function fetchGroupData(?ServerRequestInterface $request = null)
     {
         $this->TSdataArray = [];
         $this->userTS = [];
