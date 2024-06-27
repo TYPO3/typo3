@@ -111,26 +111,23 @@
 			<trans-unit id="table.header.uid" resname="table.header.uid">
 				<source>UID</source>
 			</trans-unit>
+			<trans-unit id="table.header.pageTitle" resname="table.header.pageTitle">
+				<source>Page title</source>
+			</trans-unit>
 			<trans-unit id="table.header.pid" resname="table.header.pid">
-				<source>PID</source>
+				<source>Page ID</source>
 			</trans-unit>
 			<trans-unit id="table.header.record" resname="table.header.record">
 				<source>Record</source>
-			</trans-unit>
-			<trans-unit id="table.header.actions" resname="table.header.actions">
-				<source>Actions</source>
-			</trans-unit>
-			<trans-unit id="table.header.recordtype" resname="table.header.recordtype">
-				<source>Record Type</source>
 			</trans-unit>
 			<trans-unit id="table.header.tstamp" resname="table.header.tstamp">
 				<source>Last edit</source>
 			</trans-unit>
 			<trans-unit id="table.header.crdate" resname="table.header.crdate">
-				<source>Created on</source>
+				<source>Created at</source>
 			</trans-unit>
-			<trans-unit id="table.header.owner" resname="table.header.owner">
-				<source>Owner</source>
+			<trans-unit id="table.header.createdBy" resname="table.header.createdBy">
+				<source>Created by</source>
 			</trans-unit>
 			<trans-unit id="table.header.deletedBy" resname="table.header.deletedBy">
 				<source>Deleted by</source>
@@ -138,8 +135,8 @@
 			<trans-unit id="table.header.path" resname="table.header.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="record.deleted" resname="record.deleted">
-				<source>deleted</source>
+			<trans-unit id="record.userDeleted" resname="record.userDeleted">
+				<source>[Deleted user] (id=%s)</source>
 			</trans-unit>
 		</body>
 	</file>

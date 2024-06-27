@@ -175,7 +175,6 @@ class RecyclerAjaxController
                 $pageTitle = $this->getPageTitle((int)$row['pid']);
                 $ownerInformation = $this->recordHistory->getCreationInformationForRecord($table, $row);
                 $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['usertype'] === 'BE' ? $ownerInformation['userid'] : 0);
-                $backendUserName = $this->getBackendUserInformation($ownerUid);
                 $deleteUserUid = $this->recordHistory->getUserIdFromDeleteActionForRecord($table, (int)$row['uid']);
 
                 $groupedRecords[$table]['records'][] = [
@@ -185,12 +184,12 @@ class RecyclerAjaxController
                     'pageTitle' => $pageTitle,
                     'crdate' => isset($GLOBALS['TCA'][$table]['ctrl']['crdate']) ? BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]) : '',
                     'tstamp' => isset($GLOBALS['TCA'][$table]['ctrl']['tstamp']) ? BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]) : '',
-                    'owner' => $backendUserName,
-                    'owner_uid' => $ownerUid,
+                    'backendUserUid' => $ownerUid,
+                    'backendUser' => $this->getBackendUserInformation($ownerUid),
                     'title' => BackendUtility::getRecordTitle($table, $row),
                     'path' => $this->getRecordPath((int)$row['pid']),
-                    'delete_user_uid' => $deleteUserUid,
-                    'delete_user' => $this->getBackendUserInformation($deleteUserUid),
+                    'deletedBackendUserUid' => $deleteUserUid,
+                    'deletedBackendUser' => $this->getBackendUserInformation($deleteUserUid),
                     'isParentDeleted' => $table === 'pages' && $this->isParentPageDeleted((int)$row['pid']),
                 ];
             }
@@ -219,28 +218,27 @@ class RecyclerAjaxController
     }
 
     /**
-     * Gets the username of a given backend user
+     * Gets the username and real name of a given backend user
      */
-    protected function getBackendUserInformation(int $userId): string
+    protected function getBackendUserInformation(int $userId): array
     {
         if ($userId === 0) {
-            return '';
+            return [];
         }
         $cacheId = 'recycler-user-' . $userId;
         $username = $this->runtimeCache->get($cacheId);
+        $userData = [];
         if ($username === false) {
-            $backendUser = BackendUtility::getRecord('be_users', $userId, 'username', '', false);
-            if ($backendUser === null) {
-                $username = sprintf(
-                    '[%s]',
-                    LocalizationUtility::translate('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:record.deleted')
-                );
-            } else {
-                $username = $backendUser['username'];
+            $backendUser = BackendUtility::getRecord('be_users', $userId, 'username, realName', '', false);
+            if ($backendUser !== null) {
+                $userData[] = [
+                    'username' => $backendUser['username'] ?? '',
+                    'realName' => $backendUser['realName'] ?? '',
+                ];
             }
             $this->runtimeCache->set($cacheId, $username);
         }
-        return $username;
+        return $userData;
     }
 
     /**

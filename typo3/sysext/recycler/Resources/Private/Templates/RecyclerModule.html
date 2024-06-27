@@ -47,11 +47,12 @@
                 <thead>
                     <tr>
                         <th class="col-checkbox"><f:render section="multiRecordSelectionCheckboxActions" /></th>
-                        <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.record" /></th>
+                        <th class="col-path"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.record" /></th>
+                        <th class="col-time"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.uid" /></th>
+                        <th class="col-path"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pageTitle" /></th>
+                        <th class="col-time"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pid" /></th>
                         <th class="col-datetime"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.tstamp" /></th>
-                        <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.uid" /></th>
-                        <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pid" /></th>
-                        <th class="col-control"></th>
+                        <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
                     </tr>
                 </thead>
                 <tbody data-multi-record-selection-row-selection="true">
@@ -64,7 +65,6 @@
     </div>
 
 </f:section>
-
 
 <f:section name="multiRecordSelectionCheckboxActions">
     <div class="btn-group dropdown">
