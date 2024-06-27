@@ -249,7 +249,7 @@ class Indexer
      * Initializes the object.
      * @param array|null $configuration will be used to set $this->conf, otherwise $this->conf MUST be set with proper values prior to this call
      */
-    public function init(array $configuration = null)
+    public function init(?array $configuration = null)
     {
         if (is_array($configuration)) {
             $this->conf = $configuration;
