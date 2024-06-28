@@ -45,7 +45,7 @@ class LocalizationUtility
      * @param string[]|null $alternativeLanguageKeys The alternative language keys if no translation was found. @deprecated will be removed in TYPO3 v13.0
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
-    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, Locale|string $languageKey = null, array $alternativeLanguageKeys = null): ?string
+    public static function translate(string $key, ?string $extensionName = null, ?array $arguments = null, Locale|string|null $languageKey = null, ?array $alternativeLanguageKeys = null): ?string
     {
         if ($key === '') {
             // Early return guard: returns null if the key was empty, because the key may be a dynamic value

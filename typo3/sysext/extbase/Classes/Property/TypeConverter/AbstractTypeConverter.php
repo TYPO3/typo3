@@ -84,7 +84,7 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * @param mixed $source the source data
      * @param string $originalTargetType the type we originally want to convert to
      */
-    public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string
+    public function getTargetTypeForSource($source, string $originalTargetType, ?PropertyMappingConfigurationInterface $configuration = null): string
     {
         return $originalTargetType;
     }

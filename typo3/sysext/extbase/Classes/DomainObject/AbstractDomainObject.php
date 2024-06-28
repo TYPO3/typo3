@@ -47,7 +47,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
      * @internal
      * @todo make private in 13.0 and expose value via getter
      */
-    protected int|null $_localizedUid = null;
+    protected ?int $_localizedUid = null;
 
     /**
      * @var int<-1, max>|null The uid of the language of the object. This is the id of the corresponding sing language.
@@ -55,7 +55,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
      * @internal
      * @todo make private in 13.0 and expose value via getter
      */
-    protected int|null $_languageUid = null;
+    protected ?int $_languageUid = null;
 
     /**
      * The uid of the versioned record.
@@ -63,7 +63,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
      * @internal
      * @todo make private in 13.0 and expose value via getter
      */
-    protected int|null $_versionedUid = null;
+    protected ?int $_versionedUid = null;
 
     /**
      * @var int<0, max>|null The id of the page the record is "stored".
@@ -88,7 +88,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     /**
      * @return int<1, max>|null
      */
-    public function getUid(): int|null
+    public function getUid(): ?int
     {
         if ($this->uid !== null) {
             return (int)$this->uid;
@@ -107,7 +107,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     /**
      * @return int<0, max>|null
      */
-    public function getPid(): int|null
+    public function getPid(): ?int
     {
         if ($this->pid === null) {
             return null;
@@ -179,7 +179,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
      *
      * @param non-empty-string|null $propertyName The name of the property to be memorized. If omitted all persistable properties are memorized.
      */
-    public function _memorizeCleanState(string|null $propertyName = null): void
+    public function _memorizeCleanState(?string $propertyName = null): void
     {
         if ($propertyName !== null) {
             $this->_memorizePropertyCleanState($propertyName);
@@ -248,7 +248,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
      *
      * @throws TooDirtyException
      */
-    public function _isDirty(string|null $propertyName = null): bool
+    public function _isDirty(?string $propertyName = null): bool
     {
         if ($this->uid !== null && $this->_getCleanProperty(self::PROPERTY_UID) !== null && $this->uid != $this->_getCleanProperty(self::PROPERTY_UID)) {
             throw new TooDirtyException('The ' . self::PROPERTY_UID . ' "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);

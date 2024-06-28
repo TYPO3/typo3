@@ -48,7 +48,7 @@ class EnumConverter extends AbstractTypeConverter
      * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom(mixed $source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ?\UnitEnum
+    public function convertFrom(mixed $source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): ?\UnitEnum
     {
         return $this->getEnumElement($source, $targetType);
     }

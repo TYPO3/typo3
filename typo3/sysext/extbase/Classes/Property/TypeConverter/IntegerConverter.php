@@ -50,7 +50,7 @@ class IntegerConverter extends AbstractTypeConverter
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return int|\TYPO3\CMS\Extbase\Error\Error
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($source === null || (string)$source === '') {
             return null;

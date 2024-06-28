@@ -50,7 +50,7 @@ class ObjectStorageConverter extends AbstractTypeConverter
      *
      * @param mixed $source
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ObjectStorage
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): ObjectStorage
     {
         $objectStorage = new ObjectStorage();
         foreach ($convertedChildProperties as $subProperty) {

@@ -109,7 +109,7 @@ class Session
      *
      * @return non-empty-string|null
      */
-    public function getIdentifierByObject(object $object): string|null
+    public function getIdentifierByObject(object $object): ?string
     {
         if ($this->hasObject($object)) {
             return $this->objectMap[$object];

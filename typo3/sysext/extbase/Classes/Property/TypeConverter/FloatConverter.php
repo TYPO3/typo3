@@ -61,7 +61,7 @@ class FloatConverter extends AbstractTypeConverter
      * @param mixed $source
      * @return float|\TYPO3\CMS\Extbase\Error\Error|null
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($source === null || (string)$source === '') {
             return null;

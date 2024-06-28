@@ -265,7 +265,7 @@ class FrontendConfigurationManager implements SingletonInterface
      *
      * @param string|null $pluginName in FE mode this is the specified plugin name
      */
-    protected function getPluginConfiguration(string $extensionName, string $pluginName = null): array
+    protected function getPluginConfiguration(string $extensionName, ?string $pluginName = null): array
     {
         $setup = $this->getTypoScriptSetup();
         $pluginConfiguration = [];

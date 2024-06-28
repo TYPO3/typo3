@@ -711,7 +711,7 @@ abstract class ActionController implements ControllerInterface
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    protected function getFlashMessageQueue(string $identifier = null): FlashMessageQueue
+    protected function getFlashMessageQueue(?string $identifier = null): FlashMessageQueue
     {
         if ($identifier === null) {
             $pluginNamespace = $this->internalExtensionService->getPluginNamespace(
@@ -737,7 +737,7 @@ abstract class ActionController implements ControllerInterface
      * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
      */
-    protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303): ResponseInterface
+    protected function redirect($actionName, $controllerName = null, $extensionName = null, ?array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303): ResponseInterface
     {
         if ($controllerName === null) {
             $controllerName = $this->request->getControllerName();
@@ -857,7 +857,7 @@ abstract class ActionController implements ControllerInterface
      *
      * @param string|null $html
      */
-    protected function htmlResponse(string $html = null): ResponseInterface
+    protected function htmlResponse(?string $html = null): ResponseInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8')
@@ -870,7 +870,7 @@ abstract class ActionController implements ControllerInterface
      *
      * @param string|null $json
      */
-    protected function jsonResponse(string $json = null): ResponseInterface
+    protected function jsonResponse(?string $json = null): ResponseInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/json; charset=utf-8')

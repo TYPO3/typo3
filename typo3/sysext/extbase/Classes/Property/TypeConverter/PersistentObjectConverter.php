@@ -154,7 +154,7 @@ class PersistentObjectConverter extends ObjectConverter
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ?object
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): ?object
     {
         if (is_array($source)) {
             if (
@@ -196,7 +196,7 @@ class PersistentObjectConverter extends ObjectConverter
      *
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      */
-    protected function handleArrayData(array $source, string $targetType, array &$convertedChildProperties, PropertyMappingConfigurationInterface $configuration = null): object
+    protected function handleArrayData(array $source, string $targetType, array &$convertedChildProperties, ?PropertyMappingConfigurationInterface $configuration = null): object
     {
         if (isset($source['__identity'])) {
             $object = $this->fetchObjectFromPersistence($source['__identity'], $targetType);

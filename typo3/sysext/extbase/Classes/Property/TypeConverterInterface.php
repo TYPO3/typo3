@@ -30,7 +30,7 @@ interface TypeConverterInterface
      * @param mixed $source the source data
      * @param string $originalTargetType the type we originally want to convert to
      */
-    public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string;
+    public function getTargetTypeForSource($source, string $originalTargetType, ?PropertyMappingConfigurationInterface $configuration = null): string;
 
     /**
      * Return a list of sub-properties inside the source object.
@@ -65,5 +65,5 @@ interface TypeConverterInterface
      * @return mixed|\TYPO3\CMS\Extbase\Error\Error the target type, or an error object if a user-error occurred
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException thrown in case a developer error occurred
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null);
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null);
 }
