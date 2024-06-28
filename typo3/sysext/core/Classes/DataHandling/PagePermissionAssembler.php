@@ -29,36 +29,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * - defaultPermissions as defined in this class.
  * - TYPO3_CONF_VARS[BE][defaultPermissions]
  * - Page TSconfig va TCEMAIN.permissions
+ *
+ * @internal Implements a DataHandler detail. Should only be used by the TYPO3 Core.
  */
 class PagePermissionAssembler
 {
     /**
-     * Can be overridden from $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']
-     *
-     * @var array
-     */
-    protected $defaultPermissions = [
-        'user' => 'show,edit,delete,new,editcontent',
-        'group' => 'show,edit,new,editcontent',
-        'everybody' => '',
-    ];
-
-    public function __construct(array $defaultPermissions = null)
-    {
-        // Initializing default permissions for pages
-        if (isset($defaultPermissions['user'])) {
-            $this->defaultPermissions['user'] = $defaultPermissions['user'];
-        }
-        if (isset($defaultPermissions['group'])) {
-            $this->defaultPermissions['group'] = $defaultPermissions['group'];
-        }
-        if (isset($defaultPermissions['everybody'])) {
-            $this->defaultPermissions['everybody'] = $defaultPermissions['everybody'];
-        }
-    }
-
-    /**
-     * Set default permissions of a new page, and override via page TSconfig.
+     * Set default permissions of a new page, considering defaults and pageTsConfig overrides.
      *
      * @param array $fieldArray the field array to be used
      * @param int $pid the parent page ID
@@ -70,9 +47,12 @@ class PagePermissionAssembler
     {
         $fieldArray['perms_userid'] = $backendUserId;
         $fieldArray['perms_groupid'] = $backendUserGroupId;
-        $fieldArray['perms_user'] = $this->assemblePermissions($this->defaultPermissions['user']);
-        $fieldArray['perms_group'] = $this->assemblePermissions($this->defaultPermissions['group']);
-        $fieldArray['perms_everybody'] = $this->assemblePermissions($this->defaultPermissions['everybody']);
+        $fieldArray['perms_user'] = $this->assemblePermissions($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']['user'] ?? 'show,edit,delete,new,editcontent');
+        $fieldArray['perms_group'] = $this->assemblePermissions($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']['group'] ?? 'show,edit,new,editcontent');
+        $fieldArray['perms_everybody'] = $this->assemblePermissions($GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']['everybody'] ?? '');
+        // @todo: It's kinda ugly pageTS is fetched here on demand. Together with the 'fetch parent page' code in
+        //        setTSconfigPermissions(), we should think about changing the API to have these things hand
+        //        over instead.
         $TSConfig = BackendUtility::getPagesTSconfig($pid)['TCEMAIN.'] ?? [];
         if (isset($TSConfig['permissions.']) && is_array($TSConfig['permissions.'])) {
             return $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
@@ -92,48 +72,35 @@ class PagePermissionAssembler
     {
         $parentPermissions = [];
         if (in_array('copyFromParent', $tsconfig, true)) {
+            // @todo: Dislocated! The API should be changed to have a potential parent record hand over.
             $parentPermissions = BackendUtility::getRecordWSOL('pages', $fieldArray['pid'], 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody') ?? [];
         }
-        if (
-            (string)($tsconfig['userid'] ?? '') !== ''
-            && ($tsconfig['userid'] !== 'copyFromParent' || isset($parentPermissions['perms_userid']))
-        ) {
+        if ((string)($tsconfig['userid'] ?? '') !== '' && ($tsconfig['userid'] !== 'copyFromParent' || isset($parentPermissions['perms_userid']))) {
             $fieldArray['perms_userid'] = $tsconfig['userid'] === 'copyFromParent' ? (int)$parentPermissions['perms_userid'] : (int)$tsconfig['userid'];
         }
-        if (
-            (string)($tsconfig['groupid'] ?? '') !== ''
-            && ($tsconfig['groupid'] !== 'copyFromParent' || isset($parentPermissions['perms_groupid']))
-        ) {
+        if ((string)($tsconfig['groupid'] ?? '') !== '' && ($tsconfig['groupid'] !== 'copyFromParent' || isset($parentPermissions['perms_groupid']))) {
             $fieldArray['perms_groupid'] = $tsconfig['groupid'] === 'copyFromParent' ? (int)$parentPermissions['perms_groupid'] : (int)$tsconfig['groupid'];
         }
-        if (
-            (string)($tsconfig['user'] ?? '') !== ''
-            && ($tsconfig['user'] !== 'copyFromParent' || isset($parentPermissions['perms_user']))
-        ) {
+        if ((string)($tsconfig['user'] ?? '') !== '' && ($tsconfig['user'] !== 'copyFromParent' || isset($parentPermissions['perms_user']))) {
             $fieldArray['perms_user'] = $tsconfig['user'] === 'copyFromParent' ? (int)$parentPermissions['perms_user'] : $this->assemblePermissions($tsconfig['user']);
         }
-        if (
-            (string)($tsconfig['group'] ?? '') !== ''
-            && ($tsconfig['group'] !== 'copyFromParent' || isset($parentPermissions['perms_group']))
-        ) {
+        if ((string)($tsconfig['group'] ?? '') !== '' && ($tsconfig['group'] !== 'copyFromParent' || isset($parentPermissions['perms_group']))) {
             $fieldArray['perms_group'] = $tsconfig['group'] === 'copyFromParent' ? (int)$parentPermissions['perms_group'] : $this->assemblePermissions($tsconfig['group']);
         }
-        if (
-            (string)($tsconfig['everybody'] ?? '') !== ''
-            && ($tsconfig['everybody'] !== 'copyFromParent' || isset($parentPermissions['perms_everybody']))
-        ) {
+        if ((string)($tsconfig['everybody'] ?? '') !== '' && ($tsconfig['everybody'] !== 'copyFromParent' || isset($parentPermissions['perms_everybody']))) {
             $fieldArray['perms_everybody'] = $tsconfig['everybody'] === 'copyFromParent' ? (int)$parentPermissions['perms_everybody'] : $this->assemblePermissions($tsconfig['everybody']);
         }
         return $fieldArray;
     }
 
     /**
-     * Calculates the bitvalue of the permissions given in a string, comma-separated
+     * Calculates the bit value of the permissions given in a string, comma-separated.
      *
-     * @param string $listOfPermissions a comma-separated list like "show,delete", usually from page TSconfig
-     * @return int Integer mask
+     * Even though not documented, it seems to be possible having int values in
+     * $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']['...'] as bit mask
+     * already. To not break anything, this is kept for now.
      */
-    protected function assemblePermissions($listOfPermissions): int
+    protected function assemblePermissions(int|string $listOfPermissions): int
     {
         // Already set as integer, so this one is used.
         if (MathUtility::canBeInterpretedAsInteger($listOfPermissions)) {

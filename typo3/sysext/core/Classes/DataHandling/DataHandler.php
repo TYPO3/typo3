@@ -497,7 +497,7 @@ class DataHandler implements LoggerAwareInterface
         $this->cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $this->runtimeCache = $this->cacheManager->getCache('runtime');
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $this->pagePermissionAssembler = GeneralUtility::makeInstance(PagePermissionAssembler::class, $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']);
+        $this->pagePermissionAssembler = GeneralUtility::makeInstance(PagePermissionAssembler::class);
         $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
