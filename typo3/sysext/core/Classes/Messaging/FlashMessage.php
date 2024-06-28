@@ -56,15 +56,14 @@ class FlashMessage extends AbstractMessage
      * Factory method. Useful when creating flash messages from a jsonSerialize json_decode() call.
      *
      * @param array<string, string|int|bool> $data
-     * @return static
      */
     public static function createFromArray(array $data): self
     {
         return GeneralUtility::makeInstance(
             static::class,
-            (string)$data['message'],
+            (string)($data['message'] ?? ''),
             (string)($data['title'] ?? ''),
-            ContextualFeedbackSeverity::tryFrom($data['severity']) ?? ContextualFeedbackSeverity::OK,
+            ContextualFeedbackSeverity::tryFrom($data['severity'] ?? ContextualFeedbackSeverity::OK->value) ?? ContextualFeedbackSeverity::OK,
             (bool)($data['storeInSession'] ?? false)
         );
     }

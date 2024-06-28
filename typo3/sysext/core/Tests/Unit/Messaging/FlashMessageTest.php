@@ -36,4 +36,29 @@ final class FlashMessageTest extends UnitTestCase
         ];
         self::assertEquals($expected, $message->jsonSerialize());
     }
+
+    #[Test]
+    public function canCreateFromArray(): void
+    {
+        $message = FlashMessage::createFromArray([
+            'message' => 'my message',
+            'title' => 'my title',
+            'severity' => ContextualFeedbackSeverity::INFO->value,
+            'storeInSession' => true,
+        ]);
+        self::assertSame('my message', $message->getMessage());
+        self::assertSame('my title', $message->getTitle());
+        self::assertSame(ContextualFeedbackSeverity::INFO, $message->getSeverity());
+        self::assertTrue($message->isSessionMessage());
+    }
+
+    #[Test]
+    public function createFromArrayCreatesDefault(): void
+    {
+        $message = FlashMessage::createFromArray([]);
+        self::assertSame('', $message->getMessage());
+        self::assertSame('', $message->getTitle());
+        self::assertSame(ContextualFeedbackSeverity::OK, $message->getSeverity());
+        self::assertFalse($message->isSessionMessage());
+    }
 }
