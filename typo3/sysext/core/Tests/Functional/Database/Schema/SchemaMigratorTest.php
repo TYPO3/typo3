@@ -705,4 +705,24 @@ final class SchemaMigratorTest extends FunctionalTestCase
         );
         self::assertCSVDataSet(__DIR__ . '/../Fixtures/JsonFieldDefaultValue/Assertions/' . $assertionFileName);
     }
+
+    #[Test]
+    public function bigIntPrimaryKeyCrossDatabaseMaxValue(): void
+    {
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/bigIntPrimaryKeyTable.sql'));
+        $result = $subject->install($statements);
+        $this->verifyMigrationResult($result);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/bigIntPrimaryKeyInsert.csv');
+        $connection = $this->get(ConnectionPool::class)->getConnectionByName('Default');
+        $connection->insert(
+            'a_test_table',
+            [
+                'pid' => 0,
+                'title' => 'added',
+            ]
+        );
+        self::assertSame('9223372036854775807', $connection->lastInsertId());
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/bigIntPrimaryKeyAssert.csv');
+    }
 }
