@@ -44,5 +44,5 @@ interface ExtensionDownloaderRemoteInterface
      * @throws DownloadFailedException when a remote file could not be loaded.
      * @throws VerificationFailedException when the remote file could not be unpacked or validated.
      */
-    public function downloadExtension(string $extensionKey, string $version, FileHandlingUtility $fileHandler, string $verificationHash = null, string $pathType = 'Local'): void;
+    public function downloadExtension(string $extensionKey, string $version, FileHandlingUtility $fileHandler, ?string $verificationHash = null, string $pathType = 'Local'): void;
 }

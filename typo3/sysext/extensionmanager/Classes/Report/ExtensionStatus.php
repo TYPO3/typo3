@@ -64,7 +64,7 @@ class ExtensionStatus implements StatusProviderInterface
     /**
      * @param RemoteRegistry|null  $remoteRegistry
      */
-    public function __construct(RemoteRegistry $remoteRegistry = null)
+    public function __construct(?RemoteRegistry $remoteRegistry = null)
     {
         $this->remoteRegistry = $remoteRegistry ?? GeneralUtility::makeInstance(RemoteRegistry::class);
         $this->listUtility = GeneralUtility::makeInstance(ListUtility::class);

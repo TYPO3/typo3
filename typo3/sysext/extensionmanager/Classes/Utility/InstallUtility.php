@@ -539,7 +539,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * @param string $packagePath
      * @param Import|null $import
      */
-    protected function importSiteConfiguration(string $extensionKey, string $packagePath, Import $import = null): void
+    protected function importSiteConfiguration(string $extensionKey, string $packagePath, ?Import $import = null): void
     {
         $importAbsFolder = $packagePath . 'Initialisation/Site';
         $destinationFolder = Environment::getConfigPath() . '/sites';

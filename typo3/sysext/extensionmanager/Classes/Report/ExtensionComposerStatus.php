@@ -48,7 +48,7 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
         $this->uriBuilder = $uriBuilder;
     }
 
-    public function getStatus(ServerRequestInterface $request = null): array
+    public function getStatus(?ServerRequestInterface $request = null): array
     {
         $status = [];
         $extensionsWithComposerDeficit = $this->composerDeficitDetector->getExtensionsWithComposerDeficit();
