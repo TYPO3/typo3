@@ -416,11 +416,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Mail/TransportFactory.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\:\\:createFromArray\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\) but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Messaging/FlashMessage.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\:\\:require\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Package/Cache/PackageStatesPackageCache.php
