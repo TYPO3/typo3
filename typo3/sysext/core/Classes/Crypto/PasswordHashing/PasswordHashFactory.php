@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Factory class to find and return hash instances of given hashed passwords
  * and to find and return default hash instances to hash new passwords.
  */
-class PasswordHashFactory
+readonly class PasswordHashFactory
 {
     /**
      * Find a hash class that handles given hash and return an instance of it.

@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Core\Service;
  * https://forge.typo3.org/issues/55252
  * Supported opcaches are: OPcache >= 7.0 (PHP 5.5)
  */
-class OpcodeCacheService
+readonly class OpcodeCacheService
 {
     /**
      * Returns all supported and active opcaches

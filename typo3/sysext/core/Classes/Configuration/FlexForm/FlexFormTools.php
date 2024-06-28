@@ -38,10 +38,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * fields and to maintain integrity of flex form related details in general.
  */
 #[Autoconfigure(public: true)]
-class FlexFormTools
+readonly class FlexFormTools
 {
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private EventDispatcherInterface $eventDispatcher,
     ) {}
 
     /**
@@ -108,7 +108,7 @@ class FlexFormTools
      *
      * After that method is run, the data structure is fully resolved to an array,
      * and same base normalization is done: If the ds did not contain a sheet,
-     * it will have one afterwards as "sDEF"
+     * it will have one afterward as "sDEF".
      *
      * This method gets: Target specification of the data structure.
      * This method returns: The normalized data structure parsed to an array.

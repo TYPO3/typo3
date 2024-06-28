@@ -21,8 +21,9 @@ use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Uid\Uuid;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -98,10 +99,10 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  *
  * Also see document 'TYPO3 Core API' for details.
  */
-class DataHandler implements LoggerAwareInterface
+#[Autoconfigure(public: true, shared: false)]
+class DataHandler
 {
     use LogDataTrait;
-    use LoggerAwareTrait;
 
     // *********************
     // Public variables you can configure before using the class:
@@ -302,8 +303,6 @@ class DataHandler implements LoggerAwareInterface
      */
     public bool $admin;
 
-    protected PagePermissionAssembler $pagePermissionAssembler;
-
     /**
      * The list of <table>-<fields> that cannot be edited by user. This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
      */
@@ -437,10 +436,9 @@ class DataHandler implements LoggerAwareInterface
 
     /**
      * Registry object to gather reference index update requests and perform updates after
-     * main processing has been done.
-     * It is created upon first __construct() call and hand over when dealing with internal
-     * sub instances. The final update() call is done at the end of process_cmdmap() or
-     * process_datamap() in the outermost instance.
+     * main processing has been done. It is created upon first start() call and hand over
+     * when dealing with internal sub instances. The final update() call is done at the end of
+     * process_cmdmap() or process_datamap() in the outermost instance.
      */
     protected ReferenceIndexUpdater $referenceIndexUpdater;
 
@@ -478,28 +476,29 @@ class DataHandler implements LoggerAwareInterface
      */
     protected static array $recordPidsForDeletedRecords = [];
 
-    private readonly CacheManager $cacheManager;
-    private readonly FrontendInterface $runtimeCache;
-    private readonly ConnectionPool $connectionPool;
-    protected TcaSchemaFactory $tcaSchemaFactory;
-
     /**
      * Prefix for the cache entries of nested element calls since the runtimeCache has a global scope.
      */
     protected const CACHE_IDENTIFIER_NESTED_ELEMENT_CALLS_PREFIX = 'core-datahandler-nestedElementCalls-';
     protected const CACHE_IDENTIFIER_ELEMENTS_TO_BE_DELETED = 'core-datahandler-elementsToBeDeleted';
 
-    /**
-     * Sets up the data handler cache and some additional options, the main logic is done in the start() method.
-     */
-    public function __construct()
-    {
-        $this->cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        $this->runtimeCache = $this->cacheManager->getCache('runtime');
-        $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $this->pagePermissionAssembler = GeneralUtility::makeInstance(PagePermissionAssembler::class);
-        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
-    }
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly CacheManager $cacheManager,
+        #[Autowire(service: 'cache.runtime')]
+        private readonly FrontendInterface $runtimeCache,
+        private readonly ConnectionPool $connectionPool,
+        private readonly LoggerInterface $logger,
+        private readonly PagePermissionAssembler $pagePermissionAssembler,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly PageDoktypeRegistry $pageDoktypeRegistry,
+        private readonly FlexFormTools $flexFormTools,
+        private readonly PasswordHashFactory $passwordHashFactory,
+        private readonly Random $randomGenerator,
+        private readonly TypoLinkCodecService $typoLinkCodecService,
+        private readonly OpcodeCacheService $opcodeCacheService,
+        private readonly FlashMessageService $flashMessageService,
+    ) {}
 
     /**
      * @internal
@@ -1365,7 +1364,7 @@ class DataHandler implements LoggerAwareInterface
             }
             if ($status === 'update') {
                 // This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
-                $onlyAllowedTables = GeneralUtility::makeInstance(PageDoktypeRegistry::class)->doesDoktypeOnlyAllowSpecifiedRecordTypes((int)$value);
+                $onlyAllowedTables = $this->pageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes((int)$value);
                 if ($onlyAllowedTables) {
                     // use the real page id (default language)
                     $recordId = $this->getDefaultLanguagePageId((int)$id);
@@ -1833,13 +1832,12 @@ class DataHandler implements LoggerAwareInterface
         // The strategy is to see if a salt instance can be created from the incoming value. If so,
         // no new password was submitted and we keep the value. If no salting instance can be created,
         // incoming value must be a new plain text value that needs to be hashed.
-        $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
         $mode = $table === 'fe_users' ? 'FE' : 'BE';
         $isNewUser = str_contains((string)$id, 'NEW');
-        $newHashInstance = $hashFactory->getDefaultHashInstance($mode);
+        $newHashInstance = $this->passwordHashFactory->getDefaultHashInstance($mode);
 
         try {
-            $hashFactory->get($value, $mode);
+            $this->passwordHashFactory->get($value, $mode);
         } catch (InvalidPasswordHashException $e) {
             // We got no salted password instance, incoming value must be a new plaintext password
             // Validate new password against password policy for field
@@ -1857,7 +1855,7 @@ class DataHandler implements LoggerAwareInterface
                 newUserLastName: $incomingFieldArray['last_name'] ?? '',
                 newUserFullName: $incomingFieldArray['realName'] ?? '',
             );
-            $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            $event = $this->eventDispatcher->dispatch(
                 new EnrichPasswordValidationContextDataEvent(
                     $contextData,
                     $incomingFieldArray,
@@ -1889,7 +1887,7 @@ class DataHandler implements LoggerAwareInterface
                     return [];
                 }
                 // Password not valid for new user. To prevent empty passwords in the database, we set a random password.
-                $value = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
+                $value = $this->randomGenerator->generateRandomHexString(96);
             }
 
             // Get an instance of the current configured salted password strategy and hash the value
@@ -2003,7 +2001,7 @@ class DataHandler implements LoggerAwareInterface
 
         if ($value !== '') {
             // Extract the actual link from the link definition for further evaluation
-            $linkParameter = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($value)['url'];
+            $linkParameter = $this->typoLinkCodecService->decode($value)['url'];
             if ($linkParameter === '') {
                 $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link definition for the field "{field}" of the table "{table}"', -1, ['link' => $value, 'field' => $field, 'table' => $table]);
                 $value = '';
@@ -2523,14 +2521,13 @@ class DataHandler implements LoggerAwareInterface
         // ok in certain scenarios, for instance on new record rows. Those are ok to "eat" here
         // and substitute with a dummy DS.
         try {
-            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+            $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                 ['config' => $tcaFieldConf],
                 $table,
                 $field,
                 $row
             );
-            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
         } catch (InvalidIdentifierException) {
             $dataStructureArray = ['sheets' => ['sDEF' => []]];
         }
@@ -2544,7 +2541,7 @@ class DataHandler implements LoggerAwareInterface
         // Evaluation of input values:
         $value['data'] = $this->checkValue_flex_procInData($value['data'] ?? [], $currentValueArray['data'] ?? [], $dataStructureArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
         // Create XML from input value:
-        $xmlValue = $this->checkValue_flexArray2Xml($value);
+        $xmlValue = $this->flexFormTools->flexArray2Xml($value);
 
         // Here we convert the currently submitted values BACK to an array, then merge the two and then BACK to XML again. This is needed to ensure the charsets are the same
         // (provided that the current value was already stored IN the charset that the new value is converted to).
@@ -2558,27 +2555,14 @@ class DataHandler implements LoggerAwareInterface
         }
 
         ArrayUtility::mergeRecursiveWithOverrule($currentValueArray, $xmlAsArray);
-        $xmlValue = $this->checkValue_flexArray2Xml($currentValueArray);
+        $xmlValue = $this->flexFormTools->flexArray2Xml($currentValueArray);
 
         $xmlAsArray = GeneralUtility::xml2array($xmlValue);
         $xmlAsArray = $this->sortAndDeleteFlexSectionContainerElements($xmlAsArray, $dataStructureArray);
-        $xmlValue = $this->checkValue_flexArray2Xml($xmlAsArray);
+        $xmlValue = $this->flexFormTools->flexArray2Xml($xmlAsArray);
 
         $res['value'] = $xmlValue;
         return $res;
-    }
-
-    /**
-     * Converts an array to FlexForm XML
-     *
-     * @param array $array Array with FlexForm data
-     * @return string Input array converted to XML
-     * @internal should only be used from within DataHandler
-     */
-    public function checkValue_flexArray2Xml($array): string
-    {
-        $flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
-        return $flexObj->flexArray2Xml($array);
     }
 
     /**
@@ -4051,14 +4035,13 @@ class DataHandler implements LoggerAwareInterface
         // For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
         if (isset($conf['type']) && $conf['type'] === 'flex') {
             // Get current value array:
-            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-            $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+            $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                 ['config' => $conf],
                 $table,
                 $field,
                 $row
             );
-            $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
             $currentValue = is_string($value) ? GeneralUtility::xml2array($value) : null;
             // Traversing the XML structure, processing files:
             if (is_array($currentValue)) {
@@ -6393,10 +6376,9 @@ class DataHandler implements LoggerAwareInterface
                 $toUpdateRegistry[] = $dbFieldConfig;
             }
             if ($fieldType->isType(TableColumnType::FLEX)) {
-                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
                 // Find possible mm tables attached to live record flex from data structures, mark as to delete
-                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $liveRecord);
-                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $liveRecord);
+                $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                 foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
                     foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
                         if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
@@ -6405,8 +6387,8 @@ class DataHandler implements LoggerAwareInterface
                     }
                 }
                 // Find possible mm tables attached to workspace record flex from data structures, mark as to update uid
-                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $workspaceRecord);
-                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $workspaceRecord);
+                $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                 foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
                     foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
                         if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
@@ -6557,7 +6539,6 @@ class DataHandler implements LoggerAwareInterface
     public function remapListedDBRecords(): void
     {
         if (!empty($this->registerDBList)) {
-            $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
             foreach ($this->registerDBList as $table => $records) {
                 foreach ($records as $uid => $fields) {
                     $newData = [];
@@ -6581,19 +6562,19 @@ class DataHandler implements LoggerAwareInterface
                                     if (is_array($origRecordRow)) {
                                         BackendUtility::workspaceOL($table, $origRecordRow);
                                         // Get current data structure and value array:
-                                        $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                                        $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                                             ['config' => $fieldType->getConfiguration()],
                                             $table,
                                             $fieldName,
                                             $origRecordRow
                                         );
-                                        $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                                        $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                                         $currentValueArray = GeneralUtility::xml2array($origRecordRow[$fieldName]);
                                         // Do recursive processing of the XML data:
                                         $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $theUidToUpdate, $fieldName], 'remapListedDBRecords_flexFormCallBack');
                                         // The return value should be compiled back into XML, ready to insert directly in the field (as we call updateDB() directly later):
                                         if (is_array($currentValueArray['data'])) {
-                                            $newData[$fieldName] = $this->checkValue_flexArray2Xml($currentValueArray);
+                                            $newData[$fieldName] = $this->flexFormTools->flexArray2Xml($currentValueArray);
                                         }
                                     }
                                 }
@@ -7010,7 +6991,7 @@ class DataHandler implements LoggerAwareInterface
         if (is_array($valueStructure['data'])) {
             // The return value should be compiled back into XML
             $values = [
-                $field => $this->checkValue_flexArray2Xml($valueStructure),
+                $field => $this->flexFormTools->flexArray2Xml($valueStructure),
             ];
             $this->updateDB($table, $uid, $values);
         }
@@ -7260,7 +7241,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // Check non-root-level
         $doktype = $this->pageInfo($pageUid, 'doktype');
-        return GeneralUtility::makeInstance(PageDoktypeRegistry::class)->isRecordTypeAllowedForDoktype($checkTable, (int)$doktype);
+        return $this->pageDoktypeRegistry->isRecordTypeAllowedForDoktype($checkTable, (int)$doktype);
     }
 
     /**
@@ -7433,7 +7414,7 @@ class DataHandler implements LoggerAwareInterface
             // Not a number. Probably a new page
             return [];
         }
-        $allowedTables = GeneralUtility::makeInstance(PageDoktypeRegistry::class)->getAllowedTypesForDoktype($doktype);
+        $allowedTables = $this->pageDoktypeRegistry->getAllowedTypesForDoktype($doktype);
         // If all tables are allowed, return early
         if (in_array('*', $allowedTables, true)) {
             return [];
@@ -9192,7 +9173,7 @@ class DataHandler implements LoggerAwareInterface
                     $this->cacheManager->flushCaches();
 
                     // Delete Opcode Cache
-                    GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
+                    $this->opcodeCacheService->clearAllActive();
 
                     // Delete DI Cache only on development context
                     if (Environment::getContext()->isDevelopment()) {
@@ -9314,8 +9295,7 @@ class DataHandler implements LoggerAwareInterface
             $msg = $this->formatLogDetails($row['details'], $row['log_data'] ?? '');
             $msg = $row['error'] . ': ' . $msg;
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? ContextualFeedbackSeverity::WARNING : ContextualFeedbackSeverity::ERROR, true);
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
 

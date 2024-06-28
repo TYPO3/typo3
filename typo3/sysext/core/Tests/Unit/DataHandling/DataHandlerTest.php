@@ -21,20 +21,32 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\VarDumper\Cloner\Data;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\Random;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
+use TYPO3\CMS\Core\DataHandling\PagePermissionAssembler;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SysLog\Action;
 use TYPO3\CMS\Core\SysLog\Error;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
@@ -47,7 +59,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DataHandlerTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
     protected DataHandler&MockObject&AccessibleObjectInterface $subject;
     protected BackendUserAuthentication&MockObject $backendUserMock;
     protected TcaSchemaFactory $tcaSchemaFactory;
@@ -55,11 +66,6 @@ final class DataHandlerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TCA'] = [];
-        $cacheManager = new CacheManager();
-        $cacheManager->registerCache(new NullFrontend('runtime'));
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
-        $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
         $this->tcaSchemaFactory = new TcaSchemaFactory(
@@ -68,8 +74,24 @@ final class DataHandlerTest extends UnitTestCase
             '',
             $cacheMock
         );
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
-        $this->subject = $this->getAccessibleMock(DataHandler::class, null);
+        $constructorArguments = [
+            new NoopEventDispatcher(),
+            $this->createMock(CacheManager::class),
+            $this->createMock(FrontendInterface::class),
+            $this->createMock(ConnectionPool::class),
+            $this->createMock(LoggerInterface::class),
+            new PagePermissionAssembler(),
+            $this->tcaSchemaFactory,
+            new PageDoktypeRegistry($this->tcaSchemaFactory),
+            new FlexFormTools(new NoopEventDispatcher()),
+            new PasswordHashFactory(),
+            new Random(),
+            new TypoLinkCodecService(new NoopEventDispatcher()),
+            new OpcodeCacheService(),
+            $this->createMock(FlashMessageService::class),
+        ];
+        $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
+        $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
         $this->subject->start([], [], $this->backendUserMock);
     }
 
@@ -79,9 +101,6 @@ final class DataHandlerTest extends UnitTestCase
         self::assertInstanceOf(DataHandler::class, $this->subject);
     }
 
-    //////////////////////////////////////////
-    // Test concerning checkModifyAccessList
-    //////////////////////////////////////////
     #[Test]
     public function adminIsAllowedToModifyNonAdminTable(): void
     {
@@ -204,14 +223,36 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function checkValuePasswordWithSaltedPasswordReturnsHashForSaltedPassword(): void
     {
+        $inputValue = 'myPassword';
+        $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users', 0, 0);
+        self::assertNotSame($inputValue, $result['value']);
+    }
+
+    #[Test]
+    public function checkValuePasswordWithSaltedPasswordDispatchesEvent(): void
+    {
         $event = new EnrichPasswordValidationContextDataEvent(new ContextData(), [], '');
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects(self::once())->method('dispatch')->willReturn($event);
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        // Note the involved salted passwords are NOT mocked since the factory is static
+        $constructorArguments = [
+            $eventDispatcher,
+            $this->createMock(CacheManager::class),
+            $this->createMock(FrontendInterface::class),
+            $this->createMock(ConnectionPool::class),
+            $this->createMock(LoggerInterface::class),
+            new PagePermissionAssembler(),
+            $this->tcaSchemaFactory,
+            new PageDoktypeRegistry($this->tcaSchemaFactory),
+            new FlexFormTools(new NoopEventDispatcher()),
+            new PasswordHashFactory(),
+            new Random(),
+            new TypoLinkCodecService(new NoopEventDispatcher()),
+            new OpcodeCacheService(),
+            $this->createMock(FlashMessageService::class),
+        ];
+        $subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments, '');
         $inputValue = 'myPassword';
-        $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users', 0, 0);
+        $result = $subject->_call('checkValueForPassword', $inputValue, [], 'be_users', 0, 0);
         self::assertNotSame($inputValue, $result['value']);
     }
 
@@ -310,9 +351,6 @@ final class DataHandlerTest extends UnitTestCase
         self::assertSame($expected, $returnValue['value']);
     }
 
-    /**
-     * Data provider for inputValuesRangeDoubleDataProvider
-     */
     public static function inputValuesRangeDoubleDataProvider(): array
     {
         return [
@@ -497,9 +535,6 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * Tests whether native dbtype inputs are parsed independent of the server timezone.
-     */
     #[DataProvider('datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider')]
     #[Test]
     public function datetimeValueCheckDbtypeIsIndependentFromTimezone(string $value, string $dbtype, string $expectedOutput): void
@@ -526,13 +561,11 @@ final class DataHandlerTest extends UnitTestCase
             'Datetime at unix epoch' => [
                 '1970-01-01T00:00:00Z',
                 'datetime',
-                'datetime',
                 false,
                 '1970-01-01 00:00:00',
             ],
             'Default datetime' => [
                 '0000-00-00 00:00:00',
-                'datetime',
                 'datetime',
                 false,
                 null,
@@ -540,13 +573,11 @@ final class DataHandlerTest extends UnitTestCase
             'Default date' => [
                 '0000-00-00',
                 'date',
-                'date',
                 false,
                 null,
             ],
             'Default time' => [
                 '00:00:00',
-                'time',
                 'time',
                 false,
                 '00:00:00',
@@ -554,13 +585,11 @@ final class DataHandlerTest extends UnitTestCase
             'Null on nullable time' => [
                 null,
                 'time',
-                'time',
                 true,
                 null,
             ],
             'Null on not nullable time' => [
                 null,
-                'time',
                 'time',
                 false,
                 '00:00:00',
@@ -568,13 +597,11 @@ final class DataHandlerTest extends UnitTestCase
             'Minimum mysql datetime' => [
                 '1000-01-01 00:00:00',
                 'datetime',
-                'datetime',
                 false,
                 '1000-01-01 00:00:00',
             ],
             'Maximum mysql datetime' => [
                 '9999-12-31 23:59:59',
-                'datetime',
                 'datetime',
                 false,
                 '9999-12-31 23:59:59',
@@ -582,16 +609,9 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string|null $value
-     * @param string $dbType
-     * @param string $format
-     * @param bool $nullable
-     * @param mixed|null $expectedOutput
-     */
     #[DataProvider('inputValueCheckNativeDbTypeDataProvider')]
     #[Test]
-    public function inputValueCheckNativeDbType(?string $value, string $dbType, string $format, bool $nullable, $expectedOutput): void
+    public function inputValueCheckNativeDbType(?string $value, string $dbType, bool $nullable, string|null $expectedOutput): void
     {
         $tcaFieldConf = [
             'input' => [],
@@ -605,13 +625,6 @@ final class DataHandlerTest extends UnitTestCase
         self::assertEquals($expectedOutput, $returnValue['value']);
     }
 
-    ///////////////////////////////////////////
-    // Tests concerning checkModifyAccessList
-    ///////////////////////////////////////////
-    //
-    /**
-     * Tests whether a wrong interface on the 'checkModifyAccessList' hook throws an exception.
-     */
     #[Test]
     public function doesCheckModifyAccessListThrowExceptionOnWrongHookInterface(): void
     {
@@ -622,9 +635,6 @@ final class DataHandlerTest extends UnitTestCase
         $this->subject->checkModifyAccessList('tt_content');
     }
 
-    /**
-     * Tests whether the 'checkModifyAccessList' hook is called correctly.
-     */
     #[Test]
     public function doesCheckModifyAccessListHookGetsCalled(): void
     {
@@ -639,9 +649,6 @@ final class DataHandlerTest extends UnitTestCase
         $this->subject->checkModifyAccessList('tt_content');
     }
 
-    /**
-     * Tests whether the 'checkModifyAccessList' hook modifies the $accessAllowed variable.
-     */
     #[Test]
     public function doesCheckModifyAccessListHookModifyAccessAllowed(): void
     {
@@ -649,15 +656,28 @@ final class DataHandlerTest extends UnitTestCase
         self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
     }
 
-    /////////////////////////////////////
-    // Tests concerning process_datamap
-    /////////////////////////////////////
     #[Test]
     public function processDatamapForFrozenNonZeroWorkspaceReturnsFalse(): void
     {
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
+        $constructorArguments = [
+            new NoopEventDispatcher(),
+            $this->createMock(CacheManager::class),
+            $this->createMock(FrontendInterface::class),
+            $this->createMock(ConnectionPool::class),
+            $this->createMock(LoggerInterface::class),
+            new PagePermissionAssembler(),
+            $this->tcaSchemaFactory,
+            new PageDoktypeRegistry($this->tcaSchemaFactory),
+            new FlexFormTools(new NoopEventDispatcher()),
+            new PasswordHashFactory(),
+            new Random(),
+            new TypoLinkCodecService(new NoopEventDispatcher()),
+            new OpcodeCacheService(),
+            $this->createMock(FlashMessageService::class),
+        ];
         $subject = $this->getMockBuilder(DataHandler::class)
-            ->onlyMethods(['log'])
+            ->onlyMethods([])
+            ->setConstructorArgs($constructorArguments)
             ->getMock();
         $this->backendUserMock->workspace = 1;
         $this->backendUserMock->workspaceRec = ['freeze' => true];
@@ -744,8 +764,7 @@ final class DataHandlerTest extends UnitTestCase
     }
 
     /**
-     * This test ensures, that the eval method checkValue_SW is called on
-     * flexform structures.
+     * This test ensures, that the eval method checkValue_SW is called on flexform structures.
      */
     #[DataProvider('checkValue_flex_procInData_travDSDataProvider')]
     #[Test]
@@ -766,9 +785,6 @@ final class DataHandlerTest extends UnitTestCase
         self::assertSame($expected, $dataValues);
     }
 
-    /////////////////////////////////////
-    // Tests concerning log
-    /////////////////////////////////////
     #[Test]
     public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled(): void
     {
@@ -805,8 +821,22 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray(): void
     {
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
-        $subject = new DataHandler();
+        $subject = new DataHandler(
+            new NoopEventDispatcher(),
+            $this->createMock(CacheManager::class),
+            $this->createMock(FrontendInterface::class),
+            $this->createMock(ConnectionPool::class),
+            $this->createMock(LoggerInterface::class),
+            new PagePermissionAssembler(),
+            $this->tcaSchemaFactory,
+            new PageDoktypeRegistry($this->tcaSchemaFactory),
+            new FlexFormTools(new NoopEventDispatcher()),
+            new PasswordHashFactory(),
+            new Random(),
+            new TypoLinkCodecService(new NoopEventDispatcher()),
+            new OpcodeCacheService(),
+            $this->createMock(FlashMessageService::class),
+        );
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class));
         $logDetails = StringUtility::getUniqueId('details');
         $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
@@ -817,8 +847,22 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logFormatsDetailMessageWithPlaceholders(): void
     {
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
-        $subject = new DataHandler();
+        $subject = new DataHandler(
+            new NoopEventDispatcher(),
+            $this->createMock(CacheManager::class),
+            $this->createMock(FrontendInterface::class),
+            $this->createMock(ConnectionPool::class),
+            $this->createMock(LoggerInterface::class),
+            new PagePermissionAssembler(),
+            $this->tcaSchemaFactory,
+            new PageDoktypeRegistry($this->tcaSchemaFactory),
+            new FlexFormTools(new NoopEventDispatcher()),
+            new PasswordHashFactory(),
+            new Random(),
+            new TypoLinkCodecService(new NoopEventDispatcher()),
+            new OpcodeCacheService(),
+            $this->createMock(FlashMessageService::class),
+        );
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class));
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
         $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
@@ -1018,9 +1062,9 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function deletePagesOnRootLevelIsDenied(): void
     {
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $dataHandlerMock = $this->getMockBuilder(DataHandler::class)
             ->onlyMethods(['canDeletePage', 'log'])
+            ->disableOriginalConstructor()
             ->getMock();
         $dataHandlerMock
             ->expects(self::never())
@@ -1029,7 +1073,6 @@ final class DataHandlerTest extends UnitTestCase
             ->expects(self::once())
             ->method('log')
             ->with('pages', 0, 3, 0, 2, 'Deleting all pages starting from the root-page is disabled', -1, [], 0);
-
         $dataHandlerMock->deletePages(0);
     }
 
@@ -1255,8 +1298,23 @@ final class DataHandlerTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceMock;
         $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
-        self::assertEquals($expected, (new DataHandler())->clearPrefixFromValue('testTable', $input));
+        $subject = new DataHandler(
+            new NoopEventDispatcher(),
+            $this->createMock(CacheManager::class),
+            $this->createMock(FrontendInterface::class),
+            $this->createMock(ConnectionPool::class),
+            $this->createMock(LoggerInterface::class),
+            new PagePermissionAssembler(),
+            $this->tcaSchemaFactory,
+            new PageDoktypeRegistry($this->tcaSchemaFactory),
+            new FlexFormTools(new NoopEventDispatcher()),
+            new PasswordHashFactory(),
+            new Random(),
+            new TypoLinkCodecService(new NoopEventDispatcher()),
+            new OpcodeCacheService(),
+            $this->createMock(FlashMessageService::class),
+        );
+        self::assertEquals($expected, $subject->clearPrefixFromValue('testTable', $input));
     }
 
     public static function applyFiltersToValuesFiltersValuesDataProvider(): iterable

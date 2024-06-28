@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Crypto safe pseudo-random value generation
  */
-class Random
+readonly class Random
 {
     private const DEFAULT_PASSWORD_LENGTH = 16;
     private const LOWERCASE_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz';

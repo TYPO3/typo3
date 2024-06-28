@@ -160,7 +160,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-        $dataHandler = new DataHandler();
+        $dataHandler = $this->get(DataHandler::class);
         $dataHandler->start($data, []);
         $dataHandler->process_datamap();
         $dataHandler->process_cmdmap();
@@ -194,7 +194,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-        $dataHandler = new DataHandler();
+        $dataHandler = $this->get(DataHandler::class);
         $dataHandler->start($data, []);
         $dataHandler->process_datamap();
         $dataHandler->process_cmdmap();
