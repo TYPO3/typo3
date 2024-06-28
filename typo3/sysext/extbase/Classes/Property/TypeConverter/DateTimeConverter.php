@@ -168,7 +168,7 @@ class DateTimeConverter extends AbstractTypeConverter
      *
      * @throws InvalidPropertyMappingConfigurationException
      */
-    protected function getDefaultDateFormat(PropertyMappingConfigurationInterface $configuration = null): string
+    protected function getDefaultDateFormat(?PropertyMappingConfigurationInterface $configuration = null): string
     {
         if ($configuration === null) {
             // todo: type converters are never called without a property mapping configuration

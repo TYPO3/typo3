@@ -153,7 +153,7 @@ abstract class AbstractGenericObjectValidator extends AbstractValidator implemen
     /**
      * Returns all property validators - or only validators of the specified property
      */
-    public function getPropertyValidators(string $propertyName = null): array
+    public function getPropertyValidators(?string $propertyName = null): array
     {
         if ($propertyName !== null) {
             return $this->propertyValidators[$propertyName] ?? [];

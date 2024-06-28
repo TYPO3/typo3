@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
  */
 class ObjectAccess
 {
-    private static PropertyAccessorInterface|null $propertyAccessor = null;
+    private static ?PropertyAccessorInterface $propertyAccessor = null;
 
     /**
      * Get a property of a given object.

@@ -174,7 +174,7 @@ class PersistentObjectConverter extends ObjectConverter
         array $source,
         string $targetType,
         array &$convertedChildProperties,
-        PropertyMappingConfigurationInterface $configuration = null
+        ?PropertyMappingConfigurationInterface $configuration = null
     ): object {
         if (isset($source['__identity'])) {
             $object = $this->fetchObjectFromPersistence($source['__identity'], $targetType);

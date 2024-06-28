@@ -273,7 +273,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * @phpstan-return QueryResultInterface<T>
      * @return QueryResultInterface
      */
-    public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): QueryResultInterface
+    public function findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): QueryResultInterface
     {
         $query = $this->createQuery();
         $constraints = [];
@@ -307,7 +307,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * @phpstan-param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
      * @phpstan-return T|null
      */
-    public function findOneBy(array $criteria, array $orderBy = null): object|null
+    public function findOneBy(array $criteria, ?array $orderBy = null): ?object
     {
         return $this->findBy($criteria, $orderBy, 1)->getFirst();
     }

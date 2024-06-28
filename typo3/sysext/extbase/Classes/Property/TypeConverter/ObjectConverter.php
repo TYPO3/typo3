@@ -175,7 +175,7 @@ class ObjectConverter extends AbstractTypeConverter
     public function getTargetTypeForSource(
         $source,
         string $originalTargetType,
-        PropertyMappingConfigurationInterface $configuration = null
+        ?PropertyMappingConfigurationInterface $configuration = null
     ): string {
         $targetType = $originalTargetType;
 

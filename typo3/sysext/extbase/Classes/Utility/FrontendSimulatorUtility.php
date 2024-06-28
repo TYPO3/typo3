@@ -38,7 +38,7 @@ class FrontendSimulatorUtility
      *
      * @param ContentObjectRenderer|null $cObj
      */
-    public static function simulateFrontendEnvironment(ContentObjectRenderer $cObj = null): void
+    public static function simulateFrontendEnvironment(?ContentObjectRenderer $cObj = null): void
     {
         self::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = new \stdClass();

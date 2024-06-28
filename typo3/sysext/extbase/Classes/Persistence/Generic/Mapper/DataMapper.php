@@ -473,7 +473,7 @@ class DataMapper
      * @phpstan-return array<non-empty-string, QueryInterface::ORDER_*>|null
      * @return array<string, string>|null
      */
-    public function getOrderingsForColumnMap(ColumnMap $columnMap): array|null
+    public function getOrderingsForColumnMap(ColumnMap $columnMap): ?array
     {
         if ($columnMap->getChildSortByFieldName() !== null) {
             return [$columnMap->getChildSortByFieldName() => QueryInterface::ORDER_ASCENDING];

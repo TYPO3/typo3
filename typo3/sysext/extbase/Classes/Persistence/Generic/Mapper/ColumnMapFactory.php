@@ -132,7 +132,7 @@ class ColumnMapFactory
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
      */
-    protected function setDateTimeStorageFormat(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    protected function setDateTimeStorageFormat(ColumnMap $columnMap, ?array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
@@ -153,7 +153,7 @@ class ColumnMapFactory
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
      */
-    protected function setOneToOneRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    protected function setOneToOneRelation(ColumnMap $columnMap, ?array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
@@ -182,7 +182,7 @@ class ColumnMapFactory
      *
      * @internal
      */
-    public function setOneToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    public function setOneToManyRelation(ColumnMap $columnMap, ?array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
@@ -211,7 +211,7 @@ class ColumnMapFactory
      * @param array|null $columnConfiguration The column configuration from $TCA
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException
      */
-    protected function setManyToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    protected function setManyToManyRelation(ColumnMap $columnMap, ?array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.

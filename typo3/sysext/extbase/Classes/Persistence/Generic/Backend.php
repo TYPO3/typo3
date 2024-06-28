@@ -499,7 +499,7 @@ class Backend implements BackendInterface, SingletonInterface
      */
     protected function insertObject(
         DomainObjectInterface $object,
-        DomainObjectInterface $parentObject = null,
+        ?DomainObjectInterface $parentObject = null,
         string $parentPropertyName = ''
     ): void {
         if ($object instanceof AbstractValueObject) {

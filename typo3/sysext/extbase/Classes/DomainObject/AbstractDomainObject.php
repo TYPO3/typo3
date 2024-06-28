@@ -105,7 +105,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     /**
      * @return int<0, max>|null
      */
-    public function getPid(): int|null
+    public function getPid(): ?int
     {
         if ($this->pid === null) {
             return null;

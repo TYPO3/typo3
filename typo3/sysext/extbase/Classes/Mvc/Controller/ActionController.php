@@ -666,7 +666,7 @@ abstract class ActionController implements ControllerInterface
      *
      * @internal
      */
-    protected function getFlashMessageQueue(string $identifier = null): FlashMessageQueue
+    protected function getFlashMessageQueue(?string $identifier = null): FlashMessageQueue
     {
         if ($identifier === null) {
             $pluginNamespace = $this->internalExtensionService->getPluginNamespace(
@@ -810,7 +810,7 @@ abstract class ActionController implements ControllerInterface
     /**
      * Returns a response object with either the given html string or the current rendered view as content.
      */
-    protected function htmlResponse(string $html = null): ResponseInterface
+    protected function htmlResponse(?string $html = null): ResponseInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8')
@@ -821,7 +821,7 @@ abstract class ActionController implements ControllerInterface
      * Returns a response object with either the given json string or the current rendered
      * view as content. Mainly to be used for actions / controllers using the JsonView.
      */
-    protected function jsonResponse(string $json = null): ResponseInterface
+    protected function jsonResponse(?string $json = null): ResponseInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/json; charset=utf-8')

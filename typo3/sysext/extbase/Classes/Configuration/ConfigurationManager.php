@@ -111,7 +111,7 @@ class ConfigurationManager implements ConfigurationManagerInterface
      * @throws Exception\InvalidConfigurationTypeException
      * @return array The configuration
      */
-    public function getConfiguration(string $configurationType, string $extensionName = null, string $pluginName = null): array
+    public function getConfiguration(string $configurationType, ?string $extensionName = null, ?string $pluginName = null): array
     {
         switch ($configurationType) {
             case self::CONFIGURATION_TYPE_SETTINGS:
