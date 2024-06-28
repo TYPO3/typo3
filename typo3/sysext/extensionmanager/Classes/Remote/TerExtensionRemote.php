@@ -149,7 +149,7 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
      * @throws DownloadFailedException
      * @throws VerificationFailedException
      */
-    public function downloadExtension(string $extensionKey, string $version, FileHandlingUtility $fileHandler, string $verificationHash = null, string $pathType = 'Local'): void
+    public function downloadExtension(string $extensionKey, string $version, FileHandlingUtility $fileHandler, ?string $verificationHash = null, string $pathType = 'Local'): void
     {
         $extensionPath = strtolower($extensionKey);
         $remotePath = $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath . '_' . $version . '.t3x';
