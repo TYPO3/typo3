@@ -84,7 +84,7 @@ class Extension extends AbstractEntity
     /**
      * @var \SplObjectStorage<Dependency>
      */
-    protected \SplObjectStorage|null $dependencies = null;
+    protected ?\SplObjectStorage $dependencies = null;
     protected string $documentationLink = '';
     protected string $distributionImage = '';
     protected string $distributionWelcomeImage = '';
