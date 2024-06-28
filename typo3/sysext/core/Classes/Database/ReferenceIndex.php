@@ -408,7 +408,8 @@ class ReferenceIndex
 
         $relations = $this->compileReferenceIndexRowsForRecord($tableName, $currentRecord, $workspaceUid);
         $connection = $this->connectionPool->getConnectionForTable('sys_refindex');
-        foreach ($relations as &$relation) {
+        $relationsToInsert = [];
+        foreach ($relations as $relation) {
             if (!is_array($relation)) {
                 continue;
             }
@@ -421,15 +422,16 @@ class ReferenceIndex
             if (isset($currentRelationHashes[$relation['hash']])) {
                 unset($currentRelationHashes[$relation['hash']]);
                 $result['keptNodes']++;
-                $relation['_ACTION'] = 'KEPT';
             } else {
-                // If new, add it:
+                // If new, register for bulk add:
                 if (!$testOnly) {
-                    $connection->insert('sys_refindex', $relation);
+                    $relationsToInsert[] = $relation;
                 }
                 $result['addedNodes']++;
-                $relation['_ACTION'] = 'ADDED';
             }
+        }
+        if (!$testOnly && !empty($relationsToInsert)) {
+            $connection->bulkInsert('sys_refindex', $relationsToInsert, array_keys(current($relationsToInsert)));
         }
 
         // If any existing are left, they are not in the current set anymore. Remove them.
