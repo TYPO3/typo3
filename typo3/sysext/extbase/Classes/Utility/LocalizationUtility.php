@@ -68,7 +68,7 @@ class LocalizationUtility
      * @param string[] $alternativeLanguageKeys The alternative language keys if no translation was found.
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
-    public static function translate(string $key, ?string $extensionName = null, array $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = null): ?string
+    public static function translate(string $key, ?string $extensionName = null, ?array $arguments = null, ?string $languageKey = null, ?array $alternativeLanguageKeys = null): ?string
     {
         if ($key === '') {
             // Early return guard: returns null if the key was empty, because the key may be a dynamic value
@@ -143,7 +143,7 @@ class LocalizationUtility
      * @param string[] $alternativeLanguageKeys
      * @param string $extensionName
      */
-    protected static function initializeLocalization(string $languageFilePath, string $languageKey, array $alternativeLanguageKeys, string $extensionName = null): void
+    protected static function initializeLocalization(string $languageFilePath, string $languageKey, array $alternativeLanguageKeys, ?string $extensionName = null): void
     {
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
 

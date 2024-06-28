@@ -870,7 +870,7 @@ abstract class ActionController implements ControllerInterface
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    protected function getFlashMessageQueue(string $identifier = null): FlashMessageQueue
+    protected function getFlashMessageQueue(?string $identifier = null): FlashMessageQueue
     {
         if ($identifier === null) {
             $pluginNamespace = $this->internalExtensionService->getPluginNamespace(
@@ -918,7 +918,7 @@ abstract class ActionController implements ControllerInterface
      * @see redirect()
      * @deprecated since TYPO3 11.0, will be removed in 12.0
      */
-    public function forward($actionName, $controllerName = null, $extensionName = null, array $arguments = null)
+    public function forward($actionName, $controllerName = null, $extensionName = null, ?array $arguments = null)
     {
         trigger_error(
             sprintf('Method %s is deprecated. To forward to another action, return a %s instead.', __METHOD__, ForwardResponse::class),
@@ -958,7 +958,7 @@ abstract class ActionController implements ControllerInterface
      * @throws StopActionException deprecated since TYPO3 11.0, method will RETURN a Core\Http\RedirectResponse instead of throwing in v12
      * @todo: ': ResponseInterface' (without ?) in v12 as method return type together with redirectToUri() cleanup
      */
-    protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303): void
+    protected function redirect($actionName, $controllerName = null, $extensionName = null, ?array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303): void
     {
         if ($controllerName === null) {
             $controllerName = $this->request->getControllerName();
@@ -1085,7 +1085,7 @@ abstract class ActionController implements ControllerInterface
      * @param string|null $html
      * @return ResponseInterface
      */
-    protected function htmlResponse(string $html = null): ResponseInterface
+    protected function htmlResponse(?string $html = null): ResponseInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8')
@@ -1099,7 +1099,7 @@ abstract class ActionController implements ControllerInterface
      * @param string|null $json
      * @return ResponseInterface
      */
-    protected function jsonResponse(string $json = null): ResponseInterface
+    protected function jsonResponse(?string $json = null): ResponseInterface
     {
         return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/json; charset=utf-8')

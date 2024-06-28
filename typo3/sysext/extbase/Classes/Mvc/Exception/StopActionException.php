@@ -40,7 +40,7 @@ class StopActionException extends Exception
      */
     private $response;
 
-    public function __construct($message = '', $code = 0, \Throwable $previous = null, ResponseInterface $response = null)
+    public function __construct($message = '', $code = 0, ?\Throwable $previous = null, ?ResponseInterface $response = null)
     {
         // @deprecated since v11, will be removed in v12. Can not trigger_error() here since
         // extbase ActionController still has to use this exception for b/w compatibility.

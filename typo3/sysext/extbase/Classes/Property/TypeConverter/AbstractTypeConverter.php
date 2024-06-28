@@ -99,7 +99,7 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      */
-    public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string
+    public function getTargetTypeForSource($source, string $originalTargetType, ?PropertyMappingConfigurationInterface $configuration = null): string
     {
         return $originalTargetType;
     }

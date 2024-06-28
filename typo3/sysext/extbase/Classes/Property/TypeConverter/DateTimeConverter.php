@@ -124,7 +124,7 @@ class DateTimeConverter extends AbstractTypeConverter
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ?object
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): ?object
     {
         $dateFormat = $this->getDefaultDateFormat($configuration);
         if (is_string($source)) {
@@ -195,7 +195,7 @@ class DateTimeConverter extends AbstractTypeConverter
      * @return string
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
      */
-    protected function getDefaultDateFormat(PropertyMappingConfigurationInterface $configuration = null): string
+    protected function getDefaultDateFormat(?PropertyMappingConfigurationInterface $configuration = null): string
     {
         if ($configuration === null) {
             // todo: type converters are never called without a property mapping configuration

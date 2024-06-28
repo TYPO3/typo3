@@ -59,7 +59,7 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
      * @param string $pluginName
      * @return array
      */
-    protected function getPluginConfiguration(string $extensionName, string $pluginName = null): array
+    protected function getPluginConfiguration(string $extensionName, ?string $pluginName = null): array
     {
         $setup = $this->getTypoScriptSetup();
         $pluginConfiguration = [];

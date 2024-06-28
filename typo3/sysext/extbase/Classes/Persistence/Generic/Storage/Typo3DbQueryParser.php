@@ -512,7 +512,7 @@ class Typo3DbQueryParser
      * @return string The placeholder string to be used in the query
      * @see \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::getPlainValue()
      */
-    protected function createTypedNamedParameter($value, int $forceType = null): string
+    protected function createTypedNamedParameter($value, ?int $forceType = null): string
     {
         if ($value instanceof AbstractDomainObject
             && $value->_hasProperty('_localizedUid')

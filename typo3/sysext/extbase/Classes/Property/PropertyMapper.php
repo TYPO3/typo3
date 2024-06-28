@@ -103,7 +103,7 @@ class PropertyMapper implements SingletonInterface
      * @throws Exception
      * @return mixed an instance of $targetType
      */
-    public function convert($source, $targetType, PropertyMappingConfigurationInterface $configuration = null)
+    public function convert($source, $targetType, ?PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($configuration === null) {
             $configuration = $this->configurationBuilder->build();

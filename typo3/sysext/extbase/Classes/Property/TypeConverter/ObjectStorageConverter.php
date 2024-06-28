@@ -51,7 +51,7 @@ class ObjectStorageConverter extends AbstractTypeConverter
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ObjectStorage
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): ObjectStorage
     {
         $objectStorage = new ObjectStorage();
         foreach ($convertedChildProperties as $subProperty) {

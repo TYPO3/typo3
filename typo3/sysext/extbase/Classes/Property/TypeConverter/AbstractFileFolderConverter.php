@@ -65,7 +65,7 @@ abstract class AbstractFileFolderConverter extends AbstractTypeConverter
      * @return AbstractFileFolder
      * @throws Exception
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): AbstractFileFolder
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): AbstractFileFolder
     {
         $object = $this->getOriginalResource($source);
         if (empty($this->expectedObjectType) || !$object instanceof $this->expectedObjectType) {

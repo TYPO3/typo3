@@ -536,13 +536,13 @@ class DebuggerUtility
      */
     public static function var_dump(
         $variable,
-        string $title = null,
+        ?string $title = null,
         int $maxDepth = 8,
         bool $plainText = false,
         bool $ansiColors = true,
         bool $return = false,
-        array $blacklistedClassNames = null,
-        array $blacklistedPropertyNames = null
+        ?array $blacklistedClassNames = null,
+        ?array $blacklistedPropertyNames = null
     ): string {
         self::$maxDepth = $maxDepth;
         if ($title === null) {

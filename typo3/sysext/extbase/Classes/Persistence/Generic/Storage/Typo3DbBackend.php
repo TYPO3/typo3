@@ -423,7 +423,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      * @return array
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-    protected function overlayLanguageAndWorkspace(SourceInterface $source, array $rows, QueryInterface $query, int $workspaceUid = null): array
+    protected function overlayLanguageAndWorkspace(SourceInterface $source, array $rows, QueryInterface $query, ?int $workspaceUid = null): array
     {
         $context = GeneralUtility::makeInstance(Context::class);
         if ($workspaceUid === null) {

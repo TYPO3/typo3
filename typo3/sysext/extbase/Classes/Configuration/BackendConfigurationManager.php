@@ -86,7 +86,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
      * @param string $pluginName in BE mode this is actually the module signature. But we're using it just like the plugin name in FE
      * @return array
      */
-    protected function getPluginConfiguration(string $extensionName, string $pluginName = null): array
+    protected function getPluginConfiguration(string $extensionName, ?string $pluginName = null): array
     {
         $setup = $this->getTypoScriptSetup();
         $pluginConfiguration = [];

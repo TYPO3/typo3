@@ -28,7 +28,7 @@ class NotImplementedException extends Exception
      * @param string $method
      * @param int $exceptionCode
      */
-    public function __construct(string $method, int $exceptionCode = null)
+    public function __construct(string $method, ?int $exceptionCode = null)
     {
         parent::__construct(
             sprintf('Method %s is not supported by generic persistence"', $method),

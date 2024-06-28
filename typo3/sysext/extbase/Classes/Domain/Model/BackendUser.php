@@ -162,7 +162,7 @@ class BackendUser extends AbstractEntity
      *
      * @param \DateTime|null $dateAndTime the start date and time
      */
-    public function setStartDateAndTime(\DateTime $dateAndTime = null)
+    public function setStartDateAndTime(?\DateTime $dateAndTime = null)
     {
         $this->startDateAndTime = $dateAndTime;
     }
@@ -182,7 +182,7 @@ class BackendUser extends AbstractEntity
      *
      * @param \DateTime|null $dateAndTime the end date and time
      */
-    public function setEndDateAndTime(\DateTime $dateAndTime = null)
+    public function setEndDateAndTime(?\DateTime $dateAndTime = null)
     {
         $this->endDateAndTime = $dateAndTime;
     }
@@ -282,7 +282,7 @@ class BackendUser extends AbstractEntity
      *
      * @param \DateTime|null $dateAndTime this user's last login date and time
      */
-    public function setLastLoginDateAndTime(\DateTime $dateAndTime = null)
+    public function setLastLoginDateAndTime(?\DateTime $dateAndTime = null)
     {
         $this->lastLoginDateAndTime = $dateAndTime;
     }

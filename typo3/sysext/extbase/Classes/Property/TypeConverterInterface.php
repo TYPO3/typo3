@@ -48,7 +48,7 @@ interface TypeConverterInterface
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
      * @return string
      */
-    public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string;
+    public function getTargetTypeForSource($source, string $originalTargetType, ?PropertyMappingConfigurationInterface $configuration = null): string;
 
     /**
      * Return the priority of this TypeConverter. TypeConverters with a high priority are chosen before low priority.
@@ -104,5 +104,5 @@ interface TypeConverterInterface
      * @return mixed|\TYPO3\CMS\Extbase\Error\Error the target type, or an error object if a user-error occurred
      * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException thrown in case a developer error occurred
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null);
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null);
 }

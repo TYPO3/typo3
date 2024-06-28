@@ -344,7 +344,7 @@ class DataMapFactory implements SingletonInterface
      * @param array|null $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
-    protected function setFieldEvaluations(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    protected function setFieldEvaluations(ColumnMap $columnMap, ?array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
@@ -369,7 +369,7 @@ class DataMapFactory implements SingletonInterface
      * @param array|null $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
-    protected function setOneToOneRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    protected function setOneToOneRelation(ColumnMap $columnMap, ?array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
@@ -397,7 +397,7 @@ class DataMapFactory implements SingletonInterface
      * @param array|null $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
-    public function setOneToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    public function setOneToManyRelation(ColumnMap $columnMap, ?array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
@@ -427,7 +427,7 @@ class DataMapFactory implements SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException
      * @return ColumnMap
      */
-    protected function setManyToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    protected function setManyToManyRelation(ColumnMap $columnMap, ?array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.

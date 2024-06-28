@@ -358,7 +358,7 @@ abstract class AbstractConfigurationManager implements SingletonInterface
      * @param string $pluginName in FE mode this is the specified plugin name, in BE mode this is the full module signature
      * @return array
      */
-    abstract protected function getPluginConfiguration(string $extensionName, string $pluginName = null): array;
+    abstract protected function getPluginConfiguration(string $extensionName, ?string $pluginName = null): array;
 
     /**
      * Returns the configured controller/action configuration of the specified plugin/module in the format

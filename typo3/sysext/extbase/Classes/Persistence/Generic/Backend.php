@@ -581,7 +581,7 @@ class Backend implements BackendInterface, SingletonInterface
      * @param DomainObjectInterface $parentObject The parentobject.
      * @param string $parentPropertyName
      */
-    protected function insertObject(DomainObjectInterface $object, DomainObjectInterface $parentObject = null, $parentPropertyName = '')
+    protected function insertObject(DomainObjectInterface $object, ?DomainObjectInterface $parentObject = null, $parentPropertyName = '')
     {
         if ($object instanceof AbstractValueObject) {
             $result = $this->getUidOfAlreadyPersistedValueObject($object);
@@ -934,7 +934,7 @@ class Backend implements BackendInterface, SingletonInterface
      * @param DomainObjectInterface|null $object
      * @return int the storage Page ID where the object should be stored
      */
-    protected function determineStoragePageIdForNewRecord(DomainObjectInterface $object = null)
+    protected function determineStoragePageIdForNewRecord(?DomainObjectInterface $object = null)
     {
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if ($object !== null) {
@@ -964,7 +964,7 @@ class Backend implements BackendInterface, SingletonInterface
      * @param ColumnMap|null $columnMap Optional column map for retrieving the date storage format
      * @return int|string|null
      */
-    protected function getPlainValue($input, ColumnMap $columnMap = null)
+    protected function getPlainValue($input, ?ColumnMap $columnMap = null)
     {
         return $input !== null
             ? GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap)

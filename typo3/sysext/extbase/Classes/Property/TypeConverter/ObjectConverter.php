@@ -191,7 +191,7 @@ class ObjectConverter extends AbstractTypeConverter
      * @throws InvalidTargetException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): ?object
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): ?object
     {
         $object = $this->buildObject($convertedChildProperties, $targetType);
         foreach ($convertedChildProperties as $propertyName => $propertyValue) {
@@ -222,7 +222,7 @@ class ObjectConverter extends AbstractTypeConverter
      * @throws \InvalidArgumentException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string
+    public function getTargetTypeForSource($source, string $originalTargetType, ?PropertyMappingConfigurationInterface $configuration = null): string
     {
         $targetType = $originalTargetType;
 
