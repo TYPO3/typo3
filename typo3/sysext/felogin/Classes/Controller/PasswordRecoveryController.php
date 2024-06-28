@@ -62,7 +62,7 @@ class PasswordRecoveryController extends ActionController
      * Shows the recovery form. If $userIdentifier is set, an email will be sent, if the corresponding user exists and
      * has a valid email address set.
      */
-    public function recoveryAction(string $userIdentifier = null): ResponseInterface
+    public function recoveryAction(?string $userIdentifier = null): ResponseInterface
     {
         if (empty($userIdentifier)) {
             return $this->htmlResponse();
