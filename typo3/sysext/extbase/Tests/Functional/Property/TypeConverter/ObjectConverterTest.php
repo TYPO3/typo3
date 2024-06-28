@@ -20,13 +20,13 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\TypeConverterTest\Domain\Model\Animal;
+use TYPO3Tests\TypeConverterTest\Domain\Model\Animals;
 use TYPO3Tests\TypeConverterTest\Domain\Model\Cat;
 
 final class ObjectConverterTest extends FunctionalTestCase
@@ -142,22 +142,22 @@ final class ObjectConverterTest extends FunctionalTestCase
     {
         $class = new class () {
             /**
-             * @var ObjectStorage<\TYPO3Tests\TypeConverterTest\Domain\Model\Animal>
+             * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3Tests\TypeConverterTest\Domain\Model\Animal>
              */
-            protected ObjectStorage $collection;
+            protected \TYPO3\CMS\Extbase\Persistence\ObjectStorage $collection;
 
             /**
-             * @return ObjectStorage<\TYPO3Tests\TypeConverterTest\Domain\Model\Animal>
+             * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3Tests\TypeConverterTest\Domain\Model\Animal>
              */
-            public function getCollection(): ObjectStorage
+            public function getCollection(): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
             {
                 return $this->collection;
             }
 
             /**
-             * @param ObjectStorage<\TYPO3Tests\TypeConverterTest\Domain\Model\Animal> $collection
+             * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3Tests\TypeConverterTest\Domain\Model\Animal> $collection
              */
-            public function setCollection(ObjectStorage $collection): void
+            public function setCollection(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $collection): void
             {
                 $this->collection = $collection;
             }
@@ -174,6 +174,24 @@ final class ObjectConverterTest extends FunctionalTestCase
             $propertyMapperConfiguration
         );
 
+        self::assertSame(2, $result->getCollection()->count());
+        self::assertSame('Zebra', $result->getCollection()->current()->getName());
+        $result->getCollection()->next();
+        self::assertSame('Lion', $result->getCollection()->current()->getName());
+    }
+
+    #[Test]
+    public function collectionTypesAreConsideredInMappingWithShortObjectStorageNamespaceAndNonAnonymousClass(): void
+    {
+        $propertyMapper = $this->get(PropertyMapper::class);
+        $propertyMapperConfiguration = new PropertyMappingConfiguration();
+        $propertyMapperConfiguration->allowAllProperties();
+        $propertyMapperConfiguration->forProperty('collection.*')->allowAllProperties();
+        $result = $propertyMapper->convert(
+            ['collection' => [['name' => 'Zebra'], ['name' => 'Lion']]],
+            Animals::class,
+            $propertyMapperConfiguration
+        );
         self::assertSame(2, $result->getCollection()->count());
         self::assertSame('Zebra', $result->getCollection()->current()->getName());
         $result->getCollection()->next();
