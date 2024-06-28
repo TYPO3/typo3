@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Filter;
 
-use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -47,7 +46,7 @@ class FileExtensionFilter
         array $references,
         string $allowedFileExtensions,
         string $disallowedFileExtensions,
-        DataHandler|DatabaseRecordList $dataHandler
+        ?DataHandler $dataHandler = null,
     ): array {
         if ($allowedFileExtensions !== '') {
             $this->setAllowedFileExtensions($allowedFileExtensions);
@@ -70,7 +69,7 @@ class FileExtensionFilter
                     $cleanReferences[] = $reference;
                 } else {
                     // Remove the erroneously created reference record again
-                    $dataHandler->deleteAction('sys_file_reference', $fileReferenceUid);
+                    $dataHandler?->deleteAction('sys_file_reference', $fileReferenceUid);
                 }
             } catch (ResourceDoesNotExistException $e) {
                 // do nothing

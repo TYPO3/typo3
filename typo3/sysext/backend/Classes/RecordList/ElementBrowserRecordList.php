@@ -100,7 +100,6 @@ class ElementBrowserRecordList extends DatabaseRecordList
                     [$table . '_' . $row['uid']],
                     (string)($tcaFieldConfig['allowed'] ?? ''),
                     (string)($tcaFieldConfig['disallowed'] ?? ''),
-                    $this
                 );
                 if (empty($valueArray)) {
                     $returnValue = false;
