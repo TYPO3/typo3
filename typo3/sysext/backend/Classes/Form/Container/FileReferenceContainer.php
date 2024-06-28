@@ -48,8 +48,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class FileReferenceContainer extends AbstractContainer
 {
-    public const NODE_TYPE_IDENTIFIER = 'fileReferenceContainer';
-
     private const FILE_REFERENCE_TABLE = 'sys_file_reference';
     private const FOREIGN_SELECTOR = 'uid_local';
 

@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Form\Container\FileReferenceContainer;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
@@ -112,7 +111,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         $fileReferenceData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
 
         $fileReferenceData['inlineParentUid'] = $parent['uid'];
-        $fileReferenceData['renderType'] = FileReferenceContainer::NODE_TYPE_IDENTIFIER;
+        $fileReferenceData['renderType'] = 'fileReferenceContainer';
 
         return $this->jsonResponse(
             $this->mergeFileReferenceResultIntoJsonResult(
@@ -176,7 +175,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
             $inlineStackProcessor->getStructure()
         );
         $fileReferenceData['inlineParentUid'] = (int)$parent['uid'];
-        $fileReferenceData['renderType'] = FileReferenceContainer::NODE_TYPE_IDENTIFIER;
+        $fileReferenceData['renderType'] = 'fileReferenceContainer';
 
         return $this->jsonResponse(
             $this->mergeFileReferenceResultIntoJsonResult(
@@ -299,7 +298,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
             foreach ($localizedItems as $i => $localizedFileReferenceUid) {
                 $fileReferenceData = $this->compileFileReference($request, $parentData, $parentFieldName, (int)$localizedFileReferenceUid, $inlineStackProcessor->getStructure());
                 $fileReferenceData['inlineParentUid'] = (int)$parent['uid'];
-                $fileReferenceData['renderType'] = FileReferenceContainer::NODE_TYPE_IDENTIFIER;
+                $fileReferenceData['renderType'] = 'fileReferenceContainer';
 
                 $jsonArray = $this->mergeFileReferenceResultIntoJsonResult(
                     $jsonArray,

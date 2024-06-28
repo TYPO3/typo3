@@ -47,8 +47,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class FilesControlContainer extends AbstractContainer
 {
-    public const NODE_TYPE_IDENTIFIER = 'file';
-
     private const FILE_REFERENCE_TABLE = 'sys_file_reference';
 
     /**
@@ -218,7 +216,7 @@ class FilesControlContainer extends AbstractContainer
             $options['inlineData'] = $this->fileReferenceData;
             $options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
             $options['inlineExpandCollapseStateArray'] = $this->data['inlineExpandCollapseStateArray'];
-            $options['renderType'] = FileReferenceContainer::NODE_TYPE_IDENTIFIER;
+            $options['renderType'] = 'fileReferenceContainer';
             $fileReference = $this->nodeFactory->create($options)->render();
             $fileReferencesHtml[] = $fileReference['html'];
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fileReference, false);
