@@ -1610,7 +1610,7 @@ return [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
-            'Deprecation-100596-GeneralUtility_GET.rst',
+            'Deprecation-102762-GeneralUtilityhmac.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger' => [
