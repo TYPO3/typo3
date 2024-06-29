@@ -75,7 +75,6 @@ class TcaSchemaFactory
         if (!$this->has($schemaName)) {
             throw new UndefinedSchemaException('No TCA schema exists for the name "' . $schemaName . '".', 1661540376);
         }
-
         if (str_contains($schemaName, '.')) {
             [$mainSchema, $subSchema] = explode('.', $schemaName, 2);
             return $this->get($mainSchema)->getSubSchema($subSchema);

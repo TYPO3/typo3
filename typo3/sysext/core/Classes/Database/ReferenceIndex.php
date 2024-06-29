@@ -28,7 +28,13 @@ use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
+use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
+use TYPO3\CMS\Core\Schema\RelationshipType;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -69,6 +75,7 @@ class ReferenceIndex
         private readonly ConnectionPool $connectionPool,
         private readonly Registry $registry,
         private readonly FlexFormTools $flexFormTools,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -80,14 +87,8 @@ class ReferenceIndex
         return (int)$queryBuilder
             ->count('*')->from('sys_refindex')
             ->where(
-                $queryBuilder->expr()->eq(
-                    'ref_table',
-                    $queryBuilder->createNamedParameter($tableName)
-                ),
-                $queryBuilder->expr()->eq(
-                    'ref_uid',
-                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                )
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($tableName)),
+                $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             )->executeQuery()->fetchOne();
     }
 
@@ -104,7 +105,8 @@ class ReferenceIndex
         $numberOfHandledRecords = 0;
 
         $isWorkspacesLoaded = ExtensionManagementUtility::isLoaded('workspaces');
-        $tcaTableNames = array_keys($GLOBALS['TCA']);
+        $tcaTableNames = $this->tcaSchemaFactory->all()->getNames();
+        // @todo: Ensure tcaSchemaFactory->all() always sorts alphabetically (or add test to verify), then remove this sort()
         sort($tcaTableNames);
 
         $progressListener?->log('Remember to create missing tables and columns before running this.', LogLevel::WARNING);
@@ -132,7 +134,7 @@ class ReferenceIndex
 
         // Main loop traverses all records of all TCA tables
         foreach ($tcaTableNames as $tableName) {
-            $tableTca = $GLOBALS['TCA'][$tableName];
+            $tableTcaSchema = $this->tcaSchemaFactory->get($tableName);
 
             // Count number of records in table to have a correct $numberOfHandledRecords in the end
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
@@ -154,17 +156,13 @@ class ReferenceIndex
                     $countDeleted = $queryBuilder
                         ->count('hash')
                         ->from('sys_refindex')
-                        ->where(
-                            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName))
-                        )
+                        ->where($queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)))
                         ->executeQuery()
                         ->fetchOne();
                 } else {
                     $countDeleted = $queryBuilder
                         ->delete('sys_refindex')
-                        ->where(
-                            $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName))
-                        )
+                        ->where($queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($tableName)))
                         ->executeStatement();
                 }
                 if ($countDeleted > 0) {
@@ -213,13 +211,14 @@ class ReferenceIndex
             }
 
             // Delete rows in sys_refindex related to this table where the record is soft-deleted=1.
-            if (!empty($tableTca['ctrl']['delete'])) {
+            if ($tableTcaSchema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                $softDeleteFieldName = $tableTcaSchema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
                 $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
                 $queryBuilder->getRestrictions()->removeAll();
                 $numberOfDeletedRecordsInTargetTable = $queryBuilder
                     ->count('uid')
                     ->from($tableName)
-                    ->where($queryBuilder->expr()->eq($tableTca['ctrl']['delete'], 1))
+                    ->where($queryBuilder->expr()->eq($softDeleteFieldName, 1))
                     ->executeQuery()
                     ->fetchOne();
                 if ($numberOfDeletedRecordsInTargetTable > 0) {
@@ -245,7 +244,7 @@ class ReferenceIndex
                             )
                             ->where(
                                 $queryBuilder->expr()->eq('sub_refindex.tablename', $queryBuilder->createNamedParameter($tableName)),
-                                $queryBuilder->expr()->eq('sub_' . $tableName . '.' . $tableTca['ctrl']['delete'], 1),
+                                $queryBuilder->expr()->eq('sub_' . $tableName . '.' . $softDeleteFieldName, 1),
                             );
                         $numberOfRemovedIndexes = $queryBuilder
                             ->count('hash')
@@ -276,7 +275,7 @@ class ReferenceIndex
                             )
                             ->where(
                                 $uidListQueryBuilder->expr()->eq('sub_refindex.tablename', $uidListQueryBuilder->createNamedParameter($tableName)),
-                                $uidListQueryBuilder->expr()->eq('sub_' . $tableName . '.' . $tableTca['ctrl']['delete'], 1),
+                                $uidListQueryBuilder->expr()->eq('sub_' . $tableName . '.' . $softDeleteFieldName, 1),
                             );
                         $uidListOfRemovableIndexes = $uidListQueryBuilder->executeQuery()->fetchFirstColumn();
                         $numberOfRemovedIndexes = 0;
@@ -312,10 +311,11 @@ class ReferenceIndex
             // Some additional magic is needed if the table has a field that is the local side of
             // a mm relation. See the variable usage below for details.
             $tableHasLocalSideMmRelation = false;
-            foreach (($tableTca['columns'] ?? []) as $fieldConfig) {
-                if (!empty($fieldConfig['config']['MM'] ?? '')
-                    && !empty($fieldConfig['config']['allowed'] ?? '')
-                    && empty($fieldConfig['config']['MM_opposite_field'] ?? '')
+            foreach ($tableTcaSchema->getFields() as $field) {
+                $fieldConfig = $field->getConfiguration();
+                if (!empty($fieldConfig['MM'] ?? '')
+                    && !empty($fieldConfig['allowed'] ?? '')
+                    && empty($fieldConfig['MM_opposite_field'] ?? '')
                 ) {
                     $tableHasLocalSideMmRelation = true;
                 }
@@ -454,45 +454,48 @@ class ReferenceIndex
     {
         $result = [];
         $relationFields = $this->getTableRelationFields($tableName);
-        foreach ($relationFields as $field) {
-            $value = $record[$field] ?? null;
-            if (is_array($GLOBALS['TCA'][$tableName]['columns'][$field] ?? false)) {
-                $conf = $GLOBALS['TCA'][$tableName]['columns'][$field]['config'];
-                $resultsFromDatabase = $this->getRelationsFromRelationField($tableName, $value, $conf, (int)$record['uid'], $workspaceUid, $record);
-                if (!empty($resultsFromDatabase)) {
-                    // Create an entry for the field with all DB relations:
-                    $result[$field] = [
-                        'type' => 'db',
-                        'itemArray' => $resultsFromDatabase,
+        $tableTcaSchema = $this->tcaSchemaFactory->get($tableName);
+        foreach ($relationFields as $fieldName) {
+            $value = $record[$fieldName] ?? null;
+            if (!$tableTcaSchema->hasField($fieldName)) {
+                continue;
+            }
+            $field = $tableTcaSchema->getField($fieldName);
+            $fieldConfig = $field->getConfiguration();
+            $resultsFromDatabase = $this->getRelationsFromRelationField($tableName, $value, $fieldConfig, (int)$record['uid'], $workspaceUid, $record);
+            if (!empty($resultsFromDatabase)) {
+                // Create an entry for the field with all DB relations:
+                $result[$fieldName] = [
+                    'type' => 'db',
+                    'itemArray' => $resultsFromDatabase,
+                ];
+            }
+            if ($field->isType(TableColumnType::FLEX) && is_string($value) && $value !== '') {
+                // Traverse the flex data structure looking for db references for flex fields.
+                $flexFormRelations = $this->getRelationsFromFlexData($tableName, $fieldName, $record, $workspaceUid);
+                if (!empty($flexFormRelations)) {
+                    $result[$fieldName] = [
+                        'type' => 'flex',
+                        'flexFormRels' => $flexFormRelations,
                     ];
                 }
-                if ($conf['type'] === 'flex' && is_string($value) && $value !== '') {
-                    // Traverse the flex data structure looking for db references for flex fields.
-                    $flexFormRelations = $this->getRelationsFromFlexData($tableName, $field, $record, $workspaceUid);
-                    if (!empty($flexFormRelations)) {
-                        $result[$field] = [
-                            'type' => 'flex',
-                            'flexFormRels' => $flexFormRelations,
-                        ];
-                    }
-                }
-                if ((string)$value !== '') {
-                    // Soft References
-                    $softRefValue = $value;
-                    if (!empty($conf['softref'])) {
-                        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($conf['softref']) as $softReferenceParser) {
-                            $parserResult = $softReferenceParser->parse($tableName, $field, (int)$record['uid'], $softRefValue);
-                            if ($parserResult->hasMatched()) {
-                                $result[$field]['softrefs']['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
-                                if ($parserResult->hasContent()) {
-                                    $softRefValue = $parserResult->getContent();
-                                }
+            }
+            if ((string)$value !== '') {
+                // Soft References
+                $softRefValue = $value;
+                if (!empty($fieldConfig['softref'])) {
+                    foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($fieldConfig['softref']) as $softReferenceParser) {
+                        $parserResult = $softReferenceParser->parse($tableName, $fieldName, (int)$record['uid'], $softRefValue);
+                        if ($parserResult->hasMatched()) {
+                            $result[$fieldName]['softrefs']['keys'][$softReferenceParser->getParserKey()] = $parserResult->getMatchedElements();
+                            if ($parserResult->hasContent()) {
+                                $softRefValue = $parserResult->getContent();
                             }
                         }
                     }
-                    if (!empty($result[$field]['softrefs']) && (string)$value !== (string)$softRefValue && str_contains($softRefValue, '{softref:')) {
-                        $result[$field]['softrefs']['tokenizedContent'] = $softRefValue;
-                    }
+                }
+                if (!empty($result[$fieldName]['softrefs']) && (string)$value !== (string)$softRefValue && str_contains($softRefValue, '{softref:')) {
+                    $result[$fieldName]['softrefs']['tokenizedContent'] = $softRefValue;
                 }
             }
         }
@@ -545,44 +548,53 @@ class ReferenceIndex
     private function compileReferenceIndexRowsForRecord(string $tableName, array $record, int $workspaceUid): array
     {
         $relations = [];
-        $tableCtrl = (array)($GLOBALS['TCA'][$tableName]['ctrl'] ?? []);
+
+        $tableTcaSchema = $this->tcaSchemaFactory->get($tableName);
+        $hiddenFieldValue = $tableTcaSchema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)
+            ? (int)$record[$tableTcaSchema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName()]
+            : 0;
+        $starttimeFieldValue = $tableTcaSchema->hasCapability(TcaSchemaCapability::RestrictionStartTime)
+            ? (int)$record[$tableTcaSchema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName()]
+            : 0;
+        $endtimeFieldValue = $tableTcaSchema->hasCapability(TcaSchemaCapability::RestrictionEndTime)
+            ? (int)($record[$tableTcaSchema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName()] ?: 2147483647)
+            : 2147483647; // @todo: 2^31-1 (year 2038) and not 2^32-1 since postgres 32-bit int is always signed
+
         $recordRelations = $this->getRelations($tableName, $record, $workspaceUid);
         foreach ($recordRelations as $fieldName => $fieldRelations) {
-            $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
-            if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                if (isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $workspaceUid && empty($fieldConfig['MM'])) {
-                    // The given record is workspace-enabled but doesn't live in the selected workspace. Don't add index, it's not actually there.
-                    // We still add those rows if the record is a local side live record of an MM relation and can be a target of a workspace record.
-                    // See workspaces ManyToMany Modify addCategoryRelation for details on this case.
-                    continue;
-                }
+            $field = $tableTcaSchema->getField($fieldName);
+            if ($tableTcaSchema->isWorkspaceAware()
+                && isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $workspaceUid
+                && $field instanceof RelationalFieldTypeInterface
+                && $field->getRelationshipType() !== RelationshipType::ManyToMany
+            ) {
+                // The given record is workspace-enabled but doesn't live in the selected workspace. Don't add index, it's not actually there.
+                // We still add those rows if the record is a local side live record of an MM relation and can be a target of a workspace record.
+                // See workspaces ManyToMany Modify addCategoryRelation for details on this case.
+                continue;
             }
             if (is_array($fieldRelations['itemArray'] ?? false) && !empty($fieldRelations['itemArray'])) {
                 // DB relations in a db field
                 $itemArray = $fieldRelations['itemArray'];
-                if (($fieldConfig['type'] === 'inline' || $fieldConfig['type'] === 'file') && !empty($fieldConfig['foreign_table']) && empty($fieldConfig['MM'])) {
+                if ($field->isType(TableColumnType::INLINE, TableColumnType::FILE)
+                    && $field instanceof RelationalFieldTypeInterface
+                    && ($field->getRelationshipType() === RelationshipType::List || $field->getRelationshipType() === RelationshipType::ForeignField)
+                ) {
                     // RelationHandler does not return info on hidden, starttime, endtime for inline non-MM, yet. Add this now.
                     // @todo: Refactor RelationHandler / PlainDataResolver to (optionally?) return full child row record
                     $itemArray = $this->enrichInlineRelations(current($itemArray)['table'], $fieldRelations['itemArray']);
                 }
                 $sorting = 0;
                 foreach ($itemArray as $refRecord) {
-                    $refUid = (int)$refRecord['id'];
                     $refTable = (string)$refRecord['table'];
-                    $refTcaCtrl = (array)($GLOBALS['TCA'][$refTable]['ctrl'] ?? []);
+                    $refTcaTableSchema = $this->tcaSchemaFactory->get($refTable);
                     $relations[] = [
                         'tablename' => $tableName,
                         'recuid' => (int)$record['uid'],
                         'field' => $fieldName,
-                        'hidden' => ($tableCtrl['enablecolumns']['disabled'] ?? false)
-                            ? (int)$record[$tableCtrl['enablecolumns']['disabled']]
-                            : 0,
-                        'starttime' => ($tableCtrl['enablecolumns']['starttime'] ?? false)
-                            ? (int)$record[$tableCtrl['enablecolumns']['starttime']]
-                            : 0,
-                        'endtime' => ($tableCtrl['enablecolumns']['endtime'] ?? false)
-                            ? (int)($record[$tableCtrl['enablecolumns']['endtime']] ?: 2147483647)
-                            : 2147483647, // @todo: 2^31-1 (year 2038) and not 2^32-1 since postgres 32-bit int is always signed
+                        'hidden' => $hiddenFieldValue,
+                        'starttime' => $starttimeFieldValue,
+                        'endtime' => $endtimeFieldValue,
                         't3ver_state' => (int)($record['t3ver_state'] ?? 0),
                         'flexpointer' => '',
                         'softref_key' => '',
@@ -590,16 +602,19 @@ class ReferenceIndex
                         'sorting' => $sorting,
                         'workspace' => $workspaceUid,
                         'ref_table' => $refTable,
-                        'ref_uid' => $refUid,
+                        'ref_uid' => (int)$refRecord['id'],
                         'ref_field' => (string)($refRecord['fieldname'] ?? ''),
-                        'ref_hidden' => (($refTcaCtrl['enablecolumns']['disabled'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['disabled']]))
-                            ? (int)$refRecord[$refTcaCtrl['enablecolumns']['disabled']]
+                        // @todo: With MM records, the relation MM record has no hidden, starttime and endtime info, this
+                        //        has to be fetched from the actual related record. We may want to have additional
+                        //        tests for this and implement here properly.
+                        'ref_hidden' => $refTcaTableSchema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)
+                            ? (int)($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName()] ?? 0)
                             : 0,
-                        'ref_starttime' => (($refTcaCtrl['enablecolumns']['starttime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['starttime']]))
-                            ? (int)$refRecord[$refTcaCtrl['enablecolumns']['starttime']]
+                        'ref_starttime' => $refTcaTableSchema->hasCapability(TcaSchemaCapability::RestrictionStartTime)
+                            ? (int)($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName()] ?? 0)
                             : 0,
-                        'ref_endtime' => (($refTcaCtrl['enablecolumns']['endtime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['endtime']]))
-                            ? (int)($refRecord[$refTcaCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                        'ref_endtime' => $refTcaTableSchema->hasCapability(TcaSchemaCapability::RestrictionEndTime)
+                            ? (int)(($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName()] ?? 0) ?: 2147483647)
                             : 2147483647,
                         'ref_t3ver_state' => (int)($refRecord['t3ver_state'] ?? 0),
                         'ref_sorting' => (int)($refRecord['sorting_foreign'] ?? 0),
@@ -622,7 +637,7 @@ class ReferenceIndex
                         $refUid = 0;
                         $refString = '';
                         $refRecord = [];
-                        $refTcaCtrl = [];
+                        $refTcaTableSchema = null;
                         if ($element['subst']['type'] === 'db') {
                             $explodedRefTableUid = explode(':', $element['subst']['recordRef']);
                             $refTable = $explodedRefTableUid[0];
@@ -631,7 +646,7 @@ class ReferenceIndex
                                 // @todo: It would be great to refactor the softref parser mess "data structure"
                                 //        and let it return the reference record along the way - "db" type softrefs
                                 //        fetch those already.
-                                $refTcaCtrl = (array)($GLOBALS['TCA'][$refTable]['ctrl'] ?? []);
+                                $refTcaTableSchema = $this->tcaSchemaFactory->get($refTable);
                             }
                         } else {
                             $refString = mb_substr($element['subst']['tokenValue'], 0, 1024);
@@ -640,15 +655,9 @@ class ReferenceIndex
                             'tablename' => $tableName,
                             'recuid' => (int)$record['uid'],
                             'field' => $fieldName,
-                            'hidden' => ($tableCtrl['enablecolumns']['disabled'] ?? false)
-                                ? (int)$record[$tableCtrl['enablecolumns']['disabled']]
-                                : 0,
-                            'starttime' => ($tableCtrl['enablecolumns']['starttime'] ?? false)
-                                ? (int)$record[$tableCtrl['enablecolumns']['starttime']]
-                                : 0,
-                            'endtime' => ($tableCtrl['enablecolumns']['endtime'] ?? false)
-                                ? (int)($record[$tableCtrl['enablecolumns']['endtime']] ?: 2147483647)
-                                : 2147483647,
+                            'hidden' => $hiddenFieldValue,
+                            'starttime' => $starttimeFieldValue,
+                            'endtime' => $endtimeFieldValue,
                             't3ver_state' => (int)($record['t3ver_state'] ?? 0),
                             'flexpointer' => '',
                             'softref_key' => (string)$softrefKey,
@@ -658,14 +667,14 @@ class ReferenceIndex
                             'ref_table' => $refTable,
                             'ref_uid' => $refUid,
                             'ref_field' => '',
-                            'ref_hidden' => (($refTcaCtrl['enablecolumns']['disabled'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['disabled']]))
-                                ? (int)$refRecord[$refTcaCtrl['enablecolumns']['disabled']]
+                            'ref_hidden' => $refTcaTableSchema?->hasCapability(TcaSchemaCapability::RestrictionDisabledField)
+                                ? (int)($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName()] ?? 0)
                                 : 0,
-                            'ref_starttime' => (($refTcaCtrl['enablecolumns']['starttime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['starttime']]))
-                                ? (int)$refRecord[$refTcaCtrl['enablecolumns']['starttime']]
+                            'ref_starttime' => $refTcaTableSchema?->hasCapability(TcaSchemaCapability::RestrictionStartTime)
+                                ? (int)($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName()] ?? 0)
                                 : 0,
-                            'ref_endtime' => (($refTcaCtrl['enablecolumns']['endtime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['endtime']]))
-                                ? (int)($refRecord[$refTcaCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                            'ref_endtime' => $refTcaTableSchema?->hasCapability(TcaSchemaCapability::RestrictionEndTime)
+                                ? (int)(($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName()] ?? 0) ?: 2147483647)
                                 : 2147483647,
                             'ref_t3ver_state' => (int)($refRecord['t3ver_state'] ?? 0),
                             'ref_sorting' => 0,
@@ -687,15 +696,9 @@ class ReferenceIndex
                             'tablename' => $tableName,
                             'recuid' => (int)$record['uid'],
                             'field' => $fieldName,
-                            'hidden' => ($tableCtrl['enablecolumns']['disabled'] ?? false)
-                                ? (int)$record[$tableCtrl['enablecolumns']['disabled']]
-                                : 0,
-                            'starttime' => ($tableCtrl['enablecolumns']['starttime'] ?? false)
-                                ? (int)$record[$tableCtrl['enablecolumns']['starttime']]
-                                : 0,
-                            'endtime' => ($tableCtrl['enablecolumns']['endtime'] ?? false)
-                                ? (int)($record[$tableCtrl['enablecolumns']['endtime']] ?: 2147483647)
-                                : 2147483647, // @todo: 2^31-1 (year 2038) and not 2^32-1 since postgres 32-bit int is always signed
+                            'hidden' => $hiddenFieldValue,
+                            'starttime' => $starttimeFieldValue,
+                            'endtime' => $endtimeFieldValue,
                             't3ver_state' => (int)($record['t3ver_state'] ?? 0),
                             'flexpointer' => (string)$flexPointer,
                             'softref_key' => '',
@@ -732,7 +735,7 @@ class ReferenceIndex
                             $refUid = 0;
                             $refString = '';
                             $refRecord = [];
-                            $refTcaCtrl = [];
+                            $refTcaTableSchema = null;
                             if ($element['subst']['type'] === 'db') {
                                 $explodedRefTableUid = explode(':', $element['subst']['recordRef']);
                                 $refTable = $explodedRefTableUid[0];
@@ -741,7 +744,7 @@ class ReferenceIndex
                                     // @todo: It would be great to refactor the softref parser mess "data structure"
                                     //        and let it return the reference record along the way - "db" type softrefs
                                     //        fetch those already.
-                                    $refTcaCtrl = (array)($GLOBALS['TCA'][$refTable]['ctrl'] ?? []);
+                                    $refTcaTableSchema = $this->tcaSchemaFactory->get($refTable);
                                 }
                             } else {
                                 $refString = mb_substr($element['subst']['tokenValue'], 0, 1024);
@@ -750,15 +753,9 @@ class ReferenceIndex
                                 'tablename' => $tableName,
                                 'recuid' => (int)$record['uid'],
                                 'field' => $fieldName,
-                                'hidden' => ($tableCtrl['enablecolumns']['disabled'] ?? false)
-                                    ? (int)$record[$tableCtrl['enablecolumns']['disabled']]
-                                    : 0,
-                                'starttime' => ($tableCtrl['enablecolumns']['starttime'] ?? false)
-                                    ? (int)$record[$tableCtrl['enablecolumns']['starttime']]
-                                    : 0,
-                                'endtime' => ($tableCtrl['enablecolumns']['endtime'] ?? false)
-                                    ? (int)($record[$tableCtrl['enablecolumns']['endtime']] ?: 2147483647)
-                                    : 2147483647,
+                                'hidden' => $hiddenFieldValue,
+                                'starttime' => $starttimeFieldValue,
+                                'endtime' => $endtimeFieldValue,
                                 't3ver_state' => (int)($record['t3ver_state'] ?? 0),
                                 'flexpointer' => $flexPointer,
                                 'softref_key' => (string)$softrefKey,
@@ -768,14 +765,14 @@ class ReferenceIndex
                                 'ref_table' => $refTable,
                                 'ref_uid' => $refUid,
                                 'ref_field' => '',
-                                'ref_hidden' => (($refTcaCtrl['enablecolumns']['disabled'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['disabled']]))
-                                    ? (int)$refRecord[$refTcaCtrl['enablecolumns']['disabled']]
+                                'ref_hidden' => $refTcaTableSchema?->hasCapability(TcaSchemaCapability::RestrictionDisabledField)
+                                    ? (int)($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName()] ?? 0)
                                     : 0,
-                                'ref_starttime' => (($refTcaCtrl['enablecolumns']['starttime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['starttime']]))
-                                    ? (int)$refRecord[$refTcaCtrl['enablecolumns']['starttime']]
+                                'ref_starttime' => $refTcaTableSchema?->hasCapability(TcaSchemaCapability::RestrictionStartTime)
+                                    ? (int)($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName()] ?? 0)
                                     : 0,
-                                'ref_endtime' => (($refTcaCtrl['enablecolumns']['endtime'] ?? false) && isset($refRecord[$refTcaCtrl['enablecolumns']['endtime']]))
-                                    ? (int)($refRecord[$refTcaCtrl['enablecolumns']['endtime']] ?: 2147483647)
+                                'ref_endtime' => $refTcaTableSchema?->hasCapability(TcaSchemaCapability::RestrictionEndTime)
+                                    ? (int)(($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName()] ?? 0) ?: 2147483647)
                                     : 2147483647,
                                 'ref_t3ver_state' => (int)($refRecord['t3ver_state'] ?? 0),
                                 'ref_sorting' => 0,
@@ -797,17 +794,17 @@ class ReferenceIndex
     private function enrichInlineRelations(string $tableName, array $itemArray): array
     {
         $selectFields = ['uid'];
-        $tableTcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'] ?? [];
-        if (!empty($tableTcaCtrl['enablecolumns']['disabled'])) {
-            $selectFields[] = $tableTcaCtrl['enablecolumns']['disabled'];
+        $tableTcaSchema = $this->tcaSchemaFactory->get($tableName);
+        if ($tableTcaSchema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            $selectFields[] = $tableTcaSchema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
         }
-        if (!empty($tableTcaCtrl['enablecolumns']['starttime'])) {
-            $selectFields[] = $tableTcaCtrl['enablecolumns']['starttime'];
+        if ($tableTcaSchema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
+            $selectFields[] = $tableTcaSchema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName();
         }
-        if (!empty($tableTcaCtrl['enablecolumns']['endtime'])) {
-            $selectFields[] = $tableTcaCtrl['enablecolumns']['endtime'];
+        if ($tableTcaSchema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
+            $selectFields[] = $tableTcaSchema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName();
         }
-        if ($tableTcaCtrl['versioningWS'] ?? false) {
+        if ($tableTcaSchema->isWorkspaceAware()) {
             $selectFields[] = 't3ver_state';
         }
         if (count($selectFields) === 1) {
@@ -846,8 +843,10 @@ class ReferenceIndex
             return [];
         }
         try {
+            $tableTcaSchema = $this->tcaSchemaFactory->get($tableName);
+            $fieldConfig['config'] = $tableTcaSchema->getField($fieldName)->getConfiguration();
             $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier(
-                $this->flexFormTools->getDataStructureIdentifier($GLOBALS['TCA'][$tableName]['columns'][$fieldName], $tableName, $fieldName, $row)
+                $this->flexFormTools->getDataStructureIdentifier($fieldConfig, $tableName, $fieldName, $row)
             );
         } catch (InvalidIdentifierException) {
             // Data structure can not be resolved or parsed. No relations.
@@ -1002,12 +1001,12 @@ class ReferenceIndex
      * Returns true if the TCA/columns field may carry references. True for
      * group, inline and friends, for flex, and if there is a 'softref' definition.
      */
-    private function isReferenceField(array $configuration): bool
+    private function isReferenceField(FieldTypeInterface $field): bool
     {
         return
-            $this->isDbReferenceField($configuration)
-            || $configuration['type'] === 'flex'
-            || isset($configuration['softref'])
+            $this->isDbReferenceField($field->getConfiguration())
+            || $field->isType(TableColumnType::FLEX)
+            || isset($field->getConfiguration()['softref'])
         ;
     }
 
@@ -1022,17 +1021,11 @@ class ReferenceIndex
         if (isset($this->tableRelationFieldCache[$tableName])) {
             return $this->tableRelationFieldCache[$tableName];
         }
-        if (!is_array($GLOBALS['TCA'][$tableName]['columns'] ?? false)) {
-            $this->tableRelationFieldCache[$tableName] = [];
-            return [];
-        }
+        $tableTcaFields = $this->tcaSchemaFactory->get($tableName)->getFields();
         $relationFields = [];
-        foreach ($GLOBALS['TCA'][$tableName]['columns'] as $fieldName => $fieldDefinition) {
-            if (!is_array($fieldDefinition['config'] ?? false)) {
-                continue;
-            }
-            if ($this->isReferenceField($fieldDefinition['config'])) {
-                $relationFields[] = $fieldName;
+        foreach ($tableTcaFields as $field) {
+            if ($this->isReferenceField($field)) {
+                $relationFields[] = $field->getName();
             }
         }
         $this->tableRelationFieldCache[$tableName] = $relationFields;
