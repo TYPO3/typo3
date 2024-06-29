@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Settings;
 
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 final readonly class SettingsTypeRegistry
 {
     public function __construct(
-        #[TaggedLocator('settings.type')]
+        #[AutowireLocator('settings.type')]
         private ServiceLocator $types
     ) {}
 
