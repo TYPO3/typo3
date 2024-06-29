@@ -190,7 +190,7 @@ class BackendUser extends AbstractEntity
         return $this->startDateAndTime;
     }
 
-    public function setStartDateAndTime(\DateTime $dateAndTime = null): void
+    public function setStartDateAndTime(?\DateTime $dateAndTime = null): void
     {
         $this->startDateAndTime = $dateAndTime;
     }
@@ -200,7 +200,7 @@ class BackendUser extends AbstractEntity
         return $this->endDateAndTime;
     }
 
-    public function setEndDateAndTime(\DateTime $dateAndTime = null): void
+    public function setEndDateAndTime(?\DateTime $dateAndTime = null): void
     {
         $this->endDateAndTime = $dateAndTime;
     }
@@ -230,7 +230,7 @@ class BackendUser extends AbstractEntity
         return $this->lastLoginDateAndTime;
     }
 
-    public function setLastLoginDateAndTime(\DateTime $dateAndTime = null): void
+    public function setLastLoginDateAndTime(?\DateTime $dateAndTime = null): void
     {
         $this->lastLoginDateAndTime = $dateAndTime;
     }
