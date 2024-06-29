@@ -81,7 +81,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function configureDashboardPresetRegistry(
         ContainerInterface $container,
-        DashboardPresetRegistry $dashboardPresetRegistry = null
+        ?DashboardPresetRegistry $dashboardPresetRegistry = null
     ): DashboardPresetRegistry {
         $dashboardPresetRegistry = $dashboardPresetRegistry ?? self::new($container, DashboardPresetRegistry::class);
         $cache = $container->get('cache.core');
@@ -109,7 +109,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function configureWidgetGroupRegistry(
         ContainerInterface $container,
-        WidgetGroupRegistry $widgetGroupRegistry = null
+        ?WidgetGroupRegistry $widgetGroupRegistry = null
     ): WidgetGroupRegistry {
         $widgetGroupRegistry = $widgetGroupRegistry ?? self::new($container, WidgetGroupRegistry::class);
         $cache = $container->get('cache.core');
@@ -149,9 +149,9 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param string $path supplied when invoked internally through PseudoServiceProvider
+     * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureWidgetGroups(ContainerInterface $container, \ArrayObject $widgetGroups, string $path = null): \ArrayObject
+    public static function configureWidgetGroups(ContainerInterface $container, \ArrayObject $widgetGroups, ?string $path = null): \ArrayObject
     {
         $paths = self::getPathsOfInstalledPackages();
 
@@ -168,9 +168,9 @@ class ServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param string $path supplied when invoked internally through PseudoServiceProvider
+     * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureWidgets(ContainerInterface $container, \ArrayObject $widgets, string $path = null): \ArrayObject
+    public static function configureWidgets(ContainerInterface $container, \ArrayObject $widgets, ?string $path = null): \ArrayObject
     {
         $paths = self::getPathsOfInstalledPackages();
 
