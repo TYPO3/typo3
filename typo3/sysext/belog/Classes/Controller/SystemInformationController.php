@@ -36,7 +36,7 @@ final class SystemInformationController
 {
     protected array $backendUserConfiguration;
 
-    public function __construct(array $backendUserConfiguration = null)
+    public function __construct(?array $backendUserConfiguration = null)
     {
         $this->backendUserConfiguration = $backendUserConfiguration ?? $GLOBALS['BE_USER']->uc;
     }
