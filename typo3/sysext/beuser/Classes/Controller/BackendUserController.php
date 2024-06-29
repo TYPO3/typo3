@@ -147,7 +147,7 @@ class BackendUserController extends ActionController
      * @param string $operation
      * @return ResponseInterface
      */
-    public function indexAction(Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
+    public function indexAction(?Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
 
