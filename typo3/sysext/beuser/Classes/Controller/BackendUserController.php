@@ -139,7 +139,7 @@ class BackendUserController extends ActionController
      *
      * @param Demand|null $demand
      */
-    public function listAction(Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
+    public function listAction(?Demand $demand = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
 
@@ -388,7 +388,7 @@ class BackendUserController extends ActionController
      *
      * @param BackendUserGroup|null $userGroupDto
      */
-    public function groupsAction(BackendUserGroup $userGroupDto = null, int $currentPage = 1, string $operation = ''): ResponseInterface
+    public function groupsAction(?BackendUserGroup $userGroupDto = null, int $currentPage = 1, string $operation = ''): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
 
