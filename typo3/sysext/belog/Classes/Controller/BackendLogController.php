@@ -83,7 +83,7 @@ class BackendLogController extends ActionController
      * @param string $operation
      * @return ResponseInterface
      */
-    public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Default', string $operation = ''): ResponseInterface
+    public function listAction(?Constraint $constraint = null, ?int $pageId = null, string $layout = 'Default', string $operation = ''): ResponseInterface
     {
         if ($operation === 'reset-filters') {
             $constraint = new Constraint();

@@ -273,9 +273,9 @@ class Constraint
     /**
      * Set manual date start
      *
-     * @param \DateTime $manualDateStart
+     * @param \DateTime|null $manualDateStart
      */
-    public function setManualDateStart(\DateTime $manualDateStart = null)
+    public function setManualDateStart(?\DateTime $manualDateStart = null)
     {
         $this->manualDateStart = $manualDateStart;
     }
@@ -295,7 +295,7 @@ class Constraint
      *
      * @param \DateTime $manualDateStop
      */
-    public function setManualDateStop(\DateTime $manualDateStop = null)
+    public function setManualDateStop(?\DateTime $manualDateStop = null)
     {
         $this->manualDateStop = $manualDateStop;
     }
