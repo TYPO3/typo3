@@ -42,7 +42,7 @@ class DoctrineSqlLogger implements LoggerAwareInterface
         $this->enabled = true;
     }
 
-    public function startQuery($sql, array $params = null, array $types = null): void
+    public function startQuery($sql, ?array $params = null, ?array $types = null): void
     {
         if ($this->enabled && MemoryUtility::isMemoryConsumptionTooHigh()) {
             $this->enabled = false;
