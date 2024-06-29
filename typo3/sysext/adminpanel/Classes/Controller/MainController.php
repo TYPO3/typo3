@@ -69,15 +69,10 @@ class MainController implements SingletonInterface
      */
     protected $adminPanelModuleConfiguration;
 
-    /**
-     * @param ModuleLoader $moduleLoader
-     * @param UriBuilder $uriBuilder
-     * @param ConfigurationService $configurationService
-     */
     public function __construct(
-        ModuleLoader $moduleLoader = null,
-        UriBuilder $uriBuilder = null,
-        ConfigurationService $configurationService = null
+        ?ModuleLoader $moduleLoader = null,
+        ?UriBuilder $uriBuilder = null,
+        ?ConfigurationService $configurationService = null
     ) {
         $this->moduleLoader = $moduleLoader ?? GeneralUtility::makeInstance(ModuleLoader::class);
         $this->uriBuilder = $uriBuilder ?? GeneralUtility::makeInstance(UriBuilder::class);

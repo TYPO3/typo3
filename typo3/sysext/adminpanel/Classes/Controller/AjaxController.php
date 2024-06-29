@@ -46,11 +46,7 @@ class AjaxController
      */
     private $configurationService;
 
-    /**
-     * @param ConfigurationService $configurationService
-     * @param ModuleLoader $moduleLoader
-     */
-    public function __construct(ConfigurationService $configurationService = null, ModuleLoader $moduleLoader = null)
+    public function __construct(?ConfigurationService $configurationService = null, ?ModuleLoader $moduleLoader = null)
     {
         $this->configurationService = $configurationService
                                       ??

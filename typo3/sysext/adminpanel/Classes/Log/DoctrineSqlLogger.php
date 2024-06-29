@@ -56,7 +56,7 @@ class DoctrineSqlLogger implements SQLLogger, LoggerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function startQuery($sql, array $params = null, array $types = null)
+    public function startQuery($sql, ?array $params = null, ?array $types = null)
     {
         if ($this->enabled && MemoryUtility::isMemoryConsumptionTooHigh()) {
             $this->enabled = false;
