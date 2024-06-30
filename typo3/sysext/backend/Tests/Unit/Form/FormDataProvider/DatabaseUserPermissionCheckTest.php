@@ -31,9 +31,7 @@ use TYPO3\CMS\Backend\Form\Exception\AccessDeniedTableModifyException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
-use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseUserPermissionCheckTest extends UnitTestCase
@@ -52,9 +50,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
     public function addDataSetsUserPermissionsOnPageForAdminUser(): void
     {
         $this->beUserMock->method('isAdmin')->willReturn(true);
-
-        $result = (new DatabaseUserPermissionCheck())->addData([]);
-
+        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData([]);
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
@@ -70,7 +66,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedTableModifyException::class);
         $this->expectExceptionCode(1437683248);
 
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
     }
 
     #[Test]
@@ -93,10 +89,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437679657);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
     }
 
     #[Test]
@@ -115,12 +108,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
         $this->beUserMock->method('calcPerms')->with(['pid' => 321])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
-
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        $result = (new DatabaseUserPermissionCheck())->addData($input);
-
+        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
@@ -143,10 +131,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
     }
 
     #[Test]
@@ -184,10 +169,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
     }
 
     #[Test]
@@ -222,10 +204,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('calcPerms')->with($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        $result = (new DatabaseUserPermissionCheck())->addData($input);
+        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
 
         self::assertSame(Permission::PAGE_EDIT, $result['userPermissionOnPage']);
     }
@@ -247,10 +226,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        $result = (new DatabaseUserPermissionCheck())->addData($input);
+        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
 
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
@@ -274,10 +250,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437679856);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
     }
 
     #[Test]
@@ -301,10 +274,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedEditInternalsException::class);
         $this->expectExceptionCode(1437687404);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
     }
 
     #[Test]
@@ -327,10 +297,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437745759);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
     }
 
     #[Test]
@@ -355,10 +322,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedPageNewException::class);
         $this->expectExceptionCode(1437745640);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
     }
 
     #[Test]
@@ -384,13 +348,12 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedListenerException::class);
         $this->expectExceptionCode(1662727149);
 
-        $eventDispatcher = new MockEventDispatcher();
-        $eventDispatcher->addListener(static function (ModifyEditFormUserAccessEvent $event) {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects(self::once())->method('dispatch')->willReturnCallback(static function (ModifyEditFormUserAccessEvent $event) {
             $event->denyUserAccess();
+            return $event;
         });
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck($eventDispatcher))->addData($input);
     }
 
     #[Test]
@@ -413,14 +376,12 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
-        $eventDispatcher = new MockEventDispatcher();
-        $eventDispatcher->addListener(static function (ModifyEditFormUserAccessEvent $event) {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects(self::once())->method('dispatch')->willReturnCallback(static function (ModifyEditFormUserAccessEvent $event) {
             $event->allowUserAccess();
+            return $event;
         });
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-
-        $result = (new DatabaseUserPermissionCheck())->addData($input);
-
+        $result = (new DatabaseUserPermissionCheck($eventDispatcher))->addData($input);
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
@@ -441,11 +402,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
         $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::PAGE_NEW);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
-
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
-
-        $result = (new DatabaseUserPermissionCheck())->addData($input);
-
+        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
         self::assertSame(Permission::PAGE_NEW, $result['userPermissionOnPage']);
     }
 
@@ -466,11 +423,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
         $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
-
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
-
-        $result = (new DatabaseUserPermissionCheck())->addData($input);
-
+        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
@@ -488,11 +441,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
-
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
-
-        $result = (new DatabaseUserPermissionCheck())->addData($input);
-
+        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
@@ -512,9 +461,6 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
 
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437745221);
-
-        GeneralUtility::addInstance(EventDispatcherInterface::class, new NoopEventDispatcher());
-
-        (new DatabaseUserPermissionCheck())->addData($input);
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
     }
 }

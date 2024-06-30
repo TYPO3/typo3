@@ -34,8 +34,8 @@ use TYPO3\CMS\Core\Database\Schema\SchemaDiff;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3\TestingFramework\Core\Testbase;
 
@@ -120,7 +120,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         // Ensure SqlReader is not taking any extension into account to retrieve extension table structure files.
         $packageManagerMock = $this->createMock(PackageManager::class);
         $packageManagerMock->method('getActivePackages')->willReturn([]);
-        return new SqlReader(new MockEventDispatcher(), $packageManagerMock);
+        return new SqlReader(new NoopEventDispatcher(), $packageManagerMock);
     }
 
     private function createSchemaMigrator(): SchemaMigrator
