@@ -36,7 +36,7 @@ class StandaloneView extends AbstractTemplateView
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      */
-    public function __construct(ContentObjectRenderer $contentObject = null)
+    public function __construct(?ContentObjectRenderer $contentObject = null)
     {
         // @deprecated since v11, will be removed with v12. Drop $contentObject argument and ConfigurationManager handling.
         $configurationManager = GeneralUtility::getContainer()->get(ConfigurationManager::class);

@@ -47,10 +47,9 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView imple
     public function initializeView() {}
 
     /**
-     * @param RenderingContextInterface $context
      * @internal
      */
-    public function __construct(RenderingContextInterface $context = null)
+    public function __construct(?RenderingContextInterface $context = null)
     {
         if (!$context) {
             $context = GeneralUtility::makeInstance(RenderingContextFactory::class)->create();
