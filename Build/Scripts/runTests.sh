@@ -207,6 +207,8 @@ Options:
             - buildJavascript: execute typescript to javascript builder
             - cgl: test and fix all core php files
             - cglGit: test and fix latest committed patch for CGL compliance
+            - cglHeader: test and fix file header for all core php files
+            - cglHeaderGit: test and fix latest committed patch for CGL file header compliance
             - checkAnnotations: check php code for allowed annotations
             - checkBom: check UTF-8 files do not contain BOM
             - checkComposer: check composer.json files for version integrity
@@ -819,12 +821,25 @@ case ${TEST_SUITE} in
         if [ -n "${CGLCHECK_DRY_RUN}" ]; then
             CGLCHECK_DRY_RUN="--dry-run --diff"
         fi
-        COMMAND="php -dxdebug.mode=off bin/php-cs-fixer fix -v ${CGLCHECK_DRY_RUN} --path-mode intersection --config=Build/php-cs-fixer/config.php typo3/"
+        COMMAND="php -dxdebug.mode=off bin/php-cs-fixer fix -v ${CGLCHECK_DRY_RUN} --config=Build/php-cs-fixer/config.php"
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name cgl-${SUFFIX} ${IMAGE_PHP} ${COMMAND}
         SUITE_EXIT_CODE=$?
         ;;
     cglGit)
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name cgl-git-${SUFFIX} ${IMAGE_PHP} Build/Scripts/cglFixMyCommit.sh ${CGLCHECK_DRY_RUN}
+        SUITE_EXIT_CODE=$?
+        ;;
+    cglHeader)
+        # Active dry-run for cgl needs not "-n" but specific options
+        if [ -n "${CGLCHECK_DRY_RUN}" ]; then
+            CGLCHECK_DRY_RUN="--dry-run --diff"
+        fi
+        COMMAND="php -dxdebug.mode=off bin/php-cs-fixer fix -v ${CGLCHECK_DRY_RUN} --config=Build/php-cs-fixer/header-comment.php"
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name cgl-header-${SUFFIX} ${IMAGE_PHP} ${COMMAND}
+        SUITE_EXIT_CODE=$?
+        ;;
+    cglHeaderGit)
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name cgl-header-git-${SUFFIX} ${IMAGE_PHP} Build/Scripts/cglFixMyCommitFileHeader.sh ${CGLCHECK_DRY_RUN}
         SUITE_EXIT_CODE=$?
         ;;
     checkAnnotations)

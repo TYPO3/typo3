@@ -21,8 +21,12 @@ if (PHP_SAPI !== 'cli') {
 
 $finder = PhpCsFixer\Finder::create()
     ->name('*.php')
-    ->in(__DIR__ . '/../../typo3/sysext')
+    ->in([
+        __DIR__ . '/../../typo3/sysext',
+        __DIR__ . '/../../Build',
+    ])
     ->exclude('Acceptance/Support/_generated') // EXT:core
+    ->exclude('node_modules')
     // Configuration files do not need header comments
     ->exclude('Configuration')
     ->notName('*locallang*.php')

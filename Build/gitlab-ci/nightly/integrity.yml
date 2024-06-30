@@ -19,6 +19,7 @@ cgl:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s cgl -n -p 7.4
+    - Build/Scripts/runTests.sh -s cglHeader -n -p 7.4
 
 integration various:
   stage: integrity

@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
+
 declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
