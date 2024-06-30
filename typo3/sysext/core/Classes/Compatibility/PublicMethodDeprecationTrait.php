@@ -91,9 +91,9 @@ trait PublicMethodDeprecationTrait
 
         // Do the same behaviour as calling $myObject->method();
         if (method_exists($this, $methodName)) {
-            throw new \Error('Call to protected/private method ' . self::class . '::' . $methodName . '()');
+            throw new \Error('Call to protected/private method ' . self::class . '::' . $methodName . '()', 1720252929);
         }
 
-        throw new \Error('Call to undefined method ' . self::class . '::' . $methodName . '()');
+        throw new \Error('Call to undefined method ' . self::class . '::' . $methodName . '()', 1720252942);
     }
 }

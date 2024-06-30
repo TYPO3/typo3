@@ -19,6 +19,7 @@ declare(strict_types=1);
 use Composer\Console\Application;
 use Composer\Console\Input\InputOption;
 use PhpParser\Error;
+use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\Parser;
@@ -31,7 +32,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\PhpIntegrityChecks\AbstractPhpIntegrityChecker;
 use TYPO3\CMS\PhpIntegrityChecks\AnnotationChecker;
+use TYPO3\CMS\PhpIntegrityChecks\ExceptionCodeChecker;
 use TYPO3\CMS\PhpIntegrityChecks\NamespaceChecker;
+use TYPO3\CMS\PhpIntegrityChecks\NodeResolver\ExceptionConstructorResolver;
 use TYPO3\CMS\PhpIntegrityChecks\TestClassFinalChecker;
 use TYPO3\CMS\PhpIntegrityChecks\TestMethodPrefixChecker;
 
@@ -47,6 +50,7 @@ final class PhpIntegrityChecker extends Command
         NamespaceChecker::class,
         TestMethodPrefixChecker::class,
         TestClassFinalChecker::class,
+        ExceptionCodeChecker::class,
     ];
 
     /**
@@ -86,6 +90,7 @@ final class PhpIntegrityChecker extends Command
      * @var array<class-string, array<string, string[]>>
      */
     private array $issues = [];
+    private PhpVersion $phpVersion;
 
     protected function configure(): void
     {
@@ -94,9 +99,11 @@ final class PhpIntegrityChecker extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $version = explode('.', $input->getOption('php'));
+        $this->phpVersion = PhpVersion::fromComponents((int)$version[0], (int)$version[1]);
         $this->initVisitors();
         $io = new SymfonyStyle($input, $output);
-        $parser = $this->getParser($input->getOption('php'));
+        $parser = $this->getParser();
 
         foreach ($this->createFinder() as $file) {
             $this->processFile($parser, $file);
@@ -145,8 +152,23 @@ final class PhpIntegrityChecker extends Command
 
         /** @var array<class-string, AbstractPhpIntegrityChecker> $usedVisitors */
         $usedVisitors = [];
+        $ast = $this->enrichAst($ast);
         $this->createTraverser($file, $usedVisitors)->traverse($ast);
         $this->finishUsedVisitorsForFile($file, $usedVisitors);
+    }
+
+    /**
+     * @param Node[] $ast
+     * @return Node[]
+     */
+    private function enrichAst(array $ast): array
+    {
+        $nameResolver = new NameResolver();
+        $exceptionConstructorResolver = new ExceptionConstructorResolver();
+        $traverser = new NodeTraverser();
+        $traverser->addVisitor($nameResolver);
+        $traverser->addVisitor($exceptionConstructorResolver);
+        return $traverser->traverse($ast);
     }
 
     /**
@@ -156,9 +178,7 @@ final class PhpIntegrityChecker extends Command
      */
     private function createTraverser(SplFileInfo $file, array &$usedVisitors): NodeTraverser
     {
-        $nameResolver = new NameResolver();
         $traverser = new NodeTraverser();
-        $traverser->addVisitor($nameResolver);
         foreach ($this->visitors as $visitorClassName => $visitor) {
             if (!$visitor->canHandle($file)) {
                 continue;
@@ -198,15 +218,16 @@ final class PhpIntegrityChecker extends Command
     private function initVisitors(): void
     {
         foreach ($this->registeredVisitors as $registeredVisitor) {
-            $this->visitors[$registeredVisitor] = new $registeredVisitor();
+            $visitorInstance = new $registeredVisitor();
+            $this->visitors[$registeredVisitor] = $visitorInstance;
             $this->issues[$registeredVisitor] = [];
         }
     }
 
-    private function getParser(string $phpVersion): Parser
+    private function getParser(): Parser
     {
-        $version = explode('.', $phpVersion);
-        return (new ParserFactory())->createForVersion(PhpVersion::fromComponents((int)$version[0], (int)$version[1]));
+
+        return (new ParserFactory())->createForVersion($this->phpVersion);
     }
 }
 

@@ -21,7 +21,6 @@ integration various php 8.3:
     - Build/Scripts/runTests.sh -s composerValidate -p 8.3
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.3
     - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.3
     - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.3
     - Build/Scripts/runTests.sh -s checkPermissions -p 8.3
     - Build/Scripts/runTests.sh -s checkRst -p 8.3
