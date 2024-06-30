@@ -18,12 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
-use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
+use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -37,10 +37,6 @@ final class TcaFlexPrepareTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
         $cacheManagerMock->method('getCache')->with(self::anything())->willReturn($cacheFrontendMock);
-
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools($eventDispatcher));
     }
 
     protected function tearDown(): void
@@ -91,7 +87,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
     }
 
     #[Test]
@@ -158,7 +154,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
     }
 
     #[Test]
@@ -231,7 +227,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
     }
 
     #[Test]
@@ -273,7 +269,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
     }
 
     #[Test]
@@ -409,7 +405,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
     }
 
     /**
@@ -480,6 +476,6 @@ final class TcaFlexPrepareTest extends UnitTestCase
                     ['container_1']['el']
                         ['select_section_1'] = $columnConfig;
 
-        self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
     }
 }

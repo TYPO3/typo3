@@ -42,6 +42,7 @@ readonly class FlexFormTools
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
+        private TcaMigration $tcaMigration,
     ) {}
 
     /**
@@ -258,7 +259,6 @@ readonly class FlexFormTools
         foreach ($structure as $key => $value) {
             if ($key === 'el' && is_array($value)) {
                 $newSubStructure = [];
-                $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
                 foreach ($value as $subKey => $subValue) {
                     // On-the-fly migration for flex form "TCA". Call the TcaMigration and log any deprecations.
                     $dummyTca = [
@@ -268,8 +268,8 @@ readonly class FlexFormTools
                             ],
                         ],
                     ];
-                    $migratedTca = $tcaMigration->migrate($dummyTca);
-                    $messages = $tcaMigration->getMessages();
+                    $migratedTca = $this->tcaMigration->migrate($dummyTca);
+                    $messages = $this->tcaMigration->getMessages();
                     if (!empty($messages)) {
                         $context = 'FlexFormTools did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'
                             . ' Merge the following changes into the flex form definition "' . $subKey . '":';

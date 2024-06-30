@@ -19,18 +19,17 @@ namespace TYPO3\CMS\Core\Tests\Unit\Hooks;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Tests\Unit\Fixtures\EventDispatcher\MockEventDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -187,24 +186,6 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         self::assertSame($expected, $fieldDefinition);
     }
 
-    #[DataProvider('populateExcludeFieldsTestDataProvider')]
-    #[Test]
-    public function populateExcludeFieldsTest(array $tca, array $expectedItems): void
-    {
-        $GLOBALS['TCA'] = $tca;
-        $fieldDefinition = ['items' => []];
-        $expected = [
-            'items' => $expectedItems,
-        ];
-
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools($eventDispatcher));
-
-        (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldDefinition);
-        self::assertSame($expected, $fieldDefinition);
-    }
-
     public static function populateExcludeFieldsTestDataProvider(): array
     {
         return [
@@ -316,6 +297,20 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         ];
     }
 
+    #[DataProvider('populateExcludeFieldsTestDataProvider')]
+    #[Test]
+    public function populateExcludeFieldsTest(array $tca, array $expectedItems): void
+    {
+        $GLOBALS['TCA'] = $tca;
+        $fieldDefinition = ['items' => []];
+        $expected = [
+            'items' => $expectedItems,
+        ];
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration()));
+        (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldDefinition);
+        self::assertSame($expected, $fieldDefinition);
+    }
+
     #[Test]
     public function populateExcludeFieldsWithFlexFormTest(): void
     {
@@ -376,9 +371,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
-        $eventDispatcher = new MockEventDispatcher();
-        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher);
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools($eventDispatcher));
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration()));
 
         (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);

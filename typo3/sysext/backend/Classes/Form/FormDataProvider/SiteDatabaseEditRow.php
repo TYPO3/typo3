@@ -30,17 +30,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Fetch "row" data from yml file and set as 'databaseRow'
  */
 #[Autoconfigure(public: true)]
-class SiteDatabaseEditRow implements FormDataProviderInterface
+readonly class SiteDatabaseEditRow implements FormDataProviderInterface
 {
-    /**
-     * @var SiteConfiguration
-     */
-    protected $siteConfiguration;
-
-    public function __construct(SiteConfiguration $siteConfiguration)
-    {
-        $this->siteConfiguration = $siteConfiguration;
-    }
+    public function __construct(private SiteConfiguration $siteConfiguration) {}
 
     /**
      * First level of ['customData']['siteData'] to ['databaseRow']

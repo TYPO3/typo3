@@ -35,8 +35,6 @@ class TcaPreparation
      * For flex form TCA, this class is called dynamically if opening a record in the backend.
      *
      * See unit tests for details.
-     *
-     * @param array $tca
      */
     public function prepare(array $tca): array
     {
@@ -56,13 +54,11 @@ class TcaPreparation
      * This also sets necessary MM properties, in case relationship is
      * set to "manyToMany" (which is the default).
      *
-     * Finally all category fields with a "manyToMany" relationship are
+     * Finally, all category fields with a "manyToMany" relationship are
      * added to the MM_oppositeUsage of sys_category "items".
      *
      * Important: Since this method defines a "foreign_table_where", this
      * must always be executed before prepareQuotingOfTableNamesAndColumnNames().
-     *
-     * @param array $tca
      */
     protected function configureCategoryRelations(array $tca): array
     {
@@ -104,7 +100,7 @@ class TcaPreparation
                 if ($fieldConfig['config']['relationship'] === 'oneToOne') {
                     // In case relationship is set to "oneToOne", the database column for this
                     // field will be an integer column. This means, only one uid can be stored.
-                    // Therefore maxitems must be 1.
+                    // Therefore, maxitems must be 1.
                     if ((int)($fieldConfig['config']['maxitems'] ?? 0) > 1) {
                         throw new \RuntimeException(
                             $fieldName . ' of table ' . $table . ' is defined as type category with an oneToOne relationship. ' .
