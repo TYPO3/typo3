@@ -15,57 +15,47 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Hooks;
+namespace TYPO3\CMS\Core\Tests\Functional\Hooks;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
-use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class TcaItemsProcessorFunctionsTest extends UnitTestCase
+final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected function setUp(): void
     {
         parent::setUp();
-
         // Default LANG mock just returns incoming value as label if calling ->sL()
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceMock;
-
         $iconRegistryMock = $this->createMock(IconRegistry::class);
         GeneralUtility::setSingletonInstance(IconRegistry::class, $iconRegistryMock);
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        // Two instances are needed due to the push/pop behavior of addInstance()
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
-    }
-
-    /**
-     * Tear down
-     */
-    protected function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
     }
 
     #[Test]
     public function populateAvailableTablesTest(): void
     {
-        $fieldDefinition = ['items' => [0 => ['label' => '---', 'value' => 0]]];
-
+        $fieldDefinition = [
+            'items' => [
+                0 => [
+                    'label' => '---',
+                    'value' => 0,
+                ],
+            ],
+        ];
         $GLOBALS['TCA'] = [
             'notInResult' => [
                 'ctrl' => [
@@ -78,7 +68,6 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
-
         $expected = [
             'items' => [
                 0 => [
@@ -92,19 +81,18 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        (new TcaItemsProcessorFunctions())->populateAvailableTables($fieldDefinition);
+        $this->get(TcaItemsProcessorFunctions::class)->populateAvailableTables($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
 
     #[Test]
     public function populateAvailablePageTypesTest(): void
     {
-        $fieldDefinition = ['items' => []];
-
-        (new TcaItemsProcessorFunctions())->populateAvailablePageTypes($fieldDefinition);
+        $fieldDefinition = [
+            'items' => [],
+        ];
+        $this->get(TcaItemsProcessorFunctions::class)->populateAvailablePageTypes($fieldDefinition);
         self::assertSame($fieldDefinition, $fieldDefinition);
-
         $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] = [
             0 => [
                 'label' => 'Divider',
@@ -118,9 +106,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 'value' => 'aValue',
             ],
         ];
-
         $fieldDefinition = ['items' => [0 => ['---', 0]]];
-
         $expected = [
             'items' => [
                 0 => [
@@ -134,8 +120,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        (new TcaItemsProcessorFunctions())->populateAvailablePageTypes($fieldDefinition);
+        $this->get(TcaItemsProcessorFunctions::class)->populateAvailablePageTypes($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
 
@@ -143,10 +128,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
     public function populateAvailableUserModulesTest(): void
     {
         $moduleProviderMock = $this->createMock(ModuleProvider::class);
-        GeneralUtility::addInstance(ModuleProvider::class, $moduleProviderMock);
-
         $moduleFactory = new ModuleFactory($this->createMock(IconRegistry::class), new NoopEventDispatcher());
-
         $moduleProviderMock->method('getUserModules')->willReturn([
             'aModule' => $moduleFactory->createModule('aModule', [
                 'iconIdentifier' => 'a-module',
@@ -159,8 +141,9 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 'packageName' => 'typo3/cms-testing',
             ]),
         ]);
-
-        $fieldDefinition = $expected = ['items' => []];
+        $fieldDefinition = [
+            'items' => [],
+        ];
         $expected['items'] = [
             0 => [
                 'label' => 'LLL:EXT:a-module/locallang:mlang_tabs_tab',
@@ -181,8 +164,13 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        (new TcaItemsProcessorFunctions())->populateAvailableUserModules($fieldDefinition);
+        $subject = new TcaItemsProcessorFunctions(
+            $this->get(IconFactory::class),
+            $this->get(IconRegistry::class),
+            $moduleProviderMock,
+            $this->get(FlexFormTools::class)
+        );
+        $subject->populateAvailableUserModules($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
 
@@ -302,12 +290,13 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
     public function populateExcludeFieldsTest(array $tca, array $expectedItems): void
     {
         $GLOBALS['TCA'] = $tca;
-        $fieldDefinition = ['items' => []];
+        $fieldDefinition = [
+            'items' => [],
+        ];
         $expected = [
             'items' => $expectedItems,
         ];
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration()));
-        (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldDefinition);
+        $this->get(TcaItemsProcessorFunctions::class)->populateExcludeFields($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
 
@@ -349,8 +338,9 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        $fieldDefinition = ['items' => []];
+        $fieldDefinition = [
+            'items' => [],
+        ];
         $expected = [
             'items' => [
                 'fooTableTitle aFlexFieldTitle dummy' => [
@@ -365,28 +355,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        $cacheManagerMock = $this->createMock(CacheManager::class);
-        $cacheMock = $this->createMock(FrontendInterface::class);
-        $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
-
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration()));
-
-        (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldDefinition);
-        self::assertSame($expected, $fieldDefinition);
-    }
-
-    #[DataProvider('populateExplicitAuthValuesTestDataProvider')]
-    #[Test]
-    public function populateExplicitAuthValuesTest(array $tca, array $expectedItems): void
-    {
-        $GLOBALS['TCA'] = $tca;
-        $fieldDefinition = ['items' => []];
-        $expected = [
-            'items' => $expectedItems,
-        ];
-        (new TcaItemsProcessorFunctions())->populateExplicitAuthValues($fieldDefinition);
+        $this->get(TcaItemsProcessorFunctions::class)->populateExcludeFields($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
 
@@ -430,6 +399,19 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
         ];
     }
 
+    #[DataProvider('populateExplicitAuthValuesTestDataProvider')]
+    #[Test]
+    public function populateExplicitAuthValuesTest(array $tca, array $expectedItems): void
+    {
+        $GLOBALS['TCA'] = $tca;
+        $fieldDefinition = ['items' => []];
+        $expected = [
+            'items' => $expectedItems,
+        ];
+        $this->get(TcaItemsProcessorFunctions::class)->populateExplicitAuthValues($fieldDefinition);
+        self::assertSame($expected, $fieldDefinition);
+    }
+
     #[Test]
     public function populateCustomPermissionOptionsTest(): void
     {
@@ -469,7 +451,7 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
-        (new TcaItemsProcessorFunctions())->populateCustomPermissionOptions($fieldDefinition);
+        $this->get(TcaItemsProcessorFunctions::class)->populateCustomPermissionOptions($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
 
@@ -478,9 +460,8 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1627565458);
-
         $fieldDefinition = ['items' => [], 'config' => []];
-        (new TcaItemsProcessorFunctions())->populateAvailableCategoryFields($fieldDefinition);
+        $this->get(TcaItemsProcessorFunctions::class)->populateAvailableCategoryFields($fieldDefinition);
     }
 
     #[Test]
@@ -488,49 +469,8 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1627565459);
-
         $fieldDefinition = ['items' => [], 'config' => ['itemsProcConfig' => ['table' => 'aTable']]];
-        (new TcaItemsProcessorFunctions())->populateAvailableCategoryFields($fieldDefinition);
-    }
-
-    #[DataProvider('populateAvailableCategoryFieldsDataProvider')]
-    #[Test]
-    public function populateAvailableCategoryFields(array $itemsProcConfig, array $expectedItems): void
-    {
-        $GLOBALS['TCA']['aTable']['columns'] = [
-            'aField' => [
-                'label' => 'aField label',
-                'config' => [
-                    'type' => 'category',
-                    'relationship' => 'manyToMany',
-                ],
-            ],
-            'bField' => [
-                'label' => 'bField label',
-                'config' => [
-                    'type' => 'category',
-                ],
-            ],
-            'cField' => [
-                'label' => 'cField label',
-                'config' => [
-                    'type' => 'category',
-                    'relationship' => 'oneToMany',
-                ],
-            ],
-            'dField' => [
-                'label' => 'dField label',
-                'config' => [
-                    'type' => 'category',
-                    'relationship' => 'manyToMany',
-                ],
-            ],
-        ];
-        $fieldDefinition = ['items' => [], 'config' => ['itemsProcConfig' => $itemsProcConfig]];
-        $expected = $fieldDefinition;
-        $expected['items'] = $expectedItems;
-        (new TcaItemsProcessorFunctions())->populateAvailableCategoryFields($fieldDefinition);
-        self::assertSame($expected, $fieldDefinition);
+        $this->get(TcaItemsProcessorFunctions::class)->populateAvailableCategoryFields($fieldDefinition);
     }
 
     public static function populateAvailableCategoryFieldsDataProvider(): \Generator
@@ -589,5 +529,50 @@ final class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
+    }
+
+    #[DataProvider('populateAvailableCategoryFieldsDataProvider')]
+    #[Test]
+    public function populateAvailableCategoryFields(array $itemsProcConfig, array $expectedItems): void
+    {
+        $GLOBALS['TCA']['aTable']['columns'] = [
+            'aField' => [
+                'label' => 'aField label',
+                'config' => [
+                    'type' => 'category',
+                    'relationship' => 'manyToMany',
+                ],
+            ],
+            'bField' => [
+                'label' => 'bField label',
+                'config' => [
+                    'type' => 'category',
+                ],
+            ],
+            'cField' => [
+                'label' => 'cField label',
+                'config' => [
+                    'type' => 'category',
+                    'relationship' => 'oneToMany',
+                ],
+            ],
+            'dField' => [
+                'label' => 'dField label',
+                'config' => [
+                    'type' => 'category',
+                    'relationship' => 'manyToMany',
+                ],
+            ],
+        ];
+        $fieldDefinition = [
+            'items' => [],
+            'config' => [
+                'itemsProcConfig' => $itemsProcConfig,
+            ],
+        ];
+        $expected = $fieldDefinition;
+        $expected['items'] = $expectedItems;
+        $this->get(TcaItemsProcessorFunctions::class)->populateAvailableCategoryFields($fieldDefinition);
+        self::assertSame($expected, $fieldDefinition);
     }
 }

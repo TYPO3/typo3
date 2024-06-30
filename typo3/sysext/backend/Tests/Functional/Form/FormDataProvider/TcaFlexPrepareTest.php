@@ -15,36 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
+namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
-use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
-use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class TcaFlexPrepareTest extends UnitTestCase
+final class TcaFlexPrepareTest extends FunctionalTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        // Suppress cache foo in xml helpers of GeneralUtility
-        $cacheManagerMock = $this->createMock(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
-        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
-        $cacheManagerMock->method('getCache')->with(self::anything())->willReturn($cacheFrontendMock);
-    }
-
-    protected function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
-    }
-
     #[Test]
     public function addDataKeepsExistingDataStructure(): void
     {
@@ -87,7 +65,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
+        self::assertEquals($expected, $this->get(TcaFlexPrepare::class)->addData($input));
     }
 
     #[Test]
@@ -154,7 +132,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
+        self::assertEquals($expected, $this->get(TcaFlexPrepare::class)->addData($input));
     }
 
     #[Test]
@@ -227,7 +205,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
+        self::assertEquals($expected, $this->get(TcaFlexPrepare::class)->addData($input));
     }
 
     #[Test]
@@ -269,7 +247,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
+        self::assertEquals($expected, $this->get(TcaFlexPrepare::class)->addData($input));
     }
 
     #[Test]
@@ -405,7 +383,7 @@ final class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
+        self::assertEquals($expected, $this->get(TcaFlexPrepare::class)->addData($input));
     }
 
     /**
@@ -476,6 +454,6 @@ final class TcaFlexPrepareTest extends UnitTestCase
                     ['container_1']['el']
                         ['select_section_1'] = $columnConfig;
 
-        self::assertEquals($expected, (new TcaFlexPrepare(new FlexFormTools(new NoopEventDispatcher(), new TcaMigration())))->addData($input));
+        self::assertEquals($expected, $this->get(TcaFlexPrepare::class)->addData($input));
     }
 }

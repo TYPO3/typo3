@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Hooks;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -30,16 +31,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is a hook implementation and is not part of the TYPO3 Core API.
  */
-class TcaItemsProcessorFunctions
+#[Autoconfigure(public: true)]
+readonly class TcaItemsProcessorFunctions
 {
-    protected IconFactory $iconFactory;
-    protected IconRegistry $iconRegistry;
-
-    public function __construct()
-    {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-    }
+    public function __construct(
+        private IconFactory $iconFactory,
+        private IconRegistry $iconRegistry,
+        private ModuleProvider $moduleProvider,
+        private FlexFormTools $flexFormTools,
+    ) {}
 
     public function populateAvailableTables(array &$fieldDefinition): void
     {
@@ -71,7 +71,7 @@ class TcaItemsProcessorFunctions
 
     public function populateAvailableUserModules(array &$fieldDefinition): void
     {
-        $modules = GeneralUtility::makeInstance(ModuleProvider::class)->getUserModules();
+        $modules = $this->moduleProvider->getUserModules();
         if ($modules === []) {
             return;
         }
@@ -357,7 +357,6 @@ class TcaItemsProcessorFunctions
         if (empty($GLOBALS['TCA'][$table]['columns']) || !is_array($GLOBALS['TCA'][$table]['columns'])) {
             return [];
         }
-        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
         $flexForms = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fieldDefinition) {
             if (($fieldDefinition['config']['type'] ?? '') !== 'flex'
@@ -382,7 +381,7 @@ class TcaItemsProcessorFunctions
                     'dataStructureKey' => $flexFormKey,
                 ]);
                 try {
-                    $dataStructure = $flexFormTools->parseDataStructureByIdentifier($flexFormDataStructureIdentifier);
+                    $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($flexFormDataStructureIdentifier);
                     $flexForms[$field][$extIdent] = $dataStructure;
                 } catch (InvalidIdentifierException $e) {
                     // Deliberately empty: The DS identifier is guesswork and the flex ds parser throws

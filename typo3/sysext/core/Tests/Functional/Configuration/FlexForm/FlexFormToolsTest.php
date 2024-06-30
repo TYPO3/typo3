@@ -715,6 +715,134 @@ final class FlexFormToolsTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function parseDataStructureByIdentifierMigratesSheetLevelFields(): void
+    {
+        // Register special error handler to suppress E_USER_DEPRECATED triggered by subject.
+        // This is a feature of the subject, but usually lets the test fail.
+        set_error_handler(fn() => false, E_USER_DEPRECATED);
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <sheets>
+                    <sDEF>
+                        <ROOT>
+                            <sheetTitle>aTitle</sheetTitle>
+                            <type>array</type>
+                            <el>
+                                <aFlexField>
+                                    <label>aFlexFieldLabel</label>
+                                    <config>
+                                        <type>input</type>
+                                        <eval>email</eval>
+                                    </config>
+                                </aFlexField>
+                            </el>
+                        </ROOT>
+                    </sDEF>
+                </sheets>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $expected = [
+            'sheets' => [
+                'sDEF' => [
+                    'ROOT' => [
+                        'type' => 'array',
+                        'el' => [
+                            'aFlexField' => [
+                                'label' => 'aFlexFieldLabel',
+                                'config' => [
+                                    // type=input with eval=email is now type=email
+                                    'type' => 'email',
+                                ],
+                            ],
+                        ],
+                        'sheetTitle' => 'aTitle',
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        restore_error_handler();
+        self::assertEquals($expected, $result);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierMigratesContainerFields(): void
+    {
+        // Register special error handler to suppress E_USER_DEPRECATED triggered by subject.
+        // This is a feature of the subject, but usually lets the test fail.
+        set_error_handler(fn() => false, E_USER_DEPRECATED);
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <sheets>
+                    <sDEF>
+                        <ROOT>
+                            <type>array</type>
+                            <el>
+                                <section_1>
+                                    <title>section_1</title>
+                                    <type>array</type>
+                                    <section>1</section>
+                                    <el>
+                                        <container_1>
+                                            <type>array</type>
+                                            <title>container_1 label</title>
+                                            <el>
+                                                <aFlexField>
+                                                    <label>aFlexFieldLabel</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <eval>email</eval>
+                                                    </config>
+                                                </aFlexField>
+                                            </el>
+                                        </container_1>
+                                    </el>
+                                </section_1>
+                            </el>
+                        </ROOT>
+                    </sDEF>
+                </sheets>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $expected = [
+            'sheets' => [
+                'sDEF' => [
+                    'ROOT' => [
+                        'type' => 'array',
+                        'el' => [
+                            'section_1' => [
+                                'title' => 'section_1',
+                                'type' => 'array',
+                                'section' => '1',
+                                'el' => [
+                                    'container_1' => [
+                                        'type' => 'array',
+                                        'title' => 'container_1 label',
+                                        'el' => [
+                                            'aFlexField' => [
+                                                'label' => 'aFlexFieldLabel',
+                                                'config' => [
+                                                    // type=input with eval=email is now type=email
+                                                    'type' => 'email',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        restore_error_handler();
+        self::assertEquals($expected, $result);
+    }
+
+    #[Test]
     public function parseDataStructureByIdentifierPreparesCategoryField(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
@@ -804,7 +932,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function parseDataStructureByIdentifierThrowsEsxceptionOnInvalidMaxitemsForOneToOne(): void
+    public function parseDataStructureByIdentifierThrowsExceptionOnInvalidMaxitemsForOneToOne(): void
     {
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
