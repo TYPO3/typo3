@@ -751,8 +751,10 @@ final class FlexFormToolsTest extends FunctionalTestCase
                             'aFlexField' => [
                                 'label' => 'aFlexFieldLabel',
                                 'config' => [
-                                    // type=input with eval=email is now type=email
+                                    // type=input with eval=email is now type=email, TcaMigration
                                     'type' => 'email',
+                                    // added by TcaPreparation
+                                    'softref' => 'email[subst]',
                                 ],
                             ],
                         ],
@@ -824,8 +826,10 @@ final class FlexFormToolsTest extends FunctionalTestCase
                                             'aFlexField' => [
                                                 'label' => 'aFlexFieldLabel',
                                                 'config' => [
-                                                    // type=input with eval=email is now type=email
+                                                    // type=input with eval=email is now type=email, TcaMigration
                                                     'type' => 'email',
+                                                    // added by TcaPreparation
+                                                    'softref' => 'email[subst]',
                                                 ],
                                             ],
                                         ],
@@ -952,8 +956,8 @@ final class FlexFormToolsTest extends FunctionalTestCase
             </T3DataStructure>
         ';
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1627640209);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1627335016);
         $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 
@@ -977,8 +981,8 @@ final class FlexFormToolsTest extends FunctionalTestCase
             </T3DataStructure>
         ';
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1627640210);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1627335017);
         $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
 

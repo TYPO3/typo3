@@ -458,14 +458,6 @@ class ReferenceIndex
             $value = $record[$field] ?? null;
             if (is_array($GLOBALS['TCA'][$tableName]['columns'][$field] ?? false)) {
                 $conf = $GLOBALS['TCA'][$tableName]['columns'][$field]['config'];
-                // Add a softref definition for link fields if the TCA does not specify one already
-                if ($conf['type'] === 'link' && empty($conf['softref'])) {
-                    $conf['softref'] = 'typolink';
-                }
-                // Add a softref definition for email fields
-                if ($conf['type'] === 'email') {
-                    $conf['softref'] = 'email[subst]';
-                }
                 $resultsFromDatabase = $this->getRelationsFromRelationField($tableName, $value, $conf, (int)$record['uid'], $workspaceUid, $record);
                 if (!empty($resultsFromDatabase)) {
                     // Create an entry for the field with all DB relations:
@@ -892,14 +884,6 @@ class ReferenceIndex
                                 if (isset($valueContainerElements['el'][$containerElement]['vDEF'])) {
                                     $fieldValue = $valueContainerElements['el'][$containerElement]['vDEF'];
                                     $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/el/' . $valueSectionContainerKey . '/' . $valueContainerType . '/el/' . $containerElement . '/vDEF/';
-                                    // Flex form container section elements can not have DB relations, those are not checked.
-                                    // Add a softref definition for link and email fields if the TCA does not specify one already
-                                    if (($containerElementTca['config']['type'] ?? '') === 'link' && empty($containerElementTca['config']['softref'])) {
-                                        $containerElementTca['config']['softref'] = 'typolink';
-                                    }
-                                    if (($containerElementTca['config']['type'] ?? '') === 'email') {
-                                        $containerElementTca['config']['softref'] = 'email[subst]';
-                                    }
                                     if ($fieldValue !== '' && ($containerElementTca['config']['softref'] ?? '') !== '') {
                                         $tokenizedContent = $fieldValue;
                                         foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($containerElementTca['config']['softref']) as $softReferenceParser) {
@@ -926,13 +910,6 @@ class ReferenceIndex
                     $databaseRelations = $this->getRelationsFromRelationField($tableName, $fieldValue, $sheetElementTca['config'] ?? [], (int)$row['uid'], $workspaceUid);
                     if (!empty($databaseRelations)) {
                         $flexRelations['db'][$structurePath] = $databaseRelations;
-                    }
-                    // Add a softref definition for link and email fields if the TCA does not specify one already
-                    if (($sheetElementTca['config']['type'] ?? '') === 'link' && empty($sheetElementTca['config']['softref'])) {
-                        $sheetElementTca['config']['softref'] = 'typolink';
-                    }
-                    if (($sheetElementTca['config']['type'] ?? '') === 'email') {
-                        $sheetElementTca['config']['softref'] = 'email[subst]';
                     }
                     if ($fieldValue !== '' && ($sheetElementTca['config']['softref'] ?? '') !== '') {
                         $tokenizedContent = $fieldValue;
@@ -1029,8 +1006,6 @@ class ReferenceIndex
     {
         return
             $this->isDbReferenceField($configuration)
-            || $configuration['type'] === 'link'
-            || $configuration['type'] === 'email'
             || $configuration['type'] === 'flex'
             || isset($configuration['softref'])
         ;

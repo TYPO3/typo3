@@ -24,13 +24,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaPreparationTest extends UnitTestCase
 {
-    #[DataProvider('configureCategoryRelationsDataProvider')]
-    #[Test]
-    public function configureCategoryRelations(array $input, array $expected): void
-    {
-        self::assertEquals($expected, (new TcaPreparation())->prepare($input));
-    }
-
     public static function configureCategoryRelationsDataProvider(): \Generator
     {
         yield 'No category field' => [
@@ -240,13 +233,11 @@ final class TcaPreparationTest extends UnitTestCase
         ];
     }
 
-    #[DataProvider('configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider')]
+    #[DataProvider('configureCategoryRelationsDataProvider')]
     #[Test]
-    public function configureCategoryRelationsThrowsExceptionOnInvalidMaxitems(array $input, int $exceptionCode): void
+    public function configureCategoryRelations(array $input, array $expected): void
     {
-        $this->expectExceptionCode($exceptionCode);
-        $this->expectException(\RuntimeException::class);
-        (new TcaPreparation())->prepare($input);
+        self::assertEquals($expected, (new TcaPreparation())->prepare($input));
     }
 
     public static function configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider(): \Generator
@@ -283,6 +274,15 @@ final class TcaPreparationTest extends UnitTestCase
             ],
             1627335017,
         ];
+    }
+
+    #[DataProvider('configureCategoryRelationsThrowsExceptionOnInvalidMaxitemsDataProvider')]
+    #[Test]
+    public function configureCategoryRelationsThrowsExceptionOnInvalidMaxitems(array $input, int $exceptionCode): void
+    {
+        $this->expectExceptionCode($exceptionCode);
+        $this->expectException(\RuntimeException::class);
+        (new TcaPreparation())->prepare($input);
     }
 
     #[Test]
@@ -662,24 +662,98 @@ final class TcaPreparationTest extends UnitTestCase
     }
 
     #[Test]
+    public function configureEmailSetsSoftref(): void
+    {
+        $tca = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'email',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $tca;
+        $expected['aTable']['columns']['aField']['config']['softref'] = 'email[subst]';
+        self::assertEquals($expected, (new TcaPreparation())->prepare($tca));
+    }
+
+    #[Test]
+    public function configureEmailSetsSoftrefOverridesExisting(): void
+    {
+        $tca = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'email',
+                            'softref' => 'isOverridden',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $tca;
+        $expected['aTable']['columns']['aField']['config']['softref'] = 'email[subst]';
+        self::assertEquals($expected, (new TcaPreparation())->prepare($tca));
+    }
+
+    #[Test]
+    public function configureLinkSetsSoftref(): void
+    {
+        $tca = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'link',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $tca;
+        $expected['aTable']['columns']['aField']['config']['softref'] = 'typolink';
+        self::assertEquals($expected, (new TcaPreparation())->prepare($tca));
+    }
+
+    #[Test]
+    public function configureLinkSetsSoftrefOverridesExisting(): void
+    {
+        $tca = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'link',
+                            'softref' => 'isOverridden',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $tca;
+        $expected['aTable']['columns']['aField']['config']['softref'] = 'typolink';
+        self::assertEquals($expected, (new TcaPreparation())->prepare($tca));
+    }
+
+    #[Test]
     public function prepareFileExtensionsReplacesPlaceholders(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = 'jpg,png';
-
-        self::assertEquals(
-            'jpg,png,gif',
-            TcaPreparation::prepareFileExtensions(['common-image-types', 'gif'])
-        );
+        $subject = new TcaPreparation();
+        $subjectMethodReflection = new \ReflectionMethod($subject, 'prepareFileExtensions');
+        self::assertEquals('jpg,png,gif', $subjectMethodReflection->invoke($subject, ['common-image-types', 'gif']));
     }
 
     #[Test]
     public function prepareFileExtensionsRemovesDuplicates(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] = 'jpg,png';
-
-        self::assertEquals(
-            'jpg,png,gif',
-            TcaPreparation::prepareFileExtensions('common-image-types,jpg,gif')
-        );
+        $subject = new TcaPreparation();
+        $subjectMethodReflection = new \ReflectionMethod($subject, 'prepareFileExtensions');
+        self::assertEquals('jpg,png,gif', $subjectMethodReflection->invoke($subject, ['common-image-types,jpg,gif']));
     }
 }

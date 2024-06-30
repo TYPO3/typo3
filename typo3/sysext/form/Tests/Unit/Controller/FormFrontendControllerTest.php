@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
+use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -65,7 +66,7 @@ final class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools(new NoopEventDispatcher(), new TcaMigration());
+        $flexFormTools = new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation());
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
@@ -168,7 +169,7 @@ final class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration()));
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation()));
 
         self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
@@ -190,7 +191,7 @@ final class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools(new NoopEventDispatcher(), new TcaMigration());
+        $flexFormTools = new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation());
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
@@ -316,7 +317,7 @@ final class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration()));
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation()));
 
         self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
@@ -338,9 +339,9 @@ final class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration()));
+        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation()));
 
-        $flexFormTools = new FlexFormTools(new NoopEventDispatcher(), new TcaMigration());
+        $flexFormTools = new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation());
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
