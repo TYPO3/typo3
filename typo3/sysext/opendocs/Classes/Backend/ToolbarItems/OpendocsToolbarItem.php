@@ -43,7 +43,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      *
      * @param OpenDocumentService|null $documentService
      */
-    public function __construct(OpenDocumentService $documentService = null)
+    public function __construct(?OpenDocumentService $documentService = null)
     {
         $this->documentService = $documentService ?: GeneralUtility::makeInstance(OpenDocumentService::class);
     }
