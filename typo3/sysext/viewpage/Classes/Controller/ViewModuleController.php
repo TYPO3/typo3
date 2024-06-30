@@ -341,13 +341,13 @@ class ViewModuleController
     }
 
     /**
-     * Returns the current language
+     * Returns the current language id
      *
      * @param int $pageId
-     * @param string $languageParam
+     * @param string|null $languageParam
      * @return int
      */
-    protected function getCurrentLanguage(int $pageId, string $languageParam = null): int
+    protected function getCurrentLanguage(int $pageId, ?string $languageParam = null): int
     {
         $languageId = (int)$languageParam;
         if ($languageParam === null) {
