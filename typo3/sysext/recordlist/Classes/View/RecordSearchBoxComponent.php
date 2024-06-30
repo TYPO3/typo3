@@ -33,7 +33,7 @@ class RecordSearchBoxComponent
     protected string $searchWord = '';
     protected int $searchLevel = 0;
 
-    public function __construct(ViewInterface $view = null)
+    public function __construct(?ViewInterface $view = null)
     {
         $this->view = $view ?? $this->getView('Search.html');
     }
