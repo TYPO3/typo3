@@ -58,6 +58,7 @@
 // Borderless
 //
 .btn-borderless {
+    --#{$prefix}btn-color: inherit;
     --#{$prefix}btn-bg: transparent;
     --#{$prefix}btn-border-color: transparent;
     --#{$prefix}btn-box-shadow: none;

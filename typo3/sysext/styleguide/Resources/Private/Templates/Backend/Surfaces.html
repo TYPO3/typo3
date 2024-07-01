@@ -1,0 +1,56 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:surfaces" /></h1>
+        <p>Surfaces used in the TYPO3 Backend</p>
+
+        <f:asset.css identifier="styleguide-surface-demo">
+            .surface-demo {
+                display: grid;
+                color: var(--typo3-component-color);
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                border-radius: var(--typo3-component-border-radius);
+            }
+
+            .surface-demo + .surface-demo {
+                margin-top: var(--typo3-spacing);
+            }
+
+            .surface-demo-item {
+                display: flex;
+                padding: 2rem;
+                min-height: 200px;
+                align-items: center;
+                justify-content: center;
+            }
+        </f:asset.css>
+
+        <sg:code language="html" colorschemes="true">
+            <div class="surface-demo">
+                <div class="surface-demo-item" data-variant="dim" style="background-color: var(--typo3-surface-dim);">dim</div>
+                <div class="surface-demo-item" data-variant="base" style="background-color: var(--typo3-surface-base);">base</div>
+                <div class="surface-demo-item" data-variant="bright" style="background-color: var(--typo3-surface-bright);">bright</div>
+            </div>
+            <div class="surface-demo">
+                <div class="surface-demo-item" data-variant="container-lowest" style="background-color: var(--typo3-surface-container-lowest);">container-lowest</div>
+                <div class="surface-demo-item" data-variant="container-low" style="background-color: var(--typo3-surface-container-low);">container-low</div>
+                <div class="surface-demo-item" data-variant="container-base" style="background-color: var(--typo3-surface-container-base);">container-base</div>
+                <div class="surface-demo-item" data-variant="container-high" style="background-color: var(--typo3-surface-container-high);">container-high</div>
+                <div class="surface-demo-item" data-variant="container-highest" style="background-color: var(--typo3-surface-container-highest);">container-highest</div>
+            </div>
+        </sg:code>
+    </div>
+
+</f:section>
+
+</html>

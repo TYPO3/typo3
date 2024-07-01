@@ -30,6 +30,9 @@
 			<trans-unit id="shadows" xml:space="preserve">
 				<source>Shadows</source>
 			</trans-unit>
+			<trans-unit id="surfaces" xml:space="preserve">
+				<source>Surfaces</source>
+			</trans-unit>
 			<trans-unit id="infobox" xml:space="preserve">
 				<source>Infobox</source>
 			</trans-unit>

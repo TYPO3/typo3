@@ -8,8 +8,6 @@
 //
 $scaffold-overlay-bg: rgba(0, 0, 0, .65);
 $scaffold-overlay-zindex: $zindex-modal-backdrop;
-$scaffold-bg: #f5f5f5;
-$scaffold-color: #333;
 $scaffold-secondary-bg: #151515;
 $scaffold-secondary-color: #f5f5f5;
 $scaffold-topbar-bg: $scaffold-secondary-bg;
@@ -29,6 +27,15 @@ $scaffold-toolbar-zindex: $zindex-dropdown;
 $scaffold-content-navigation-width: 300px;
 $scaffold-content-toggle-bg: lighten($scaffold-secondary-bg, 12);
 $scaffold-content-toggle-color: $scaffold-secondary-color;
+
+:root {
+    --scaffold-bg: var(--typo3-surface-base);
+    --scaffold-color: var(--typo3-text-color-base);
+    --scaffold-content-navigation-drag-bg: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 10%);
+    --scaffold-content-navigation-drag-bg-hover: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 20%);
+    --scaffold-content-navigation-switcher-bg: var(--typo3-surface-container-base);
+    --scaffold-content-navigation-switcher-border: color-mix(in srgb, var(--typo3-surface-container-base), var(--typo3-text-color-base) 10%);
+}
 
 //
 // Prevent Browser Rebounce
@@ -55,8 +62,8 @@ body {
 .scaffold {
     display: flex;
     flex-wrap: wrap;
-    background-color: $scaffold-bg;
-    color: $scaffold-color;
+    background-color: var(--scaffold-bg);
+    color: var(--scaffold-color);
     position: relative;
     height: 100vh;
 }
@@ -246,20 +253,23 @@ body {
 }
 
 .scaffold-content-navigation-drag {
+    color-scheme: light dark;
     display: none;
     flex: 0 0 auto;
     width: 1px;
     height: 100%;
     user-select: none;
     z-index: 3;
-    background-color: rgb(200, 200, 200);
+    color: var(--scaffold-color);
+    background-color: var(--scaffold-content-navigation-drag-bg);
     transition: background-color .2s ease-in-out, border .2s ease-in-out;
 
     &:hover {
-        background-color: rgb(150, 150, 150);
+        --scaffold-content-navigation-drag-bg: var(--scaffold-content-navigation-drag-bg-hover);
+        background-color: var(--scaffold-content-navigation-drag-bg);
 
         &:after {
-            border-inline-end: 2px solid rgb(150, 150, 150);
+            border-inline-end: 2px solid var(--scaffold-content-navigation-drag-bg);
         }
     }
 
@@ -293,6 +303,7 @@ body {
 }
 
 .scaffold-content-navigation-switcher {
+    color-scheme: light dark;
     display: none;
 
     .scaffold-content-navigation-available & {
@@ -301,9 +312,10 @@ body {
         display: flex;
         position: relative;
         flex-direction: column;
-        border-inline-end: 1px solid #c3c3c3;
+        color: var(--scaffold-color);
+        border-inline-end: 1px solid var(--scaffold-content-navigation-switcher-border);
         padding: 4px;
-        background: #eee;
+        background: var(--scaffold-content-navigation-switcher-bg);
     }
 
     .scaffold-content-navigation-available.scaffold-content-navigation-expanded & {
@@ -313,7 +325,7 @@ body {
         height: 30px;
         border-inline-end: 0;
         background: transparent;
-        transform: translate(calc(-36px * var(--typo3-position-modifier)), 4px);
+        transform: translate(calc(-38px * var(--typo3-position-modifier)), 4px);
         z-index: 3;
         padding: 0;
     }

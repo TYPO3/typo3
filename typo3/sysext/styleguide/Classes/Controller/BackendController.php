@@ -52,6 +52,7 @@ final class BackendController
         'index',
         'typography',
         'colors',
+        'surfaces',
         'shadows',
         'trees',
         'tab',
@@ -182,6 +183,16 @@ final class BackendController
             'currentAction' => 'colors',
         ]);
         return $moduleTemplate->renderResponse('Backend/Colors');
+    }
+
+    private function surfacesAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $moduleTemplate = $this->createModuleTemplate($request, 'surfaces');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'surfaces',
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Surfaces');
     }
 
     private function shadowsAction(ServerRequestInterface $request): ResponseInterface

@@ -50,7 +50,7 @@ var __decorate=function(e,t,o,n){var a,r=arguments.length,i=r<3?t:null===n?n=Obj
                   <typo3-backend-icon identifier="${e.icon}" size="small"></typo3-backend-icon>
                 </div>
               `)):""}
-          <a class="tree-toolbar__menuitem nav-link dropdown-toggle dropdown-toggle-no-chevron float-end" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon></a>
+          <a class="tree-toolbar__menuitem dropdown-toggle dropdown-toggle-no-chevron float-end" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon></a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
               <button class="dropdown-item" @click="${()=>this.refreshTree()}">

@@ -18,6 +18,18 @@
     // Header
     --typo3-header-font-family: "Source Sans 3", sans-serif;
 
+    // Colors
+    --typo3-text-color-base: light-dark(#1b1b1b, #ebebeb);
+    --typo3-text-color-variant: light-dark(#4b4b4b, #dbdbdb);
+    --typo3-surface-dim: light-dark(#dedede, #141414);
+    --typo3-surface-base: light-dark(#f8f8f8, #141414);
+    --typo3-surface-bright: light-dark(#f8f8f8, #353535);
+    --typo3-surface-container-lowest: light-dark(#fff, #0e0e0e);
+    --typo3-surface-container-low: light-dark(#f6f6f6, #1c1c1c);
+    --typo3-surface-container-base: light-dark(#f2f2f2, #212121);
+    --typo3-surface-container-high: light-dark(#ebebeb, #292929);
+    --typo3-surface-container-highest: light-dark(#dedede, #353535);
+
     // Elevation / Shadow
     //
     // Generated CSS Properties
@@ -43,12 +55,13 @@
     }
 
     // Component
-    --typo3-component-color: light-dark(#{$body-color}, #{$white});
+    --typo3-component-color: var(--typo3-text-color-base);
+    --typo3-component-variant-color: var(--typo3-text-color-variant);
     --typo3-component-primary-color: light-dark(#{$primary}, #{tint-color($primary, 40%)});
     --typo3-component-secondary-color: light-dark(#{tint-color($body-color, 40%)}, #{shade-color($white, 40%)});
     --typo3-component-match-highlight-color: inherit;
     --typo3-component-match-highlight-bg: rgba(234, 92, 0, .33);
-    --typo3-component-bg: light-dark(#{$white}, #{$gray-900});
+    --typo3-component-bg: var(--typo3-surface-container-lowest);
     --typo3-component-link-color: light-dark(#{$primary}, #{tint-color($primary, 40%)});
     --typo3-component-link-hover-color: light-dark(#{tint-color($primary, 10%)}, #{tint-color($primary, 50%)});
     --typo3-component-font-size: #{$font-size-base};

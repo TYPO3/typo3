@@ -73,7 +73,6 @@ class ViewModuleController
         $pageInfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
 
         $view = $this->moduleTemplateFactory->create($request);
-        $view->setBodyTag('<body class="typo3-module-viewpage">');
         $view->setModuleId('typo3-module-viewpage');
         $view->setTitle(
             $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),

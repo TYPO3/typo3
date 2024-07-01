@@ -4,7 +4,7 @@
 //
 .example {
     color: var(--typo3-component-color);
-    background-color: var(--typo3-component-bg);
+    background-color: var(--typo3-surface-base);
     border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
     border-radius: var(--typo3-component-border-radius);
     padding: var(--typo3-spacing);
@@ -21,6 +21,7 @@
     &:before {
         content: 'EXAMPLE';
         display: block;
+        color: var(--typo3-component-variant-color);
         font-weight: bold;
         font-size: .9em;
         margin-bottom: var(--typo3-spacing);

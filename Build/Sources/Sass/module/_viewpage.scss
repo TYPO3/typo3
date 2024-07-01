@@ -4,23 +4,13 @@
 //
 
 //
-// Variables
-//
-$viewpage-bg: #494949;
-$viewpage-resizable-size: 5px;
-$viewpage-item-bg: #292929;
-$viewpage-item-color: #fafafa;
-$viewpage-topbar-height: 40px;
-
-//
 // Module
 //
-.typo3-module-viewpage {
-    background-color: $viewpage-bg;
-
-    .module {
-        background-color: transparent;
-    }
+[data-module-id="typo3-module-viewpage"] {
+    --viewpage-topbar-height: 40px;
+    --viewpage-resizable-size: 5px;
+    --viewpage-item-radius: 5px;
+    color-scheme: only dark;
 
     .module-body {
         text-align: center;
@@ -39,22 +29,22 @@ $viewpage-topbar-height: 40px;
 
     .resizable-w {
         top: 0;
-        left: -$viewpage-resizable-size;
+        left: calc(var(--viewpage-resizable-size) * -1);
         height: 100%;
-        width: $viewpage-resizable-size;
+        width: var(--viewpage-resizable-size);
     }
 
     .resizable-s {
-        bottom: -$viewpage-resizable-size;
-        height: $viewpage-resizable-size;
+        bottom: calc(var(--viewpage-resizable-size) * -1);
+        height: var(--viewpage-resizable-size);
         width: 100%;
     }
 
     .resizable-e {
         top: 0;
-        right: -$viewpage-resizable-size;
+        right: calc(var(--viewpage-resizable-size) * -1);
         height: 100%;
-        width: $viewpage-resizable-size;
+        width: var(--viewpage-resizable-size);
     }
 }
 
@@ -64,12 +54,14 @@ $viewpage-topbar-height: 40px;
 .viewpage-item {
     position: relative;
     display: inline-block;
-    background-color: $viewpage-item-bg;
-    box-shadow: var(--typo3-component-box-shadow-strong);
-    color: $viewpage-item-color;
+    background-color: var(--typo3-surface-container-base);
+    box-shadow: var(--typo3-component-box-shadow-tooltip);
+    color: var(--typo3-text-color-base);
+    border-radius: var(--viewpage-item-radius);
 
     iframe {
         display: block;
+        border-radius: 0 0 var(--viewpage-item-radius) var(--viewpage-item-radius);
     }
 }
 
@@ -77,7 +69,7 @@ $viewpage-topbar-height: 40px;
 // Topbar
 //
 .viewpage-topbar {
-    height: $viewpage-topbar-height;
+    height: var(--viewpage-topbar-height);
     flex-shrink: 0;
     padding: .75em 1em;
     display: flex;
@@ -88,7 +80,7 @@ $viewpage-topbar-height: 40px;
 
 .viewpage-topbar-orientation {
     a {
-        color: $viewpage-item-color;
+        color: inherit;
         opacity: .5;
         transition: all .2s ease-in-out;
 
@@ -108,7 +100,7 @@ $viewpage-topbar-height: 40px;
         border: 0;
         border-bottom: 1px solid rgba($primary, .5);
         transition: all .5s ease-in-out;
-        color: $viewpage-item-color;
+        color: inherit;
         color-scheme: dark;
 
         &:focus,
@@ -123,5 +115,6 @@ $viewpage-topbar-height: 40px;
 // Resizeable
 //
 .viewpage-resizeable {
-    background-color: #fafafa;
+    background-color: var(--typo3-surface-container-low);
+    border-radius: 0 var(--viewpage-item-radius) var(--viewpage-item-radius);
 }
