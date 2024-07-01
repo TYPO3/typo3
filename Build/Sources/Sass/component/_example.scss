@@ -10,10 +10,6 @@
     padding: var(--typo3-spacing);
     margin-bottom: var(--typo3-spacing);
 
-    &:not([data-color-scheme]) {
-        color-scheme: light dark;
-    }
-
     & + *:not(.example) {
         margin-top: var(--typo3-component-spacing);
     }

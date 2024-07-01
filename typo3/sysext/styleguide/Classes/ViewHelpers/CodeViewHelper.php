@@ -80,7 +80,7 @@ final class CodeViewHelper extends AbstractViewHelper
 
         $markup = [];
         if (!$this->arguments['codeonly']) {
-            $schemes = ['auto'];
+            $schemes = ['default'];
             if ($this->arguments['colorschemes']) {
                 $schemes = ['light', 'dark'];
             }

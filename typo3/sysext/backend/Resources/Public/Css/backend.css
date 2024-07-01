@@ -3823,7 +3823,6 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .sm
 .indent-inline-block{display:inline-block}
 .pagination{flex-wrap:wrap;row-gap:4px}
 .example{color:var(--typo3-component-color);background-color:var(--typo3-component-bg);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);border-radius:var(--typo3-component-border-radius);padding:var(--typo3-spacing);margin-bottom:var(--typo3-spacing)}
-.example:not([data-color-scheme]){color-scheme:light dark}
 .example+:not(.example){margin-top:var(--typo3-component-spacing)}
 .example>:last-child{margin-bottom:0}
 .example:before{content:"EXAMPLE";display:block;font-weight:700;font-size:.9em;margin-bottom:var(--typo3-spacing)}
