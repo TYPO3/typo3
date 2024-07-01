@@ -39,7 +39,7 @@ class LocalizationRepository
      */
     protected $translationConfigurationProvider;
 
-    public function __construct(TranslationConfigurationProvider $translationConfigurationProvider = null)
+    public function __construct(?TranslationConfigurationProvider $translationConfigurationProvider = null)
     {
         $this->translationConfigurationProvider = $translationConfigurationProvider ?? GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
     }

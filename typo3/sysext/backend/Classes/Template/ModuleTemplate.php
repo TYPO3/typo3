@@ -242,8 +242,8 @@ class ModuleTemplate
         PageRenderer $pageRenderer,
         IconFactory $iconFactory,
         FlashMessageService $flashMessageService,
-        ServerRequestInterface $request = null,
-        ViewInterface $view = null
+        ?ServerRequestInterface $request = null,
+        ?ViewInterface $view = null
     ) {
         $this->pageRenderer = $pageRenderer;
         $this->iconFactory = $iconFactory;

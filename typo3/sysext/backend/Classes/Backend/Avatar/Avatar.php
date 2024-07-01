@@ -42,12 +42,12 @@ class Avatar
      * Renders an avatar based on a Fluid template which contains some base wrapper classes and does
      * a simple caching functionality, used in Avatar ViewHelper for instance
      *
-     * @param array $backendUser be_users record
+     * @param array|null $backendUser be_users record
      * @param int $size width and height of the image
      * @param bool $showIcon show the record icon
      * @return string
      */
-    public function render(array $backendUser = null, int $size = 32, bool $showIcon = false)
+    public function render(?array $backendUser = null, int $size = 32, bool $showIcon = false)
     {
         if (!is_array($backendUser)) {
             $backendUser = $this->getBackendUser()->user;
@@ -80,11 +80,11 @@ class Avatar
     /**
      * Returns an HTML <img> tag for the avatar
      *
-     * @param array $backendUser be_users record
+     * @param array|null $backendUser be_users record
      * @param int $size
      * @return string
      */
-    public function getImgTag(array $backendUser = null, $size = 32)
+    public function getImgTag(?array $backendUser = null, $size = 32)
     {
         if (!is_array($backendUser)) {
             $backendUser = $this->getBackendUser()->user;
@@ -181,10 +181,10 @@ class Avatar
     /**
      * Returns a new standalone view, shorthand function
      *
-     * @param string $filename Which templateFile should be used.
+     * @param string|null $filename Which templateFile should be used.
      * @return StandaloneView
      */
-    protected function getFluidTemplateObject(string $filename = null): StandaloneView
+    protected function getFluidTemplateObject(?string $filename = null): StandaloneView
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);

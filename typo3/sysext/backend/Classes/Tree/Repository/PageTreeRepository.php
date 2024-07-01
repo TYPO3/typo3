@@ -120,14 +120,14 @@ class PageTreeRepository
      * Basically the page record, plus all child pages and their child pages recursively, stored within "_children" item.
      *
      * @param int $entryPoint the page ID to fetch the tree for
-     * @param callable $callback a callback to be used to check for permissions and filter out pages not to be included.
+     * @param callable|null $callback a callback to be used to check for permissions and filter out pages not to be included.
      * @param array $dbMounts
      * @param bool $resolveUserPermissions
      * @return array
      */
     public function getTree(
         int $entryPoint,
-        callable $callback = null,
+        ?callable $callback = null,
         array $dbMounts = [],
         $resolveUserPermissions = false
     ): array {

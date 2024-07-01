@@ -554,7 +554,7 @@ class Clipboard
      * @param array|null $update Additional key/value pairs which should get set in the moved/copied record (via DataHandler)
      * @return string
      */
-    public function pasteUrl(string $table, $identifier, bool $setRedirect = true, array $update = null): string
+    public function pasteUrl(string $table, $identifier, bool $setRedirect = true, ?array $update = null): string
     {
         $urlParameters = [
             'CB' => [

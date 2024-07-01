@@ -38,9 +38,9 @@ class ImageManipulationController
     private $templateView;
 
     /**
-     * @param StandaloneView $templateView
+     * @param StandaloneView|null $templateView
      */
-    public function __construct(StandaloneView $templateView = null)
+    public function __construct(?StandaloneView $templateView = null)
     {
         if (!$templateView) {
             $templateView = GeneralUtility::makeInstance(StandaloneView::class);

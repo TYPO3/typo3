@@ -64,7 +64,7 @@ class FailedLoginAttemptNotification
      */
     protected $failedLoginAttemptsThreshold;
 
-    public function __construct(string $notificationRecipientEmailAddress = null, int $warningPeriod = 3600, int $failedLoginAttemptsThreshold = 3)
+    public function __construct(?string $notificationRecipientEmailAddress = null, int $warningPeriod = 3600, int $failedLoginAttemptsThreshold = 3)
     {
         $this->notificationRecipientEmailAddress = $notificationRecipientEmailAddress ?? (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         $this->warningPeriod = $warningPeriod;

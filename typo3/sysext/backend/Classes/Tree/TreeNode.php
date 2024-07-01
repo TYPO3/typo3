@@ -133,7 +133,7 @@ class TreeNode implements ComparableNodeInterface, \Serializable
      *
      * @param TreeNode|null $parentNode
      */
-    public function setParentNode(TreeNode $parentNode = null)
+    public function setParentNode(?TreeNode $parentNode = null)
     {
         $this->parentNode = $parentNode;
     }

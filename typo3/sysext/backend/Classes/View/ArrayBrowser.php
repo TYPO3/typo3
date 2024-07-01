@@ -76,7 +76,7 @@ class ArrayBrowser
      */
     protected $route;
 
-    public function __construct(Route $route = null)
+    public function __construct(?Route $route = null)
     {
         $this->route = $route;
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

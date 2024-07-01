@@ -79,7 +79,7 @@ class PreviewUriBuilder
      * @param string|null $alternativeUri Alternative URL to be used instead of `/index.php?id=`
      * @return static
      */
-    public static function create(int $pageId, string $alternativeUri = null): self
+    public static function create(int $pageId, ?string $alternativeUri = null): self
     {
         return GeneralUtility::makeInstance(static::class, $pageId, $alternativeUri);
     }
@@ -88,7 +88,7 @@ class PreviewUriBuilder
      * @param int $pageId Page ID to be previewed
      * @param string|null $alternativeUri Alternative URL to be used instead of `/index.php?id=`
      */
-    public function __construct(int $pageId, string $alternativeUri = null)
+    public function __construct(int $pageId, ?string $alternativeUri = null)
     {
         $this->pageId = $pageId;
         $this->alternativeUri = $alternativeUri;
@@ -156,7 +156,7 @@ class PreviewUriBuilder
      * @param array|null $options
      * @return Uri|null
      */
-    public function buildUri(array $options = null): ?Uri
+    public function buildUri(?array $options = null): ?Uri
     {
         try {
             $options = $this->enrichOptions($options);
@@ -183,7 +183,7 @@ class PreviewUriBuilder
      * @param array|null $options
      * @return array|null
      */
-    public function buildDispatcherDataAttributes(array $options = null): ?array
+    public function buildDispatcherDataAttributes(?array $options = null): ?array
     {
         if (null === ($attributes = $this->buildAttributes($options))) {
             return null;
@@ -199,7 +199,7 @@ class PreviewUriBuilder
      * @param array|null $options
      * @return array|null
      */
-    public function buildDispatcherAttributes(array $options = null): ?array
+    public function buildDispatcherAttributes(?array $options = null): ?array
     {
         if (null === ($attributes = $this->buildAttributes($options))) {
             return null;
@@ -214,7 +214,7 @@ class PreviewUriBuilder
      * @param array|null $options
      * @return string|null
      */
-    public function serializeDispatcherAttributes(array $options = null): ?string
+    public function serializeDispatcherAttributes(?array $options = null): ?string
     {
         if (null === ($attributes = $this->buildDispatcherAttributes($options))) {
             return null;
@@ -229,7 +229,7 @@ class PreviewUriBuilder
      * @param array|null $options
      * @return string|null
      */
-    public function buildImmediateActionElement(array $options = null): ?string
+    public function buildImmediateActionElement(?array $options = null): ?string
     {
         if (null === ($attributes = $this->buildAttributes($options))) {
             return null;
@@ -242,7 +242,7 @@ class PreviewUriBuilder
         );
     }
 
-    protected function buildAttributes(array $options = null): ?array
+    protected function buildAttributes(?array $options = null): ?array
     {
         $options = $this->enrichOptions($options);
         if (null === ($uri = $this->buildUri($options))) {
@@ -277,7 +277,7 @@ class PreviewUriBuilder
      * @param array|null $options
      * @return array
      */
-    protected function enrichOptions(array $options = null): array
+    protected function enrichOptions(?array $options = null): array
     {
         return array_merge(
             [

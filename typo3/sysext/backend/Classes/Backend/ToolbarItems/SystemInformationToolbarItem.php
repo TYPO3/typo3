@@ -81,7 +81,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected $typo3Version;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(?EventDispatcherInterface $eventDispatcher = null)
     {
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);

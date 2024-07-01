@@ -97,9 +97,9 @@ class ModuleLoader
      * Further the global var $LANG will have labels and images for the modules loaded in an internal array.
      *
      * @param array $modulesArray Should be the global var $TBE_MODULES, $BE_USER can optionally be set to an alternative Backend user object than the global var $BE_USER (which is the currently logged in user)
-     * @param BackendUserAuthentication $beUser Optional backend user object to use. If not set, the global BE_USER object is used.
+     * @param BackendUserAuthentication $beUser|null Optional backend user object to use. If not set, the global BE_USER object is used.
      */
-    public function load($modulesArray, BackendUserAuthentication $beUser = null)
+    public function load($modulesArray, ?BackendUserAuthentication $beUser = null)
     {
         // Setting the backend user for use internally
         $this->BE_USER = $beUser ?: $GLOBALS['BE_USER'];

@@ -43,7 +43,7 @@ class RecordHistoryRollback
      * @param array $diff
      * @param BackendUserAuthentication|null $backendUserAuthentication
      */
-    public function performRollback(string $rollbackFields, array $diff, BackendUserAuthentication $backendUserAuthentication = null): void
+    public function performRollback(string $rollbackFields, array $diff, ?BackendUserAuthentication $backendUserAuthentication = null): void
     {
         $this->eventDispatcher->dispatch(new BeforeHistoryRollbackStartEvent($rollbackFields, $diff, $this, $backendUserAuthentication));
         $rollbackData = explode(':', $rollbackFields);

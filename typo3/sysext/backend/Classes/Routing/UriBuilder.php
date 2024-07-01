@@ -102,7 +102,7 @@ class UriBuilder implements SingletonInterface
      * @throws RouteNotFoundException
      * @internal this is experimental API used for creating logins to redirect to a different route
      */
-    public function buildUriWithRedirect(string $name, array $parameters = [], RouteRedirect $redirect = null, string $referenceType = self::ABSOLUTE_PATH): Uri
+    public function buildUriWithRedirect(string $name, array $parameters = [], ?RouteRedirect $redirect = null, string $referenceType = self::ABSOLUTE_PATH): Uri
     {
         if ($redirect === null) {
             return $this->buildUriFromRoute($name, $parameters, $referenceType);

@@ -34,7 +34,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected $context;
 
-    public function __construct(Context $context = null, int $pageId = null, array $rootLine = null)
+    public function __construct(?Context $context = null, ?int $pageId = null, ?array $rootLine = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageId = $pageId ?? $this->determinePageId();
