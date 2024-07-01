@@ -33,8 +33,8 @@ Fluid templates:
 
 .. code-block:: html
 
-    {f:constant(value: 'PHP_INT_MAX')}
-    {f:constant(value: '\Vendor\Package\Class::CONSTANT')}
-    {f:constant(value: '\Vendor\Package\Enum::CASE')}
+    {f:constant(name: 'PHP_INT_MAX')}
+    {f:constant(name: '\Vendor\Package\Class::CONSTANT')}
+    {f:constant(name: '\Vendor\Package\Enum::CASE')}
 
 .. index:: Fluid, Frontend, ext:fluid
