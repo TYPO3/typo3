@@ -45,11 +45,11 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
     protected $enforceLiveRowsOnly;
 
     /**
-     * @param int $workspaceId (PageRepository::$versioningWorkspaceId property)
-     * @param bool $includeRowsForWorkspacePreview (PageRepository::$versioningWorkspaceId > 0 property)
+     * @param int|null $workspaceId (PageRepository::$versioningWorkspaceId property)
+     * @param bool|null $includeRowsForWorkspacePreview (PageRepository::$versioningWorkspaceId > 0 property)
      * @param bool $enforceLiveRowsOnly (!$noVersionPreview argument from PageRepository::enableFields()) This is ONLY for use in PageRepository class and most likely will be removed
      */
-    public function __construct(int $workspaceId = null, bool $includeRowsForWorkspacePreview = null, bool $enforceLiveRowsOnly = true)
+    public function __construct(?int $workspaceId = null, ?bool $includeRowsForWorkspacePreview = null, bool $enforceLiveRowsOnly = true)
     {
         trigger_error('FrontendWorkspaceRestriction will be removed in TYPO3 v13.0. Use WorkspaceRestriction instead.', E_USER_DEPRECATED);
         $globalWorkspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');

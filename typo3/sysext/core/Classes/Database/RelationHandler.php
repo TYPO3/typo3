@@ -1605,7 +1605,7 @@ class RelationHandler
      * @param int[] $ids
      * @return PlainDataResolver
      */
-    protected function getResolver($tableName, array $ids, array $sortingStatement = null)
+    protected function getResolver($tableName, array $ids, ?array $sortingStatement = null)
     {
         $resolver = GeneralUtility::makeInstance(
             PlainDataResolver::class,

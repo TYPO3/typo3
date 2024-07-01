@@ -126,7 +126,7 @@ class SiteMatcher implements SingletonInterface
      * @param int $pageId uid of a page in default language
      * @param array|null $rootLine an alternative root line, if already at and.
      */
-    public function matchByPageId(int $pageId, array $rootLine = null): SiteInterface
+    public function matchByPageId(int $pageId, ?array $rootLine = null): SiteInterface
     {
         try {
             return $this->finder->getSiteByPageId($pageId, $rootLine);

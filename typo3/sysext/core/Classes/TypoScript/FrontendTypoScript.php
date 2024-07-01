@@ -27,8 +27,8 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
  */
 final class FrontendTypoScript
 {
-    private RootNode|null $setupTree = null;
-    private array|null $setupArray = null;
+    private ?RootNode $setupTree = null;
+    private ?array $setupArray = null;
 
     public function __construct(
         private readonly RootNode $settingsTree,

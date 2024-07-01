@@ -120,7 +120,7 @@ class ProcessedFile extends AbstractFile
      *
      * @param string $taskType
      */
-    public function __construct(File $originalFile, $taskType, array $processingConfiguration, array $databaseRow = null)
+    public function __construct(File $originalFile, $taskType, array $processingConfiguration, ?array $databaseRow = null)
     {
         $this->originalFile = $originalFile;
         $this->originalFileSha1 = $this->originalFile->getSha1();

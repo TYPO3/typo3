@@ -84,7 +84,7 @@ class LanguageAspect implements AspectInterface
      *
      * @param int|null $contentId
      */
-    public function __construct(int $id = 0, int $contentId = null, string $overlayType = self::OVERLAYS_ON_WITH_FLOATING, array $fallbackChain = [])
+    public function __construct(int $id = 0, ?int $contentId = null, string $overlayType = self::OVERLAYS_ON_WITH_FLOATING, array $fallbackChain = [])
     {
         $this->overlayType = $overlayType;
         $this->id = $id;

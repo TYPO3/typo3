@@ -84,7 +84,7 @@ class FrontendFormProtection extends AbstractFormProtection
      *
      * @throws \TYPO3\CMS\Core\Error\Exception
      */
-    public function __construct(FrontendUserAuthentication $frontendUser, \Closure $validationFailedCallback = null)
+    public function __construct(FrontendUserAuthentication $frontendUser, ?\Closure $validationFailedCallback = null)
     {
         $this->frontendUser = $frontendUser;
         $this->validationFailedCallback = $validationFailedCallback;

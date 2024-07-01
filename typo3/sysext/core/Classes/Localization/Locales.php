@@ -177,7 +177,7 @@ class Locales implements SingletonInterface
         }
     }
 
-    public function createLocale(string $localeKey, array $alternativeDependencies = null): Locale
+    public function createLocale(string $localeKey, ?array $alternativeDependencies = null): Locale
     {
         if (strpos($localeKey, '.')) {
             [$sanitizedLocaleKey] = explode('.', $localeKey);

@@ -305,7 +305,7 @@ class Bootstrap
      * @param bool $allowCaching
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function loadTypo3LoadedExtAndExtLocalconf($allowCaching = true, FrontendInterface $coreCache = null)
+    public static function loadTypo3LoadedExtAndExtLocalconf($allowCaching = true, ?FrontendInterface $coreCache = null)
     {
         if ($allowCaching) {
             $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
@@ -487,10 +487,10 @@ class Bootstrap
      * This will mainly set up $TCA through extMgm API.
      *
      * @param bool $allowCaching True, if loading TCA from cache is allowed
-     * @param FrontendInterface $coreCache
+     * @param FrontendInterface|null $coreCache
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function loadBaseTca(bool $allowCaching = true, FrontendInterface $coreCache = null)
+    public static function loadBaseTca(bool $allowCaching = true, ?FrontendInterface $coreCache = null)
     {
         if ($allowCaching) {
             $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
@@ -520,7 +520,7 @@ class Bootstrap
      * @param bool $allowCaching True, if reading compiled ext_tables file from cache is allowed
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function loadExtTables(bool $allowCaching = true, FrontendInterface $coreCache = null)
+    public static function loadExtTables(bool $allowCaching = true, ?FrontendInterface $coreCache = null)
     {
         if ($allowCaching) {
             $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
@@ -535,7 +535,7 @@ class Bootstrap
      * @param ServerRequestInterface|null $request
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function initializeBackendUser($className = BackendUserAuthentication::class, ServerRequestInterface $request = null)
+    public static function initializeBackendUser($className = BackendUserAuthentication::class, ?ServerRequestInterface $request = null)
     {
         /** @var BackendUserAuthentication $backendUser */
         $backendUser = GeneralUtility::makeInstance($className);

@@ -600,7 +600,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param ReferenceIndexUpdater|null $referenceIndexUpdater Hand over from outer most instance to sub instances
      */
-    public function __construct(ReferenceIndexUpdater $referenceIndexUpdater = null)
+    public function __construct(?ReferenceIndexUpdater $referenceIndexUpdater = null)
     {
         $this->checkStoredRecords = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecords'];
         $this->checkStoredRecords_loose = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecordsLoose'];
@@ -1524,7 +1524,7 @@ class DataHandler implements LoggerAwareInterface
      * @return array Returns the evaluated $value as key "value" in this array.
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, array $additionalData = null)
+    public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, ?array $additionalData = null)
     {
         // Convert to NULL value if defined in TCA
         if ($value === null && ($tcaFieldConf['nullable'] ?? false)) {
@@ -2705,10 +2705,10 @@ class DataHandler implements LoggerAwareInterface
      * @param array $tcaFieldConf Field configuration from TCA
      * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
      * @param string $field Field name
-     * @param array $additionalData Additional data to be forwarded to sub-processors
+     * @param array|null $additionalData Additional data to be forwarded to sub-processors
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, array $additionalData = null)
+    public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, ?array $additionalData = null)
     {
         [$table, $id, , $status] = $PP;
         $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData);
@@ -2725,11 +2725,11 @@ class DataHandler implements LoggerAwareInterface
      * @param int $id UID of record
      * @param string $status 'update' or 'new' flag
      * @param string $field Field name
-     * @param array $additionalData Additional data to be forwarded to sub-processors
+     * @param array|null $additionalData Additional data to be forwarded to sub-processors
      * @return array|false Modified $res array
      * @internal should only be used from within DataHandler
      */
-    public function checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, array $additionalData = null)
+    public function checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, ?array $additionalData = null)
     {
         if (!$tcaFieldConf['foreign_table']) {
             // Fatal error, inline fields should always have a foreign_table defined
@@ -5938,7 +5938,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array|null $record Record row that should be discarded. Used instead of $uid within recursion.
      * @internal should only be used from within DataHandler
      */
-    public function discard(string $table, ?int $uid, array $record = null): void
+    public function discard(string $table, ?int $uid, ?array $record = null): void
     {
         if ($uid === null && $record === null) {
             throw new \RuntimeException('Either record $uid or $record row must be given', 1600373491);
@@ -7974,10 +7974,10 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $uid Record UID
-     * @param int $workspace Workspace the record lives in
+     * @param int|null $workspace Workspace the record lives in
      * @internal should only be used from within DataHandler
      */
-    public function updateRefIndex($table, $uid, int $workspace = null): void
+    public function updateRefIndex($table, $uid, ?int $workspace = null): void
     {
         if ($workspace === null) {
             $workspace = (int)$this->BE_USER->workspace;
@@ -8007,7 +8007,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @internal Exists only for workspace DataHandlerHook. May vanish any time.
      */
-    public function registerReferenceIndexUpdateForReferencesToItem(string $table, int $uid, int $workspace, int $targetWorkspace = null): void
+    public function registerReferenceIndexUpdateForReferencesToItem(string $table, int $uid, int $workspace, ?int $targetWorkspace = null): void
     {
         $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, $uid, $workspace, $targetWorkspace);
     }
@@ -8204,10 +8204,10 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $pid Page Uid in which to resort records
-     * @param int $sortingValue All sorting numbers larger than this number will be shifted
+     * @param int|null $sortingValue All sorting numbers larger than this number will be shifted
      * @see getSortNumber()
      */
-    protected function increaseSortingOfFollowingRecords(string $table, int $pid, int $sortingValue = null): void
+    protected function increaseSortingOfFollowingRecords(string $table, int $pid, ?int $sortingValue = null): void
     {
         $sortBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '';
         if ($sortBy) {

@@ -288,7 +288,7 @@ class MailMessage extends Email
         return parent::addBcc(...$this->convertNamedAddress(...$addresses));
     }
 
-    protected function checkArguments($addresses, string $name = null): void
+    protected function checkArguments($addresses, ?string $name = null): void
     {
         if ($name !== null && !is_string($addresses)) {
             throw new \InvalidArgumentException('The combination of a name and an array of addresses is invalid.', 1570543657);

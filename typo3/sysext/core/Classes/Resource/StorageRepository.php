@@ -460,7 +460,7 @@ class StorageRepository implements LoggerAwareInterface
      *
      * @param array|null $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
      */
-    protected function createStorageObject(array $storageRecord, array $storageConfiguration = null): ResourceStorage
+    protected function createStorageObject(array $storageRecord, ?array $storageConfiguration = null): ResourceStorage
     {
         if (!$storageConfiguration && !empty($storageRecord['configuration'])) {
             $storageConfiguration = $this->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);

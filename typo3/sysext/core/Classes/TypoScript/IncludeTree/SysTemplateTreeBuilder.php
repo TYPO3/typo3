@@ -99,7 +99,7 @@ final class SysTemplateTreeBuilder
         array $sysTemplateRows,
         TokenizerInterface $tokenizer,
         ?SiteInterface $site = null,
-        PhpFrontend $cache = null
+        ?PhpFrontend $cache = null
     ): RootInclude {
         if (!in_array($type, ['constants', 'setup'], true)) {
             throw new \RuntimeException('type must be either constants or setup', 1653737656);

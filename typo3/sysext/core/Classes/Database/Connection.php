@@ -83,7 +83,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    public function __construct(array $params, Driver $driver, Configuration $config = null, EventManager $em = null)
+    public function __construct(array $params, Driver $driver, ?Configuration $config = null, ?EventManager $em = null)
     {
         parent::__construct($params, $driver, $config, $em);
         $this->_expr = GeneralUtility::makeInstance(ExpressionBuilder::class, $this);

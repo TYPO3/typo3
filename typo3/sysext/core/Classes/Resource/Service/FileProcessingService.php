@@ -56,7 +56,7 @@ class FileProcessingService
      *
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(ResourceStorage $storage, DriverInterface $driver, EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(ResourceStorage $storage, DriverInterface $driver, ?EventDispatcherInterface $eventDispatcher = null)
     {
         $this->storage = $storage;
         $this->driver = $driver;

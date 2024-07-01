@@ -60,7 +60,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      *
      * @param ServerRequestInterface|null $request
      */
-    public function start(ServerRequestInterface $request = null)
+    public function start(?ServerRequestInterface $request = null)
     {
         // do nothing
     }
@@ -113,7 +113,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     /**
      * Logs in the TYPO3 Backend user "_cli_"
      */
-    public function backendCheckLogin(ServerRequestInterface $request = null)
+    public function backendCheckLogin(?ServerRequestInterface $request = null)
     {
         $this->authenticate();
     }

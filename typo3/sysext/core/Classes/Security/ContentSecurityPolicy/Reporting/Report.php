@@ -53,9 +53,9 @@ class Report implements \JsonSerializable
         public readonly array $meta,
         public readonly ReportDetails $details,
         public readonly string $summary = '',
-        UuidV4 $uuid = null,
-        \DateTimeImmutable $created = null,
-        \DateTimeImmutable $changed = null,
+        ?UuidV4 $uuid = null,
+        ?\DateTimeImmutable $created = null,
+        ?\DateTimeImmutable $changed = null,
     ) {
         $this->uuid = $uuid ?? new UuidV4();
         $this->created = $created ?? new \DateTimeImmutable();

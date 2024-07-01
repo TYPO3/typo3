@@ -27,7 +27,7 @@ final class AfterRecordLanguageOverlayEvent
     public function __construct(
         private readonly string $table,
         private readonly array $record,
-        private array|null $localizedRecord,
+        private ?array $localizedRecord,
         private bool $overlayingWasAttempted,
         private readonly LanguageAspect $languageAspect
     ) {}
@@ -47,13 +47,13 @@ final class AfterRecordLanguageOverlayEvent
         return $this->languageAspect;
     }
 
-    public function setLocalizedRecord(array|null $localizedRecord): void
+    public function setLocalizedRecord(?array $localizedRecord): void
     {
         $this->overlayingWasAttempted = true;
         $this->localizedRecord = $localizedRecord;
     }
 
-    public function getLocalizedRecord(): array|null
+    public function getLocalizedRecord(): ?array
     {
         return $this->localizedRecord;
     }

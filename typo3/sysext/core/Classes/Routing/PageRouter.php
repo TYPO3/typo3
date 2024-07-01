@@ -79,7 +79,7 @@ class PageRouter implements RouterInterface
     /**
      * A page router is always bound to a specific site.
      */
-    public function __construct(Site $site, Context $context = null)
+    public function __construct(Site $site, ?Context $context = null)
     {
         $this->site = $site;
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
@@ -96,7 +96,7 @@ class PageRouter implements RouterInterface
      * @return RouteResultInterface|PageArguments
      * @throws RouteNotFoundException
      */
-    public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): RouteResultInterface
+    public function matchRequest(ServerRequestInterface $request, ?RouteResultInterface $previousResult = null): RouteResultInterface
     {
         if ($previousResult === null) {
             throw new RouteNotFoundException('No previous result given. Cannot find a page for an empty route part', 1555303496);

@@ -30,7 +30,7 @@ class StatementException extends \Exception
     /**
      * @param \Exception|null $previous
      */
-    public static function syntaxError(string $message, \Exception $previous = null): StatementException
+    public static function syntaxError(string $message, ?\Exception $previous = null): StatementException
     {
         return new self('[SQL Error] ' . $message, 1471504821, $previous);
     }
@@ -38,7 +38,7 @@ class StatementException extends \Exception
     /**
      * @param \Exception|null $previous
      */
-    public static function semanticalError(string $message, \Exception $previous = null): StatementException
+    public static function semanticalError(string $message, ?\Exception $previous = null): StatementException
     {
         return new self('[Semantical Error] ' . $message, 1471504822, $previous);
     }

@@ -102,7 +102,7 @@ class PageDoktypeRegistry implements SingletonInterface
      * Used to find out if a specific doktype is restricted to only allow a certain list of tables.
      * This list can be checked against via 'isRecordTypeAllowedForDoktype()'
      */
-    public function doesDoktypeOnlyAllowSpecifiedRecordTypes(int $doktype = null): bool
+    public function doesDoktypeOnlyAllowSpecifiedRecordTypes(?int $doktype = null): bool
     {
         $doktype = $doktype ?? 'default';
         return $this->pageTypes[$doktype]['onlyAllowedTables'] ?? false;

@@ -160,9 +160,9 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     /**
      * Stores given flash messages in the session
      *
-     * @param FlashMessage[] $flashMessages
+     * @param FlashMessage[]|null $flashMessages
      */
-    protected function storeFlashMessagesInSession(array $flashMessages = null)
+    protected function storeFlashMessagesInSession(?array $flashMessages = null)
     {
         if (is_array($flashMessages)) {
             $flashMessages = array_map('json_encode', $flashMessages);
@@ -238,7 +238,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
      * @param FlashMessageRendererInterface|null $flashMessageRenderer
      * @return string All flash messages in the queue rendered by context based FlashMessageRendererResolver.
      */
-    public function renderFlashMessages(FlashMessageRendererInterface $flashMessageRenderer = null)
+    public function renderFlashMessages(?FlashMessageRendererInterface $flashMessageRenderer = null)
     {
         $content = '';
         $flashMessages = $this->getAllMessagesAndFlush();

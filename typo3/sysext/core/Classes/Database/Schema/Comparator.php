@@ -46,7 +46,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
     /**
      * Comparator constructor.
      */
-    public function __construct(AbstractPlatform $platform = null)
+    public function __construct(?AbstractPlatform $platform = null)
     {
         $this->databasePlatform = $platform;
         parent::__construct($platform);
@@ -164,7 +164,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
     public static function compareSchemas(
         Schema $fromSchema,
         Schema $toSchema,
-        AbstractPlatform $platform = null
+        ?AbstractPlatform $platform = null
     ) {
         $comparator       = new self($platform);
         $diff             = new SchemaDiff();

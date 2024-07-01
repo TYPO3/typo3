@@ -82,7 +82,7 @@ class IconFactory
      * @param string $overlayIdentifier
      * @return Icon
      */
-    public function getIcon($identifier, $size = Icon::SIZE_MEDIUM, $overlayIdentifier = null, IconState $state = null)
+    public function getIcon($identifier, $size = Icon::SIZE_MEDIUM, $overlayIdentifier = null, ?IconState $state = null)
     {
         $cacheIdentifier = md5($identifier . $size . $overlayIdentifier . (string)$state);
         if (!empty(static::$iconCache[$cacheIdentifier])) {

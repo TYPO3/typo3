@@ -91,7 +91,7 @@ class ReferenceIndexUpdater
      * @param int $workspace The workspace given record lives in
      * @param int|null $targetWorkspace The target workspace the record has been swapped to
      */
-    public function registerUpdateForReferencesToItem(string $table, int $uid, int $workspace, int $targetWorkspace = null): void
+    public function registerUpdateForReferencesToItem(string $table, int $uid, int $workspace, ?int $targetWorkspace = null): void
     {
         if ($workspace && !BackendUtility::isTableWorkspaceEnabled($table)) {
             // If a user is in some workspace and changes relations of not workspace aware

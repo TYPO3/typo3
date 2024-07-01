@@ -62,7 +62,7 @@ class PageTsConfig
      *
      * This then caches a specific version away during runtime to avoid multiple overloads.
      */
-    public function getWithUserOverride(int $pageId, array $rootLine, ?Site $site, ConditionMatcherInterface $conditionMatcher, BackendUserAuthentication $user = null): array
+    public function getWithUserOverride(int $pageId, array $rootLine, ?Site $site, ConditionMatcherInterface $conditionMatcher, ?BackendUserAuthentication $user = null): array
     {
         $pagesTsConfigIdToHash = $this->cache->get('pagesTsConfigIdToHash' . $pageId);
         if ($pagesTsConfigIdToHash !== false) {

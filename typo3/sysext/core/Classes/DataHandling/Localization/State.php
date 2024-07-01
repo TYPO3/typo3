@@ -45,7 +45,7 @@ class State
      * @param string|null $json
      * @return State|null
      */
-    public static function fromJSON(string $tableName, string $json = null)
+    public static function fromJSON(string $tableName, ?string $json = null)
     {
         if (!static::isApplicable($tableName)) {
             return null;

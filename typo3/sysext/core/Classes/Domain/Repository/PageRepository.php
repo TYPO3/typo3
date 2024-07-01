@@ -154,7 +154,7 @@ class PageRepository implements LoggerAwareInterface
      * PageRepository constructor to set the base context, this will effectively remove the necessity for
      * setting properties from the outside.
      */
-    public function __construct(Context $context = null)
+    public function __construct(?Context $context = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->versioningWorkspaceId = $this->context->getPropertyFromAspect('workspace', 'id');
@@ -398,7 +398,7 @@ class PageRepository implements LoggerAwareInterface
      * @param LanguageAspect|null $languageAspect an alternative language aspect if needed (optional)
      * @return array|null NULL If overlays were activated but no overlay was found and LanguageAspect was NOT set to MIXED
      */
-    public function getLanguageOverlay(string $table, array $originalRow, LanguageAspect $languageAspect = null): ?array
+    public function getLanguageOverlay(string $table, array $originalRow, ?LanguageAspect $languageAspect = null): ?array
     {
         // table is not localizable, so return directly
         if (!isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])) {
@@ -519,7 +519,7 @@ class PageRepository implements LoggerAwareInterface
      *               included. If the input were page rows, untranslated pages
      *               are returned.
      */
-    public function getPagesOverlay(array $pagesInput, int|LanguageAspect $language = null)
+    public function getPagesOverlay(array $pagesInput, int|LanguageAspect|null $language = null)
     {
         if (empty($pagesInput)) {
             return [];
@@ -1394,7 +1394,7 @@ class PageRepository implements LoggerAwareInterface
      * @param QueryRestrictionContainerInterface|null $restrictionContainer
      * @return int[] Returns the array of remaining page UID numbers
      */
-    public function filterAccessiblePageIds(array $pageIds, QueryRestrictionContainerInterface $restrictionContainer = null): array
+    public function filterAccessiblePageIds(array $pageIds, ?QueryRestrictionContainerInterface $restrictionContainer = null): array
     {
         if ($pageIds === []) {
             return [];

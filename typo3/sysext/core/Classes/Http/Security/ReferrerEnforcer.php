@@ -56,7 +56,7 @@ class ReferrerEnforcer
         $this->requestDir = $this->resolveRequestDir($request);
     }
 
-    public function handle(array $options = null): ?ResponseInterface
+    public function handle(?array $options = null): ?ResponseInterface
     {
         $referrerType = $this->resolveReferrerType();
         // valid referrer, no more actions required

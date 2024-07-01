@@ -32,7 +32,7 @@ final class EventDispatcherAdapter implements SymfonyEventDispatcherInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function dispatch(object $event, string $eventName = null): object
+    public function dispatch(object $event, ?string $eventName = null): object
     {
         return $this->eventDispatcher->dispatch($event);
     }

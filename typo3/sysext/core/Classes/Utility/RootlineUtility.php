@@ -126,7 +126,7 @@ class RootlineUtility
     /**
      * Constructs the cache Identifier
      */
-    public function getCacheIdentifier(int $otherUid = null): string
+    public function getCacheIdentifier(?int $otherUid = null): string
     {
         $mountPointParameter = (string)$this->mountPointParameter;
         if ($mountPointParameter !== '' && str_contains($mountPointParameter, ',')) {

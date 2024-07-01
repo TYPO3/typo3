@@ -85,7 +85,7 @@ class CreateIndexDefinitionItem extends AbstractCreateDefinitionItem
      * CreateIndexDefinitionItem constructor.
      */
     public function __construct(
-        Identifier $indexName = null,
+        ?Identifier $indexName = null,
         bool $isPrimary = false,
         bool $isUnique = false,
         bool $isSpatial = false,

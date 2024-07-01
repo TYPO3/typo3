@@ -1289,10 +1289,10 @@ class GraphicalFunctions
      * Gets the break space for each new line.
      *
      * @param array $conf TypoScript configuration for the currently rendered object
-     * @param array $boundingBox The bounding box the the currently rendered object
+     * @param array|null $boundingBox The bounding box the the currently rendered object
      * @return int The break space
      */
-    protected function getBreakSpace($conf, array $boundingBox = null)
+    protected function getBreakSpace($conf, ?array $boundingBox = null)
     {
         if (!isset($boundingBox)) {
             $boundingBox = $this->calcBBox($conf);

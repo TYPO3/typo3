@@ -34,7 +34,7 @@ class DefaultUploadFolderResolver
         protected readonly EventDispatcher $eventDispatcher,
     ) {}
 
-    public function resolve(BackendUserAuthentication $user, int $pid = null, string $table = null, string $field = null): Folder | bool
+    public function resolve(BackendUserAuthentication $user, ?int $pid = null, ?string $table = null, ?string $field = null): Folder | bool
     {
         $uploadFolder = $this->getDefaultUploadFolderForUser($user);
         $uploadFolder = $this->getDefaultUploadFolderForPage($pid) ?? $uploadFolder;

@@ -51,7 +51,7 @@ class UserAspect implements AspectInterface
      * @param AbstractUserAuthentication|null $user
      * @param array|null $alternativeGroups
      */
-    public function __construct(AbstractUserAuthentication $user = null, array $alternativeGroups = null)
+    public function __construct(?AbstractUserAuthentication $user = null, ?array $alternativeGroups = null)
     {
         $this->user = $user ?? $this->createPseudoUser();
         $this->groups = $alternativeGroups;

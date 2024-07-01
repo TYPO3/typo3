@@ -64,10 +64,10 @@ interface SiteInterface
      *
      * @param BackendUserAuthentication $user the authenticated backend user to check access rights
      * @param bool $includeAllLanguagesFlag whether "-1" should be included in the values or not.
-     * @param int $pageId usually used for resolving additional information from PageTS, only used for pseudo-sites. uid of the default language row!
+     * @param int|null $pageId usually used for resolving additional information from PageTS, only used for pseudo-sites. uid of the default language row!
      * @return SiteLanguage[]
      */
-    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array;
+    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, ?int $pageId = null): array;
 
     /**
      * Returns a ready-to-use error handler, to be used within the ErrorController

@@ -30,7 +30,7 @@ final class ConsumableNonce extends ConsumableString
      */
     public readonly string $b64;
 
-    public function __construct(string $nonce = null)
+    public function __construct(?string $nonce = null)
     {
         if ($nonce === null || strlen($nonce) < self::MIN_BYTES) {
             $nonce = random_bytes(self::MIN_BYTES);

@@ -78,7 +78,7 @@ class RequestToken
         }
     }
 
-    public function __construct(string $scope, \DateTimeImmutable $time = null, array $params = [])
+    public function __construct(string $scope, ?\DateTimeImmutable $time = null, array $params = [])
     {
         $this->scope = $scope;
         // drop microtime, second is the minimum date-interval

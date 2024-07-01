@@ -49,7 +49,7 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
      * FrontendRestrictionContainer constructor.
      * Initializes the default restrictions for frontend requests
      */
-    public function __construct(Context $context = null)
+    public function __construct(?Context $context = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         foreach ($this->defaultRestrictionTypes as $restrictionType) {

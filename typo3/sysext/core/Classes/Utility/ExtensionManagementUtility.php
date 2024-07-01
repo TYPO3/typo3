@@ -1299,10 +1299,10 @@ tt_content.' . $key . $suffix . ' {
      * extensions should not use it!
      *
      * @param bool $allowCaching Whether or not to load / create concatenated cache file
-     * @param FrontendInterface $codeCache
+     * @param FrontendInterface|null $codeCache
      * @internal
      */
-    public static function loadExtLocalconf(bool $allowCaching = true, FrontendInterface $codeCache = null): void
+    public static function loadExtLocalconf(bool $allowCaching = true, ?FrontendInterface $codeCache = null): void
     {
         if ($allowCaching) {
             $codeCache = $codeCache ?? self::getCacheManager()->getCache('core');
@@ -1390,7 +1390,7 @@ tt_content.' . $key . $suffix . ' {
      * @param bool $allowCaching Whether or not to load / create concatenated cache file
      * @internal
      */
-    public static function loadBaseTca(bool $allowCaching = true, FrontendInterface $codeCache = null): void
+    public static function loadBaseTca(bool $allowCaching = true, ?FrontendInterface $codeCache = null): void
     {
         if ($allowCaching) {
             $codeCache = $codeCache ?? self::getCacheManager()->getCache('core');
@@ -1534,7 +1534,7 @@ tt_content.' . $key . $suffix . ' {
      * @param bool $allowCaching Whether to load / create concatenated cache file
      * @internal
      */
-    public static function loadExtTables(bool $allowCaching = true, FrontendInterface $codeCache = null): void
+    public static function loadExtTables(bool $allowCaching = true, ?FrontendInterface $codeCache = null): void
     {
         if ($allowCaching && !self::$extTablesWasReadFromCacheOnce) {
             self::$extTablesWasReadFromCacheOnce = true;

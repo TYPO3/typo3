@@ -59,7 +59,7 @@ class Resolution implements \JsonSerializable
         public readonly string $mutationIdentifier,
         public readonly MutationCollection $mutationCollection,
         public readonly array $meta = [],
-        \DateTimeImmutable $created = null,
+        ?\DateTimeImmutable $created = null,
     ) {
         $this->created = $created ?? new \DateTimeImmutable();
     }

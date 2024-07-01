@@ -42,7 +42,7 @@ class IndexColumnName
     /**
      * IndexColumnName constructor.
      */
-    public function __construct(Identifier $columnName, int $length, string $direction = null)
+    public function __construct(Identifier $columnName, int $length, ?string $direction = null)
     {
         $this->columnName = $columnName;
         $this->length = $length;

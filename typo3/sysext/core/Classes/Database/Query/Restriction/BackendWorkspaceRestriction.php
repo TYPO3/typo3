@@ -42,7 +42,7 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
     /**
      * @param bool $includeRowsForWorkspaceOverlay
      */
-    public function __construct(int $workspaceId = null, $includeRowsForWorkspaceOverlay = true)
+    public function __construct(?int $workspaceId = null, $includeRowsForWorkspaceOverlay = true)
     {
         trigger_error('BackendWorkspaceRestriction will be removed in TYPO3 v13.0. Use WorkspaceRestriction instead.', E_USER_DEPRECATED);
         if ($workspaceId === null) {

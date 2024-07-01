@@ -102,7 +102,7 @@ class Totp
      * @param string $totp The time-based one-time password to be verified
      * @param int|null $gracePeriod The grace period for the TOTP +- (mainly to circumvent transmission delays)
      */
-    public function verifyTotp(string $totp, int $gracePeriod = null): bool
+    public function verifyTotp(string $totp, ?int $gracePeriod = null): bool
     {
         $counter = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
 

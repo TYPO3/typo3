@@ -51,7 +51,7 @@ final class AfterDefaultUploadFolderWasResolvedEvent
         return $this->table;
     }
 
-    public function getFieldName(): string | null
+    public function getFieldName(): ?string
     {
         return $this->fieldName;
     }
