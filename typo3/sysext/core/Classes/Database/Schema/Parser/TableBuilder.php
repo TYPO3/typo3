@@ -85,11 +85,11 @@ class TableBuilder
     /**
      * TableBuilder constructor.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform|null $platform
      * @throws \InvalidArgumentException
      * @throws \Doctrine\DBAL\Exception
      */
-    public function __construct(AbstractPlatform $platform = null)
+    public function __construct(?AbstractPlatform $platform = null)
     {
         // Register custom data types as no connection might have
         // been established yet so the types would not be available
@@ -291,12 +291,12 @@ class TableBuilder
      *
      * @param string[] $localColumnNames
      * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\ReferenceDefinition $referenceDefinition
-     * @param string $indexName
+     * @param string|null $indexName
      */
     protected function addForeignKeyConstraint(
         array $localColumnNames,
         ReferenceDefinition $referenceDefinition,
-        string $indexName = null
+        ?string $indexName = null
     ) {
         $foreignTableName = $referenceDefinition->tableName->getQuotedName();
         $foreignColumnNames = array_map(

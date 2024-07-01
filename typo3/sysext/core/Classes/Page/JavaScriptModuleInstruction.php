@@ -46,7 +46,7 @@ class JavaScriptModuleInstruction implements \JsonSerializable
      * @param string|null $exportName (optional) name used internally to export the module
      * @return self
      */
-    public static function forRequireJS(string $name, string $exportName = null): self
+    public static function forRequireJS(string $name, ?string $exportName = null): self
     {
         $target = GeneralUtility::makeInstance(static::class, $name, self::FLAG_LOAD_REQUIRE_JS);
         $target->exportName = $exportName;

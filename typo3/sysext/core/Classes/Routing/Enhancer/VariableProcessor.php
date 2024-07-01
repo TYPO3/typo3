@@ -114,7 +114,7 @@ class VariableProcessor
      * @param array $arguments
      * @return string
      */
-    public function deflateRoutePath(string $routePath, string $namespace = null, array $arguments = []): string
+    public function deflateRoutePath(string $routePath, ?string $namespace = null, array $arguments = []): string
     {
         if (!preg_match_all(static::VARIABLE_PATTERN, $routePath, $matches)) {
             return $routePath;
@@ -136,7 +136,7 @@ class VariableProcessor
      * @param array $arguments
      * @return string
      */
-    public function inflateRoutePath(string $routePath, string $namespace = null, array $arguments = []): string
+    public function inflateRoutePath(string $routePath, ?string $namespace = null, array $arguments = []): string
     {
         if (!preg_match_all(static::VARIABLE_PATTERN, $routePath, $matches)) {
             return $routePath;
@@ -232,7 +232,7 @@ class VariableProcessor
      * @param bool $hash = true
      * @return array
      */
-    public function deflateKeys(array $items, string $namespace = null, array $arguments = [], bool $hash = true): array
+    public function deflateKeys(array $items, ?string $namespace = null, array $arguments = [], bool $hash = true): array
     {
         if (empty($items) || empty($arguments) && empty($namespace)) {
             return $items;
@@ -254,7 +254,7 @@ class VariableProcessor
      * @param bool $hash = true
      * @return array
      */
-    public function inflateKeys(array $items, string $namespace = null, array $arguments = [], bool $hash = true): array
+    public function inflateKeys(array $items, ?string $namespace = null, array $arguments = [], bool $hash = true): array
     {
         if (empty($items) || empty($arguments) && empty($namespace)) {
             return $items;
@@ -275,7 +275,7 @@ class VariableProcessor
      * @param bool $hash
      * @return array
      */
-    protected function deflateValues(array $values, string $namespace = null, array $arguments = [], bool $hash = true): array
+    protected function deflateValues(array $values, ?string $namespace = null, array $arguments = [], bool $hash = true): array
     {
         if (empty($values) || empty($arguments) && empty($namespace)) {
             return $values;
@@ -305,7 +305,7 @@ class VariableProcessor
      * @param bool $hash
      * @return array
      */
-    protected function inflateValues(array $values, string $namespace = null, array $arguments = [], bool $hash = true): array
+    protected function inflateValues(array $values, ?string $namespace = null, array $arguments = [], bool $hash = true): array
     {
         if (empty($values) || empty($arguments) && empty($namespace)) {
             return $values;

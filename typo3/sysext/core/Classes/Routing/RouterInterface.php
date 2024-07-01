@@ -42,7 +42,7 @@ interface RouterInterface
      * @return RouteResultInterface
      * @throws RouteNotFoundException
      */
-    public function matchRequest(ServerRequestInterface $request, RouteResultInterface $previousResult = null): RouteResultInterface;
+    public function matchRequest(ServerRequestInterface $request, ?RouteResultInterface $previousResult = null): RouteResultInterface;
 
     /**
      * Builds a URI based on the $route and the given parameters.

@@ -44,9 +44,9 @@ class IndexColumnName
      *
      * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\Identifier $columnName
      * @param int $length
-     * @param string $direction
+     * @param string|null $direction
      */
-    public function __construct(Identifier $columnName, int $length, string $direction = null)
+    public function __construct(Identifier $columnName, int $length, ?string $direction = null)
     {
         $this->columnName = $columnName;
         $this->length = $length;

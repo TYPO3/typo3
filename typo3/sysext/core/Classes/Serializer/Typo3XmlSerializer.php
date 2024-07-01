@@ -134,7 +134,7 @@ class Typo3XmlSerializer
      */
     public function encodeWithReturningExceptionAsString(
         array $input,
-        Typo3XmlParserOptions $options = null,
+        ?Typo3XmlParserOptions $options = null,
         array $additionalOptions = []
     ): string {
         try {
@@ -152,7 +152,7 @@ class Typo3XmlSerializer
      */
     public function encode(
         array $input,
-        Typo3XmlParserOptions $options = null,
+        ?Typo3XmlParserOptions $options = null,
         array $additionalOptions = []
     ): string {
         $options = $options ?? new Typo3XmlParserOptions();

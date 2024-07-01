@@ -569,7 +569,7 @@ class ExpressionBuilder
      * @param string|null $alias
      * @return string
      */
-    public function min(string $fieldName, string $alias = null): string
+    public function min(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('MIN', $fieldName, $alias);
     }
@@ -581,7 +581,7 @@ class ExpressionBuilder
      * @param string|null $alias
      * @return string
      */
-    public function max(string $fieldName, string $alias = null): string
+    public function max(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('MAX', $fieldName, $alias);
     }
@@ -593,7 +593,7 @@ class ExpressionBuilder
      * @param string|null $alias
      * @return string
      */
-    public function avg(string $fieldName, string $alias = null): string
+    public function avg(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('AVG', $fieldName, $alias);
     }
@@ -605,7 +605,7 @@ class ExpressionBuilder
      * @param string|null $alias
      * @return string
      */
-    public function sum(string $fieldName, string $alias = null): string
+    public function sum(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('SUM', $fieldName, $alias);
     }
@@ -617,7 +617,7 @@ class ExpressionBuilder
      * @param string|null $alias
      * @return string
      */
-    public function count(string $fieldName, string $alias = null): string
+    public function count(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('COUNT', $fieldName, $alias);
     }
@@ -629,7 +629,7 @@ class ExpressionBuilder
      * @param string|null $alias
      * @return string
      */
-    public function length(string $fieldName, string $alias = null): string
+    public function length(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('LENGTH', $fieldName, $alias);
     }
@@ -642,7 +642,7 @@ class ExpressionBuilder
      * @param string|null $alias
      * @return string
      */
-    protected function calculation(string $aggregateName, string $fieldName, string $alias = null): string
+    protected function calculation(string $aggregateName, string $fieldName, ?string $alias = null): string
     {
         $aggregateSQL = sprintf(
             '%s(%s)',
@@ -662,10 +662,10 @@ class ExpressionBuilder
      *
      * @param string $fieldName Field name to build expression for
      * @param int $position Either constant out of LEADING, TRAILING, BOTH
-     * @param string $char Character to be trimmed (defaults to space)
+     * @param string|null $char Character to be trimmed (defaults to space)
      * @return string
      */
-    public function trim(string $fieldName, int $position = TrimMode::UNSPECIFIED, string $char = null)
+    public function trim(string $fieldName, int $position = TrimMode::UNSPECIFIED, ?string $char = null)
     {
         return $this->connection->getDatabasePlatform()->getTrimExpression(
             $this->connection->quoteIdentifier($fieldName),

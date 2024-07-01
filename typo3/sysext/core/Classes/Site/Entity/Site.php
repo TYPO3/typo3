@@ -263,7 +263,7 @@ class Site implements SiteInterface
      * @inheritdoc
      * @return array<LanguageRef, SiteLanguage>
      */
-    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
+    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, ?int $pageId = null): array
     {
         $availableLanguages = [];
 
@@ -371,7 +371,7 @@ class Site implements SiteInterface
      * @param Context|null $context
      * @return RouterInterface
      */
-    public function getRouter(Context $context = null): RouterInterface
+    public function getRouter(?Context $context = null): RouterInterface
     {
         return GeneralUtility::makeInstance(PageRouter::class, $this, $context);
     }

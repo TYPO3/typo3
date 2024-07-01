@@ -48,7 +48,7 @@ class Typo3XmlParser
      */
     public function decodeWithReturningExceptionAsString(
         string $xml,
-        Typo3XmlSerializerOptions $options = null
+        ?Typo3XmlSerializerOptions $options = null
     ) {
         try {
             return $this->decode($xml, $options);
@@ -65,7 +65,7 @@ class Typo3XmlParser
      */
     public function decode(
         string $xml,
-        Typo3XmlSerializerOptions $options = null
+        ?Typo3XmlSerializerOptions $options = null
     ) {
         $xml = trim($xml);
         if ($xml === '') {

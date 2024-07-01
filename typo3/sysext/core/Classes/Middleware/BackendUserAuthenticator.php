@@ -92,7 +92,7 @@ abstract class BackendUserAuthenticator implements MiddlewareInterface
      * @param BackendUserAuthentication|null $user
      * @param int|null $alternativeWorkspaceId
      */
-    protected function setBackendUserAspect(?BackendUserAuthentication $user, int $alternativeWorkspaceId = null): void
+    protected function setBackendUserAspect(?BackendUserAuthentication $user, ?int $alternativeWorkspaceId = null): void
     {
         $this->context->setAspect(
             'backend.user',

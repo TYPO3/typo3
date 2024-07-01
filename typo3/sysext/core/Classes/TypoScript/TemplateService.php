@@ -286,7 +286,7 @@ class TemplateService
      * @param PackageManager|null $packageManager
      * @param TypoScriptFrontendController|null $frontendController
      */
-    public function __construct(Context $context = null, PackageManager $packageManager = null, TypoScriptFrontendController $frontendController = null)
+    public function __construct(?Context $context = null, ?PackageManager $packageManager = null, ?TypoScriptFrontendController $frontendController = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->packageManager = $packageManager ?? GeneralUtility::makeInstance(PackageManager::class);

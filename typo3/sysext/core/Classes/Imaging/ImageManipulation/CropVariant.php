@@ -70,10 +70,10 @@ class CropVariant
         string $id,
         string $title,
         Area $cropArea,
-        array $allowedAspectRatios = null,
-        string $selectedRatio = null,
-        Area $focusArea = null,
-        array $coverAreas = null
+        ?array $allowedAspectRatios = null,
+        ?string $selectedRatio = null,
+        ?Area $focusArea = null,
+        ?array $coverAreas = null
     ) {
         $this->id = $id;
         $this->title = $title;

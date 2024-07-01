@@ -61,7 +61,7 @@ class SiteRouteResult implements RouteResultInterface
      */
     protected $tail;
 
-    public function __construct(UriInterface $uri, SiteInterface $site, SiteLanguage $language = null, string $tail = '', array $data = [])
+    public function __construct(UriInterface $uri, SiteInterface $site, ?SiteLanguage $language = null, string $tail = '', array $data = [])
     {
         $this->uri = $uri;
         $this->site = $site;

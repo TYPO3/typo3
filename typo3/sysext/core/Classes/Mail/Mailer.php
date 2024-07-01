@@ -68,7 +68,7 @@ class Mailer implements MailerInterface
      * @param EventDispatcherInterface|null $eventDispatcher
      * @throws CoreException
      */
-    public function __construct(TransportInterface $transport = null, EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(?TransportInterface $transport = null, ?EventDispatcherInterface $eventDispatcher = null)
     {
         if ($transport !== null) {
             $this->transport = $transport;
@@ -91,7 +91,7 @@ class Mailer implements MailerInterface
     /**
      * @inheritdoc
      */
-    public function send(RawMessage $message, Envelope $envelope = null): void
+    public function send(RawMessage $message, ?Envelope $envelope = null): void
     {
         if ($message instanceof Email) {
             // Ensure to always have a From: header set
@@ -162,10 +162,10 @@ class Mailer implements MailerInterface
     /**
      * This method is only used in unit tests
      *
-     * @param array $mailSettings
+     * @param array|null $mailSettings
      * @internal
      */
-    public function injectMailSettings(array $mailSettings = null)
+    public function injectMailSettings(?array $mailSettings = null)
     {
         if (is_array($mailSettings)) {
             $this->mailSettings = $mailSettings;

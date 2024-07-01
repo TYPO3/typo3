@@ -60,7 +60,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      *
      * @param ServerRequestInterface|null $request
      */
-    public function start(ServerRequestInterface $request = null)
+    public function start(?ServerRequestInterface $request = null)
     {
         // do nothing
     }
@@ -70,7 +70,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      *
      * Not required in CLI mode, therefore empty.
      */
-    public function checkAuthentication(ServerRequestInterface $request = null)
+    public function checkAuthentication(?ServerRequestInterface $request = null)
     {
         // do nothing
     }

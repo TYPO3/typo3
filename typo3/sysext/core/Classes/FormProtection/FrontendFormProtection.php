@@ -83,10 +83,10 @@ class FrontendFormProtection extends AbstractFormProtection
      * Only allow construction if we have an authorized frontend session
      *
      * @param FrontendUserAuthentication $frontendUser
-     * @param \Closure $validationFailedCallback
+     * @param \Closure|null $validationFailedCallback
      * @throws \TYPO3\CMS\Core\Error\Exception
      */
-    public function __construct(FrontendUserAuthentication $frontendUser, \Closure $validationFailedCallback = null)
+    public function __construct(FrontendUserAuthentication $frontendUser, ?\Closure $validationFailedCallback = null)
     {
         $this->frontendUser = $frontendUser;
         $this->validationFailedCallback = $validationFailedCallback;

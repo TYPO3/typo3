@@ -43,13 +43,13 @@ class MboxTransport extends AbstractTransport
      * Create a new MailTransport
      *
      * @param string $mboxFile
-     * @param EventDispatcherInterface $dispatcher
-     * @param LoggerInterface $logger
+     * @param EventDispatcherInterface|null $dispatcher
+     * @param LoggerInterface|null $logger
      */
     public function __construct(
         string $mboxFile,
-        EventDispatcherInterface $dispatcher = null,
-        LoggerInterface $logger = null
+        ?EventDispatcherInterface $dispatcher = null,
+        ?LoggerInterface $logger = null
     ) {
         parent::__construct($dispatcher, $logger);
 

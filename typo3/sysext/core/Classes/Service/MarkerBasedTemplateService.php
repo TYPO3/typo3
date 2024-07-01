@@ -345,15 +345,15 @@ class MarkerBasedTemplateService
      * alternating.
      *
      * @param string $content The content stream, typically HTML template content.
-     * @param array $markContentArray Regular marker-array where the 'keys' are substituted in $content with their values
-     * @param array $subpartContentArray Exactly like markContentArray only is whole subparts substituted and not only a single marker.
-     * @param array $wrappedSubpartContentArray An array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
+     * @param array|null $markContentArray Regular marker-array where the 'keys' are substituted in $content with their values
+     * @param array|null $subpartContentArray Exactly like markContentArray only is whole subparts substituted and not only a single marker.
+     * @param array|null $wrappedSubpartContentArray An array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
      * @return string The output content stream
      * @see substituteSubpart()
      * @see substituteMarker()
      * @see substituteMarkerInObject()
      */
-    public function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
+    public function substituteMarkerArrayCached($content, ?array $markContentArray = null, ?array $subpartContentArray = null, ?array $wrappedSubpartContentArray = null)
     {
         $runtimeCache = $this->getRuntimeCache();
         // If not arrays then set them

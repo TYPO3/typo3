@@ -74,9 +74,9 @@ class SiteConfiguration implements SingletonInterface
 
     /**
      * @param string $configPath
-     * @param PhpFrontend $coreCache
+     * @param PhpFrontend|null $coreCache
      */
-    public function __construct(string $configPath, PhpFrontend $coreCache = null)
+    public function __construct(string $configPath, ?PhpFrontend $coreCache = null)
     {
         $this->configPath = $configPath;
         // The following fallback to GeneralUtility;:getContainer() is only used in acceptance tests

@@ -26,9 +26,9 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 class StartTimeRestriction implements QueryRestrictionInterface
 {
     /**
-     * @param int $accessTimeStamp
+     * @param int|null $accessTimeStamp
      */
-    public function __construct(int $accessTimeStamp = null)
+    public function __construct(?int $accessTimeStamp = null)
     {
         $this->accessTimeStamp = $accessTimeStamp ?: ($GLOBALS['SIM_ACCESS_TIME'] ?? null);
     }

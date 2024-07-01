@@ -26,7 +26,7 @@ class JavaScriptRenderer
     protected JavaScriptItems $items;
     protected ?RequireJS $requireJS = null;
 
-    public static function create(string $uri = null): self
+    public static function create(?string $uri = null): self
     {
         $uri ??= PathUtility::getAbsoluteWebPath(
             GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/JavaScript/JavaScriptHandler.js')

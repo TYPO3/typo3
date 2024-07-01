@@ -52,7 +52,7 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
      *
      * @param Context $context
      */
-    public function __construct(Context $context = null)
+    public function __construct(?Context $context = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         foreach ($this->defaultRestrictionTypes as $restrictionType) {

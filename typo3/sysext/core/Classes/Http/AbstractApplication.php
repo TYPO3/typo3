@@ -93,9 +93,9 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
     /**
      * Set up the application and shut it down afterwards
      *
-     * @param callable $execute Deprecated, will be removed in TYPO3 v12.0
+     * @param callable|null $execute Deprecated, will be removed in TYPO3 v12.0
      */
-    final public function run(callable $execute = null)
+    final public function run(?callable $execute = null)
     {
         $response = $this->handle(ServerRequestFactory::fromGlobals());
         if ($execute !== null) {

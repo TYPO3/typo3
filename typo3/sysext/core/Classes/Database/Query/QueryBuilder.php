@@ -99,9 +99,9 @@ class QueryBuilder
      */
     public function __construct(
         Connection $connection,
-        QueryRestrictionContainerInterface $restrictionContainer = null,
-        \Doctrine\DBAL\Query\QueryBuilder $concreteQueryBuilder = null,
-        array $additionalRestrictions = null
+        ?QueryRestrictionContainerInterface $restrictionContainer = null,
+        ?\Doctrine\DBAL\Query\QueryBuilder $concreteQueryBuilder = null,
+        ?array $additionalRestrictions = null
     ) {
         $this->connection = $connection;
         $this->additionalRestrictions = $additionalRestrictions ?: $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'] ?? [];
@@ -364,7 +364,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function setParameter($key, $value, int $type = null): QueryBuilder
+    public function setParameter($key, $value, ?int $type = null): QueryBuilder
     {
         $this->concreteQueryBuilder->setParameter($key, $value, $type);
 
@@ -595,7 +595,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function delete(string $delete, string $alias = null): QueryBuilder
+    public function delete(string $delete, ?string $alias = null): QueryBuilder
     {
         $this->concreteQueryBuilder->delete(
             $this->quoteIdentifier($delete),
@@ -614,7 +614,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function update(string $update, string $alias = null): QueryBuilder
+    public function update(string $update, ?string $alias = null): QueryBuilder
     {
         $this->concreteQueryBuilder->update(
             $this->quoteIdentifier($update),
@@ -648,7 +648,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function from(string $from, string $alias = null): QueryBuilder
+    public function from(string $from, ?string $alias = null): QueryBuilder
     {
         $this->concreteQueryBuilder->from(
             $this->quoteIdentifier($from),
@@ -668,7 +668,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function join(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
+    public function join(string $fromAlias, string $join, string $alias, ?string $condition = null): QueryBuilder
     {
         $this->concreteQueryBuilder->innerJoin(
             $this->quoteIdentifier($fromAlias),
@@ -690,7 +690,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function innerJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
+    public function innerJoin(string $fromAlias, string $join, string $alias, ?string $condition = null): QueryBuilder
     {
         $this->concreteQueryBuilder->innerJoin(
             $this->quoteIdentifier($fromAlias),
@@ -712,7 +712,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function leftJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
+    public function leftJoin(string $fromAlias, string $join, string $alias, ?string $condition = null): QueryBuilder
     {
         $condition = $this->expr()->andX(
             $condition,
@@ -740,7 +740,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function rightJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
+    public function rightJoin(string $fromAlias, string $join, string $alias, ?string $condition = null): QueryBuilder
     {
         $fromTable = $fromAlias;
         // find the table belonging to the $fromAlias, if it's an alias at all
@@ -976,7 +976,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function orderBy(string $fieldName, string $order = null): QueryBuilder
+    public function orderBy(string $fieldName, ?string $order = null): QueryBuilder
     {
         $this->concreteQueryBuilder->orderBy($this->connection->quoteIdentifier($fieldName), $order);
 
@@ -991,7 +991,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function addOrderBy(string $fieldName, string $order = null): QueryBuilder
+    public function addOrderBy(string $fieldName, ?string $order = null): QueryBuilder
     {
         $this->concreteQueryBuilder->addOrderBy($this->connection->quoteIdentifier($fieldName), $order);
 
@@ -1027,7 +1027,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function resetQueryParts(array $queryPartNames = null): QueryBuilder
+    public function resetQueryParts(?array $queryPartNames = null): QueryBuilder
     {
         $this->concreteQueryBuilder->resetQueryParts($queryPartNames);
 
@@ -1076,7 +1076,7 @@ class QueryBuilder
      *
      * @return string the placeholder name used.
      */
-    public function createNamedParameter($value, int $type = \PDO::PARAM_STR, string $placeHolder = null): string
+    public function createNamedParameter($value, int $type = \PDO::PARAM_STR, ?string $placeHolder = null): string
     {
         return $this->concreteQueryBuilder->createNamedParameter($value, $type, $placeHolder);
     }

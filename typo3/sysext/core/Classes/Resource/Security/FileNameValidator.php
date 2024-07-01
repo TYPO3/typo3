@@ -33,7 +33,7 @@ class FileNameValidator
      */
     protected $fileDenyPattern;
 
-    public function __construct(string $fileDenyPattern = null)
+    public function __construct(?string $fileDenyPattern = null)
     {
         if ($fileDenyPattern !== null) {
             $this->fileDenyPattern = $fileDenyPattern;

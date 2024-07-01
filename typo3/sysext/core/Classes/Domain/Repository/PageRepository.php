@@ -138,9 +138,9 @@ class PageRepository implements LoggerAwareInterface
      * PageRepository constructor to set the base context, this will effectively remove the necessity for
      * setting properties from the outside.
      *
-     * @param Context $context
+     * @param Context|null $context
      */
-    public function __construct(Context $context = null)
+    public function __construct(?Context $context = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->versioningWorkspaceId = $this->context->getPropertyFromAspect('workspace', 'id');
@@ -1293,7 +1293,7 @@ class PageRepository implements LoggerAwareInterface
      * @param QueryRestrictionContainerInterface|null $restrictionContainer
      * @return int[] Returns the array of remaining page UID numbers
      */
-    public function filterAccessiblePageIds(array $pageIds, QueryRestrictionContainerInterface $restrictionContainer = null): array
+    public function filterAccessiblePageIds(array $pageIds, ?QueryRestrictionContainerInterface $restrictionContainer = null): array
     {
         if ($pageIds === []) {
             return [];

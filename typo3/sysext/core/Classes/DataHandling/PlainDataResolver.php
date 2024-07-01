@@ -72,7 +72,7 @@ class PlainDataResolver
      * @param int[] $liveIds
      * @param array|null $sortingStatement
      */
-    public function __construct($tableName, array $liveIds, array $sortingStatement = null)
+    public function __construct($tableName, array $liveIds, ?array $sortingStatement = null)
     {
         $this->tableName = $tableName;
         $this->liveIds = $this->reindex($this->sanitizeIds($liveIds));

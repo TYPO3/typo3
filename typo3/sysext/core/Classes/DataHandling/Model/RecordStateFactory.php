@@ -160,7 +160,7 @@ class RecordStateFactory
      * @return EntityPointer
      * @throws \LogicException
      */
-    protected function createEntityPointer($identifier, string $name = null): EntityPointer
+    protected function createEntityPointer($identifier, ?string $name = null): EntityPointer
     {
         if ($identifier === null) {
             throw new \LogicException(

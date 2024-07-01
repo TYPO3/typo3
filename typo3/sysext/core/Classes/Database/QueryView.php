@@ -99,11 +99,11 @@ class QueryView
     protected $moduleName;
 
     /**
-     * @param array $settings previously stored in $GLOBALS['SOBE']->MOD_SETTINGS
-     * @param array $menuItems previously stored in $GLOBALS['SOBE']->MOD_MENU
-     * @param string $moduleName previously stored in $GLOBALS['SOBE']->moduleName
+     * @param array|null $settings previously stored in $GLOBALS['SOBE']->MOD_SETTINGS
+     * @param array|null $menuItems previously stored in $GLOBALS['SOBE']->MOD_MENU
+     * @param string|null $moduleName previously stored in $GLOBALS['SOBE']->moduleName
      */
-    public function __construct(array $settings = null, $menuItems = null, $moduleName = null)
+    public function __construct(?array $settings = null, $menuItems = null, $moduleName = null)
     {
         trigger_error(__CLASS__ . ' will be removed in TYPO3 v12.', E_USER_DEPRECATED);
         $this->backendUserAuthentication = $GLOBALS['BE_USER'];

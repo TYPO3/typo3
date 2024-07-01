@@ -71,9 +71,9 @@ class SessionManager implements SingletonInterface
      *
      * @param SessionBackendInterface $backend see constants
      * @param int $userId
-     * @param AbstractUserAuthentication $userAuthentication
+     * @param AbstractUserAuthentication|null $userAuthentication
      */
-    public function invalidateAllSessionsByUserId(SessionBackendInterface $backend, int $userId, AbstractUserAuthentication $userAuthentication = null)
+    public function invalidateAllSessionsByUserId(SessionBackendInterface $backend, int $userId, ?AbstractUserAuthentication $userAuthentication = null)
     {
         $sessionToRenew = '';
         $hashedSessionToRenew = '';

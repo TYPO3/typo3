@@ -44,11 +44,11 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
     protected $enforceLiveRowsOnly;
 
     /**
-     * @param int $workspaceId (PageRepository::$versioningWorkspaceId property)
-     * @param bool $includeRowsForWorkspacePreview (PageRepository::$versioningWorkspaceId > 0 property)
+     * @param int|null $workspaceId (PageRepository::$versioningWorkspaceId property)
+     * @param bool|null $includeRowsForWorkspacePreview (PageRepository::$versioningWorkspaceId > 0 property)
      * @param bool $enforceLiveRowsOnly (!$noVersionPreview argument from PageRepository::enableFields()) This is ONLY for use in PageRepository class and most likely will be removed
      */
-    public function __construct(int $workspaceId = null, bool $includeRowsForWorkspacePreview = null, bool $enforceLiveRowsOnly = true)
+    public function __construct(?int $workspaceId = null, ?bool $includeRowsForWorkspacePreview = null, bool $enforceLiveRowsOnly = true)
     {
         $globalWorkspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
         $this->workspaceId = $workspaceId ?? $globalWorkspaceId;

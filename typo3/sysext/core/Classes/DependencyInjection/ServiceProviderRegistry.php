@@ -116,7 +116,7 @@ class ServiceProviderRegistry implements \IteratorAggregate
      * @param Package|null $package
      * @return ServiceProviderInterface
      */
-    private function create(string $packageKey, Package $package = null): ServiceProviderInterface
+    private function create(string $packageKey, ?Package $package = null): ServiceProviderInterface
     {
         if ($package === null) {
             if (!$this->packageManager->isPackageActive($packageKey)) {

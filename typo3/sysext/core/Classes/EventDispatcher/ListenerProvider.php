@@ -51,7 +51,7 @@ class ListenerProvider implements ListenerProviderInterface
      * @param string|null $method
      * @internal
      */
-    public function addListener(string $event, string $service, string $method = null): void
+    public function addListener(string $event, string $service, ?string $method = null): void
     {
         $this->listeners[$event][] = [
             'service' => $service,
@@ -98,7 +98,7 @@ class ListenerProvider implements ListenerProviderInterface
      * @return callable
      * @throws \InvalidArgumentException
      */
-    protected function getCallable(string $service, string $method = null): callable
+    protected function getCallable(string $service, ?string $method = null): callable
     {
         $target = $this->container->get($service);
         if ($method !== null) {

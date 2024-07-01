@@ -117,7 +117,7 @@ class PackageManager implements SingletonInterface
      * @param string|null $packagesBasePath
      * @param string|null $packageStatesPathAndFilename
      */
-    public function __construct(DependencyOrderingService $dependencyOrderingService, string $packageStatesPathAndFilename = null, string $packagesBasePath = null)
+    public function __construct(DependencyOrderingService $dependencyOrderingService, ?string $packageStatesPathAndFilename = null, ?string $packagesBasePath = null)
     {
         $this->packagesBasePath = $packagesBasePath ?? Environment::getPublicPath() . '/';
         $this->packageStatesPathAndFilename = $packageStatesPathAndFilename ?? Environment::getLegacyConfigPath() . '/PackageStates.php';

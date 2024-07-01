@@ -62,7 +62,7 @@ class ComposerPackageArtifact implements PackageCacheInterface
      */
     private ?string $cacheIdentifier;
 
-    public function __construct(string $packageArtifactsPath, ?Filesystem $filesystem = null, string $cacheIdentifier = null)
+    public function __construct(string $packageArtifactsPath, ?Filesystem $filesystem = null, ?string $cacheIdentifier = null)
     {
         $this->packageArtifactsFile = $packageArtifactsPath . self::ARTIFACTS_FILE;
         $this->filesystem = $filesystem;

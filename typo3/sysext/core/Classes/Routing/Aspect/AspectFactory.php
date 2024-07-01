@@ -44,9 +44,9 @@ class AspectFactory
     /**
      * AspectFactory constructor.
      *
-     * @param Context $context
+     * @param Context|null $context
      */
-    public function __construct(Context $context = null)
+    public function __construct(?Context $context = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->availableAspects = $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects'] ?? [];

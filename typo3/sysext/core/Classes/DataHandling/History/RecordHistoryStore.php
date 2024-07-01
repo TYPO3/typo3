@@ -72,7 +72,7 @@ class RecordHistoryStore
      * @param int|null $tstamp
      * @param int $workspaceId
      */
-    public function __construct(string $userType = self::USER_BACKEND, int $userId = null, int $originalUserId = null, int $tstamp = null, int $workspaceId = 0)
+    public function __construct(string $userType = self::USER_BACKEND, ?int $userId = null, ?int $originalUserId = null, ?int $tstamp = null, int $workspaceId = 0)
     {
         $this->userType = $userType;
         $this->userId = $userId;
@@ -88,7 +88,7 @@ class RecordHistoryStore
      * @param CorrelationId|null $correlationId
      * @return string
      */
-    public function addRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null): string
+    public function addRecord(string $table, int $uid, array $payload, ?CorrelationId $correlationId = null): string
     {
         $data = [
             'actiontype' => self::ACTION_ADD,
@@ -113,7 +113,7 @@ class RecordHistoryStore
      * @param CorrelationId|null $correlationId
      * @return string
      */
-    public function modifyRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null): string
+    public function modifyRecord(string $table, int $uid, array $payload, ?CorrelationId $correlationId = null): string
     {
         $data = [
             'actiontype' => self::ACTION_MODIFY,
@@ -137,7 +137,7 @@ class RecordHistoryStore
      * @param CorrelationId|null $correlationId
      * @return string
      */
-    public function deleteRecord(string $table, int $uid, CorrelationId $correlationId = null): string
+    public function deleteRecord(string $table, int $uid, ?CorrelationId $correlationId = null): string
     {
         $data = [
             'actiontype' => self::ACTION_DELETE,
@@ -160,7 +160,7 @@ class RecordHistoryStore
      * @param CorrelationId|null $correlationId
      * @return string
      */
-    public function undeleteRecord(string $table, int $uid, CorrelationId $correlationId = null): string
+    public function undeleteRecord(string $table, int $uid, ?CorrelationId $correlationId = null): string
     {
         $data = [
             'actiontype' => self::ACTION_UNDELETE,
@@ -184,7 +184,7 @@ class RecordHistoryStore
      * @param CorrelationId|null $correlationId
      * @return string
      */
-    public function moveRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null): string
+    public function moveRecord(string $table, int $uid, array $payload, ?CorrelationId $correlationId = null): string
     {
         $data = [
             'actiontype' => self::ACTION_MOVE,
@@ -202,7 +202,7 @@ class RecordHistoryStore
         return $this->getDatabaseConnection()->lastInsertId('sys_history');
     }
 
-    public function changeStageForRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null): string
+    public function changeStageForRecord(string $table, int $uid, array $payload, ?CorrelationId $correlationId = null): string
     {
         $data = [
             'actiontype' => self::ACTION_STAGECHANGE,

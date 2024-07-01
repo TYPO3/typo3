@@ -38,7 +38,7 @@ class AssetRenderer
      */
     protected $eventDispatcher;
 
-    public function __construct(AssetCollector $assetCollector = null, EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(?AssetCollector $assetCollector = null, ?EventDispatcherInterface $eventDispatcher = null)
     {
         $this->assetCollector = $assetCollector ?? GeneralUtility::makeInstance(AssetCollector::class);
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);

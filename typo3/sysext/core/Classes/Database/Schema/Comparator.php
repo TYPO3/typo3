@@ -41,9 +41,9 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
     /**
      * Comparator constructor.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform|null $platform
      */
-    public function __construct(AbstractPlatform $platform = null)
+    public function __construct(?AbstractPlatform $platform = null)
     {
         $this->databasePlatform = $platform;
     }

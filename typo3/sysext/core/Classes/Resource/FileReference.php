@@ -81,7 +81,7 @@ class FileReference implements FileInterface
      *
      * @throws Exception\FileDoesNotExistException
      */
-    private function getFileObject(int $uidLocal, ResourceFactory $factory = null): FileInterface
+    private function getFileObject(int $uidLocal, ?ResourceFactory $factory = null): FileInterface
     {
         if ($factory === null) {
             $factory = GeneralUtility::makeInstance(ResourceFactory::class);

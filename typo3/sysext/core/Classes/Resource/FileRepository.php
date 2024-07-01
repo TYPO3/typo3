@@ -65,11 +65,11 @@ class FileRepository extends AbstractRepository
      * @param string $tableName Table name of the related record
      * @param string $fieldName Field name of the related record
      * @param int $uid The UID of the related record (needs to be the localized uid, as translated IRRE elements relate to them)
-     * @param ?int $workspaceId
+     * @param int|null $workspaceId
      * @return array An array of objects, empty if no objects found
      * @throws \InvalidArgumentException
      */
-    public function findByRelation($tableName, $fieldName, $uid, int $workspaceId = null)
+    public function findByRelation($tableName, $fieldName, $uid, ?int $workspaceId = null)
     {
         $itemList = [];
         if (!MathUtility::canBeInterpretedAsInteger($uid)) {

@@ -254,7 +254,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      *
      * @param ServerRequestInterface|null $request @todo: Make mandatory in v12.
      */
-    public function start(ServerRequestInterface $request = null)
+    public function start(?ServerRequestInterface $request = null)
     {
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $this->logger->debug('## Beginning of auth logging.');
@@ -426,7 +426,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @throws MfaRequiredException
      * @internal
      */
-    public function checkAuthentication(ServerRequestInterface $request = null)
+    public function checkAuthentication(?ServerRequestInterface $request = null)
     {
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $authConfiguration = $this->getAuthServiceConfiguration();

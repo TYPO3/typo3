@@ -101,7 +101,7 @@ class DataMapProcessor
     public static function instance(
         array $dataMap,
         BackendUserAuthentication $backendUser,
-        ReferenceIndexUpdater $referenceIndexUpdater = null
+        ?ReferenceIndexUpdater $referenceIndexUpdater = null
     ) {
         return GeneralUtility::makeInstance(
             static::class,
@@ -119,7 +119,7 @@ class DataMapProcessor
     public function __construct(
         array $dataMap,
         BackendUserAuthentication $backendUser,
-        ReferenceIndexUpdater $referenceIndexUpdater = null
+        ?ReferenceIndexUpdater $referenceIndexUpdater = null
     ) {
         $this->allDataMap = $dataMap;
         $this->modifiedDataMap = $dataMap;

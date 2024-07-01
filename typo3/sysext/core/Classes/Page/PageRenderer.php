@@ -598,10 +598,10 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * @param string $scope
+     * @param string|null $scope
      * @return array
      */
-    public function getRequireJsConfig(string $scope = null): array
+    public function getRequireJsConfig(?string $scope = null): array
     {
         // return basic RequireJS configuration without shim, paths and packages
         if ($scope === static::REQUIREJS_SCOPE_CONFIG) {

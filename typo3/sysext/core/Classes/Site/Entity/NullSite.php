@@ -43,10 +43,10 @@ class NullSite implements SiteInterface
     /**
      * Sets up a null site object
      *
-     * @param array $languages (sys_language objects)
+     * @param array|null $languages (sys_language objects)
      * @param Uri|null $baseEntryPoint
      */
-    public function __construct(array $languages = null, Uri $baseEntryPoint = null)
+    public function __construct(?array $languages = null, ?Uri $baseEntryPoint = null)
     {
         if (empty($languages)) {
             // Create the default language if no language configuration is given
@@ -141,7 +141,7 @@ class NullSite implements SiteInterface
      *
      * @inheritdoc
      */
-    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
+    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, ?int $pageId = null): array
     {
         $availableLanguages = [];
 

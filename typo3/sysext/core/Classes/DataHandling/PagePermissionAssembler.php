@@ -43,7 +43,7 @@ class PagePermissionAssembler
         'everybody' => '',
     ];
 
-    public function __construct(array $defaultPermissions = null)
+    public function __construct(?array $defaultPermissions = null)
     {
         // Initializing default permissions for pages
         if (isset($defaultPermissions['user'])) {

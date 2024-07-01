@@ -847,7 +847,7 @@ class NormalizedParams
      * @param array|null $systemConfiguration
      * @return static
      */
-    public static function createFromServerParams(array $serverParams, array $systemConfiguration = null): self
+    public static function createFromServerParams(array $serverParams, ?array $systemConfiguration = null): self
     {
         return new NormalizedParams(
             $serverParams,
@@ -864,7 +864,7 @@ class NormalizedParams
      * @param array|null $systemConfiguration
      * @return static
      */
-    public static function createFromRequest(ServerRequestInterface $request, array $systemConfiguration = null): self
+    public static function createFromRequest(ServerRequestInterface $request, ?array $systemConfiguration = null): self
     {
         return static::createFromServerParams(
             $request->getServerParams(),

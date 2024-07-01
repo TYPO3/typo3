@@ -58,10 +58,10 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * @param ContainerInterface $container
      * @param ArrayObject $middlewares
-     * @param string $path supplied when invoked internally through PseudoServiceProvider
+     * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
      */
-    public static function configureMiddlewares(ContainerInterface $container, ArrayObject $middlewares, string $path = null): ArrayObject
+    public static function configureMiddlewares(ContainerInterface $container, ArrayObject $middlewares, ?string $path = null): ArrayObject
     {
         $packageConfiguration = ($path ?? static::getPackagePath()) . 'Configuration/RequestMiddlewares.php';
         if (file_exists($packageConfiguration)) {
@@ -80,7 +80,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
      */
-    public static function configureBackendRoutes(ContainerInterface $container, ArrayObject $routes, string $path = null): ArrayObject
+    public static function configureBackendRoutes(ContainerInterface $container, ArrayObject $routes, ?string $path = null): ArrayObject
     {
         $path = $path ?? static::getPackagePath();
         $routesFileNameForPackage = $path . 'Configuration/Backend/Routes.php';
@@ -106,7 +106,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         return $routes;
     }
 
-    public static function configureIcons(ContainerInterface $container, ArrayObject $icons, string $path = null): ArrayObject
+    public static function configureIcons(ContainerInterface $container, ArrayObject $icons, ?string $path = null): ArrayObject
     {
         $path = $path ?? static::getPackagePath();
         $iconsFileNameForPackage = $path . 'Configuration/Icons.php';

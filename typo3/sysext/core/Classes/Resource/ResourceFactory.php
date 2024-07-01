@@ -180,7 +180,7 @@ class ResourceFactory implements SingletonInterface
      * @return ResourceStorage
      * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
      */
-    public function createStorageObject(array $storageRecord, array $storageConfiguration = null)
+    public function createStorageObject(array $storageRecord, ?array $storageConfiguration = null)
     {
         return $this->storageRepository->createStorageObject($storageRecord, $storageConfiguration);
     }
@@ -418,10 +418,10 @@ class ResourceFactory implements SingletonInterface
      * row to be fetched.
      *
      * @param array $fileData
-     * @param ResourceStorage $storage
+     * @param ResourceStorage|null $storage
      * @return File
      */
-    public function createFileObject(array $fileData, ResourceStorage $storage = null)
+    public function createFileObject(array $fileData, ?ResourceStorage $storage = null)
     {
         if (array_key_exists('storage', $fileData) && MathUtility::canBeInterpretedAsInteger($fileData['storage'])) {
             $storageObject = $this->storageRepository->findByUid((int)$fileData['storage']);

@@ -94,10 +94,10 @@ class BackendFormProtection extends AbstractFormProtection
      *
      * @param BackendUserAuthentication $backendUser
      * @param Registry $registry
-     * @param \Closure $validationFailedCallback
+     * @param \Closure|null $validationFailedCallback
      * @throws \TYPO3\CMS\Core\Error\Exception
      */
-    public function __construct(BackendUserAuthentication $backendUser, Registry $registry, \Closure $validationFailedCallback = null)
+    public function __construct(BackendUserAuthentication $backendUser, Registry $registry, ?\Closure $validationFailedCallback = null)
     {
         $this->backendUser = $backendUser;
         $this->registry = $registry;

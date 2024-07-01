@@ -38,7 +38,7 @@ class Identifier
      *
      * @param string $schemaObjectName
      */
-    public function __construct(string $schemaObjectName = null)
+    public function __construct(?string $schemaObjectName = null)
     {
         $this->schemaObjectName = (string)$schemaObjectName;
     }

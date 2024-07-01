@@ -120,7 +120,7 @@ class ReferenceIndex implements LoggerAwareInterface
     protected EventDispatcherInterface $eventDispatcher;
     protected SoftReferenceParserFactory $softReferenceParserFactory;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher = null, SoftReferenceParserFactory $softReferenceParserFactory = null)
+    public function __construct(?EventDispatcherInterface $eventDispatcher = null, ?SoftReferenceParserFactory $softReferenceParserFactory = null)
     {
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $this->softReferenceParserFactory = $softReferenceParserFactory ?? GeneralUtility::makeInstance(SoftReferenceParserFactory::class);

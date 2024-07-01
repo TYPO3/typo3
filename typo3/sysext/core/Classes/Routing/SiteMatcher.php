@@ -60,7 +60,7 @@ class SiteMatcher implements SingletonInterface
      *
      * @param SiteFinder|null $finder
      */
-    public function __construct(SiteFinder $finder = null)
+    public function __construct(?SiteFinder $finder = null)
     {
         $this->finder = $finder ?? GeneralUtility::makeInstance(SiteFinder::class);
     }
@@ -137,7 +137,7 @@ class SiteMatcher implements SingletonInterface
      * @return SiteInterface
      * @throws SiteNotFoundException
      */
-    public function matchByPageId(int $pageId, array $rootLine = null): SiteInterface
+    public function matchByPageId(int $pageId, ?array $rootLine = null): SiteInterface
     {
         try {
             return $this->finder->getSiteByPageId($pageId, $rootLine);

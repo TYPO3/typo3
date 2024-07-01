@@ -39,10 +39,10 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
     protected $includeRowsForWorkspaceOverlay;
 
     /**
-     * @param int $workspaceId
+     * @param int|null $workspaceId
      * @param bool $includeRowsForWorkspaceOverlay
      */
-    public function __construct(int $workspaceId = null, $includeRowsForWorkspaceOverlay = true)
+    public function __construct(?int $workspaceId = null, $includeRowsForWorkspaceOverlay = true)
     {
         if ($workspaceId === null) {
             $this->workspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');

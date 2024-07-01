@@ -67,8 +67,8 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Delay
      * @param LoggerInterface $logger
      */
     public function __construct(
-        EventDispatcherInterface $dispatcher = null,
-        LoggerInterface $logger = null
+        ?EventDispatcherInterface $dispatcher = null,
+        ?LoggerInterface $logger = null
     ) {
         parent::__construct($dispatcher, $logger);
 

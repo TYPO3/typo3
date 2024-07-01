@@ -37,7 +37,7 @@ final class AfterPackageActivationEvent
      */
     private $emitter;
 
-    public function __construct(string $packageKey, string $type, object $emitter = null)
+    public function __construct(string $packageKey, string $type, ?object $emitter = null)
     {
         $this->packageKey = $packageKey;
         $this->type = $type;

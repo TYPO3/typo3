@@ -274,7 +274,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * @param int $level
      * @return DatabaseTreeNode Node object
      */
-    protected function buildRepresentationForNode(TreeNode $basicNode, DatabaseTreeNode $parent = null, $level = 0)
+    protected function buildRepresentationForNode(TreeNode $basicNode, ?DatabaseTreeNode $parent = null, $level = 0)
     {
         $node = GeneralUtility::makeInstance(DatabaseTreeNode::class);
         $row = [];

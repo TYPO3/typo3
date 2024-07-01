@@ -74,13 +74,13 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
      * Create a new FileSpool.
      *
      * @param string $path
-     * @param EventDispatcherInterface $dispatcher
-     * @param LoggerInterface $logger
+     * @param EventDispatcherInterface|null $dispatcher
+     * @param LoggerInterface|null $logger
      */
     public function __construct(
         string $path,
-        EventDispatcherInterface $dispatcher = null,
-        LoggerInterface $logger = null
+        ?EventDispatcherInterface $dispatcher = null,
+        ?LoggerInterface $logger = null
     ) {
         parent::__construct($dispatcher, $logger);
 

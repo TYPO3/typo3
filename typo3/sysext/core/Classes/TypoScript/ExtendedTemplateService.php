@@ -168,9 +168,9 @@ class ExtendedTemplateService extends TemplateService
 
     /**
      * @param Context|null $context
-     * @param \TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser $constantParser
+     * @param \TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser|null $constantParser
      */
-    public function __construct(Context $context = null, ConstantConfigurationParser $constantParser = null)
+    public function __construct(?Context $context = null, ?ConstantConfigurationParser $constantParser = null)
     {
         parent::__construct($context);
         $this->constantParser = $constantParser ?? GeneralUtility::makeInstance(ConstantConfigurationParser::class);

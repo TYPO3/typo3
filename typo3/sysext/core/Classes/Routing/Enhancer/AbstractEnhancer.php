@@ -41,7 +41,7 @@ abstract class AbstractEnhancer implements EnhancerInterface
      * @param AspectInterface[] $aspects
      * @param string|null $namespace
      */
-    protected function applyRouteAspects(Route $route, array $aspects, string $namespace = null)
+    protected function applyRouteAspects(Route $route, array $aspects, ?string $namespace = null)
     {
         if (empty($aspects)) {
             return;
@@ -56,7 +56,7 @@ abstract class AbstractEnhancer implements EnhancerInterface
      * @param array $requirements
      * @param string|null $namespace
      */
-    protected function applyRequirements(Route $route, array $requirements, string $namespace = null)
+    protected function applyRequirements(Route $route, array $requirements, ?string $namespace = null)
     {
         $requirements = $this->getVariableProcessor()
             ->deflateKeys($requirements, $namespace, $route->getArguments());
