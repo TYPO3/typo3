@@ -62,7 +62,7 @@ readonly class OpcodeCacheService
      *
      * @param string|null $fileAbsPath The file as absolute path to be cleared or NULL to clear completely.
      */
-    public function clearAllActive(string $fileAbsPath = null): void
+    public function clearAllActive(?string $fileAbsPath = null): void
     {
         foreach ($this->getAllActive() as $properties) {
             $callback = $properties['clearCallback'];

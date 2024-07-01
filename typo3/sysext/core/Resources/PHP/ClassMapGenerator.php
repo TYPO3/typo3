@@ -50,14 +50,14 @@ class ClassMapGenerator
      * Iterate over all files in the given directory searching for classes
      *
      * @param \Iterator|string $path      The path to search in or an iterator
-     * @param string           $blacklist Regex that matches against the file path that exclude from the classmap.
-     * @param IOInterface      $io        IO object
-     * @param string           $namespace Optional namespace prefix to filter by
+     * @param string|null      $blacklist Regex that matches against the file path that exclude from the classmap.
+     * @param IOInterface|null $io        IO object
+     * @param string|null      $namespace Optional namespace prefix to filter by
      *
      * @throws \RuntimeException When the path is neither an existing file nor directory
      * @return array             A class map array
      */
-    public static function createMap($path, $blacklist = null, IOInterface $io = null, $namespace = null)
+    public static function createMap($path, $blacklist = null, ?IOInterface $io = null, $namespace = null)
     {
         if (is_string($path)) {
             if (is_file($path)) {

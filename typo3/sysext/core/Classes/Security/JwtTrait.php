@@ -54,7 +54,7 @@ trait JwtTrait
         return new Key($keyMaterial, self::getDefaultSigningAlgorithm());
     }
 
-    private static function encodeHashSignedJwt(array $payload, Key $key, SecretIdentifier $identifier = null): string
+    private static function encodeHashSignedJwt(array $payload, Key $key, ?SecretIdentifier $identifier = null): string
     {
         $keyId = $identifier !== null ? json_encode($identifier) : null;
         return JWT::encode($payload, $key->getKeyMaterial(), self::getDefaultSigningAlgorithm(), $keyId);

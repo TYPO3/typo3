@@ -138,7 +138,7 @@ class ModelService
     /**
      * @param ConsumableNonce|null $nonce used to substitute `SourceKeyword::nonceProxy` items during compilation
      */
-    public function serializeSource(SourceInterface $source, ConsumableNonce $nonce = null): string
+    public function serializeSource(SourceInterface $source, ?ConsumableNonce $nonce = null): string
     {
         if ($source === SourceKeyword::nonceProxy && $nonce !== null) {
             return $nonce->count() > 0 ? "'nonce-" . $nonce->value . "'" : '';

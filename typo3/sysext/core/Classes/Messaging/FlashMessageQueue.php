@@ -108,7 +108,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
      * @param ContextualFeedbackSeverity|null $severity
      * @return FlashMessage[]
      */
-    public function getAllMessages(ContextualFeedbackSeverity|null $severity = null)
+    public function getAllMessages(?ContextualFeedbackSeverity $severity = null)
     {
         // Get messages from user session
         $queuedFlashMessagesFromSession = $this->getFlashMessagesFromSession();
@@ -134,7 +134,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
      * @param ContextualFeedbackSeverity|null $severity
      * @return FlashMessage[]
      */
-    public function getAllMessagesAndFlush(ContextualFeedbackSeverity|null $severity = null)
+    public function getAllMessagesAndFlush(?ContextualFeedbackSeverity $severity = null)
     {
         $queuedFlashMessages = $this->getAllMessages($severity);
         // Reset messages in user session
@@ -147,9 +147,9 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     /**
      * Stores given flash messages in the session
      *
-     * @param FlashMessage[] $flashMessages
+     * @param FlashMessage[]|null $flashMessages
      */
-    protected function storeFlashMessagesInSession(array $flashMessages = null)
+    protected function storeFlashMessagesInSession(?array $flashMessages = null)
     {
         if (is_array($flashMessages)) {
             $flashMessages = array_map(json_encode(...), $flashMessages);
@@ -163,7 +163,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
      *
      * @param ContextualFeedbackSeverity|null $severity
      */
-    protected function removeAllFlashMessagesFromSession(ContextualFeedbackSeverity|null $severity = null)
+    protected function removeAllFlashMessagesFromSession(?ContextualFeedbackSeverity $severity = null)
     {
         if (!$this->getUserByContext() instanceof AbstractUserAuthentication) {
             return;
@@ -225,7 +225,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
      * @param FlashMessageRendererInterface|null $flashMessageRenderer
      * @return string All flash messages in the queue rendered by context based FlashMessageRendererResolver.
      */
-    public function renderFlashMessages(FlashMessageRendererInterface $flashMessageRenderer = null)
+    public function renderFlashMessages(?FlashMessageRendererInterface $flashMessageRenderer = null)
     {
         $content = '';
         $flashMessages = $this->getAllMessagesAndFlush();
@@ -261,7 +261,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
      *
      * @param ContextualFeedbackSeverity|null $severity
      */
-    public function clear(ContextualFeedbackSeverity|null $severity = null)
+    public function clear(?ContextualFeedbackSeverity $severity = null)
     {
         $this->rewind();
         if ($severity === null) {

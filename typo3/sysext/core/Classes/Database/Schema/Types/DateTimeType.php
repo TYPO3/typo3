@@ -28,7 +28,7 @@ use Doctrine\DBAL\Types\Exception\InvalidType;
  */
 class DateTimeType extends \Doctrine\DBAL\Types\DateTimeType
 {
-    public function convertToDatabaseValue($value, DoctrineAbstractPlatform $platform): null|string
+    public function convertToDatabaseValue($value, DoctrineAbstractPlatform $platform): ?string
     {
         if ($value === null || (is_string($value) && $value !== '')) {
             return $value;

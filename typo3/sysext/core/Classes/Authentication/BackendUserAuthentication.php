@@ -1835,7 +1835,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @throws \RuntimeException
      * @todo deprecate
      */
-    public function backendCheckLogin(ServerRequestInterface $request = null)
+    public function backendCheckLogin(?ServerRequestInterface $request = null)
     {
         if (empty($this->user['uid'])) {
             // @todo: throw a proper AccessDeniedException in TYPO3 v12.0. and handle this functionality in the calling code
@@ -1854,7 +1854,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * @internal
      */
-    public function initializeBackendLogin(ServerRequestInterface $request = null): void
+    public function initializeBackendLogin(?ServerRequestInterface $request = null): void
     {
         // The groups are fetched and ready for permission checking in this initialization.
         // Tables.php must be read before this because stuff like the modules has impact in this
@@ -1874,7 +1874,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @internal
      */
-    public function handleUserLoggedIn(ServerRequestInterface $request = null): void
+    public function handleUserLoggedIn(?ServerRequestInterface $request = null): void
     {
         // Also, if there is a recovery link set, unset it now
         // this will be moved into its own Event at a later stage.

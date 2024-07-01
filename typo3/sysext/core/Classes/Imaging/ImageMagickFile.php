@@ -118,7 +118,7 @@ class ImageMagickFile
     /**
      * @param int|null $frame
      */
-    public static function fromFilePath(string $filePath, int $frame = null): self
+    public static function fromFilePath(string $filePath, ?int $frame = null): self
     {
         return GeneralUtility::makeInstance(
             static::class,
@@ -131,7 +131,7 @@ class ImageMagickFile
      * @param int|null $frame
      * @throws UnsupportedFileException
      */
-    public function __construct(string $filePath, int $frame = null)
+    public function __construct(string $filePath, ?int $frame = null)
     {
         $this->frame = $frame;
         $this->fileExists = file_exists($filePath);

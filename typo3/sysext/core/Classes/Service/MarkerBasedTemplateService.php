@@ -366,7 +366,7 @@ readonly class MarkerBasedTemplateService
      * @see substituteMarker()
      * @see substituteMarkerInObject()
      */
-    public function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
+    public function substituteMarkerArrayCached($content, ?array $markContentArray = null, ?array $subpartContentArray = null, ?array $wrappedSubpartContentArray = null)
     {
         // If not arrays then set them
         if ($markContentArray === null) {

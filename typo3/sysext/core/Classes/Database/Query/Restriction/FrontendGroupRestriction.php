@@ -33,7 +33,7 @@ class FrontendGroupRestriction implements QueryRestrictionInterface
     /**
      * @param array|null $frontendGroupIds Normalized array with user groups of currently logged in user (typically found in the Frontend Context)
      */
-    public function __construct(array $frontendGroupIds = null)
+    public function __construct(?array $frontendGroupIds = null)
     {
         if ($frontendGroupIds !== null) {
             $this->frontendGroupIds = $frontendGroupIds;

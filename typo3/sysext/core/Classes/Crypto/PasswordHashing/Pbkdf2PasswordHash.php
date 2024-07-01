@@ -148,7 +148,7 @@ class Pbkdf2PasswordHash implements PasswordHashInterface
      * @param string $salt Optional custom salt with setting to use
      * @return string|null Salted hashed password
      */
-    protected function getHashedPasswordInternal(string $password, string $salt = null)
+    protected function getHashedPasswordInternal(string $password, ?string $salt = null)
     {
         $saltedPW = null;
         if ($password !== '') {

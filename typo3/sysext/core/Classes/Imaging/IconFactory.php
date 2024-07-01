@@ -84,7 +84,7 @@ class IconFactory
      *
      * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIcon($identifier, string|IconSize $size = IconSize::MEDIUM, $overlayIdentifier = null, \TYPO3\CMS\Core\Type\Icon\IconState|IconState $state = null)
+    public function getIcon($identifier, string|IconSize $size = IconSize::MEDIUM, $overlayIdentifier = null, \TYPO3\CMS\Core\Type\Icon\IconState|IconState|null $state = null)
     {
         if ($state instanceof \TYPO3\CMS\Core\Type\Icon\IconState) {
             trigger_error(

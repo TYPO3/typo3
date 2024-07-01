@@ -252,7 +252,7 @@ class ImportMap
 
     protected function resolvePaths(
         array $imports,
-        string $bust = null
+        ?string $bust = null
     ): array {
         $cacheBustingSpecifiers = [];
         foreach ($imports as $specifier => $address) {

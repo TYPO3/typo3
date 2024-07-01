@@ -67,7 +67,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureMiddlewares(ContainerInterface $container, \ArrayObject $middlewares, string $path = null): \ArrayObject
+    public static function configureMiddlewares(ContainerInterface $container, \ArrayObject $middlewares, ?string $path = null): \ArrayObject
     {
         $packageConfiguration = ($path ?? static::getPackagePath()) . 'Configuration/RequestMiddlewares.php';
         if (file_exists($packageConfiguration)) {
@@ -84,7 +84,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureBackendRoutes(ContainerInterface $container, \ArrayObject $routes, string $path = null, string $packageName = null): \ArrayObject
+    public static function configureBackendRoutes(ContainerInterface $container, \ArrayObject $routes, ?string $path = null, ?string $packageName = null): \ArrayObject
     {
         $path = $path ?? static::getPackagePath();
         $packageName = $packageName ?? static::getPackageName();
@@ -122,7 +122,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
      */
-    public static function configureBackendModules(ContainerInterface $container, \ArrayObject $modules, string $path = null, string $packageName = null): \ArrayObject
+    public static function configureBackendModules(ContainerInterface $container, \ArrayObject $modules, ?string $path = null, ?string $packageName = null): \ArrayObject
     {
         $path = $path ?? static::getPackagePath();
         $packageName = $packageName ?? static::getPackageName();
@@ -145,7 +145,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      * @param Map<Scope, Map<MutationOrigin, MutationCollection>> $mutations
      * @return Map<Scope, Map<MutationOrigin, MutationCollection>>
      */
-    public static function configureContentSecurityPolicies(ContainerInterface $container, Map $mutations, string $path = null, string $packageName = null): Map
+    public static function configureContentSecurityPolicies(ContainerInterface $container, Map $mutations, ?string $path = null, ?string $packageName = null): Map
     {
         $path = $path ?? static::getPackagePath();
         $packageName = $packageName ?? static::getPackageName();
@@ -164,7 +164,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         return $mutations;
     }
 
-    public static function configureIcons(ContainerInterface $container, \ArrayObject $icons, string $path = null): \ArrayObject
+    public static function configureIcons(ContainerInterface $container, \ArrayObject $icons, ?string $path = null): \ArrayObject
     {
         $path = $path ?? static::getPackagePath();
         $iconsFileNameForPackage = $path . 'Configuration/Icons.php';
@@ -177,7 +177,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         return $icons;
     }
 
-    public static function configureSetCollector(ContainerInterface $container, SetCollector $setCollector, string $path = null): SetCollector
+    public static function configureSetCollector(ContainerInterface $container, SetCollector $setCollector, ?string $path = null): SetCollector
     {
         $path = $path ?? static::getPackagePath();
         $setPath = $path . 'Configuration/Sets';

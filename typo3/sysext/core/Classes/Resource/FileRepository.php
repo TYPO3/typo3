@@ -79,10 +79,10 @@ class FileRepository
      * @param string $tableName Table name of the related record
      * @param string $fieldName Field name of the related record
      * @param int $uid The UID of the related record (needs to be the localized uid, as translated IRRE elements relate to them)
-     * @param ?int $workspaceId
+     * @param int|null $workspaceId
      * @return FileReference[] An array of file references, empty if no objects found
      */
-    public function findByRelation(string $tableName, string $fieldName, int $uid, int $workspaceId = null): array
+    public function findByRelation(string $tableName, string $fieldName, int $uid, ?int $workspaceId = null): array
     {
         $itemList = [];
         $referenceUids = [];

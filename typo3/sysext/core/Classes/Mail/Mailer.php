@@ -71,7 +71,7 @@ class Mailer implements MailerInterface
         $this->eventDispatcher?->dispatch(new AfterMailerInitializationEvent($this));
     }
 
-    public function send(RawMessage $message, Envelope $envelope = null): void
+    public function send(RawMessage $message, ?Envelope $envelope = null): void
     {
         if ($message instanceof Email) {
             // Ensure to always have a From: header set
@@ -152,7 +152,7 @@ class Mailer implements MailerInterface
      *
      * @internal
      */
-    public function injectMailSettings(array $mailSettings = null)
+    public function injectMailSettings(?array $mailSettings = null)
     {
         $this->mailSettings = $mailSettings ?? (array)$GLOBALS['TYPO3_CONF_VARS']['MAIL'];
     }

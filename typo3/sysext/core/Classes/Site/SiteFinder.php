@@ -46,7 +46,7 @@ class SiteFinder
     /**
      * Fetches all existing configurations as Site objects
      */
-    public function __construct(SiteConfiguration $siteConfiguration = null)
+    public function __construct(?SiteConfiguration $siteConfiguration = null)
     {
         $this->siteConfiguration = $siteConfiguration ?? GeneralUtility::makeInstance(SiteConfiguration::class);
         $this->fetchAllSites();
@@ -99,7 +99,7 @@ class SiteFinder
      * @param string|null $mountPointParameter
      * @throws SiteNotFoundException
      */
-    public function getSiteByPageId(int $pageId, array $rootLine = null, string $mountPointParameter = null): Site
+    public function getSiteByPageId(int $pageId, ?array $rootLine = null, ?string $mountPointParameter = null): Site
     {
         if ($pageId === 0) {
             // page uid 0 has no root line. We don't need to ask the root line resolver to know that.

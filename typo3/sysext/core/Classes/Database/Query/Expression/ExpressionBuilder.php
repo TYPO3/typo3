@@ -455,7 +455,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      *
      * @param string|null $alias
      */
-    public function min(string $fieldName, string $alias = null): string
+    public function min(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('MIN', $fieldName, $alias);
     }
@@ -465,7 +465,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      *
      * @param string|null $alias
      */
-    public function max(string $fieldName, string $alias = null): string
+    public function max(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('MAX', $fieldName, $alias);
     }
@@ -475,7 +475,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      *
      * @param string|null $alias
      */
-    public function avg(string $fieldName, string $alias = null): string
+    public function avg(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('AVG', $fieldName, $alias);
     }
@@ -485,7 +485,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      *
      * @param string|null $alias
      */
-    public function sum(string $fieldName, string $alias = null): string
+    public function sum(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('SUM', $fieldName, $alias);
     }
@@ -495,7 +495,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      *
      * @param string|null $alias
      */
-    public function count(string $fieldName, string $alias = null): string
+    public function count(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('COUNT', $fieldName, $alias);
     }
@@ -505,7 +505,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      *
      * @param string|null $alias
      */
-    public function length(string $fieldName, string $alias = null): string
+    public function length(string $fieldName, ?string $alias = null): string
     {
         return $this->calculation('LENGTH', $fieldName, $alias);
     }
@@ -658,7 +658,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      *
      * @param string|null $alias
      */
-    protected function calculation(string $aggregateName, string $fieldName, string $alias = null): string
+    protected function calculation(string $aggregateName, string $fieldName, ?string $alias = null): string
     {
         $aggregateSQL = sprintf(
             '%s(%s)',

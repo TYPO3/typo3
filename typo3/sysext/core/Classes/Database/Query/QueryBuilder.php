@@ -90,9 +90,9 @@ class QueryBuilder extends ConcreteQueryBuilder
      */
     public function __construct(
         Connection $connection,
-        QueryRestrictionContainerInterface $restrictionContainer = null,
-        ConcreteQueryBuilder $concreteQueryBuilder = null,
-        array $additionalRestrictions = null
+        ?QueryRestrictionContainerInterface $restrictionContainer = null,
+        ?ConcreteQueryBuilder $concreteQueryBuilder = null,
+        ?array $additionalRestrictions = null
     ) {
         parent::__construct($connection);
         $this->additionalRestrictions = $additionalRestrictions ?: $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'] ?? [];
@@ -412,7 +412,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function setMaxResults(int|null $maxResults = null): QueryBuilder
+    public function setMaxResults(?int $maxResults = null): QueryBuilder
     {
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         $concreteQueryBuilder->setMaxResults($maxResults);
@@ -425,7 +425,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      *
      * @return int|null The maximum number of results.
      */
-    public function getMaxResults(): int|null
+    public function getMaxResults(): ?int
     {
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         return $concreteQueryBuilder->getMaxResults();
@@ -561,7 +561,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      * @param string $table The table. Will be quoted according to database platform automatically.
      * @param string|null $alias The alias of the table. Will be quoted according to database platform automatically.
      */
-    public function from(string $table, string $alias = null): QueryBuilder
+    public function from(string $table, ?string $alias = null): QueryBuilder
     {
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         $concreteQueryBuilder->from(
@@ -579,7 +579,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      * @param string $alias The alias of the join table.
      * @param string|null $condition The condition for the join.
      */
-    public function join(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
+    public function join(string $fromAlias, string $join, string $alias, ?string $condition = null): QueryBuilder
     {
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         $concreteQueryBuilder->innerJoin(
@@ -599,7 +599,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      * @param string $alias The alias of the join table.
      * @param string|null $condition The condition for the join.
      */
-    public function innerJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
+    public function innerJoin(string $fromAlias, string $join, string $alias, ?string $condition = null): QueryBuilder
     {
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         $concreteQueryBuilder->innerJoin(
@@ -619,7 +619,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      * @param string $alias The alias of the join table.
      * @param CompositeExpression|string|null $condition The condition for the join.
      */
-    public function leftJoin(string $fromAlias, string $join, string $alias, CompositeExpression|string $condition = null): QueryBuilder
+    public function leftJoin(string $fromAlias, string $join, string $alias, CompositeExpression|string|null $condition = null): QueryBuilder
     {
         $conditionExpression = (string)$this->expr()->and(
             $condition,
@@ -644,7 +644,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      * @param string $alias The alias of the join table.
      * @param string|null $condition The condition for the join.
      */
-    public function rightJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
+    public function rightJoin(string $fromAlias, string $join, string $alias, ?string $condition = null): QueryBuilder
     {
         $fromTable = $fromAlias;
         // find the table belonging to the $fromAlias, if it's an alias at all
@@ -866,7 +866,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      * @param string $fieldName The fieldName to order by. Will be quoted according to database platform automatically.
      * @param string|null $order The ordering direction. No automatic quoting/escaping.
      */
-    public function orderBy(string $fieldName, string $order = null): QueryBuilder
+    public function orderBy(string $fieldName, ?string $order = null): QueryBuilder
     {
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         $concreteQueryBuilder->orderBy($this->connection->quoteIdentifier($fieldName), $order);
@@ -879,7 +879,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      * @param string $fieldName The fieldName to order by. Will be quoted according to database platform automatically.
      * @param string|null $order The ordering direction.
      */
-    public function addOrderBy(string $fieldName, string $order = null): QueryBuilder
+    public function addOrderBy(string $fieldName, ?string $order = null): QueryBuilder
     {
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         $concreteQueryBuilder->addOrderBy($this->connection->quoteIdentifier($fieldName), $order);
@@ -951,7 +951,7 @@ class QueryBuilder extends ConcreteQueryBuilder
     public function createNamedParameter(
         mixed $value,
         string|ParameterType|Type|ArrayParameterType $type = ParameterType::STRING,
-        string $placeHolder = null
+        ?string $placeHolder = null
     ): string {
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         return $concreteQueryBuilder->createNamedParameter($value, $type, $placeHolder);

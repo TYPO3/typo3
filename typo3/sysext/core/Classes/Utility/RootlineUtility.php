@@ -117,7 +117,7 @@ class RootlineUtility
         return $this->runtimeCache->get('rootline-localcache-' . $this->cacheIdentifier);
     }
 
-    protected function getCacheIdentifier(int $otherUid = null): string
+    protected function getCacheIdentifier(?int $otherUid = null): string
     {
         $mountPointParameter = $this->mountPointParameter;
         if ($mountPointParameter !== '' && str_contains($mountPointParameter, ',')) {

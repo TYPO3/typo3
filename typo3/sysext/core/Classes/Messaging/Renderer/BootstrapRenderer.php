@@ -33,7 +33,7 @@ class BootstrapRenderer implements FlashMessageRendererInterface
 {
     protected IconFactory $iconFactory;
 
-    public function __construct(IconFactory $iconFactory = null)
+    public function __construct(?IconFactory $iconFactory = null)
     {
         $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
     }

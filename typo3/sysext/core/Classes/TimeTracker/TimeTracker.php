@@ -236,7 +236,7 @@ class TimeTracker implements SingletonInterface
      * @return int The difference between a given microtime value and starting time as milliseconds
      * @internal
      */
-    public function getDifferenceToStarttime(float $microtime = null): int
+    public function getDifferenceToStarttime(?float $microtime = null): int
     {
         return $this->getMilliseconds($microtime) - $this->starttime;
     }

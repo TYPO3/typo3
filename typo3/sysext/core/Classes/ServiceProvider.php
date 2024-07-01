@@ -609,7 +609,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function provideFallbackEventDispatcher(
         ContainerInterface $container,
-        EventDispatcherInterface $eventDispatcher = null
+        ?EventDispatcherInterface $eventDispatcher = null
     ): EventDispatcherInterface {
         // Provide a dummy / empty event dispatcher for the install tool when $eventDispatcher is null (that means when we run without symfony DI)
         return $eventDispatcher ?? new EventDispatcher\EventDispatcher(

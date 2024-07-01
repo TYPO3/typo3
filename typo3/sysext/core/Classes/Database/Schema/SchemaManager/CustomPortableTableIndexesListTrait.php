@@ -134,7 +134,7 @@ trait CustomPortableTableIndexesListTrait
      * Copied from `doctrine/dbal 3.x` \Doctrine\DBAL\Platforms\AbstractMySQLPlatform because it has been deprecated
      * and will be removed in `doctrine/dbal 4.x`.
      */
-    protected function getListTableIndexesSQL(AbstractPlatform $platform, string $table, string $database = null): string
+    protected function getListTableIndexesSQL(AbstractPlatform $platform, string $table, ?string $database = null): string
     {
         if ($database !== null) {
             return 'SELECT NON_UNIQUE AS Non_Unique, INDEX_NAME AS Key_name, COLUMN_NAME AS Column_Name,' .

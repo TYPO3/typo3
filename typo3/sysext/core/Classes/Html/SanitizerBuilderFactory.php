@@ -40,7 +40,7 @@ class SanitizerBuilderFactory
      */
     protected $configuration;
 
-    public function __construct(array $configuration = null)
+    public function __construct(?array $configuration = null)
     {
         $this->configuration = $configuration ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['htmlSanitizer'] ?? [];
     }

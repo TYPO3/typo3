@@ -111,7 +111,7 @@ class ServiceProviderRegistry implements \IteratorAggregate
      * @param string $packageKey Key of the service provider in the registry
      * @param Package|null $package
      */
-    private function create(string $packageKey, Package $package = null): ServiceProviderInterface
+    private function create(string $packageKey, ?Package $package = null): ServiceProviderInterface
     {
         if ($package === null) {
             if (!$this->packageManager->isPackageActive($packageKey)) {

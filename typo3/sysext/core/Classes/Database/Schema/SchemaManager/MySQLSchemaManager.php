@@ -110,7 +110,7 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
         return $tableColumn;
     }
 
-    protected function getMySQLTextAndBlobColumnDefault(string|null $columnDefault): string|null
+    protected function getMySQLTextAndBlobColumnDefault(?string $columnDefault): ?string
     {
         if ($columnDefault === null || $columnDefault === 'NULL') {
             return null;

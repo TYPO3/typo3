@@ -32,7 +32,7 @@ final class RelationMap
         protected array $relations = []
     ) {}
 
-    public function add(string $fromTable, string $fromFieldName, array $fieldConfig, string $flexPointer = null): void
+    public function add(string $fromTable, string $fromFieldName, array $fieldConfig, ?string $flexPointer = null): void
     {
         $fieldType = $fieldConfig['type'] ?? null;
         if ($fieldType === 'group') {
@@ -81,7 +81,7 @@ final class RelationMap
         }
     }
 
-    protected function addMMRelation(string $fromTable, string $fromField, string $toTable, string $mm, string $mmOpposite = null, string $flexPointer = null): void
+    protected function addMMRelation(string $fromTable, string $fromField, string $toTable, string $mm, ?string $mmOpposite = null, ?string $flexPointer = null): void
     {
         $this->relations[$fromTable][$fromField][] = [
             'target' => $toTable,
@@ -91,7 +91,7 @@ final class RelationMap
         ];
     }
 
-    protected function addActiveRelationWithField(string $fromTable, string $fromField, string $toTable, string $toField, string $flexPointer = null): void
+    protected function addActiveRelationWithField(string $fromTable, string $fromField, string $toTable, string $toField, ?string $flexPointer = null): void
     {
         $this->relations[$fromTable][$fromField][] = [
             'target' => $toTable,
@@ -100,7 +100,7 @@ final class RelationMap
         ];
     }
 
-    protected function addActiveRelationToTable(string $fromTable, string $fromField, string $toTable, string $flexPointer = null): void
+    protected function addActiveRelationToTable(string $fromTable, string $fromField, string $toTable, ?string $flexPointer = null): void
     {
         $this->relations[$fromTable][$fromField][] = [
             'target' => $toTable,
@@ -111,7 +111,7 @@ final class RelationMap
     /**
      * @return ActiveRelation[]
      */
-    public function getActiveRelations(string $tableName, string $fieldName = null, string $flexPointer = null): array
+    public function getActiveRelations(string $tableName, ?string $fieldName = null, ?string $flexPointer = null): array
     {
         if ($fieldName === null) {
             $relations = [];

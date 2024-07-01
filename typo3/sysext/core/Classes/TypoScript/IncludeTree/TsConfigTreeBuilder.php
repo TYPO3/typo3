@@ -297,7 +297,7 @@ final class TsConfigTreeBuilder
         string $typoScriptString,
         TokenizerInterface $tokenizer,
         ?PhpFrontend $cache = null,
-        string $filename = null,
+        ?string $filename = null,
     ): TsConfigInclude {
         $lowercaseName = mb_strtolower($name);
         $identifier = (new PackageDependentCacheIdentifier($this->packageManager))

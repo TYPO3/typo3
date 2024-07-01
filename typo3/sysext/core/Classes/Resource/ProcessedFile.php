@@ -101,7 +101,7 @@ class ProcessedFile extends AbstractFile
      * Constructor for a processed file object. Should normally not be used
      * directly, use the corresponding factory methods instead.
      */
-    public function __construct(File $originalFile, string $taskType, array $processingConfiguration, array $databaseRow = null)
+    public function __construct(File $originalFile, string $taskType, array $processingConfiguration, ?array $databaseRow = null)
     {
         $this->originalFile = $originalFile;
         $this->originalFileSha1 = $this->originalFile->getSha1();

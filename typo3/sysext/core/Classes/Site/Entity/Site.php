@@ -89,7 +89,7 @@ class Site implements SiteInterface
     /**
      * Sets up a site object, and its languages, error handlers and the settings
      */
-    public function __construct(string $identifier, int $rootPageId, array $configuration, SiteSettings $settings = null, ?SiteTypoScript $typoscript = null, ?SiteTSconfig $tsConfig = null)
+    public function __construct(string $identifier, int $rootPageId, array $configuration, ?SiteSettings $settings = null, ?SiteTypoScript $typoscript = null, ?SiteTSconfig $tsConfig = null)
     {
         $this->identifier = $identifier;
         $this->rootPageId = $rootPageId;
@@ -269,7 +269,7 @@ class Site implements SiteInterface
     /**
      * @return array<LanguageRef, SiteLanguage>
      */
-    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
+    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, ?int $pageId = null): array
     {
         $availableLanguages = [];
 
@@ -392,7 +392,7 @@ class Site implements SiteInterface
     /**
      * Returns the applicable router for this site. This might be configurable in the future.
      */
-    public function getRouter(Context $context = null): RouterInterface
+    public function getRouter(?Context $context = null): RouterInterface
     {
         return GeneralUtility::makeInstance(PageRouter::class, $this, $context);
     }

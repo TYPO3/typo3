@@ -147,7 +147,7 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
      * @return array An array of Command descriptors
      * @internal
      */
-    public function filter(string $namespace = null): array
+    public function filter(?string $namespace = null): array
     {
         $commands = [];
         foreach ($this->commandConfigurations as $commandName => $configuration) {
@@ -174,10 +174,10 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
     public function addLazyCommand(
         string $commandName,
         string $serviceName,
-        string $description = null,
+        ?string $description = null,
         bool $hidden = false,
         bool $schedulable = false,
-        string $aliasFor = null
+        ?string $aliasFor = null
     ): void {
         $this->commandConfigurations[$commandName] = [
             'name' => $aliasFor ?? $commandName,
@@ -201,7 +201,7 @@ class CommandRegistry implements CommandLoaderInterface, SingletonInterface
      *
      * @return string The namespace of the command
      */
-    private function extractNamespace(string $name, int $limit = null): string
+    private function extractNamespace(string $name, ?int $limit = null): string
     {
         $parts = explode(':', $name, -1);
         if (count($parts) === 0) {

@@ -53,7 +53,7 @@ class Nonce implements SigningSecretInterface
         }
     }
 
-    public function __construct(public readonly string $binary, \DateTimeImmutable $time = null)
+    public function __construct(public readonly string $binary, ?\DateTimeImmutable $time = null)
     {
         if (strlen($this->binary) < self::MIN_BYTES) {
             throw new \LogicException(

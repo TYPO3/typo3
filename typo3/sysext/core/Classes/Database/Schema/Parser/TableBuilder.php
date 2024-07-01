@@ -87,7 +87,7 @@ class TableBuilder
      * @throws \InvalidArgumentException
      * @throws \Doctrine\DBAL\Exception
      */
-    public function __construct(AbstractPlatform $platform = null)
+    public function __construct(?AbstractPlatform $platform = null)
     {
         // Register custom data types as no connection might have
         // been established yet so the types would not be available
@@ -279,7 +279,7 @@ class TableBuilder
     protected function addForeignKeyConstraint(
         array $localColumnNames,
         ReferenceDefinition $referenceDefinition,
-        string $indexName = null
+        ?string $indexName = null
     ) {
         $foreignTableName = $referenceDefinition->tableName->getQuotedName();
         $foreignColumnNames = array_map(

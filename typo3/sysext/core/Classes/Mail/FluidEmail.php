@@ -41,17 +41,16 @@ class FluidEmail extends Email
      * @var string[]
      */
     protected array $format = ['html', 'plain'];
-
     protected string $templateName = 'Default';
-
     protected StandaloneView $view;
-    public function __construct(TemplatePaths $templatePaths = null, Headers $headers = null, AbstractPart $body = null)
+
+    public function __construct(?TemplatePaths $templatePaths = null, ?Headers $headers = null, ?AbstractPart $body = null)
     {
         parent::__construct($headers, $body);
         $this->initializeView($templatePaths);
     }
 
-    protected function initializeView(TemplatePaths $templatePaths = null): void
+    protected function initializeView(?TemplatePaths $templatePaths = null): void
     {
         $templatePaths = $templatePaths ?? new TemplatePaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']);
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);

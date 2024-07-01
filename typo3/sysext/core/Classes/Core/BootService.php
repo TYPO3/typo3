@@ -81,7 +81,7 @@ class BootService
      * to the original booting container if no container
      * is specified
      */
-    public function makeCurrent(ContainerInterface $container = null, array $backup = []): array
+    public function makeCurrent(?ContainerInterface $container = null, array $backup = []): array
     {
         $container = $container ?? $backup['container'] ?? $this->failsafeContainer;
 

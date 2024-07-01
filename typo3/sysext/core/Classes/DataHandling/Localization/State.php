@@ -40,7 +40,7 @@ class State
         );
     }
 
-    public static function fromJSON(string $tableName, string $json = null): ?State
+    public static function fromJSON(string $tableName, ?string $json = null): ?State
     {
         if (!static::isApplicable($tableName)) {
             return null;

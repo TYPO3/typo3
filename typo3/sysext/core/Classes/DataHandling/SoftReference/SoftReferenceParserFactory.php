@@ -82,7 +82,7 @@ class SoftReferenceParserFactory
      * @param array|null $forcedParameters
      * @return iterable<SoftReferenceParserInterface>
      */
-    public function getParsersBySoftRefParserList(string $softRefParserList, array $forcedParameters = null): iterable
+    public function getParsersBySoftRefParserList(string $softRefParserList, ?array $forcedParameters = null): iterable
     {
         foreach ($this->explodeSoftRefParserList($softRefParserList) ?? [] as $parserKey => $parameters) {
             if (!is_array($parameters)) {

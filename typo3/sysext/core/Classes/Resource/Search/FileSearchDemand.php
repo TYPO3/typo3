@@ -64,7 +64,7 @@ class FileSearchDemand
      *
      * @param string|null $searchTerm
      */
-    private function __construct(string $searchTerm = null)
+    private function __construct(?string $searchTerm = null)
     {
         $this->searchTerm = $searchTerm;
     }

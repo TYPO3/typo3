@@ -60,7 +60,7 @@ interface PackageInterface
      * @see json_decode for return values
      * @internal
      */
-    public function getValueFromComposerManifest(string $key = null): mixed;
+    public function getValueFromComposerManifest(?string $key = null): mixed;
 
     /**
      * Returns the package meta object of this package.

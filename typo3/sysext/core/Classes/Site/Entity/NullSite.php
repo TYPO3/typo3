@@ -43,7 +43,7 @@ class NullSite implements SiteInterface
      * @param array|null $languages site languages
      * @param Uri|null $baseEntryPoint
      */
-    public function __construct(array $languages = null, Uri $baseEntryPoint = null)
+    public function __construct(?array $languages = null, ?Uri $baseEntryPoint = null)
     {
         if (empty($languages)) {
             // Create the default language if no language configuration is given
@@ -127,7 +127,7 @@ class NullSite implements SiteInterface
      * This takes page TSconfig into account (unlike Site interface) to find
      * mod.SHARED.disableLanguages and mod.SHARED.defaultLanguageLabel
      */
-    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
+    public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, ?int $pageId = null): array
     {
         $availableLanguages = [];
 

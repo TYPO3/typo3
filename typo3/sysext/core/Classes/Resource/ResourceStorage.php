@@ -230,7 +230,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param array $storageRecord The storage record row from the database
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(DriverInterface $driver, array $storageRecord, EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(DriverInterface $driver, array $storageRecord, ?EventDispatcherInterface $eventDispatcher = null)
     {
         if (!isset($storageRecord['uid'])) {
             throw new \InvalidArgumentException(
@@ -444,7 +444,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder|null $folder
      * @param bool $useFilters Whether storage filters should be applied
      */
-    public function searchFiles(FileSearchDemand $searchDemand, Folder $folder = null, bool $useFilters = true): FileSearchResultInterface
+    public function searchFiles(FileSearchDemand $searchDemand, ?Folder $folder = null, bool $useFilters = true): FileSearchResultInterface
     {
         $folder = $folder ?? $this->getRootLevelFolder();
         if (!$folder->checkActionPermission('read')) {
@@ -783,10 +783,10 @@ class ResourceStorage implements ResourceStorageInterface
      * See the checkFileActionPermission() method above for the reasons.
      *
      * @param string $action
-     * @param Folder $folder
+     * @param Folder|null $folder
      * @return bool
      */
-    public function checkFolderActionPermission($action, Folder $folder = null)
+    public function checkFolderActionPermission($action, ?Folder $folder = null)
     {
         // Check 1: Does the user have permission to perform the action? e.g. "writeFolder"
         if ($this->checkUserActionPermission($action, 'Folder') === false) {
@@ -857,10 +857,10 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Assures read permission for given folder.
      *
-     * @param Folder $folder If a folder is given, mountpoints are checked. If not only user folder read permissions are checked.
+     * @param Folder|null $folder If a folder is given, mountpoints are checked. If not only user folder read permissions are checked.
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
-    protected function assureFolderReadPermission(Folder $folder = null)
+    protected function assureFolderReadPermission(?Folder $folder = null)
     {
         if (!$this->checkFolderActionPermission('read', $folder)) {
             if ($folder === null) {
@@ -1221,7 +1221,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @return string
      */
-    public function sanitizeFileName($fileName, Folder $targetFolder = null)
+    public function sanitizeFileName($fileName, ?Folder $targetFolder = null)
     {
         $targetFolder = $targetFolder ?: $this->getDefaultFolder();
         $fileName = $this->driver->sanitizeFileName($fileName);
@@ -1307,7 +1307,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws \InvalidArgumentException
      * @internal use only
      */
-    public function updateProcessedFile($localFilePath, ProcessedFile $processedFile, Folder $processingFolder = null)
+    public function updateProcessedFile($localFilePath, ProcessedFile $processedFile, ?Folder $processingFolder = null)
     {
         if (!file_exists($localFilePath)) {
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552746);
@@ -1751,14 +1751,14 @@ class ResourceStorage implements ResourceStorageInterface
      * Returns a PSR-7 Response which can be used to stream the requested file
      *
      * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
-     * @param string $alternativeFilename the filename for the download (if $asDownload is set)
-     * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
+     * @param string|null $alternativeFilename the filename for the download (if $asDownload is set)
+     * @param string|null $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
      */
     public function streamFile(
         FileInterface $file,
         bool $asDownload = false,
-        string $alternativeFilename = null,
-        string $overrideMimeType = null
+        ?string $alternativeFilename = null,
+        ?string $overrideMimeType = null
     ): ResponseInterface {
         $this->assureFileReadPermission($file);
         if (!$this->driver instanceof StreamableDriverInterface) {
@@ -1777,15 +1777,15 @@ class ResourceStorage implements ResourceStorageInterface
      * Wrap DriverInterface::dumpFileContents into a SelfEmittableStreamInterface
      *
      * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
-     * @param string $alternativeFilename the filename for the download (if $asDownload is set)
-     * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
+     * @param string|null $alternativeFilename the filename for the download (if $asDownload is set)
+     * @param string|null $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
      * @return ResponseInterface
      */
     protected function getPseudoStream(
         FileInterface $file,
         bool $asDownload = false,
-        string $alternativeFilename = null,
-        string $overrideMimeType = null
+        ?string $alternativeFilename = null,
+        ?string $overrideMimeType = null
     ) {
         $downloadName = $alternativeFilename ?: $file->getName();
         $contentDisposition = $asDownload ? 'attachment' : 'inline';
@@ -2153,7 +2153,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @return FileInterface The file object
      * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
-    public function addUploadedFile(array|UploadedFile $uploadedFileData, Folder $targetFolder = null, $targetFileName = null, $conflictMode = DuplicationBehavior::CANCEL)
+    public function addUploadedFile(array|UploadedFile $uploadedFileData, ?Folder $targetFolder = null, $targetFileName = null, $conflictMode = DuplicationBehavior::CANCEL)
     {
         if (!$conflictMode instanceof DuplicationBehavior) {
             trigger_error(
@@ -2525,14 +2525,14 @@ class ResourceStorage implements ResourceStorageInterface
      * previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::func_newfolder()
      *
      * @param string $folderName The new folder name
-     * @param Folder $parentFolder (optional) the parent folder to create the new folder inside of. If not given, the root folder is used
+     * @param Folder|null $parentFolder (optional) the parent folder to create the new folder inside of. If not given, the root folder is used
      * @return Folder
      * @throws Exception\ExistingTargetFolderException
      * @throws Exception\InsufficientFolderAccessPermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws \Exception
      */
-    public function createFolder($folderName, Folder $parentFolder = null)
+    public function createFolder($folderName, ?Folder $parentFolder = null)
     {
         if ($parentFolder === null) {
             $parentFolder = $this->getRootLevelFolder();
@@ -2781,10 +2781,10 @@ class ResourceStorage implements ResourceStorageInterface
      * Getter function to return the folder where the files can
      * be processed. Does not check for access rights here.
      *
-     * @param File $file Specific file you want to have the processing folder for
+     * @param File|null $file Specific file you want to have the processing folder for
      * @return Folder
      */
-    public function getProcessingFolder(File $file = null)
+    public function getProcessingFolder(?File $file = null)
     {
         // If a file is given, make sure to return the processing folder of the correct storage
         if ($file !== null && $file->getStorage()->getUid() !== $this->getUid()) {

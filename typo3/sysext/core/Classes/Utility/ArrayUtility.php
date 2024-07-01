@@ -944,7 +944,7 @@ class ArrayUtility
      * @param 0|ARRAY_FILTER_USE_KEY|ARRAY_FILTER_USE_BOTH $mode
      * @see https://www.php.net/manual/en/function.array-filter.php
      */
-    public static function filterRecursive(array $array, callable $callback = null, int $mode = 0): array
+    public static function filterRecursive(array $array, ?callable $callback = null, int $mode = 0): array
     {
         $callback ??= static fn($value) => (bool)$value;
 

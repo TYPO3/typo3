@@ -37,7 +37,7 @@ class ReportRepository
     /**
      * @return list<Report>
      */
-    public function findAll(ReportDemand $demand = null): array
+    public function findAll(?ReportDemand $demand = null): array
     {
         $demand ??= ReportDemand::create();
         $result = $this->prepareQueryBuilder($demand)
@@ -52,7 +52,7 @@ class ReportRepository
     /**
      * @return list<SummarizedReport>
      */
-    public function findAllSummarized(ReportDemand $demand = null): array
+    public function findAllSummarized(?ReportDemand $demand = null): array
     {
         $demand ??= ReportDemand::create();
         $queryBuilder = $this->prepareQueryBuilder($demand, 'report');
@@ -214,7 +214,7 @@ class ReportRepository
         );
     }
 
-    protected function prepareQueryBuilder(ReportDemand $demand, string $alias = null): QueryBuilder
+    protected function prepareQueryBuilder(ReportDemand $demand, ?string $alias = null): QueryBuilder
     {
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder->from(self::TABLE_NAME, $alias);
@@ -223,13 +223,13 @@ class ReportRepository
         return $queryBuilder;
     }
 
-    protected function applyDemand(ReportDemand $demand, QueryBuilder $queryBuilder, string $alias = null): void
+    protected function applyDemand(ReportDemand $demand, QueryBuilder $queryBuilder, ?string $alias = null): void
     {
         $this->applyDemandConditions($demand, $queryBuilder, $alias);
         $this->applyDemandSorting($demand, $queryBuilder, $alias);
     }
 
-    protected function applyDemandConditions(ReportDemand $demand, QueryBuilder $queryBuilder, string $alias = null): void
+    protected function applyDemandConditions(ReportDemand $demand, QueryBuilder $queryBuilder, ?string $alias = null): void
     {
         $expr = $queryBuilder->expr();
         $aliasPrefix = $this->prepareAliasPrefix($alias);
@@ -267,7 +267,7 @@ class ReportRepository
         }
     }
 
-    protected function applyDemandSorting(ReportDemand $demand, QueryBuilder $queryBuilder, string $alias = null): void
+    protected function applyDemandSorting(ReportDemand $demand, QueryBuilder $queryBuilder, ?string $alias = null): void
     {
         $aliasPrefix = $this->prepareAliasPrefix($alias);
         if ($demand->orderFieldName !== null && $demand->orderDirection !== null) {
@@ -278,7 +278,7 @@ class ReportRepository
         }
     }
 
-    protected function applyStaticTypeCondition(QueryBuilder $queryBuilder, string $alias = null): void
+    protected function applyStaticTypeCondition(QueryBuilder $queryBuilder, ?string $alias = null): void
     {
         $aliasPrefix = $this->prepareAliasPrefix($alias);
         $queryBuilder->andWhere(
@@ -299,7 +299,7 @@ class ReportRepository
         );
     }
 
-    protected function createFunctionLiteral(QueryBuilder $queryBuilder, string $functionName, string $fieldName, string $alias = null): string
+    protected function createFunctionLiteral(QueryBuilder $queryBuilder, string $functionName, string $fieldName, ?string $alias = null): string
     {
         $values = [
             $functionName,
@@ -314,7 +314,7 @@ class ReportRepository
         return vsprintf($format, $values);
     }
 
-    protected function prepareAliasPrefix(string $alias = null): string
+    protected function prepareAliasPrefix(?string $alias = null): string
     {
         return $alias === null ? '' : $alias . '.';
     }

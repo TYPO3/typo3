@@ -34,7 +34,7 @@ class TableDiff extends DoctrineTableDiff
     /**
      * $newTableName is a TYPO3 internal addition to handle renames at a later point.
      */
-    public string|null $newName = null;
+    public ?string $newName = null;
 
     /**
      * Constructs a TableDiff object.
@@ -205,7 +205,7 @@ class TableDiff extends DoctrineTableDiff
             && $this->getTableOptions() === [];
     }
 
-    public function getNewName(): string|null
+    public function getNewName(): ?string
     {
         return $this->newName;
     }

@@ -1974,7 +1974,7 @@ class ConnectionMigrator
      * @return array{seqid: int, objid: int}|null
      * @throws DBALException
      */
-    private function getTableSequenceInformation(Typo3Connection $connection, TableDiff $changedTable, ColumnDiff $modifiedColumn): array|null
+    private function getTableSequenceInformation(Typo3Connection $connection, TableDiff $changedTable, ColumnDiff $modifiedColumn): ?array
     {
         $oldColumn = $modifiedColumn->getOldColumn();
         $newColumn = $modifiedColumn->getNewColumn();
@@ -2002,7 +2002,7 @@ class ConnectionMigrator
      * @return array{seqid: int, objid: int}|null
      * @throws DBALException
      */
-    private function getSequenceInfo(Typo3Connection $connection, string $table, string $field, int $colNum): array|null
+    private function getSequenceInfo(Typo3Connection $connection, string $table, string $field, int $colNum): ?array
     {
         $quotedTable = $connection->quote($table);
         $colNum = $connection->quote((string)$colNum);
@@ -2045,7 +2045,7 @@ class ConnectionMigrator
      * @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-auto-increment-columns-on-postgresql-are-implemented-as-identity-not-serial
      * @see ConnectionMigrator::getTableSequenceInformation()
      */
-    private function getTableFieldColumnNumber(Typo3Connection $connection, string $table, string $field): int|null
+    private function getTableFieldColumnNumber(Typo3Connection $connection, string $table, string $field): ?int
     {
         $table = $connection->quote($table);
         $field = $connection->quote($field);

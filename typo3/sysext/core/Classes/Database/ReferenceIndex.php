@@ -380,7 +380,7 @@ class ReferenceIndex
      * @return array Statistics about how many index records were added, deleted and not altered.
      * @internal
      */
-    public function updateRefIndexTable(string $tableName, int $uid, bool $testOnly = false, int $workspaceUid = 0, array $currentRecord = null): array
+    public function updateRefIndexTable(string $tableName, int $uid, bool $testOnly = false, int $workspaceUid = 0, ?array $currentRecord = null): array
     {
         $result = [
             'keptNodes' => 0,

@@ -342,7 +342,7 @@ class UserSessionManager implements LoggerAwareInterface
      * @param IpLocker|null $ipLocker
      * @return static
      */
-    public static function create(string $loginType, int $sessionLifetime = null, SessionManager $sessionManager = null, IpLocker $ipLocker = null): self
+    public static function create(string $loginType, ?int $sessionLifetime = null, ?SessionManager $sessionManager = null, ?IpLocker $ipLocker = null): self
     {
         $sessionManager = $sessionManager ?? GeneralUtility::makeInstance(SessionManager::class);
         $ipLocker = $ipLocker ?? GeneralUtility::makeInstance(
@@ -376,7 +376,7 @@ class UserSessionManager implements LoggerAwareInterface
      * @param array|null $sessionRecord
      * @throws SessionNotFoundException
      */
-    protected function recreateUserSession(UserSession $session, array $sessionRecord = null): UserSession
+    protected function recreateUserSession(UserSession $session, ?array $sessionRecord = null): UserSession
     {
         return UserSession::createFromRecord(
             $session->getIdentifier(),

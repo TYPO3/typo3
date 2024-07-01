@@ -1468,7 +1468,7 @@ class DataHandler
      * @return array Returns the evaluated $value as key "value" in this array.
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, array $additionalData = null): array
+    public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, ?array $additionalData = null): array
     {
         // Convert to NULL value if defined in TCA
         if ($value === null && ($tcaFieldConf['nullable'] ?? false)) {
@@ -2624,10 +2624,10 @@ class DataHandler
      * @param array $tcaFieldConf Field configuration from TCA
      * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
      * @param string $field Field name
-     * @param array $additionalData Additional data to be forwarded to sub-processors
+     * @param array|null $additionalData Additional data to be forwarded to sub-processors
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, array $additionalData = null)
+    public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, ?array $additionalData = null)
     {
         [$table, $id, , $status] = $PP;
         $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData);
@@ -2644,11 +2644,11 @@ class DataHandler
      * @param int $id UID of record
      * @param string $status 'update' or 'new' flag
      * @param string $field Field name
-     * @param array $additionalData Additional data to be forwarded to sub-processors
+     * @param array|null $additionalData Additional data to be forwarded to sub-processors
      * @return array|false Modified $res array
      * @internal should only be used from within DataHandler
      */
-    public function checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, array $additionalData = null)
+    public function checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, ?array $additionalData = null)
     {
         if (!$tcaFieldConf['foreign_table']) {
             // Fatal error, inline fields should always have a foreign_table defined
@@ -5912,7 +5912,7 @@ class DataHandler
      * @param array|null $record Record row that should be discarded. Used instead of $uid within recursion.
      * @internal should only be used from within DataHandler
      */
-    public function discard(string $table, ?int $uid, array $record = null): void
+    public function discard(string $table, ?int $uid, ?array $record = null): void
     {
         if ($uid === null && $record === null) {
             throw new \RuntimeException('Either record $uid or $record row must be given', 1600373491);
@@ -7802,10 +7802,10 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $uid Record UID
-     * @param int $workspace Workspace the record lives in
+     * @param int|null $workspace Workspace the record lives in
      * @internal should only be used from within DataHandler
      */
-    public function updateRefIndex($table, $uid, int $workspace = null): void
+    public function updateRefIndex($table, $uid, ?int $workspace = null): void
     {
         if ($workspace === null) {
             $workspace = (int)$this->BE_USER->workspace;
@@ -7835,7 +7835,7 @@ class DataHandler
      *
      * @internal Exists only for workspace DataHandlerHook. May vanish any time.
      */
-    public function registerReferenceIndexUpdateForReferencesToItem(string $table, int $uid, int $workspace, int $targetWorkspace = null): void
+    public function registerReferenceIndexUpdateForReferencesToItem(string $table, int $uid, int $workspace, ?int $targetWorkspace = null): void
     {
         $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, $uid, $workspace, $targetWorkspace);
     }
@@ -8029,10 +8029,10 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $pid Page Uid in which to resort records
-     * @param int $sortingValue All sorting numbers larger than this number will be shifted
+     * @param int|null $sortingValue All sorting numbers larger than this number will be shifted
      * @see getSortNumber()
      */
-    protected function increaseSortingOfFollowingRecords(string $table, int $pid, int $sortingValue = null): void
+    protected function increaseSortingOfFollowingRecords(string $table, int $pid, ?int $sortingValue = null): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
         if ($schema->hasCapability(TcaSchemaCapability::SortByField)) {

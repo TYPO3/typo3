@@ -83,10 +83,10 @@ class SqlReader
      * and there may only be one statement (or partial statement) per line.
      *
      * @param string $dumpContent The SQL dump content.
-     * @param string $queryRegex Regex to select which statements to return.
+     * @param string|null $queryRegex Regex to select which statements to return.
      * @return array Array of SQL statements
      */
-    public function getStatementArray(string $dumpContent, string $queryRegex = null): array
+    public function getStatementArray(string $dumpContent, ?string $queryRegex = null): array
     {
         $statementArray = [];
         $statementArrayPointer = 0;

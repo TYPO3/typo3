@@ -237,7 +237,7 @@ class ProcessedFileRepository implements LoggerAwareInterface, SingletonInterfac
      * @param int|null $storageUid If not NULL, only the processed files of the given storage are removed
      * @return int Number of failed deletions
      */
-    public function removeAll(int $storageUid = null): int
+    public function removeAll(?int $storageUid = null): int
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_processedfile');
         $queryBuilder = $connection->createQueryBuilder();

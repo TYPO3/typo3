@@ -401,7 +401,7 @@ class ResourceFactory implements SingletonInterface
      *
      * @return File
      */
-    public function createFileObject(array $fileData, ResourceStorage $storage = null)
+    public function createFileObject(array $fileData, ?ResourceStorage $storage = null)
     {
         if (array_key_exists('storage', $fileData) && MathUtility::canBeInterpretedAsInteger($fileData['storage'])) {
             $storageObject = $this->storageRepository->findByUid((int)$fileData['storage']);

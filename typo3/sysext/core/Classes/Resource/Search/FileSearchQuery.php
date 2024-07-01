@@ -49,7 +49,7 @@ class FileSearchQuery
 
     private ?Result $result = null;
 
-    public function __construct(QueryBuilder $queryBuilder = null)
+    public function __construct(?QueryBuilder $queryBuilder = null)
     {
         $this->queryBuilder = $queryBuilder ?? GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::FILES_TABLE);
     }
@@ -59,7 +59,7 @@ class FileSearchQuery
      *
      * @param QueryBuilder|null $queryBuilder
      */
-    public static function createForSearchDemand(FileSearchDemand $searchDemand, QueryBuilder $queryBuilder = null): self
+    public static function createForSearchDemand(FileSearchDemand $searchDemand, ?QueryBuilder $queryBuilder = null): self
     {
         $query = new self($queryBuilder);
         $query->additionalRestriction(
@@ -125,7 +125,7 @@ class FileSearchQuery
      *
      * @param QueryBuilder|null $queryBuilder
      */
-    public static function createCountForSearchDemand(FileSearchDemand $searchDemand, QueryBuilder $queryBuilder = null): self
+    public static function createCountForSearchDemand(FileSearchDemand $searchDemand, ?QueryBuilder $queryBuilder = null): self
     {
         $query = new self($queryBuilder);
         $query->additionalRestriction(

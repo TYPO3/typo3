@@ -41,7 +41,7 @@ trait CustomDoctrineTypesColumnDefinitionTrait
     protected function processCustomDoctrineTypesColumnDefinition(
         array $tableColumn,
         AbstractPlatform $platform,
-    ): Column|null {
+    ): ?Column {
         $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
         $dbType = $this->getDatabaseType($tableColumn['type']);
         if ($dbType !== 'enum' && $dbType !== 'set') {

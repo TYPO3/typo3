@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ImageCropScaleMaskTask extends AbstractTask
 {
-    protected string|null $targetFileExtension;
+    protected ?string $targetFileExtension;
 
     public function getType(): string
     {

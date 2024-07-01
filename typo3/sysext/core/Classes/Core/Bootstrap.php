@@ -494,7 +494,7 @@ class Bootstrap
      * @todo: It would be better to remove this method and use the factory directly.
      *        Needs a pre-patch in testing-framework.
      */
-    public static function loadExtTables(bool $allowCaching = true, FrontendInterface $coreCache = null)
+    public static function loadExtTables(bool $allowCaching = true, ?FrontendInterface $coreCache = null)
     {
         $container = GeneralUtility::getContainer();
         if ($allowCaching) {
@@ -511,7 +511,7 @@ class Bootstrap
      * @param ServerRequestInterface|null $request
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function initializeBackendUser($className = BackendUserAuthentication::class, ServerRequestInterface $request = null)
+    public static function initializeBackendUser($className = BackendUserAuthentication::class, ?ServerRequestInterface $request = null)
     {
         /** @var BackendUserAuthentication $backendUser */
         $backendUser = GeneralUtility::makeInstance($className);

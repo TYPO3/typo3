@@ -25,7 +25,7 @@ class SvgSanitizer
      * @param string|null $targetPath
      * @throws \BadFunctionCallException
      */
-    public function sanitizeFile(string $sourcePath, string $targetPath = null): void
+    public function sanitizeFile(string $sourcePath, ?string $targetPath = null): void
     {
         if ($targetPath === null) {
             $targetPath = $sourcePath;

@@ -86,7 +86,7 @@ class SimpleParser
     /**
      * @param int|null $type using `Node::TYPE_*`
      */
-    public function getFirstNode(int $type = null): ?SimpleNode
+    public function getFirstNode(?int $type = null): ?SimpleNode
     {
         foreach ($this->nodes as $node) {
             if ($type === null || $type === $node->getType()) {
@@ -99,7 +99,7 @@ class SimpleParser
     /**
      * @param int|null $type using `Node::TYPE_*`
      */
-    public function getLastNode(int $type = null): ?SimpleNode
+    public function getLastNode(?int $type = null): ?SimpleNode
     {
         foreach (array_reverse($this->nodes) as $node) {
             if ($type === null || $type === $node->getType()) {

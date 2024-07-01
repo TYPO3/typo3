@@ -57,7 +57,7 @@ class IpAnonymizationUtility
      * @param int $mask Allowed values are 0 (masking disabled), 1 (mask host), 2 (mask host and subnet)
      * @throws \UnexpectedValueException
      */
-    public static function anonymizeIp(string $address, int $mask = null): string
+    public static function anonymizeIp(string $address, ?int $mask = null): string
     {
         if ($mask === null) {
             $mask = (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['ipAnonymization'];

@@ -96,7 +96,7 @@ class FieldTypeFactory
         'uuid' => UuidFieldType::class,
     ];
 
-    public function createFieldType(string $fieldName, array $configuration, string $schemaName, RelationMap $relationMap, string $parentSchemaName = null, string $parentFieldName = null): FieldTypeInterface
+    public function createFieldType(string $fieldName, array $configuration, string $schemaName, RelationMap $relationMap, ?string $parentSchemaName = null, ?string $parentFieldName = null): FieldTypeInterface
     {
         $fieldType = $configuration['config']['type'] ?? '';
         switch ($fieldType) {
@@ -129,7 +129,7 @@ class FieldTypeFactory
     /**
      * Basic factory to create the field type from the TCA configuration via new().
      */
-    protected function createFromTca(string $targetClass, string $fieldName, array $fieldConfiguration, array $relations = null): FieldTypeInterface
+    protected function createFromTca(string $targetClass, string $fieldName, array $fieldConfiguration, ?array $relations = null): FieldTypeInterface
     {
         // We deliberately reduce the "config" subarray to make life easier in the future
         $fieldConfiguration = $this->streamlineFieldConfiguration($fieldConfiguration);
@@ -147,7 +147,7 @@ class FieldTypeFactory
     /**
      * First, parse the data structures (and if we only have a subschema, we use that one, ofc)
      */
-    protected function createFlexFormField(string $mainSchemaName, string $fieldName, array $tcaConfig, RelationMap $relationMap, string $subSchemaName = null): FlexFormFieldType
+    protected function createFlexFormField(string $mainSchemaName, string $fieldName, array $tcaConfig, RelationMap $relationMap, ?string $subSchemaName = null): FlexFormFieldType
     {
         $tcaConfig = $this->streamlineFieldConfiguration($tcaConfig);
         // This is the place to get all schema / data structures but should be called somewhere else, probably
