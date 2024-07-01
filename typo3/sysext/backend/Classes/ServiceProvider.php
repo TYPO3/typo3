@@ -172,7 +172,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new \ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('backend'));
     }
 
-    public static function configureBackendRouter(ContainerInterface $container, Router $router = null): Router
+    public static function configureBackendRouter(ContainerInterface $container, ?Router $router = null): Router
     {
         $router = $router ?? self::new($container, Router::class, [$container->get(RequestContextFactory::class)]);
         $cache = $container->get('cache.core');

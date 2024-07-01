@@ -35,21 +35,21 @@ interface ProgressListenerInterface
      * @param int $maxSteps set the maximum amount of items to be processed
      * @param string|null $additionalMessage a separate text message
      */
-    public function start(int $maxSteps = 0, string $additionalMessage = null): void;
+    public function start(int $maxSteps = 0, ?string $additionalMessage = null): void;
 
     /**
      * Move the progress one step further
      * @param int $step by default, this is "1" but can be used to skip further.
      * @param string|null $additionalMessage a separate text message
      */
-    public function advance(int $step = 1, string $additionalMessage = null): void;
+    public function advance(int $step = 1, ?string $additionalMessage = null): void;
 
     /**
      * Stop the progress, automatically setting it to 100%.
      *
      * @param string|null $additionalMessage a separate text message
      */
-    public function finish(string $additionalMessage = null): void;
+    public function finish(?string $additionalMessage = null): void;
 
     /**
      * Can be used to render custom messages during the progress.

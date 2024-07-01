@@ -75,7 +75,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      *
      * @return bool Returns TRUE if access is OK
      */
-    public function backendCheckLogin(ServerRequestInterface $request = null)
+    public function backendCheckLogin(?ServerRequestInterface $request = null)
     {
         if (empty($this->user['uid'])) {
             return false;

@@ -110,11 +110,11 @@ class TranslationConfigurationProvider
      * @param string $table Table name
      * @param int $uid Record uid
      * @param int $languageUid Language uid. If 0, then all languages are selected.
-     * @param array $row The record to be translated
+     * @param array|null $row The record to be translated
      * @param array|string $selFieldList Select fields for the query which fetches the translations of the current record
      * @return mixed Array with information or error message as a string.
      */
-    public function translationInfo($table, $uid, $languageUid = 0, array $row = null, $selFieldList = '')
+    public function translationInfo($table, $uid, $languageUid = 0, ?array $row = null, $selFieldList = '')
     {
         if (!$GLOBALS['TCA'][$table] || !$uid) {
             return 'No table "' . $table . '" or no UID value';

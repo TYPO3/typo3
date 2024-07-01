@@ -57,7 +57,7 @@ class RouteAccessSubject implements AccessSubjectInterface
         return new static($subject, $lifetime, $group);
     }
 
-    final public function __construct(string $subject, AccessLifetime $lifetime = null, string $group = null)
+    final public function __construct(string $subject, ?AccessLifetime $lifetime = null, ?string $group = null)
     {
         $this->subject = $subject;
         $this->lifetime = $lifetime ?? AccessLifetime::veryShort;

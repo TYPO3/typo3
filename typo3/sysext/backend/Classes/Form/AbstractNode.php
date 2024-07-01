@@ -70,7 +70,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
      *
      * @deprecated since TYPO3 v12.4. Default constructor will be removed in v13.
      */
-    public function __construct(NodeFactory $nodeFactory = null, array $data = [])
+    public function __construct(?NodeFactory $nodeFactory = null, array $data = [])
     {
         $this->data = $data;
         $this->nodeFactory = $nodeFactory;

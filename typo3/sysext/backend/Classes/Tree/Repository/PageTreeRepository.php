@@ -129,7 +129,7 @@ class PageTreeRepository
      */
     public function getTree(
         int $entryPoint,
-        callable $callback = null,
+        ?callable $callback = null,
         array $dbMounts = []
     ): array {
         $this->fetchAllPages($dbMounts);

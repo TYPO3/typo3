@@ -54,7 +54,7 @@ class NewContentElementController
     /**
      * If set, the content is destined for a specific column.
      */
-    protected int|null $colPos = null;
+    protected ?int $colPos = null;
 
     public function __construct(
         protected readonly UriBuilder $uriBuilder,

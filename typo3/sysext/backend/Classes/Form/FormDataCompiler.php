@@ -45,7 +45,7 @@ class FormDataCompiler
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      */
-    public function compile(array $initialData, FormDataGroupInterface $formDataGroup = null): array
+    public function compile(array $initialData, ?FormDataGroupInterface $formDataGroup = null): array
     {
         if ($formDataGroup === null) {
             // @deprecated Remove entire if() in v13.

@@ -49,7 +49,7 @@ class ReferenceIndexProgressListener implements ProgressListenerInterface
         $this->isEnabled = $io->isQuiet() === false;
     }
 
-    public function start(int $maxSteps = 0, string $additionalMessage = null): void
+    public function start(int $maxSteps = 0, ?string $additionalMessage = null): void
     {
         if (!$this->isEnabled) {
             return;
@@ -65,7 +65,7 @@ class ReferenceIndexProgressListener implements ProgressListenerInterface
         }
     }
 
-    public function advance(int $step = 1, string $additionalMessage = null): void
+    public function advance(int $step = 1, ?string $additionalMessage = null): void
     {
         if (!$this->isEnabled) {
             return;
@@ -80,7 +80,7 @@ class ReferenceIndexProgressListener implements ProgressListenerInterface
         }
     }
 
-    public function finish(string $additionalMessage = null): void
+    public function finish(?string $additionalMessage = null): void
     {
         if (!$this->isEnabled) {
             return;

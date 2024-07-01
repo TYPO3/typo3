@@ -41,7 +41,7 @@ class TreeController
     protected FileStorageTreeProvider $treeProvider;
     protected ResourceFactory $resourceFactory;
 
-    public function __construct(IconFactory $iconFactory = null)
+    public function __construct(?IconFactory $iconFactory = null)
     {
         $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
         $this->treeProvider = GeneralUtility::makeInstance(FileStorageTreeProvider::class);
