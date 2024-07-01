@@ -21,7 +21,7 @@ $_SERVER['TYPO3_DEPRECATED_ENTRYPOINT'] = 1;
 
 array_map(
     static function (string $var): void {
-        $setenv = static function (string $name, string $value = null): void {
+        $setenv = static function (string $name, ?string $value = null): void {
             // If PHP is running as an Apache module and an existing
             // Apache environment variable exists, overwrite it
             if (function_exists('apache_getenv') && function_exists('apache_setenv') && apache_getenv($name)) {

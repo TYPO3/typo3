@@ -534,7 +534,7 @@ class Clipboard
      * @param bool $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
      * @param array|null $update Additional key/value pairs which should get set in the moved/copied record (via DataHandler)
      */
-    public function pasteUrl(string $table, $identifier, bool $setRedirect = true, array $update = null): string
+    public function pasteUrl(string $table, $identifier, bool $setRedirect = true, ?array $update = null): string
     {
         $urlParameters = [
             'CB' => [

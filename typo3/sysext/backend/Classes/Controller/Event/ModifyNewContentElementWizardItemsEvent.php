@@ -25,7 +25,7 @@ final class ModifyNewContentElementWizardItemsEvent
     public function __construct(
         private array $wizardItems,
         private readonly array $pageInfo,
-        private readonly int|null $colPos,
+        private readonly ?int $colPos,
         private readonly int $sys_language,
         private readonly int $uid_pid,
     ) {}

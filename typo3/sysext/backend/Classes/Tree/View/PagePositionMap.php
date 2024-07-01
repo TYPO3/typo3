@@ -89,7 +89,7 @@ class PagePositionMap
      *
      * @param string|null $pageTreeClassName
      */
-    public function __construct(string $pageTreeClassName = null)
+    public function __construct(?string $pageTreeClassName = null)
     {
         if ($pageTreeClassName !== null) {
             $this->pageTreeClassName = $pageTreeClassName;

@@ -36,7 +36,7 @@ class BackendUserConfiguration
     /**
      * @param BackendUserAuthentication|null $backendUser
      */
-    public function __construct(BackendUserAuthentication $backendUser = null)
+    public function __construct(?BackendUserAuthentication $backendUser = null)
     {
         $this->backendUser = $backendUser ?: $GLOBALS['BE_USER'];
     }

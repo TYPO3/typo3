@@ -57,7 +57,7 @@ class Avatar
      * Has a simple caching functionality. Used in Avatar ViewHelper for instance.
      * Renders avatar of a given backend user record, or of current logged-in backend user.
      */
-    public function render(array $backendUser = null, int $size = 32, bool $showIcon = false): string
+    public function render(?array $backendUser = null, int $size = 32, bool $showIcon = false): string
     {
         if (!is_array($backendUser)) {
             /** @var array $backendUser */

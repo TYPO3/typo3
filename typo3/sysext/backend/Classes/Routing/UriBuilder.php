@@ -62,7 +62,7 @@ class UriBuilder implements SingletonInterface
      */
     protected array $generated = [];
 
-    protected RequestContext|null $requestContext = null;
+    protected ?RequestContext $requestContext = null;
     /**
      * Loads the router to fetch the available routes from the Router to be used for generating routes
      */
@@ -106,7 +106,7 @@ class UriBuilder implements SingletonInterface
      * @throws RouteNotFoundException
      * @internal this is experimental API used for creating logins to redirect to a different route
      */
-    public function buildUriWithRedirect(string $name, array $parameters = [], RouteRedirect $redirect = null, string $referenceType = self::ABSOLUTE_PATH): UriInterface
+    public function buildUriWithRedirect(string $name, array $parameters = [], ?RouteRedirect $redirect = null, string $referenceType = self::ABSOLUTE_PATH): UriInterface
     {
         if ($redirect === null) {
             return $this->buildUriFromRoute($name, $parameters, $referenceType);

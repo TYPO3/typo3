@@ -37,7 +37,7 @@ class LoginProviderResolver
 {
     protected array $loginProviders = [];
 
-    public function __construct(array $loginProviders = null)
+    public function __construct(?array $loginProviders = null)
     {
         if ($loginProviders === null) {
             $loginProviders = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] ?? [];

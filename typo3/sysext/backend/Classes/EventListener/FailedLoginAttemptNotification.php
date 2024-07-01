@@ -55,7 +55,7 @@ final class FailedLoginAttemptNotification
      * @param int $failedLoginAttemptsThreshold The maximum accepted number of warnings before an email to $notificationRecipientEmailAddress is sent
      */
     public function __construct(
-        string $notificationRecipientEmailAddress = null,
+        ?string $notificationRecipientEmailAddress = null,
         protected readonly int $warningPeriod = 3600,
         protected readonly int $failedLoginAttemptsThreshold = 3
     ) {

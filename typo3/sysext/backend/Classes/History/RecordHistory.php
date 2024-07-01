@@ -200,7 +200,7 @@ class RecordHistory
      *
      * @param int $lastHistoryEntry the highest entry to be evaluated
      */
-    protected function getHistoryData(string $table, int $uid, bool $includeSubEntries = null, int $lastHistoryEntry = null): array
+    protected function getHistoryData(string $table, int $uid, ?bool $includeSubEntries = null, ?int $lastHistoryEntry = null): array
     {
         $historyDataForRecord = $this->getHistoryDataForRecord($table, $uid, $lastHistoryEntry);
         // get history of tables of this page and merge it into changelog
@@ -248,11 +248,11 @@ class RecordHistory
      *
      * @param string $table DB table name
      * @param int $uid UID of record
-     * @param int $lastHistoryEntry the highest entry to be fetched
+     * @param int|null $lastHistoryEntry the highest entry to be fetched
      * @return array Array of history data of the record
      * @internal
      */
-    public function getHistoryDataForRecord(string $table, int $uid, int $lastHistoryEntry = null): array
+    public function getHistoryDataForRecord(string $table, int $uid, ?int $lastHistoryEntry = null): array
     {
         if (empty($GLOBALS['TCA'][$table]) || !$this->hasTableAccess($table) || !$this->hasPageAccess($table, $uid)) {
             return [];
@@ -378,7 +378,7 @@ class RecordHistory
      * Queries the DB and prepares the results
      * Resolving a WSOL of the UID and checking permissions is explicitly not part of this method
      */
-    public function findEventsForRecord(string $table, int $uid, int $limit = 0, int $minimumUid = null): array
+    public function findEventsForRecord(string $table, int $uid, int $limit = 0, ?int $minimumUid = null): array
     {
         $backendUser = $this->getBackendUser();
         $queryBuilder = $this->getQueryBuilder();

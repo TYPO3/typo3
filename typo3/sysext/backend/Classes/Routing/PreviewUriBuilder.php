@@ -167,7 +167,7 @@ class PreviewUriBuilder
     /**
      * Builds preview URI.
      */
-    public function buildUri(array $options = null, Context $context = null): ?UriInterface
+    public function buildUri(?array $options = null, ?Context $context = null): ?UriInterface
     {
         $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         try {
@@ -249,7 +249,7 @@ class PreviewUriBuilder
      *
      * @param array|null $options
      */
-    public function buildDispatcherDataAttributes(array $options = null): ?array
+    public function buildDispatcherDataAttributes(?array $options = null): ?array
     {
         if (null === ($attributes = $this->buildAttributes($options))) {
             return null;
@@ -264,7 +264,7 @@ class PreviewUriBuilder
      *
      * @param array|null $options
      */
-    public function buildDispatcherAttributes(array $options = null): ?array
+    public function buildDispatcherAttributes(?array $options = null): ?array
     {
         if (null === ($attributes = $this->buildAttributes($options))) {
             return null;
@@ -278,7 +278,7 @@ class PreviewUriBuilder
      *
      * @param array|null $options
      */
-    public function serializeDispatcherAttributes(array $options = null): ?string
+    public function serializeDispatcherAttributes(?array $options = null): ?string
     {
         if (null === ($attributes = $this->buildDispatcherAttributes($options))) {
             return null;
@@ -292,7 +292,7 @@ class PreviewUriBuilder
      *
      * @param array|null $options
      */
-    public function buildImmediateActionElement(array $options = null): ?string
+    public function buildImmediateActionElement(?array $options = null): ?string
     {
         if (null === ($attributes = $this->buildAttributes($options))) {
             return null;
@@ -305,7 +305,7 @@ class PreviewUriBuilder
         );
     }
 
-    protected function buildAttributes(array $options = null): ?array
+    protected function buildAttributes(?array $options = null): ?array
     {
         $options = $this->enrichOptions($options);
         if (null === ($uri = $this->buildUri($options))) {
@@ -339,7 +339,7 @@ class PreviewUriBuilder
      *
      * @param array|null $options
      */
-    protected function enrichOptions(array $options = null): array
+    protected function enrichOptions(?array $options = null): array
     {
         return array_merge(
             [

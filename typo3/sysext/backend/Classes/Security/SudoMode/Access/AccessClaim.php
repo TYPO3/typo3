@@ -30,7 +30,7 @@ class AccessClaim implements \JsonSerializable
         public readonly AccessSubjectInterface $subject,
         public readonly ServerRequestInstruction $instruction,
         public readonly int $expiration,
-        string $id = null,
+        ?string $id = null,
     ) {
         $this->id = $id ?? bin2hex(random_bytes(20));
     }
