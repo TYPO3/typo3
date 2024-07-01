@@ -37,12 +37,6 @@ import '@typo3/backend/element/spinner-element';
 @customElement('typo3-t3editor-codemirror')
 export class CodeMirrorElement extends LitElement {
   static styles = css`
-    @media (prefers-color-scheme: dark) {
-      :host {
-        color-scheme: dark;
-      }
-    }
-
     :host {
       position: relative;
       display: block;
@@ -254,12 +248,23 @@ export class CodeMirrorElement extends LitElement {
       root: this.renderRoot as ShadowRoot
     });
 
+    this.toggleDarkMode(this.darkModeEnabled());
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    this.toggleDarkMode(darkModeMediaQuery.matches);
-
-    darkModeMediaQuery.addEventListener('change', (e: MediaQueryListEvent): void => {
-      this.toggleDarkMode(e.matches);
+    darkModeMediaQuery.addEventListener('change', (): void => {
+      this.toggleDarkMode(this.darkModeEnabled());
     });
+  }
+
+  private darkModeEnabled(): boolean {
+    const computedStyle = window.getComputedStyle(this);
+    const colorScheme = computedStyle.colorScheme;
+    if (colorScheme === 'light only' || colorScheme === 'light') {
+      return false;
+    } else if (colorScheme === 'dark only' || colorScheme === 'dark') {
+      return true;
+    }
+
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
 
   private toggleDarkMode(enabled: boolean): void {
