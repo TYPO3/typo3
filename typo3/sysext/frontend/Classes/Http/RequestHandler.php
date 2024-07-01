@@ -300,8 +300,15 @@ class RequestHandler implements RequestHandlerInterface
         if (!empty($docTypeParts)) {
             $pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
         }
+        
         // See https://www.w3.org/International/questions/qa-html-language-declarations.en.html#attributes
-        $htmlTagAttributes[$docType->isXmlCompliant() ? 'xml:lang' : 'lang'] = $siteLanguage->getLocale()->getLanguageCode();
+        // and https://datatracker.ietf.org/doc/html/rfc5646
+        $htmlLangAttribute = $siteLanguage->getLocale()->getLanguageCode();
+        $siteLanguageHreflang = $siteLanguage->getHreflang(true);
+        if ($siteLanguageHreflang !== '') {
+            $htmlLangAttribute = $siteLanguageHreflang;
+        }
+        $htmlTagAttributes[$docType->isXmlCompliant() ? 'xml:lang' : 'lang'] = $htmlLangAttribute;
 
         if ($docType->isXmlCompliant() || $docType === DocType::html5 && $xmlDocument) {
             // We add this to HTML5 to achieve a slightly better backwards compatibility
