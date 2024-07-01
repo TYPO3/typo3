@@ -17,23 +17,23 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Content;
 
+use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Executes a SQL query, and retrieves TCA-based records for Frontend rendering.
  */
-class RecordCollector
+readonly class RecordCollector
 {
-    public function __construct(
-        protected readonly RecordFactory $recordFactory
-    ) {}
+    public function __construct(protected RecordFactory $recordFactory) {}
 
     public function collect(
         string $table,
         array $select,
         ContentSlideMode $slideMode,
-        ContentObjectRenderer $contentObjectRenderer
+        ContentObjectRenderer $contentObjectRenderer,
+        ?RecordIdentityMap $recordIdentityMap = null,
     ): array {
         $slideCollectReverse = false;
         $collect = false;
@@ -59,8 +59,10 @@ class RecordCollector
         do {
             $recordsOnPid = $contentObjectRenderer->getRecords($table, $select);
             $recordsOnPid = array_map(
-                function ($record) use ($table) {
-                    return $this->recordFactory->createFromDatabaseRow($table, $record);
+                function ($record) use ($recordIdentityMap, $table) {
+                    $obj = $this->recordFactory->createFromDatabaseRow($table, $record);
+                    $recordIdentityMap?->add($obj);
+                    return $obj;
                 },
                 $recordsOnPid
             );

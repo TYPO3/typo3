@@ -118,11 +118,12 @@ class ContentFetcher
     public function getUnusedRecords(): iterable
     {
         $unrendered = [];
-        $rememberer = GeneralUtility::makeInstance(RecordRememberer::class);
+        $recordIdentityMap = $this->context->getRecordIdentityMap();
         $languageId = $this->context->getDrawingConfiguration()->getSelectedLanguageId();
+        // @todo consider to invoke the identity-map much earlier (to avoid fetching database records again)
         foreach ($this->getContentRecordsPerColumn(null, $languageId) as $contentRecordsInColumn) {
             foreach ($contentRecordsInColumn as $contentRecord) {
-                $used = $rememberer->isRemembered((int)$contentRecord['uid']);
+                $used = $recordIdentityMap->hasIdentifier('tt_content', (int)$contentRecord['uid']);
                 // A hook mentioned that this record is used somewhere, so this is in fact "rendered" already
                 $event = new IsContentUsedOnPageLayoutEvent($contentRecord, $used, $this->context);
                 $event = $this->eventDispatcher->dispatch($event);

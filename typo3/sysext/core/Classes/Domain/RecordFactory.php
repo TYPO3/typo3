@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Domain;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Domain\Record\LanguageInfo;
 use TYPO3\CMS\Core\Domain\Record\SystemProperties;
@@ -38,6 +39,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  *
  * @internal not part of TYPO3 Core API yet.
  */
+#[Autoconfigure(public: true)]
 readonly class RecordFactory
 {
     public function __construct(

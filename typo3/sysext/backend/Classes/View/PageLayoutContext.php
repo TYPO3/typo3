@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -66,6 +67,8 @@ class PageLayoutContext
      * - icon (icon name or file reference. OPTIONAL)
      */
     protected array $itemLabels = [];
+
+    protected RecordIdentityMap $recordIdentityMap;
 
     public function __construct(
         protected readonly array $pageRecord,
@@ -323,6 +326,14 @@ class PageLayoutContext
     public function getLocalizedPageRecord(): ?array
     {
         return $this->localizedPageRecord;
+    }
+
+    public function getRecordIdentityMap(): RecordIdentityMap
+    {
+        if (!isset($this->recordIdentityMap)) {
+            $this->recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
+        }
+        return $this->recordIdentityMap;
     }
 
     protected function getLanguageService(): LanguageService

@@ -24,10 +24,10 @@ use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridRow;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\LanguageColumn;
-use TYPO3\CMS\Backend\View\BackendLayout\RecordRememberer;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -47,11 +47,12 @@ class BackendLayoutRenderer
 {
     public function __construct(
         protected readonly BackendViewFactory $backendViewFactory,
-        protected readonly RecordRememberer $recordRememberer
+        protected readonly RecordFactory $recordFactory,
     ) {}
 
     public function getGridForPageLayoutContext(PageLayoutContext $context): Grid
     {
+        $recordIdentityMap = $context->getRecordIdentityMap();
         $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $context);
         $grid = GeneralUtility::makeInstance(Grid::class, $context);
         if ($context->getDrawingConfiguration()->isLanguageComparisonMode()) {
@@ -63,13 +64,17 @@ class BackendLayoutRenderer
         ksort($rows);
         foreach ($rows as $row) {
             $rowObject = GeneralUtility::makeInstance(GridRow::class, $context);
-            foreach (($row['columns.'] ?? []) as $column) {
+            foreach ($row['columns.'] ?? [] as $column) {
                 $columnObject = GeneralUtility::makeInstance(GridColumn::class, $context, $column);
                 $rowObject->addColumn($columnObject);
                 if (isset($column['colPos'])) {
                     $records = $contentFetcher->getContentRecordsPerColumn((int)$column['colPos'], $languageId);
-                    $this->recordRememberer->rememberRecords($records);
                     foreach ($records as $contentRecord) {
+                        // @todo: ideally we hand in the record object into the GridColumnItem in the future
+                        if (!$recordIdentityMap->hasIdentifier('tt_content', (int)($contentRecord['uid'] ?? null))) {
+                            $recordObject = $this->recordFactory->createFromDatabaseRow('tt_content', $contentRecord);
+                            $recordIdentityMap->add($recordObject);
+                        }
                         $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $context, $columnObject, $contentRecord);
                         $columnObject->addItem($columnItem);
                     }
