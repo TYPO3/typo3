@@ -148,7 +148,7 @@
 			"always-add-alias-loader": true
 		},
 		"branch-alias": {
-			"dev-main": "13.2.x-dev"
+			"dev-main": "13.3.x-dev"
 		}
 	},
 	"scripts": {
