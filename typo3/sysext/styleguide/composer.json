@@ -21,10 +21,10 @@
 		"source": "https://github.com/typo3/typo3"
 	},
 	"require": {
-		"typo3/cms-core": "13.2.0,
-		"typo3/cms-felogin": "13.2.0,
-		"typo3/cms-fluid-styled-content": "13.2.0,
-		"typo3/cms-seo": "13.2.0
+		"typo3/cms-core": "13.2.0",
+		"typo3/cms-felogin": "13.2.0",
+		"typo3/cms-fluid-styled-content": "13.2.0",
+		"typo3/cms-seo": "13.2.0"
 	},
 	"conflict": {
 		"typo3/cms": "*"
