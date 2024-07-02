@@ -93,6 +93,10 @@ return (new \PhpCsFixer\Config())
         'no_useless_else' => true,
         'no_useless_nullsafe_operator' => true,
         'no_whitespace_in_blank_line' => true,
+        'nullable_type_declaration' => [
+            'syntax' => 'question_mark',
+        ],
+        'nullable_type_declaration_for_default_null_value' => true,
         'ordered_imports' => true,
         'php_unit_construct' => ['assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']],
         'php_unit_mock_short_will_return' => true,
