@@ -38,10 +38,53 @@ readonly class TcaPreparation
      */
     public function prepare(array $tca, bool $isFlexForm = false): array
     {
+        $tca = $this->sanitizeControlSectionIntegrity($tca, $isFlexForm);
         $tca = $this->configureCategoryRelations($tca, $isFlexForm);
         $tca = $this->configureFileReferences($tca, $isFlexForm);
         $tca = $this->configureEmailSoftReferences($tca);
         return $this->configureLinkSoftReferences($tca);
+    }
+
+    /**
+     * Ensures that system internal columns that are required for data integrity
+     * (e.g. localize or copy a record) are available in case they have been defined
+     * in $GLOBALS['TCA'][<table-name>]['ctrl'].
+     *
+     * The list of references to usages below is not necessarily complete.
+     *
+     * @see \TYPO3\CMS\Core\DataHandling\DataHandler::fillInFieldArray()
+     */
+    protected function sanitizeControlSectionIntegrity(array $tca, bool $isFlexForm): array
+    {
+        if ($isFlexForm) {
+            // Flex form "TCA" has no 'ctrl'
+            return $tca;
+        }
+        $defaultControlSectionColumnConfig = [
+            'type' => 'passthrough',
+            'default' => 0,
+        ];
+        $controlSectionNames = [
+            'origUid' => $defaultControlSectionColumnConfig,
+            'languageField' => [
+                'type' => 'language',
+            ],
+            'transOrigPointerField' => $defaultControlSectionColumnConfig,
+            'translationSource' => $defaultControlSectionColumnConfig,
+        ];
+
+        foreach ($tca as $table => &$tableDefinition) {
+            foreach ($controlSectionNames as $controlSectionName => $controlSectionColumnConfig) {
+                $columnName = $tableDefinition['ctrl'][$controlSectionName] ?? null;
+                if (empty($columnName) || !empty($tableDefinition['columns'][$columnName])) {
+                    continue;
+                }
+                $tableDefinition['columns'][$columnName] = [
+                    'config' => $controlSectionColumnConfig,
+                ];
+            }
+        }
+        return $tca;
     }
 
     /**

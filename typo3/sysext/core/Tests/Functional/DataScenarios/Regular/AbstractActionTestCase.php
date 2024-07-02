@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular;
 
-use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
+use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
@@ -191,7 +191,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function localizeContentWithEmptyTcaIntegrityColumns(): void
     {
-        // @see \TYPO3\CMS\Core\Configuration\Tca\TcaMigration::sanitizeControlSectionIntegrity()
+        // @see \TYPO3\CMS\Core\Configuration\Tca\TcaPreparation::sanitizeControlSectionIntegrity()
         $integrityFieldNames = [
             'language' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['languageField'] ?? null,
             'languageParent' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['transOrigPointerField'] ?? null,
@@ -206,7 +206,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $referenceIndex->updateIndex(false);
 
         // explicitly call TcaMigration (which was executed already earlier in functional testing bootstrap)
-        $GLOBALS['TCA'] = (new TcaMigration())->migrate($GLOBALS['TCA']);
+        $GLOBALS['TCA'] = (new TcaPreparation())->prepare($GLOBALS['TCA']);
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         // perform actions to be tested
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);

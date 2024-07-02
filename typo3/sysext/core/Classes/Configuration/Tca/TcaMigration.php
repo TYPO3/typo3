@@ -50,7 +50,6 @@ class TcaMigration
         $tca = $this->migratePagesLanguageOverlayRemoval($tca);
         $tca = $this->removeSelIconFieldPath($tca);
         $tca = $this->removeSetToDefaultOnCopy($tca);
-        $tca = $this->sanitizeControlSectionIntegrity($tca);
         $tca = $this->removeEnableMultiSelectFilterTextfieldConfiguration($tca);
         $tca = $this->removeExcludeFieldForTransOrigPointerField($tca);
         $tca = $this->removeShowRecordFieldListField($tca);
@@ -218,44 +217,6 @@ class TcaMigration
                     . '[ctrl][setToDefaultOnCopy] which should be removed from TCA, '
                     . 'as it is not in use anymore.';
                 unset($configuration['ctrl']['setToDefaultOnCopy']);
-            }
-        }
-        return $tca;
-    }
-
-    /**
-     * Ensures that system internal columns that are required for data integrity
-     * (e.g. localize or copy a record) are available in case they have been defined
-     * in $GLOBALS['TCA'][<table-name>]['ctrl'].
-     *
-     * The list of references to usages below is not necessarily complete.
-     *
-     * @see \TYPO3\CMS\Core\DataHandling\DataHandler::fillInFieldArray()
-     */
-    protected function sanitizeControlSectionIntegrity(array $tca): array
-    {
-        $defaultControlSectionColumnConfig = [
-            'type' => 'passthrough',
-            'default' => 0,
-        ];
-        $controlSectionNames = [
-            'origUid' => $defaultControlSectionColumnConfig,
-            'languageField' => [
-                'type' => 'language',
-            ],
-            'transOrigPointerField' => $defaultControlSectionColumnConfig,
-            'translationSource' => $defaultControlSectionColumnConfig,
-        ];
-
-        foreach ($tca as $tableName => &$configuration) {
-            foreach ($controlSectionNames as $controlSectionName => $controlSectionColumnConfig) {
-                $columnName = $configuration['ctrl'][$controlSectionName] ?? null;
-                if (empty($columnName) || !empty($configuration['columns'][$columnName])) {
-                    continue;
-                }
-                $configuration['columns'][$columnName] = [
-                    'config' => $controlSectionColumnConfig,
-                ];
             }
         }
         return $tca;
