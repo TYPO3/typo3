@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -51,6 +52,7 @@ class PackageActivationService
         private OpcodeCacheService $opcodeCacheService,
         private EventDispatcherInterface $eventDispatcher,
         private ExtensionConfiguration $extensionConfiguration,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function activate(array $extensionKeys, ?object $emitter = null): void
@@ -71,7 +73,7 @@ class PackageActivationService
         $tcaFactory = $container->get(TcaFactory::class);
         $GLOBALS['TCA'] = $tcaFactory->create();
         $container->get(ExtTablesFactory::class)->loadUncached();
-
+        $this->tcaSchemaFactory->rebuild($GLOBALS['TCA']);
         $this->updateDatabase();
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
         foreach ($packages as $extensionKey => $package) {
