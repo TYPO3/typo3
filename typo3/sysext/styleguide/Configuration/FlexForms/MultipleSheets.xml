@@ -1,0 +1,175 @@
+<T3DataStructure>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <sheet1>
+            <ROOT>
+                <sheetTitle>Tab1</sheetTitle>
+                <type>array</type>
+                <el>
+                    <tabheader>
+                        <label>Tabheader</label>
+                        <config>
+                            <type>input</type>
+                            <size>60</size>
+                        </config>
+                    </tabheader>
+                    <tabicon>
+                        <label>Tabicon</label>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <selicon_cols>28</selicon_cols>
+                            <size>1</size>
+                            <minitems>0</minitems>
+                            <maxitems> 1</maxitems>
+                            <items type="array">
+                                <numIndex index="0" type="array">
+                                    <label>label1.1.1</label>
+                                    <value>value1.1.1</value>
+                                </numIndex>
+                                <numIndex index="1" type="array">
+                                    <label>label1.1.2</label>
+                                    <value>value1.1.2</value>
+                                </numIndex>
+                            </items>
+                        </config>
+                    </tabicon>
+                    <links>
+                        <title>links</title>
+                        <type>array</type>
+                        <section>1</section>
+                        <el>
+                            <link>
+                                <type>array</type>
+                                <title>link</title>
+                                <el>
+                                    <linkicon>
+                                        <label>linkicon</label>
+                                        <config>
+                                            <type>select</type>
+                                            <renderType>selectSingle</renderType>
+                                            <selicon_cols>28</selicon_cols>
+                                            <size>1</size>
+                                            <minitems>0</minitems>
+                                            <maxitems>1</maxitems>
+                                            <items type="array">
+                                                <numIndex index="0" type="array">
+                                                    <label>label1.2.1</label>
+                                                    <value>value1.2.1</value>
+                                                </numIndex>
+                                                <numIndex index="1" type="array">
+                                                    <label>label1.2.2</label>
+                                                    <value>value1.2.2</value>
+                                                </numIndex>
+                                            </items>
+                                        </config>
+                                    </linkicon>
+                                    <linktext>
+                                        <label>linktext</label>
+                                        <config>
+                                            <type>input</type>
+                                            <size>20</size>
+                                            <default/>
+                                        </config>
+                                    </linktext>
+                                    <url>
+                                        <label>linkurl</label>
+                                        <config>
+                                            <type>link</type>
+                                        </config>
+                                    </url>
+                                </el>
+                            </link>
+                        </el>
+                    </links>
+                </el>
+            </ROOT>
+        </sheet1>
+        <sheet2>
+            <ROOT>
+                <sheetTitle>Tab2</sheetTitle>
+                <type>array</type>
+                <el>
+                    <tabheader>
+                        <label>Tabheader</label>
+                        <config>
+                            <type>input</type>
+                            <size>60</size>
+                        </config>
+                    </tabheader>
+                    <tabicon>
+                        <label>Tabicon</label>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <selicon_cols>28</selicon_cols>
+                            <size>1</size>
+                            <minitems>0</minitems>
+                            <maxitems>1</maxitems>
+                            <items type="array">
+                                <numIndex index="0" type="array">
+                                    <label>label2.1.1</label>
+                                    <value>value2.1.1</value>
+                                </numIndex>
+                                <numIndex index="1" type="array">
+                                    <label>label2.1.2</label>
+                                    <value>value2.1.2</value>
+                                </numIndex>
+                            </items>
+                        </config>
+                    </tabicon>
+                    <links>
+                        <title>links</title>
+                        <type>array</type>
+                        <section>1</section>
+                        <el>
+                            <link>
+                                <type>array</type>
+                                <title>link</title>
+                                <el>
+                                    <linkicon>
+                                        <label>tabicon</label>
+                                        <config>
+                                            <type>select</type>
+                                            <renderType>selectSingle</renderType>
+                                            <selicon_cols>28</selicon_cols>
+                                            <size>1</size>
+                                            <minitems>0</minitems>
+                                            <maxitems> 1</maxitems>
+                                            <items type="array">
+                                                <numIndex index="0" type="array">
+                                                    <label>label2.2.1</label>
+                                                    <value>value2.2.1</value>
+                                                </numIndex>
+                                                <numIndex index="1" type="array">
+                                                    <label>label2.2.2</label>
+                                                    <value>value2.2.2</value>
+                                                </numIndex>
+                                            </items>
+                                        </config>
+                                    </linkicon>
+                                    <linktext>
+                                        <label>linktext</label>
+                                        <config>
+                                            <type>input</type>
+                                            <size>20</size>
+                                            <default/>
+                                        </config>
+                                    </linktext>
+                                    <url>
+                                        <label>linkurl</label>
+                                        <config>
+                                            <type>link</type>
+                                        </config>
+                                    </url>
+                                </el>
+                            </link>
+                        </el>
+                    </links>
+                </el>
+            </ROOT>
+        </sheet2>
+    </sheets>
+</T3DataStructure>

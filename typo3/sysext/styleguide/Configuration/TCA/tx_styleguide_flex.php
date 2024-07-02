@@ -84,6 +84,17 @@ return [
             ],
         ],
 
+        'flex_file_2' => [
+            'label' => 'flex_file_2 more complex flexform in external file',
+            'description' => 'field description',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => 'FILE:EXT:styleguide/Configuration/FlexForms/MultipleSheets.xml',
+                ],
+            ],
+        ],
+
         'flex_5' => [
             'label' => 'flex_5 no sheets description',
             'description' => 'field description',
@@ -337,6 +348,8 @@ return [
             'showitem' => '
                 --div--;simple,
                     flex_file_1,
+                --div--;complex,
+                    flex_file_2,
                 --div--;no sheets,
                     flex_5,
                 --div--;sheet description,
