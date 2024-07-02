@@ -42,17 +42,8 @@ final class CleanSchemaMigrationForAllSystemExtensionTest extends FunctionalTest
                 continue;
             }
             $extensionName = $item->getBasename();
-            if (in_array($extensionName, ['reactions', 'webhooks'], true)) {
-                // @todo CleanSchemaMigrationForAllSystemExtensionTest::verifyCleanDatabaseState() revealed for SQLite
-                //       that casual testing-framework `install()` does not setup a clean database, which relates to
-                //       `EXT:reactions` and `EXT:webhooks` leaving operations for `change` open not done in usual
-                //       install. This needs a dedicated investigation and fixing in some way or another.
-                continue;
-            }
             $systemExtensions[] = $extensionName;
         }
-        // @todo Should be 36, but 2 extension disabled for now - see above.
-        self::assertCount(34, $systemExtensions);
         return $systemExtensions;
     }
 
