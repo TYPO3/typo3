@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Linkvalidator\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -92,6 +93,7 @@ class LinkValidatorController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly LinkAnalyzer $linkAnalyzer,
         protected readonly LinktypeRegistry $linktypeRegistry,
+        protected readonly TranslationConfigurationProvider $translationConfigurationProvider,
     ) {}
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
@@ -339,7 +341,7 @@ class LinkValidatorController
         $fieldLabel = $row['field'];
         $table = $row['table_name'];
         $languageService = $this->getLanguageService();
-        $hookObj = $this->linktypeRegistry->getLinktype($row['link_type'] ?? '');
+        $linkType = $this->linktypeRegistry->getLinktype($row['link_type'] ?? '');
 
         // Try to resolve the field label from TCA
         if ($GLOBALS['TCA'][$table]['types'][$row['element_type']]['columnsOverrides'][$row['field']]['label'] ?? false) {
@@ -353,15 +355,24 @@ class LinkValidatorController
         }
 
         $result = [
-            'title' => $table . ':' . $row['record_uid'],
-            'icon' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),
-            'headline' => $row['headline'],
-            'label' => sprintf($languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.field'), $fieldLabel),
-            'path' => BackendUtility::getRecordPath($row['record_pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0),
-            'linkTitle' => $row['link_title'],
-            'linkTarget' => $hookObj?->getBrokenUrl($row),
-            'linkStatus' => (bool)($row['url_response']['valid'] ?? false),
-            'linkMessage' => $hookObj?->getErrorMessage($row['url_response']['errorParams']),
+            'uid' => $row['uid'],
+            'recordUid' => $row['record_uid'],
+            'recordTable' => $table,
+            'recordTableTitle' => $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? ''),
+            // @todo: Remove this assignment (and template use) when linkvalidator stops rendering broken
+            //        links registered to records that are meanwhile deleted=1 or in a different workspace.
+            'recordTableIconDefault' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),
+            'recordFieldLabel' => $fieldLabel,
+            'recordTitle' => $row['headline'],
+            'recordLanguageIcon' => $this->iconFactory->getIcon($this->getSystemLanguageValue($row['language'], $row['record_pid'], 'flagIcon'), IconSize::SMALL)->getIdentifier(),
+            'recordLanguageTitle' => $this->getSystemLanguageValue($row['language'], $row['record_pid'], 'title'),
+            'backendUserTitleLength' => (int)$this->getBackendUser()->uc['titleLen'],
+            'recordData' => BackendUtility::getRecord($table, abs((int)$row['record_uid'])),
+            'recordPageData' => BackendUtility::getRecord('pages', abs((int)$row['record_pid'])),
+            'linkType' => $row['link_type'],
+            'linkText' => $row['link_title'],
+            'linkTarget' => $linkType?->getBrokenUrl($row),
+            'linkErrorMessage' => $linkType?->getErrorMessage($row['url_response']['errorParams']),
             'lastCheck' => sprintf(
                 $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.msg.lastRun'),
                 date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['last_check']),
@@ -388,6 +399,23 @@ class LinkValidatorController
         $result['editUrlFull'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $editUrlParameters);
         $result['editUrlField'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', array_merge($editUrlParameters, ['columnsOnly' => [$table => [$row['field']]]]));
         return $result;
+    }
+
+    /**
+     * Gets a named value of an available system language
+     *
+     * @param int $id system language uid
+     * @param int $pageId page id of a site
+     * @param string $key Name of the value to be fetched (e.g. title)
+     */
+    protected function getSystemLanguageValue(int $id, int $pageId, string $key): string
+    {
+        $value = '';
+        $systemLanguages = $this->translationConfigurationProvider->getSystemLanguages($pageId);
+        if (!empty($systemLanguages[$id][$key])) {
+            $value = $systemLanguages[$id][$key];
+        }
+        return $value;
     }
 
     /**

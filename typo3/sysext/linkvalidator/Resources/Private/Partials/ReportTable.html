@@ -5,64 +5,112 @@
 >
 
 <div class="table-fit">
-    <table class="table table-striped table-hover">
+    <table id="typo3-broken-links-table" class="table table-striped table-hover">
         <thead>
             <tr>
-                <th><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.element" /></th>
-                <th><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.path" /></th>
-                <th><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.headlink" /></th>
-                <th><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linktarget" /></th>
-                <th><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linkmessage" /></th>
-                <th><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.lastCheck" /></th>
-                <th></th>
+                <th data-sort-method="none"></th>
+                <th><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.record" /></th>
+                <th class="col-language"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._LOCALIZATION_" /></th>
+                <th class="col-path"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linkTarget" /></th>
+                <th class="col-recordtitle"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.errorMessage" /></th>
+                <th class="col-datetime"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.lastCheck" /></th>
+                <th class="col-control" data-sort-method="none">
+                    <span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span>
+                </th>
             </tr>
         </thead>
+        <tbody>
             <f:for each="{brokenLinks}" as="item">
-                <tr class="text-break">
-                    <td>
-                        <a href="{item.editUrlField}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.editField')}">
-                            <span title="{item.title}">
-                                {item.icon -> f:format.raw()}
-                            </span>
-                            <f:if condition="{item.headline}">
+                <tr>
+                    <td class="col-icon">
+                        <span title="id={item.recordUid} - {item.recordTitle}">
+                            <f:if condition="{item.recordTable} && {item.recordData}">
                                 <f:then>
-                                    {item.headline}
+                                    <core:iconForRecord table="{item.recordTable}" row="{item.recordData}" />
                                 </f:then>
                                 <f:else>
-                                    <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.no.headline" />
-                                </f:else>
-                            </f:if>
-                            {item.label}
-                        </a>
-                    </td>
-                    <td>{item.path}</td>
-                    <td>{item.linkTitle}</td>
-                    <td><a href="{item.linkTarget}" target="_blank" rel="noreferrer">{item.linkTarget}</a></td>
-                    <td>
-                        <span class="text-{f:if(condition: item.linkStatus, then: 'success', else: 'danger')}">
-                            <f:if condition="{item.linkStatus}">
-                                <f:then>
-                                    <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.msg.ok" />
-                                </f:then>
-                                <f:else>
-                                    {item.linkMessage -> f:format.nl2br()}
+                                    <f:comment>
+                                        @todo: This fallback can be removed when linkvalidator stops trying to render links to records that are deleted=1.
+                                    </f:comment>
+                                    {item.recordTableIconDefault -> f:format.raw()}
                                 </f:else>
                             </f:if>
                         </span>
                     </td>
-                    <td>
+                    <td class="col-path">
+                        <a
+                            href="{item.editUrlField}"
+                            title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.editField')}"
+                        >
+                            <f:if condition="{item.recordTitle}">
+                                <f:then>{item.recordTitle}</f:then>
+                                <f:else>[<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title" />]</f:else>
+                            </f:if>
+                        </a>
+                    </td>
+                    <td class="col-language">
+                        <span title="{item.recordLanguageTitle}" class="icon icon-size-small">
+                            <typo3-backend-icon identifier={item.recordLanguageIcon} size="small"></typo3-backend-icon>
+                        </span>
+                        <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{item.recordLanguageTitle}</f:format.crop>
+                    </td>
+                    <td class="col-path">{item.linkTarget}</td>
+                    <td class="col-recordtitle">
+                        {item.linkErrorMessage -> f:format.nl2br()}
+                    </td>
+                    <td class="col-datetime">
                         {item.lastCheck}
-                        <f:if condition="{item.needsRecheck}"><br />
-                            <span class="error">({f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:needs-recheck')})</span>
+                        <f:if condition="{item.needsRecheck}">
+                            <br>
+                            <span class="badge badge-warning">
+                                <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:needs-recheck" />
+                            </span>
                         </f:if>
                     </td>
-                    <td>
+                    <td class="col-control">
                         <div class="btn-group">
-                            <a class="btn btn-default" href="{item.editUrlField}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.editField')}">
+                            <a
+                                class="btn btn-default"
+                                href="{item.editUrlField}"
+                                title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.editField')}"
+                                role="button"
+                            >
                                 <core:icon identifier="actions-open" size="small" />
                             </a>
-                            <a class="btn btn-default" href="{item.editUrlFull}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}">
+                            <a
+                                class="btn btn-default"
+                                href="{item.editUrlFull}"
+                                title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}"
+                                role="button"
+                            >
                                 <core:icon identifier="actions-document-edit" size="small" />
+                            </a>
+                        </div>
+                        <div class="btn-group">
+                            <f:variable name="infoModalTitle">
+                                <f:if condition="{item.linkText}">
+                                    <f:then>
+                                        <f:translate
+                                            key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:report.modal.info.title.withLinkText"
+                                            arguments="{
+                                                0: '{item.linkText}'
+                                            }"
+                                        />
+                                    </f:then>
+                                    <f:else>
+                                        <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:report.modal.info.title" />
+                                    </f:else>
+                                </f:if>
+                            </f:variable>
+                            <a
+                                href="#"
+                                class="btn btn-default t3js-linkvalidator-modal"
+                                title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.btn.info.title')}"
+                                role="button"
+                                data-modal-identifier="broken-link_{item.uid}"
+                                data-modal-title="{infoModalTitle -> f:spaceless()}"
+                            >
+                                <core:icon identifier="actions-document-info" />
                             </a>
                         </div>
                     </td>
@@ -71,7 +119,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="10">
+                <td colspan="7">
                     <f:if condition="{brokenLinkTotalCount} == 1">
                         <f:then>
                             {brokenLinkTotalCount} <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableFoot.record" />
@@ -85,5 +133,102 @@
         </tfoot>
     </table>
 </div>
+
+<f:for each="{brokenLinks}" as="modalItem">
+    <template id="linkvalidatorModal-broken-link_{modalItem.uid}">
+        <h2><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:report.modal.info.headline.link" /></h2>
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <tbody>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linkType" /></th>
+                        <td>{modalItem.linkType}</td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linkText" /></th>
+                        <td>
+                            <f:if condition="{modalItem.linkText}">
+                                <f:then>{modalItem.linkText}</f:then>
+                                <f:else><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.report.linkText.noValue" /></f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.linkTarget" /></th>
+                        <td>{modalItem.linkTarget}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:report.modal.info.headline.record" /></h2>
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <tbody>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.title" /></th>
+                        <td>
+                            <f:if condition="{modalItem.recordTitle}">
+                                <f:then>{modalItem.recordTitle}</f:then>
+                                <f:else>
+                                    [<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title" />]
+                                </f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.table" /></th>
+                        <td>
+                            <f:if condition="{modalItem.recordTableTitle}">
+                                <f:then>{modalItem.recordTableTitle -> f:format.raw()}</f:then>
+                                <f:else>{modalItem.recordTable}</f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.uid" /></th>
+                        <td>{modalItem.recordUid}</td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.field" /></th>
+                        <td>{modalItem.recordFieldLabel -> f:format.raw()}</td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._LOCALIZATION_" /></th>
+                        <td>
+                            <span title="{modalItem.recordLanguageTitle}" class="icon icon-size-small">
+                                <typo3-backend-icon identifier={modalItem.recordLanguageIcon} size="small"></typo3-backend-icon>
+                            </span>
+                            <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{modalItem.recordLanguageTitle}</f:format.crop>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname align-top">
+                            <f:if condition="{modalItem.recordTable} == 'pages'">
+                                <f:then>
+                                    <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.parentPage" />
+                                </f:then>
+                                <f:else>
+                                    <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableHead.page" />
+                                </f:else>
+                            </f:if>
+                        </th>
+                        <td class="text-break">
+                            <f:if condition="{modalItem.linkType} !== 'file'">
+                                <f:then>
+                                    <span title="id={modalItem.recordPageData.uid} - {modalItem.recordPageData.title}">
+                                        <core:iconForRecord table="pages" row="{modalItem.recordPageData}" />
+                                    </span>
+                                    {modalItem.recordPageData.title}
+                                </f:then>
+                                <f:else>-</f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</f:for>
 
 </html>

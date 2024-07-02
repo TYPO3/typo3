@@ -30,29 +30,47 @@
 			<trans-unit id="label_update" resname="label_update">
 				<source>Check links</source>
 			</trans-unit>
+			<trans-unit id="list.check.headline" resname="list.check.headline">
+				<source>Configuration</source>
+			</trans-unit>
 			<trans-unit id="list.header" resname="list.header">
 				<source>Listing of broken links</source>
 			</trans-unit>
-			<trans-unit id="list.tableHead.path" resname="list.tableHead.path">
-				<source>Path</source>
-			</trans-unit>
-			<trans-unit id="list.tableHead.element" resname="list.tableHead.element">
-				<source>Element</source>
-			</trans-unit>
-			<trans-unit id="list.tableHead.headlink" resname="list.tableHead.headlink">
-				<source>Link</source>
-			</trans-unit>
-			<trans-unit id="list.tableHead.linktarget" resname="list.tableHead.linktarget">
-				<source>URL / Link Target</source>
-			</trans-unit>
-			<trans-unit id="list.tableHead.linkmessage" resname="list.tableHead.linkmessage">
+			<trans-unit id="list.tableHead.errorMessage" resname="list.tableHead.errorMessage">
 				<source>Error message</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.field" resname="list.tableHead.field">
+				<source>Field</source>
 			</trans-unit>
 			<trans-unit id="list.tableHead.lastCheck" resname="list.tableHead.lastCheck">
 				<source>Last check</source>
 			</trans-unit>
-			<trans-unit id="list.edit" resname="list.edit">
-				<source>Edit element containing this broken link</source>
+			<trans-unit id="list.tableHead.linkTarget" resname="list.tableHead.linkTarget">
+				<source>Link target</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.linkText" resname="list.tableHead.linkText">
+				<source>Link text</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.linkType" resname="list.tableHead.linkType">
+				<source>Link type</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.page" resname="list.tableHead.page">
+				<source>Located on page / folder</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.parentPage" resname="list.tableHead.parentPage">
+				<source>Parent page / folder</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.record" resname="list.tableHead.record">
+				<source>Record</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.table" resname="list.tableHead.table">
+				<source>Table</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.title" resname="list.tableHead.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.uid" resname="list.tableHead.uid">
+				<source>Uid</source>
 			</trans-unit>
 			<trans-unit id="list.tableFoot.record" resname="list.tableFoot.record">
 				<source>Records</source>
@@ -60,17 +78,17 @@
 			<trans-unit id="list.tableFoot.records" resname="list.tableFoot.records">
 				<source>Records</source>
 			</trans-unit>
+			<trans-unit id="list.edit" resname="list.edit">
+				<source>Edit record containing this broken link</source>
+			</trans-unit>
 			<trans-unit id="list.editField" resname="list.editField">
 				<source>Edit only the field containing this broken link</source>
 			</trans-unit>
-			<trans-unit id="list.field" resname="list.field">
-				<source>(Field: %s)</source>
+			<trans-unit id="list.report.btn.info.title" resname="list.report.btn.info.title">
+				<source>Display information</source>
 			</trans-unit>
-			<trans-unit id="list.no.headline" resname="list.no.headline">
-				<source>no headline</source>
-			</trans-unit>
-			<trans-unit id="list.check.headline" resname="list.check.headline">
-				<source>Configuration</source>
+			<trans-unit id="list.report.linkText.noValue" resname="list.report.linkText.noValue">
+				<source>[No value]</source>
 			</trans-unit>
 			<trans-unit id="list.report.pagedeleted" resname="list.report.pagedeleted">
 				<source>Page '###title###' (id=###uid###) is deleted.</source>
@@ -82,34 +100,19 @@
 				<source>Page (id=###uid###) does not exist.</source>
 			</trans-unit>
 			<trans-unit id="list.report.contentmoved" resname="list.report.contentmoved">
-				<source>Element '###title###' (id=###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
+				<source>Record '###title###' (id=###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
 			</trans-unit>
 			<trans-unit id="list.report.contentdeleted" resname="list.report.contentdeleted">
-				<source>Element '###title###' (id=###uid###) is deleted.</source>
+				<source>Record '###title###' (id=###uid###) is deleted.</source>
 			</trans-unit>
 			<trans-unit id="list.report.contentnotvisible" resname="list.report.contentnotvisible">
-				<source>Element '###title###' (id=###uid###) is not visible.</source>
+				<source>Record '###title###' (id=###uid###) is not visible.</source>
 			</trans-unit>
 			<trans-unit id="list.report.contentnotexisting" resname="list.report.contentnotexisting">
-				<source>Element (id=###uid###) does not exist.</source>
-			</trans-unit>
-			<trans-unit id="list.report.rownotvisible" resname="list.report.rownotvisible">
-				<source>###title### row (id=###uid###) is not visible.</source>
-			</trans-unit>
-			<trans-unit id="list.report.rowdeleted" resname="list.report.rowdeleted">
-				<source>###title### row (id=###uid###) is deleted.</source>
-			</trans-unit>
-			<trans-unit id="list.report.rowdeleted.default.title" resname="list.report.rowdeleted.default.title">
-				<source>Linked</source>
-			</trans-unit>
-			<trans-unit id="list.report.rownotexisting" resname="list.report.rownotexisting">
-				<source>Row (id=###uid###) does not exist.</source>
+				<source>Record (id=###uid###) does not exist.</source>
 			</trans-unit>
 			<trans-unit id="list.report.noinformation" resname="list.report.noinformation">
 				<source>No information about the error is available.</source>
-			</trans-unit>
-			<trans-unit id="list.report.noresponse" resname="list.report.noresponse">
-				<source>External Link not reachable.</source>
 			</trans-unit>
 			<trans-unit id="list.report.redirectloop" resname="list.report.redirectloop">
 				<source>A redirect loop occurred. (%s: %s)</source>
@@ -119,9 +122,6 @@
 			</trans-unit>
 			<trans-unit id="list.report.filenotexisting" resname="list.report.filenotexisting">
 				<source>File doesn't exist.</source>
-			</trans-unit>
-			<trans-unit id="list.report.timeout" resname="list.report.timeout">
-				<source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
 			</trans-unit>
 
 			<!-- external linktype check errors -->
@@ -249,6 +249,20 @@
 			</trans-unit>
 			<trans-unit id="info.noPageSelected.message" resname="info.noPageSelected.message">
 				<source>Please select a page in the page tree.</source>
+			</trans-unit>
+
+			<!-- Modal content -->
+			<trans-unit id="report.modal.info.title" resname="report.modal.info.title">
+				<source>Broken link</source>
+			</trans-unit>
+			<trans-unit id="report.modal.info.title.withLinkText" resname="report.modal.info.title.withLinkText">
+				<source>Broken link: "%s"</source>
+			</trans-unit>
+			<trans-unit id="report.modal.info.headline.link" resname="report.modal.info.headline.link">
+				<source>Link properties</source>
+			</trans-unit>
+			<trans-unit id="report.modal.info.headline.record" resname="report.modal.info.headline.record">
+				<source>Record information</source>
 			</trans-unit>
 		</body>
 	</file>

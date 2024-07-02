@@ -177,7 +177,7 @@ class LinkAnalyzer
      */
     protected function checkLinks(array $links, array $linkTypes)
     {
-        foreach ($this->linktypeRegistry->getLinktypes() as $key => $hookObj) {
+        foreach ($this->linktypeRegistry->getLinktypes() as $key => $linkType) {
             if (!is_array($links[$key] ?? false) || (!in_array($key, $linkTypes, true))) {
                 continue;
             }
@@ -221,11 +221,11 @@ class LinkAnalyzer
                 }
 
                 $this->linkCounts[$table]++;
-                $checkUrl = $hookObj->checkLink($url, $entryValue, $this);
+                $checkUrl = $linkType->checkLink($url, $entryValue, $this);
 
                 // Broken link found
                 if (!$checkUrl) {
-                    $this->brokenLinkRepository->addBrokenLink($record, false, $hookObj->getErrorParams() ?: []);
+                    $this->brokenLinkRepository->addBrokenLink($record, false, $linkType->getErrorParams() ?: []);
                     $this->brokenLinkCounts[$table]++;
                 }
             }
@@ -355,8 +355,8 @@ class LinkAnalyzer
                 continue;
             }
 
-            foreach ($this->linktypeRegistry->getLinktypes() as $keyArr => $hookObj) {
-                $type = $hookObj->fetchType($reference, $type, $keyArr);
+            foreach ($this->linktypeRegistry->getLinktypes() as $keyArr => $linkType) {
+                $type = $linkType->fetchType($reference, $type, $keyArr);
                 // Store the type that was found
                 // This prevents overriding by internal validator
                 if (!empty($type)) {
@@ -418,8 +418,8 @@ class LinkAnalyzer
             if (empty($currentR)) {
                 continue;
             }
-            foreach ($this->linktypeRegistry->getLinktypes() as $keyArr => $hookObj) {
-                $type = $hookObj->fetchType($currentR, $type, $keyArr);
+            foreach ($this->linktypeRegistry->getLinktypes() as $keyArr => $linkType) {
+                $type = $linkType->fetchType($currentR, $type, $keyArr);
                 // Store the type that was found
                 // This prevents overriding by internal validator
                 if (!empty($type)) {

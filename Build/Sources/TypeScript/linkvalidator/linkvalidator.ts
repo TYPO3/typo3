@@ -11,8 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import Notification from '@typo3/backend/notification';
 import RegularEvent from '@typo3/core/event/regular-event';
+import SortableTable from '@typo3/backend/sortable-table';
 
 enum Selectors {
   // Check
@@ -26,7 +28,8 @@ enum Selectors {
 }
 
 enum Identifier {
-  toggleAllLinktypesIdReport = 'options-by-type-toggle-all-report'
+  toggleAllLinktypesIdReport = 'options-by-type-toggle-all-report',
+  brokenLinksTableIdReport = 'typo3-broken-links-table'
 }
 
 /**
@@ -34,6 +37,15 @@ enum Identifier {
  */
 class Linkvalidator {
   constructor() {
+    DocumentService.ready().then((): void => {
+      const linkList = document.getElementById(Identifier.brokenLinksTableIdReport);
+      if (linkList !== null) {
+        if (linkList instanceof HTMLTableElement) {
+          new SortableTable(linkList);
+        }
+      }
+    });
+
     this.initializeEvents();
   }
 
