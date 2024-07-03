@@ -159,7 +159,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
         $languageService = $this->getLanguageService();
         $noMatchingLabel = isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['noMatchingValue_label'])
             ? $languageService->sL(trim($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['noMatchingValue_label']))
-            : '[ ' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue') . ' ]';
+            : '[ ' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingLabel') . ' ]';
 
         $unmatchedValues = array_diff(
             array_values($databaseValues),

@@ -2685,9 +2685,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['foo'];
         $expected['processedTca']['columns']['aField']['config']['items'] = [
-            ['label' => '[ INVALID VALUE ("bar") ]', 'value' => 'bar', 'icon' => null, 'group' => 'none', 'description' => null],
-            ['label' => '[ INVALID VALUE ("2") ]', 'value' => '2', 'icon' => null, 'group' => 'none', 'description' => null],
-            ['label' => '[ INVALID VALUE ("1") ]', 'value' => '1', 'icon' => null, 'group' => 'none', 'description' => null],
+            ['label' => '[ MISSING LABEL ("bar") ]', 'value' => 'bar', 'icon' => null, 'group' => 'none', 'description' => null],
+            ['label' => '[ MISSING LABEL ("2") ]', 'value' => '2', 'icon' => null, 'group' => 'none', 'description' => null],
+            ['label' => '[ MISSING LABEL ("1") ]', 'value' => '1', 'icon' => null, 'group' => 'none', 'description' => null],
             ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'group' => null, 'description' => null],
         ];
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
