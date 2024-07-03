@@ -86,13 +86,33 @@ return [
                 'type' => 'input',
             ],
         ],
-
+        'file_1' => [
+            'label' => 'input_1 file',
+            'description' => 'file description',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'jpg,png',
+            ],
+        ],
     ],
 
     'types' => [
         '0' => [
-            'showitem' => 'input_1',
+            'showitem' => 'input_1, file_1',
+            'columnsOverrides' => [
+                'file_1' => [
+                    'label' => 'Overridden label via overrideChildTca in TCA',
+                    'config' => [
+                        'overrideChildTca' => [
+                            'columns' => [
+                                'title' => [
+                                    'label' => 'Label override via child TCA',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ],
     ],
-
 ];
