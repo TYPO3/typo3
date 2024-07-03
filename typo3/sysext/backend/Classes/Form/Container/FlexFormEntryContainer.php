@@ -51,7 +51,7 @@ class FlexFormEntryContainer extends AbstractContainer
         $resultArray['labelHasBeenHandled'] = true;
         $legend = htmlspecialchars($this->data['parameterArray']['fieldConf']['label']);
         if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
-            $legend .= ' <code>[' . htmlspecialchars($this->data['fieldName']) . ']</code>';
+            $legend .= ' <code>[' . htmlspecialchars($this->data['flexFormContainerFieldName'] ?? $this->data['flexFormFieldName'] ?? $this->data['fieldName']) . ']</code>';
         }
         $resultArray['html'] = '<fieldset><legend class="form-legend">' . $legend . '</legend>' . $resultArray['html'] . '</fieldset>';
         return $resultArray;

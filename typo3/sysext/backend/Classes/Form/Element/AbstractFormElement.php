@@ -130,8 +130,8 @@ abstract class AbstractFormElement extends AbstractNode
     protected function renderLabel(string $for): string
     {
         $label = htmlspecialchars($this->data['parameterArray']['fieldConf']['label'] ?? '');
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
-            $fieldName = $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
+        if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+            $fieldName = $this->data['flexFormContainerFieldName'] ?? $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
             $label .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
         }
         return '<label for="' . htmlspecialchars($for) . '" class="form-label t3js-formengine-label">' . $label . '</label>';
@@ -144,8 +144,8 @@ abstract class AbstractFormElement extends AbstractNode
     protected function wrapWithFieldsetAndLegend(string $innerHTML): string
     {
         $legend = htmlspecialchars($this->data['parameterArray']['fieldConf']['label'] ?? '');
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
-            $fieldName = $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
+        if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+            $fieldName = $this->data['flexFormContainerFieldName'] ?? $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
             $legend .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
         }
         $html = [];
