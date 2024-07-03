@@ -11,7 +11,6 @@ return [
     ],
 
     'columns' => [
-
         'value_1' => [
             'label' => 'value_1',
             'config' => [
@@ -19,7 +18,6 @@ return [
                 'size' => 10,
             ],
         ],
-
     ],
 
     'types' => [

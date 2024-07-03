@@ -12,7 +12,6 @@ return [
         'rootLevel' => 1,
         'groupName' => 'system',
         'versioningWS_alwaysAllowLiveEdit' => true, // Only have LIVE records of file storages
-        'enablecolumns' => [],
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_file_storage',
         ],
@@ -26,14 +25,6 @@ return [
                 'size' => 50,
                 'max' => 255,
                 'required' => true,
-            ],
-        ],
-        'description' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.description',
-            'config' => [
-                'type' => 'text',
-                'cols' => 30,
-                'rows' => 5,
             ],
         ],
         'is_browsable' => [

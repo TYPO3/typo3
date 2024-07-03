@@ -27,36 +27,6 @@ return [
         'searchFields' => 'title,description,alternative',
     ],
     'columns' => [
-        'sys_language_uid' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
-        'l10n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-            'config' => [
-                'type' => 'group',
-                'allowed' => 'sys_file_reference',
-                'size' => 1,
-                'maxitems' => 1,
-                'default' => 0,
-            ],
-        ],
-        'l10n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-                'default' => '',
-            ],
-        ],
-        'hidden' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
-            'config' => [
-                'type' => 'check',
-                'default' => 0,
-            ],
-        ],
         'uid_local' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.uid_local',
             'config' => [

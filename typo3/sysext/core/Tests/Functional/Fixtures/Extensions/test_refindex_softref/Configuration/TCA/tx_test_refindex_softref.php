@@ -19,49 +19,6 @@ return [
     ],
 
     'columns' => [
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
-        'l10n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'Translation parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    [
-                        'label' => '',
-                        'value' => 0,
-                    ],
-                ],
-                'foreign_table' => 'tx_test_refindex_softref',
-                'foreign_table_where' => 'AND {#tx_test_refindex_softref}.{#pid}=###CURRENT_PID### AND {#tx_test_refindex_softref}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0,
-            ],
-        ],
-        'l10n_source' => [
-            'exclude' => true,
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'Translation source',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    [
-                        'label' => '',
-                        'value' => 0,
-                    ],
-                ],
-                'foreign_table' => 'tx_test_refindex_softref',
-                'foreign_table_where' => 'AND {#tx_test_refindex_softref}.{#pid}=###CURRENT_PID### AND {#tx_test_refindex_softref}.{#uid}!=###THIS_UID###',
-                'default' => 0,
-            ],
-        ],
-
         'text_1' => [
             'label' => 'text_1',
             'config' => [

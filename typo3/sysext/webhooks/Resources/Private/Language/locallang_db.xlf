@@ -16,12 +16,6 @@
 			<trans-unit id="sys_webhook.name.description" resname="sys_webhook.name.description">
 				<source>Meaningful name of the webhook</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.description" resname="sys_webhook.description">
-				<source>Description</source>
-			</trans-unit>
-			<trans-unit id="sys_webhook.description.description" resname="sys_webhook.description.description">
-				<source>Additional information about the webhook.</source>
-			</trans-unit>
 			<trans-unit id="sys_webhook.url" resname="sys_webhook.url">
 				<source>URL</source>
 			</trans-unit>

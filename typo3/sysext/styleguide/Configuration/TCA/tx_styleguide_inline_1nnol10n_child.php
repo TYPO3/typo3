@@ -18,14 +18,6 @@ return [
     ],
 
     'columns' => [
-
-        'disable' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
-            'config' => [
-                'type' => 'check',
-            ],
-        ],
-
         'parentid' => [
             'config' => [
                 'type' => 'passthrough',
@@ -44,7 +36,6 @@ return [
                 'size' => '30',
             ],
         ],
-
     ],
     'types' => [
         '0' => [

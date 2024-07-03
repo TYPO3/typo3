@@ -37,20 +37,6 @@ return [
                 'type' => 'text',
             ],
         ],
-        'hidden' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-                'default' => 0,
-                'items' => [
-                    [
-                        'label' => '',
-                        'invertStateDisplay' => true,
-                    ],
-                ],
-            ],
-        ],
     ],
     'types' => [
         '1' => [

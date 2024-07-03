@@ -244,106 +244,9 @@ return [
                 'dbFieldLength' => 255,
             ],
         ],
-        'editlock' => [
-            'displayCond' => 'HIDE_FOR_NON_ADMINS',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:editlock',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-            ],
-        ],
-        'hidden' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.visible',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-                'items' => [
-                    [
-                        'label' => '',
-                        'invertStateDisplay' => true,
-                    ],
-                ],
-            ],
-        ],
-        'starttime' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
-            'config' => [
-                'type' => 'datetime',
-                'default' => 0,
-            ],
-            'l10n_mode' => 'exclude',
-            'l10n_display' => 'defaultAsReadonly',
-        ],
-        'endtime' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
-            'config' => [
-                'type' => 'datetime',
-                'default' => 0,
-                'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2106),
-                ],
-            ],
-            'l10n_mode' => 'exclude',
-            'l10n_display' => 'defaultAsReadonly',
-        ],
-        'fe_group' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
-                'size' => 5,
-                'maxitems' => 20,
-                'items' => [
-                    [
-                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
-                        'value' => -1,
-                    ],
-                    [
-                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
-                        'value' => -2,
-                    ],
-                    [
-                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
-                        'value' => '--div--',
-                    ],
-                ],
-                'exclusiveKeys' => '-1,-2',
-                'foreign_table' => 'fe_groups',
-            ],
-        ],
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
         'categories' => [
             'config' => [
                 'type' => 'category',
-            ],
-        ],
-        'l18n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tt_content',
-                'foreign_table_where' => 'AND {#tt_content}.{#pid}=###CURRENT_PID### AND {#tt_content}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0,
-            ],
-        ],
-        'l10n_source' => [
-            'config' => [
-                'type' => 'passthrough',
             ],
         ],
         'layout' => [
@@ -562,15 +465,6 @@ return [
                 'appearance' => [
                     'browserTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
                 ],
-            ],
-        ],
-        'rowDescription' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
-            'config' => [
-                'type' => 'text',
-                'rows' => 5,
-                'cols' => 30,
             ],
         ],
         'subheader' => [
@@ -1063,12 +957,6 @@ return [
                 'size' => 20,
                 'max' => 30,
                 'eval' => 'trim',
-                'default' => '',
-            ],
-        ],
-        'l18n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
                 'default' => '',
             ],
         ],

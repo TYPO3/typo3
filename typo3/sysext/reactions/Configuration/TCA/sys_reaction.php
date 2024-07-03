@@ -70,15 +70,6 @@ return [
                 'eval' => 'trim',
             ],
         ],
-        'description' => [
-            'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.description',
-            'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.description.description',
-            'config' => [
-                'type' => 'text',
-                'rows' => 5,
-                'cols' => 30,
-            ],
-        ],
         'identifier' => [
             'label' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.identifier',
             'description' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.identifier.description',
@@ -133,36 +124,6 @@ return [
                 'items' => [],
                 'itemsProcFunc' => \TYPO3\CMS\Reactions\Form\ReactionItemsProcFunc::class . '->validateAllowedTablesForExternalCreation',
                 'dbFieldLength' => 255,
-            ],
-        ],
-        'disabled' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-                'items' => [
-                    [
-                        'label' => '',
-                        'invertStateDisplay' => true,
-                    ],
-                ],
-            ],
-        ],
-        'starttime' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
-            'config' => [
-                'type' => 'datetime',
-                'default' => 0,
-            ],
-        ],
-        'endtime' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
-            'config' => [
-                'type' => 'datetime',
-                'default' => 0,
-                'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2106),
-                ],
             ],
         ],
     ],

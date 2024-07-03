@@ -24,41 +24,6 @@ return [
         ],
     ],
     'columns' => [
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
-        'l18n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_testirremm_offer',
-                'foreign_table_where' => 'AND {#tx_testirremm_offer}.{#pid}=###CURRENT_PID### AND {#tx_testirremm_offer}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0,
-            ],
-        ],
-        'l18n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-                'default' => '',
-            ],
-        ],
-        'hidden' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
-            'config' => [
-                'type' => 'check',
-                'default' => 0,
-            ],
-        ],
         'title' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',

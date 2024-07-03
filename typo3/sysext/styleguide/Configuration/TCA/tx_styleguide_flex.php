@@ -23,56 +23,6 @@ return [
     ],
 
     'columns' => [
-
-        'hidden' => [
-            'config' => [
-                'type' => 'check',
-                'items' => [
-                    ['label' => 'Disable'],
-                ],
-            ],
-        ],
-        'sys_language_uid' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
-        'l10n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'Translation parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_styleguide_flex',
-                'foreign_table_where' => 'AND {#tx_styleguide_flex}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_flex}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0,
-            ],
-        ],
-        'l10n_source' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'Translation source',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_styleguide_flex',
-                'foreign_table_where' => 'AND {#tx_styleguide_flex}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_flex}.{#uid}!=###THIS_UID###',
-                'default' => 0,
-            ],
-        ],
-        'l10n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-                'default' => '',
-            ],
-        ],
-
         'flex_file_1' => [
             'label' => 'flex_file_1 simple flexform in external file',
             'description' => 'field description',

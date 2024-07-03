@@ -22,42 +22,12 @@ return [
         ],
     ],
     'columns' => [
-        'hidden' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-                'default' => 1,
-                'items' => [
-                    [
-                        'label' => '',
-                        'invertStateDisplay' => true,
-                    ],
-                ],
-            ],
-        ],
-        'starttime' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
-            'config' => [
-                'type' => 'datetime',
-                'format' => 'date',
-                'default' => 0,
-            ],
-        ],
         'title' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'required' => true,
-            ],
-        ],
-        'description' => [
-            'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.description',
-            'config' => [
-                'type' => 'text',
-                'cols' => 30,
-                'rows' => 2,
             ],
         ],
         'type' => [

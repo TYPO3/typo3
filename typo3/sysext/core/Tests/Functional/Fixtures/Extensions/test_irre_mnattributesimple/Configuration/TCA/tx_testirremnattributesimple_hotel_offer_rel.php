@@ -23,41 +23,6 @@ return [
         ],
     ],
     'columns' => [
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
-        'l18n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_testirremnattributesimple_hotel_offer_rel',
-                'foreign_table_where' => 'AND {#tx_testirremnattributesimple_hotel_offer_rel}.{#pid}=###CURRENT_PID### AND {#tx_testirremnattributesimple_hotel_offer_rel}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0,
-            ],
-        ],
-        'l18n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-                'default' => '',
-            ],
-        ],
-        'hidden' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
-            'config' => [
-                'type' => 'check',
-                'default' => 0,
-            ],
-        ],
         'hotelid' => [
             'label' => 'LLL:EXT:test_irre_mnattributesimple/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_offer_rel.hotelid',
             'config' => [

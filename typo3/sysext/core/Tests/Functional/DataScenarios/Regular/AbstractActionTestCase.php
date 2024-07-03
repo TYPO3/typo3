@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular;
 
-use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
-use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -187,30 +185,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
         $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], ['hidden' => 0]);
-    }
-
-    public function localizeContentWithEmptyTcaIntegrityColumns(): void
-    {
-        // @see \TYPO3\CMS\Core\Configuration\Tca\TcaPreparation::sanitizeControlSectionIntegrity()
-        $integrityFieldNames = [
-            'language' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['languageField'] ?? null,
-            'languageParent' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['transOrigPointerField'] ?? null,
-            'languageSource' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['translationSource'] ?? null,
-        ];
-        // explicitly unset integrity columns in TCA
-        foreach ($integrityFieldNames as $integrityFieldName) {
-            unset($GLOBALS['TCA'][self::TABLE_Content]['columns'][$integrityFieldName]);
-        }
-        // After TCA changes, refindex is not ok anymore for imported rows. Update it before performing other actions.
-        $referenceIndex = $this->get(ReferenceIndex::class);
-        $referenceIndex->updateIndex(false);
-
-        // explicitly call TcaMigration (which was executed already earlier in functional testing bootstrap)
-        $GLOBALS['TCA'] = (new TcaPreparation())->prepare($GLOBALS['TCA']);
-        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
-        // perform actions to be tested
-        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
-        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
 
     public function localizeContentWithLanguageSynchronization(): void

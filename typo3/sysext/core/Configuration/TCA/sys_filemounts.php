@@ -33,28 +33,6 @@ return [
                 'eval' => 'trim',
             ],
         ],
-        'hidden' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-                'items' => [
-                    [
-                        'label' => '',
-                        'invertStateDisplay' => true,
-                    ],
-                ],
-            ],
-        ],
-        'description' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
-            'config' => [
-                'type' => 'text',
-                'rows' => 5,
-                'cols' => 30,
-                'max' => 2000,
-            ],
-        ],
         'identifier' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.identifier',
             'config' => [

@@ -16,12 +16,6 @@
 			<trans-unit id="sys_reaction.name.description" resname="sys_reaction.name.description">
 				<source>Meaningful name of the reaction</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.description" resname="sys_reactions.description">
-				<source>Description</source>
-			</trans-unit>
-			<trans-unit id="sys_reaction.description.description" resname="sys_reactions.description.description">
-				<source>Additional information about the reaction.</source>
-			</trans-unit>
 			<trans-unit id="sys_reaction.identifier" resname="sys_reaction.identifier">
 				<source>Identifier</source>
 			</trans-unit>

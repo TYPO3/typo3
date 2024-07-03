@@ -29,43 +29,9 @@ return [
         '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, archive_date, author, second_author, content, tags, comments, related_posts, additional_name, additional_info, additional_comments, categories'],
     ],
     'columns' => [
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-                'default' => 0,
-            ],
-        ],
         'categories' => [
             'config' => [
                 'type' => 'category',
-            ],
-        ],
-        'l18n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_blogexample_domain_model_post',
-                'foreign_table_where' => 'AND {#tx_blogexample_domain_model_post}.{#uid}=###REC_FIELD_l18n_parent### AND {#tx_blogexample_domain_model_post}.{#sys_language_uid} IN (-1,0)',
-            ],
-        ],
-        'l18n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-                'default' => '',
-            ],
-        ],
-        'hidden' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
-            'config' => [
-                'type' => 'check',
             ],
         ],
         'blog' => [

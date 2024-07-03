@@ -179,20 +179,6 @@ return [
                 'itemsProcFunc' => \TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions::class . '->populateCustomPermissionOptions',
             ],
         ],
-        'hidden' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-                'default' => 0,
-                'items' => [
-                    [
-                        'label' => '',
-                        'invertStateDisplay' => true,
-                    ],
-                ],
-            ],
-        ],
         'groupMods' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:userMods',
             'config' => [
@@ -211,15 +197,6 @@ return [
                 'itemsProcFunc' => \TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry::class . '->allowedProvidersItemsProcFunc',
                 'size' => 5,
                 'autoSizeMax' => 50,
-            ],
-        ],
-        'description' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
-            'config' => [
-                'type' => 'text',
-                'rows' => 5,
-                'cols' => 30,
-                'max' => 2000,
             ],
         ],
         'TSconfig' => [

@@ -40,15 +40,6 @@ return [
                 'autocomplete' => false,
             ],
         ],
-        'description' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
-            'config' => [
-                'type' => 'text',
-                'rows' => 5,
-                'cols' => 30,
-                'max' => 2000,
-            ],
-        ],
         'password' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.password',
             'config' => [
@@ -164,21 +155,6 @@ return [
                 'max' => 80,
             ],
         ],
-        'disable' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-            'displayCond' => 'USER:' . \TYPO3\CMS\Core\Hooks\TcaDisplayConditions::class . '->isRecordCurrentUser:false',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-                'items' => [
-                    [
-                        'label' => '',
-                        'invertStateDisplay' => true,
-                    ],
-                ],
-                'default' => 1,
-            ],
-        ],
         'admin' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.admin',
             'config' => [
@@ -242,23 +218,6 @@ return [
                 'default' => 1,
                 'items' => [
                     ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live'],
-                ],
-            ],
-        ],
-        'starttime' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
-            'config' => [
-                'type' => 'datetime',
-                'default' => 0,
-            ],
-        ],
-        'endtime' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
-            'config' => [
-                'type' => 'datetime',
-                'default' => 0,
-                'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2106),
                 ],
             ],
         ],

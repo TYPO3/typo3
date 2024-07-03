@@ -482,9 +482,6 @@
 			<trans-unit id="sys_template.config" resname="sys_template.config">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="sys_template.description" resname="sys_template.description">
-				<source>Description</source>
-			</trans-unit>
 			<trans-unit id="sys_template.static_file_mode" resname="sys_template.static_file_mode">
 				<source>Loading order of TypoScript sets</source>
 			</trans-unit>
@@ -524,9 +521,6 @@
 			</trans-unit>
 			<trans-unit id="backend_layout.title" resname="backend_layout.title">
 				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="backend_layout.description" resname="backend_layout.description">
-				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="backend_layout.config" resname="backend_layout.config">
 				<source>Config</source>

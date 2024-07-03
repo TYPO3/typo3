@@ -23,7 +23,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Migrate TCA from old to new syntax. Used in bootstrap and Flex Form Data Structures.
+ * Migrate TCA from old to new syntax.
+ * Used in bootstrap and Flex Form Data Structures.
+ * This is to *migrate* from "old" to "new" TCA syntax,
+ * all methods must add a deprecation method if they
+ * change something.
  *
  * @internal Class and API may change any time.
  */

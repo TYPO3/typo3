@@ -399,9 +399,6 @@
 			<trans-unit id="sys_file_storage.name" resname="sys_file_storage.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.description" resname="sys_file_storage.description">
-				<source>Description</source>
-			</trans-unit>
 			<trans-unit id="sys_file_storage.hidden" resname="sys_file_storage.hidden">
 				<source>Hide from listings</source>
 			</trans-unit>
@@ -608,9 +605,6 @@
 			</trans-unit>
 			<trans-unit id="sys_category.title" resname="sys_category.title">
 				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="sys_category.description" resname="sys_category.description">
-				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="sys_category.parent" resname="sys_category.parent">
 				<source>Parent</source>

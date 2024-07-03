@@ -138,13 +138,13 @@
                     <title>typo3_image2.jpg</title>
                     <relationLevel>2</relationLevel>
                     <relations index="rels" type="array">
-                        <element index="sys_file_metadata:1" type="array">
-                            <id>1</id>
-                            <table>sys_file_metadata</table>
-                        </element>
                         <element index="sys_file:1" type="array">
                             <id>1</id>
                             <table>sys_file</table>
+                        </element>
+                        <element index="sys_file_metadata:1" type="array">
+                            <id>1</id>
+                            <table>sys_file_metadata</table>
                         </element>
                     </relations>
                     <softrefs type="array"></softrefs>
@@ -406,21 +406,21 @@
                 <field index="height">300</field>
             </fieldlist>
             <related index="rels" type="array">
-                <field index="l10n_parent" type="array">
-                    <type>db</type>
-                    <relations index="itemArray" type="array">
-                        <element index="0" type="array">
-                            <id>1</id>
-                            <table>sys_file_metadata</table>
-                        </element>
-                    </relations>
-                </field>
                 <field index="file" type="array">
                     <type>db</type>
                     <relations index="itemArray" type="array">
                         <element index="0" type="array">
                             <id>1</id>
                             <table>sys_file</table>
+                        </element>
+                    </relations>
+                </field>
+                <field index="l10n_parent" type="array">
+                    <type>db</type>
+                    <relations index="itemArray" type="array">
+                        <element index="0" type="array">
+                            <id>1</id>
+                            <table>sys_file_metadata</table>
                         </element>
                     </relations>
                 </field>

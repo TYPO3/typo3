@@ -63,6 +63,7 @@ final readonly class TcaFactory
     public function create(): array
     {
         $tca = $this->loadConfigurationTcaFiles();
+        $tca = $this->enrichTca($tca);
         $tca = $this->dispatchBeforeTcaOverridesEvent($tca);
         $tca = $this->loadConfigurationTcaOverridesFiles($tca);
         $tca = $this->migrateTca($tca);
@@ -76,6 +77,7 @@ final readonly class TcaFactory
     public function createNotMigrated(): array
     {
         $tca = $this->loadConfigurationTcaFiles();
+        $tca = $this->enrichTca($tca);
         return $this->loadConfigurationTcaOverridesFiles($tca);
     }
 
@@ -127,6 +129,11 @@ final readonly class TcaFactory
         $tca = $GLOBALS['TCA'];
         unset($GLOBALS['TCA']);
         return $tca;
+    }
+
+    private function enrichTca(array $tca): array
+    {
+        return (new TcaEnrichment())->enrich($tca);
     }
 
     private function loadConfigurationTcaOverridesFiles(array $tca): array

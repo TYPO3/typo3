@@ -20,69 +20,9 @@ return [
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_blog.gif',
     ],
     'columns' => [
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-                'default' => 0,
-            ],
-        ],
         'categories' => [
             'config' => [
                 'type' => 'category',
-            ],
-        ],
-        'l18n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_blogexample_domain_model_blog',
-                'foreign_table_where' => 'AND {#tx_blogexample_domain_model_blog}.{#uid}=###REC_FIELD_l18n_parent### AND {#tx_blogexample_domain_model_blog}.{#sys_language_uid} IN (-1,0)',
-            ],
-        ],
-        'l18n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-                'default' => '',
-            ],
-        ],
-        'hidden' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
-            'config' => [
-                'type' => 'check',
-            ],
-        ],
-        'fe_group' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
-                'size' => 5,
-                'maxitems' => 20,
-                'items' => [
-                    [
-                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
-                        'value' => -1,
-                    ],
-                    [
-                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
-                        'value' => -2,
-                    ],
-                    [
-                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
-                        'value' => '--div--',
-                    ],
-                ],
-                'exclusiveKeys' => '-1,-2',
-                'foreign_table' => 'fe_groups',
             ],
         ],
         'title' => [

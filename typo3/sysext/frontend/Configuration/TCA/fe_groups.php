@@ -20,21 +20,6 @@ return [
         'searchFields' => 'title,description',
     ],
     'columns' => [
-        'hidden' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
-            'exclude' => true,
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-                'default' => 0,
-                'items' => [
-                    [
-                        'label' => '',
-                        'invertStateDisplay' => true,
-                    ],
-                ],
-            ],
-        ],
         'title' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.title',
             'config' => [
@@ -56,14 +41,6 @@ return [
                 'size' => 6,
                 'autoSizeMax' => 10,
                 'maxitems' => 20,
-            ],
-        ],
-        'description' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
-            'config' => [
-                'type' => 'text',
-                'rows' => 5,
-                'cols' => 48,
             ],
         ],
     ],

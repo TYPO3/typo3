@@ -495,6 +495,11 @@ $tca = [
             ],
         ],
         'fe_groups' => [
+            // @todo Inconsistent: sys_file_metadata has no ['ctrl']['enablecolumns']['fe_group'],
+            //       but this column is configured like the standard fe_group column?! Does this
+            //       actually work? And why can metadata be restricted for fe_groups in the first place?
+            //       Same question for 'visible' column above, shouldn't this be registered as
+            //       enablecolumns as well, if it actually works in FE?
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config' => [

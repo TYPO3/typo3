@@ -23,55 +23,6 @@ return [
     ],
 
     'columns' => [
-
-        'hidden' => [
-            'config' => [
-                'type' => 'check',
-                'items' => [
-                    ['label' => 'Disable'],
-                ],
-            ],
-        ],
-        'sys_language_uid' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
-        'l10n_parent' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'Translation parent',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_styleguide_palette',
-                'foreign_table_where' => 'AND {#tx_styleguide_palette}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_palette}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0,
-            ],
-        ],
-        'l10n_source' => [
-            'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'label' => 'Translation source',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['label' => '', 'value' => 0],
-                ],
-                'foreign_table' => 'tx_styleguide_palette',
-                'foreign_table_where' => 'AND {#tx_styleguide_palette}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_palette}.{#uid}!=###THIS_UID###',
-                'default' => 0,
-            ],
-        ],
-        'l10n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-            ],
-        ],
-
         'palette_1_1' => [
             'label' => 'palette_1_1',
             'description' => 'field description',
@@ -153,7 +104,6 @@ return [
                 'type' => 'input',
             ],
         ],
-
     ],
 
     'types' => [
