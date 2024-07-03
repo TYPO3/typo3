@@ -173,7 +173,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                     if (!empty($label)) {
                         $out .= $this->linkEditContent('<strong>' . htmlspecialchars($languageService->sL($label)) . '</strong>', $record);
                     } else {
-                        $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $record['list_type']);
+                        $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingLabel'), $record['list_type']);
                         $out .= '<div class="alert alert-danger">' . htmlspecialchars($message) . '</div>';
                     }
                 } else {
