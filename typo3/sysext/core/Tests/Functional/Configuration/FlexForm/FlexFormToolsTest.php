@@ -715,6 +715,212 @@ final class FlexFormToolsTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function parseDataStructureByIdentifierThrowsExceptionForDataStructureTypeArrayWithoutSection(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1440685208);
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <sheets>
+                    <sDEF>
+                        <ROOT>
+                            <sheetTitle>aTitle</sheetTitle>
+                            <type>array</type>
+                            <el>
+                                <aSection>
+                                    <type>array</type>
+                                </aSection>
+                            </el>
+                        </ROOT>
+                    </sDEF>
+                </sheets>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierThrowsExceptionForDataStructureSectionWithoutTypeArray(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1440685208);
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <sheets>
+                    <sDEF>
+                        <ROOT>
+                            <sheetTitle>aTitle</sheetTitle>
+                            <type>array</type>
+                            <el>
+                                <aSection>
+                                    <section>1</section>
+                                </aSection>
+                            </el>
+                        </ROOT>
+                    </sDEF>
+                </sheets>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierThrowsExceptionForNestedSectionContainers(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1458745712);
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <sheets>
+                    <sDEF>
+                        <ROOT>
+                            <sheetTitle>aTitle</sheetTitle>
+                            <type>array</type>
+                            <el>
+                                <aSection>
+                                    <type>array</type>
+                                    <section>1</section>
+                                    <el>
+                                        <container_1>
+                                            <type>array</type>
+                                            <el>
+                                                <section_nested>
+                                                    <type>array</type>
+                                                    <section>1</section>
+                                                    <el></el>
+                                                </section_nested>
+                                            </el>
+                                        </container_1>
+                                    </el>
+                                </aSection>
+                            </el>
+                        </ROOT>
+                    </sDEF>
+                </sheets>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+    }
+
+    public static function parseDataStructureByIdentifierThrowsExceptionForSectionContainerElementsWithDbRelationsDataProvider(): array
+    {
+        return [
+            'inline' => [
+                'element' => '
+                    <aFLexField>
+                        <label>aFlexFieldLabel</label>
+                        <config>
+                            <type>inline</type>
+                        </config>
+                    </aFLexField>
+                ',
+            ],
+            'select MM' => [
+                'element' => '
+                    <aFLexField>
+                        <label>aFlexFieldLabel</label>
+                        <config>
+                            <type>select</type>
+                            <MM></MM>
+                        </config>
+                    </aFLexField>
+                ',
+            ],
+            'select foreign_field' => [
+                'element' => '
+                    <aFLexField>
+                        <label>aFlexFieldLabel</label>
+                        <config>
+                            <type>select</type>
+                            <foreign_table></foreign_table>
+                        </config>
+                    </aFLexField>
+                ',
+            ],
+            'group MM' => [
+                'element' => '
+                    <aFLexField>
+                        <label>aFlexFieldLabel</label>
+                        <config>
+                            <type>group</type>
+                            <MM></MM>
+                        </config>
+                    </aFLexField>
+                ',
+            ],
+            'folder' => [
+                'element' => '
+                    <aFLexField>
+                        <label>aFlexFieldLabel</label>
+                        <config>
+                            <type>folder</type>
+                        </config>
+                    </aFLexField>
+                ',
+            ],
+            'file' => [
+                'element' => '
+                    <aFLexField>
+                        <label>aFlexFieldLabel</label>
+                        <config>
+                            <type>file</type>
+                        </config>
+                    </aFLexField>
+                ',
+            ],
+            'category' => [
+                'element' => '
+                    <aFLexField>
+                        <label>aFlexFieldLabel</label>
+                        <config>
+                            <type>category</type>
+                        </config>
+                    </aFLexField>
+                ',
+            ],
+        ];
+    }
+
+    #[DataProvider('parseDataStructureByIdentifierThrowsExceptionForSectionContainerElementsWithDbRelationsDataProvider')]
+    #[Test]
+    public function parseDataStructureByIdentifierThrowsExceptionForSectionContainerElementsWithDbRelations(string $element): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionCode(1458745468);
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
+            <T3DataStructure>
+                <sheets>
+                    <sDEF>
+                        <ROOT>
+                            <sheetTitle>aTitle</sheetTitle>
+                            <type>array</type>
+                            <el>
+                                <aSection>
+                                    <type>array</type>
+                                    <section>1</section>
+                                    <el>
+                                        <container_1>
+                                            <type>array</type>
+                                            <el>
+                                                ' . $element . '
+                                            </el>
+                                        </container_1>
+                                    </el>
+                                </aSection>
+                            </el>
+                        </ROOT>
+                    </sDEF>
+                </sheets>
+            </T3DataStructure>
+        ';
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+    }
+
+    #[Test]
     public function parseDataStructureByIdentifierMigratesSheetLevelFields(): void
     {
         // Register special error handler to suppress E_USER_DEPRECATED triggered by subject.

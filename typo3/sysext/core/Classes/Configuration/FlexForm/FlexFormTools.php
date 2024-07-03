@@ -146,7 +146,7 @@ readonly class FlexFormTools
         $dataStructure = $this->convertDataStructureToArray($dataStructure);
         $dataStructure = $this->ensureDefaultSheet($dataStructure);
         $dataStructure = $this->resolveFileDirectives($dataStructure);
-        $dataStructure = $this->migrateAndPrepareFlexTca($dataStructure);
+        $dataStructure = $this->checkMigratePrepareFlexTca($dataStructure);
         return $this->eventDispatcher
             ->dispatch(new AfterFlexFormDataStructureParsedEvent($dataStructure, $parsedIdentifier))
             ->getDataStructure();
@@ -543,91 +543,114 @@ readonly class FlexFormTools
     }
 
     /**
-     * Call TCA migration and TCA preparation on flex elements.
+     * Check for invalid flex form structures, migrate and prepare single fields.
      */
-    protected function migrateAndPrepareFlexTca(array $dataStructure): array
+    private function checkMigratePrepareFlexTca(array $dataStructure): array
     {
-        if (isset($dataStructure['sheets']) && is_array($dataStructure['sheets'])) {
-            foreach ($dataStructure['sheets'] as $sheetName => $sheetStructure) {
-                if (is_array($dataStructure['sheets'][$sheetName])) {
-                    $dataStructure['sheets'][$sheetName] = $this->migrateFlexFormTcaRecursive($dataStructure['sheets'][$sheetName]);
-                    $dataStructure['sheets'][$sheetName] = $this->prepareFlexFormTca($dataStructure['sheets'][$sheetName]);
-                }
-            }
+        if (!is_array($dataStructure['sheets'] ?? null)) {
+            return $dataStructure;
         }
-        return $dataStructure;
-    }
-
-    /**
-     * Recursively migrate flex form TCA. Flex form consists of flex sheet TCA elements at this point,
-     * plus flex section container TCA elements. Those need to call TcaMigration.
-     *
-     * @todo: This does not *really* need to be recursive, the code is more aggressive than it could be:
-     *        There are only two levels: Flex sheet elements and container elements. Refactor the method do handle
-     *        those directly without recursion. To be sure this works when refactored, test
-     *        parseDataStructureByIdentifierMigratesContainerFields() should be accompanied by two further tests:
-     *        One that has two section containers in a sheet element, and one that has one or more than one section
-     *        container in two different sheet elements, maybe in two different sheets, or a combination of all that.
-     */
-    protected function migrateFlexFormTcaRecursive(array $structure): array
-    {
-        $newStructure = [];
-        foreach ($structure as $key => $value) {
-            if ($key === 'el' && is_array($value)) {
-                $newSubStructure = [];
-                foreach ($value as $subKey => $subValue) {
-                    // On-the-fly migration for flex form "TCA". Call the TcaMigration and log any deprecations.
-                    $dummyTca = [
-                        'dummyTable' => [
-                            'columns' => [
-                                'dummyField' => $subValue,
-                            ],
-                        ],
-                    ];
-                    $migratedTca = $this->tcaMigration->migrate($dummyTca);
-                    $messages = $this->tcaMigration->getMessages();
-                    if (!empty($messages)) {
-                        $context = 'FlexFormTools did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'
-                            . ' Merge the following changes into the flex form definition "' . $subKey . '":';
-                        array_unshift($messages, $context);
-                        trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
+        $newStructure = $dataStructure;
+        foreach ($dataStructure['sheets'] as $sheetName => $sheetStructure) {
+            if (!is_array($sheetStructure['ROOT']['el'])) {
+                continue;
+            }
+            foreach ($sheetStructure['ROOT']['el'] as $sheetElementName => $sheetElementConfig) {
+                if (!is_array($sheetElementConfig)) {
+                    continue;
+                }
+                if (($sheetElementConfig['type'] ?? null) === 'array' xor ($sheetElementConfig['section'] ?? null) === '1') {
+                    // Section element, but type=array without section=1 or vice versa is not ok
+                    throw new \UnexpectedValueException(
+                        'Broken data structure on field name ' . $sheetElementName . '. section without type or vice versa is not allowed',
+                        1440685208
+                    );
+                }
+                if (($sheetElementConfig['type'] ?? null) === 'array' && ($sheetElementConfig['section'] ?? null) === '1') {
+                    // Section element
+                    if (!is_array($sheetElementConfig['el'] ?? null)) {
+                        continue;
                     }
-                    $newSubStructure[$subKey] = $migratedTca['dummyTable']['columns']['dummyField'];
+                    foreach ($sheetElementConfig['el'] as $containerName => $containerConfig) {
+                        if (!is_array($containerConfig['el'] ?? null)) {
+                            continue;
+                        }
+                        foreach ($containerConfig['el'] as $containerElementName => $containerElementConfig) {
+                            if (!is_array($containerElementConfig)) {
+                                continue;
+                            }
+                            if (
+                                // inline, file, group and category are always DB relations
+                                in_array($containerElementConfig['config']['type'] ?? [], ['inline', 'file', 'folder', 'group', 'category'], true)
+                                // MM is not allowed (usually type=select, otherwise the upper check should kick in)
+                                || isset($containerElementConfig['config']['MM'])
+                                // foreign_table is not allowed (usually type=select, otherwise the upper check should kick in)
+                                || isset($containerElementConfig['config']['foreign_table'])
+                            ) {
+                                // Nesting types that use DB relations in container sections is not supported.
+                                throw new \UnexpectedValueException(
+                                    'Invalid flex form data structure on field name "' . $containerElementName . '" with element "' . $sheetElementName . '"'
+                                    . ' in section container "' . $containerName . '": Nesting elements that have database relations in flex form'
+                                    . ' sections is not allowed.',
+                                    1458745468
+                                );
+                            }
+                            if (($containerElementConfig['type'] ?? null) === 'array' && ($containerElementConfig['section'] ?? null) === '1') {
+                                // Nesting sections is not supported. Throw an exception if configured.
+                                throw new \UnexpectedValueException(
+                                    'Invalid flex form data structure on field name "' . $containerElementName . '" with element "' . $sheetElementName . '"'
+                                    . ' in section container "' . $containerName . '": Nesting sections in container elements'
+                                    . ' sections is not allowed.',
+                                    1458745712
+                                );
+                            }
+                            $containerElementConfig = $this->migrateFlexField($containerElementName, $containerElementConfig);
+                            $containerElementConfig = $this->prepareFlexField($containerElementName, $containerElementConfig);
+                            $newStructure['sheets'][$sheetName]['ROOT']['el'][$sheetElementName]['el'][$containerName]['el'][$containerElementName] = $containerElementConfig;
+                        }
+                    }
+                } else {
+                    // Normal element
+                    $sheetElementConfig = $this->migrateFlexField($sheetElementName, $sheetElementConfig);
+                    $sheetElementConfig = $this->prepareFlexField($sheetElementName, $sheetElementConfig);
+                    $newStructure['sheets'][$sheetName]['ROOT']['el'][$sheetElementName] = $sheetElementConfig;
                 }
-                $value = $newSubStructure;
             }
-            if (is_array($value)) {
-                $value = $this->migrateFlexFormTcaRecursive($value);
-            }
-            $newStructure[$key] = $value;
         }
         return $newStructure;
     }
 
-    protected function prepareFlexFormTca(array $structure): array
+    private function migrateFlexField(string $fieldName, array $fieldConfig): array
     {
-        $newStructure = [];
-        foreach ($structure as $key => $value) {
-            if ($key === 'el' && is_array($value)) {
-                $newSubStructure = [];
-                foreach ($value as $subKey => $subValue) {
-                    $dummyTca = [
-                        'dummyTable' => [
-                            'columns' => [
-                                $subKey => $subValue,
-                            ],
-                        ],
-                    ];
-                    $preparedTca = $this->tcaPreparation->prepare($dummyTca, true);
-                    $newSubStructure[$subKey] = $preparedTca['dummyTable']['columns'][$subKey];
-                }
-                $value = $newSubStructure;
-            }
-            if (is_array($value)) {
-                $value = $this->prepareFlexFormTca($value);
-            }
-            $newStructure[$key] = $value;
+        // TcaMigration of this field. Call the TcaMigration and log any deprecations.
+        $dummyTca = [
+            'dummyTable' => [
+                'columns' => [
+                    $fieldName => $fieldConfig,
+                ],
+            ],
+        ];
+        $migratedTca = $this->tcaMigration->migrate($dummyTca);
+        $messages = $this->tcaMigration->getMessages();
+        if (!empty($messages)) {
+            $context = 'FlexFormTools did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'
+                . ' Merge the following changes into the flex form definition "' . $fieldName . '":';
+            array_unshift($messages, $context);
+            trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
         }
-        return $newStructure;
+        return $migratedTca['dummyTable']['columns'][$fieldName];
+    }
+
+    private function prepareFlexField(string $fieldName, array $fieldConfig): array
+    {
+        $dummyTca = [
+            'dummyTable' => [
+                'columns' => [
+                    $fieldName => $fieldConfig,
+                ],
+            ],
+        ];
+        $preparedTca = $this->tcaPreparation->prepare($dummyTca, true);
+        return $preparedTca['dummyTable']['columns'][$fieldName];
     }
 }

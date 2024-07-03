@@ -243,6 +243,7 @@ readonly class TcaPreparation
                     $fieldConfig['config']['overrideChildTca'] = $this->configureAllowedDisallowedInOverrideChildTca($fieldConfig['config']['overrideChildTca']);
                 }
             }
+            unset($fieldConfig);
             if (is_array($tableDefinition['types'] ?? null)) {
                 foreach ($tableDefinition['types'] as &$typeConfig) {
                     if (!isset($typeConfig['columnsOverrides']) || !is_array($typeConfig['columnsOverrides'])) {
@@ -275,6 +276,7 @@ readonly class TcaPreparation
                 }
                 $overrideChildTcaColumnConfig['config'] = $this->configureAllowedDisallowedFileExtensions($overrideChildTcaColumnConfig['config']);
             }
+            unset($overrideChildTcaColumnConfig);
         }
         if (is_array($overrideChildTcaConfig['types'] ?? null)) {
             foreach ($overrideChildTcaConfig['types'] as &$overrideChildTcaTypeConfig) {
