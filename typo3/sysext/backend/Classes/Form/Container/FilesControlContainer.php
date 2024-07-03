@@ -173,8 +173,8 @@ class FilesControlContainer extends AbstractContainer
         ];
         $configJson = (string)json_encode($config);
         $this->fileReferenceData['config'][$formFieldIdentifier . '-' . self::FILE_REFERENCE_TABLE] = [
-            'min' => $config['minitems'],
-            'max' => $config['maxitems'],
+            'min' => $config['minitems'] ?? null,
+            'max' => $config['maxitems'] ?? null,
             'sortable' => $config['appearance']['useSortable'] ?? false,
             'top' => [
                 'table' => $top['table'],
