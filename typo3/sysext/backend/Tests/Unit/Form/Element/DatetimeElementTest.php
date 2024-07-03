@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\DatetimeElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -43,6 +44,7 @@ final class DatetimeElementTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $this->timezoneBackup = date_default_timezone_get();
     }
 

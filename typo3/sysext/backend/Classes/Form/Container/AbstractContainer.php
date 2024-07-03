@@ -141,7 +141,8 @@ abstract class AbstractContainer extends AbstractNode
     {
         $legend = htmlspecialchars($this->data['parameterArray']['fieldConf']['label']);
         if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
-            $legend .= ' <code>[' . htmlspecialchars($this->data['fieldName']) . ']</code>';
+            $fieldName = $this->data['flexFormContainerFieldName'] ?? $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
+            $legend .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
         }
         return '<fieldset><legend class="form-legend">' . $legend . '</legend>' . $fieldContent . '</fieldset>';
     }
