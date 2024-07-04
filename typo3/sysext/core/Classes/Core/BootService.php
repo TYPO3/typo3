@@ -67,7 +67,6 @@ class BootService
             // Core cache is initialized with a NullBackend in failsafe mode.
             // Replace it with a new cache that uses the real backend.
             $this->container->set('_early.cache.core', $coreCache);
-            $this->container->set('_early.cache.assets', Bootstrap::createCache('assets'));
             if (!Environment::isComposerMode()) {
                 $this->container->get(PackageManager::class)->setPackageCache(Bootstrap::createPackageCache($coreCache));
             }

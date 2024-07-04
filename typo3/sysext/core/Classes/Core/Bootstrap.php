@@ -107,7 +107,6 @@ class Bootstrap
         static::setDefaultTimezone();
         static::setMemoryLimit();
 
-        $assetsCache = static::createCache('assets', $disableCaching);
         $dependencyInjectionContainerCache = static::createCache('di');
 
         $bootState = new \stdClass();
@@ -122,7 +121,6 @@ class Bootstrap
             RequestId::class => $requestId,
             'cache.di' => $dependencyInjectionContainerCache,
             'cache.core' => $coreCache,
-            'cache.assets' => $assetsCache,
             PackageManager::class => $packageManager,
 
             // @internal

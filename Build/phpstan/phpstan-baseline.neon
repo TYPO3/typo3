@@ -252,7 +252,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
-			count: 3
+			count: 2
 			path: ../../typo3/sysext/core/Classes/Core/BootService.php
 
 		-

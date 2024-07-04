@@ -23,6 +23,8 @@ use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
@@ -112,6 +114,7 @@ class ServiceProvider extends AbstractServiceProvider
             TypoScript\Tokenizer\LosslessTokenizer::class => [ self::class, 'getLosslessTokenizer'],
             'icons' => self::getIcons(...),
             'middlewares' => self::getMiddlewares(...),
+            'cache.assets' => self::getAssetsCache(...),
             'core.middlewares' => self::getCoreMiddlewares(...),
             'content.security.policies' => self::getContentSecurityPolicies(...),
         ];
@@ -595,6 +598,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getContentSecurityPolicies(ContainerInterface $container): Map
     {
         return new Map();
+    }
+
+    public static function getAssetsCache(ContainerInterface $container): FrontendInterface
+    {
+        return Bootstrap::createCache('assets');
     }
 
     public static function getCoreMiddlewares(ContainerInterface $container): \ArrayObject
