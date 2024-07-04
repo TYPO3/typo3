@@ -189,7 +189,7 @@ final class InstallerController
         $structureFixMessageQueue = $structureFacade->fix();
         $errorsFromStructure = $structureFixMessageQueue->getAllMessages(ContextualFeedbackSeverity::ERROR);
 
-        if (@is_dir(Environment::getLegacyConfigPath())) {
+        if ($this->configurationManager->canWriteConfiguration()) {
             $this->configurationManager->createLocalConfigurationFromFactoryConfiguration();
             // Create a PackageStates.php with all packages activated marked as "part of factory default"
             $this->packageManager->recreatePackageStatesFileIfMissing(true);
@@ -200,6 +200,8 @@ final class InstallerController
                 'success' => true,
             ]);
         }
+        $errorsFromStructure[] = new FlashMessage('Unable to write configuration file', 'Error', ContextualFeedbackSeverity::ERROR);
+
         return new JsonResponse([
             'success' => false,
             'status' => $errorsFromStructure,
