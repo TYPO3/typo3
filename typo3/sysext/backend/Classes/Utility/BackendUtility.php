@@ -2946,9 +2946,11 @@ class BackendUtility
      * @param string $table Name of the table
      * @param string $field Name of the field
      * @return array
+     * @deprecated will be removed in TYPO3 v14, use TcaSchema instead.
      */
     public static function getTcaFieldConfiguration($table, $field)
     {
+        trigger_error('BackendUtility::getTcaFieldConfiguration() will be removed in TYPO3 v14. Use TcaSchema instead.', E_USER_DEPRECATED);
         $configuration = [];
         if (isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
             $configuration = $GLOBALS['TCA'][$table]['columns'][$field]['config'];

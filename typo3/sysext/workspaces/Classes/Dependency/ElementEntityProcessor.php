@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Dependency;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -27,10 +29,15 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  *
  * @internal
  */
+#[Autoconfigure(public: true, shared: false)]
 class ElementEntityProcessor
 {
     protected int $workspace;
     protected ?DataHandler $dataHandler;
+
+    public function __construct(
+        protected readonly TcaSchemaFactory $tcaSchemaFactory
+    ) {}
 
     /**
      * Sets the current workspace.
@@ -82,7 +89,8 @@ class ElementEntityProcessor
         if ($caller->isInvalid()) {
             return ElementEntity::RESPONSE_Skip;
         }
-        $fieldConfiguration = BackendUtility::getTcaFieldConfiguration($caller->getTable(), $callerArguments['field']);
+        $schema = $this->tcaSchemaFactory->get($caller->getTable());
+        $fieldConfiguration = $schema->getField($callerArguments['field'])->getConfiguration();
         $inlineFieldType = $this->getDataHandler()->getRelationFieldType($fieldConfiguration);
         if (!$fieldConfiguration || ($fieldConfiguration['type'] !== 'flex' && $inlineFieldType !== 'field' && $inlineFieldType !== 'list')) {
             return ElementEntity::RESPONSE_Skip;
@@ -97,7 +105,8 @@ class ElementEntityProcessor
      */
     public function createNewDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, string $eventName): ?string
     {
-        $fieldConfiguration = BackendUtility::getTcaFieldConfiguration($callerArguments['table'], $callerArguments['field']);
+        $schema = $this->tcaSchemaFactory->get($callerArguments['table']);
+        $fieldConfiguration = $schema->getField($callerArguments['field'])->getConfiguration();
         $inlineFieldType = $this->getDataHandler()->getRelationFieldType($fieldConfiguration);
         if (!$fieldConfiguration || ($fieldConfiguration['type'] !== 'flex' && $inlineFieldType !== 'field' && $inlineFieldType !== 'list')) {
             return ElementEntity::RESPONSE_Skip;

@@ -1620,4 +1620,11 @@ return [
             'Deprecation-103785-DeprecateMathUtilityConvertToPositiveInteger.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-104304-BackendUtilitygetTcaFieldConfiguration.rst',
+        ],
+    ],
 ];

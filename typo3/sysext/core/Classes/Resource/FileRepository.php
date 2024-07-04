@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -36,10 +36,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * as it is more flexible.
  */
 #[Autoconfigure(public: true)]
-class FileRepository
+readonly class FileRepository
 {
     public function __construct(
-        protected readonly ResourceFactory $factory
+        protected ResourceFactory $factory,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -115,6 +116,7 @@ class FileRepository
                 $referenceUids[] = $row['uid'];
             }
         } else {
+            $schema = $this->tcaSchemaFactory->get($tableName);
             $workspaceId ??= GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id', 0);
             $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
             $relationHandler->setWorkspaceId($workspaceId);
@@ -124,7 +126,7 @@ class FileRepository
                 '',
                 $uid,
                 $tableName,
-                BackendUtility::getTcaFieldConfiguration($tableName, $fieldName)
+                $schema->getField($fieldName)->getConfiguration()
             );
             if (!empty($relationHandler->tableArray['sys_file_reference'])) {
                 $relationHandler->processDeletePlaceholder();
