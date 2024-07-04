@@ -3334,7 +3334,7 @@ class DataHandler
         // IRRE with a pointer field (database normalization):
         if ($tcaFieldConf['foreign_field'] ?? false) {
             // update record in intermediate table (sorting & pointer uid to parent record)
-            $dbAnalysis->writeForeignField($tcaFieldConf, $id, 0);
+            $dbAnalysis->writeForeignField($tcaFieldConf, $id);
             $newValue = $dbAnalysis->countItems(false);
         } elseif ($this->getRelationFieldType($tcaFieldConf) === 'mm') {
             // In order to fully support all the MM stuff, directly call checkValue_group_select_processDBdata instead of repeating the needed code here

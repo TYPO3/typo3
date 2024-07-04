@@ -29,25 +29,26 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Load database groups (relations)
- * Used to process the relations created by the TCA element types "group" and "select" for database records.
- * Manages MM-relations as well.
+ * Used to process the relations created by the TCA element types
+ * - "group"
+ * - "select"
+ * - "inline"
+ * - "file"
+ * - "category"
+ * for database records. Manages MM-relations as well.
  */
 class RelationHandler
 {
     /**
      * If set, values that are not ids in tables are normally discarded. By this options they will be preserved.
-     *
-     * @var bool
      */
-    public $registerNonTableValues = false;
+    public bool $registerNonTableValues = false;
 
     /**
      * Contains the table names as keys. The values are the id-values for each table.
      * Should ONLY contain proper table names.
-     *
-     * @var array
      */
-    public $tableArray = [];
+    public array $tableArray = [];
 
     /**
      * Contains items in a numeric array (table/id for each). Tablenames here might be "_NO_TABLE". Keeps
@@ -55,63 +56,47 @@ class RelationHandler
      *
      * @var array<int, array<string, mixed>>
      */
-    public $itemArray = [];
+    public array $itemArray = [];
 
     /**
      * Array for NON-table elements
-     *
-     * @var array
      */
-    public $nonTableArray = [];
+    public array $nonTableArray = [];
 
-    /**
-     * @var array
-     */
-    public $additionalWhere = [];
+    public array $additionalWhere = [];
 
     /**
      * Deleted-column is added to additionalWhere... if this is set...
-     *
-     * @var bool
      */
-    public $checkIfDeleted = true;
+    public bool $checkIfDeleted = true;
 
     /**
      * Will contain the first table name in the $tablelist (for positive ids)
-     *
-     * @var string
      */
-    protected $firstTable = '';
+    protected string $firstTable = '';
 
     /**
      * If TRUE, uid_local and uid_foreign are switched, and the current table
      * is inserted as tablename - this means you display a foreign relation "from the opposite side"
-     *
-     * @var bool
      */
-    protected $MM_is_foreign = false;
+    protected bool $MM_is_foreign = false;
 
     /**
      * Is empty by default; if MM_is_foreign is set and there is more than one table
      * allowed (on the "local" side), then it contains the first table (as a fallback)
-     * @var string
      */
-    protected $MM_isMultiTableRelationship = '';
+    protected string $MM_isMultiTableRelationship = '';
 
     /**
      * Current table => Only needed for reverse relations
-     *
-     * @var string
      */
-    protected $currentTable;
+    protected string $currentTable = '';
 
     /**
      * If a record should be undeleted
      * (so do not use the $useDeleteClause on \TYPO3\CMS\Backend\Utility\BackendUtility)
-     *
-     * @var bool
      */
-    public $undeleteRecord;
+    public bool $undeleteRecord = false;
 
     /**
      * Array of fields value pairs that should match while SELECT.
@@ -129,57 +114,36 @@ class RelationHandler
 
     /**
      * Extra MM table where
-     *
-     * @var string
      */
-    protected $MM_table_where = '';
+    protected string $MM_table_where = '';
 
     /**
      * Usage of an MM field on the opposite relation.
-     *
-     * @var array
      */
-    protected $MM_oppositeUsage;
+    protected array $MM_oppositeUsage;
 
-    /**
-     * @var ReferenceIndexUpdater|null
-     */
-    protected $referenceIndexUpdater;
+    protected ?ReferenceIndexUpdater $referenceIndexUpdater = null;
 
-    /**
-     * @var bool
-     */
-    protected $useLiveParentIds = true;
+    protected bool $useLiveParentIds = true;
 
-    /**
-     * @var bool
-     */
-    protected $useLiveReferenceIds = true;
+    protected bool $useLiveReferenceIds = true;
 
-    /**
-     * @var int|null
-     */
-    protected $workspaceId;
+    protected ?int $workspaceId = null;
 
-    /**
-     * @var bool
-     */
-    protected $purged = false;
+    protected bool $purged = false;
 
     /**
      * This array will be filled by getFromDB().
-     *
-     * @var array
      */
-    public $results = [];
+    public array $results = [];
 
     /**
      * Gets the current workspace id.
      */
     protected function getWorkspaceId(): int
     {
-        $backendUser = $GLOBALS['BE_USER'] ?? null;
-        if (!isset($this->workspaceId)) {
+        if ($this->workspaceId === null) {
+            $backendUser = $GLOBALS['BE_USER'] ?? null;
             $this->workspaceId = $backendUser instanceof BackendUserAuthentication ? (int)($backendUser->workspace) : 0;
         }
         return $this->workspaceId;
@@ -207,10 +171,8 @@ class RelationHandler
 
     /**
      * Whether item array has been purged in this instance.
-     *
-     * @return bool
      */
-    public function isPurged()
+    public function isPurged(): bool
     {
         return $this->purged;
     }
@@ -230,7 +192,7 @@ class RelationHandler
         $conf = (array)$conf;
         // SECTION: MM reverse relations
         $this->MM_is_foreign = (bool)($conf['MM_opposite_field'] ?? false);
-        $this->MM_table_where = $conf['MM_table_where'] ?? null;
+        $this->MM_table_where = (string)($conf['MM_table_where'] ?? '');
         $this->multiple = (bool)($conf['multiple'] ?? false);
         $this->MM_match_fields = (isset($conf['MM_match_fields']) && is_array($conf['MM_match_fields'])) ? $conf['MM_match_fields'] : [];
         $this->currentTable = $currentTable;
@@ -273,7 +235,7 @@ class RelationHandler
                 $this->additionalWhere[$tableName] .= ' AND ' . $tableName . '.' . $deleteField . '=0';
             }
         }
-        if (is_array($this->tableArray)) {
+        if ($this->tableArray !== []) {
             reset($this->tableArray);
         } else {
             // No tables
@@ -719,7 +681,7 @@ class RelationHandler
                     }
                     $connection->insert($MM_tableName, $insertFields);
                     if ($this->MM_is_foreign) {
-                        $this->updateRefIndex($val['table'], $val['id']);
+                        $this->referenceIndexUpdater?->registerForUpdate($val['table'], (int)$val['id'], $this->getWorkspaceId());
                     }
                 }
             }
@@ -727,7 +689,6 @@ class RelationHandler
             if (is_array($oldMMs) && !empty($oldMMs)) {
                 $queryBuilder = $connection->createQueryBuilder();
                 $removeClauses = $queryBuilder->expr()->or();
-                $updateRefIndex_records = [];
                 foreach ($oldMMs as $oldMM_key => $mmItem) {
                     // If UID field is present, of course we need only use that for deleting.
                     if ($this->multiple) {
@@ -760,9 +721,9 @@ class RelationHandler
                     }
                     if ($this->MM_is_foreign) {
                         if (is_array($mmItem)) {
-                            $updateRefIndex_records[] = [$mmItem[0], $mmItem[1]];
+                            $this->referenceIndexUpdater?->registerForUpdate((string)$mmItem[0], (int)$mmItem[1], $this->getWorkspaceId());
                         } else {
-                            $updateRefIndex_records[] = [$this->firstTable, $mmItem];
+                            $this->referenceIndexUpdater?->registerForUpdate($this->firstTable, (int)$mmItem, $this->getWorkspaceId());
                         }
                     }
                 }
@@ -784,16 +745,11 @@ class RelationHandler
                 }
 
                 $queryBuilder->executeStatement();
-
-                // Update ref index:
-                foreach ($updateRefIndex_records as $pair) {
-                    $this->updateRefIndex($pair[0], $pair[1]);
-                }
             }
             // Update ref index; In DataHandler it is not certain that this will happen because
             // if only the MM field is changed the record itself is not updated and so the ref-index is not either.
             // This could also have been fixed in updateDB in DataHandler, however I decided to do it here ...
-            $this->updateRefIndex($this->currentTable, $uid);
+            $this->referenceIndexUpdater?->registerForUpdate($this->currentTable, (int)$uid, $this->getWorkspaceId());
         }
     }
 
@@ -804,7 +760,7 @@ class RelationHandler
      * @param int $uid The uid of the parent record (this value is also on the foreign_table in the foreign_field)
      * @param array $conf TCA configuration for current field
      */
-    protected function readForeignField(int $uid, $conf)
+    protected function readForeignField(int $uid, array $conf): void
     {
         if ($this->useLiveParentIds) {
             $uid = $this->getLiveDefaultId($this->currentTable, $uid);
@@ -865,7 +821,7 @@ class RelationHandler
         // Select children from the live(!) workspace only
         if (BackendUtility::isTableWorkspaceEnabled($foreign_table)) {
             $queryBuilder->getRestrictions()->add(
-                GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getWorkspaceId())
+                GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getWorkspaceId())
             );
         }
 
@@ -933,7 +889,7 @@ class RelationHandler
      * @param int $parentUid The uid of the parent record
      * @param int $updateToUid If this is larger than zero it will be used as foreign UID instead of the given $parentUid (on Copy)
      */
-    public function writeForeignField($conf, $parentUid, $updateToUid = 0)
+    public function writeForeignField(array $conf, $parentUid, $updateToUid = 0): void
     {
         if ($this->useLiveParentIds) {
             $parentUid = $this->getLiveDefaultId($this->currentTable, $parentUid);
@@ -987,7 +943,7 @@ class RelationHandler
                 }
                 $isOnSymmetricSide = false;
                 if ($symmetric_field) {
-                    $isOnSymmetricSide = self::isOnSymmetricSide((string)$parentUid, $conf, $row);
+                    $isOnSymmetricSide = $this->isOnSymmetricSide((string)$parentUid, $conf, $row);
                 }
                 $updateValues = $foreign_match_fields;
                 // No update to the uid is requested, so this is the normal behaviour
@@ -1050,21 +1006,20 @@ class RelationHandler
                             $updateValues,
                             ['uid' => (int)$uid]
                         );
-                    $this->updateRefIndex($table, $uid);
+                    $this->referenceIndexUpdater?->registerForUpdate($table, (int)$uid, $this->getWorkspaceId());
                 }
             }
         }
     }
 
     /**
-     * After initialization you can extract an array of the elements from the object. Use this function for that.
+     * After initialization, you can extract an array of the elements from the object. Use this function for that.
      *
      * @param bool $prependTableName If set, then table names will ALWAYS be prepended (unless its a _NO_TABLE value)
      * @return array A numeric array.
      */
-    public function getValueArray($prependTableName = false)
+    public function getValueArray(bool $prependTableName = false): array
     {
-        // INIT:
         $valueArray = [];
         $tableC = count($this->tableArray);
         // If there are tables in the table array:
@@ -1086,7 +1041,7 @@ class RelationHandler
      *
      * @return array
      */
-    public function getFromDB()
+    public function getFromDB(): array
     {
         // Traverses the tables listed:
         foreach ($this->tableArray as $table => $ids) {
@@ -1153,31 +1108,13 @@ class RelationHandler
      * @param bool $returnAsArray Whether to put the count value in an array
      * @return mixed The plain count as integer or the same inside an array
      */
-    public function countItems($returnAsArray = true)
+    public function countItems(bool $returnAsArray = true)
     {
         $count = count($this->itemArray);
         if ($returnAsArray) {
             $count = [$count];
         }
         return $count;
-    }
-
-    /**
-     * Update Reference Index (sys_refindex) for a record.
-     * Should be called any almost any update to a record which could affect references inside the record.
-     * If used from within DataHandler, only registers a row for update for later processing.
-     *
-     * @param string $table Table name
-     * @param int $uid Record uid
-     * @return array Empty array
-     */
-    protected function updateRefIndex($table, $uid): array
-    {
-        if ($this->referenceIndexUpdater) {
-            // Add to update registry if given
-            $this->referenceIndexUpdater->registerForUpdate((string)$table, (int)$uid, $this->getWorkspaceId());
-        }
-        return [];
     }
 
     /**
@@ -1189,7 +1126,7 @@ class RelationHandler
      *
      * @return bool Whether items have been converted
      */
-    public function convertItemArray()
+    public function convertItemArray(): bool
     {
         // conversion is only required in a workspace context
         // (the case that version ids are submitted in a live context are rare)
@@ -1239,16 +1176,13 @@ class RelationHandler
      *        callback logic and would reduce some queries. The (workspace) mm tests
      *        should be complete enough now to verify if a change like that would do.
      *
-     * @param int|null $workspaceId
      * @return bool Whether items have been purged
      * @internal
      */
-    public function purgeItemArray($workspaceId = null)
+    public function purgeItemArray(?int $workspaceId = null): bool
     {
         if ($workspaceId === null) {
             $workspaceId = $this->getWorkspaceId();
-        } else {
-            $workspaceId = (int)$workspaceId;
         }
 
         // Ensure, only live relations are in the items Array
@@ -1269,7 +1203,7 @@ class RelationHandler
      *
      * @return bool Whether items have been purged
      */
-    public function processDeletePlaceholder()
+    public function processDeletePlaceholder(): bool
     {
         if (!$this->useLiveReferenceIds || $this->getWorkspaceId() === 0) {
             return false;
@@ -1281,10 +1215,9 @@ class RelationHandler
     /**
      * Handles a purge callback on $this->itemArray
      *
-     * @param string $purgeCallback
      * @return bool Whether items have been purged
      */
-    protected function purgeItemArrayHandler($purgeCallback, int $workspaceId)
+    protected function purgeItemArrayHandler(string $purgeCallback, int $workspaceId): bool
     {
         $itemArrayHasBeenPurged = false;
 
@@ -1314,14 +1247,11 @@ class RelationHandler
 
     /**
      * Purges ids that are versioned.
-     *
-     * @param string $tableName
-     * @return array
      */
-    protected function purgeVersionedIds($tableName, array $ids)
+    protected function purgeVersionedIds(string $tableName, array $ids): array
     {
         $ids = $this->sanitizeIds($ids);
-        $ids = (array)array_combine($ids, $ids);
+        $ids = array_combine($ids, $ids);
         $connection = $this->getConnectionForTableName($tableName);
         $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
 
@@ -1418,11 +1348,8 @@ class RelationHandler
 
     /**
      * Purges ids that have a delete placeholder
-     *
-     * @param string $tableName
-     * @return array
      */
-    protected function purgeDeletePlaceholder($tableName, array $ids)
+    protected function purgeDeletePlaceholder(string $tableName, array $ids): array
     {
         $ids = $this->sanitizeIds($ids);
         $ids = array_combine($ids, $ids) ?: [];
@@ -1467,7 +1394,7 @@ class RelationHandler
         return array_values($ids);
     }
 
-    protected function removeFromItemArray($tableName, $id)
+    protected function removeFromItemArray(string $tableName, $id): bool
     {
         foreach ($this->itemArray as $index => $item) {
             if ($item['table'] === $tableName && (string)$item['id'] === (string)$id) {
@@ -1486,7 +1413,7 @@ class RelationHandler
      * @param array $childRec The record row of the child record
      * @return bool Returns TRUE if looking from the symmetric ("other") side to the relation.
      */
-    protected static function isOnSymmetricSide($parentUid, $parentConf, $childRec)
+    protected function isOnSymmetricSide(string $parentUid, array $parentConf, array $childRec): bool
     {
         return MathUtility::canBeInterpretedAsInteger($childRec['uid'])
             && $parentConf['symmetric_field']
@@ -1501,7 +1428,7 @@ class RelationHandler
      * @param array $referenceValues Values to be written
      * @return array Values to be written, possibly modified
      */
-    protected function completeOppositeUsageValues($tableName, array $referenceValues)
+    protected function completeOppositeUsageValues(string $tableName, array $referenceValues): array
     {
         if (empty($this->MM_oppositeUsage[$tableName]) || count($this->MM_oppositeUsage[$tableName]) > 1) {
             // @todo: count($this->MM_oppositeUsage[$tableName]) > 1 is buggy.
@@ -1544,10 +1471,9 @@ class RelationHandler
      * Gets the record uid of the live default record. If already
      * pointing to the live record, the submitted record uid is returned.
      *
-     * @param string $tableName
      * @param int|string $id
      */
-    protected function getLiveDefaultId($tableName, $id): int
+    protected function getLiveDefaultId(string $tableName, $id): int
     {
         $liveDefaultId = BackendUtility::getLiveVersionIdOfRecord($tableName, $id);
         if ($liveDefaultId === null) {
@@ -1567,11 +1493,9 @@ class RelationHandler
     }
 
     /**
-     * @param string $tableName
      * @param int[] $ids
-     * @return PlainDataResolver
      */
-    protected function getResolver($tableName, array $ids, ?array $sortingStatement = null)
+    protected function getResolver(string $tableName, array $ids, ?array $sortingStatement = null): PlainDataResolver
     {
         $resolver = GeneralUtility::makeInstance(
             PlainDataResolver::class,
@@ -1585,12 +1509,8 @@ class RelationHandler
         return $resolver;
     }
 
-    /**
-     * @return Connection
-     */
-    protected function getConnectionForTableName(string $tableName)
+    protected function getConnectionForTableName(string $tableName): Connection
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($tableName);
+        return GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
     }
 }
