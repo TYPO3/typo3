@@ -113,6 +113,7 @@ from `editor.config.wordcount` to `editor.config.wordCount`:
           definitions:
             # block level styles
             - { name: "Lead", element: "p", classes: ['lead'] }
+            - { name: "Multiple", element: "p", classes: ['first', 'second'] }
             - { name: "Small", element: "small", classes: [] }
             # Inline styles
             - { name: "Muted", element: "span", classes: ['text-muted'] }
