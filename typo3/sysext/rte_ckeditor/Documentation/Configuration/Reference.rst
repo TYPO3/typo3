@@ -109,6 +109,7 @@ editor.config
       style:
         definitions:
           - { name: "Lead", element: "p", classes: ['lead'] }
+          - { name: "Multiple", element: "p", classes: ['first', 'second'] }
 
 .. option:: editor.config.importModules
 
