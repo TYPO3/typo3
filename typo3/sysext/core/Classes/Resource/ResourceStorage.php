@@ -2839,25 +2839,24 @@ class ResourceStorage implements ResourceStorageInterface
     protected function getNestedProcessingFolder(File $file, Folder $rootProcessingFolder)
     {
         $processingFolder = $rootProcessingFolder;
-        $nestedFolderNames = $this->getNamesForNestedProcessingFolder(
-            $file->getIdentifier(),
-            self::PROCESSING_FOLDER_LEVELS
-        );
+        $nestedFolderNames = $this->getNamesForNestedProcessingFolder($file->getIdentifier(), self::PROCESSING_FOLDER_LEVELS);
+        foreach ($nestedFolderNames as $folderName) {
+            try {
+                $processingFolder = $processingFolder->getSubfolder($folderName);
+            } catch (FolderDoesNotExistException) {
+                $currentEvaluatePermissions = $processingFolder->getStorage()->getEvaluatePermissions();
+                $processingFolder->getStorage()->setEvaluatePermissions(false);
 
-        try {
-            foreach ($nestedFolderNames as $folderName) {
-                if ($processingFolder->hasFolder($folderName)) {
-                    $processingFolder = $processingFolder->getSubfolder($folderName);
-                } else {
-                    $currentEvaluatePermissions = $processingFolder->getStorage()->getEvaluatePermissions();
-                    $processingFolder->getStorage()->setEvaluatePermissions(false);
+                try {
                     $processingFolder = $processingFolder->createFolder($folderName);
-                    $processingFolder->getStorage()->setEvaluatePermissions($currentEvaluatePermissions);
+                } catch (ExistingTargetFolderException) {
+                    // The folder may have been created meanwhile in a parallel process, which is fine, we take it.
+                    $processingFolder = $processingFolder->getSubfolder($folderName);
                 }
-            }
-        } catch (FolderDoesNotExistException $e) {
-        }
 
+                $processingFolder->getStorage()->setEvaluatePermissions($currentEvaluatePermissions);
+            }
+        }
         return $processingFolder;
     }
 

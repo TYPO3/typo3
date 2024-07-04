@@ -18,8 +18,10 @@ namespace TYPO3\CMS\Core\Resource;
 use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourcePermissionsUnavailableException;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
@@ -342,6 +344,8 @@ class Folder implements FolderInterface
      *
      * @param string $folderName
      * @return Folder The new folder object
+     * @throws ExistingTargetFolderException
+     * @throws InsufficientFolderWritePermissionsException
      */
     public function createFolder($folderName)
     {
