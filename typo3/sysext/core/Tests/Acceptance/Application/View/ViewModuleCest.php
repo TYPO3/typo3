@@ -48,20 +48,20 @@ final class ViewModuleCest
         $I->waitForElementVisible('#viewpage-topbar-preset-button');
         $I->waitForElementNotVisible('#nprogress', 120);
         $I->click('#viewpage-topbar-preset-button');
-        $I->waitForText('Nexus 7');
-        $I->click('Nexus 7');
+        $I->waitForText('Tablet portrait');
+        $I->click('Tablet portrait');
         $width = $I->grabValueFrom('input[name="width"]');
         $height = $I->grabValueFrom('input[name="height"]');
-        $I->assertEquals($width, 600);
-        $I->assertEquals($height, 960);
+        $I->assertEquals($width, 768);
+        $I->assertEquals($height, 1024);
 
         $I->waitForElementVisible('#viewpage-topbar-preset-button');
         $I->click('#viewpage-topbar-preset-button');
-        $I->waitForText('iPhone 4');
-        $I->click('iPhone 4');
+        $I->waitForText('Tablet landscape');
+        $I->click('Tablet landscape');
         $width = $I->grabValueFrom('input[name="width"]');
         $height = $I->grabValueFrom('input[name="height"]');
-        $I->assertEquals($width, 320);
-        $I->assertEquals($height, 480);
+        $I->assertEquals($width, 1024);
+        $I->assertEquals($height, 768);
     }
 }

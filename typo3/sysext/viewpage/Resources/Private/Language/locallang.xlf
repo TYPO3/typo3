@@ -9,11 +9,14 @@
 			<trans-unit id="tablet">
 				<source>Tablet</source>
 			</trans-unit>
+			<trans-unit id="tabletLandscape">
+				<source>Tablet landscape</source>
+			</trans-unit>
+			<trans-unit id="tabletPortrait">
+				<source>Tablet portrait</source>
+			</trans-unit>
 			<trans-unit id="mobile">
 				<source>Mobile</source>
-			</trans-unit>
-			<trans-unit id="computer">
-				<source>Computer</source>
 			</trans-unit>
 			<trans-unit id="desktop">
 				<source>Desktop</source>
