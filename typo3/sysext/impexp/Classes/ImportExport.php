@@ -552,7 +552,7 @@ abstract class ImportExport
                     if (!$this->getBackendUser()->doesUserHaveAccess($pidRecord, ($table === 'pages' ? 8 : 16))) {
                         $line['msg'] .= '"' . $line['ref'] . '" cannot be INSERTED on this page! ';
                     }
-                    if ($this->pid > 0 && !$this->checkDokType($table, $pidRecord['doktype']) && !$GLOBALS['TCA'][$table]['ctrl']['rootLevel']) {
+                    if ($this->pid > 0 && !$this->checkDokType($table, $pidRecord['doktype']) && !($GLOBALS['TCA'][$table]['ctrl']['rootLevel'] ?? 0)) {
                         $line['msg'] .= '"' . $table . '" cannot be INSERTED on this page type (change page type to "Folder".) ';
                     }
                 }
