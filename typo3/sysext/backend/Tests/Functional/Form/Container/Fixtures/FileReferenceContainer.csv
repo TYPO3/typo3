@@ -1,0 +1,12 @@
+"be_groups"
+,"uid","pid","title","deleted","db_mountpoints","tables_select","tables_modify"
+,1,0,"editor with file reference access",0,"1,2","pages,sys_file_reference","pages,sys_file_reference"
+,2,0,"editor without file reference access",0,"1,2","pages,sys_file_reference","pages"
+"be_users"
+,"uid","pid","username","usergroup","deleted","admin"
+,1,0,"editor",1,0,0
+,2,0,"editorWithoutFileReferenceAccess",2,0,0
+"pages"
+,"uid","pid","sorting","title","deleted","perms_userid","perms_groupid","perms_user","perms_group","perms_everybody"
+,1,0,128,"Page without content edit permission",0,1,1,15,15,15
+,2,0,256,"Page with content edit permission",0,1,1,31,31,31

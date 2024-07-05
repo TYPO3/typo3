@@ -299,9 +299,10 @@ class FileReferenceContainer extends AbstractContainer
         $backendUser = $this->getBackendUserAuthentication();
         $isNewItem = str_starts_with((string)$databaseRow['uid'], 'NEW');
         $fileReferenceTableTca = $this->data['tcaSchemata']->get(self::FILE_REFERENCE_TABLE);
+        $parentPageRowUid = (int)($this->data['parentPageRow']['uid'] ?? 0);
         $calcPerms = new Permission(
             $backendUser->calcPerms(BackendUtility::readPageAccess(
-                (int)($this->data['parentPageRow']['uid'] ?? 0),
+                $parentPageRowUid,
                 $backendUser->getPagePermsClause(Permission::PAGE_SHOW)
             ))
         );
@@ -394,7 +395,19 @@ class FileReferenceContainer extends AbstractContainer
                         </a>';
                 }
             }
-            if ($event->isControlEnabled('delete') && $calcPerms->editContentPermissionIsGranted()) {
+
+            if ($event->isControlEnabled('delete')
+                && (
+                    $calcPerms->editContentPermissionIsGranted()
+                    || (
+                        $parentPageRowUid === 0
+                        && $backendUser->check('tables_modify', self::FILE_REFERENCE_TABLE)
+                        && $fileReferenceTableTca->getCapability(
+                            TcaSchemaCapability::RestrictionRootLevel
+                        )->shallIgnoreRootLevelRestriction()
+                    )
+                )
+            ) {
                 $recordInfo = $this->data['databaseRow']['uid_local'][0]['title'] ?? $this->data['recordTitle'] ?? '';
                 if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
                     $recordInfo .= ' [' . $this->data['tableName'] . ':' . $this->data['vanillaUid'] . ']';
