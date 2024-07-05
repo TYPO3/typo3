@@ -7,6 +7,7 @@ use TYPO3\CMS\Backend\Controller\PageTsConfig\PageTsConfigIncludesController;
 use TYPO3\CMS\Backend\Controller\PageTsConfig\PageTsConfigRecordsOverviewController;
 use TYPO3\CMS\Backend\Controller\RecordListController;
 use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
+use TYPO3\CMS\Backend\Controller\SiteSettingsController;
 use TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspModuleController;
 
 /**
@@ -69,6 +70,31 @@ return [
             ],
             'delete' => [
                 'target' => SiteConfigurationController::class . '::deleteAction',
+                'methods' => ['POST'],
+            ],
+        ],
+    ],
+    'site_settings' => [
+        'parent' => 'site',
+        'position' => ['after' => 'site_configuration'],
+        // @todo implement access=user
+        'access' => 'admin',
+        'path' => '/module/site/settings',
+        'iconIdentifier' => 'module-site-settings',
+        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings_module.xlf',
+        'routes' => [
+            '_default' => [
+                'target' => SiteSettingsController::class . '::overviewAction',
+            ],
+            'edit' => [
+                'target' => SiteSettingsController::class . '::editAction',
+            ],
+            'save' => [
+                'target' => SiteSettingsController::class . '::saveAction',
+                'methods' => ['POST'],
+            ],
+            'dump' => [
+                'target' => SiteSettingsController::class . '::dumpAction',
                 'methods' => ['POST'],
             ],
         ],

@@ -148,6 +148,31 @@
                                             <f:be.link route="site_configuration.edit" parameters="{site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.editSiteConfiguration')}" class="btn btn-default">
                                                 <core:icon identifier="actions-open" />
                                             </f:be.link>
+
+                                            <f:if condition="{page.siteConfiguration.sets->f:count()} > 0">
+                                                <f:then>
+                                                    <f:variable name="returnUrl">{f:be.uri(route: 'site_configuration')}</f:variable>
+                                                    <f:be.link
+                                                        route="site_settings.edit"
+                                                        parameters="{site: page.siteIdentifier, returnUrl: returnUrl}"
+                                                        title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.editSiteSettings')}"
+                                                        class="btn btn-default"
+                                                    >
+                                                        <core:icon identifier="actions-cog" />
+                                                    </f:be.link>
+                                                </f:then>
+                                                <f:else>
+                                                    <button
+                                                        disabled
+                                                        type="button"
+                                                        class="btn btn-default"
+                                                        title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.editSiteSettingsUnavailable')}"
+                                                    >
+                                                        <core:icon identifier="actions-cog" />
+                                                    </button>
+                                                </f:else>
+                                            </f:if>
+
                                             <button
                                                 type="submit"
                                                 class="btn btn-default t3js-modal-trigger"

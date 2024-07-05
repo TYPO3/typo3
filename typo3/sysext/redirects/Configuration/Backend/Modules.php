@@ -8,7 +8,7 @@ use TYPO3\CMS\Redirects\Controller\ManagementController;
 return [
     'site_redirects' => [
         'parent' => 'site',
-        'position' => ['after' => 'site_configuration'],
+        'position' => ['after' => 'site_settings'],
         'access' => 'user',
         'path' => '/module/site/redirects',
         'iconIdentifier' => 'module-redirects',

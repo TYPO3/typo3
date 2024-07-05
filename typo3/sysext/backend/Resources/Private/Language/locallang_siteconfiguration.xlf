@@ -27,6 +27,12 @@
 			<trans-unit id="overview.editSiteConfiguration" resname="overview.editSiteConfiguration">
 				<source>Edit site configuration</source>
 			</trans-unit>
+			<trans-unit id="overview.editSiteSettings" resname="overview.editSiteSettings">
+				<source>Edit site settings</source>
+			</trans-unit>
+			<trans-unit id="overview.editSiteSettingsUnavailable" resname="overview.editSiteSettingsUnavailable">
+				<source>This site provides no configurable settings</source>
+			</trans-unit>
 			<trans-unit id="overview.deleteSiteConfiguration" resname="overview.deleteSiteConfiguration">
 				<source>Delete site configuration</source>
 			</trans-unit>
@@ -50,6 +56,9 @@
 			</trans-unit>
 			<trans-unit id="overview.duplicatedRootPage.message" resname="overview.duplicatedRootPage.message">
 				<source>The page with ID "%1s" is used in the following site configurations:</source>
+			</trans-unit>
+			<trans-unit id="edit.editSiteSettings" resname="edit.editSiteSettings">
+				<source>Edit site settings</source>
 			</trans-unit>
 			<trans-unit id="validation.identifierRenamed.title" resname="validation.identifierRenamed.title">
 				<source>Renamed identifier</source>

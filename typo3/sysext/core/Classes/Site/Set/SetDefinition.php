@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Site\Set;
 
+use TYPO3\CMS\Core\Settings\CategoryDefinition;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 
 readonly class SetDefinition
@@ -24,6 +25,7 @@ readonly class SetDefinition
     /**
      * @param list<string> $dependencies
      * @param SettingDefinition[] $settingsDefinitions
+     * @param CategoryDefinition[] $categoryDefinitions
      */
     public function __construct(
         public string $name,
@@ -31,6 +33,7 @@ readonly class SetDefinition
         public array $dependencies = [],
         public array $optionalDependencies = [],
         public array $settingsDefinitions = [],
+        public array $categoryDefinitions = [],
         public ?string $typoscript = null,
         public ?string $pagets = null,
         public array $settings = [],

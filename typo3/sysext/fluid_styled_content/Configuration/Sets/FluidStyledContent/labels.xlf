@@ -6,6 +6,17 @@
 			<trans-unit id="label" resname="label">
 				<source>Fluid Styled Content</source>
 			</trans-unit>
+
+			<trans-unit id="categories.fsc" resname="categories.fsc">
+				<source>Fluid Styled Content</source>
+			</trans-unit>
+			<trans-unit id="categories.fsc.templates" resname="categories.fsc.templates">
+				<source>Templates</source>
+			</trans-unit>
+			<trans-unit id="categories.fsc.content" resname="categories.fsc.content">
+				<source>Content Elements</source>
+			</trans-unit>
+
 			<trans-unit id="settings.styles.content.defaultHeaderType" resname="settings.styles.content.defaultHeaderType">
 				<source>Default Header type</source>
 			</trans-unit>

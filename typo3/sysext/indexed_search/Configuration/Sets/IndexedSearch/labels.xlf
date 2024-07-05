@@ -7,6 +7,13 @@
 				<source>Indexed Search</source>
 			</trans-unit>
 
+			<trans-unit id="categories.indexedsearch" resname="categories.indexedsearch">
+				<source>Indexed Search</source>
+			</trans-unit>
+			<trans-unit id="categories.indexedsearch.templates" resname="categories.indexedsearch.templates">
+				<source>Templates</source>
+			</trans-unit>
+
 			<trans-unit id="settings.indexedsearch.view.templateRootPath" resname="settings.indexedsearch.view.templateRootPath">
 				<source>Path to template root (FE)</source>
 			</trans-unit>

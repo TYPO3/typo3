@@ -40,6 +40,15 @@ readonly class StringListType implements SettingsTypeInterface
     public function transformValue(mixed $value, SettingDefinition $definition): array
     {
         $stringType = new StringType($this->logger);
+        if (is_string($value)) {
+            // A json-encoded stringlist only needs 2-levels
+            $depth = 2;
+            try {
+                $value = json_decode($value, false, 2, JSON_THROW_ON_ERROR);
+            } catch (\JsonException) {
+                // invalid json, ignore and handle below
+            }
+        }
         if (!is_array($value) || !$this->doValidate($stringType, $value, $definition)) {
             $this->logger->warning('Setting validation field, reverting to default: {key}', ['key' => $definition->key]);
             return $definition->default;
@@ -59,5 +68,10 @@ readonly class StringListType implements SettingsTypeInterface
             }
         }
         return true;
+    }
+
+    public function getJavaScriptModule(): string
+    {
+        return '@typo3/backend/settings/type/stringlist.js';
     }
 }

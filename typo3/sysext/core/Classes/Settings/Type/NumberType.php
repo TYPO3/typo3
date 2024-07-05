@@ -64,4 +64,9 @@ readonly class NumberType implements SettingsTypeInterface
         }
         return $value;
     }
+
+    public function getJavaScriptModule(): string
+    {
+        return '@typo3/backend/settings/type/number.js';
+    }
 }

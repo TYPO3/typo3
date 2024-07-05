@@ -28,4 +28,6 @@ interface SettingsTypeInterface
     public function validate(mixed $value, SettingDefinition $definition): bool;
 
     public function transformValue(mixed $value, SettingDefinition $definition): mixed;
+
+    public function getJavaScriptModule(): string;
 }

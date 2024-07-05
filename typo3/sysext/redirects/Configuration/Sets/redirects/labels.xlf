@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:redirects/Configuration/Sets/redirects/labels.xlf" date="2024-09-10T12:30:00Z"
+		  product-name="redirects">
+		<header/>
+		<body>
+			<trans-unit id="label" resname="label">
+				<source>Redirects</source>
+			</trans-unit>
+
+			<trans-unit id="categories.redirects" resname="categories.redirects">
+				<source>Redirects</source>
+			</trans-unit>
+
+			<trans-unit id="settings.redirects.autoUpdateSlugs" resname="settings.redirects.autoUpdateSlugs">
+				<source>Automatically update slugs of all sub pages</source>
+			</trans-unit>
+
+			<trans-unit id="settings.redirects.autoCreateRedirects" resname="settings.redirects.autoCreateRedirects">
+				<source>Automatically create redirects for pages with a new slug (works only in LIVE workspace)</source>
+			</trans-unit>
+			<trans-unit id="settings.description.redirects.autoCreateRedirects" resname="settings.description.redirects.autoCreateRedirects">
+				<source>This feature works only in LIVE workspace.</source>
+			</trans-unit>
+
+			<trans-unit id="settings.redirects.redirectTTL" resname="settings.redirects.redirectTTL">
+				<source>Time To Live in days for redirect records to be created - `0` disables TTL, no expiration</source>
+			</trans-unit>
+
+			<trans-unit id="settings.redirects.httpStatusCode" resname="settings.redirects.httpStatusCode">
+				<source>HTTP status code for automatically created redirects</source>
+			</trans-unit>
+
+			<trans-unit id="settings.description.redirects.httpStatusCode" resname="settings.description.redirects.httpStatusCode">
+				<source>See https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections#Temporary_redirections for more information.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,19 +1,30 @@
+categories:
+  seo: ~
+  seo.templates:
+    parent: seo
+
 settings:
   seo.sitemap.view.templateRootPath:
     default: 'EXT:seo/Resources/Private/Templates/'
     type: string
+    category: seo.templates
   seo.sitemap.view.partialRootPath:
     default: 'EXT:seo/Resources/Private/Partials/'
     type: string
+    category: seo.templates
   seo.sitemap.view.layoutRootPath:
     default: 'EXT:seo/Resources/Private/Layouts/'
     type: string
+    category: seo.templates
   seo.sitemap.pages.excludedDoktypes:
     default: '3, 4, 6, 7, 199, 254'
     type: string
+    category: seo
   seo.sitemap.pages.excludePagesRecursive:
     default: ''
     type: string
+    category: seo
   seo.sitemap.pages.additionalWhere:
     default: "{#no_index} = 0 AND {#canonical_link} = ''"
     type: string
+    category: seo

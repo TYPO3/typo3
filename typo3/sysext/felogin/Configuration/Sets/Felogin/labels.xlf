@@ -6,6 +6,11 @@
 			<trans-unit id="label" resname="label">
 				<source>Frontend Login</source>
 			</trans-unit>
+
+			<trans-unit id="categories.felogin" resname="categories.felogin">
+				<source>Frontend Login</source>
+			</trans-unit>
+
 			<trans-unit id="settings.felogin.pid" resname="settings.felogin.pid">
 				<source>User Storage Page</source>
 			</trans-unit>

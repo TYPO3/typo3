@@ -20,6 +20,10 @@ test.describe('modules', () => {
       'label': 'the info module',
       'route': 'module/web/info',
     },
+    'mod_site_settings': {
+      'label': 'the site settings module',
+      'route': 'module/site/settings',
+    },
     'mod_reports': {
       'label': 'the reports module',
       'route': 'module/system/reports',

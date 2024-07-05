@@ -16,6 +16,37 @@ import { customElement, property } from 'lit/decorators';
 import Notification from '@typo3/backend/notification';
 import { lll } from '@typo3/core/lit-helper';
 
+export function copyToClipboard(text: string): void {
+  if (!text.length) {
+    console.warn('No text for copy to clipboard given.');
+    Notification.error(lll('copyToClipboard.error'));
+    return;
+  }
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then((): void => {
+      Notification.success(lll('copyToClipboard.success'), '', 1);
+    }).catch((): void => {
+      Notification.error(lll('copyToClipboard.error'));
+    });
+  } else {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      if (document.execCommand('copy')) {
+        Notification.success(lll('copyToClipboard.success'), '', 1);
+      } else {
+        Notification.error(lll('copyToClipboard.error'));
+      }
+    } catch {
+      Notification.error(lll('copyToClipboard.error'));
+    }
+    document.body.removeChild(textarea);
+  }
+}
+
 /**
  * Module: @typo3/backend/copy-to-clipboard
  *
@@ -60,34 +91,12 @@ export class CopyToClipboard extends LitElement {
   }
 
   private copyToClipboard(): void {
-    if (typeof this.text !== 'string' || !this.text.length) {
+    if (typeof this.text !== 'string') {
       console.warn('No text for copy to clipboard given.');
       Notification.error(lll('copyToClipboard.error'));
       return;
     }
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(this.text).then((): void => {
-        Notification.success(lll('copyToClipboard.success'), '', 1);
-      }).catch((): void => {
-        Notification.error(lll('copyToClipboard.error'));
-      });
-    } else {
-      const textarea = document.createElement('textarea');
-      textarea.value = this.text;
-      document.body.appendChild(textarea);
-      textarea.focus();
-      textarea.select();
-      try {
-        if (document.execCommand('copy')) {
-          Notification.success(lll('copyToClipboard.success'), '', 1);
-        } else {
-          Notification.error(lll('copyToClipboard.error'));
-        }
-      } catch {
-        Notification.error(lll('copyToClipboard.error'));
-      }
-      document.body.removeChild(textarea);
-    }
+    copyToClipboard(this.text);
   }
 }
 

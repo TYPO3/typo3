@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Site\Set;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Settings\CategoryDefinition;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 
 /**
@@ -66,7 +67,8 @@ class YamlSetDefinitionProvider
             if (!is_array($settingsDefinitions['settings'] ?? null)) {
                 throw new \RuntimeException('Missing "settings" key in settings definitions. Filename: ' . $settingsDefinitionsFile, 1711024378);
             }
-            $set['settingsDefinitions'] = $settingsDefinitions['settings'];
+            $set['settingsDefinitions'] = $settingsDefinitions['settings'] ?? [];
+            $set['categoryDefinitions'] = $settingsDefinitions['categories'] ?? [];
         }
 
         $settingsFile = $path . '/settings.yaml';
@@ -115,9 +117,25 @@ class YamlSetDefinitionProvider
                 }
                 $settingsDefinitions[] = $definition;
             }
+
+            $categoryDefinitions = [];
+            foreach (($set['categoryDefinitions'] ?? []) as $category => $options) {
+                if ($labels) {
+                    $options['label'] ??= 'LLL:' . $labels . ':categories.' . $category;
+                    $options['description'] ??= 'LLL:' . $labels . ':categories.description.' . $category;
+                }
+                try {
+                    $definition = new CategoryDefinition(...[...['key' => $category], ...$options]);
+                } catch (\Error $e) {
+                    throw new \Exception('Invalid category-category definition: ' . json_encode($options), 1702623313, $e);
+                }
+                $categoryDefinitions[] = $definition;
+            }
+
             $setData = [
                 ...$set,
                 'settingsDefinitions' => $settingsDefinitions,
+                'categoryDefinitions' => $categoryDefinitions,
             ];
             $setData['typoscript'] ??= $basePath;
             $setData['pagets'] ??= $basePath . '/page.tsconfig';

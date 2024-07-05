@@ -135,6 +135,31 @@ readonly class SiteSettingsFactory
         );
     }
 
+    public function createSettingsForKeys(array $settingKeys, string $siteIdentifier, array $inlineSettings = []): SiteSettings
+    {
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
+        if (file_exists($fileName)) {
+            $settingsTree = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
+        } else {
+            $settingsTree = $inlineSettings;
+        }
+
+        /** @var array<string, string|int|float|bool|array|null> $settingsMap */
+        $settingsMap = [];
+        foreach ($settingKeys as $key) {
+            if (!ArrayUtility::isValidPath($settingsTree, $key, '.')) {
+                continue;
+            }
+            $settingsMap[$key] = ArrayUtility::getValueByPath($settingsTree, $key, '.');
+        }
+        $flatSettings = $settingsTree === [] ? [] : ArrayUtility::flattenPlain($settingsTree);
+        return new SiteSettings(
+            settings: $settingsMap,
+            settingsTree: $settingsTree,
+            flatSettings: $flatSettings,
+        );
+    }
+
     protected function validateSettings(array $settings, array $definitions): array
     {
         foreach ($definitions as $definition) {

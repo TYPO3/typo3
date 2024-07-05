@@ -1,7 +1,11 @@
+categories:
+  felogin: ~
+
 settings:
   felogin.pid:
     default: '0'
     type: string
+    category: felogin
   felogin.recursive:
     default: '0'
     type: string
@@ -12,72 +16,96 @@ settings:
       '3': '3'
       '4': '4'
       '255': '255'
+    category: felogin
   felogin.showForgotPassword:
     default: false
     type: bool
+    category: felogin
   felogin.showPermaLogin:
     default: false
     type: bool
+    category: felogin
   felogin.showLogoutFormAfterLogin:
     default: false
     type: bool
+    category: felogin
   felogin.emailFrom:
     default: ''
     type: string
+    category: felogin
   felogin.emailFromName:
     default: ''
     type: string
+    category: felogin
   felogin.replyToEmail:
     default: ''
     type: string
+    category: felogin
   felogin.dateFormat:
     default: 'Y-m-d H:i'
     type: string
+    category: felogin
   felogin.email.layoutRootPath:
     default: ''
     type: string
+    category: felogin
   felogin.email.templateRootPath:
     default: 'EXT:felogin/Resources/Private/Email/Templates/'
     type: string
+    category: felogin
   felogin.email.partialRootPath:
     default: ''
     type: string
+    category: felogin
   felogin.email.templateName:
     default: PasswordRecovery
     type: string
+    category: felogin
   felogin.redirectMode:
     default: ''
     type: string
+    category: felogin
   felogin.redirectFirstMethod:
     default: false
     type: bool
+    category: felogin
   felogin.redirectPageLogin:
     default: 0
     type: int
+    category: felogin
   felogin.redirectPageLoginError:
     default: 0
     type: int
+    category: felogin
   felogin.redirectPageLogout:
     default: 0
     type: int
+    category: felogin
   felogin.redirectDisable:
     default: false
     type: bool
+    category: felogin
   felogin.forgotLinkHashValidTime:
     default: 12
     type: int
+    category: felogin
   felogin.domains:
     default: ''
     type: string
+    category: felogin
   felogin.exposeNonexistentUserInForgotPasswordDialog:
     default: false
     type: bool
+    category: felogin
   felogin.view.templateRootPath:
     default: ''
     type: string
+    category: felogin
   felogin.view.partialRootPath:
     default: ''
     type: string
+    category: felogin
   felogin.view.layoutRootPath:
     default: ''
     type: string
+    category: felogin

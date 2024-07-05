@@ -74,4 +74,9 @@ readonly class BoolType implements SettingsTypeInterface
         }
         return false;
     }
+
+    public function getJavaScriptModule(): string
+    {
+        return '@typo3/backend/settings/type/bool.js';
+    }
 }

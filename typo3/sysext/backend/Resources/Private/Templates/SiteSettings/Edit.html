@@ -1,0 +1,35 @@
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/settings/editor.js'}"/>
+
+    <h1>
+        Site Settings for "{siteTitle}"
+        <br>
+        <small class="text-muted">{siteIdentifier} <code>[pid: {rootPageId}]</code></small>
+    </h1>
+
+    <f:if condition="{categories->f:count()} == 0">
+        <f:then>
+            <f:be.infobox
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.noSettings.title')}"
+            >
+                <f:translate
+                    key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.noSettings.message"
+                    arguments="{0: siteIdentifier}"
+                />
+        </f:be.infobox>
+        </f:then>
+        <f:else>
+            <typo3-backend-settings-editor
+                action-url="{actionUrl}"
+                return-url="{returnUrl}"
+                dump-url="{dumpUrl}"
+                categories="{categories->f:format.json()}"
+            ></typo3-backend-settings-editor>
+
+        </f:else>
+    </f:if>
+</f:section>

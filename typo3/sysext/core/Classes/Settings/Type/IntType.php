@@ -52,4 +52,9 @@ readonly class IntType implements SettingsTypeInterface
 
         return (int)$value;
     }
+
+    public function getJavaScriptModule(): string
+    {
+        return '@typo3/backend/settings/type/int.js';
+    }
 }

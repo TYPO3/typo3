@@ -141,4 +141,9 @@ readonly class ColorType implements SettingsTypeInterface
 
         return '#' . $values;
     }
+
+    public function getJavaScriptModule(): string
+    {
+        return '@typo3/backend/settings/type/color.js';
+    }
 }

@@ -8,6 +8,13 @@
 				<source>SEO Sitemap</source>
 			</trans-unit>
 
+			<trans-unit id="categories.seo" resname="categories.seo">
+				<source>SEO Sitemap</source>
+			</trans-unit>
+			<trans-unit id="categories.seo.templates" resname="categories.seo.templates">
+				<source>Template Paths</source>
+			</trans-unit>
+
 			<trans-unit id="settings.seo.sitemap.view.templateRootPath" resname="settings.seo.sitemap.view.templateRootPath">
 				<source>Path to template root (FE)</source>
 			</trans-unit>

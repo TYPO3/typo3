@@ -96,7 +96,15 @@ class SiteWriter
     public function writeSettings(string $siteIdentifier, array $settings): void
     {
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
-        $yamlFileContents = Yaml::dump($settings, 99, 2);
+        if ($settings === []) {
+            if (!is_file($fileName)) {
+                return;
+            }
+            if (is_writable($fileName) && @unlink($fileName)) {
+                return;
+            }
+        }
+        $yamlFileContents = Yaml::dump($settings, 99, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE | Yaml::DUMP_OBJECT_AS_MAP);
         if (!GeneralUtility::writeFile($fileName, $yamlFileContents)) {
             throw new SiteConfigurationWriteException('Unable to write site settings in sites/' . $siteIdentifier . '/' . $this->configFileName, 1590487411);
         }

@@ -51,4 +51,9 @@ readonly class StringType implements SettingsTypeInterface
         }
         return (string)$value;
     }
+
+    public function getJavaScriptModule(): string
+    {
+        return '@typo3/backend/settings/type/string.js';
+    }
 }

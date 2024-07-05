@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf" date="2024-09-10T12:13:00Z" product-name="backend">
+		<header/>
+		<body>
+			<trans-unit id="overview.title" resname="overview.title">
+				<source>Site Settings Overview</source>
+			</trans-unit>
+			<trans-unit id="overview.setSummary" resname="overview.setSummary">
+				<source>Sets (%d)</source>
+			</trans-unit>
+			<trans-unit id="overview.customSettingsSummary" resname="overview.customSettingsSummary">
+				<source>Custom Settings (%d)</source>
+			</trans-unit>
+			<trans-unit id="overview.editSettings" resname="overview.editSettings">
+				<source>Edit Settings</source>
+			</trans-unit>
+			<trans-unit id="overview.message.notEditable" resname="overview.message.notEditable">
+				<source>This sets of this sites do not provide any configurable settings.</source>
+			</trans-unit>
+			<trans-unit id="edit.title" resname="edit.noSettings.title">
+				<source>Site Settings for "{siteTitle}"</source>
+			</trans-unit>
+			<trans-unit id="edit.noSettings.title" resname="edit.noSettings.title">
+				<source>No Settings available</source>
+			</trans-unit>
+			<trans-unit id="edit.noSettings.message" resname="edit.noSettings.message">
+				<source>The site '%s' does provide configurable settings.</source>
+			</trans-unit>
+			<trans-unit id="edit.yamlExport" resname="edit.yamlExport">
+				<source>YAML export</source>
+			</trans-unit>
+			<trans-unit id="edit.editSiteConfiguration" resname="edit.editSiteConfiguration">
+				<source>Edit site configuration</source>
+			</trans-unit>
+			<trans-unit id="edit.resetSetting" resname="edit.resetSetting">
+				<source>Reset setting</source>
+			</trans-unit>
+			<trans-unit id="edit.copySettingsIdentifier" resname="edit.copySettingsIdentifier">
+				<source>Copy identifier</source>
+			</trans-unit>
+			<trans-unit id="edit.copyAsYaml" resname="edit.copyAsYaml">
+				<source>Copy as YAML</source>
+			</trans-unit>
+			<trans-unit id="save.message.updated" resname="save.message.updated">
+				<source>Settings updated.</source>
+			</trans-unit>
+			<trans-unit id="categories.other" resname="categories.other">
+				<source>Other</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

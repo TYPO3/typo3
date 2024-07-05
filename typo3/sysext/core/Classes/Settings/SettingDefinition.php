@@ -29,7 +29,7 @@ readonly class SettingDefinition
         public string $label,
         public ?string $description = null,
         public array $enum = [],
-        public array $categories = [],
+        public ?string $category = null,
         public array $tags = [],
     ) {}
 

@@ -1,0 +1,20 @@
+categories:
+  redirects: ~
+
+settings:
+  redirects.autoUpdateSlugs:
+    type: bool
+    default: true
+    category: redirects
+  redirects.autoCreateRedirects:
+    type: bool
+    default: true
+    category: redirects
+  redirects.redirectTTL:
+    type: int
+    default: 0
+    category: redirects
+  redirects.httpStatusCode:
+    type: int
+    default: 307
+    category: redirects

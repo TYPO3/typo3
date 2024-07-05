@@ -150,7 +150,9 @@ class SiteConfigurationController
             throw new \RuntimeException('Existing config for site ' . $siteIdentifier . ' not found', 1521561226);
         }
 
-        $returnUrl = $this->uriBuilder->buildUriFromRoute('site_configuration');
+        $returnUrl = GeneralUtility::sanitizeLocalUrl(
+            (string)($request->getQueryParams()['returnUrl'] ?? '')
+        ) ?: $this->uriBuilder->buildUriFromRoute('site_configuration');
 
         $formDataCompilerInput = [
             'request' => $request,
@@ -183,7 +185,7 @@ class SiteConfigurationController
         ]);
 
         $this->pageRenderer->getJavaScriptRenderer()->includeTaggedImports('backend.form');
-        $this->configureEditViewDocHeader($view);
+        $this->configureEditViewDocHeader($view, $siteIdentifier);
         $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab'),
             $siteIdentifier ?? ''
@@ -212,11 +214,16 @@ class SiteConfigurationController
 
         $siteTca = GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca();
 
-        $overviewRoute = $this->uriBuilder->buildUriFromRoute('site_configuration');
+        $queryParams = $request->getQueryParams();
         $parsedBody = $request->getParsedBody();
+
+        $returnUrl = GeneralUtility::sanitizeLocalUrl(
+            (string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '')
+        ) ?: $this->uriBuilder->buildUriFromRoute('site_configuration');
+
         if (isset($parsedBody['closeDoc']) && (int)$parsedBody['closeDoc'] === 1) {
             // Closing means no save, just redirect to overview
-            return new RedirectResponse($overviewRoute);
+            return new RedirectResponse($returnUrl);
         }
         $isSave = $parsedBody['_savedok'] ?? $parsedBody['doSave'] ?? false;
         $isSaveClose = $parsedBody['_saveandclosedok'] ?? false;
@@ -433,7 +440,7 @@ class SiteConfigurationController
 
         $saveRoute = $this->uriBuilder->buildUriFromRoute('site_configuration.edit', ['site' => $siteIdentifier]);
         if ($isSaveClose) {
-            return new RedirectResponse($overviewRoute);
+            return new RedirectResponse($returnUrl);
         }
         return new RedirectResponse($saveRoute);
     }
@@ -678,7 +685,7 @@ class SiteConfigurationController
     /**
      * Create document header buttons of "edit" action
      */
-    protected function configureEditViewDocHeader(ModuleTemplate $view): void
+    protected function configureEditViewDocHeader(ModuleTemplate $view, ?string $siteIdentifier): void
     {
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
@@ -697,6 +704,19 @@ class SiteConfigurationController
             ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL));
         $buttonBar->addButton($closeButton);
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+        if ($siteIdentifier) {
+            $exportButton = $buttonBar->makeLinkButton()
+                ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:edit.editSiteSettings'))
+                ->setIcon($this->iconFactory->getIcon('actions-cog', IconSize::SMALL))
+                ->setShowLabelText(true)
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute('site_settings.edit', [
+                    'site' => $siteIdentifier,
+                    'returnUrl' => $this->uriBuilder->buildUriFromRoute('site_configuration.edit', [
+                        'site' => $siteIdentifier,
+                    ]),
+                ]));
+            $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        }
     }
 
     /**

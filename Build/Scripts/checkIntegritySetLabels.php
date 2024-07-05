@@ -93,9 +93,13 @@ final readonly class CheckIntegritySetLabels
         ];
 
         $settingsDefinitions = Yaml::parseFile(dirname($labelFile) . '/settings.definitions.yaml');
-        foreach ($settingsDefinitions['settings'] as $key => $settingsDefinition) {
+        foreach (($settingsDefinitions['settings'] ?? []) as $key => $_) {
             $requiredLabels[] = 'settings.' . $key;
             $optionalLabels[] = 'settings.description.' . $key;
+        }
+        foreach (($settingsDefinitions['categories'] ?? []) as $key => $_) {
+            $requiredLabels[] = 'categories.' . $key;
+            $optionalLabels[] = 'categories.description.' . $key;
         }
 
         $setName = Yaml::parseFile(dirname($labelFile) . '/config.yaml')['name'];

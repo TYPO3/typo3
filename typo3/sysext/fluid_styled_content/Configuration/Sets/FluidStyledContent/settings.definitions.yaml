@@ -1,13 +1,23 @@
+categories:
+  fsc: ~
+  fsc.templates:
+    parent: fsc
+  fsc.content:
+    parent: fsc
+
 settings:
   styles.content.defaultHeaderType:
     default: 2
     type: int
+    category: fsc.content
   styles.content.shortcut.tables:
     default: tt_content
     type: string
+    category: fsc.content
   styles.content.allowTags:
     default: 'a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, figure, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, mark, meta, nav, ol, p, pre, q, s, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var'
     type: string
+    category: fsc.content
   styles.content.image.lazyLoading:
     default: lazy
     type: string
@@ -15,6 +25,7 @@ settings:
       lazy: 'Lazy'
       eager: 'Eager'
       auto: 'Auto'
+    category: fsc.content
   styles.content.image.imageDecoding:
     default: ''
     type: string
@@ -22,60 +33,80 @@ settings:
       sync: 'Sync'
       async: 'Asynchronous'
       auto: 'Auto'
+    category: fsc.content
   styles.content.textmedia.maxW:
     default: 600
     type: int
+    category: fsc.content
   styles.content.textmedia.maxWInText:
     default: 300
     type: int
+    category: fsc.content
   styles.content.textmedia.columnSpacing:
     default: 10
     type: int
+    category: fsc.content
   styles.content.textmedia.rowSpacing:
     default: 10
     type: int
+    category: fsc.content
   styles.content.textmedia.textMargin:
     default: 10
     type: int
+    category: fsc.content
   styles.content.textmedia.borderColor:
     default: '#000000'
     type: color
+    category: fsc.content
   styles.content.textmedia.borderWidth:
     default: 2
     type: int
+    category: fsc.content
   styles.content.textmedia.borderPadding:
     default: 0
     type: int
+    category: fsc.content
   styles.content.textmedia.linkWrap.width:
     default: 800m
     type: string
+    category: fsc.content
   styles.content.textmedia.linkWrap.height:
     default: 600m
     type: string
+    category: fsc.content
   styles.content.textmedia.linkWrap.newWindow:
     default: false
     type: bool
+    category: fsc.content
   styles.content.textmedia.linkWrap.lightboxEnabled:
     default: false
     type: bool
+    category: fsc.content
   styles.content.textmedia.linkWrap.lightboxCssClass:
     default: lightbox
     type: string
+    category: fsc.content
   styles.content.textmedia.linkWrap.lightboxRelAttribute:
     default: 'lightbox[{field:uid}]'
     type: string
+    category: fsc.content
   styles.content.links.extTarget:
     default: _blank
     type: string
+    category: fsc.content
   styles.content.links.keep:
     default: path
     type: string
+    category: fsc.content
   styles.templates.templateRootPath:
     default: ''
     type: string
+    category: fsc.templates
   styles.templates.partialRootPath:
     default: ''
     type: string
+    category: fsc.templates
   styles.templates.layoutRootPath:
     default: ''
     type: string
+    category: fsc.templates
