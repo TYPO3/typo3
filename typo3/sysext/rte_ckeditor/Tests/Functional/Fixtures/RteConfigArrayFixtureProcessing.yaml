@@ -8,15 +8,11 @@ processing:
   allowAttributes: [class, id, data-custom, data-special]
 
   # 'blockElementList' has test coverage
-  # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-  # blockElementList: [table, blockquote, ul]
-  blockElementList: 'table,blockquote,ul'
+  blockElementList: [table, blockquote, ul]
 
   HTMLparser_db:
     noAttrib: br
-    # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-    #denyTags: ['img', 'font']
-    denyTags: 'img,font'
+    denyTags: ['img', 'font']
     tags:
       # The following 'fixAttrib' cases have test coverage
       font:
@@ -24,33 +20,30 @@ processing:
         fixAttrib:
           class:
             default: 'btn'
-            # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-            #list: ['button','btn']
-            list: 'button,btn'
+            list: ['button','btn']
       a:
         fixAttrib:
           class:
             always: 1
             trim: 1,
             default: 'btn'
-            # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-            #list: ['button','btn']
-            list: 'button,btn'
-      span:
+            list: ['button','btn']
+      span1:
         fixAttrib:
-        # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-        #data-custom:
-        #  always: 0
-        #  trim: 1
-        #  default: btn
-        #  casesensitiveComp: 0
-        #  list: ['button','btn']
-        #data-custom2:
-        #  always: 0,
-        #  trim: 1,
-        #  default: btn
-        #  casesensitiveComp: 0,
-        #  list: ['buTTon','bTn']
+          data-custom:
+            always: 0
+            trim: 1
+            default: btn
+            casesensitiveComp: 0
+            list: ['button','btn']
+      span2:
+        fixAttrib:
+          data-custom2:
+            always: 0,
+            trim: 1,
+            default: btn
+            casesensitiveComp: 0,
+            list: ['buTTon','bTn']
       span3:
         fixAttrib:
           data-custom3:
@@ -58,9 +51,7 @@ processing:
             trim: 1
             default: btn
             casesensitiveComp: 1
-            # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-            #list: ['button','btn']
-            list: 'button,btn'
+            list: ['button','btn']
       span4:
         fixAttrib:
           data-custom4:
@@ -68,18 +59,14 @@ processing:
             trim: 1
             default: 'bTn'
             casesensitiveComp: 1
-            # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-            #list: ['buTTon','bTn']
-            list: 'buTTon,bTn'
+            list: ['buTTon','bTn']
       span5:
         fixAttrib:
           data-custom5:
             always: '0'
             trim: '1'
             casesensitiveComp: 1
-            # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-            #range: ['0','3']
-            range: '0,3'
+            range: ['0','3']
       span6:
         fixAttrib:
           data-custom6:
@@ -87,9 +74,7 @@ processing:
             trim: '1'
             default: 'bTn'
             casesensitiveComp: 1
-            # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-            #range: ['2']
-            range: '2'
+            range: ['2']
       span7:
         fixAttrib:
           data-custom7:
