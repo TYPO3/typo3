@@ -65,7 +65,7 @@ class RecordService implements SingletonInterface
         foreach ($this->getIdsPerTable() as $tableName => $ids) {
             $historyRecords = $recordHistory->getCreationInformationForMultipleRecords($tableName, $ids);
             foreach ($historyRecords as $historyRecord) {
-                if ($historyRecord['actiontype'] === 'BE') {
+                if ($historyRecord['usertype'] === 'BE') {
                     $createUserIds[] = (int)$historyRecord['userid'];
                 }
             }
