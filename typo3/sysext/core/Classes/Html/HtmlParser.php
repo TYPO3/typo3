@@ -541,8 +541,8 @@ class HtmlParser
                                                     $normalizedSearchList = $params['list'];
                                                     if (!($params['casesensitiveComp'] ?? false)) {
                                                         // Case-sensitive comparison is not wanted, normalize all values
-                                                        $normalizedSearchWord = strtoupper($tagAttrib[0][$attr] ?? '');
-                                                        array_walk($normalizedSearchList, strtoupper(...));
+                                                        $normalizedSearchWord = strtoupper((string)($tagAttrib[0][$attr] ?? ''));
+                                                        $normalizedSearchList = array_map('strtoupper', $normalizedSearchList);
                                                     }
                                                     if (!in_array($normalizedSearchWord, $normalizedSearchList, true)) {
                                                         $tagAttrib[0][$attr] = $params['list'][0];
@@ -889,11 +889,19 @@ class HtmlParser
                                     $keepTags[$key]['fixAttrib'][$atName] = [];
                                 }
                                 $keepTags[$key]['fixAttrib'][$atName] = array_merge($keepTags[$key]['fixAttrib'][$atName], $atConfig);
-                                if ((string)($keepTags[$key]['fixAttrib'][$atName]['range'] ?? '') !== '') {
-                                    $keepTags[$key]['fixAttrib'][$atName]['range'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['range']);
+                                if (!empty($keepTags[$key]['fixAttrib'][$atName]['range'])) {
+                                    if (!isset($keepTags[$key]['fixAttrib'][$atName]['range.'])) {
+                                        $keepTags[$key]['fixAttrib'][$atName]['range'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['range']);
+                                    } else {
+                                        $keepTags[$key]['fixAttrib'][$atName]['range'] = $keepTags[$key]['fixAttrib'][$atName]['range.'];
+                                    }
                                 }
-                                if ((string)($keepTags[$key]['fixAttrib'][$atName]['list'] ?? '') !== '') {
-                                    $keepTags[$key]['fixAttrib'][$atName]['list'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['list']);
+                                if (!empty($keepTags[$key]['fixAttrib'][$atName]['list'])) {
+                                    if (!isset($keepTags[$key]['fixAttrib'][$atName]['list.'])) {
+                                        $keepTags[$key]['fixAttrib'][$atName]['list'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['list']);
+                                    } else {
+                                        $keepTags[$key]['fixAttrib'][$atName]['list'] = $keepTags[$key]['fixAttrib'][$atName]['list.'];
+                                    }
                                 }
                             }
                         }

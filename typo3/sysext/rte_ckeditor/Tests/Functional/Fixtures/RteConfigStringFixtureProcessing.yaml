@@ -48,21 +48,22 @@ processing:
             trim: 1,
             default: 'btn'
             list: 'button,btn'
-      span:
+      span1:
         fixAttrib:
-          # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
-          #data-custom:
-          #  always: 0
-          #  trim: 1
-          #  default: btn
-          #  casesensitiveComp: 0
-          #  list: 'button,btn'
-          #data-custom2:
-          #  always: 0,
-          #  trim: 1,
-          #  default: btn
-          #  casesensitiveComp: 0,
-          #  list: buTTon,bTn
+          data-custom:
+            always: 0
+            trim: 1
+            default: btn
+            casesensitiveComp: 0
+            list: 'button,btn'
+      span2:
+        fixAttrib:
+          data-custom2:
+            always: 0,
+            trim: 1,
+            default: btn
+            casesensitiveComp: 0,
+            list: 'buTTon,bTn'
       span3:
         fixAttrib:
             data-custom3:

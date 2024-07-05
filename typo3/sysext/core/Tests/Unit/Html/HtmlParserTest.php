@@ -258,7 +258,6 @@ final class HtmlParserTest extends UnitTestCase
                     ],
                 ],
             ],
-            /* @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
             'data-custom, case insensitive' => [
                 'content' => '<span data-custom=" bTn ">text</span>',
                 'expectedResult' => '<span data-custom="bTn">text</span>',
@@ -299,7 +298,6 @@ final class HtmlParserTest extends UnitTestCase
                     ],
                 ],
             ],
-            */
             'data-custom3, case sensitive' => [
                 'content' => '<span data-custom3=" bTn ">text</span>',
                 'expectedResult' => '<span data-custom3="button">text</span>',
