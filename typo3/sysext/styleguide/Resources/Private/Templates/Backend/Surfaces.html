@@ -12,21 +12,21 @@
 
     <div class="styleguide-content">
         <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:surfaces" /></h1>
-        <p>Surfaces used in the TYPO3 Backend</p>
+        <p>Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.</p>
 
-        <f:asset.css identifier="styleguide-surface-demo">
-            .surface-demo {
+        <f:asset.css identifier="styleguide-surface-natural-demo">
+            .surface-natural-demo {
                 display: grid;
                 color: var(--typo3-component-color);
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
                 border-radius: var(--typo3-component-border-radius);
             }
 
-            .surface-demo + .surface-demo {
+            .surface-natural-demo + .surface-natural-demo {
                 margin-top: var(--typo3-spacing);
             }
 
-            .surface-demo-item {
+            .surface-natural-demo-item {
                 display: flex;
                 padding: 2rem;
                 min-height: 200px;
@@ -36,17 +36,62 @@
         </f:asset.css>
 
         <sg:code language="html" colorschemes="true">
-            <div class="surface-demo">
-                <div class="surface-demo-item" data-variant="dim" style="background-color: var(--typo3-surface-dim);">dim</div>
-                <div class="surface-demo-item" data-variant="base" style="background-color: var(--typo3-surface-base);">base</div>
-                <div class="surface-demo-item" data-variant="bright" style="background-color: var(--typo3-surface-bright);">bright</div>
+            <div class="surface-natural-demo">
+                <div class="surface-natural-demo-item" data-variant="dim" style="background-color: var(--typo3-surface-dim);">dim</div>
+                <div class="surface-natural-demo-item" data-variant="base" style="background-color: var(--typo3-surface-base);">base</div>
+                <div class="surface-natural-demo-item" data-variant="bright" style="background-color: var(--typo3-surface-bright);">bright</div>
             </div>
-            <div class="surface-demo">
-                <div class="surface-demo-item" data-variant="container-lowest" style="background-color: var(--typo3-surface-container-lowest);">container-lowest</div>
-                <div class="surface-demo-item" data-variant="container-low" style="background-color: var(--typo3-surface-container-low);">container-low</div>
-                <div class="surface-demo-item" data-variant="container-base" style="background-color: var(--typo3-surface-container-base);">container-base</div>
-                <div class="surface-demo-item" data-variant="container-high" style="background-color: var(--typo3-surface-container-high);">container-high</div>
-                <div class="surface-demo-item" data-variant="container-highest" style="background-color: var(--typo3-surface-container-highest);">container-highest</div>
+            <div class="surface-natural-demo">
+                <div class="surface-natural-demo-item" data-variant="container-lowest" style="background-color: var(--typo3-surface-container-lowest);">container-lowest</div>
+                <div class="surface-natural-demo-item" data-variant="container-low" style="background-color: var(--typo3-surface-container-low);">container-low</div>
+                <div class="surface-natural-demo-item" data-variant="container-base" style="background-color: var(--typo3-surface-container-base);">container-base</div>
+                <div class="surface-natural-demo-item" data-variant="container-high" style="background-color: var(--typo3-surface-container-high);">container-high</div>
+                <div class="surface-natural-demo-item" data-variant="container-highest" style="background-color: var(--typo3-surface-container-highest);">container-highest</div>
+            </div>
+        </sg:code>
+
+        <f:asset.css identifier="styleguide-surface-theme-demo">
+            .surface-color-container {
+                display: grid;
+                color: var(--typo3-component-color);
+                grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+                gap: 1rem;
+            }
+
+            .surface-color-demo {
+                overflow: hidden;
+                border-radius: .5rem;
+                box-shadow: var(--typo3-shadow-2);
+            }
+
+            .surface-color-demo-item {
+                display: flex;
+                padding: 1rem;
+                min-height: 6rem;
+            }
+
+            .surface-color-demo-code {
+                padding: 1rem;
+                font-size: 0.75rem;
+                background-color: var(--typo3-surface-container-base);
+                margin: 0 !important;
+            }
+        </f:asset.css>
+
+        <sg:code language="html" colorschemes="true" exampleonly="true">
+            <div class="surface-color-container">
+                <f:for each="{themeColors}" as="color">
+                    <div class="surface-color-demo">
+                        <div class="surface-color-demo-item" style="background-color: var(--typo3-surface-{color}); color: var(--typo3-surface-{color}-text)">{color}</div>
+                        <div class="surface-color-demo-item" style="background-color: var(--typo3-surface-container-{color}); color: var(--typo3-surface-container-{color}-text)">container-{color}</div>
+<pre class="surface-color-demo-code">
+--typo3-surface-{color}
+--typo3-surface-{color}-text
+--typo3-surface-container-{color}
+--typo3-surface-container-{color}-text
+</pre>
+                    </div>
+                </f:for>
             </div>
         </sg:code>
     </div>

@@ -3,6 +3,24 @@
 // ================
 
 //
+// TYPO3
+// =====
+//
+$natural-base: #000;
+$neutral-shades: (0, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 96, 97, 100);
+$base-colors: (
+    'blue': #05c,
+    'purple': #5e4db2,
+    'teal': #abdced,
+    'green': #247554,
+    'magenta': #c6398f,
+    'yellow': #fc3,
+    'orange': #ee6d11,
+    'red': #d13a2e,
+);
+$base-shades: (10, 20, 30, 40, 50, 60, 70, 80, 90);
+
+//
 // Bootstrap
 // =========
 //
@@ -21,22 +39,20 @@ $gray-900: rgb(30, 30, 30);
 $black: #000;
 
 // color-variables
-$blue: #0078e6;
-$indigo: #6610f2;
-$purple: #8661c5;
-$pink: #e83e8c;
-$red: #c83c3c;
-$orange: #d83b01;
-$yellow: #e8a33d;
-$green: #107c10;
-$teal: #008575;
-$cyan: #17a2b8;
+$blue: map-get($base-colors, 'blue');
+$purple: map-get($base-colors, 'purple');
+$pink: map-get($base-colors, 'magenta');
+$red: map-get($base-colors, 'red');
+$orange: map-get($base-colors, 'orange');
+$yellow: map-get($base-colors, 'yellow');
+$green: map-get($base-colors, 'green');
+$teal: map-get($base-colors, 'teal');
 
 // theme-color-variables
 $primary: $blue;
 $secondary: $gray-600;
 $success: $green;
-$info: #6daae0;
+$info: $teal;
 $warning: $yellow;
 $danger: $red;
 $light: $gray-100;

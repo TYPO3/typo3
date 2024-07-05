@@ -1,4 +1,23 @@
-@use 'sass:math';
+@use 'sass:color';
+
+//
+// Colors
+//
+:root {
+    --token-color-neutral-base: #{$natural-base};
+
+    @each $shade in $neutral-shades {
+        --token-color-neutral-#{$shade}: #{color.change($natural-base, $lightness: 100% - $shade)};
+    }
+
+    @each $name, $value in $base-colors {
+        --token-color-#{$name}-base: #{$value};
+
+        @each $shade in $base-shades {
+            --token-color-#{$name}-#{$shade}: #{color.change($value, $lightness: 100% - $shade)};
+        }
+    }
+}
 
 //
 // Global CSS Variables
@@ -13,22 +32,71 @@
     --typo3-font-family: var(--typo3-font-family-sans-serif);
     --typo3-font-family-code: var(--typo3-font-family-monospace);
     --typo3-spacing: 1rem;
-    --typo3-color-scheme: auto;
 
     // Header
     --typo3-header-font-family: "Source Sans 3", sans-serif;
 
     // Colors
-    --typo3-text-color-base: light-dark(#1b1b1b, #ebebeb);
-    --typo3-text-color-variant: light-dark(#4b4b4b, #dbdbdb);
-    --typo3-surface-dim: light-dark(#dedede, #141414);
-    --typo3-surface-base: light-dark(#f8f8f8, #141414);
-    --typo3-surface-bright: light-dark(#f8f8f8, #353535);
-    --typo3-surface-container-lowest: light-dark(#fff, #0e0e0e);
-    --typo3-surface-container-low: light-dark(#f6f6f6, #1c1c1c);
-    --typo3-surface-container-base: light-dark(#f2f2f2, #212121);
-    --typo3-surface-container-high: light-dark(#ebebeb, #292929);
-    --typo3-surface-container-highest: light-dark(#dedede, #353535);
+    --typo3-text-color-base: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-10));
+    --typo3-text-color-variant: light-dark(var(--token-color-neutral-75), var(--token-color-neutral-25));
+
+    // Surfaces
+    --typo3-surface-dim: light-dark(var(--token-color-neutral-15), var(--token-color-neutral-96));
+    --typo3-surface-base: light-dark(var(--token-color-neutral-4), var(--token-color-neutral-96));
+    --typo3-surface-bright: light-dark(var(--token-color-neutral-4), var(--token-color-neutral-85));
+    --typo3-surface-container-lowest: light-dark(var(--token-color-neutral-0), var(--token-color-neutral-100));
+    --typo3-surface-container-low: light-dark(var(--token-color-neutral-3), var(--token-color-neutral-97));
+    --typo3-surface-container-base: light-dark(var(--token-color-neutral-5), var(--token-color-neutral-95));
+    --typo3-surface-container-high: light-dark(var(--token-color-neutral-10), var(--token-color-neutral-90));
+    --typo3-surface-container-highest: light-dark(var(--token-color-neutral-15), var(--token-color-neutral-85));
+
+    // primary
+    --typo3-surface-primary: light-dark(var(--token-color-blue-60), var(--token-color-blue-70));
+    --typo3-surface-primary-text: light-dark(var(--token-color-neutral-0), var(--token-color-neutral-0));
+    --typo3-surface-container-primary: light-dark(var(--token-color-blue-10), var(--token-color-blue-90));
+    --typo3-surface-container-primary-text: light-dark(var(--token-color-blue-90), var(--token-color-blue-10));
+
+    // secondary
+    --typo3-surface-secondary: light-dark(var(--token-color-neutral-70), var(--token-color-neutral-70));
+    --typo3-surface-secondary-text: light-dark(var(--token-color-neutral-0), var(--token-color-neutral-0));
+    --typo3-surface-container-secondary: light-dark(var(--token-color-neutral-10), var(--token-color-neutral-90));
+    --typo3-surface-container-secondary-text: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-10));
+
+    // info
+    --typo3-surface-info: light-dark(var(--token-color-teal-20), var(--token-color-teal-60));
+    --typo3-surface-info-text: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-0));
+    --typo3-surface-container-info: light-dark(var(--token-color-teal-10), var(--token-color-teal-90));
+    --typo3-surface-container-info-text: light-dark(var(--token-color-teal-90), var(--token-color-teal-10));
+
+    // success
+    --typo3-surface-success: light-dark(var(--token-color-green-70), var(--token-color-green-80));
+    --typo3-surface-success-text: light-dark(var(--token-color-neutral-0), var(--token-color-neutral-0));
+    --typo3-surface-container-success: light-dark(var(--token-color-green-10), var(--token-color-green-90));
+    --typo3-surface-container-success-text: light-dark(var(--token-color-green-90), var(--token-color-green-10));
+
+    // warning
+    --typo3-surface-warning: light-dark(var(--token-color-yellow-40), var(--token-color-yellow-80));
+    --typo3-surface-warning-text: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-0));
+    --typo3-surface-container-warning: light-dark(var(--token-color-yellow-10), var(--token-color-yellow-90));
+    --typo3-surface-container-warning-text: light-dark(var(--token-color-yellow-90), var(--token-color-yellow-10));
+
+    // danger
+    --typo3-surface-danger: light-dark(var(--token-color-red-50), var(--token-color-red-70));
+    --typo3-surface-danger-text: light-dark(var(--token-color-neutral-0), var(--token-color-neutral-0));
+    --typo3-surface-container-danger: light-dark(var(--token-color-red-10), var(--token-color-red-90));
+    --typo3-surface-container-danger-text: light-dark(var(--token-color-red-90), var(--token-color-red-10));
+
+    // notice
+    --typo3-surface-notice: light-dark(var(--token-color-neutral-75), var(--token-color-neutral-85));
+    --typo3-surface-notice-text: light-dark(var(--token-color-neutral-0), var(--token-color-neutral-0));
+    --typo3-surface-container-notice: light-dark(var(--token-color-neutral-10), var(--token-color-neutral-90));
+    --typo3-surface-container-notice-text: light-dark(var(--token-color-neutral-95), var(--token-color-neutral-0));
+
+    // default
+    --typo3-surface-default: light-dark(var(--token-color-neutral-5), var(--token-color-neutral-95));
+    --typo3-surface-default-text: light-dark(var(--token-color-default-90), var(--token-color-default-0));
+    --typo3-surface-container-default: light-dark(var(--token-color-neutral-5), var(--token-color-neutral-95));
+    --typo3-surface-container-default-text: light-dark(var(--token-color-default-90), var(--token-color-default-0));
 
     // Elevation / Shadow
     //

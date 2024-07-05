@@ -197,7 +197,7 @@ abstract class AbstractContentPagePositionMap
                                 <p>
                                     ' . $columnTitle . ' <em>(' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:noAccess')) . ')</em>
                                 </p>';
-                            $tableCellAttributes['class'] .= ' bg-danger bg-opacity-25';
+                            $tableCellAttributes['class'] .= ' danger';
                         }
                     } elseif ($isUnassigned) {
                         if ($hideRestrictedColumns) {
@@ -209,7 +209,7 @@ abstract class AbstractContentPagePositionMap
                                     ' . htmlspecialchars($lang->sL($columnConfig['name']) ?: '') . '
                                     ' . ' (' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:notAssigned')) . ')' . '
                                 </em>';
-                            $tableCellAttributes['class'] .= ' bg-warning bg-opacity-25';
+                            $tableCellAttributes['class'] .= ' warning';
                         }
                     } else {
                         // If not restricted and not unassigned, wrap column title and render list (if available)
@@ -246,7 +246,7 @@ abstract class AbstractContentPagePositionMap
                 $columnTitle = '<strong>' . htmlspecialchars($tcaColumnConfiguration['title']) . '</strong>';
                 if ($tcaColumnConfiguration['isRestricted']) {
                     // If this colPos is restricted, add an information to the column title and color the cell
-                    $tableCellClasses .= ' bg-danger bg-opacity-25';
+                    $tableCellClasses .= ' danger';
                     $cellContent = '
                         <p>
                             ' . $columnTitle . ' <em>(' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:noAccess')) . ')</em>

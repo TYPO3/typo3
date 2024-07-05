@@ -1,0 +1,84 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:colorTokens" /></h1>
+        <p>Base Color tokens, for <strong>internal usage only</strong>.</p>
+
+        <f:asset.css identifier="styleguide-shadow-demo">
+            .color-palettes {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1.5rem;
+                padding: 1.5rem 0;
+            }
+
+            .color-palette {
+                display: flex;
+                flex-wrap: wrap;
+                gap: .25rem;
+                max-width: 20rem;
+            }
+
+            .color-palette-neutral {
+                max-width: 43.5rem;
+            }
+
+            .color-palette-item {
+                width: 6rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: .5rem;
+            }
+
+            .color-palette-item-plate {
+                height: 100px;
+                width: 100%;
+                border-radius: .25rem;
+            }
+        </f:asset.css>
+
+
+        <sg:code language="html" colorschemes="true" exampleonly="true">
+            <div class="color-palettes">
+                <f:for each="{neutralColors}" as="color">
+                    <div class="color-palette color-palette-{color}">
+                        <f:for each="{neutralSteps}" as="step">
+                            <div class="color-palette-item">
+                                <div class="color-palette-item-plate" style="background: var(--token-color-{color}-{step});"></div>
+                                <div class="color-palette-item-label">{color}-{step}</div>
+                            </div>
+                        </f:for>
+                    </div>
+                </f:for>
+            </div>
+            <div class="color-palettes">
+                <f:for each="{accentColors}" as="color">
+                    <div class="color-palette color-palette-{color}">
+                        <f:for each="{accentSteps}" as="step">
+                            <div class="color-palette-item">
+                                <div class="color-palette-item-plate" style="background: var(--token-color-{color}-{step});"></div>
+                                <div class="color-palette-item-label">{color}-{step}</div>
+                            </div>
+                        </f:for>
+                    </div>
+                </f:for>
+            </div>
+        </sg:code>
+
+    </div>
+
+</f:section>
+
+</html>

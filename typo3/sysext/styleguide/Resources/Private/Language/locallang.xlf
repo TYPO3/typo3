@@ -45,8 +45,8 @@
 			<trans-unit id="cards" xml:space="preserve">
 				<source>Cards</source>
 			</trans-unit>
-			<trans-unit id="colors" xml:space="preserve">
-				<source>Colors</source>
+			<trans-unit id="colorTokens" xml:space="preserve">
+				<source>Color Tokens</source>
 			</trans-unit>
 			<trans-unit id="tab" xml:space="preserve">
 				<source>Tabs</source>

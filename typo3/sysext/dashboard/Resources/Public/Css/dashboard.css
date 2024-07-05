@@ -74,7 +74,7 @@
 .widget-action .icon{position:absolute;top:50%;inset-inline-start:50%;transform:translate(calc(-50% * var(--typo3-position-modifier)),-50%)}
 .widget-action-move{cursor:grab}
 .widget-waiting{position:absolute;top:50%;left:50%;line-height:300px;margin-inline-end:-50%;transform:translate(calc(-50% * var(--typo3-position-modifier)),-50%)}
-.widget-error{padding:20px;position:absolute;top:50%;text-align:center;transform:translateY(-50%);color:#c83c3c}
+.widget-error{padding:20px;position:absolute;top:50%;text-align:center;transform:translateY(-50%);color:#d13a2e}
 .widget-chart{width:100%;height:100%}
 .widget-edit{width:45px;text-align:center}
 .widget-editIcon{color:#000}

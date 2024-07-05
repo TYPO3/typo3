@@ -43,7 +43,7 @@ var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s
                     <td>${e.created}</td>
                     <td>${e.scope}</td>
                     <td>
-                      <span class="badge bg-warning">${e.count}</span>
+                      <span class="badge badge-warning">${e.count}</span>
                       ${e.details.effectiveDirective}
                     </td>
                     <td>${this.shortenUri(e.details.blockedUri)}</td>

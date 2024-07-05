@@ -137,7 +137,7 @@ export class CspReports extends LitElement {
                     <td>${report.created}</td>
                     <td>${report.scope}</td>
                     <td>
-                      <span class="badge bg-warning">${report.count}</span>
+                      <span class="badge badge-warning">${report.count}</span>
                       ${report.details.effectiveDirective}
                     </td>
                     <td>${this.shortenUri(report.details.blockedUri)}</td>
