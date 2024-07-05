@@ -1449,7 +1449,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function getFile($identifier)
     {
         $file = $this->getFileByIdentifier($identifier);
-        if (!$this->driver->fileExists($identifier)) {
+        if ($file instanceof File && !$this->driver->fileExists($identifier)) {
             $file->setMissing(true);
         }
         return $file;
