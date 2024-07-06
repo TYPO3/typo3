@@ -731,9 +731,9 @@ class BackendUtility
      * this method from being a memory hog, a two-level-cache is implemented:
      * Many pages typically share the same page TSconfig. We get the rootline
      * of a page, and create a hash from the two relevant TSconfig and
-     * tsconfig_includes fields, plus the attached site identifier. We then
-     * store a hash-to-object cache entry per different hash, and a
-     * page uid-to-hash pointer.
+     * tsconfig_includes fields, the attached site identifier, plus the hash of
+     * matched conditions. We then store a hash-to-object cache entry per
+     * different hash, and a page uid-to-hash pointer.
      *
      * @param int $pageUid
      */
@@ -759,7 +759,10 @@ class BackendUtility
             $site = new NullSite();
         }
 
-        $cacheRelevantData = $site->getIdentifier();
+        $pageTsConfigFactory = GeneralUtility::makeInstance(PageTsConfigFactory::class);
+        $pageTsConfig = $pageTsConfigFactory->create($fullRootLine, $site, static::getBackendUserAuthentication()?->getUserTsConfig());
+
+        $cacheRelevantData = $site->getIdentifier() . json_encode($pageTsConfig->getConditionListWithVerdicts(), JSON_THROW_ON_ERROR);
         foreach ($fullRootLine as $rootLine) {
             if (!empty($rootLine['TSconfig'])) {
                 $cacheRelevantData .= (string)$rootLine['TSconfig'];
@@ -768,19 +771,10 @@ class BackendUtility
                 $cacheRelevantData .= (string)$rootLine['tsconfig_includes'];
             }
         }
-        $cacheRelevantDataHash = hash('xxh3', $cacheRelevantData);
+        $pageTsConfigHash = hash('xxh3', $cacheRelevantData);
 
-        $pageTsConfig = $runtimeCache->get('pageTsConfig-hash-to-object-' . $cacheRelevantDataHash);
-        if ($pageTsConfig instanceof PageTsConfig) {
-            $runtimeCache->set('pageTsConfig-pid-to-hash-' . $pageUid, $cacheRelevantDataHash);
-            return $pageTsConfig->getPageTsConfigArray();
-        }
-
-        $pageTsConfigFactory = GeneralUtility::makeInstance(PageTsConfigFactory::class);
-        $pageTsConfig = $pageTsConfigFactory->create($fullRootLine, $site, static::getBackendUserAuthentication()?->getUserTsConfig());
-
-        $runtimeCache->set('pageTsConfig-pid-to-hash-' . $pageUid, $cacheRelevantDataHash);
-        $runtimeCache->set('pageTsConfig-hash-to-object-' . $cacheRelevantDataHash, $pageTsConfig);
+        $runtimeCache->set('pageTsConfig-pid-to-hash-' . $pageUid, $pageTsConfigHash);
+        $runtimeCache->set('pageTsConfig-hash-to-object-' . $pageTsConfigHash, $pageTsConfig);
         return $pageTsConfig->getPageTsConfigArray();
     }
 

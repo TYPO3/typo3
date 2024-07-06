@@ -139,6 +139,6 @@ final readonly class PageTsConfigFactory
         $includeTreeTraverserConditionVerdictAwareVisitors[] = $astBuilderVisitor;
         $includeTreeTraverserConditionVerdictAware->traverse($pagesTsConfigTree, $includeTreeTraverserConditionVerdictAwareVisitors);
 
-        return new PageTsConfig($astBuilderVisitor->getAst());
+        return new PageTsConfig($astBuilderVisitor->getAst(), $conditionMatcherVisitor->getConditionListWithVerdicts());
     }
 }

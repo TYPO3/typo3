@@ -1,9 +1,12 @@
 "pages"
-,"uid","pid","sorting","title","deleted","perms_everybody"
-,1,0,128,"Root",0,15
-,2,1,128,"Dummy 1-2",0,15
-,3,2,128,"Dummy 1-2-3",0,15
-,4,3,128,"Dummy 1-2-3-4",0,15
-,5,1,256,"Dummy 1-5",0,15
-,6,5,128,"Dummy 1-5-6",0,15
-,7,0,256,"Root 2",0,15
+,"uid","pid","sorting","title","deleted","perms_everybody","TSconfig"
+,1,0,128,"Root",0,15,"some_property=0"
+,2,1,128,"Dummy 1-2",0,15,""
+,3,2,128,"Dummy 1-2-3",0,15,""
+,4,3,128,"Dummy 1-2-3-4",0,15,""
+,5,1,256,"Dummy 1-5",0,15,"some_property=5
+[6 in tree.rootLineIds]
+some_property=6
+[end]"
+,6,5,128,"Dummy 1-5-6",0,15,""
+,7,0,256,"Root 2",0,15,""

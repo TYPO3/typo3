@@ -24,12 +24,13 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
  *
  * @internal Internal for now until API stabilized. Use BackendUtility::getPagesTSconfig().
  */
-final class PageTsConfig
+final readonly class PageTsConfig
 {
-    private readonly array $pageTsConfigArray;
+    private array $pageTsConfigArray;
 
     public function __construct(
-        private readonly RootNode $pageTsConfigTree
+        private RootNode $pageTsConfigTree,
+        private array $conditionListWithVerdicts,
     ) {
         $this->pageTsConfigArray = $pageTsConfigTree->toArray();
     }
@@ -42,5 +43,10 @@ final class PageTsConfig
     public function getPageTsConfigArray(): array
     {
         return $this->pageTsConfigArray;
+    }
+
+    public function getConditionListWithVerdicts(): array
+    {
+        return $this->conditionListWithVerdicts;
     }
 }
