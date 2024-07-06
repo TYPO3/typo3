@@ -56,7 +56,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TcaSchemaFactory
 {
     protected array $schemata = [];
-    protected array $tca;
     protected RelationMap $relationMap;
 
     public function __construct(
@@ -117,13 +116,12 @@ class TcaSchemaFactory
      *
      * @internal only used for TYPO3 Core internally, never use it in public!
      */
-    public function rebuild(array $tca): void
+    public function rebuild(array $fullTca): void
     {
-        $this->tca = $tca;
         $this->schemata = [];
-        $this->relationMap = $this->relationMapBuilder->buildFromStructure($this->tca);
-        foreach (array_keys($this->tca) as $table) {
-            $this->build($table);
+        $this->relationMap = $this->relationMapBuilder->buildFromStructure($fullTca);
+        foreach (array_keys($fullTca) as $table) {
+            $this->build($table, $fullTca);
         }
     }
 
@@ -159,17 +157,17 @@ class TcaSchemaFactory
      * As it is crucial to understand, parts such as FlexForms (incl. Sheet, SectionContainers and their Fields)
      * NEED to be resolved first, because they need to be attached.
      */
-    protected function build(string $schemaName): TcaSchema
+    protected function build(string $schemaName, array $fullTca): TcaSchema
     {
         if (str_contains($schemaName, '.')) {
             [$mainSchema, $subSchema] = explode('.', $schemaName, 2);
-            $mainSchema = $this->build($mainSchema);
+            $mainSchema = $this->build($mainSchema, $fullTca);
             return $mainSchema->getSubSchema($subSchema);
         }
 
         // Collect all fields
         $allFields = [];
-        $schemaDefinition = $this->tca[$schemaName];
+        $schemaDefinition = $fullTca[$schemaName];
         foreach ($schemaDefinition['columns'] ?? [] as $fieldName => $fieldConfiguration) {
             try {
                 $field = $this->fieldTypeFactory->createFieldType(
