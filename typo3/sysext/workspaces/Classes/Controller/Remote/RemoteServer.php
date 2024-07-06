@@ -64,6 +64,7 @@ class RemoteServer
         protected readonly EventDispatcherInterface $eventDispatcher,
         private readonly FormDataCompiler $formDataCompiler,
         protected readonly FlexFormValueFormatter $flexFormValueFormatter,
+        private readonly DiffUtility $diffUtility,
     ) {}
 
     /**
@@ -118,14 +119,12 @@ class RemoteServer
      */
     public function getRowDetails($parameter, ServerRequestInterface $request)
     {
-        $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
         $diffReturnArray = [];
         $liveReturnArray = [];
         $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
         $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
         $versionState = VersionState::tryFrom($versionRecord['t3ver_state'] ?? 0);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $iconLive = $iconFactory->getIconForRecord($parameter->table, $liveRecord, IconSize::SMALL);
         $iconWorkspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, IconSize::SMALL);
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
@@ -210,8 +209,8 @@ class RemoteServer
                         'field' => $fieldName,
                         'label' => $fieldTitle,
                         'content' => $versionState === VersionState::NEW_PLACEHOLDER
-                            ? $diffUtility->makeDiffDisplay('', $newOrDeleteRecord[$fieldName], $granularity)
-                            : $diffUtility->makeDiffDisplay($newOrDeleteRecord[$fieldName], '', $granularity),
+                            ? $this->diffUtility->diff('', strip_tags($newOrDeleteRecord[$fieldName]), $granularity)
+                            : $this->diffUtility->diff(strip_tags($newOrDeleteRecord[$fieldName]), '', $granularity),
                     ];
 
                     // Generally not needed by Core, but let's make it available for further processing in hooks
@@ -224,13 +223,9 @@ class RemoteServer
                     // Select the human-readable values before diff
                     $liveRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration);
                     $versionRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$versionRecord[$fieldName], $versionRecord['uid'], $configuration);
-                    $granularity = ($configuration['type'] ?? '') === 'flex' ? DiffGranularity::CHARACTER : DiffGranularity::WORD;
-                    $fieldDifferences = $diffUtility->makeDiffDisplay(
-                        $liveRecord[$fieldName],
-                        $versionRecord[$fieldName],
-                        $granularity
-                    );
-
+                    $fieldDifferences = ($configuration['type'] ?? '') === 'flex'
+                        ? $this->diffUtility->diff(strip_tags($liveRecord[$fieldName]), strip_tags($versionRecord[$fieldName]), DiffGranularity::CHARACTER)
+                        : $this->diffUtility->diff(strip_tags($liveRecord[$fieldName]), strip_tags($versionRecord[$fieldName]));
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
@@ -364,8 +359,7 @@ class RemoteServer
             }
         }
 
-        $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
-        $differences = $diffUtility->makeDiffDisplay($liveInformation, $versionInformation);
+        $differences = $this->diffUtility->diff(strip_tags($liveInformation), strip_tags($versionInformation));
         $liveInformation = str_replace(array_keys($substitutes), array_values($substitutes), trim($liveInformation));
         $differences = str_replace(array_keys($substitutes), array_values($substitutes), trim($differences));
 

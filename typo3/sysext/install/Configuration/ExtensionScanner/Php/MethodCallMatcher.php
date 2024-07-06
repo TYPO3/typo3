@@ -6323,4 +6323,11 @@ return [
             'Breaking-102763-ExtbaseHashServiceUsageReplacedWithCoreHashService.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\DiffUtility->makeDiffDisplay' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-104325-DiffUtility-makeDiffDisplay.rst',
+        ],
+    ],
 ];

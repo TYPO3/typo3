@@ -22,20 +22,26 @@ use cogpowered\FineDiff\Granularity\Character;
 use cogpowered\FineDiff\Granularity\Word;
 
 /**
- * This class has functions which generates a difference output of a content string
+ * Helper service to create a diff HTML of two strings.
+ * It is currently a facade for lolli42/finediff.
  */
 class DiffUtility
 {
     /**
      * If set, the HTML tags are stripped from the input strings first.
+     *
+     * @deprecated will be removed in TYPO3 v14. Remove together with makeDiffDisplay().
      */
     public bool $stripTags = true;
 
     /**
      * Returns a color-marked-up diff output in HTML from the input strings.
+     *
+     * @deprecated will be removed in TYPO3 v14. Remove together with $stripTags property.
      */
     public function makeDiffDisplay(string $str1, string $str2, DiffGranularity $granularity = DiffGranularity::WORD): string
     {
+        trigger_error(__METHOD__ . ' has been marked as deprecated in TYPO3 v13. Use diff() instead.', E_USER_DEPRECATED);
         if ($this->stripTags) {
             $str1 = strip_tags($str1);
             $str2 = strip_tags($str2);
@@ -43,5 +49,10 @@ class DiffUtility
         $granularity = $granularity === DiffGranularity::WORD ? new Word() : new Character();
         $diff = new Diff($granularity);
         return $diff->render($str1, $str2);
+    }
+
+    public function diff(string $from, string $to, DiffGranularity $granularity = DiffGranularity::WORD): string
+    {
+        return (new Diff($granularity === DiffGranularity::WORD ? new Word() : new Character()))->render($from, $to);
     }
 }

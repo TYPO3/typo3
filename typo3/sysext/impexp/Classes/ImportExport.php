@@ -157,8 +157,6 @@ abstract class ImportExport
      * File processing object
      */
     protected ?ExtendedFileUtility $fileProcObj = null;
-    protected ?DiffUtility $diffUtility = null;
-
     protected array $remainHeader = [];
     protected LanguageService $lang;
     protected IconFactory $iconFactory;
@@ -1217,23 +1215,23 @@ abstract class ImportExport
             ) {
                 if (isset($importRecord[$fieldName])) {
                     if (trim((string)$databaseRecord[$fieldName]) !== trim((string)$importRecord[$fieldName])) {
-                        $diffFieldHtml = $this->getDiffUtility()->makeDiffDisplay(
-                            (string)BackendUtility::getProcessedValue(
+                        $diffFieldHtml = $this->getDiffUtility()->diff(
+                            strip_tags((string)BackendUtility::getProcessedValue(
                                 $table,
                                 $fieldName,
                                 !$inverse ? $importRecord[$fieldName] : $databaseRecord[$fieldName],
                                 0,
                                 true,
                                 true
-                            ),
-                            (string)BackendUtility::getProcessedValue(
+                            )),
+                            strip_tags((string)BackendUtility::getProcessedValue(
                                 $table,
                                 $fieldName,
                                 !$inverse ? $databaseRecord[$fieldName] : $importRecord[$fieldName],
                                 0,
                                 true,
                                 true
-                            )
+                            ))
                         );
                         $diffHtml .= sprintf(
                             '<tr><td>%s (%s)</td><td>%s</td></tr>' . PHP_EOL,
@@ -1275,17 +1273,9 @@ abstract class ImportExport
         );
     }
 
-    /**
-     * Returns string comparing object, initialized only once.
-     *
-     * @return DiffUtility String comparing object
-     */
     protected function getDiffUtility(): DiffUtility
     {
-        if ($this->diffUtility === null) {
-            $this->diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
-        }
-        return $this->diffUtility;
+        return GeneralUtility::makeInstance(DiffUtility::class);
     }
 
     /**

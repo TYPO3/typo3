@@ -68,8 +68,7 @@ class DefaultLanguageDifferences extends AbstractNode
         $html = [];
         if ((string)$defaultLanguageDiffRow[$fieldName] !== (string)$defaultLanguageRow[$fieldName]) {
             // Create diff-result:
-            $this->diffUtility->stripTags = false;
-            $diffResult = $this->diffUtility->makeDiffDisplay(
+            $diffResult = $this->diffUtility->diff(
                 (string)BackendUtility::getProcessedValue($table, $fieldName, $defaultLanguageDiffRow[$fieldName], 0, true),
                 (string)BackendUtility::getProcessedValue($table, $fieldName, $defaultLanguageRow[$fieldName], 0, true)
             );

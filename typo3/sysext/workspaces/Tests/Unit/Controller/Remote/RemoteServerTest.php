@@ -20,11 +20,18 @@ namespace TYPO3\CMS\Workspaces\Tests\Unit\Controller\Remote;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
+use TYPO3\CMS\Workspaces\Service\GridDataService;
+use TYPO3\CMS\Workspaces\Service\StagesService;
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RemoteServerTest extends UnitTestCase
@@ -103,15 +110,18 @@ final class RemoteServerTest extends UnitTestCase
     {
         $liveFileReferences = $this->getFileReferenceMocks($fileFileReferenceList);
         $versionFileReferences = $this->getFileReferenceMocks($versionFileReferenceList);
-
-        $subject = $this->getAccessibleMock(RemoteServer::class, null, [], '', false);
-        $result = $subject->_call(
-            'prepareFileReferenceDifferences',
-            $liveFileReferences,
-            $versionFileReferences,
-            $useThumbnails
+        $subject = new RemoteServer(
+            $this->createMock(GridDataService::class),
+            new StagesService(),
+            new WorkspaceService(),
+            new NoopEventDispatcher(),
+            new FormDataCompiler(),
+            new FlexFormValueFormatter(),
+            new DiffUtility(),
         );
-
+        $subjectReflection = new \ReflectionObject($subject);
+        $result = $subjectReflection->getMethod('prepareFileReferenceDifferences')
+            ->invoke($subject, $liveFileReferences, $versionFileReferences, $useThumbnails);
         self::assertSame($expected, $result);
     }
 

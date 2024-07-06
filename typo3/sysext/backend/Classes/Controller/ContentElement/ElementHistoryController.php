@@ -71,6 +71,7 @@ class ElementHistoryController
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly DiffUtility $diffUtility,
     ) {}
 
     /**
@@ -373,24 +374,22 @@ class ElementHistoryController
     {
         $lines = [];
         if (is_array($entry['newRecord'] ?? null)) {
-            $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
             $fieldsToDisplay = array_keys($entry['newRecord']);
             $languageService = $this->getLanguageService();
             foreach ($fieldsToDisplay as $fN) {
                 $tcaType = $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] ?? '';
                 if (is_array($GLOBALS['TCA'][$table]['columns'][$fN] ?? null) && $tcaType !== 'passthrough') {
-                    $granularity = DiffGranularity::WORD;
                     if ($tcaType === 'flex') {
-                        $granularity = DiffGranularity::CHARACTER;
                         $flexFormValueFormatter = GeneralUtility::makeInstance(FlexFormValueFormatter::class);
                         $colConfig = $GLOBALS['TCA'][$table]['columns'][$fN]['config'] ?? [];
                         $old = $flexFormValueFormatter->format($table, $fN, ($entry['oldRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
                         $new = $flexFormValueFormatter->format($table, $fN, ($entry['newRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
+                        $diffResult = $this->diffUtility->diff(strip_tags($old), strip_tags($new), DiffGranularity::CHARACTER);
                     } else {
                         $old = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['oldRecord'][$fN] ?? ''), 0, true, uid: $rollbackUid);
                         $new = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true, uid: $rollbackUid);
+                        $diffResult = $this->diffUtility->diff(strip_tags($old), strip_tags($new));
                     }
-                    $diffResult = $diffUtility->makeDiffDisplay($old, $new, $granularity);
                     $rollbackUrl = '';
                     if ($rollbackUid && $showRollbackLink) {
                         $rollbackUrl = $this->buildUrl(['rollbackFields' => $table . ':' . $rollbackUid . ':' . $fN]);

@@ -123,17 +123,16 @@ class HistoryService implements SingletonInterface
                 if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $tcaType !== 'passthrough') {
                     // Create diff-result:
                     if ($tcaType === 'flex') {
-                        $granularity = DiffGranularity::CHARACTER;
                         $flexFormValueFormatter = GeneralUtility::makeInstance(FlexFormValueFormatter::class);
                         $colConfig = $GLOBALS['TCA'][$tableName]['columns'][$field]['config'] ?? [];
                         $old = $flexFormValueFormatter->format($tableName, $field, $entry['oldRecord'][$field], $entry['recuid'], $colConfig);
                         $new = $flexFormValueFormatter->format($tableName, $field, $entry['newRecord'][$field], $entry['recuid'], $colConfig);
+                        $fieldDifferences = $diffUtility->diff(strip_tags($old), strip_tags($new), DiffGranularity::CHARACTER);
                     } else {
-                        $granularity = DiffGranularity::WORD;
                         $old = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true);
                         $new = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true);
+                        $fieldDifferences = $diffUtility->diff(strip_tags($old), strip_tags($new));
                     }
-                    $fieldDifferences = $diffUtility->makeDiffDisplay($old, $new, $granularity);
                     if (!empty($fieldDifferences)) {
                         $differences[] = [
                             'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, (string)$field)),
