@@ -26,18 +26,20 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal
  */
 class HistoryService implements SingletonInterface
 {
-    public function __construct(
-        private readonly Avatar $avatar,
-        private readonly DiffUtility $diffUtility,
-        private readonly FlexFormValueFormatter $flexFormValueFormatter,
-        private readonly RecordHistory $recordHistory,
-    ) {}
+    protected array $backendUserNames;
+    protected array $historyEntries = [];
+
+    public function __construct()
+    {
+        $this->backendUserNames = BackendUtility::getUserNames();
+    }
 
     /**
      * Gets the editing history of a record.
@@ -90,12 +92,13 @@ class HistoryService implements SingletonInterface
             $differences = $this->getDifferences($entry);
         }
 
+        $avatar = GeneralUtility::makeInstance(Avatar::class);
         $beUserRecord = BackendUtility::getRecord('be_users', $entry['userid']);
 
         return [
             'datetime' => htmlspecialchars(BackendUtility::datetime($entry['tstamp'])),
-            'user' => htmlspecialchars($beUserRecord['username'] ?? 'unknown'),
-            'user_avatar' => $this->avatar->render($beUserRecord),
+            'user' => htmlspecialchars($this->getUserName($entry['userid'])),
+            'user_avatar' => $avatar->render($beUserRecord),
             'differences' => $differences,
         ];
     }
@@ -108,6 +111,7 @@ class HistoryService implements SingletonInterface
      */
     protected function getDifferences(array $entry): array
     {
+        $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
         $differences = [];
         $tableName = $entry['tablename'];
         if (is_array($entry['newRecord'] ?? false)) {
@@ -120,15 +124,16 @@ class HistoryService implements SingletonInterface
                     // Create diff-result:
                     if ($tcaType === 'flex') {
                         $granularity = DiffGranularity::CHARACTER;
+                        $flexFormValueFormatter = GeneralUtility::makeInstance(FlexFormValueFormatter::class);
                         $colConfig = $GLOBALS['TCA'][$tableName]['columns'][$field]['config'] ?? [];
-                        $old = $this->flexFormValueFormatter->format($tableName, $field, $entry['oldRecord'][$field], $entry['recuid'], $colConfig);
-                        $new = $this->flexFormValueFormatter->format($tableName, $field, $entry['newRecord'][$field], $entry['recuid'], $colConfig);
+                        $old = $flexFormValueFormatter->format($tableName, $field, $entry['oldRecord'][$field], $entry['recuid'], $colConfig);
+                        $new = $flexFormValueFormatter->format($tableName, $field, $entry['newRecord'][$field], $entry['recuid'], $colConfig);
                     } else {
                         $granularity = DiffGranularity::WORD;
                         $old = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true);
                         $new = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true);
                     }
-                    $fieldDifferences = $this->diffUtility->makeDiffDisplay($old, $new, $granularity);
+                    $fieldDifferences = $diffUtility->makeDiffDisplay($old, $new, $granularity);
                     if (!empty($fieldDifferences)) {
                         $differences[] = [
                             'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, (string)$field)),
@@ -142,6 +147,18 @@ class HistoryService implements SingletonInterface
     }
 
     /**
+     * Gets the username of a backend user.
+     */
+    protected function getUserName(int $user): string
+    {
+        $userName = 'unknown';
+        if (!empty($this->backendUserNames[$user]['username'])) {
+            $userName = $this->backendUserNames[$user]['username'];
+        }
+        return $userName;
+    }
+
+    /**
      * Gets an instance of the record history of a record.
      *
      * @param string $table Name of the table
@@ -149,7 +166,11 @@ class HistoryService implements SingletonInterface
      */
     protected function getHistoryEntries(string $table, int $id): array
     {
-        return $this->recordHistory->getHistoryDataForRecord($table, $id);
+        if (!isset($this->historyEntries[$table][$id])) {
+            $this->historyEntries[$table][$id] = GeneralUtility::makeInstance(RecordHistory::class)
+                ->getHistoryDataForRecord($table, $id);
+        }
+        return $this->historyEntries[$table][$id];
     }
 
     protected function getLanguageService(): LanguageService
