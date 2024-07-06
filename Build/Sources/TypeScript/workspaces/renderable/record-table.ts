@@ -271,7 +271,7 @@ export class RecordTableElement extends LitElement {
         }
       ),
       this.getAction(
-        data.allowedAction_edit,
+        data.allowedAction_edit && data.state_Workspace !== 'deleted',
         'open',
         'actions-open',
         {
