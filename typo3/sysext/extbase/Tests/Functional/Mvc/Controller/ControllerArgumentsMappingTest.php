@@ -22,10 +22,13 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Controller\BlogController;
 
@@ -90,5 +93,81 @@ final class ControllerArgumentsMappingTest extends FunctionalTestCase
 
         $response->getBody()->rewind();
         self::assertEquals($expectedTitle, $response->getBody()->getContents());
+    }
+
+    #[Test]
+    public function actionThrowsRequiredArgumentMissingExceptionWhenNoBlogGiven(): void
+    {
+        $context = $this->get(Context::class);
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->request = $this->request->withControllerActionName('testSingle');
+
+        $this->expectException(RequiredArgumentMissingException::class);
+        $this->expectExceptionCode(1298012500);
+        $this->controller->processRequest($this->request);
+    }
+
+    #[Test]
+    public function actionHandlesArgumentMissingExceptionAsPageNotFoundIfConfigured(): void
+    {
+        $context = $this->get(Context::class);
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->request = $this->request->withControllerActionName('testSingle');
+
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration([
+            'persistence' => [
+                'storagePid' => 20,
+            ],
+            'mvc' => [
+                'showPageNotFoundIfRequiredArgumentIsMissingException' => 1,
+            ],
+        ]);
+
+        try {
+            $this->controller->processRequest($this->request);
+            self::fail('processRequest() did not throw a PropagateResponseException although expected');
+        } catch (PropagateResponseException $exception) {
+            self::assertEquals(404, $exception->getResponse()->getStatusCode());
+        }
+    }
+
+    #[Test]
+    public function actionThrowsTargetNotFoundExceptionExceptionWhenBlogUidNotFound(): void
+    {
+        $context = $this->get(Context::class);
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->request = $this->request->withControllerActionName('testSingle');
+        $this->request = $this->request->withArgument('blog', 11);
+
+        $this->expectException(TargetNotFoundException::class);
+        $this->expectExceptionCode(1297933823);
+        $this->controller->processRequest($this->request);
+    }
+
+    #[Test]
+    public function actionHandlesTargetNotFoundExceptionAsPageNotFoundIfConfigured(): void
+    {
+        $context = $this->get(Context::class);
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
+        $this->request = $this->request->withControllerActionName('testSingle');
+        $this->request = $this->request->withArgument('blog', 11);
+
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration([
+            'persistence' => [
+                'storagePid' => 20,
+            ],
+            'mvc' => [
+                'showPageNotFoundIfTargetNotFoundException' => 1,
+            ],
+        ]);
+
+        try {
+            $this->controller->processRequest($this->request);
+            self::fail('processRequest() did not throw a PropagateResponseException although expected');
+        } catch (PropagateResponseException $exception) {
+            self::assertEquals(404, $exception->getResponse()->getStatusCode());
+        }
     }
 }
