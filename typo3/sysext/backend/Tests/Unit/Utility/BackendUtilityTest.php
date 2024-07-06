@@ -877,7 +877,7 @@ final class BackendUtilityTest extends UnitTestCase
         $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
         $cacheMock->method('get')->willReturnMap([
             ['pageTsConfig-pid-to-hash-0', 'hash'],
-            ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode())],
+            ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode(), [])],
         ]);
         $siteFinderMock = $this->createMock(SiteFinder::class);
         GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService($siteFinderMock));
@@ -1037,7 +1037,7 @@ final class BackendUtilityTest extends UnitTestCase
         $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
         $cacheMock->method('get')->willReturnMap([
             ['pageTsConfig-pid-to-hash-0', 'hash'],
-            ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode())],
+            ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode(), [])],
         ]);
         $siteFinderMock = $this->createMock(SiteFinder::class);
         GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService($siteFinderMock));
@@ -1107,7 +1107,7 @@ final class BackendUtilityTest extends UnitTestCase
         $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
         $cacheMock->method('get')->willReturnMap([
             ['pageTsConfig-pid-to-hash-0', 'hash'],
-            ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode())],
+            ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode(), [])],
         ]);
         $siteFinderMock = $this->createMock(SiteFinder::class);
         GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService($siteFinderMock));
@@ -1120,11 +1120,16 @@ final class BackendUtilityTest extends UnitTestCase
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getProcessedValue(
-            table: $table,
-            col: $col,
-            value: 'foo,invalidKey,bar,uidIsApplied',
-            uid: $uid,
-            fullRow: $row
+            $table,
+            $col,
+            'foo,invalidKey,bar,uidIsApplied',
+            0,
+            false,
+            false,
+            $uid,
+            true,
+            0,
+            $row
         );
         self::assertEquals($row['title'] . ', ' . $row['title2'] . ', ' . $uid, $label);
     }

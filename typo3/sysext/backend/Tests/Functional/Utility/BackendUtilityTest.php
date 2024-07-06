@@ -23,9 +23,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\TypoScript\PageTsConfig;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendUtilityTest extends FunctionalTestCase
@@ -247,5 +251,72 @@ final class BackendUtilityTest extends FunctionalTestCase
     public function getRecordWithExistingUidDoesNotReturnNull(): void
     {
         self::assertNotNull(BackendUtility::getRecord('tt_content', 1));
+    }
+
+    #[Test]
+    public function pageTSconfigWorksCorrectly(): void
+    {
+        // root page: some_property set in TSconfig
+        $ts = BackendUtility::getPagesTSconfig(1);
+        self::assertSame('0', $ts['some_property']);
+
+        // sub page: inherited from root page
+        $ts = BackendUtility::getPagesTSconfig(2);
+        self::assertSame('0', $ts['some_property']);
+
+        // sub page with overridden TSconfig
+        $ts = BackendUtility::getPagesTSconfig(5);
+        self::assertSame('5', $ts['some_property']);
+
+        // sub page with inherited conditional property
+        $ts = BackendUtility::getPagesTSconfig(6);
+        self::assertSame('6', $ts['some_property']);
+    }
+
+    #[Test]
+    public function pageTSconfigCacheWorks(): void
+    {
+        /** @var FrontendInterface $cache */
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
+
+        BackendUtility::getPagesTSconfig(1);
+        $cacheKey1 = $cache->get('pageTsConfig-pid-to-hash-1');
+        self::assertIsString($cacheKey1);
+        self::assertNotSame('', $cacheKey1);
+        $cacheObject1 = $cache->get('pageTsConfig-hash-to-object-' . $cacheKey1);
+        self::assertInstanceOf(PageTsConfig::class, $cacheObject1);
+
+        BackendUtility::getPagesTSconfig(2);
+        $cacheKey2 = $cache->get('pageTsConfig-pid-to-hash-2');
+        self::assertIsString($cacheKey2);
+        self::assertNotSame('', $cacheKey2);
+        $cacheObject2 = $cache->get('pageTsConfig-hash-to-object-' . $cacheKey2);
+        self::assertInstanceOf(PageTsConfig::class, $cacheObject2);
+
+        self::assertSame($cacheKey1, $cacheKey2, 'Cache keys should be the same for page 1 and 2');
+        self::assertSame(
+            $cacheObject1->getPageTsConfigArray(),
+            $cacheObject2->getPageTsConfigArray(),
+            'TSconfig should be the same for page 1 and 2'
+        );
+        self::assertSame(
+            $cacheObject1->getConditionListWithVerdicts(),
+            $cacheObject2->getConditionListWithVerdicts(),
+            'TSconfig conditions should be the same for page 1 and 2'
+        );
+
+        BackendUtility::getPagesTSconfig(6);
+        $cacheKey6 = $cache->get('pageTsConfig-pid-to-hash-6');
+        self::assertIsString($cacheKey6);
+        self::assertNotSame('', $cacheKey6);
+        $cacheObject6 = $cache->get('pageTsConfig-hash-to-object-' . $cacheKey6);
+        self::assertInstanceOf(PageTsConfig::class, $cacheObject6);
+
+        self::assertNotSame($cacheKey2, $cacheKey6);
+        self::assertNotSame(
+            $cacheObject2->getConditionListWithVerdicts(),
+            $cacheObject6->getConditionListWithVerdicts(),
+            'the tree.rootLineIds condition should lead to a different hash for page 6'
+        );
     }
 }
