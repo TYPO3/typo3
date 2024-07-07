@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
@@ -109,7 +108,6 @@ class ServiceProvider extends AbstractServiceProvider
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
-            Updates\DatabaseUpdatedPrerequisite::class => self::getDatabaseUpdatedPrerequisite(...),
         ];
     }
 
@@ -224,9 +222,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getDatabaseUpgradeWizardsService(ContainerInterface $container): Service\DatabaseUpgradeWizardsService
     {
-        return self::new($container, Service\DatabaseUpgradeWizardsService::class, [
-            $container->get(SchemaMigrator::class),
-        ]);
+        return self::new($container, Service\DatabaseUpgradeWizardsService::class);
     }
 
     public static function getSessionService(ContainerInterface $container): Service\SessionService
@@ -253,7 +249,6 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(ConfigurationManager::class),
             $container->get(PermissionsCheck::class),
             $container->get(Registry::class),
-            $container->get(SchemaMigrator::class),
         );
     }
 
@@ -340,7 +335,6 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Locales::class),
             $container->get(LanguageServiceFactory::class),
             $container->get(FormProtectionFactory::class),
-            $container->get(SchemaMigrator::class),
         );
     }
 
@@ -431,13 +425,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
-    }
-
-    public static function getDatabaseUpdatedPrerequisite(ContainerInterface $container): Updates\DatabaseUpdatedPrerequisite
-    {
-        return self::new($container, Updates\DatabaseUpdatedPrerequisite::class, [
-            $container->get(Service\DatabaseUpgradeWizardsService::class),
-        ]);
     }
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry

@@ -21,6 +21,7 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -32,10 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DatabaseUpgradeWizardsService
 {
-    public function __construct(
-        private readonly SchemaMigrator $schemaMigrator,
-    ) {}
-
     /**
      * Get a list of tables, single columns and indexes to add.
      *
@@ -45,11 +42,12 @@ class DatabaseUpgradeWizardsService
      *           indexes?: list<array{table: string, index: string}>
      *         }
      */
-    public function getBlockingDatabaseAdds(): array
+    public function getBlockingDatabaseAdds(ContainerInterface $container): array
     {
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $databaseDefinitions = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-        $databaseDifferences = $this->schemaMigrator->getSchemaDiffs($databaseDefinitions);
+        $schemaMigrator = $container->get(SchemaMigrator::class);
+        $databaseDifferences = $schemaMigrator->getSchemaDiffs($databaseDefinitions);
         $adds = [];
         foreach ($databaseDifferences as $schemaDiff) {
             foreach ($schemaDiff->getCreatedTables() as $newTable) {
@@ -93,11 +91,12 @@ class DatabaseUpgradeWizardsService
      *
      * @return array<string, string> Every sql statement as key with empty string or error message as value
      */
-    public function addMissingTablesAndFields(): array
+    public function addMissingTablesAndFields(ContainerInterface $container): array
     {
         $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $databaseDefinitions = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-        return $this->schemaMigrator->install($databaseDefinitions, true);
+        $schemaMigrator = $container->get(SchemaMigrator::class);
+        return $schemaMigrator->install($databaseDefinitions, true);
     }
 
     /**

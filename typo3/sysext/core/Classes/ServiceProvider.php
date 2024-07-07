@@ -30,8 +30,6 @@ use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
-use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
-use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
@@ -81,8 +79,6 @@ class ServiceProvider extends AbstractServiceProvider
             Core\BootService::class => self::getBootService(...),
             Crypto\HashService::class => self::getHashService(...),
             Crypto\PasswordHashing\PasswordHashFactory::class => self::getPasswordHashFactory(...),
-            Database\Schema\SchemaMigrator::class => self::getSchemaMigrator(...),
-            Database\Schema\Parser\Parser::class => self::getSchemaParser(...),
             EventDispatcher\EventDispatcher::class => self::getEventDispatcher(...),
             EventDispatcher\ListenerProvider::class => self::getEventListenerProvider(...),
             FormProtection\FormProtectionFactory::class => self::getFormProtectionFactory(...),
@@ -335,22 +331,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getPasswordHashFactory(ContainerInterface $container): Crypto\PasswordHashing\PasswordHashFactory
     {
         return new Crypto\PasswordHashing\PasswordHashFactory();
-    }
-
-    public static function getSchemaMigrator(ContainerInterface $container): Database\Schema\SchemaMigrator
-    {
-        return self::new($container, Database\Schema\SchemaMigrator::class, [
-            $container->get(Database\ConnectionPool::class),
-            $container->get(Database\Schema\Parser\Parser::class),
-            new DefaultTcaSchema(),
-        ]);
-    }
-
-    public static function getSchemaParser(ContainerInterface $container): Database\Schema\Parser\Parser
-    {
-        return self::new($container, Database\Schema\Parser\Parser::class, [
-            new Lexer(),
-        ]);
     }
 
     public static function getIconFactory(ContainerInterface $container): Imaging\IconFactory

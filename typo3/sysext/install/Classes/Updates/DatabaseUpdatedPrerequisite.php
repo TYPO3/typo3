@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Install\Service\DatabaseUpgradeWizardsService;
 
 /**
@@ -25,12 +27,14 @@ use TYPO3\CMS\Install\Service\DatabaseUpgradeWizardsService;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
 {
     protected OutputInterface $output;
 
     public function __construct(
         private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
+        private readonly ContainerInterface $container,
     ) {}
 
     public function getTitle(): string
@@ -40,7 +44,7 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
 
     public function ensure(): bool
     {
-        $adds = $this->databaseUpgradeWizardsService->getBlockingDatabaseAdds();
+        $adds = $this->databaseUpgradeWizardsService->getBlockingDatabaseAdds($this->container);
         // Nothing to add, early return
         if ($adds === []) {
             return true;
@@ -48,14 +52,14 @@ class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterf
 
         $this->output->writeln('Performing ' . count($adds) . ' database operations.');
         // remove potentially empty error messages
-        $errorMessages = array_filter($this->databaseUpgradeWizardsService->addMissingTablesAndFields());
+        $errorMessages = array_filter($this->databaseUpgradeWizardsService->addMissingTablesAndFields($this->container));
 
         return $errorMessages === [];
     }
 
     public function isFulfilled(): bool
     {
-        $adds = $this->databaseUpgradeWizardsService->getBlockingDatabaseAdds();
+        $adds = $this->databaseUpgradeWizardsService->getBlockingDatabaseAdds($this->container);
         return count($adds) === 0;
     }
 

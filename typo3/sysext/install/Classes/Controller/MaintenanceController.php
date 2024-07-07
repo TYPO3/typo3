@@ -63,7 +63,6 @@ class MaintenanceController extends AbstractController
         private readonly Locales $locales,
         private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly FormProtectionFactory $formProtectionFactory,
-        private readonly SchemaMigrator $schemaMigrator,
     ) {
         $GLOBALS['LANG'] = $this->languageServiceFactory->create('en');
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
@@ -225,12 +224,14 @@ class MaintenanceController extends AbstractController
     public function databaseAnalyzerAnalyzeAction(ServerRequestInterface $request): ResponseInterface
     {
         $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $schemaMigrator = $container->get(SchemaMigrator::class);
+
         $messageQueue = new FlashMessageQueue('install');
         $suggestions = [];
         try {
             $sqlReader = $container->get(SqlReader::class);
             $sqlStatements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-            $addCreateChange = $this->schemaMigrator->getUpdateSuggestions($sqlStatements);
+            $addCreateChange = $schemaMigrator->getUpdateSuggestions($sqlStatements);
 
             // Aggregate the per-connection statements into one flat array
             $addCreateChange = array_merge_recursive(...array_values($addCreateChange));
@@ -285,7 +286,7 @@ class MaintenanceController extends AbstractController
             }
 
             // Difference from current to expected
-            $dropRename = $this->schemaMigrator->getUpdateSuggestions($sqlStatements, true);
+            $dropRename = $schemaMigrator->getUpdateSuggestions($sqlStatements, true);
 
             // Aggregate the per-connection statements into one flat array
             $dropRename = array_merge_recursive(...array_values($dropRename));
@@ -389,7 +390,8 @@ class MaintenanceController extends AbstractController
             $sqlReader = $container->get(SqlReader::class);
             $sqlStatements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
             $statementHashesToPerform = array_flip($selectedHashes);
-            $results = $this->schemaMigrator->migrate($sqlStatements, $statementHashesToPerform);
+            $schemaMigrator = $container->get(SchemaMigrator::class);
+            $results = $schemaMigrator->migrate($sqlStatements, $statementHashesToPerform);
             // Create error flash messages if any
             foreach ($results as $errorMessage) {
                 $messageQueue->enqueue(new FlashMessage(

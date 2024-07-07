@@ -993,11 +993,11 @@ class UpgradeController extends AbstractController
     public function upgradeWizardsBlockingDatabaseAddsAction(): ResponseInterface
     {
         // ext_localconf, db and ext_tables must be loaded for the updates :(
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
         $adds = [];
         $needsUpdate = false;
         try {
-            $adds = $this->databaseUpgradeWizardsService->getBlockingDatabaseAdds();
+            $adds = $this->databaseUpgradeWizardsService->getBlockingDatabaseAdds($container);
             $this->lateBootService->resetGlobalContainer();
             if (!empty($adds)) {
                 $needsUpdate = true;
@@ -1018,8 +1018,8 @@ class UpgradeController extends AbstractController
     public function upgradeWizardsBlockingDatabaseExecuteAction(): ResponseInterface
     {
         // ext_localconf, db and ext_tables must be loaded for the updates :(
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
-        $errors = $this->databaseUpgradeWizardsService->addMissingTablesAndFields();
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $errors = $this->databaseUpgradeWizardsService->addMissingTablesAndFields($container);
         $this->lateBootService->resetGlobalContainer();
         $messages = new FlashMessageQueue('install');
         // Discard empty values which indicate success
