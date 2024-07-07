@@ -25,7 +25,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
@@ -38,7 +37,6 @@ use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 
@@ -68,6 +66,7 @@ class ServiceProvider extends AbstractServiceProvider
             Charset\CharsetConverter::class => self::getCharsetConverter(...),
             Charset\CharsetProvider::class => self::getCharsetProvider(...),
             Configuration\Features::class => self::getFeatures(...),
+            Configuration\FlexForm\FlexFormTools::class => self::getFlexFormTools(...),
             Configuration\Loader\YamlFileLoader::class => self::getYamlFileLoader(...),
             Configuration\SiteWriter::class => self::getSiteWriter(...),
             Command\ListCommand::class => self::getListCommand(...),
@@ -115,6 +114,8 @@ class ServiceProvider extends AbstractServiceProvider
             Resource\ResourceFactory::class => self::getResourceFactory(...),
             Resource\Security\FileNameValidator::class => self::getFileNameValidator(...),
             Resource\StorageRepository::class => self::getStorageRepository(...),
+            Schema\RelationMapBuilder::class => self::getRelationMapBuilder(...),
+            Schema\TcaSchemaFactory::class => self::getTcaSchemaFactory(...),
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
             Service\OpcodeCacheService::class => self::getOpcodeCacheService(...),
             TypoScript\TypoScriptStringFactory::class => self::getTypoScriptStringFactory(...),
@@ -204,6 +205,15 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getFeatures(ContainerInterface $container): Configuration\Features
     {
         return self::new($container, Configuration\Features::class);
+    }
+
+    public static function getFlexFormTools(ContainerInterface $container): Configuration\FlexForm\FlexFormTools
+    {
+        return self::new($container, Configuration\FlexForm\FlexFormTools::class, [
+            $container->get(EventDispatcherInterface::class),
+            new Configuration\Tca\TcaMigration(),
+            new Configuration\Tca\TcaPreparation(),
+        ]);
     }
 
     public static function getYamlFileLoader(ContainerInterface $container): Configuration\Loader\YamlFileLoader
@@ -306,6 +316,7 @@ class ServiceProvider extends AbstractServiceProvider
             Http\MiddlewareStackResolver::class,
             Imaging\IconRegistry::class,
             Package\PackageManager::class,
+            Schema\TcaSchemaFactory::class,
         ];
         foreach ($cacheWarmers as $service) {
             $listenerProvider->addListener(Cache\Event\CacheWarmupEvent::class, $service, 'warmupCaches');
@@ -343,6 +354,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Database\ConnectionPool::class),
             $container->get(Database\Schema\Parser\Parser::class),
             new DefaultTcaSchema(),
+            $container->get(Schema\TcaSchemaFactory::class),
         ]);
     }
 
@@ -527,14 +539,31 @@ class ServiceProvider extends AbstractServiceProvider
         return new FileNameValidator();
     }
 
+    public static function getRelationMapBuilder(ContainerInterface $container): Schema\RelationMapBuilder
+    {
+        return self::new($container, Schema\RelationMapBuilder::class, [
+            $container->get(Configuration\FlexForm\FlexFormTools::class),
+        ]);
+    }
+
+    public static function getTcaSchemaFactory(ContainerInterface $container): Schema\TcaSchemaFactory
+    {
+        return self::new($container, Schema\TcaSchemaFactory::class, [
+            $container->get(Schema\RelationMapBuilder::class),
+            new Schema\FieldTypeFactory(),
+            $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('TcaSchema')->toString(),
+            $container->get('cache.core'),
+        ]);
+    }
+
     public static function getStorageRepository(ContainerInterface $container): Resource\StorageRepository
     {
         return self::new($container, Resource\StorageRepository::class, [
             $container->get(EventDispatcherInterface::class),
             $container->get(Database\ConnectionPool::class),
             $container->get(Resource\Driver\DriverRegistry::class),
-            $container->get(FlexFormTools::class),
-            new FlexFormService(),
+            $container->get(Configuration\FlexForm\FlexFormTools::class),
+            new Service\FlexFormService(),
             $container->get(Log\LogManager::class)->getLogger(Resource\StorageRepository::class),
         ]);
     }

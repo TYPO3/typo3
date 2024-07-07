@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Schema;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Schema\Exception\FieldTypeNotAvailableException;
@@ -285,7 +284,6 @@ class TcaSchemaFactory
         return $fieldConfiguration;
     }
 
-    #[AsEventListener('typo3-core/tca-schema')]
     public function warmupCaches(CacheWarmupEvent $event): void
     {
         if ($event->hasGroup('system')) {

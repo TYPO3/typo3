@@ -253,7 +253,6 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(ConfigurationManager::class),
             $container->get(PermissionsCheck::class),
             $container->get(Registry::class),
-            $container->get(SchemaMigrator::class),
         );
     }
 
@@ -340,7 +339,6 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Locales::class),
             $container->get(LanguageServiceFactory::class),
             $container->get(FormProtectionFactory::class),
-            $container->get(SchemaMigrator::class),
         );
     }
 
