@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
@@ -24,12 +26,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeInputMax4Min4 extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=input
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
@@ -39,12 +39,8 @@ final class TypeInputMax4Min4 extends AbstractFieldGenerator implements FieldGen
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
+    public function __construct(private readonly KauderwelschService $kauderwelschService) {}
+
     public function generate(array $data): string
     {
         return substr($this->kauderwelschService->getWord(), 0, 4);

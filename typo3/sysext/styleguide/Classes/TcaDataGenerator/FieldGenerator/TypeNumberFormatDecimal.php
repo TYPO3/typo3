@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
@@ -24,14 +26,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeNumberFormatDecimal extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * General match if type=number and format=decimal
-     *
-     * @var array
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'number',
@@ -40,14 +38,11 @@ final class TypeNumberFormatDecimal extends AbstractFieldGenerator implements Fi
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
+    public function __construct(private readonly KauderwelschService $kauderwelschService) {}
+
     public function generate(array $data): string
     {
+        // @todo: See if DB could handle float directly.
         return (string)$this->kauderwelschService->getFloat();
     }
 }

@@ -20,16 +20,13 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=none fields
+ * Generate data for type=imageManipulation fields
  *
  * @internal
  */
 final class TypeImageManipulation extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=input
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'imageManipulation',
@@ -37,12 +34,6 @@ final class TypeImageManipulation extends AbstractFieldGenerator implements Fiel
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
     public function generate(array $data): string
     {
         return '';

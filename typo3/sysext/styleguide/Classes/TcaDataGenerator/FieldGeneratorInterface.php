@@ -28,15 +28,11 @@ interface FieldGeneratorInterface
      * Return true if this FieldGenerator matches
      *
      * @param array $data See RecordData generate() for details on this array
-     * @return bool
      */
     public function match(array $data): bool;
 
     /**
      * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
      */
-    public function generate(array $data): string;
+    public function generate(array $data): string|int;
 }

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -28,12 +29,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeGroupFal extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=group
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'group',
@@ -47,17 +46,11 @@ final class TypeGroupFal extends AbstractFieldGenerator implements FieldGenerato
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function __construct(private readonly RecordFinder $recordFinder) {}
+
+    public function generate(array $data): int
     {
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $demoImages = $recordFinder->findDemoFileObjects();
+        $demoImages = $this->recordFinder->findDemoFileObjects();
         $recordData = [];
         foreach ($demoImages as $demoImage) {
             $newId = StringUtility::getUniqueId('NEW');
@@ -78,6 +71,6 @@ final class TypeGroupFal extends AbstractFieldGenerator implements FieldGenerato
             $dataHandler->start($recordData, []);
             $dataHandler->process_datamap();
         }
-        return (string)count($demoImages);
+        return count($demoImages);
     }
 }

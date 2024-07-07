@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Styleguide\Service\KauderwelschService;
-
 /**
  * Implement some standard stuff
  *
@@ -28,29 +25,13 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 abstract class AbstractFieldGenerator
 {
     /**
-     * @var KauderwelschService
-     */
-    protected $kauderwelschService;
-
-    /**
      * @var array If all of these settings are identical to given values, match is true
      */
-    protected $matchArray = [];
-
-    /**
-     * TypeInput constructor.
-     */
-    public function __construct()
-    {
-        $this->kauderwelschService = GeneralUtility::makeInstance(KauderwelschService::class);
-    }
+    protected array $matchArray = [];
 
     /**
      * General match implementation checks input array against $this->matchArray.
      * If all keys and values of matchArray exist in $data and are identical, this generator matches.
-     *
-     * @param array $data Given data
-     * @return bool
      */
     public function match(array $data): bool
     {
@@ -62,7 +43,6 @@ abstract class AbstractFieldGenerator
      *
      * @param array $data Given data
      * @param array $matchArray Part to mach against
-     * @return bool
      */
     protected function checkMatchArray(array $data, array $matchArray): bool
     {

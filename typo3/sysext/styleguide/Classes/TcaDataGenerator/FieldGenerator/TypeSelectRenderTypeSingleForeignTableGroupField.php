@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 
@@ -28,14 +28,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeSelectRenderTypeSingleForeignTableGroupField extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    private string $table = 'tx_styleguide_elements_select_single_21_foreign';
-
-    /**
-     * @var array General match if type=select
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldName' => 'select_single_21',
         'fieldConfig' => [
             'config' => [
@@ -47,33 +43,36 @@ final class TypeSelectRenderTypeSingleForeignTableGroupField extends AbstractFie
         ],
     ];
 
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly RecordData $recordData,
+    ) {}
+
     /**
      * Returns the generated value to be inserted into DB for this field
      */
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connection = $connectionPool->getConnectionForTable($this->table);
+        $connection = $this->connectionPool->getConnectionForTable('tx_styleguide_elements_select_single_21_foreign');
         $groups = ['group3', 'group4', 'group5'];
         foreach ($groups as $group) {
             $childFieldValues = [
                 'pid' => $data['fieldValues']['pid'],
             ];
             $connection->insert(
-                $this->table,
+                'tx_styleguide_elements_select_single_21_foreign',
                 $childFieldValues
             );
-            $uid = $connection->lastInsertId();
+            $uid = (int)$connection->lastInsertId();
             $childFieldValues['uid'] = $uid;
             $childFieldValues['item_group'] = $group;
-            $recordData = GeneralUtility::makeInstance(RecordData::class);
-            $childFieldValues = $recordData->generate($this->table, $childFieldValues);
+            $childFieldValues = $this->recordData->generate('tx_styleguide_elements_select_single_21_foreign', $childFieldValues);
             $connection->update(
-                $this->table,
+                'tx_styleguide_elements_select_single_21_foreign',
                 $childFieldValues,
                 ['uid' => $uid]
             );
         }
-        return (string)$childFieldValues['uid'];
+        return $childFieldValues['uid'];
     }
 }

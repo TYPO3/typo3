@@ -30,10 +30,8 @@ final class FieldGeneratorResolver
      * List of field generators to be called for values.
      * Order is important: Each class is called top-bottom until one returns
      * true on match(), then generate() is called on it.
-     *
-     * @var array
      */
-    protected $fieldValueGenerators = [
+    protected array $fieldValueGenerators = [
         // dbType = date / datetime have ['config']['default'] set, so match them before general ConfigDefault
         FieldGenerator\TypeDatetimeFormatDateDbTypeDate::class,
         FieldGenerator\TypeDatetimeDbTypeDatetime::class,
@@ -151,7 +149,6 @@ final class FieldGeneratorResolver
      * Either returns an instance of FieldGeneratorInterface or throws exception
      *
      * @param array $data Criteria data
-     * @return FieldGeneratorInterface
      * @throws GeneratorNotFoundException|Exception
      */
     public function resolve(array $data): FieldGeneratorInterface

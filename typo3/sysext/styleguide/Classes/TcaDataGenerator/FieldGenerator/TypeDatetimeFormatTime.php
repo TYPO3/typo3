@@ -19,9 +19,9 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\IntegerType;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
@@ -29,14 +29,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeDatetimeFormatTime extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * General match if type=datetime and format=time
-     *
-     * @var array
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'datetime',
@@ -45,19 +41,15 @@ final class TypeDatetimeFormatTime extends AbstractFieldGenerator implements Fie
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
+
+    public function generate(array $data): string|int
     {
         // 05:23
-        $value = '19380';
+        $value = 19380;
 
         // If database field is configured as integer field type, keep the integer-like value.
-        $tableSchemaInformation = GeneralUtility::makeInstance(ConnectionPool::class)
+        $tableSchemaInformation = $this->connectionPool
             ->getConnectionForTable($data['tableName'])
             ->getSchemaInformation()
             ->introspectTable($data['tableName']);
@@ -74,8 +66,6 @@ final class TypeDatetimeFormatTime extends AbstractFieldGenerator implements Fie
         $nativeDateTimeType = $data['fieldConfig']['config']['dbType'] ?? '';
         $dateTimeFormats = QueryHelper::getDateTimeFormats();
         $nativeDateTimeFieldFormat = $dateTimeFormats[$nativeDateTimeType]['format'] ?? 'h:i:s';
-        $value =  gmdate($nativeDateTimeFieldFormat, (int)$value);
-
-        return $value;
+        return gmdate($nativeDateTimeFieldFormat, (int)$value);
     }
 }

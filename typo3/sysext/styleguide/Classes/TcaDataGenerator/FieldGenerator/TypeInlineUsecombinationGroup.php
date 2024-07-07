@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 
@@ -29,12 +29,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeInlineUsecombinationGroup extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=input
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'inline',
@@ -46,11 +44,13 @@ final class TypeInlineUsecombinationGroup extends AbstractFieldGenerator impleme
         ],
     ];
 
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly RecordData $recordData,
+    ) {}
+
     /**
      * Check for tx_styleguide_inline_usecombinationgroup
-     *
-     * @param array $data
-     * @return bool
      */
     public function match(array $data): bool
     {
@@ -62,12 +62,9 @@ final class TypeInlineUsecombinationGroup extends AbstractFieldGenerator impleme
     }
 
     /**
-     * Generate 4 child child rows, connect 2 of them in mm table
-     *
-     * @param array $data
-     * @return string
+     * Generate 4 "child child" rows, connect 2 of them in mm table
      */
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
         if (!isset($GLOBALS['TCA'][$data['fieldConfig']['config']['foreign_table']]['columns']['group_child']['config']['allowed'])) {
             throw new \RuntimeException(
@@ -75,7 +72,6 @@ final class TypeInlineUsecombinationGroup extends AbstractFieldGenerator impleme
                 1706633899
             );
         }
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $childChildTableName = $GLOBALS['TCA'][$data['fieldConfig']['config']['foreign_table']]['columns']['group_child']['config']['allowed'];
         $numberOfChildChildRowsToCreate = 4;
         $uidsOfChildrenToConnect = [];
@@ -85,14 +81,13 @@ final class TypeInlineUsecombinationGroup extends AbstractFieldGenerator impleme
             $childFieldValues = [
                 'pid' => $data['fieldValues']['pid'],
             ];
-            $connection = $connectionPool->getConnectionForTable($childChildTableName);
+            $connection = $this->connectionPool->getConnectionForTable($childChildTableName);
             $connection->insert($childChildTableName, $childFieldValues);
             $childFieldValues['uid'] = $connection->lastInsertId();
             if (count($uidsOfChildrenToConnect) < 2) {
                 $uidsOfChildrenToConnect[] = $childFieldValues['uid'];
             }
-            $recordData = GeneralUtility::makeInstance(RecordData::class);
-            $childFieldValues = $recordData->generate($childChildTableName, $childFieldValues);
+            $childFieldValues = $this->recordData->generate($childChildTableName, $childFieldValues);
             $connection->update(
                 $childChildTableName,
                 $childFieldValues,
@@ -106,9 +101,9 @@ final class TypeInlineUsecombinationGroup extends AbstractFieldGenerator impleme
                 'group_child' => $uid,
             ];
             $tableName = $data['fieldConfig']['config']['foreign_table'];
-            $connection = $connectionPool->getConnectionForTable($tableName);
+            $connection = $this->connectionPool->getConnectionForTable($tableName);
             $connection->insert($tableName, $mmFieldValues);
         }
-        return (string)count($uidsOfChildrenToConnect);
+        return count($uidsOfChildrenToConnect);
     }
 }

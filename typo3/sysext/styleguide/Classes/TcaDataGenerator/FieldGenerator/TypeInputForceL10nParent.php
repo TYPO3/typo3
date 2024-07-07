@@ -31,14 +31,8 @@ final class TypeInputForceL10nParent extends AbstractFieldGenerator implements F
         return $data['fieldName'] === 'l10n_parent';
     }
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
-        return '0';
+        return 0;
     }
 }

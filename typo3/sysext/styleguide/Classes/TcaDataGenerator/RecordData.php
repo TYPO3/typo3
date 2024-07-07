@@ -17,28 +17,28 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
  * Create data for a specific table and its child tables
  *
  * @internal
  */
-final class RecordData
+#[Autoconfigure(public: true)]
+final readonly class RecordData
 {
+    public function __construct(private FieldGeneratorResolver $fieldGeneratorResolver) {}
+
     /**
      * Generate data for a given table and insert into database
      *
      * @param string $tableName The tablename to create data for
      * @param array $fieldValues Incoming list of field values, Typically uid and pid are set already
-     * @return array
      * @throws Exception
      */
     public function generate(string $tableName, array $fieldValues): array
     {
         $tca = $GLOBALS['TCA'][$tableName];
-        /** @var FieldGeneratorResolver $resolver */
-        $resolver = GeneralUtility::makeInstance(FieldGeneratorResolver::class);
         foreach ($tca['columns'] as $fieldName => $fieldConfig) {
             // Generate only if there is no value set, yet
             if (isset($fieldValues[$fieldName])) {
@@ -51,7 +51,7 @@ final class RecordData
                 'fieldValues' => $fieldValues,
             ];
             try {
-                $generator = $resolver->resolve($data);
+                $generator = $this->fieldGeneratorResolver->resolve($data);
                 $fieldValues[$fieldName] = $generator->generate($data);
             } catch (GeneratorNotFoundException $e) {
                 // No op if no matching generator was found

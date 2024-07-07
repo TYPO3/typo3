@@ -26,10 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  */
 final class TypeRadio extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=check
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'radio',
@@ -37,12 +34,6 @@ final class TypeRadio extends AbstractFieldGenerator implements FieldGeneratorIn
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
     public function generate(array $data): string
     {
         // Nothing by default

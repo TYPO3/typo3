@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
@@ -27,12 +27,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeSelectRenderTypeSingleForeignTableForType extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldName' => 'foreign_table',
         'fieldConfig' => [
             'config' => [
@@ -43,17 +41,12 @@ final class TypeSelectRenderTypeSingleForeignTableForType extends AbstractFieldG
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
+
+    public function generate(array $data): int
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_styleguide_type');
-        return (string)$queryBuilder
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_styleguide_type');
+        return (int)$queryBuilder
             ->select('uid')
             ->from('tx_styleguide_type')
             ->executeQuery()

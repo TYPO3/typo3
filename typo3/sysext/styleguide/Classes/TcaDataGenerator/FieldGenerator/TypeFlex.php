@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorResolver;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorNotFoundException;
@@ -28,12 +28,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorNotFoundException;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=input
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'flex',
@@ -41,29 +39,20 @@ final class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInt
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
+    public function __construct(
+        private readonly FlexFormTools $flexFormTools,
+        private readonly FieldGeneratorResolver $fieldGeneratorResolver,
+    ) {}
+
     public function generate(array $data): string
     {
         // Parse the flex form
-        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-        $structureIdentifier = $flexFormTools->getDataStructureIdentifier($data['fieldConfig'], $data['tableName'], $data['fieldName'], []);
-        $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($structureIdentifier);
-
-        // Early return if flex couldn't be parsed
-        if (!is_array($dataStructureArray)) {
-            return '';
-        }
+        $structureIdentifier = $this->flexFormTools->getDataStructureIdentifier($data['fieldConfig'], $data['tableName'], $data['fieldName'], []);
+        $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($structureIdentifier);
 
         // Loop through this xml mess and call a generator for each found field
         $aFlexFieldData = $data;
         $resultArray = [];
-        /** @var FieldGeneratorResolver $resolver */
-        $resolver = GeneralUtility::makeInstance(FieldGeneratorResolver::class);
         if (isset($dataStructureArray['sheets']) && is_array($dataStructureArray['sheets'])) {
             foreach ($dataStructureArray['sheets'] as $sheetName => $sheetArray) {
                 if (isset($sheetArray['ROOT']['el']) && is_array($sheetArray['ROOT']['el'])) {
@@ -83,7 +72,7 @@ final class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInt
                                     $aFlexFieldData['fieldName'] = $containerSingleElementName;
                                     $aFlexFieldData['fieldConfig'] = $containerSingleElementArray;
                                     try {
-                                        $generator = $resolver->resolve($aFlexFieldData);
+                                        $generator = $this->fieldGeneratorResolver->resolve($aFlexFieldData);
                                         $flexFieldValue = $generator->generate($aFlexFieldData);
                                         $resultArray['data'][$sheetName]['lDEF']
                                             [$sheetElementName]['el']
@@ -101,7 +90,7 @@ final class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInt
                             $aFlexFieldData['fieldName'] = $sheetElementName;
                             $aFlexFieldData['fieldConfig'] = $sheetElementArray;
                             try {
-                                $generator = $resolver->resolve($aFlexFieldData);
+                                $generator = $this->fieldGeneratorResolver->resolve($aFlexFieldData);
                                 $flexFieldValue = $generator->generate($aFlexFieldData);
                                 $resultArray['data'][$sheetName]['lDEF'][$sheetElementName]['vDEF'] = $flexFieldValue;
                             } catch (GeneratorNotFoundException $e) {
@@ -116,7 +105,7 @@ final class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInt
                 $aFlexFieldData['fieldName'] = $elementName;
                 $aFlexFieldData['fieldConfig'] = $elementArray;
                 try {
-                    $generator = $resolver->resolve($aFlexFieldData);
+                    $generator = $this->fieldGeneratorResolver->resolve($aFlexFieldData);
                     $flexFieldValue = $generator->generate($aFlexFieldData);
                     $resultArray['data']['sDEF']['lDEF'][$elementName]['vDEF'] = $flexFieldValue;
                 } catch (GeneratorNotFoundException $e) {
@@ -128,7 +117,7 @@ final class TypeFlex extends AbstractFieldGenerator implements FieldGeneratorInt
         // Get string representation of result via FlexFormTools
         $resultString = '';
         if (!empty($resultArray)) {
-            $resultString = $flexFormTools->flexArray2Xml($resultArray);
+            $resultString = $this->flexFormTools->flexArray2Xml($resultArray);
         }
 
         return $resultString;

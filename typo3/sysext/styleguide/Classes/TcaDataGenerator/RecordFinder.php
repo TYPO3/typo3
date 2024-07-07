@@ -70,8 +70,6 @@ final class RecordFinder
      * The methods find this page by getting the highest uid of a page where field
      * tx_styleguide_containsdemo is set to given table name.
      *
-     * @param string $tableName
-     * @return int
      * @throws Exception
      */
     public function findPidOfMainTableRecord(string $tableName): int
@@ -130,8 +128,6 @@ final class RecordFinder
 
     /**
      * Returns the highest language id from all sites
-     *
-     * @return int
      */
     public function findHighestLanguageId(): int
     {
@@ -247,8 +243,6 @@ final class RecordFinder
 
     /**
      * Find the demo folder
-     *
-     * @return Folder
      */
     public function findDemoFolderObject(): Folder
     {
@@ -260,9 +254,6 @@ final class RecordFinder
 
     /**
      * Get all styleguide frontend page UIDs
-     *
-     * @param array|string[] $types
-     * @return array
      */
     public function findUidsOfFrontendPages(array $types = ['tx_styleguide_frontend_root', 'tx_styleguide_frontend'], array $doktype = []): array
     {
@@ -314,10 +305,6 @@ final class RecordFinder
 
     /**
      * Find tt_content by ctype and identifier
-     *
-     * @param array|string[] $types
-     * @param string $identifier
-     * @return array
      */
     public function findTtContent(array $types = ['textmedia', 'textpic', 'image', 'uploads'], string $identifier = 'tx_styleguide_frontend'): array
     {

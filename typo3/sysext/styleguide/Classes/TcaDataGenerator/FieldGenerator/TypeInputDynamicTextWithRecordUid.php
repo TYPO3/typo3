@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
@@ -25,12 +27,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeInputDynamicTextWithRecordUid extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=input
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
@@ -38,14 +38,13 @@ final class TypeInputDynamicTextWithRecordUid extends AbstractFieldGenerator imp
         ],
     ];
 
+    public function __construct(private readonly KauderwelschService $kauderwelschService) {}
+
     /**
      * Some inline scenarios need multiple children table rows. To distinct those rows from each
      * other, the uid of the row is added.
      *
      * This match() is hardcoded for some specific child tables only.
-     *
-     * @param array $data
-     * @return bool
      */
     public function match(array $data): bool
     {
@@ -68,12 +67,9 @@ final class TypeInputDynamicTextWithRecordUid extends AbstractFieldGenerator imp
     /**
      * To determine different children in an easy way, this input field
      * generates a string combined with the record uid
-     *
-     * @param array $data
-     * @return string
      */
     public function generate(array $data): string
     {
-        return (string)($this->kauderwelschService->getWord() . $data['fieldValues']['uid']);
+        return $this->kauderwelschService->getWord() . $data['fieldValues']['uid'];
     }
 }

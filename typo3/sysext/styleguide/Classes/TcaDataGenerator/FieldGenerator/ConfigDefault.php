@@ -28,23 +28,18 @@ final class ConfigDefault extends AbstractFieldGenerator implements FieldGenerat
 {
     /**
      * Match if ['config']['default'] is set.
-     *
-     * @param array $data
-     * @return bool
      */
     public function match(array $data): bool
     {
-        return (isset($data['fieldConfig']['config']['default'])) ? true : false;
+        return isset($data['fieldConfig']['config']['default']);
     }
 
     /**
      * Returns the value of ['config']['default']
-     *
-     * @param array $data
-     * @return string
      */
     public function generate(array $data): string
     {
+        // @todo: string|int|float ?!
         return (string)$data['fieldConfig']['config']['default'];
     }
 }

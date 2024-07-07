@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -29,21 +30,17 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
-     * Well ... this one is called twice and we want one image for the first image
-     * and a different one for the second image ... this static proprety tracks that
-     * since there is no other indication if that is the first or second call ..
-     *
-     * @var bool
+     * Well ... this one is called twice, and we want one image for the first image
+     * and a different one for the second image ... this static property tracks that
+     * since there is no other indication if that is the first or second call.
      */
-    protected static $first = true;
+    protected static bool $first = true;
 
-    /**
-     * @var array Match if type=inline in elements_select_single_12_foreign
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldName' => 'fal_1',
         'fieldConfig' => [
             'label' => 'fal_1 selicon_field',
@@ -54,16 +51,11 @@ final class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator im
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function __construct(private readonly RecordFinder $recordFinder) {}
+
+    public function generate(array $data): int
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $demoImages = $recordFinder->findDemoFileObjects();
+        $demoImages = $this->recordFinder->findDemoFileObjects();
         $recordData = [];
         if (self::$first) {
             $demoImage = $demoImages['bus_lane.jpg'];
@@ -85,6 +77,6 @@ final class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator im
         $dataHandler->enableLogging = false;
         $dataHandler->start($recordData, []);
         $dataHandler->process_datamap();
-        return (string)1;
+        return 1;
     }
 }

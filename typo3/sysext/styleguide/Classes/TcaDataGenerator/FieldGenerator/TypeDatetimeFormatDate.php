@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
@@ -24,14 +26,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeDatetimeFormatDate extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * General match if type=datetime and format=date
-     *
-     * @var array
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'datetime',
@@ -40,14 +38,10 @@ final class TypeDatetimeFormatDate extends AbstractFieldGenerator implements Fie
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function __construct(private readonly KauderwelschService $kauderwelschService) {}
+
+    public function generate(array $data): int
     {
-        return (string)$this->kauderwelschService->getDateTimestamp();
+        return $this->kauderwelschService->getDateTimestamp();
     }
 }

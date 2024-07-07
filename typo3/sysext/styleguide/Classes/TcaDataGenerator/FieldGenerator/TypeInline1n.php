@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 
@@ -27,12 +27,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeInline1n extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=input
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'inline',
@@ -42,11 +40,13 @@ final class TypeInline1n extends AbstractFieldGenerator implements FieldGenerato
         ],
     ];
 
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly RecordData $recordData,
+    ) {}
+
     /**
      * Additionally check that "foreign_table" is set to something.
-     *
-     * @param array $data
-     * @return bool
      */
     public function match(array $data): bool
     {
@@ -59,13 +59,7 @@ final class TypeInline1n extends AbstractFieldGenerator implements FieldGenerato
         return $result;
     }
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
         $childTable = $data['fieldConfig']['config']['foreign_table'];
         // Insert an empty row again to have the uid already. This is useful for
@@ -78,16 +72,15 @@ final class TypeInline1n extends AbstractFieldGenerator implements FieldGenerato
         if ($data['fieldConfig']['config']['foreign_match_fields']['role'] ?? false) {
             $childFieldValues['role'] = $data['fieldConfig']['config']['foreign_match_fields']['role'];
         }
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($childTable);
+        $connection = $this->connectionPool->getConnectionForTable($childTable);
         $connection->insert($childTable, $childFieldValues);
         $childFieldValues['uid'] = (int)$connection->lastInsertId();
-        $recordData = GeneralUtility::makeInstance(RecordData::class);
-        $childFieldValues = $recordData->generate($childTable, $childFieldValues);
+        $childFieldValues = $this->recordData->generate($childTable, $childFieldValues);
         $connection->update(
             $childTable,
             $childFieldValues,
             [ 'uid' => $childFieldValues['uid'] ]
         );
-        return (string)1;
+        return 1;
     }
 }

@@ -26,7 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  */
 final class TypePassthroughFieldL10nSource extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldName' => 'l10n_source',
         'fieldConfig' => [
             'config' => [
@@ -35,9 +35,8 @@ final class TypePassthroughFieldL10nSource extends AbstractFieldGenerator implem
         ],
     ];
 
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
-        // @todo: int would be better and more correct.
-        return '0';
+        return 0;
     }
 }

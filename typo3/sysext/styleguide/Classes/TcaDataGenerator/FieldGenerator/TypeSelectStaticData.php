@@ -20,13 +20,13 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=select fields with foreign_table=tx_styleguide_staticdata and MM
+ * Generate data for type=select fields with foreign_table=tx_styleguide_staticdata
  *
  * @internal
  */
 final class TypeSelectStaticData extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'select',
@@ -35,9 +35,9 @@ final class TypeSelectStaticData extends AbstractFieldGenerator implements Field
         ],
     ];
 
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
         // "Parent count" field - just use zero as string here.
-        return '0';
+        return 0;
     }
 }

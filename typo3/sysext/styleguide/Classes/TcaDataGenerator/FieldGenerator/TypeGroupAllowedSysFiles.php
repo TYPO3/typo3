@@ -17,21 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
- * Generate data for type=group fields
+ * Generate data for type=group fields and allowed=pages
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeGroupAllowedSysFiles extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array Match if type=group and allowed=pages
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'group',
@@ -40,25 +38,12 @@ final class TypeGroupAllowedSysFiles extends AbstractFieldGenerator implements F
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function __construct(private readonly RecordFinder $recordFinder) {}
+
+    public function generate(array $data): int
     {
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $demoImages = $recordFinder->findDemoFileObjects();
-        $ret = 0;
+        $demoImages = $this->recordFinder->findDemoFileObjects();
         $image = next($demoImages);
-        if ($image == null) {
-            $ret = reset($demoImages);
-        }
-        if ($image != null) {
-            $ret = $image->getUid();
-        }
-        return (string)$ret;
+        return $image->getUid();
     }
 }

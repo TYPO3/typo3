@@ -26,10 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  */
 final class TypeTextWizardTable extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=text
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'text',
@@ -38,12 +35,6 @@ final class TypeTextWizardTable extends AbstractFieldGenerator implements FieldG
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
     public function generate(array $data): string
     {
         return 'row1 col1|row1 col2'

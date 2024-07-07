@@ -26,10 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  */
 final class TypeInputEvalYear extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=input
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
@@ -38,14 +35,8 @@ final class TypeInputEvalYear extends AbstractFieldGenerator implements FieldGen
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
-        return '1960';
+        return 1960;
     }
 }

@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
@@ -26,14 +27,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypePassword extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * General match if type=password
-     *
-     * @var array
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'password',
@@ -41,13 +38,14 @@ final class TypePassword extends AbstractFieldGenerator implements FieldGenerato
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     */
+    public function __construct(
+        private readonly KauderwelschService $kauderwelschService,
+        private readonly PasswordHashFactory $passwordHashFactory,
+    ) {}
+
     public function generate(array $data): string
     {
-        $saltFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-        $defaultHashInstance = $saltFactory->getDefaultHashInstance('BE');
+        $defaultHashInstance = $this->passwordHashFactory->getDefaultHashInstance('BE');
         $plainText = $this->kauderwelschService->getPassword();
         if (array_key_exists('default', $data['fieldConfig']['config'])) {
             $plainText = $data['fieldConfig']['config']['default'];

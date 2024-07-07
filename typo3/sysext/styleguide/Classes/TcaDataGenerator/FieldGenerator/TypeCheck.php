@@ -26,10 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  */
 final class TypeCheck extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=check
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'check',
@@ -37,13 +34,7 @@ final class TypeCheck extends AbstractFieldGenerator implements FieldGeneratorIn
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
         // Nothing checked by default
         $value = 0;
@@ -54,6 +45,6 @@ final class TypeCheck extends AbstractFieldGenerator implements FieldGeneratorIn
         ) {
             $value = 2;
         }
-        return (string)$value;
+        return $value;
     }
 }

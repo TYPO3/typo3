@@ -26,7 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  */
 final class TypeSelectRenderTypeSelectTree extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'select',
@@ -36,9 +36,9 @@ final class TypeSelectRenderTypeSelectTree extends AbstractFieldGenerator implem
         ],
     ];
 
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
         // "Parent count" field - just use zero as string here.
-        return '0';
+        return 0;
     }
 }

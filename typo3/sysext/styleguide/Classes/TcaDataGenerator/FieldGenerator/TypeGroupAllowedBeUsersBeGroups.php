@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
@@ -26,12 +26,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeGroupAllowedBeUsersBeGroups extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=group
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'group',
@@ -40,18 +38,12 @@ final class TypeGroupAllowedBeUsersBeGroups extends AbstractFieldGenerator imple
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
+    public function __construct(private readonly RecordFinder $recordFinder) {}
+
     public function generate(array $data): string
     {
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $beGroupUids = $recordFinder->findUidsOfDemoBeGroups();
-        $beUserUids = $recordFinder->findUidsOfDemoBeUsers();
+        $beGroupUids = $this->recordFinder->findUidsOfDemoBeGroups();
+        $beUserUids = $this->recordFinder->findUidsOfDemoBeUsers();
         $result = [];
         foreach ($beGroupUids as $uid) {
             $result[] = 'be_groups_' . $uid;

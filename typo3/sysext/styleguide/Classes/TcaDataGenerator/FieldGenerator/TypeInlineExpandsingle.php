@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 
@@ -29,12 +29,10 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class TypeInlineExpandsingle extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=input
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'inline',
@@ -46,11 +44,13 @@ final class TypeInlineExpandsingle extends AbstractFieldGenerator implements Fie
         ],
     ];
 
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly RecordData $recordData,
+    ) {}
+
     /**
      * Additionally check that "foreign_table" is set to something.
-     *
-     * @param array $data
-     * @return bool
      */
     public function match(array $data): bool
     {
@@ -59,14 +59,10 @@ final class TypeInlineExpandsingle extends AbstractFieldGenerator implements Fie
 
     /**
      * Generate 3 child rows
-     *
-     * @param array $data
-     * @return string
      */
-    public function generate(array $data): string
+    public function generate(array $data): int
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connection = $connectionPool->getConnectionForTable('tx_styleguide_inline_expandsingle_child');
+        $connection = $this->connectionPool->getConnectionForTable('tx_styleguide_inline_expandsingle_child');
         $childRowsToCreate = 3;
         for ($i = 0; $i < $childRowsToCreate; $i++) {
             // Insert an empty row again to have the uid already. This is useful for
@@ -81,14 +77,13 @@ final class TypeInlineExpandsingle extends AbstractFieldGenerator implements Fie
                 $childFieldValues
             );
             $childFieldValues['uid'] = $connection->lastInsertId();
-            $recordData = GeneralUtility::makeInstance(RecordData::class);
-            $childFieldValues = $recordData->generate('tx_styleguide_inline_expandsingle_child', $childFieldValues);
+            $childFieldValues = $this->recordData->generate('tx_styleguide_inline_expandsingle_child', $childFieldValues);
             $connection->update(
                 'tx_styleguide_inline_expandsingle_child',
                 $childFieldValues,
                 [ 'uid' => $childFieldValues['uid'] ]
             );
         }
-        return (string)$childRowsToCreate;
+        return $childRowsToCreate;
     }
 }

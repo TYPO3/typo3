@@ -26,10 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  */
 final class TypeInputWizardSelect extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=input
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'input',
@@ -38,12 +35,6 @@ final class TypeInputWizardSelect extends AbstractFieldGenerator implements Fiel
         ],
     ];
 
-    /**
-     * Returns the generated value to be inserted into DB for this field
-     *
-     * @param array $data
-     * @return string
-     */
     public function generate(array $data): string
     {
         // Get second value from "items" of wizard

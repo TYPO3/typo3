@@ -26,10 +26,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  */
 final class TypeSelect extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
-    /**
-     * @var array General match if type=select
-     */
-    protected $matchArray = [
+    protected array $matchArray = [
         'fieldConfig' => [
             'config' => [
                 'type' => 'select',
@@ -37,13 +34,6 @@ final class TypeSelect extends AbstractFieldGenerator implements FieldGeneratorI
         ],
     ];
 
-    /**
-     * Selects the second item from a static item list if there are
-     * at least two items.
-     *
-     * @param array $data
-     * @return string
-     */
     public function generate(array $data): string
     {
         $result = [];
