@@ -98,8 +98,11 @@ final class FieldGeneratorResolver
         FieldGenerator\TypeNoneFormatDateTime::class,
         FieldGenerator\TypeNone::class,
 
+        // l10n_source is type=passthrough but needs an int
+        FieldGenerator\TypePassthroughFieldL10nSource::class,
         // General type=passthrough generator
         FieldGenerator\TypePassthrough::class,
+
         // General type=user generator
         FieldGenerator\TypeUser::class,
         // General type=uuid generator

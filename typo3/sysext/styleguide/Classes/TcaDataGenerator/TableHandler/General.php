@@ -33,9 +33,6 @@ final class General extends AbstractTableHandler implements TableHandlerInterfac
 {
     /**
      * Match always
-     *
-     * @param string $tableName
-     * @return bool
      */
     public function match(string $tableName): bool
     {
@@ -44,8 +41,6 @@ final class General extends AbstractTableHandler implements TableHandlerInterfac
 
     /**
      * Adds rows
-     *
-     * @param string $tableName
      */
     public function handle(string $tableName): void
     {
