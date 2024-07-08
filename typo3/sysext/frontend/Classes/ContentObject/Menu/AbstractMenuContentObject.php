@@ -39,6 +39,7 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent;
+use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
@@ -1252,15 +1253,18 @@ abstract class AbstractMenuContentObject
         $addParams = ($this->mconf['addParams'] ?? '') . ($this->I['val']['additionalParams'] ?? '') . $MP_params;
         try {
             $linkResult = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
-            // Overriding URL / Target if set to do so:
-            if ($this->menuArr[$key]['_OVERRIDE_HREF'] ?? false) {
-                $linkResult = $linkResult->withAttribute('href', $this->menuArr[$key]['_OVERRIDE_HREF']);
-                if ($this->menuArr[$key]['_OVERRIDE_TARGET'] ?? false) {
-                    $linkResult = $linkResult->withAttribute('target', $this->menuArr[$key]['_OVERRIDE_TARGET']);
-                }
-            }
         } catch (UnableToLinkException $e) {
             $linkResult = null;
+        }
+        // Overriding URL / Target if set to do so:
+        if ($this->menuArr[$key]['_OVERRIDE_HREF'] ?? false) {
+            if ($linkResult === null) {
+                $linkResult = new LinkResult('', '');
+            }
+            $linkResult = $linkResult->withAttribute('href', $this->menuArr[$key]['_OVERRIDE_HREF']);
+            if ($this->menuArr[$key]['_OVERRIDE_TARGET'] ?? false) {
+                $linkResult = $linkResult->withAttribute('target', $this->menuArr[$key]['_OVERRIDE_TARGET']);
+            }
         }
         $runtimeCache->set($cacheId, $linkResult);
 
