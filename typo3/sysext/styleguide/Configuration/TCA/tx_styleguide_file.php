@@ -100,6 +100,23 @@ return [
                 ],
             ],
         ],
+        'file_6' => [
+            'label' => 'file_6 with RTE for image description',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'common-media-types',
+                'overrideChildTca' => [
+                    'columns' => [
+                        'description' => [
+                            'config' => [
+                                'type' => 'text',
+                                'enableRichtext' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
 
         'file_flex_1' => [
             'label' => 'flex_1',
@@ -179,7 +196,7 @@ return [
                 --div--;typical fal,
                     file_1, file_2,
                 --div--;media,
-                    file_3, file_4, file_5,
+                    file_3, file_4, file_5, file_6,
                 --div--;in flex,
                     file_flex_1,
             ',
