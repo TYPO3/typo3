@@ -244,10 +244,10 @@ class Scheduler {
 
     window.addEventListener('message', this.listenOnElementBrowser.bind(this));
 
-    new RegularEvent('click', (e: Event): void => {
+    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
       e.preventDefault();
 
-      this.saveDocument(e.target as HTMLElement);
+      this.saveDocument(target);
     }).delegateTo(document, 'button[form]');
   }
 
@@ -401,17 +401,17 @@ class Scheduler {
       return;
     }
 
-    const formData = new FormData(schedulerForm)
+    const formData = new FormData(schedulerForm);
 
-    document.querySelector('.t3js-scheduler-close').addEventListener('click', (e: Event) => {
+    new RegularEvent('click', (e: Event): void => {
       const newFormData = new FormData(schedulerForm)
       const formDataObj = Object.fromEntries(formData.entries());
       const newFormDataObj = Object.fromEntries(newFormData.entries());
       const formChanged = JSON.stringify(formDataObj) !== JSON.stringify(newFormDataObj)
 
-      if(formChanged || schedulerForm.querySelector('input[value="add"]')) {
+      if (formChanged || schedulerForm.querySelector('input[value="add"]')) {
         e.preventDefault();
-        const closeUrl = (e.target as HTMLLinkElement).href
+        const closeUrl = (e.currentTarget as HTMLLinkElement).href;
         Modal.confirm(
           TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to close without saving?',
           TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes. Are you sure you want to discard these changes?',
@@ -429,7 +429,7 @@ class Scheduler {
               name: 'yes',
               trigger: () => {
                 Modal.dismiss();
-                window.location.href = closeUrl
+                window.location.href = closeUrl;
               }
             },
             {
@@ -452,7 +452,7 @@ class Scheduler {
           ]
         );
       }
-    })
+    }).bindTo(document.querySelector('.t3js-scheduler-close'));
   }
 
   private getTaskEditForm(): HTMLFormElement|null {
