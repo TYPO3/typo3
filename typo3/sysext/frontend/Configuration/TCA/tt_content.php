@@ -338,9 +338,10 @@ return [
                 'type' => 'number',
                 'size' => 4,
                 'range' => [
-                    'lower' => 0,
+                    'lower' => 1,
                 ],
-                'default' => 0,
+                'nullable' => true,
+                'default' => null,
             ],
         ],
         'imageheight' => [
@@ -350,9 +351,10 @@ return [
                 'type' => 'number',
                 'size' => 4,
                 'range' => [
-                    'lower' => 0,
+                    'lower' => 1,
                 ],
-                'default' => 0,
+                'nullable' => true,
+                'default' => null,
             ],
         ],
         'imageorient' => [
