@@ -687,7 +687,14 @@ class FileList
      */
     protected function renderCreationTime(ResourceView $resourceView): string
     {
-        $timestamp = ($resourceView->resource instanceof File) ? $resourceView->getCreatedAt() : null;
+        if ($resourceView->resource instanceof File) {
+            $timestamp = $resourceView->getCreatedAt();
+        } elseif ($resourceView->resource instanceof Folder) {
+            $timestamp = $resourceView->resource->getCreationTime();
+        } else {
+            $timestamp = null;
+        }
+
         return $timestamp ? BackendUtility::datetime($timestamp) : '';
     }
 
@@ -696,7 +703,14 @@ class FileList
      */
     protected function renderModificationTime(ResourceView $resourceView): string
     {
-        $timestamp = ($resourceView->resource instanceof File) ? $resourceView->getUpdatedAt() : null;
+        if ($resourceView->resource instanceof File) {
+            $timestamp = $resourceView->getUpdatedAt();
+        } elseif ($resourceView->resource instanceof Folder) {
+            $timestamp = $resourceView->resource->getModificationTime();
+        } else {
+            $timestamp = null;
+        }
+
         return $timestamp ? BackendUtility::datetime($timestamp) : '';
     }
 
@@ -1647,6 +1661,10 @@ class FileList
                     . ($resource->checkActionPermission('write') ? 'W' : '');
             case 'name':
                 return $resource->getName();
+            case 'tstamp':
+                return $resource->getModificationTime() . 't';
+            case 'crdate':
+                return $resource->getCreationTime() . 'c';
             default:
                 return '';
         }
