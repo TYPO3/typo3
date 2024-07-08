@@ -144,10 +144,6 @@ $workspace-topbar-logo-width: 22px;
         .dropdown-menu-right {
             inset-inline: 0 auto;
         }
-
-        .btn {
-            margin-top: 1px;
-        }
     }
 }
 
@@ -165,17 +161,6 @@ $workspace-topbar-logo-width: 22px;
     .active-preview-mode {
         display: inline-block;
         text-align: start;
-    }
-
-    .btn-group {
-        vertical-align: top;
-    }
-
-    .btn-sm {
-        vertical-align: top;
-        line-height: $workspace-topbar-line-height;
-        padding: 0 .5em;
-        border: none !important;
     }
 
     .slider-wrapper {

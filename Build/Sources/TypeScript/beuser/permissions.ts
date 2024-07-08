@@ -61,6 +61,7 @@ class Permissions {
   private setPermissions(element: HTMLElement): void {
     const page = element.dataset.page;
     const who = element.dataset.who;
+    const bits = element.dataset.bits;
 
     (new AjaxRequest(this.ajaxUrl)).post({
       page: page,
@@ -70,9 +71,10 @@ class Permissions {
       bits: element.dataset.bits,
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
-      const element = document.getElementById(page + '_' + who);
-      // Replace content
-      element.outerHTML = data;
+      const parentElement = element.parentElement;
+      parentElement.innerHTML = data;
+      const targetElement = parentElement.querySelector('button[data-bits="' + bits + '"]') as HTMLButtonElement;
+      targetElement.focus();
     });
   }
 
@@ -86,8 +88,11 @@ class Permissions {
       page: page,
       editLockState: element.dataset.lockstate,
     }).then(async (response: AjaxResponse): Promise<void> => {
-      // Replace content
-      document.getElementById('el_' + page).outerHTML = await response.resolve();
+      const data = await response.resolve();
+      const parentElement = element.parentElement;
+      element.outerHTML = data;
+      const targetElement = parentElement.querySelector('button[data-page="' + page + '"]') as HTMLButtonElement;
+      targetElement.focus();
     });
   }
 

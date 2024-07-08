@@ -213,6 +213,10 @@ select {
         box-shadow: none;
         border-color: inherit;
     }
+
+    &:focus-within {
+        z-index: 3;
+    }
 }
 
 //
@@ -369,10 +373,6 @@ select {
 
 .form-irre-header-control {
     cursor: auto;
-
-    .btn-group > .btn {
-        float: none;
-    }
 }
 
 //
@@ -466,9 +466,4 @@ textarea {
     min-height: floor(2px + ($padding-small-vertical * 2) + ($font-size-small * $line-height-small));
     // Consistent space between actions and listing
     margin: .5rem 0;
-}
-
-.input-group > .btn {
-    display: flex;
-    align-items: center;
 }

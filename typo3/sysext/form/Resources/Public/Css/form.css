@@ -62,7 +62,7 @@
 #t3-form-inspector>.t3-form-remove-element-button{padding-top:1rem;border-top:1px solid var(--module-docheader-border)}
 #t3-form-inspector>.t3-form-remove-element-button .btn{width:100%}
 #t3-form-inspector-validators.sortable+.t3-form-remove-element-button{margin-top:.25rem}
-#t3-form-inspector .t3-form-inspector-finishers-editor-removeButton .btn,#t3-form-inspector .t3-form-inspector-validators-editor-removeButton .btn{padding:.25rem .5rem;font-size:.65625rem}
+#t3-form-inspector .t3-form-inspector-finishers-editor-removeButton .btn,#t3-form-inspector .t3-form-inspector-validators-editor-removeButton .btn{--typo3-btn-font-size:.65625rem;--typo3-btn-padding-y:.25rem;--typo3-btn-padding-x:.5rem}
 #t3-form-inspector .t3-form-inspector-finishers-editor-removeButton .t3-form-remove-element-button-label,#t3-form-inspector .t3-form-inspector-validators-editor-removeButton .t3-form-remove-element-button-label{display:none}
 #t3-form-inspector .t3-form-add-collection-element,#t3-form-inspector .t3-form-control-group{clear:both}
 #t3-form-inspector .t3-form-control-group.form-group #t3-form-add-finisher.t3-form-add-collection-element,#t3-form-inspector .t3-form-control-group.form-group #t3-form-add-validator.t3-form-add-collection-element{margin:initial}
@@ -151,16 +151,9 @@
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .caret{color:#05c}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .t3-form-dropdown-buttons .icon{margin-inline-end:.5em}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar{float:var(--typo3-position-end)}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn{background-color:#fff;border-color:#fff}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn.active,#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn:focus,#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn:hover{background-color:#fff}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .btn-toolbar-container .btn-toolbar .btn .icon svg path{fill:#05c}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .meta-label{display:inline-block;top:1em;inset-inline-start:5em;bottom:auto;font-size:.9em;color:#fff}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage .t3-form-form-element-selected .meta-label span{color:#fff}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected{border-color:#05c}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading{background-color:#05c;border-color:#05c;color:#fff}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn{background-color:#fff;border-color:#fff}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn.active,#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn:focus,#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn:hover{background-color:#fff}
-#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected>.panel-heading .btn .icon svg path{fill:#05c}
+#t3-form-stage-container.t3-form-stage-viewmode-abstract .panel.t3-form-form-stage-selected{--panel-heading-color:#fff;--panel-heading-bg:#05c;--panel-border-color:#05c}
 @media (max-width:1199.98px){
 #t3-form-stage-container.t3-form-stage-viewmode-preview #t3-form-stage-inner-container{width:600px}
 }
@@ -172,7 +165,7 @@
 #t3-form-stage-container.t3-form-stage-viewmode-preview textarea{min-height:100px}
 #t3-form-stage-container.t3-form-stage-viewmode-preview .container{width:auto}
 #t3-form-stage-container.t3-form-stage-viewmode-preview legend.t3-form-form-element-selected{border-color:var(--module-docheader-border)}
-#t3-form-stage-container.t3-form-stage-viewmode-preview .form-navigation .btn-group button,#t3-form-stage-container.t3-form-stage-viewmode-preview .form-navigation .btn-group span{display:inline-block;margin-inline-end:1em}
+#t3-form-stage-container.t3-form-stage-viewmode-preview .form-navigation .btn-group button,#t3-form-stage-container.t3-form-stage-viewmode-preview .form-navigation .btn-group span{display:inline-flex;margin-inline-end:1em}
 #t3-form-stage-container.t3-form-stage-viewmode-preview .preview-table-first-col{width:30%}
 #t3-form-stage-container.t3-form-stage-viewmode-preview .t3-form-element-preview{position:relative;display:inline-block;width:100%}
 #t3-form-stage-container.t3-form-stage-viewmode-preview .t3-form-new-element-container{display:none}

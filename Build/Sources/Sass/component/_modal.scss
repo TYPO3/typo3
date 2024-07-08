@@ -70,15 +70,8 @@ $modal-sidebar-button-space: $padding-small-vertical;
 }
 
 .modal-footer {
-    .btn {
-        margin-inline-end: 0;
-        padding-inline: 1em;
-        display: inline-flex;
-        align-items: center;
-
-        typo3-backend-icon {
-            margin-inline: -2px 4px;
-        }
+    .btn + .btn {
+        margin-inline-start: .5em;
     }
 
     .progress {
@@ -298,10 +291,6 @@ $modal-sidebar-button-space: $padding-small-vertical;
     }
 
     .modal-footer {
-        .btn + .btn {
-            margin-inline-start: .5em;
-        }
-
         .progress-bar {
             &.inactive {
                 background: none;

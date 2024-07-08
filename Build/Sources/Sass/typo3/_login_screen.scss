@@ -194,10 +194,21 @@ $login-container-padding-horizontal: 2.5em;
 }
 
 .btn-login {
-    @include button-size($login-input-padding-vertical, $login-input-padding-horizontal, $login-input-font-size, $login-input-border-radius);
-    @include button-variant($login-btn-bg, rgba(0, 0, 0, .1), $white, darken($login-btn-bg, 7.5%), rgba(0, 0, 0, .1), $white);
-    line-height: 1.3em;
-    white-space: normal;
+    --typo3-btn-padding-y: 12px;
+    --typo3-btn-padding-x: 12px;
+    --typo3-btn-line-height: 1.3em;
+    --typo3-btn-color: #{$login-btn-text};
+    --typo3-btn-bg: #{$login-btn-bg};
+    --typo3-btn-border-color: hsl(from #{$login-btn-bg} h s calc(l - 5));
+    --typo3-btn-hover-color: #{$login-btn-text};
+    --typo3-btn-hover-bg: hsl(from #{$login-btn-bg} h s calc(l - 3));
+    --typo3-btn-hover-border-color: hsl(from #{$login-btn-bg} h s calc(l - 8));
+    --typo3-btn-focus-color: #{$login-btn-text};
+    --typo3-btn-focus-bg: hsl(from #{$login-btn-bg} h s calc(l - 6));
+    --typo3-btn-focus-border-color: hsl(from #{$login-btn-bg} h s calc(l - 11));
+    --typo3-btn-disabled-color: #{$login-btn-text};
+    --typo3-btn-disabled-bg: #{$login-btn-bg};
+    --typo3-btn-disabled-border-color: hsl(from #{$login-btn-bg} h s calc(l - 5));
 }
 
 //

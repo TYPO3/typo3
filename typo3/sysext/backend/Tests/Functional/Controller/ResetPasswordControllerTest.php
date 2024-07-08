@@ -103,7 +103,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $response = $this->subject->forgetPasswordFormAction($request)->getBody()->__toString();
         self::assertStringContainsString('/*loginHighlightColor*/', $response);
-        self::assertMatchesRegularExpression('/\.btn-login { background-color: #abcdef; }.*\.card-login \.card-footer { border-color: #abcdef; }/s', $response);
+        self::assertMatchesRegularExpression('/\.btn-login {.*--typo3-btn-bg: #abcdef;.*}.*\.card-login \.card-footer { border-color: #abcdef; }/s', $response);
     }
 
     #[Test]

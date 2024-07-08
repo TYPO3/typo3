@@ -1,13 +1,117 @@
 //
+// Button
+//
+.btn {
+    --typo3-btn-padding-y: var(--typo3-input-padding-y);
+    --typo3-btn-padding-x: var(--typo3-input-padding-x);
+    --typo3-btn-font-size: var(--typo3-input-font-size);
+    --typo3-btn-line-height: var(--typo3-input-line-height);
+    --typo3-btn-border-width: var(--typo3-input-border-width);
+    --typo3-btn-border-radius: var(--typo3-input-border-radius);
+    --typo3-btn-disabled-opacity: .65;
+    --typo3-btn-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    --typo3-btn-color: inherit;
+    --typo3-btn-bg: transparent;
+    --typo3-btn-border-color: transparent;
+    --typo3-btn-hover-color: inherit;
+    --typo3-btn-hover-bg: transparent;
+    --typo3-btn-hover-border-color: transparent;
+    --typo3-btn-focus-color: inherit;
+    --typo3-btn-focus-bg: transparent;
+    --typo3-btn-focus-border-color: transparent;
+    --typo3-btn-disabled-color: inherit;
+    --typo3-btn-disabled-bg: transparent;
+    --typo3-btn-disabled-border-color: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35em;
+    color: var(--typo3-btn-color);
+    background-color: var(--typo3-btn-bg);
+    padding: calc(var(--typo3-btn-padding-y) - var(--typo3-btn-border-width)) calc(var(--typo3-btn-padding-x) - var(--typo3-btn-border-width));
+    font-size: var(--typo3-btn-font-size);
+    font-weight: normal;
+    line-height: var(--typo3-btn-line-height);
+    text-decoration: none;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: var(--typo3-btn-border-width) solid var(--typo3-btn-border-color);
+    border-radius: var(--typo3-btn-border-radius);
+    transition: var(--typo3-btn-transition);
+    outline-offset: 0;
+    cursor: pointer;
+
+    &:hover {
+        --typo3-btn-color: var(--typo3-btn-hover-color);
+        --typo3-btn-bg: var(--typo3-btn-hover-bg);
+        --typo3-btn-border-color: var(--typo3-btn-hover-border-color);
+        text-decoration: inherit;
+        z-index: 2 !important;
+    }
+
+    &:focus {
+        --typo3-btn-color: var(--typo3-btn-focus-color);
+        --typo3-btn-bg: var(--typo3-btn-focus-bg);
+        --typo3-btn-border-color: var(--typo3-btn-focus-border-color);
+        z-index: 3 !important;
+    }
+
+    &:focus-visible {
+        outline: .25rem solid color-mix(in srgb, var(--typo3-btn-focus-border-color), transparent 25%);
+    }
+
+    &.active,
+    &[aria-pressed="true"] {
+        box-shadow: inset 0 0 1000px 0 color-mix(in srgb, var(--typo3-btn-color), transparent 90%);
+    }
+
+    &:disabled,
+    &.disabled,
+    fieldset:disabled & {
+        --typo3-btn-color: var(--typo3-btn-disabled-color);
+        --typo3-btn-bg: var(--typo3-btn-disabled-bg);
+        --typo3-btn-border-color: var(--typo3-btn-disabled-border-color);
+        opacity: var(--typo3-btn-disabled-opacity);
+        pointer-events: none;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+}
+
+//
+// Size
+//
+.btn-sm {
+    --typo3-btn-padding-y: .3125rem;
+    --typo3-btn-padding-x: .5rem;
+    --typo3-btn-font-size: .65625rem;
+}
+
+// Icon Button
+.btn-icon {
+    --typo3-btn-padding-y: .3125rem;
+    --typo3-btn-padding-x: .3125rem;
+}
+
+//
+// Block button
+//
+.btn-block {
+    display: flex;
+    width: 100%;
+
+    + .btn-block {
+        margin-top: calc(var(--typo3-spacing) * .5);
+    }
+}
+
+//
 // Group
 //
 .btn-group {
     // Avoid cropping of dropdowns
     position: static;
-
-    & + .btn-group {
-        margin-inline-start: .5em;
-    }
 }
 
 .btn-toolbar {
@@ -18,70 +122,42 @@
 // Link button
 //
 .btn-link {
-    padding-left: 0;
-    padding-right: 0;
-}
+    --typo3-btn-padding-y: 0;
+    --typo3-btn-padding-x: 0;
+    --typo3-btn-focus-border-color: var(--typo3-state-default-focus-border-color);
 
-//
-// Block button
-//
-.btn-block {
-    display: block;
-    width: 100%;
-
-    // Vertically space out multiple block buttons
-    + .btn-block {
-        margin-top: $spacer * .5;
+    &:hover,
+    &:focus {
+        border: 1px solid transparent;
+        text-decoration: underline;
     }
 }
 
 //
-// Size
-//
-.btn-sm {
-    height: calc((var(--#{$prefix}btn-border-width) * 2) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-font-size) * var(--#{$prefix}btn-line-height)));
-}
-
-//
 // Variants
-// The notice and default variants have problems beeing generated, they need manual correction.
 //
-.btn-notice {
-    @include button-variant($notice, $notice, $hover-background: tint-color($notice, $btn-hover-bg-tint-amount), $hover-border: tint-color($notice, $btn-hover-border-tint-amount), $active-background: tint-color($notice, $btn-active-bg-tint-amount), $active-border: tint-color($notice, $btn-active-border-tint-amount));
-}
-
-.btn-default {
-    @include button-variant($default, darken($default, 20%), $hover-background: shade-color($default, $btn-hover-bg-shade-amount), $hover-border: shade-color($default, $btn-hover-border-shade-amount), $active-background: shade-color($default, $btn-active-bg-shade-amount), $active-border: shade-color($default, $btn-active-border-shade-amount));
+@each $variant in $base-variants {
+    .btn-#{$variant} {
+        --typo3-btn-color: var(--typo3-state-#{$variant}-color);
+        --typo3-btn-bg: var(--typo3-state-#{$variant}-bg);
+        --typo3-btn-border-color: var(--typo3-state-#{$variant}-border-color);
+        --typo3-btn-hover-color: var(--typo3-state-#{$variant}-hover-color);
+        --typo3-btn-hover-bg: var(--typo3-state-#{$variant}-hover-bg);
+        --typo3-btn-hover-border-color: var(--typo3-state-#{$variant}-hover-border-color);
+        --typo3-btn-focus-color: var(--typo3-state-#{$variant}-focus-color);
+        --typo3-btn-focus-bg: var(--typo3-state-#{$variant}-focus-bg);
+        --typo3-btn-focus-border-color: var(--typo3-state-#{$variant}-focus-border-color);
+        --typo3-btn-disabled-color: var(--typo3-state-#{$variant}-disabled-color);
+        --typo3-btn-disabled-bg: var(--typo3-state-#{$variant}-disabled-bg);
+        --typo3-btn-disabled-border-color: var(--typo3-state-#{$variant}-disabled-border-color);
+    }
 }
 
 //
 // Borderless
 //
 .btn-borderless {
-    --#{$prefix}btn-color: inherit;
-    --#{$prefix}btn-bg: transparent;
-    --#{$prefix}btn-border-color: transparent;
-    --#{$prefix}btn-box-shadow: none;
-    --#{$prefix}btn-padding-x: var(--#{$prefix}btn-padding-y);
-}
-
-//
-// Permission
-//
-.btn-permission {
-    --#{$prefix}btn-bg: transparent;
-    --#{$prefix}btn-border-color: transparent;
-    --#{$prefix}btn-box-shadow: none;
-    --#{$prefix}btn-padding-x: 0;
-    --#{$prefix}btn-padding-y: 0;
-}
-
-//
-// Tables
-//
-.btn:not(.btn-sm) {
-    .table &,
-    .diff-item-button & {
-        --#{$prefix}btn-padding-x: var(--#{$prefix}btn-padding-y);
-    }
+    --typo3-btn-color: inherit;
+    --typo3-btn-bg: transparent;
+    --typo3-btn-border-color: transparent;
 }

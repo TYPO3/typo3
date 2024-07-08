@@ -84,12 +84,12 @@ final class PermissionsViewHelper extends AbstractViewHelper
                 . ' data-who="' . htmlspecialchars($arguments['scope']) . '"'
                 . ' data-bits="' . htmlspecialchars((string)$mask) . '"'
                 . ' data-mode="' . htmlspecialchars($mode) . '"'
-                . ' class="btn btn-permission change-permission ' . htmlspecialchars($iconClass) . '">'
+                . ' class="btn btn-default btn-icon btn-borderless change-permission ' . htmlspecialchars($iconClass) . '">'
                 . $iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE)
                 . '</button>';
         }
 
-        return '<span id="' . htmlspecialchars($arguments['pageId'] . '_' . $arguments['scope']) . '">' . $icon . '</span>';
+        return $icon;
     }
 
     protected static function resolvePermissionLabel(int $mask): string

@@ -33,13 +33,10 @@
 .typo3-topbar-workspace-actions .workspace-action{display:block;float:none;margin-inline-end:0;height:auto;margin-bottom:.75em}
 .typo3-topbar-workspace-actions .workspace-action:after{content:"";display:table}
 .typo3-topbar-workspace-actions .dropdown-menu-right{inset-inline:0 auto}
-.typo3-topbar-workspace-actions .btn{margin-top:1px}
 }
 .workspace-action{height:26px;display:block;line-height:26px}
 .workspace-action:after{content:"";clear:both;display:table}
 .workspace-action .active-preview-mode{display:inline-block;text-align:start}
-.workspace-action .btn-group{vertical-align:top}
-.workspace-action .btn-sm{vertical-align:top;line-height:26px;padding:0 .5em;border:none!important}
 .workspace-action .slider-wrapper .slider{height:26px}
 .workspaces{position:relative}
 .workspaces iframe{border:0}

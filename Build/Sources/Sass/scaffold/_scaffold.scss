@@ -331,13 +331,14 @@ body {
     }
 
     .scaffold-content-navigation-switcher-btn {
-        display: inline-block;
-        padding: .25rem .325rem;
+        --typo3-btn-padding-y: .25rem;
+        --typo3-btn-padding-x: .325rem;
+        display: inline-flex;
         margin-top: .125rem;
     }
 
     .scaffold-content-navigation-switcher-open {
-        display: inline-block;
+        display: inline-flex;
 
         .scaffold-content-navigation-expanded & {
             display: none;
@@ -348,7 +349,7 @@ body {
         display: none;
 
         .scaffold-content-navigation-expanded & {
-            display: inline-block;
+            display: inline-flex;
         }
     }
 }
