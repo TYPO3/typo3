@@ -1238,16 +1238,16 @@
         },
         {
             "name": "lolli42/finediff",
-            "version": "1.0.2",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lolli42/FineDiff.git",
-                "reference": "f72cd968b663fc09bc73ef0ab5a3288583d0d59d"
+                "reference": "807deaf7aa119cf47b58e90ba7bf37c8c8264c7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lolli42/FineDiff/zipball/f72cd968b663fc09bc73ef0ab5a3288583d0d59d",
-                "reference": "f72cd968b663fc09bc73ef0ab5a3288583d0d59d",
+                "url": "https://api.github.com/repos/lolli42/FineDiff/zipball/807deaf7aa119cf47b58e90ba7bf37c8c8264c7a",
+                "reference": "807deaf7aa119cf47b58e90ba7bf37c8c8264c7a",
                 "shasum": ""
             },
             "require": {
@@ -1259,8 +1259,8 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.4",
-                "phpstan/phpstan": "^1.6",
-                "phpunit/phpunit": "^8 || ^9"
+                "phpstan/phpstan": "^1.9.14",
+                "phpunit/phpunit": "^8.5.33 || ^9.6.11 || ^10.3.2"
             },
             "type": "library",
             "autoload": {
@@ -1297,9 +1297,9 @@
             ],
             "support": {
                 "issues": "https://github.com/lolli42/FineDiff/issues",
-                "source": "https://github.com/lolli42/FineDiff/tree/1.0.2"
+                "source": "https://github.com/lolli42/FineDiff/tree/1.0.4"
             },
-            "time": "2022-05-23T07:44:28+00:00"
+            "time": "2024-07-09T14:52:10+00:00"
         },
         {
             "name": "masterminds/html5",
