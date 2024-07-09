@@ -1750,11 +1750,20 @@ class DataHandler implements LoggerAwareInterface
 
         // Checking range of value:
         if (is_array($tcaFieldConf['range'] ?? false)) {
-            if (isset($tcaFieldConf['range']['upper']) && ceil($result['value']) > (int)$tcaFieldConf['range']['upper']) {
-                $result['value'] = (int)$tcaFieldConf['range']['upper'];
-            }
-            if (isset($tcaFieldConf['range']['lower']) && floor($result['value']) < (int)$tcaFieldConf['range']['lower']) {
-                $result['value'] = (int)$tcaFieldConf['range']['lower'];
+            if ($format === 'decimal') {
+                if (isset($tcaFieldConf['range']['upper']) && ceil((float)$result['value']) > (float)$tcaFieldConf['range']['upper']) {
+                    $result['value'] = (float)$tcaFieldConf['range']['upper'];
+                }
+                if (isset($tcaFieldConf['range']['lower']) && floor((float)$result['value']) < (float)$tcaFieldConf['range']['lower']) {
+                    $result['value'] = (float)$tcaFieldConf['range']['lower'];
+                }
+            } else {
+                if (isset($tcaFieldConf['range']['upper']) && ceil($result['value']) > (int)$tcaFieldConf['range']['upper']) {
+                    $result['value'] = (int)$tcaFieldConf['range']['upper'];
+                }
+                if (isset($tcaFieldConf['range']['lower']) && floor($result['value']) < (int)$tcaFieldConf['range']['lower']) {
+                    $result['value'] = (int)$tcaFieldConf['range']['lower'];
+                }
             }
         }
 

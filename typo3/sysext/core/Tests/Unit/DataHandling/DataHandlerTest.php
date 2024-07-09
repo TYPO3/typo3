@@ -311,7 +311,7 @@ final class DataHandlerTest extends UnitTestCase
             ],
             '"-0.5" is interpreted correctly as -0.5 but is lower than 0 and set to 0' => [
                 '-0.5',
-                0,
+                0.0,
             ],
             '"0.5" is interpreted correctly as 0.5 and is equal to 0.5' => [
                 '0.5',
@@ -321,16 +321,16 @@ final class DataHandlerTest extends UnitTestCase
                 '39.9',
                 '39.90',
             ],
-            '"42.3" is interpreted correctly as 42.3 but is greater then 42 and set to 42' => [
-                '42.3',
-                42,
+            '"43.3" is interpreted correctly as 43.3 but is greater then 42 and set to 42' => [
+                '43.3',
+                42.0,
             ],
         ];
     }
 
     #[DataProvider('inputValuesRangeDoubleDataProvider')]
     #[Test]
-    public function inputValueCheckRespectsRightLowerAndUpperLimitForDouble(string $value, string|int $expectedReturnValue): void
+    public function inputValueCheckRespectsRightLowerAndUpperLimitForDouble(string $value, string|int|float $expectedReturnValue): void
     {
         $tcaFieldConf = [
             'type' => 'number',
@@ -346,7 +346,7 @@ final class DataHandlerTest extends UnitTestCase
 
     #[DataProvider('inputValuesRangeDoubleDataProvider')]
     #[Test]
-    public function inputValueCheckRespectsRightLowerAndUpperLimitWithDefaultValueForDouble(string $value, string|int $expectedReturnValue): void
+    public function inputValueCheckRespectsRightLowerAndUpperLimitWithDefaultValueForDouble(string $value, string|int|float $expectedReturnValue): void
     {
         $tcaFieldConf = [
             'type' => 'number',

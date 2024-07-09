@@ -190,8 +190,8 @@ class NumberElement extends AbstractFormElement
             $rangeAttributes = [
                 'type' => 'range',
                 'class' => 'slider',
-                'min' => (string)(int)($config['range']['lower'] ?? 0),
-                'max' => (string)(int)($config['range']['upper'] ?? 10000),
+                'min' => (string)(float)($config['range']['lower'] ?? 0),
+                'max' => (string)(float)($config['range']['upper'] ?? 10000),
                 'step' => (string)($config['slider']['step'] ?? 1),
                 'style' => 'width: ' . (int)($config['slider']['width'] ?? 400) . 'px',
                 'title' => (string)$itemValue,
@@ -216,10 +216,10 @@ class NumberElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         if (isset($config['range']['lower'])) {
-            $attributes['min'] = (string)(int)$config['range']['lower'];
+            $attributes['min'] = (string)(float)$config['range']['lower'];
         }
         if (isset($config['range']['upper'])) {
-            $attributes['max'] = (string)(int)$config['range']['upper'];
+            $attributes['max'] = (string)(float)$config['range']['upper'];
         }
 
         if ($format === 'decimal') {
