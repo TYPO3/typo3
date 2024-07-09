@@ -13,6 +13,7 @@ return [
         'bootstrap' => 'EXT:core/Resources/Public/JavaScript/Contrib/bootstrap.js',
         'cropperjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/cropperjs.js',
         'css-tree' => 'EXT:core/Resources/Public/JavaScript/Contrib/css-tree.js',
+        'flatpickr' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/flatpickr.min.js',
         'flatpickr/' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/',
         'interactjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/interact.js',
         'jquery' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.js',

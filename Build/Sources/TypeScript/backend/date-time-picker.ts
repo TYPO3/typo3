@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import flatpickr from 'flatpickr/flatpickr.min';
+import flatpickr from 'flatpickr';
 import ShortcutButtonsPlugin from 'flatpickr/plugins/shortcut-buttons.min';
 import { DateTime } from 'luxon';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 
 interface FlatpickrInputElement extends HTMLInputElement {
-  _flatpickr: any;
+  _flatpickr: flatpickr.Instance;
 }
 
 /**
@@ -70,17 +70,14 @@ class DateTimePicker {
 
     element.dataset.datepickerInitialized = '1';
     import('flatpickr/locales').then((): void => {
-      this.initializeField(element, userLocale);
+      this.initializeField(element, userLocale as flatpickr.Options.LocaleKey);
     });
   }
 
   /**
    * Initialize a single field
-   *
-   * @param {HTMLInputElement} inputElement
-   * @param {string} locale
    */
-  private initializeField(inputElement: HTMLInputElement, locale: string): void {
+  private initializeField(inputElement: HTMLInputElement, locale: flatpickr.Options.LocaleKey): void {
     const scrollEvent = this.getScrollEvent();
     const options = this.getDateOptions(inputElement);
     options.locale = locale;
@@ -172,14 +169,12 @@ class DateTimePicker {
 
   /**
    * Initialize a single field
-   *
-   * @param {HTMLInputElement} inputElement
    */
-  private getDateOptions(inputElement: HTMLInputElement): { [key: string]: any } {
+  private getDateOptions(inputElement: HTMLInputElement): flatpickr.Options.Options {
     const format = this.format;
     const type = inputElement.dataset.dateType;
     const now = new Date();
-    const options = {
+    const options: flatpickr.Options.Options = {
       allowInput: true,
       dateFormat: '',
       defaultDate: inputElement.value,
@@ -207,7 +202,7 @@ class DateTimePicker {
               label: top.TYPO3.lang['labels.datepicker.today'] || 'Today'
             },
           ],
-          onClick: (index: number, fp: any) => {
+          onClick: (index: number, fp: flatpickr.Instance) => {
             fp.setDate(new Date(), true);
           }
         })
