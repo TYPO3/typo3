@@ -1653,8 +1653,11 @@ abstract class AbstractMenuContentObject
 
         $backupData = $this->parent_cObj->data;
         $this->parent_cObj->data = $page;
-        $link = $this->parent_cObj->createLink('|', $conf);
-        $this->parent_cObj->data = $backupData;
+        try {
+            $link = $this->parent_cObj->createLink('|', $conf);
+        } finally {
+            $this->parent_cObj->data = $backupData;
+        }
 
         return $link;
     }
