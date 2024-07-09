@@ -1,0 +1,50 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:componentsOverview.headline" /></h1>
+
+        <div class="card-container">
+            <f:for each="{actions}" as="action">
+                <f:if condition="{action} !== 'componentsOverview'">
+                    <div class="card card-size-fixed-small">
+                        <div class="card-header">
+                            <div class="card-header-body">
+                                <h2 class="card-title"><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.{action}" /></h3>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <f:be.link
+                                route="{routeIdentifier}"
+                                parameters="{action: action}"
+                                class="btn btn-default"
+                            >
+                                <f:variable name="componentTitle"><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.{action}"/></f:variable>
+                                <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:componentsOverview.link.title" arguments="{0: componentTitle}" />
+                            </f:be.link>
+                        </div>
+                    </div>
+                </f:if>
+            </f:for>
+        </div>
+    </div>
+
+</f:section>
+
+</html>

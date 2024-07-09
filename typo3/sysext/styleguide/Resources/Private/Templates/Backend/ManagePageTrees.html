@@ -1,0 +1,115 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/styleguide/processing-indicator.js',
+        }"
+    />
+</f:section>
+
+<f:section name="Content">
+    <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:managePageTrees.headline" /></h1>
+
+    <div class="card-container">
+        <div class="card card-size-medium">
+            <div class="card-header">
+                <div class="card-header-body">
+                    <h3 class="card-title">Page tree including TCA demo records</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    <p>
+                        This extension comes with a huge set of TCA records to show and test different combinations
+                        of TCA possibilities. Here you can create a page tree with TCA demo records.
+                    </p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <f:variable name="hiddenDemoExists">{f:if(condition: '{demoExists} = true', then: 'hidden')}</f:variable>
+                <button
+                    {hiddenDemoExists}
+                    class="btn btn-default{f:if(condition: '{demoExists} = true', then: ' disabled')} t3js-generator-action"
+                    id="t3-tca-pagetree-create"
+                    data-href="{f:be.uri(route: '{routeIdentifier}', parameters: '{action: \'tcaCreate\'}')}"
+                    data-generator-action="plus"
+                >
+                    <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
+                    <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateButton" />
+                </button>
+
+                <f:variable name="hiddenDemoExists">{f:if(condition: '{demoExists} != true', then: 'hidden')}</f:variable>
+                <button
+                    {hiddenDemoExists}
+                    class="btn btn-danger{f:if(condition: '{demoExists} != true', then: ' disabled')} t3js-generator-action"
+                    id="t3-tca-pagetree-delete"
+                    data-href="{f:be.uri(route: '{routeIdentifier}', parameters: '{action: \'tcaDelete\'}')}"
+                    data-generator-action="delete"
+                >
+                    <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
+                    <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteButton" />
+                </button>
+            </div>
+        </div>
+        <div class="card card-size-medium">
+            <div class="card-header">
+                <div class="card-header-body">
+                    <h3 class="card-title">Page tree including content elements</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    <p>
+                        This creates a page tree with a page for each content element, a site configuration and files.
+                    </p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <f:variable name="hiddenFrontendExists">{f:if(condition: '{demoFrontendExists} = true', then: 'hidden')}</f:variable>
+                <button
+                    {hiddenFrontendExists}
+                    class="btn btn-primary{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')} t3js-generator-action"
+                    id="t3-ce-pagetree-create-sets"
+                    data-href="{f:be.uri(route:'{routeIdentifier}', parameters: '{action: \'frontendCreateWithSets\'}')}"
+                    data-generator-action="plus"
+                >
+                    <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
+                    <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateButtonWithSets" />
+                </button>
+
+                <button
+                    {hiddenFrontendExists}
+                    class="btn btn-default{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')} t3js-generator-action"
+                    id="t3-ce-pagetree-create-sys-template"
+                    data-href="{f:be.uri(route:'{routeIdentifier}', parameters: '{action: \'frontendCreateWithSysTemplate\'}')}"
+                    data-generator-action="plus"
+                >
+                    <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
+                    <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateButtonWithSysTemplate" />
+                </button>
+
+                <f:variable name="hiddenFrontendExists">{f:if(condition: '{demoFrontendExists} != true', then: 'hidden')}</f:variable>
+                <button
+                    {hiddenFrontendExists}
+                    class="btn btn-danger{f:if(condition: '{demoFrontendExists} != true', then: ' disabled')} t3js-generator-action"
+                    id="t3-ce-pagetree-delete"
+                    data-href="{f:be.uri(route: '{routeIdentifier}', parameters: '{action: \'frontendDelete\'}')}"
+                    data-generator-action="delete"
+                >
+                    <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
+                    <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendDeleteButton" />
+                </button>
+            </div>
+        </div>
+    </div>
+
+</f:section>
+
+</html>

@@ -9,11 +9,18 @@
 
 <f:section name="Content">
 
-    <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
 
     <div class="styleguide-content">
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:badges" /></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.badges" /></h1>
 
         <f:asset.css identifier="styleguide-badge-demo">
             .demo-badge-container {

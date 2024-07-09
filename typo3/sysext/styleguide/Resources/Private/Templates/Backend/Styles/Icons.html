@@ -7,12 +7,27 @@
 
 <f:layout name="Module" />
 
+<f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/styleguide/find-icons.js',
+        }"
+    />
+</f:section>
+
 <f:section name="Content">
 
-    <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:icons" /></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.icons" /></h1>
 
         <p>Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</p>
 

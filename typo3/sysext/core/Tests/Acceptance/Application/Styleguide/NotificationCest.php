@@ -24,7 +24,7 @@ final class NotificationCest
     public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
-        $I->amOnPage('/typo3/module/system/styleguide?action=notifications');
+        $I->amOnPage('/typo3/module/system/styleguide/components?action=notifications');
     }
 
     public function seeClearAllButton(ApplicationTester $I): void

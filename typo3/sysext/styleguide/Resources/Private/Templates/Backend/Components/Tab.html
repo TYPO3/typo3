@@ -6,19 +6,29 @@
 
 <f:layout name="Module" />
 
-<f:section name="Content">
 
+<f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/tabs.js'
         }"
     />
+</f:section>
 
-    <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
 
     <div class="styleguide-content">
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tab" /></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.tab" /></h1>
 
         <h2>Multiple tabs. Last selected tab is stored in local browser storage.</h2>
 

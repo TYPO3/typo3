@@ -8,10 +8,17 @@
 
 <f:section name="Content">
 
-    <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:shadows" /></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.shadows" /></h1>
         <p>Shadows used in the TYPO3 Backend</p>
 
         <f:asset.css identifier="styleguide-shadow-demo">

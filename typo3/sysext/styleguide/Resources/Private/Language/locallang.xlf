@@ -12,151 +12,177 @@
 			<trans-unit id="module.configuration.description" resname="module.configuration.description">
 				<source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.</source>
 			</trans-unit>
-			<trans-unit id="styleguide" xml:space="preserve">
+
+			<trans-unit id="module.configuration.components.title" resname="module.configuration.components.title">
+				<source>Component Library: Components</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.pageTrees.title" resname="module.configuration.pageTrees.title">
+				<source>Manage example page trees</source>
+			</trans-unit>
+			<trans-unit id="module.configuration.styles.title" resname="module.configuration.styles.title">
+				<source>Component Library: Styles</source>
+			</trans-unit>
+
+			<trans-unit id="componentsOverview.headline" resname="componentsOverview.headline">
+				<source>Components</source>
+			</trans-unit>
+			<trans-unit id="componentsOverview.link.title" resname="componentsOverview.link.title">
+				<source>Open %1s component</source>
+			</trans-unit>
+			<trans-unit id="managePageTrees.headline" resname="managePageTrees.headline">
+				<source>Manage example page trees</source>
+			</trans-unit>
+			<trans-unit id="stylesOverview.headline" resname="stylesOverview.headline">
+				<source>Styles</source>
+			</trans-unit>
+			<trans-unit id="stylesOverview.link.title" resname="stylesOverview.link.title">
+				<source>Open %1s style</source>
+			</trans-unit>
+
+			<trans-unit id="styleguide" resname="styleguide">
 				<source>Styleguide</source>
 			</trans-unit>
-			<trans-unit id="backendStyleguide" xml:space="preserve">
-				<source>TYPO3 CMS Backend Styleguide</source>
-			</trans-unit>
-			<trans-unit id="welcome" xml:space="preserve">
-				<source>Welcome</source>
-			</trans-unit>
-			<trans-unit id="index" xml:space="preserve">
-				<source>Index</source>
-			</trans-unit>
-			<trans-unit id="icons" xml:space="preserve">
-				<source>Icons</source>
-			</trans-unit>
-			<trans-unit id="shadows" xml:space="preserve">
-				<source>Shadows</source>
-			</trans-unit>
-			<trans-unit id="surfaces" xml:space="preserve">
-				<source>Surfaces</source>
-			</trans-unit>
-			<trans-unit id="infobox" xml:space="preserve">
-				<source>Infobox</source>
-			</trans-unit>
-			<trans-unit id="avatar" xml:space="preserve">
-				<source>Avatar</source>
-			</trans-unit>
-			<trans-unit id="typography" xml:space="preserve">
-				<source>Typography</source>
-			</trans-unit>
-			<trans-unit id="cards" xml:space="preserve">
-				<source>Cards</source>
-			</trans-unit>
-			<trans-unit id="colorTokens" xml:space="preserve">
-				<source>Color Tokens</source>
-			</trans-unit>
-			<trans-unit id="tab" xml:space="preserve">
-				<source>Tabs</source>
-			</trans-unit>
-			<trans-unit id="modal" xml:space="preserve">
-				<source>Modal</source>
-			</trans-unit>
-			<trans-unit id="trees" xml:space="preserve">
-				<source>Trees</source>
-			</trans-unit>
-			<trans-unit id="buttons" xml:space="preserve">
-				<source>Buttons</source>
-			</trans-unit>
-			<trans-unit id="badges" xml:space="preserve">
-				<source>Badges</source>
-			</trans-unit>
-			<trans-unit id="bootstrap" xml:space="preserve">
-				<source>Bootstrap</source>
-			</trans-unit>
-			<trans-unit id="tables" xml:space="preserve">
-				<source>Tables</source>
-			</trans-unit>
-			<trans-unit id="flashMessages" xml:space="preserve">
-				<source>Flash Messages</source>
-			</trans-unit>
-			<trans-unit id="notifications" xml:space="preserve">
-				<source>Notifications</source>
-			</trans-unit>
-			<trans-unit id="tcaCreateButton" xml:space="preserve">
-				<source>Create page tree</source>
-			</trans-unit>
-			<trans-unit id="tcaDeleteButton" xml:space="preserve">
-				<source>Delete page tree and all related records</source>
-			</trans-unit>
-			<trans-unit id="tcaCreateActionOkTitle" xml:space="preserve">
-				<source>Data created</source>
-			</trans-unit>
-			<trans-unit id="tcaCreateActionOkBody" xml:space="preserve">
-				<source>A page tree with TCA demo records was created.</source>
-			</trans-unit>
-			<trans-unit id="tcaCreateActionFailedTitle" xml:space="preserve">
-				<source>No data created</source>
-			</trans-unit>
-			<trans-unit id="tcaCreateActionFailedBody" xml:space="preserve">
-				<source>A page tree with TCA demo records exists already. Please delete that first.</source>
-			</trans-unit>
-			<trans-unit id="tcaDeleteActionOkTitle" xml:space="preserve">
-				<source>Data deleted</source>
-			</trans-unit>
-			<trans-unit id="tcaDeleteActionOkBody" xml:space="preserve">
-				<source>The page tree and all related records were deleted.</source>
-			</trans-unit>
-			<trans-unit id="extConfTemplateLocalizedLabel" xml:space="preserve">
-				<source>A localized label</source>
-			</trans-unit>
-			<trans-unit id="translatedHelpTextForSelectCheckBox3" xml:space="preserve">
-				<source>A localized help text</source>
-			</trans-unit>
-			<trans-unit id="minimalTableTitle" xml:space="preserve">
-				<source>Form engine - Minimal table configuration</source>
-			</trans-unit>
-			<trans-unit id="minimalTableTitleField" xml:space="preserve">
-				<source>Title field</source>
-			</trans-unit>
-			<trans-unit id="accordion" xml:space="preserve">
+
+			<trans-unit id="action.accordion" resname="action.accordion">
 				<source>Accordion</source>
 			</trans-unit>
-			<trans-unit id="pagination" xml:space="preserve">
-				<source>Pagination</source>
+			<trans-unit id="action.avatar" resname="action.avatar">
+				<source>Avatar</source>
 			</trans-unit>
-			<trans-unit id="filter" xml:space="preserve">
+			<trans-unit id="action.badges" resname="action.badges">
+				<source>Badges</source>
+			</trans-unit>
+			<trans-unit id="action.buttons" resname="action.buttons">
+				<source>Buttons</source>
+			</trans-unit>
+			<trans-unit id="action.cards" resname="action.cards">
+				<source>Cards</source>
+			</trans-unit>
+			<trans-unit id="action.colorTokens" resname="action.colorTokens">
+				<source>Color Tokens</source>
+			</trans-unit>
+			<trans-unit id="action.componentsOverview" resname="action.componentsOverview">
+				<source>Components overview</source>
+			</trans-unit>
+			<trans-unit id="action.filter" resname="action.filter">
 				<source>Filter</source>
 			</trans-unit>
-			<trans-unit id="progressIndicators" xml:space="preserve">
+			<trans-unit id="action.flashMessages" resname="action.flashMessages">
+				<source>Flash Messages</source>
+			</trans-unit>
+			<trans-unit id="action.icons" resname="action.icons">
+				<source>Icons</source>
+			</trans-unit>
+			<trans-unit id="action.infobox" resname="action.infobox">
+				<source>Infobox</source>
+			</trans-unit>
+			<trans-unit id="action.managePageTrees" resname="action.managePageTrees">
+				<source>Manage example page trees</source>
+			</trans-unit>
+			<trans-unit id="action.modal" resname="action.modal">
+				<source>Modal</source>
+			</trans-unit>
+			<trans-unit id="action.notifications" resname="action.notifications">
+				<source>Notifications</source>
+			</trans-unit>
+			<trans-unit id="action.pagination" resname="action.pagination">
+				<source>Pagination</source>
+			</trans-unit>
+			<trans-unit id="action.progressIndicators" resname="action.progressIndicators">
 				<source>Progress Indicators</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateButtonWithSets" xml:space="preserve">
-				<source>Create page tree with site sets</source>
+			<trans-unit id="action.shadows" resname="action.shadows">
+				<source>Shadows</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateButtonWithSysTemplate" xml:space="preserve">
-				<source>Create page tree with sys_template</source>
+			<trans-unit id="action.stylesOverview" resname="action.stylesOverview">
+				<source>Styles overview</source>
 			</trans-unit>
-			<trans-unit id="frontendDeleteButton" xml:space="preserve">
+			<trans-unit id="action.surfaces" resname="action.surfaces">
+				<source>Surfaces</source>
+			</trans-unit>
+			<trans-unit id="action.tab" resname="action.tab">
+				<source>Tabs</source>
+			</trans-unit>
+			<trans-unit id="action.tables" resname="action.tables">
+				<source>Tables</source>
+			</trans-unit>
+			<trans-unit id="action.trees" resname="action.trees">
+				<source>Trees</source>
+			</trans-unit>
+			<trans-unit id="action.typography" resname="action.typography">
+				<source>Typography</source>
+			</trans-unit>
+
+			<trans-unit id="tcaCreateButton" resname="tcaCreateButton">
+				<source>Create page tree</source>
+			</trans-unit>
+			<trans-unit id="tcaDeleteButton" resname="tcaDeleteButton">
 				<source>Delete page tree and all related records</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateActionOkTitle" xml:space="preserve">
+			<trans-unit id="tcaCreateActionOkTitle" resname="tcaCreateActionOkTitle">
 				<source>Data created</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateActionOkBody" xml:space="preserve">
-				<source>A page tree with content elements was created.</source>
+			<trans-unit id="tcaCreateActionOkBody" resname="tcaCreateActionOkBody">
+				<source>A page tree with TCA demo records was created.</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateActionFailedTitle" xml:space="preserve">
+			<trans-unit id="tcaCreateActionFailedTitle" resname="tcaCreateActionFailedTitle">
 				<source>No data created</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateActionFailedBody" xml:space="preserve">
-				<source>A page tree with content elements exists already. Please delete that first.</source>
+			<trans-unit id="tcaCreateActionFailedBody" resname="tcaCreateActionFailedBody">
+				<source>A page tree with TCA demo records exists already. Please delete that first.</source>
 			</trans-unit>
-			<trans-unit id="frontendDeleteActionOkTitle" xml:space="preserve">
+			<trans-unit id="tcaDeleteActionOkTitle" resname="tcaDeleteActionOkTitle">
 				<source>Data deleted</source>
 			</trans-unit>
-			<trans-unit id="frontendDeleteActionOkBody" xml:space="preserve">
+			<trans-unit id="tcaDeleteActionOkBody" resname="tcaDeleteActionOkBody">
 				<source>The page tree and all related records were deleted.</source>
 			</trans-unit>
-			<trans-unit id="itemGroupLabel" xml:space="preserve">
+			<trans-unit id="extConfTemplateLocalizedLabel" resname="extConfTemplateLocalizedLabel">
+				<source>A localized label</source>
+			</trans-unit>
+			<trans-unit id="translatedHelpTextForSelectCheckBox3" resname="translatedHelpTextForSelectCheckBox3">
+				<source>A localized help text</source>
+			</trans-unit>
+			<trans-unit id="minimalTableTitle" resname="minimalTableTitle">
+				<source>Form engine - Minimal table configuration</source>
+			</trans-unit>
+			<trans-unit id="minimalTableTitleField" resname="minimalTableTitleField">
+				<source>Title field</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateButtonWithSets" resname="frontendCreateButtonWithSets">
+				<source>Create page tree with site sets</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateButtonWithSysTemplate" resname="frontendCreateButtonWithSysTemplate">
+				<source>Create page tree with sys_template</source>
+			</trans-unit>
+			<trans-unit id="frontendDeleteButton" resname="frontendDeleteButton">
+				<source>Delete page tree and all related records</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionOkTitle" resname="frontendCreateActionOkTitle">
+				<source>Data created</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionOkBody" resname="frontendCreateActionOkBody">
+				<source>A page tree with content elements was created.</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionFailedTitle" resname="frontendCreateActionFailedTitle">
+				<source>No data created</source>
+			</trans-unit>
+			<trans-unit id="frontendCreateActionFailedBody" resname="frontendCreateActionFailedBody">
+				<source>A page tree with content elements exists already. Please delete that first.</source>
+			</trans-unit>
+			<trans-unit id="frontendDeleteActionOkTitle" resname="frontendDeleteActionOkTitle">
+				<source>Data deleted</source>
+			</trans-unit>
+			<trans-unit id="frontendDeleteActionOkBody" resname="frontendDeleteActionOkBody">
+				<source>The page tree and all related records were deleted.</source>
+			</trans-unit>
+			<trans-unit id="itemGroupLabel" resname="itemGroupLabel">
 				<source>Item group from locallang</source>
 			</trans-unit>
-			<trans-unit id="backendLayouts.styleguideFrontend.title" xml:space="preserve">
+			<trans-unit id="backendLayouts.styleguideFrontend.title" resname="backendLayouts.styleguideFrontend.title">
 				<source>Styleguide Frontend</source>
 			</trans-unit>
-			<trans-unit id="backendLayouts.styleguideFrontend.colpos.0" xml:space="preserve">
+			<trans-unit id="backendLayouts.styleguideFrontend.colpos.0" resname="backendLayouts.styleguideFrontend.colpos.0">
 				<source>Main content</source>
 			</trans-unit>
 		</body>
