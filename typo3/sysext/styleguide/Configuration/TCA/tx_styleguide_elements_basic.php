@@ -791,8 +791,8 @@ return [
                 'format' => 'decimal',
                 'size' => 5,
                 'range' => [
-                    'lower' => -90,
-                    'upper' => 90,
+                    'lower' => -90.5,
+                    'upper' => 90.5,
                 ],
                 'default' => 14.5,
                 'slider' => [
