@@ -1,0 +1,29 @@
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <type>array</type>
+                <el>
+                    <answers>
+                        <type>array</type>
+                        <section>1</section>
+                        <el>
+                            <answer>
+                                <type>array</type>
+                                <title>Answer</title>
+                                <el>
+                                    <text>
+                                        <label>Text</label>
+                                        <config>
+                                            <type>input</type>
+                                        </config>
+                                    </text>
+                                </el>
+                            </answer>
+                        </el>
+                    </answers>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>
