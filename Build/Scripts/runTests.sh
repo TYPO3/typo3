@@ -185,6 +185,9 @@ getPhpImageVersion() {
         8.3)
             echo -n "1.13"
             ;;
+        8.4)
+            echo -n "1.0"
+            ;;
     esac
 }
 
@@ -319,13 +322,14 @@ Options:
         Hack functional or acceptance tests into #numberOfChunks pieces and run tests of #chunk.
         Example -c 3/13
 
-    -p <7.4|8.0|8.1|8.2|8.3>
+    -p <7.4|8.0|8.1|8.2|8.3|8.4>
         Specifies the PHP minor version to be used
             - 7.4: (default) use PHP 7.4
             - 8.0: use PHP 8.0
             - 8.1: use PHP 8.1
             - 8.2: use PHP 8.2
             - 8.3: use PHP 8.3
+            - 8.4: use PHP 8.4
 
     -g
         Only with -s acceptance|acceptanceComposer|acceptanceInstall
@@ -475,7 +479,7 @@ while getopts ":a:b:s:c:d:i:p:xy:nhug" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0|8.1|8.2|8.3)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0|8.1|8.2|8.3|8.4)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
