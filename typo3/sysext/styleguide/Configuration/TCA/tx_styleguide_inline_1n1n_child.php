@@ -43,12 +43,30 @@ return [
                 'foreign_table_field' => 'parenttable',
             ],
         ],
+        'inline_2' => [
+            'label' => 'inline_2',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => 'FILE:EXT:styleguide/Configuration/FlexForms/SimpleSection.xml',
+                ],
+            ],
+        ],
+        'inline_3' => [
+            'label' => 'inline_3',
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => 'FILE:EXT:styleguide/Configuration/FlexForms/MultipleSheets.xml',
+                ],
+            ],
+        ],
     ],
 
     'types' => [
         '0' => [
             'showitem' => '
-                inline_1,
+                inline_1,inline_2,inline_3,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,
             ',
