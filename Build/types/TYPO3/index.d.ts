@@ -134,7 +134,6 @@ interface JQuery {
  * Declare modules for dependencies without TypeScript declarations
  * @todo: Use chart.js and flatpickr declaration via their vanilla package name
  */
-declare module 'flatpickr/flatpickr.min';
 declare module 'flatpickr/locales';
 declare module 'flatpickr/plugins/shortcut-buttons.min';
 declare module '@typo3/install/chosen.jquery.min';
