@@ -9,7 +9,7 @@
 <f:section name="Before">
     <f:be.pageRenderer
         includeJavaScriptModules="{
-            0: '@typo3/indexed-search/main.js'
+            0: '@typo3/indexed-search/statistics.js'
         }"
     />
 </f:section>
@@ -92,64 +92,66 @@
             <f:form class="form" method="post" action="saveStopwords" name="stopwords" arguments="{pageHash:phash}">
                 <f:form.hidden name="pageHash" value="{phash}" />
                 <div class="table-fit">
-                    <table id="typo3-words-list" class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th data-sort-method="none"><f:translate key="administration.stopWords" /></th>
-                                <th><f:translate key="administration.statistics.word" /></th>
-                                <th><f:translate key="field.wordCount" /></th>
-                                <th><f:translate key="field.frequency" /></th>
-                                <th data-sort-method="none"><f:translate key="field.flag" /></th>
-                                <th class="col-control nowrap" data-sort-method="none">
-                                    <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')}</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <f:for each="{words}" as="word">
+                    <typo3-indexed-search-statistics>
+                        <table class="table table-striped table-hover">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <f:form.checkbox name="stopwords[{word.wid}]" value="1" checked="{word.is_stopword}" />
-                                    </td>
-                                    <td>{word.baseword}</td>
-                                    <td>{word.count}</td>
-                                    <td>{word.freq}</td>
-                                    <td>
-                                        <f:if condition="{word.flags} > 0">
-                                            {is:format.flagValue(flags:word.flags)}
+                                    <th data-sort-method="none"><f:translate key="administration.stopWords" /></th>
+                                    <th><f:translate key="administration.statistics.word" /></th>
+                                    <th><f:translate key="field.wordCount" /></th>
+                                    <th><f:translate key="field.frequency" /></th>
+                                    <th data-sort-method="none"><f:translate key="field.flag" /></th>
+                                    <th class="col-control nowrap" data-sort-method="none">
+                                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <f:for each="{words}" as="word">
+                                    <tr>
+                                        <td>
+                                            <f:form.checkbox name="stopwords[{word.wid}]" value="1" checked="{word.is_stopword}" />
+                                        </td>
+                                        <td>{word.baseword}</td>
+                                        <td>{word.count}</td>
+                                        <td>{word.freq}</td>
+                                        <td>
+                                            <f:if condition="{word.flags} > 0">
+                                                {is:format.flagValue(flags:word.flags)}
+                                            </f:if>
+                                        </td>
+                                        <td class="col-control nowrap">
+                                            <div class="btn-group">
+                                                <f:link.action
+                                                    action="wordDetail"
+                                                    arguments="{wordHash:word.wid, pageHash:phash, wordTitle: word.baseword}"
+                                                    title="{f:translate(key:'administration.btn.info.title')}"
+                                                    class="btn btn-default"
+                                                >
+                                                    <core:icon identifier="actions-document-info" />
+                                                </f:link.action>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </f:for>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        {f:count(subject:words)}
+                                        <f:if condition="{words -> f:count()} > 1">
+                                            <f:then>
+                                                <f:translate key="administration.words" />
+                                            </f:then>
+                                            <f:else>
+                                                <f:translate key="administration.word" />
+                                            </f:else>
                                         </f:if>
                                     </td>
-                                    <td class="col-control nowrap">
-                                        <div class="btn-group">
-                                            <f:link.action
-                                                action="wordDetail"
-                                                arguments="{wordHash:word.wid, pageHash:phash, wordTitle: word.baseword}"
-                                                title="{f:translate(key:'administration.btn.info.title')}"
-                                                class="btn btn-default"
-                                            >
-                                                <core:icon identifier="actions-document-info" />
-                                            </f:link.action>
-                                        </div>
-                                    </td>
                                 </tr>
-                            </f:for>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="6">
-                                    {f:count(subject:words)}
-                                    <f:if condition="{words -> f:count()} > 1">
-                                        <f:then>
-                                            <f:translate key="administration.words" />
-                                        </f:then>
-                                        <f:else>
-                                            <f:translate key="administration.word" />
-                                        </f:else>
-                                    </f:if>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                            </tfoot>
+                        </table>
+                    </typo3-indexed-search-statistics>
                 </div>
                 <f:form.submit class="btn btn-default" value="{f:translate(key:'administration.stopWords.save')}" />
             </f:form>
