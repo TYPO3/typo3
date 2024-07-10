@@ -29,39 +29,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TypoScriptReferenceController
 {
     /**
-     * @var \DOMDocument
-     */
-    protected $xmlDoc;
-
-    /**
      * Load TypoScript reference
      */
     public function loadReference(ServerRequestInterface $request): ResponseInterface
     {
-        // Load the TSref XML information:
-        $this->loadFile(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/tsref.xml'));
-        return new JsonResponse($this->getTypes());
-    }
+        // Load the TSref XML information
+        $xmlDoc = new \DOMDocument('1.0', 'utf-8');
+        $xmlDoc->loadXML(file_get_contents(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/tsref.xml')));
 
-    /**
-     * Load XML file
-     *
-     * @param string $filepath
-     */
-    protected function loadFile($filepath)
-    {
-        $this->xmlDoc = new \DOMDocument('1.0', 'utf-8');
-        $this->xmlDoc->loadXML(file_get_contents($filepath));
-        // @TODO: oliver@typo3.org: I guess this is not required here
-        $this->xmlDoc->saveXML();
+        return new JsonResponse($this->getTypes($xmlDoc));
     }
 
     /**
      * Get types from XML
      */
-    protected function getTypes(): array
+    protected function getTypes(\DOMDocument $xmlDoc): array
     {
-        $types = $this->xmlDoc->getElementsByTagName('type');
+        $types = $xmlDoc->getElementsByTagName('type');
         $typeArr = [];
         foreach ($types as $type) {
             $typeId = $type->getAttribute('id');
