@@ -176,6 +176,7 @@ class DateTimePicker {
     const now = new Date();
     const options: flatpickr.Options.Options = {
       allowInput: true,
+      ariaDateFormat: 'DDDD',
       dateFormat: '',
       defaultDate: inputElement.value,
       defaultHour: now.getHours(),
