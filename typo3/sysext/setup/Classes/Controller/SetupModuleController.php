@@ -486,7 +486,7 @@ class SetupModuleController
                             name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
                             $more . '>' . LF;
                         foreach ($config['items'] as $key => $optionLabel) {
-                            $html .= '<option value="' . htmlspecialchars($key) . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', false) . '</option>' . LF;
+                            $html .= '<option value="' . htmlspecialchars((string)$key) . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', false) . '</option>' . LF;
                         }
                         $html .= '</select>';
                     }
