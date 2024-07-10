@@ -57,7 +57,7 @@ export type DownloadPacksEvent = {
 
 @customElement('typo3-install-language-matrix')
 export class LanguageMatrixElement extends LitElement {
-  @property({ type: Boolean }) configurationIsWritable: boolean = true;
+  @property({ type: Boolean }) configurationIsWritable: boolean = false;
   @property({ type: Object }) data: LanguagePacksGetDataResponse | null = null;
 
   @state()

@@ -94,13 +94,14 @@ class LanguagePacks extends AbstractInteractableModule {
             modalContent.innerHTML = html;
             const contentContainer: HTMLElement = modalContent.parentElement.querySelector(Identifiers.contentContainer);
             contentContainer.innerHTML = '';
-            const configurationIsWritable = this.getModuleContent().dataset.configurationIsWritable;
 
             const documentRef = window.location !== window.parent.location ? parent.document : document;
 
             const languageMatrix = documentRef.createElement('typo3-install-language-matrix');
             languageMatrix.data = state;
-            languageMatrix.configurationIsWritable = Boolean(configurationIsWritable);
+            if (this.getModuleContent().dataset.configurationIsWritable === 'true') {
+              languageMatrix.setAttribute('configurationIsWritable', '');
+            }
             languageMatrix.addEventListener('activate-language', (e: CustomEvent<ActivateLanguageEvent>) => {
               this.activateLanguage(e.detail.iso);
             });
