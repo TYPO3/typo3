@@ -181,7 +181,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         $usedExtensionKeys = [];
 
         return array_map(
-            function (array $packageAndPath) use (&$usedExtensionKeys): array {
+            function (array $packageAndPath) use ($rootPackage, &$usedExtensionKeys): array {
                 [$composerPackage, $packagePath] = $packageAndPath;
                 $packageName = $composerPackage->getName();
                 $packagePath = GeneralUtility::fixWindowsFilePath($packagePath);
@@ -210,6 +210,10 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 $usedExtensionKeys[$extensionKey] = $packageName;
                 unset($this->availableComposerPackageKeys[$packageName]);
                 $this->composerNameToPackageKeyMap[$packageName] = $extensionKey;
+                if ($composerPackage === $rootPackage) {
+                    // The root package's path is the Composer base dir
+                    $packagePath = $this->config->get('base-dir');
+                }
                 // Add extension key to the package map for later reference
                 return [$composerPackage, $packagePath, $extensionKey];
             },
