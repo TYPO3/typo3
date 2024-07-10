@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FieldWizard;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
@@ -78,20 +77,25 @@ class OtherLanguageThumbnails extends AbstractNode
             $cropVariantCollection = CropVariantCollection::create((string)($languageRow['crop'] ?? ''), $cropVariants);
 
             foreach (array_keys($cropVariants) as $variant) {
-                $processedImages[] = FormEngineUtility::getIconHtml(
-                    $file
-                        ->process(
-                            ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
-                            [
-                                'maxWidth' => '145',
-                                'maxHeight' => '45',
-                                'crop' => $cropVariantCollection->getCropArea($variant)->makeAbsoluteBasedOnFile($file),
-                            ]
-                        )
-                        ->getPublicUrl() ?? '',
-                    $languageRow['title'] ?? $file->getProperty('title') ?? '',
-                    $languageRow['alternative'] ?? $file->getProperty('alternative') ?? ''
-                );
+                $processedFileUrl = $file
+                    ->process(
+                        ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+                        [
+                            'maxWidth' => '145',
+                            'maxHeight' => '45',
+                            'crop' => $cropVariantCollection->getCropArea($variant)->makeAbsoluteBasedOnFile($file),
+                        ]
+                    )
+                    ->getPublicUrl() ?? '';
+
+                if ($processedFileUrl !== '') {
+                    $processedImages[] = '<img ' . GeneralUtility::implodeAttributes([
+                        'loading' => 'lazy',
+                        'src' => $processedFileUrl,
+                        'alt' => $languageRow['alternative'] ?? $file->getProperty('alternative') ?? '',
+                        'title' => $languageRow['title'] ?? $file->getProperty('title') ?? '',
+                    ], true) . ' />';
+                }
             }
 
             if ($processedImages !== []) {
