@@ -72,14 +72,6 @@ class PreviewController
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $backendUser->uc['moduleData']['Workspaces']['States'] ?? []);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
-        // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ['dd-MM-yyyy', 'HH:mm dd-MM-yyyy'];
-        $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
-        // @todo Most likely the inline configuration can be removed. Seems to be unused in the JavaScript module
-        $this->pageRenderer->addInlineSetting('TYPO3', 'configuration', [
-            'username' => htmlspecialchars($backendUser->user['username']),
-            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
-        ]);
         $this->pageRenderer->addCssFile('EXT:workspaces/Resources/Public/Css/preview.css');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
