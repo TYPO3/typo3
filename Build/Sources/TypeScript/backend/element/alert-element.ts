@@ -95,6 +95,7 @@ export class AlertElement extends LitElement {
       ['alert-dismissible']: this.dismissible,
       ['fade']: true,
       ['show']: this.visible,
+      ['hidden']: !this.visible,
     };
   }
 

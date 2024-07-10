@@ -34,7 +34,7 @@ var AlertElement_1,__decorate=function(e,t,i,r){var s,o=arguments.length,l=o<3?t
         </div>
         ${this.dismissible?this.renderDismissButton():nothing}
       </div>
-    `}getClasses(){return{alert:!0,["alert-"+Severity.getCssClass(this.severity)]:!0,"alert-dismissible":this.dismissible,fade:!0,show:this.visible}}renderDismissButton(){return html`
+    `}getClasses(){return{alert:!0,["alert-"+Severity.getCssClass(this.severity)]:!0,"alert-dismissible":this.dismissible,fade:!0,show:this.visible,hidden:!this.visible}}renderDismissButton(){return html`
       <button type="button" class="close" data-bs-dismiss="alert" aria-label="${lll("button.close")||"Close"}">
         <span aria-hidden="true"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></span>
         <span class="visually-hidden">${lll("button.close")||"Close"}</span>
