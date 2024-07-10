@@ -1,0 +1,50 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render partial="Backend/Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+
+    <div class="styleguide-content">
+
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:badges" /></h1>
+
+        <f:asset.css identifier="styleguide-badge-demo">
+            .demo-badge-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+                gap: .25rem;
+            }
+        </f:asset.css>
+
+        <sg:code language="html" colorschemes="true">
+            <div class="demo-badge-container">
+            <f:for each="{variants}" as="variant">
+                <div class="demo-badge-item">
+                    <span class="badge badge-{variant}">{variant} plain</span>
+                    <a href="#" class="badge badge-{variant}">{variant} link</a>
+                </div>
+            </f:for>
+            </div>
+        </sg:code>
+
+        <sg:code language="html" colorschemes="true">
+            <h1>h1. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h1>
+            <h2>h2. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h2>
+            <h3>h3. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h3>
+            <h4>h4. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h4>
+            <h5>h5. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h5>
+            <h6>h6. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h6>
+        </sg:code>
+
+    </div>
+
+</f:section>
+
+</html>

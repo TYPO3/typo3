@@ -60,6 +60,7 @@ final class BackendController
         'cards',
         'avatar',
         'buttons',
+        'badges',
         'infobox',
         'flashMessages',
         'notifications',
@@ -163,6 +164,17 @@ final class BackendController
             'currentAction' => 'buttons',
         ]);
         return $moduleTemplate->renderResponse('Backend/Buttons');
+    }
+
+    private function badgesAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $moduleTemplate = $this->createModuleTemplate($request, 'badges');
+        $moduleTemplate->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'badges',
+            'variants' => ['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'notice', 'default'],
+        ]);
+        return $moduleTemplate->renderResponse('Backend/Badges');
     }
 
     private function typographyAction(ServerRequestInterface $request): ResponseInterface

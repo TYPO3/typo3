@@ -3,45 +3,82 @@
 //
 
 // Mixins
-@mixin badge-create-variant($state, $value) {
-    --badge-#{$state}-color: #{color-contrast($value)};
-    --badge-#{$state}-bg: #{$value};
-    --badge-#{$state}-link-bg-hover: #{darken($value, 10%)};
+@mixin badge-create-variant($state) {
+    --typo3-badge-#{$state}-color: var(--typo3-state-#{$state}-color);
+    --typo3-badge-#{$state}-bg: var(--typo3-state-#{$state}-bg);
+    --typo3-badge-#{$state}-border-color: var(--typo3-state-#{$state}-border-color);
+    --typo3-badge-#{$state}-link-hover-color: var(--typo3-state-#{$state}-hover-color);
+    --typo3-badge-#{$state}-link-hover-bg: var(--typo3-state-#{$state}-hover-bg);
+    --typo3-badge-#{$state}-link-hover-border-color: var(--typo3-state-#{$state}-hover-border-color);
+    --typo3-badge-#{$state}-link-focus-color: var(--typo3-state-#{$state}-focus-color);
+    --typo3-badge-#{$state}-link-focus-bg: var(--typo3-state-#{$state}-focus-bg);
+    --typo3-badge-#{$state}-link-focus-border-color: var(--typo3-state-#{$state}-focus-border-color);
 }
 
 @mixin badge-use-variant($state) {
-    --badge-color: var(--badge-#{$state}-color);
-    --badge-bg: var(--badge-#{$state}-bg);
-    --badge-link-bg-hover: var(--badge-#{$state}-link-bg-hover);
+    --typo3-badge-color: var(--typo3-badge-#{$state}-color);
+    --typo3-badge-bg: var(--typo3-badge-#{$state}-bg);
+    --typo3-badge-border-color: var(--typo3-badge-#{$state}-border-color);
+    --typo3-badge-link-hover-color: var(--typo3-badge-#{$state}-link-hover-color);
+    --typo3-badge-link-hover-bg: var(--typo3-badge-#{$state}-link-hover-bg);
+    --typo3-badge-link-hover-border-color: var(--typo3-badge-#{$state}-link-hover-border-color);
+    --typo3-badge-link-focus-color: var(--typo3-badge-#{$state}-link-focus-color);
+    --typo3-badge-link-focus-bg: var(--typo3-badge-#{$state}-link-focus-bg);
+    --typo3-badge-link-focus-border-color: var(--typo3-badge-#{$state}-link-focus-border-color);
 }
 
 // Variables
-@each $state, $value in $theme-colors {
-    :root {
-        @include badge-create-variant($state, $value);
+:root {
+    @each $state in $base-variants {
+        @include badge-create-variant($state);
     }
 }
 
 // Base
 .badge {
-    color: var(--badge-color);
-    background-color: var(--badge-bg);
-
-    &[href] {
-        &:hover,
-        &:focus {
-            text-decoration: none;
-            color: var(--badge-color, inherit);
-            background-color: var(--badge-link-bg-hover);
-        }
-    }
-
     // Default also used for:
     // .badge-default,
     // .badge-obsolete,
     // .badge-test,
     // .badge-excludeFromUpdates
     @include badge-use-variant('default');
+    --typo3-badge-padding-y: calc(.35em - 1px);
+    --typo3-badge-padding-x: .65em;
+    --typo3-badge-border-radius: .25em;
+    --typo3-badge-font-size: calc(1em / 12 * 10);
+    background-color: var(--typo3-badge-bg);
+    display: inline-flex;
+    padding: var(--typo3-badge-padding-y) var(--typo3-badge-padding-x);
+    font-size: var(--typo3-badge-font-size);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--typo3-badge-color);
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: baseline;
+    border-radius: var(--typo3-badge-border-radius);
+    border: 1px solid var(--typo3-badge-border-color);
+    outline-offset: 0;
+
+    &[href] {
+        text-decoration: none;
+
+        &:hover {
+            --typo3-badge-color: var(--typo3-badge-link-hover-color);
+            --typo3-badge-bg: var(--typo3-badge-link-hover-bg);
+            --typo3-badge-border-color: var(--typo3-badge-link-hover-border-color);
+        }
+
+        &:focus {
+            --typo3-badge-color: var(--typo3-badge-link-focus-color);
+            --typo3-badge-bg: var(--typo3-badge-link-focus-bg);
+            --typo3-badge-border-color: var(--typo3-badge-link-focus-border-color);
+        }
+
+        &:focus-visible {
+            outline: .25rem solid color-mix(in srgb, var(--typo3-badge-link-focus-bg), transparent 25%);
+        }
+    }
 }
 
 // Colors
@@ -75,4 +112,8 @@
 
 .badge-space-end {
     margin-inline-end: 1em;
+}
+
+.badge-pill {
+    --typo3-badge-border-radius: 1em;
 }

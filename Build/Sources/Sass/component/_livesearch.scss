@@ -15,7 +15,6 @@ typo3-backend-live-search {
         transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
         top: 0 !important;
         inset-inline-start: 100%;
-        --bs-badge-border-radius: .65rem;
     }
 
     typo3-backend-live-search-result-pagination {

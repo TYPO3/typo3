@@ -84,6 +84,7 @@ class SystemInformationMenu {
     element.removeAttribute('class');
     element.classList.add('toolbar-item-badge');
     element.classList.add('badge');
+    element.classList.add('badge-pill');
     if (data.severityBadgeClass !== '') {
       element.classList.add(data.severityBadgeClass);
     }

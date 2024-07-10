@@ -60,6 +60,9 @@
 			<trans-unit id="buttons" xml:space="preserve">
 				<source>Buttons</source>
 			</trans-unit>
+			<trans-unit id="badges" xml:space="preserve">
+				<source>Badges</source>
+			</trans-unit>
 			<trans-unit id="bootstrap" xml:space="preserve">
 				<source>Bootstrap</source>
 			</trans-unit>

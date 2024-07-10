@@ -59,7 +59,7 @@ class OpendocsMenu {
     }
 
     counterElement.textContent = num.toString();
-    counterElement.hidden = num === 0;
+    counterElement.classList.toggle('hidden', (num === 0));
   }
 
   /**
