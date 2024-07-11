@@ -36,19 +36,15 @@ class BcryptPasswordHash implements PasswordHashInterface
     protected const PREFIX = '$2y$';
 
     /**
-     * Raise default PHP cost (10). At the time of this writing, this leads to
-     * 150-200ms computing time on a casual I7 CPU.
-     *
-     * @var array
+     * Set default PHP cost: Default is 10 with PHP <8.4, 12 since PHP 8.4. At the time
+     * of this writing, this leads to 150-200ms computing time on a casual I7 CPU.
      */
-    protected $options = [
+    protected array $options = [
         'cost' => 12,
     ];
 
     /**
      * Constructor sets options if given
-     *
-     * @throws \InvalidArgumentException
      */
     public function __construct(array $options = [])
     {
@@ -57,7 +53,7 @@ class BcryptPasswordHash implements PasswordHashInterface
         if (isset($options['cost'])) {
             if (!$this->isValidBcryptCost((int)$options['cost'])) {
                 throw new \InvalidArgumentException(
-                    'cost must not be lower than ' . PASSWORD_BCRYPT_DEFAULT_COST . ' or higher than 31',
+                    'cost must not be lower than 10 or higher than 31',
                     1533902002
                 );
             }
@@ -152,6 +148,6 @@ class BcryptPasswordHash implements PasswordHashInterface
      */
     protected function isValidBcryptCost(int $cost): bool
     {
-        return $cost >= PASSWORD_BCRYPT_DEFAULT_COST && $cost <= 31;
+        return $cost >= 10 && $cost <= 31;
     }
 }
