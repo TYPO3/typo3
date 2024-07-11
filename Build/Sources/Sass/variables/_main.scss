@@ -267,4 +267,8 @@ $utilities: (
             center: center,
         )
     ),
+    // disable bootstrap color utilities
+    "color": (),
+    "text-color": (),
+    "text-opacity": (),
 );

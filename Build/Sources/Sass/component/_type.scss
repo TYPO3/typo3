@@ -24,3 +24,62 @@ h3 {
 .h6 {
     font-family: inherit;
 }
+
+//
+// Colors
+//
+.text-base,
+.text-base-emphasis {
+    color: var(--typo3-text-color-base) !important;
+}
+
+.text-muted,
+.text-muted-emphasis,
+.text-variant,
+.text-variant-emphasis {
+    color: var(--typo3-text-color-variant) !important;
+}
+
+.text-primary,
+.text-primary-emphasis {
+    color: var(--typo3-text-color-primary) !important;
+}
+
+.text-secondary,
+.text-secondary-emphasis {
+    color: var(--typo3-text-color-secondary) !important;
+}
+
+.text-info,
+.text-info-emphasis {
+    color: var(--typo3-text-color-info) !important;
+}
+
+.text-success,
+.text-success-emphasis {
+    color: var(--typo3-text-color-success) !important;
+}
+
+.text-warning,
+.text-warning-emphasis {
+    color: var(--typo3-text-color-warning) !important;
+}
+
+.text-danger,
+.text-danger-emphasis {
+    color: var(--typo3-text-color-danger) !important;
+}
+
+.text-notice,
+.text-notice-emphasis {
+    color: var(--typo3-text-color-notice) !important;
+}
+
+.text-default,
+.text-default-emphasis {
+    color: var(--typo3-text-color-default) !important;
+}
+
+.text-reset {
+    color: inherit !important;
+}

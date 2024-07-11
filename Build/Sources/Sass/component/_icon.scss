@@ -27,34 +27,29 @@
 .icon-status-status-current,
 .icon-status-dialog-error,
 .icon-status-status-permission-denied {
-    --icon-color-primary: #{$danger};
-}
-
-.icon-status-status-sorting-light-asc,
-.icon-status-status-sorting-light-desc {
-    --icon-color-primary: #fff;
+    --icon-color-primary: var(--typo3-text-color-danger);
 }
 
 .icon-status-status-sorting-asc,
 .icon-status-status-sorting-desc {
-    --icon-color-primary: #{$gray-600};
+    --icon-color-primary: var(--typo3-text-color-variant);
 }
 
 .icon-status-dialog-information {
-    --icon-color-primary: #{$info};
+    --icon-color-primary: var(--typo3-text-color-info);
 }
 
 .icon-status-dialog-ok,
 .icon-status-status-permission-granted {
-    --icon-color-primary: #{$success};
+    --icon-color-primary: var(--typo3-text-color-success);
 }
 
 .icon-status-dialog-notification {
-    --icon-color-primary: #{$notice};
+    --icon-color-primary: var(--typo3-text-color-notice);
 }
 
 .icon-status-dialog-warning {
-    --icon-color-primary: #{$warning};
+    --icon-color-primary: var(--typo3-text-color-warning);
 }
 
 //
