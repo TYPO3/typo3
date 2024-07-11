@@ -53,6 +53,7 @@ final class CodeViewHelper extends AbstractViewHelper
         $this->registerArgument('codeonly', 'bool', 'if true show only the code but not the example', false, false);
         $this->registerArgument('exampleonly', 'bool', 'if true show only the example but not the code', false, false);
         $this->registerArgument('colorschemes', 'bool', 'if true show example variants forced in auto, light and dark', false, false);
+        $this->registerArgument('decodeEntities', 'bool', 'if true entities like &lt; and &gt; are decoded', false, false);
     }
 
     public function render(): string
@@ -104,11 +105,18 @@ final class CodeViewHelper extends AbstractViewHelper
             ];
             $attributes = [
                 'wrap' => 'off',
+                'rows' => count($lines),
             ];
 
             $markup[] = '<div class="example example--code">';
             $markup[] = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
-            $markup[] = '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($content) . '</textarea>';
+            $markup[] = '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
+            if ($this->arguments['decodeEntities']) {
+                $markup[] = htmlspecialchars_decode($content);
+            } else {
+                $markup[] = htmlspecialchars($content);
+            }
+            $markup[] = '</textarea>';
             $markup[] = '</typo3-t3editor-codemirror>';
             $markup[] = '</div>';
         }

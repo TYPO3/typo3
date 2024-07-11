@@ -1,7 +1,7 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
-    xmlns:b="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
@@ -19,29 +19,48 @@
     />
 
     <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.headline" /></h1>
+        <p>
+            <f:sanitize.html>
+                <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.introtext" />
+            </f:sanitize.html>
+        </p>
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.avatar" /></h1>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.state.default.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.state.default.text" /></p>
 
-        <p>Make the backend your backend and upload your personal profile picture.<br>
-            Backend users can change their profile pictures within setup module.</p>
+        <div class="styleguide-example">
+            <div class="styleguide-example-content">
+                <be:avatar />
+            </div>
+            <div class="styleguide-example-code">
+                <sg:code language="html" codeonly="true" decodeEntities="true">
+                    &lt;be:avatar /&gt;
+                </sg:code>
+            </div>
+        </div>
 
-        <h2>Simple</h2>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.state.withStatus.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.state.withStatus.text" /></p>
 
-        <p>Displays backend user avatar picture or static image fall-back for users without pictures.</p>
+        <div class="styleguide-example">
+            <div class="styleguide-example-content">
+                <be:avatar showIcon="true" />
+            </div>
+            <div class="styleguide-example-code">
+                <sg:code language="html" codeonly="true" decodeEntities="true">
+                    &lt;be:avatar showIcon="true" /&gt;
+                </sg:code>
+            </div>
+        </div>
 
-        <sg:code language="html">
-            <b:avatar />
-        </sg:code>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.color.headline" /></h2>
 
-        <h2>Icon overlay and click menu</h2>
-
-        <p>When icon overlay is used always bind click menu on the avatar icon. Please consider backend users can only be modified by administrator users.
-            Please use icon overlay only in views that are available for administrators only and bind click menu.</p>
-
-        <sg:code language="html">
-            <b:avatar showIcon="true" />
-        </sg:code>
-
+        <div class="styleguide-example">
+            <sg:code language="html" colorschemes="true" exampleonly="true">
+                <be:avatar showIcon="true" />
+            </sg:code>
+        </div>
     </div>
 
 </f:section>

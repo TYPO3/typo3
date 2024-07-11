@@ -4352,6 +4352,16 @@ td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap
 .styleguide-content .icon-container.icon-deprecated-container{height:175px}
 .styleguide-content .icon-container span.icon-container-icon,.styleguide-content .icon-container span.icon-container-label{display:block;text-align:center;background-color:#eee;min-height:50px;padding:5px}
 .styleguide-content .icon-container:hover span.icon-container-icon,.styleguide-content .icon-container:hover span.icon-container-label{background-color:#e1e1e1}
+.styleguide-example{border-radius:var(--typo3-component-border-radius);box-shadow:var(--typo3-component-box-shadow);margin-bottom:calc(var(--typo3-spacing) * 1.5)}
+.styleguide-example .styleguide-example-content{background:var(--typo3-surface-base);background-image:linear-gradient(45deg,var(--token-color-neutral-10) 25%,transparent 25%),linear-gradient(135deg,var(--token-color-neutral-10) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--token-color-neutral-10) 75%),linear-gradient(135deg,transparent 75%,var(--token-color-neutral-10) 75%);background-position:0 0,10px 0,10px -10px,0 10px;background-size:20px 20px;padding:var(--typo3-spacing)}
+.styleguide-example .styleguide-example-code{background-color:var(--typo3-surface-container-base);margin:0;padding:var(--typo3-spacing)}
+.styleguide-example .styleguide-example-code .example{padding:0}
+.styleguide-example .example{border:0;border-radius:0;margin-bottom:0}
+.styleguide-example .example:first-child{border-top-left-radius:var(--typo3-component-border-radius);border-top-right-radius:var(--typo3-component-border-radius)}
+.styleguide-example .example:last-child{border-bottom-left-radius:var(--typo3-component-border-radius);border-bottom-right-radius:var(--typo3-component-border-radius)}
+.styleguide-example .example:not([data-color-scheme]):before{display:none}
+.styleguide-example .example[data-color-scheme=light]:before{content:"Light mode"}
+.styleguide-example .example[data-color-scheme=dark]:before{content:"Dark mode"}
 #SetupModuleController .form-wizards-wrap{margin-bottom:.5rem!important}
 @media (min-width:992px){
 #SetupModuleController .row>.form-group{width:50%}

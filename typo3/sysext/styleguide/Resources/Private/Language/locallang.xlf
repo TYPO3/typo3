@@ -185,6 +185,29 @@
 			<trans-unit id="backendLayouts.styleguideFrontend.colpos.0" resname="backendLayouts.styleguideFrontend.colpos.0">
 				<source>Main content</source>
 			</trans-unit>
+
+			<!-- Component: Avatar -->
+			<trans-unit id="component.avatar.headline" resname="component.avatar.headline">
+				<source>Avatar</source>
+			</trans-unit>
+			<trans-unit id="component.avatar.introtext" resname="component.avatar.introtext">
+				<source><![CDATA[An avatar displays an image that represents a backend user and can provide additional information such as their status.<br>Avatars can be displayed with an own ViewHelper. If an avatar image is stored in the user settings, this will be used instead of the standard image.]]></source>
+			</trans-unit>
+			<trans-unit id="component.avatar.state.default.headline" resname="component.avatar.state.default.headline">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="component.avatar.state.default.text" resname="component.avatar.state.default.text">
+				<source>Display the backend user's avatar image or a static fallback image for users without avatar images.</source>
+			</trans-unit>
+			<trans-unit id="component.avatar.state.withStatus.headline" resname="component.avatar.state.withStatus.headline">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="component.avatar.state.withStatus.text" resname="component.avatar.state.withStatus.text">
+				<source>If set, the backend user type (normal user or admin user) and its status (disabled or not) will be displayed next to the avatar. </source>
+			</trans-unit>
+			<trans-unit id="component.avatar.color.headline" resname="component.avatar.color.headline">
+				<source>Color (for internal use)</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
