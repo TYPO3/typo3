@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Preview;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
@@ -53,14 +54,15 @@ final readonly class FluidBasedContentPreviewRenderer
         $previewContent = $this->renderContentElementPreviewFromFluidTemplate(
             $event->getRecord(),
             $event->getTable(),
-            $event->getRecordType()
+            $event->getRecordType(),
+            $event->getPageLayoutContext()->getCurrentRequest(),
         );
         if ($previewContent !== null) {
             $event->setPreviewContent($previewContent);
         }
     }
 
-    private function renderContentElementPreviewFromFluidTemplate(array $row, string $table, string $recordType): ?string
+    private function renderContentElementPreviewFromFluidTemplate(array $row, string $table, string $recordType, ServerRequestInterface $request): ?string
     {
         $tsConfig = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['web_layout.'][$table . '.']['preview.'] ?? [];
         $fluidTemplateFile = '';
@@ -87,6 +89,7 @@ final readonly class FluidBasedContentPreviewRenderer
         try {
             $viewFactoryData = new ViewFactoryData(
                 templatePathAndFilename: $fluidTemplateFileAbsolutePath,
+                request: $request,
             );
             $view = $this->viewFactory->create($viewFactoryData);
             $view->assignMultiple($row);
