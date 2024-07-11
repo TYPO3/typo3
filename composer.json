@@ -121,7 +121,7 @@
 		"phpspec/prophecy-phpunit": "^2.0.1",
 		"phpstan/phpstan": "^1.10.32",
 		"phpstan/phpstan-phpunit": "^1.3.14",
-		"phpunit/phpunit": "^9.6.1",
+		"phpunit/phpunit": "^9.6.20",
 		"typo3/cms-styleguide": "~11.5.5",
 		"typo3/testing-framework": "^6.16.9",
 		"webmozart/assert": "^1.11.0"
