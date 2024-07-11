@@ -33,6 +33,9 @@ entitySettings:
         aside: {colPos: 2}
         footer: {colPos: 5}
         flashInfo: {colPos: 10}
+  carousel_items:
+    tableName: 'test_content_carousel_item'
+    languageColumnNames: ['l10n_parent']
 
 entities:
   page:
@@ -40,8 +43,12 @@ entities:
       entities:
         content:
           - self: {title: 'Welcome to ACME guitars', type: *contentText, area: 'stage'}
+          - self: {id: 234, title: 'Our latest and greatest products', type: 'test_carousel', area: 'stage', carousel_items: '1,2'}
           - self: {text: '<p>Great to see you here</p>', type: *contentText, area: 'main'}
           - self: {text: '<p>If you read this you are at the end.</p>', type: *contentText, area: 'footer'}
+        carousel_items:
+          - self: {header: 'Meet us at Guitar Brussels in 2035', carousel_content_element: 234}
+          - self: {header: 'Check out our latest Hero guitars', carousel_content_element: 234}
       children:
         - self: {id: 1100, title: 'Our Products', slug: '/products', backendLayout: 'default'}
           entities:

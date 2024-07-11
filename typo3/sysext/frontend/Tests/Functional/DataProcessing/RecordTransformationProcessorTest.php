@@ -30,6 +30,10 @@ final class RecordTransformationProcessorTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_classic_content',
+    ];
+
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en-US'],
     ];

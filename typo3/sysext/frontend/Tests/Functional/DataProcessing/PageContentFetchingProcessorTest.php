@@ -34,6 +34,10 @@ final class PageContentFetchingProcessorTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en-US'],
     ];
 
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_classic_content',
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -76,6 +80,7 @@ final class PageContentFetchingProcessorTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/'))->withPageId(1000));
         $body = (string)$response->getBody();
         self::assertStringContainsString('Welcome to ACME guitars', $body);
+        self::assertStringContainsString('Carousel Items will show up: 2', $body);
         self::assertStringContainsString('Great to see you here', $body);
         self::assertStringContainsString('If you read this you are at the end.', $body);
     }
