@@ -198,13 +198,17 @@ class InputSlugElement extends AbstractFormElement
         }
         $mainFieldHtml[] =          '<div class="form-wizards-items-bottom">';
         $mainFieldHtml[] =              '<div class="t3js-form-proposal-accepted callout callout-success hidden mt-3 mb-0">';
-        $mainFieldHtml[] =                  '<div class="callout-body">';
-        $mainFieldHtml[] =                      sprintf(htmlspecialchars($successMessage), '<samp class="text-nowrap">' . htmlspecialchars($baseUrl) . '<span class="fw-bold">/abc/</span></samp>');
+        $mainFieldHtml[] =                  '<div class="callout-content">';
+        $mainFieldHtml[] =                      '<div class="callout-body">';
+        $mainFieldHtml[] =                          sprintf(htmlspecialchars($successMessage), '<samp class="text-nowrap">' . htmlspecialchars($baseUrl) . '<span class="fw-bold">/abc/</span></samp>');
+        $mainFieldHtml[] =                      '</div>';
         $mainFieldHtml[] =                  '</div>';
         $mainFieldHtml[] =              '</div>';
         $mainFieldHtml[] =              '<div class="t3js-form-proposal-different callout callout-warning hidden mt-3 mb-0">';
-        $mainFieldHtml[] =                  '<div class="callout-body">';
-        $mainFieldHtml[] =                      sprintf(htmlspecialchars($errorMessage), '<samp class="text-nowrap">' . htmlspecialchars($baseUrl) . '<span class="fw-bold">/abc/</span></samp>');
+        $mainFieldHtml[] =                  '<div class="callout-content">';
+        $mainFieldHtml[] =                      '<div class="callout-body">';
+        $mainFieldHtml[] =                          sprintf(htmlspecialchars($errorMessage), '<samp class="text-nowrap">' . htmlspecialchars($baseUrl) . '<span class="fw-bold">/abc/</span></samp>');
+        $mainFieldHtml[] =                      '</div>';
         $mainFieldHtml[] =                  '</div>';
         $mainFieldHtml[] =              '</div>';
         $mainFieldHtml[] =              $fieldWizardHtml;

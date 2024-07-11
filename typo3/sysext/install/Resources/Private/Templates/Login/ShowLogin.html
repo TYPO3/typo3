@@ -33,31 +33,37 @@
 
             <f:if condition="{installToolEnableFilePermanent}">
                 <div class="callout callout-danger">
-                    <div class="callout-title">Install Tool is permanently enabled</div>
-                    <div class="callout-body">
-                        The Install Tool is permanently enabled because our <code>ENABLE_INSTALL_TOOL</code> file contains
-                        the text <em>KEEP_FILE</em>.<br />
-                        Never use this on production systems!
+                    <div class="callout-content">
+                        <div class="callout-title">Install Tool is permanently enabled</div>
+                        <div class="callout-body">
+                            The Install Tool is permanently enabled because our <code>ENABLE_INSTALL_TOOL</code> file contains
+                            the text <em>KEEP_FILE</em>.<br />
+                            Never use this on production systems!
+                        </div>
                     </div>
                 </div>
             </f:if>
 
             <div class="callout callout-info">
-                <div class="callout-title">Information</div>
-                <div class="callout-body">
-                    By default the Install Tool password is the one specified during the installation.
+                <div class="callout-content">
+                    <div class="callout-title">Information</div>
+                    <div class="callout-body">
+                        By default the Install Tool password is the one specified during the installation.
+                    </div>
                 </div>
             </div>
             <div class="callout callout-warning">
-                <div class="callout-title">Important</div>
-                <div class="callout-body">
-                    If you don't know the current password, you can set a new one by setting the value of
-                    <code>$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']</code> in <code>{configFile}</code> to
-                    the hash value of the password you desire, which will be shown if you enter the desired password
-                    in this form and submit it.
-                    <br /><br />
-                    This password gives an attacker full control over your instance if cracked. It should be strong
-                    (include lower and upper case characters, special characters and numbers) and at least eight characters long.
+                <div class="callout-content">
+                    <div class="callout-title">Important</div>
+                    <div class="callout-body">
+                        If you don't know the current password, you can set a new one by setting the value of
+                        <code>$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']</code> in <code>{configFile}</code> to
+                        the hash value of the password you desire, which will be shown if you enter the desired password
+                        in this form and submit it.
+                        <br /><br />
+                        This password gives an attacker full control over your instance if cracked. It should be strong
+                        (include lower and upper case characters, special characters and numbers) and at least eight characters long.
+                    </div>
                 </div>
             </div>
         </div>

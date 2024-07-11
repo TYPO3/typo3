@@ -231,6 +231,7 @@ class Router {
       const url = this.getUrl(undefined, 'upgrade');
       const message =
         '<div class="t3js-infobox callout callout-sm callout-danger">'
+        + '<div class="callout-content">'
         + '<div class="callout-title">Something went wrong</div>'
         + '<div class="callout-body">'
         + '<p>Please use <b><a href="' + url + '">Check for broken'
@@ -243,6 +244,7 @@ class Router {
         + '<code>[\'BE\'][\'debug\'] => true</code>, <code>[\'SYS\'][\'devIPmask\'] => \'*\'</code>, '
         + '<code>[\'SYS\'][\'displayErrors\'] => 1</code>,'
         + '<code>[\'SYS\'][\'exceptionalErrors\'] => 12290</code></p>'
+        + '</div>'
         + '</div>'
         + '</div>'
         + '<div class="panel-group" role="tablist" aria-multiselectable="true">'

@@ -105,17 +105,19 @@ HTML;
             $exceptionInfo = <<<INFO
             <div class="container">
                 <div class="callout">
-                    <div class="callout-title">Get help in the TYPO3 Documentation</div>
-                    <div class="callout-body">
-                        <p>
-                            If you need help solving this exception, you can have a look at the TYPO3 Documentation.
-                            There you can find solutions provided by the TYPO3 community.
-                            Once you have found a solution to the problem, help others by contributing to the
-                            documentation page.
-                        </p>
-                        <p>
-                            <a href="$documentationLink" target="_blank" rel="noreferrer">Find a solution for this exception in the TYPO3 Documentation.</a>
-                        </p>
+                    <div class="callout-content">
+                        <div class="callout-title">Get help in the TYPO3 Documentation</div>
+                        <div class="callout-body">
+                            <p>
+                                If you need help solving this exception, you can have a look at the TYPO3 Documentation.
+                                There you can find solutions provided by the TYPO3 community.
+                                Once you have found a solution to the problem, help others by contributing to the
+                                documentation page.
+                            </p>
+                            <p>
+                                <a href="$documentationLink" target="_blank" rel="noreferrer">Find a solution for this exception in the TYPO3 Documentation.</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1244,16 +1244,14 @@ class EditDocumentController
     protected function getInfobox(string $message, ?string $title = null): string
     {
         return '<div class="callout callout-danger">' .
-                '<div class="media">' .
-                    '<div class="media-left">' .
-                        '<span class="icon-emphasized">' .
-                            $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render() .
-                        '</span>' .
-                    '</div>' .
-                    '<div class="media-body">' .
-                        ($title ? '<div class="callout-title">' . htmlspecialchars($title) . '</div>' : '') .
-                        '<div class="callout-body">' . htmlspecialchars($message) . '</div>' .
-                    '</div>' .
+                '<div class="callout-icon">' .
+                    '<span class="icon-emphasized">' .
+                        $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render() .
+                    '</span>' .
+                '</div>' .
+                '<div class="callout-content">' .
+                    ($title ? '<div class="callout-title">' . htmlspecialchars($title) . '</div>' : '') .
+                    '<div class="callout-body">' . htmlspecialchars($message) . '</div>' .
                 '</div>' .
             '</div>';
     }

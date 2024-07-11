@@ -438,8 +438,10 @@ class LinkElement extends AbstractFormElement
         $data['additionalAttributes'] = $additionalAttributes !== []
             ? '
                 <div class="callout callout-info mt-3 mb-0">
-                    <div class="callout-body">
-                        ' . implode(' - ', $additionalAttributes) . '
+                    <div class="callout-content">
+                        <div class="callout-body">
+                            ' . implode(' - ', $additionalAttributes) . '
+                        </div>
                     </div>
                 </div>
             '

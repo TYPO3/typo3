@@ -1,5 +1,6 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
@@ -17,60 +18,57 @@
 
         <h2>Default icon</h2>
 
-        <div class="example">
+        <sg:code language="html" colorschemes="true" exampleonly="true">
             <f:be.infobox title="Infobox with default icon">Your infobox content</f:be.infobox>
-        </div>
-
+        </sg:code>
         <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Infobox with default icon"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
         <h2>Without icon</h2>
 
-        <div class="example">
+        <sg:code language="html" colorschemes="true" exampleonly="true">
             <f:be.infobox title="Infobox without icon" disableIcon="TRUE">Your infobox content</f:be.infobox>
-        </div>
-
+        </sg:code>
         <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Infobox without icon" disableIcon="TRUE"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
         <h2>Custom icon</h2>
 
         <p>It is also possible to use a custom icon. Just pass the icon identifier as <strong>iconName</strong> to the view helper. <strong>The identifier must be registered in your TYPO3 installation.</strong></p>
 
-        <div class="example">
+        <sg:code language="html" colorschemes="true" exampleonly="true">
             <f:be.infobox title="Infobox with a save icon" iconName="actions-save">Your infobox content</f:be.infobox>
-        </div>
-
+        </sg:code>
         <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Infobox with a save icon" iconName="actions-save"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
         <h2>Levels</h2>
 
         <h3>Notice</h3>
-        <div class="example">
+        <sg:code language="html" colorschemes="true" exampleonly="true">
             <f:be.infobox title="Message title" state="-2">Your infobox content</f:be.infobox>
-        </div>
+        </sg:code>
         <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="-2"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
         <h3>Information</h3>
-        <div class="example">
+        <sg:code language="html" colorschemes="true" exampleonly="true">
             <f:be.infobox title="Message title" state="-1">Your infobox content</f:be.infobox>
-        </div>
+        </sg:code>
         <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="-1"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
         <h3>Positive feedback</h3>
-        <div class="example">
+        <sg:code language="html" colorschemes="true" exampleonly="true">
             <f:be.infobox title="Message title" state="0">Your infobox content</f:be.infobox>
-        </div>
+        </sg:code>
         <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="0"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
         <h3>Warning</h3>
-        <div class="example">
+        <sg:code language="html" colorschemes="true" exampleonly="true">
             <f:be.infobox title="Message title" state="1">Your infobox content</f:be.infobox>
-        </div>
+        </sg:code>
         <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="1"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
         <h3>Error</h3>
-        <div class="example">
+        <sg:code language="html" colorschemes="true" exampleonly="true">
             <f:be.infobox title="Message title" state="2">Your infobox content</f:be.infobox>
-        </div>
+        </sg:code>
         <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="2"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 
     </div>

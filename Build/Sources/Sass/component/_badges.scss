@@ -82,7 +82,7 @@
 }
 
 // Colors
-@each $state, $value in $theme-colors {
+@each $state in $base-variants {
     .badge-#{$state} {
         @include badge-use-variant($state);
     }

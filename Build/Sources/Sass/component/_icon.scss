@@ -61,8 +61,8 @@
 // Emphasized
 //
 .icon-emphasized {
-    --icon-emphasized-color: #313131;
-    --icon-emphasized-bg: #fff;
+    --icon-emphasized-color: var(--typo3-state-default-color);
+    --icon-emphasized-bg: var(--typo3-state-default-bg);
     color: var(--icon-emphasized-color);
     background-color: var(--icon-emphasized-bg);
     display: flex;
@@ -78,7 +78,7 @@
     }
 
     .callout & {
-        --icon-emphasized-color: var(--callout-color);
-        --icon-emphasized-bg: var(--callout-border-color);
+        --icon-emphasized-color: var(--typo3-callout-icon-color);
+        --icon-emphasized-bg: var(--typo3-callout-icon-bg);
     }
 }

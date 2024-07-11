@@ -8,9 +8,11 @@
 // -------------
 //
 // <div class="callout callout-info">
-//   <div class="callout-title">Web&gt;Page module</div>
-//   <div class="callout-body">
-//	   <p>Please click the page title in the page tree to the left to edit page content.</p>
+//   <div class="callout-content">
+//     <div class="callout-title">Web&gt;Page module</div>
+//     <div class="callout-body">
+//       <p>Please click the page title in the page tree to the left to edit page content.</p>
+//     </div>
 //   </div>
 // </div>
 //
@@ -19,48 +21,44 @@
 // --------------
 //
 // <div class="callout callout-info">
-//   <div class="media">
-//     <div class="media-left">
-//       <span class="icon-emphasized">
-//         <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-info" data-identifier="actions-info">
-//           <span class="icon-markup">
-//             <svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-info"></use></svg>
-//           </span>
+//   <div class="callout-icon">
+//     <span class="icon-emphasized">
+//       <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-info" data-identifier="actions-info">
+//         <span class="icon-markup">
+//           <svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-info"></use></svg>
 //         </span>
 //       </span>
-//     </div>
-//     <div class="media-body">
-//       <div class="callout-title">...</div>
-//       <div class="callout-body">
-//         <p>..</p>
-//       </div>
+//     </span>
+//   </div>
+//   <div class="callout-content">
+//     <div class="callout-title">...</div>
+//     <div class="callout-body">
+//       <p>..</p>
 //     </div>
 //   </div>
 // </div>
 //
 
 //
-// Variables
-//
-$callout-bg-scale: -85%;
-$callout-border-scale: -60%;
-$callout-padding: 1rem;
-
-//
 // Component
 //
 .callout {
-    --callout-color: var(--typo3-component-color);
-    --callout-bg: var(--typo3-component-bg);
-    --callout-border-radius: var(--typo3-component-border-radius);
-    --callout-border-color: var(--typo3-component-border-color);
-    --callout-box-shadow: var(--typo3-component-box-shadow);
+    --typo3-callout-color: var(--typo3-surface-container-default-text);
+    --typo3-callout-bg: var(--typo3-surface-container-default-bg);
+    --typo3-callout-border-color: var(--typo3-state-default-bg);
+    --typo3-callout-icon-color: var(--typo3-state-default-color);
+    --typo3-callout-icon-bg: var(--typo3-state-default-bg);
+    --typo3-callout-border-radius: var(--typo3-component-border-radius);
+    --typo3-callout-padding-y: 1rem;
+    --typo3-callout-padding-x: 1rem;
+    display: flex;
+    gap: calc(var(--typo3-callout-padding-x) * .75);
     color: var(--callout-color);
-    background-color: var(--callout-bg);
-    border-inline-start: .5em solid var(--callout-border-color);
-    border-radius: var(--callout-border-radius);
-    margin-bottom: 1rem;
-    padding: $callout-padding;
+    background-color: var(--typo3-callout-bg);
+    border-inline-start: .5rem solid var(--typo3-callout-border-color);
+    border-radius: var(--typo3-callout-border-radius);
+    margin-bottom: var(--typo3-spacing);
+    padding: var(--typo3-callout-padding-y) var(--typo3-callout-padding-x);
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
@@ -70,10 +68,21 @@ $callout-padding: 1rem;
     margin-top: -2px;
 }
 
+.callout-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    > * {
+        width: 100%;
+    }
+}
+
 .callout-title {
-    font-size: 1.3em;
+    font-size: 1.2em;
     line-height: 1.2;
-    margin: 0 0 .5em;
+    margin-bottom: .5em;
 }
 
 .callout-body {
@@ -86,8 +95,8 @@ $callout-padding: 1rem;
 // Size Variants
 //
 .callout-sm {
-    margin: 10px 0;
-    padding: $callout-padding * .5;
+    --typo3-callout-padding-y: .5rem;
+    --typo3-callout-padding-x: .5rem;
 
     .callout-title {
         font-size: 1em;
@@ -98,32 +107,12 @@ $callout-padding: 1rem;
 //
 // Color Variants
 //
-@mixin callout-variant($background, $border, $text-color) {
-    --callout-color: #{$text-color};
-    --callout-bg: #{$background};
-    --callout-border-color: #{$border};
-}
-
-@each $state, $value in $theme-colors {
-    $callout-background: shift-color($value, $callout-bg-scale);
-    $callout-border: shift-color($value, $callout-border-scale);
-    $callout-color: color-contrast($callout-background);
-
+@each $state in $base-variants {
     .callout-#{$state} {
-        @include callout-variant($callout-background, $callout-border, $callout-color);
+        --typo3-callout-color: var(--typo3-surface-container-#{$state}-text);
+        --typo3-callout-bg: var(--typo3-surface-container-#{$state});
+        --typo3-callout-border-color: var(--typo3-state-#{$state}-bg);
+        --typo3-callout-icon-color: var(--typo3-state-#{$state}-color);
+        --typo3-callout-icon-bg: var(--typo3-state-#{$state}-bg);
     }
-}
-
-//
-// Variants
-// The light variants have problems beeing generated, they need manual correction.
-//
-.callout-light {
-    --callout-bg: #{$light};
-    --callout-border-color: #{shift-color($light, 20%)};
-}
-
-.callout-default {
-    --callout-bg: #{$default};
-    --callout-border-color: #{shift-color($default, 20%)};
 }

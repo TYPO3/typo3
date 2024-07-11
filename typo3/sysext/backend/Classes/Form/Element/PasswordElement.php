@@ -255,11 +255,13 @@ class PasswordElement extends AbstractFormElement
         );
 
         $passwordPolicyElement[] = '<div id="password-policy-info-' . htmlspecialchars($fieldId) . '" class="mt-2 callout callout-secondary hidden">';
-        $passwordPolicyElement[] = '  <div class="callout-title">' . htmlspecialchars($calloutTitle) . '</div>';
-        $passwordPolicyElement[] = '  <div class="callout-body">';
-        $passwordPolicyElement[] = '    <ul>';
-        $passwordPolicyElement[] =        implode(LF, $requirements);
-        $passwordPolicyElement[] = '    </ul>';
+        $passwordPolicyElement[] = '  <div class="callout-content">';
+        $passwordPolicyElement[] = '    <div class="callout-title">' . htmlspecialchars($calloutTitle) . '</div>';
+        $passwordPolicyElement[] = '    <div class="callout-body">';
+        $passwordPolicyElement[] = '      <ul>';
+        $passwordPolicyElement[] =          implode(LF, $requirements);
+        $passwordPolicyElement[] = '      </ul>';
+        $passwordPolicyElement[] = '    </div>';
         $passwordPolicyElement[] = '  </div>';
         $passwordPolicyElement[] = '</div>';
 

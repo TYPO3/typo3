@@ -104,7 +104,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
         $iconTemplate = '';
         if (!$disableIcon) {
             $iconTemplate = '' .
-                '<div class="media-left">' .
+                '<div class="callout-icon">' .
                     '<span class="icon-emphasized">' .
                         $iconFactory->getIcon($icon, IconSize::SMALL)->render() .
                     '</span>' .
@@ -115,12 +115,10 @@ final class InfoboxViewHelper extends AbstractViewHelper
             $titleTemplate = '<div class="callout-title">' . htmlspecialchars($title) . '</div>';
         }
         return '<div class="callout callout-' . htmlspecialchars($severity->getCssClass()) . '">' .
-                '<div class="media">' .
-                    $iconTemplate .
-                    '<div class="media-body">' .
-                        $titleTemplate .
-                        '<div class="callout-body">' . $message . '</div>' .
-                    '</div>' .
+                $iconTemplate .
+                '<div class="callout-content">' .
+                    $titleTemplate .
+                    '<div class="callout-body">' . $message . '</div>' .
                 '</div>' .
             '</div>';
     }
