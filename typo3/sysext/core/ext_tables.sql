@@ -234,10 +234,6 @@ CREATE TABLE sys_refindex (
 	# the first parts of the combined index, or can be changed to include more dummy where parts to use even more.
 	KEY lookup_rec (tablename,recuid,field,workspace,ref_t3ver_state,ref_hidden,ref_starttime,ref_endtime),
 	KEY lookup_ref (ref_table,ref_uid,tablename,workspace,t3ver_state,hidden,starttime,endtime),
-	# @todo: There is only one query in ext:form DatabaseService that has a where on ref_string at all.
-	#        It seems we could either juggle the above indexes around a bit, or could change the query
-	#        a bit to avoid this huge index here.
-	KEY lookup_string (ref_string(191))
 );
 
 # Define table and fields since it has no TCA
