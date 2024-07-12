@@ -666,12 +666,13 @@ class DefaultTcaSchema
                         break;
 
                     case 'color':
+                        $opacity = (bool)($fieldConfig['config']['opacity'] ?? false);
                         if ($fieldConfig['config']['nullable'] ?? false) {
                             $tables[$tableName]->addColumn(
                                 $this->quote($fieldName),
                                 Types::STRING,
                                 [
-                                    'length' => 7,
+                                    'length' => $opacity ? 9 : 7,
                                     'default' => null,
                                     'notnull' => false,
                                 ]
@@ -681,7 +682,7 @@ class DefaultTcaSchema
                                 $this->quote($fieldName),
                                 Types::STRING,
                                 [
-                                    'length' => 7,
+                                    'length' => $opacity ? 9 : 7,
                                     'default' => '',
                                     'notnull' => true,
                                 ]

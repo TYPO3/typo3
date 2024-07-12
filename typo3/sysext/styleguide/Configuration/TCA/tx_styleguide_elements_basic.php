@@ -709,6 +709,15 @@ return [
                 'nullable' => true,
             ],
         ],
+        'color_5' => [
+            'label' => 'color_5 opacity',
+            'description' => 'type=color opacity',
+            'config' => [
+                'type' => 'color',
+                'size' => 10,
+                'opacity' => true,
+            ],
+        ],
 
         'number_1' => [
             'label' => 'number_1',
@@ -1863,7 +1872,7 @@ backend_layout {
                 --div--;password,
                     password_1,password_2,password_3,password_8,password_4,password_5,password_6,password_7,
                 --div--;color,
-                    color_1,color_2,color_3,color_4,
+                    color_1,color_2,color_3,color_4,color_5,
                 --div--;number,
                     number_1, number_2, number_3, number_4, number_5, number_7,
                 --div--;email,

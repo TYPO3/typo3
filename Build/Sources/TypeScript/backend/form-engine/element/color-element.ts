@@ -45,9 +45,11 @@ class ColorElement extends HTMLElement {
     this.registerEventHandler();
 
     const swatches = this.hasAttribute('colorPalette') ? this.getAttribute('colorPalette').split(';') : [];
+    const opacity = this.hasAttribute('opacity');
     import('@typo3/backend/color-picker').then(({ default: ColorPicker }): void => {
       ColorPicker.initialize(this.element, {
-        swatches: swatches
+        swatches: swatches,
+        opacity: opacity
       });
     });
   }

@@ -111,6 +111,7 @@ class ColorElement extends AbstractFormElement
         if ($config['nullable'] ?? false) {
             $evalList[] = 'null';
         }
+        $opacityEnabled = (bool)($config['opacity'] ?? false);
 
         $attributes = [
             'value' => '',
@@ -119,7 +120,7 @@ class ColorElement extends AbstractFormElement
                 'form-control',
                 't3js-color-picker',
             ]),
-            'maxlength' => '7', // #XXXXXX (/#[0-9a-fA-F]{3,6}/)
+            'maxlength' => $opacityEnabled ? 9 : 7, // #RRGGBBAA (/#[0-9a-fA-F]{3,6}([0-9]{2})?/)
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $itemName,
@@ -255,6 +256,7 @@ class ColorElement extends AbstractFormElement
         $attributes = [
             'recordFieldId' => $fieldId,
             'colorPalette' => implode(';', array_unique(array_filter($colorDefinitions))),
+            'opacity' => $opacityEnabled,
         ];
 
         $resultArray['html'] = $renderedLabel . '

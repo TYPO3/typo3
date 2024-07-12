@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import Alwan from"alwan";import RegularEvent from"@typo3/core/event/regular-event.js";class ColorPicker{initialize(e,t={}){if(e.classList.contains("t3js-colorpicker-initialized"))return;const o=new Alwan(e,{position:"bottom-start",format:"hex",opacity:!1,preset:!1,color:e.value,swatches:t.swatches});e.classList.add("t3js-colorpicker-initialized"),o.on("color",(t=>{e.value=t.hex,e.dispatchEvent(new Event("blur"))})),["input","change"].forEach((t=>{new RegularEvent(t,(e=>{o.setColor(e.target.value)})).bindTo(e)}))}}export default new ColorPicker;
+import Alwan from"alwan";import RegularEvent from"@typo3/core/event/regular-event.js";class ColorPicker{initialize(e,t={}){if(e.classList.contains("t3js-colorpicker-initialized"))return;const o=new Alwan(e,{position:"bottom-start",format:"hex",opacity:t.opacity,preset:!1,color:e.value,swatches:t.swatches});e.classList.add("t3js-colorpicker-initialized"),o.on("color",(t=>{e.value=t.hex,e.dispatchEvent(new Event("blur"))})),["input","change"].forEach((t=>{new RegularEvent(t,(e=>{o.setColor(e.target.value)})).bindTo(e)}))}}export default new ColorPicker;

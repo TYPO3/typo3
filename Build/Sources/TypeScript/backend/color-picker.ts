@@ -15,7 +15,8 @@ import Alwan from 'alwan';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 interface ColorPickerSettings {
-  swatches?: string[]
+  swatches?: string[],
+  opacity?: boolean
 }
 
 /**
@@ -36,7 +37,7 @@ class ColorPicker {
     const alwan = new Alwan(element, {
       position: 'bottom-start',
       format: 'hex',
-      opacity: false,
+      opacity: options.opacity,
       preset: false,
       color: element.value,
       swatches: options.swatches,
