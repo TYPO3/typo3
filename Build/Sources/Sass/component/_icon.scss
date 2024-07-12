@@ -68,8 +68,8 @@
     border-radius: 100%;
 
     .alert & {
-        --icon-emphasized-color: var(--#{$prefix}alert-color);
-        --icon-emphasized-bg: var(--#{$prefix}alert-border-color);
+        --icon-emphasized-color: var(--typo3-alert-icon-color);
+        --icon-emphasized-bg: var(--typo3-alert-icon-bg);
     }
 
     .callout & {

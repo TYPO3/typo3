@@ -1,9 +1,8 @@
-<div class="alert alert-info alert-dismissible">
-    <div class="alert-heading">
-        <h4><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.instructions"/></h4>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.instructions.close')}"></button>
-    </div>
-    <div class="alert-body">
-        <f:format.nl2br>{provider.setupInstructions -> f:translate(key: provider.setupInstructions, default: provider.setupInstructions)}</f:format.nl2br>
-    </div>
-</div>
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.instructions')}" state="-1">
+    <f:format.nl2br>{provider.setupInstructions -> f:translate(key: provider.setupInstructions, default: provider.setupInstructions)}</f:format.nl2br>
+</f:be.infobox>
+</html>

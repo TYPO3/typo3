@@ -24,13 +24,13 @@ var __decorate=function(t,i,e,o){var n,a=arguments.length,s=a<3?i:null===o?o=Obj
           <span aria-hidden="true"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></span>
           <span class="visually-hidden">Close</span>
         </button>
-        <div class="media">
-          <div class="media-left">
+        <div class="alert-inner">
+          <div class="alert-icon">
             <span class="icon-emphasized">
               <typo3-backend-icon identifier="${i}" size="small"></typo3-backend-icon>
             </span>
           </div>
-          <div class="media-body">
+          <div class="alert-content">
             <div class="alert-title" id="alert-title-${e}">${this.notificationTitle}</div>
             <p class="alert-message" id="alert-message-${e}">${this.notificationMessage?this.notificationMessage:""}</p>
           </div>

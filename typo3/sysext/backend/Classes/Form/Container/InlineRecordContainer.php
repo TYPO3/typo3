@@ -254,13 +254,13 @@ class InlineRecordContainer extends AbstractContainer
             // @TODO: This is not a FlashMessage! The markup must be changed and special CSS
             // @TODO: should be created, in order to prevent confusion.
             $markup[] = '<div class="alert alert-warning">';
-            $markup[] = '    <div class="media">';
-            $markup[] = '        <div class="media-left">';
+            $markup[] = '    <div class="alert-inner">';
+            $markup[] = '        <div class="alert-icon">';
             $markup[] = '            <span class="icon-emphasized">';
             $markup[] = '                ' . $this->iconFactory->getIcon('actions-exclamation', IconSize::SMALL)->render();
             $markup[] = '            </span>';
             $markup[] = '        </div>';
-            $markup[] = '        <div class="media-body">';
+            $markup[] = '        <div class="alert-content">';
             $markup[] = '            <div class="alert-message">' . htmlspecialchars($message) . '</div>';
             $markup[] = '        </div>';
             $markup[] = '    </div>';

@@ -57,8 +57,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <div class="typo3-messages">
  *       <div class="alert alert-info">
- *          <div class="media">
- *             <div class="media-left">
+ *          <div class="alert-inner">
+ *             <div class="alert-icon">
  *                <span class="icon-emphasized">
  *                   <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-info" data-identifier="actions-info">
  *                      <span class="icon-markup">
@@ -67,7 +67,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *                   </span>
  *                </span>
  *             </div>
- *             <div class="media-body">
+ *             <div class="alert-content">
  *                <div class="alert-title">Info - Title for Info message</div>
  *                <p class="alert-message">Message text here.</p>
  *             </div>

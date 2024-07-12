@@ -368,7 +368,7 @@ $panel-heading-bg-scale: -85%;
         margin: 0;
         border: none;
         border-top: var(--panel-border-width) solid var(--panel-border-color);
-        --bs-alert-padding-x: var(--panel-header-padding-x);
+        --typo3-alert-padding-x: var(--panel-header-padding-x);
     }
 
     > .form-section,

@@ -2,17 +2,51 @@
 // Alerts
 //
 .alert {
+    --typo3-alert-color: inherit;
+    --typo3-alert-bg: transparent;
+    --typo3-alert-icon-color: inherit;
+    --typo3-alert-icon-bg: transparent;
+    --typo3-alert-padding-x: 1rem;
+    --typo3-alert-padding-y: 1rem;
+    --typo3-alert-padding-dismissable-end: 3rem;
+    --typo3-alert-margin-bottom: var(--typo3-spacing);
+    --typo3-alert-border-color: color-mix(in srgb, var(--typo3-alert-bg), var(--typo3-alert-color) 15%);
+    --typo3-alert-border-radius: var(--typo3-component-border-radius);
+    --typo3-alert-link-color: inherit;
+    position: relative;
+    padding: var(--typo3-alert-padding-y) var(--typo3-alert-padding-x);
+    margin-bottom: var(--typo3-alert-margin-bottom);
+    color: var(--typo3-alert-color);
+    background-color: var(--typo3-alert-bg);
+    border: 1px solid var(--typo3-alert-border-color);
+    border-radius: var(--typo3-alert-border-radius);
+
     a {
         color: inherit;
         text-decoration: underline;
     }
 }
 
+.alert-inner {
+    display: flex;
+    gap: calc(var(--typo3-alert-padding-x) * .75);
+}
+
+.alert-content {
+    flex-grow: 1;
+    align-self: center;
+}
+
 .alert-title {
     font-size: 1.12em;
     line-height: 1.2;
     font-weight: bold;
-    margin: 0 0 .25em;
+    margin-bottom: .25em;
+}
+
+.alert-message {
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .alert-body,
@@ -31,16 +65,9 @@
 }
 
 .alert-dismissible {
-    padding-inline-start: var(--#{$prefix}alert-padding-x);
-    padding-inline-end: $alert-dismissible-padding-r;
-}
+    padding-inline-start: var(--typo3-alert-padding-x);
+    padding-inline-end: var(--typo3-alert-padding-dismissable-end);
 
-.alert-message {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-
-.alert-dismissible {
     .close {
         background: none;
         border: none;
@@ -51,35 +78,60 @@
         position: absolute;
         inset-inline-end: .625rem;
         inset-block-start: .625rem;
+        border-radius: .25rem;
+        outline-offset: 0;
         opacity: .5;
 
-        &:hover {
+        &:hover,
+        &:focus {
             color: inherit;
             opacity: 1;
         }
-    }
 
-    .alert-actions {
-        margin-inline-end: $alert-dismissible-padding-r * -1;
+        &:focus-visible {
+            outline: 2px solid var(--typo3-alert-color);
+        }
     }
 }
 
 .alert-actions {
     display: flex;
     flex-flow: row wrap;
-    margin: var(--#{$prefix}alert-padding-y) calc(var(--#{$prefix}alert-padding-x) * -1) calc(var(--#{$prefix}alert-padding-y) * -1);
+    gap: 1px;
+    background-color: var(--typo3-alert-border-color);
+    padding-top: 1px;
+    margin: var(--typo3-alert-padding-y) calc(var(--typo3-alert-padding-x) * -1) calc(var(--typo3-alert-padding-y) * -1);
+
+    .alert-dismissible & {
+        margin-inline-end: calc(var(--typo3-alert-padding-dismissable-end) * -1);
+    }
 
     a {
-        border-block-start: 1px solid var(--#{$prefix}alert-border-color);
         flex-basis: 25%;
         flex-grow: 1;
         font-weight: bold;
-        padding: .5rem var(--#{$prefix}alert-padding-x);
+        padding: .5rem var(--typo3-alert-padding-x);
         text-align: center;
         text-decoration: none;
+        outline-offset: -2px;
+        border-end-start-radius: calc(var(--typo3-alert-border-radius) - 2px);
+        background-color: var(--typo3-alert-bg);
+
+        &:last-child {
+            border-end-start-radius: 0;
+            border-end-end-radius: calc(var(--typo3-alert-border-radius) - 2px);
+        }
 
         &:hover {
-            background-color: rgba(255, 255, 255, .25);
+            background-color: color-mix(in srgb, var(--typo3-alert-bg), var(--typo3-alert-color) 5%);
+        }
+
+        &:focus {
+            background-color: color-mix(in srgb, var(--typo3-alert-bg), var(--typo3-alert-color) 10%);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--typo3-alert-color);
         }
 
         &.executing {
@@ -90,42 +142,17 @@
             pointer-events: none;
             opacity: .4;
         }
-
-        &:not(:last-child) {
-            border-inline-end: 1px solid var(--#{$prefix}alert-border-color);
-        }
     }
 }
 
 //
-// Variants
-// The light variants have problems beeing generated, they need manual correction.
+// Color Variants
 //
-.alert-light {
-    --#{$prefix}alert-color: #{$body-color};
-    --#{$prefix}alert-bg: #{$light};
-    --#{$prefix}alert-border-color: #{shade-color($light, 10%)};
-    --#{$prefix}alert-link-color: #{$body-color};
-}
-
-.alert-default {
-    --#{$prefix}alert-color: #{$body-color};
-    --#{$prefix}alert-bg: #{$default};
-    --#{$prefix}alert-border-color: #{shade-color($default, 10%)};
-    --#{$prefix}alert-link-color: #{$body-color};
-}
-
-// Notice is currently not beeing generated correctly
-// Bootstrap 5.3 introduced new color maps:
-// - $theme-colors-border-subtle
-// - $theme-colors-bg-subtle
-// - $theme-colors-text
-//
-// While the maps exist we wait for the final release to adopt
-// since we need to define a lot more colors here.
-.alert-notice {
-    --#{$prefix}alert-color: #{$body-color};
-    --#{$prefix}alert-bg: #{$gray-300};
-    --#{$prefix}alert-border-color: #{shade-color($gray-300, 10%)};
-    --#{$prefix}alert-link-color: #{$body-color};
+@each $state in $base-variants {
+    .alert-#{$state} {
+        --typo3-alert-color: var(--typo3-surface-container-#{$state}-text);
+        --typo3-alert-bg: var(--typo3-surface-container-#{$state});
+        --typo3-alert-icon-color: var(--typo3-state-#{$state}-color);
+        --typo3-alert-icon-bg: var(--typo3-state-#{$state}-bg);
+    }
 }

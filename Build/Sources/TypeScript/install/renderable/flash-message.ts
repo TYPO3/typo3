@@ -46,11 +46,11 @@ export class FlashMessage extends LitElement {
   protected render(): TemplateResult {
     let content: TemplateResult | symbol = nothing;
     if (this.content) {
-      content = html`<p class="messageText">${this.content}</p>`;
+      content = html`<p class="alert-message">${this.content}</p>`;
     }
     return html`
-      <div class="t3js-message typo3-message alert alert-${Severity.getCssClass(this.severity)}">
-        <h4>${this.subject}</h4>
+      <div class="t3js-message alert alert-${Severity.getCssClass(this.severity)}">
+        <div class="alert-title">${this.subject}</div>
         ${content}
       </div>
     `;

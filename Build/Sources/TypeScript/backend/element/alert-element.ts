@@ -70,15 +70,15 @@ export class AlertElement extends LitElement {
         aria-describedby="alert-message-${this.randomSuffix}"
         @closed.bs.alert="${this.remove}"
       >
-        <div class="media">
+        <div class="alert-inner">
           ${this.showIcon ? html`
-            <div class="media-left">
+            <div class="alert-icon">
               <span class="icon-emphasized">
                 <typo3-backend-icon identifier="${AlertElement.getIconIdentifier(this.severity)}" size="small"></typo3-backend-icon>
               </span>
             </div>
           ` : nothing}
-          <div class="media-body">
+          <div class="alert-content">
             ${this.heading ? html`<h4 class="alert-title" id="alert-title-${this.randomSuffix}">${this.heading}</h4>` : nothing}
             <p class="alert-body" id="alert-message-${this.randomSuffix}">${this.message}</p>
           </div>

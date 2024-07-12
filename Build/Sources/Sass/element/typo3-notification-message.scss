@@ -7,38 +7,56 @@
 // </div>
 //
 #alert-container {
+    --typo3-alert-container-color: var(--typo3-text-color-base);
+    --typo3-alert-container-bg: var(--typo3-surface-container-high);
+    --typo3-alert-contanier-border-radius: var(--typo3-component-border-radius);
+    --typo3-alert-container-padding: .5rem;
+    --typo3-alert-container-border-color: color-mix(in srgb, var(--typo3-alert-container-bg), var(--typo3-alert-container-color) 20%);
+    --typo3-alert-container-shadow: var(--typo3-component-box-shadow-dialog);
+    --typo3-alert-container-offset: calc(var(--typo3-spacing) * 1.5);
+    --typo3-alert-container-bar-shadow: var(--typo3-component-box-shadow-strong);
     width: 400px;
     position: fixed;
-    inset-inline-end: 5px;
     z-index: 10000;
-    bottom: calc(var(--typo3-spacing) * 1.5);
+    color: var(--typo3-alert-container-color);
+    max-width: calc(100% - (var(--typo3-alert-container-offset) * 2));
+    bottom: var(--typo3-alert-container-offset);
+    background-color: var(--typo3-alert-container-bg);
+    border: 1px solid var(--typo3-alert-container-border-color);
+    border-radius: var(--typo3-alert-contanier-border-radius);
+    box-shadow: var(--typo3-alert-container-shadow);
+    overflow: hidden;
 
     @media (max-width: 767px) {
-        left: 50%;
+        inset-inline-start: 50%;
         transform: translateX(-50%);
     }
 
     @media (min-width: 768px) {
-        right: calc(var(--typo3-spacing) * 1.5);
+        inset-inline-end: calc(var(--typo3-spacing) * 1.5);
     }
 
     .alert-list {
-        display: block;
-        max-height: calc(100vh - $toolbar-height - var(--typo3-spacing) - var(--module-docheader-height) * 2);
+        display: grid;
+        grid-template-columns: 1fr;
+        padding: var(--typo3-alert-container-padding);
+        gap: var(--typo3-alert-container-padding);
+        max-height: calc(50dvh);
         overflow-y: auto;
-    }
+        outline-offset: -2px;
 
-    typo3-notification-message {
-        margin-top: 5px;
+        &:focus-visible {
+            outline: 2px solid color-mix(in srgb, var(--typo3-alert-container-border-color), currentColor 25%);
+        }
     }
 
     typo3-notification-clear-all {
+        display: block;
         text-align: right;
-
-        div {
-            display: block;
-            padding-bottom: calc(var(--typo3-spacing) / 2);
-        }
+        padding: var(--typo3-alert-container-padding);
+        box-shadow: var(--typo3-alert-container-bar-shadow);
+        position: relative;
+        z-index: 1;
     }
 }
 
@@ -46,7 +64,6 @@ typo3-notification-message {
     display: block;
 
     .alert {
-        box-shadow: var(--typo3-component-box-shadow-dialog);
-        margin: 0;
+        --typo3-alert-margin-bottom: 0;
     }
 }

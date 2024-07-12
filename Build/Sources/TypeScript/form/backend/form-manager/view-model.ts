@@ -357,7 +357,6 @@ function newFormSetup(formManagerApp: FormManager): void {
         + '<p>' + TYPO3.lang['formManager.newFormWizard.step3.message'] + '</p>'
         + '</div>'
         + '<div class="alert alert-notice">'
-        + '<div class="alert-body mt-1">'
 
       if (settings.prototypeNameName) {
         html += '<div class="row my-1">'
@@ -403,7 +402,6 @@ function newFormSetup(formManagerApp: FormManager): void {
         + '</div>';
 
       html += '</div>'
-        + '</div>'
         + '</div>';
 
       slide.html(html);
@@ -605,7 +603,6 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
         + '<p>' + TYPO3.lang['formManager.newFormWizard.step3.message'] + '</p>'
         + '</div>'
         + '<div class="alert alert-notice">'
-        + '<div class="alert-body mt-1">'
         + '<div class="dropdown-table-row">'
         + '<div class="dropdown-table-column dropdown-table-icon">'
         + formTemplateIconMarkup
@@ -637,7 +634,6 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
         + '</div>'
         + '<div class="dropdown-table-column dropdown-table-value">'
         + securityUtility.encodeHtml(settings.confirmationDuplicateFormSavePath)
-        + '</div>'
         + '</div>'
         + '</div>'
         + '</div>';
