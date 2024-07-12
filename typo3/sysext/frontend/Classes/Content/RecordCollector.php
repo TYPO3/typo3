@@ -60,6 +60,9 @@ readonly class RecordCollector
             $recordsOnPid = $contentObjectRenderer->getRecords($table, $select);
             $recordsOnPid = array_map(
                 function ($record) use ($recordIdentityMap, $table) {
+                    if ($recordIdentityMap !== null && $recordIdentityMap->hasIdentifier($table, (int)$record['uid'])) {
+                        return $recordIdentityMap->findByIdentifier($table, (int)$record['uid']);
+                    }
                     $obj = $this->recordFactory->createFromDatabaseRow($table, $record);
                     $recordIdentityMap?->add($obj);
                     return $obj;

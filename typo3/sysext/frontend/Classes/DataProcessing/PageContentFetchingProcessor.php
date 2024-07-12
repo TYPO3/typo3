@@ -107,6 +107,7 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
                 ],
                 ContentSlideMode::tryFrom($contentAreaData['slideMode'] ?? null),
                 $cObj,
+                $this->recordIdentityMap
             );
             $contentAreaData['records'] = $records;
             $contentAreaName = $contentAreaData['identifier'];

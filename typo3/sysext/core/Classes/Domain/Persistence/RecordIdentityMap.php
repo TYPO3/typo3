@@ -53,7 +53,7 @@ class RecordIdentityMap
 
     public function add(RecordInterface $record): void
     {
-        $this->recordMap[$record->getMainType()][(string)$record->getUid()] = $record;
+        $this->recordMap[$record->getMainType()][$record->getUid()] = $record;
     }
 
     public function has(RecordInterface $record): bool
@@ -61,19 +61,19 @@ class RecordIdentityMap
         return isset($this->recordMap[$record->getMainType()][$record->getUid()]);
     }
 
-    public function findByIdentifier(string $recordType, int $identifier): RecordInterface
+    public function findByIdentifier(string $mainType, int $identifier): RecordInterface
     {
-        if ($this->hasIdentifier($recordType, $identifier)) {
-            return $this->recordMap[$recordType][$identifier];
+        if ($this->hasIdentifier($mainType, $identifier)) {
+            return $this->recordMap[$mainType][$identifier];
         }
         throw new \InvalidArgumentException(
-            'Record with type "' . $recordType . '" and identifier "' . $identifier . '" not found in the Identity Map.',
+            'Record with type "' . $mainType . '" and identifier "' . $identifier . '" not found in the Identity Map.',
             1720730774
         );
     }
 
-    public function hasIdentifier(string $recordType, int $identifier): bool
+    public function hasIdentifier(string $mainType, int $identifier): bool
     {
-        return isset($this->recordMap[$recordType][$identifier]);
+        return isset($this->recordMap[$mainType][$identifier]);
     }
 }
