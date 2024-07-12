@@ -62,7 +62,7 @@ lint php pre-merge:
   needs: []
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 7.4
-    - Build/Scripts/runTests.sh -s lintPhp -p 8.3
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.4
 
 grunt scss ts html pre-merge:
   stage: main
