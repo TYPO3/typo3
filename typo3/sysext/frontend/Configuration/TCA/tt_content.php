@@ -482,7 +482,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.text',
             'config' => [
                 'type' => 'text',
-                'cols' => 80,
+                'cols' => 50,
                 'rows' => 15,
                 'softref' => 'typolink_tag,email[subst],url',
                 'search' => [
