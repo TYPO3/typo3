@@ -239,7 +239,7 @@ class FormEditorController extends AbstractBackendController
         $formDefinition = $formDefinition->getArrayCopy();
 
         $formFactory = GeneralUtility::makeInstance(ArrayFormFactory::class);
-        $formDefinition = $formFactory->build($formDefinition, $prototypeName);
+        $formDefinition = $formFactory->build($formDefinition, $prototypeName, $this->request);
         $formDefinition->setRenderingOption('previewMode', true);
         $form = $formDefinition->bind($this->request);
         $form->setCurrentSiteLanguage($this->buildFakeSiteLanguage(0, 0));

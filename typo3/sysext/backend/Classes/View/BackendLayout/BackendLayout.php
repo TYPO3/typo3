@@ -164,6 +164,6 @@ class BackendLayout
      */
     public function getColumnPositionNumbers(): array
     {
-        return $this->structure['__colPosList'];
+        return $this->structure['__colPosList'] ?? [];
     }
 }

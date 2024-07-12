@@ -98,7 +98,7 @@ class ArrayFormFactory extends AbstractFormFactory
     protected function addNestedRenderable(
         array $nestedRenderableConfiguration,
         CompositeRenderableInterface $parentRenderable,
-        ServerRequestInterface $request
+        ?ServerRequestInterface $request = null
     ) {
         if (!isset($nestedRenderableConfiguration['identifier'])) {
             throw new IdentifierNotValidException('Identifier not set.', 1329289436);
@@ -107,7 +107,7 @@ class ArrayFormFactory extends AbstractFormFactory
             $renderable = $parentRenderable->createPage($nestedRenderableConfiguration['identifier'], $nestedRenderableConfiguration['type']);
         } elseif ($parentRenderable instanceof AbstractSection) {
             $renderable = $parentRenderable->createElement($nestedRenderableConfiguration['identifier'], $nestedRenderableConfiguration['type']);
-            if (method_exists($renderable, 'setRequest')) {
+            if ($request !== null && method_exists($renderable, 'setRequest')) {
                 $renderable->setRequest($request);
             }
         } else {

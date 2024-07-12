@@ -21,8 +21,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
+use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Backend\View\PageViewMode;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -50,15 +54,25 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
         $this->registerArgument('contentElementUid', 'int', 'The uid of a content element');
     }
 
+    /**
+     * @param RenderingContext $renderingContext
+     */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $content = '';
         $contentElementUid = $arguments['contentElementUid'];
         $contentRecord = BackendUtility::getRecord('tt_content', $contentElementUid);
-        if (!empty($contentRecord)) {
+        if (!empty($contentRecord) && ($request = $renderingContext->getRequest()) !== null) {
             $backendLayout = GeneralUtility::makeInstance(BackendLayout::class, 'dummy', 'dummy', []);
             $pageRow = BackendUtility::getRecord('pages', $contentRecord['pid']);
-            $pageLayoutContext = GeneralUtility::makeInstance(PageLayoutContext::class, $pageRow, $backendLayout);
+            $pageLayoutContext = GeneralUtility::makeInstance(
+                PageLayoutContext::class,
+                $pageRow,
+                $backendLayout,
+                $request->getAttribute('site') ?? new NullSite(),
+                DrawingConfiguration::create($backendLayout, BackendUtility::getPagesTSconfig($contentRecord['pid']), PageViewMode::LayoutView),
+                $request
+            );
             $gridColumn = GeneralUtility::makeInstance(GridColumn::class, $pageLayoutContext, []);
             $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $pageLayoutContext, $gridColumn, $contentRecord);
             return $columnItem->getPreview();
