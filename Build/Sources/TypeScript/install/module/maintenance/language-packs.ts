@@ -367,7 +367,7 @@ class LanguagePacks extends AbstractInteractableModule {
     const activateIcon = this.findInModal(this.selectorActivateLanguageIcon).html();
     const deactivateIcon = this.findInModal(this.selectorDeactivateLanguageIcon).html();
     const updateIcon = this.findInModal(this.selectorLanguageUpdateIcon).html();
-    const configurationIsWritable = this.getModuleContent().data('configuration-is-writable');
+    const configurationIsWritable = this.getModuleContent().data('configuration-is-writable') === true;
     const $markupContainer = $('<div>');
 
     const $tbody = $('<tbody>');
