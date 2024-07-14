@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
+use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -61,6 +63,8 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 $this->createMock(UriBuilder::class),
                 $this->createMock(ArrayFormFactory::class),
                 $this->createMock(ViewFactoryInterface::class),
+                $this->createMock(DatabaseService::class),
+                $this->createMock(CacheManager::class),
             ],
         );
         $prototypeConfiguration = [
@@ -154,6 +158,8 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 $this->createMock(UriBuilder::class),
                 $this->createMock(ArrayFormFactory::class),
                 $this->createMock(ViewFactoryInterface::class),
+                $this->createMock(DatabaseService::class),
+                $this->createMock(CacheManager::class),
             ],
         );
         $prototypeConfiguration = [

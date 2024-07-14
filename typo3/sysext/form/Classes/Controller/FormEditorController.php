@@ -22,6 +22,8 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -47,6 +49,7 @@ use TYPO3\CMS\Form\Exception;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
+use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Form\Type\FormDefinitionArray;
 
@@ -74,6 +77,8 @@ class FormEditorController extends ActionController
         protected readonly UriBuilder $coreUriBuilder,
         protected readonly ArrayFormFactory $arrayFormFactory,
         protected readonly ViewFactoryInterface $viewFactory,
+        protected readonly DatabaseService $databaseService,
+        protected readonly CacheManager $cacheManager,
     ) {}
 
     /**
@@ -201,6 +206,7 @@ class FormEditorController extends ActionController
                 throw new PersistenceManagerException(sprintf('Save "%s" is not allowed', $formPersistenceIdentifier), 1614500663);
             }
             $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition, $formSettings);
+            $this->flushPageCache($formPersistenceIdentifier);
             $prototypeConfiguration = $this->configurationService->getPrototypeConfiguration($formDefinition['prototypeName']);
             $formDefinition = $this->transformFormDefinitionForFormEditor($prototypeConfiguration, $formDefinition);
             $response['formDefinition'] = $formDefinition;
@@ -603,6 +609,23 @@ class FormEditorController extends ActionController
             $formDefinition['finishers'][$i] = $finisherConfiguration;
         }
         return $formDefinition;
+    }
+
+    protected function flushPageCache(string $formPersistenceIdentifier): void
+    {
+        $pageIdList = [];
+        $referenceRows = $this->databaseService->getReferencesByPersistenceIdentifier($formPersistenceIdentifier);
+        foreach ($referenceRows as $referenceRow) {
+            $record = BackendUtility::getRecord($referenceRow['tablename'], $referenceRow['recuid']);
+            if (!$record) {
+                continue;
+            }
+            $pageIdList[] = $record['pid'];
+        }
+
+        foreach (array_unique($pageIdList) as $pageId) {
+            $this->cacheManager->flushCachesInGroupByTag('pages', 'pageId_' . $pageId);
+        }
     }
 
     protected function getLanguageService(): LanguageService
