@@ -4104,7 +4104,6 @@ video{background-color:#000}
 .input-group-icon{vertical-align:middle}
 .input-group-icon img{max-height:18px}
 .input-group-text{min-width:2.5rem}
-label .icon img{pointer-events:none}
 .form-control{min-width:120px}
 .form-control::-moz-placeholder{color:var(--typo3-input-color-placeholder)}
 .form-control::placeholder{color:var(--typo3-input-color-placeholder)}
