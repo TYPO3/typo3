@@ -158,7 +158,7 @@ class Hotkeys {
         shift: e.shiftKey,
         alt: e.altKey,
       },
-      key: e.key.toLowerCase(),
+      key: e.key?.toLowerCase(),
     };
   }
 
