@@ -139,8 +139,8 @@ services:
     public: true
     alias: TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier
 
-  # Core caches, cache.core and cache.assets are injected as early
-  # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
+  # Core caches, cache.core, cache.assets and cache.runtime are injected as
+  # early entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
   cache.hash:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
@@ -150,11 +150,6 @@ services:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['pages']
-
-  cache.runtime:
-    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
-    arguments: ['runtime']
 
   cache.rootline:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface

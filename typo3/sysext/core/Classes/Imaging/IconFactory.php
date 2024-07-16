@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Imaging;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
 use TYPO3\CMS\Core\Imaging\Event\ModifyRecordOverlayIconIdentifierEvent;
 use TYPO3\CMS\Core\Resource\File;
@@ -30,62 +31,24 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * The main factory class, which acts as the entrypoint for generating an Icon object which
  * is responsible for rendering an icon. Checks for the correct icon provider through the IconRegistry.
  */
-class IconFactory
+readonly class IconFactory
 {
-    /**
-     * @var IconRegistry
-     */
-    protected $iconRegistry;
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+        private IconRegistry $iconRegistry,
+        private ContainerInterface $container,
+        private FrontendInterface $runtimeCache,
+    ) {}
 
     /**
-     * Mapping of record status to overlays.
-     * $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping']
-     *
-     * @var string[]
-     */
-    protected $recordStatusMapping = [];
-
-    /**
-     * Order of priorities for overlays.
-     * $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['overlayPriorities']
-     *
-     * @var string[]
-     */
-    protected $overlayPriorities = [];
-
-    /**
-     * Runtime icon cache
-     *
-     * @var array
-     */
-    protected static $iconCache = [];
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    protected ContainerInterface $container;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher, IconRegistry $iconRegistry, ContainerInterface $container)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->iconRegistry = $iconRegistry;
-        $this->container = $container;
-        $this->recordStatusMapping = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping'];
-        $this->overlayPriorities = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['overlayPriorities'];
-    }
-
-    /**
-     * @param string $identifier
-     * @param string|IconSize $size
-     * @param string $overlayIdentifier
-     * @return Icon
-     *
      * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIcon($identifier, string|IconSize $size = IconSize::MEDIUM, $overlayIdentifier = null, \TYPO3\CMS\Core\Type\Icon\IconState|IconState|null $state = null)
-    {
+    public function getIcon(
+        string $identifier,
+        string|IconSize $size = IconSize::MEDIUM,
+        ?string $overlayIdentifier = null,
+        \TYPO3\CMS\Core\Type\Icon\IconState|IconState|null $state = null
+    ): Icon {
         if ($state instanceof \TYPO3\CMS\Core\Type\Icon\IconState) {
             trigger_error(
                 'Using the non-native enumeration TYPO3\CMS\Core\Type\Icon\IconState in IconFactory->getIcon()'
@@ -100,16 +63,14 @@ class IconFactory
             $size = IconSize::from($size);
             $size->triggerDeprecation();
         }
-        $cacheIdentifier = md5($identifier . $size->value . $overlayIdentifier . $stateValue);
-        if (!empty(static::$iconCache[$cacheIdentifier])) {
-            return static::$iconCache[$cacheIdentifier];
+        $cacheIdentifier = 'icon-factory-' . hash('xxh3', $identifier . $size->value . $overlayIdentifier . $stateValue);
+        $icon = $this->runtimeCache->get($cacheIdentifier);
+        if ($icon instanceof Icon) {
+            return $icon;
         }
 
-        if (
-            !$this->iconRegistry->isDeprecated($identifier)
-            && !$this->iconRegistry->isRegistered($identifier)
-        ) {
-            // in case icon identifier is neither deprecated nor registered
+        if (!$this->iconRegistry->isDeprecated($identifier) && !$this->iconRegistry->isRegistered($identifier)) {
+            // If icon identifier is neither deprecated nor registered
             $identifier = $this->iconRegistry->getDefaultIconIdentifier();
         }
 
@@ -123,7 +84,7 @@ class IconFactory
             GeneralUtility::makeInstance($iconConfiguration['provider']);
         $iconProvider->prepareIconMarkup($icon, $iconConfiguration['options']);
 
-        static::$iconCache[$cacheIdentifier] = $icon;
+        $this->runtimeCache->set($cacheIdentifier, $icon);
 
         return $icon;
     }
@@ -133,12 +94,9 @@ class IconFactory
      *
      * @param string $table The TCA table name
      * @param array $row The DB record of the TCA table
-     * @param string|IconSize $size
-     * @return Icon
-     *
      * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIconForRecord($table, array $row, $size = IconSize::MEDIUM)
+    public function getIconForRecord(string $table, array $row, string|IconSize|null $size = IconSize::MEDIUM): Icon
     {
         if (is_string($size)) {
             $size = IconSize::from($size);
@@ -165,7 +123,7 @@ class IconFactory
      * @TODO: make this method protected, after FormEngine doesn't need it anymore.
      * @return string The icon identifier string for the icon of that DB record
      */
-    public function mapRecordTypeToIconIdentifier($table, array $row)
+    public function mapRecordTypeToIconIdentifier(string $table, array $row): string
     {
         $recordType = [];
         $ref = null;
@@ -327,7 +285,7 @@ class IconFactory
      * @param array $row The selected record
      * @return string The status with the highest priority
      */
-    protected function mapRecordTypeToOverlayIdentifier($table, array $row)
+    protected function mapRecordTypeToOverlayIdentifier(string $table, array $row): string
     {
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
         // Calculate for a given record the actual visibility at the moment
@@ -383,9 +341,12 @@ class IconFactory
 
         // Now only show the status with the highest priority
         $iconName = '';
-        foreach ($this->overlayPriorities as $priority) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['overlayPriorities'] ?? [] as $priority) {
             if ($status[$priority]) {
-                $iconName = $this->recordStatusMapping[$priority];
+                if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping'][$priority]) {
+                    throw new \LogicException('Priority ' . $priority . ' is not configured', 1719756056);
+                }
+                $iconName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping'][$priority];
                 break;
             }
         }
@@ -398,14 +359,9 @@ class IconFactory
     /**
      * Get Icon for a file by its extension
      *
-     * @param string $fileExtension
-     * @param string|IconSize $size
-     * @param string $overlayIdentifier
-     * @return Icon
-     *
      * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIconForFileExtension($fileExtension, string|IconSize $size = IconSize::MEDIUM, $overlayIdentifier = null)
+    public function getIconForFileExtension(string $fileExtension, string|IconSize $size = IconSize::MEDIUM, ?string $overlayIdentifier = null): Icon
     {
         if (is_string($size)) {
             $size = IconSize::from($size);
@@ -427,20 +383,16 @@ class IconFactory
      *
      * There is a hook in place to manipulate the icon name and overlays.
      *
-     * @param ResourceInterface $resource
-     * @param string|IconSize $size
-     * @param string $overlayIdentifier
      * @param array $options An associative array with additional options.
-     * @return Icon
      *
      * @todo: Change $size to allow IconSize only in v14
      */
     public function getIconForResource(
         ResourceInterface $resource,
         string|IconSize $size = IconSize::MEDIUM,
-        $overlayIdentifier = null,
+        ?string $overlayIdentifier = null,
         array $options = []
-    ) {
+    ): Icon {
         $iconIdentifier = null;
 
         // Folder
@@ -537,13 +489,9 @@ class IconFactory
     /**
      * Creates an icon object
      *
-     * @param string $identifier
-     * @param IconSize $size
-     * @param string $overlayIdentifier
      * @param array $iconConfiguration the icon configuration array
-     * @return Icon
      */
-    protected function createIcon($identifier, IconSize $size, $overlayIdentifier = null, array $iconConfiguration = [])
+    protected function createIcon(string $identifier, IconSize $size, ?string $overlayIdentifier = null, array $iconConfiguration = []): Icon
     {
         $icon = GeneralUtility::makeInstance(Icon::class);
         $icon->setIdentifier($identifier);
@@ -556,15 +504,11 @@ class IconFactory
         if (!empty($iconConfiguration['options']['spinning'])) {
             $icon->setSpinning(true);
         }
-
         return $icon;
     }
 
     /**
-     * clear icon cache
+     * @internal Remove in v14. May have been used during testing in TYPO3 <v14.
      */
-    public function clearIconCache()
-    {
-        static::$iconCache = [];
-    }
+    public function clearIconCache(): void {}
 }

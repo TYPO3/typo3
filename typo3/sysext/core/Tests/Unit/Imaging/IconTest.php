@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -40,7 +41,7 @@ final class IconTest extends UnitTestCase
         parent::setUp();
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('has')->with(self::anything())->willReturn(false);
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $containerMock);
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $containerMock, $this->createMock(FrontendInterface::class));
         $this->subject = $iconFactory->getIcon($this->iconIdentifier, IconSize::SMALL, $this->overlayIdentifier, IconState::STATE_DISABLED);
     }
 

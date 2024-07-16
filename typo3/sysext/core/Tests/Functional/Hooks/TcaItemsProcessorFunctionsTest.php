@@ -77,7 +77,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                 1 => [
                     'label' => 'aTitle',
                     'value' => 'aTable',
-                    'icon' => null,
+                    'icon' => '',
                 ],
             ],
         ];
@@ -116,7 +116,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                 1 => [
                     'label' => 'aLabel',
                     'value' => 'aValue',
-                    'icon' => null,
+                    'icon' => '',
                 ],
             ],
         ];
@@ -200,7 +200,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                     'fooTable' => [
                         'label' => 'fooTableTitle',
                         'value' => '--div--',
-                        'icon' => null,
+                        'icon' => '',
                     ],
                     0 => [
                         'label' => 'barColumnTitle (bar)',
@@ -233,7 +233,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                     'fooTable' => [
                         'label' => 'fooTableTitle',
                         'value' => '--div--',
-                        'icon' => null,
+                        'icon' => '',
                     ],
                     0 => [
                         'label' => 'barColumnTitle (bar)',
@@ -346,7 +346,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                 'fooTableTitle aFlexFieldTitle dummy' => [
                     'label' => 'fooTableTitle aFlexFieldTitle dummy',
                     'value' => '--div--',
-                    'icon' => null,
+                    'icon' => '',
                 ],
                 0 => [
                     'label' => 'flexInputLabel (input1)',

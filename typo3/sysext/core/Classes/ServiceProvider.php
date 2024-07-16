@@ -115,6 +115,7 @@ class ServiceProvider extends AbstractServiceProvider
             'icons' => self::getIcons(...),
             'middlewares' => self::getMiddlewares(...),
             'cache.assets' => self::getAssetsCache(...),
+            'cache.runtime' => self::getRuntimeCache(...),
             'core.middlewares' => self::getCoreMiddlewares(...),
             'content.security.policies' => self::getContentSecurityPolicies(...),
         ];
@@ -328,6 +329,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(EventDispatcherInterface::class),
             $container->get(Imaging\IconRegistry::class),
             $container,
+            $container->get('cache.runtime'),
         ]);
     }
 
@@ -603,6 +605,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getAssetsCache(ContainerInterface $container): FrontendInterface
     {
         return Bootstrap::createCache('assets');
+    }
+
+    public static function getRuntimeCache(ContainerInterface $container): FrontendInterface
+    {
+        return Bootstrap::createCache('runtime');
     }
 
     public static function getCoreMiddlewares(ContainerInterface $container): \ArrayObject

@@ -316,10 +316,7 @@ class IconRegistry implements SingletonInterface
         return isset($this->deprecatedIcons[$identifier]);
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultIconIdentifier()
+    public function getDefaultIconIdentifier(): string
     {
         return $this->defaultIconIdentifier;
     }
