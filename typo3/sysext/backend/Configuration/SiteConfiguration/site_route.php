@@ -9,6 +9,7 @@ return [
         'typeicon_column' => 'type',
         'typeicon_classes' => [
             'staticText' => 'mimetypes-text-html',
+            'asset' => 'mimetypes-text-html',
             'uri' => 'apps-pagetree-page-content-from-page',
         ],
     ],
@@ -37,6 +38,7 @@ return [
                     ['label' => '', 'value' => ''],
                     ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText', 'value' => 'staticText'],
                     ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.source', 'value' => 'uri'],
+                    ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.asset', 'value' => 'asset'],
                 ],
             ],
         ],
@@ -64,6 +66,19 @@ Allow: /typo3/sysext/frontend/Resources/Public/*
                 'allowedTypes' => ['page', 'url', 'record', 'file'],
             ],
         ],
+        'asset' => [
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.asset',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'trim',
+                'required' => true,
+                'valuePicker' => [
+                    'items' => [
+                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.asset.example', 'EXT:backend/Resources/Public/Icons/favicon.ico'],
+                    ],
+                ],
+            ],
+        ],
     ],
     'types' => [
         '1' => [
@@ -74,6 +89,9 @@ Allow: /typo3/sysext/frontend/Resources/Public/*
         ],
         'uri' => [
             'showitem' => 'route, type, source',
+        ],
+        'asset' => [
+            'showitem' => 'route, type, asset',
         ],
     ],
 ];

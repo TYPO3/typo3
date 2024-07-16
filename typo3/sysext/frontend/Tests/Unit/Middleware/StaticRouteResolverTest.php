@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,7 +28,9 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Middleware\StaticRouteResolver;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StaticRouteResolverTest extends UnitTestCase
@@ -51,7 +54,8 @@ final class StaticRouteResolverTest extends UnitTestCase
     {
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
         $linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
-        $subject = new StaticRouteResolver($requestFactoryMock, $linkServiceMock);
+        $filePathSanitizer = new FilePathSanitizer();
+        $subject = new StaticRouteResolver($requestFactoryMock, $linkServiceMock, $filePathSanitizer);
         $site = new Site('lotus-flower', 13, [
             'base' => 'https://example.com/',
             'languages' => [
@@ -106,5 +110,116 @@ final class StaticRouteResolverTest extends UnitTestCase
         $request = $request->withAttribute('site', $site);
         $response = $subject->process($request, $this->requestHandler);
         self::assertInstanceOf(NullResponse::class, $response);
+    }
+
+    #[Test]
+    public function assetRoutesProvideProperResponse(): void
+    {
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $filePathSanitizer = new FilePathSanitizer();
+        $subject = new StaticRouteResolver($requestFactoryMock, $linkServiceMock, $filePathSanitizer);
+        $site = new Site('lotus-flower', 13, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'locale' => 'en_US.UTF-8',
+                    'base' => '/',
+                ],
+            ],
+            'routes' => [
+                [
+                    'route' => '/extension.svg',
+                    'type' => 'asset',
+                    'asset' => 'EXT:frontend/Resources/Public/Icons/Extension.svg',
+                ],
+                [
+                    'route' => '/some/subdirectory/extension.svg',
+                    'type' => 'asset',
+                    'asset' => 'EXT:frontend/Resources/Public/Icons/Extension.svg',
+                ],
+            ],
+        ]);
+
+        $request = new ServerRequest('https://example.com/extension.svg');
+        $request = $request->withAttribute('site', $site);
+        $response = $subject->process($request, $this->requestHandler);
+        self::assertInstanceOf(HtmlResponse::class, $response);
+        self::assertEquals(file_get_contents(GeneralUtility::getFileAbsFileName('EXT:frontend/Resources/Public/Icons/Extension.svg')), $response->getBody()->getContents());
+
+        $request = new ServerRequest('https://example.com/some/subdirectory/extension.svg');
+        $request = $request->withAttribute('site', $site);
+        $response = $subject->process($request, $this->requestHandler);
+        self::assertInstanceOf(HtmlResponse::class, $response);
+        self::assertEquals(file_get_contents(GeneralUtility::getFileAbsFileName('EXT:frontend/Resources/Public/Icons/Extension.svg')), $response->getBody()->getContents());
+
+        $request = new ServerRequest('https://example.com/invalid-file');
+        $request = $request->withAttribute('site', $site);
+        $response = $subject->process($request, $this->requestHandler);
+        self::assertInstanceOf(NullResponse::class, $response);
+    }
+
+    public static function assetRoutesResponseTriggersExceptionForInvalidAssetDataProvider(): \Generator
+    {
+        yield 'empty asset' => [
+            'some-route.svg',
+            '',
+            1721134959,
+        ];
+        yield 'invalid asset, with invalid path' => [
+            'some-route-2.svg',
+            '../path-to-invalid-asset.svg',
+            1721134960,
+        ];
+        yield 'missing asset, with valid path' => [
+            'some-route-2.svg',
+            './././path-to-invalid-asset.svg',
+            1721134960,
+        ];
+        yield 'missing asset, with valid path and subdirectory route' => [
+            '/path/to/somedirectory/with/some-route-2.svg',
+            './././path-to-invalid-asset.svg',
+            1721134960,
+        ];
+        yield 'missing asset, with EXT notation' => [
+            'some-route-2.svg',
+            'EXT:missingExt/Resources/NoPath/NoFile.svg',
+            1721134960,
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('assetRoutesResponseTriggersExceptionForInvalidAssetDataProvider')]
+    public function assetRoutesResponseTriggersExceptionForInvalidAsset(string $route, string $asset, int $exceptionCode): void
+    {
+        $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
+        $linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
+        $filePathSanitizer = new FilePathSanitizer();
+        $subject = new StaticRouteResolver($requestFactoryMock, $linkServiceMock, $filePathSanitizer);
+        $site = new Site('lotus-flower', 13, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'locale' => 'en_US.UTF-8',
+                    'base' => '/',
+                ],
+            ],
+            'routes' => [
+                [
+                    'route' => $route,
+                    'type' => 'asset',
+                    'asset' => $asset,
+                ],
+            ],
+        ]);
+
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionCode($exceptionCode);
+
+        $request = new ServerRequest('https://example.com/' . $route);
+        $request = $request->withAttribute('site', $site);
+        $subject->process($request, $this->requestHandler);
     }
 }

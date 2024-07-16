@@ -25,10 +25,17 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Type\File\FileInfo;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * Resolves static routes - can return configured content directly or load content from file / urls
@@ -37,7 +44,8 @@ class StaticRouteResolver implements MiddlewareInterface
 {
     public function __construct(
         protected readonly RequestFactory $requestFactory,
-        protected readonly LinkService $linkService
+        protected readonly LinkService $linkService,
+        protected readonly FilePathSanitizer $filePathSanitizer,
     ) {}
 
     /**
@@ -157,9 +165,30 @@ class StaticRouteResolver implements MiddlewareInterface
                 }
 
                 break;
+            case 'asset':
+                if (!($routeConfig['asset'] ?? null)) {
+                    throw new \InvalidArgumentException('A static route of type "asset" must have an asset defined.', 1721134959);
+                }
+
+                try {
+                    $path = $this->filePathSanitizer->sanitize($routeConfig['asset']);
+                } catch (InvalidFileNameException|InvalidPathException|FileDoesNotExistException|InvalidFileException) {
+                    // We provide our own custom exception at this point
+                    $path = '';
+                }
+
+                if ($path === '') {
+                    throw new \InvalidArgumentException(sprintf('The asset "%s" (resolved to "%s") was invalid.', $routeConfig['asset'], $path), 1721134960);
+                }
+
+                $content = file_get_contents($path);
+                /** @var FileInfo $fileInfo */
+                $fileInfo = GeneralUtility::makeInstance(FileInfo::class, $path);
+                $contentType = $fileInfo->getMimeType();
+                break;
             default:
                 throw new \InvalidArgumentException(
-                    'Can only handle static file configurations with type uri or staticText.',
+                    'Can only handle static file configurations with type uri, staticText or asset',
                     1537348083
                 );
         }

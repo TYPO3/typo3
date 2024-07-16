@@ -23,10 +23,7 @@ namespace TYPO3\CMS\Core\Resource;
  */
 final class MimeTypeDetector
 {
-    /**
-     * @var MimeTypeCollection
-     */
-    private $collection;
+    private MimeTypeCollection $collection;
 
     public function __construct()
     {

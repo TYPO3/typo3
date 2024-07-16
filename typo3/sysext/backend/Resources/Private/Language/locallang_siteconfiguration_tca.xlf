@@ -210,6 +210,12 @@
 			<trans-unit id="site_route.source" resname="site_route.source">
 				<source>Page, File or URL</source>
 			</trans-unit>
+			<trans-unit id="site_route.asset" resname="site_route.asset">
+				<source>Static Asset</source>
+			</trans-unit>
+			<trans-unit id="site_route.asset.example" resname="site_route.asset.example">
+				<source>Example asset</source>
+			</trans-unit>
 			<trans-unit id="site_route.route" resname="site_route.route">
 				<source>Static Route Name</source>
 			</trans-unit>
