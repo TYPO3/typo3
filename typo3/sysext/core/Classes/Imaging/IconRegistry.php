@@ -63,17 +63,6 @@ class IconRegistry implements SingletonInterface
     protected $backendIconDeclaration = 'EXT:core/Resources/Public/Icons/T3Icons/icons.json';
 
     /**
-     * List of allowed icon file extensions with their Provider class
-     *
-     * @var string[]
-     */
-    protected $backendIconAllowedExtensionsWithProvider = [
-        'png' => BitmapIconProvider::class,
-        'webp' => BitmapIconProvider::class,
-        'svg' => SvgIconProvider::class,
-    ];
-
-    /**
      * manually registered icons
      * hopefully obsolete one day
      *
