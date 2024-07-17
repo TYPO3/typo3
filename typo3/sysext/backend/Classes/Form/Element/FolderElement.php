@@ -184,48 +184,53 @@ class FolderElement extends AbstractFormElement
             $html[] =       '<div class="form-wizards-items-aside form-wizards-items-aside--move">';
             $html[] =           '<div class="btn-group-vertical">';
             if ($maxItems > 1 && $size >= 5 && $showMoveIcons) {
-                $html[] =           '<a href="#"';
+                $html[] =           '<button type="button"';
                 $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-top"';
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '"';
                 $html[] =           '>';
                 $html[] =               $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render();
-                $html[] =           '</a>';
+                $html[] =               '<span class="visually-hidden">' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_top')) . '</span>';
+                $html[] =           '</button>';
             }
             if ($maxItems > 1 && $size > 1 && $showMoveIcons) {
-                $html[] =           '<a href="#"';
+                $html[] =           '<button type="button"';
                 $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-up"';
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '"';
                 $html[] =           '>';
                 $html[] =               $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render();
-                $html[] =           '</a>';
-                $html[] =           '<a href="#"';
+                $html[] =               '<span class="visually-hidden">' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_up')) . '</span>';
+                $html[] =           '</button>';
+                $html[] =           '<button type="button"';
                 $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-down"';
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '"';
                 $html[] =           '>';
                 $html[] =               $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render();
-                $html[] =           '</a>';
+                $html[] =               '<span class="visually-hidden">' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '</span>';
+                $html[] =           '</button>';
             }
             if ($maxItems > 1 && $size >= 5 && $showMoveIcons) {
-                $html[] =           '<a href="#"';
+                $html[] =           '<button type="button"';
                 $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-bottom"';
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '"';
                 $html[] =           '>';
                 $html[] =               $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render();
-                $html[] =           '</a>';
+                $html[] =               '<span class="visually-hidden">' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_to_bottom')) . '</span>';
+                $html[] =           '</button>';
             }
             if ($showDeleteControl) {
-                $html[] =           '<a href="#"';
+                $html[] =           '<button type="button"';
                 $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-removeoption t3js-revert-unique"';
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
                 $html[] =               ' data-uid="' . htmlspecialchars((string)$row['uid']) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
                 $html[] =           '>';
                 $html[] =               $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
-                $html[] =           '</a>';
+                $html[] =               '<span class="visually-hidden">' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '</span>';
+                $html[] =           '</button>';
             }
             $html[] =           '</div>';
             $html[] =       '</div>';
