@@ -25,10 +25,15 @@ $login-input-border-color: #949494;
 $login-input-padding-vertical: $padding-large-vertical;
 $login-input-padding-horizontal: $padding-large-horizontal;
 $login-container-padding-horizontal: 2.5em;
+$login-link-focus-outline-color: #1a1d1d;
 
 //
 // Login
 //
+
+body[data-typo3-login-ready] {
+    overflow-y: auto;
+}
 
 .typo3-login {
     display: flex;
@@ -160,6 +165,11 @@ $login-container-padding-horizontal: 2.5em;
 
     a {
         font-weight: bold;
+
+        &:focus-visible {
+            outline: 1px solid $login-link-focus-outline-color;
+            outline-offset: 1px;
+        }
     }
 
     @include media-breakpoint-down('md') {
