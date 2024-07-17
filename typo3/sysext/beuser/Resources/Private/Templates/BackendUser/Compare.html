@@ -196,6 +196,14 @@
                     </f:for>
                 </tr>
                 <tr>
+                    <th>{f:translate(key:'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:tt_content')}: {f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type')}</th>
+                    <f:for each="{compareUserList}" as="compareData">
+                        <td>
+                            <f:render partial="Compare/Information" section="pageContentTypes" arguments="{pageContentTypes:compareData.pageContentTypes}" />
+                        </td>
+                    </f:for>
+                </tr>
+                <tr>
                     <th>{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms')}</th>
                     <f:for each="{compareUserList}" as="compareData">
                         <td>

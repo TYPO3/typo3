@@ -235,6 +235,16 @@ class UserInformationService
             $data['pageTypes'][] = ['label' => $label, 'value' => $value, 'icon' => $icon];
         }
 
+        // page content types
+        $pageContentTypes = GeneralUtility::trimExplode(',', $user->groupData['explicit_allowdeny'] ?? '', true);
+        foreach ($pageContentTypes as $item) {
+            $split = explode(':', $item);
+            if (count($split) !== 3) {
+                continue;
+            }
+            $data['pageContentTypes'][] = BackendUtility::getLabelFromItemlist(...$split);
+        }
+
         return $data;
     }
 
