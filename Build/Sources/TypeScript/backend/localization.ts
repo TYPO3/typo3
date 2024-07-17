@@ -91,13 +91,14 @@ class Localization {
         actions.push(
           '<div class="row">'
           + '<div class="col-sm-3">'
-          + '<label class="btn btn-default d-block t3js-localization-option" data-helptext=".t3js-helptext-translate">'
+          + '<input class="btn-check t3js-localization-option" type="radio" name="mode" id="mode_translate" value="localize">'
+          + '<label class="btn btn-default btn-block-vertical" for="mode_translate" data-action="localize">'
           + localizeIconMarkup
-          + '<input type="radio" name="mode" id="mode_translate" value="localize" style="display: none">'
-          + '<br>' + TYPO3.lang['localize.wizard.button.translate'] + '</label>'
+          + TYPO3.lang['localize.wizard.button.translate']
+          + '</label>'
           + '</div>'
           + '<div class="col-sm-9">'
-          + '<p class="t3js-helptext t3js-helptext-translate text-body-secondary">' + TYPO3.lang['localize.educate.translate'] + '</p>'
+          + '<p class="text-body-secondary">' + TYPO3.lang['localize.educate.translate'] + '</p>'
           + '</div>'
           + '</div>',
         );
@@ -108,10 +109,11 @@ class Localization {
         actions.push(
           '<div class="row">'
           + '<div class="col-sm-3">'
-          + '<label class="btn btn-default d-block t3js-localization-option" data-helptext=".t3js-helptext-copy">'
+          + '<input class="btn-check t3js-localization-option" type="radio" name="mode" id="mode_copy" value="copyFromLanguage">'
+          + '<label class="btn btn-default btn-block-vertical" for="mode_copy" data-action="copy">'
           + copyIconMarkup
-          + '<input type="radio" name="mode" id="mode_copy" value="copyFromLanguage" style="display: none">'
-          + '<br>' + TYPO3.lang['localize.wizard.button.copy'] + '</label>'
+          + TYPO3.lang['localize.wizard.button.copy']
+          + '</label>'
           + '</div>'
           + '<div class="col-sm-9">'
           + '<p class="t3js-helptext t3js-helptext-copy text-body-secondary">' + TYPO3.lang['localize.educate.copy'] + '</p>'
@@ -159,11 +161,8 @@ class Localization {
             }
 
             $slide.html('<div class="text-center">' + (await Icons.getIcon('spinner-circle', Icons.sizes.large)) + '</div>');
-            MultiStepWizard.getComponent().on('click', '.t3js-language-option', (optionEvt: JQueryEventObject): void => {
-              const $me = $(optionEvt.currentTarget);
-              const $radio = $me.prev();
-
-              MultiStepWizard.set('sourceLanguage', $radio.val());
+            MultiStepWizard.getComponent().on('change', '.t3js-language-option', (optionEvt: JQueryEventObject): void => {
+              MultiStepWizard.set('sourceLanguage', $(optionEvt.currentTarget).val());
               MultiStepWizard.unlockNextStep();
             });
 
@@ -176,11 +175,10 @@ class Localization {
                 name: 'language',
                 id: id,
                 value: languageObject.uid,
-                style: 'display: none;',
-                class: 'btn-check'
+                class: 'btn-check t3js-language-option'
               });
               const $label: JQuery = $('<label />', {
-                class: 'btn btn-default d-block t3js-language-option option',
+                class: 'btn btn-default btn-block',
                 'for': id
               })
                 .text(' ' + languageObject.title)
@@ -224,48 +222,71 @@ class Localization {
             }
 
             const column = columns[colPos];
-            const $row = $('<div />', { class: 'row' });
+            const rowElement = document.createElement('div');
+            rowElement.classList.add('row', 'gy-2')
 
             result.records[colPos].forEach((record: SummaryColPosRecord): void => {
               const label = ' (' + record.uid + ') ' + record.title;
               settings.records.push(record.uid);
 
-              $row.append(
-                $('<div />', { 'class': 'col-sm-6' }).append(
-                  $('<div />', { 'class': 'input-group' }).append(
-                    $('<span />', { 'class': 'input-group-text' }).append(
-                      $('<input />', {
-                        type: 'checkbox',
-                        'class': 't3js-localization-toggle-record',
-                        id: 'record-uid-' + record.uid,
-                        checked: 'checked',
-                        'data-uid': record.uid,
-                        'aria-label': label,
-                      }),
-                    ),
-                    $('<label />', {
-                      'class': 'form-control',
-                      for: 'record-uid-' + record.uid,
-                    }).text(label).prepend(record.icon),
-                  ),
-                ),
-              );
+              const columnElement = document.createElement('div');
+              columnElement.classList.add('col-sm-6');
+
+              const inputGroupElement = document.createElement('div');
+              inputGroupElement.classList.add('input-group');
+
+              const inputGroupTextElement = document.createElement('span');
+              inputGroupTextElement.classList.add('input-group-text');
+
+              const checkboxContainerElement = document.createElement('span');
+              checkboxContainerElement.classList.add('form-check', 'form-check-type-toggle');
+
+              const checkboxInputElement = document.createElement('input');
+              checkboxInputElement.type = 'checkbox';
+              checkboxInputElement.id = 'record-uid-' + record.uid;
+              checkboxInputElement.classList.add('form-check-input', 't3js-localization-toggle-record');
+              checkboxInputElement.checked = true;
+              checkboxInputElement.dataset.uid = record.uid.toString();
+              checkboxInputElement.ariaLabel = label;
+
+              const labelElement = document.createElement('label');
+              labelElement.classList.add('form-control');
+              labelElement.htmlFor = 'record-uid-' + record.uid;
+              labelElement.innerHTML = record.icon;
+              labelElement.appendChild(document.createTextNode(label));
+
+              checkboxContainerElement.appendChild(checkboxInputElement);
+              inputGroupTextElement.appendChild(checkboxContainerElement);
+              inputGroupElement.appendChild(inputGroupTextElement);
+              inputGroupElement.appendChild(labelElement);
+              columnElement.appendChild(inputGroupElement);
+
+              rowElement.appendChild(columnElement);
             });
 
-            $slide.append(
-              $('<fieldset />', {
-                'class': 'localization-fieldset',
-              }).append(
-                $('<label />').text(column).prepend(
-                  $('<input />', {
-                    'class': 't3js-localization-toggle-column',
-                    type: 'checkbox',
-                    checked: 'checked',
-                  }),
-                ),
-                $row,
-              ),
-            );
+            const fieldsetElement = document.createElement('fieldset');
+            fieldsetElement.classList.add('localization-fieldset');
+
+            const fieldsetCheckboxContaineElement = document.createElement('div');
+            fieldsetCheckboxContaineElement.classList.add('form-check', 'form-check-type-toggle');
+
+            const fieldsetCheckboxInputElement = document.createElement('input');
+            fieldsetCheckboxInputElement.classList.add('form-check-input', 't3js-localization-toggle-column');
+            fieldsetCheckboxInputElement.id = 'records-column-' + colPos;
+            fieldsetCheckboxInputElement.type = 'checkbox';
+            fieldsetCheckboxInputElement.checked = true;
+
+            const fieldsetCheckboxInputLabel = document.createElement('label');
+            fieldsetCheckboxInputLabel.classList.add('form-check-label');
+            fieldsetCheckboxInputLabel.htmlFor = 'records-column-' + colPos;
+            fieldsetCheckboxInputLabel.textContent = column;
+
+            fieldsetCheckboxContaineElement.appendChild(fieldsetCheckboxInputElement);
+            fieldsetCheckboxContaineElement.appendChild(fieldsetCheckboxInputLabel);
+            fieldsetElement.appendChild(fieldsetCheckboxContaineElement);
+            fieldsetElement.appendChild(rowElement);
+
+            $slide.append(fieldsetElement);
           });
 
           MultiStepWizard.unlockNextStep();
@@ -319,18 +340,8 @@ class Localization {
       }).then((): void => {
         MultiStepWizard.show();
 
-        MultiStepWizard.getComponent().on('click', '.t3js-localization-option', (optionEvt: JQueryEventObject): void => {
-          const $me = $(optionEvt.currentTarget);
-          const $radio = $me.find('input[type="radio"]');
-
-          if ($me.data('helptext')) {
-            const $container = $(optionEvt.delegateTarget);
-            $container.find('.t3js-localization-option').removeClass('active');
-            $container.find('.t3js-helptext').addClass('text-body-secondary');
-            $me.addClass('active');
-            $container.find($me.data('helptext')).removeClass('text-body-secondary');
-          }
-          MultiStepWizard.set('localizationMode', $radio.val());
+        MultiStepWizard.getComponent().on('change', '.t3js-localization-option', (optionEvt: JQueryEventObject): void => {
+          MultiStepWizard.set('localizationMode', $(optionEvt.currentTarget).val());
           MultiStepWizard.unlockNextStep();
         });
       });

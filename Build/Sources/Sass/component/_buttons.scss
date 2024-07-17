@@ -57,10 +57,13 @@
         z-index: 3 !important;
     }
 
+    .btn-check:focus-visible + &,
     &:focus-visible {
         outline: .25rem solid color-mix(in srgb, var(--typo3-btn-focus-border-color), transparent 25%);
     }
 
+    .btn-check:checked + &,
+    :not(.btn-check) + &:active,
     &.active,
     &[aria-pressed="true"] {
         box-shadow: inset 0 0 1000px 0 color-mix(in srgb, var(--typo3-btn-color), transparent 90%);
@@ -104,6 +107,11 @@
     + .btn-block {
         margin-top: calc(var(--typo3-spacing) * .5);
     }
+}
+
+.btn-block-vertical {
+    flex-direction: column;
+    width: 100%;
 }
 
 //

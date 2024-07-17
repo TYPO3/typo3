@@ -74,7 +74,7 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->click('Translate');
         $I->switchToWindow('typo3-backend');
         $I->waitForText('Localize page "staticdata - language 1" into styleguide demo language danish');
-        $I->click('span[data-identifier="actions-localize"]');
+        $I->click('label[data-action="localize"]');
         $I->click('Next');
         $I->waitForText('Normal');
         $I->click('Next');

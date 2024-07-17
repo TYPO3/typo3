@@ -87,7 +87,7 @@ final class CodeViewHelper extends AbstractViewHelper
             }
             foreach ($schemes as $scheme) {
                 $markup[] = '<div class="example" data-color-scheme="' . $scheme . '">';
-                $markup[] = $content;
+                $markup[] = str_replace('<UNIQUEID>', uniqid($scheme), $content);
                 $markup[] = '</div>';
             }
         }
@@ -112,9 +112,9 @@ final class CodeViewHelper extends AbstractViewHelper
             $markup[] = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
             $markup[] = '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
             if ($this->arguments['decodeEntities']) {
-                $markup[] = htmlspecialchars_decode($content);
+                $markup[] = htmlspecialchars_decode(str_replace('<UNIQUEID>', uniqid('code'), $content));
             } else {
-                $markup[] = htmlspecialchars($content);
+                $markup[] = htmlspecialchars(str_replace('<UNIQUEID>', uniqid('code'), $content));
             }
             $markup[] = '</textarea>';
             $markup[] = '</typo3-t3editor-codemirror>';

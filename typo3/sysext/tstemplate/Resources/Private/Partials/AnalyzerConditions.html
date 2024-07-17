@@ -62,8 +62,8 @@
             <div class="panel-body">
                 <form action="{f:be.uri(route: 'web_typoscript_analyzer', parameters: '{id: pageUid}')}" method="post">
                     <f:for each="{conditions}" as="condition">
-                        <input type="hidden" name="{type}Conditions[{condition.hash}]" value="0" />
                         <div class="form-check form-switch">
+                            <input type="hidden" name="{type}Conditions[{condition.hash}]" value="0" />
                             <input
                                 type="checkbox"
                                 class="form-check-input"

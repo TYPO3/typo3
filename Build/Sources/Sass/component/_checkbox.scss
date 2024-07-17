@@ -100,14 +100,21 @@
 //             <span class="form-check-label-icon-checked">
 //                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-check" data-identifier="actions-check">
 //                     <span class="icon-markup">
-//                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M13.3 4.8l-.7-.7c-.2-.2-.5-.2-.7 0L6.5 9.5 4 6.9c-.2-.2-.5-.2-.7 0l-.6.7c-.2.2-.2.5 0 .7l3.6 3.6c.2.2.5.2.7 0l6.4-6.4c.1-.2.1-.5-.1-.7z" class="icon-color"></path></svg>
+//                         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 16 16"><g fill="currentColor"><path d="m13.3 4.8-.7-.7c-.2-.2-.5-.2-.7 0L6.5 9.5 4 6.9c-.2-.2-.5-.2-.7 0l-.6.7c-.2.2-.2.5 0 .7l3.6 3.6c.2.2.5.2.7 0l6.4-6.4c.1-.2.1-.5-.1-.7z"/></g></svg>
 //                     </span>
 //                 </span>
 //             </span>
 //             <span class="form-check-label-icon-unchecked">
 //                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-close" data-identifier="actions-close">
 //                     <span class="icon-markup">
-//                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M11.9 5.5L9.4 8l2.5 2.5c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0L8 9.4l-2.5 2.5c-.2.2-.5.2-.7 0l-.7-.7c-.2-.2-.2-.5 0-.7L6.6 8 4.1 5.5c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0L8 6.6l2.5-2.5c.2-.2.5-.2.7 0l.7.7c.2.2.2.5 0 .7z" class="icon-color"></path></svg>
+//                         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 16 16"><g fill="currentColor"><path d="M11.9 5.5 9.4 8l2.5 2.5c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0L8 9.4l-2.5 2.5c-.2.2-.5.2-.7 0l-.7-.7c-.2-.2-.2-.5 0-.7L6.6 8 4.1 5.5c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0L8 6.6l2.5-2.5c.2-.2.5-.2.7 0l.7.7c.2.2.2.5 0 .7z"/></g></svg>
+//                     </span>
+//                 </span>
+//             </span>
+//             <span class="form-check-label-icon-indeterminate">
+//                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-minus" data-identifier="actions-minus">
+//                     <span class="icon-markup">
+//                         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 16 16"><g fill="currentColor"><path d="M12.5 9h-9c-.3 0-.5-.2-.5-.5v-1c0-.3.2-.5.5-.5h9c.3 0 .5.2.5.5v1c0 .3-.2.5-.5.5Z"/></g></svg>
 //                     </span>
 //                 </span>
 //             </span>
@@ -150,13 +157,13 @@
         top: 0;
         inset-inline-start: 0;
         color: color-contrast($form-check-input-bg);
-
-        .icon {
-            vertical-align: middle;
-        }
     }
 
     .form-check-label-icon-checked {
+        display: none;
+    }
+
+    .form-check-label-icon-indeterminate {
         display: none;
     }
 
@@ -175,6 +182,28 @@
 
         .form-check-label-icon-unchecked {
             display: none;
+        }
+
+        .form-check-label-icon-indeterminate {
+            display: none;
+        }
+    }
+
+    .form-check-input:indeterminate ~ .form-check-label {
+        .form-check-label-icon {
+            color: color-contrast($form-check-input-checked-bg-color);
+        }
+
+        .form-check-label-icon-checked {
+            display: none;
+        }
+
+        .form-check-label-icon-unchecked {
+            display: none;
+        }
+
+        .form-check-label-icon-indeterminate {
+            display: block;
         }
     }
 
@@ -199,19 +228,24 @@
 //
 // Styleguide component.checkbox.3
 //
-$form-toggle-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g class='icon-color'><path d='M13 2c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
+$form-toggle-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' viewBox='0 0 16 16'><g fill='currentColor'><path d='M13 2c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
 $form-toggle-checked-color: $component-active-color !default;
-$form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><g class='icon-color'><path d='M12.1 5.3l-.4-.3c-.1-.1-.3-.1-.4 0L6.6 9.8l-2-2c-.1-.1-.3-.1-.4 0l-.3.4c-.1.1-.1.3 0 .4L6 10.7l.4.3c.1.1.3.1.4 0l.4-.4 4.9-4.9c.1-.1.1-.3 0-.4z'/><path d='M13 2c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
+$form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' viewBox='0 0 16 16'><g fill='currentColor'><path d='m12.1 5.3-.4-.3c-.1-.1-.3-.1-.4 0L6.6 9.8l-2-2c-.1-.1-.3-.1-.4 0l-.3.4c-.1.1-.1.3 0 .4L6 10.7l.4.3c.1.1.3.1.4 0l.4-.4 4.9-4.9c.1-.1.1-.3 0-.4z'/><path d='M13 2c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/></g></svg>") !default;
+$form-toggle-indeterminate-color: $component-active-color !default;
+$form-toggle-indeterminate-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' viewBox='0 0 16 16'><g fill='currentColor'><path d='M13 2c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V3c0-.6.4-1 1-1h10m0-1H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z'/><path d='M11.5 9h-7c-.3 0-.5-.2-.5-.5v-1c0-.3.2-.5.5-.5h7c.3 0 .5.2.5.5v1c0 .3-.2.5-.5.5z'/></g></svg>") !default;
 
 .form-check.form-check-type-toggle {
-    display: inline-block;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
     padding-inline-start: 0;
+    gap: .5em;
     margin: 0;
 
     .form-check-input[type="checkbox"] {
         margin: 0;
-        margin-top: 1px;
-        float: none;
+        flex-grow: 0;
+        flex-shrink: 0;
         border: 0;
         width: calc(16 / 12 * 1em);
         height: calc(16 / 12 * 1em);
@@ -225,6 +259,11 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
         &:checked {
             background-image: escape-svg($form-toggle-checked-bg-image);
             background-color: $form-toggle-checked-color;
+        }
+
+        &:indeterminate {
+            background-image: escape-svg($form-toggle-indeterminate-bg-image);
+            background-color: $form-toggle-indeterminate-color;
         }
     }
 }

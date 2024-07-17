@@ -14,3 +14,11 @@
         margin-inline-start: $form-switch-padding-start * -1;
     }
 }
+
+//
+// Bugfix to allow indeterminate state
+//
+.form-switch .form-check-input:indeterminate {
+    --#{$prefix}form-switch-bg: #{escape-svg($form-switch-checked-bg-image)};
+    background-position: center center;
+}

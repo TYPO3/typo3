@@ -283,10 +283,9 @@ $modal-sidebar-button-space: $padding-small-vertical;
         }
 
         .carousel-inner {
-            // fix cropped input outlines due to overflow:hidden
             width: auto;
-            margin: 0 -5px;
-            padding: 0 5px;
+            margin: -5px;
+            padding: 5px;
         }
     }
 

@@ -7,26 +7,11 @@ $option-margin-bottom: $padding-small-horizontal;
     }
 }
 
-[data-bs-slide="localize-summary"] {
-    .input-group {
-        margin-bottom: $option-margin-bottom;
+.localization-fieldset {
+    display: grid;
+    gap: calc(var(--typo3-spacing) / 4);
 
-        .form-control {
-            height: auto;
-            font-weight: normal;
-            margin: 0;
-        }
-    }
-
-    .localization-fieldset {
-        margin-bottom: $padding-large-vertical;
-
-        > label {
-            padding: 0 $fieldset-padding;
-
-            input[type="checkbox"] {
-                margin: 0 $padding-base-horizontal;
-            }
-        }
+    & + & {
+        margin-top: var(--typo3-spacing);
     }
 }

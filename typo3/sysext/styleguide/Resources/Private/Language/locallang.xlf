@@ -55,6 +55,9 @@
 			<trans-unit id="action.buttons" resname="action.buttons">
 				<source>Buttons</source>
 			</trans-unit>
+			<trans-unit id="action.checkboxes" resname="action.checkboxes">
+				<source>Checkboxes</source>
+			</trans-unit>
 			<trans-unit id="action.cards" resname="action.cards">
 				<source>Cards</source>
 			</trans-unit>

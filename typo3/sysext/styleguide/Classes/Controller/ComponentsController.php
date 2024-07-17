@@ -48,6 +48,7 @@ final class ComponentsController
         'avatar',
         'badges',
         'buttons',
+        'checkboxes',
         'cards',
         'filter',
         'flashMessages',
@@ -80,6 +81,7 @@ final class ComponentsController
             'avatar' => $this->renderAvatarView($request),
             'badges' => $this->renderBadgesView($request),
             'buttons' => $this->renderButtonsView($request),
+            'checkboxes' => $this->renderCheckboxesView($request),
             'cards' => $this->renderCardsView($request),
             'filter' => $this->renderFilterView($request),
             'flashMessages' => $this->renderFlashMessagesView($request),
@@ -151,6 +153,17 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Buttons');
+    }
+
+    private function renderCheckboxesView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'checkboxes');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'checkboxes',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/Checkboxes');
     }
 
     private function renderCardsView(ServerRequestInterface $request): ResponseInterface
