@@ -99,6 +99,9 @@
             <h2 class="headline-spaced">{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select')}</h2>
             <f:render partial="Compare/Information" section="pageTypes" arguments="{pageTypes:data.pageTypes}" />
 
+            <h2 class="headline-spaced">{f:translate(key:'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:tt_content')}: {f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type')}</h2>
+            <f:render partial="Compare/Information" section="pageContentTypes" arguments="{pageContentTypes:data.pageContentTypes}" />
+
             <h2 class="headline-spaced"><f:translate key="permissions" /></h2>
             <f:render partial="Compare/Information" section="modules" arguments="{showTitle:1,modules:data.modules}"/>
 

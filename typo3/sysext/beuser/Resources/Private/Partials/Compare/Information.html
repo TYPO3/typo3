@@ -341,4 +341,19 @@
     </f:if>
 </f:section>
 
+<f:section name="pageContentTypes">
+    <f:if condition="{pageContentTypes}">
+        <div class="table-fit">
+            <table class="table table-hover">
+                <f:for each="{pageContentTypes}" as="item">
+                    <tr>
+                        <td class="col-title">{f:translate(key:item)}</td>
+                    </tr>
+                </f:for>
+            </table>
+        </div>
+    </f:if>
+</f:section>
+
+
 </html>
