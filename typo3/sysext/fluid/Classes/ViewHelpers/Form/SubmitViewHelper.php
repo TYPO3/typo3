@@ -60,7 +60,6 @@ final class SubmitViewHelper extends AbstractFormFieldViewHelper
             'string',
             'Specifies that the input element should be disabled when the page loads'
         );
-        $this->registerUniversalTagAttributes();
     }
 
     public function render(): string

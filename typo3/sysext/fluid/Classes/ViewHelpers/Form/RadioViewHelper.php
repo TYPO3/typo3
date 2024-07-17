@@ -81,7 +81,6 @@ final class RadioViewHelper extends AbstractFormFieldViewHelper
         );
         $this->registerArgument('checked', 'bool', 'Specifies that the input element should be preselected');
         $this->overrideArgument('value', 'string', 'Value of input tag. Required for radio buttons', true);
-        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute(
             'disabled',
             'string',

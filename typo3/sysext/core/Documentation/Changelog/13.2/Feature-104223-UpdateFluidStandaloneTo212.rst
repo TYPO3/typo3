@@ -12,21 +12,30 @@ Description
 ===========
 
 Fluid Standalone has been updated to version 2.12. This version adds new capabilities for
-TagBasedViewHelpers as well as a new ViewHelper. The introduced XSD Schema Generator will
-be adapted to TYPO3's Fluid integration in a separate patch.
+tab based ViewHelpers and adds the new ViewHelper :html:`f:constant`.
+
+Also see this :ref:`deprecation document<deprecation-104223-1721383576>` for
+information on deprecated functionality.
 
 
 Impact
 ======
 
-All TagBasedViewHelpers (such as :html:`<f:image />` or :html:`<f:form.*>`) can now receive
-arbitrary tag attributes which will be appended to the resulting HTML tag. In the past,
-this was only possible for a small list of tag attributes, like class, id or lang.
+Arbitrary tags with tag based view helpers
+------------------------------------------
+
+Tag based view helpers (such as :html:`<f:image />` or :html:`<f:form.*>`) can now
+receive arbitrary tag attributes which will be appended to the resulting HTML tag,
+without dedicated registration.
 
 .. code-block:: html
 
     <f:form.textfield inputmode="tel" />
     <f:image image="{image}" hidden="hidden" />
+
+
+New f:constant ViewHelper
+-------------------------
 
 A :html:`<f:constant>` ViewHelper has been added to be able to access PHP constants from
 Fluid templates:

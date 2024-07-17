@@ -137,7 +137,6 @@ class FormViewHelper extends AbstractFormViewHelper
         $this->registerTagAttribute('onsubmit', 'string', 'JavaScript: On submit of the form');
         $this->registerTagAttribute('target', 'string', 'Target attribute of the form');
         $this->registerTagAttribute('novalidate', 'bool', 'Indicate that the form is not to be validated on submit.');
-        $this->registerUniversalTagAttributes();
     }
 
     public function render(): string

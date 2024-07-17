@@ -62,7 +62,6 @@ final class PasswordViewHelper extends AbstractFormFieldViewHelper
             false,
             'f3-form-error'
         );
-        $this->registerUniversalTagAttributes();
     }
 
     public function render(): string

@@ -32,7 +32,6 @@ final class OptgroupViewHelper extends AbstractFormFieldViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.');
         $this->registerArgument('data', 'array', 'Additional data-* attributes. They will each be added with a "data-" prefix.');
         $this->registerTagAttribute('label', 'string', 'Human-readable label property for the generated optgroup tag');

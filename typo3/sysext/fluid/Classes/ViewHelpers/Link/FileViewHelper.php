@@ -77,7 +77,6 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('file', FileInterface::class, 'Specifies the file to create a link to', true);
         $this->registerArgument('download', 'bool', 'Specifies if file should be downloaded instead of displayed');
         $this->registerArgument('filename', 'string', 'Specifies an alternative filename. If filename contains a file extension, this must be the same as from \'file\'.');
-        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
         $this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');

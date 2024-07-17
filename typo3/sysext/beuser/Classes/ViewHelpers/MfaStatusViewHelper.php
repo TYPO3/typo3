@@ -35,7 +35,6 @@ final class MfaStatusViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('userUid', 'int', 'The uid of the user to check', true);
     }
 

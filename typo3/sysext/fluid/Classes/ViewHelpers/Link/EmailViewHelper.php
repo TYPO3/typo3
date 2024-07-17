@@ -87,7 +87,6 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('bcc', 'string', 'The email address(es) for BCC of the email link');
         $this->registerArgument('subject', 'string', 'A prefilled subject for the email link');
         $this->registerArgument('body', 'string', 'A prefilled body for the email link');
-        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
         $this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');

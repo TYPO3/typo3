@@ -44,7 +44,6 @@ final class HiddenViewHelper extends AbstractFormFieldViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerArgument(
             'respectSubmittedDataValue',
             'bool',

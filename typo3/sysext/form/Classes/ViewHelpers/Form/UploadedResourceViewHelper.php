@@ -59,7 +59,6 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
         $this->registerTagAttribute('multiple', 'string', 'Specifies that the file input element should allow multiple selection of files');
-        $this->registerUniversalTagAttributes();
     }
 
     public function render(): string
@@ -77,8 +76,8 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
 
         if ($resource !== null) {
             $resourcePointerIdAttribute = '';
-            if ($this->hasArgument('id')) {
-                $resourcePointerIdAttribute = ' id="' . htmlspecialchars($this->arguments['id']) . '-file-reference"';
+            if (isset($this->additionalArguments['id'])) {
+                $resourcePointerIdAttribute = ' id="' . htmlspecialchars($this->additionalArguments['id']) . '-file-reference"';
             }
             $resourcePointerValue = $resource->getUid();
             if ($resourcePointerValue === null) {

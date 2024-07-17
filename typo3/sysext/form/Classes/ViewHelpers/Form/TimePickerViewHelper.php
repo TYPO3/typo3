@@ -54,7 +54,6 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
         $this->registerArgument('initialDate', 'string', 'Initial time (@see http://www.php.net/manual/en/datetime.formats.php for supported formats)');
         $this->registerArgument('timeType', 'string', '"hour" or "minute"');
-        $this->registerUniversalTagAttributes();
     }
 
     /**
@@ -123,8 +122,8 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
     {
         $value = $date !== null ? $date->format('i') : null;
         $minuteSelector = clone $this->tag;
-        if ($this->hasArgument('id')) {
-            $minuteSelector->addAttribute('id', $this->arguments['id'] . '-minute');
+        if (isset($this->additionalArguments['id'])) {
+            $minuteSelector->addAttribute('id', $this->additionalArguments['id'] . '-minute');
         }
         $minuteSelector->addAttribute('name', sprintf('%s[minute]', $this->getName()));
         $options = '';

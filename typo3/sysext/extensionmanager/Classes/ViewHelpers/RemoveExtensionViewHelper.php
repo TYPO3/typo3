@@ -43,7 +43,6 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('extension', 'array', '', true);
     }
 
@@ -74,7 +73,6 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
             'Action'
         );
         $this->tag->addAttribute('href', $uri);
-        $this->tag->addAttribute('class', $this->arguments['class']);
         $this->tag->addAttribute('title', htmlspecialchars($this->getLanguageService()->sL(
             'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.remove'
         )));

@@ -58,7 +58,6 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('extension', Extension::class, '', true);
-        $this->registerUniversalTagAttributes();
     }
 
     public function render(): string
@@ -107,7 +106,6 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
             </div>';
 
         $this->tag->setContent($label . $pathSelector);
-        $this->tag->addAttribute('class', $this->arguments['class']);
         return '<div id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
     }
 

@@ -58,7 +58,6 @@ final class LinkViewHelper extends AbstractTagBasedViewHelper
             'Specifies the relationship between the linked document and the current document'
         );
         $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
-        $this->registerUniversalTagAttributes();
     }
 
     public function render(): string

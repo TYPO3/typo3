@@ -6330,4 +6330,11 @@ return [
             'Deprecation-104325-DiffUtility-makeDiffDisplay.rst',
         ],
     ],
+    'TYPO3Fluid\Fluid\Core\ViewHelper->registerUniversalTagAttributes' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-104223-FluidStandaloneMethods.rst',
+        ],
+    ],
 ];

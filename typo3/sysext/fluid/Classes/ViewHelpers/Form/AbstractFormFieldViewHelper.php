@@ -331,7 +331,12 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     protected function setErrorClassAttribute(): void
     {
         if ($this->hasArgument('class')) {
+            // @deprecated: Fallback layer for VH's that register 'class' as argument
+            //              via registerUniversalTagAttributes(). Remove in v14. Make
+            //              elseif() below if().
             $cssClass = $this->arguments['class'] . ' ';
+        } elseif (isset($this->additionalArguments['class'])) {
+            $cssClass = $this->additionalArguments['class'] . ' ';
         } else {
             $cssClass = '';
         }

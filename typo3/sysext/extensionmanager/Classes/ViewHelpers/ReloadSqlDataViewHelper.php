@@ -45,7 +45,6 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('extension', 'array', 'Extension key', true);
     }
 

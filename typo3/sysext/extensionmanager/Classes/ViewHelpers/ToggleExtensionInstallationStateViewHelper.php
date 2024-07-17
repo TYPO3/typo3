@@ -43,7 +43,6 @@ final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedV
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('extension', 'array', '', true);
     }
 

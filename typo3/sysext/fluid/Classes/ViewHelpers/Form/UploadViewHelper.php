@@ -46,7 +46,6 @@ final class UploadViewHelper extends AbstractFormFieldViewHelper
         $this->registerTagAttribute('multiple', 'string', 'Specifies that the file input element should allow multiple selection of files');
         $this->registerTagAttribute('accept', 'string', 'Specifies the allowed file extensions to upload via comma-separated list, example ".png,.gif"');
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
-        $this->registerUniversalTagAttributes();
     }
 
     public function render(): string

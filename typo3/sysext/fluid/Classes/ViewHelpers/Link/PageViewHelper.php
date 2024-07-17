@@ -89,7 +89,6 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('target', 'string', 'Target of link');
         $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
         $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination');

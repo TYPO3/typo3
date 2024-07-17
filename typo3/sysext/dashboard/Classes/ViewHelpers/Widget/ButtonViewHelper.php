@@ -45,7 +45,6 @@ final class ButtonViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('button', ButtonProviderInterface::class, 'Dashboard widget button', true);
     }
 

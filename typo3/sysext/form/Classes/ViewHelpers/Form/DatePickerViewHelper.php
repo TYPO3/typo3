@@ -65,7 +65,6 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('dateFormat', 'string', 'The date format', false, 'Y-m-d');
         // use the default value if custom templates have not yet adapted this property
         $this->registerArgument('datePickerInitializationJavaScriptFile', 'string', 'The JavaScript file to initialize the date picker', false, 'EXT:form/Resources/Public/JavaScript/frontend/date-picker.js');
-        $this->registerUniversalTagAttributes();
     }
 
     /**
@@ -84,8 +83,8 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $this->tag->addAttribute('type', 'text');
         $this->tag->addAttribute('name', $name . '[date]');
 
-        if ($this->hasArgument('id')) {
-            $id = $this->arguments['id'];
+        if (isset($this->additionalArguments['id'])) {
+            $id = $this->additionalArguments['id'];
         } else {
             $id = 'field' . md5(StringUtility::getUniqueId());
         }

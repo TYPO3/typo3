@@ -41,7 +41,6 @@ final class SwitchUserViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('backendUser', BackendUser::class, 'Target backendUser to switch active session to', true);
-        $this->registerUniversalTagAttributes();
     }
 
     public function render(): string

@@ -105,7 +105,6 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('uid', 'int', 'uid < 0 will insert the record after the given uid');
         $this->registerArgument('pid', 'int', 'the page id where the record will be created');
         $this->registerArgument('table', 'string', 'target database table', true);

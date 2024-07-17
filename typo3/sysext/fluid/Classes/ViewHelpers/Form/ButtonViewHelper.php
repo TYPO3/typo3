@@ -90,7 +90,6 @@ final class ButtonViewHelper extends AbstractFormFieldViewHelper
             'string',
             'Specifies where to display the response after submitting the form. Only for type="submit" (e.g. "_blank", "_self", "_parent", "_top", "framename")'
         );
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('type', 'string', 'Specifies the type of button (e.g. "button", "reset" or "submit")', false, 'submit');
     }
 

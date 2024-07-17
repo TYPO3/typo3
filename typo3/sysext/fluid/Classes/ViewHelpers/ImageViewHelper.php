@@ -116,7 +116,6 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', false);
         $this->registerTagAttribute('ismap', 'string', 'Specifies an image as a server-side image-map. Rarely used. Look at usemap instead', false);
         $this->registerTagAttribute('longdesc', 'string', 'Specifies the URL to a document that contains a long description of an image', false);
@@ -213,7 +212,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
             }
             // Add title-attribute from property if not already set and the property is not an empty string
             $title = (string)($image->hasProperty('title') ? $image->getProperty('title') : '');
-            if (empty($this->arguments['title']) && $title !== '') {
+            if (empty($this->additionalArguments['title']) && $title !== '') {
                 $this->tag->addAttribute('title', $title);
             }
         } catch (ResourceDoesNotExistException $e) {
