@@ -4344,9 +4344,9 @@ td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap
 .scheduler-info-text{width:90%}
 .scheduler-info-container{display:grid;grid-template-columns:50% 50%;gap:var(--typo3-spacing)}
 }
-.module-styleguide .module-body{display:flex;gap:calc(var(--module-body-padding-x) * 1.5);flex-wrap:wrap}
-.styleguide-navigation{flex:0 1 250px;position:sticky;align-self:flex-start;top:calc(var(--module-body-padding-y) + var(--module-docheader-height));margin-bottom:var(--module-body-padding-y)}
-.styleguide-content{flex:1 1 560px;contain:inline-size}
+.module-styleguide .module-body{display:flex;gap:2.5rem;flex-wrap:wrap;container-type:inline-size}
+.styleguide-navigation{flex:0 1 200px;align-self:flex-start}
+.styleguide-content{flex:1 1 500px;contain:inline-size}
 .styleguide-content .icon-container{border:1px solid transparent;margin-bottom:20px;height:100px}
 .styleguide-content .icon-container.icon-deprecated-container{height:175px}
 .styleguide-content .icon-container span.icon-container-icon,.styleguide-content .icon-container span.icon-container-label{display:block;text-align:center;background-color:#eee;min-height:50px;padding:5px}
@@ -4361,6 +4361,13 @@ td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap
 .styleguide-example .example:not([data-color-scheme]):before{display:none}
 .styleguide-example .example[data-color-scheme=light]:before{content:"Light mode"}
 .styleguide-example .example[data-color-scheme=dark]:before{content:"Dark mode"}
+
+@container (min-width: 740px) {
+  .styleguide-navigation {
+    position: sticky;
+    top: calc(var(--module-body-padding-y) + var(--module-docheader-height));
+  }
+}
 #SetupModuleController .form-wizards-wrap{margin-bottom:.5rem!important}
 @media (min-width:992px){
 #SetupModuleController .row>.form-group{width:50%}

@@ -1,19 +1,17 @@
 .module-styleguide .module-body {
     display: flex;
-    gap: calc(var(--module-body-padding-x) * 1.5);
+    gap: 2.5rem;
     flex-wrap: wrap;
+    container-type: inline-size;
 }
 
 .styleguide-navigation {
-    flex: 0 1 250px;
-    position: sticky;
+    flex: 0 1 200px;
     align-self: flex-start;
-    top: calc(var(--module-body-padding-y) + var(--module-docheader-height));
-    margin-bottom: var(--module-body-padding-y);
 }
 
 .styleguide-content {
-    flex: 1 1 560px;
+    flex: 1 1 500px;
     contain: inline-size;
 
     // Icon module
@@ -93,3 +91,13 @@
         }
     }
 }
+
+/* clean-css ignore:start */
+@container (min-width: 740px) {
+    .styleguide-navigation {
+        position: sticky;
+        top: calc(var(--module-body-padding-y) + var(--module-docheader-height));
+    }
+}
+
+/* clean-css ignore:end */
