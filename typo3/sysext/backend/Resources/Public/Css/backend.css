@@ -4153,6 +4153,7 @@ span.dragIcon{display:inline-block;height:16px}
 .media-new-content-element-wizard .media-left input{margin-inline-start:2px}
 .history-block{border-inline-start:5px solid #a9a9a9;border-bottom:1px dotted #a9a9a9}
 .belog-filter-form .input-group{max-width:190px}
+body[data-typo3-login-ready]{overflow-y:auto}
 .typo3-login{display:flex;flex-direction:row;width:100%;height:auto!important;background-color:#eee;background-size:cover;background-position:center center}
 .typo3-login-inner{margin:0 auto;width:99.999%;min-height:100vh;display:flex;flex-direction:column}
 .typo3-login-container{z-index:100;padding:1.5em;display:flex;flex-direction:column;flex:1 1 auto;align-items:center;justify-content:center}
@@ -4174,6 +4175,7 @@ span.dragIcon{display:inline-block;height:16px}
 .card-login .card-body{padding:1.75em 2.5em 2.5em}
 .card-login .card-footer{padding:1.5em 2.5em;border-top:3px solid #f80;border-bottom-left-radius:2px;border-bottom-right-radius:2px}
 .card-login a{font-weight:700}
+.card-login a:focus-visible{outline:1px solid #1a1d1d;outline-offset:1px}
 @media (max-width:767.98px){
 .card-login{margin-bottom:0}
 }
