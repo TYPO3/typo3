@@ -58,9 +58,9 @@ final class RenderViewHelper extends AbstractViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('persistenceIdentifier', 'string', 'The persistence identifier for the form.', false);
+        $this->registerArgument('persistenceIdentifier', 'string', 'The persistence identifier for the form.');
         $this->registerArgument('factoryClass', 'string', 'The fully qualified class name of the factory', false, ArrayFormFactory::class);
-        $this->registerArgument('prototypeName', 'string', 'Name of the prototype to use', false);
+        $this->registerArgument('prototypeName', 'string', 'Name of the prototype to use');
         $this->registerArgument('overrideConfiguration', 'array', 'factory specific configuration', false, []);
     }
 

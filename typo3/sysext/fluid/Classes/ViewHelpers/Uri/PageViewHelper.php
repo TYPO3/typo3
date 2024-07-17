@@ -85,7 +85,7 @@ final class PageViewHelper extends AbstractViewHelper
         $this->registerArgument('additionalParams', 'array', 'query parameters to be attached to the resulting URI', false, []);
         $this->registerArgument('pageType', 'int', 'type of the target page. See typolink.parameter', false, 0);
         $this->registerArgument('noCache', 'bool', 'set this to disable caching for the target page. You should not need this.', false, false);
-        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false);
+        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language');
         $this->registerArgument('section', 'string', 'the anchor to be added to the URI', false, '');
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.', false, false);
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute', false, false);

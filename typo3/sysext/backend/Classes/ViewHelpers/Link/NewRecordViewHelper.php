@@ -106,8 +106,8 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
-        $this->registerArgument('uid', 'int', 'uid < 0 will insert the record after the given uid', false);
-        $this->registerArgument('pid', 'int', 'the page id where the record will be created', false);
+        $this->registerArgument('uid', 'int', 'uid < 0 will insert the record after the given uid');
+        $this->registerArgument('pid', 'int', 'the page id where the record will be created');
         $this->registerArgument('table', 'string', 'target database table', true);
         $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the new record dialog', false, '');
         $this->registerArgument('defaultValues', 'array', 'default values for fields of the new record', false, []);

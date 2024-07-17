@@ -60,7 +60,7 @@ final class IconForResourceViewHelper extends AbstractViewHelper
         $this->registerArgument('size', 'string', 'The icon size', false, IconSize::SMALL);
         $this->registerArgument('overlay', 'string', 'Overlay identifier', false, null);
         $this->registerArgument('options', 'array', 'An associative array with additional options', false, []);
-        $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative markup identifier', false);
+        $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative markup identifier');
     }
 
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string

@@ -105,7 +105,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('target', 'string', 'Define where to display the linked URL', false, '');
         $this->registerArgument('class', 'string', 'Define classes for the link element', false, '');
         $this->registerArgument('title', 'string', 'Define the title for the link element', false, '');
-        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false);
+        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language');
         $this->registerArgument('additionalParams', 'string', 'Additional query parameters to be attached to the resulting URL', false, '');
         $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes to be added directly to the resulting HTML tag', false, []);
         $this->registerArgument('addQueryString', 'string', 'If set, the current query parameters will be kept in the URL. If set to "untrusted", then ALL query parameters will be added. Be aware, that this might lead to problems when the generated link is cached.', false, false);

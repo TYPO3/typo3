@@ -90,18 +90,18 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
-        $this->registerTagAttribute('target', 'string', 'Target of link', false);
-        $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', false);
+        $this->registerTagAttribute('target', 'string', 'Target of link');
+        $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
         $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination');
         $this->registerArgument('pageType', 'int', 'Type of the target page. See typolink.parameter');
         $this->registerArgument('noCache', 'bool', 'Set this to disable caching for the target page. You should not need this.');
-        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false);
+        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language');
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI');
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.');
         $this->registerArgument('additionalParams', 'array', 'Additional query parameters that won\'t be prefixed like $arguments (overrule $arguments)');
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute');
         $this->registerArgument('addQueryString', 'string', 'If set, the current query parameters will be kept in the URL. If set to "untrusted", then ALL query parameters will be added. Be aware, that this might lead to problems when the generated link is cached.', false, false);
-        $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE');
+        $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = true');
     }
 
     public function render(): string
