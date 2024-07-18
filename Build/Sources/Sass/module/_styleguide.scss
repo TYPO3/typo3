@@ -38,6 +38,16 @@
             background-color: #e1e1e1;
         }
     }
+
+    .example-container {
+        display: flex;
+        align-items: center;
+        gap: var(--typo3-spacing);
+
+        &.example-container--large-spacing {
+            gap: calc(var(--typo3-spacing) * 2);
+        }
+    }
 }
 
 .styleguide-example {
@@ -78,16 +88,16 @@
             border-bottom-right-radius: var(--typo3-component-border-radius);
         }
 
-        &:not([data-color-scheme]):before {
+        &:before {
             display: none;
         }
 
-        &[data-color-scheme="light"]:before {
-            content: "Light mode";
-        }
-
-        &[data-color-scheme="dark"]:before {
-            content: "Dark mode";
+        .styleguide-example-label {
+            display: block;
+            color: var(--typo3-component-variant-color);
+            font-weight: bold;
+            font-size: .9em;
+            margin-bottom: var(--typo3-spacing);
         }
     }
 }

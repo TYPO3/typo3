@@ -18,205 +18,188 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.typography" /></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.headline" /></h1>
 
-        <!--
-            Headlines
-        -->
-
-        <h2>Headlines</h2>
-
-        <div class="example">
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.headings.headline" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.headings.text" /></f:sanitize.html>
+        </p>
+        <sg:example codePreview="true" codeLanguage="html">
             <h1>H1: Headline</h1>
             <h2>H2: Headline</h2>
             <h3>H3: Headline</h3>
             <h4>H4: Headline</h4>
-        </div>
+        </sg:example>
 
-        <div class="example">
-            <h1>H1: Headline <small>small description</small></h1>
-            <h2>H2: Headline <small>small description</small></h2>
-            <h3>H3: Headline <small>small description</small></h3>
-            <h4>H4: Headline <small>small description</small></h4>
-        </div>
-
-        <div class="example">
-            <h1><a href="#">H1: Headline</a></h1>
-            <h2><a href="#">H2: Headline</a></h2>
-            <h3><a href="#">H3: Headline</a></h3>
-            <h4><a href="#">H4: Headline</a></h4>
-        </div>
-
-        <!--
-            H1
-        -->
-
-        <p>Module headline "H1" is the main headline within each backend module. Only added once to every backend page.</p>
-
-        <sg:code language="html">
-            <h1>H1: Module Headline</h1>
-        </sg:code>
-
-        <!--
-            H2
-        -->
-
-        <p>Section headline "H2" is the headline for every section in backend modules. Place above each section and use several times..</p>
-
-        <sg:code language="html">
-            <h2>H2: Section Headline</h2>
-        </sg:code>
-
-        <!--
-            H3
-        -->
-
-        <p>Paragraph headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.</p>
-
-        <sg:code language="html">
-            <h3>H3: Paragraph Headline</h3>
-        </sg:code>
-
-        <!--
-            H4
-        -->
-
-        <p>Moderate headline "H4" might be used to split off meta / footer information.</p>
-
-        <sg:code language="html">
-            <h4>H4: Moderate headline</h4>
-        </sg:code>
-
-        <!--
-            Copy text
-        -->
-
-        <h2>Copy text</h2>
-
-        <p>Normal copy text in base font size 1em with a line-height of 1.5em.</p>
-
-        <sg:code language="html">
-            <p>This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.paragraph.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <p>
+                This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
                 vertical rhythm. To show what a paragraph looks like this needs a little more content so, did you know that
                 there are storms occurring on Jupiter that are larger than the Earth? Pretty cool. Wrap "strong" around type to
-                <strong>make it bold!</strong>. You can also "em" to <em>italicize your words</em>.</p>
-        </sg:code>
+                <strong>make it bold!</strong> (or wrap with "b" for <b>bold text</b>).
+                You can also "em" to <em>italicize your words</em> (or wrap with "i" for <b>italic text</b>).
+            </p>
+        </sg:example>
 
-        <!--
-            Emphasis
-        -->
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.smallText.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.smallText.text" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <small>Small text</small>
+            <p><small>Small text inside a paragraph</small></p>
+        </sg:example>
 
-        <h2>Emphasis</h2>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.links.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <p>Paragraph with embedded <a href="#">link (without a class)</a>.</p>
+        </sg:example>
 
-        <!--
-            Color
-        -->
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.textColor.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <span class="text-base">base</span><br>
+            <span class="text-muted">muted</span><br>
+            <span class="text-primary">primary</span><br>
+            <span class="text-secondary">secondary</span><br>
+            <span class="text-info">info</span><br>
+            <span class="text-success">success</span><br>
+            <span class="text-warning">warning</span><br>
+            <span class="text-danger">danger</span><br>
+            <span class="text-notice">notice</span><br>
+            <span class="text-default">default</span><br>
+            <span class="text-reset">reset</span>
+        </sg:example>
 
-        <h3>Color</h3>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.headline" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.text" /></f:sanitize.html>
+        </p>
 
-        <sg:code language="html" colorschemes="true">
-            <ul>
-                <li><span class="text-base">base</span></li>
-                <li><span class="text-muted">muted</span></li>
-                <li><span class="text-primary">primary</span></li>
-                <li><span class="text-secondary">secondary</span></li>
-                <li><span class="text-info">info</span></li>
-                <li><span class="text-success">success</span></li>
-                <li><span class="text-warning">warning</span></li>
-                <li><span class="text-danger">danger</span></li>
-                <li><span class="text-notice">notice</span></li>
-                <li><span class="text-default">default</span></li>
-            </ul>
-            <ul>
-                <li><span class="text-base">base text with <a href="#" class="text-reset">reset link</a></span></li>
-            </ul>
-        </sg:code>
-
-        <!--
-            Bold
-        -->
-
-        <h3>Bold</h3>
-
-        <p>Bold font-weight can be gained with strong and b html tag.</p>
-
-        <sg:code language="html">
-            <p>This example includes <strong>bold text</strong> based on strong html tag.</p>
-            <p>This example includes <b>bold text</b> based on b htm tag.</p>
-        </sg:code>
-
-        <!--
-            Italic
-        -->
-
-        <h3>Italic</h3>
-
-        <p>Italic font style can be gained with em and i html tag.</p>
-
-        <sg:code language="html">
-            <p>This example includes <em>italic text</em> based on em html tag.</p>
-            <p>This example includes <i>italic text</i>  based on i html tag.</p>
-        </sg:code>
-
-        <!--
-            Small text
-        -->
-
-        <h3>Small text</h3>
-
-        <p>Footer information, small notices can be wrapped in small text tag.</p>
-
-        <sg:code language="html">
-            <small>Line of small text</small>
-        </sg:code>
-
-        <!--
-            Links
-        -->
-
-        <h2>Links</h2>
-
-        <p>Links are currently not decorated.</p>
-
-        <sg:code language="html">
-            <p>Copy text with embedded <a href="#">link text</a>.</p>
-        </sg:code>
-
-        <!--
-            Lists
-        -->
-
-        <h2>Lists</h2>
-
-        <p>Ordered and unordered lists are styled with disc bullet and decimal.</p>
-
-        <sg:code language="html">
-            <ul>
-                <li>List item zero</li>
-                <li>First item of list</li>
-                <li>Last not least item</li>
-            </ul>
-
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.ordered.headline" /></h3>
+        <sg:example codePreview="true" codeLanguage="html">
             <ol>
-                <li>List item zero</li>
-                <li>First item of list</li>
-                <li>Last not least item</li>
+                <f:render section="listItems" />
             </ol>
+        </sg:example>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.unordered.headline" /></h3>
+        <sg:example codePreview="true" codeLanguage="html">
+            <ul>
+                <f:render section="listItems" />
+            </ul>
 
             <ul class="list-unstyled">
-                <li>List item zero</li>
-                <li>First item of list</li>
-                <li>Last not least item</li>
+                <f:render section="listItems" />
             </ul>
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.headings.headline" /></h4>
+        <sg:colorScheme>
+            <h1>H1: Headline <a href="#">(example link)</a></h1>
+            <h2>H2: Headline <a href="#">(example link)</a></h2>
+            <h3>H3: Headline <a href="#">(example link)</a></h3>
+            <h4>H4: Headline <a href="#">(example link)</a></h4>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.paragraph.headline" /></h4>
+        <sg:colorScheme>
+            <p>
+                This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
+                vertical rhythm. To show what a paragraph looks like this needs a little more content so, did you know that
+                there are storms occurring on Jupiter that are larger than the Earth? Pretty cool. Wrap "strong" around type to
+                <strong>make it bold!</strong> (or wrap with "b" for <b>bold text</b>).
+                You can also "em" to <em>italicize your words</em> (or wrap with "i" for <b>italic text</b>).
+            </p>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.smallText.headline" /></h4>
+        <sg:colorScheme>
+            <small>Small text</small>
+            <p><small>Small text inside a paragraph</small></p>
+
+            <h1>H1: Headline <small>small text</small></h1>
+            <h2>H2: Headline <small>small text</small></h2>
+            <h3>H3: Headline <small>small text</small></h3>
+            <h4>H4: Headline <small>small text</small></h4>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.links.headline" /></h4>
+        <sg:colorScheme>
+            <p>
+                Paragraph with embedded <a href="#">link (without a class)</a>.
+            </p>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.textColor.headline" /></h4>
+        <sg:colorScheme>
+            <div class="row">
+                <div class="col-6">
+                    <ul>
+                        <li><span class="text-base">span.text-base <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-muted">span.text-muted <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-primary">span.text-primary <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-secondary">span.text-secondary <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-info">span.text-info <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-success">span.text-success <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-warning">span.text-warning <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-danger">span.text-danger <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-notice">span.text-notice <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-default">span.text-default <a href="#">(link inside span)</a></span></li>
+                        <li><span class="text-reset">span.text-reset <a href="#">(link inside span)</a></span></li>
+                    </ul>
+                </div>
+                <div class="col-6">
+                    <ul>
+                        <li><a href="#"><span class="text-base">span.text-base inside link</span></a></li>
+                        <li><a href="#"><span class="text-muted">span.text-muted inside link</span></a></li>
+                        <li><a href="#"><span class="text-primary">span.text-primary inside link</span></a></li>
+                        <li><a href="#"><span class="text-secondary">span.text-secondary inside link</span></a></li>
+                        <li><a href="#"><span class="text-info">span.text-info inside link</span></a></li>
+                        <li><a href="#"><span class="text-success">span.text-success inside link</span></a></li>
+                        <li><a href="#"><span class="text-warning">span.text-warning inside link</span></a></li>
+                        <li><a href="#"><span class="text-danger">span.text-danger inside link</span></a></li>
+                        <li><a href="#"><span class="text-notice">span.text-notice inside link</span></a></li>
+                        <li><a href="#"><span class="text-default">span.text-default inside link</span></a></li>
+                        <li><a href="#"><span class="text-reset">span.text-reset inside link</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.ordered.headline" /></h4>
+        <sg:colorScheme>
+            <ol>
+                <f:render section="listItems" />
+            </ol>
 
             <ol class="list-unstyled">
-                <li>List item zero</li>
-                <li>First item of list</li>
-                <li>Last not least item</li>
+                <f:render section="listItems" />
             </ol>
-        </sg:code>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.typography.section.lists.unordered.headline" /></h4>
+        <sg:colorScheme>
+            <ul>
+                <f:render section="listItems" />
+            </ul>
+
+            <ul class="list-unstyled">
+                <f:render section="listItems" />
+            </ul>
+        </sg:colorScheme>
     </div>
 
+</f:section>
+
+<f:section name="listItems">
+    <li>Item 1 - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</li>
+    <li>Item 2 - Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</li>
+    <li>Item 3 - Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</li>
 </f:section>
 
 </html>

@@ -1,5 +1,6 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
@@ -17,9 +18,31 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.flashMessages"/></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.flashMessage.headline" /></h1>
 
-        <f:flashMessages queueIdentifier="styleguide.demo" />
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.flashMessage.section.default.headline" /></h2>
+
+        <f:variable name="codeSnippetDefault">&lt;f:flashMessages queueIdentifier="styleguide.default" /&gt;</f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
+            <f:flashMessages queueIdentifier="styleguide.default" />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.flashMessage.section.color.headline" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.flashMessage.section.color.text" /></f:sanitize.html>
+        </p>
+        <sg:example>
+            <f:flashMessages queueIdentifier="styleguide.color" />
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <sg:colorScheme>
+            <f:flashMessages queueIdentifier="styleguide.colorscheme" />
+        </sg:colorScheme>
     </div>
 
 </f:section>

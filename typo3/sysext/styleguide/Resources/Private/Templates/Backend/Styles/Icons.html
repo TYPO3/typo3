@@ -27,18 +27,97 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.icons" /></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.headline" /></h1>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.introtext" /></p>
 
-        <p>Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</p>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.default.headline" /></h2>
+        <f:variable name="codeSnippetDefault">
+            &lt;core:icon identifier="actions-brand-typo3" size="small" /&gt;
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
+            <core:icon identifier="actions-brand-typo3" size="small" />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.svg.headline" /></h3>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.registration" /></p>
+        <sg:code language="php">
+            $iconRegistry->registerIcon(
+                'provider-svg',
+                \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+                ['source' => 'EXT:icon_api/Resources/Public/Icons/provider_svg_icon.svg']
+            );
+        </sg:code>
+
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.implementation" /></p>
+        <f:variable name="codeSnippetImplementationSvg">
+            &lt;core:icon identifier="provider-svg" size="small" /&gt;
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetImplementationSvg}" decodeEntities="true">
+            <core:icon identifier="provider-svg" size="small" />
+        </sg:example>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.bitmap.headline" /></h3>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.registration" /></p>
+        <sg:code language="php">
+            $iconRegistry->registerIcon(
+                'provider-bitmap',
+                \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+                ['source' => 'EXT:icon_api/Resources/Public/Icons/provider_bitmap_icon.png']
+            );
+        </sg:code>
+
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.usage.implementation" /></p>
+        <f:variable name="codeSnippetImplementationBitmap">
+            &lt;core:icon identifier="provider-bitmap" size="small" /&gt;
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetImplementationBitmap}" decodeEntities="true">
+            <core:icon identifier="provider-bitmap" size="small" />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.size.headline" /></h2>
+        <f:variable name="codeSnippetSize">
+            &lt;core:icon identifier="actions-brand-typo3" size="default" /&gt;
+            &lt;core:icon identifier="actions-brand-typo3" size="small" /&gt;
+            &lt;core:icon identifier="actions-brand-typo3" size="medium" /&gt;
+            &lt;core:icon identifier="actions-brand-typo3" size="large" /&gt;
+            &lt;core:icon identifier="actions-brand-typo3" size="mega" /&gt;
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSize}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <core:icon identifier="actions-brand-typo3" size="default" />
+                </div>
+                <div class="example-item">
+                    <core:icon identifier="actions-brand-typo3" size="small" />
+                </div>
+                <div class="example-item">
+                    <core:icon identifier="actions-brand-typo3" size="medium" />
+                </div>
+                <div class="example-item">
+                    <core:icon identifier="actions-brand-typo3" size="large" />
+                </div>
+                <div class="example-item">
+                    <core:icon identifier="actions-brand-typo3" size="mega" />
+                </div>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.overlay.headline" /></h2>
+        <f:variable name="codeSnippetOverlay">
+            &lt;core:icon identifier="actions-brand-typo3" size="small" overlay="overlay-readonly" /&gt;
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetOverlay}" decodeEntities="true">
+            <core:icon identifier="actions-brand-typo3" size="small" overlay="overlay-readonly" />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.overview.headline" /></h2>
 
         <div>
-            <!-- Nav tabs -->
             <ul class="nav nav-tabs t3js-tabs" role="tablist">
                 <li role="presentation">
-                    <a href="#iconprovider" aria-controls="iconprovider" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">IconProvider</a>
-                </li>
-                <li role="presentation">
-                    <a href="#all" aria-controls="all" role="tab" data-bs-toggle="tab" aria-selected="false">All Icons</a>
+                    <a href="#all" aria-controls="all" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">All Icons</a>
                 </li>
                 <f:if condition="{deprecatedIcons}">
                     <li role="presentation">
@@ -48,60 +127,10 @@
                 <li role="presentation">
                     <a href="#overlays" aria-controls="overlays" role="tab" data-bs-toggle="tab" aria-selected="false">All Overlays</a>
                 </li>
-                <li role="presentation">
-                    <a href="#examples" aria-controls="examples" role="tab" data-bs-toggle="tab" aria-selected="false">Examples</a>
-                </li>
             </ul>
 
-            <!-- Tab panes -->
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="iconprovider">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th></th>
-                            <th>small</th>
-                            <th>default</th>
-                            <th>large</th>
-                        </tr>
-                        <tr>
-                            <th colspan="4" style="background-color: #eee;">Default Icon</th>
-                        </tr>
-                        <tr>
-                            <th>not registered icon</th>
-                            <td><core:icon identifier="default-not-found" size="small" /></td>
-                            <td><core:icon identifier="default-not-found" size="default" /></td>
-                            <td><core:icon identifier="default-not-found" size="large" /></td>
-                        </tr>
-                        <tr>
-                            <th colspan="4" style="background-color: #eee;">Provider Examples</th>
-                        </tr>
-                        <tr>
-                            <th>provider-svg</th>
-                            <td><core:icon identifier="provider-svg" size="small" /></td>
-                            <td><core:icon identifier="provider-svg" size="default" /></td>
-                            <td><core:icon identifier="provider-svg" size="large" /></td>
-                        </tr>
-                        <tr>
-                            <th>provider-svg with overlay</th>
-                            <td><core:icon identifier="provider-svg" size="small" overlay="overlay-readonly" /></td>
-                            <td><core:icon identifier="provider-svg" size="default" overlay="overlay-readonly" /></td>
-                            <td><core:icon identifier="provider-svg" size="large" overlay="overlay-readonly" /></td>
-                        </tr>
-                        <tr>
-                            <th>provider-bitmap</th>
-                            <td><core:icon identifier="provider-bitmap" size="small" /></td>
-                            <td><core:icon identifier="provider-bitmap" size="default" /></td>
-                            <td><core:icon identifier="provider-bitmap" size="large" /></td>
-                        </tr>
-                        <tr>
-                            <th>provider-bitmap with overlay</th>
-                            <td><core:icon identifier="provider-bitmap" size="small" overlay="overlay-readonly" /></td>
-                            <td><core:icon identifier="provider-bitmap" size="default" overlay="overlay-readonly" /></td>
-                            <td><core:icon identifier="provider-bitmap" size="large" overlay="overlay-readonly" /></td>
-                        </tr>
-                    </table>
-                </div>
-                <div role="tabpanel" class="tab-pane form-section" id="all">
+                <div role="tabpanel" class="tab-pane form-section active" id="all">
                     <div class="row">
                         <form>
                             <div class="form-group col-md-12">
@@ -159,146 +188,6 @@
                             </tr>
                         </f:for>
                     </table>
-                </div>
-                <div role="tabpanel" class="tab-pane form-section" id="examples">
-                    <h1>Buttons</h1>
-                    <h3>Default</h3>
-                    <a class="btn btn-default" href="#">
-                        <core:icon identifier="default-not-found" size="small" />
-                    </a>
-                    <a class="btn btn-default" href="#">
-                        <core:icon identifier="default-not-found" size="small" /> default-not-found [a]
-                    </a>
-                    <button class="btn btn-default">
-                        <core:icon identifier="default-not-found" size="small" />
-                    </button>
-                    <button class="btn btn-default">
-                        <core:icon identifier="default-not-found" size="small" /> default-not-found [button]
-                    </button>
-
-                    <h3>Provider SVG</h3>
-                    <a class="btn btn-default" href="#">
-                        <core:icon identifier="provider-svg" size="small" />
-                    </a>
-                    <a class="btn btn-default" href="#">
-                        <core:icon identifier="provider-svg" size="small" /> provider-svg [a]
-                    </a>
-                    <button class="btn btn-default">
-                        <core:icon identifier="provider-svg" size="small" />
-                    </button>
-                    <button class="btn btn-default">
-                        <core:icon identifier="provider-svg" size="small" /> provider-svg [button]
-                    </button>
-
-                    <h3>Provider Bitmap</h3>
-                    <a class="btn btn-default" href="#">
-                        <core:icon identifier="provider-bitmap" size="small" />
-                    </a>
-                    <a class="btn btn-default" href="#">
-                        <core:icon identifier="provider-bitmap" size="small" /> provider-bitmap [a]
-                    </a>
-                    <button class="btn btn-default">
-                        <core:icon identifier="provider-bitmap" size="small" />
-                    </button>
-                    <button class="btn btn-default">
-                        <core:icon identifier="provider-bitmap" size="small" /> provider-bitmap [button]
-                    </button>
-
-                    <h2>IRRE</h2>
-                    <div class="panel panel-default panel-condensed panel-collapsed">
-                        <div class="panel-heading">
-                            <div class="form-irre-header">
-                                <div class="form-irre-header-cell form-irre-header-icon">
-                                    <span class="caret"></span>
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-icon">
-                                    <core:icon identifier="default-not-found" size="small" />
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-body">
-                                    <span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-1_label">
-                                        <span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">default-not-found</span>
-                                    </span>
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <span class="btn btn-default">
-                                            <core:icon identifier="default-not-found" size="small" />
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default panel-condensed panel-collapsed">
-                        <div class="panel-heading">
-                            <div class="form-irre-header">
-                                <div class="form-irre-header-cell form-irre-header-icon">
-                                    <span class="caret"></span>
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-icon">
-                                    <core:icon identifier="provider-svg" size="small" />
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-body">
-                                    <span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-2_label">
-                                        <span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">provider-svg</span>
-                                    </span>
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <span class="btn btn-default">
-                                            <core:icon identifier="provider-svg" size="small" />
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default panel-condensed panel-collapsed">
-                        <div class="panel-heading">
-                            <div class="form-irre-header">
-                                <div class="form-irre-header-cell form-irre-header-icon">
-                                    <span class="caret"></span>
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-icon">
-                                    <core:icon identifier="provider-bitmap" size="small" />
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-body">
-                                    <span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-3_label">
-                                        <span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">provider-bitmap</span>
-                                    </span>
-                                </div>
-                                <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <span class="btn btn-default">
-                                            <core:icon identifier="provider-bitmap" size="small" />
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <h2>Registration</h2>
-                    <h3>Register SVG</h3>
-
-                    <sg:code language="php" codeonly="true">
-                        $iconRegistry->registerIcon(
-                            'provider-svg',
-                            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-                            ['source' => 'EXT:icon_api/Resources/Public/Icons/provider_svg_icon.svg']
-                        );
-                    </sg:code>
-
-                    <h3>Register Bitmap</h3>
-                    <sg:code language="php" codeonly="true">
-                        $iconRegistry->registerIcon(
-                            'provider-bitmap',
-                            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-                            ['source' => 'EXT:icon_api/Resources/Public/Icons/provider_bitmap_icon.png']
-                        );
-                    </sg:code>
                 </div>
             </div>
         </div>

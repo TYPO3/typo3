@@ -31,14 +31,14 @@ final class NotificationCest
     {
         $I->amGoingTo('Open a notification');
         $I->switchToContentFrame();
-        $I->click('.styleguide-content > p [data-severity="error"]');
+        $I->click('.styleguide-content .styleguide-example button');
         $I->switchToMainFrame();
         $I->waitForElement('#alert-container');
         $I->dontSee('#alert-container typo3-notification-message');
 
         $I->amGoingTo('Open a second notification and expecting to see the "Clear all" button');
         $I->switchToContentFrame();
-        $I->click('.styleguide-content > p [data-severity="error"]');
+        $I->click('.styleguide-content .styleguide-example button');
         $I->switchToMainFrame();
         $I->waitForElement('#alert-container typo3-notification-message');
         $I->waitForElement('#alert-container typo3-notification-clear-all');

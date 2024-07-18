@@ -24,7 +24,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Render code snippets in a usable way
+ * ViewHelper for rendering a code example
+ *
+ * Examples
+ * ========
+ *
+ * Simple:
+ *
+ *    <sg:code language="html">your code</sg:code>
+ *
+ * All options:
+ *
+ *    <sg:code language="html" decodeEntities="true" disableOuterWrap="true">your code</sg:code>
  *
  * @internal
  */
@@ -50,10 +61,8 @@ final class CodeViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         $this->registerArgument('language', 'string', 'the language identifier, e.g. html, php, etc.', true);
-        $this->registerArgument('codeonly', 'bool', 'if true show only the code but not the example', false, false);
-        $this->registerArgument('exampleonly', 'bool', 'if true show only the example but not the code', false, false);
-        $this->registerArgument('colorschemes', 'bool', 'if true show example variants forced in auto, light and dark', false, false);
-        $this->registerArgument('decodeEntities', 'bool', 'if true entities like &lt; and &gt; are decoded', false, false);
+        $this->registerArgument('decodeEntities', 'bool', 'if true, entities like &lt; and &gt; are decoded', false, false);
+        $this->registerArgument('disableOuterWrap', 'bool', 'if true, the enclosing divs are removed', false, false);
     }
 
     public function render(): string
@@ -79,47 +88,43 @@ final class CodeViewHelper extends AbstractViewHelper
             $content .= str_repeat('  ', $spaces) . ltrim($line) . chr(10);
         }
 
-        $markup = [];
-        if (!$this->arguments['codeonly']) {
-            $schemes = ['default'];
-            if ($this->arguments['colorschemes']) {
-                $schemes = ['light', 'dark'];
-            }
-            foreach ($schemes as $scheme) {
-                $markup[] = '<div class="example" data-color-scheme="' . $scheme . '">';
-                $markup[] = str_replace('<UNIQUEID>', uniqid($scheme), $content);
-                $markup[] = '</div>';
-            }
+        $registry = GeneralUtility::makeInstance(ModeRegistry::class);
+        if ($registry->isRegistered($this->arguments['language'])) {
+            $mode = $registry->getByFormatCode($this->arguments['language']);
+        } else {
+            $mode = $registry->getDefaultMode();
         }
-        if (!$this->arguments['exampleonly']) {
-            $registry = GeneralUtility::makeInstance(ModeRegistry::class);
-            if ($registry->isRegistered($this->arguments['language'])) {
-                $mode = $registry->getByFormatCode($this->arguments['language']);
-            } else {
-                $mode = $registry->getDefaultMode();
-            }
 
-            $codeMirrorConfig = [
-                'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
-                'readonly' => true,
-            ];
-            $attributes = [
-                'wrap' => 'off',
-                'rows' => count($lines),
-            ];
+        $codeMirrorConfig = [
+            'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
+            'readonly' => true,
+        ];
+        $attributes = [
+            'wrap' => 'off',
+            'rows' => count($lines),
+        ];
 
-            $markup[] = '<div class="example example--code">';
-            $markup[] = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
-            $markup[] = '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
-            if ($this->arguments['decodeEntities']) {
-                $markup[] = htmlspecialchars_decode(str_replace('<UNIQUEID>', uniqid('code'), $content));
-            } else {
-                $markup[] = htmlspecialchars(str_replace('<UNIQUEID>', uniqid('code'), $content));
-            }
-            $markup[] = '</textarea>';
-            $markup[] = '</typo3-t3editor-codemirror>';
+        $markup = [];
+        if (!$this->arguments['disableOuterWrap']) {
+            $markup[] = '<div class="styleguide-example">';
+            $markup[] =     '<div class="styleguide-example-code">';
+        }
+        $markup[] =             '<div class="example example--code">';
+        $markup[] =                 '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
+        $markup[] =                     '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
+        if ($this->arguments['decodeEntities']) {
+            $markup[] =                     htmlspecialchars_decode(str_replace('<UNIQUEID>', uniqid('code'), $content));
+        } else {
+            $markup[] =                     htmlspecialchars(str_replace('<UNIQUEID>', uniqid('code'), $content));
+        }
+        $markup[] =                     '</textarea>';
+        $markup[] =                 '</typo3-t3editor-codemirror>';
+        $markup[] =             '</div>';
+        if (!$this->arguments['disableOuterWrap']) {
+            $markup[] =     '</div>';
             $markup[] = '</div>';
         }
+
         return implode('', $markup);
     }
 }

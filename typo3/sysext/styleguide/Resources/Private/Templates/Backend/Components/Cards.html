@@ -19,567 +19,259 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.cards" /></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.headline" /></h1>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.introtext" /></p>
 
-        <p>Cards can be displayed individually or in groups.</p>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.default.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.default.text" /></p>
 
-        <h2>Single card</h2>
+        <f:variable name="codeSnippetDefault">
+            <f:render
+                section="cardItem"
+                arguments="{
+                    showIcon: 1,
+                    showSubtitle: 1,
+                    showLink: 1,
+                    decodeEntities: 1
+                }"
+            />
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
+            <f:render
+                section="cardItem"
+                arguments="{
+                    showIcon: 1,
+                    showSubtitle: 1,
+                    showLink: 1,
+                    cardTextValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'
+                }"
+            />
+        </sg:example>
 
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.multipleCards.headline" /></h2>
         <p>
-            This is an example of a single card with its possible content. Unless further defined via CSS, a single card
-            takes on the full width of the place it has been put into.
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.multipleCards.text" /></f:sanitize.html>
         </p>
-
-        <sg:code language="html" colorschemes="true">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <core:icon identifier="module-styleguide" size="medium" />
-                    </div>
-                    <div class="card-header-body">
-                        <h2 class="card-title">Headline</h2>
-                        <span class="card-subtitle">Subtitle</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
-                        ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-default">Link title</a>
-                </div>
+        <f:variable name="codeSnippetMultiple">
+            <div class="card-container">
+                <div class="card card-size-small">...</div>
+                <div class="card card-size-small">...</div>
+                <div class="card card-size-small">...</div>
             </div>
-        </sg:code>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetMultiple}">
+            <div class="card-container">
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Item 1',
+                        cardTextValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
+                        cardSize: 'card-size-small'
+                    }"
+                />
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Item 2',
+                        cardTextValue: 'Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.',
+                        cardSize: 'card-size-small'
+                    }"
+                />
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Item 3 - with a longer text that requires multiple lines',
+                        cardTextValue: 'Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        cardSize: 'card-size-small'
+                    }"
+                />
+            </div>
+        </sg:example>
 
-        <h2>Multiple cards</h2>
-
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.alignment.headline" /></h2>
         <p>
-            To display multiple cards, group them by wrapping them with <code>div.card-container</code>.
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.alignment.text" /></f:sanitize.html>
         </p>
-
-        <sg:code language="html" colorschemes="true"  exampleonly="true">
+        <sg:example>
             <div class="card-container">
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Item 1</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                                invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Item 2</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
-                                vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio
-                                dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla
-                                facilisi.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Item 3 - with a longer text that requires multiple lines</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis
-                                nisl ut aliquip ex ea commodo consequat.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        showLink: 1,
+                        cardTextValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
+                        cardSize: 'card-size-small'
+                    }"
+                />
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        showLink: 1,
+                        cardTextValue: 'At vero eos et accusam et justo duo dolores et ea rebum.',
+                        cardSize: 'card-size-small'
+                    }"
+                />
             </div>
-        </sg:code>
+        </sg:example>
 
-        <sg:code language="html" colorschemes="true" codeonly="true">
-            <div class="card-container">
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">...</div>
-                    <div class="card-body">...</div>
-                </div>
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">...</div>
-                    <div class="card-body">...</div>
-                </div>
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">...</div>
-                    <div class="card-body">...</div>
-                </div>
-            </div>
-        </sg:code>
-
-        <h2>Card sizes</h2>
-
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.size.headline" /></h2>
         <p>
-            To give the card the desired size, assign one of the following classes to the <code>div.card</code>. If only
-            a single card is used, it must be wrapped with <code>div.card-container</code> as with multiple cards.
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.size.text" /></f:sanitize.html>
         </p>
-
-        <sg:code language="html" colorschemes="true" exampleonly="true">
+        <sg:example>
             <div class="card-container">
-                <div class="card card-size-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Small size (<code>.card-size-small</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                The card has a width of 25% of the card container.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Small size (<code>.card-size-small</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                The card has a width of 25% of the card container.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Small size (<code>.card-size-small</code>)',
+                        cardTextValue: 'The card has a width of 25% of the card container.',
+                        cardSize: 'card-size-small'
+                    }"
+                />
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Small size (<code>.card-size-small</code>)',
+                        cardTextValue: 'The card has a width of 25% of the card container.',
+                        cardSize: 'card-size-small'
+                    }"
+                />
             </div>
 
             <div class="card-container">
-                <div class="card card-size-medium">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Medium size (<code>.card-size-medium</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                The card has a width of 50% of the card container.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-medium">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Medium size (<code>.card-size-medium</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                                invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Medium size (<code>.card-size-medium</code>)',
+                        cardTextValue: 'The card has a width of 50% of the card container.',
+                        cardSize: 'card-size-medium'
+                    }"
+                />
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Medium size (<code>.card-size-medium</code>)',
+                        cardTextValue: 'The card has a width of 50% of the card container.',
+                        cardSize: 'card-size-medium'
+                    }"
+                />
             </div>
 
             <div class="card-container">
-                <div class="card card-size-large">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Large size (<code>.card-size-large</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                The card has a width of 100% of the card container.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Large size (<code>.card-size-large</code>)',
+                        cardTextValue: 'The card has a width of 100% of the card container.',
+                        cardSize: 'card-size-large'
+                    }"
+                />
             </div>
-        </sg:code>
 
-        <h3>Special size</h3>
-        <p>
-            Many submodules of the module "Admin Tools" use cards on their main page. They use a special form of small
-            size that ensures that the card retains its size in all viewports.
-        </p>
-
-        <sg:code language="html" colorschemes="true" exampleonly="true">
             <div class="card-container">
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Fixed small size (<code>.card-size-fixed-small</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                The card keeps a fixed small size in all viewports.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Fixed small size (<code>.card-size-fixed-small</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                                invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Fixed small size (<code>.card-size-fixed-small</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                At vero eos et accusam et justo duo dolores et ea rebum.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Fixed small size (<code>.card-size-fixed-small</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis
-                                nisl ut aliquip ex ea commodo consequat.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Fixed small size (<code>.card-size-fixed-small</code>)',
+                        cardTextValue: 'The card keeps a fixed small size in all viewports.',
+                        cardSize: 'card-size-fixed-small'
+                    }"
+                />
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Fixed small size (<code>.card-size-fixed-small</code>)',
+                        cardTextValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
+                        cardSize: 'card-size-fixed-small'
+                    }"
+                />
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Fixed small size (<code>.card-size-fixed-small</code>)',
+                        cardTextValue: 'At vero eos et accusam et justo duo dolores et ea rebum.',
+                        cardSize: 'card-size-fixed-small'
+                    }"
+                />
+                <f:render
+                    section="cardItem"
+                    arguments="{
+                        cardTitle: 'Fixed small size (<code>.card-size-fixed-small</code>)',
+                        cardTextValue: 'Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        cardSize: 'card-size-fixed-small'
+                    }"
+                />
             </div>
-        </sg:code>
+        </sg:example>
 
-        <h2>Alignment</h2>
-
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.color.headline" /></h2>
         <p>
-            If you have multiple cards and each have a link or button, they may not align properly depending on the
-            length of the previously placed headings or description text. To ensure they align regardless of previous
-            content, place the link or button in the <code>div.card-footer</code> - this way the links will always be
-            placed at the bottom of the card.
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.color.text" /></f:sanitize.html>
         </p>
-
-        <sg:code language="html" colorschemes="true" exampleonly="true">
+        <f:variable name="codeSnippetColor">
+            <f:for each="{variants}" as="variant">
+            card-{variant}
+            </f:for>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetColor}">
             <div class="card-container">
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Headline</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                                invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-default">Link title</a>
-                    </div>
-                </div>
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Headline</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                At vero eos et accusam et justo duo dolores et ea rebum.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-default">
-                            <core:icon identifier="actions-plus" size="small" /> Button title
-                        </button>
-                    </div>
-                </div>
+                <f:for each="{variants}" as="variant">
+                    <f:render
+                        section="cardItem"
+                        arguments="{
+                            cardTitle: '{variant}',
+                            cardTextValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
+                            cardSize: 'card-size-small card-{variant}'
+                        }"
+                    />
+                </f:for>
             </div>
-        </sg:code>
+        </sg:example>
 
-        <sg:code language="html" colorschemes="true" codeonly="true">
-            <div class="card-container">
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">...</div>
-                    <div class="card-body">...</div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-default">Link title</a>
-                    </div>
-                </div>
-                <div class="card card-size-fixed-small">
-                    <div class="card-header">...</div>
-                    <div class="card-body">...</div>
-                    <div class="card-footer">
-                        <button class="btn btn-default">
-                            <core:icon identifier="actions-plus" size="small" /> Button title
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </sg:code>
+        <hr>
 
-        <h2>Coloured cards</h2>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
 
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.formFieldsInCards.headline" /></h3>
+        <f:variable name="UriExtensionManagerModule" value="{f:be.uri(route: 'extensionmanager')}" />
+        <f:variable name="UriSettingsModule" value="{f:be.uri(route: 'tools_toolssettings')}" />
+        <f:variable name="UriDBCheckModule" value="{f:be.uri(route: 'system_dbint')}" />
         <p>
-            It is possible to colour cards. However, this option is rarely used - so please use this option sparingly.
-            All available options are listed below. If needed assign one of the following classes to the
-            <code>div.card</code>.<br>
-            If you want to display the card in its default state, it is not necessary to add <code>.card-default</code>
-            to the <code>div.card</code> - just omit the extra class.
+            <f:sanitize.html>
+                <f:translate
+                    key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.formFieldsInCards.text"
+                    arguments="{
+                        0: '{UriExtensionManagerModule}',
+                        1: '{UriSettingsModule}',
+                        2: '{UriDBCheckModule}'
+                    }"
+                />
+            </f:sanitize.html>
         </p>
 
-        <sg:code language="html" colorschemes="true" exampleonly="true">
-            <div class="card-container">
-                <div class="card card-size-small card-primary">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Primary (<code>.card-primary</code>)</h3>
+        <sg:example>
+            <form>
+                <div class="card-container">
+                    <div class="card card-size-large">
+                        <div class="card-header">
+                            <h4>Headline</h4>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-small card-secondary">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Secondary (<code>.card-secondary</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                            </p>
+                        <div class="card-body">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" value="1" name="" id="formFieldId" checked="checked">
+                                <label class="form-check-label" for="formFieldId">
+                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.<br>
+                                    <strong>Default setting: Disabled</strong>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card card-size-small card-success">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Success (<code>.card-success</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-small card-info">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Info (<code>.card-info</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-small card-warning">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Warning (<code>.card-warning</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-small card-danger">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Danger (<code>.card-danger</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-small card-notice">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Notice (<code>.card-notice</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card card-size-small card-default">
-                    <div class="card-header">
-                        <div class="card-header-body">
-                            <h3 class="card-title">Default (<code>.card-default</code>)</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            <p>
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </sg:code>
+            </form>
+        </sg:example>
 
-        <f:be.infobox title="Note" state="-1">
-            Not all listed classes currently have a visual effect. Since they are defined in the CSS, we keep them here
-            in the listing in case they come into use later.
-        </f:be.infobox>
-
-        <h2>Further usages</h2>
-
-        <p>
-            Some modules and views extend the card component with additional elements. Some known uses are listed below.
-        </p>
-
-        <h3>"About" module</h3>
-
-        <p>
-            The listing of submodules in the "About" module uses an additional <code>div.card-longdesc</code> in
-            <code>div.card-header</code>.
-        </p>
-
-        <sg:code colorschemes="true" language="html">
-            <section class="card-container">
-                <div class="card card-size-medium">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <core:icon identifier="module-styleguide" size="medium" />
-                        </div>
-                        <div class="card-header-body">
-                            <h2 class="card-title">Submodule title</h2>
-                            <span class="card-subtitle">Short description</span>
-                            <div class="card-longdesc">Description of the submodule</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </sg:code>
-
-        <p>
-            In some sections of the "About" module, tables are included within the card component.
-        </p>
-
-        <sg:code colorschemes="true" language="html" exampleonly="true">
-            <div class="container-small about-module">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Title</h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                        </p>
-                    </div>
-                    <div class="table-fit">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th width="50%">Table header cell</th>
-                                <th>Table header cell</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                                    invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                                </td>
-                                <td>
-                                    Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
-                                    vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio
-                                    dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla
-                                    facilisi.
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </sg:code>
-
-        <sg:code colorschemes="true" language="html" codeonly="true">
-            <div class="card">
-                <div class="card-body">...</div>
-                <div class="table-fit">
-                    <table class="table">
-                        <thead>...</thead>
-                        <tbody>...</tbody>
-                    </table>
-                </div>
-            </div>
-        </sg:code>
-
-        <h3>Element information</h3>
-
-        <p>
-            On top of the element information overlay, rows are included within the card component.
-        </p>
-
-        <sg:code colorschemes="true" language="html" exampleonly="true">
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.rowsInCards.headline" /></h3>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.rowsInCards.text" /></p>
+        <sg:example>
             <div class="card-container">
                 <div class="card card-size-medium">
                     <div class="card-header">
@@ -605,36 +297,12 @@
                     </div>
                 </div>
             </div>
-        </sg:code>
+        </sg:example>
 
-        <sg:code colorschemes="true" language="html" codeonly="true">
-            <div class="card-container">
-                <div class="card card-size-medium">
-                    <div class="card-header">...</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <strong>Created At</strong><br>
-                                01-01-70 00:00
-                            </div>
-                            <div class="col-md-6">
-                                <strong>Last Modified</strong><br>
-                                01-01-70 00:00
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </sg:code>
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.extensionManangerModule.headline" /></h4>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.card.section.extensionManangerModule.text" /></p>
 
-        <h3>"Extension Manager" module</h3>
-
-        <p>
-            In the extension manager it is possible to get pre-configured distributions. For this view, the cards have
-            been enhanced with an image and some badges.
-        </p>
-
-        <sg:code colorschemes="true" language="html" exampleonly="true">
+        <sg:colorScheme>
             <div class="card-container">
                 <div class="card card-size-fixed-small">
                     <div class="card-image">
@@ -672,41 +340,54 @@
                     </div>
                 </div>
             </div>
-        </sg:code>
+        </sg:colorScheme>
 
-        <sg:code language="html" codeonly="true">
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <sg:colorScheme>
             <div class="card-container">
-                <div class="card card-size-fixed-small">
-                    <div class="card-image">
-                        <a href="#" class="distribution-image">
-                            <f:image src="EXT:styleguide/Resources/Public/Images/ExtensionManagerDistribution.svg" />
-                        </a>
-                        <div class="card-image-badge">
-                            <span class="badge badge-success">0.0.0 - 99.9.99</span>
-                        </div>
-                        <div class="distribution-official-badge">
-                            <f:image
-                                src="EXT:styleguide/Resources/Public/Images/ExtensionManagerOfficialBadge.svg"
-                                height="64"
-                                width="64"
-                            />
-                        </div>
-                    </div>
-                    <div class="card-header">...</div>
-                    <div class="card-body">...</div>
-                    <div class="card-footer">...</div>
-                </div>
+                <f:for each="{variants}" as="variant">
+                    <f:render
+                        section="cardItem"
+                        arguments="{
+                            showSubtitle: 1,
+                            showLink: 1,
+                            cardTitle: '{variant}',
+                            cardTextValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
+                            cardSize: 'card-size-small card-{variant}'
+                        }"
+                    />
+                </f:for>
             </div>
-        </sg:code>
-
-        <h3>Others</h3>
-
-        <p>
-            It is also possible to display forms and form fields in cards. This is done, for example, in the "Upload
-            Extension" section of the Extension Manager and in the "Feature Toggles" overlay in the "Settings" module.
-        </p>
+        </sg:colorScheme>
     </div>
 
+</f:section>
+
+<f:section name="cardItem">
+    <div class="card{f:if(condition: cardSize, then: ' {cardSize}')}">
+        <div class="card-header">
+            <f:if condition="{showIcon}">
+            <div class="card-icon">
+                <f:if condition="{decodeEntities}">
+                    <f:then>&lt;core:icon identifier="module-styleguide" size="large" /&gt;</f:then>
+                    <f:else><core:icon identifier="module-styleguide" size="large" /></f:else>
+                </f:if>
+            </div>
+            </f:if>
+            <div class="card-header-body">
+                <h2 class="card-title"><f:sanitize.html>{f:if(condition: cardTitle, then: '{cardTitle -> f:format.raw()}', else: 'Headline')}</f:sanitize.html></h2>
+                <f:if condition="{showSubtitle}"><span class="card-subtitle">Subtitle</span></f:if>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{f:if(condition: cardTextValue, then: cardTextValue, else: '...')}</p>
+        </div>
+        <f:if condition="{showLink}">
+        <div class="card-footer">
+            <a href="#" class="btn btn-default">Link title</a>
+        </div>
+        </f:if>
+    </div>
 </f:section>
 
 </html>

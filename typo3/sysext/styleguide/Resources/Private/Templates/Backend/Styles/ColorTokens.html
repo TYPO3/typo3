@@ -18,8 +18,10 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.colorTokens" /></h1>
-        <p>Base Color tokens, for <strong>internal usage only</strong>.</p>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.colorTokens.headline" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.colorTokens.introtext" /></f:sanitize.html>
+        </p>
 
         <f:asset.css identifier="styleguide-shadow-demo">
             .color-palettes {
@@ -56,8 +58,7 @@
             }
         </f:asset.css>
 
-
-        <sg:code language="html" colorschemes="true" exampleonly="true">
+        <sg:colorScheme>
             <div class="color-palettes">
                 <f:for each="{neutralColors}" as="color">
                     <div class="color-palette color-palette-{color}">
@@ -82,8 +83,7 @@
                     </div>
                 </f:for>
             </div>
-        </sg:code>
-
+        </sg:colorScheme>
     </div>
 
 </f:section>

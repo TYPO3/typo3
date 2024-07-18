@@ -19,37 +19,60 @@
     />
 
     <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.headline" /></h1>
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.badges" /></h1>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.section.default.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <span class="badge badge-default">default badge</span>
+        </sg:example>
 
-        <f:asset.css identifier="styleguide-badge-demo">
-            .demo-badge-container {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-                gap: .25rem;
-            }
-        </f:asset.css>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.section.shape.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <span class="badge badge-pill badge-default">pill shaped badge</span>
+            <span class="badge badge-pill badge-default">1</span>
+        </sg:example>
 
-        <sg:code language="html" colorschemes="true">
-            <div class="demo-badge-container">
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.section.color.headline" /></h2>
+        <f:variable name="codeSnippetColor">
             <f:for each="{variants}" as="variant">
-                <div class="demo-badge-item">
-                    <span class="badge badge-{variant}">{variant} plain</span>
-                    <a href="#" class="badge badge-{variant}">{variant} link</a>
-                </div>
+            badge-{variant}
             </f:for>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetColor}">
+            <div class="example-container">
+                <f:for each="{variants}" as="variant">
+                    <div class="example-item">
+                        <span class="badge badge-{variant}">{variant}</span>
+                    </div>
+                </f:for>
             </div>
-        </sg:code>
+        </sg:example>
 
-        <sg:code language="html" colorschemes="true">
-            <h1>h1. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h1>
-            <h2>h2. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h2>
-            <h3>h3. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h3>
-            <h4>h4. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h4>
-            <h5>h5. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h5>
-            <h6>h6. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">Pill</span></h6>
-        </sg:code>
+        <hr>
 
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.badge.section.withinHeadlines.headline" /></h3>
+        <sg:example>
+            <h1>h1. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">1</span></h1>
+            <h2>h2. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">2</span></h2>
+            <h3>h3. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">3</span></h3>
+            <h4>h4. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">4</span></h4>
+            <h5>h5. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">5</span></h5>
+            <h6>h6. Example heading <span class="badge badge-primary">New</span> <span class="badge badge-pill badge-danger">6</span></h6>
+        </sg:example>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <sg:colorScheme>
+            <div class="example-container">
+                <f:for each="{variants}" as="variant">
+                    <div class="example-item">
+                        <span class="badge badge-{variant}">{variant}</span>
+                        <a href="#" class="badge badge-{variant}">{variant} link</a>
+                    </div>
+                </f:for>
+            </div>
+        </sg:colorScheme>
     </div>
 
 </f:section>

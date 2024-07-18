@@ -21,46 +21,33 @@
     <div class="styleguide-content">
         <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.headline" /></h1>
         <p>
-            <f:sanitize.html>
-                <f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.introtext" />
-            </f:sanitize.html>
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.introtext" /></f:sanitize.html>
         </p>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.state.default.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.state.default.text" /></p>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.section.default.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.section.default.text" /></p>
 
-        <div class="styleguide-example">
-            <div class="styleguide-example-content">
-                <be:avatar />
-            </div>
-            <div class="styleguide-example-code">
-                <sg:code language="html" codeonly="true" decodeEntities="true">
-                    &lt;be:avatar /&gt;
-                </sg:code>
-            </div>
-        </div>
+        <f:variable name="codeSnippetDefault">&lt;be:avatar /&gt;</f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
+            <be:avatar />
+        </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.state.withStatus.headline" /></h2>
-        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.state.withStatus.text" /></p>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.section.withStatus.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.section.withStatus.text" /></p>
 
-        <div class="styleguide-example">
-            <div class="styleguide-example-content">
-                <be:avatar showIcon="true" />
-            </div>
-            <div class="styleguide-example-code">
-                <sg:code language="html" codeonly="true" decodeEntities="true">
-                    &lt;be:avatar showIcon="true" /&gt;
-                </sg:code>
-            </div>
-        </div>
+        <f:variable name="codeSnippetStatus">&lt;be:avatar showIcon="true" /&gt;</f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetStatus}" decodeEntities="true">
+            <be:avatar showIcon="true" />
+        </sg:example>
 
-        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.avatar.color.headline" /></h2>
+        <hr>
 
-        <div class="styleguide-example">
-            <sg:code language="html" colorschemes="true" exampleonly="true">
-                <be:avatar showIcon="true" />
-            </sg:code>
-        </div>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <sg:colorScheme>
+            <be:avatar showIcon="true" />
+        </sg:colorScheme>
     </div>
 
 </f:section>

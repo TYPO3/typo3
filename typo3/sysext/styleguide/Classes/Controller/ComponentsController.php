@@ -48,10 +48,10 @@ final class ComponentsController
         'avatar',
         'badges',
         'buttons',
-        'checkboxes',
         'cards',
-        'filter',
+        'checkboxes',
         'flashMessages',
+        'form',
         'infobox',
         'modal',
         'notifications',
@@ -81,10 +81,10 @@ final class ComponentsController
             'avatar' => $this->renderAvatarView($request),
             'badges' => $this->renderBadgesView($request),
             'buttons' => $this->renderButtonsView($request),
-            'checkboxes' => $this->renderCheckboxesView($request),
             'cards' => $this->renderCardsView($request),
-            'filter' => $this->renderFilterView($request),
+            'checkboxes' => $this->renderCheckboxesView($request),
             'flashMessages' => $this->renderFlashMessagesView($request),
+            'form' => $this->renderFormView($request),
             'infobox' => $this->renderInfoboxView($request),
             'modal' => $this->renderModalView($request),
             'notifications' => $this->renderNotificationsView($request),
@@ -134,7 +134,7 @@ final class ComponentsController
 
     private function renderBadgesView(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->createModuleTemplate($request, 'buttons');
+        $view = $this->createModuleTemplate($request, 'badges');
         $view->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'badges',
@@ -151,8 +151,21 @@ final class ComponentsController
             'actions' => $this->allowedActions,
             'currentAction' => 'buttons',
             'routeIdentifier' => 'styleguide_components',
+            'variants' => ['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'notice', 'default', 'link'],
         ]);
         return $view->renderResponse('Backend/Components/Buttons');
+    }
+
+    private function renderCardsView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'cards');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'cards',
+            'routeIdentifier' => 'styleguide_components',
+            'variants' => ['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'notice', 'default'],
+        ]);
+        return $view->renderResponse('Backend/Components/Cards');
     }
 
     private function renderCheckboxesView(ServerRequestInterface $request): ResponseInterface
@@ -164,41 +177,6 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Checkboxes');
-    }
-
-    private function renderCardsView(ServerRequestInterface $request): ResponseInterface
-    {
-        $view = $this->createModuleTemplate($request, 'cards');
-        $view->assignMultiple([
-            'actions' => $this->allowedActions,
-            'currentAction' => 'cards',
-            'routeIdentifier' => 'styleguide_components',
-        ]);
-        return $view->renderResponse('Backend/Components/Cards');
-    }
-
-    private function renderFilterView(ServerRequestInterface $request): ResponseInterface
-    {
-        // Prepare example data for dropdown
-        $userGroupArray = [
-            0 => '[All users]',
-            -1 => 'Self',
-            'gr-7' => 'Group styleguide demo group 1',
-            'gr-8' => 'Group styleguide demo group 2',
-            'us-9' => 'User _cli_',
-            'us-1' => 'User admin',
-            'us-10' => 'User styleguide demo user 1',
-            'us-11' => 'User styleguide demo user 2',
-        ];
-        $view = $this->createModuleTemplate($request, 'filter');
-        $view->assignMultiple([
-            'actions' => $this->allowedActions,
-            'currentAction' => 'filter',
-            'routeIdentifier' => 'styleguide_components',
-            'userGroups' => $userGroupArray,
-            'dateTimeFormat' => 'h:m d-m-Y',
-        ]);
-        return $view->renderResponse('Backend/Components/Filter');
     }
 
     private function renderFlashMessagesView(ServerRequestInterface $request): ResponseInterface
@@ -214,14 +192,48 @@ final class ComponentsController
         // We're writing to an own queue here to position the messages within the body.
         // Normal modules wouldn't usually do this and would let ModuleTemplate layout take care of rendering
         // at some appropriate position.
-        $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.demo');
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Info - Title for Info message', ContextualFeedbackSeverity::INFO, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Notice - Title for Notice message', ContextualFeedbackSeverity::NOTICE, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Error - Title for Error message', ContextualFeedbackSeverity::ERROR, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Ok - Title for OK message', ContextualFeedbackSeverity::OK, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Warning - Title for Warning message', ContextualFeedbackSeverity::WARNING, true));
+        $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.default');
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Title', ContextualFeedbackSeverity::NOTICE, true));
+
+        $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.color');
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Notice', ContextualFeedbackSeverity::NOTICE, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Info', ContextualFeedbackSeverity::INFO, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Ok', ContextualFeedbackSeverity::OK, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Warning', ContextualFeedbackSeverity::WARNING, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Error', ContextualFeedbackSeverity::ERROR, true));
+
+        $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.colorscheme');
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Notice', ContextualFeedbackSeverity::NOTICE, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Info', ContextualFeedbackSeverity::INFO, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Ok', ContextualFeedbackSeverity::OK, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Warning', ContextualFeedbackSeverity::WARNING, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Error', ContextualFeedbackSeverity::ERROR, true));
 
         return $view->renderResponse('Backend/Components/FlashMessages');
+    }
+
+    private function renderFormView(ServerRequestInterface $request): ResponseInterface
+    {
+        // Prepare example data for dropdown
+        $userGroupArray = [
+            0 => '[All users]',
+            -1 => 'Self',
+            'gr-7' => 'Group styleguide demo group 1',
+            'gr-8' => 'Group styleguide demo group 2',
+            'us-9' => 'User _cli_',
+            'us-1' => 'User admin',
+            'us-10' => 'User styleguide demo user 1',
+            'us-11' => 'User styleguide demo user 2',
+        ];
+        $view = $this->createModuleTemplate($request, 'form');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'form',
+            'routeIdentifier' => 'styleguide_components',
+            'userGroups' => $userGroupArray,
+            'dateTimeFormat' => 'h:m d-m-Y',
+        ]);
+        return $view->renderResponse('Backend/Components/Form');
     }
 
     private function renderInfoboxView(ServerRequestInterface $request): ResponseInterface
@@ -242,6 +254,7 @@ final class ComponentsController
             'actions' => $this->allowedActions,
             'currentAction' => 'modal',
             'routeIdentifier' => 'styleguide_components',
+            'variants' => ['notice', 'info', 'ok', 'warning', 'error'],
         ]);
         return $view->renderResponse('Backend/Components/Modal');
     }
@@ -253,6 +266,7 @@ final class ComponentsController
             'actions' => $this->allowedActions,
             'currentAction' => 'notifications',
             'routeIdentifier' => 'styleguide_components',
+            'variants' => ['notice', 'info', 'success', 'warning', 'error'],
         ]);
         return $view->renderResponse('Backend/Components/Notifications');
     }

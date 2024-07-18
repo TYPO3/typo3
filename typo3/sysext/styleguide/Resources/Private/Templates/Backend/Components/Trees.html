@@ -26,172 +26,115 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.trees" /></h1>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tree.headline" /></h1>
 
-        <h2>Page trees</h2>
-
-        <p>
-            Page trees are rendered as one big SVG construct. Initialization is done via TypeScript as in the code
-            example below.
-        </p>
-
-        <sg:code language="html" codeonly="true">
-            <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
-                <typo3-backend-navigation-component-pagetree-tree id="typo3-pagetree-tree" class="tree-wrapper" .setup=${e} @tree:initialized=${###array###}></typo3-backend-navigation-component-pagetree-tree>
-            </div>
-        </sg:code>
-
-        <h3>Known usage</h3>
-        <p>
-            All backend modules of the "Web" section use them in the navigation column.
-        </p>
-
-        <h2>File trees</h2>
-
-        <p>
-            File trees are rendered as one big SVG construct and initialized via TypeScript like the page trees.
-        </p>
-
-        <sg:code language="html" codeonly="true">
-            <div class="navigation-tree-container">
-                <typo3-backend-navigation-component-filestorage-tree id="typo3-filestoragetree-tree" class="svg-tree-wrapper" .setup=${e}></typo3-backend-navigation-component-filestorage-tree>
-            </div>
-        </sg:code>
-
-        <h3>Known usage</h3>
-        <p>
-            Filelist module
-        </p>
-
-        <h2>Collapsible trees</h2>
-
-        <p>
-            Collapsible trees are used to show the configuration in a more structured way. Lower levels can be opened
-            and closed, while the entries are collapsed by default. If a user opens entries, this state is saved in the
-            session.
-        </p>
-
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tree.section.pageTree.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tree.section.pageTree.text" /></p>
         <sg:code language="html">
-            <ul class="treelist">
-                <li>
-                    <typo3-backend-tree-node-toggle
-                        class="treelist-control collapsed"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse-list-1686230946"
-                        aria-expanded="true">
-                    </typo3-backend-tree-node-toggle>
-                    <span class="treelist-group treelist-group-monospace">
-                        <span class="treelist-label">items</span>
-                    </span>
-                    <div class="treelist-collapse collapse show" id="collapse-list-1686230946">
-                        <ul class="treelist">
-                            <li>
-                                <typo3-backend-tree-node-toggle
-                                    class="treelist-control collapsed"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-list-2511c918639b1bd8"
-                                    aria-expanded="true">
-                                </typo3-backend-tree-node-toggle>
-                                <span class="treelist-group treelist-group-monospace">
-                                    <span class="treelist-label">key1</span>
-                                </span>
-                                <div class="treelist-collapse collapse show" id="collapse-list-2511c918639b1bd8">
-                                    <ul class="treelist">
-                                        <li>
-                                            <span class="treelist-group treelist-group-monospace">
-                                                <span class="treelist-label">0</span> <span class="treelist-operator">=</span> <span class="treelist-value">Option 1</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="treelist-group treelist-group-monospace">
-                                                <span class="treelist-label">1</span> <span class="treelist-operator">=</span> <span class="treelist-value">Description 1</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span class="treelist-group treelist-group-monospace">
-                                                <span class="treelist-label">2</span> <span class="treelist-operator">=</span> <span class="treelist-value">Label 1</span>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li>
-                                <typo3-backend-tree-node-toggle
-                                    class="treelist-control collapsed"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-list-032f17e98235ecae"
-                                    aria-expanded="true">
-                                </typo3-backend-tree-node-toggle>
-                                <span class="treelist-group treelist-group-monospace">
-                                    <span class="treelist-label">key2</span>
-                                </span>
-                                <div class="treelist-collapse collapse show" id="collapse-list-032f17e98235ecae">
-                                    <ul class="treelist">
-                                        <li>
-                                            <span class="treelist-group treelist-group-monospace">
-                                                <span class="treelist-label">0</span> <span class="treelist-operator">=</span> <span class="treelist-value">Option 2</span>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <span class="treelist-group treelist-group-monospace">
-                        <span class="treelist-label">exampleInterval</span> <span class="treelist-operator">=</span> <span class="treelist-value">15 minutes</span>
-                    </span>
-                </li>
-                <li>
-                    <typo3-backend-tree-node-toggle
-                        class="treelist-control collapsed"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse-list-68d1352020c51580"
-                        aria-expanded="false">
-                    </typo3-backend-tree-node-toggle>
-                    <span class="treelist-group treelist-group-monospace">
-                        <span class="treelist-label">EXT</span>
-                    </span>
-                    <div class="treelist-collapse collapse" id="collapse-list-68d1352020c51580">
-                        <ul class="treelist">
-                            <li>
-                                <span class="treelist-group treelist-group-monospace">
-                                    <span class="treelist-label">exampleConfiguration</span> <span class="treelist-operator">=</span> <span class="treelist-value">lorem ipsum dolor</span>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <span class="treelist-group treelist-group-monospace">
-                        <span class="treelist-label">USER</span> <span class="treelist-operator">=</span>
-                    </span>
-                </li>
-            </ul>
+            <typo3-backend-navigation-component-pagetree-tree id="typo3-pagetree-tree" class="tree-wrapper" .setup=${e} @tree:initialized=${###array###}></typo3-backend-navigation-component-pagetree-tree>
         </sg:code>
 
-        <p>
-            There are additional data attributes that can be added to div.treelist-collapse to configure the collapse state.
-        </p>
-
-        <sg:code language="html" codeonly="true">
-            <div
-                class="treelist-collapse collapse"
-                data-persist-collapse-state="true"
-                data-persist-collapse-state-suffix="styleguide-tree-example-1686230947"
-                data-persist-collapse-state-if-state="shown"
-                data-persist-collapse-state-not-if-search="true"
-                id="collapse-list-68d1352020c51580"
-            />
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tree.section.fileTree.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tree.section.fileTree.text" /></p>
+        <sg:code language="html">
+            <typo3-backend-navigation-component-filestorage-tree id="typo3-filestoragetree-tree" class="svg-tree-wrapper" .setup=${e}></typo3-backend-navigation-component-filestorage-tree>
         </sg:code>
 
-        <h3>Known usage</h3>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tree.section.collapsibleTree.headline" /></h2>
         <p>
-            Page TSconfig, TypoScript and Configuration backend modules.
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tree.section.collapsibleTree.text" /></f:sanitize.html>
         </p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render section="collapsibleTree" arguments="{_all}" />
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tree.section.collapsibleTree.headline" /></h4>
+        <sg:colorScheme>
+            <f:render section="collapsibleTree" arguments="{_all}" />
+        </sg:colorScheme>
     </div>
 
+</f:section>
+
+<f:section name="collapsibleTree">
+    <ul class="treelist">
+        <li>
+            <typo3-backend-tree-node-toggle class="treelist-control collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-list-1686230946" aria-expanded="true"></typo3-backend-tree-node-toggle>
+            <span class="treelist-group treelist-group-monospace">
+                <span class="treelist-label">items</span>
+            </span>
+            <div class="treelist-collapse collapse show" id="collapse-list-1686230946">
+                <ul class="treelist">
+                    <li>
+                        <typo3-backend-tree-node-toggle class="treelist-control collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-list-2511c918639b1bd8" aria-expanded="true"></typo3-backend-tree-node-toggle>
+                        <span class="treelist-group treelist-group-monospace">
+                            <span class="treelist-label">key1</span>
+                        </span>
+                        <div class="treelist-collapse collapse show" id="collapse-list-2511c918639b1bd8">
+                            <ul class="treelist">
+                                <li>
+                                    <span class="treelist-group treelist-group-monospace">
+                                        <span class="treelist-label">0</span> <span class="treelist-operator">=</span> <span class="treelist-value">Option 1</span>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="treelist-group treelist-group-monospace">
+                                        <span class="treelist-label">1</span> <span class="treelist-operator">=</span> <span class="treelist-value">Description 1</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <typo3-backend-tree-node-toggle class="treelist-control collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-list-032f17e98235ecae" aria-expanded="true"></typo3-backend-tree-node-toggle>
+                        <span class="treelist-group treelist-group-monospace">
+                            <span class="treelist-label">key2</span>
+                        </span>
+                        <div class="treelist-collapse collapse show" id="collapse-list-032f17e98235ecae">
+                            <ul class="treelist">
+                                <li>
+                                    <span class="treelist-group treelist-group-monospace">
+                                        <span class="treelist-label">0</span> <span class="treelist-operator">=</span> <span class="treelist-value">Option 2</span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <span class="treelist-group treelist-group-monospace">
+                <span class="treelist-label">exampleInterval</span> <span class="treelist-operator">=</span> <span class="treelist-value">15 minutes</span>
+            </span>
+        </li>
+        <li>
+            <typo3-backend-tree-node-toggle class="treelist-control collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-list-68d1352020c51580" aria-expanded="false"></typo3-backend-tree-node-toggle>
+            <span class="treelist-group treelist-group-monospace">
+                <span class="treelist-label">EXT</span>
+            </span>
+            <div class="treelist-collapse collapse" id="collapse-list-68d1352020c51580">
+                <ul class="treelist">
+                    <li>
+                        <span class="treelist-group treelist-group-monospace">
+                            <span class="treelist-label">exampleConfiguration</span> <span class="treelist-operator">=</span> <span class="treelist-value">lorem ipsum dolor</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <span class="treelist-group treelist-group-monospace">
+                <span class="treelist-label">USER</span> <span class="treelist-operator">=</span>
+            </span>
+        </li>
+    </ul>
 </f:section>
 
 </html>

@@ -7,6 +7,10 @@
 
 <f:layout name="Module" />
 
+<f:section name="Before">
+    <f:asset.script identifier="styleguide-checkbox-demo" src="EXT:styleguide/Resources/Public/JavaScript/checkbox-demo.js" />
+</f:section>
+
 <f:section name="Content">
 
     <f:render
@@ -20,67 +24,68 @@
 
     <div class="styleguide-content">
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.checkboxes" /></h1>
-        <f:asset.script identifier="styleguide-checkbox-demo" src="EXT:styleguide/Resources/Public/JavaScript/checkbox-demo.js" />
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.headline" /></h1>
 
-        <h2>Checkbox</h2>
-        <sg:code language="html">
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.default.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="checkbox-default-<UNIQUEID>">
-                <label class="form-check-label" for="checkbox-default-<UNIQUEID>">Default checkbox</label>
+                <label class="form-check-label" for="checkbox-default-<UNIQUEID>">Label XY</label>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox-checked-<UNIQUEID>" checked>
-                <label class="form-check-label" for="checkbox-checked-<UNIQUEID>">Checked checkbox</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox-indeterminate-<UNIQUEID>">
-                <label class="form-check-label" for="checkbox-indeterminate-<UNIQUEID>">Indeterminate checkbox</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox-disabled-<UNIQUEID>" disabled>
-                <label class="form-check-label" for="checkbox-disabled-<UNIQUEID>">Disabled checkbox</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox-disabled-checked-<UNIQUEID>" checked disabled>
-                <label class="form-check-label" for="checkbox-disabled-checked-<UNIQUEID>">Disabled checked checkbox</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox-disabled-indeterminate-<UNIQUEID>" disabled>
-                <label class="form-check-label" for="checkbox-disabled-indeterminate-<UNIQUEID>">Disabled indeterminate checkbox</label>
-            </div>
-        </sg:code>
+        </sg:example>
 
-        <h2>Switch</h2>
-        <sg:code language="html">
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.switch.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" value="" id="switch-default-<UNIQUEID>">
-                <label class="form-check-label" for="switch-default-<UNIQUEID>">Default switch</label>
+                <label class="form-check-label" for="switch-default-<UNIQUEID>">Label XY</label>
             </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" value="" id="switch-checked-<UNIQUEID>" checked>
-                <label class="form-check-label" for="switch-checked-<UNIQUEID>">Checked switch</label>
-            </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" value="" id="switch-indeterminate-<UNIQUEID>">
-                <label class="form-check-label" for="switch-indeterminate-<UNIQUEID>">Indeterminate switch</label>
-            </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" value="" id="switch-disabled-<UNIQUEID>" disabled>
-                <label class="form-check-label" for="switch-disabled-<UNIQUEID>">Disabled switch</label>
-            </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" value="" id="switch-disabled-checked-<UNIQUEID>" checked disabled>
-                <label class="form-check-label" for="switch-disabled-checked-<UNIQUEID>">Disabled checked switch</label>
-            </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" value="" id="switch-disabled-indeterminate-<UNIQUEID>" disabled>
-                <label class="form-check-label" for="switch-disabled-indeterminate-<UNIQUEID>">Disabled indeterminate switch</label>
-            </div>
-        </sg:code>
+        </sg:example>
 
-        <h2>Labeled Toggle</h2>
-        <sg:code language="html">
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.toggle.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <div class="form-check form-check-type-toggle">
+                <input class="form-check-input" type="checkbox" value="" id="toggle-default-<UNIQUEID>">
+                <label class="form-check-label" for="toggle-default-<UNIQUEID>">Label XY</label>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.iconToggle.headline" /></h2>
+        <f:variable name="codeSnippetIconToggle">
+            <div class="form-check form-check-type-icon-toggle">
+                <input class="form-check-input" type="checkbox" value="" id="icontoggle-default-basic-<UNIQUEID>">
+                <label class="form-check-label" for="icontoggle-default-basic-<UNIQUEID>">
+                    <span class="form-check-label-icon">
+                        <span class="form-check-label-icon-checked">
+                            &lt;core:icon identifier="actions-check" size="small" /&gt;
+                        </span>
+                        <span class="form-check-label-icon-unchecked">
+                            &lt;core:icon identifier="empty-empty" size="small" /&gt;
+                        </span>
+                    </span>
+                    Label XY
+                </label>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetIconToggle}" decodeEntities="true">
+            <div class="form-check form-check-type-icon-toggle">
+                <input class="form-check-input" type="checkbox" value="" id="icontoggle-default-basic-<UNIQUEID>">
+                <label class="form-check-label" for="icontoggle-default-basic-<UNIQUEID>">
+                    <span class="form-check-label-icon">
+                        <span class="form-check-label-icon-checked">
+                            <core:icon identifier="actions-check" size="small" />
+                        </span>
+                        <span class="form-check-label-icon-unchecked">
+                            <core:icon identifier="empty-empty" size="small" />
+                        </span>
+                    </span>
+                    Label XY
+                </label>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.labeledToggle.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
             <div class="form-check form-check-type-labeled-toggle">
                 <input
                     class="form-check-input"
@@ -90,50 +95,123 @@
                     data-form-check-label-checked="Enabled"
                     data-form-check-label-unchecked="Disabled"
                 >
-                <label class="form-check-label" for="labeledtoggle-default-<UNIQUEID>">Default labeled toggle</label>
+                <label class="form-check-label" for="labeledtoggle-default-<UNIQUEID>">Label XY</label>
             </div>
-            <div class="form-check form-check-type-labeled-toggle">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="labeledtoggle-checked-<UNIQUEID>"
-                    data-form-check-label-checked="Enabled"
-                    data-form-check-label-unchecked="Disabled"
-                    checked
-                >
-                <label class="form-check-label" for="labeledtoggle-checked-<UNIQUEID>">Checked labeled toggle</label>
-            </div>
-            <div class="form-check form-check-type-labeled-toggle">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="labeledtoggle-disabled-<UNIQUEID>"
-                    data-form-check-label-checked="Enabled"
-                    data-form-check-label-unchecked="Disabled"
-                    disabled
-                >
-                <label class="form-check-label" for="labeledtoggle-disabled-<UNIQUEID>">Disabled labeled toggle</label>
-            </div>
-            <div class="form-check form-check-type-labeled-toggle">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="labeledtoggle-disabled-checked-<UNIQUEID>"
-                    data-form-check-label-checked="Enabled"
-                    data-form-check-label-unchecked="Disabled"
-                    checked
-                    disabled
-                >
-                <label class="form-check-label" for="labeledtoggle-disabled-checked-<UNIQUEID>">Disabled checked labeled toggle</label>
-            </div>
-        </sg:code>
+        </sg:example>
 
-        <h2>Icon Toggle</h2>
-        <sg:code language="html">
-            <div class="form-check form-check-type-icon-toggle">
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.checkBoxToggleButton.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <input class="btn-check" type="checkbox" value="" id="btncheck-default-basic-<UNIQUEID>">
+            <label class="btn btn-default" for="btncheck-default-basic-<UNIQUEID>">Label XY</label>
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.default.headline" /></h4>
+        <sg:colorScheme>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-default-<UNIQUEID>">
+                <label class="form-check-label" for="checkbox-default-<UNIQUEID>">Default</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-checked-<UNIQUEID>" checked>
+                <label class="form-check-label" for="checkbox-checked-<UNIQUEID>">Checked</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-indeterminate-<UNIQUEID>">
+                <label class="form-check-label" for="checkbox-indeterminate-<UNIQUEID>">Indeterminate</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-disabled-<UNIQUEID>" disabled>
+                <label class="form-check-label" for="checkbox-disabled-<UNIQUEID>">Disabled</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-disabled-checked-<UNIQUEID>" checked disabled>
+                <label class="form-check-label" for="checkbox-disabled-checked-<UNIQUEID>">Disabled checked</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-disabled-indeterminate-<UNIQUEID>" disabled>
+                <label class="form-check-label" for="checkbox-disabled-indeterminate-<UNIQUEID>">Disabled indeterminate</label>
+            </div>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.switch.headline" /></h4>
+        <sg:colorScheme>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" value="" id="switch-default-<UNIQUEID>">
+                <label class="form-check-label" for="switch-default-<UNIQUEID>">Default</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" value="" id="switch-checked-<UNIQUEID>" checked>
+                <label class="form-check-label" for="switch-checked-<UNIQUEID>">Checked</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" value="" id="switch-indeterminate-<UNIQUEID>">
+                <label class="form-check-label" for="switch-indeterminate-<UNIQUEID>">Indeterminate</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" value="" id="switch-disabled-<UNIQUEID>" disabled>
+                <label class="form-check-label" for="switch-disabled-<UNIQUEID>">Disabled</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" value="" id="switch-disabled-checked-<UNIQUEID>" checked disabled>
+                <label class="form-check-label" for="switch-disabled-checked-<UNIQUEID>">Disabled checked</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" value="" id="switch-disabled-indeterminate-<UNIQUEID>" disabled>
+                <label class="form-check-label" for="switch-disabled-indeterminate-<UNIQUEID>">Disabled indeterminate</label>
+            </div>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.toggle.headline" /></h4>
+        <sg:colorScheme>
+            <div class="form-check form-check-type-toggle mb-1">
+                <input class="form-check-input" type="checkbox" value="" id="toggle-default-<UNIQUEID>">
+                <label class="form-check-label" for="toggle-default-<UNIQUEID>">Default</label>
+            </div>
+            <div class="form-check form-check-type-toggle mb-1">
+                <input class="form-check-input" type="checkbox" value="" id="toggle-checked-<UNIQUEID>" checked>
+                <label class="form-check-label" for="toggle-checked-<UNIQUEID>">Checked</label>
+            </div>
+            <div class="form-check form-check-type-toggle mb-1">
+                <input class="form-check-input" type="checkbox" value="" id="toggle-indeterminate-<UNIQUEID>">
+                <label class="form-check-label" for="toggle-indeterminate-<UNIQUEID>">Indeterminate</label>
+            </div>
+            <div class="form-check form-check-type-toggle mb-1">
+                <input class="form-check-input" type="checkbox" value="" id="toggle-disabled-<UNIQUEID>" disabled>
+                <label class="form-check-label" for="toggle-disabled-<UNIQUEID>">Disabled</label>
+            </div>
+            <div class="form-check form-check-type-toggle mb-1">
+                <input class="form-check-input" type="checkbox" value="" id="toggle-disabled-checked-<UNIQUEID>" checked disabled>
+                <label class="form-check-label" for="toggle-disabled-checked-<UNIQUEID>">Disabled checked</label>
+            </div>
+            <div class="form-check form-check-type-toggle mb-1">
+                <input class="form-check-input" type="checkbox" value="" id="toggle-disabled-indeterminate-<UNIQUEID>" disabled>
+                <label class="form-check-label" for="toggle-disabled-indeterminate-<UNIQUEID>">Disabled indeterminate</label>
+            </div>
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.iconToggle.headline" /></h4>
+        <sg:colorScheme>
+            <div class="form-check form-check-type-icon-toggle mb-2">
+                <input class="form-check-input" type="checkbox" value="" id="icontoggle-default-<UNIQUEID>">
+                <label class="form-check-label" for="icontoggle-default-basic-<UNIQUEID>">
+                    <span class="form-check-label-icon">
+                        <span class="form-check-label-icon-checked">
+                            <core:icon identifier="actions-check" size="small" />
+                        </span>
+                        <span class="form-check-label-icon-unchecked">
+                            <core:icon identifier="empty-empty" size="small" />
+                        </span>
+                    </span>
+                    Unchecked
+                </label>
+            </div>
+            <div class="form-check form-check-type-icon-toggle mb-2">
                 <input class="form-check-input" type="checkbox" value="" id="icontoggle-default-basic-<UNIQUEID>">
                 <label class="form-check-label" for="icontoggle-default-basic-<UNIQUEID>">
                     <span class="form-check-label-icon">
@@ -147,10 +225,10 @@
                             <core:icon identifier="actions-minus" size="small" />
                         </span>
                     </span>
-                    Default icon toggle
+                    Default
                 </label>
             </div>
-            <div class="form-check form-check-type-icon-toggle">
+            <div class="form-check form-check-type-icon-toggle mb-2">
                 <input class="form-check-input" type="checkbox" value="" id="icontoggle-default-checked-<UNIQUEID>" checked>
                 <label class="form-check-label" for="icontoggle-default-checked-<UNIQUEID>">
                     <span class="form-check-label-icon">
@@ -164,10 +242,10 @@
                             <core:icon identifier="actions-minus" size="small" />
                         </span>
                     </span>
-                    Checked icon toggle
+                    Checked
                 </label>
             </div>
-            <div class="form-check form-check-type-icon-toggle">
+            <div class="form-check form-check-type-icon-toggle mb-2">
                 <input class="form-check-input" type="checkbox" value="" id="icontoggle-default-indeterminate-<UNIQUEID>">
                 <label class="form-check-label" for="icontoggle-default-indeterminate-<UNIQUEID>">
                     <span class="form-check-label-icon">
@@ -181,10 +259,10 @@
                             <core:icon identifier="actions-minus" size="small" />
                         </span>
                     </span>
-                    Indeterminate icon toggle
+                    Indeterminate
                 </label>
             </div>
-            <div class="form-check form-check-type-icon-toggle">
+            <div class="form-check form-check-type-icon-toggle mb-2">
                 <input class="form-check-input" type="checkbox" value="" id="icontoggle-disabled-basic-<UNIQUEID>" disabled>
                 <label class="form-check-label" for="icontoggle-disabled-basic-<UNIQUEID>">
                     <span class="form-check-label-icon">
@@ -198,10 +276,10 @@
                             <core:icon identifier="actions-minus" size="small" />
                         </span>
                     </span>
-                    Disabled icon toggle
+                    Disabled
                 </label>
             </div>
-            <div class="form-check form-check-type-icon-toggle">
+            <div class="form-check form-check-type-icon-toggle mb-2">
                 <input class="form-check-input" type="checkbox" value="" id="icontoggle-disabled-checked-<UNIQUEID>" checked disabled>
                 <label class="form-check-label" for="icontoggle-disabled-checked-<UNIQUEID>">
                     <span class="form-check-label-icon">
@@ -215,10 +293,10 @@
                             <core:icon identifier="actions-minus" size="small" />
                         </span>
                     </span>
-                    Disabled checked icon toggle
+                    Disabled checked
                 </label>
             </div>
-            <div class="form-check form-check-type-icon-toggle">
+            <div class="form-check form-check-type-icon-toggle mb-2">
                 <input class="form-check-input" type="checkbox" value="" id="icontoggle-disabled-indeterminate-<UNIQUEID>" disabled>
                 <label class="form-check-label" for="icontoggle-disabled-indeterminate-<UNIQUEID>">
                     <span class="form-check-label-icon">
@@ -232,59 +310,94 @@
                             <core:icon identifier="actions-minus" size="small" />
                         </span>
                     </span>
-                    Disabled indeterminate icon toggle
+                    Disabled indeterminate
                 </label>
             </div>
-        </sg:code>
+        </sg:colorScheme>
 
-        <h2>Toggle</h2>
-        <sg:code language="html">
-            <div class="form-check form-check-type-toggle">
-                <input class="form-check-input" type="checkbox" value="" id="toggle-default-<UNIQUEID>">
-                <label class="form-check-label" for="toggle-default-<UNIQUEID>">Default toggle</label>
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.labeledToggle.headline" /></h4>
+        <sg:colorScheme>
+            <div class="example-container example-container--large-spacing">
+                <div class="example-item">
+                    <div class="form-check form-check-type-labeled-toggle">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="labeledtoggle-default-<UNIQUEID>"
+                            data-form-check-label-checked="Enabled"
+                            data-form-check-label-unchecked="Disabled"
+                        >
+                        <label class="form-check-label" for="labeledtoggle-default-<UNIQUEID>">Default</label>
+                    </div>
+                </div>
+                <div class="example-item">
+                    <div class="form-check form-check-type-labeled-toggle">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="labeledtoggle-checked-<UNIQUEID>"
+                            data-form-check-label-checked="Enabled"
+                            data-form-check-label-unchecked="Disabled"
+                            checked
+                        >
+                        <label class="form-check-label" for="labeledtoggle-checked-<UNIQUEID>">Checked</label>
+                    </div>
+                </div>
+                <div class="example-item">
+                    <div class="form-check form-check-type-labeled-toggle">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="labeledtoggle-disabled-<UNIQUEID>"
+                            data-form-check-label-checked="Enabled"
+                            data-form-check-label-unchecked="Disabled"
+                            disabled
+                        >
+                        <label class="form-check-label" for="labeledtoggle-disabled-<UNIQUEID>">Disabled</label>
+                    </div>
+                </div>
+                <div class="example-item">
+                    <div class="form-check form-check-type-labeled-toggle">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="labeledtoggle-disabled-checked-<UNIQUEID>"
+                            data-form-check-label-checked="Enabled"
+                            data-form-check-label-unchecked="Disabled"
+                            checked
+                            disabled
+                        >
+                        <label class="form-check-label" for="labeledtoggle-disabled-checked-<UNIQUEID>">Disabled checked</label>
+                    </div>
+                </div>
             </div>
-            <div class="form-check form-check-type-toggle">
-                <input class="form-check-input" type="checkbox" value="" id="toggle-checked-<UNIQUEID>" checked>
-                <label class="form-check-label" for="toggle-checked-<UNIQUEID>">Checked toggle</label>
-            </div>
-            <div class="form-check form-check-type-toggle">
-                <input class="form-check-input" type="checkbox" value="" id="toggle-indeterminate-<UNIQUEID>">
-                <label class="form-check-label" for="toggle-indeterminate-<UNIQUEID>">Indeterminate toggle</label>
-            </div>
-            <div class="form-check form-check-type-toggle">
-                <input class="form-check-input" type="checkbox" value="" id="toggle-disabled-<UNIQUEID>" disabled>
-                <label class="form-check-label" for="toggle-disabled-<UNIQUEID>">Disabled toggle</label>
-            </div>
-            <div class="form-check form-check-type-toggle">
-                <input class="form-check-input" type="checkbox" value="" id="toggle-disabled-checked-<UNIQUEID>" checked disabled>
-                <label class="form-check-label" for="toggle-disabled-checked-<UNIQUEID>">Disabled checked toggle</label>
-            </div>
-            <div class="form-check form-check-type-toggle">
-                <input class="form-check-input" type="checkbox" value="" id="toggle-disabled-indeterminate-<UNIQUEID>" disabled>
-                <label class="form-check-label" for="toggle-disabled-indeterminate-<UNIQUEID>">Disabled indeterminate toggle</label>
-            </div>
-        </sg:code>
+        </sg:colorScheme>
 
-        <h2>Button Check</h2>
-        <sg:code language="html">
-            <div class="my-2">
-                <input class="btn-check" type="checkbox" value="" id="btncheck-default-basic-<UNIQUEID>">
-                <label class="btn btn-default" for="btncheck-default-basic-<UNIQUEID>">Default button-check</label>
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.checkbox.section.checkBoxToggleButton.headline" /></h4>
+        <sg:colorScheme>
+            <div class="example-container">
+                <div class="example-item">
+                    <input class="btn-check" type="checkbox" value="" id="btncheck-default-basic-<UNIQUEID>">
+                    <label class="btn btn-default" for="btncheck-default-basic-<UNIQUEID>">Default</label>
+                </div>
+                <div class="example-item">
+                    <input class="btn-check" type="checkbox" value="" id="btncheck-default-checked-<UNIQUEID>" checked>
+                    <label class="btn btn-default" for="btncheck-default-checked-<UNIQUEID>">Checked</label>
+                </div>
+                <div class="example-item">
+                    <input class="btn-check" type="checkbox" value="" id="btncheck-disabled-basic-<UNIQUEID>" disabled>
+                    <label class="btn btn-default" for="btncheck-disabled-basic-<UNIQUEID>">Disabled</label>
+                </div>
+                <div class="example-item">
+                    <input class="btn-check" type="checkbox" value="" id="btncheck-disabled-checked-<UNIQUEID>" checked disabled>
+                    <label class="btn btn-default" for="btncheck-disabled-checked-<UNIQUEID>">Disabled checked</label>
+                </div>
             </div>
-            <div class="my-2">
-                <input class="btn-check" type="checkbox" value="" id="btncheck-default-checked-<UNIQUEID>" checked>
-                <label class="btn btn-default" for="btncheck-default-checked-<UNIQUEID>">Checked button-check</label>
-            </div>
-            <div class="my-2">
-                <input class="btn-check" type="checkbox" value="" id="btncheck-disabled-basic-<UNIQUEID>" disabled>
-                <label class="btn btn-default" for="btncheck-disabled-basic-<UNIQUEID>">Disabled button-check</label>
-            </div>
-            <div class="my-2">
-                <input class="btn-check" type="checkbox" value="" id="btncheck-disabled-checked-<UNIQUEID>" checked disabled>
-                <label class="btn btn-default" for="btncheck-disabled-checked-<UNIQUEID>">Disabled checked button-check</label>
-            </div>
-        </sg:code>
-
+        </sg:colorScheme>
     </div>
 
 </f:section>

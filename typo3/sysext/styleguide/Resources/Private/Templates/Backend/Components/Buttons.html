@@ -1,7 +1,7 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
-    xmlns:co="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
@@ -19,76 +19,72 @@
     />
 
     <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.headline" /></h1>
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.buttons" /></h1>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.default.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <button class="btn btn-default">Button title</button>
+        </sg:example>
 
-        <!--
-            Form type buttons
-        -->
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.withIcon.headline" /></h2>
+        <f:variable name="codeSnippetIcon">
+            <button class="btn btn-default">&lt;core:icon identifier="actions-open" /&gt; Button title</button>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetIcon}" decodeEntities="true">
+            <button class="btn btn-default"><core:icon identifier="actions-open" /> Button title</button>
+        </sg:example>
 
-        <h3>Form Button</h3>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.color.headline" /></h2>
+        <f:variable name="codeSnippetColor">
+            <f:for each="{variants}" as="variant">
+            btn-{variant}
+            </f:for>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetColor}" decodeEntities="true">
+            <div class="example-container">
+                <f:for each="{variants}" as="variant">
+                    <div class="example-item">
+                        <button class="btn btn-{variant}">{variant}</button>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
 
-        <sg:code language="html" colorschemes="true">
-            <a href="#" class="btn btn-default">Link button</a>
-            <button class="btn btn-default">Button</button>
-            <input type="button" class="btn btn-default" value="Input button" />
-            <input type="submit" class="btn btn-default" value="Submit button" />
-        </sg:code>
+        <hr>
 
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
 
-        <!--
-            twbs Buttons
-        -->
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.types.headline" /></h3>
+        <sg:example codePreview="true" codeLanguage="html">
+            <button class="btn btn-default">button</button>
+            <input type="button" class="btn btn-default" value="input type='button'" />
+            <input type="submit" class="btn btn-default" value="input type='submit'" />
+            <a href="#" class="btn btn-default">a tag</a>
+        </sg:example>
 
-        <h3>Button States</h3>
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
 
-        <sg:code language="html" colorschemes="true">
-            <a href="#" class="btn btn-default">Default button</a>
-            <a href="#" class="btn btn-primary">Primary button</a>
-            <a href="#" class="btn btn-secondary">Secondary button</a>
-            <a href="#" class="btn btn-success">Success button</a>
-            <a href="#" class="btn btn-warning">Warning button</a>
-            <a href="#" class="btn btn-danger">Danger button</a>
-            <a href="#" class="btn btn-info">Info button</a>
-            <a href="#" class="btn btn-notice">Notice button</a>
-            <a href="#" class="btn btn-link">Link button</a>
-        </sg:code>
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.stateActive.headline" /></h4>
+        <sg:colorScheme>
+            <div class="example-container">
+            <f:for each="{variants}" as="variant">
+                <div class="example-item">
+                    <button class="btn btn-{variant}">{variant}</button>
+                </div>
+            </f:for>
+            </div>
+        </sg:colorScheme>
 
-        <!--
-            Buttons with icons
-        -->
-
-        <h3>Buttons with icons</h3>
-
-        <sg:code language="html" colorschemes="true">
-            <a href="#" class="btn btn-default"><co:icon identifier="apps-filetree-folder-default" />  Default button</a>
-            <a href="#" class="btn btn-primary"><co:icon identifier="apps-filetree-folder-default" />  Primary button</a>
-            <a href="#" class="btn btn-secondary"><co:icon identifier="apps-filetree-folder-default" />  Secondary button</a>
-            <a href="#" class="btn btn-success"><co:icon identifier="apps-filetree-folder-default" />  Success button</a>
-            <a href="#" class="btn btn-warning"><co:icon identifier="apps-filetree-folder-default" />  Warning button</a>
-            <a href="#" class="btn btn-danger"><co:icon identifier="apps-filetree-folder-default" />  Danger button</a>
-            <a href="#" class="btn btn-info"><co:icon identifier="apps-filetree-folder-default" />  Info button</a>
-            <a href="#" class="btn btn-notice"><co:icon identifier="apps-filetree-folder-default" />  Notice button</a>
-            <a href="#" class="btn btn-link"><co:icon identifier="apps-filetree-folder-default" />  Link button</a>
-        </sg:code>
-
-        <!--
-            Disabled buttons
-        -->
-
-        <h3>Disabled buttons</h3>
-
-        <sg:code language="html" colorschemes="true">
-            <a href="#" class="btn btn-default disabled"><co:icon identifier="apps-filetree-folder-default" />  Default button</a>
-            <a href="#" class="btn btn-primary disabled"><co:icon identifier="apps-filetree-folder-default" />  Primary button</a>
-            <a href="#" class="btn btn-secondary disabled"><co:icon identifier="apps-filetree-folder-default" />  Primary button</a>
-            <a href="#" class="btn btn-success disabled"><co:icon identifier="apps-filetree-folder-default" />  Success button</a>
-            <a href="#" class="btn btn-warning disabled"><co:icon identifier="apps-filetree-folder-default" />  Warning button</a>
-            <a href="#" class="btn btn-danger disabled"><co:icon identifier="apps-filetree-folder-default" />  Danger button</a>
-            <a href="#" class="btn btn-info disabled"><co:icon identifier="apps-filetree-folder-default" />  Info button</a>
-            <a href="#" class="btn btn-notice disabled"><co:icon identifier="apps-filetree-folder-default" />  Notice button</a>
-            <a href="#" class="btn btn-link disabled"><co:icon identifier="apps-filetree-folder-default" />  Link button</a>
-        </sg:code>
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.button.section.stateDisabled.headline" /></h4>
+        <sg:colorScheme>
+            <div class="example-container">
+            <f:for each="{variants}" as="variant">
+                <div class="example-item">
+                    <button class="btn btn-{variant} disabled">{variant} disabled</button>
+                </div>
+            </f:for>
+            </div>
+        </sg:colorScheme>
     </div>
 
 </f:section>

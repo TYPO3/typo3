@@ -18,106 +18,99 @@
     />
 
     <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.accordion.headline" /></h1>
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.accordion"/></h1>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.accordion.section.default.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.accordion.section.default.text" /></p>
 
-        <h3>Simple Accordion</h3>
+        <f:variable name="codeSnippetDefault">
+            <f:render section="accordion" arguments="{identifier: 'simple-panel'}" />
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}">
+            <f:render
+                section="accordion"
+                arguments="{
+                    identifier: 'simple-panel',
+                    panelBodyValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores.'
+                }"
+            />
+        </sg:example>
 
-        <sg:code language="html">
-            <div class="panel-group" id="accordionExampleSimple">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" id="simple-heading-panel1">
-                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#simple-panel1" aria-expanded="false" aria-controls="simple-panel1">
-                                <span class="caret"></span>
-                                <strong>Panel 1</strong>
-                            </a>
-                        </h3>
-                    </div>
-                    <div id="simple-panel1" class="collapse" aria-labelledby="simple-heading-panel1">
-                        <div class="panel-body">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" id="simple-heading-panel2">
-                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#simple-panel2" aria-expanded="false" aria-controls="simple-panel2">
-                                <span class="caret"></span>
-                                <strong>Panel 2</strong>
-                            </a>
-                        </h3>
-                    </div>
-                    <div id="simple-panel2" class="collapse" aria-labelledby="simple-heading-panel2">
-                        <div class="panel-body">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </sg:code>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.accordion.section.firstPanelOpened.headline" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.accordion.section.firstPanelOpened.text" /></f:sanitize.html>
+        </p>
+        <sg:example>
+            <f:render
+                section="accordion"
+                arguments="{
+                    identifier: 'first-opened-panel',
+                    panelBodyValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores.',
+                    firstPanelIsOpened: 1
+                }"
+            />
+        </sg:example>
 
-        <h3>First panel open and only one open at a time</h3>
+        <hr>
 
-        <sg:code language="html">
-            <div class="panel-group" id="accordionExampleAdvanced">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" id="heading-panel1">
-                            <a href="#" data-bs-toggle="collapse" data-bs-target="#panel1" aria-expanded="true" aria-controls="panel1">
-                                <span class="caret"></span>
-                                <strong>Panel 1</strong>
-                            </a>
-                        </h3>
-                    </div>
-                    <div id="panel1" class="accordion-collapse collapse show" aria-labelledby="heading-panel1" data-bs-parent="#accordionExampleAdvanced">
-                        <div class="panel-body">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" id="heading-panel2">
-                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#panel2" aria-expanded="false" aria-controls="panel2">
-                                <span class="caret"></span>
-                                <strong>Panel 2</strong>
-                            </a>
-                        </h3>
-                    </div>
-                    <div id="panel2" class="accordion-collapse collapse" aria-labelledby="heading-panel2" data-bs-parent="#accordionExampleAdvanced">
-                        <div class="panel-body">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-                        </div>
-                    </div>
-                </div>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" id="heading-panel3">
-                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#panel3" aria-expanded="false" aria-controls="heading-panel3">
-                                <span class="caret"></span>
-                                <strong>Panel 3</strong>
-                            </a>
-                        </h3>
-                    </div>
-                    <div id="panel3" class="accordion-collapse collapse" aria-labelledby="heading-panel3" data-bs-parent="#accordionExampleAdvanced">
-                        <div class="panel-body">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </sg:code>
-
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <sg:colorScheme>
+            <f:render
+                section="accordion"
+                arguments="{
+                    identifier: 'color-panel',
+                    panelBodyValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores.'
+                }"
+            />
+        </sg:colorScheme>
     </div>
 
+</f:section>
+
+<f:section name="accordion">
+<div class="panel-group" id="{identifier}" role="tablist">
+    <f:render
+        section="accordionItem"
+        arguments="{
+            identifier: identifier,
+            iterator: '1',
+            panelTitleValue: 'Panel element',
+            panelBodyValue: panelBodyValue,
+            firstPanelIsOpened: firstPanelIsOpened
+        }"
+    />
+    <f:render
+        section="accordionItem"
+        arguments="{
+            identifier: identifier,
+            iterator: '2',
+            panelTitleValue: 'Panel element',
+            panelBodyValue: panelBodyValue,
+            firstPanelIsOpened: firstPanelIsOpened
+        }"
+    />
+</div>
+</f:section>
+
+<f:section name="accordionItem">
+    <f:if condition="{firstPanelIsOpened} && ({iterator} == '1')">
+        <f:variable name="isOpened" value="1" />
+    </f:if>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="{identifier}-{iterator}-heading">
+            <h3 class="panel-title">
+                <a href="#{identifier}-{iterator}" class="collapsed" role="button" data-bs-toggle="collapse" aria-expanded="{f:if(condition: isOpened, then: 'true', else: 'false')}" aria-controls="{identifier}-{iterator}">
+                    <span class="caret"></span>
+                    <strong>{panelTitleValue} {iterator}</strong>
+                </a>
+            </h3>
+        </div>
+        <div id="{identifier}-{iterator}" class="panel-collapse collapse{f:if(condition: isOpened, then: ' show')}" role="tabpanel" data-bs-parent="#{identifier}" aria-labelledby="{identifier}-{iterator}-heading">
+            <div class="panel-body">{f:if(condition: panelBodyValue, then: panelBodyValue, else: '...')}</div>
+        </div>
+    </div>
 </f:section>
 
 </html>

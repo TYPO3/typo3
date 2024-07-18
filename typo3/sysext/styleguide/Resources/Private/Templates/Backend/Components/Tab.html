@@ -27,58 +27,106 @@
     />
 
     <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tabs.headline" /></h1>
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.tab" /></h1>
-
-        <h2>Multiple tabs. Last selected tab is stored in local browser storage.</h2>
-
-        <sg:code language="html">
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tabs.section.default.headline" /></h2>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.tabs.section.default.text" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
             <div role="tabpanel">
-                <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-DTM-67217d8b401cf5e72bbf5103d60f3e98" data-store-last-tab="1">
-                    <li role="presentation" class="t3js-tabmenu-item">
-                        <a href="#DTM-67217d8b401cf5e72bbf5103d60f3e98-1" title="" aria-controls="DTM-67217d8b401cf5e72bbf5103d60f3e98-1" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">
-                            First label
-                        </a>
-                    </li>
-                    <li role="presentation" class="t3js-tabmenu-item ">
-                        <a href="#DTM-67217d8b401cf5e72bbf5103d60f3e98-2" title="" aria-controls="DTM-67217d8b401cf5e72bbf5103d60f3e98-2" role="tab" data-bs-toggle="tab" aria-selected="false">
-                            Second label
-                        </a>
-                    </li>
-                    <li role="presentation" class="t3js-tabmenu-item ">
-                        <a href="#DTM-67217d8b401cf5e72bbf5103d60f3e98-3" title="" aria-controls="DTM-67217d8b401cf5e72bbf5103d60f3e98-3" role="tab" data-bs-toggle="tab" aria-selected="false">
-                            Third label
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="DTM-67217d8b401cf5e72bbf5103d60f3e98-1">
-                        <div class="panel panel-tab">
-                            <div class="panel-body">
-                                First content
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="DTM-67217d8b401cf5e72bbf5103d60f3e98-2">
-                        <div class="panel panel-tab">
-                            <div class="panel-body">
-                                Second content
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="DTM-67217d8b401cf5e72bbf5103d60f3e98-3">
-                        <div class="panel panel-tab">
-                            <div class="panel-body">
-                                Third content
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <f:render
+                    section="tabNavigation"
+                    arguments="{
+                        identifier: 'DTM-1721236302',
+                    }"
+                />
+                <f:render
+                    section="tabContent"
+                    arguments="{
+                        identifier: 'DTM-1721236302',
+                    }"
+                />
             </div>
-        </sg:code>
+        </sg:example>
 
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <sg:colorScheme>
+            <div role="tabpanel">
+                <f:render
+                    section="tabNavigation"
+                    arguments="{
+                        identifier: 'DTM-1721236304',
+                    }"
+                />
+                <f:render
+                    section="tabContent"
+                    arguments="{
+                        identifier: 'DTM-1721236304',
+                    }"
+                />
+            </div>
+        </sg:colorScheme>
     </div>
 
+</f:section>
+
+<f:section name="tabNavigation">
+    <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-{identifier}" data-store-last-tab="1">
+        <f:render
+            section="tabNavigationItem"
+            arguments="{
+                identifier: identifier,
+                iterator: '1'
+            }"
+        />
+        <f:render
+            section="tabNavigationItem"
+            arguments="{
+                identifier: identifier,
+                iterator: '2'
+            }"
+        />
+    </ul>
+</f:section>
+
+<f:section name="tabNavigationItem">
+    <li role="presentation" class="t3js-tabmenu-item">
+        <a href="#{identifier}-{iterator}"{f:if(condition: '{iterator} == 1', then: ' class="active"')} title="" aria-controls="{identifier}-{iterator}" role="tab" data-bs-toggle="tab">
+            Tab {iterator}
+        </a>
+    </li>
+</f:section>
+
+<f:section name="tabContent">
+    <div class="tab-content">
+        <f:render
+            section="tabItem"
+            arguments="{
+                identifier: identifier,
+                iterator: '1',
+                panelBodyValue: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores.'
+            }"
+        />
+        <f:render
+            section="tabItem"
+            arguments="{
+                identifier: identifier,
+                iterator: '2',
+                panelBodyValue: 'Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+            }"
+        />
+    </div>
+</f:section>
+
+<f:section name="tabItem">
+    <div role="tabpanel" class="tab-pane{f:if(condition: '{iterator} == 1', then: ' active')}" id="{identifier}-{iterator}">
+        <div class="panel panel-tab">
+            <div class="panel-body">{f:if(condition: panelBodyValue, then: panelBodyValue, else: '...')}</div>
+        </div>
+    </div>
 </f:section>
 
 </html>

@@ -18,60 +18,50 @@
     />
 
     <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.headline" /></h1>
+        <p><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.introtext" /></p>
 
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.modal" /></h1>
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.default.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <a class="btn btn-default t3js-modal-trigger">Open modal</a>
+        </sg:example>
 
-        <p>Modals on buttons can be triggered using t3js-modal-trigger class. There are various
-        data attributes to customize text and behavior. Not all of them are shown here.</p>
-
-        <h2>Simple Modal</h2>
-
-        <div class="example">
-            <a class="btn btn-primary t3js-modal-trigger">
-                Open simple modal
-            </a>
-        </div>
-
-        <sg:code language="html" codeonly="true">
-            <a class="btn btn-primary t3js-modal-trigger">
-                Open simple modal
-            </a>
-        </sg:code>
-
-        <h2>Customize title and message</h2>
-
-        <div class="example">
-            <a class="btn btn-primary t3js-modal-trigger" data-title="Modal with custom title" data-content="Modal with custom message">
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.customTitleContent.headline" /></h2>
+        <f:variable name="codeSnippetCustomTitle">
+            <a class="btn btn-default t3js-modal-trigger" data-title="Custom modal title" data-content="Lorem ipsum dolor...">Open modal</a>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetCustomTitle}">
+            <a
+                class="btn btn-default t3js-modal-trigger"
+                data-title="Custom modal title"
+                data-content="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+            >
                 Open modal
             </a>
-        </div>
+        </sg:example>
 
-        <sg:code language="html" codeonly="true">
-            <a class="btn btn-primary t3js-modal-trigger" data-title="Modal with custom title" data-content="Modal with custom message">
-                Open modal
-            </a>
-        </sg:code>
-
-        <h2>Change modal type</h2>
-
-        <div class="example">
-            <a class="btn btn-warning t3js-modal-trigger" data-severity="warning">
-                Open warning modal
-            </a>
-            <a class="btn btn-danger t3js-modal-trigger" data-severity="error">
-                Open danger modal
-            </a>
-        </div>
-
-        <sg:code language="html" codeonly="true">
-            <a class="btn btn-warning t3js-modal-trigger" data-severity="warning">
-                Open warning modal
-            </a>
-            <a class="btn btn-danger t3js-modal-trigger" data-severity="error">
-                Open danger modal
-            </a>
-        </sg:code>
-
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.severity.headline" /></h2>
+        <f:variable name="codeSnippetSeverity">
+            <f:for each="{variants}" as="variant">
+            data-severity="{variant}"
+            </f:for>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSeverity}">
+            <div class="example-container">
+                <f:for each="{variants}" as="variant">
+                    <f:variable name="buttonClass">
+                        <f:if condition="{variant} == 'ok'">
+                            <f:then>success</f:then>
+                            <f:else if="{variant} == 'error'">danger</f:else>
+                            <f:else>{variant}</f:else>
+                        </f:if>
+                    </f:variable>
+                    <div class="example-item">
+                        <a class="btn btn-{buttonClass -> f:spaceless()} t3js-modal-trigger" data-severity="{variant}">Open {variant} modal</a>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
     </div>
 
 </f:section>

@@ -18,9 +18,12 @@
     />
 
     <div class="styleguide-content">
-        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.surfaces" /></h1>
-        <p>Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.</p>
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.surfaces.headline" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.surfaces.introtext" /></f:sanitize.html>
+        </p>
 
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.surfaces.section.natural.headline" /></h2>
         <f:asset.css identifier="styleguide-surface-natural-demo">
             .surface-natural-demo {
                 display: grid;
@@ -42,7 +45,7 @@
             }
         </f:asset.css>
 
-        <sg:code language="html" colorschemes="true">
+        <sg:colorScheme>
             <div class="surface-natural-demo">
                 <div class="surface-natural-demo-item" data-variant="dim" style="background-color: var(--typo3-surface-dim);">dim</div>
                 <div class="surface-natural-demo-item" data-variant="base" style="background-color: var(--typo3-surface-base);">base</div>
@@ -55,8 +58,9 @@
                 <div class="surface-natural-demo-item" data-variant="container-high" style="background-color: var(--typo3-surface-container-high);">container-high</div>
                 <div class="surface-natural-demo-item" data-variant="container-highest" style="background-color: var(--typo3-surface-container-highest);">container-highest</div>
             </div>
-        </sg:code>
+        </sg:colorScheme>
 
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.surfaces.section.color.headline" /></h2>
         <f:asset.css identifier="styleguide-surface-theme-demo">
             .surface-color-container {
                 display: grid;
@@ -85,7 +89,7 @@
             }
         </f:asset.css>
 
-        <sg:code language="html" colorschemes="true" exampleonly="true">
+        <sg:colorScheme>
             <div class="surface-color-container">
                 <f:for each="{themeColors}" as="color">
                     <div class="surface-color-demo">
@@ -100,7 +104,7 @@
                     </div>
                 </f:for>
             </div>
-        </sg:code>
+        </sg:colorScheme>
     </div>
 
 </f:section>
