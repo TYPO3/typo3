@@ -3,22 +3,21 @@
 //
 :root {
     --pagemodule-grid-border-radius: 5px;
-    --pagemodule-grid-border-color: rgba(0, 0, 0, .15);
+    --pagemodule-grid-border-color: color-mix(in srgb, var(--module-bg), currentColor 30%);
     --pagemodule-grid-spacing: 1rem;
     --pagemodule-grid-inner-spacing: 1rem;
     --pagemodule-grid-cell-header-size: 1em;
     --pagemodule-grid-cell-border-radius: 4px;
-    --pagemodule-grid-cell-bg: #f2f2f2;
-    --pagemodule-grid-cell-restricted-bg: #{shift-color($warning, -85%)};
-    --pagemodule-grid-column-unused-bg: #{shift-color($warning, -85%)};
+    --pagemodule-grid-cell-bg: color-mix(in srgb, var(--module-bg), currentColor 3%);
+    --pagemodule-grid-cell-restricted-bg: var(--typo3-surface-container-warning);
+    --pagemodule-grid-column-unused-bg: var(--typo3-surface-container-warning);
     --pagemodule-element-spacing: 1rem;
-    --pagemodule-element-bg: #fff;
+    --pagemodule-element-bg: var(--typo3-surface-bright);
     --pagemodule-element-border-radius: 2px;
-    --pagemodule-element-warning-bg: #{shift-color($warning, -85%)};
-    --pagemodule-element-warning-border-color: #f6dab1;
-    --pagemodule-element-hidden-bg: #f2f2f2;
-    --pagemodule-dropzone-bg: #{shift-color($warning, -85%)};
-    --pagemodule-dropzone-possible-bg: #{shift-color($success, -85%)};
+    --pagemodule-element-warning-bg: var(--typo3-surface-container-warning);
+    --pagemodule-element-hidden-bg: var(--pagemodule-grid-cell-bg);
+    --pagemodule-dropzone-bg: var(--typo3-surface-container-warning);
+    --pagemodule-dropzone-possible-bg: var(--typo3-surface-container-success);
 }
 
 //
@@ -58,7 +57,7 @@
 }
 
 .t3-grid-cell-unassigned {
-    background-image: repeating-linear-gradient(-45deg, rgba(0, 0, 0, .05), rgba(0, 0, 0, .05) 5px, transparent 5px, transparent 10px);
+    background-image: repeating-linear-gradient(-45deg, color-mix(in srgb, currentColor, transparent 95%), color-mix(in srgb, currentColor, transparent 95%) 5px, transparent 5px, transparent 10px);
 }
 
 //
@@ -90,6 +89,7 @@
     font-size: var(--pagemodule-grid-cell-header-size);
 
     a {
+        color: inherit;
         position: relative;
     }
 }
@@ -150,7 +150,7 @@
 
     .t3-page-ce-hidden & {
         opacity: .5;
-        border: 1px dashed rgba(0, 0, 0, .5);
+        border: 1px dashed color-mix(in srgb, var(--pagemodule-element-hidden-bg), currentColor 40%);
         background-color: var(--pagemodule-element-hidden-bg);
         box-shadow: none;
         transition: opacity .3s ease-in-out;
@@ -161,7 +161,7 @@
     }
 
     .t3-page-ce-warning & {
-        border: 1px solid var(--pagemodule-element-warning-border-color);
+        border: 1px solid color-mix(in srgb, var(--pagemodule-element-warning-bg), currentColor 10%);
         background-color: var(--pagemodule-element-warning-bg);
         box-shadow: none;
     }
@@ -237,12 +237,12 @@
     background-color: var(--pagemodule-dropzone-bg);
 
     &.active {
-        border: 1px dashed rgba(0, 0, 0, .15);
+        border: 1px dashed color-mix(in srgb, var(--pagemodule-dropzone-bg), currentColor 10%);
         height: 25.75px; // @todo refactor later
         width: 100%;
 
         &.t3-page-ce-dropzone-possible {
-            background-color: var(--pagemodule-dropzone-possible-bg);
+            --pagemodule-dropzone-bg: var(--pagemodule-dropzone-possible-bg);
             z-index: 298;
         }
     }
@@ -251,6 +251,12 @@
 //
 // Element Preview
 //
+.element-preview {
+    a {
+        color: inherit;
+    }
+}
+
 .element-preview-header {
     &:empty {
         display: none;

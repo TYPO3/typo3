@@ -141,7 +141,6 @@ class DragDrop {
       content.append(copyMessage);
     }, 0);
 
-    content.closest(Identifiers.column).classList.remove('active');
     (content.querySelector(Identifiers.dropZone) as HTMLElement).hidden = true;
   }
 
@@ -151,7 +150,6 @@ class DragDrop {
     content.draggable = false;
 
     // Show create new element button
-    content.closest(Identifiers.column).classList.add('active');
     (content.querySelector(Identifiers.dropZone) as HTMLElement).hidden = false;
     content.querySelector('.t3js-draggable-copy-message').remove();
 
