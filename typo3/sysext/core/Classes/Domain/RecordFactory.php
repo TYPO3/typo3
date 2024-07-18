@@ -82,9 +82,6 @@ readonly class RecordFactory
             if ($subSchema && !$subSchema->hasField($fieldName)) {
                 continue;
             }
-            if ($fieldName === $typeFieldDefinition?->getName()) {
-                continue;
-            }
             $properties[$fieldName] = $fieldValue;
         }
         [$properties, $systemProperties] = $this->extractSystemInformation(

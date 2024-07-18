@@ -43,4 +43,27 @@ final class RecordFactoryTest extends UnitTestCase
         $subject = new RecordFactory($schemaFactory);
         $subject->createFromDatabaseRow('foo', ['foo' => 1]);
     }
+
+    #[Test]
+    public function createFromDatabaseRowAddsTypeField(): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $schemaFactory = new TcaSchemaFactory(
+            new RelationMapBuilder(),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $schemaFactory->load([
+            'foo' => [
+                'ctrl' => ['type' => 'type'],
+                'columns' => ['type' => ['config' => ['type' => 'select', 'items' => [['value' => 'bar', 'label' => 'bar']]]]],
+                'types' => ['bar' => ['showitem' => 'type']],
+            ],
+        ]);
+        $subject = new RecordFactory($schemaFactory);
+        $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'bar']);
+        self::assertEquals('bar', $recordObject->toArray()['type']);
+    }
 }
