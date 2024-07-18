@@ -1161,7 +1161,6 @@ return [
             ',
         ],
         'text' => [
-            'previewRenderer' => \TYPO3\CMS\Frontend\Preview\TextPreviewRenderer::class,
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     --palette--;;general,
@@ -1190,7 +1189,6 @@ return [
             ],
         ],
         'textpic' => [
-            'previewRenderer' => \TYPO3\CMS\Frontend\Preview\TextpicPreviewRenderer::class,
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     --palette--;;general,
