@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,12 +30,15 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class InlineMnSymmetric extends AbstractTableHandler implements TableHandlerInterface
 {
     /**
      * @var string Table name to match
      */
     protected $tableName = 'tx_styleguide_inline_mnsymmetric';
+
+    public function __construct(private readonly RecordData $recordData) {}
 
     /**
      * Create 4 rows, add row 2 and 3 as branch to row 1
@@ -47,7 +51,6 @@ final class InlineMnSymmetric extends AbstractTableHandler implements TableHandl
 
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $pidOfMainTable = $recordFinder->findPidOfMainTableRecord($tableName);
-        $recordData = GeneralUtility::makeInstance(RecordData::class);
         $context = GeneralUtility::makeInstance(Context::class);
 
         $isFirst = true;
@@ -67,7 +70,7 @@ final class InlineMnSymmetric extends AbstractTableHandler implements TableHandl
                 $fieldValues['branches'] = $numberOfRelationsForFirstRecord;
                 $uidOfFirstRecord = $fieldValues['uid'];
             }
-            $fieldValues = $recordData->generate($tableName, $fieldValues);
+            $fieldValues = $this->recordData->generate($tableName, $fieldValues);
             // Do not update primary identifier uid anymore, db's choke on that for good reason
             $updateValues = $fieldValues;
             unset($updateValues['uid']);

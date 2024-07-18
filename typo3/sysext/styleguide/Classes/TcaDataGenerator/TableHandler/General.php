@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,8 +30,11 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class General extends AbstractTableHandler implements TableHandlerInterface
 {
+    public function __construct(private readonly RecordData $recordData) {}
+
     /**
      * Match always
      */
@@ -45,7 +49,6 @@ final class General extends AbstractTableHandler implements TableHandlerInterfac
     public function handle(string $tableName): void
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $recordData = GeneralUtility::makeInstance(RecordData::class);
         $context = GeneralUtility::makeInstance(Context::class);
 
         // First insert an empty row and get the uid of this row since
@@ -62,7 +65,7 @@ final class General extends AbstractTableHandler implements TableHandlerInterfac
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
         $connection->insert($tableName, $fieldValues);
         $fieldValues['uid'] = $connection->lastInsertId();
-        $fieldValues = $recordData->generate($tableName, $fieldValues);
+        $fieldValues = $this->recordData->generate($tableName, $fieldValues);
         // Do not update primary identifier uid anymore, db's choke on that for good reason
         $updateValues = $fieldValues;
         unset($updateValues['uid']);

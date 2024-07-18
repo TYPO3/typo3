@@ -17,14 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-
 /**
  * Create data for a specific table and its child tables
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
 final readonly class RecordData
 {
     public function __construct(private FieldGeneratorResolver $fieldGeneratorResolver) {}

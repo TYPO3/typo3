@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,12 +30,15 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class InlineMn extends AbstractTableHandler implements TableHandlerInterface
 {
     /**
      * @var string Table name to match
      */
     protected $tableName = 'tx_styleguide_inline_mn';
+
+    public function __construct(private readonly RecordData $recordData) {}
 
     /**
      * Create 1 main row, 4 child child rows, add 2 child child rows in mn
@@ -45,7 +49,6 @@ final class InlineMn extends AbstractTableHandler implements TableHandlerInterfa
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $pidOfMainTable = $recordFinder->findPidOfMainTableRecord($tableName);
-        $recordData = GeneralUtility::makeInstance(RecordData::class);
         $context = GeneralUtility::makeInstance(Context::class);
 
         $childRelationUids = [];
@@ -64,7 +67,7 @@ final class InlineMn extends AbstractTableHandler implements TableHandlerInterfa
             if (count($childRelationUids) < $numberOfChildRelationsToCreate) {
                 $childRelationUids[] = $fieldValues['uid'];
             }
-            $fieldValues = $recordData->generate('tx_styleguide_inline_mn_child', $fieldValues);
+            $fieldValues = $this->recordData->generate('tx_styleguide_inline_mn_child', $fieldValues);
             // Do not update primary identifier uid anymore, db's choke on that for good reason
             $updateValues = $fieldValues;
             unset($updateValues['uid']);
@@ -84,7 +87,7 @@ final class InlineMn extends AbstractTableHandler implements TableHandlerInterfa
         $connection = $connectionPool->getConnectionForTable($tableName);
         $connection->insert($tableName, $fieldValues);
         $parentid = $fieldValues['uid'] = $connection->lastInsertId();
-        $fieldValues = $recordData->generate($tableName, $fieldValues);
+        $fieldValues = $this->recordData->generate($tableName, $fieldValues);
         // Do not update primary identifier uid anymore, db's choke on that for good reason
         $updateValues = $fieldValues;
         unset($updateValues['uid']);
