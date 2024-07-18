@@ -45,7 +45,9 @@ readonly class TcaPreparation
         $tca = $this->configureCategoryRelations($tca, $isFlexForm);
         $tca = $this->configureFileReferences($tca, $isFlexForm);
         $tca = $this->configureEmailSoftReferences($tca);
-        return $this->configureLinkSoftReferences($tca);
+        $tca = $this->configureLinkSoftReferences($tca);
+        $tca = $this->configureSelectSingle($tca);
+        return $tca;
     }
 
     /**
@@ -321,6 +323,28 @@ readonly class TcaPreparation
                     // Hard set/override: 'softref' is not listed as property for type=link at all,
                     // there is little need to have this configurable.
                     $fieldConfig['config']['softref'] = 'typolink';
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Add "'maxitems' => 1" to all "'type' => 'select'" column fields with "'renderType' => 'selectSingle'".
+     */
+    protected function configureSelectSingle(array $tca): array
+    {
+        foreach ($tca as &$tableDefinition) {
+            if (!is_array($tableDefinition['columns'] ?? null)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as &$fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? null) === 'select' && ($fieldConfig['config']['renderType'] ?? null) === 'selectSingle') {
+                    // Hard set/override: 'maxitems' to 1, since selectSingle - as the name suggests - only
+                    // allows a single item to be selected. Setting this config option allows to prevent
+                    // further checks for the renderType, which should be avoided.
+                    // @todo This should be solved by using a dedicated TCA type for selectSingle instead.
+                    $fieldConfig['config']['maxitems'] = 1;
                 }
             }
         }

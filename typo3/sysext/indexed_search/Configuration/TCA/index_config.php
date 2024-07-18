@@ -43,7 +43,6 @@ return [
                     ['label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.type.I.4', 'value' => '4'],
                     ['label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.type.I.5', 'value' => '5'],
                 ],
-                'maxitems' => 1,
             ],
         ],
         'depth' => [
@@ -58,7 +57,6 @@ return [
                     ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3', 'value' => '3'],
                     ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4', 'value' => '4'],
                 ],
-                'maxitems' => 1,
             ],
         ],
         'table2index' => [
@@ -70,7 +68,6 @@ return [
                     ['label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.table2index.I.0', 'value' => '0'],
                 ],
                 'itemsProcFunc' => \TYPO3\CMS\IndexedSearch\Hook\AvailableTcaTables::class . '->populateTables',
-                'maxitems' => 1,
                 'dbFieldLength' => 255,
             ],
         ],
@@ -168,7 +165,6 @@ return [
                     ['label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_frequency.I.1', 'value' => '86400'],
                     ['label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_frequency.I.2', 'value' => '604800'],
                 ],
-                'maxitems' => 1,
                 'default' => 86400,
             ],
         ],

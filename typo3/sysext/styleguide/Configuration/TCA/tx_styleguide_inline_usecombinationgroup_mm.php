@@ -27,9 +27,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_styleguide_inline_usecombinationgroup',
-                'size' => 1,
                 'minitems' => 1,
-                'maxitems' => 1,
             ],
         ],
         'group_child' => [

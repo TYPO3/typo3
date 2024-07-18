@@ -371,7 +371,6 @@ return [
                     ['label' => 'cyan', 'value' => 'cyan', 'icon' => 'flags-cyan'],
                     ['label' => 'rainbow', 'value' => 'rainbow', 'icon' => 'flags-rainbow'],
                 ],
-                'maxitems' => 1,
                 'fieldWizard' => [
                     'selectIcons' => [
                         'disabled' => false,

@@ -31,8 +31,6 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_styleguide_type',
                 'minitems' => 1,
-                'maxitems' => 1,
-                'size' => 1,
             ],
         ],
 

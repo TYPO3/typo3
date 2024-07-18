@@ -31,8 +31,6 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'size' => 1,
-                'maxitems' => 1,
                 'items' => [
                     ['label' => 'false values', 'value' => '--div--'],
                     ['label' => 'integer 0', 'value' => 0],
@@ -136,9 +134,6 @@ return [
                     ['label' => 'foo2', 'value' => 2],
                     ['label' => 'foo42', 'value' => 42],
                 ],
-                'size' => 1,
-                'minitems' => 0,
-                'maxitems' => 1,
             ],
         ],
         'checkbox_1' => [
@@ -270,9 +265,6 @@ return [
                     ['label' => 'Hide input_2 on flex_1', 'value' => 0],
                     ['label' => 'Show input_2 on flex_1', 'value' => 1],
                 ],
-                'size' => 1,
-                'minitems' => 0,
-                'maxitems' => 1,
             ],
         ],
         'flex_1' => [

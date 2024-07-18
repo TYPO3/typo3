@@ -41,7 +41,6 @@ return [
                     ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'sys_file_storage',
-                'maxitems' => 1,
             ],
         ],
         'identifier' => [

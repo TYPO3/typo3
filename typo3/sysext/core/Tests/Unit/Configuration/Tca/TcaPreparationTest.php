@@ -756,4 +756,11 @@ final class TcaPreparationTest extends UnitTestCase
         $subjectMethodReflection = new \ReflectionMethod($subject, 'prepareFileExtensions');
         self::assertEquals('jpg,png,gif', $subjectMethodReflection->invoke($subject, ['common-image-types,jpg,gif']));
     }
+
+    #[Test]
+    public function prepareSelectSingleAddsMaxItems(): void
+    {
+        $subject = (new TcaPreparation())->prepare(['foo' => ['columns' => ['select' => ['config' => ['type' => 'select', 'renderType' => 'selectSingle']]]]]);
+        self::assertEquals(1, $subject['foo']['columns']['select']['config']['maxitems']);
+    }
 }

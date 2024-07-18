@@ -91,10 +91,9 @@ return [
                     ['label' => 'foo2', 'value' => 2],
                     ['label' => 'foo3', 'value' => 3],
                 ],
-                // combination size > 1 & maxitems 1 triggers "singlebox" mode
+                // size > 1 triggers "singlebox" mode
                 'size' => 2,
                 'minitems' => 1,
-                'maxitems' => 1,
             ],
         ],
         'select_3' => [

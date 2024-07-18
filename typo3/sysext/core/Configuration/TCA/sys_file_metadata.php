@@ -50,7 +50,6 @@ return [
                 'foreign_table' => 'sys_file',
                 'foreign_table_where' => 'AND {#sys_file}.{#uid} = ###REC_FIELD_file###',
                 'minitems' => 1,
-                'maxitems' => 1,
                 'default' => 0,
             ],
         ],

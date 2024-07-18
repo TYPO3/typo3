@@ -41,7 +41,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_blogexample_domain_model_blog',
-                'maxitems' => 1,
             ],
         ],
         'title' => [

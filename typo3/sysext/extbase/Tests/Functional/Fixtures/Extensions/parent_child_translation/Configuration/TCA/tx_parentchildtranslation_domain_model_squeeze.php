@@ -44,8 +44,6 @@ return [
                 'foreign_table' => 'tx_parentchildtranslation_domain_model_child',
                 'foreign_table_where' => 'AND {#tx_parentchildtranslation_domain_model_child}.{#sys_language_uid} IN (0,-1)',
                 'default' => 0,
-                'minitems' => 0,
-                'maxitems' => 1,
             ],
         ],
         'parent' => [
