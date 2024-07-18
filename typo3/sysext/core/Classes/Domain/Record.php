@@ -70,12 +70,32 @@ readonly class Record implements \ArrayAccess, RecordInterface
 
     public function offsetExists(mixed $offset): bool
     {
-        return isset($this->properties[$offset]) || isset($this->rawRecord[$offset]);
+        if (isset($this->properties[$offset])) {
+            return true;
+        }
+
+        // Only fall back to the raw record in case no record type is defined.
+        // This allows to properly check for only record type specific fields.
+        if ($this->getRecordType() === null && isset($this->rawRecord[$offset])) {
+            return true;
+        }
+
+        return false;
     }
 
     public function offsetGet(mixed $offset): mixed
     {
-        return $this->properties[$offset] ?? $this->rawRecord[$offset] ?? null;
+        if (isset($this->properties[$offset])) {
+            return $this->properties[$offset];
+        }
+
+        if ($this->getRecordType() === null && isset($this->rawRecord[$offset])) {
+            // Only fall back to the raw record in case no record type is defined.
+            // This ensures that only record type specific fields are being returned.
+            return $this->rawRecord[$offset];
+        }
+
+        return null;
     }
 
     public function offsetSet(mixed $offset, mixed $value): void

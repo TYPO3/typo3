@@ -66,4 +66,30 @@ final class RecordFactoryTest extends UnitTestCase
         $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'bar']);
         self::assertEquals('bar', $recordObject->toArray()['type']);
     }
+
+    #[Test]
+    public function resolvedRecordOnlyContainsFieldsInSubSchema(): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $schemaFactory = new TcaSchemaFactory(
+            new RelationMapBuilder(),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $schemaFactory->load([
+            'foo' => [
+                'ctrl' => ['type' => 'type'],
+                'columns' => ['type' => ['config' => ['type' => 'select', 'items' => [['value' => 'bar', 'label' => 'bar']]]], 'foo' => ['config' => ['type' => 'input']], 'bar' => ['config' => ['type' => 'input']]],
+                'types' => ['foo' => ['showitem' => 'foo']],
+            ],
+        ]);
+        $subject = new RecordFactory($schemaFactory);
+        $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'foo', 'foo' => 'fooValue', 'bar' => 'barValue']);
+        self::assertFalse($recordObject->offsetExists('bar'));
+        self::assertTrue($recordObject->offsetExists('foo'));
+        self::assertTrue($recordObject->getRawRecord()->offsetExists('foo'));
+        self::assertTrue($recordObject->getRawRecord()->offsetExists('bar'));
+    }
 }
