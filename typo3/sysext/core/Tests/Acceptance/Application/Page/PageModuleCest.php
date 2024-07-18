@@ -42,6 +42,39 @@ final class PageModuleCest
         $I->canSee('Please select a page in the page tree to edit page content.');
     }
 
+    public function switchModulesBackAndForthKeepsCurrentlySelectedPage(ApplicationTester $I, PageTree $pageTree): void
+    {
+        $pagePathA = ['styleguide TCA demo', 'ctrl common'];
+        $pageTitleA = 'ctrl common';
+        $pagePathB = ['styleguide TCA demo', 'ctrl minimal'];
+        $pageTitleB = 'ctrl minimal';
+
+        // Select module 'Page' and select page 'A'
+        $I->switchToMainFrame();
+        $I->click('Page');
+        $pageTree->openPath($pagePathA);
+        $I->switchToContentFrame();
+        $I->canSee($pageTitleA);
+
+        // Switch to module 'List': page must still be 'A'
+        $I->switchToMainFrame();
+        $I->click('List');
+        $I->switchToContentFrame();
+        $I->canSee($pageTitleA);
+
+        // Stay in module 'List' and switch to page 'B'
+        $I->switchToMainFrame();
+        $pageTree->openPath($pagePathB);
+        $I->switchToContentFrame();
+        $I->canSee($pageTitleB);
+
+        // Switch to module 'Page': page must still be 'B'
+        $I->switchToMainFrame();
+        $I->click('Page');
+        $I->switchToContentFrame();
+        $I->canSee($pageTitleB);
+    }
+
     public function editPageTitle(ApplicationTester $I, PageTree $pageTree): void
     {
         $oldPageTitle = 'styleguide TCA demo';

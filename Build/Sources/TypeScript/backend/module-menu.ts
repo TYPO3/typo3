@@ -120,8 +120,8 @@ class ModuleMenu {
       section = moduleData.name.split('_')[0];
     }
     const moduleStateStorage = ModuleStateStorage.current(section);
-    if (moduleStateStorage.selection) {
-      params = 'id=' + moduleStateStorage.selection + '&' + params;
+    if (moduleStateStorage.identifier) {
+      params = 'id=' + moduleStateStorage.identifier + '&' + params;
     }
     return params;
   }

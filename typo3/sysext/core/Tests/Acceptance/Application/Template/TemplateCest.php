@@ -58,7 +58,6 @@ final class TemplateCest
 
     public function addANewSiteTemplate(ApplicationTester $I): void
     {
-        $I->waitForText('TypoScript definitions');
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
