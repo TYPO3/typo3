@@ -24,8 +24,8 @@ Impact
 
 Registering FormEngine JavaScript modules via :php:`'requireJsModules'` will
 have no effect. The PageRenderer endpoints
-:php:`\TYPO3\CMS\Core\Page\PageRenderer::loadRequireJs()` and
-:php:`\TYPO3\CMS\Core\Page\PageRenderer::loadRequireJsModule()`
+:php:`\TYPO3\CMS\Core\Page\PageRenderer->loadRequireJs()` and
+:php:`\TYPO3\CMS\Core\Page\PageRenderer->loadRequireJsModule()`
 have been removed and must no longer be called.
 The respective :html:`includeJavaScriptModules` property of the ViewHelper
 :html:`<f:be.pageRenderer>` ViewHelper has also been removed.
@@ -59,8 +59,8 @@ for more information:
         ],
     ];
 
-Then use :php:`\TYPO3\CMS\Core\Page\PageRenderer::loadJavaScriptModules()` instead
-of :php:`\TYPO3\CMS\Core\Page\PageRenderer::loadRequireJsModule()` to load the ES6 module:
+Then use :php:`\TYPO3\CMS\Core\Page\PageRenderer->loadJavaScriptModule()` instead
+of :php:`\TYPO3\CMS\Core\Page\PageRenderer->loadRequireJsModule()` to load the ES6 module:
 
 .. code-block:: php
 

@@ -49,7 +49,8 @@ Migrate your JavaScript from the AMD module format to native ES6 modules and reg
         ],
     ];
 
-Then use :php:`TYPO3\CMS\Core\Page\PageRenderer::loadJavaScriptModules()` instead of :php:`TYPO3\CMS\Core\Page\PageRenderer::loadRequireJsModule()` to load the ES6 module:
+Then use :php:`TYPO3\CMS\Core\Page\PageRenderer->loadJavaScriptModule()` instead of
+:php:`TYPO3\CMS\Core\Page\PageRenderer->loadRequireJsModule()` to load the ES6 module:
 
 .. code-block:: php
 
