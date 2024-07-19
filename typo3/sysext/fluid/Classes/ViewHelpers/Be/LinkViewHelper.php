@@ -46,18 +46,6 @@ final class LinkViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('route', 'string', 'The name of the route', true);
         $this->registerArgument('parameters', 'array', 'An array of parameters', false, []);
         $this->registerArgument('referenceType', 'string', 'The type of reference to be generated (one of the constants)', false, UriBuilder::ABSOLUTE_PATH);
-        $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
-        $this->registerTagAttribute(
-            'rel',
-            'string',
-            'Specifies the relationship between the current document and the linked document'
-        );
-        $this->registerTagAttribute(
-            'rev',
-            'string',
-            'Specifies the relationship between the linked document and the current document'
-        );
-        $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
     }
 
     public function render(): string

@@ -58,4 +58,14 @@ final class PasswordViewHelperTest extends FunctionalTestCase
         $context->setRequest(new Request($serverRequest));
         self::assertSame('<input autocomplete="new-password" type="password" name="myNewPassword" value="" />', (new TemplateView($context))->render());
     }
+
+    #[Test]
+    public function renderCorrectlySetsSizeTagAttribute(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myNewPassword" size="42" />');
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context->setRequest(new Request($serverRequest));
+        self::assertSame('<input size="42" type="password" name="myNewPassword" value="" />', (new TemplateView($context))->render());
+    }
 }

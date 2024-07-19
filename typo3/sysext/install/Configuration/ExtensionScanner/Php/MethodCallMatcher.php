@@ -6330,9 +6330,16 @@ return [
             'Deprecation-104325-DiffUtility-makeDiffDisplay.rst',
         ],
     ],
-    'TYPO3Fluid\Fluid\Core\ViewHelper->registerUniversalTagAttributes' => [
+    'TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper->registerUniversalTagAttributes' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-104223-FluidStandaloneMethods.rst',
+        ],
+    ],
+    'TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper->registerTagAttribute' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-104223-FluidStandaloneMethods.rst',
         ],

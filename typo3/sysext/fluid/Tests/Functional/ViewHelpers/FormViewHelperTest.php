@@ -112,7 +112,31 @@ final class FormViewHelperTest extends FunctionalTestCase
         $request = $this->createRequest();
         $context->setRequest($request);
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $expected = '<form method="post" action="foobar">';
+        $expected = '<form action="foobar" method="post">';
+        self::assertStringContainsString($expected, (new TemplateView($context))->render());
+    }
+
+    #[Test]
+    public function nameAttributeIsSetIfGiven(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form name="myForm" />');
+        $request = $this->createRequest();
+        $context->setRequest($request);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $expected = '<form action="" method="post" name="myForm">';
+        self::assertStringContainsString($expected, (new TemplateView($context))->render());
+    }
+
+    #[Test]
+    public function emptyNameAttributeIsNotSet(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form name="" />');
+        $request = $this->createRequest();
+        $context->setRequest($request);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $expected = '<form action="" method="post">';
         self::assertStringContainsString($expected, (new TemplateView($context))->render());
     }
 
@@ -160,7 +184,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $expected = '<form method="post" action="">' . chr(10) . '<div>';
+        $expected = '<form action="" method="post">' . chr(10) . '<div>';
         self::assertStringContainsString($expected, $view->render());
     }
 
@@ -176,12 +200,12 @@ final class FormViewHelperTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $expected = '<form method="post" action="">' . chr(10) . '<div class="hidden">';
+        $expected = '<form action="" method="post">' . chr(10) . '<div class="hidden">';
         self::assertStringContainsString($expected, $view->render());
     }
 
     #[Test]
-    public function renderHiddenReferrerFieldsAddCurrentControllerAndActionAsHiddenFields(): void
+    public function renderHiddenReferrerFieldsAddCurrentControllerAndActionAsHiddenFields1(): void
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerActionName('controllerActionName');
@@ -197,7 +221,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $expected = '<form method="post" action="">
+        $expected = '<form action="" method="post">
 <div>
 <input type="hidden" name="prefix[myObjectName][__identity]" value="123" />
 
@@ -213,7 +237,7 @@ final class FormViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function renderHiddenReferrerFieldsAddCurrentControllerAndActionAsHiddenFields111(): void
+    public function renderHiddenReferrerFieldsAddCurrentControllerAndActionAsHiddenFields2(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
@@ -238,7 +262,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form addQueryString="untrusted" />');
         $context->setRequest(new Request($request));
         $view = new TemplateView($context);
-        $expected = '<form method="post" action="/?tx_extensionname_pluginname%5Bcontroller%5D=controllerName&amp;untrusted=123';
+        $expected = '<form action="/?tx_extensionname_pluginname%5Bcontroller%5D=controllerName&amp;untrusted=123';
         self::assertStringStartsWith($expected, $view->render());
     }
 

@@ -78,7 +78,6 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image');
         $this->registerArgument('file', 'object', 'File', true);
         $this->registerArgument('additionalConfig', 'array', 'This array can hold additional configuration that is passed though to the Renderer object', false, []);
         $this->registerArgument('width', 'string', 'This can be a numeric value representing the fixed width of in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
@@ -182,7 +181,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         $title = $image->getProperty('title');
 
         // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
-        if (empty($this->arguments['alt'])) {
+        if (empty($this->additionalArguments['alt'])) {
             $this->tag->addAttribute('alt', $alt);
         }
         if (empty($this->additionalArguments['title']) && !empty($title)) {

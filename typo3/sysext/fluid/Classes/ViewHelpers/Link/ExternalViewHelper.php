@@ -59,10 +59,6 @@ final class ExternalViewHelper extends AbstractTagBasedViewHelper
         parent::initializeArguments();
         $this->registerArgument('uri', 'string', 'The URI that will be put in the href attribute of the rendered link tag', true);
         $this->registerArgument('defaultScheme', 'string', 'Scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already', false, 'https');
-        $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
-        $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
-        $this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
-        $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
     }
 
     public function render(): string

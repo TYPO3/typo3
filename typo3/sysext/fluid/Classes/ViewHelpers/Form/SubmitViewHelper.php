@@ -52,16 +52,6 @@ final class SubmitViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    public function initializeArguments(): void
-    {
-        parent::initializeArguments();
-        $this->registerTagAttribute(
-            'disabled',
-            'string',
-            'Specifies that the input element should be disabled when the page loads'
-        );
-    }
-
     public function render(): string
     {
         $name = $this->getName();

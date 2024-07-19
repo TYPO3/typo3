@@ -72,20 +72,9 @@ final class RadioViewHelper extends AbstractFormFieldViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument(
-            'errorClass',
-            'string',
-            'CSS class to set if there are errors for this ViewHelper',
-            false,
-            'f3-form-error'
-        );
+        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
         $this->registerArgument('checked', 'bool', 'Specifies that the input element should be preselected');
         $this->overrideArgument('value', 'string', 'Value of input tag. Required for radio buttons', true);
-        $this->registerTagAttribute(
-            'disabled',
-            'string',
-            'Specifies that the input element should be disabled when the page loads'
-        );
     }
 
     public function render(): string

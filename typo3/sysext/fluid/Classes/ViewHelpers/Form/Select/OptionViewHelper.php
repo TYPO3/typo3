@@ -35,7 +35,7 @@ final class OptionViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('selected', 'boolean', 'If set, overrides automatic detection of selected state for this option.');
         $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.');
         $this->registerArgument('data', 'array', 'Additional data-* attributes. They will each be added with a "data-" prefix.');
-        $this->registerTagAttribute('value', 'mixed', 'Value to be inserted in HTML tag - must be convertible to string!');
+        $this->registerArgument('value', 'mixed', 'Value to be inserted in HTML tag - must be convertible to string!');
     }
 
     public function render(): string

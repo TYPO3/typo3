@@ -70,11 +70,6 @@ final class CheckboxViewHelper extends AbstractFormFieldViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerTagAttribute(
-            'disabled',
-            'string',
-            'Specifies that the input element should be disabled when the page loads'
-        );
         $this->registerArgument(
             'errorClass',
             'string',

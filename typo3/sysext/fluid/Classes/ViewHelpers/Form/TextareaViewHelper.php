@@ -43,13 +43,7 @@ final class TextareaViewHelper extends AbstractFormFieldViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerTagAttribute('autofocus', 'string', 'Specifies that a text area should automatically get focus when the page loads');
-        $this->registerTagAttribute('rows', 'int', 'The number of rows of a text area');
-        $this->registerTagAttribute('cols', 'int', 'The number of columns of a text area');
-        $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-        $this->registerTagAttribute('placeholder', 'string', 'The placeholder of the textarea');
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
-        $this->registerTagAttribute('readonly', 'string', 'The readonly attribute of the textarea', false);
         $this->registerArgument('required', 'bool', 'Specifies whether the textarea is required', false, false);
     }
 

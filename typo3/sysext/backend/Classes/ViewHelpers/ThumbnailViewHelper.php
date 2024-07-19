@@ -79,8 +79,6 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', false);
-
         $this->registerArgument('src', 'string', 'a path to a file, a combined FAL identifier or an uid (int). If $treatIdAsReference is set, the integer is considered the uid of the sys_file_reference record. If you already got a FAL object, consider using the $image parameter instead', false, '');
         $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
         $this->registerArgument('image', 'object', 'a FAL object (\\TYPO3\\CMS\\Core\\Resource\\File or \\TYPO3\\CMS\\Core\\Resource\\FileReference)');
@@ -147,7 +145,7 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
             $title = $image->getProperty('title');
 
             // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
-            if (empty($this->arguments['alt'])) {
+            if (empty($this->additionalArguments['alt'])) {
                 $this->tag->addAttribute('alt', $alt);
             }
             if (empty($this->additionalArguments['title']) && $title) {

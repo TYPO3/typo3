@@ -57,8 +57,6 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('as', 'string', '');
         $this->registerArgument('accept', 'array', 'Values for the accept attribute', false, []);
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
-        $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-        $this->registerTagAttribute('multiple', 'string', 'Specifies that the file input element should allow multiple selection of files');
     }
 
     public function render(): string
@@ -97,7 +95,7 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
         }
         $this->tag->addAttribute('type', 'file');
 
-        if (isset($this->arguments['multiple'])) {
+        if (isset($this->additionalArguments['multiple'])) {
             $this->tag->addAttribute('name', $name . '[]');
         } else {
             $this->tag->addAttribute('name', $name);

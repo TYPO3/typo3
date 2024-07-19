@@ -110,7 +110,7 @@ final class OptionViewHelperTest extends FunctionalTestCase
             'value' => $value,
             'selected' => $selected,
         ]);
-        $expected = '<select name=""><option value="' . $value . '" selected="selected">Option Label</option></select>';
+        $expected = '<select name=""><option selected="selected" value="' . $value . '">Option Label</option></select>';
         self::assertSame($expected, $view->render());
     }
 

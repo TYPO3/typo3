@@ -130,13 +130,9 @@ class FormViewHelper extends AbstractFormViewHelper
         $this->registerArgument('hiddenFieldClassName', 'string', 'hiddenFieldClassName');
         $this->registerArgument('requestToken', 'mixed', 'whether to add that request token to the form');
         $this->registerArgument('signingType', 'string', 'which signing type to be used on the request token (falls back to "nonce")');
-        $this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
-        $this->registerTagAttribute('method', 'string', 'Transfer type (get or post)', false, 'post');
-        $this->registerTagAttribute('name', 'string', 'Name of form');
-        $this->registerTagAttribute('onreset', 'string', 'JavaScript: On reset of the form');
-        $this->registerTagAttribute('onsubmit', 'string', 'JavaScript: On submit of the form');
-        $this->registerTagAttribute('target', 'string', 'Target attribute of the form');
-        $this->registerTagAttribute('novalidate', 'bool', 'Indicate that the form is not to be validated on submit.');
+        $this->registerArgument('method', 'string', 'Transfer type (get or post)', false, 'post');
+        $this->registerArgument('name', 'string', 'Name of form');
+        $this->registerArgument('novalidate', 'bool', 'Indicate that the form is not to be validated on submit.');
     }
 
     public function render(): string
@@ -158,6 +154,10 @@ class FormViewHelper extends AbstractFormViewHelper
             $this->tag->addAttribute('method', 'get');
         } else {
             $this->tag->addAttribute('method', 'post');
+        }
+
+        if (!empty($this->arguments['name'])) {
+            $this->tag->addAttribute('name', $this->arguments['name']);
         }
 
         if (isset($this->arguments['novalidate']) && $this->arguments['novalidate'] === true) {

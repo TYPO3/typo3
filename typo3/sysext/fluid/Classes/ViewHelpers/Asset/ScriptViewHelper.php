@@ -84,29 +84,12 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerTagAttribute('async', 'bool', 'Define that the script will be fetched in parallel to parsing and evaluation.', false);
-        $this->registerTagAttribute('crossorigin', 'string', 'Define how to handle crossorigin requests.', false);
-        $this->registerTagAttribute('defer', 'bool', 'Define that the script is meant to be executed after the document has been parsed.', false);
-        $this->registerTagAttribute('integrity', 'string', 'Define base64-encoded cryptographic hash of the resource that allows browsers to verify what they fetch.', false);
-        $this->registerTagAttribute('nomodule', 'bool', 'Define that the script should not be executed in browsers that support ES2015 modules.', false);
-        $this->registerTagAttribute('nonce', 'string', 'Define a cryptographic nonce (number used once) used to whitelist inline styles in a style-src Content-Security-Policy.', false);
-        $this->registerTagAttribute('referrerpolicy', 'string', 'Define which referrer is sent when fetching the resource.', false);
-        $this->registerTagAttribute('src', 'string', 'Define the URI of the external resource.', false);
-        $this->registerTagAttribute('type', 'string', 'Define the MIME type (usually \'text/javascript\').', false);
+        $this->registerArgument('async', 'bool', 'Define that the script will be fetched in parallel to parsing and evaluation.');
+        $this->registerArgument('defer', 'bool', 'Define that the script is meant to be executed after the document has been parsed.');
+        $this->registerArgument('nomodule', 'bool', 'Define that the script should not be executed in browsers that support ES2015 modules.');
         $this->registerArgument('useNonce', 'bool', 'Whether to use the global nonce value', false, false);
-        $this->registerArgument(
-            'identifier',
-            'string',
-            'Use this identifier within templates to only inject your JS once, even though it is added multiple times.',
-            true
-        );
-        $this->registerArgument(
-            'priority',
-            'boolean',
-            'Define whether the JavaScript should be put in the <head> tag above-the-fold or somewhere in the body part.',
-            false,
-            false
-        );
+        $this->registerArgument('identifier', 'string', 'Use this identifier within templates to only inject your JS once, even though it is added multiple times.', true);
+        $this->registerArgument('priority', 'boolean', 'Define whether the JavaScript should be put in the <head> tag above-the-fold or somewhere in the body part.', false, false);
     }
 
     public function render(): string
@@ -115,9 +98,9 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
         $attributes = $this->tag->getAttributes();
 
         // boolean attributes shall output attr="attr" if set
-        foreach (['async', 'defer', 'nomodule'] as $_attr) {
-            if ($attributes[$_attr] ?? false) {
-                $attributes[$_attr] = $_attr;
+        foreach (['async', 'defer', 'nomodule'] as $attribute) {
+            if ($this->arguments[$attribute] ?? false) {
+                $attributes[$attribute] = $attribute;
             }
         }
 
