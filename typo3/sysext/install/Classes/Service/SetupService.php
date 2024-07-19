@@ -298,12 +298,18 @@ For each website you need a TypoScript record on the main page of your website (
                 $mappedPermissions['explicit_allowdeny'] = implode(',', $explicitAllowDeny);
             }
         }
-        if (isset($permissionPreset['availableWidgets']) && is_array($permissionPreset['availableWidgets'])) {
+
+        $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        if (
+            // availableWidgets is only available if typo3/cms-dashboard is installed
+            $databaseConnection->getSchemaInformation()->introspectTable($table)->hasColumn('availableWidgets')
+            && isset($permissionPreset['availableWidgets'])
+            && is_array($permissionPreset['availableWidgets'])
+        ) {
             $mappedPermissions['availableWidgets'] = implode(',', $permissionPreset['availableWidgets']);
         }
         if ($mappedPermissions !== []) {
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-            $connectionPool->getConnectionForTable($table)->update(
+            $databaseConnection->update(
                 $table,
                 $mappedPermissions,
                 ['uid' => $recordId]
