@@ -223,7 +223,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * @param array<int, mixed> $arguments The arguments of the magic method
      * @throws UnsupportedMethodException
      * @return mixed
-     * @deprecated since v12, will be removed in v14, use {@see findBy}, {@see findOneBy} and {@see count} instead
+     * @deprecated since v12, will be removed in v14, use {@see self::findBy()}, {@see self::findOneBy()} and {@see self::count()} instead
      */
     public function __call($methodName, $arguments)
     {
