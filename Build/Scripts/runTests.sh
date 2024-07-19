@@ -3,8 +3,9 @@
 #
 # TYPO3 core test runner based on docker or podman
 #
-
-trap 'cleanUp;exit 2' SIGINT
+if [ "${CI}" != "true" ]; then
+    trap 'echo "runTests.sh SIGINT signal emitted";cleanUp;exit 2' SIGINT
+fi
 
 waitFor() {
     local HOST=${1}
