@@ -1038,7 +1038,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function returnWebmounts()
     {
-        return (string)$this->groupData['webmounts'] != '' ? explode(',', $this->groupData['webmounts']) : [];
+        $webMounts = $this->groupData['webmounts'] ?? null;
+        return is_string($webMounts) && $webMounts !== ''
+            ? explode(',', $webMounts)
+            : [];
     }
 
     /**
