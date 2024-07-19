@@ -421,7 +421,7 @@ CREATE TABLE sys_http_report (
 	created int(11) unsigned NOT NULL,
 	changed int(11) unsigned NOT NULL,
 	type varchar(32) NOT NULL,
-	scope varchar(32) NOT NULL,
+	scope varchar(100) NOT NULL,
 	request_time bigint(20) unsigned NOT NULL,
 	meta mediumtext,
 	details mediumtext,
