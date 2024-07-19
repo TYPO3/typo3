@@ -11,7 +11,7 @@
     </p>
 </f:if>
 
-<f:form target="_top" fieldNamePrefix="" action="login" requestToken="{requestToken}" additionalAttributes="{spellcheck: 'false'}">
+<f:form target="_top" fieldNamePrefix="" action="login" requestToken="{requestToken}" spellcheck="false">
     <f:render section="content" arguments="{_all}"/>
 </f:form>
 
@@ -29,13 +29,13 @@
         <div>
             <label for="tx-felogin-input-username">
                 <f:translate key="username"/>
-                <f:form.textfield name="user" required="true" additionalAttributes="{autocomplete: 'username'}" id="tx-felogin-input-username"/>
+                <f:form.textfield name="user" required="true" autocomplete="username" id="tx-felogin-input-username"/>
             </label>
         </div>
         <div>
             <label for="tx-felogin-input-password">
                 <f:translate key="password"/>
-                <f:form.password name="pass" additionalAttributes="{required: 'required', autocomplete: 'current-password'}" id="tx-felogin-input-password"/>
+                <f:form.password name="pass" required="true" autocomplete="current-password" id="tx-felogin-input-password"/>
             </label>
         </div>
 
@@ -45,7 +45,7 @@
                     <f:translate id="permalogin"/>
                     <f:if condition="{permaloginStatus} == 1">
                         <f:then>
-                            <f:form.hidden name="permalogin" value="0" additionalAttributes="{disabled: 'disabled'}"/>
+                            <f:form.hidden name="permalogin" value="0" disabled="disabled"/>
                             <f:form.checkbox name="permalogin" id="permalogin" value="1" checked="checked"/>
                         </f:then>
                         <f:else>
