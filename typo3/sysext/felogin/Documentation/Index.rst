@@ -44,6 +44,7 @@ in to the TYPO3 frontend.
    UsersManual/Index
    LoginMechanism/Index
    Configuration/Index
+   GetPostParameters/Index
    Events/Index
    Examples/Index
    KnownProblems/Index
