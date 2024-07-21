@@ -20,6 +20,23 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 /**
  * ViewHelper which creates a simple checkbox :html:`<input type="checkbox">`.
  *
+ * It **must** only be used in :ref:`Extbase <t3coreapi:extbase>` context within the
+ * :ref:`f:form <t3viewhelper:typo3-fluid-form>` tag. It **cannot** be used
+ * within a standard :ref:`FLUIDTEMPLATE <t3tsref:cobj-template>` or a non-Extbase
+ * plugin.
+ *
+ * ..  versionchanged:: 12.0
+ *     The `<f:form>` ViewHelper where initially build to be only used in Extbase.
+ *     Nevertheless until TYPO3 v12.0 it was possible to use them in a non-Extbase
+ *     context, for example a :ref:`FLUIDTEMPLATE <t3tsref:cobj-template>`.
+ *
+ *     With :ref:`Breaking: #98377 - Fluid StandaloneView does not create an
+ *     Extbase Request anymore <changelog:breaking-98377-1663607123>` using them
+ *     in a non-Extbase context now throws an error.
+ *
+ *     See :ref:`Migration <f-form-checkbox-migration>` for details.
+ *
+ *
  * Examples
  * ========
  *
@@ -59,6 +76,23 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *    <input type="checkbox" name="user[interests][]" value="TYPO3" checked="checked" />
  *
  * Depending on property ``interests``.
+ * 
+ * ..  _f-form-checkbox-migration:
+ *
+ * Migration: Remove f:form.checkbox ViewHelper in non-Extbase context
+ * ===================================================================
+ *
+ * Starting with TYPO3 v12.0 it is not possible to use the f:form.checkbox
+ * ViewHelper in a non-Extbase context anymore. These can be safely replaced
+ * by standard HTML `<input>` tags.
+ *
+ * ..  code-block:: diff
+ *     :caption: Migration of a preselected ViewHelper in a non-Extbase context
+ *
+ *     - <f:form.checkbox name="myCheckBox" value="someValue"
+ *     -   checked="{object.value} == 5" />
+ *     + <input type="checkbox" name="myCheckBox" id="myCheckBox" value="someValue"
+ *     +   checked="{f:if(condition:'{object.value} == 5', then:'checked')}" />
  */
 final class CheckboxViewHelper extends AbstractFormFieldViewHelper
 {
