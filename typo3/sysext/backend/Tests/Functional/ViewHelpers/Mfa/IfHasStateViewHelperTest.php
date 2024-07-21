@@ -33,9 +33,10 @@ final class IfHasStateViewHelperTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->view = new TemplateView($this->get(RenderingContextFactory::class)->create());
-        $this->view->getRenderingContext()->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
-        $this->view->getTemplatePaths()->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Mfa/IfHasStateViewHelper.html');
+        $renderingContext = $this->get(RenderingContextFactory::class)->create();
+        $renderingContext->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $renderingContext->getTemplatePaths()->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Mfa/IfHasStateViewHelper.html');
+        $this->view = new TemplateView($renderingContext);
         $this->view->assign('provider', $this->get(MfaProviderRegistry::class)->getProvider('totp'));
     }
 

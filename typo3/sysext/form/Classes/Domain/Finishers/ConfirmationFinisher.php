@@ -136,7 +136,7 @@ class ConfirmationFinisher extends AbstractFinisher
         }
 
         $standaloneView->setTemplate($this->options['templateName']);
-        $standaloneView->getTemplatePaths()->fillFromConfigurationArray($this->options);
+        $standaloneView->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($this->options);
 
         if (isset($this->options['variables']) && is_array($this->options['variables'])) {
             $standaloneView->assignMultiple($this->options['variables']);

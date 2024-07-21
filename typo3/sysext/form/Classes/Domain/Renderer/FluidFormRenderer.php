@@ -173,9 +173,8 @@ class FluidFormRenderer extends AbstractElementRenderer
             ->getViewHelperVariableContainer()
             ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $this->formRuntime);
 
-        // Configure the fluid TemplatePaths with the rendering options
-        // from the renderable
-        $view->getTemplatePaths()->fillFromConfigurationArray($renderingOptions);
+        // Configure the fluid TemplatePaths with the rendering options from the renderable
+        $view->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($renderingOptions);
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
