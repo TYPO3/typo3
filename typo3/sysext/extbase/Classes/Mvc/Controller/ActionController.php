@@ -493,9 +493,6 @@ abstract class ActionController implements ControllerInterface
             $templatePaths->fillDefaultsByPackageName($this->request->getControllerExtensionKey());
             $templatePaths->setFormat($this->request->getFormat());
         }
-        if (method_exists($view, 'injectSettings')) {
-            $view->injectSettings($this->settings);
-        }
         $view->assign('settings', $this->settings);
         return $view;
     }
