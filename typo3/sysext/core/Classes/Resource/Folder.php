@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourcePermissionsUnavailableException;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
@@ -284,6 +285,7 @@ class Folder implements FolderInterface
      * @param string $fileName
      * @param string|DuplicationBehavior $conflictMode
      * @return File The file object
+     * @throws ExistingTargetFileNameException
      * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function addFile($localFilePath, $fileName = null, $conflictMode = DuplicationBehavior::CANCEL)
@@ -307,7 +309,7 @@ class Folder implements FolderInterface
      *
      * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
      * @param string|DuplicationBehavior $conflictMode
-     * @return File The file object
+     * @return FileInterface The file object
      * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL)

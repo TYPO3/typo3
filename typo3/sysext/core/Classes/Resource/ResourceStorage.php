@@ -1248,7 +1248,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @throws \InvalidArgumentException
      * @throws Exception\ExistingTargetFileNameException
-     * @return FileInterface
+     * @return File
      * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function addFile($localFilePath, Folder $targetFolder, $targetFileName = '', $conflictMode = DuplicationBehavior::RENAME, $removeOriginal = true)
@@ -1287,9 +1287,10 @@ class ResourceStorage implements ResourceStorageInterface
         }
 
         $fileIdentifier = $this->driver->addFile($localFilePath, $targetFolder->getIdentifier(), $targetFileName, $removeOriginal);
+        /** @var File $file */
         $file = $this->getFileByIdentifier($fileIdentifier);
 
-        if ($replaceExisting && $file instanceof File) {
+        if ($replaceExisting) {
             $this->getIndexer()->updateIndexEntry($file);
         }
 
@@ -1448,6 +1449,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getFile($identifier)
     {
+        // @todo not sure if this method is used with processed files too, if so, the return value is missing types
         $file = $this->getFileByIdentifier($identifier);
         if ($file instanceof File && !$this->driver->fileExists($identifier)) {
             $file->setMissing(true);
@@ -1460,7 +1462,7 @@ class ResourceStorage implements ResourceStorageInterface
      * If the file is outside of the process folder, it gets indexed and returned as file object afterwards
      * If the file is within processing folder, the file object will be directly returned
      *
-     * @return File|ProcessedFile|null
+     * @return File|ProcessedFile|null Returns ProcessedFile|null only if a processed file is requested, always File otherwise
      */
     public function getFileByIdentifier(string $fileIdentifier)
     {
@@ -1608,6 +1610,7 @@ class ResourceStorage implements ResourceStorageInterface
             if (isset($rows[$identifier])) {
                 $fileObject = $this->getFileFactory()->getFileObject($rows[$identifier]['uid'], $rows[$identifier]);
             } else {
+                // @todo check if processed files can be involved here, if so, return type is wrong
                 $fileObject = $this->getFileByIdentifier($identifier);
             }
             if ($fileObject instanceof FileInterface) {
@@ -1843,7 +1846,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFolderWritePermissionsException
-     * @return FileInterface The file object
+     * @return File The file object
      */
     public function createFile($fileName, Folder $targetFolderObject)
     {
@@ -1916,7 +1919,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @throws \Exception|Exception\AbstractFileOperationException
      * @throws Exception\ExistingTargetFileNameException
-     * @return FileInterface
+     * @return File
      * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
     public function copyFile(FileInterface $file, Folder $targetFolder, $targetFileName = null, $conflictMode = DuplicationBehavior::RENAME)
@@ -1956,10 +1959,11 @@ class ResourceStorage implements ResourceStorageInterface
             $tempPath = $file->getForLocalProcessing();
             $newFileObjectIdentifier = $this->driver->addFile($tempPath, $targetFolder->getIdentifier(), $sanitizedTargetFileName);
         }
+        /** @var File $newFileObject */
         $newFileObject = $this->getFileByIdentifier($newFileObjectIdentifier);
 
         // In case we deal with a file, also copy corresponding metadata
-        if ($file instanceof File && $newFileObject !== null) {
+        if ($file instanceof File) {
             $metaDataAspect = $newFileObject->getMetaData();
             // Add meta data of file while keeping existing properties like "file", "uid", etc.
             $metaDataAspect->add(array_replace($file->getMetaData()->get(), $metaDataAspect->get()));

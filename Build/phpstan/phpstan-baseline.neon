@@ -426,11 +426,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:copyTo\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:moveTo\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
@@ -467,21 +462,6 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getReadablePath\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\:\\:addFile\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\:\\:addUploadedFile\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\:\\:createFile\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
 

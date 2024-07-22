@@ -222,6 +222,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         $currentName = 'form_' . $this->hashService->hmac($seed, self::class);
         $uploadFolder = $this->provideTargetFolder($uploadFolder, $currentName);
         // sub-folder in $uploadFolder with 160 bit of derived entropy (.../form_<40-chars-hash>/actual.file)
+        /** @var File $uploadedFile */
         $uploadedFile = $uploadFolder->addUploadedFile($uploadInfo, $conflictMode);
 
         $resourcePointer = isset($uploadInfo['submittedFile']['resourcePointer']) && !str_contains($uploadInfo['submittedFile']['resourcePointer'], 'file:')
