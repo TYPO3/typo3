@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -72,8 +73,11 @@ class BackendLayoutRenderer
                     foreach ($records as $contentRecord) {
                         // @todo: ideally we hand in the record object into the GridColumnItem in the future
                         if (!$recordIdentityMap->hasIdentifier('tt_content', (int)($contentRecord['uid'] ?? null))) {
-                            $recordObject = $this->recordFactory->createFromDatabaseRow('tt_content', $contentRecord);
-                            $recordIdentityMap->add($recordObject);
+                            try {
+                                $recordObject = $this->recordFactory->createFromDatabaseRow('tt_content', $contentRecord);
+                                $recordIdentityMap->add($recordObject);
+                            } catch (UndefinedSchemaException) {
+                            }
                         }
                         $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $context, $columnObject, $contentRecord);
                         $columnObject->addItem($columnItem);
