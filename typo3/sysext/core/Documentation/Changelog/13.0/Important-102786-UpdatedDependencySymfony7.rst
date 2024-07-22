@@ -3,7 +3,7 @@
 .. _important-102786-1704811367:
 
 ==================================================
-Important: #102786 - Updated dependency: Symfony 7
+Important: #102786 - Updated Dependency: Symfony 7
 ==================================================
 
 See :issue:`102786`
