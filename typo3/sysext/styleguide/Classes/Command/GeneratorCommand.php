@@ -24,7 +24,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
@@ -37,6 +36,14 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 #[AsCommand('styleguide:generate', 'Generate page tree for Styleguide TCA backend and/or Styleguide frontend')]
 final class GeneratorCommand extends Command
 {
+    public function __construct(
+        private readonly Generator $generator,
+        private readonly GeneratorFrontend $generatorFrontend,
+        private readonly RecordFinder $recordFinder,
+    ) {
+        parent::__construct('styleguide:generate');
+    }
+
     protected function configure(): void
     {
         $this->addArgument('type', InputArgument::OPTIONAL, 'Create page tree data, valid arguments are "tca", "frontend", "frontend-systemplate" and "all"', 'all');
@@ -111,13 +118,10 @@ final class GeneratorCommand extends Command
 
     private function createTca(OutputInterface $output): int
     {
-        /** @var RecordFinder $finder */
-        $finder = GeneralUtility::makeInstance(RecordFinder::class);
-        if (count($finder->findUidsOfStyleguideEntryPages())) {
+        if (count($this->recordFinder->findUidsOfStyleguideEntryPages())) {
             $output->writeln('<comment>TCA page tree already exists!</comment>');
         } else {
-            $generator = GeneralUtility::makeInstance(Generator::class);
-            $generator->create();
+            $this->generator->create();
             $output->writeln('<info>TCA page tree created!</info>');
         }
 
@@ -126,9 +130,7 @@ final class GeneratorCommand extends Command
 
     private function deleteTca(OutputInterface $output): int
     {
-        /** @var Generator $generator */
-        $generator = GeneralUtility::makeInstance(Generator::class);
-        $generator->delete();
+        $this->generator->delete();
         $output->writeln('<info>TCA page tree deleted!</info>');
 
         return 0;
@@ -136,15 +138,11 @@ final class GeneratorCommand extends Command
 
     private function createFrontend(OutputInterface $output, bool $useSiteSets): int
     {
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 
-        if (count($recordFinder->findUidsOfFrontendPages())) {
+        if (count($this->recordFinder->findUidsOfFrontendPages())) {
             $output->writeln('<info>Frontend page tree already exists!</info>');
         } else {
-            /** @var GeneratorFrontend $frontend */
-            $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-            $frontend->create('', 1, $useSiteSets);
+            $this->generatorFrontend->create('', 1, $useSiteSets);
             $output->writeln('<info>Frontend page tree created!</info>');
         }
 
@@ -153,9 +151,7 @@ final class GeneratorCommand extends Command
 
     private function deleteFrontend(OutputInterface $output): int
     {
-        /** @var GeneratorFrontend $frontend */
-        $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-        $frontend->delete();
+        $this->generatorFrontend->delete();
 
         $output->writeln('<info>Frontend page tree deleted!</info>');
 

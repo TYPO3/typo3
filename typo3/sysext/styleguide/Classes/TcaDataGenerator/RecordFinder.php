@@ -34,16 +34,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-final class RecordFinder
+final readonly class RecordFinder
 {
+    public function __construct(private ConnectionPool $connectionPool) {}
+
     /**
-     * Returns a uid list of existing styleguide demo top level pages.
+     * Returns an uid list of existing styleguide demo top level pages.
      * These are pages with pid=0 and tx_styleguide_containsdemo set to 'tx_styleguide'.
      * This can be multiple pages if "create" button was clicked multiple times without "delete" in between.
      */
     public function findUidsOfStyleguideEntryPages(): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $result = $queryBuilder->select('uid')
             ->from('pages')
@@ -74,7 +76,7 @@ final class RecordFinder
      */
     public function findPidOfMainTableRecord(string $tableName): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $row = $queryBuilder->select('uid')
             ->from('pages')
@@ -149,7 +151,7 @@ final class RecordFinder
      */
     public function findUidsOfDemoBeGroups(): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_groups');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_groups');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $rows = $queryBuilder->select('uid')
             ->from('be_groups')
@@ -177,7 +179,7 @@ final class RecordFinder
      */
     public function findUidsOfDemoBeUsers(): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_users');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $rows = $queryBuilder->select('uid')
             ->from('be_users')
@@ -206,7 +208,7 @@ final class RecordFinder
     public function findUidsOfStaticdata(): array
     {
         $pageUid = $this->findPidOfMainTableRecord('tx_styleguide_staticdata');
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_styleguide_staticdata');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_styleguide_staticdata');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $rows = $queryBuilder->select('uid')
             ->from('tx_styleguide_staticdata')
@@ -258,7 +260,7 @@ final class RecordFinder
     public function findUidsOfFrontendPages(array $types = ['tx_styleguide_frontend_root', 'tx_styleguide_frontend'], array $doktype = []): array
     {
         $allowedTypes = ['tx_styleguide_frontend_root', 'tx_styleguide_frontend'];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         /** @var QueryBuilder $queryBuilder */
@@ -308,7 +310,7 @@ final class RecordFinder
      */
     public function findTtContent(array $types = ['textmedia', 'textpic', 'image', 'uploads'], string $identifier = 'tx_styleguide_frontend'): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder->select('uid', 'pid', 'CType')
@@ -332,7 +334,7 @@ final class RecordFinder
 
     public function findFeUserGroups(): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_groups');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('fe_groups');
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder->select('uid', 'pid', 'title')
@@ -348,7 +350,7 @@ final class RecordFinder
 
     public function findFeUsers(): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_users');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('fe_users');
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder->select('uid', 'pid', 'username')

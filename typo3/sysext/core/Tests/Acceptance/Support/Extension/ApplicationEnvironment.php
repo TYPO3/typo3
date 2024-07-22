@@ -111,13 +111,13 @@ final class ApplicationEnvironment extends BackendEnvironment
             symlink('typo3/sysext/backend/Resources/Public/Icons/favicon.ico', $faviconLinkPath);
         }
 
-        $styleguideGenerator = new Generator();
+        $styleguideGenerator = GeneralUtility::makeInstance(Generator::class);
         $styleguideGenerator->create();
 
-        $styleguideGeneratorFrontend = new GeneratorFrontend();
         // Force basePath for testing environment, required for the frontend!
-        // Otherwise the page can not be found, also do not set root page to
+        // Otherwise, the page can not be found, also do not set root page to
         // 'hidden' so menus (e.g. menu_sitemap_pages) are displayed correctly
+        $styleguideGeneratorFrontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
         $styleguideGeneratorFrontend->create('/', 0, $useSiteSets);
 
         $testbase = new Testbase();

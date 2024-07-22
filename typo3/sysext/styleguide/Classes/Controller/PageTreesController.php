@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
@@ -57,7 +56,10 @@ final class PageTreesController
     ];
 
     public function __construct(
+        private readonly GeneratorFrontend $frontend,
+        private readonly Generator $generator,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly RecordFinder $recordFinder,
     ) {}
 
     /**
@@ -78,9 +80,8 @@ final class PageTreesController
     private function managePageTreesAction(ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $finder = GeneralUtility::makeInstance(RecordFinder::class);
-        $demoExists = count($finder->findUidsOfStyleguideEntryPages());
-        $demoFrontendExists = count($finder->findUidsOfFrontendPages());
+        $demoExists = count($this->recordFinder->findUidsOfStyleguideEntryPages());
+        $demoFrontendExists = count($this->recordFinder->findUidsOfFrontendPages());
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
@@ -101,8 +102,7 @@ final class PageTreesController
 
     private function tcaCreateAction(): ResponseInterface
     {
-        $finder = GeneralUtility::makeInstance(RecordFinder::class);
-        if (count($finder->findUidsOfStyleguideEntryPages())) {
+        if (count($this->recordFinder->findUidsOfStyleguideEntryPages())) {
             // Tell something was done here
             $json = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionFailedTitle'),
@@ -110,8 +110,7 @@ final class PageTreesController
                 'status' => ContextualFeedbackSeverity::ERROR,
             ];
         } else {
-            $generator = GeneralUtility::makeInstance(Generator::class);
-            $generator->create();
+            $this->generator->create();
             // Tell something was done here
             $json = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaCreateActionOkTitle'),
@@ -125,8 +124,7 @@ final class PageTreesController
 
     private function tcaDeleteAction(): ResponseInterface
     {
-        $generator = GeneralUtility::makeInstance(Generator::class);
-        $generator->delete();
+        $this->generator->delete();
         $json = [
             'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkTitle'),
             'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:tcaDeleteActionOkBody'),
@@ -137,16 +135,14 @@ final class PageTreesController
 
     private function frontendCreateWithSetsAction(): ResponseInterface
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        if (count($recordFinder->findUidsOfFrontendPages())) {
+        if (count($this->recordFinder->findUidsOfFrontendPages())) {
             $json = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionFailedTitle'),
                 'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionFailedBody'),
                 'status' => ContextualFeedbackSeverity::ERROR,
             ];
         } else {
-            $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-            $frontend->create('', 1, true);
+            $this->frontend->create('', 1, true);
             $json = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkTitle'),
                 'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkBody'),
@@ -158,16 +154,14 @@ final class PageTreesController
 
     private function frontendCreateWithSysTemplateAction(): ResponseInterface
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        if (count($recordFinder->findUidsOfFrontendPages())) {
+        if (count($this->recordFinder->findUidsOfFrontendPages())) {
             $json = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionFailedTitle'),
                 'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionFailedBody'),
                 'status' => ContextualFeedbackSeverity::ERROR,
             ];
         } else {
-            $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-            $frontend->create();
+            $this->frontend->create();
             $json = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkTitle'),
                 'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendCreateActionOkBody'),
@@ -179,8 +173,7 @@ final class PageTreesController
 
     private function frontendDeleteAction(): ResponseInterface
     {
-        $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
-        $frontend->delete();
+        $this->frontend->delete();
         $json = [
             'title' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendDeleteActionOkTitle'),
             'body' => $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:frontendDeleteActionOkBody'),

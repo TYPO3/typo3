@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class Generator extends AbstractGenerator
 {
     /**
@@ -37,10 +39,8 @@ final class Generator extends AbstractGenerator
      * "default" handler for casual tables, but some $mainTables
      * like several inline scenarios need more sophisticated
      * handlers.
-     *
-     * @var array
      */
-    protected $tableHandler = [
+    protected array $tableHandler = [
         TableHandler\StaticData::class,
         TableHandler\InlineMn::class,
         TableHandler\InlineMnGroup::class,
@@ -48,6 +48,11 @@ final class Generator extends AbstractGenerator
         TableHandler\InlineMnSymmetricGroup::class,
         TableHandler\General::class,
     ];
+
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly RecordFinder $recordFinder,
+    ) {}
 
     /**
      * Create a page tree for styleguide records and add records on them.
@@ -57,10 +62,8 @@ final class Generator extends AbstractGenerator
      */
     public function create(): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-
         // Create should not be called if demo data exists already
-        if (count($recordFinder->findUidsOfStyleguideEntryPages())) {
+        if (count($this->recordFinder->findUidsOfStyleguideEntryPages())) {
             throw new Exception(
                 'Can not create a second styleguide demo record tree',
                 1597577827
@@ -85,7 +88,7 @@ final class Generator extends AbstractGenerator
         // Add rows of third party tables like be_users and fal
         $this->populateRowsOfThirdPartyTables();
 
-        $highestLanguageId = $recordFinder->findHighestLanguageId();
+        $highestLanguageId = $this->recordFinder->findHighestLanguageId();
         $styleguideDemoLanguageIds = range($highestLanguageId + 1, $highestLanguageId + 4);
 
         // Add a page for each main table below entry page
@@ -126,7 +129,7 @@ final class Generator extends AbstractGenerator
 
         // Create a site configuration on root page
         /** @var non-empty-array $topPageUidList */
-        $topPageUidList = $recordFinder->findUidsOfStyleguideEntryPages();
+        $topPageUidList = $this->recordFinder->findUidsOfStyleguideEntryPages();
         $topPageUid = $topPageUidList[0];
 
         $this->createSiteConfiguration($topPageUid);
@@ -163,12 +166,10 @@ final class Generator extends AbstractGenerator
      */
     public function delete(): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-
         $commands = [];
 
         // Delete page tree and all their records on this tree
-        $topUids = $recordFinder->findUidsOfStyleguideEntryPages();
+        $topUids = $this->recordFinder->findUidsOfStyleguideEntryPages();
         if (!empty($topUids)) {
             foreach ($topUids as $topUid) {
                 $commands['pages'][(int)$topUid]['delete'] = 1;
@@ -176,7 +177,7 @@ final class Generator extends AbstractGenerator
         }
 
         // Delete demo users
-        $demoUserUids = $recordFinder->findUidsOfDemoBeUsers();
+        $demoUserUids = $this->recordFinder->findUidsOfDemoBeUsers();
         if (!empty($demoUserUids)) {
             foreach ($demoUserUids as $demoUserUid) {
                 $commands['be_users'][(int)$demoUserUid]['delete'] = 1;
@@ -184,7 +185,7 @@ final class Generator extends AbstractGenerator
         }
 
         // Delete demo groups
-        $demoGroupUids = $recordFinder->findUidsOfDemoBeGroups();
+        $demoGroupUids = $this->recordFinder->findUidsOfDemoBeGroups();
         if (!empty($demoGroupUids)) {
             foreach ($demoGroupUids as $demoUserGroup) {
                 $commands['be_groups'][(int)$demoUserGroup]['delete'] = 1;
@@ -209,9 +210,8 @@ final class Generator extends AbstractGenerator
      */
     protected function populateRowsOfThirdPartyTables(): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
 
-        $demoGroupUids = $recordFinder->findUidsOfDemoBeGroups();
+        $demoGroupUids = $this->recordFinder->findUidsOfDemoBeGroups();
         if (empty($demoGroupUids)) {
             // Add two be_groups and fetch their uids to assign the non-admin be_user to these groups
             $fields = [
@@ -220,11 +220,11 @@ final class Generator extends AbstractGenerator
                 'tx_styleguide_isdemorecord' => 1,
                 'title' => 'styleguide demo group 1',
             ];
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_groups');
+            $connection = $this->connectionPool->getConnectionForTable('be_groups');
             $connection->insert('be_groups', $fields);
             $fields['title'] = 'styleguide demo group 2';
             $connection->insert('be_groups', $fields);
-            $demoGroupUids = $recordFinder->findUidsOfDemoBeGroups();
+            $demoGroupUids = $this->recordFinder->findUidsOfDemoBeGroups();
 
             // If there were no groups, it is assumed (!) there are no users either. So they are just created.
             // This may lead to duplicate demo users if a group was manually deleted, but the styleguide
@@ -244,7 +244,7 @@ final class Generator extends AbstractGenerator
                 'usergroup' => implode(',', $demoGroupUids),
                 'password' => $passwordHash->getHashedPassword($random->generateRandomBytes(10)),
             ];
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
+            $connection = $this->connectionPool->getConnectionForTable('be_users');
             $connection->insert('be_users', $fields);
             $fields['admin'] = 1;
             $fields['username'] = 'styleguide demo user 2';
@@ -316,7 +316,7 @@ final class Generator extends AbstractGenerator
             }
         }
         // Manual resorting - the "staticdata" table is used by other tables later.
-        // We resort this on top so it is handled first and other tables can rely on
+        // We resort this on top, so it is handled first and other tables can rely on
         // created data already. This is a bit hacky but a quick workaround.
         array_unshift($result, 'tx_styleguide_staticdata');
         return $result;

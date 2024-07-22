@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
 
@@ -27,12 +27,18 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class StaticData extends AbstractTableHandler implements TableHandlerInterface
 {
     /**
      * @var string Table name to match
      */
     protected $tableName = 'tx_styleguide_staticdata';
+
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly RecordFinder $recordFinder,
+    ) {}
 
     /**
      * Adds rows
@@ -41,21 +47,20 @@ final class StaticData extends AbstractTableHandler implements TableHandlerInter
      */
     public function handle(string $tableName): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-
         // tx_styleguide_staticdata is used in other TCA demo fields. We need some default
         // rows to later connect other fields to these rows.
-        $pid = $recordFinder->findPidOfMainTableRecord('tx_styleguide_staticdata');
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_styleguide_staticdata');
-        $connection->bulkInsert(
-            'tx_styleguide_staticdata',
-            [
-                [ $pid, 'foo' ],
-                [ $pid, 'bar' ],
-                [ $pid, 'foofoo' ],
-                [ $pid, 'foobar' ],
-            ],
-            [ 'pid', 'value_1' ]
-        );
+        $pid = $this->recordFinder->findPidOfMainTableRecord('tx_styleguide_staticdata');
+        $this->connectionPool
+            ->getConnectionForTable('tx_styleguide_staticdata')
+            ->bulkInsert(
+                'tx_styleguide_staticdata',
+                [
+                    [ $pid, 'foo' ],
+                    [ $pid, 'bar' ],
+                    [ $pid, 'foofoo' ],
+                    [ $pid, 'foobar' ],
+                ],
+                [ 'pid', 'value_1'],
+            );
     }
 }

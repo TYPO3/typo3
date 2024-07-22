@@ -38,18 +38,30 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 abstract class AbstractGenerator
 {
+    private ConnectionPool $connectionPool;
+    private RecordFinder $recordFinder;
+
+    public function injectConnectionPool(ConnectionPool $connectionPool): void
+    {
+        $this->connectionPool = $connectionPool;
+    }
+
+    public function injectRecordFinder(RecordFinder $recordFinder): void
+    {
+        $this->recordFinder = $recordFinder;
+    }
+
     /**
      * Create a site configuration on new styleguide root page
      */
     protected function createSiteConfiguration(int $topPageUid, string $base = 'http://localhost/', string $title = 'styleguide demo', array $sets = []): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         // When the DataHandler created the page tree, a default site configuration has been added. Fetch,  rename, update.
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($topPageUid);
         $siteWriter = GeneralUtility::makeInstance(SiteWriter::class);
         $siteIdentifier = 'styleguide-demo-' . $topPageUid;
         $siteWriter->rename($site->getIdentifier(), $siteIdentifier);
-        $highestLanguageId = $recordFinder->findHighestLanguageId();
+        $highestLanguageId = $this->recordFinder->findHighestLanguageId();
         $configuration = [
             'base' => $base . 'styleguide-demo-' . $topPageUid,
             'rootPageId' => $topPageUid,
@@ -151,7 +163,7 @@ abstract class AbstractGenerator
      */
     protected function getUidOfLastTopLevelPage(): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $lastPage = $queryBuilder->select('uid')
             ->from('pages')

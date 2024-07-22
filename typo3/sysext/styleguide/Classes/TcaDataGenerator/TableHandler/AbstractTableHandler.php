@@ -35,6 +35,13 @@ abstract class AbstractTableHandler
      */
     protected $tableName;
 
+    private RecordFinder $recordFinder;
+
+    public function injectRecordFinder(RecordFinder $recordFinder): void
+    {
+        $this->recordFinder = $recordFinder;
+    }
+
     /**
      * Match if given table name is registered table name
      *
@@ -55,10 +62,7 @@ abstract class AbstractTableHandler
         if (!BackendUtility::isTableLocalizable($tableName)) {
             return;
         }
-
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $demoLanguages = $recordFinder->findIdsOfDemoLanguages();
-
+        $demoLanguages = $this->recordFinder->findIdsOfDemoLanguages();
         $translatedRecord = -42;
         foreach ($demoLanguages as $demoLanguageIndex => $demoLanguageUid) {
             switch ($demoLanguageIndex) {

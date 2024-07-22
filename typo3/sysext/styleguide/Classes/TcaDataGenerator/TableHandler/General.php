@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
@@ -33,7 +32,12 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
 #[Autoconfigure(public: true)]
 final class General extends AbstractTableHandler implements TableHandlerInterface
 {
-    public function __construct(private readonly RecordData $recordData) {}
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly RecordData $recordData,
+        private readonly RecordFinder $recordFinder,
+        private readonly Context $context,
+    ) {}
 
     /**
      * Match always
@@ -48,21 +52,18 @@ final class General extends AbstractTableHandler implements TableHandlerInterfac
      */
     public function handle(string $tableName): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $context = GeneralUtility::makeInstance(Context::class);
-
         // First insert an empty row and get the uid of this row since
         // some fields need this uid for relations later.
         $fieldValues = [
-            'pid' => $recordFinder->findPidOfMainTableRecord($tableName),
+            'pid' => $this->recordFinder->findPidOfMainTableRecord($tableName),
         ];
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['tstamp'])) {
-            $fieldValues[$GLOBALS['TCA'][$tableName]['ctrl']['tstamp']] = $context->getAspect('date')->get('timestamp');
+            $fieldValues[$GLOBALS['TCA'][$tableName]['ctrl']['tstamp']] = $this->context->getAspect('date')->get('timestamp');
         }
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['crdate'])) {
-            $fieldValues[$GLOBALS['TCA'][$tableName]['ctrl']['crdate']] = $context->getAspect('date')->get('timestamp');
+            $fieldValues[$GLOBALS['TCA'][$tableName]['ctrl']['crdate']] = $this->context->getAspect('date')->get('timestamp');
         }
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+        $connection = $this->connectionPool->getConnectionForTable($tableName);
         $connection->insert($tableName, $fieldValues);
         $fieldValues['uid'] = $connection->lastInsertId();
         $fieldValues = $this->recordData->generate($tableName, $fieldValues);

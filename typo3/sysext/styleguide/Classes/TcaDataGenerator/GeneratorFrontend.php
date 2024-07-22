@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -29,15 +30,18 @@ use TYPO3\CMS\Styleguide\Service\KauderwelschService;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 final class GeneratorFrontend extends AbstractGenerator
 {
+    public function __construct(
+        private readonly KauderwelschService $kauderwelschService,
+        private readonly RecordFinder $recordFinder,
+    ) {}
+
     public function create(string $basePath = '', int $hidden = 1, bool $useSiteSets = false): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $kauderWelsch = GeneralUtility::makeInstance(KauderwelschService::class);
-
         // Create should not be called if demo frontend data exists already
-        if (count($recordFinder->findUidsOfFrontendPages())) {
+        if (count($this->recordFinder->findUidsOfFrontendPages())) {
             throw new Exception(
                 'Can not create a second styleguide frontend record tree',
                 1626357141
@@ -121,7 +125,7 @@ final class GeneratorFrontend extends AbstractGenerator
             $newIdOfTemplateFolder = StringUtility::getUniqueId('NEW');
             $newIdOfDummyTemplateSubsite = StringUtility::getUniqueId('NEW');
             $newIdOfExtTsTemplate = StringUtility::getUniqueId('NEW');
-            // Storage for for demo sys_template records
+            // Storage for demo sys_template records
             $data['pages'][$newIdOfTemplateFolder] = [
                 'title' => 'template records',
                 'pid' => $newIdOfEntryPage,
@@ -171,7 +175,7 @@ final class GeneratorFrontend extends AbstractGenerator
                 'title' => $type,
                 'tx_styleguide_containsdemo' => 'tx_styleguide_frontend',
                 'hidden' => 0,
-                'abstract' => $kauderWelsch->getLoremIpsum(),
+                'abstract' => $this->kauderwelschService->getLoremIpsum(),
                 'pid' => $neighborPage,
                 'categories' => $newIdOfCategory,
             ];
@@ -208,10 +212,10 @@ final class GeneratorFrontend extends AbstractGenerator
             $port = $GLOBALS['TYPO3_REQUEST']->getUri()->getPort() ? ':' . $GLOBALS['TYPO3_REQUEST']->getUri()->getPort() : '';
             $domain = $GLOBALS['TYPO3_REQUEST']->getUri()->getScheme() . '://' . $GLOBALS['TYPO3_REQUEST']->getUri()->getHost() . $port . '/';
         } else {
-            // On cli there is no TYPO3_REUQEST object
+            // On cli there is no TYPO3_REQUEST object
             $domain = empty($basePath) ? '/' : $basePath;
         }
-        $topPageUid = (int)$recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root'])[0];
+        $topPageUid = (int)$this->recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root'])[0];
         $this->createSiteConfiguration($topPageUid, $domain, 'Styleguide frontend demo', $useSiteSets ? ['typo3/styleguide'] : []);
 
         $this->populateSysFileReference();
@@ -222,11 +226,10 @@ final class GeneratorFrontend extends AbstractGenerator
 
     public function delete(): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         $commands = [];
 
         // Delete frontend pages - also deletes tt_content, sys_category and sys_file_references
-        $frontendPagesUids = $recordFinder->findUidsOfFrontendPages();
+        $frontendPagesUids = $this->recordFinder->findUidsOfFrontendPages();
         if (!empty($frontendPagesUids)) {
             foreach ($frontendPagesUids as $page) {
                 $commands['pages'][(int)$page]['delete'] = 1;
@@ -235,7 +238,7 @@ final class GeneratorFrontend extends AbstractGenerator
 
         // Delete site configuration
         try {
-            $rootUid = $recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root']);
+            $rootUid = $this->recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root']);
 
             if (!empty($rootUid)) {
                 $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId((int)$rootUid[0]);
@@ -259,9 +262,6 @@ final class GeneratorFrontend extends AbstractGenerator
      */
     protected function getElementContent(): array
     {
-        /** @var KauderwelschService $kauderWelsch */
-        $kauderWelsch = GeneralUtility::makeInstance(KauderwelschService::class);
-
         return [
             'bullets' => [
                 [
@@ -275,89 +275,89 @@ final class GeneratorFrontend extends AbstractGenerator
             ],
             'div' => [
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                 ],
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                 ],
             ],
             'header' => [
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                 ],
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                     'header_layout' => 2,
                 ],
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                     'header_layout' => 3,
                 ],
             ],
             'text' => [
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
-                    'subheader' => $kauderWelsch->getLoremIpsum(),
-                    'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
+                    'subheader' => $this->kauderwelschService->getLoremIpsum(),
+                    'bodytext' => $this->kauderwelschService->getLoremIpsumHtml() . ' ' . $this->kauderwelschService->getLoremIpsumHtml(),
                 ],
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                     'header_layout' => 3,
-                    'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
+                    'bodytext' => $this->kauderwelschService->getLoremIpsumHtml() . ' ' . $this->kauderwelschService->getLoremIpsumHtml(),
                 ],
             ],
             'textpic' => [ // @todo add images
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                     'header_layout' => 5,
-                    'subheader' => $kauderWelsch->getLoremIpsum(),
-                    'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
+                    'subheader' => $this->kauderwelschService->getLoremIpsum(),
+                    'bodytext' => $this->kauderwelschService->getLoremIpsumHtml() . ' ' . $this->kauderwelschService->getLoremIpsumHtml(),
                 ],
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                     'header_layout' => 2,
-                    'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
+                    'bodytext' => $this->kauderwelschService->getLoremIpsumHtml() . ' ' . $this->kauderwelschService->getLoremIpsumHtml(),
                 ],
             ],
             'textmedia' => [
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                     'header_layout' => 5,
-                    'subheader' => $kauderWelsch->getLoremIpsum(),
-                    'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
+                    'subheader' => $this->kauderwelschService->getLoremIpsum(),
+                    'bodytext' => $this->kauderwelschService->getLoremIpsumHtml() . ' ' . $this->kauderwelschService->getLoremIpsumHtml(),
                 ],
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                     'header_layout' => 2,
-                    'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
+                    'bodytext' => $this->kauderwelschService->getLoremIpsumHtml() . ' ' . $this->kauderwelschService->getLoremIpsumHtml(),
                     'imageorient' => 25,
                 ],
             ],
             'image' => [
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
-                    'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
+                    'bodytext' => $this->kauderwelschService->getLoremIpsumHtml() . ' ' . $this->kauderwelschService->getLoremIpsumHtml(),
                 ],
             ],
             'html' => [
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
-                    'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
+                    'bodytext' => $this->kauderwelschService->getLoremIpsumHtml() . ' ' . $this->kauderwelschService->getLoremIpsumHtml(),
                 ],
             ],
             'table' => [
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                     'bodytext' => "row1 col1|row1 col2|row1 col3|row1 col4\nrow2 col1|row2 col2|row2 col3|row2 col4",
                 ],
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                     'bodytext' => "row1 col1|row1 col2|row1 col3|row1 col4\nrow2 col1|row2 col2|row2 col3|row2 col4\nrow3 col1|row3 col2|row3 col3|row3 col4\nrow4 col1|row4 col2|row4 col3|row4 col4",
                 ],
             ],
             'felogin_login' => [
                 [
-                    'header' => $kauderWelsch->getLoremIpsum(),
+                    'header' => $this->kauderwelschService->getLoremIpsum(),
                 ],
             ],
             'form_formframework' => [
@@ -480,12 +480,10 @@ final class GeneratorFrontend extends AbstractGenerator
      */
     protected function populateSysFileReference(): void
     {
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $files = $recordFinder->findDemoFileObjects('styleguide_frontend');
+        $files = $this->recordFinder->findDemoFileObjects('styleguide_frontend');
 
         $recordData = [];
-        foreach ($recordFinder->findTtContent() as $content) {
+        foreach ($this->recordFinder->findTtContent() as $content) {
             switch ($content['CType']) {
                 case 'textmedia':
                     $fieldname = 'assets';
@@ -518,10 +516,8 @@ final class GeneratorFrontend extends AbstractGenerator
      */
     protected function populateTtContentPages(string $field = 'pages', int $count = 5): void
     {
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $pages = $recordFinder->findUidsOfFrontendPages();
-        $contentElements = $recordFinder->findTtContent(['menu_pages', 'menu_subpages', 'menu_section', 'menu_abstract', 'menu_recently_updated', 'menu_section_pages', 'menu_sitemap_pages']);
+        $pages = $this->recordFinder->findUidsOfFrontendPages();
+        $contentElements = $this->recordFinder->findTtContent(['menu_pages', 'menu_subpages', 'menu_section', 'menu_abstract', 'menu_recently_updated', 'menu_section_pages', 'menu_sitemap_pages']);
 
         $recordData = [];
         foreach ($contentElements as $content) {
@@ -540,10 +536,8 @@ final class GeneratorFrontend extends AbstractGenerator
      */
     protected function populateTtContentRecords(string $field = 'records'): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-
-        $shortcutToElement = $recordFinder->findTtContent(['text'])[0]['uid'];
-        $contentElements = $recordFinder->findTtContent(['shortcut']);
+        $shortcutToElement = $this->recordFinder->findTtContent(['text'])[0]['uid'];
+        $contentElements = $this->recordFinder->findTtContent(['shortcut']);
 
         $recordData = [];
         foreach ($contentElements as $content) {
@@ -557,13 +551,10 @@ final class GeneratorFrontend extends AbstractGenerator
 
     private function populateFeUserAndGroup(): void
     {
-        /** @var RecordFinder $recordFinder */
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-
-        $ceFeLogin = $recordFinder->findTtContent(['felogin_login']);
-        $storageFeLogin = $recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root', 'tx_styleguide_frontend'], [254])[0];
-        $feUsers = $recordFinder->findFeUsers();
-        $feGroups = $recordFinder->findFeUserGroups();
+        $ceFeLogin = $this->recordFinder->findTtContent(['felogin_login']);
+        $storageFeLogin = $this->recordFinder->findUidsOfFrontendPages(['tx_styleguide_frontend_root', 'tx_styleguide_frontend'], [254])[0];
+        $feUsers = $this->recordFinder->findFeUsers();
+        $feGroups = $this->recordFinder->findFeUserGroups();
         $feGroupUids = implode(',', array_column($feGroups, 'uid'));
 
         $recordData = [];

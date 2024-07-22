@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
@@ -38,7 +37,12 @@ final class InlineMn extends AbstractTableHandler implements TableHandlerInterfa
      */
     protected $tableName = 'tx_styleguide_inline_mn';
 
-    public function __construct(private readonly RecordData $recordData) {}
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly RecordData $recordData,
+        private readonly RecordFinder $recordFinder,
+        private readonly Context $context,
+    ) {}
 
     /**
      * Create 1 main row, 4 child child rows, add 2 child child rows in mn
@@ -47,21 +51,18 @@ final class InlineMn extends AbstractTableHandler implements TableHandlerInterfa
      */
     public function handle(string $tableName): void
     {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $pidOfMainTable = $recordFinder->findPidOfMainTableRecord($tableName);
-        $context = GeneralUtility::makeInstance(Context::class);
+        $pidOfMainTable = $this->recordFinder->findPidOfMainTableRecord($tableName);
 
         $childRelationUids = [];
         $numberOfChildRelationsToCreate = 2;
         $numberOfChildRows = 4;
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         for ($i = 0; $i < $numberOfChildRows; $i++) {
             $fieldValues = [
                 'pid' => $pidOfMainTable,
-                'tstamp' => $context->getAspect('date')->get('timestamp'),
-                'crdate' => $context->getAspect('date')->get('timestamp'),
+                'tstamp' => $this->context->getAspect('date')->get('timestamp'),
+                'crdate' => $this->context->getAspect('date')->get('timestamp'),
             ];
-            $connection = $connectionPool->getConnectionForTable('tx_styleguide_inline_mn_child');
+            $connection = $this->connectionPool->getConnectionForTable('tx_styleguide_inline_mn_child');
             $connection->insert('tx_styleguide_inline_mn_child', $fieldValues);
             $fieldValues['uid'] = $connection->lastInsertId();
             if (count($childRelationUids) < $numberOfChildRelationsToCreate) {
@@ -80,12 +81,14 @@ final class InlineMn extends AbstractTableHandler implements TableHandlerInterfa
 
         $fieldValues = [
             'pid' => $pidOfMainTable,
-            'tstamp' => $context->getAspect('date')->get('timestamp'),
-            'crdate' => $context->getAspect('date')->get('timestamp'),
+            'tstamp' => $this->context->getAspect('date')->get('timestamp'),
+            'crdate' => $this->context->getAspect('date')->get('timestamp'),
             'inline_1' => $numberOfChildRelationsToCreate,
         ];
-        $connection = $connectionPool->getConnectionForTable($tableName);
-        $connection->insert($tableName, $fieldValues);
+
+        $this->connectionPool
+            ->getConnectionForTable($tableName)
+            ->insert($tableName, $fieldValues);
         $parentid = $fieldValues['uid'] = $connection->lastInsertId();
         $fieldValues = $this->recordData->generate($tableName, $fieldValues);
         // Do not update primary identifier uid anymore, db's choke on that for good reason
@@ -102,13 +105,15 @@ final class InlineMn extends AbstractTableHandler implements TableHandlerInterfa
         foreach ($childRelationUids as $uid) {
             $mmFieldValues = [
                 'pid' => $pidOfMainTable,
-                'tstamp' => $context->getAspect('date')->get('timestamp'),
-                'crdate' => $context->getAspect('date')->get('timestamp'),
+                'tstamp' => $this->context->getAspect('date')->get('timestamp'),
+                'crdate' => $this->context->getAspect('date')->get('timestamp'),
                 'parentid' => $parentid,
                 'childid' => $uid,
             ];
-            $connection = $connectionPool->getConnectionForTable('tx_styleguide_inline_mn_mm');
-            $connection->insert('tx_styleguide_inline_mn_mm', $mmFieldValues);
+
+            $this->connectionPool
+                ->getConnectionForTable('tx_styleguide_inline_mn_mm')
+                ->insert('tx_styleguide_inline_mn_mm', $mmFieldValues);
         }
     }
 }

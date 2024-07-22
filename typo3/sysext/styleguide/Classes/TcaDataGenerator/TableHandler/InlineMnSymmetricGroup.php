@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
@@ -38,7 +37,12 @@ final class InlineMnSymmetricGroup extends AbstractTableHandler implements Table
      */
     protected $tableName = 'tx_styleguide_inline_mnsymmetricgroup';
 
-    public function __construct(private readonly RecordData $recordData) {}
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly RecordData $recordData,
+        private readonly RecordFinder $recordFinder,
+        private readonly Context $context,
+    ) {}
 
     /**
      * Create 4 rows, add row 2 and 3 as branch to row 1
@@ -47,11 +51,7 @@ final class InlineMnSymmetricGroup extends AbstractTableHandler implements Table
      */
     public function handle(string $tableName): void
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $pidOfMainTable = $recordFinder->findPidOfMainTableRecord($tableName);
-        $context = GeneralUtility::makeInstance(Context::class);
+        $pidOfMainTable = $this->recordFinder->findPidOfMainTableRecord($tableName);
 
         $isFirst = true;
         $numberOfRelationsForFirstRecord = 2;
@@ -60,10 +60,10 @@ final class InlineMnSymmetricGroup extends AbstractTableHandler implements Table
         for ($i = 0; $i < 4; $i++) {
             $fieldValues = [
                 'pid' => $pidOfMainTable,
-                'tstamp' => $context->getAspect('date')->get('timestamp'),
-                'crdate' => $context->getAspect('date')->get('timestamp'),
+                'tstamp' => $this->context->getAspect('date')->get('timestamp'),
+                'crdate' => $this->context->getAspect('date')->get('timestamp'),
             ];
-            $connection = $connectionPool->getConnectionForTable($tableName);
+            $connection = $this->connectionPool->getConnectionForTable($tableName);
             $connection->insert($tableName, $fieldValues);
             $fieldValues['uid'] = $connection->lastInsertId();
             if ($isFirst) {
@@ -92,16 +92,15 @@ final class InlineMnSymmetricGroup extends AbstractTableHandler implements Table
         foreach ($relationUids as $uid) {
             $mmFieldValues = [
                 'pid' => $pidOfMainTable,
-                'tstamp' => $context->getAspect('date')->get('timestamp'),
-                'crdate' => $context->getAspect('date')->get('timestamp'),
+                'tstamp' => $this->context->getAspect('date')->get('timestamp'),
+                'crdate' => $this->context->getAspect('date')->get('timestamp'),
                 'hotelid' => $uidOfFirstRecord,
                 'branchid' => $uid,
             ];
-            $connection = $connectionPool->getConnectionForTable('tx_styleguide_inline_mnsymmetricgroup_mm');
-            $connection->insert(
-                'tx_styleguide_inline_mnsymmetricgroup_mm',
-                $mmFieldValues
-            );
+
+            $this->connectionPool
+                ->getConnectionForTable('tx_styleguide_inline_mnsymmetricgroup_mm')
+                ->insert('tx_styleguide_inline_mnsymmetricgroup_mm', $mmFieldValues);
         }
     }
 }
