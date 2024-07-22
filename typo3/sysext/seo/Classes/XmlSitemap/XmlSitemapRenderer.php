@@ -73,7 +73,7 @@ final readonly class XmlSitemapRenderer
         $view->assign('type', $request->getAttribute('routing')->getPageType());
         $view->assign('sitemapType', $sitemapType);
         $configConfiguration = $configurationArrayWithoutDots['config'] ?? [];
-        if (!empty($sitemapName = ($request->getQueryParams()['sitemap'] ?? null))) {
+        if (!empty($sitemapName = ($request->getQueryParams()['tx_seo']['sitemap'] ?? null))) {
             $xslPath = $this->getXslFilePath($configConfiguration, $sitemapType, $sitemapName);
             $this->applyDynamicContentSecurityPolicy($xslPath);
             $view->assign('xslFile', $this->getUriFromFilePath($xslPath));

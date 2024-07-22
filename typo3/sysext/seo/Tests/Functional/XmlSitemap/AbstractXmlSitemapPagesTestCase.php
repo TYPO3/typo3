@@ -63,7 +63,7 @@ abstract class AbstractXmlSitemapPagesTestCase extends AbstractTestCase
             (new InternalRequest($uri))->withQueryParameters([
                 'id' => 1,
                 'type' => 1533906435,
-                'sitemap' => 'pages',
+                'tx_seo[sitemap]' => 'pages',
             ])
         );
     }

@@ -77,7 +77,7 @@ final class SitemapXmlCest
     public function seeSitemapXml(ApplicationTester $I, Example $testData): void
     {
         $I->see('TYPO3 XML Sitemap');
-        $I->see('sitemap=pages');
+        $I->see('tx_seo%5Bsitemap%5D=pages');
         $I->see('type=1533906435');
 
         $I->amGoingTo('See sitemap pages details');

@@ -70,7 +70,7 @@ abstract class AbstractXmlSitemapDataProvider implements XmlSitemapDataProviderI
 
     public function getItems(): array
     {
-        $pageNumber = (int)($this->request->getQueryParams()['page'] ?? 0);
+        $pageNumber = (int)($this->request->getQueryParams()['tx_seo']['page'] ?? 0);
         $page = $pageNumber > 0 ? $pageNumber : 0;
         $items = array_slice(
             $this->items,

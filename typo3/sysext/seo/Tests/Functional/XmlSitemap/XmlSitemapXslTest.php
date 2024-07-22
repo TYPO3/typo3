@@ -72,7 +72,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
         ];
 
         if (!empty($sitemap)) {
-            $config['sitemap'] = $sitemap;
+            $config['tx_seo[sitemap]'] = $sitemap;
         }
 
         $response = $this->executeFrontendSubRequest(

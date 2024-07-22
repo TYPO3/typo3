@@ -74,7 +74,7 @@ final class XmlSitemapRecordsTest extends AbstractTestCase
             (new InternalRequest($host))->withQueryParameters(
                 [
                     'type' => 1533906435,
-                    'sitemap' => $sitemap,
+                    'tx_seo[sitemap]' => $sitemap,
                 ]
             )
         );
@@ -164,7 +164,7 @@ final class XmlSitemapRecordsTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'type' => 1533906435,
-                    'sitemap' => 'content',
+                    'tx_seo[sitemap]' => 'content',
                 ]
             )
         );
@@ -190,7 +190,7 @@ final class XmlSitemapRecordsTest extends AbstractTestCase
                 [
                     'id' => 1,
                     'type' => 1533906435,
-                    'sitemap' => $sitemap,
+                    'tx_seo[sitemap]' => $sitemap,
                 ]
             )
         );
