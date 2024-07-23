@@ -77,7 +77,7 @@ final class CheckboxViewHelper extends AbstractFormFieldViewHelper
             false,
             'f3-form-error'
         );
-        $this->overrideArgument('value', 'string', 'Value of input tag. Required for checkboxes', true);
+        $this->registerArgument('value', 'string', 'Value of input tag. Required for checkboxes', true);
         $this->registerArgument('checked', 'bool', 'Specifies that the input element should be preselected');
         $this->registerArgument('multiple', 'bool', 'Specifies whether this checkbox belongs to a multivalue (is part of a checkbox group)', false, false);
     }

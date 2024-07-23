@@ -6344,4 +6344,11 @@ return [
             'Deprecation-104223-FluidStandaloneMethods.rst',
         ],
     ],
+    'TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper->overrideArgument' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-104463-FluidStandaloneOverrideArgument.rst',
+        ],
+    ],
 ];
