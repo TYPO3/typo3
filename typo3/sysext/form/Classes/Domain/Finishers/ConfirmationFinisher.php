@@ -100,7 +100,7 @@ class ConfirmationFinisher extends AbstractFinisher
                 }
                 $setup = $setup[$segment . '.'];
             }
-            $this->contentObjectRenderer->setRequest($this->finisherContext->getRequest());
+            $this->contentObjectRenderer->setRequest($this->finisherContext->getRequest()->withoutAttribute('extbase'));
             $this->contentObjectRenderer->start([$contentElementUid]);
             $this->contentObjectRenderer->setCurrentVal((string)$contentElementUid);
             $message = $this->contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'], $lastSegment);
