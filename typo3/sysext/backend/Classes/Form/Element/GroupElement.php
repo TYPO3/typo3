@@ -287,7 +287,7 @@ class GroupElement extends AbstractFormElement
         if (($maxItems > 1 && $size > 1 && $showMoveIcons) || $showDeleteControl) {
             $html[] =       '<div class="form-wizards-items-aside form-wizards-items-aside--move">';
             $html[] =           '<div class="btn-group-vertical">';
-            if ($maxItems > 1 && $size >= 5 && $showMoveIcons) {
+            if ($maxItems > 1 && $size >= 2 && $showMoveIcons) {
                 $html[] =           '<button type="button"';
                 $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-top"';
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
@@ -315,7 +315,7 @@ class GroupElement extends AbstractFormElement
                 $html[] =               '<span class="visually-hidden">' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move_down')) . '</span>';
                 $html[] =           '</button>';
             }
-            if ($maxItems > 1 && $size >= 5 && $showMoveIcons) {
+            if ($maxItems > 1 && $size >= 2 && $showMoveIcons) {
                 $html[] =           '<button type="button"';
                 $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-moveoption-bottom"';
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
