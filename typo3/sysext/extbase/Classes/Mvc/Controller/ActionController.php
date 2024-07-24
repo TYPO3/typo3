@@ -489,6 +489,8 @@ abstract class ActionController implements ControllerInterface
             if ($renderingContext instanceof RenderingContext) {
                 $renderingContext->setRequest($this->request);
             }
+            $renderingContext->setControllerName($this->request->getControllerName());
+            $renderingContext->setControllerAction($this->request->getControllerActionName());
             $templatePaths = $view->getRenderingContext()->getTemplatePaths();
             $templatePaths->fillDefaultsByPackageName($this->request->getControllerExtensionKey());
             $templatePaths->setFormat($this->request->getFormat());

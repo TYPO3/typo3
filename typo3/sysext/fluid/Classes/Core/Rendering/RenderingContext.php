@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Fluid\Core\Rendering;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface;
@@ -99,10 +98,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
             $action = substr($action, 0, $dotPosition);
         }
         $this->controllerAction = $action;
-        if ($this->request instanceof RequestInterface) {
-            // @todo: Avoid altogether?!
-            $this->request = $this->request->withControllerActionName(lcfirst($action));
-        }
     }
 
     /**
@@ -111,22 +106,16 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     public function setControllerName($controllerName): void
     {
         $this->controllerName = $controllerName;
-        if ($this->request instanceof RequestInterface) {
-            // @todo: Avoid altogether?!
-            $this->request = $this->request->withControllerName($controllerName);
-        }
     }
 
     public function getControllerName(): string
     {
-        // @todo: Why fallback to request here? This is not consistent!
-        return $this->request instanceof RequestInterface ? $this->request->getControllerName() : $this->controllerName;
+        return $this->controllerName;
     }
 
     public function getControllerAction(): string
     {
-        // @todo: Why fallback to request here? This is not consistent!
-        return $this->request instanceof RequestInterface ? $this->request->getControllerActionName() : $this->controllerAction;
+        return $this->controllerAction;
     }
 
     /**
@@ -137,11 +126,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     public function setRequest(?ServerRequestInterface $request): void
     {
         $this->request = $request;
-        if ($request instanceof RequestInterface) {
-            // Set magic if this is an extbase request
-            $this->setControllerAction($request->getControllerActionName());
-            $this->setControllerName($request->getControllerName());
-        }
     }
 
     public function getRequest(): ?ServerRequestInterface

@@ -68,6 +68,6 @@ final class RenderingContextTest extends UnitTestCase
         $request = new Request($serverRequest);
         $subject->setRequest($request);
         $subject->setControllerAction($input);
-        self::assertSame(lcfirst($expected), $subject->getControllerAction());
+        self::assertSame($expected, $subject->getControllerAction());
     }
 }
