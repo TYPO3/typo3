@@ -34,19 +34,19 @@
                 <table class="table table-striped table-hover table-vertical-top">
                     <thead>
                         <tr>
-                            <th class="col-recordtitle">
+                            <th class="col-title-flexible">
                                 <f:translate key="field.pageTitle" />
                             </th>
-                            <th class="col-recordtitle">
+                            <th class="col-title-flexible">
                                 <f:translate key="field.fileName" />
                             </th>
                             <f:switch expression="{mode}">
                                 <f:case value="content">
-                                    <th>
+                                    <th class="col-title-flexible">
                                         <f:translate key="field.content" />
                                     </th>
                                     <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
-                                        <th>
+                                        <th class="col-title-flexible">
                                             <f:translate key="field.words" />
                                         </th>
                                     </f:if>
@@ -65,7 +65,7 @@
                                     </th>
                                 </f:defaultCase>
                             </f:switch>
-                            <th class="col-control nowrap">
+                            <th class="col-control">
                                 <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')}</span>
                             </th>
                         </tr>
@@ -76,21 +76,37 @@
                                 <f:then>
                                     <f:for each="{line.lines}" as="l" iteration="i">
                                         <tr>
-                                            <td class="col-recordtitle">
-                                                {line.HTML -> f:format.raw()}
-                                                <f:if condition="{i.index} == 0"> {line.row.title}</f:if>
+                                            <td class="col-title-flexible">
+                                                <f:if condition="{i.index} == 0">
+                                                    <f:then>
+                                                        <div class="treeline-container">
+                                                            {line.depthData -> f:format.raw()}{line.HTML -> f:format.raw()}
+                                                            <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
+                                                            <span>
+                                                                <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{line.row.title}</f:format.crop>
+                                                            </span>
+                                                        </div>
+                                                    </f:then>
+                                                    <f:else>
+                                                        {line.depthData -> f:format.raw()}
+                                                        <span class="visually-hidden">
+                                                            <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
+                                                            <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{line.row.title}</f:format.crop>
+                                                        </span>
+                                                    </f:else>
+                                                </f:if>
                                             </td>
-                                            <td class="col-recordtitle">
+                                            <td class="col-title-flexible">
                                                 <f:image src="{l.icon}" />
-                                                {l.item_title}
+                                                <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{l.item_title}</f:format.crop>
                                             </td>
                                             <f:switch expression="{mode}">
                                                 <f:case value="content">
-                                                    <td>
+                                                    <td class="col-title-flexible">
                                                         {l.fulltextData.fulltextdata}
                                                     </td>
                                                     <f:if condition="{extensionConfiguration.useMysqlFulltext} == false">
-                                                        <td>
+                                                        <td class="col-title-flexible">
                                                             <f:for each="{l.allWords}" as="w" iteration="wordIterator">
                                                                 {w}{f:if(condition:wordIterator.isLast,then:'',else:', ')}
                                                             </f:for>
@@ -111,15 +127,15 @@
                                                     </td>
                                                 </f:defaultCase>
                                             </f:switch>
-                                            <td class="col-control nowrap">
+                                            <td class="col-control">
                                                 <div class="btn-group">
                                                     <f:link.action
                                                         action="statisticDetails"
                                                         arguments="{pageHash:l.phash}"
-                                                        title="{f:translate(key:'administration.btn.info.title')}"
+                                                        title="{f:translate(key:'administration.btn.details.title')}"
                                                         class="btn btn-default"
                                                     >
-                                                        <core:icon identifier="actions-document-info" />
+                                                        <core:icon identifier="actions-options" />
                                                     </f:link.action>
                                                     <a
                                                         href="{f:uri.action(action:'deleteIndexedItem',arguments:'{itemId:l.phash,depth:depth,mode:mode}')}"
@@ -135,7 +151,15 @@
                                 </f:then>
                                 <f:else>
                                     <tr>
-                                        <td class="nowrap">{line.HTML -> f:format.raw()} {line.row.title}</td>
+                                        <td class="col-title-flexible">
+                                            <div class="treeline-container">
+                                                {line.depthData -> f:format.raw()}{line.HTML -> f:format.raw()}
+                                                <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
+                                                <span>
+                                                    <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{line.row.title}</f:format.crop>
+                                                </span>
+                                            </div>
+                                        </td>
                                         <f:switch expression="{mode}">
                                             <f:case value="content">
                                                 <td colspan="5">

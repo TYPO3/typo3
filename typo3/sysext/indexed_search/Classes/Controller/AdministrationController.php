@@ -377,15 +377,16 @@ class AdministrationController extends ActionController
             }
         }
         $this->administrationRepository->external_parsers = $externalParsers;
-        $allLines = $this->administrationRepository->getTree($this->pageUid, $depth, $mode);
+        $tree = $this->administrationRepository->getTree($this->pageUid, $depth, $mode);
         $view = $this->initializeModuleTemplate($this->request);
         $view->assignMultiple([
             'extensionConfiguration' => $this->indexerConfig,
             'levelTranslations' => explode('|', $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchLevels')),
-            'tree' => $allLines,
+            'tree' => $tree,
             'pageUid' => $this->pageUid,
             'mode' => $mode,
             'depth' => $depth,
+            'backendUserTitleLength' => (int)$this->getBackendUserAuthentication()->uc['titleLen'],
         ]);
         return $view->renderResponse('Administration/Statistic');
     }

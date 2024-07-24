@@ -57,6 +57,7 @@ body.typo3-adminPanel-noscroll{overflow:hidden}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon-line:after{display:none}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon-blank{display:none}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon-clear:after,#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-icon-clear:before{display:none}
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel .treeline-container{display:flex;gap:calc(var(--typo3-spacing) * .25)}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel body#typo3-pagetree{margin:0;padding:0}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel #typo3-pagetree #typo3-inner-docbody{padding:10px 0}
 #TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel span.dragIcon{display:inline-block;height:16px}

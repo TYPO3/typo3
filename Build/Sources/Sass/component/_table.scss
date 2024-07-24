@@ -75,6 +75,11 @@
         width: 99%;
     }
 
+    .col-title-flexible {
+        min-width: 200px;
+        max-width: 40ch;
+    }
+
     .col-checkbox,
     .col-icon {
         width: 16px;

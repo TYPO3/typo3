@@ -435,8 +435,8 @@
 			<trans-unit id="administration.moduleFunctions.depth" resname="administration.moduleFunctions.depth">
 				<source>Depth</source>
 			</trans-unit>
-			<trans-unit id="administration.btn.info.title" resname="administration.btn.info.title">
-				<source>Display information</source>
+			<trans-unit id="administration.btn.details.title" resname="administration.btn.details.title">
+				<source>Show details</source>
 			</trans-unit>
 			<trans-unit id="administration.noPageSelected" resname="administration.noPageSelected">
 				<source>Please select a page in the page tree.</source>

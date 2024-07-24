@@ -66,6 +66,14 @@ $navigation-bg: $gray-100;
     }
 }
 
+/**
+ * Tree line inside a table
+ */
+.treeline-container {
+    display: flex;
+    gap: calc(var(--typo3-spacing) * .25);
+}
+
 //
 // AJAX Page Tree
 //

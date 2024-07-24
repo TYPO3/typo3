@@ -3378,6 +3378,7 @@ typo3-backend-form-selecttree-toolbar{display:block;border-bottom:1px solid rgba
 .table .col-avatar,.table .col-checkbox,.table .col-icon{padding-inline-end:0}
 .table .col-50{width:50%}
 .table .col-task,.table .col-title{width:99%}
+.table .col-title-flexible{min-width:200px;max-width:40ch}
 .table .col-checkbox,.table .col-icon{width:16px;min-width:16px;white-space:nowrap;box-sizing:content-box}
 .table .col-time{width:8ch;white-space:nowrap;box-sizing:content-box}
 .table .col-datetime{width:14ch;white-space:nowrap;box-sizing:content-box}
@@ -3966,6 +3967,7 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex{border-top:0}
 .treeline-icon-line:after{display:none}
 .treeline-icon-blank{display:none}
 .treeline-icon-clear:after,.treeline-icon-clear:before{display:none}
+.treeline-container{display:flex;gap:calc(var(--typo3-spacing) * .25)}
 body#typo3-pagetree{margin:0;padding:0}
 #typo3-pagetree #typo3-inner-docbody{padding:10px 0}
 span.dragIcon{display:inline-block;height:16px}

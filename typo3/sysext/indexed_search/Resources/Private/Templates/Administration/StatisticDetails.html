@@ -101,7 +101,7 @@
                                     <th><f:translate key="field.wordCount" /></th>
                                     <th><f:translate key="field.frequency" /></th>
                                     <th data-sort-method="none"><f:translate key="field.flag" /></th>
-                                    <th class="col-control nowrap" data-sort-method="none">
+                                    <th class="col-control" data-sort-method="none">
                                         <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')}</span>
                                     </th>
                                 </tr>
@@ -120,15 +120,15 @@
                                                 {is:format.flagValue(flags:word.flags)}
                                             </f:if>
                                         </td>
-                                        <td class="col-control nowrap">
+                                        <td class="col-control">
                                             <div class="btn-group">
                                                 <f:link.action
                                                     action="wordDetail"
                                                     arguments="{wordHash:word.wid, pageHash:phash, wordTitle: word.baseword}"
-                                                    title="{f:translate(key:'administration.btn.info.title')}"
+                                                    title="{f:translate(key:'administration.btn.details.title')}"
                                                     class="btn btn-default"
                                                 >
-                                                    <core:icon identifier="actions-document-info" />
+                                                    <core:icon identifier="actions-options" />
                                                 </f:link.action>
                                             </div>
                                         </td>
