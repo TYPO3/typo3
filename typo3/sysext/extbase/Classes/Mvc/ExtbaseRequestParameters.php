@@ -21,7 +21,6 @@ use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 
@@ -174,36 +173,14 @@ class ExtbaseRequestParameters
         return $this->controllerName;
     }
 
-    /**
-     * @throws InvalidActionNameException if the action name is not valid
-     */
     public function setControllerActionName(string $actionName): self
     {
-        if ($actionName[0] !== strtolower($actionName[0])) {
-            throw new InvalidActionNameException('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
-        }
         $this->controllerActionName = $actionName;
         return $this;
     }
 
     public function getControllerActionName(): string
     {
-        $controllerObjectName = $this->getControllerObjectName();
-        if ($controllerObjectName !== '' && $this->controllerActionName === strtolower($this->controllerActionName)) {
-            // todo: this is nonsense! We can detect a non existing method in
-            // todo: \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin, if necessary.
-            // todo: At this point, we want to have a getter for a fixed value.
-            $actionMethodName = $this->controllerActionName . 'Action';
-            $classMethods = get_class_methods($controllerObjectName);
-            if (is_array($classMethods)) {
-                foreach ($classMethods as $existingMethodName) {
-                    if (strtolower($existingMethodName) === strtolower($actionMethodName)) {
-                        $this->controllerActionName = substr($existingMethodName, 0, -6);
-                        break;
-                    }
-                }
-            }
-        }
         return $this->controllerActionName;
     }
 

@@ -143,7 +143,6 @@ class Request implements RequestInterface
 
     /**
      * Return an instance with the specified controller action name set.
-     * Note that the action name must start with a lower case letter and is case-sensitive.
      */
     public function withControllerActionName(string $actionName): self
     {
