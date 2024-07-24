@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
@@ -202,34 +201,10 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected function setExtbaseVariables(array $conf)
     {
-        // @todo: It is currently unclear if the if's below can happen at all: An extbase request has been
-        //        prepared, but the setup of plugin name, controller extension name and friends
-        //        did not happen? Maybe these four if's are useless and the main if that
-        //        tests for all four properties is fine? Maybe the main if below is obsolete, too?
-        //        This comment was added when StandaloneView still had a default constructor that actively
-        //        creates a request by default. It might be more possible to resolve this when this is gone.
-        $request = $this->request;
         $requestPluginName = (string)$this->cObj->stdWrapValue('pluginName', $conf['extbase.'] ?? []);
-        if ($requestPluginName && $request instanceof RequestInterface) {
-            $request = $request->withPluginName($requestPluginName);
-            $this->view->setRequest($request);
-        }
         $requestControllerExtensionName = (string)$this->cObj->stdWrapValue('controllerExtensionName', $conf['extbase.'] ?? []);
-        if ($requestControllerExtensionName && $request instanceof RequestInterface) {
-            $request = $request->withControllerExtensionName($requestControllerExtensionName);
-            $this->view->setRequest($request);
-        }
         $requestControllerName = (string)$this->cObj->stdWrapValue('controllerName', $conf['extbase.'] ?? []);
-        if ($requestControllerName && $request instanceof RequestInterface) {
-            $request = $request->withControllerName($requestControllerName);
-            $this->view->setRequest($request);
-        }
         $requestControllerActionName = (string)$this->cObj->stdWrapValue('controllerActionName', $conf['extbase.'] ?? []);
-        if ($requestControllerActionName && $request instanceof RequestInterface) {
-            $request = $request->withControllerActionName($requestControllerActionName);
-            $this->view->setRequest($request);
-        }
-
         if ($requestPluginName && $requestControllerExtensionName && $requestControllerName && $requestControllerActionName) {
             // @todo: Yep, ugly. Having all four properties indicates an extbase plugin and then starts
             //        extbase configuration manager. See https://forge.typo3.org/issues/78842 and investigate
