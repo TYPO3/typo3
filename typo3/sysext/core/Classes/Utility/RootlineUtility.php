@@ -144,23 +144,9 @@ class RootlineUtility
     {
         $currentCacheIdentifier = $this->getCacheIdentifier($uid);
         if (!$this->runtimeCache->has('rootline-recordcache-' . $currentCacheIdentifier)) {
-            $queryBuilder = $this->createQueryBuilder('pages');
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $row = $queryBuilder->select('*')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->in('t3ver_wsid', $queryBuilder->createNamedParameter([0, $this->workspaceUid], Connection::PARAM_INT_ARRAY))
-                )
-                ->executeQuery()
-                ->fetchAssociative();
-            if (empty($row)) {
-                throw new PageNotFoundException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
-            }
-            $this->pageRepository->versionOL('pages', $row, false, true);
+            $row = $this->getWorkspaceResolvedPageRecord($uid, $this->workspaceUid);
             if (is_array($row)) {
-                $row = $this->pageRepository->getLanguageOverlay('pages', $row, $this->context->getAspect('language'));
-                $row = $this->enrichWithRelationFields($row['_LOCALIZED_UID'] ?? $uid, $row);
+                $row = $this->enrichPageRecordArray($row, $uid);
                 $this->runtimeCache->set('rootline-recordcache-' . $currentCacheIdentifier, $row, [self::RUNTIME_CACHE_TAG]);
             }
         }
@@ -612,6 +598,187 @@ class RootlineUtility
 
         $movePointerId = $statement->fetchOne();
         return $movePointerId ? (int)$movePointerId : null;
+    }
+
+    /**
+     * {@see self::getRecordArray()} used {@see PageRepository::versionOL()} to compose workspace overlayed records in
+     * the based, bypassing access checks (aka enableFields) resulting in multiple queries. This constellation of method
+     * and database query chains can be condensed down to a single database query, which this method uses to retrieve
+     * the equal workspace overlay database page record in one and thus reducing overall database query count.
+     */
+    protected function getWorkspaceResolvedPageRecord(int $pageId, int $workspaceId): ?array
+    {
+        $createForLiveWorkspace = ($workspaceId <= 0);
+        $queryBuilder = $this->createQueryBuilder('pages');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $fields = $this->getPagesFields();
+        if ($createForLiveWorkspace) {
+            // For live workspace only we can even more simplify this
+            $queryBuilder
+                ->select(...array_values($fields))
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->in('t3ver_wsid', $queryBuilder->createNamedParameter([0, $workspaceId], Connection::PARAM_INT_ARRAY)),
+                )
+                ->setMaxResults(1);
+            return $queryBuilder->executeQuery()->fetchAssociative() ?: null;
+        }
+        $prefixedFields = array_filter($fields, static fn($value) => $value !== 'uid');
+        array_walk(
+            $prefixedFields,
+            static function (string &$value, int|string $key, QueryBuilder $queryBuilder) {
+                $value = $queryBuilder->quoteIdentifier(sprintf('%s.%s', 'workspace_resolved', $value));
+            },
+            $queryBuilder,
+        );
+        $queryBuilder
+            ->selectLiteral(
+                $queryBuilder->quoteIdentifier('live.uid'),
+                ...array_values($prefixedFields),
+                ...array_values([
+                    //------------------------------------------------------------------------------------------------------
+                    // For move pointers, store the actual live PID in the _ORIG_pid
+                    // The only place where PID is actually different in a workspace
+                    $queryBuilder->expr()->if(
+                        $queryBuilder->expr()->and(
+                            $queryBuilder->expr()->isNotNull('workspace.t3ver_state'),
+                            $queryBuilder->expr()->eq('workspace.t3ver_state', $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)),
+                        ),
+                        $queryBuilder->quoteIdentifier('live.pid'),
+                        'null',
+                        '_ORIG_pid'
+                    ),
+                    // For versions of single elements or page+content, preserve online UID
+                    // (this will produce true "overlay" of element _content_, not any references)
+                    // For new versions there is no online counterpart
+                    $queryBuilder->expr()->if(
+                        $queryBuilder->expr()->and(
+                            $queryBuilder->expr()->isNotNull('workspace.t3ver_state'),
+                            $queryBuilder->expr()->neq('workspace.t3ver_state', $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)),
+                        ),
+                        $queryBuilder->quoteIdentifier('workspace.uid'),
+                        'null',
+                        '_ORIG_uid',
+                    ),
+                ])
+            )
+            ->from('pages', 'source')
+            ->innerJoin(
+                'source',
+                'pages',
+                'live',
+                $queryBuilder->expr()->eq(
+                    'live.uid',
+                    $queryBuilder->expr()->if(
+                        (string)$queryBuilder->expr()->and(
+                            $queryBuilder->expr()->gt('source.t3ver_oid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                            $queryBuilder->expr()->eq('source.t3ver_state', $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)),
+                        ),
+                        $queryBuilder->quoteIdentifier('source.t3ver_oid'),
+                        $queryBuilder->quoteIdentifier('source.uid'),
+                    )
+                ),
+            )
+            ->leftJoin(
+                'live',
+                'pages',
+                'workspace',
+                (string)$queryBuilder->expr()->and(
+                    $queryBuilder->expr()->eq(
+                        'workspace.t3ver_wsid',
+                        $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->or(
+                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                        $queryBuilder->expr()->and(
+                            $queryBuilder->expr()->eq(
+                                'workspace.uid',
+                                $queryBuilder->quoteIdentifier('live.uid'),
+                            ),
+                            $queryBuilder->expr()->eq(
+                                'workspace.t3ver_state',
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT),
+                            ),
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'workspace.t3ver_oid',
+                            $queryBuilder->quoteIdentifier('live.uid'),
+                        )
+                    )
+                ),
+            )
+            ->innerJoin(
+                'workspace',
+                'pages',
+                'workspace_resolved',
+                (string)$queryBuilder->expr()->and(
+                    $queryBuilder->expr()->eq(
+                        'workspace_resolved.uid',
+                        $queryBuilder->expr()->if(
+                            $queryBuilder->expr()->isNotNull('workspace.uid'),
+                            $queryBuilder->quoteIdentifier('workspace.uid'),
+                            $queryBuilder->quoteIdentifier('live.uid'),
+                        ),
+                    ),
+                ),
+            )
+            ->where(
+                $queryBuilder->expr()->eq('source.uid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
+                $queryBuilder->expr()->in('source.t3ver_wsid', $queryBuilder->createNamedParameter([0, $workspaceId], Connection::PARAM_INT_ARRAY)),
+                $queryBuilder->expr()->or(
+                    // retrieve live workspace if no overlays exists
+                    $queryBuilder->expr()->isNull('workspace.uid'),
+                    // discard(omit) record if it turned out to be deleted in workspace
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->isNotNull('workspace.uid'),
+                        $queryBuilder->expr()->neq(
+                            'workspace.t3ver_state',
+                            $queryBuilder->createNamedParameter(VersionState::DELETE_PLACEHOLDER->value, Connection::PARAM_INT),
+                        ),
+                    ),
+                ),
+            )
+            ->setMaxResults(1);
+        $row = $queryBuilder->executeQuery()->fetchAssociative() ?: null;
+        return $this->cleanWorkspaceResolvedPageRecord($row);
+    }
+
+    protected function cleanWorkspaceResolvedPageRecord(?array $row = null): ?array
+    {
+        if ($row === null) {
+            return $row;
+        }
+        $removeNullableFields = [
+            '_ORIG_uid',
+            '_ORIG_pid',
+        ];
+        foreach ($removeNullableFields as $removeNullableField) {
+            if (array_key_exists($removeNullableField, $row) && $row[$removeNullableField] === null) {
+                unset($row[$removeNullableField]);
+            }
+        }
+        return $row;
+    }
+
+    protected function enrichPageRecordArray(array $row, int $pageId): array
+    {
+        $row = $this->pageRepository->getLanguageOverlay('pages', $row, $this->context->getAspect('language'));
+        $row = $this->enrichWithRelationFields($row['_LOCALIZED_UID'] ?? $pageId, $row);
+        return $row;
+    }
+
+    protected function getPagesFields(): array
+    {
+        $fieldNames = [];
+        $columns = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('pages')
+            ->getSchemaInformation()->introspectTable('pages')
+            ->getColumns();
+        foreach ($columns as $column) {
+            $fieldNames[] = $column->getName();
+        }
+        return $fieldNames;
     }
 
     protected function createQueryBuilder(string $tableName): QueryBuilder
