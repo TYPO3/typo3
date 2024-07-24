@@ -53,7 +53,7 @@
 
 .statusreport {
     display: grid;
-    grid-template: 'statusreport-indicator statusreport-title statusreport-body' / calc(var(--statusreport-icon-size) * 1.5) 200px auto;
+    grid-template: 'statusreport-indicator statusreport-title statusreport-body' / calc(var(--statusreport-icon-size) * 1.5) 400px auto;
     color: var(--statusreport-color);
     padding: calc(var(--statusreport-spacing) * 1.5);
     gap: var(--statusreport-spacing);

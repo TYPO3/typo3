@@ -114,6 +114,7 @@ class ReportController
         $view->assignMultiple([
             'content' => $content,
             'report' => $reportInstance,
+            'title' => $languageService->sL($reportInstance->getTitle()),
         ]);
         $view->setTitle(
             $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
