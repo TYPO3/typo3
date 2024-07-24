@@ -1658,4 +1658,42 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $queryBuilder->expr()->rightPad('uid', 10, '..');
     }
+
+    #[Test]
+    public function ifExpressionReturnsExpectedDataSets(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderIf.csv');
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        $result = $queryBuilder
+            ->select('uid', 'title')
+            ->addSelectLiteral(
+                $queryBuilder->expr()->if(
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->gt('uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                        $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                    ),
+                    $queryBuilder->expr()->literal('visible'),
+                    $queryBuilder->expr()->literal('not-visible'),
+                    'hidden_state_label'
+                )
+            )
+            ->from('pages')
+            ->orderBy('uid', 'ASC')
+            ->executeQuery()
+            ->fetchAllAssociative();
+        $expected = [
+            0 => [
+                'uid' => 1,
+                'title' => '123',
+                'hidden_state_label' => 'visible',
+            ],
+            1 => [
+                'uid' => 2,
+                'title' => 'string-2',
+                'hidden_state_label' => 'not-visible',
+            ],
+        ];
+        self::assertSame($expected, $result);
+    }
 }
