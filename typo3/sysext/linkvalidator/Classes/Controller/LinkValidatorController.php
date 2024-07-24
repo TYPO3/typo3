@@ -82,8 +82,6 @@ class LinkValidatorController
     protected int $id;
     protected array $searchFields = [];
 
-    protected ServerRequestInterface $request;
-
     public function __construct(
         protected readonly Context $context,
         protected readonly UriBuilder $uriBuilder,
@@ -101,12 +99,11 @@ class LinkValidatorController
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
 
-        $this->request = $request;
-        $this->id = (int)($this->request->getQueryParams()['id'] ?? 0);
+        $this->id = (int)($request->getQueryParams()['id'] ?? 0);
         $this->modTS = BackendUtility::getPagesTSconfig($this->id)['mod.']['linkvalidator.'] ?? [];
         $this->pageRecord = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
 
-        $view = $this->moduleTemplateFactory->create($this->request);
+        $view = $this->moduleTemplateFactory->create($request);
         if ($this->pageRecord !== []) {
             $view->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
         }
@@ -114,7 +111,7 @@ class LinkValidatorController
         $this->validateSettings($request);
         $this->initializeLinkAnalyzer();
 
-        if ($this->request->getParsedBody()['updateLinkList'] ?? false) {
+        if ($request->getParsedBody()['updateLinkList'] ?? false) {
             $this->updateBrokenLinks();
         } elseif ($this->lastEditedRecord['uid']) {
             if (($this->modTS['actionAfterEditRecord'] ?? '') === 'recheck') {
@@ -183,7 +180,7 @@ class LinkValidatorController
 
         $prefix = 'check';
         $other = 'report';
-        if (empty($this->request->getParsedBody()['updateLinkList'] ?? false)) {
+        if (empty($request->getParsedBody()['updateLinkList'] ?? false)) {
             $prefix = 'report';
             $other = 'check';
         }
@@ -192,13 +189,13 @@ class LinkValidatorController
         $moduleData = $request->getAttribute('moduleData');
 
         // get information for last edited record
-        $this->lastEditedRecord['uid'] = $this->request->getQueryParams()['last_edited_record_uid'] ?? 0;
-        $this->lastEditedRecord['table'] = $this->request->getQueryParams()['last_edited_record_table'] ?? '';
-        $this->lastEditedRecord['field'] = $this->request->getQueryParams()['last_edited_record_field'] ?? '';
-        $this->lastEditedRecord['timestamp'] = $this->request->getQueryParams()['last_edited_record_timestamp'] ?? 0;
+        $this->lastEditedRecord['uid'] = $request->getQueryParams()['last_edited_record_uid'] ?? 0;
+        $this->lastEditedRecord['table'] = $request->getQueryParams()['last_edited_record_table'] ?? '';
+        $this->lastEditedRecord['field'] = $request->getQueryParams()['last_edited_record_field'] ?? '';
+        $this->lastEditedRecord['timestamp'] = $request->getQueryParams()['last_edited_record_timestamp'] ?? 0;
 
         // get searchLevel (number of levels of pages to check / show results)
-        $this->searchLevel[$prefix] = $this->request->getQueryParams()[$prefix . '_search_levels'] ?? $this->request->getParsedBody()[$prefix . '_search_levels'] ?? null;
+        $this->searchLevel[$prefix] = $request->getQueryParams()[$prefix . '_search_levels'] ?? $request->getParsedBody()[$prefix . '_search_levels'] ?? null;
 
         $mainSearchLevelKey = $prefix . '_searchlevel';
         $otherSearchLevelKey = $other . '_searchlevel';
@@ -212,8 +209,8 @@ class LinkValidatorController
         }
 
         // which linkTypes to check (internal, file, external, ...)
-        $set = $this->request->getParsedBody()[$prefix . '_SET'] ?? [];
-        $submittedValues = $this->request->getParsedBody()[$prefix . '_values'] ?? [];
+        $set = $request->getParsedBody()[$prefix . '_SET'] ?? [];
+        $submittedValues = $request->getParsedBody()[$prefix . '_values'] ?? [];
 
         foreach ($this->linktypeRegistry->getIdentifiers() as $linkType) {
             // Compile list of all available types. Used for checking with button "Check Links".
