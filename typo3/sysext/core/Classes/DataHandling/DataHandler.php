@@ -4992,8 +4992,10 @@ class DataHandler
         if (empty($parentRecord[$languageCapability->getLanguageField()->getName()])) {
             // Fetch the live record
             // @todo: this needs to be revisited, as getRecordLocalization() does a WorkspaceRestriction
-            // based on $GLOBALS[BE_USER], which could differ from the $this->BE_USER->workspace value
-            $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], 'AND t3ver_oid=0');
+            //        based on $GLOBALS[BE_USER], which could differ from the $this->BE_USER->workspace value
+            //        and that's why we have this check here and do the overlay manually there (which is a bad idea)
+            $whereClause = BackendUtility::isTableWorkspaceEnabled($table) ? 'AND t3ver_oid=0' : '';
+            $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], $whereClause);
             if (empty($parentRecordLocalization)) {
                 $this->log($table, $id, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::MESSAGE, 'Localization for parent record {table}:{uid} cannot be fetched', -1, ['table' => $table, 'uid' => (int)$id], $this->eventPid($table, $id, $parentRecord['pid']));
                 return;
