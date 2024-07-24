@@ -24,6 +24,12 @@
 			<trans-unit id="noReportsMessage" resname="noReportsMessage">
 				<source>There are no reports registered in the system and default reports have been disabled.</source>
 			</trans-unit>
+			<trans-unit id="link.openModule" resname="link.openModule">
+				<source>Open</source>
+			</trans-unit>
+			<trans-unit id="link.openModuleWithTitle" resname="link.openModuleWithTitle">
+				<source>Open %1s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

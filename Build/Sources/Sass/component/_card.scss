@@ -58,16 +58,6 @@
 //             </a>
 //         </div>
 //     </div>
-//     <a href="#" class="card card-size-medium">
-//         <div class="card-header">
-//             <h1 class="card-title">Linked Card</h1>
-//         </div>
-//         <div class="card-body">
-//             <p class="card-text">
-//                 Etiam posuere tristique arcu, a elementum justo semper eget. Etiam malesuada consectetur risus nec hendrerit. Mauris velit arcu, efficitur at erat eget, luctus consequat felis.
-//             </p>
-//         </div>
-//     </a>
 //     <div class="card card-size-medium">
 //         <div class="card-image">
 //             <img src="http://via.placeholder.com/300x120" height="120" width="300">
@@ -213,7 +203,6 @@
     --typo3-card-color-subtle: var(--typo3-text-color-variant);
     --typo3-card-bg: var(--typo3-surface-container-low);
     --typo3-card-border-color: color-mix(in srgb, var(--typo3-card-bg), var(--typo3-card-color) 15%);
-    --typo3-card-hover-border-color: color-mix(in srgb, var(--typo3-card-bg), var(--typo3-card-color) 30%);
     color: var(--typo3-card-color);
     background: var(--typo3-card-bg);
     border: 1px solid var(--typo3-card-border-color);
@@ -238,14 +227,6 @@
 
     .table-fit:not(:first-child) {
         margin-top: var(--typo3-card-padding);
-    }
-}
-
-a.card {
-    &:hover {
-        --typo3-card-border-color: var(--typo3-card-hover-border-color);
-        text-decoration: none;
-        transform: translate(0, -1px);
     }
 }
 

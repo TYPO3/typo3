@@ -8,42 +8,57 @@
 <f:layout name="Module" />
 
 <f:section name="Content">
-    <div class="container-small">
-
-        <h1><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview"/></h1>
+    <div class="container">
+        <h1><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview" /></h1>
 
         <f:if condition="!{reports}">
             <f:be.infobox state="-1" title="{f:translate(key:'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsTitle')}">
-                <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsMessage"/>
+                <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsMessage" />
             </f:be.infobox>
         </f:if>
 
         <section class="card-container">
             <f:for each="{reports}" as="report">
-                <a
-                    href="{be:moduleLink(route: 'system_reports', arguments: '{action: \'detail\', report: report.identifier}')}"
-                    title="{f:translate(key: report.title, default: report.title)}"
-                    class="card card-size-medium"
-                >
+                <div class="card card-size-small">
                     <div class="card-header">
                         <div class="card-icon">
-                            <core:icon identifier="{report.iconIdentifier}" size="medium" />
+                            <core:icon identifier="{report.iconIdentifier}" size="large" />
                         </div>
-                        <div class="card-header-body">
-                            <h3 class="card-title"><f:translate key="{report.title}" default="{report.title}"/></h3>
-                            <f:if condition="{report.description}">
-                                <div class="card-longdesc">
-                                    <f:sanitize.html>
-                                        <f:translate key="{report.description}" default="{report.description}"/>
-                                    </f:sanitize.html>
-                                </div>
-                            </f:if>
-                        </div>
+                        <f:if condition="{report.title}">
+                            <div class="card-header-body">
+                                <h2 class="card-title"><f:translate key="{report.title}" default="{report.title}" /></h2>
+                            </div>
+                        </f:if>
                     </div>
-                </a>
+                    <f:if condition="{report.description}">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <f:sanitize.html>
+                                    <f:translate key="{report.description}" default="{report.description}"/>
+                                </f:sanitize.html>
+                            </p>
+                        </div>
+                    </f:if>
+                    <div class="card-footer">
+                        <a
+                            href="{be:moduleLink(route: 'system_reports', arguments: '{action: \'detail\', report: report.identifier}')}"
+                            class="btn btn-default"
+                            role="button"
+                        >
+                            <f:if condition="{report.title}">
+                                <f:then>
+                                    <f:variable name="submoduleTitle"><f:translate key="{report.title}" default="{report.title}" /></f:variable>
+                                    <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:link.openModuleWithTitle" arguments="{0: submoduleTitle}" />
+                                </f:then>
+                                <f:else>
+                                    <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:link.openModule" />
+                                </f:else>
+                            </f:if>
+                        </a>
+                    </div>
+                </div>
             </f:for>
         </section>
-
     </div>
 </f:section>
 
