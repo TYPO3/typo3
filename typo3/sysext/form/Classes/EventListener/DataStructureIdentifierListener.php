@@ -178,7 +178,7 @@ class DataStructureIdentifierListener
             }
         } catch (NoSuchFileException|ParseErrorException $e) {
             $dataStructure = $this->addSelectedPersistenceIdentifier($identifier['ext-form-persistenceIdentifier'], $dataStructure);
-            $this->addInvalidFrameworkConfigurationFlashMessage($e);
+            $this->addInvalidFrameworkConfigurationFlashMessage($e, $identifier['ext-form-persistenceIdentifier']);
         }
 
         $event->setDataStructure($dataStructure);
@@ -306,10 +306,11 @@ class DataStructureIdentifierListener
         return $dataStructure;
     }
 
-    protected function addInvalidFrameworkConfigurationFlashMessage(\Exception $e): void
+    protected function addInvalidFrameworkConfigurationFlashMessage(\Exception $e, string $identifier = ''): void
     {
         $messageText = sprintf(
             $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.preview.invalidFrameworkConfiguration.text'),
+            $identifier,
             $e->getMessage()
         );
 
