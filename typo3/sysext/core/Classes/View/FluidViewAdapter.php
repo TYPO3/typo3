@@ -61,7 +61,7 @@ readonly class FluidViewAdapter implements CoreViewInterface, FluidStandaloneVie
         if ($this->view instanceof FluidStandaloneAbstractTemplateView) {
             return $this->view->getRenderingContext();
         }
-        throw new \RuntimeException('view must be an instance of ext:fluid \TYPO3Fluid\Fluid\View\AbstractTemplateView', 1721578954);
+        throw new \RuntimeException('view must be an instance of ext:fluid \TYPO3Fluid\Fluid\View\AbstractTemplateView', 1721889095);
     }
 
     public function setRenderingContext(RenderingContextInterface $renderingContext): void
@@ -220,7 +220,7 @@ readonly class FluidViewAdapter implements CoreViewInterface, FluidStandaloneVie
         );
         if (!$this->getRenderingContext() instanceof CoreRenderingContext) {
             // @todo: This needs a transition towards hasAttribute()
-            throw new \RuntimeException('The rendering context must be of type ' . CoreRenderingContext::class, 1482251886);
+            throw new \RuntimeException('The rendering context must be of type ' . CoreRenderingContext::class, 1721889120);
         }
         $request = $this->getRenderingContext()->getRequest();
         if ($request instanceof RequestInterface) {

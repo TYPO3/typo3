@@ -63,6 +63,7 @@ final class ExceptionCodeChecker extends AbstractPhpIntegrityChecker
         $position = $this->getRelativeFileNameFromRepositoryRoot() . ' ' . $node->getLine();
         if (!$exceptionCodeArgument instanceof Node\Arg) {
             $this->undefinedCodes['undefined'][] = $position;
+            $this->messages['undefinedCodes'] = ['see $this->undefinedCodes'];
             return;
         }
         try {
@@ -73,10 +74,12 @@ final class ExceptionCodeChecker extends AbstractPhpIntegrityChecker
                 return;
             }
             $this->malformedCodes['undefined'][] = $position;
+            $this->messages['malformedCodes'] = ['see $this->malformedCodes'];
             return;
         }
         if (!MathUtility::canBeInterpretedAsInteger($exceptionCode) || strlen((string)$exceptionCode) !== 10) {
             $this->malformedCodes[$exceptionCode][] = $position;
+            $this->messages['malformedCodes'] = ['see $this->malformedCodes'];
         }
         if (!array_key_exists($exceptionCode, $this->usedCodes)) {
             $this->usedCodes[$exceptionCode] = $position;
@@ -85,8 +88,10 @@ final class ExceptionCodeChecker extends AbstractPhpIntegrityChecker
                 $this->usedCodes[$exceptionCode],
                 $position,
             ];
+            $this->messages['duplicatedCodes'] = ['see $this->duplicatedCodes'];
         } else {
             $this->duplicatedCodes[$exceptionCode][] = $position;
+            $this->messages['duplicatedCodes'] = ['see $this->duplicatedCodes'];
         }
     }
 
