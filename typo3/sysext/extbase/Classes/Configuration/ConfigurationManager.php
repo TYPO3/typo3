@@ -17,81 +17,39 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
 /**
- * A configuration manager following the strategy pattern. It hides the concrete
- * implementation of the configuration manager and provides a unified access point.
+ * Generic ConfigurationManager implementation. Uses BackendConfigurationManager
+ * or FrontendConfigurationManager depending on request type.
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ConfigurationManager implements ConfigurationManagerInterface
 {
-    private ContainerInterface $container;
-
-    /**
-     * @todo: Make nullable and private(?) in v13.
-     */
-    protected FrontendConfigurationManager|BackendConfigurationManager $concreteConfigurationManager;
-
     private ?ServerRequestInterface $request = null;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-        $this->initializeConcreteConfigurationManager();
-    }
-
-    protected function initializeConcreteConfigurationManager(): void
-    {
-        // @todo: Move into getConfiguration() in v13.
-        //        This will allow getting rid of $GLOBALS['TYPO3_REQUEST'] here, and the
-        //        concrete ConfigurationManager is created "late" in getConfiguration().
-        //        Check $this->concreteConfigurationManager for null. If null, fetch request from
-        //        $this->request() (and *maybe* check TYPO3_REQUEST as b/w layer, better not), if still
-        //        null, fall back to BackendConfigurationManager.
-        //        Background: People tend to inject ConfigurationManager into non-extbase bootstrapped
-        //        classes since the getConfiguration() API is so convenient. If request has not been set
-        //        via setRequest(), this *may* indicate a CLI call. Extbase in general needs requests for
-        //        controllers, but we *may* want to allow getting ConfigurationManager injected as
-        //        "standalone" feature in CLI as well? OTOH, we could avoid this, when the TypoScript
-        //        factories have been refactored far enough to be easily usable. If so, the request
-        //        properties should be made non-nullable.
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-        ) {
-            $this->concreteConfigurationManager = $this->container->get(FrontendConfigurationManager::class);
-        } else {
-            $this->concreteConfigurationManager = $this->container->get(BackendConfigurationManager::class);
-        }
-    }
+    private array $configuration = [];
 
     /**
-     * @internal
+     * @todo Use runtime cache
      */
+    private array $feConfigCache = [];
+
+    public function __construct(
+        private readonly FrontendConfigurationManager $feConfigManager,
+        private readonly BackendConfigurationManager $beConfigManager,
+    ) {}
+
     public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
-        // @todo: Move to getConfiguration() together with "late" creation of $this->concreteConfigurationManager
-        $this->concreteConfigurationManager->setRequest($this->request);
     }
 
-    /**
-     * Sets the specified raw configuration coming from the outside.
-     * Note that this is a low level method and only makes sense to be used by Extbase internally.
-     *
-     * @param array $configuration The new configuration
-     * @internal Set by extbase bootstrap internally. Must be called *after* setRequest() has been called.
-     */
     public function setConfiguration(array $configuration = []): void
     {
-        // @todo: If really needed in v13 and if it can't be refactored out, park
-        //        state in a property and $this->concreteConfigurationManager->setConfiguration()
-        //        after concreteConfigurationManager has been created in getConfiguration().
-        $this->concreteConfigurationManager->setConfiguration($configuration);
+        $this->configuration = $configuration;
+        $this->feConfigCache = [];
     }
 
     /**
@@ -108,21 +66,51 @@ class ConfigurationManager implements ConfigurationManagerInterface
      * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
      * @param string|null $extensionName if specified, the configuration for the given extension will be returned.
      * @param string|null $pluginName if specified, the configuration for the given plugin will be returned.
-     * @throws Exception\InvalidConfigurationTypeException
      * @return array The configuration
      */
     public function getConfiguration(string $configurationType, ?string $extensionName = null, ?string $pluginName = null): array
     {
-        switch ($configurationType) {
-            case self::CONFIGURATION_TYPE_SETTINGS:
-                $configuration = $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
-                return $configuration['settings'] ?? [];
-            case self::CONFIGURATION_TYPE_FRAMEWORK:
-                return $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
-            case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT:
-                return $this->concreteConfigurationManager->getTypoScriptSetup();
-            default:
-                throw new InvalidConfigurationTypeException('Invalid configuration type "' . $configurationType . '"', 1206031879);
+        $request = $this->request;
+        $configuration = $this->configuration;
+        if ($request === null && ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
+            // @todo: deprecate
+            $request = $GLOBALS['TYPO3_REQUEST'];
+        }
+        if ($request === null) {
+            throw new \RuntimeException('No request given. ConfigurationManager has not been initialized properly.', 1721920500);
+        }
+        if (ApplicationType::fromRequest($request)->isFrontend()) {
+            if ($configurationType === self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT) {
+                return $this->feConfigManager->getTypoScriptSetup($request);
+            }
+            // @todo Throw if empty to not end up with '_': Invalid setup/call!
+            $feConfigCacheKey = strtolower(
+                ($extensionName ?? $configuration['extensionName'] ?? null)
+                . '_'
+                . ($pluginName ?? $configuration['pluginName'] ?? null)
+            );
+            if ($configurationType === self::CONFIGURATION_TYPE_SETTINGS) {
+                if (isset($this->feConfigCache[$feConfigCacheKey])) {
+                    return $this->feConfigCache[$feConfigCacheKey]['settings'] ?? [];
+                }
+                $this->feConfigCache[$feConfigCacheKey] = $this->feConfigManager->getConfiguration($request, $this->configuration, $extensionName, $pluginName);
+                return $this->feConfigCache[$feConfigCacheKey]['settings'] ?? [];
+            }
+            if ($configurationType === self::CONFIGURATION_TYPE_FRAMEWORK) {
+                if (isset($this->feConfigCache[$feConfigCacheKey])) {
+                    return $this->feConfigCache[$feConfigCacheKey];
+                }
+                $this->feConfigCache[$feConfigCacheKey] = $this->feConfigManager->getConfiguration($request, $this->configuration, $extensionName, $pluginName);
+                return $this->feConfigCache[$feConfigCacheKey];
+            }
+            throw new \RuntimeException('Invalid configuration type "' . $configurationType . '"', 1206031879);
+        } else {
+            return match ($configurationType) {
+                self::CONFIGURATION_TYPE_SETTINGS => $this->beConfigManager->getConfiguration($request, $this->configuration, $extensionName, $pluginName)['settings'] ?? [],
+                self::CONFIGURATION_TYPE_FRAMEWORK => $this->beConfigManager->getConfiguration($request, $this->configuration, $extensionName, $pluginName),
+                self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT => $this->beConfigManager->getTypoScriptSetup($request),
+                default => throw new \RuntimeException('Invalid configuration type "' . $configurationType . '"', 1721928055),
+            };
         }
     }
 }

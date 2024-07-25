@@ -55,6 +55,10 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
     public function render(string $template, string $expected): void
     {
         $this->loadDefaultYamlConfigurations();
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $definition = $this->buildFormDefinition();
         $runtime = $definition->bind($this->buildExtbaseRequest());
 

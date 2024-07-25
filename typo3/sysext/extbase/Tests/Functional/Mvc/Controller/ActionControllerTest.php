@@ -19,11 +19,12 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
@@ -49,6 +50,10 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function initializeActionMethodArgumentsRegistersArgumentsFoundInTheSignatureOfTheCurrentActionMethod(): void
     {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $subject = $this->get(TestController::class);
         $subject->arguments = new Arguments();
         $subject->actionMethodName = 'initializeActionMethodArgumentsTestActionOne';
@@ -70,6 +75,10 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function initializeActionMethodArgumentsRegistersOptionalArgumentsAsSuch(): void
     {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $subject = $this->get(TestController::class);
         $subject->arguments = new Arguments();
         $subject->actionMethodName = 'initializeActionMethodArgumentsTestActionTwo';
@@ -93,6 +102,10 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         $this->expectException(InvalidArgumentTypeException::class);
         $this->expectExceptionCode(1253175643);
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $subject = $this->get(TestController::class);
         $subject->arguments = new Arguments();
         $subject->actionMethodName = 'initializeActionMethodArgumentsTestActionThree';
@@ -104,6 +117,10 @@ final class ActionControllerTest extends FunctionalTestCase
     {
         $this->expectException(NoSuchActionException::class);
         $this->expectExceptionCode(1186669086);
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($serverRequest))
             ->withControllerExtensionName('ActionControllerTest')
@@ -116,6 +133,10 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function processRequestSetsActionMethodName(): void
     {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($serverRequest))
             ->withControllerExtensionName('ActionControllerTest')
@@ -129,6 +150,10 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function customValidatorsAreProperlyResolved(): void
     {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($serverRequest))
             ->withControllerExtensionName('ActionControllerTest')
@@ -154,6 +179,10 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function extbaseValidatorsAreProperlyResolved(): void
     {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($serverRequest))
             ->withControllerExtensionName('ActionControllerTest')
@@ -180,6 +209,10 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function resolveViewRespectsDefaultViewObjectName(): void
     {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($serverRequest))
             ->withControllerExtensionName('ActionControllerTest')
@@ -202,7 +235,11 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function setViewConfigurationConfiguresViewWithArray(): void
     {
-        $configurationManagerMock = $this->createMock(ConfigurationManager::class);
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManagerMock->method('getConfiguration')->willReturn(
             [
                 'view' => [
@@ -230,7 +267,11 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function setViewConfigurationDoesNotCallSettersWithEmptyArray(): void
     {
-        $configurationManagerMock = $this->createMock(ConfigurationManager::class);
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManagerMock->method('getConfiguration')->willReturn(
             [
                 'view' => [
@@ -258,6 +299,11 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function renderAssetsForRequestAssignsHeaderDataFromViewIntoPageRenderer(): void
     {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
         $viewMock = $this->createMock(FluidTemplateView::class);
         $viewMock->expects(self::exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('custom-header-data', '');
         $expectedHeader = 'custom-header-data';
@@ -278,6 +324,11 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function renderAssetsForRequestAssignsFooterDataFromViewIntoPageRenderer(): void
     {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
         $viewMock = $this->createMock(FluidTemplateView::class);
         $viewMock->expects(self::exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('', 'custom-footer-data');
         $expectedFooter = 'custom-footer-data';
@@ -298,6 +349,11 @@ final class ActionControllerTest extends FunctionalTestCase
     #[Test]
     public function addFlashMessageAddsFlashMessageToFlashMessageQueue(): void
     {
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($serverRequest))
             ->withControllerExtensionName('ActionControllerTest')

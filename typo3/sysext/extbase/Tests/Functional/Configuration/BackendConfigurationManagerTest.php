@@ -27,40 +27,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class BackendConfigurationManagerTest extends FunctionalTestCase
 {
     #[Test]
-    public function setConfigurationSetsExtensionAndPluginName(): void
-    {
-        $subject = $this->get(BackendConfigurationManager::class);
-        $subject->setConfiguration([
-            'extensionName' => 'SomeExtensionName',
-            'pluginName' => 'SomePluginName',
-        ]);
-        self::assertEquals('SomeExtensionName', (new \ReflectionProperty($subject, 'extensionName'))->getValue($subject));
-        self::assertEquals('SomePluginName', (new \ReflectionProperty($subject, 'pluginName'))->getValue($subject));
-    }
-
-    #[Test]
-    public function setConfigurationConvertsTypoScriptArrayToPlainArray(): void
-    {
-        $configuration = [
-            'foo' => 'bar',
-            'settings.' => ['foo' => 'bar'],
-            'view.' => ['subkey.' => ['subsubkey' => 'subsubvalue']],
-        ];
-        $expectedResult = [
-            'foo' => 'bar',
-            'settings' => ['foo' => 'bar'],
-            'view' => ['subkey' => ['subsubkey' => 'subsubvalue']],
-        ];
-        $subject = $this->get(BackendConfigurationManager::class);
-        $subject->setConfiguration($configuration);
-        self::assertEquals($expectedResult, (new \ReflectionProperty($subject, 'configuration'))->getValue($subject));
-    }
-
-    #[Test]
     public function getConfigurationRecursivelyMergesCurrentExtensionConfigurationWithFrameworkConfiguration(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerTestTypoScript.csv');
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
         $subject = $this->get(BackendConfigurationManager::class);
         $expectedResult = [
             'settings' => [
@@ -85,14 +54,13 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
                 'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
             ],
         ];
-        self::assertEquals($expectedResult, $subject->getConfiguration('CurrentExtensionName'));
+        self::assertEquals($expectedResult, $subject->getConfiguration(new ServerRequest(), [], 'CurrentExtensionName'));
     }
 
     #[Test]
     public function getConfigurationRecursivelyMergesCurrentPluginConfigurationWithFrameworkConfiguration(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerTestTypoScript.csv');
-        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
         $subject = $this->get(BackendConfigurationManager::class);
         $expectedResult = [
             'settings' => [
@@ -117,7 +85,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
                 'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
             ],
         ];
-        self::assertEquals($expectedResult, $subject->getConfiguration('CurrentExtensionName', 'CurrentPluginName'));
+        self::assertEquals($expectedResult, $subject->getConfiguration(new ServerRequest(), [], 'CurrentExtensionName', 'CurrentPluginName'));
     }
 
     #[Test]
@@ -125,9 +93,8 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
     {
         $request = (new ServerRequest())->withQueryParams(['id' => 123]);
         $subject = $this->get(BackendConfigurationManager::class);
-        $subject->setRequest($request);
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, $request);
         self::assertEquals(123, $actualResult);
     }
 
@@ -136,9 +103,8 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
     {
         $request = (new ServerRequest())->withQueryParams(['id' => 123])->withParsedBody(['id' => 321]);
         $subject = $this->get(BackendConfigurationManager::class);
-        $subject->setRequest($request);
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, $request);
         self::assertEquals(321, $actualResult);
     }
 
@@ -155,9 +121,8 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
             ]
         );
         $subject = $this->get(BackendConfigurationManager::class);
-        $subject->setRequest(new ServerRequest());
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
         self::assertEquals(123, $actualResult);
     }
 
@@ -173,9 +138,8 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
             ]
         );
         $subject = $this->get(BackendConfigurationManager::class);
-        $subject->setRequest(new ServerRequest());
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
         self::assertEquals(1, $actualResult);
     }
 
@@ -183,9 +147,8 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
     public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound(): void
     {
         $subject = $this->get(BackendConfigurationManager::class);
-        $subject->setRequest(new ServerRequest());
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject);
+        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
         self::assertEquals(0, $actualResult);
     }
 

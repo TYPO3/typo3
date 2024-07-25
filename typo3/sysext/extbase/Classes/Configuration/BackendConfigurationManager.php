@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Configuration;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -29,7 +28,6 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -67,63 +65,19 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-#[Autoconfigure(public: true)]
-class BackendConfigurationManager implements SingletonInterface
+final readonly class BackendConfigurationManager
 {
-    /**
-     * Storage of the raw TypoScript configuration
-     */
-    protected array $configuration = [];
-
-    /**
-     * Name of the extension this Configuration Manager instance belongs to
-     */
-    protected ?string $extensionName = null;
-
-    /**
-     * Name of the plugin this Configuration Manager instance belongs to
-     */
-    protected ?string $pluginName = null;
-
-    /**
-     * Stores the current page ID
-     */
-    protected ?int $currentPageId = null;
-
-    /**
-     * @todo: In CLI context, BE configuration manager might be triggered without request.
-     *        See comment on this in ConfigurationManager.
-     */
-    private ?ServerRequestInterface $request = null;
-
     public function __construct(
-        private readonly TypoScriptService $typoScriptService,
+        private TypoScriptService $typoScriptService,
         #[Autowire(service: 'cache.typoscript')]
-        private readonly PhpFrontend $typoScriptCache,
+        private PhpFrontend $typoScriptCache,
         #[Autowire(service: 'cache.runtime')]
-        private readonly FrontendInterface $runtimeCache,
-        private readonly SysTemplateRepository $sysTemplateRepository,
-        private readonly SiteFinder $siteFinder,
-        private readonly FrontendTypoScriptFactory $frontendTypoScriptFactory,
+        private FrontendInterface $runtimeCache,
+        private SysTemplateRepository $sysTemplateRepository,
+        private SiteFinder $siteFinder,
+        private FrontendTypoScriptFactory $frontendTypoScriptFactory,
+        private ConnectionPool $connectionPool,
     ) {}
-
-    public function setRequest(ServerRequestInterface $request): void
-    {
-        $this->request = $request;
-    }
-
-    /**
-     * Sets the specified raw configuration coming from the outside.
-     * Note that this is a low level method and only makes sense to be used by Extbase internally.
-     *
-     * @param array $configuration The new configuration
-     */
-    public function setConfiguration(array $configuration = []): void
-    {
-        $this->extensionName = $configuration['extensionName'] ?? null;
-        $this->pluginName = $configuration['pluginName'] ?? null;
-        $this->configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
-    }
 
     /**
      * Loads the Extbase Framework configuration.
@@ -131,23 +85,29 @@ class BackendConfigurationManager implements SingletonInterface
      * The Extbase framework configuration HAS TO be retrieved using this method, as they are come from different places than the normal settings.
      * Framework configuration is, in contrast to normal settings, needed for the Extbase framework to operate correctly.
      *
+     * @param array $configuration low level configuration from outside, typically ContentObjectRenderer TypoScript element config
      * @param string|null $extensionName if specified, the configuration for the given extension will be returned (plugin.tx_extensionname)
      * @param string|null $pluginName if specified, the configuration for the given plugin will be returned (plugin.tx_extensionname_pluginname)
      * @return array the Extbase framework configuration
      */
-    public function getConfiguration(?string $extensionName = null, ?string $pluginName = null): array
+    public function getConfiguration(ServerRequestInterface $request, array $configuration, ?string $extensionName = null, ?string $pluginName = null): array
     {
-        $frameworkConfiguration = $this->getExtbaseConfiguration();
+        $extensionNameFromConfig = $configuration['extensionName'] ?? null;
+        $pluginNameFromConfig = $configuration['pluginName'] ?? null;
+        $configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
+
+        $frameworkConfiguration = $this->getExtbaseConfiguration($request);
         if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
-            $frameworkConfiguration['persistence']['storagePid'] = $this->getCurrentPageId();
+            $currentPageId = $this->getCachedCurrentPageId($request);
+            $frameworkConfiguration['persistence']['storagePid'] = $currentPageId;
         }
-        // only merge $this->configuration and override controller configuration when retrieving configuration of the current plugin
-        if ($extensionName === null || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
-            $pluginConfiguration = $this->getPluginConfiguration((string)$this->extensionName, (string)$this->pluginName);
-            ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $this->configuration);
+        // only merge $configuration and override controller configuration when retrieving configuration of the current plugin
+        if ($extensionName === null || $extensionName === $extensionNameFromConfig && $pluginName === $pluginNameFromConfig) {
+            $pluginConfiguration = $this->getPluginConfiguration($request, (string)$extensionNameFromConfig, (string)$pluginNameFromConfig);
+            ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $configuration);
             $pluginConfiguration['controllerConfiguration'] = [];
         } else {
-            $pluginConfiguration = $this->getPluginConfiguration((string)$extensionName, (string)$pluginName);
+            $pluginConfiguration = $this->getPluginConfiguration($request, $extensionName, (string)$pluginName);
             $pluginConfiguration['controllerConfiguration'] = [];
         }
         ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, $pluginConfiguration);
@@ -158,8 +118,8 @@ class BackendConfigurationManager implements SingletonInterface
                 // stdWrap. We then convert the configuration to normal TypoScript
                 // and apply the stdWrap to the storagePid
                 // Use makeInstance here since extbase Bootstrap always setContentObject(null) in Backend, no need to call getContentObject().
-                FrontendSimulatorUtility::simulateFrontendEnvironment(GeneralUtility::makeInstance(ContentObjectRenderer::class));
                 $conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
+                FrontendSimulatorUtility::simulateFrontendEnvironment(GeneralUtility::makeInstance(ContentObjectRenderer::class));
                 $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrapValue('storagePid', $conf);
                 FrontendSimulatorUtility::resetFrontendEnvironment();
             }
@@ -180,18 +140,18 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @return array the raw TypoScript setup
      */
-    public function getTypoScriptSetup(): array
+    public function getTypoScriptSetup(ServerRequestInterface $request): array
     {
-        $pageId = $this->getCurrentPageId();
+        $currentPageId = $this->getCachedCurrentPageId($request);
 
-        $cacheIdentifier = 'extbase-backend-typoscript-pageId-' . $pageId;
+        $cacheIdentifier = 'extbase-backend-typoscript-pageId-' . $currentPageId;
         $setupArray = $this->runtimeCache->get($cacheIdentifier);
         if (is_array($setupArray)) {
             return $setupArray;
         }
 
-        $site = $this->request?->getAttribute('site');
-        if (($site === null || $site instanceof NullSite) && $pageId > 0) {
+        $site = $request->getAttribute('site');
+        if (($site === null || $site instanceof NullSite) && $currentPageId > 0) {
             // Due to the weird magic of getting the pid of the first root template when
             // not having a pageId (extbase BE modules without page tree / no page selected),
             // we also have no proper site in this case.
@@ -199,7 +159,7 @@ class BackendConfigurationManager implements SingletonInterface
             // first TS page are turned into constants and can be used in setup and setup
             // conditions.
             try {
-                $site = $this->siteFinder->getSiteByPageId($pageId);
+                $site = $this->siteFinder->getSiteByPageId($currentPageId);
             } catch (SiteNotFoundException) {
                 // Keep null / NullSite when no site could be determined for whatever reason.
             }
@@ -228,9 +188,9 @@ class BackendConfigurationManager implements SingletonInterface
             'endtime' => 0,
             'sorting' => 0,
         ];
-        if ($pageId > 0) {
-            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
-            $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $this->request);
+        if ($currentPageId > 0) {
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $currentPageId)->get();
+            $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
             ksort($rootLine);
         }
         if (empty($sysTemplateRows)) {
@@ -240,8 +200,8 @@ class BackendConfigurationManager implements SingletonInterface
         }
 
         $expressionMatcherVariables = [
-            'request' => $this->request,
-            'pageId' => $pageId,
+            'request' => $request,
+            'pageId' => $currentPageId,
             'page' => !empty($rootLine) ? $rootLine[array_key_first($rootLine)] : [],
             'fullRootLine' => $rootLine,
             'site' => $site,
@@ -257,9 +217,9 @@ class BackendConfigurationManager implements SingletonInterface
     /**
      * Returns the TypoScript configuration found in config.tx_extbase
      */
-    protected function getExtbaseConfiguration(): array
+    private function getExtbaseConfiguration(ServerRequestInterface $request): array
     {
-        $setup = $this->getTypoScriptSetup();
+        $setup = $this->getTypoScriptSetup($request);
         $extbaseConfiguration = [];
         if (isset($setup['config.']['tx_extbase.'])) {
             $extbaseConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['config.']['tx_extbase.']);
@@ -273,9 +233,9 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @param string|null $pluginName in BE mode this is actually the module signature. But we're using it just like the plugin name in FE
      */
-    protected function getPluginConfiguration(string $extensionName, ?string $pluginName = null): array
+    private function getPluginConfiguration(ServerRequestInterface $request, string $extensionName, ?string $pluginName = null): array
     {
-        $setup = $this->getTypoScriptSetup();
+        $setup = $this->getTypoScriptSetup($request);
         $pluginConfiguration = [];
         if (is_array($setup['module.']['tx_' . strtolower($extensionName) . '.'] ?? false)) {
             $pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . strtolower($extensionName) . '.']);
@@ -290,6 +250,16 @@ class BackendConfigurationManager implements SingletonInterface
         return $pluginConfiguration;
     }
 
+    private function getCachedCurrentPageId(ServerRequestInterface $request): int
+    {
+        $currentPageId = $this->runtimeCache->get('extbase-backend-typoscript-currentPageId');
+        if (!is_int($currentPageId)) {
+            $currentPageId = $this->getCurrentPageId($request);
+            $this->runtimeCache->set('extbase-backend-typoscript-currentPageId', $currentPageId);
+        }
+        return $currentPageId;
+    }
+
     /**
      * The full madness to guess a page id:
      * - First try to get one from the request, accessing POST / GET 'id'
@@ -299,16 +269,12 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @return int current page id. If no page is selected current root page id is returned
      */
-    protected function getCurrentPageId(): int
+    private function getCurrentPageId(ServerRequestInterface $request): int
     {
-        if ($this->currentPageId !== null) {
-            return $this->currentPageId;
-        }
-        $this->currentPageId = $this->getCurrentPageIdFromRequest();
-        $this->currentPageId = $this->currentPageId ?: $this->getCurrentPageIdFromCurrentSiteRoot();
-        $this->currentPageId = $this->currentPageId ?: $this->getCurrentPageIdFromRootTemplate();
-        $this->currentPageId = $this->currentPageId ?: 0;
-        return $this->currentPageId;
+        $currentPageId = $this->getCurrentPageIdFromRequest($request);
+        $currentPageId = $currentPageId ?: $this->getCurrentPageIdFromCurrentSiteRoot();
+        $currentPageId = $currentPageId ?: $this->getCurrentPageIdFromRootTemplate();
+        return $currentPageId ?: 0;
     }
 
     /**
@@ -316,14 +282,14 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @return int the page UID, will be 0 if none has been set
      */
-    protected function getCurrentPageIdFromRequest(): int
+    private function getCurrentPageIdFromRequest(ServerRequestInterface $request): int
     {
         // @todo: This misuses 'id' as a broken convention for pages-uid. The filelist module for instance
         //        uses 'id' as "storage-uid:path", which is only mitigated here by testing the argument
         //        with MU:canBeInterpretedAsInteger().
         //        This is in-line with a similar misuse in BackendModuleValidator.
         $id = 0;
-        $potentialId = $this->request?->getParsedBody()['id'] ?? $this->request?->getQueryParams()['id'] ?? 0;
+        $potentialId = $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0;
         if (MathUtility::canBeInterpretedAsInteger($potentialId) && $potentialId > 0) {
             $id = (int)$potentialId;
         }
@@ -335,9 +301,9 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @return int the page UID, will be 0 if none has been set
      */
-    protected function getCurrentPageIdFromCurrentSiteRoot(): int
+    private function getCurrentPageIdFromCurrentSiteRoot(): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
@@ -366,9 +332,9 @@ class BackendConfigurationManager implements SingletonInterface
      *
      * @return int the page UID, will be 0 if none has been set
      */
-    protected function getCurrentPageIdFromRootTemplate(): int
+    private function getCurrentPageIdFromRootTemplate(): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
@@ -395,7 +361,7 @@ class BackendConfigurationManager implements SingletonInterface
      * @param int $recursionDepth Maximum number of levels to search, 0 to disable recursive lookup
      * @return int[] Uid list including the start $storagePids
      */
-    protected function getRecursiveStoragePids(array $storagePids, int $recursionDepth = 0): array
+    private function getRecursiveStoragePids(array $storagePids, int $recursionDepth = 0): array
     {
         if ($recursionDepth <= 0) {
             return $storagePids;
@@ -421,11 +387,11 @@ class BackendConfigurationManager implements SingletonInterface
      * @param int $pid uid of the page
      * @return int[] List of child row $uid's
      */
-    protected function getPageChildrenRecursive(int $pid, int $depth, int $begin, string $permsClause): array
+    private function getPageChildrenRecursive(int $pid, int $depth, int $begin, string $permsClause): array
     {
         $children = [];
         if ($pid && $depth > 0) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $statement = $queryBuilder->select('uid')
                 ->from('pages')
@@ -449,7 +415,7 @@ class BackendConfigurationManager implements SingletonInterface
         return $children;
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

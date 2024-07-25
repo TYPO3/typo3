@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager as ExtbaseConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ExtensionNameRequiredException;
 
 /**
@@ -32,7 +34,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\ExtensionNameRequiredException;
  * Scope: frontend / backend
  * @internal
  */
-class ConfigurationManager extends ExtbaseConfigurationManager implements ConfigurationManagerInterface
+class ConfigurationManager extends ExtbaseConfigurationManager implements ExtFormConfigurationManagerInterface
 {
     /**
      * @var FrontendInterface
@@ -148,7 +150,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
 
     protected function getConfigurationCacheKey(string $cacheKeySuffix): string
     {
-        return strtolower(self::CONFIGURATION_TYPE_YAML_SETTINGS . '_' . $cacheKeySuffix);
+        return strtolower(ExtFormConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS . '_' . $cacheKeySuffix);
     }
 
     /**
@@ -161,23 +163,18 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
         );
     }
 
-    protected function setYamlSettingsIntoCache(
-        string $cacheKeySuffix,
-        array $yamlSettings
-    ) {
+    protected function setYamlSettingsIntoCache(string $cacheKeySuffix, array $yamlSettings): void
+    {
         $this->getCacheFrontend()->set(
             $this->getConfigurationCacheKey($cacheKeySuffix),
             $yamlSettings
         );
     }
 
-    /**
-     * @return array
-     */
-    protected function getTypoScriptSettings(string $extensionName)
+    protected function getTypoScriptSettings(string $extensionName): array
     {
         return parent::getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+            ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
             $extensionName
         );
     }

@@ -41,17 +41,11 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            Configuration\ConfigurationManager::class => self::getConfigurationManager(...),
             Reflection\ReflectionService::class => self::getReflectionService(...),
             Service\ExtensionService::class => self::getExtensionService(...),
             Service\ImageService::class => self::getImageService(...),
             Security\Cryptography\HashService::class => self::getHashService(...),
         ];
-    }
-
-    public static function getConfigurationManager(ContainerInterface $container): Configuration\ConfigurationManager
-    {
-        return self::new($container, Configuration\ConfigurationManager::class, [$container]);
     }
 
     public static function getReflectionService(ContainerInterface $container): Reflection\ReflectionService

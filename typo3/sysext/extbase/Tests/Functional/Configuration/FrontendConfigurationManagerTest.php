@@ -58,7 +58,6 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
 
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($typoScript);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
 
         /** @var Container $container */
         $container = $this->get('service_container');
@@ -78,11 +77,9 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $frontendConfigurationManager = $this->get(FrontendConfigurationManager::class);
-        $frontendConfigurationManager->setRequest($request);
-        $frontendConfigurationManager->setConfiguration(['extensionName' => 'foo']);
-
-        self::assertSame('from eventlistener', $frontendConfigurationManager->getConfiguration('foo')['settings']['foo']);
+        $configuration = ['extensionName' => 'foo'];
+        $subject = $this->get(FrontendConfigurationManager::class);
+        self::assertSame('from eventlistener', $subject->getConfiguration($request, $configuration, 'foo')['settings']['foo']);
     }
 
     public static function overrideConfigurationFromFlexFormSettingsDataProvider(): iterable
@@ -359,10 +356,8 @@ final class FrontendConfigurationManagerTest extends FunctionalTestCase
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($typoScript);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $frontendConfigurationManager = $this->get(FrontendConfigurationManager::class);
-        $frontendConfigurationManager->setRequest($request);
-        $frontendConfigurationManager->setConfiguration(['extensionName' => 'foo', 'pluginName' => 'foo']);
-
-        self::assertSame($expected, $frontendConfigurationManager->getConfiguration('foo', 'foo')['settings']);
+        $configuration = ['extensionName' => 'foo', 'pluginName' => 'foo'];
+        $subject = $this->get(FrontendConfigurationManager::class);
+        self::assertSame($expected, $subject->getConfiguration($request, $configuration, 'foo', 'foo')['settings']);
     }
 }

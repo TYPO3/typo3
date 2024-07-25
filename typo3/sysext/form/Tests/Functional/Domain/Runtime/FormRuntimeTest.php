@@ -114,6 +114,9 @@ final class FormRuntimeTest extends FunctionalTestCase
     private function loadDefaultYamlConfigurations(): void
     {
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
         $configurationManager->setConfiguration([
             'plugin.' => [
                 'tx_form.' => [

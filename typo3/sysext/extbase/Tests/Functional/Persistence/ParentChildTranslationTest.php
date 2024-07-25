@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\ParentChildTranslation\Domain\Repository\MainRepository;
 
@@ -26,16 +29,15 @@ final class ParentChildTranslationTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/parent_child_translation'];
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/parentChildTranslationExampleData.csv');
-    }
-
     #[Test]
     public function localizeChildrenOfAllLanguageElementToDefaultLanguage(): void
     {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/parentChildTranslationExampleData.csv');
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
         $query = $this->get(MainRepository::class)->createQuery();
         $results = $query->execute();
 
@@ -61,6 +63,12 @@ final class ParentChildTranslationTest extends FunctionalTestCase
     #[Test]
     public function localizesChildrenOfAllLanguageElementToTranslation(): void
     {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/parentChildTranslationExampleData.csv');
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ConfigurationManagerInterface::class)->setRequest(
+            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+
         $query = $this->get(MainRepository::class)->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setStoragePageIds([1]);
