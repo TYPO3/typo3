@@ -31,3 +31,5 @@ parameters:
     # contains broken syntax for testing-purpose, which cannot be disabled directly
     - ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyControllerWithIgnoreValidationDoctrineAnnotation.php
 
+  featureToggles:
+    nodeConnectingVisitorCompatibility: false
