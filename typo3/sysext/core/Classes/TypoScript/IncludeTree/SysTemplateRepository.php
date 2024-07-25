@@ -36,12 +36,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal: Internal structure. There is optimization potential and especially getSysTemplateRowsByRootline() will probably vanish later.
  */
 #[Autoconfigure(public: true)]
-final class SysTemplateRepository
+final readonly class SysTemplateRepository
 {
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ConnectionPool $connectionPool,
-        private readonly Context $context,
+        private EventDispatcherInterface $eventDispatcher,
+        private ConnectionPool $connectionPool,
+        private Context $context,
     ) {}
 
     /**
