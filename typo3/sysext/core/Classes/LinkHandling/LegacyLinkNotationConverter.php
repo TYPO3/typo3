@@ -189,7 +189,8 @@ class LegacyLinkNotationConverter
             $data = explode('/', trim($data, '/'));
             $result['pageuid'] = array_shift($data);
             foreach ($data as $k => $item) {
-                if ($data[$k] % 2 === 0 && !empty($data[$k + 1])) {
+                if ((int)$data[$k] % 2 === 0 && !empty($data[$k + 1])) {
+                    // @todo: revisit. Looks fishy and has no coverage?
                     $result['page' . $data[$k]] = $data[$k + 1];
                 }
             }
