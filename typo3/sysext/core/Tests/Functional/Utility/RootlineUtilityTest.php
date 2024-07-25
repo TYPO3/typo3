@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -89,7 +90,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
     {
         $subject = new RootlineUtility(1, '', new Context());
         $subjectMethodReflection = (new \ReflectionMethod($subject, 'isMountedPage'));
-        self::assertFalse($subjectMethodReflection->invoke($subject));
+        self::assertFalse($subjectMethodReflection->invoke($subject, 1));
     }
 
     #[Test]
@@ -97,7 +98,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
     {
         $subject = new RootlineUtility(1, '1-99', new Context());
         $subjectMethodReflection = (new \ReflectionMethod($subject, 'isMountedPage'));
-        self::assertTrue($subjectMethodReflection->invoke($subject));
+        self::assertTrue($subjectMethodReflection->invoke($subject, 1));
     }
 
     #[Test]
@@ -105,7 +106,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
     {
         $subject = new RootlineUtility(1, '99-99', new Context());
         $subjectMethodReflection = (new \ReflectionMethod($subject, 'isMountedPage'));
-        self::assertFalse($subjectMethodReflection->invoke($subject));
+        self::assertFalse($subjectMethodReflection->invoke($subject, 1));
     }
 
     #[Test]
@@ -373,7 +374,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
     public function rootlineFailsForDeletedParentPageInWorkspace(): void
     {
         $this->expectException(PageNotFoundException::class);
-        $this->expectExceptionCode(1343464101);
+        $this->expectExceptionCode(1721913589);
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(1));
         (new RootlineUtility(1002, '', $context))->get();
@@ -1547,5 +1548,26 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context->setAspect('visibility', new VisibilityAspect(false, false, false, $includeScheduledRecords));
         $result = (new RootlineUtility($uid, '', $context))->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
+    }
+
+    #[Test]
+    public function rootlineFailsForCyclingRootlineProducedByInvalidConnectionsInLiveWorkspace(): void
+    {
+        // Note that this test indicates/simulates a corrupted database
+        $this->expectException(CircularRootLineException::class);
+        $this->expectExceptionCode(1343464103);
+        $context = new Context();
+        (new RootlineUtility(7020, '', $context))->get();
+    }
+
+    #[Test]
+    public function rootlineFailsForWorkspaceOverlayCyclingRootlineProducedByInvalidConnections(): void
+    {
+        // Note that this test indicates/simulates a corrupted database
+        $this->expectException(CircularRootLineException::class);
+        $this->expectExceptionCode(1343464103);
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(2));
+        (new RootlineUtility(8020, '', $context))->get();
     }
 }

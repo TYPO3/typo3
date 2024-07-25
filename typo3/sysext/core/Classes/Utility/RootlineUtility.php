@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Utility;
 
+use Doctrine\DBAL\Exception as DoctrineException;
+use Doctrine\DBAL\Platforms\TrimMode;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
@@ -37,6 +39,10 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class RootlineUtility
 {
+    // Note that having a nesting depth of 100 is quite high, but defined to be more on a "safe" side here. Main goal
+    // is to mitigate unforeseen recursion which are not covered by the anchestor guard (checking page uid in path).
+    private const MAX_CTE_TRAVERSAL_LEVELS = 100;
+
     /** @internal */
     public const RUNTIME_CACHE_TAG = 'rootline-utility';
 
@@ -83,6 +89,11 @@ class RootlineUtility
 
     /**
      * Returns the actual rootline without the tree root (uid=0), including the page with $this->pageUid
+     *
+     * @throws BrokenRootLineException
+     * @throws CircularRootLineException
+     * @throws PageNotFoundException
+     * @throws DoctrineException
      */
     public function get(): array
     {
@@ -403,57 +414,63 @@ class RootlineUtility
     /**
      * Actual function to generate the rootline and cache it
      *
+     * @throws BrokenRootLineException
      * @throws CircularRootLineException
+     * @throws PageNotFoundException
+     * @throws DoctrineException
      */
     protected function generateRootlineCache(): void
     {
-        $page = $this->getRecordArray($this->pageUid);
-        // If the current page is a mounted (according to the MP parameter) handle the mount-point
-        if ($this->isMountedPage()) {
-            $mountPoint = $this->getRecordArray($this->parsedMountPointParameters[$this->pageUid]);
+        $pageId = $this->pageUid;
+        $page = $this->getRecordArray($pageId);
+        $parentPageId = $page['pid'];
+        $workspaceId = $this->workspaceUid;
+        if ($this->isMountedPage($pageId)) {
+            $page = $this->getRecordArray($pageId);
+            $mountPoint = $this->getRecordArray($this->parsedMountPointParameters[$pageId]);
             $page = $this->processMountedPage($page, $mountPoint);
-            $parentUid = $mountPoint['pid'];
-            // Anyhow after reaching the mount-point, we have to go up that rootline
-            unset($this->parsedMountPointParameters[$this->pageUid]);
-        } else {
-            $parentUid = $page['pid'];
+            $parentPageId = $page['pid'];
         }
-        $cacheTags = ['pageId_' . $page['uid']];
-        if ($parentUid > 0) {
-            // Get rootline of (and including) parent page
-            $mountPointParameter = !empty($this->parsedMountPointParameters) ? $this->mountPointParameter : '';
-            $rootlineUtility = GeneralUtility::makeInstance(self::class, $parentUid, $mountPointParameter, $this->context);
-            $rootline = $rootlineUtility->get();
-            // retrieve cache tags of parent rootline
-            foreach ($rootline as $entry) {
-                $cacheTags[] = 'pageId_' . $entry['uid'];
-                if ($entry['uid'] == $this->pageUid) {
-                    // @todo: Bug. This detection is broken since it happens *after* the child ->get() call, and thus
-                    //        triggers infinite recursion already. To fix this, the child needs to know the list of
-                    //        resolved children to except on duplicate *before* going up itself. Cover this case with
-                    //        a functional test when fixing.
-                    throw new CircularRootLineException(
-                        'Circular connection in rootline for page with uid ' . $this->pageUid . ' found. Check your mountpoint configuration.',
-                        1343464103
-                    );
-                }
-            }
-        } else {
+        $rootline = $this->getRootlineFromRuntimeCache($parentPageId);
+        if (!is_array($rootline)) {
+            $rootline = $this->getRootlineRecords($parentPageId, $workspaceId);
+        }
+        if (!is_array($rootline)) {
             $rootline = [];
         }
         $rootline[] = $page;
+        $firstEntry = reset($rootline);
+        // ensure valid rootline down to virtual tree root
+        if (is_array($firstEntry) && $firstEntry['pid'] !== 0) {
+            throw new PageNotFoundException('Broken rootline. Could not resolve full rootline for uid ' . $pageId . '.', 1721913589);
+        }
+        $cacheTags = [];
+        foreach ($rootline as $entry) {
+            $cacheTags[] = 'pageId_' . $entry['uid'];
+        }
         krsort($rootline);
         $this->cache->set($this->cacheIdentifier, $rootline, $cacheTags);
         $this->runtimeCache->set('rootline-localcache-' . $this->cacheIdentifier, $rootline, [self::RUNTIME_CACHE_TAG]);
+
+        // Reduce rootline page by page and set to runtime cache to eliminate the need to fetch rootline for a parent
+        // page as a performance optimization when a children already generated the rootline.
+        while ($rootline !== []) {
+            // Behaves similar to array_shift(), but preserves the array keys.
+            $rootline = array_slice($rootline, 1, null, true);
+            if ($rootline !== []) {
+                $cacheIdentifier = $this->getCacheIdentifier($rootline[array_key_first($rootline)]['uid']);
+                $this->runtimeCache->set('rootline-localcache-' . $cacheIdentifier, $rootline, [self::RUNTIME_CACHE_TAG]);
+            }
+        }
     }
 
     /**
      * Checks whether the current Page is a Mounted Page
      * (according to the MP-URL-Parameter)
      */
-    protected function isMountedPage(): bool
+    protected function isMountedPage(int $pageId): bool
     {
-        return array_key_exists($this->pageUid, $this->parsedMountPointParameters);
+        return array_key_exists($pageId, $this->parsedMountPointParameters);
     }
 
     /**
@@ -601,6 +618,605 @@ class RootlineUtility
     }
 
     /**
+     * Get enriched RootLine page records.
+     *
+     * This method uses a recursive common-table-expression (CTE) doing the first workspace overlay handling withing the
+     * RootLine traversal. Language overlay and record enrichment (references data) are applied on retrieved records.
+     *
+     * In case a received record is a mounted page, a new instance of `RootlineUtility` is created to retrieve the
+     * mounted page rootline and result spliced together.
+     *
+     * In case only live-workspace rootline is required, for example in normal frontend visitors without backend login
+     * and selected workspaces, the created CTE is simplified avoiding irrelevant joins and further improve performance
+     * in that case.
+     *
+     * Note that the created recursive CTE contains two guards against cycling rootline issues:
+     *
+     * Guard 1 - ancestor path guard:
+     * ------------------------------
+     *
+     * During the recursing a uid path is created (`__CTE_PATH__`) and in case that a page is already contained in the
+     * parent record `__CTE_PATH__` the flag field `__CTE_IS_CYCLE__` is set to 1, otherwise it is 0.
+     *
+     * If the parent record `__CTE_IS_CYLCE__` is `1` no records are retrieved which retrieves a duplicate page record
+     * except of this flag. During the record retrieval {@see CircularRootLineException} is thrown to abort and state
+     * this crucial data corruption.
+     *
+     * This guard is designed to abort cycling recursion on the database side as early as possible while still transport
+     * the cycling issue information to this method.
+     *
+     * Guard 2 - max recursion level guard:
+     * ------------------------------------
+     *
+     * During the recursive CTE handling recursion level info is created (`__CTE_LEVEL__`) and used as a hard recursion
+     * limit fence. That means, if the level reaches {@see self::MAX_CTE_TRAVERSAL_LEVELS} no more page records are
+     * received. In the case that neither GUARD 1, nor PID=0 abort criteria is reached and max level hit a meaningful
+     * {@see BrokenRootLineException} exception is thrown.
+     *
+     * Note that further improvements are possible, for example adding language overlay handling directly to the CTE
+     * when strategy how to deal with the three dispatched PSR-14 events in PageRepository has been made up.
+     *
+     * @todo As already mentioned above, mountpoint pages are resolved by calling a new `RootlineUtility` instance
+     *       which prevents the detection of circular mountpoint configuration like in the prior implementation. A
+     *       way to add mountpoint page replacements within the CTE needs to be evaluated and implemented to make a
+     *       circular mountpoint configuration finally detectable. At least first cycling rootline revealing database
+     *       data corruption are now included.
+     *
+     * @throws BrokenRootLineException
+     * @throws CircularRootLineException
+     * @throws DoctrineException
+     */
+    protected function getRootlineRecords(int $pageId, int $workspaceId): array
+    {
+        if ($pageId === 0) {
+            return [];
+        }
+        $cte = $this->createQueryBuilder('pages');
+        $cte->getRestrictions()->removeAll();
+        $expr = $cte->expr();
+        $pagesFields = $this->getPagesFields();
+        $resolvedPagesFields = array_filter($pagesFields, static fn($value) => $value !== 'uid');
+        array_walk(
+            $resolvedPagesFields,
+            static function (string &$value, int|string $key, string $prefixAlias) {
+                $value = sprintf('%s.%s', $prefixAlias, $value);
+            },
+            'finalpages',
+        );
+        $cte
+            ->typo3_withRecursive(
+                'cte',
+                // Unique rows is omitted to avoid superfluous distinct row determination by the database query executor
+                // due to having level based data in the traversal part they would be distinct anyway. Duplicates are
+                // sorted out by the implemented ancestor guard - see self::createTraversalQueryBuilder().
+                false,
+                $this->createInitialQueryBuilder($cte, $pageId, $workspaceId),
+                $this->createTraversalQueryBuilder($cte, $workspaceId),
+                [
+                    // data fields
+                    $cte->quoteIdentifier('uid'),
+                    $cte->quoteIdentifier('pid'),
+                    // workspace handling values
+                    $cte->quoteIdentifier('_ORIG_pid'),
+                    $cte->quoteIdentifier('_ORIG_uid'),
+                    // recursive handling fields
+                    $cte->quoteIdentifier('__CTE_JOIN_UID__'),
+                    $cte->quoteIdentifier('__CTE_LEVEL__'),
+                    $cte->quoteIdentifier('__CTE_PATH__'),
+                    $cte->quoteIdentifier('__CTE_IS_CYCLE__'),
+                ],
+            )
+            ->select(...array_values([
+                'cte.uid',
+                ...array_values($resolvedPagesFields),
+                'cte._ORIG_uid',
+                'cte._ORIG_pid',
+                // Cycle detection guard implemented manually due to the fact that CTE cycle is not implemented by
+                // all supported Database vendors at all or not following the SQL standard. The guard stops cycling
+                // rootline early to avoid use-less cycle retrieval until __CTE_LEVEL__ reaches maximal hard level.
+                // Note that these values are removed from result rows by `self::cleanWorkspaceResolvedPageRecord()`
+                'cte.__CTE_PATH__',
+                'cte.__CTE_IS_CYCLE__',
+                'cte.__CTE_LEVEL__',
+            ]))
+            ->from('cte')
+            ->orderBy('cte.__CTE_LEVEL__', 'DESC')
+            ->addOrderBy('cte.uid', 'ASC')
+            ->innerJoin(
+                'cte',
+                'pages',
+                'finalpages',
+                $expr->eq('finalpages.uid', $cte->quoteIdentifier('cte.__CTE_JOIN_UID__'))
+            );
+        $records = [];
+        $result = $cte->executeQuery();
+        while ($record = $result->fetchAssociative()) {
+            $cyclingDetected = (bool)($record['__CTE_IS_CYCLE__'] ?? false);
+            $recordLevel = (int)($record['__CTE_LEVEL__'] ?? 0);
+            $recordId = (int)$record['uid'];
+            $recordPid = (int)$record['pid'];
+            $recordCacheIdentifier = $this->getCacheIdentifier($recordId);
+            $record = $this->cleanWorkspaceResolvedPageRecord($record);
+            if ($cyclingDetected) {
+                // Cycling page records found by CTE path guard.
+                // @todo CTE does not handle mountpoint page resolving yet and calling RootlineUtility in recursive
+                //       manner below not detecting cycling mountpoint configurations yet. CTE **must* be improved to
+                //       handle mountpoint replacements directly and ensure cycling detection finally works - which has
+                //       never been the case.
+                throw new CircularRootLineException(
+                    'Circular connection in rootline for page with uid ' . $this->pageUid . ' found. '
+                    . 'Check your mountpoint configuration and page data with pid value pointing to a sub page.',
+                    1343464103
+                );
+            }
+            // Throw a concrete BrokenRootLineException with explaining message in case maximal CTE traversal limit has
+            // been reached without ending on PID 0 - the virtual tree root node.
+            // @todo Find a way to test this case which is not that easy because of the MAX_CTE_TRAVERSAL_LEVEL.
+            if ($recordLevel >= self::MAX_CTE_TRAVERSAL_LEVELS && $recordPid !== 0) {
+                throw new BrokenRootLineException(
+                    sprintf(
+                        'Broken rootline. Could not resolve full rootline for uid %s. '
+                        . 'Reached max traversal level %s without ending on pid 0.',
+                        $pageId,
+                        self::MAX_CTE_TRAVERSAL_LEVELS,
+                    ),
+                    1722118090,
+                );
+            }
+            if ($this->isMountedPage($recordId)) {
+                // free result, because we will not iterator further through it and instead invoke RootlineUtility.
+                $result->free();
+                // @todo Find a way to implement mountpoint resolving directly in the CTE to remove calling and splicing
+                //       recursive RootlineUtility call results and handle everything in one database query.
+                // Get rootline of (and including) parent page
+                $mountPointParameter = !empty($this->parsedMountPointParameters) ? $this->mountPointParameter : '';
+                $rootlineUtility = GeneralUtility::makeInstance(self::class, $recordId, $mountPointParameter, $this->context);
+                $rootline = $rootlineUtility->get();
+                // Reverse sub-rootline again to process entries in correct order.
+                ksort($rootline);
+                foreach ($rootline as $rootlineRecord) {
+                    $records[] = $rootlineRecord;
+                }
+                break;
+            }
+            if (!$this->runtimeCache->has('rootline-recordcache-' . $recordCacheIdentifier)) {
+                $record = $this->enrichPageRecordArray($record, $recordId);
+                $this->runtimeCache->set('rootline-recordcache-' . $recordCacheIdentifier, $record, [self::RUNTIME_CACHE_TAG]);
+            }
+            $record = $this->runtimeCache->get('rootline-recordcache-' . $recordCacheIdentifier);
+            if (!is_array($record)) {
+                throw new PageNotFoundException('Broken rootline. Could not resolve page with uid ' . $recordId . '.', 1721982337);
+            }
+            $records[] = $record;
+
+        }
+        return $records;
+    }
+
+    /**
+     * Creates the QueryBuilder for the recursive CTE initial part within {@see self::getRootlineRecords()}.
+     *
+     * Not to be used standalone. {@see self::getRootlineRecords()} method docblock for overall CTE information.
+     */
+    protected function createInitialQueryBuilder(QueryBuilder $cte, int $pageId, int $workspaceId): QueryBuilder
+    {
+        $expr = $cte->expr();
+        $initial = $this->createQueryBuilder('pages');
+        $initial->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        if ($workspaceId <= 0) {
+            // Return simplified initial expression for live workspace resolving only.
+            return $initial
+                ->selectLiteral(...array_values([
+                    // data fields
+                    $cte->quoteIdentifier('uid'),
+                    $cte->quoteIdentifier('pid'),
+                    // adding fake columns to be compatible with workspace aware columns
+                    $expr->as('null', '_ORIG_pid'),
+                    $expr->as('null', '_ORIG_uid'),
+                    // recursive handling fields
+                    $expr->as($cte->quoteIdentifier('uid'), '__CTE_JOIN_UID__'),
+                    $expr->castInt('1', '__CTE_LEVEL__'),
+                    // Cycle detection guard implemented manually due to the fact that CTE cycle is not implemented by
+                    // all supported Database vendors at all or not following the SQL standard. The guard stops cycling
+                    // rootline early to avoid use-less cycle retrieval until __CTE_LEVEL__ reaches maximal hard level.
+                    $expr->castText($cte->quoteIdentifier('uid'), '__CTE_PATH__'),
+                    // Because of Postgres we need to have this cte colum boolean type and thus needing a comparison here
+                    $expr->castInt('0 <> 0', '__CTE_IS_CYCLE__'),
+                ]))
+                ->from('pages')
+                ->where(...array_values([
+                    $expr->eq('uid', $cte->createNamedParameter($pageId, Connection::PARAM_INT)),
+                    // only select live workspace
+                    $expr->eq('t3ver_wsid', $cte->createNamedParameter(0, Connection::PARAM_INT)),
+                ]));
+        }
+
+        $initial
+            ->selectLiteral(...array_values([
+                // data fields
+                $cte->quoteIdentifier('live.uid'),
+                $cte->quoteIdentifier('workspace_resolved.pid'),
+                // workspace handling
+                // For move pointers, store the actual live PID in the _ORIG_pid
+                // The only place where PID is actually different in a workspace
+                $expr->if(
+                    $expr->and(
+                        $expr->isNotNull('workspace.t3ver_state'),
+                        $expr->eq(
+                            'workspace.t3ver_state',
+                            $cte->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT),
+                        ),
+                    ),
+                    $cte->quoteIdentifier('live.pid'),
+                    'null',
+                    '_ORIG_pid'
+                ),
+                // For versions of single elements or page+content, preserve online UID
+                // (this will produce true "overlay" of element _content_, not any references)
+                // For new versions there is no online counterpart
+                $expr->if(
+                    $expr->and(
+                        $expr->isNotNull('workspace.t3ver_state'),
+                        $expr->neq(
+                            'workspace.t3ver_state',
+                            $cte->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT),
+                        ),
+                    ),
+                    $cte->quoteIdentifier('workspace.uid'),
+                    'null',
+                    '_ORIG_uid',
+                ),
+                // recursive handling fields
+                $expr->if(
+                    $expr->and(
+                        $expr->isNotNull('workspace.t3ver_state'),
+                        $expr->neq(
+                            'workspace.t3ver_state',
+                            $cte->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT),
+                        ),
+                    ),
+                    $cte->quoteIdentifier('workspace_resolved.uid'),
+                    $cte->quoteIdentifier('live.uid'),
+                    '__CTE_JOIN_UID__',
+                ),
+                $expr->castInt('1', '__CTE_LEVEL__'),
+                // Cycle detection guard implemented manually due to the fact that CTE cycle is not implemented by
+                // all supported Database vendors at all or not following the SQL standard. The guard stops cycling
+                // rootline early to avoid use-less cycle retrieval until __CTE_LEVEL__ reaches maximal hard level.
+                $expr->castText($cte->quoteIdentifier('live.uid'), '__CTE_PATH__'),
+                // Because of Postgres we need to have this cte colum boolean type and thus needing a comparison here
+                $expr->castInt('0 <> 0', '__CTE_IS_CYCLE__'),
+            ]))
+            ->from('pages', 'source')
+            ->innerJoin(
+                'source',
+                'pages',
+                'live',
+                $expr->eq(
+                    'live.uid',
+                    $expr->if(
+                        $expr->and(
+                            $expr->gt('source.t3ver_oid', $cte->createNamedParameter(0, Connection::PARAM_INT)),
+                            $expr->eq('source.t3ver_state', $cte->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)),
+                        ),
+                        $cte->quoteIdentifier('source.t3ver_oid'),
+                        $cte->quoteIdentifier('source.uid'),
+                    )
+                ),
+            )
+            ->leftJoin(
+                'live',
+                'pages',
+                'workspace',
+                $expr->and(
+                    $expr->eq(
+                        'workspace.t3ver_wsid',
+                        $cte->createNamedParameter($workspaceId, Connection::PARAM_INT)
+                    ),
+                    $expr->or(
+                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                        $expr->and(
+                            $expr->eq(
+                                'workspace.uid',
+                                $cte->quoteIdentifier('live.uid'),
+                            ),
+                            $expr->eq(
+                                'workspace.t3ver_state',
+                                $cte->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT),
+                            ),
+                        ),
+                        $expr->eq(
+                            'workspace.t3ver_oid',
+                            $cte->quoteIdentifier('live.uid'),
+                        )
+                    )
+                ),
+            )
+            ->innerJoin(
+                'workspace',
+                'pages',
+                'workspace_resolved',
+                (string)$expr->and(
+                    $expr->eq(
+                        'workspace_resolved.uid',
+                        $expr->if(
+                            $expr->isNotNull('workspace.uid'),
+                            $cte->quoteIdentifier('workspace.uid'),
+                            $cte->quoteIdentifier('live.uid'),
+                        ),
+                    ),
+                ),
+            )
+            ->where(...array_values([
+                $expr->eq('source.uid', $cte->createNamedParameter($pageId, Connection::PARAM_INT)),
+                $expr->in('source.t3ver_wsid', $cte->createNamedParameter([0, $workspaceId], Connection::PARAM_INT_ARRAY)),
+                $expr->or(
+                    // retrieve live workspace if no overlays exists
+                    $expr->isNull('workspace.uid'),
+                    // discard(omit) record if it turned out to be deleted in workspace
+                    $expr->and(
+                        $expr->isNotNull('workspace.uid'),
+                        $expr->neq(
+                            'workspace.t3ver_state',
+                            $cte->createNamedParameter(VersionState::DELETE_PLACEHOLDER->value, Connection::PARAM_INT),
+                        ),
+                    ),
+                ),
+            ]));
+
+        return $initial;
+    }
+
+    /**
+     * Creates the QueryBuilder for the recursive CTE traversal part within {@see self::getRootlineRecords()}.
+     *
+     * Not to be used standalone. {@see self::getRootlineRecords()} method docblock for overall CTE information.
+     */
+    protected function createTraversalQueryBuilder(QueryBuilder $cte, int $workspaceId): QueryBuilder
+    {
+        $expr = $cte->expr();
+        $traversal = $this->createQueryBuilder('pages');
+        $traversal->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        if ($workspaceId <= 0) {
+            $traversal
+                ->selectLiteral(...array_values([
+                    // data fields
+                    $cte->quoteIdentifier('p.uid'),
+                    $cte->quoteIdentifier('p.pid'),
+                    // adding fake columns to be compatible with workspace aware columns
+                    $expr->as('null', '_ORIG_pid'),
+                    $expr->as('null', '_ORIG_uid'),
+                    // recursive handling fields
+                    $expr->as($cte->quoteIdentifier('p.uid'), '__CTE_JOIN_UID__'),
+                    $expr->castInt(sprintf('(%s + 1)', $expr->castInt($cte->quoteIdentifier('c.__CTE_LEVEL__'))), '__CTE_LEVEL__'),
+                    // Cycle detection guard implemented manually due to the fact that CTE cycle is not implemented by
+                    // all supported Database vendors at all or not following the SQL standard. The guard stops cycling
+                    // rootline early to avoid use-less cycle retrieval until __CTE_LEVEL__ reaches maximal hard level.
+                    $expr->castText(
+                        $expr->concat(
+                            $expr->trim('c.__CTE_PATH__', TrimMode::TRAILING, ' '),
+                            $cte->quote(','),
+                            $cte->quoteIdentifier('p.uid')
+                        ),
+                        '__CTE_PATH__'
+                    ),
+                    $expr->as(
+                        sprintf(
+                            '%s <> 0',
+                            $expr->castInt(sprintf(
+                                // Nesting is needed because inSet() creates a comparision expression return a boolean value
+                                '(%s)',
+                                $expr->inSet(
+                                    'c.__CTE_PATH__',
+                                    $cte->quoteIdentifier('p.uid'),
+                                    true,
+                                ),
+                            )),
+                        ),
+                        '__CTE_IS_CYCLE__'
+                    ),
+                ]))
+                ->from('cte', 'c')
+                ->innerJoin(
+                    'c',
+                    'pages',
+                    'p',
+                    (string)$expr->and(
+                        $expr->eq('p.uid', $cte->quoteIdentifier('c.pid')),
+                        // only select live workspace
+                        $expr->eq('p.t3ver_wsid', $cte->createNamedParameter(0, Connection::PARAM_INT)),
+                        // ensure that resolve page is not the child page
+                        $expr->neq('c.uid', $cte->quoteIdentifier('p.uid')),
+                    )
+                )
+                ->where(...array_values([
+                    // If last parent has been detected as start of a recursive cycle, stop here. Note that this is done to
+                    // keep the cycle detection value in the result set to allow proper handling later on retrieved rows.
+                    $expr->eq('c.__CTE_IS_CYCLE__', $cte->createNamedParameter(0, Connection::PARAM_INT)),
+                    // do not try to fetch page with uid 0, which is the virtual tree root point
+                    $expr->neq('c.pid', $cte->createNamedParameter(0, Connection::PARAM_INT)),
+                    // place a maximal traversal level guard against invalid cycling rootlines to mitigate endless recursion
+                    $expr->lt('c.__CTE_LEVEL__', $cte->createNamedParameter(self::MAX_CTE_TRAVERSAL_LEVELS, Connection::PARAM_INT)),
+                ]));
+
+            return $traversal;
+        }
+
+        $traversal
+            ->selectLiteral(...array_values([
+                // data fields
+                $cte->quoteIdentifier('traversal_live.uid'),
+                $cte->quoteIdentifier('traversal_workspace_resolved.pid'),
+                // workspace handling
+                // For move pointers, store the actual live PID in the _ORIG_pid
+                // The only place where PID is actually different in a workspace
+                $expr->if(
+                    $expr->and(
+                        $expr->isNotNull('traversal_workspace.t3ver_state'),
+                        $expr->eq(
+                            'traversal_workspace.t3ver_state',
+                            $cte->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT),
+                        ),
+                    ),
+                    $cte->quoteIdentifier('traversal_live.pid'),
+                    'null',
+                    '_ORIG_pid'
+                ),
+                // For versions of single elements or page+content, preserve online UID
+                // (this will produce true "overlay" of element _content_, not any references)
+                // For new versions there is no online counterpart
+                $expr->if(
+                    $expr->and(
+                        $expr->isNotNull('traversal_workspace.t3ver_state'),
+                        $expr->neq(
+                            'traversal_workspace.t3ver_state',
+                            $cte->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT),
+                        ),
+                    ),
+                    $cte->quoteIdentifier('traversal_workspace.uid'),
+                    'null',
+                    '_ORIG_uid',
+                ),
+                // recursive handling fields
+                $expr->if(
+                    $expr->and(
+                        $expr->isNotNull('traversal_workspace.t3ver_state'),
+                        $expr->neq(
+                            'traversal_workspace.t3ver_state',
+                            $cte->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT),
+                        ),
+                    ),
+                    $cte->quoteIdentifier('traversal_workspace_resolved.uid'),
+                    $cte->quoteIdentifier('traversal_live.uid'),
+                    '__CTE_JOIN_UID__',
+                ),
+                $expr->castInt(sprintf('(%s + 1)', $expr->castInt($cte->quoteIdentifier('traversal_c.__CTE_LEVEL__'))), '__CTE_LEVEL__'),
+                // Cycle detection guard implemented manually due to the fact that CTE cycle is not implemented by
+                // all supported Database vendors at all or not following the SQL standard. The guard stops cycling
+                // rootline early to avoid use-less cycle retrieval until __CTE_LEVEL__ reaches maximal hard level.
+                $expr->castText(
+                    $expr->concat(
+                        $expr->trim('traversal_c.__CTE_PATH__', TrimMode::TRAILING, ' '),
+                        $cte->quote(','),
+                        $cte->quoteIdentifier('traversal_live.uid')
+                    ),
+                    '__CTE_PATH__'
+                ),
+                $expr->as(
+                    sprintf(
+                        '%s <> 0',
+                        $expr->castInt(sprintf(
+                            // Nesting is needed because inSet() creates a comparision expression return a boolean value
+                            '(%s)',
+                            $expr->inSet(
+                                'traversal_c.__CTE_PATH__',
+                                $cte->quoteIdentifier('traversal_live.uid'),
+                                true,
+                            )
+                        )),
+                    ),
+                    '__CTE_IS_CYCLE__'
+                ),
+            ]))
+            ->from('cte', 'traversal_c')
+            ->innerJoin(
+                'traversal_c',
+                'pages',
+                'traversal_source',
+                (string)$expr->and(
+                    $expr->eq(
+                        'traversal_source.uid',
+                        $cte->quoteIdentifier('traversal_c.pid')
+                    ),
+                    $expr->in('traversal_source.t3ver_wsid', $cte->createNamedParameter([0, $workspaceId], Connection::PARAM_INT_ARRAY)),
+                ),
+            )
+            ->innerJoin(
+                'traversal_source',
+                'pages',
+                'traversal_live',
+                $expr->eq(
+                    'traversal_live.uid',
+                    $expr->if(
+                        $expr->and(
+                            $expr->gt('traversal_source.t3ver_oid', $cte->createNamedParameter(0, Connection::PARAM_INT)),
+                            $expr->eq('traversal_source.t3ver_state', $cte->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)),
+                        ),
+                        $cte->quoteIdentifier('traversal_source.t3ver_oid'),
+                        $cte->quoteIdentifier('traversal_source.uid'),
+                    )
+                ),
+            )
+            ->leftJoin(
+                'traversal_live',
+                'pages',
+                'traversal_workspace',
+                (string)$expr->and(
+                    $expr->eq(
+                        'traversal_workspace.t3ver_wsid',
+                        $cte->createNamedParameter($workspaceId, Connection::PARAM_INT)
+                    ),
+                    $expr->or(
+                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                        $expr->and(
+                            $expr->eq(
+                                'traversal_workspace.uid',
+                                $cte->quoteIdentifier('traversal_live.uid'),
+                            ),
+                            $expr->eq(
+                                'traversal_workspace.t3ver_state',
+                                $cte->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT),
+                            ),
+                        ),
+                        $expr->eq(
+                            'traversal_workspace.t3ver_oid',
+                            $cte->quoteIdentifier('traversal_live.uid'),
+                        )
+                    )
+                ),
+            )
+            ->innerJoin(
+                'traversal_workspace',
+                'pages',
+                'traversal_workspace_resolved',
+                (string)$expr->and(
+                    $expr->eq(
+                        'traversal_workspace_resolved.uid',
+                        $expr->if(
+                            $expr->isNotNull('traversal_workspace.uid'),
+                            $cte->quoteIdentifier('traversal_workspace.uid'),
+                            $cte->quoteIdentifier('traversal_live.uid'),
+                        ),
+                    ),
+                ),
+            )
+            ->where(...array_values([
+                // If last parent has been detected as start of a recursive cycle, stop here. Note that this is done to
+                // keep the cycle detection value in the result set to allow proper handling later on retrieved rows.
+                $expr->eq('traversal_c.__CTE_IS_CYCLE__', $cte->createNamedParameter(0, Connection::PARAM_INT)),
+                // do not try to fetch page with uid 0, which is the virtual tree root point
+                $expr->neq('traversal_c.pid', $cte->createNamedParameter(0, Connection::PARAM_INT)),
+                // place a maximal traversal level guard against invalid cycling rootlines to mitigate endless recursion
+                $expr->lt('traversal_c.__CTE_LEVEL__', $cte->createNamedParameter(self::MAX_CTE_TRAVERSAL_LEVELS, Connection::PARAM_INT)),
+                // workspace handling
+                $expr->or(
+                    // retrieve live workspace if no overlays exists
+                    $expr->isNull('traversal_workspace.uid'),
+                    // discard(omit) record if it turned out to be deleted in workspace
+                    $expr->and(
+                        $expr->isNotNull('traversal_workspace.uid'),
+                        $expr->neq(
+                            'traversal_workspace.t3ver_state',
+                            $cte->createNamedParameter(VersionState::DELETE_PLACEHOLDER->value, Connection::PARAM_INT),
+                        ),
+                    ),
+                ),
+            ]));
+
+        return $traversal;
+    }
+
+    /**
      * {@see self::getRecordArray()} used {@see PageRepository::versionOL()} to compose workspace overlayed records in
      * the based, bypassing access checks (aka enableFields) resulting in multiple queries. This constellation of method
      * and database query chains can be condensed down to a single database query, which this method uses to retrieve
@@ -637,7 +1253,6 @@ class RootlineUtility
                 $queryBuilder->quoteIdentifier('live.uid'),
                 ...array_values($prefixedFields),
                 ...array_values([
-                    //------------------------------------------------------------------------------------------------------
                     // For move pointers, store the actual live PID in the _ORIG_pid
                     // The only place where PID is actually different in a workspace
                     $queryBuilder->expr()->if(
@@ -749,6 +1364,14 @@ class RootlineUtility
         if ($row === null) {
             return $row;
         }
+        // Remove cycle detection fields from result row
+        unset(
+            $row['__CTE_PATH__'],
+            $row['__CTE_IS_CYCLE__'],
+            $row['__CTE_LEVEL__'],
+        );
+        // Remove helper fields if null, keeping them only if they contain valid data to mimic the way PHP methods
+        // throughout the TYPO3 core added these fields.
         $removeNullableFields = [
             '_ORIG_uid',
             '_ORIG_pid',
@@ -785,5 +1408,17 @@ class RootlineUtility
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($tableName);
+    }
+
+    private function getRootlineFromRuntimeCache(int $pageId): ?array
+    {
+        $cacheIdentifier = $this->getCacheIdentifier($pageId);
+        if ($this->runtimeCache->has('rootline-localcache-' . $cacheIdentifier)) {
+            $rootline = $this->runtimeCache->get('rootline-localcache-' . $cacheIdentifier);
+            if (is_array($rootline)) {
+                return array_reverse($rootline);
+            }
+        }
+        return null;
     }
 }

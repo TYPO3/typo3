@@ -107,6 +107,15 @@
 # starttime endtime relations tests
 ,6000,1,0,0,0,0,0,0,"/parent6000","EN Parent 6000"
 ,6010,6000,0,0,0,0,0,0,"/parent6000/sub10","EN Parent 6000 Sub 10"
+# cycling rootline - indicates corrupted database
+,7000,7020,0,0,0,0,0,0,"/parent7000","EN Parent 7000 cycling parent to EN Parent 7000 Sub 10 Sub 20"
+,7010,7000,0,0,0,0,0,0,"/parent7000/sub10","EN Parent 7000 Sub 10"
+,7020,7010,0,0,0,0,0,0,"/parent7000/sub10/sub20","EN Parent 7000 Sub 10 Sub 20"
+# cycling rootline through workspace overlays - indicates corrupted database
+,8000,1,0,0,0,0,0,0,"/parent8000","EN Parent 8000"
+,8010,7000,0,0,0,0,0,0,"/parent8000/sub10","EN Parent 8000 Sub 10"
+,8020,7010,0,0,0,0,0,0,"/parent8000/sub10/sub20","EN Parent 8000 Sub 10 Sub 20"
+,8100,7010,0,0,0,2,8000,0,"/parent8000/sub10/sub20","EN Parent 8000 Sub 10 Sub 20 Moved in WS2 to cycling position"
 "tx_testrootlineutility_hotel"
 ,"uid","pid","parenttable","parentid","deleted","hidden","starttime","endtime","sorting","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","title"
 ,1000,4010,"pages",4010,0,0,0,0,2,0,0,0,0,0,"EN Hotel 1000"
