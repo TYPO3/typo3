@@ -673,7 +673,7 @@ class ConnectionMigrator
         $changedTables = [];
 
         $databasePlatform = $this->connection->getDatabasePlatform();
-        foreach ($schemaDiff->changedTables as $index => $changedTable) {
+        foreach ($schemaDiff->changedTables as $tableName => $changedTable) {
             if (count($changedTable->changedColumns) === 0) {
                 continue;
             }
@@ -700,7 +700,7 @@ class ConnectionMigrator
                 if ($databasePlatform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
                     $renameColumnTableDiff->renamedColumns[$oldFieldName] = $changedColumn->column;
                 }
-                $changedTables[$index . ':' . $changedColumn->column->getName()] = $renameColumnTableDiff;
+                $changedTables[$tableName . ':' . $changedColumn->column->getName()] = $renameColumnTableDiff;
 
                 if ($databasePlatform instanceof SqlitePlatform) {
                     break;
