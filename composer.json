@@ -102,7 +102,7 @@
 		"typo3/class-alias-loader": "^1.1.4",
 		"typo3/cms-cli": "^3.1",
 		"typo3/cms-composer-installers": "^5.0",
-		"typo3/html-sanitizer": "^2.1.4",
+		"typo3/html-sanitizer": "^2.2.0",
 		"typo3fluid/fluid": "^2.14.0"
 	},
 	"require-dev": {
