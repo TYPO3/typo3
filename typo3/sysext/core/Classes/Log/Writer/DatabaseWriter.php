@@ -79,7 +79,7 @@ class DatabaseWriter extends AbstractWriter
             if (isset($context['exception']) && $context['exception'] instanceof \Throwable) {
                 $context['exception'] = (string)$context['exception'];
             }
-            $data = '- ' . json_encode($context);
+            $data = json_encode($context);
         }
 
         $fieldValues = [
