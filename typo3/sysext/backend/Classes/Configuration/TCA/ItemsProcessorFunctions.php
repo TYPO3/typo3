@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Configuration\TCA;
 
+use TYPO3\CMS\Core\Country\Country;
+use TYPO3\CMS\Core\Country\CountryFilter;
+use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Site\Set\SetCollector;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -129,6 +132,44 @@ class ItemsProcessorFunctions
             $fieldConfiguration['items'][] = [
                 'label' => $set->label,
                 'value' => $set->name,
+            ];
+        }
+    }
+
+    public function populateFlags(array &$fieldConfiguration): void
+    {
+        $filter = (new CountryFilter())->setExcludeCountries(['um']);
+        $countries = GeneralUtility::makeInstance(CountryProvider::class)->getFiltered($filter);
+        /** @var Country $country */
+        foreach ($countries as $country) {
+            $code = strtolower($country->getAlpha2IsoCode());
+            $fieldConfiguration['items'][] = [
+                'label' => $country->getName(),
+                'value' => $code,
+                'icon' => 'flags-' . $code,
+                'group' => 'countries',
+            ];
+        }
+        // Additional country variants
+        $variants = ['ca-qc', 'es-ct', 'es-ga', 'gb-eng', 'gb-nir', 'gb-sct', 'gb-wls'];
+        foreach ($variants as $variant) {
+            $split = explode('-', $variant);
+            $base = $countries[strtoupper($split[0])];
+            $fieldConfiguration['items'][] = [
+                'label' => sprintf('%s - %s', $base->getName(), strtoupper($split[1])),
+                'value' => $variant,
+                'icon' => 'flags-' . $variant,
+                'group' => 'countries',
+            ];
+        }
+
+        $colors = ['black', 'white', 'blue', 'indigo', 'purple', 'pink', 'orange', 'yellow', 'green', 'teal', 'cyan', 'rainbow'];
+        foreach ($colors as $color) {
+            $fieldConfiguration['items'][] = [
+                'label' => $color,
+                'value' => $color,
+                'icon' => 'flags-' . $color,
+                'group' => 'colors',
             ];
         }
     }

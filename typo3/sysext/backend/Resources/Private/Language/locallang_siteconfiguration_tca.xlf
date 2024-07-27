@@ -98,6 +98,15 @@
 			<trans-unit id="site_language.flag" resname="site_language.flag">
 				<source>Flag icon</source>
 			</trans-unit>
+			<trans-unit id="site_language.flag.group.colors" resname="site_language.flag.group.colors">
+				<source>Colors</source>
+			</trans-unit>
+			<trans-unit id="site_language.flag.group.countries" resname="site_language.flag.group.countries">
+				<source>Countries</source>
+			</trans-unit>
+			<trans-unit id="site_language.flag.group.misc" resname="site_language.flag.group.misc">
+				<source>Miscellaneous</source>
+			</trans-unit>
 			<trans-unit id="site_language.fallbackType" resname="site_language.fallbackType">
 				<source>Fallback Type</source>
 			</trans-unit>
