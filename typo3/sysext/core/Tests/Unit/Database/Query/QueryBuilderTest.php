@@ -1104,20 +1104,20 @@ final class QueryBuilderTest extends UnitTestCase
     {
         return [
             'Test cast for MySQLPlatform' => [
-                new DoctrineMySQLPlatform(),
-                'CONVERT(aField, CHAR)',
+                'platform' => new DoctrineMySQLPlatform(),
+                'expectation' => 'CONVERT(aField, CHAR)',
             ],
             'Test cast for MariaDBPlatform' => [
-                new DoctrineMariaDBPlatform(),
-                'CONVERT(aField, CHAR)',
+                'platform' => new DoctrineMariaDBPlatform(),
+                'expectation' => 'CONVERT(aField, CHAR)',
             ],
             'Test cast for PostgreSqlPlatform' => [
-                new DoctrinePostgreSQLPlatform(),
-                'aField::text',
+                'platform' => new DoctrinePostgreSQLPlatform(),
+                'expectation' => 'aField::text',
             ],
             'Test cast for SqlitePlatform' => [
-                new DoctrineSQLitePlatform(),
-                'CAST(aField as TEXT)',
+                'platform' => new DoctrineSQLitePlatform(),
+                'expectation' => 'CAST(aField as TEXT)',
             ],
         ];
     }

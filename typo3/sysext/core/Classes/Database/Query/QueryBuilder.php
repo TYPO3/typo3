@@ -1153,7 +1153,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      *
      * @param string $fieldName The fieldname will be quoted and casted according to database platform automatically
      *
-     * @todo This is literally an expression and should be provided by the ExpressionBuilder. Duplicate/move this.
+     * @todo Deprecate this method in favor of {@see ExpressionBuilder::castText()}.
      */
     public function castFieldToTextType(string $fieldName): string
     {

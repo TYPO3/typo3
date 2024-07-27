@@ -17,6 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Expression;
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Platforms\TrimMode;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -708,5 +713,57 @@ final class ExpressionBuilderTest extends UnitTestCase
         $result = $this->subject->literal('aField');
 
         self::assertSame('"aField"', $result);
+    }
+
+    public static function castTextDataProvider(): array
+    {
+        return [
+            'Test cast for MySQLPlatform' => [
+                'platform' => new DoctrineMySQLPlatform(),
+                'expectation' => '(CAST((1 * 10) AS CHAR(16383)))',
+            ],
+            'Test cast for MariaDBPlatform' => [
+                'platform' => new DoctrineMariaDBPlatform(),
+                'expectation' => '(CAST((1 * 10) AS VARCHAR(16383)))',
+            ],
+            'Test cast for PostgreSqlPlatform' => [
+                'platform' => new DoctrinePostgreSQLPlatform(),
+                'expectation' => '((1 * 10)::text)',
+            ],
+            'Test cast for SqlitePlatform' => [
+                'platform' => new DoctrineSQLitePlatform(),
+                'expectation' => '(CAST((1 * 10) AS TEXT))',
+            ],
+        ];
+    }
+
+    #[DataProvider('castTextDataProvider')]
+    #[Test]
+    public function castText(AbstractPlatform $platform, string $expectation): void
+    {
+        $this->connectionMock->method('getDatabasePlatform')->willReturn($platform);
+        $result = (new ExpressionBuilder($this->connectionMock))->castText('1 * 10');
+        self::assertSame($expectation, $result);
+    }
+
+    #[DataProvider('castTextDataProvider')]
+    #[Test]
+    public function castTextAsVirtualIdentifier(AbstractPlatform $platform, string $expectation): void
+    {
+        $this->connectionMock->method('getDatabasePlatform')->willReturn($platform);
+        $this->connectionMock->method('quoteIdentifier')->willReturnArgument(0);
+        $result = (new ExpressionBuilder($this->connectionMock))->castText('1 * 10', 'virtual_identifier');
+        self::assertSame($expectation . ' AS virtual_identifier', $result);
+    }
+
+    #[Test]
+    public function castTextThrowsRuntimeExceptionForUnsupportedPlatform(): void
+    {
+        $this->connectionMock->method('getDatabasePlatform')->willReturn(new MockPlatform());
+
+        self::expectException(\RuntimeException::class);
+        self::expectExceptionCode(1722105672);
+
+        (new ExpressionBuilder($this->connectionMock))->castText('1 * 10', 'virtual_identifier');
     }
 }

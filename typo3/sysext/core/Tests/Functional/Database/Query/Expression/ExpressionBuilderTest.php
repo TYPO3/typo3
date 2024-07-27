@@ -1696,4 +1696,21 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         ];
         self::assertSame($expected, $result);
     }
+
+    #[Test]
+    public function castTextExpressionReturnsExpectedResult(): void
+    {
+        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->selectLiteral(...array_values([
+            $queryBuilder->expr()->castText('(1 * 10)', 'virtual_field'),
+        ]));
+        $expected = [
+            0 => [
+                'virtual_field' => '10',
+            ],
+        ];
+        $result = $queryBuilder->executeQuery()->fetchAllAssociative();
+        self::assertSame($expected, $result);
+    }
 }
