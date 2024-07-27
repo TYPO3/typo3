@@ -120,13 +120,10 @@ readonly class FileRepository
             $workspaceId ??= GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id', 0);
             $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
             $relationHandler->setWorkspaceId($workspaceId);
-            $relationHandler->start(
-                '',
-                'sys_file_reference',
-                '',
-                $uid,
+            $relationHandler->initializeForField(
                 $tableName,
-                $schema->getField($fieldName)->getConfiguration()
+                $schema->getField($fieldName),
+                $uid
             );
             if (!empty($relationHandler->tableArray['sys_file_reference'])) {
                 $relationHandler->processDeletePlaceholder();

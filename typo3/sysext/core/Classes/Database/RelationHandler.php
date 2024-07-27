@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -175,6 +176,46 @@ class RelationHandler
     public function isPurged(): bool
     {
         return $this->purged;
+    }
+
+    /**
+     * Use this method to find relations for a specific field / table of a record.
+     * Once the initializeForField() method was called, the resolved IDs can be used via
+     * ->getValueArray() et al.
+     */
+    public function initializeForField(
+        string $tableName,
+        array|FieldTypeInterface $fieldConfiguration,
+        array|string|int|null $baseRecordOrUid,
+        string|array|null $currentValue = null
+    ): void {
+        if ($fieldConfiguration instanceof FieldTypeInterface) {
+            $fieldConfiguration = $fieldConfiguration->getConfiguration();
+        }
+
+        $manyToManyConfiguration = $fieldConfiguration['MM'] ?? '';
+        $recordUid = $baseRecordOrUid;
+        if (is_array($baseRecordOrUid)) {
+            $recordUid = (int)($baseRecordOrUid['uid'] ?? 0);
+            // If not dealing with MM relations, use default live uid, not versioned uid for record relations
+            // MM relations point to their versioned ID
+            if (!$manyToManyConfiguration
+                && BackendUtility::isTableWorkspaceEnabled($tableName)
+                && ($baseRecordOrUid['t3ver_oid'] ?? 0) > 0
+            ) {
+                $recordUid = (int)$baseRecordOrUid['t3ver_oid'];
+            }
+        }
+
+        $this->registerNonTableValues = (bool)($fieldConfiguration['allowNonIdValues'] ?? false);
+        $this->start(
+            is_array($currentValue) ? implode(',', $currentValue) : (string)$currentValue,
+            $fieldConfiguration['allowed'] ?? $fieldConfiguration['foreign_table'] ?? '',
+            $manyToManyConfiguration,
+            $recordUid,
+            $tableName,
+            $fieldConfiguration
+        );
     }
 
     /**

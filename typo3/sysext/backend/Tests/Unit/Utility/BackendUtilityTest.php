@@ -345,7 +345,7 @@ final class BackendUtilityTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceMock;
 
         $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
-        $relationHandlerMock->expects(self::once())->method('start')->with('1,2');
+        $relationHandlerMock->expects(self::once())->method('initializeForField');
         $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
         $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
             [
@@ -414,7 +414,7 @@ final class BackendUtilityTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceMock;
 
         $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
-        $relationHandlerMock->expects(self::once())->method('start')->with('pages_1,index_config_2');
+        $relationHandlerMock->expects(self::once())->method('initializeForField');
         $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
         $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
             [
@@ -444,7 +444,7 @@ final class BackendUtilityTest extends UnitTestCase
     public function getProcessedValueForSelectWithMMRelation(): void
     {
         $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
-        $relationHandlerMock->expects(self::once())->method('start')->with('2');
+        $relationHandlerMock->expects(self::once())->method('initializeForField');
         $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
         $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
             [
@@ -1242,14 +1242,16 @@ final class BackendUtilityTest extends UnitTestCase
     {
         $tableName = 'table_a';
         $fieldName = 'field_a';
+        $elementData = [
+            $fieldName => 'foo',
+            'uid' => 42,
+        ];
         $relationHandlerMock = $this->createMock(RelationHandler::class);
-        $relationHandlerMock->expects(self::once())->method('start')->with(
-            'foo',
-            'sys_file_reference',
-            '',
-            42,
+        $relationHandlerMock->expects(self::once())->method('initializeForField')->with(
             $tableName,
-            ['type' => 'file', 'foreign_table' => 'sys_file_reference']
+            ['type' => 'file', 'foreign_table' => 'sys_file_reference'],
+            $elementData,
+            'foo'
         );
         $relationHandlerMock->expects(self::once())->method('processDeletePlaceholder');
         $relationHandlerMock->tableArray = ['sys_file_reference' => []];
@@ -1257,10 +1259,6 @@ final class BackendUtilityTest extends UnitTestCase
         $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [
             'type' => 'file',
             'foreign_table' => 'sys_file_reference',
-        ];
-        $elementData = [
-            $fieldName => 'foo',
-            'uid' => 42,
         ];
 
         self::assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));

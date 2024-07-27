@@ -996,16 +996,14 @@ class BackendUtility
         if ($workspaceId !== null) {
             $relationHandler->setWorkspaceId($workspaceId);
         }
-        $relationHandler->start(
-            $element[$fieldName],
-            $configuration['foreign_table'],
-            $configuration['MM'] ?? '',
-            $element['uid'],
+        $relationHandler->initializeForField(
             $tableName,
-            $configuration
+            $configuration,
+            $element,
+            $element[$fieldName],
         );
         $relationHandler->processDeletePlaceholder();
-        $referenceUids = $relationHandler->tableArray[$configuration['foreign_table']];
+        $referenceUids = $relationHandler->tableArray[$configuration['foreign_table']] ?? [];
 
         foreach ($referenceUids as $referenceUid) {
             try {
@@ -1880,15 +1878,7 @@ class BackendUtility
         $finalValues = [];
 
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
-        $relationHandler->registerNonTableValues = (bool)($theColConf['allowNonIdValues'] ?? false);
-        $relationHandler->start(
-            $value,
-            $theColConf['allowed'] ?? $theColConf['foreign_table'] ?? '',
-            $theColConf['MM'] ?? '',
-            $recordId,
-            $table,
-            $theColConf
-        );
+        $relationHandler->initializeForField($table, $theColConf, $recordId, $value);
 
         if ($noRecordLookup) {
             $finalValues = array_column($relationHandler->itemArray, 'id');
