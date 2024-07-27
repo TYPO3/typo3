@@ -1189,7 +1189,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
             [
                 'label' => 'label',
                 'value' => $extKey,
-                'icon' => 'EXT:' . $extKey . '/Resources/Public/Icons/Extension.png',
+                'icon' => null,
                 'group' => 'default',
                 'description' => null,
             ],

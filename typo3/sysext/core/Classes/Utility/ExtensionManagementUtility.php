@@ -826,12 +826,7 @@ class ExtensionManagementUtility
             );
         }
         $selectItem = is_array($itemArray) ? SelectItem::fromTcaItemArray($itemArray) : $itemArray;
-        if (!$selectItem->hasIcon()) {
-            $iconPath = static::$packageManager->getPackage($extensionKey)->getPackageIcon();
-            if ($iconPath) {
-                $selectItem = $selectItem->withIcon('EXT:' . $extensionKey . '/' . $iconPath);
-            }
-        } elseif ($type === 'CType' && !isset($GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()])) {
+        if ($type === 'CType' && $selectItem->getIcon() && !isset($GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()])) {
             // Set the type icon as well
             $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()] = $selectItem->getIcon();
         }
