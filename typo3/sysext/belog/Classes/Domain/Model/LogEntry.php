@@ -224,6 +224,11 @@ class LogEntry
         return $logData ?? [];
     }
 
+    public function getLogDataRaw(): string
+    {
+        return $this->logData;
+    }
+
     public function getEventPid(): int
     {
         return $this->eventPid;

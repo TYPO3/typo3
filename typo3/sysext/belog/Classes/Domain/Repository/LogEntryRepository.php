@@ -182,7 +182,7 @@ class LogEntryRepository
         // If the detailsNo is 11 or 12 we got messages that are heavily using placeholders. In this case
         // we need to compare both the message and the actual log data to not remove too many log entries.
         if (in_array($logEntry->getDetailsNumber(), [11, 12], true)) {
-            $constraints[] = $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter($logEntry->getLogData()));
+            $constraints[] = $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter($logEntry->getLogDataRaw()));
         }
         return (int)$queryBuilder->delete('sys_log')
             ->where(...$constraints)
