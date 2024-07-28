@@ -285,6 +285,11 @@ class LogEntry extends AbstractEntity
         return $logData ?? [];
     }
 
+    public function getLogDataRaw(): string
+    {
+        return $this->logData;
+    }
+
     public function setEventPid(int $eventPid): void
     {
         $this->eventPid = $eventPid;
