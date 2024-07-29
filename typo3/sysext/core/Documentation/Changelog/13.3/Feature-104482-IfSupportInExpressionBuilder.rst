@@ -13,7 +13,7 @@ Description
 
 The TYPO3 :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder`
 provides a new method to phrase "if-then-else" expressions. Those are translated
-into :sql:`IF` or :sql:`CASE` statements depending on used database engine.
+into :sql:`IF` or :sql:`CASE` statements depending on the used database engine.
 
 :php:`ExpressionBuilder::if()`
 ------------------------------
@@ -43,7 +43,7 @@ Creates an IF-THEN-ELSE expression.
      *
      * **Result with MySQL:**
      * ```
-     * SELECT (IF(`hidden` = 0, 'page-is-visible', 'page-is-not-visible')) AS `result_feld_name` FROM `pages`
+     * SELECT (IF(`hidden` = 0, 'page-is-visible', 'page-is-not-visible')) AS `result_field_name` FROM `pages`
      * ```
      */
     public function if(

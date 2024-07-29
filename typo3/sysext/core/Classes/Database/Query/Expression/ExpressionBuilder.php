@@ -1069,7 +1069,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
      *
      * **Result with MySQL:**
      * ```
-     * SELECT (IF(`hidden` = 0, 'page-is-visible', 'page-is-not-visible')) AS `result_feld_name` FROM `pages`
+     * SELECT (IF(`hidden` = 0, 'page-is-visible', 'page-is-not-visible')) AS `result_field_name` FROM `pages`
      * ```
      */
     public function if(
