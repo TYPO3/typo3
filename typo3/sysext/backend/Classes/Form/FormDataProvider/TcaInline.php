@@ -204,7 +204,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
                     // exist in default language, but are not localized yet. Compile and mark those
                     try {
-                        $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid);
+                        $compiledChild = $this->compileChild($result, $fieldName, $defaultLanguageUid, true);
                     } catch (DatabaseRecordException $e) {
                         // The child could not be compiled, probably it was deleted and a dangling mm record exists
                         $this->logger->warning(
@@ -217,7 +217,6 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                         );
                         continue;
                     }
-                    $compiledChild['isInlineDefaultLanguageRecordInLocalizedParentContext'] = true;
                     $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
                 }
             }
@@ -325,7 +324,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
      * @param int $childUid Uid of child to compile
      * @return array Full result array
      */
-    protected function compileChild(array $result, $parentFieldName, $childUid)
+    protected function compileChild(array $result, $parentFieldName, $childUid, $isInlineDefaultLanguageRecordInLocalizedParentContext = false)
     {
         $parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
@@ -345,6 +344,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             // and FormInlineAjaxController
             'returnUrl' => $result['returnUrl'],
             'isInlineChild' => true,
+            'isInlineDefaultLanguageRecordInLocalizedParentContext' => $isInlineDefaultLanguageRecordInLocalizedParentContext,
             'inlineStructure' => $result['inlineStructure'],
             'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
             'inlineFirstPid' => $result['inlineFirstPid'],
