@@ -144,6 +144,7 @@ readonly class DatabaseUserPermissionCheck implements FormDataProviderInterface
             }
             // If general access is allowed, check "recordEditAccessInternals"
             if ($exception === null
+                && !($result['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)
                 && !$backendUser->recordEditAccessInternals($result['tableName'], $result['databaseRow'])
             ) {
                 $exception = new AccessDeniedEditInternalsException($backendUser->errorMsg, 1437687404);

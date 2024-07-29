@@ -250,7 +250,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
                     // If there are still uids in $connectedUidsOfDefaultLanguageRecord, these are records that
                     // exist in default language, but are not localized yet. Compile and mark those
                     try {
-                        $compiledFileReference = $this->compileFileReference($result, $fieldName, $defaultLanguageUid);
+                        $compiledFileReference = $this->compileFileReference($result, $fieldName, $defaultLanguageUid, true);
                     } catch (DatabaseRecordException $e) {
                         // The child could not be compiled, probably it was deleted and a dangling mm record exists
                         $this->logger->warning(
@@ -263,7 +263,6 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
                         );
                         continue;
                     }
-                    $compiledFileReference['isInlineDefaultLanguageRecordInLocalizedParentContext'] = true;
                     $result['processedTca']['columns'][$fieldName]['children'][] = $compiledFileReference;
                 }
             }
@@ -272,7 +271,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
         return $result;
     }
 
-    protected function compileFileReference(array $result, string $parentFieldName, int $childUid): array
+    protected function compileFileReference(array $result, string $parentFieldName, int $childUid, $isInlineDefaultLanguageRecordInLocalizedParentContext = false): array
     {
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
@@ -287,6 +286,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
                     'vanillaUid' => $childUid,
                     'returnUrl' => $result['returnUrl'],
                     'isInlineChild' => true,
+                    'isInlineDefaultLanguageRecordInLocalizedParentContext' => $isInlineDefaultLanguageRecordInLocalizedParentContext,
                     'inlineStructure' => $result['inlineStructure'],
                     'inlineExpandCollapseStateArray' => $result['inlineExpandCollapseStateArray'],
                     'inlineFirstPid' => $result['inlineFirstPid'],
