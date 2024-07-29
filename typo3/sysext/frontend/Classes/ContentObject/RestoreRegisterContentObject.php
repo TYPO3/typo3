@@ -30,7 +30,7 @@ class RestoreRegisterContentObject extends AbstractContentObject
     public function render($conf = [])
     {
         $frontendController = $this->getTypoScriptFrontendController();
-        $frontendController->register = array_pop($frontendController->registerStack);
+        $frontendController->register = array_pop($frontendController->registerStack) ?? [];
         return '';
     }
 }
