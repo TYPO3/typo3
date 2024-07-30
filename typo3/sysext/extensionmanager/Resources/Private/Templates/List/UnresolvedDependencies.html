@@ -18,7 +18,7 @@
 
     <h1><f:translate key="installExtension">Install extension</f:translate> <small>{f:translate(key: 'downloadExtension.dependencies.errorTitle')}</small></h1>
     <f:render partial="List/UnresolvedDependencies" arguments="{_all}" />
-    <f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="1">
+    <f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}">
         <f:render partial="List/UnresolvedDependenciesMessage" />
     </f:be.infobox>
     <f:link.action action="{returnAction.action}" controller="{returnAction.controller}" class="btn btn-default onClickMaskExtensionManager">

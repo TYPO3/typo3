@@ -54,10 +54,10 @@
         </h4>
         <f:if condition="{uploadStatus} == 1">
             <f:then>
-                <f:be.infobox title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_success')} {uploadedFile}" state="0" />
+                <f:be.infobox title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_success')} {uploadedFile}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_OK')}" />
             </f:then>
             <f:else>
-                <f:be.infobox title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_failureNoFileUploaded')}" state="2" />
+                <f:be.infobox title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_failureNoFileUploaded')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" />
             </f:else>
         </f:if>
     </f:if>

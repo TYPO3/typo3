@@ -49,18 +49,18 @@
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.infobox.section.color.headline" /></h2>
         <f:variable name="codeSnippetColor">
-            state="-2"
-            state="-1"
-            state="0"
-            state="1"
-            state="2"
+            state="&lcub;f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_NOTICE')&rcub;"
+            state="&lcub;f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')&rcub;"
+            state="&lcub;f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_OK')&rcub;"
+            state="&lcub;f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')&rcub;"
+            state="&lcub;f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')&rcub;"
         </f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetColor}" decodeEntities="true">
-            <f:be.infobox state="-2" title="Notice">{dummyText}</f:be.infobox>
-            <f:be.infobox state="-1" title="Info">{dummyText}</f:be.infobox>
-            <f:be.infobox state="0" title="Ok">{dummyText}</f:be.infobox>
-            <f:be.infobox state="1" title="Warning">{dummyText}</f:be.infobox>
-            <f:be.infobox state="2" title="Error">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_NOTICE')}" title="Notice">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="Info">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_OK')}" title="Ok">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}" title="Warning">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" title="Error">{dummyText}</f:be.infobox>
         </sg:example>
 
         <hr>
@@ -69,11 +69,11 @@
 
         <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
         <sg:colorScheme>
-            <f:be.infobox state="-2" title="Notice">{dummyText}</f:be.infobox>
-            <f:be.infobox state="-1" title="Info">{dummyText}</f:be.infobox>
-            <f:be.infobox state="0" title="Ok">{dummyText}</f:be.infobox>
-            <f:be.infobox state="1" title="Warning">{dummyText}</f:be.infobox>
-            <f:be.infobox state="2" title="Error">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_NOTICE')}" title="Notice">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="Info">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_OK')}" title="Ok">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}" title="Warning">{dummyText}</f:be.infobox>
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" title="Error">{dummyText}</f:be.infobox>
         </sg:colorScheme>
     </div>
 

@@ -2,7 +2,7 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.instructions')}" state="-1">
+<f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.instructions')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">
     <f:format.nl2br>{provider.setupInstructions -> f:translate(key: provider.setupInstructions, default: provider.setupInstructions)}</f:format.nl2br>
 </f:be.infobox>
 </html>

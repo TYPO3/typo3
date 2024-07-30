@@ -61,7 +61,7 @@
         <f:then>
             <f:be.infobox
                 message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.noPageTSconfigAvailable')}"
-                state="-1"
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
             />
         </f:then>
         <f:else>

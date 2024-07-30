@@ -25,7 +25,7 @@
             <f:be.infobox
                 title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:canNotCreateNew.title')}"
                 message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:canNotCreateNew.message')}"
-                state="-1"
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
             />
         </f:then>
         <f:else>
@@ -36,14 +36,14 @@
                             <f:be.infobox
                                 title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:pagesCreated.title')}"
                                 message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:pagesCreated.message')}"
-                                state="-1"
+                                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
                             />
                         </f:then>
                         <f:else>
                             <f:be.infobox
                                 title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:noPagesCreated.title')}"
                                 message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:noPagesCreated.message')}"
-                                state="1"
+                                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}"
                             />
                         </f:else>
                     </f:if>

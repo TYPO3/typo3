@@ -38,7 +38,7 @@
             <f:render partial="TaskList" arguments="{_all}" />
         </f:then>
         <f:else>
-            <f:be.infobox state="-1" message="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTasks')}" />
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" message="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTasks')}" />
         </f:else>
     </f:if>
 

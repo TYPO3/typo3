@@ -11,7 +11,7 @@
         <f:render partial="About/Logo" arguments="{_all}" />
 
         <f:for each="{messages}" as="message">
-            <f:be.infobox title="{f:if(condition: message.title, then: message.title, else: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header\')}')}" state="2">
+            <f:be.infobox title="{f:if(condition: message.title, then: message.title, else: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header\')}')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}">
                 <p>{message.message -> f:sanitize.html()}</p>
             </f:be.infobox>
         </f:for>

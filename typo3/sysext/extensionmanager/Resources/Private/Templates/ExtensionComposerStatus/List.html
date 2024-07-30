@@ -21,7 +21,7 @@
 
     <f:if condition="{extensions}">
         <f:then>
-            <f:be.infobox title="Invalid composer.json files in extensions" state="-1">
+            <f:be.infobox title="Invalid composer.json files in extensions" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">
                 <p><f:translate key="extensionList.composerStatus.information" /></p>
                 <p><f:translate key="extensionList.composerStatus.thirdParty" /></p>
                 <h4 class="mt-3"><f:translate key="extensionList.composerStatus.missingManifest" /></h4>
@@ -78,7 +78,7 @@
         <f:else>
             <f:be.infobox title="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.title')}"
                 message="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.message.multiple')}"
-                state="-1" />
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" />
         </f:else>
     </f:if>
 </f:section>

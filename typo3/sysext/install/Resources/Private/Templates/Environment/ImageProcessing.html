@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <h2>True type font tests</h2>
-<f:be.infobox title="FreeType2 hint" state="-1">
+<f:be.infobox title="FreeType2 hint" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">
     <p>If the two images below do not look the same, please check your FreeType 2 module.</p>
 </f:be.infobox>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingTrueType"></div>
@@ -14,7 +14,7 @@
     The tool <code>identify</code> is used to read the pixeldimensions of non-web formats and 'convert' is used to
     read the image and convert it to <code>jpg</code>.
 </p>
-<f:be.infobox title="Dark images" state="-1">
+<f:be.infobox title="Dark images" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">
     <p>
         In case the images appear remarkably darker than the reference images,
         try to set<br/> <code>$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_colorspace'] = 'sRGB';</code>.
@@ -103,7 +103,7 @@
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibRenderText"></div>
 
 <h3>Render text with TrueType font using 'niceText' option</h3>
-<f:be.infobox title="Note on 'niceText'" state="-1">
+<f:be.infobox title="Note on 'niceText'" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">
     <p>
         'niceText' is a concept that tries to improve the antialiasing of the rendered type by actually
         rendering the textstring in double size on a black/white mask, downscaling the mask and masking
@@ -113,7 +113,7 @@
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibNiceText"></div>
 
 <h3>Render 'niceText' with a shadow under</h3>
-<f:be.infobox title="Note on 'shadow'" state="-1">
+<f:be.infobox title="Note on 'shadow'" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">
     <p>
         This test makes sense only if the above test had a correct output. But if so, you may not see
         a soft dropshadow from the third text string as you should. In that case you are most likely using

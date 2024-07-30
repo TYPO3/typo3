@@ -16,7 +16,7 @@
 <f:section name="Content">
 
     <h1>{siteName}</h1>
-    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:clickAPage_content')}" state="-1" />
+    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:clickAPage_content')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" />
 
 </f:section>
 

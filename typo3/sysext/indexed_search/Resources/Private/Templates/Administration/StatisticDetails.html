@@ -77,7 +77,7 @@
             <h1><f:translate key="administration.statisticDetails.headline" /></h1>
             <f:be.infobox
                 message="{f:translate(key:'LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.noResult')}"
-                state="-2"
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_NOTICE')}"
             />
         </f:else>
     </f:if>
@@ -159,7 +159,7 @@
         <f:else>
             <f:be.infobox
                 message="{f:translate(key:'LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.noResult')}"
-                state="-2"
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_NOTICE')}"
             />
         </f:else>
     </f:if>

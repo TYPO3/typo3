@@ -45,7 +45,7 @@
 
     <f:be.infobox
         title="{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_headline')}"
-        state="-1"
+        state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
     >
         <p>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript')}</p>
         <p>

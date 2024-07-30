@@ -184,7 +184,7 @@
             <f:render partial="Backend/FormManager/Pagination" arguments="{_all}" />
         </f:then>
         <f:else if="{hasForms}">
-            <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">
                 <p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found_by_search_term.message" arguments="{0: searchTerm}" /></p>
                 <a class="btn btn-primary" href="{f:be.uri(route:'web_FormFormbuilder')}">
                     <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.remove_search_term"/>
@@ -192,7 +192,7 @@
             </f:be.infobox>
         </f:else>
         <f:else>
-            <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">
+            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">
                 <p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.message" /></p>
                 <a class="btn btn-primary" href="#" data-identifier="newForm"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form" /></a>
             </f:be.infobox>

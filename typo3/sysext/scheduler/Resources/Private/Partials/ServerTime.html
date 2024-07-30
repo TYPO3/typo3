@@ -4,7 +4,7 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:be.infobox state="-1" title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.serverTime')}">
+<f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.serverTime')}">
     <p><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.serverTimeHelp" /></p>
     <p>
         <f:variable

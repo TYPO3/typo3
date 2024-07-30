@@ -121,6 +121,6 @@
     </div>
 </f:groupedFor>
 
-<f:be.infobox state="-1">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:differenceMsg') -> f:format.raw()}</f:be.infobox>
+<f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:differenceMsg') -> f:format.raw()}</f:be.infobox>
 
 </html>

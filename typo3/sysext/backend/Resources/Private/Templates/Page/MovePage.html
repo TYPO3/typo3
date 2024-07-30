@@ -45,7 +45,7 @@
                 </div>
             </f:then>
             <f:else>
-                <f:be.infobox state="2">
+                <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}">
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:samePageConflict" arguments="{0: target.recordTitle, 1: target.record.uid}" />
                 </f:be.infobox>
             </f:else>

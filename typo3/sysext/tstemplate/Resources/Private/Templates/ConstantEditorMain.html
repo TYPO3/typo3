@@ -58,7 +58,7 @@
         <f:comment><!-- Main form --></f:comment>
         <f:if condition="!{relevantCategories}">
             <f:then>
-                <f:be.infobox message="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:infobox.message.noConstants')}" state="-1" />
+                <f:be.infobox message="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:infobox.message.noConstants')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" />
             </f:then>
             <f:else>
                 <f:render partial="ConstantEditorFields" arguments="{_all}" />
@@ -68,7 +68,7 @@
 
     <f:if condition="{selectedTemplateUid} == -1">
         <f:be.infobox
-            state="-1"
+            state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
             title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoTypoScriptRecordFromSite.title')}"
         >
             <f:translate

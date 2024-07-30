@@ -37,7 +37,7 @@
             <input type="hidden" name="data[upload][1][redirect]" value="{returnUrl}" />
             <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_upload.php.submit')}" />
         </div>
-        <f:be.infobox state="1" disableIcon="true">
+        <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING')}" disableIcon="true">
             <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:uploadMultipleFilesInfo" />
         </f:be.infobox>
     </form>
