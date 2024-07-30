@@ -133,8 +133,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      * Returns the current value of this Form ViewHelper and converts it to an identifier string in case it's an object
      * The value is determined as follows:
      * * If property mapping errors occurred and the form is re-displayed, the *last submitted* value is returned
-     * * Else the bound property is returned (only in objectAccessor-mode)
-     * * As fallback the "value" argument of this ViewHelper is used
+     * * If a "value" attribute was specified, this value is used (preferring an "override" from integrators)
+     * * Else the bound property value is returned (only in objectAccessor-mode)
      *
      * Note: This method should *not* be used for form elements that must not change the value attribute, e.g. (radio) buttons and checkboxes.
      *
