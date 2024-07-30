@@ -59,7 +59,7 @@ In turn, a "Passive Relation" is the information what other schemata/fields are
 pointing to a specific table or field.
 
 A common example for a "Passive Relation" is "sys_workspace_stage":
-The information stored in `$GLOBALS[TCA][sys_workspace_stage]` does not contain
+The information stored in :php:`$GLOBALS[TCA][sys_workspace_stage]` does not contain
 the information that this table is actually used as a reference from the database
 field `sys_workspace.custom_stages`, the `sys_workspace_stage` Schema now
 contains this information directly via :php:`TcaSchema->getPassiveRelations()`.
@@ -151,6 +151,8 @@ Usage
 
 The API can now be used to find out information about TCA fields.
 
+.. code-block:: php
+
     public function __construct(
         protected readonly PageRepository $pageRepository,
         protected readonly TcaSchemaFactory $tcaSchemaFactory
@@ -174,7 +176,7 @@ The API can now be used to find out information about TCA fields.
 
     }
 
-Using the API improves handling for parts such as evaluating `columnsOverrides`,
+Using the API improves handling for parts such as evaluating :php:`columnsOverrides`,
 foreign field structures, FlexForm Schema parsing, and evaluating type fields
 for a database field.
 
