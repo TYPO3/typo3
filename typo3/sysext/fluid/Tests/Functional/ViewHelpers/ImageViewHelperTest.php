@@ -377,7 +377,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
         ];
         yield 'overwrite alt from file' => [
             '<f:image src="1" alt="" />',
-            '<img alt="" src="fileadmin/user_upload/ImageViewHelperFalTest.jpg" width="400" height="300" />',
+            '<img src="fileadmin/user_upload/ImageViewHelperFalTest.jpg" width="400" height="300" alt="" />',
         ];
         yield 'title from file reference' => [
             '<f:image src="1" treatIdAsReference="1" />',
