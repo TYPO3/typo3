@@ -183,6 +183,9 @@
 			<trans-unit id="formManager.form_name" resname="formManager.form_name" xml:space="preserve">
 				<source>Form name</source>
 			</trans-unit>
+			<trans-unit id="formManager.integrity" resname="formManager.integrity" xml:space="preserve">
+				<source>Integrity</source>
+			</trans-unit>
 			<trans-unit id="formManager.location" resname="formManager.location" xml:space="preserve">
 				<source>Location</source>
 			</trans-unit>
@@ -202,28 +205,28 @@
 				<source>Delete this form</source>
 			</trans-unit>
 			<trans-unit id="formManager.forms_not_found.title" resname="formManager.forms_not_found.title" xml:space="preserve">
-				<source>No forms found!</source>
+				<source>No forms found</source>
 			</trans-unit>
 			<trans-unit id="formManager.forms_not_found.message" resname="formManager.forms_not_found.message" xml:space="preserve">
 				<source>There are currently no forms found in the system.</source>
 			</trans-unit>
 			<trans-unit id="formManager.forms_not_found_by_search_term.message" resname="formManager.forms_not_found_by_search_term.message" xml:space="preserve">
-                <source>There are currently no forms found containing the search term %1s.</source>
+                <source>There are currently no forms found containing the search term "%1s".</source>
             </trans-unit>
 			<trans-unit id="formManager.remove_search_term" resname="formManager.remove_search_term" xml:space="preserve">
 				<source>Remove search term</source>
 			</trans-unit>
-			<trans-unit id="formManager.edit_form_not_allowed" resname="formManager.edit_form_not_allowed" xml:space="preserve">
-				<source>Edit this form is not allowed.</source>
-			</trans-unit>
-			<trans-unit id="formManager.duplicate_form_not_allowed" resname="formManager.duplicate_form_not_allowed" xml:space="preserve">
-				<source>Duplicate this form is not allowed.</source>
-			</trans-unit>
 			<trans-unit id="formManager.invalid" resname="formManager.invalid" xml:space="preserve">
-				<source>Invalid YAML file!</source>
+				<source>Invalid YAML file</source>
 			</trans-unit>
 			<trans-unit id="formManager.duplicate_identifier" resname="formManager.duplicate_identifier" xml:space="preserve">
-				<source>Duplicate identifier!</source>
+				<source>Duplicate identifier</source>
+			</trans-unit>
+			<trans-unit id="formManager.table.amount.form" resname="formManager.table.amount.form" xml:space="preserve">
+				<source>form</source>
+			</trans-unit>
+			<trans-unit id="formManager.table.amount.forms" resname="formManager.table.amount.forms" xml:space="preserve">
+				<source>forms</source>
 			</trans-unit>
 
 			<trans-unit id="formManager.selectablePrototypesConfiguration.standard.label" resname="formManager.selectablePrototypesConfiguration.standard.label" xml:space="preserve">

@@ -5,10 +5,18 @@
 >
 <f:layout name="Module" />
 
-<f:section name="Content">
+<f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/form/backend/form-manager/main.js'
+        }"
+    />
     <f:be.pageRenderer
         includeCssFiles="{stylesheets}"
     />
+</f:section>
+
+<f:section name="Content">
     <h1><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.headline" /></h1>
     <f:if condition="{hasForms}">
         <form
@@ -20,12 +28,19 @@
         >
             <div class="form-row">
                 <div class="form-group">
+                    <label for="search_field" class="form-label">
+                        <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
+                    </label>
                     <div class="input-group">
-                        <input type="search" id="search_field" name="searchTerm" class="form-control" value="{searchTerm}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
-                        <label for="search_field" class="visually-hidden">
-                            <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
-                        </label>
+                        <input
+                            type="search"
+                            id="search_field"
+                            name="searchTerm"
+                            class="form-control form-control-clearable t3js-clearable"
+                            value="{searchTerm}"
+                        />
                         <button class="btn btn-default" type="submit" name="search">
+                            <span class="visually-hidden"><f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search"/></span>
                             <core:icon identifier="actions-search" size="small" />
                         </button>
                     </div>
@@ -41,44 +56,54 @@
                         <tr>
                             <th class="col-icon" data-sort-method="none"></th>
                             <th class="col-50 col-responsive"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.form_name" /></th>
-                            <th class="col-50"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.location" /></th>
+                            <th class="col-50 col-path"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.location" /></th>
+                            <th class="col-state"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.integrity" /></th>
                             <th class="col-state"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.references" /></th>
-                            <th class="col-control" data-sort-method="none"><span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')}</span></th>
+                            <th class="col-control" data-sort-method="none">
+                                <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')}</span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <f:for each="{paginator.paginatedItems}" as="form">
                             <tr>
                                 <td class="col-icon">
+                                    <span title="id={form.identifier}"><core:icon identifier="content-form" /></span>
+                                </td>
+                                <td class="col-50 col-responsive">
+                                    <f:if condition="{form.invalid} || {form.readOnly}">
+                                        <f:then>
+                                            {form.name}
+                                        </f:then>
+                                        <f:else>
+                                            <f:link.action
+                                                controller="FormEditor"
+                                                action="index"
+                                                arguments="{formPersistenceIdentifier: form.persistenceIdentifier}"
+                                                title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}"
+                                            >
+                                                {form.name}
+                                            </f:link.action>
+                                        </f:else>
+                                    </f:if>
+                                </td>
+                                <td class="col-50 col-path">
+                                    {form.persistenceIdentifier}
+                                </td>
+                                <td class="col-state">
                                     <f:if condition="{form.invalid}">
                                         <f:then>
                                             <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.invalid')}">
-                                                <core:icon identifier="overlay-missing" />
+                                                <core:icon identifier="status-dialog-error" />
                                             </span>
                                         </f:then>
                                         <f:else if="{form.duplicateIdentifier}">
-                                            <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_identifier')} {form.identifier}">
-                                                <core:icon identifier="overlay-missing" />
-                                            </span>
-                                        </f:else>
-                                        <f:else>
-                                            <span title="id={form.identifier}">
-                                                <core:icon identifier="content-form" />
+                                            <span title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_identifier')}">
+                                                <core:icon identifier="status-dialog-error" />
                                             </span>
                                         </f:else>
                                     </f:if>
                                 </td>
-                                <td class="col-50">
-                                    <f:if condition="{form.invalid} || {form.readOnly}">
-                                        <f:then>
-                                            <div title="{form.name}">{form.name}</div>
-                                        </f:then>
-                                        <f:else>
-                                            <f:link.action controller="FormEditor" action="index" arguments="{formPersistenceIdentifier: form.persistenceIdentifier}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}">{form.name}</f:link.action>
-                                        </f:else>
-                                    </f:if>
-                                </td>
-                                <td class="col-50"><code>{form.persistenceIdentifier}</code></td>
                                 <td class="col-state">
                                     <f:if condition="{form.referenceCount}">
                                         <f:then>
@@ -93,13 +118,7 @@
                                     <div class="btn-group" role="group">
                                         <f:if condition="{form.invalid} || {form.readOnly}">
                                             <f:then>
-                                                <button
-                                                    class="btn btn-default form-record-readonly"
-                                                    disabled="disabled"
-                                                    title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form_not_allowed')}"
-                                                >
-                                                    <core:icon identifier="actions-open" />
-                                                </button>
+                                                <span class="btn btn-default disabled" aria-hidden="true"><core:icon identifier="empty-empty" /></span>
                                             </f:then>
                                             <f:else>
                                                 <f:link.action
@@ -112,15 +131,6 @@
                                                     <core:icon identifier="actions-open" />
                                                 </f:link.action>
                                             </f:else>
-                                        </f:if>
-                                        <f:if condition="{form.invalid}">
-                                            <button
-                                                class="btn btn-default form-record-readonly"
-                                                disabled="disabled"
-                                                title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_form_not_allowed')}"
-                                            >
-                                                <core:icon identifier="actions-duplicate" />
-                                            </button>
                                         </f:if>
                                         <f:if condition="{form.removable} && ({form.invalid} == '0') && ({form.referenceCount} == '0')">
                                             <f:then>
@@ -136,27 +146,30 @@
                                                 </a>
                                             </f:then>
                                             <f:else>
-                                                <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
+                                                <span class="btn btn-default disabled" aria-hidden="true"><core:icon identifier="empty-empty" /></span>
                                             </f:else>
                                         </f:if>
                                     </div>
                                     <div class="btn-group dropdown" role="group">
-                                        <a
-                                            href="#actions-{form.identifier}"
-                                            class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron"
-                                            data-bs-toggle="dropdown"
-                                            data-bs-boundary="window"
-                                            aria-expanded="false"
-                                        >
-                                            <core:icon identifier="actions-menu-alternative" />
-                                        </a>
-                                        <ul id="actions-{form.identifier}" class="dropdown-menu">
-                                            <f:if condition="{form.invalid}">
-                                                <f:else>
+                                        <f:if condition="{form.invalid}">
+                                            <f:then>
+                                                <span class="btn btn-default disabled" aria-hidden="true"><core:icon identifier="empty-empty" /></span>
+                                            </f:then>
+                                            <f:else>
+                                                <a
+                                                    href="#actions-{form.identifier}"
+                                                    class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron"
+                                                    data-bs-toggle="dropdown"
+                                                    data-bs-boundary="window"
+                                                    aria-expanded="false"
+                                                >
+                                                    <core:icon identifier="actions-menu-alternative" />
+                                                </a>
+                                                <ul id="actions-{form.identifier}" class="dropdown-menu">
                                                     <li>
                                                         <a
                                                             href="#"
-                                                            class="dropdown-item"
+                                                            class="dropdown-item dropdown-item-spaced"
                                                             data-bs-original-title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.duplicate_this_form')}"
                                                             data-identifier="duplicateForm"
                                                             data-form-persistence-identifier="{form.persistenceIdentifier}"
@@ -172,20 +185,34 @@
                                                             </span>
                                                         </a>
                                                     </li>
-                                                </f:else>
-                                            </f:if>
-                                        </ul>
+                                                </ul>
+                                            </f:else>
+                                        </f:if>
                                     </div>
                                 </td>
                             </tr>
                         </f:for>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <f:variable name="totalAmountOfPaginatedItems" value="{paginator.paginatedItems -> f:count()}" />
+                                <f:if condition="{paginator.paginatedItems -> f:count()} > 1">
+                                    <f:then>{totalAmountOfPaginatedItems} <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.table.amount.forms" /></f:then>
+                                    <f:else>{totalAmountOfPaginatedItems} <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.table.amount.form" /></f:else>
+                                </f:if>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             <f:render partial="Backend/FormManager/Pagination" arguments="{_all}" />
         </f:then>
         <f:else if="{hasForms}">
-            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">
+            <f:be.infobox
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}"
+            >
                 <p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found_by_search_term.message" arguments="{0: searchTerm}" /></p>
                 <a class="btn btn-primary" href="{f:be.uri(route:'web_FormFormbuilder')}">
                     <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.remove_search_term"/>
@@ -193,7 +220,10 @@
             </f:be.infobox>
         </f:else>
         <f:else>
-            <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">
+            <f:be.infobox
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}"
+            >
                 <p><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.message" /></p>
                 <a class="btn btn-primary" href="#" data-identifier="newForm"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form" /></a>
             </f:be.infobox>
