@@ -81,12 +81,13 @@ final class CodeViewHelper extends AbstractViewHelper
             }
         }
         $indentSize = strlen($lines[0]) - strlen(ltrim($lines[0]));
-        $content = '';
+        $contentLines = [];
         foreach ($lines as $line) {
             $tmp = substr($line, $indentSize) ?: '';
             $spaces = strlen($tmp) - strlen(ltrim($tmp));
-            $content .= str_repeat('  ', $spaces) . ltrim($line) . chr(10);
+            $contentLines[] = str_repeat('  ', $spaces) . ltrim($line);
         }
+        $content = implode(chr(10), $contentLines);
 
         $registry = GeneralUtility::makeInstance(ModeRegistry::class);
         if ($registry->isRegistered($this->arguments['language'])) {

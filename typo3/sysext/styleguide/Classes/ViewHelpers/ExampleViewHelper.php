@@ -90,12 +90,13 @@ final class ExampleViewHelper extends AbstractViewHelper
                 }
             }
             $indentSize = strlen($lines[0]) - strlen(ltrim($lines[0]));
-            $code = '';
+            $codeLines = [];
             foreach ($lines as $line) {
                 $tmp = substr($line, $indentSize) ?: '';
                 $spaces = strlen($tmp) - strlen(ltrim($tmp));
-                $code .= str_repeat('  ', $spaces) . ltrim($line) . chr(10);
+                $codeLines[] = str_repeat('  ', $spaces) . ltrim($line);
             }
+            $code = implode(chr(10), $codeLines);
 
             $registry = GeneralUtility::makeInstance(ModeRegistry::class);
             if ($this->arguments['codeLanguage'] && ($registry->isRegistered($this->arguments['codeLanguage']))) {
