@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
 use TYPO3\CMS\Extensionmanager\Parser\ExtensionXmlParser;
 
 /**
@@ -237,7 +238,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
             $this->remoteIdentifier,
             $this->extensionModel->getDefaultState($subject->getState() ?: ''),
             $subject->getReviewstate(),
-            $this->extensionModel->getCategoryIndexFromStringOrNumber($subject->getCategory() ?: ''),
+            ExtensionCategory::fromValue($subject->getCategory() ?: '')->value,
             $subject->getDescription() ?: '',
             $subject->getDependencies() ?: '',
             $subject->getUploadcomment() ?: '',

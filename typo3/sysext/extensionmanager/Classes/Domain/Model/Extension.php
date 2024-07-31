@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
@@ -28,27 +27,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Extension extends AbstractEntity
 {
-    /**
-     * Category index for distributions
-     */
-    public const DISTRIBUTION_CATEGORY = 10;
-
-    /**
-     * Contains default categories.
-     */
-    protected static array $defaultCategories = [
-        0 => 'be',
-        1 => 'module',
-        2 => 'fe',
-        3 => 'plugin',
-        4 => 'misc',
-        5 => 'services',
-        6 => 'templates',
-        8 => 'doc',
-        9 => 'example',
-        self::DISTRIBUTION_CATEGORY => 'distribution',
-    ];
-
     /**
      * Contains default states.
      */
@@ -123,39 +101,6 @@ class Extension extends AbstractEntity
     public function getCategory(): int
     {
         return $this->category;
-    }
-
-    /**
-     * Get Category String
-     */
-    public function getCategoryString(): string
-    {
-        $categoryString = '';
-        if (isset(self::$defaultCategories[$this->category])) {
-            $categoryString = self::$defaultCategories[$this->category];
-        }
-        return $categoryString;
-    }
-
-    /**
-     * Returns category index from a given string or an integer.
-     * Fallback to 4 - 'misc' in case string is not found or integer ist out of range.
-     */
-    public function getCategoryIndexFromStringOrNumber(mixed $category): int
-    {
-        $categoryIndex = 4;
-        if (MathUtility::canBeInterpretedAsInteger($category)) {
-            $categoryIndex = (int)$category;
-            if ($categoryIndex < 0 || $categoryIndex > 10) {
-                $categoryIndex = 4;
-            }
-        } elseif (is_string($category)) {
-            $categoryIndex = array_search($category, self::$defaultCategories);
-            if ($categoryIndex === false) {
-                $categoryIndex = 4;
-            }
-        }
-        return (int)$categoryIndex;
     }
 
     public function setDescription(string $description): void

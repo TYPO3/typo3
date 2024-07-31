@@ -22,75 +22,8 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Extension test
- */
 final class ExtensionTest extends UnitTestCase
 {
-    /**
-     * Data provider for getCategoryIndexFromStringOrNumberReturnsIndex
-     */
-    public static function getCategoryIndexFromStringOrNumberReturnsIndexDataProvider(): array
-    {
-        return [
-            'empty string' => [
-                '',
-                4,
-            ],
-            'existing category string' => [
-                'plugin',
-                3,
-            ],
-            'not existing category string' => [
-                'foo',
-                4,
-            ],
-            'string number 3' => [
-                '3',
-                3,
-            ],
-            'integer 3' => [
-                3,
-                3,
-            ],
-            'string number not in range -1' => [
-                '-1',
-                4,
-            ],
-            'integer not in range -1' => [
-                -1,
-                4,
-            ],
-            'string number not in range 11' => [
-                '11',
-                4,
-            ],
-            'integer not in range 11' => [
-                11,
-                4,
-            ],
-            'object' => [
-                new \stdClass(),
-                4,
-            ],
-            'array' => [
-                [],
-                4,
-            ],
-        ];
-    }
-
-    /**
-     * @param string|int $input Given input
-     * @param int $expected Expected result
-     */
-    #[DataProvider('getCategoryIndexFromStringOrNumberReturnsIndexDataProvider')]
-    #[Test]
-    public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected): void
-    {
-        $extension = new Extension();
-        self::assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));
-    }
     #[Test]
     public function convertDependenciesToObjectsCreatesObjectStorage(): void
     {
