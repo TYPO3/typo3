@@ -167,7 +167,7 @@ class SiteMatcher implements SingletonInterface
                     ['site' => $site, 'language' => $siteLanguage, 'tail' => ''],
                     array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                     ['utf8' => true],
-                    (string)idn_to_ascii($uri->getHost()),
+                    $uri->getHost() ? (string)idn_to_ascii($uri->getHost()) : '',
                     $uri->getScheme() === '' ? [] : [$uri->getScheme()]
                 );
                 $identifier = 'site_' . $site->getIdentifier() . '_' . $siteLanguage->getLanguageId();
