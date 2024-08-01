@@ -11,8 +11,8 @@ See :issue:`103576`
 Description
 ===========
 
-A new property `opacity` has been added to the TCA configuration of a
-`color`type element to allow defining colors with an opacity using
+A new boolean property `opacity` has been added to the TCA configuration of
+a TCA type `color` element to allow defining colors with an opacity using
 the RRGGBBAA color notation.
 
 ..  code-block:: php
@@ -29,6 +29,7 @@ the RRGGBBAA color notation.
 Impact
 ======
 
-If enabled, editors can select not only a color but also its opacity in a color element.
+If `opacity` is enabled, editors can select not only a color but also its
+opacity in a corresponding color element.
 
 .. index:: TCA, ext:backend
