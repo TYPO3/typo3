@@ -993,7 +993,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         $sourceFolderPath = $this->getAbsolutePath($sourceFolderIdentifier);
         $targetFolderPath = $this->getAbsolutePath($newFolderIdentifier);
 
-        mkdir($targetFolderPath);
+        GeneralUtility::mkdir($targetFolderPath);
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($sourceFolderPath),
             \RecursiveIteratorIterator::SELF_FIRST,
