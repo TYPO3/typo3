@@ -339,6 +339,96 @@ final class InheritancesResolverServiceTest extends UnitTestCase
     }
 
     #[Test]
+    public function getMergedConfigurationResolvesInheritanceWithNumericKeys(): void
+    {
+        $input = [
+            'finishers' => [
+                1 => [
+                    'identifier' => 'SaveEventFinisher',
+                    'options' => [
+                        1 => [
+                            'table' => 'some_table',
+                            'mode' => 'insert',
+                            'elements' => [
+                                'youtube-link' => [
+                                    'mapOnDatabaseColumn' => 'link',
+                                ],
+                            ],
+                            'databaseColumnMappings' => [
+                                'pid' => [
+                                    'value' => 8,
+                                ],
+                                'crdate' => [
+                                    'value' => '{__currentTimestamp}',
+                                ],
+                            ],
+                        ],
+                        2 => [
+                            '__inheritances' => [
+                                10 => 'finishers.1.options.1',
+                            ],
+                            'elements' => [
+                                'download-link' => [
+                                    'mapOnDatabaseColumn' => 'link',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'finishers' => [
+                1 => [
+                    'identifier' => 'SaveEventFinisher',
+                    'options' => [
+                        1 => [
+                            'table' => 'some_table',
+                            'mode' => 'insert',
+                            'elements' => [
+                                'youtube-link' => [
+                                    'mapOnDatabaseColumn' => 'link',
+                                ],
+                            ],
+                            'databaseColumnMappings' => [
+                                'pid' => [
+                                    'value' => 8,
+                                ],
+                                'crdate' => [
+                                    'value' => '{__currentTimestamp}',
+                                ],
+                            ],
+                        ],
+                        2 => [
+                            'table' => 'some_table',
+                            'mode' => 'insert',
+                            'elements' => [
+                                'youtube-link' => [
+                                    'mapOnDatabaseColumn' => 'link',
+                                ],
+                                'download-link' => [
+                                    'mapOnDatabaseColumn' => 'link',
+                                ],
+                            ],
+                            'databaseColumnMappings' => [
+                                'pid' => [
+                                    'value' => 8,
+                                ],
+                                'crdate' => [
+                                    'value' => '{__currentTimestamp}',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration());
+    }
+
+    #[Test]
     public function getMergedConfigurationResolvesInheritancesWithAndWithoutVendorNamespacePrefix(): void
     {
         $input = [
