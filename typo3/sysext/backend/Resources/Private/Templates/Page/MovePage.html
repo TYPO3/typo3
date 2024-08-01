@@ -25,7 +25,7 @@
     <div class="page-position">
         <f:if condition="{hasEditPermissions} && {isDifferentPage}">
             <div class="page-position-control page-position-control-top">
-                <button data-action="paste" data-position="{positions.above}" class="btn btn-primary" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:action.pasteAbove')}">
+                <button data-action="paste" data-position="{positions.above}" class="btn btn-default" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:action.pasteAbove')}">
                     <typo3-backend-icon identifier="apps-pagetree-drag-move-above" size="small"></typo3-backend-icon>
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:action.pasteAbove" />
                 </button>
@@ -55,7 +55,7 @@
         <f:if condition="{hasEditPermissions} && {isDifferentPage}">
             <f:if condition="!{targetHasSubpages}">
                 <div class="page-position-control page-position-control-right">
-                    <button data-action="paste" data-position="{positions.inside}" class="btn btn-primary" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:action.pasteInto')}">
+                    <button data-action="paste" data-position="{positions.inside}" class="btn btn-default" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:action.pasteInto')}">
                         <typo3-backend-icon identifier="apps-pagetree-drag-move-between" size="small"></typo3-backend-icon>
                         <f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:action.pasteInto" />
                     </button>
@@ -63,7 +63,7 @@
             </f:if>
 
             <div class="page-position-control page-position-control-bottom">
-                <button data-action="paste" data-position="{positions.below}" class="btn btn-primary" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:action.pasteBelow')}">
+                <button data-action="paste" data-position="{positions.below}" class="btn btn-default" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:action.pasteBelow')}">
                     <typo3-backend-icon identifier="apps-pagetree-drag-move-below" size="small"></typo3-backend-icon>
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:action.pasteBelow" />
                 </button>
