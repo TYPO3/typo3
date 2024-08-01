@@ -20,9 +20,13 @@ namespace TYPO3\CMS\Workspaces\Tests\Unit\Controller\Remote;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -118,6 +122,10 @@ final class RemoteServerTest extends UnitTestCase
             new FormDataCompiler(),
             new FlexFormValueFormatter(),
             new DiffUtility(),
+            $this->createMock(IconFactory::class),
+            $this->createMock(Avatar::class),
+            new ConnectionPool(),
+            new TcaDatabaseRecord()
         );
         $subjectReflection = new \ReflectionObject($subject);
         $result = $subjectReflection->getMethod('prepareFileReferenceDifferences')

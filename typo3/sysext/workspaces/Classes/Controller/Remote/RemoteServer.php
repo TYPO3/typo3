@@ -53,18 +53,22 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[Autoconfigure(public: true)]
-class RemoteServer
+readonly class RemoteServer
 {
     use LogDataTrait;
 
     public function __construct(
-        protected readonly GridDataService $gridDataService,
-        protected readonly StagesService $stagesService,
-        protected readonly WorkspaceService $workspaceService,
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        private readonly FormDataCompiler $formDataCompiler,
-        protected readonly FlexFormValueFormatter $flexFormValueFormatter,
-        private readonly DiffUtility $diffUtility,
+        protected GridDataService $gridDataService,
+        protected StagesService $stagesService,
+        protected WorkspaceService $workspaceService,
+        protected EventDispatcherInterface $eventDispatcher,
+        private FormDataCompiler $formDataCompiler,
+        protected FlexFormValueFormatter $flexFormValueFormatter,
+        private DiffUtility $diffUtility,
+        protected IconFactory $iconFactory,
+        protected Avatar $avatar,
+        protected ConnectionPool $connectionPool,
+        protected TcaDatabaseRecord $tcaDatabaseRecord
     ) {}
 
     /**
@@ -124,8 +128,7 @@ class RemoteServer
         $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
         $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
         $versionState = VersionState::tryFrom($versionRecord['t3ver_state'] ?? 0);
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $iconWorkspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, IconSize::SMALL);
+        $iconWorkspace = $this->iconFactory->getIconForRecord($parameter->table, $versionRecord, IconSize::SMALL);
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
         $isNewOrDeletePlaceholder = $versionState === VersionState::NEW_PLACEHOLDER || $versionState === VersionState::DELETE_PLACEHOLDER;
@@ -377,7 +380,6 @@ class RemoteServer
     protected function getCommentsForRecord(array $historyEntries, array $additionalChangesFromLog): array
     {
         $allStageChanges = [];
-        $avatar = GeneralUtility::makeInstance(Avatar::class);
 
         foreach ($historyEntries as $entry) {
             $preparedEntry = [];
@@ -388,7 +390,7 @@ class RemoteServer
             $preparedEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
             $preparedEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
             $preparedEntry['user_comment'] = nl2br(htmlspecialchars($entry['history_data']['comment']));
-            $preparedEntry['user_avatar'] = $beUserRecord ? $avatar->render($beUserRecord) : '';
+            $preparedEntry['user_avatar'] = $beUserRecord ? $this->avatar->render($beUserRecord) : '';
             $allStageChanges[] = $preparedEntry;
         }
 
@@ -403,7 +405,7 @@ class RemoteServer
             $sysLogEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
             $sysLogEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($sysLogRow['tstamp']));
             $sysLogEntry['user_comment'] = nl2br(htmlspecialchars($data['comment']));
-            $sysLogEntry['user_avatar'] = $avatar->render($beUserRecord);
+            $sysLogEntry['user_avatar'] = $this->avatar->render($beUserRecord);
             $allStageChanges[] = $sysLogEntry;
         }
 
@@ -417,7 +419,7 @@ class RemoteServer
      */
     protected function getStageChangesFromSysLog(string $table, int $uid): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_log');
 
         return $queryBuilder
             ->select('log_data', 'tstamp', 'userid')
@@ -536,7 +538,7 @@ class RemoteServer
                     'tableName' => $table,
                     'vanillaUid' => $uid,
                 ],
-                GeneralUtility::makeInstance(TcaDatabaseRecord::class)
+                $this->tcaDatabaseRecord
             );
             $fieldList = array_unique(array_values($result['columnsToProcess']));
         } catch (\Exception) {
