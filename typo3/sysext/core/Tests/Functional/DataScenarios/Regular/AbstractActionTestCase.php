@@ -89,6 +89,11 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['header' => 'Testing Translation #3']);
     }
 
+    public function modifyDefaultContentToLanguageAll(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThird, ['sys_language_uid' => '-1']);
+    }
+
     public function hideContent(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['hidden' => '1']);

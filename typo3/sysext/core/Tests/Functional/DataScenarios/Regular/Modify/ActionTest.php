@@ -89,6 +89,19 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function modifyDefaultContentToLanguageAll(): void
+    {
+        parent::modifyDefaultContentToLanguageAll();
+
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyDefaultContentToLanguageAll.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3'));
+    }
+
+    #[Test]
     public function deleteContent(): void
     {
         parent::deleteContent();
