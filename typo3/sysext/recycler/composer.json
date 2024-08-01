@@ -32,6 +32,9 @@
 			"dev-main": "13.3.x-dev"
 		},
 		"typo3/cms": {
+			"Package": {
+				"partOfFactoryDefault": true
+			},
 			"extension-key": "recycler"
 		}
 	},
