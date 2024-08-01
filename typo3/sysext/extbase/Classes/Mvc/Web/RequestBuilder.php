@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -121,11 +122,17 @@ class RequestBuilder implements SingletonInterface
         $files = $mainRequest->getUploadedFiles();
         if (!$useArgumentsWithoutNamespace) {
             $files = $files[$pluginNamespace] ?? [];
+            if ($files instanceof UploadedFile) {
+                throw new InvalidArgumentNameException(
+                    'Using only the plugin namespace as argument name is not allowed for uploaded files. Please use plugin_namespace[argument_name] instead.',
+                    1722542546
+                );
+            }
         }
-        if ($files instanceof UploadedFile) {
-            // ensure it's always an array
-            $files = [$files];
-        }
+
+        // Merge UploadedFiles into request parameters, so that they
+        // are available as arguments for property mapping.
+        $parameters = array_merge_recursive($parameters, $files);
 
         $controllerClassName = $this->resolveControllerClassName($defaultValues, $parameters);
         $actionName = $this->resolveActionName($defaultValues, $controllerClassName, $parameters);

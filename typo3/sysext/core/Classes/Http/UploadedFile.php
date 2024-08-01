@@ -27,8 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * from $_FILES, according to PSR-7 standard.
  *
  * Highly inspired by https://github.com/phly/http/
- *
- * @internal Note that this is not public API yet.
  */
 class UploadedFile implements UploadedFileInterface
 {
