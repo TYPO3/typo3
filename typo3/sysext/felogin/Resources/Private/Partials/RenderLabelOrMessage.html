@@ -1,7 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" data-namespace-typo3-fluid="true"
-        xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-        xmlns:fluid="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
-<fluid:spaceless>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:spaceless>
     <f:if condition="{settings.{key}}">
         <f:then>
             {settings.{key}}
@@ -10,5 +8,5 @@
             <f:translate key="{key}"/>
         </f:else>
     </f:if>
-</fluid:spaceless>
+</f:spaceless>
 </html>
