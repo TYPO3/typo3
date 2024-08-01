@@ -212,7 +212,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
                 GeneralUtility::makeInstance(
                     UserAspect::class,
                     $frontendUser,
-                    [$simulateUserGroup]
+                    [$simulateUserGroup, -2]
                 )
             );
         }
