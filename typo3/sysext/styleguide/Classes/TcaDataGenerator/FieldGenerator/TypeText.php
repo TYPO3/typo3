@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
@@ -26,7 +25,6 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
 final class TypeText extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     protected array $matchArray = [

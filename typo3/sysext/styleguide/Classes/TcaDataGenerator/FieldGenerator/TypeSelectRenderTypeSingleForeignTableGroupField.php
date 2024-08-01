@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordDataAwareInterface;
 
 /**
  * Generate data for type=select fields.
@@ -28,8 +28,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
-final class TypeSelectRenderTypeSingleForeignTableGroupField extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeSelectRenderTypeSingleForeignTableGroupField extends AbstractFieldGenerator implements FieldGeneratorInterface, RecordDataAwareInterface
 {
     protected array $matchArray = [
         'fieldName' => 'select_single_21',
@@ -43,16 +42,25 @@ final class TypeSelectRenderTypeSingleForeignTableGroupField extends AbstractFie
         ],
     ];
 
+    private ?RecordData $recordData = null;
+
     public function __construct(
         private readonly ConnectionPool $connectionPool,
-        private readonly RecordData $recordData,
     ) {}
+
+    public function setRecordData(RecordData $recordData): void
+    {
+        $this->recordData = $recordData;
+    }
 
     /**
      * Returns the generated value to be inserted into DB for this field
      */
     public function generate(array $data): int
     {
+        if ($this->recordData === null) {
+            throw new \RuntimeException('Not initialized. Call setRecordData() first.', 1726780932);
+        }
         $connection = $this->connectionPool->getConnectionForTable('tx_styleguide_elements_select_single_21_foreign');
         $groups = ['group3', 'group4', 'group5'];
         foreach ($groups as $group) {

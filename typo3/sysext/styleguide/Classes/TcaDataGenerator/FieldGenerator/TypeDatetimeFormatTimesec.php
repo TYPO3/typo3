@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\IntegerType;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
@@ -29,7 +28,6 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
 final class TypeDatetimeFormatTimesec extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     protected array $matchArray = [

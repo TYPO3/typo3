@@ -17,18 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordDataAwareInterface;
 
 /**
  * Generate data for type=inline fields
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
-final class TypeInline1n extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeInline1n extends AbstractFieldGenerator implements FieldGeneratorInterface, RecordDataAwareInterface
 {
     protected array $matchArray = [
         'fieldConfig' => [
@@ -40,10 +39,16 @@ final class TypeInline1n extends AbstractFieldGenerator implements FieldGenerato
         ],
     ];
 
+    private ?RecordData $recordData = null;
+
     public function __construct(
         private readonly ConnectionPool $connectionPool,
-        private readonly RecordData $recordData,
     ) {}
+
+    public function setRecordData(RecordData $recordData): void
+    {
+        $this->recordData = $recordData;
+    }
 
     /**
      * Additionally check that "foreign_table" is set to something.
@@ -61,6 +66,9 @@ final class TypeInline1n extends AbstractFieldGenerator implements FieldGenerato
 
     public function generate(array $data): int
     {
+        if ($this->recordData === null) {
+            throw new \RuntimeException('Not initialized. Call setRecordData() first.', 1726780936);
+        }
         $childTable = $data['fieldConfig']['config']['foreign_table'];
         // Insert an empty row again to have the uid already. This is useful for
         // possible further inline that may be attached to this child.

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
@@ -29,7 +28,6 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandlerInterface;
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
 final class InlineMnGroup extends AbstractTableHandler implements TableHandlerInterface
 {
     /**

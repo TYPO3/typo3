@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordDataAwareInterface;
 
 /**
  * Generate data for type=inline fields.
@@ -29,8 +29,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
-final class TypeInlineExpandsingle extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeInlineExpandsingle extends AbstractFieldGenerator implements FieldGeneratorInterface, RecordDataAwareInterface
 {
     protected array $matchArray = [
         'fieldConfig' => [
@@ -44,10 +43,16 @@ final class TypeInlineExpandsingle extends AbstractFieldGenerator implements Fie
         ],
     ];
 
+    private ?RecordData $recordData = null;
+
     public function __construct(
         private readonly ConnectionPool $connectionPool,
-        private readonly RecordData $recordData,
     ) {}
+
+    public function setRecordData(RecordData $recordData): void
+    {
+        $this->recordData = $recordData;
+    }
 
     /**
      * Additionally check that "foreign_table" is set to something.
@@ -62,6 +67,9 @@ final class TypeInlineExpandsingle extends AbstractFieldGenerator implements Fie
      */
     public function generate(array $data): int
     {
+        if ($this->recordData === null) {
+            throw new \RuntimeException('Not initialized. Call setRecordData() first.', 1726780935);
+        }
         $connection = $this->connectionPool->getConnectionForTable('tx_styleguide_inline_expandsingle_child');
         $childRowsToCreate = 3;
         for ($i = 0; $i < $childRowsToCreate; $i++) {

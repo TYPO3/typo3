@@ -24,7 +24,9 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
  */
 final readonly class RecordData
 {
-    public function __construct(private FieldGeneratorResolver $fieldGeneratorResolver) {}
+    public function __construct(
+        private FieldGeneratorResolver $fieldGeneratorResolver,
+    ) {}
 
     /**
      * Generate data for a given table and insert into database
@@ -49,6 +51,11 @@ final readonly class RecordData
             ];
             try {
                 $generator = $this->fieldGeneratorResolver->resolve($data);
+                if ($generator instanceof RecordDataAwareInterface) {
+                    // This interface prevents circular DI with
+                    // generators that need RecordData again.
+                    $generator->setRecordData($this);
+                }
                 $fieldValues[$fieldName] = $generator->generate($data);
             } catch (GeneratorNotFoundException $e) {
                 // No op if no matching generator was found

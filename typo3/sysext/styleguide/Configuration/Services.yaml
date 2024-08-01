@@ -6,3 +6,137 @@ services:
 
   TYPO3\CMS\Styleguide\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\Styleguide\TcaDataGenerator\Generator:
+    # List of handlers to create full table data. There is a
+    # "default" handler for casual tables, but some $mainTables
+    # like several inline scenarios need more sophisticated handlers.
+    arguments:
+      $tableHandler:
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler\StaticData'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler\InlineMn'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler\InlineMnGroup'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler\InlineMnSymmetric'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler\InlineMnSymmetricGroup'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler\General'
+
+  TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorResolver:
+    # List of field generators to be called for values.
+    # Order is important: Each class is called top-bottom until one returns
+    # true on match(), then generate() is called on it.
+    arguments:
+      $fieldValueGenerators:
+        # dbType = date / datetime have ['config']['default'] set, so match them before general ConfigDefault
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeFormatDateDbTypeDate'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeDbTypeDatetime'
+
+        # p/w generators are *before* 'default', so hashing kicks in, even if default is set.
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypePasswordHashedFalse'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypePassword'
+
+        # Use value from ['config']['default'] if given
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\ConfigDefault'
+
+        # Specific type=input generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputMax4Min4'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputMax4'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalAlphanum'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeEmail'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalIsIn'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalMd5'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalNum'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalUpper'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalYear'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputWizardSelect'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputDynamicTextWithRecordUid'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputForceL10nParent'
+
+        # General type=input generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInput'
+
+        # Specific type=datetime generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeFormatDate'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeRequiredFormatDate'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeFormatTime'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeFormatTimesec'
+
+        # General type=datetime generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetime'
+
+        # General type=link generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeLink'
+
+        # General type=color generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeColor'
+
+        # Specific type=number generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeNumberFormatDecimal'
+
+        # General type=number generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeNumber'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeTextDefaultExtrasRichtext'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeTextFormatDatetime'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeTextFormatCodeEditor'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeTextMax30'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeTextWizardSelect'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeTextWizardTable'
+
+        # General type=text generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeText'
+
+        # General type=check generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeCheck'
+
+        # General type=radio generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeRadio'
+
+        # General type=none generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeNoneFormatDateTime'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeNone'
+
+        # l10n_source is type=passthrough but needs an int
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypePassthroughFieldL10nSource'
+        # General type=passthrough generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypePassthrough'
+
+        # General type=user generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeUser'
+        # General type=uuid generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeUuid'
+
+        # type=group
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupFal'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupAllowedBeUsersBeGroups'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupAllowedBeUsers'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupAllowedStaticdata'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupAllowedPages'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupAllowedSysFiles'
+
+        # type=folder
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeFolder'
+
+        # type=select
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeSelectRenderTypeSingleForeignTable'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeSelectRenderTypeSingleForeignTableGroupField'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeSelectRenderTypeSingleForeignTableForType'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeSelectRenderTypeSelectTree'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeSelectStaticData'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeSelect'
+
+        # type=inline
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInlineFalSelectSingle12Foreign'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInlineExpandsingle'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInlineUsecombination'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInlineUsecombinationGroup'
+
+        # type=file
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeFile'
+
+        # type=imageManipulation
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeImageManipulation'
+
+        # General type=inline for simple 1:n parent child relations
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInline1n'
+
+        # General type=flex generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeFlex'

@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordDataAwareInterface;
 
 /**
  * Generate data for type=inline fields.
@@ -29,8 +29,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
-final class TypeInlineUsecombination extends AbstractFieldGenerator implements FieldGeneratorInterface
+final class TypeInlineUsecombination extends AbstractFieldGenerator implements FieldGeneratorInterface, RecordDataAwareInterface
 {
     protected array $matchArray = [
         'fieldConfig' => [
@@ -44,10 +43,16 @@ final class TypeInlineUsecombination extends AbstractFieldGenerator implements F
         ],
     ];
 
+    private ?RecordData $recordData = null;
+
     public function __construct(
         private readonly ConnectionPool $connectionPool,
-        private readonly RecordData $recordData,
     ) {}
+
+    public function setRecordData(RecordData $recordData): void
+    {
+        $this->recordData = $recordData;
+    }
 
     /**
      * Check for tx_styleguide_inline_usecombination and
@@ -71,6 +76,9 @@ final class TypeInlineUsecombination extends AbstractFieldGenerator implements F
      */
     public function generate(array $data): int
     {
+        if ($this->recordData === null) {
+            throw new \RuntimeException('Not initialized. Call setRecordData() first.', 1726780934);
+        }
         if (!isset($GLOBALS['TCA'][$data['fieldConfig']['config']['foreign_table']]['columns']['select_child']['config']['foreign_table'])) {
             throw new \RuntimeException(
                 'mm child table name not found',

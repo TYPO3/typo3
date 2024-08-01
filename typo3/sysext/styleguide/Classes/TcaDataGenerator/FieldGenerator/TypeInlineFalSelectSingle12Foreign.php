@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -30,7 +29,6 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  *
  * @internal
  */
-#[Autoconfigure(public: true)]
 final class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**

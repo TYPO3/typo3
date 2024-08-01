@@ -34,24 +34,10 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 #[Autoconfigure(public: true)]
 final class Generator extends AbstractGenerator
 {
-    /**
-     * List of handlers to create full table data. There is a
-     * "default" handler for casual tables, but some $mainTables
-     * like several inline scenarios need more sophisticated
-     * handlers.
-     */
-    protected array $tableHandler = [
-        TableHandler\StaticData::class,
-        TableHandler\InlineMn::class,
-        TableHandler\InlineMnGroup::class,
-        TableHandler\InlineMnSymmetric::class,
-        TableHandler\InlineMnSymmetricGroup::class,
-        TableHandler\General::class,
-    ];
-
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly RecordFinder $recordFinder,
+        private readonly array $tableHandler,
     ) {}
 
     /**
@@ -137,11 +123,10 @@ final class Generator extends AbstractGenerator
         // Create data for each main table
         foreach ($mainTables as $mainTable) {
             $generator = null;
-            foreach ($this->tableHandler as $handlerName) {
-                $generator = GeneralUtility::makeInstance($handlerName);
+            foreach ($this->tableHandler as $generator) {
                 if (!$generator instanceof TableHandlerInterface) {
                     throw new Exception(
-                        'Table handler ' . $handlerName . ' must implement TableHandlerInterface',
+                        'Table handler ' . $generator . ' must implement TableHandlerInterface',
                         1458302830
                     );
                 }
