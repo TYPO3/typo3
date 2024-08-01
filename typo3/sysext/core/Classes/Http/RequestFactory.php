@@ -21,11 +21,13 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 
 /**
  * Front-end for sending requests, using PSR-7.
  */
+#[AsAlias(RequestFactoryInterface::class, public: true)]
 class RequestFactory implements RequestFactoryInterface
 {
     public function __construct(

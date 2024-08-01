@@ -6,13 +6,6 @@ services:
 
   TYPO3\CMS\Core\:
     resource: '../Classes/*'
-    # glob for services that have been previously available as
-    # container entries and have been removed in the meantime,
-    # e.g. because factories are to be used instead.
-    exclude: '../Classes/{Localization/LanguageService.php}'
-
-  TYPO3\CMS\Core\DependencyInjection\EnvVarProcessor:
-    tags: ['container.env_var_processor']
 
   TYPO3\CMS\Core\Command\ExtensionListCommand:
     tags:
@@ -87,9 +80,6 @@ services:
         defaultProviderAllowed: false
         after: 'totp'
 
-  TYPO3\CMS\Core\Routing\Enhancer\VariableProcessorCache:
-    shared: true
-
   # Soft Reference Parsers
   TYPO3\CMS\Core\DataHandling\SoftReference\SubstituteSoftReferenceParser:
     tags:
@@ -121,24 +111,6 @@ services:
       - name: softreference.parser
         parserKey: url
 
-  TYPO3\CMS\Core\Page\AssetRenderer:
-    public: true
-    arguments:
-      $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
-
-  TYPO3\CMS\Core\TypoScript\AST\AstBuilderInterface:
-    alias: TYPO3\CMS\Core\TypoScript\AST\AstBuilder
-
-  TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface:
-    alias: TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer
-
-  TYPO3\CMS\Core\Utility\DiffUtility:
-    shared: false
-
-  package-dependent-cache-identifier:
-    public: true
-    alias: TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier
-
   # Core caches, cache.core, cache.assets and cache.runtime are injected as
   # early entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
   cache.hash:
@@ -169,15 +141,11 @@ services:
   ## messenger
 
   Symfony\Component\Messenger\Middleware\SendMessageMiddleware:
-    arguments:
-      $sendersLocator: '@Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface'
-      $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
     tags:
+      # TODO: Autoconfigure MiddlewareInterface?
       - { name: 'messenger.middleware' }
 
   Symfony\Component\Messenger\Middleware\HandleMessageMiddleware:
-    arguments:
-      $handlersLocator: '@Symfony\Component\Messenger\Handler\HandlersLocatorInterface'
     tags:
       - name: 'messenger.middleware'
         after: 'Symfony\Component\Messenger\Middleware\SendMessageMiddleware'
@@ -189,15 +157,8 @@ services:
   Symfony\Component\Messenger\MessageBusInterface:
     alias: messenger.bus.default
 
-  TYPO3\CMS\Core\Messenger\HandlersLocator:
-    factory: [ '@TYPO3\CMS\Core\Messenger\HandlersLocatorFactory', 'createHandlersLocator' ]
-
-  TYPO3\CMS\Core\Messenger\TransportLocator:
-    arguments:
-      $sendersLocator: !tagged_locator { tag: 'messenger.sender', index_by: 'identifier' }
-
   Symfony\Component\Messenger\Handler\HandlersLocatorInterface:
-    alias: TYPO3\CMS\Core\Messenger\HandlersLocator
+    factory: [ '@TYPO3\CMS\Core\Messenger\HandlersLocatorFactory', 'createHandlersLocator' ]
 
   Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface:
     alias: TYPO3\CMS\Core\Messenger\TransportLocator
@@ -237,45 +198,12 @@ services:
   Psr\Container\ContainerInterface:
     alias: service_container
     public: true
-  Psr\EventDispatcher\EventDispatcherInterface:
-    alias: TYPO3\CMS\Core\EventDispatcher\EventDispatcher
-    public: true
   Psr\Http\Client\ClientInterface:
     alias: GuzzleHttp\Client
-    public: true
-  Psr\Http\Message\RequestFactoryInterface:
-    alias: TYPO3\CMS\Core\Http\RequestFactory
-    public: true
-  Psr\Http\Message\ResponseFactoryInterface:
-    alias: TYPO3\CMS\Core\Http\ResponseFactory
-    public: true
-  Psr\Http\Message\ServerRequestFactoryInterface:
-    alias: TYPO3\CMS\Core\Http\ServerRequestFactory
-    public: true
-  Psr\Http\Message\StreamFactoryInterface:
-    alias: TYPO3\CMS\Core\Http\StreamFactory
-    public: true
-  Psr\Http\Message\UploadedFileFactoryInterface:
-    alias: TYPO3\CMS\Core\Http\UploadedFileFactory
-    public: true
-  Psr\Http\Message\UriFactoryInterface:
-    alias: TYPO3\CMS\Core\Http\UriFactory
     public: true
   GuzzleHttp\ClientInterface:
     alias: GuzzleHttp\Client
     public: true
-  Symfony\Contracts\EventDispatcher\EventDispatcherInterface:
-    alias: TYPO3\CMS\Core\Adapter\EventDispatcherAdapter
-    public: true
-  TYPO3\CMS\Core\Mail\MailerInterface:
-    alias: TYPO3\CMS\Core\Mail\Mailer
-    public: true
-
-  # Content-Security-Policy Handlers
-
-  TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationRepository:
-    arguments:
-      $staticMutations: '@content.security.policies'
 
   # External dependencies
 

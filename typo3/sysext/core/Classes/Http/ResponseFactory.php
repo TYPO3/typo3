@@ -19,10 +19,12 @@ namespace TYPO3\CMS\Core\Http;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
 /**
  * @internal Note that this is not public API, use PSR-17 interfaces instead.
  */
+#[AsAlias(ResponseFactoryInterface::class, public: true)]
 class ResponseFactory implements ResponseFactoryInterface
 {
     /**

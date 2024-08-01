@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ResolutionRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -34,6 +35,7 @@ final class MutationRepository
      *        (from DI, declared in `Configuration/ContentSecurityPolicies.php`)
      */
     public function __construct(
+        #[Autowire(service: 'content.security.policies')]
         private readonly Map $staticMutations,
         private readonly SiteFinder $siteFinder,
         private readonly ModelService $modelService,

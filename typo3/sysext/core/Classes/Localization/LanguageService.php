@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Localization;
 
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *     ->createFromUserPreferences($GLOBALS['BE_USER']);
  * ```
  */
+#[Exclude]
 class LanguageService
 {
     /**

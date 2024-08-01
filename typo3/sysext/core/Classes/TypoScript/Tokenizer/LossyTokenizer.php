@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\Tokenizer;
 
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\BlockCloseLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ConditionElseLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ConditionLine;
@@ -53,6 +54,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
  *
  * @internal: Internal tokenizer structure.
  */
+#[AsAlias(TokenizerInterface::class)]
 final class LossyTokenizer implements TokenizerInterface
 {
     private LineStream $lineStream;

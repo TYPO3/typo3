@@ -19,10 +19,12 @@ namespace TYPO3\CMS\Core\Http;
 
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
 /**
  * @internal Note that this is not public API, use PSR-17 interfaces instead.
  */
+#[AsAlias(StreamFactoryInterface::class, public: true)]
 class StreamFactory implements StreamFactoryInterface
 {
     /**

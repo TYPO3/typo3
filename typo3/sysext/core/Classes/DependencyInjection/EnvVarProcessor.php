@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\DependencyInjection\EnvVarProcessorInterface;
 use TYPO3\CMS\Core\Core\Environment;
 
 /**
  * @internal
  */
+#[AutoconfigureTag('container.env_var_processor')]
 class EnvVarProcessor implements EnvVarProcessorInterface
 {
     /**

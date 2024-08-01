@@ -20,10 +20,12 @@ namespace TYPO3\CMS\Core\Http;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
 /**
  * @internal Note that this is not public API, use PSR-17 interfaces instead.
  */
+#[AsAlias(UploadedFileFactoryInterface::class, public: true)]
 class UploadedFileFactory implements UploadedFileFactoryInterface
 {
     /**

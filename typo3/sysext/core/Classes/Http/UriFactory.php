@@ -19,10 +19,12 @@ namespace TYPO3\CMS\Core\Http;
 
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
 /**
  * @internal Note that this is not public API, use PSR-17 interfaces instead.
  */
+#[AsAlias(UriFactoryInterface::class, public: true)]
 class UriFactory implements UriFactoryInterface
 {
     /**

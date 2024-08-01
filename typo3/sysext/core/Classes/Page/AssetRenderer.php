@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Page;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent;
 use TYPO3\CMS\Core\Page\Event\BeforeStylesheetsRenderingEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * @internal The AssetRenderer is used for the asset rendering and is not public API
  */
+#[Autoconfigure(public: true)]
 class AssetRenderer
 {
     /**

@@ -20,11 +20,15 @@ namespace TYPO3\CMS\Core\Utility;
 use cogpowered\FineDiff\Diff;
 use cogpowered\FineDiff\Granularity\Character;
 use cogpowered\FineDiff\Granularity\Word;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
  * Helper service to create a diff HTML of two strings.
  * It is currently a facade for lolli42/finediff.
+ *
+ * @todo Remove "shared: false" in v14 when `$this->stripTags` is dropped.
  */
+#[Autoconfigure(shared: false)]
 class DiffUtility
 {
     /**

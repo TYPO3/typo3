@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal Note that this is not public API yet.
  */
+#[AsAlias(ServerRequestFactoryInterface::class, public: true)]
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
     /**
