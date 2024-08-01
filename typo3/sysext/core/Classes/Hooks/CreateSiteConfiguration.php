@@ -58,7 +58,7 @@ class CreateSiteConfiguration
          *   - pages table
          *   - live workspace
          *   - resolved uids
-         *   - pages on root level
+         *   - pages on root level OR with is_siteroot set
          *   - pages in default language
          *   - non-versioned records
          *   - allowed doktypes
@@ -68,8 +68,8 @@ class CreateSiteConfiguration
             || $table !== 'pages'
             || $dataHandler->BE_USER->workspace > 0
             || !isset($dataHandler->substNEWwithIDs[$id])
-            || (int)$fieldValues['pid'] !== 0
             || (int)$fieldValues['l10n_parent'] !== 0
+            || ((int)$fieldValues['pid'] !== 0 && !($fieldValues['is_siteroot'] ?? false))
             || (isset($fieldValues['t3ver_oid']) && (int)$fieldValues['t3ver_oid'] > 0)
             || !in_array((int)$fieldValues['doktype'], $this->allowedPageTypes, true)
             || $dataHandler->isImporting
