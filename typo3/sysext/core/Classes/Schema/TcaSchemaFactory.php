@@ -130,7 +130,7 @@ class TcaSchemaFactory
      */
     public function load(array $tca, bool $force = false): void
     {
-        if ($this->schemata !== []) {
+        if (!$force && $this->schemata !== []) {
             return;
         }
         if (!$force && $this->cache->has($this->cacheIdentifier)) {
