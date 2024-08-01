@@ -25,7 +25,7 @@
     >
         <f:for each="{modules}" as="module" iteration="iterator">
             <li
-                role="menuitem"
+                role="presentation"
                 data-modulemenu-level="1"
                 {f:if(condition: module.subModules, then: 'class="modulemenu-group modulemenu-group-{f:if(condition: module.collapsed, then: \'collapsed\', else: \'expanded\')}"')}
             >
@@ -40,12 +40,16 @@
 
 <f:section name="Menu">
     <ul
+        id="modulemenu-group-{parent.identifier}"
         role="menu"
         aria-orientation="vertical"
+        <f:if condition="{parent.title}">
+            aria-label="{f:translate(key: parent.title, default: parent.title)}"
+        </f:if>
         class="modulemenu-group-container collapse {f:if(condition: '{parent}', then: '{f:if(condition: parent.collapsed, else: \'show\')}')}"
     >
         <f:for each="{modules}" as="module">
-            <li role="menuitem" data-modulemenu-level="2">
+            <li role="presentation" data-modulemenu-level="2">
                 <f:render section="Button" arguments="{module: module, tabIndex: '-1'}" />
             </li>
         </f:for>
@@ -59,8 +63,13 @@
     </f:if>
     <{f:if(condition: module.shouldBeLinked, then: 'a', else: 'button')}
         <f:if condition="{module.shouldBeLinked}">
-            href="{f:be.uri(route: module.identifier)}"
-            data-moduleroute-identifier="{module.identifier}"
+            <f:then>
+                href="{f:be.uri(route: module.identifier)}"
+                data-moduleroute-identifier="{module.identifier}"
+            </f:then>
+            <f:else>
+                type="button"
+            </f:else>
         </f:if>
         role="menuitem"
         title="{moduleTitle}"
@@ -68,7 +77,7 @@
         tabindex="{tabIndex}"
         data-modulemenu-identifier="{module.identifier}"
         data-modulemenu-collapsible="{f:if(condition: showChildren, then: 'true', else: 'false')}"
-        {f:if(condition: showChildren, then: 'aria-haspopup="true" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}"')}
+        {f:if(condition: showChildren, then: 'aria-controls="modulemenu-group-{module.identifier}" aria-haspopup="menu" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}"')}
     >
         <span class="modulemenu-icon" aria-hidden="true"><core:icon size="medium" identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline" /></span>
         <span class="modulemenu-name">{moduleTitle}</span>

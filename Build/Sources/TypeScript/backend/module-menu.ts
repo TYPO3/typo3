@@ -148,13 +148,23 @@ class ModuleMenu {
     );
   }
 
-  private static toggleModuleGroup(element: HTMLElement): void {
+  private static toggleModuleGroup(element: HTMLElement, expand?: boolean): void {
     const menuItem = ModuleMenu.getModuleMenuItemFromElement(element);
     const moduleGroup = menuItem.element.closest('.modulemenu-group');
     const moduleGroupContainer = moduleGroup.querySelector('.modulemenu-group-container');
-    const collapseInstance = Collapse.getOrCreateInstance(moduleGroupContainer);
+    const collapseInstance = Collapse.getOrCreateInstance(moduleGroupContainer, {
+      toggle: false // Do not auto-toggle on init.
+    });
 
-    if (menuItem.expanded) {
+    if (expand === undefined) {
+      // No intended state given: toggle state.
+      expand = !menuItem.expanded;
+    } else if (expand === menuItem.expanded) {
+      // Intended state is already reached.
+      return;
+    }
+
+    if (!expand) {
       ModuleMenu.addCollapsedMainMenuItem(menuItem.identifier);
       collapseInstance.hide();
     } else {
@@ -162,10 +172,10 @@ class ModuleMenu {
       collapseInstance.show();
     }
 
-    moduleGroup.classList.toggle('modulemenu-group-collapsed', menuItem.expanded);
-    moduleGroup.classList.toggle('modulemenu-group-expanded', !menuItem.expanded);
+    moduleGroup.classList.toggle('modulemenu-group-collapsed', !expand);
+    moduleGroup.classList.toggle('modulemenu-group-expanded', expand);
 
-    element.setAttribute('aria-expanded', (!menuItem.expanded).toString());
+    element.setAttribute('aria-expanded', (expand).toString());
   }
 
   private static highlightModule(identifier: string): void {
@@ -334,15 +344,16 @@ class ModuleMenu {
         item = ModuleMenu.getNextItem(menuItem.element);
         break;
       case KeyTypesEnum.LEFT:
+        if (menuItem.collapsible) {
+          ModuleMenu.toggleModuleGroup(menuItem.element, false);
+        }
         if (menuItem.level > 1) {
           item = ModuleMenu.getParentItem(menuItem.element);
         }
         break;
       case KeyTypesEnum.RIGHT:
         if (menuItem.collapsible) {
-          if (!menuItem.expanded) {
-            ModuleMenu.toggleModuleGroup(menuItem.element);
-          }
+          ModuleMenu.toggleModuleGroup(menuItem.element, true);
           item = ModuleMenu.getFirstChildItem(menuItem.element);
         }
         break;
@@ -362,27 +373,39 @@ class ModuleMenu {
         break;
       case KeyTypesEnum.SPACE:
       case KeyTypesEnum.ENTER:
-        if (event.key === KeyTypesEnum.SPACE || menuItem.collapsible) {
-          // we do not want the click handler to run, need to prevent default immediately
-          event.preventDefault();
+        // we do not want the click handler to run, need to prevent default immediately
+        event.preventDefault();
+
+        if (event.repeat) {
+          // Ignore repeated event invocation
+          break;
         }
+
         if (menuItem.collapsible) {
-          ModuleMenu.toggleModuleGroup(menuItem.element);
-          if (menuItem.element.attributes.getNamedItem('aria-expanded').value === 'true') {
-            item = ModuleMenu.getFirstChildItem(menuItem.element);
-          }
+          // Always select the first element of sub-menu on ENTER/SPACE. Open sub-menu if necessary.
+          ModuleMenu.toggleModuleGroup(menuItem.element, true);
+          item = ModuleMenu.getFirstChildItem(menuItem.element);
+        } else {
+          menuItem.element.click();
         }
         break;
       case KeyTypesEnum.ESCAPE:
+        // Close sub-menu on ESCAPE either from inside sub-menu or when trigger-button is focused.
         if (menuItem.level > 1) {
           item = ModuleMenu.getParentItem(menuItem.element);
-          ModuleMenu.toggleModuleGroup(item);
+        } else if (menuItem.level === 1 && menuItem.collapsible) {
+          item = menuItem.element;
+        }
+        if (item !== null) {
+          ModuleMenu.toggleModuleGroup(item, false);
         }
         break;
       default:
         item = null;
     }
     if (item !== null) {
+      // Disable additional scrolling e.g. triggered by arrow-keypress.
+      event.preventDefault();
       item.focus();
     }
   }
@@ -403,6 +426,11 @@ class ModuleMenu {
       event.preventDefault();
       ModuleMenu.toggleModuleGroup(target);
     }).delegateTo(moduleMenu, ModuleMenuSelector.collapsible);
+
+    new RegularEvent('shown.bs.collapse', (event: Event, target: HTMLElement): void => {
+      // Wait for collapsible to become fully visible, then scroll module-group into view if necessary.
+      target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }).delegateTo(moduleMenu, '.modulemenu-group');
   }
 
   /**
