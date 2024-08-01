@@ -946,6 +946,30 @@ class EditDocumentController
     }
 
     /**
+     * Translated site root pages must use their translation parent as
+     * the preview target, otherwise the site configuration cannot be
+     * found correctly.
+     *
+     * @param int $pageUid
+     * @return int
+     */
+    protected function resolvePreviewPageId(int $pageUid): int
+    {
+        if (!$pageUid) {
+            return $pageUid;
+        }
+
+        $l10nPointer = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
+        $page = BackendUtility::getRecord('pages', $pageUid, 'is_siteroot,' . $l10nPointer);
+
+        if ($page['is_siteroot'] && $page[$l10nPointer]) {
+            return $page[$l10nPointer];
+        }
+
+        return $pageUid;
+    }
+
+    /**
      * Returns the anchor section for the preview url
      */
     protected function getPreviewUrlAnchorSection(): string
@@ -967,7 +991,7 @@ class EditDocumentController
         $pageId = (int)($this->popViewId ?: $this->viewId);
 
         if ($table === 'pages') {
-            $currentPageId = (int)$recordId;
+            $currentPageId = $this->resolvePreviewPageId((int)$recordId);
         } else {
             $currentPageId = max(0, $pageId);
         }
