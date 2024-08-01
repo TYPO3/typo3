@@ -23,6 +23,12 @@
 			<trans-unit id="localized.to.de_at" resname="localized.to.de_at">
 				<source>EN label</source>
 			</trans-unit>
+			<trans-unit id="localized.to.en" resname="localized.to.en">
+				<source>EN label</source>
+			</trans-unit>
+			<trans-unit id="not.localized.to.en" resname="not.localized.to.en">
+				<source>EN label</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

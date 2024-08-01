@@ -156,6 +156,10 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de_at" languageKey="de_at" />',
                 'DE_AT label',
             ],
+            'languageKey en when key is overridden in en' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.en" />',
+                'EN label override en',
+            ],
         ];
     }
 
@@ -173,6 +177,10 @@ final class TranslateViewHelperTest extends FunctionalTestCase
     public static function fallbackChainInNonExtbaseContextDataProvider(): array
     {
         return [
+            'languageKey fallback to default when key is not localized to en' => [
+                '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:not.localized.to.en" />',
+                'EN label',
+            ],
             'languageKey fallback to default when key is not localized to de' => [
                 '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:not.localized.to.de" languageKey="de" />',
                 'EN label',

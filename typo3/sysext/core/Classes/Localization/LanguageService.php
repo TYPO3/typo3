@@ -338,12 +338,6 @@ class LanguageService
 
     private function getTypo3LanguageKey(): string
     {
-        if ($this->locale === null) {
-            return 'default';
-        }
-        if ($this->locale->getName() === 'en') {
-            return 'default';
-        }
-        return $this->locale->getName();
+        return $this->locale?->getName() ?? 'default';
     }
 }
