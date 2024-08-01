@@ -1419,7 +1419,21 @@ backend_layout {
                 ],
             ],
         ],
-
+        'checkbox_27' => [
+            'label' => 'checkbox_27',
+            'description' => 'renderType=checkboxToggle multiple with cols=inline',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    ['label' => 'foo'],
+                    ['label' => 'bar'],
+                    ['label' => 'baz'],
+                    ['label' => 'husel'],
+                ],
+                'cols' => 'inline',
+            ],
+        ],
         'radio_1' => [
             'label' => 'radio_1',
             'description' => 'radio_1 three options, one without label',
@@ -1892,7 +1906,7 @@ backend_layout {
                 --div--;uuid,
                     uuid_1, uuid_2, uuid_3,
                 --div--;check,
-                    checkbox_1, checkbox_9, checkbox_2, checkbox_17, checkbox_25, checkbox_18, checkbox_24, checkbox_19, checkbox_26,
+                    checkbox_1, checkbox_9, checkbox_2, checkbox_17, checkbox_25, checkbox_18, checkbox_24, checkbox_27, checkbox_19, checkbox_26,
                     checkbox_20, checkbox_21, checkbox_22, checkbox_23, checkbox_3, checkbox_4, checkbox_6, checkbox_7, checkbox_8,
                     checkbox_10, checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16,
                 --div--;radio,

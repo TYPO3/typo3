@@ -157,6 +157,7 @@ class CheckboxToggleElement extends AbstractFormElement
     protected function renderSingleCheckboxElement($label, $itemCounter, $formElementValue, $numberOfItems, $additionalInformation, $disabled): string
     {
         $config = $additionalInformation['fieldConf']['config'];
+        $inline = ($config['cols'] ?? '') === 'inline';
         $invert = isset($config['items'][0]['invertStateDisplay']) && $config['items'][0]['invertStateDisplay'] === true;
         $checkboxParameters = $this->checkBoxParams(
             $additionalInformation['itemFormElName'],
@@ -168,7 +169,7 @@ class CheckboxToggleElement extends AbstractFormElement
         );
         $checkboxId = htmlspecialchars(StringUtility::getUniqueId('formengine-check-toggle-') . '-' . $itemCounter);
         return '
-            <div class="form-check form-switch' . (!$disabled ? '' : ' disabled') . '">
+            <div class="form-check form-switch' . ($inline ? ' form-check-inline' : '') . (!$disabled ? '' : ' disabled') . '">
                 <input type="checkbox"
                     class="form-check-input"
                     value="1"
