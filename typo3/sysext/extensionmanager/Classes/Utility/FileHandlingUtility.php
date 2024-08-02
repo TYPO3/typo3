@@ -73,9 +73,8 @@ class FileHandlingUtility implements LoggerAwareInterface
      */
     public function getExtensionDir(string $extensionKey): string
     {
-        $paths = Extension::returnInstallPaths();
-        $path = $paths['Local'] ?? '';
-        if (!$path || !is_dir($path) || !$extensionKey) {
+        $path = Environment::getExtensionsPath();
+        if (!is_dir($path) || !$extensionKey) {
             throw new ExtensionManagerException(
                 sprintf(
                     $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:fileHandling.installPathWasNoDirectory'),
@@ -84,7 +83,7 @@ class FileHandlingUtility implements LoggerAwareInterface
                 1337280417
             );
         }
-        return $path . $extensionKey . '/';
+        return $path . '/' . $extensionKey . '/';
     }
 
     /**

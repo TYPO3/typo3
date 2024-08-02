@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Enum\ExtensionType;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper;
 
@@ -64,9 +65,12 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
     {
         /** @var Extension $extension */
         $extension = $this->arguments['extension'];
-        $installPaths = Extension::returnInstallPaths();
+        $installPaths =  [
+            ExtensionType::System->value,
+            ExtensionType::Local->value,
+        ];
         $pathSelector = '<ul class="extensionmanager-is-hidden">';
-        foreach ($installPaths as $installPathType => $installPath) {
+        foreach ($installPaths as $installPathType) {
             /** @var string $installPathType */
             $pathSelector .= '<li>
                 <input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="downloadPath" class="downloadPath" value="' . htmlspecialchars($installPathType) . '" ' . ($installPathType === 'Local' ? 'checked="checked"' : '') . ' />

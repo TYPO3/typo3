@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -232,30 +231,6 @@ class Extension extends AbstractEntity
     public function getMd5hash(): string
     {
         return $this->md5hash;
-    }
-
-    /**
-     * Possible install paths
-     *
-     * @static
-     */
-    public static function returnInstallPaths(): array
-    {
-        return [
-            'System' => Environment::getFrameworkBasePath() . '/',
-            'Local' => Environment::getExtensionsPath() . '/',
-        ];
-    }
-
-    /**
-     * Allowed install names: System, Local
-     *
-     * @static
-     */
-    public static function returnAllowedInstallTypes(): array
-    {
-        $installPaths = self::returnInstallPaths();
-        return array_keys($installPaths);
     }
 
     public function setSerializedDependencies(string $dependencies): void

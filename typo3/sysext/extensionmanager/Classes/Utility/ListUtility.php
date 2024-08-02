@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Extensionmanager\Enum\ExtensionType;
 
 /**
  * Utility for dealing with extension list related functions
@@ -150,12 +151,15 @@ class ListUtility implements SingletonInterface
     protected function getInstallTypeForPackage(PackageInterface $package): string
     {
         if (Environment::isComposerMode()) {
-            return $package->getPackageMetaData()->isFrameworkType() ? 'System' : 'Local';
+            return $package->getPackageMetaData()->isFrameworkType()
+                ? ExtensionType::System->value
+                : ExtensionType::Local->value;
         }
-        foreach (Extension::returnInstallPaths() as $installType => $installPath) {
-            if (str_starts_with($package->getPackagePath(), $installPath)) {
-                return $installType;
-            }
+        if (str_starts_with($package->getPackagePath(), Environment::getFrameworkBasePath())) {
+            return ExtensionType::System->value;
+        }
+        if (str_starts_with($package->getPackagePath(), Environment::getExtensionsPath())) {
+            return ExtensionType::Local->value;
         }
         return '';
     }

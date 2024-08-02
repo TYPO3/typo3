@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Enum\ExtensionType;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -49,13 +49,13 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
     public function render(): string
     {
         $extension = $this->arguments['extension'];
+        $extensionKey = $extension['key'];
+        $extensionType = ExtensionType::tryFrom($extension['type']);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        if (ExtensionManagementUtility::isLoaded($extension['key'])) {
-            return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
-        }
         if (
-            !in_array($extension['type'], Extension::returnAllowedInstallTypes()) ||
-            $extension['type'] === 'System'
+            ExtensionManagementUtility::isLoaded($extensionKey)
+            || $extensionType === null
+            || $extensionType === ExtensionType::System
         ) {
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
         }
@@ -69,7 +69,7 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
         $uriBuilder->setFormat('json');
         $uri = $uriBuilder->uriFor(
             'removeExtension',
-            ['extension' => $extension['key']],
+            ['extension' => $extensionKey],
             'Action'
         );
         $this->tag->addAttribute('href', $uri);

@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
 use TYPO3\CMS\Core\Package\PackageActivationService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
-use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
@@ -200,7 +200,10 @@ class InstallUtility implements LoggerAwareInterface
      */
     protected function isValidExtensionPath(string $path): bool
     {
-        $allowedPaths = Extension::returnInstallPaths();
+        $allowedPaths = [
+            Environment::getFrameworkBasePath(),
+            Environment::getExtensionsPath(),
+        ];
         foreach ($allowedPaths as $allowedPath) {
             if (str_starts_with($path, $allowedPath)) {
                 return true;
