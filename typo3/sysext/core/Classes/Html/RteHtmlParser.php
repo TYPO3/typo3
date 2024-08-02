@@ -78,12 +78,15 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
 
     /**
      * A list of HTML attributes for <p> tags. Because <p> tags are wrapped currently in a special handling,
-     * they have a special place for configuration via 'proc.keepPDIVattribs'
+     * they have a special place for configuration via 'proc.allowAttributes' (formerly 'proc.keepPDIVattribs').
+     *
+     * Since TYPO3 v12.4 it is also used for the <span> tag, see #104520.
      */
     protected array $allowedAttributesForParagraphTags = [
         'class',
         'align',
         'id',
+        'style',
         'title',
         'dir',
         'lang',
@@ -113,12 +116,20 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         'section',
     ];
 
+    protected string $defaultGlobalNesting = 'b,i,u,a,center,font,sub,sup,strong,em,strike,span';
+
+    /**
+     * List of tags where all attributes are removed
+     * This is usually overridden with "noAttrib"
+     */
+    protected string $defaultTagListWithoutAttributes = 'b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike';
+
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     /**
-     * Sanitize and streamline given options (usually from RichTextConfiguration results "proc."
+     * Sanitize and streamline given options (usually from RichTextConfiguration results "proc.")
      * and set them to the respective properties.
      */
     protected function setProcessingConfiguration(array $processingConfiguration): void
@@ -137,7 +148,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             $this->blockElementList = $this->procOptions['blockElementList'];
         }
 
-        // Define which attributes are allowed on <p> tags
+        // Define which attributes are allowed on <p> and <span> tags
         if (isset($this->procOptions['allowAttributes.'])) {
             $this->allowedAttributesForParagraphTags = $this->procOptions['allowAttributes.'];
         }
@@ -543,7 +554,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     // Setting up span tags if they are allowed:
                     if (isset($keepTags['span'])) {
                         $keepTags['span'] = [
-                            'allowedAttribs' => 'id,class,style,title,lang,xml:lang,dir,itemscope,itemtype,itemprop',
+                            'allowedAttribs' => implode(',', $this->allowedAttributesForParagraphTags),
                             'fixAttrib' => [
                                 'class' => [
                                     'removeIfFalse' => 1,
@@ -551,17 +562,17 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                             ],
                             'rmTagIfNoAttrib' => 1,
                         ];
-                        if (!empty($this->allowedClasses)) {
+                        if ($this->allowedClasses !== []) {
                             $keepTags['span']['fixAttrib']['class']['list'] = $this->allowedClasses;
                         }
                     }
                     // Setting further options, getting them from the processing options
                     $TSc = $this->procOptions['HTMLparser_db.'] ?? [];
                     if (empty($TSc['globalNesting'])) {
-                        $TSc['globalNesting'] = 'b,i,u,a,center,font,sub,sup,strong,em,strike,span';
+                        $TSc['globalNesting'] = $this->defaultGlobalNesting;
                     }
                     if (empty($TSc['noAttrib'])) {
-                        $TSc['noAttrib'] = 'b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike';
+                        $TSc['noAttrib'] = $this->defaultTagListWithoutAttributes;
                     }
                     // Transforming the array from TypoScript to regular array:
                     [$keepTags] = $this->HTMLparserConfig($TSc, $keepTags);
