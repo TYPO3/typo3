@@ -24,6 +24,8 @@
 		"typo3/cms-core": "13.3.*@dev",
 		"typo3/cms-felogin": "13.3.*@dev",
 		"typo3/cms-fluid-styled-content": "13.3.*@dev",
+		"typo3/cms-form": "13.3.*@dev",
+		"typo3/cms-indexed-search": "13.3.*@dev",
 		"typo3/cms-seo": "13.3.*@dev"
 	},
 	"conflict": {

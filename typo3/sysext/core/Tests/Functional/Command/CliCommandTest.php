@@ -43,6 +43,8 @@ final class CliCommandTest extends AbstractCommandTestCase
         'fluid_styled_content',
         'seo',
         'styleguide',
+        'form',
+        'indexed_search',
         'install',
     ];
 

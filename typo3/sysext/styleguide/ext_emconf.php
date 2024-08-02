@@ -14,6 +14,8 @@ $EM_CONF[$_EXTKEY] = [
             'felogin' => '13.3.0',
             'fluid_styled_content' => '13.3.0',
             'seo' => '13.3.0',
+            'form' => '13.3.0',
+            'indexed_search' => '13.3.0',
         ],
         'conflicts' => [],
         'suggests' => [],
