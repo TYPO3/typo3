@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Merger\SetupConfigMerger;
 use TYPO3\CMS\Core\TypoScript\AST\Node\ChildNode;
@@ -122,7 +123,11 @@ final readonly class FrontendTypoScriptFactory
         array $expressionMatcherVariables,
         ?PhpFrontend $typoScriptCache,
     ): array {
-        $conditionTreeCacheIdentifier = 'settings-condition-tree-' . hash('xxh3', json_encode($sysTemplateRows, JSON_THROW_ON_ERROR));
+        $cacheCriteria = [
+            'sets' => $site instanceof Site ? $site->getSets() : [],
+            'sysTemplateRows' => $sysTemplateRows,
+        ];
+        $conditionTreeCacheIdentifier = 'settings-condition-tree-' . hash('xxh3', json_encode($cacheCriteria, JSON_THROW_ON_ERROR));
 
         if ($conditionTree = $typoScriptCache?->require($conditionTreeCacheIdentifier)) {
             // Got the (flat) include tree of all settings conditions for this TypoScript combination from cache.
@@ -334,6 +339,7 @@ final readonly class FrontendTypoScriptFactory
         $setupTypoScriptCacheIdentifier = 'setup-' . hash(
             'xxh3',
             json_encode($sysTemplateRows, JSON_THROW_ON_ERROR)
+            . json_encode($site instanceof Site ? $site->getSets() : [], JSON_THROW_ON_ERROR)
             . json_encode($frontendTypoScript->getSettingsConditionList(), JSON_THROW_ON_ERROR)
             . json_encode($frontendTypoScript->getSetupConditionList(), JSON_THROW_ON_ERROR)
         );
