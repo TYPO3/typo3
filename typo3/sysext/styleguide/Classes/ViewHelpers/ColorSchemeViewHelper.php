@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Styleguide\ViewHelpers;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -52,17 +53,19 @@ final class ColorSchemeViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
+        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/element/theme-switcher-element.js');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:styleguide/Resources/Private/Language/locallang.xlf', 'colorScheme.');
+
         $content = $this->renderChildren();
-        $schemes = ['light', 'dark'];
+        $defaultScheme = 'light';
+        $id = StringUtility::getUniqueId('styleguide-example-');
 
         $markup = [];
         $markup[] = '<div class="styleguide-example">';
-        foreach ($schemes as $scheme) {
-            $markup[] = '<div class="example" data-color-scheme="' . $scheme . '">';
-            $markup[] =     '<strong class="styleguide-example-label">' . $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:colorScheme.' . $scheme . '.label') . '</strong>';
-            $markup[] =     str_replace('<UNIQUEID>', uniqid($scheme), $content);
-            $markup[] = '</div>';
-        }
+        $markup[] =     '<div class="example t3js-styleguide-example" id="' . htmlspecialchars($id) . '" data-color-scheme="' . $defaultScheme . '">';
+        $markup[] =         '<typo3-styleguide-theme-switcher activetheme="' . htmlspecialchars($defaultScheme) . '" example="#' . htmlspecialchars($id) . '"></typo3-styleguide-theme-switcher>';
+        $markup[] =         str_replace('<UNIQUEID>', uniqid($defaultScheme), $content);
+        $markup[] =     '</div>';
         $markup[] = '</div>';
 
         return implode('', $markup);

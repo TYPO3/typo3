@@ -4369,6 +4369,7 @@ td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap
 .styleguide-example .example:last-child{border-bottom-left-radius:var(--typo3-component-border-radius);border-bottom-right-radius:var(--typo3-component-border-radius)}
 .styleguide-example .example:before{display:none}
 .styleguide-example .example .styleguide-example-label{display:block;color:var(--typo3-example-label-color);font-weight:700;font-size:.9em;margin-bottom:var(--typo3-example-label-margin-bottom)}
+.colorscheme-switch{display:flex;align-items:center;padding-bottom:var(--typo3-spacing);gap:.5em}
 
 @container (min-width: 740px) {
   .styleguide-navigation {

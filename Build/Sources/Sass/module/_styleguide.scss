@@ -118,6 +118,13 @@
     }
 }
 
+.colorscheme-switch {
+    display: flex;
+    align-items: center;
+    padding-bottom: var(--typo3-spacing);
+    gap: .5em;
+}
+
 /* clean-css ignore:start */
 @container (min-width: 740px) {
     .styleguide-navigation {
