@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -68,6 +69,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         protected readonly UriBuilder $uriBuilder,
         protected readonly QueryParser $queryParser,
         protected readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
@@ -343,6 +345,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         $platform = $queryBuilder->getConnection()->getDatabasePlatform();
         $isPostgres = $platform instanceof DoctrinePostgreSQLPlatform;
         $fieldsToSearchWithin = $this->searchableSchemaFieldsCollector->getFields($tableName);
+        [$subSchemaDivisorFieldName, $fieldsSubSchemaTypes] = $this->getSchemaFieldSubSchemaTypes($tableName);
         $constraints = [];
         // If the search string is a simple integer, assemble an equality comparison
         if (MathUtility::canBeInterpretedAsInteger($queryString)) {
@@ -358,19 +361,39 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             foreach ($fieldsToSearchWithin as $fieldName => $field) {
                 // Assemble the search condition only if the field is an integer
                 if ($field instanceof NumberFieldType || $field instanceof DateTimeFieldType) {
-                    $constraints[] = $queryBuilder->expr()->eq(
+                    $searchConstraint = $queryBuilder->expr()->eq(
                         $fieldName,
                         $queryBuilder->createNamedParameter($queryString, Connection::PARAM_INT)
                     );
                 } else {
                     // Otherwise assemble a like condition
-                    $constraints[] = $queryBuilder->expr()->like(
+                    $searchConstraint = $queryBuilder->expr()->like(
                         $fieldName,
                         $queryBuilder->createNamedParameter(
                             '%' . $queryBuilder->escapeLikeWildcards($queryString) . '%'
                         )
                     );
                 }
+
+                // If this table has subtypes (e.g. tt_content.CType), we want to ensure that only CType that contain
+                // e.g. "bodytext" in their list of fields, to search through them. This is important when a field
+                // is filled but its type has been changed.
+                if ($subSchemaDivisorFieldName !== ''
+                    && isset($fieldsSubSchemaTypes[$fieldName])
+                    && $fieldsSubSchemaTypes[$fieldName] !== []
+                ) {
+                    // Using `IN()` with a string-value quoted list is fine for all database systems, even when
+                    // used on integer-typed fields and no additional work required here to mitigate something.
+                    $searchConstraint = $queryBuilder->expr()->and(
+                        $searchConstraint,
+                        $queryBuilder->expr()->in(
+                            $subSchemaDivisorFieldName,
+                            $queryBuilder->quoteArrayBasedValueListToStringList($fieldsSubSchemaTypes[$fieldName])
+                        ),
+                    );
+                }
+
+                $constraints[] = $searchConstraint;
             }
         } else {
             $like = '%' . $queryBuilder->escapeLikeWildcards($queryString) . '%';
@@ -411,6 +434,24 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                             QueryHelper::stripLogicalOperatorPrefix(QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), $fieldConfig['search']['andWhere']))
                         );
                     }
+                }
+
+                // If this table has subtypes (e.g. tt_content.CType), we want to ensure that only CType that contain
+                // e.g. "bodytext" in their list of fields, to search through them. This is important when a field
+                // is filled but its type has been changed.
+                if ($subSchemaDivisorFieldName !== ''
+                    && isset($fieldsSubSchemaTypes[$fieldName])
+                    && $fieldsSubSchemaTypes[$fieldName] !== []
+                ) {
+                    // Using `IN()` with a string-value quoted list is fine for all database systems, even when
+                    // used on integer-typed fields and no additional work required here to mitigate something.
+                    $searchConstraint = $queryBuilder->expr()->and(
+                        $searchConstraint,
+                        $queryBuilder->expr()->in(
+                            $subSchemaDivisorFieldName,
+                            $queryBuilder->quoteArrayBasedValueListToStringList($fieldsSubSchemaTypes[$fieldName])
+                        ),
+                    );
                 }
 
                 $constraints[] = $searchConstraint;
@@ -476,6 +517,44 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             ]);
         }
         return $editLink;
+    }
+
+    /**
+     * Returns table subschema divisor field name and a list of fields not included in all subSchemas along with
+     * the list of subSchemas they are included.
+     *
+     * @param string $tableName
+     * @return array{0: string, 1: array<string, list<string>>}
+     * @todo Consider to move this to {@see SearchableSchemaFieldsCollector}, a dedicated trait or a shared place to
+     *       mitigate code duplication (and maintenance in different places).
+     *       - {@see PageRecordProvider::getSchemaFieldSubSchemaTypes()}
+     *       - {@see DatabaseRecordList::getSchemaFieldSubSchemaTypes()}
+     */
+    protected function getSchemaFieldSubSchemaTypes(string $tableName): array
+    {
+        $result = [
+            0 => '',
+            1 => [],
+        ];
+        if (!$this->tcaSchemaFactory->has($tableName)) {
+            return $result;
+        }
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        if ($schema->getSubSchemaDivisorField() === null) {
+            return $result;
+        }
+        $result[0] = $schema->getSubSchemaDivisorField()->getName();
+        foreach ($schema->getSubSchemata() as $recordType => $subSchemata) {
+            foreach ($subSchemata->getFields() as $fieldInSubschema => $fieldConfig) {
+                $result[1][$fieldInSubschema] ??= [];
+                $result[1][$fieldInSubschema][] = $recordType;
+            }
+        }
+        // Remove all fields which are contained in all sub-schemas, determined by
+        // comparing each field types count with table types count.
+        $subSchemaCount = count($schema->getSubSchemata());
+        $result[1] = array_filter($result[1], static fn($value) => count($value) < $subSchemaCount);
+        return $result;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

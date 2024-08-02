@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListTableActionsEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Search\LiveSearch\DatabaseRecordProvider;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
@@ -56,6 +57,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -412,6 +414,7 @@ class DatabaseRecordList
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly ModuleProvider $moduleProvider,
         protected readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {
         $this->calcPerms = new Permission();
         $this->spaceIcon = '<span class="btn btn-default disabled" aria-hidden="true">' . $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
@@ -2599,37 +2602,59 @@ class DatabaseRecordList
         }
 
         $searchableFields = $this->searchableSchemaFieldsCollector->getFields($table);
+        [$subSchemaDivisorFieldName, $fieldsSubSchemaTypes] = $this->getSchemaFieldSubSchemaTypes($table);
         // Get fields from ctrl section of TCA first
         if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
             $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
             foreach ($searchableFields as $field) {
                 $fieldConfig = $field->getConfiguration();
+                $searchConstraint = null;
                 if ($field instanceof NumberFieldType || $field instanceof DateTimeFieldType) {
                     if (!isset($fieldConfig['search']['pidonly'])
                         || ($fieldConfig['search']['pidonly'] && $currentPid > 0)
                     ) {
-                        $constraints[] = $expressionBuilder->and(
+                        $searchConstraint = $expressionBuilder->and(
                             $expressionBuilder->eq($field->getName(), (int)$this->searchString),
                             $expressionBuilder->eq($tablePidField, $currentPid)
                         );
+                    } else {
+                        continue;
                     }
                 } else {
-                    $constraints[] = $expressionBuilder->like(
+                    $searchConstraint = $expressionBuilder->like(
                         $field->getName(),
                         $queryBuilder->quote('%' . $this->searchString . '%')
                     );
                 }
+
+                // If this table has subtypes (e.g. tt_content.CType), we want to ensure that only CType that contain
+                // e.g. "bodytext" in their list of fields, to search through them. This is important when a field
+                // is filled but its type has been changed.
+                if ($subSchemaDivisorFieldName !== ''
+                    && isset($fieldsSubSchemaTypes[$field->getName()])
+                    && $fieldsSubSchemaTypes[$field->getName()] !== []
+                ) {
+                    // Using `IN()` with a string-value quoted list is fine for all database systems, even when
+                    // used on integer-typed fields and no additional work required here to mitigate something.
+                    $searchConstraint = $queryBuilder->expr()->and(
+                        $searchConstraint,
+                        $queryBuilder->expr()->in(
+                            $subSchemaDivisorFieldName,
+                            $queryBuilder->quoteArrayBasedValueListToStringList($fieldsSubSchemaTypes[$field->getName()])
+                        ),
+                    );
+                }
+
+                $constraints[] = $searchConstraint;
             }
         } elseif ($searchableFields->count() > 0) {
             $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->searchString) . '%');
             foreach ($searchableFields as $field) {
                 $fieldConfig = $field->getConfiguration();
-                $searchConstraint = $expressionBuilder->and(
-                    $expressionBuilder->comparison(
-                        'LOWER(' . $queryBuilder->castFieldToTextType($field->getName()) . ')',
-                        'LIKE',
-                        'LOWER(' . $like . ')'
-                    )
+                $searchConstraint = $expressionBuilder->comparison(
+                    'LOWER(' . $queryBuilder->castFieldToTextType($field->getName()) . ')',
+                    'LIKE',
+                    'LOWER(' . $like . ')'
                 );
                 if (is_array($fieldConfig['search'] ?? null)) {
                     $searchConfig = $fieldConfig['search'];
@@ -2638,14 +2663,37 @@ class DatabaseRecordList
                         $searchConstraint = $expressionBuilder->and($expressionBuilder->like($field->getName(), $like));
                     }
                     if (($searchConfig['pidonly'] ?? false) && $currentPid > 0) {
-                        $searchConstraint = $searchConstraint->with($expressionBuilder->eq($tablePidField, (int)$currentPid));
+                        $searchConstraint = $expressionBuilder->and(
+                            $searchConstraint,
+                            $expressionBuilder->eq($tablePidField, (int)$currentPid),
+                        );
                     }
                     if ($searchConfig['andWhere'] ?? false) {
-                        $searchConstraint = $searchConstraint->with(
+                        $searchConstraint = $expressionBuilder->and(
+                            $searchConstraint,
                             QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere']))
                         );
                     }
                 }
+
+                // If this table has subtypes (e.g. tt_content.CType), we want to ensure that only CType that contain
+                // e.g. "bodytext" in their list of fields, to search through them. This is important when a field
+                // is filled but its type has been changed.
+                if ($subSchemaDivisorFieldName !== ''
+                    && isset($fieldsSubSchemaTypes[$field->getName()])
+                    && $fieldsSubSchemaTypes[$field->getName()] !== []
+                ) {
+                    // Using `IN()` with a string-value quoted list is fine for all database systems, even when
+                    // used on integer-typed fields and no additional work required here to mitigate something.
+                    $searchConstraint = $queryBuilder->expr()->and(
+                        $searchConstraint,
+                        $queryBuilder->expr()->in(
+                            $subSchemaDivisorFieldName,
+                            $queryBuilder->quoteArrayBasedValueListToStringList($fieldsSubSchemaTypes[$field->getName()])
+                        ),
+                    );
+                }
+
                 $constraints[] = $searchConstraint;
             }
         }
@@ -3419,5 +3467,43 @@ class DatabaseRecordList
         if (!($cells['secondary']['divider'] ?? false)) {
             $this->addActionToCellGroup($cells, '<hr class="dropdown-divider">', 'divider');
         }
+    }
+
+    /**
+     * Returns table subschema divisor field name and a list of fields not included in all subSchemas along with
+     * the list of subSchemas they are included.
+     *
+     * @param string $tableName
+     * @return array{0: string, 1: array<string, list<string>>}
+     * @todo Consider to move this to {@see SearchableSchemaFieldsCollector}, a dedicated trait or a shared place to
+     *       mitigate code duplication (and maintenance in different places).
+     *       - {@see PageRecordProvider::getSchemaFieldSubSchemaTypes()}
+     *       - {@see DatabaseRecordProvider::getSchemaFieldSubSchemaTypes()}
+     */
+    protected function getSchemaFieldSubSchemaTypes(string $tableName): array
+    {
+        $result = [
+            0 => '',
+            1 => [],
+        ];
+        if (!$this->tcaSchemaFactory->has($tableName)) {
+            return $result;
+        }
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        if ($schema->getSubSchemaDivisorField() === null) {
+            return $result;
+        }
+        $result[0] = $schema->getSubSchemaDivisorField()->getName();
+        foreach ($schema->getSubSchemata() as $recordType => $subSchemata) {
+            foreach ($subSchemata->getFields() as $fieldInSubschema => $fieldConfig) {
+                $result[1][$fieldInSubschema] ??= [];
+                $result[1][$fieldInSubschema][] = $recordType;
+            }
+        }
+        // Remove all fields which are contained in all sub-schemas, determined by
+        // comparing each field types count with table types count.
+        $subSchemaCount = count($schema->getSubSchemata());
+        $result[1] = array_filter($result[1], static fn($value) => count($value) < $subSchemaCount);
+        return $result;
     }
 }
