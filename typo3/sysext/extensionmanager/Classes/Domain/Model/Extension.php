@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
+use TYPO3\CMS\Extensionmanager\Enum\ExtensionState;
 
 /**
  * Main extension model
@@ -26,21 +28,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Extension extends AbstractEntity
 {
-    /**
-     * Contains default states.
-     */
-    protected static array $defaultStates = [
-        0 => 'alpha',
-        1 => 'beta',
-        2 => 'stable',
-        3 => 'experimental',
-        4 => 'test',
-        5 => 'obsolete',
-        6 => 'excludeFromUpdates',
-        7 => 'deprecated',
-        999 => 'n/a',
-    ];
-
     protected string $extensionKey = '';
     protected string $version = '';
     protected int $integerVersion = 0;
@@ -142,45 +129,16 @@ class Extension extends AbstractEntity
         return $this->state;
     }
 
-    public function getStateString(): string
+    public function getCategoryString(): string
     {
-        $stateString = '';
-        if (isset(self::$defaultStates[$this->getState()])) {
-            $stateString = self::$defaultStates[$this->getState()];
-        }
-        return $stateString;
+        $category = ExtensionCategory::from($this->category);
+        return $category->getStringValue();
     }
 
-    /**
-     * Returns either array with all default states or index/title
-     * of a state entry.
-     */
-    public function getDefaultState(int|string|null $state = null): mixed
+    public function getStateString(): string
     {
-        $defaultState = '';
-        if ($state === null) {
-            $defaultState = self::$defaultStates;
-        } else {
-            if (is_string($state)) {
-                $stateIndex = array_search(strtolower($state), self::$defaultStates);
-                if ($stateIndex === false) {
-                    // default state
-                    $stateIndex = 999;
-                }
-                $defaultState = $stateIndex;
-            } else {
-                if (is_int($state) && $state >= 0) {
-                    if (array_key_exists($state, self::$defaultStates)) {
-                        $stateTitle = self::$defaultStates[$state];
-                    } else {
-                        // default state
-                        $stateTitle = 'n/a';
-                    }
-                    $defaultState = $stateTitle;
-                }
-            }
-        }
-        return $defaultState;
+        $state = ExtensionState::from($this->state);
+        return $state->getStringValue();
     }
 
     public function setTitle(string $title): void

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
+use TYPO3\CMS\Extensionmanager\Enum\ExtensionState;
 use TYPO3\CMS\Extensionmanager\Parser\ExtensionXmlParser;
 
 /**
@@ -236,7 +237,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
             $subject->getLastuploaddate(),
             $subject->getT3xfilemd5(),
             $this->remoteIdentifier,
-            $this->extensionModel->getDefaultState($subject->getState() ?: ''),
+            ExtensionState::fromValue($subject->getState() ?: '')->value,
             $subject->getReviewstate(),
             ExtensionCategory::fromValue($subject->getCategory() ?: '')->value,
             $subject->getDescription() ?: '',

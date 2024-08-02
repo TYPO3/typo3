@@ -62,4 +62,20 @@ enum ExtensionCategory: int
             default => self::Miscellaneous,
         };
     }
+
+    public function getStringValue(): string
+    {
+        return match ($this) {
+            self::Backend => 'be',
+            self::Module => 'module',
+            self::Frontend => 'fe',
+            self::Plugin => 'plugin',
+            self::Miscellaneous => 'misc',
+            self::Services => 'services',
+            self::Templates => 'templates',
+            self::Documentation => 'doc',
+            self::Example => 'example',
+            self::Distribution => 'distribution',
+        };
+    }
 }
