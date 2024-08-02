@@ -1,0 +1,6 @@
+"tx_blogexample_domain_model_blog",,,,,,
+,"uid","pid","title",sys_language_uid,"deleted","hidden"
+,1,20,"My Blog",0,0,0
+"tx_blogexample_domain_model_post",,,,,,,
+,"uid","pid","title",sys_language_uid,"deleted","hidden","blog"
+,1,30,"My Post",0,0,0,1

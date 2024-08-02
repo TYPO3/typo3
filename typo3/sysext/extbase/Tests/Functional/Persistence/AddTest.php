@@ -21,12 +21,15 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Tests\BlogExample\Domain\Model\Administrator;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Enum\Salutation;
 use TYPO3Tests\BlogExample\Domain\Model\Person;
+use TYPO3Tests\BlogExample\Domain\Model\Post;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 
 final class AddTest extends FunctionalTestCase
@@ -91,5 +94,94 @@ final class AddTest extends FunctionalTestCase
         $person = $this->persistentManager->getObjectByIdentifier(1, Person::class);
 
         self::assertSame(Salutation::MR, $person->getSalutation());
+    }
+
+    #[Test]
+    public function addObjectSetsPidFromParentObjectToObjectStorageProperty(): void
+    {
+        $post = new Post();
+        $post->setTitle('My Post');
+
+        $newBlog = new Blog();
+        $newBlog->setPid(123);
+        $newBlog->setTitle('My Blog');
+        $newBlog->addPost($post);
+
+        $this->blogRepository->add($newBlog);
+        $this->persistentManager->persistAll();
+
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultAddObjectSetsPidFromParentObjectToObjectStorageProperty.csv');
+    }
+
+    #[Test]
+    public function addObjectSetsPidFromParentObjectToDomainObjectProperty(): void
+    {
+        $administrator = new Administrator();
+        $administrator->setName('Admin');
+
+        $newBlog = new Blog();
+        $newBlog->setTitle('My Blog');
+        $newBlog->setPid(123);
+        $newBlog->setAdministrator($administrator);
+
+        $this->blogRepository->add($newBlog);
+        $this->persistentManager->persistAll();
+
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultAddObjectSetsPidFromParentObjectToDomainObjectProperty.csv');
+    }
+
+    #[Test]
+    public function addObjectRespectsPersistenceStoragePid(): void
+    {
+        $configuration = [
+            'persistence' => [
+                'storagePid' => 10,
+            ],
+            'extensionName' => 'blog_example',
+            'pluginName' => 'test',
+        ];
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration($configuration);
+
+        $newBlog = new Blog();
+        $newBlog->setTitle('My Blog');
+
+        $this->blogRepository->add($newBlog);
+        $this->persistentManager->persistAll();
+
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultAddObjectRespectsPersistenceStoragePid.csv');
+    }
+
+    #[Test]
+    public function addObjectRespectsNewRecordStoragePid(): void
+    {
+        $configuration = [
+            'persistence' => [
+                'classes' => [
+                    Blog::class => [
+                        'newRecordStoragePid' => 20,
+                    ],
+                    Post::class => [
+                        'newRecordStoragePid' => 30,
+                    ],
+                ],
+            ],
+            'extensionName' => 'blog_example',
+            'pluginName' => 'test',
+        ];
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration($configuration);
+
+        $post = new Post();
+        $post->setTitle('My Post');
+
+        $newBlog = new Blog();
+        $newBlog->setTitle('My Blog');
+        $newBlog->addPost($post);
+
+        $this->blogRepository->add($newBlog);
+        $this->persistentManager->persistAll();
+
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultAddObjectRespectsNewRecordStoragePid.csv');
     }
 }

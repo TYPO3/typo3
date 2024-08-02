@@ -1,0 +1,6 @@
+"tx_blogexample_domain_model_blog",,,,,,
+,"uid","pid","title",sys_language_uid,"deleted","hidden"
+,1,123,"My Blog",0,0,0
+"fe_users",,,,,,
+,"uid","pid","name","deleted","disable"
+,1,123,"Admin",0,0

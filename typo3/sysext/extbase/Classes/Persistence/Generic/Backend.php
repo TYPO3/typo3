@@ -331,7 +331,7 @@ class Backend implements BackendInterface, SingletonInterface
             }
             $cleanProperty = $parentObject->_getCleanProperty($propertyName);
             if ($object->_isNew()) {
-                $this->insertObject($object);
+                $this->insertObject($object, $parentObject);
                 $this->attachObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
                 // if a new object is inserted, all objects after this need to have their sorting updated
                 $updateSortingOfFollowing = true;
@@ -558,6 +558,17 @@ class Backend implements BackendInterface, SingletonInterface
                 $row[$parentColumnDataMap->getParentKeyFieldName()] = (int)$parentObject->getUid();
             }
         }
+
+        if ($parentObject) {
+            // Ensure a nested object respects the storage PID for new records or inherits the storage PID from
+            // the parent object.
+            $storagePidForObject = $this->determineStoragePageIdForNewRecord($object);
+            if ($storagePidForObject === 0) {
+                $storagePidForObject = $parentObject->getPid() ?? 0;
+            }
+            $row['pid'] = $storagePidForObject;
+        }
+
         $uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
         $localizedUid = $object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         $identifier = $uid . ($localizedUid ? '_' . $localizedUid : '');
