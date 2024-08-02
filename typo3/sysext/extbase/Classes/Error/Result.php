@@ -429,7 +429,7 @@ class Result
         foreach ($otherResult->getSubResults() as $subPropertyName => $subResult) {
             /** @var Result $subResult */
             if (array_key_exists($subPropertyName, $this->propertyResults) && $this->propertyResults[$subPropertyName]->hasMessages()) {
-                $this->forProperty($subPropertyName)->merge($subResult);
+                $this->forProperty((string)$subPropertyName)->merge($subResult);
             } else {
                 $this->propertyResults[$subPropertyName] = $subResult;
                 $subResult->setParent($this);

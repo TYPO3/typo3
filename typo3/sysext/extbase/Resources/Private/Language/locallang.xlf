@@ -66,6 +66,39 @@
 			<trans-unit id="validator.url.notvalid" resname="validator.url.notvalid">
 				<source>The given subject is no valid URL.</source>
 			</trans-unit>
+			<trans-unit id="validation.mimetype.notallowed" resname="validation.mimetype.notallowed">
+				<source>The mime type '%s' is not allowed.</source>
+			</trans-unit>
+			<trans-unit id="validation.mimetype.invalidextension" resname="validation.mimetype.invalidextension">
+				<source>The file extension provided "%s" does not match to expected media types.</source>
+			</trans-unit>
+			<trans-unit id="validation.denyphpupload.notallowed" resname="validation.denyphpupload.notallowed">
+				<source>Uploading of files with PHP executable file extensions is not allowed.</source>
+			</trans-unit>
+			<trans-unit id="validation.filesize.less" resname="validation.filesize.less">
+				<source>The file must be larger than %s in size.</source>
+			</trans-unit>
+			<trans-unit id="validation.filesize.exceed" resname="validation.filesize.exceed">
+				<source>The file must be smaller than %s in size.</source>
+			</trans-unit>
+			<trans-unit id="validation.imagedimensions.width.notvalid" resname="validation.imagedimensions.width.notvalid">
+				<source>The image must be exactly %s pixels in width.</source>
+			</trans-unit>
+			<trans-unit id="validation.imagedimensions.height.notvalid" resname="validation.imagedimensions.height.notvalid">
+				<source>The image must be exactly %s pixels in height.</source>
+			</trans-unit>
+			<trans-unit id="validation.imagedimensions.minwidth.notvalid" resname="validation.imagedimensions.minwidth.notvalid">
+				<source>The image must at least have a width of %s pixels.</source>
+			</trans-unit>
+			<trans-unit id="validation.imagedimensions.minheight.notvalid" resname="validation.imagedimensions.minheight.notvalid">
+				<source>The image must at least have a heigh of %s pixels.</source>
+			</trans-unit>
+			<trans-unit id="validation.imagedimensions.maxwidth.notvalid" resname="validation.imagedimensions.maxwidth.notvalid">
+				<source>The image is too wide. The maximum width is %s pixels.</source>
+			</trans-unit>
+			<trans-unit id="validation.imagedimensions.maxheight.notvalid" resname="validation.imagedimensions.maxheight.notvalid">
+				<source>The image is too high. The maximum height is %s pixels.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
