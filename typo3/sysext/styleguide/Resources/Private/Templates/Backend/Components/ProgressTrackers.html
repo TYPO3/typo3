@@ -1,0 +1,69 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/element/progress-tracker-element.js'
+        }"
+    />
+</f:section>
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.headline" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.introtext" /></f:sanitize.html>
+        </p>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.default.headline" /></h2>
+        <f:variable name="codeSnippetDefault">
+            <typo3-backend-progress-tracker stages="[&quot;Stage 1&quot;,&quot;Stage 2&quot;,&quot;Stage 3&quot;,&quot;Stage 4&quot;]"></typo3-backend-progress-tracker>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
+            {codeSnippetDefault}
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.activeStage.headline" /></h2>
+        <f:variable name="codeSnippetActive">
+            <typo3-backend-progress-tracker active="2" stages="[&quot;Stage 1&quot;,&quot;Stage 2&quot;,&quot;Stage 3&quot;,&quot;Stage 4&quot;]"></typo3-backend-progress-tracker>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetActive}" decodeEntities="true">
+            {codeSnippetActive}
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.default.headline" /></h4>
+        <sg:colorScheme>
+            {codeSnippetDefault}
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.activeStage.headline" /></h4>
+        <sg:colorScheme>
+            {codeSnippetActive}
+        </sg:colorScheme>
+    </div>
+
+</f:section>
+
+</html>

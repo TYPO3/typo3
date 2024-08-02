@@ -94,6 +94,9 @@
 			<trans-unit id="action.progressIndicators" resname="action.progressIndicators">
 				<source>Progress indicators</source>
 			</trans-unit>
+			<trans-unit id="action.progressTrackers" resname="action.progressTrackers">
+				<source>Progress trackers</source>
+			</trans-unit>
 			<trans-unit id="action.shadows" resname="action.shadows">
 				<source>Shadows</source>
 			</trans-unit>
@@ -496,6 +499,20 @@
 			</trans-unit>
 			<trans-unit id="component.progressIndicator.section.value.headline" resname="component.progressIndicator.section.value.headline">
 				<source>Value</source>
+			</trans-unit>
+
+			<!-- Component: Progress trackers -->
+			<trans-unit id="component.progressTrackers.headline" resname="component.progressTrackers.headline">
+				<source>Progress trackers</source>
+			</trans-unit>
+			<trans-unit id="component.progressTrackers.introtext" resname="component.progressTrackers.introtext">
+				<source><![CDATA[Progress trackers are a segmented variant of progress bars, diving the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
+			</trans-unit>
+			<trans-unit id="component.progressTrackers.section.default.headline" resname="component.progressTrackers.section.default.headline">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="component.progressTrackers.section.activeStage.headline" resname="component.progressTrackers.section.activeStage.headline">
+				<source>Active stage</source>
 			</trans-unit>
 
 			<!-- Component: Tabs -->

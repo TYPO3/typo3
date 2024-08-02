@@ -15,17 +15,11 @@
 			<trans-unit id="wizard.progress" resname="wizard.progress">
 				<source>Step {0} of {1}</source>
 			</trans-unit>
-			<trans-unit id="wizard.progressWithLabel" resname="wizard.progress">
-				<source>Step {0} of {1}: {2}</source>
-			</trans-unit>
-			<trans-unit id="wizard.progressStep.start">
-				<source>Start</source>
-			</trans-unit>
 			<trans-unit id="wizard.progressStep.configure">
 				<source>Configure</source>
 			</trans-unit>
 			<trans-unit id="wizard.progressStep.finish">
-				<source>Finish!	</source>
+				<source>Finish</source>
 			</trans-unit>
 			<trans-unit id="wizard.processing.title" resname="wizard.processing.title">
 				<source>Processing...</source>

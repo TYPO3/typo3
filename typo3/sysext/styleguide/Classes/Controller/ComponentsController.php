@@ -57,6 +57,7 @@ final class ComponentsController
         'notifications',
         'pagination',
         'progressIndicators',
+        'progressTrackers',
         'tab',
         'tables',
         'trees',
@@ -90,6 +91,7 @@ final class ComponentsController
             'notifications' => $this->renderNotificationsView($request),
             'pagination' => $this->renderPaginationView($request),
             'progressIndicators' => $this->renderProgressIndicatorsView($request),
+            'progressTrackers' => $this->renderProgressTrackersView($request),
             'tab' => $this->renderTabView($request),
             'tables' => $this->renderTablesView($request),
             'trees' => $this->renderTreesView($request),
@@ -332,6 +334,17 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/ProgressIndicators');
+    }
+
+    private function renderProgressTrackersView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'progressTrackers');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'renderProgressTrackersView',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/ProgressTrackers');
     }
 
     private function renderTabView(ServerRequestInterface $request): ResponseInterface
