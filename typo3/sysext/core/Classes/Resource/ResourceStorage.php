@@ -2375,16 +2375,24 @@ class ResourceStorage implements ResourceStorageInterface
             new BeforeFolderDeletedEvent($folderObject)
         );
 
-        foreach ($this->getFilesInFolder($folderObject, 0, 0, false, $deleteRecursively) as $file) {
-            $this->deleteFile($file);
-        }
+        $recyclerFolder = $this->getNearestRecyclerFolder($folderObject);
 
-        $result = $this->driver->deleteFolder($folderObject->getIdentifier(), $deleteRecursively);
+        if ($recyclerFolder) {
+            $folderObject->moveTo($recyclerFolder);
+            $result = false;
+        } else {
+            foreach ($this->getFilesInFolder($folderObject, 0, 0, false, $deleteRecursively) as $file) {
+                $this->deleteFile($file);
+            }
+
+            $result = $this->driver->deleteFolder($folderObject->getIdentifier(), $deleteRecursively);
+        }
 
         $this->eventDispatcher->dispatch(
             new AfterFolderDeletedEvent($folderObject, $result)
         );
-        return $result;
+
+        return $recyclerFolder ? true : $result;
     }
 
     /**
@@ -2905,19 +2913,19 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * Get the nearest Recycler folder for given file
+     * Get the nearest Recycler folder for given file or folder
      *
      * Return null if:
-     *  - There is no folder with ROLE_RECYCLER in the rootline of the given File
-     *  - File is a ProcessedFile (we don't know the concept of recycler folders for processedFiles)
-     *  - File is located in a folder with ROLE_RECYCLER
+     *  - There is no folder with ROLE_RECYCLER in the rootline of the given Resource
+     *  - Resource is a ProcessedFile (we don't know the concept of recycler folders for processedFiles)
+     *  - Resource is located in a folder with ROLE_RECYCLER
      *
-     * @param FileInterface $file
+     * @param ResourceInterface $resource
      * @return Folder|null
      */
-    protected function getNearestRecyclerFolder(FileInterface $file)
+    protected function getNearestRecyclerFolder(ResourceInterface $resource)
     {
-        if ($file instanceof ProcessedFile) {
+        if ($resource instanceof ProcessedFile) {
             return null;
         }
         // if the storage is not browsable we cannot fetch the parent folder of the file so no recycler handling is possible
@@ -2926,7 +2934,7 @@ class ResourceStorage implements ResourceStorageInterface
         }
 
         $recyclerFolder = null;
-        $folder = $file->getParentFolder();
+        $folder = $resource->getParentFolder();
 
         do {
             if ($folder->getRole() === FolderInterface::ROLE_RECYCLER) {
