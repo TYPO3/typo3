@@ -100,9 +100,16 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                 throw new \RuntimeException(sprintf('Error handler could not fetch error page "%s", status code: %s', $resolvedUrl, $subResponse->getStatusCode()), 1544172839);
             }
 
-            return $this->responseFactory->createResponse($this->statusCode)
+            $response = $this->responseFactory->createResponse($this->statusCode)
                 ->withHeader('content-type', $subResponse->getHeader('content-type'))
                 ->withBody($subResponse->getBody());
+
+            foreach (['Content-Security-Policy', 'Content-Security-Policy-Report-Only'] as $header) {
+                if ($subResponse->hasHeader($header)) {
+                    $response = $response->withHeader($header, $subResponse->getHeader($header));
+                }
+            }
+            return $response;
         } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
             return new HtmlResponse('Invalid error handler configuration: ' . $this->errorHandlerConfiguration['errorContentSource']);
         }
