@@ -69,7 +69,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     {
         $packageConfiguration = ($path ?? static::getPackagePath()) . 'Configuration/RequestMiddlewares.php';
         if (file_exists($packageConfiguration)) {
-            $middlewaresInPackage = require $packageConfiguration;
+            $middlewaresInPackage = self::requireFile($packageConfiguration);
             if (is_array($middlewaresInPackage)) {
                 $middlewares->exchangeArray(array_replace_recursive($middlewares->getArrayCopy(), $middlewaresInPackage));
             }
@@ -88,7 +88,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         $packageName = $packageName ?? static::getPackageName();
         $routesFileNameForPackage = $path . 'Configuration/Backend/Routes.php';
         if (file_exists($routesFileNameForPackage)) {
-            $definedRoutesInPackage = require $routesFileNameForPackage;
+            $definedRoutesInPackage = self::requireFile($routesFileNameForPackage);
             if (is_array($definedRoutesInPackage)) {
                 array_walk($definedRoutesInPackage, static function (&$options) use ($packageName, $path) {
                     // Add packageName and absolutePackagePath to all routes
@@ -100,7 +100,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         }
         $routesFileNameForPackage = $path . 'Configuration/Backend/AjaxRoutes.php';
         if (file_exists($routesFileNameForPackage)) {
-            $definedRoutesInPackage = require $routesFileNameForPackage;
+            $definedRoutesInPackage = self::requireFile($routesFileNameForPackage);
             if (is_array($definedRoutesInPackage)) {
                 foreach ($definedRoutesInPackage as $routeIdentifier => $routeOptions) {
                     // prefix the route with "ajax_" as "namespace"
@@ -147,7 +147,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         $packageName = $packageName ?? static::getPackageName();
         $modulesFileNameForPackage = $path . 'Configuration/Backend/Modules.php';
         if (file_exists($modulesFileNameForPackage)) {
-            $definedModulesInPackage = require $modulesFileNameForPackage;
+            $definedModulesInPackage = self::requireFile($modulesFileNameForPackage);
             if (is_array($definedModulesInPackage)) {
                 array_walk($definedModulesInPackage, static function (&$module) use ($packageName, $path) {
                     // Add packageName and absolutePackagePath to all modules
@@ -171,7 +171,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         $fileName = $path . 'Configuration/ContentSecurityPolicies.php';
         if (file_exists($fileName)) {
             /** @var Map<Scope, MutationCollection> $mutationsInPackage */
-            $mutationsInPackage = require $fileName;
+            $mutationsInPackage = self::requireFile($fileName);
             foreach ($mutationsInPackage as $scope => $mutation) {
                 if (!isset($mutations[$scope])) {
                     $mutations[$scope] = new Map();
@@ -188,7 +188,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         $path = $path ?? static::getPackagePath();
         $iconsFileNameForPackage = $path . 'Configuration/Icons.php';
         if (file_exists($iconsFileNameForPackage)) {
-            $definedIconsInPackage = require $iconsFileNameForPackage;
+            $definedIconsInPackage = self::requireFile($iconsFileNameForPackage);
             if (is_array($definedIconsInPackage)) {
                 $icons->exchangeArray(array_merge($icons->getArrayCopy(), $definedIconsInPackage));
             }
@@ -212,5 +212,13 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             $instance->setLogger($container->get(LogManager::class)->getLogger($className));
         }
         return $instance;
+    }
+
+    /**
+     * Require a file in a safe scoped environment avoiding local variable clashes.
+     */
+    protected static function requireFile(string $filename): mixed
+    {
+        return require $filename;
     }
 }
