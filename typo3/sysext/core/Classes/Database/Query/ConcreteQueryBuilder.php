@@ -845,9 +845,9 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
         array $fields = [],
         array $dependsOn = [],
     ): self {
-        // @todo Switch to UNION QueryBuilder once https://review.typo3.org/c/Packages/TYPO3.CMS/+/83943 has been added.
-        $unionPattern = ($uniqueRows ? '%s UNION %s' : '%s UNION ALL %s');
-        $unionExpression = sprintf($unionPattern, $initialExpression, $recursiveExpression);
+        $unionExpression = $this->connection->createQueryBuilder()
+            ->union($initialExpression)
+            ->addUnion($recursiveExpression, $uniqueRows ? UnionType::DISTINCT : UnionType::ALL);
         $this->typo3_with->set(new With($name, $fields, $dependsOn, $unionExpression, true));
 
         return $this;
@@ -867,9 +867,9 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
         array $fields = [],
         array $dependsOn = [],
     ): self {
-        // @todo Switch to UNION QueryBuilder once https://review.typo3.org/c/Packages/TYPO3.CMS/+/83943 has been added.
-        $unionPattern = ($uniqueRows ? '%s UNION %s' : '%s UNION ALL %s');
-        $unionExpression = sprintf($unionPattern, $initialExpression, $recursiveExpression);
+        $unionExpression = $this->connection->createQueryBuilder()
+            ->union($initialExpression)
+            ->addUnion($recursiveExpression, $uniqueRows ? UnionType::DISTINCT : UnionType::ALL);
         $this->typo3_with->add(new With($name, $fields, $dependsOn, $unionExpression, true));
 
         return $this;
