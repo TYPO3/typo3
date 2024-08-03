@@ -99,8 +99,8 @@ final class SchedulerModuleController
             $this->toggleDisabledFlag($view, (int)$parsedBody['action']['toggleHidden']);
             return $this->renderListTasksView($view, $moduleData);
         }
-        if (!empty($queryParams['action']['stop'])) {
-            $this->stopTask($view, (int)$queryParams['action']['stop']);
+        if (!empty($parsedBody['action']['stop'])) {
+            $this->stopTask($view, (int)$parsedBody['action']['stop']);
             return $this->renderListTasksView($view, $moduleData);
         }
         if (!empty($parsedBody['execute'])) {
