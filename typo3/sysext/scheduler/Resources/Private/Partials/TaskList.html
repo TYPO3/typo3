@@ -410,20 +410,21 @@
                                         <f:if condition="{task.isRunning}">
                                             <f:then>
                                                 <div class="btn-group" role="group">
-                                                    <f:comment>@todo: Next one should be a button type="submit".</f:comment>
-                                                    <f:be.link
-                                                        route="scheduler_manage"
-                                                        parameters="{action: {'stop': task.uid}}"
+                                                    <button
+                                                        type="submit"
                                                         class="btn btn-default t3js-modal-trigger"
-                                                        data="{
-                                                            severity: 'warning',
-                                                            button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}',
-                                                            bs-content: '{f:translate(key: \'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stop\')}'
-                                                        }"
-                                                        title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop')}"
+                                                        data-target-form="tx_scheduler_form_task_stop_{task.uid}"
+                                                        data-severity="warning"
+                                                        data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                                                        data-bs-content="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stop')}"
+                                                        data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop')}"
+                                                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:stop')}"
                                                     >
                                                         <core:icon identifier="actions-close"/>
-                                                    </f:be.link>
+                                                    </button>
+                                                    <form name="tx_scheduler_form_task_stop_{task.uid}" id="tx_scheduler_form_task_stop_{task.uid}" method="post">
+                                                        <input name="action[stop]" type="hidden" value="{task.uid}">
+                                                    </form>
                                                 </div>
                                             </f:then>
                                             <f:else>
