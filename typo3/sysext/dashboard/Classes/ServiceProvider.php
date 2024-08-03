@@ -138,7 +138,7 @@ class ServiceProvider extends AbstractServiceProvider
         foreach ($paths as $pathOfPackage) {
             $dashboardPresetsFileNameForPackage = $pathOfPackage . 'Configuration/Backend/DashboardPresets.php';
             if (file_exists($dashboardPresetsFileNameForPackage)) {
-                $definedPresetsInPackage = require $dashboardPresetsFileNameForPackage;
+                $definedPresetsInPackage = self::requireFile($dashboardPresetsFileNameForPackage);
                 if (is_array($definedPresetsInPackage)) {
                     $presets->exchangeArray(array_merge($presets->getArrayCopy(), $definedPresetsInPackage));
                 }
@@ -158,7 +158,7 @@ class ServiceProvider extends AbstractServiceProvider
         foreach ($paths as $pathOfPackage) {
             $widgetGroupsFileNameForPackage = $pathOfPackage . 'Configuration/Backend/DashboardWidgetGroups.php';
             if (file_exists($widgetGroupsFileNameForPackage)) {
-                $definedGroupsInPackage = require $widgetGroupsFileNameForPackage;
+                $definedGroupsInPackage = self::requireFile($widgetGroupsFileNameForPackage);
                 if (is_array($definedGroupsInPackage)) {
                     $widgetGroups->exchangeArray(array_merge($widgetGroups->getArrayCopy(), $definedGroupsInPackage));
                 }
@@ -177,7 +177,7 @@ class ServiceProvider extends AbstractServiceProvider
         foreach ($paths as $pathOfPackage) {
             $widgetsFileNameForPackage = $pathOfPackage . 'Configuration/Backend/DashboardWidgets.php';
             if (file_exists($widgetsFileNameForPackage)) {
-                $definedWidgetsInPackage = require $widgetsFileNameForPackage;
+                $definedWidgetsInPackage = self::requireFile($widgetsFileNameForPackage);
                 if (is_array($definedWidgetsInPackage)) {
                     $widgets->exchangeArray(array_merge($widgets->getArrayCopy(), $definedWidgetsInPackage));
                 }
