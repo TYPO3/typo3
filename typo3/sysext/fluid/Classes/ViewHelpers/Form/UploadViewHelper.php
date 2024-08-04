@@ -47,14 +47,20 @@ final class UploadViewHelper extends AbstractFormFieldViewHelper
 
     public function render(): string
     {
+        $multiple = isset($this->additionalArguments['multiple']);
         $name = $this->getName();
         $allowedFields = ['name', 'type', 'tmp_name', 'error', 'size'];
         foreach ($allowedFields as $fieldName) {
-            $this->registerFieldNameForFormTokenGeneration($name . '[' . $fieldName . ']');
+            if ($multiple) {
+                $formTokenFieldName = sprintf('%s[*][%s]', $name, $fieldName);
+            } else {
+                $formTokenFieldName = $name . '[' . $fieldName . ']';
+            }
+            $this->registerFieldNameForFormTokenGeneration($formTokenFieldName);
         }
         $this->tag->addAttribute('type', 'file');
 
-        if (isset($this->additionalArguments['multiple'])) {
+        if ($multiple) {
             $this->tag->addAttribute('name', $name . '[]');
         } else {
             $this->tag->addAttribute('name', $name);
