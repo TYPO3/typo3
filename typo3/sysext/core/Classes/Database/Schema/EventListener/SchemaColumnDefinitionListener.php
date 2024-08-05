@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Database\Schema\EventListener;
 
 use Doctrine\DBAL\Event\SchemaColumnDefinitionEventArgs;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDb1027Platform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
@@ -65,11 +66,18 @@ class SchemaColumnDefinitionListener
      */
     protected function getEnumerationTableColumnDefinition(array $tableColumn, AbstractPlatform $platform): Column
     {
+        $default = $tableColumn['default'] ?? null;
+        // Doctrine DBAL retrieves for MariaDB `ENUM()` and `SET()` field default values quotes with single quotes,
+        // which leads to an endless field change reporting recursion in the database analyzer. The default value
+        // is now trimmed to ensure a working field compare within `TYPO3\CMS\Core\Database\Schema\Comparator`.
+        if ($platform instanceof MariaDb1027Platform && str_starts_with($default, "'") && str_ends_with($default, "'")) {
+            $default = trim($default, "'");
+        }
         $options = [
             'length' => $tableColumn['length'] ?? null,
             'unsigned' => false,
             'fixed' => false,
-            'default' => $tableColumn['default'] ?? null,
+            'default' => $default,
             'notnull' => ($tableColumn['null'] ?? '') !== 'YES',
             'scale' => null,
             'precision' => null,
