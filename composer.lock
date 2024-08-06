@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec6f13eb61edde4fa46980e3a1bcfb99",
+    "content-hash": "ce2a9d7469657c8926c2f5952e7fbeea",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7279,16 +7279,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.2.7",
+            "version": "11.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "15c7e69dec4a8f246840859e6b430bd2abeb5039"
+                "reference": "a8dce73a8938dfec7ac0daa91bdbcaae7d7188a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/15c7e69dec4a8f246840859e6b430bd2abeb5039",
-                "reference": "15c7e69dec4a8f246840859e6b430bd2abeb5039",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a8dce73a8938dfec7ac0daa91bdbcaae7d7188a3",
+                "reference": "a8dce73a8938dfec7ac0daa91bdbcaae7d7188a3",
                 "shasum": ""
             },
             "require": {
@@ -7327,7 +7327,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "11.2-dev"
+                    "dev-main": "11.3-dev"
                 }
             },
             "autoload": {
@@ -7359,7 +7359,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.2.7"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.3.0"
             },
             "funding": [
                 {
@@ -7375,7 +7375,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-10T11:50:09+00:00"
+            "time": "2024-08-02T03:56:43+00:00"
         },
         {
             "name": "psy/psysh",
