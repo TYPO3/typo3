@@ -266,11 +266,10 @@ class Backend extends Workspaces {
       this.getWorkspaceInfos();
     }).delegateTo(document, Identifiers.searchForm);
 
-    new RegularEvent('keyup', (event: Event) => {
-      const me = event.target as HTMLInputElement;
+    new RegularEvent('input', (event: Event, target: HTMLInputElement) => {
       const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
 
-      if (me.value !== '') {
+      if (target.value !== '') {
         searchSubmitButton.classList.remove('disabled');
       } else {
         searchSubmitButton.classList.add('disabled');
