@@ -113,7 +113,7 @@
 		"codeception/module-cli": "^2.0.1",
 		"codeception/module-filesystem": "^3.0.1",
 		"codeception/module-webdriver": "^4.0.1",
-		"composer/composer": "^2.6.5",
+		"composer/composer": "^2.7.7",
 		"friendsofphp/php-cs-fixer": "^3.57.1",
 		"friendsoftypo3/phpstan-typo3": "^0.9.0",
 		"php-webdriver/webdriver": "^1.15.1",
