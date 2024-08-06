@@ -17,18 +17,20 @@ import Notification from '@typo3/backend/notification.js';
 import Icons from '@typo3/backend/icons.js';
 import type { LitElement } from 'lit';
 import { expect } from '@open-wc/testing';
-import { stub, SinonStub } from 'sinon';
-import type { } from 'mocha';
+import { stub, SinonStub, useFakeTimers, SinonFakeTimers } from 'sinon';
 
 describe('@typo3/backend/notification:', () => {
+  let clock: SinonFakeTimers;
   let getIconStub: SinonStub<Parameters<typeof Icons['getIcon']>, Promise<string>>;
 
   beforeEach((): void => {
+    clock = useFakeTimers();
     getIconStub = stub(Icons, 'getIcon');
     getIconStub.returns(Promise.resolve('X'));
   });
 
   afterEach((): void => {
+    clock.restore();
     getIconStub.restore();
 
     const alertContainer = document.getElementById('alert-container');
@@ -84,14 +86,21 @@ describe('@typo3/backend/notification:', () => {
       it('can render a notification of type ' + dataSet.class, async () => {
         dataSet.method(dataSet.title, dataSet.message, 1);
 
-        await (document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement).updateComplete;
+        const notificationMessage = document.querySelector('#alert-container typo3-notification-message:last-child') as LitElement;
+        await notificationMessage.updateComplete;
+
         const alertSelector = 'div.alert.' + dataSet.class;
         const alertBox = document.querySelector(alertSelector);
         expect(alertBox).not.to.be.null;
         expect(alertBox.querySelector('.alert-title').textContent).to.equal(dataSet.title);
         expect(alertBox.querySelector('.alert-message').textContent).to.equal(dataSet.message);
+
         // wait for the notification to disappear for the next assertion (which tests for auto dismiss)
-        await new Promise(resolve => window.setTimeout(resolve, 2000));
+        await clock.tickAsync(2000);
+
+        // Notifications are hidden via an animation which cannot be faked by Sinon.
+        // Instead, we dispatch a custom event to enforce its removal.
+        notificationMessage.dispatchEvent(new CustomEvent('typo3-notification-clear-finish'));
         expect(document.querySelector(alertSelector)).to.be.null;
       });
     }
