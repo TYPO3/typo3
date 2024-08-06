@@ -507,7 +507,7 @@ export class NewRecordWizard extends LitElement {
         @click="${(event: PointerEvent): void => { event.preventDefault(); this.handleItemClick(item); }}"
       >
         <div class="item-icon">
-          <typo3-backend-icon identifier="${item.icon}" size="medium"></typo3-backend-icon>
+          <typo3-backend-icon identifier="${item.icon || 'empty-empty'}" size="medium"></typo3-backend-icon>
         </div>
         <div class="item-body">
           <div class="item-body-label">${item.label}</div>

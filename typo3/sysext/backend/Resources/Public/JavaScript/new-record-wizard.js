@@ -75,7 +75,7 @@ var __decorate=function(e,t,o,r){var i,a=arguments.length,n=a<3?t:null===r?r=Obj
         @click="${t=>{t.preventDefault(),this.handleItemClick(e)}}"
       >
         <div class="item-icon">
-          <typo3-backend-icon identifier="${e.icon}" size="medium"></typo3-backend-icon>
+          <typo3-backend-icon identifier="${e.icon||"empty-empty"}" size="medium"></typo3-backend-icon>
         </div>
         <div class="item-body">
           <div class="item-body-label">${e.label}</div>
