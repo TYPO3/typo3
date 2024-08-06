@@ -225,9 +225,13 @@ export class NotificationMessage extends LitElement {
       new CustomEvent('typo3-notification-clear', { bubbles: true, composed: true })
     );
 
-    const onfinish = () => {
+    this.addEventListener('typo3-notification-clear-finish', (): void => {
       this.parentNode && this.parentNode.removeChild(this);
-    };
+    });
+
+    const dispatchFinishEvent = (): void => {
+      this.dispatchEvent(new CustomEvent('typo3-notification-clear-finish'));
+    }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!prefersReducedMotion && 'animate' in this) {
@@ -241,9 +245,9 @@ export class NotificationMessage extends LitElement {
           duration: 400,
           easing: 'cubic-bezier(.02, .01, .47, 1)'
         }
-      ).onfinish = onfinish;
+      ).onfinish = dispatchFinishEvent;
     } else {
-      onfinish();
+      dispatchFinishEvent();
     }
   }
 
