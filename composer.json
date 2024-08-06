@@ -110,7 +110,7 @@
 		"codeception/module-cli": "^1.1",
 		"codeception/module-filesystem": "^1.0.3",
 		"codeception/module-webdriver": "^1.4.0",
-		"composer/composer": "^2.2.22",
+		"composer/composer": "^2.2.24",
 		"composer/package-versions-deprecated": "^1.11.99.4",
 		"cweagans/composer-patches": "^1.7.1",
 		"friendsofphp/php-cs-fixer": "^3.57.1",
