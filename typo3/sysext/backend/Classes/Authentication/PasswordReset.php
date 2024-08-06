@@ -135,7 +135,7 @@ class PasswordReset implements LoggerAwareInterface
             ->fetchAllAssociative();
         if (!is_array($users) || count($users) === 0) {
             // No user found, do nothing, also no log to sys_log in order avoid log flooding
-            $this->logger->warning('Password reset requested for email but no valid users');
+            $this->logger->warning('Password reset requested for email {email} but no valid users', ['email' => $emailAddress]);
         } elseif (count($users) > 1) {
             // More than one user with the same email address found, send out the email that one cannot send out a reset link
             $this->sendAmbiguousEmail($request, $context, $emailAddress);

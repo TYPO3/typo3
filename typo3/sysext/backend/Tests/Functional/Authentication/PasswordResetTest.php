@@ -125,7 +125,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $emailAddress = 'does-not-exist@example.com';
         $subject = new PasswordReset();
         $loggerMock = $this->createMock(LoggerInterface::class);
-        $loggerMock->expects(self::atLeastOnce())->method('warning')->with('Password reset requested for email but no valid users');
+        $loggerMock->expects(self::atLeastOnce())->method('warning')->with('Password reset requested for email {email} but no valid users', ['email' => 'does-not-exist@example.com']);
         $subject->setLogger($loggerMock);
         $context = new Context();
         $request = new ServerRequest();
