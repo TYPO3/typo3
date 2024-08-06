@@ -56,7 +56,7 @@ class FlexFormValueFormatter
         $flexFormDataStructure = $this->getFlexFormDataStructure($fieldConfiguration, $tableName, $fieldName, $record);
 
         // Map data to FlexForm structure and build an easy to handle array
-        $processedSheets = $this->getProcessedSheets($flexFormDataStructure, $flexFormDataArray['data']);
+        $processedSheets = $this->getProcessedSheets($flexFormDataStructure, $flexFormDataArray['data'] ?? []);
 
         // Render a human-readable plain text representation of the FlexForm data
         $renderedPlainValue = $this->renderFlexFormValuePlain($processedSheets);
