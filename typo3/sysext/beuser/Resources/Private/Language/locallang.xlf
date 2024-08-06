@@ -18,6 +18,9 @@
 			<trans-unit id="realName" resname="realName">
 				<source>Real Name</source>
 			</trans-unit>
+			<trans-unit id="name" resname="name">
+				<source>Name</source>
+			</trans-unit>
 			<trans-unit id="lastAccess" resname="lastAccess">
 				<source>Last access</source>
 			</trans-unit>
@@ -51,6 +54,9 @@
 			<trans-unit id="edit" resname="edit">
 				<source>Edit</source>
 			</trans-unit>
+			<trans-unit id="link.editRecord" resname="link.editRecord">
+				<source>Edit record</source>
+			</trans-unit>
 			<trans-unit id="delete" resname="delete">
 				<source>Delete backend user (!)</source>
 			</trans-unit>
@@ -61,10 +67,7 @@
 				<source>Display information</source>
 			</trans-unit>
 			<trans-unit id="disable" resname="disable">
-				<source>Disable</source>
-			</trans-unit>
-			<trans-unit id="disable_compare" resname="disable_compare">
-				<source>Is active?</source>
+				<source>Enabled</source>
 			</trans-unit>
 			<trans-unit id="startDateAndTime" resname="startDateAndTime">
 				<source>Start</source>
@@ -186,6 +189,9 @@
 			<trans-unit id="compare" resname="compare">
 				<source>Compare</source>
 			</trans-unit>
+			<trans-unit id="compare.link.removeFromCompareList" resname="compare.link.removeFromList">
+				<source>Remove from comparison list</source>
+			</trans-unit>
 			<trans-unit id="remove" resname="remove">
 				<source>Remove</source>
 			</trans-unit>
@@ -219,12 +225,6 @@
 			<trans-unit id="group" resname="group">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="information.groups.direct" resname="information.groups.direct">
-				<source>Directly assigned</source>
-			</trans-unit>
-			<trans-unit id="information.groups.inheritance" resname="information.groups.inheritance">
-				<source>Assigned through inheritance</source>
-			</trans-unit>
 			<trans-unit id="languages" resname="languages">
 				<source>Languages</source>
 			</trans-unit>
@@ -243,14 +243,11 @@
 			<trans-unit id="modules" resname="modules">
 				<source>Modules</source>
 			</trans-unit>
-			<trans-unit id="tableModes" resname="tableModes">
-				<source>Table select/modify</source>
+			<trans-unit id="tableModes.read" resname="tableModes.read">
+				<source>Read</source>
 			</trans-unit>
-			<trans-unit id="tableModes.select" resname="tableModes.select">
-				<source>Select</source>
-			</trans-unit>
-			<trans-unit id="tableModes.modify" resname="tableModes.modify">
-				<source>Modify</source>
+			<trans-unit id="tableModes.write" resname="tableModes.write">
+				<source>Read &amp; Write</source>
 			</trans-unit>
 			<trans-unit id="information.defaultWorkspace" resname="information.defaultWorkspace">
 				<source>Default workspace</source>
@@ -322,6 +319,15 @@
 			<trans-unit id="backendUser.compare.title" resname="backendUser.online.title">
 				<source>Compare backend users</source>
 			</trans-unit>
+			<trans-unit id="backendUser.show.notConfigured" resname="backendUser.show.notConfigured">
+				<source>Not configured.</source>
+			</trans-unit>
+			<trans-unit id="backendUser.show.infobox.title" resname="backendUser.show.infobox.title">
+				<source>Compiled rights and settings</source>
+			</trans-unit>
+			<trans-unit id="backendUser.show.infobox.message" resname="backendUser.show.infobox.message">
+				<source>This view displays all compiled rights and settings of the selected backend user. These can come from settings in the backend user record itself, as well as from settings that have been stored in backend user groups assigned to this backend user.</source>
+			</trans-unit>
 			<trans-unit id="backendUserGroup.list.title" resname="backendUserGroup.list.title">
 				<source>Backend user groups</source>
 			</trans-unit>
@@ -349,6 +355,22 @@
 			</trans-unit>
 			<trans-unit id="filemount.amount.singular" resname="filemount.amount.singular">
 				<source>1 Filemount</source>
+			</trans-unit>
+
+			<trans-unit id="mountsWorkspaces" resname="mountsWorkspaces">
+				<source>Mounts and workspaces</source>
+			</trans-unit>
+			<trans-unit id="options" resname="options">
+				<source>Options</source>
+			</trans-unit>
+			<trans-unit id="allowedPageContentTypes" resname="allowedPageContentTypes">
+				<source>Allowed page content types</source>
+			</trans-unit>
+			<trans-unit id="generalPermissions" resname="generalPermissions">
+				<source>General permissions</source>
+			</trans-unit>
+			<trans-unit id="information.groups.th.groupTitle" resname="information.groups.th.groupTitle">
+				<source>Group title</source>
 			</trans-unit>
 		</body>
 	</file>

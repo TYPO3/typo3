@@ -294,6 +294,17 @@ $panel-heading-bg-scale: -85%;
 }
 
 //
+// List
+//
+.panel-list {
+    padding-left: var(--panel-padding);
+
+    li {
+        padding-bottom: .2rem;
+    }
+}
+
+//
 // Condensed
 //
 .panel-condensed {

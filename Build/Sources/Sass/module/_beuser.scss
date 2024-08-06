@@ -1,0 +1,32 @@
+.beuser-comparison__table {
+    @include media-breakpoint-up('lg') {
+        table-layout: fixed;
+    }
+
+    th,
+    td {
+        @include media-breakpoint-up('lg') {
+            column-width: auto;
+        }
+    }
+
+    th[scope="row"] {
+        white-space: wrap;
+    }
+}
+
+.beuser-comparison-element {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+}
+
+.beuser-comparison-element__title {
+    white-space: wrap;
+    word-break: break-all;
+}
+
+.beuser-comparison-element__action {
+    padding-bottom: var(--typo3-component-padding-y);
+    text-align: right;
+}

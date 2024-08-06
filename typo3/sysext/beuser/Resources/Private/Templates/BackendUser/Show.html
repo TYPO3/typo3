@@ -1,127 +1,642 @@
 <html
     xmlns:backend="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
 
 <f:layout name="Module"/>
+
+<f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/element/collapsible-element.js',
+            1: '@typo3/backend/element/immediate-action-element.js',
+            2: '@typo3/backend/utility/collapse-state-persister.js',
+        }"
+    />
+    <f:variable name="args" value="{0: 'system', 1: data.user.uid}" />
+    <typo3-immediate-action
+        action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+        args="{args -> f:format.json() -> f:format.htmlspecialchars()}"
+    ></typo3-immediate-action>
+</f:section>
+
 <f:section name="Content">
 
-    <h1><f:translate key="backendUser" />: {data.user.username} <code>[{data.user.uid}]</code></h1>
-
-    <f:if condition="{data.user.description}">
-        <f:be.infobox
-            title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordInformation')}">
-            {data.user.description -> f:format.nl2br()}
-        </f:be.infobox>
-    </f:if>
-
-    <div class="table-fit">
-        <table class="table table-striped table-bordered table-hover">
-            <tr>
-                <th><f:translate key="admin" /></th>
-                <td class="col-title"><f:render partial="Compare/Information" section="yesno" arguments="{value:data.user.admin}" /></td>
-            </tr>
-            <tr>
-                <th>{f:translate(key:'realName')}</th>
-                <td class="col-title">
-                    <button
-                        type="button"
-                        class="btn btn-link p-0"
-                        data-contextmenu-trigger="click"
-                        data-contextmenu-table="be_users"
-                        data-contextmenu-uid="{data.user.uid}"
-                        title="id={data.user.uid}"
-                        aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
-                    >
-                        <backend:avatar backendUser="{data.user.uid}" showIcon="true"/>
-                    </button>
-                    {data.user.realName}
-                </td>
-            </tr>
-            <tr>
-                <th>{f:translate(key:'email')}</th>
-                <td class="col-title">
-                    <f:if condition="{data.user.email}">
-                        <f:link.email email="{data.user.email}"/>
-                    </f:if>
-                </td>
-            </tr>
-            <tr>
-                <th><f:translate key="lastLogin" /></th>
-                <td class="col-title">
-                    <f:if condition="{data.user.lastlogin}">
-                        <f:then>
-                            <f:format.date format="{dateFormat} {timeFormat}">{data.user.lastlogin}</f:format.date>
-                        </f:then>
-                        <f:else>
-                            <f:translate key="never" />
-                        </f:else>
-                    </f:if>
-                </td>
-            </tr>
-            <tr>
-                <th>{f:translate(key:'startDateAndTime')} / <f:translate key="endDateAndTime" /></th>
-                <td class="col-title">
-                    <f:if condition="{data.user.starttime}">
-                        <f:then><f:format.date format="{dateFormat} {timeFormat}">{data.user.starttime}</f:format.date></f:then>
-                        <f:else>-</f:else>
-                    </f:if>&nbsp;/
-                    <f:if condition="{data.user.endtime}">
-                        <f:then><f:format.date format="{dateFormat} {timeFormat}">{data.user.endtime}</f:format.date></f:then>
-                        <f:else>-</f:else>
-                    </f:if>
-                </td>
-            </tr>
-        </table>
-    </div>
+    <h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser" />: {data.user.username}</h1>
 
     <div class="row">
-        <div class="col-lg-4">
-            <h2 class="headline-spaced"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.subgroup" /></h2>
-            <f:render partial="Compare/Information" section="groups" arguments="{groups:data.groups}"/>
-        </div>
-        <div class="col-lg-4">
-            <h2 class="headline-spaced"><f:translate key="allowedLanguages" /></h2>
-            <f:render partial="Compare/Information" section="languages" arguments="{languages:data.languages}"/>
-        </div>
-        <div class="col-lg-4">
-            <h2 class="headline-spaced"><f:translate key="dbMountPoints" /></h2>
-            <f:render partial="Compare/Information" section="dbMounts" arguments="{dbMounts:data.dbMounts}"/>
+        <div class="col-md-10 col-lg-8">
+            <f:be.infobox
+                title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.infobox.title')}"
+                message="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.infobox.message')}"
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+            />
 
-            <h2 class="headline-spaced"><f:translate key="fileMounts" /></h2>
-            <f:render partial="Compare/Information" section="fileMounts" arguments="{fileMounts:data.fileMounts}"/>
+            <div class="table-fit">
+                <table class="table table-striped table-hover table-vertical-top">
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:admin" /></th>
+                        <td class="col-word-break">
+                            <f:if condition="{data.user.admin}">
+                                <f:then>
+                                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:yes" />
+                                </f:then>
+                                <f:else>
+                                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:no" />
+                                </f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:userName" /></th>
+                        <td class="col-word-break">
+                            {data.user.username}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:name" /></th>
+                        <td class="col-word-break">
+                            {data.user.realName}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:email" /></th>
+                        <td class="col-word-break">
+                            <f:if condition="{data.user.email}">
+                                <f:link.email email="{data.user.email}"/>
+                            </f:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:avatar" /></th>
+                        <td class="col-word-break">
+                            <backend:avatar backendUser="{data.user.uid}" showIcon="true"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:disable" /></th>
+                        <td class="col-word-break">
+                            <f:if condition="{data.user.disable}">
+                                <f:then>
+                                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:no" />
+                                </f:then>
+                                <f:else>
+                                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:yes" />
+                                </f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:startDateAndTime" /></th>
+                        <td class="col-word-break">
+                            <f:if condition="{data.user.starttime}">
+                                <f:format.date format="{dateFormat} {timeFormat}">{data.user.starttime}</f:format.date>
+                            </f:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:endDateAndTime" /></th>
+                        <td class="col-word-break">
+                            <f:if condition="{data.user.endtime}">
+                                <f:format.date format="{dateFormat} {timeFormat}">{data.user.endtime}</f:format.date>
+                            </f:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:lastLogin" /></th>
+                        <td class="col-word-break">
+                            <f:if condition="{data.user.lastlogin}">
+                                <f:then>
+                                    <f:format.date format="{dateFormat} {timeFormat}">{data.user.lastlogin}</f:format.date>
+                                </f:then>
+                                <f:else>
+                                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:never" />
+                                </f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-fieldname"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description" /></th>
+                        <td class="col-word-break">
+                            {data.user.description -> f:format.nl2br()}
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 
+    <h2><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:groups" /></h2>
     <div class="row">
-        <div class="col-md-6">
-            <h2 class="headline-spaced">{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select')}</h2>
-            <f:render partial="Compare/Information" section="pageTypes" arguments="{pageTypes:data.pageTypes}" />
-
-            <h2 class="headline-spaced">{f:translate(key:'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:tt_content')}: {f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type')}</h2>
-            <f:render partial="Compare/Information" section="pageContentTypes" arguments="{pageContentTypes:data.pageContentTypes}" />
-
-            <h2 class="headline-spaced"><f:translate key="permissions" /></h2>
-            <f:render partial="Compare/Information" section="modules" arguments="{showTitle:1,modules:data.modules}"/>
-
-            <h2 class="headline-spaced">{f:translate(key:'compare.tables')}</h2>
-            <f:render partial="Compare/Information" section="tables" arguments="{showTitle:1,tables:data.tables}"/>
-
-            <h2 class="headline-spaced">{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms')}</h2>
-            <f:render partial="Compare/Information" section="categories" arguments="{categories:data.categories}"/>
-
-            <h2 class="headline-spaced">{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig')}</h2>
-            <f:render partial="Compare/Information" section="tsconfig" arguments="{tsconfig:data.tsconfig,id:data.user.uid}" />
-        </div>
-        <div class="col-md-6">
-            <h2 class="headline-spaced">{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields')}</h2>
-            <f:render partial="Compare/Information" section="nonExcludeFields" arguments="{nonExcludeFields:data.non_exclude_fields, id:data.user.uid}"/>
-
-            <h2 class="headline-spaced">{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms')}</h2>
-            <f:render partial="Compare/Information" section="fileFolderPermissions" arguments="{fileFolderPermissions:data.fileFolderPermissions}" />
+        <div class="col-md-10 col-lg-8">
+            <f:if condition="{data.groups.all}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-groups-collapse"
+                                data-bs-target="#permission-group-groups-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.subgroup" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-groups-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <f:render
+                                    partial="Compare/Information"
+                                    section="groups"
+                                    arguments="{
+                                        groups: data.groups,
+                                        hasColumnClasses: 1
+                                    }"
+                                />
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.subgroup" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
         </div>
     </div>
+
+    <h2><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:languages" /></h2>
+    <div class="row">
+        <div class="col-md-10 col-lg-8">
+            <f:if condition="{data.languages}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-languages-collapse"
+                                data-bs-target="#permission-group-languages-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:allowedLanguages" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-languages-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <f:render partial="Compare/Information" section="languages" arguments="{languages: data.languages}"/>
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:allowedLanguages" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+        </div>
+    </div>
+
+    <h2><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:permissions" /></h2>
+    <div class="row">
+        <div class="col-md-10 col-lg-8">
+            <h3><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:generalPermissions" /></h3>
+            <f:if condition="{data.modules}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-modules-collapse"
+                                data-bs-target="#permission-group-modules-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:userMods" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-modules-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <f:render partial="Compare/Information" section="modules" arguments="{modules: data.modules}"/>
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:userMods" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{data.pageTypes}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-pageType-collapse"
+                                data-bs-target="#permission-group-pageType-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-pageType-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <f:render partial="Compare/Information" section="pageTypes" arguments="{pageTypes: data.pageTypes}" />
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{data.pageContentTypes}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-pageContentTypes-collapse"
+                                data-bs-target="#permission-group-pageContentTypes-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:allowedPageContentTypes" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-pageContentTypes-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <div class="panel-body">
+                                    <f:render partial="Compare/Information" section="pageContentTypes" arguments="{pageContentTypes: data.pageContentTypes}" />
+                                </div>
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:allowedPageContentTypes" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{data.tables.all}">
+                <f:then>
+                    <h3 class="headline-spaced"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compare.tables" /></h3>
+                    <f:render partial="Compare/Information" section="tables" arguments="{tables: data.tables}" />
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compare.tables" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{data.non_exclude_fields}">
+                <f:then>
+                    <h3 class="headline-spaced"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields" /></h3>
+                    <f:render
+                        partial="Compare/Information"
+                        section="nonExcludeFields"
+                        arguments="{
+                            nonExcludeFields: data.non_exclude_fields,
+                            id: data.user.uid
+                        }"
+                    />
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.non_exclude_fields" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+        </div>
+    </div>
+
+    <h2><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:mountsWorkspaces" /></h2>
+    <div class="row">
+        <div class="col-md-10 col-lg-8">
+            <f:if condition="{data.workspaces} && {data.workspaces.record.uid}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-workspaces-collapse"
+                                data-bs-target="#permission-group-workspaces-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-workspaces-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <f:render partial="Compare/Information" section="workspaces" arguments="{workspaces: data.workspaces}" />
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{data.dbMounts}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-dbMounts-collapse"
+                                data-bs-target="#permission-group-dbMounts-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:dbMountPoints" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-dbMounts-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <f:render partial="Compare/Information" section="dbMounts" arguments="{dbMounts: data.dbMounts}" />
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:dbMountPoints" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{data.fileMounts}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-fileMounts-collapse"
+                                data-bs-target="#permission-group-fileMounts-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:fileMounts" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-fileMounts-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <f:render partial="Compare/Information" section="fileMounts" arguments="{fileMounts: data.fileMounts}"/>
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:fileMounts" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{data.fileFolderPermissions}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-fileFolderPermissions-collapse"
+                                data-bs-target="#permission-group-fileFolderPermissions-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-fileFolderPermissions-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <f:render partial="Compare/Information" section="fileFolderPermissions" arguments="{fileFolderPermissions: data.fileFolderPermissions}" />
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{data.categories}">
+                <f:then>
+                    <typo3-backend-collapsible>
+                        <div class="panel panel-default">
+                            <button
+                                type="button"
+                                class="panel-heading panel-heading-button"
+                                aria-expanded="false"
+                                aria-controls="permission-group-categories-collapse"
+                                data-bs-target="#permission-group-categories-collapse"
+                                data-bs-toggle="collapse"
+                            >
+                                <span class="flex-grow-1 align-self-center">
+                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms" />
+                                </span>
+                                <div class="panel-actions ml-auto">
+                                    <span class="btn btn-sm btn-default">
+                                        <span class="collapseIcon">
+                                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                                        </span>
+                                    </span>
+                                </div>
+                            </button>
+                            <div id="permission-group-categories-collapse" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
+                                <f:render partial="Compare/Information" section="categories" arguments="{categories: data.categories}"/>
+                            </div>
+                        </div>
+                    </typo3-backend-collapsible>
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+        </div>
+    </div>
+
+    <h2><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:options" /></h2>
+    <div class="row">
+        <div class="col-md-10 col-lg-8">
+            <f:if condition="{data.tsconfig}">
+                <f:then>
+                    <f:render
+                        partial="Compare/Information"
+                        section="tsconfig"
+                        arguments="{
+                            tsconfig: data.tsconfig,
+                            id: data.user.uid
+                        }"
+                    />
+                </f:then>
+                <f:else>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig" />
+                        </div>
+                        <div class="panel-body">
+                            <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.notConfigured" /></p>
+                        </div>
+                    </div>
+                </f:else>
+            </f:if>
+        </div>
+    </div>
+
 </f:section>
 
 </html>

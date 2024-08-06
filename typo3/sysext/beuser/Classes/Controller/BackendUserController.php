@@ -228,7 +228,10 @@ class BackendUserController extends ActionController
     public function showAction(int $uid = 0): ResponseInterface
     {
         $data = $this->userInformationService->getUserInformation($uid);
-        $this->moduleTemplate->assign('data', $data);
+        $this->moduleTemplate->assignMultiple([
+            'data' => $data,
+            'showUid', $this->getBackendUser()->shallDisplayDebugInformation(),
+        ]);
 
         $this->addMainMenu('show');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -286,6 +289,7 @@ class BackendUserController extends ActionController
         $this->moduleTemplate->assignMultiple([
             'compareUserList' => $compareData,
             'onlineBackendUsers' => $this->getOnlineBackendUsers(),
+            'showUid', $this->getBackendUser()->shallDisplayDebugInformation(),
         ]);
 
         $this->addMainMenu('compare');
@@ -449,7 +453,10 @@ class BackendUserController extends ActionController
             return $this->redirect('groups');
         }
 
-        $this->moduleTemplate->assign('compareGroupList', $compareData);
+        $this->moduleTemplate->assignMultiple([
+            'compareGroupList' => $compareData,
+            'showUid', $this->getBackendUser()->shallDisplayDebugInformation(),
+        ]);
 
         $this->addMainMenu('compareGroups');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();

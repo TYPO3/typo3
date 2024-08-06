@@ -46,8 +46,8 @@ final class CompareUserCest
         $I->waitForElementVisible('table.table-striped');
 
         // first user can be edited
-        $usernameFirstCompare = $I->grabTextFrom('#tx_beuser_compare > thead > tr > th:nth-child(2) > div > div > span');
-        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(2) a[title="Edit"]');
+        $usernameFirstCompare = $I->grabTextFrom('table.beuser-comparison__table > thead > tr > th:nth-child(2) .beuser-comparison-element__title > span:nth-child(2)');
+        $I->click('table.beuser-comparison__table > thead > tr > th:nth-child(2) a[title="Edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');
@@ -58,8 +58,8 @@ final class CompareUserCest
         $I->canSee('Compare backend users', 'h1');
 
         // second user can be edited
-        $usernameFirstCompare = $I->grabTextFrom('#tx_beuser_compare > thead > tr > th:nth-child(3) > div > div > span');
-        $I->click('#tx_beuser_compare > thead > tr > th:nth-child(3) a[title="Edit"]');
+        $usernameFirstCompare = $I->grabTextFrom('table.beuser-comparison__table > thead > tr > th:nth-child(3) .beuser-comparison-element__title > span:nth-child(2)');
+        $I->click('table.beuser-comparison__table > thead > tr > th:nth-child(3) a[title="Edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');
@@ -86,7 +86,6 @@ final class CompareUserCest
 
         $I->amGoingTo('Check compare view is loaded with the correct number of groups');
         $I->see('Compare backend user groups', 'h1');
-        // We expect four header columns, since the first one is used for the row labels
-        $I->canSeeNumberOfElements('#tx_beuser_compare > thead > tr > th', 4);
+        $I->canSeeNumberOfElements('table.beuser-comparison__table > thead > tr > th', 3);
     }
 }

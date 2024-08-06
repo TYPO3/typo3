@@ -217,10 +217,6 @@ class UserInformationService
                 $fieldList[$itemTable]['fields'][$itemField] = $GLOBALS['TCA'][$itemTable]['columns'][$itemField]['label'] ?? $itemField;
             }
         }
-        ksort($fieldList);
-        foreach ($fieldList as &$fieldListItem) {
-            ksort($fieldListItem['fields']);
-        }
         $data['non_exclude_fields'] = $fieldList;
 
         // page types
