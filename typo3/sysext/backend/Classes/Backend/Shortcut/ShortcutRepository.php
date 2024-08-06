@@ -475,7 +475,7 @@ class ShortcutRepository
             $routeIdentifier = $row['route'] ?? '';
             $arguments = json_decode($row['arguments'] ?? '', true) ?? [];
 
-            if ($routeIdentifier === 'record_edit' && is_array($arguments['edit'])) {
+            if ($routeIdentifier === 'record_edit' && is_array($arguments['edit'] ?? null)) {
                 $shortcut['table'] = (string)(key($arguments['edit']) ?? '');
                 $shortcut['recordid'] = key($arguments['edit'][$shortcut['table']]);
 
@@ -636,8 +636,8 @@ class ShortcutRepository
     {
         switch ($routeIdentifier) {
             case 'record_edit':
-                $table = $shortcut['table'];
-                $recordid = $shortcut['recordid'];
+                $table = $shortcut['table'] ?? '';
+                $recordid = $shortcut['recordid'] ?? 0;
                 $icon = '';
 
                 if ($shortcut['type'] === 'edit') {
