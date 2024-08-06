@@ -203,7 +203,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
                     FileInterface $b
                 ) use ($sortingProperty) {
                     if ($a->hasProperty($sortingProperty) && $b->hasProperty($sortingProperty)) {
-                        return strnatcasecmp($a->getProperty($sortingProperty), $b->getProperty($sortingProperty));
+                        return strnatcasecmp((string)$a->getProperty($sortingProperty), (string)$b->getProperty($sortingProperty));
                     }
                     return 0;
                 }
