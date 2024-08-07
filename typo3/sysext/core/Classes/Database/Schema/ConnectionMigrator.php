@@ -240,7 +240,7 @@ class ConnectionMigrator
         }
 
         // Build the schema definitions
-        $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
+        $fromSchema = $this->buildExistingSchemaDefinitions();
         $toSchema = $this->buildExpectedSchemaDefinitions($this->connectionName);
 
         // Add current table options to the fromSchema
@@ -281,6 +281,11 @@ class ConnectionMigrator
         return $schemaDiff;
     }
 
+    protected function buildExistingSchemaDefinitions(): Schema
+    {
+        return $this->connection->createSchemaManager()->introspectSchema();
+    }
+
     /**
      * Build the expected schema definitions from raw SQL statements.
      *
@@ -289,6 +294,11 @@ class ConnectionMigrator
      */
     protected function buildExpectedSchemaDefinitions(string $connectionName): Schema
     {
+        $schemaConfig = new SchemaConfig();
+        $schemaConfig->setName($this->connection->getDatabase());
+        if (isset($this->connection->getParams()['defaultTableOptions'])) {
+            $schemaConfig->setDefaultTableOptions($this->connection->getParams()['defaultTableOptions']);
+        }
         /** @var Table[] $tablesForConnection */
         $tablesForConnection = [];
         foreach ($this->tables as $table) {
@@ -298,15 +308,10 @@ class ConnectionMigrator
             if ($connectionName !== $this->getConnectionNameForTable($tableName)) {
                 continue;
             }
-
+            $table->setSchemaConfig($schemaConfig);
             $tablesForConnection[$tableName] = $table;
         }
-        $tablesForConnection = $this->transformTablesForDatabasePlatform($tablesForConnection, $this->connection);
-        $schemaConfig = new SchemaConfig();
-        $schemaConfig->setName($this->connection->getDatabase());
-        if (isset($this->connection->getParams()['defaultTableOptions'])) {
-            $schemaConfig->setDefaultTableOptions($this->connection->getParams()['defaultTableOptions']);
-        }
+        $tablesForConnection = $this->transformTablesForDatabasePlatform($this->connection, $schemaConfig, $tablesForConnection);
         return new Schema($tablesForConnection, [], $schemaConfig);
     }
 
@@ -1406,10 +1411,10 @@ class ConnectionMigrator
      * @return Table[]
      * @throws \InvalidArgumentException
      */
-    protected function transformTablesForDatabasePlatform(array $tables, Typo3Connection $connection): array
+    protected function transformTablesForDatabasePlatform(Typo3Connection $connection, SchemaConfig $schemaConfig, array $tables): array
     {
-        $defaultTableOptions = $connection->getParams()['defaultTableOptions'] ?? [];
-        $tables = $this->normalizeTablesForTargetConnection($tables, $connection);
+        $defaultTableOptions = $schemaConfig->getDefaultTableOptions();
+        $tables = $this->normalizeTablesForTargetConnection($connection, $schemaConfig, $tables);
         foreach ($tables as &$table) {
             $indexes = [];
             foreach ($table->getIndexes() as $key => $index) {
@@ -1454,6 +1459,7 @@ class ConnectionMigrator
                 $table->getForeignKeys(),
                 array_merge($defaultTableOptions, $table->getOptions())
             );
+            $table->setSchemaConfig($schemaConfig);
         }
 
         return $tables;
@@ -1652,15 +1658,16 @@ class ConnectionMigrator
      * @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-changes-in-handling-string-and-binary-columns [3]
      *
      * @param Table[] $tables
-     * @param Typo3Connection $connection
      * @return Table[]
      * @throws DBALException
      */
-    protected function normalizeTablesForTargetConnection(array $tables, Typo3Connection $connection): array
+    protected function normalizeTablesForTargetConnection(Typo3Connection $connection, SchemaConfig $schemaConfig, array $tables): array
     {
         $databasePlatform = $connection->getDatabasePlatform();
-        array_walk($tables, function (Table &$table) use ($databasePlatform): void {
+        array_walk($tables, function (Table &$table) use ($databasePlatform, $schemaConfig): void {
+            $table->setSchemaConfig($schemaConfig);
             $this->normalizeTableIdentifiers($databasePlatform, $table);
+            $this->applyDefaultPlatformOptionsToColumns($databasePlatform, $schemaConfig, $table);
             $this->normalizeTableForMariaDBOrMySQL($databasePlatform, $table);
             $this->normalizeTableForPostgreSQL($databasePlatform, $table);
             $this->normalizeTableForSQLite($databasePlatform, $table);
@@ -1689,6 +1696,33 @@ class ConnectionMigrator
             // options
             $table->getOptions(),
         );
+    }
+
+    protected function applyDefaultPlatformOptionsToColumns(AbstractPlatform $platform, SchemaConfig $schemaConfig, Table $table): void
+    {
+        $defaultTableOptions = $schemaConfig->getDefaultTableOptions();
+        $defaultColumnCollation = $defaultTableOptions['collation'] ?? $defaultTableOptions['collate'] ?? '';
+        $defaultColumCharset = $defaultTableOptions['charset'] ?? '';
+        foreach ($table->getColumns() as $column) {
+            $columnType = $column->getType();
+            if (($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform)
+                && (($columnType instanceof StringType || $columnType instanceof TextType))
+            ) {
+                $columnCollation = (string)($column->getPlatformOptions()['collation'] ?? '');
+                $columnCharset = (string)($column->getPlatformOptions()['charset'] ?? '');
+                if ($defaultColumnCollation !== '' && $columnCollation === '') {
+                    $column->setPlatformOption('collation', $defaultColumnCollation);
+                }
+                if ($defaultColumCharset !== '' && $columnCharset === '') {
+                    $column->setPlatformOption('charset', $defaultColumCharset);
+                }
+            }
+            if ($platform instanceof DoctrineSQLitePlatform
+                && ($columnType instanceof StringType || $columnType instanceof TextType || $columnType instanceof JsonType)
+            ) {
+                $column->setPlatformOption('collation', 'BINARY');
+            }
+        }
     }
 
     /**
