@@ -32,6 +32,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\UniqueConstraint;
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\BinaryType;
+use Doctrine\DBAL\Types\BlobType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\SmallIntType;
@@ -283,7 +284,24 @@ class ConnectionMigrator
 
     protected function buildExistingSchemaDefinitions(): Schema
     {
-        return $this->connection->createSchemaManager()->introspectSchema();
+        $platform = $this->connection->getDatabasePlatform();
+        $schema = $this->connection->createSchemaManager()->introspectSchema();
+        // Only MySQL has variable length versions of TEXT/BLOB.
+        // Move the platform into the foreach loop as soon as more normalization needs to be applied, taking it
+        // now as early avoiding the loop.
+        if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
+            foreach ($schema->getTables() as $table) {
+                foreach ($table->getColumns() as $column) {
+                    $columnType = $column->getType();
+                    if ($columnType instanceof BlobType || $columnType instanceof TextType) {
+                        // Doctrine does not provide a length for LONGTEXT/LONGBLOB columns, thus
+                        // ensuring a default length. This is essential for column comparison.
+                        $column->setLength($column->getLength() ?? 2147483647);
+                    }
+                }
+            }
+        }
+        return $schema;
     }
 
     /**
@@ -1861,23 +1879,19 @@ class ConnectionMigrator
         if (!($databasePlatform instanceof DoctrineMariaDBPlatform || $databasePlatform instanceof DoctrineMySQLPlatform)) {
             return;
         }
-
         foreach ($table->getColumns() as $column) {
-            if (!($column->getType() instanceof StringType || $column->getType() instanceof BinaryType)) {
-                continue;
-            }
-            if ($column->getLength() !== null) {
-                // Ensure not to exceed the maximum varchar or binary length
+            $columnType = $column->getType();
+            if ($columnType instanceof StringType || $columnType instanceof BinaryType) {
+                $column->setLength($column->getLength() ?? 255);
                 if ($column->getLength() > 4000) {
-                    // @todo Should a exception be thrown for this case ?
                     $column->setLength(4000);
                 }
-                continue;
             }
-
-            // 255 has been the removed `AbstractPlatform->getVarcharDefaultLength()` and
-            // `AbstractPlatform->getBinaryMaxLength()` value
-            $column->setLength(255);
+            if ($columnType instanceof BlobType || $columnType instanceof TextType) {
+                // Doctrine does not provide a length for LONGTEXT/LONGBLOB columns, thus
+                // ensuring a default length. This is essential for column comparison.
+                $column->setLength($column->getLength() ?? 2147483647);
+            }
         }
     }
 

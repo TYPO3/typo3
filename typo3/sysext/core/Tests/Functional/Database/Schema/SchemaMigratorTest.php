@@ -725,4 +725,40 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertSame('9223372036854775807', $connection->lastInsertId());
         $this->assertCSVDataSet(__DIR__ . '/../Fixtures/bigIntPrimaryKeyAssert.csv');
     }
+
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[Test]
+    public function mediumTextToLargeTextColumChangeAndRevertWorksAsExpected(): void
+    {
+        $subject = $this->createSchemaMigrator();
+        $sqlCode = file_get_contents(__DIR__ . '/../Fixtures/mediumTextTable.sql');
+        $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
+        $this->verifyMigrationResult($result);
+        $this->verifyCleanDatabaseState($sqlCode);
+
+        // medium to long text
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/mediumTextTable_changeToLongText.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
+        self::assertCount(1, $selectedStatements);
+        self::assertStringContainsString('CHANGE `text1` `text1` LONGTEXT', $selectedStatements[array_key_first($selectedStatements)]);
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
+        self::assertCount(0, $selectedStatements);
+
+        // long to medium text
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/mediumTextTable.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
+        self::assertCount(1, $selectedStatements);
+        self::assertStringContainsString('CHANGE `text1` `text1` MEDIUMTEXT', $selectedStatements[array_key_first($selectedStatements)]);
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
+        self::assertCount(0, $selectedStatements);
+    }
 }
