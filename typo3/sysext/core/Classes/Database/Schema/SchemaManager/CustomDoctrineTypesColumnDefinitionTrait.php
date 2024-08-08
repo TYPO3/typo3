@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
@@ -29,6 +30,13 @@ use Doctrine\DBAL\Types\Type;
  *  - PostgreSQLSchemaManager
  *
  * @internal only for use in extended SchemaManager classes and not part of public core API.
+ *
+ * @todo ENUM and SET does not work for SQLite and PostgresSQL. SQLite supports it with a slightly other syntax and
+ *       PostgreSQL needs to create a custom type with a human-readable name, which is not reasonable either. Consider
+ *       to deprecate and drop ENUM/SET support due not having compatibility for all supported database systems.
+ *         * @see https://www.postgresql.org/docs/current/datatype-enum.html#DATATYPE-ENUM (PostgreSQL)
+ *         * @see https://www.sqlite.org/lang_createtable.html#ckconst (SQlite)
+ *         * @see https://stackoverflow.com/questions/5299267/how-to-create-enum-type-in-sqlite
  */
 trait CustomDoctrineTypesColumnDefinitionTrait
 {
@@ -42,17 +50,28 @@ trait CustomDoctrineTypesColumnDefinitionTrait
         array $tableColumn,
         AbstractPlatform $platform,
     ): ?Column {
-        $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
+        $tableColumn = array_change_key_case($tableColumn);
         $dbType = $this->getDatabaseType($tableColumn['type']);
         if ($dbType !== 'enum' && $dbType !== 'set') {
             return null;
         }
-
+        $default = $tableColumn['default'] ?? null;
+        // Doctrine DBAL retrieves for MariaDB `ENUM()` and `SET()` field default values quotes with single quotes,
+        // which leads to an endless field change reporting recursion in the database analyzer. The default value
+        // is now trimmed to ensure a working field compare within `TYPO3\CMS\Core\Database\Schema\Comparator`.
+        if ($platform instanceof DoctrineMariaDBPlatform
+            && is_string($default)
+            && $default !== ''
+            && str_starts_with($default, "'")
+            && str_ends_with($default, "'")
+        ) {
+            $default = trim($default, "'");
+        }
         $options = [
             'length' => $tableColumn['length'] ?? null,
             'unsigned' => false,
             'fixed' => false,
-            'default' => $tableColumn['default'] ?? null,
+            'default' => $default,
             'notnull' => ($tableColumn['null'] ?? '') !== 'YES',
             'scale' => 0,
             'precision' => null,
@@ -75,9 +94,7 @@ trait CustomDoctrineTypesColumnDefinitionTrait
     protected function getDatabaseType(string $typeDefinition): string
     {
         $dbType = strtolower($typeDefinition);
-        $dbType = strtok($dbType, '(), ');
-
-        return $dbType;
+        return strtok($dbType, '(), ');
     }
 
     protected function getUnquotedEnumerationValues(string $typeDefinition): array

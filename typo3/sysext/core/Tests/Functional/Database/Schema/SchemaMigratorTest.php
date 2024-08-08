@@ -761,4 +761,32 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
         self::assertCount(0, $selectedStatements);
     }
+
+    #[Group('not-sqlite')]
+    #[Group('not-postgres')]
+    #[Test]
+    public function enumTypeFieldCanBeCreated(): void
+    {
+        // @todo ENUM never worked for SQLite and PostgreSQL. Fix EnumType implementation for SQLite and PostgreSQL
+        //       and remove the exclude group attributes of the test to test working state.
+        $subject = $this->createSchemaMigrator();
+        $sqlCode = file_get_contents(__DIR__ . '/../Fixtures/enumTable.sql');
+        $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
+        $this->verifyMigrationResult($result);
+        $this->verifyCleanDatabaseState($sqlCode);
+    }
+
+    #[Group('not-sqlite')]
+    #[Group('not-postgres')]
+    #[Test]
+    public function setTypeFieldCanBeCreated(): void
+    {
+        // @todo SET never worked for SQLite and PostgreSQL. Fix EnumType implementation for SQLite and PostgreSQL
+        //       and remove the exclude group attributes of the test to test working state.
+        $subject = $this->createSchemaMigrator();
+        $sqlCode = file_get_contents(__DIR__ . '/../Fixtures/setTable.sql');
+        $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
+        $this->verifyMigrationResult($result);
+        $this->verifyCleanDatabaseState($sqlCode);
+    }
 }

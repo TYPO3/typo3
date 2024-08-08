@@ -1816,7 +1816,7 @@ class ConnectionMigrator
                 // @todo why do we need this with Doctrine DBAL 4 ???
                 $column->setUnsigned(false);
             }
-            $columnData = $column->toArray();
+            $columnData = $this->prepareColumnOptions($column);
             unset($columnData['name'], $columnData['type']);
             $normalizedColumns[] = new Column(
                 // name

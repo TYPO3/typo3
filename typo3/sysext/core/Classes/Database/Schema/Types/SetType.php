@@ -24,6 +24,10 @@ use Doctrine\DBAL\Types\Type;
  * Type that maps a TYPE field.
  *
  * @internal not part of public core API.
+ *
+ * @todo SetType does not work for SQLite and PostgresSQL. SQLite supports it with a slightly other syntax and
+ *       PostgreSQL needs to create a custom type with a human-readable name, which is not reasonable either. Consider
+ *       to deprecate and drop ENUM support due not having compatibility for all supported database systems.
  */
 class SetType extends Type
 {

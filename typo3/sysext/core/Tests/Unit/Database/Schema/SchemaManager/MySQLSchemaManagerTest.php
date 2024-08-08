@@ -35,6 +35,22 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MySQLSchemaManagerTest extends UnitTestCase
 {
+    public static function platformDataProvider(): \Generator
+    {
+        yield 'Use TYPO3 MySQLPlatform' => [
+            'platform' => MySQLPlatform::class,
+        ];
+        yield 'Use TYPO3 MySQL80Platform' => [
+            'platform' => MySQL80Platform::class,
+        ];
+        yield 'Use TYPO3 MariaDBPlatform' => [
+            'platform' => MariaDBPlatform::class,
+        ];
+        yield 'Use TYPO3 MariaDB1052Platform' => [
+            'platform' => MariaDB1052Platform::class,
+        ];
+    }
+
     #[DataProvider('platformDataProvider')]
     #[Test]
     public function isInactiveForStandardColumnTypes(string $platform): void
@@ -100,23 +116,6 @@ final class MySQLSchemaManagerTest extends UnitTestCase
         self::assertInstanceOf(SetType::class, $column->getType());
         self::assertSame(['value1', 'value3'], $column->getPlatformOption('unquotedValues'));
     }
-
-    public static function platformDataProvider(): \Generator
-    {
-        yield 'Use TYPO3 MySQLPlatform' => [
-            'platform' => MySQLPlatform::class,
-        ];
-        yield 'Use TYPO3 MySQL80Platform' => [
-            'platform' => MySQL80Platform::class,
-        ];
-        yield 'Use TYPO3 MariaDBPlatform' => [
-            'platform' => MariaDBPlatform::class,
-        ];
-        yield 'Use TYPO3 MariaDB1052Platform' => [
-            'platform' => MariaDB1052Platform::class,
-        ];
-    }
-
     private function createSchemaManager(Connection $connection, DoctrineAbstractMySQLPlatform $platform): FixtureMySQLSchemaManager
     {
         return new FixtureMySQLSchemaManager($connection, $platform);
