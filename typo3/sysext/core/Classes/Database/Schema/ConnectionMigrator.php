@@ -330,7 +330,7 @@ class ConnectionMigrator
             $table->setSchemaConfig($schemaConfig);
             $tablesForConnection[$tableName] = $table;
         }
-        $tablesForConnection = $this->transformTablesForDatabasePlatform($this->connection, $schemaConfig, $tablesForConnection);
+        $tablesForConnection = $this->normalizeTablesForTargetConnection($this->connection, $schemaConfig, $tablesForConnection);
         return new Schema($tablesForConnection, [], $schemaConfig);
     }
 
@@ -1422,69 +1422,6 @@ class ConnectionMigrator
     }
 
     /**
-     * Transform the table information to conform to specific
-     * requirements of different database platforms like removing
-     * the index substring length for Non-MySQL Platforms.
-     *
-     * @param Table[] $tables
-     * @return Table[]
-     * @throws \InvalidArgumentException
-     */
-    protected function transformTablesForDatabasePlatform(Typo3Connection $connection, SchemaConfig $schemaConfig, array $tables): array
-    {
-        $defaultTableOptions = $schemaConfig->getDefaultTableOptions();
-        $tables = $this->normalizeTablesForTargetConnection($connection, $schemaConfig, $tables);
-        foreach ($tables as &$table) {
-            $indexes = [];
-            foreach ($table->getIndexes() as $key => $index) {
-                $indexName = $index->getName();
-                // PostgreSQL and sqlite require index names to be unique per database/schema.
-                $platform = $connection->getDatabasePlatform();
-                if ($platform instanceof DoctrinePostgreSQLPlatform || $platform instanceof DoctrineSQLitePlatform) {
-                    $indexName = $indexName . '_' . hash('crc32b', $table->getName() . '_' . $indexName);
-                }
-
-                // Remove the length information from column names for indexes if required.
-                $cleanedColumnNames = array_map(
-                    static function (string $columnName) use ($connection): string {
-                        $platform = $connection->getDatabasePlatform();
-                        if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
-                            // Returning the unquoted, unmodified version of the column name since
-                            // it can include the length information for BLOB/TEXT columns which
-                            // may not be quoted.
-                            return $columnName;
-                        }
-
-                        return $connection->quoteIdentifier(preg_replace('/\(\d+\)$/', '', $columnName));
-                    },
-                    $index->getUnquotedColumns()
-                );
-
-                $indexes[$key] = new Index(
-                    $connection->quoteIdentifier($indexName),
-                    $cleanedColumnNames,
-                    $index->isUnique(),
-                    $index->isPrimary(),
-                    $index->getFlags(),
-                    $index->getOptions()
-                );
-            }
-
-            $table = new Table(
-                $table->getQuotedName($connection->getDatabasePlatform()),
-                $table->getColumns(),
-                $indexes,
-                [],
-                $table->getForeignKeys(),
-                array_merge($defaultTableOptions, $table->getOptions())
-            );
-            $table->setSchemaConfig($schemaConfig);
-        }
-
-        return $tables;
-    }
-
-    /**
      * Get COLLATION, ROW_FORMAT, COMMENT and ENGINE table options on MySQL connections.
      *
      * @param string[] $tableNames
@@ -1683,7 +1620,7 @@ class ConnectionMigrator
     protected function normalizeTablesForTargetConnection(Typo3Connection $connection, SchemaConfig $schemaConfig, array $tables): array
     {
         $databasePlatform = $connection->getDatabasePlatform();
-        array_walk($tables, function (Table &$table) use ($databasePlatform, $schemaConfig): void {
+        array_walk($tables, function (Table &$table) use ($connection, $databasePlatform, $schemaConfig): void {
             $table->setSchemaConfig($schemaConfig);
             $this->normalizeTableIdentifiers($databasePlatform, $table);
             $this->applyDefaultPlatformOptionsToColumns($databasePlatform, $schemaConfig, $table);
@@ -1691,6 +1628,7 @@ class ConnectionMigrator
             $this->normalizeTableForMariaDBOrMySQL($databasePlatform, $table);
             $this->normalizeTableForPostgreSQL($databasePlatform, $table);
             $this->normalizeTableForSQLite($databasePlatform, $table);
+            $this->normalizeTableIndex($databasePlatform, $connection, $schemaConfig, $table);
         });
 
         return $tables;
@@ -1989,6 +1927,49 @@ class ConnectionMigrator
         ) {
             $singlePrimaryKeyColumn->setAutoincrement(true);
         }
+    }
+
+    protected function normalizeTableIndex(AbstractPlatform $platform, Typo3Connection $connection, SchemaConfig $schemaConfig, Table &$table): void
+    {
+        $indexes = [];
+        foreach ($table->getIndexes() as $key => $index) {
+            $indexName = $index->getName();
+            // PostgreSQL and sqlite require index names to be unique per database/schema.
+            if ($platform instanceof DoctrinePostgreSQLPlatform || $platform instanceof DoctrineSQLitePlatform) {
+                $indexName = $indexName . '_' . hash('crc32b', $table->getName() . '_' . $indexName);
+            }
+            // Remove the length information from column names for indexes if required.
+            $cleanedColumnNames = array_map(
+                static function (string $columnName) use ($connection): string {
+                    $platform = $connection->getDatabasePlatform();
+                    if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
+                        // Returning the unquoted, unmodified version of the column name since
+                        // it can include the length information for BLOB/TEXT columns which
+                        // may not be quoted.
+                        return $columnName;
+                    }
+                    return $connection->quoteIdentifier(preg_replace('/\(\d+\)$/', '', $columnName));
+                },
+                $index->getUnquotedColumns()
+            );
+            $indexes[$key] = new Index(
+                $connection->quoteIdentifier($indexName),
+                $cleanedColumnNames,
+                $index->isUnique(),
+                $index->isPrimary(),
+                $index->getFlags(),
+                $index->getOptions()
+            );
+        }
+        $table = new Table(
+            $table->getQuotedName($connection->getDatabasePlatform()),
+            $table->getColumns(),
+            $indexes,
+            [],
+            $table->getForeignKeys(),
+            array_merge($schemaConfig->getDefaultTableOptions(), $table->getOptions())
+        );
+        $table->setSchemaConfig($schemaConfig);
     }
 
     /**
