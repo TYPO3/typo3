@@ -36,7 +36,8 @@
 		"sort-packages": true,
 		"allow-plugins": {
 			"typo3/class-alias-loader": true,
-			"typo3/cms-composer-installers": true
+			"typo3/cms-composer-installers": true,
+			"cweagans/composer-patches": true
 		}
 	},
 	"require": {
@@ -61,7 +62,7 @@
 		"doctrine/lexer": "^3.0",
 		"egulias/email-validator": "^4.0",
 		"enshrined/svg-sanitize": "^0.18.0",
-		"firebase/php-jwt": "^6.4.0",
+		"firebase/php-jwt": "^6.10.1",
 		"guzzlehttp/guzzle": "^7.9.2",
 		"guzzlehttp/promises": "^2.0.3",
 		"guzzlehttp/psr7": "^2.7.0",
@@ -114,6 +115,7 @@
 		"codeception/module-filesystem": "^3.0.1",
 		"codeception/module-webdriver": "^4.0.1",
 		"composer/composer": "^2.7.7",
+		"cweagans/composer-patches": "^1.7.3",
 		"friendsofphp/php-cs-fixer": "^3.57.1",
 		"friendsoftypo3/phpstan-typo3": "^0.9.0",
 		"php-webdriver/webdriver": "^1.15.1",
@@ -150,7 +152,9 @@
 		},
 		"branch-alias": {
 			"dev-main": "13.3.x-dev"
-		}
+		},
+		"composer-exit-on-patch-failure": "true",
+		"patches-file": "Build/patches/patches.json"
 	},
 	"scripts": {
 		"gerrit:setup": [

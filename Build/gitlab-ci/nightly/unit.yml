@@ -12,6 +12,28 @@ unit javascript:
   script:
     - Build/Scripts/runTests.sh -s unitJavascript
 
+# 8.2 & 8.4 "locked" are part of pre-merge, have 8.3 in nightly
+unit php 8.3 locked:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.3
+    - Build/Scripts/runTests.sh -s unit -p 8.3
+unit php 8.3 deprecated locked:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.3
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.3
+
 unit php 8.2 max:
   stage: unit
   tags:
@@ -74,6 +96,37 @@ unit php 8.3 max random:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
     - Build/Scripts/runTests.sh -s unitRandom -p 8.3
 
+unit php 8.4 max:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
+    - Build/Scripts/runTests.sh -s unit -p 8.4
+unit php 8.4 max deprecated:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.4
+unit php 8.4 max random:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.4
+
 unit php 8.2 min:
   stage: unit
   tags:
@@ -105,6 +158,8 @@ unit php 8.2 min random:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
     - Build/Scripts/runTests.sh -s unitRandom -p 8.2
 
+# 8.4 "min" is left out since some transitive dependencies like symfony/string
+# are not 8.4 compatible with their "min" versions.
 unit php 8.3 min:
   stage: unit
   tags:
