@@ -55,7 +55,7 @@ final class LoggerAwarePass implements CompilerPassInterface
             if ($definition->getClass()) {
                 $reflectionClass = $container->getReflectionClass($definition->getClass(), false);
                 if ($reflectionClass) {
-                    $channel = $this->getClassChannelName($reflectionClass) ?? $channel;
+                    $channel = $this->getClassChannelName($reflectionClass) ?? $definition->getClass();
                 }
             }
 
