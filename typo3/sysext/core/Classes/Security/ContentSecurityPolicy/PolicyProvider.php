@@ -23,10 +23,12 @@ use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Middleware\AbstractContentSecurityPolicyReporter;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Provide a Content-Security-Policy representation for a given scope (e.g. backend, frontend, frontend.my-site).
@@ -42,7 +44,7 @@ final class PolicyProvider
         private readonly SiteFinder $siteFinder,
         private readonly PolicyRegistry $policyRegistry,
         private readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly MutationRepository $mutationRepository,
+        private readonly MutationRepository $mutationRepository,
     ) {}
 
     /**
@@ -84,8 +86,12 @@ final class PolicyProvider
                 return null;
             }
         }
+        $requestTime = (string)$this->requestId->microtime;
+        $requestHash = GeneralUtility::hmac($requestTime, AbstractContentSecurityPolicyReporter::class);
         $uriBase = $this->getDefaultReportingUriBase($scope, $request);
-        return $uriBase->withQuery($uriBase->getQuery() . '&requestTime=' . $this->requestId->microtime);
+        return $uriBase->withQuery(
+            $uriBase->getQuery() . '&requestTime=' . $requestTime . '&requestHash=' . $requestHash
+        );
     }
 
     /**
