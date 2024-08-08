@@ -53,7 +53,15 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
             'addr' => IpAnonymizationUtility::anonymizeIp($normalizedParams->getRemoteAddress()),
             'agent' => $normalizedParams->getHttpUserAgent(),
         ];
-        $requestTime = (int)($request->getQueryParams()['requestTime'] ?? 0);
+        // skip potential externally injected violation reports
+        $requestTime = $this->getRequestQueryParam($request, 'requestTime');
+        $requestHash = $this->getRequestQueryParam($request, 'requestHash');
+        if ($requestTime === null
+            || $requestHash === null
+            || !$this->hashService->validateHmac($requestTime, self::class, $requestHash)
+        ) {
+            return;
+        }
         $originalDetails = json_decode($payload, true)['csp-report'] ?? [];
         $originalDetails = $this->anonymizeDetails($originalDetails);
         $details = new ReportDetails($originalDetails);
@@ -61,7 +69,7 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
         $report = new Report(
             $scope,
             ReportStatus::New,
-            $requestTime,
+            (int)$requestTime,
             $meta,
             $details,
             $summary
@@ -123,6 +131,12 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
         return $request->getMethod() === 'POST'
             && str_starts_with($normalizedParams->getRequestUri(), (string)$reportingUriBase)
             && $contentTypeHeader === 'application/csp-report';
+    }
+
+    protected function getRequestQueryParam(ServerRequestInterface $request, string $name): ?string
+    {
+        $value = $request->getQueryParams()[$name] ?? null;
+        return is_string($value) ? $value : null;
     }
 
     protected function isJson(string $value): bool

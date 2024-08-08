@@ -22,8 +22,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Middleware\AbstractContentSecurityPolicyReporter;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -47,6 +49,7 @@ final class PolicyProvider
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly MutationRepository $mutationRepository,
         private readonly BackendEntryPointResolver $backendEntryPointResolver,
+        private readonly HashService $hashService,
     ) {}
 
     /**
@@ -88,8 +91,12 @@ final class PolicyProvider
                 return null;
             }
         }
+        $requestTime = (string)$this->requestId->microtime;
+        $requestHash = $this->hashService->hmac($requestTime, AbstractContentSecurityPolicyReporter::class);
         $uriBase = $this->getDefaultReportingUriBase($scope, $request);
-        return $uriBase->withQuery($uriBase->getQuery() . '&requestTime=' . $this->requestId->microtime);
+        return $uriBase->withQuery(
+            $uriBase->getQuery() . '&requestTime=' . $requestTime . '&requestHash=' . $requestHash
+        );
     }
 
     /**
