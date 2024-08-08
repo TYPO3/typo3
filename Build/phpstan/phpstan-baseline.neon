@@ -581,11 +581,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Http/NormalizedParams.php
 
 		-
-			message: "#^Call to function is_resource\\(\\) with Psr\\\\Http\\\\Message\\\\StreamInterface will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/Response.php
-
-		-
 			message: "#^Result of && is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Http/Response.php
