@@ -401,7 +401,7 @@ class Backend extends Workspaces {
       this.getWorkspaceInfos();
     });
 
-    this.elements.$searchTextField.on('keyup', (e: JQueryEventObject): void => {
+    this.elements.$searchTextField.on('input', (e: JQueryEventObject): void => {
       const me = <HTMLInputElement>e.target;
 
       if (me.value !== '') {
