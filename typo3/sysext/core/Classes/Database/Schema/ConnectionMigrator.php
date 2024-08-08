@@ -33,6 +33,7 @@ use Doctrine\DBAL\Schema\UniqueConstraint;
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\BinaryType;
 use Doctrine\DBAL\Types\BlobType;
+use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\SmallIntType;
@@ -1686,6 +1687,7 @@ class ConnectionMigrator
             $table->setSchemaConfig($schemaConfig);
             $this->normalizeTableIdentifiers($databasePlatform, $table);
             $this->applyDefaultPlatformOptionsToColumns($databasePlatform, $schemaConfig, $table);
+            $this->normalizeDecimalTypeColumnDefaultValue($databasePlatform, $table);
             $this->normalizeTableForMariaDBOrMySQL($databasePlatform, $table);
             $this->normalizeTableForPostgreSQL($databasePlatform, $table);
             $this->normalizeTableForSQLite($databasePlatform, $table);
@@ -1740,6 +1742,33 @@ class ConnectionMigrator
             ) {
                 $column->setPlatformOption('collation', 'BINARY');
             }
+        }
+    }
+
+    /**
+     * Normalize DecimalType fields default values to have the correct format defined by the column
+     * scale settings to ensure working comparison with Doctrine DBAL v4 {@see AbstractPlatform::columnsEqual()}.
+     */
+    protected function normalizeDecimalTypeColumnDefaultValue(AbstractPlatform $platform, Table $table): void
+    {
+        if (!($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform)) {
+            return;
+        }
+        foreach ($table->getColumns() as $column) {
+            $columnType = $column->getType();
+            if (!($columnType instanceof DecimalType)) {
+                continue;
+            }
+            if (!$column->getNotnull() && $column->getDefault() === null) {
+                continue;
+            }
+            $column->setDefault(number_format(
+                (float)$column->getDefault(),
+                // Scale defines the count of decimal digits after the decimal separator
+                $column->getScale(),
+                '.',
+                '',
+            ));
         }
     }
 
