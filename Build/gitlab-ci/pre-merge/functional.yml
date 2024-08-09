@@ -1,27 +1,3 @@
-functional deprecated mariadb 10.4 php 8.3 pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.4 -p 8.3
-
-functional deprecated postgres 10 php 8.2 pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -i 10 -p 8.2
-
 functional mariadb 10.4 php 8.3 pre-merge:
   stage: main
   tags:

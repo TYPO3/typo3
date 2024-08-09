@@ -89,4 +89,35 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);
     }
+
+    /**
+     * @deprecated Remove together with $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] handling.
+     *             Remove Fixtures/userTsConfigTestFixtureDeprecated.csv as well.
+     */
+    #[Test]
+    public function userTsConfigLoadsDefaultFromGlobals(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixtureDeprecated.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $subject = $this->get(UserTsConfigFactory::class);
+        $userTsConfig = $subject->create($backendUser);
+        self::assertSame('loadedFromGlobals', $userTsConfig->getUserTsConfigArray()['loadedFromGlobals']);
+    }
+
+    /**
+     * @deprecated Remove together with $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] handling.
+     *             Remove Fixtures/userTsConfigTestFixtureDeprecated.csv as well.
+     */
+    #[Test]
+    public function userTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixtureDeprecated.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        /** @var UserTsConfigFactory $subject */
+        $subject = $this->get(UserTsConfigFactory::class);
+        $userTsConfig = $subject->create($backendUser);
+        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
+    }
 }

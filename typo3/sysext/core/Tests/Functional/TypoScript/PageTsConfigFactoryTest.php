@@ -188,4 +188,29 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         $pageTsConfig = $subject->create($rootLine, new NullSite(), $userTsConfig);
         self::assertSame('overridden', $pageTsConfig->getPageTsConfigArray()['valueOverriddenByUserTsConfig']);
     }
+
+    /**
+     * @deprecated Remove together with $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'].
+     */
+    #[Test]
+    public function pageTsConfigLoadsDefaultsFromGlobals(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
+        $subject = $this->get(PageTsConfigFactory::class);
+        $pageTsConfig = $subject->create([], new NullSite());
+        self::assertSame('loadedFromGlobals', $pageTsConfig->getPageTsConfigArray()['loadedFromGlobals']);
+    }
+
+    /**
+     * @deprecated Remove together with $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'].
+     */
+    #[Test]
+    public function pageTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';
+        /** @var PageTsConfigFactory $subject */
+        $subject = $this->get(PageTsConfigFactory::class);
+        $pageTsConfig = $subject->create([], new NullSite());
+        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
+    }
 }
