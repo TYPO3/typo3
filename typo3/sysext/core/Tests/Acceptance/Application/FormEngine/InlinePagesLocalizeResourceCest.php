@@ -44,6 +44,7 @@ final class InlinePagesLocalizeResourceCest
         $I->click('Resources');
         $I->click('span[data-identifier="actions-insert-record"]', 'div.active');
         $I->switchToWindow('typo3-backend');
+        $I->waitForElement('iframe[name=\'modal_frame\']');
         $I->switchToIFrame('modal_frame');
         // Find page 'styleguide' in page tree of modal and click it
         $context = $I->executeInSelenium(function (RemoteWebDriver $webdriver) {
