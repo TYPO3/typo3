@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -32,47 +33,47 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class IconTest extends UnitTestCase
 {
-    protected ?Icon $subject;
-    protected string $iconIdentifier = 'actions-close';
-    protected string $overlayIdentifier = 'overlay-readonly';
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with(self::anything())->willReturn(false);
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $containerMock, $this->createMock(FrontendInterface::class));
-        $this->subject = $iconFactory->getIcon($this->iconIdentifier, IconSize::SMALL, $this->overlayIdentifier, IconState::STATE_DISABLED);
-    }
+    private const iconIdentifier = 'actions-close';
+    private const overlayIdentifier = 'overlay-readonly';
 
     #[Test]
     public function renderAndCastToStringReturnsTheSameCode(): void
     {
-        self::assertEquals($this->subject->render(), (string)$this->subject);
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
+        self::assertEquals($subject->render(), (string)$subject);
     }
 
     #[Test]
     public function getIdentifierReturnsCorrectIdentifier(): void
     {
-        self::assertEquals($this->iconIdentifier, $this->subject->getIdentifier());
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
+        self::assertEquals(self::iconIdentifier, $subject->getIdentifier());
     }
 
     #[Test]
     public function getOverlayIdentifierReturnsCorrectIdentifier(): void
     {
-        self::assertEquals($this->overlayIdentifier, $this->subject->getOverlayIcon()->getIdentifier());
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
+        self::assertEquals(self::overlayIdentifier, $subject->getOverlayIcon()->getIdentifier());
     }
 
     #[Test]
     public function getSizeIdentifierReturnsCorrectIdentifier(): void
     {
-        self::assertEquals(IconSize::SMALL->value, $this->subject->getSize());
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
+        self::assertEquals(IconSize::SMALL->value, $subject->getSize());
     }
 
     #[Test]
     public function getStateReturnsCorrectIdentifier(): void
     {
-        self::assertSame($this->subject->getState(), IconState::STATE_DISABLED);
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
+        self::assertSame($subject->getState(), IconState::STATE_DISABLED);
     }
 
     public static function setSizeSetsExpectedValuesDataProvider(): \Generator
@@ -106,6 +107,84 @@ final class IconTest extends UnitTestCase
     #[DataProvider('setSizeSetsExpectedValuesDataProvider')]
     #[Test]
     public function setSizeSetsExpectedValues(IconSize $size, array $expectedDimensions): void
+    {
+        $icon = new Icon();
+        $icon->setSize($size);
+
+        [$width, $height] = $expectedDimensions;
+
+        self::assertSame($width, $icon->getDimension()->getWidth());
+        self::assertSame($height, $icon->getDimension()->getHeight());
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function renderAndCastToStringReturnsTheSameCodeDeprecated(): void
+    {
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, \TYPO3\CMS\Core\Type\Icon\IconState::cast(\TYPO3\CMS\Core\Type\Icon\IconState::STATE_DISABLED));
+        self::assertEquals($subject->render(), (string)$subject);
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function getIdentifierReturnsCorrectIdentifierDeprecated(): void
+    {
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, \TYPO3\CMS\Core\Type\Icon\IconState::cast(\TYPO3\CMS\Core\Type\Icon\IconState::STATE_DISABLED));
+        self::assertEquals(self::iconIdentifier, $subject->getIdentifier());
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function getOverlayIdentifierReturnsCorrectIdentifierDeprecated(): void
+    {
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, \TYPO3\CMS\Core\Type\Icon\IconState::cast(\TYPO3\CMS\Core\Type\Icon\IconState::STATE_DISABLED));
+        self::assertEquals(self::overlayIdentifier, $subject->getOverlayIcon()->getIdentifier());
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function getSizeIdentifierReturnsCorrectIdentifierDeprecated(): void
+    {
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, \TYPO3\CMS\Core\Type\Icon\IconState::cast(\TYPO3\CMS\Core\Type\Icon\IconState::STATE_DISABLED));
+        self::assertEquals(IconSize::SMALL->value, $subject->getSize());
+    }
+
+    public static function setSizeSetsExpectedValuesDataProviderDeprecated(): \Generator
+    {
+        yield 'SIZE_DEFAULT' => [
+            Icon::SIZE_DEFAULT,
+            [16, 16],
+        ];
+        yield 'SIZE_SMALL' => [
+            Icon::SIZE_DEFAULT,
+            [16, 16],
+        ];
+        yield 'SIZE_OVERLAY' => [
+            Icon::SIZE_OVERLAY,
+            [16, 16],
+        ];
+        yield 'SIZE_MEDIUM' => [
+            Icon::SIZE_MEDIUM,
+            [32, 32],
+        ];
+        yield 'SIZE_LARGE' => [
+            Icon::SIZE_LARGE,
+            [48, 48],
+        ];
+        yield 'SIZE_MEGA' => [
+            Icon::SIZE_MEGA,
+            [64, 64],
+        ];
+    }
+
+    #[DataProvider('setSizeSetsExpectedValuesDataProviderDeprecated')]
+    #[Test]
+    #[IgnoreDeprecations]
+    public function setSizeSetsExpectedValuesDeprecated(string $size, array $expectedDimensions): void
     {
         $icon = new Icon();
         $icon->setSize($size);

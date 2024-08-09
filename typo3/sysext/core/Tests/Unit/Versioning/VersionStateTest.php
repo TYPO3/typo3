@@ -15,9 +15,10 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Versioning;
+namespace TYPO3\CMS\Core\Tests\Unit\Versioning;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -42,6 +43,7 @@ final class VersionStateTest extends UnitTestCase
 
     #[DataProvider('canBeCastedDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function canBeCasted(mixed $value, ?int $expectation): void
     {
         self::assertSame($expectation, VersionState::cast($value)?->value);
@@ -60,6 +62,7 @@ final class VersionStateTest extends UnitTestCase
 
     #[DataProvider('canBeComparedDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function canBeCompared(mixed $value, bool $expectation): void
     {
         self::assertSame($expectation, VersionState::MOVE_POINTER->equals($value));

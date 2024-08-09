@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
-use TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
@@ -41,74 +41,41 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RepositoryTest extends UnitTestCase
 {
-    protected Repository&MockObject&AccessibleObjectInterface $repository;
-
-    /**
-     * @var QueryFactory
-     */
-    protected $mockQueryFactory;
-
-    /**
-     * @var BackendInterface
-     */
-    protected $mockBackend;
-
-    /**
-     * @var Session
-     */
-    protected $mockSession;
-
-    /**
-     * @var PersistenceManagerInterface
-     */
-    protected $mockPersistenceManager;
-
-    /**
-     * @var QueryInterface
-     */
-    protected $mockQuery;
-
-    /**
-     * @var QuerySettingsInterface
-    */
-    protected $mockQuerySettings;
-
-    /**
-     * @var ConfigurationManager
-     */
-    protected $mockConfigurationManager;
+    private Repository&MockObject&AccessibleObjectInterface $subject;
+    private MockObject&Session $mockSession;
+    private MockObject&QueryInterface $mockQuery;
+    private MockObject&QuerySettingsInterface $mockQuerySettings;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mockQueryFactory = $this->createMock(QueryFactory::class);
+        $mockQueryFactory = $this->createMock(QueryFactory::class);
         $this->mockQuery = $this->createMock(QueryInterface::class);
         $this->mockQuerySettings = $this->createMock(QuerySettingsInterface::class);
         $this->mockQuery->method('getQuerySettings')->willReturn($this->mockQuerySettings);
-        $this->mockQueryFactory->method('create')->willReturn($this->mockQuery);
+        $mockQueryFactory->method('create')->willReturn($this->mockQuery);
         $this->mockSession = $this->createMock(Session::class);
-        $this->mockConfigurationManager = $this->createMock(ConfigurationManager::class);
-        $this->mockBackend = $this->getAccessibleMock(Backend::class, null, [$this->mockConfigurationManager], '', false);
-        $this->mockBackend->_set('session', $this->mockSession);
-        $this->mockPersistenceManager = $this->getAccessibleMock(
+        $mockBackend = $this->getAccessibleMock(Backend::class, null, [$this->createMock(ConfigurationManager::class)], '', false);
+        $mockBackend->_set('session', $this->mockSession);
+        $mockPersistenceManager = $this->getAccessibleMock(
             PersistenceManager::class,
             ['createQueryForType'],
             [
-                $this->mockQueryFactory,
-                $this->mockBackend,
+                $mockQueryFactory,
+                $mockBackend,
                 $this->mockSession,
             ]
         );
-        $this->mockBackend->setPersistenceManager($this->mockPersistenceManager);
-        $this->mockPersistenceManager->method('createQueryForType')->willReturn($this->mockQuery);
-        $this->repository = $this->getAccessibleMock(Repository::class, null);
-        $this->repository->injectPersistenceManager($this->mockPersistenceManager);
+        $mockBackend->setPersistenceManager($mockPersistenceManager);
+        $mockPersistenceManager->method('createQueryForType')->willReturn($this->mockQuery);
+        $this->subject = $this->getAccessibleMock(Repository::class, null);
+        $this->subject->injectPersistenceManager($mockPersistenceManager);
     }
 
     #[Test]
     public function abstractRepositoryImplementsRepositoryInterface(): void
     {
-        self::assertInstanceOf(RepositoryInterface::class, $this->repository);
+        self::assertInstanceOf(RepositoryInterface::class, $this->subject);
     }
 
     #[Test]
@@ -117,10 +84,10 @@ final class RepositoryTest extends UnitTestCase
         $mockPersistenceManager = $this->createMock(PersistenceManager::class);
         $mockPersistenceManager->expects(self::once())->method('createQueryForType')->with('ExpectedType');
 
-        $this->repository->_set('objectType', 'ExpectedType');
-        $this->repository->injectPersistenceManager($mockPersistenceManager);
+        $this->subject->_set('objectType', 'ExpectedType');
+        $this->subject->injectPersistenceManager($mockPersistenceManager);
 
-        $this->repository->createQuery();
+        $this->subject->createQuery();
     }
 
     #[Test]
@@ -132,13 +99,13 @@ final class RepositoryTest extends UnitTestCase
         $mockPersistenceManager = $this->createMock(PersistenceManager::class);
         $mockPersistenceManager->expects(self::exactly(2))->method('createQueryForType')->with('ExpectedType')->willReturn($mockQuery);
 
-        $this->repository->_set('objectType', 'ExpectedType');
-        $this->repository->injectPersistenceManager($mockPersistenceManager);
-        $this->repository->setDefaultOrderings($orderings);
-        $this->repository->createQuery();
+        $this->subject->_set('objectType', 'ExpectedType');
+        $this->subject->injectPersistenceManager($mockPersistenceManager);
+        $this->subject->setDefaultOrderings($orderings);
+        $this->subject->createQuery();
 
-        $this->repository->setDefaultOrderings([]);
-        $this->repository->createQuery();
+        $this->subject->setDefaultOrderings([]);
+        $this->subject->createQuery();
     }
 
     #[Test]
@@ -172,7 +139,7 @@ final class RepositoryTest extends UnitTestCase
 
         // skip backend, as we want to test the backend
         $this->mockSession->method('hasIdentifier')->willReturn(false);
-        self::assertSame($object, $this->repository->findByIdentifier($identifier));
+        self::assertSame($object, $this->subject->findByIdentifier($identifier));
     }
 
     #[Test]
@@ -181,9 +148,9 @@ final class RepositoryTest extends UnitTestCase
         $object = new \stdClass();
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $mockPersistenceManager->expects(self::once())->method('add')->with($object);
-        $this->repository->injectPersistenceManager($mockPersistenceManager);
-        $this->repository->_set('objectType', get_class($object));
-        $this->repository->add($object);
+        $this->subject->injectPersistenceManager($mockPersistenceManager);
+        $this->subject->_set('objectType', get_class($object));
+        $this->subject->add($object);
     }
 
     #[Test]
@@ -192,9 +159,9 @@ final class RepositoryTest extends UnitTestCase
         $object = new \stdClass();
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $mockPersistenceManager->expects(self::once())->method('remove')->with($object);
-        $this->repository->injectPersistenceManager($mockPersistenceManager);
-        $this->repository->_set('objectType', get_class($object));
-        $this->repository->remove($object);
+        $this->subject->injectPersistenceManager($mockPersistenceManager);
+        $this->subject->_set('objectType', get_class($object));
+        $this->subject->remove($object);
     }
 
     #[Test]
@@ -203,9 +170,9 @@ final class RepositoryTest extends UnitTestCase
         $object = new \stdClass();
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $mockPersistenceManager->expects(self::once())->method('update')->with($object);
-        $this->repository->injectPersistenceManager($mockPersistenceManager);
-        $this->repository->_set('objectType', get_class($object));
-        $this->repository->update($object);
+        $this->subject->injectPersistenceManager($mockPersistenceManager);
+        $this->subject->_set('objectType', get_class($object));
+        $this->subject->update($object);
     }
 
     #[Test]
@@ -224,8 +191,8 @@ final class RepositoryTest extends UnitTestCase
     {
         $this->expectException(IllegalObjectTypeException::class);
         $this->expectExceptionCode(1248363335);
-        $this->repository->_set('objectType', 'ExpectedObjectType');
-        $this->repository->add(new \stdClass());
+        $this->subject->_set('objectType', 'ExpectedObjectType');
+        $this->subject->add(new \stdClass());
     }
 
     #[Test]
@@ -233,8 +200,8 @@ final class RepositoryTest extends UnitTestCase
     {
         $this->expectException(IllegalObjectTypeException::class);
         $this->expectExceptionCode(1248363336);
-        $this->repository->_set('objectType', 'ExpectedObjectType');
-        $this->repository->remove(new \stdClass());
+        $this->subject->_set('objectType', 'ExpectedObjectType');
+        $this->subject->remove(new \stdClass());
     }
 
     #[Test]
@@ -264,8 +231,8 @@ final class RepositoryTest extends UnitTestCase
     {
         $this->mockQuery = $this->createMock(Query::class);
         $mockDefaultQuerySettings = $this->createMock(QuerySettingsInterface::class);
-        $this->repository->setDefaultQuerySettings($mockDefaultQuerySettings);
-        $query = $this->repository->createQuery();
+        $this->subject->setDefaultQuerySettings($mockDefaultQuerySettings);
+        $query = $this->subject->createQuery();
         $instanceQuerySettings = $query->getQuerySettings();
         self::assertEquals($mockDefaultQuerySettings, $instanceQuerySettings);
         self::assertNotSame($mockDefaultQuerySettings, $instanceQuerySettings);
@@ -290,7 +257,98 @@ final class RepositoryTest extends UnitTestCase
     {
         $this->expectException(IllegalObjectTypeException::class);
         $this->expectExceptionCode(1249479625);
-        $this->repository->_set('objectType', 'Foo');
-        $this->repository->update(new \stdClass());
+        $this->subject->_set('objectType', 'Foo');
+        $this->subject->update(new \stdClass());
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function magicCallMethodAcceptsFindBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
+    {
+        $mockQueryResult = $this->createMock(QueryResultInterface::class);
+        $mockQuery = $this->createMock(QueryInterface::class);
+        $mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
+        $mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($mockQuery);
+        $mockQuery->expects(self::once())->method('execute')->with()->willReturn($mockQueryResult);
+
+        $repository = $this->getMockBuilder(Repository::class)
+            ->onlyMethods(['createQuery'])
+            ->getMock();
+        $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
+
+        /** @phpstan-ignore-next-line */
+        self::assertSame($mockQueryResult, $repository->findByFoo('bar'));
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function magicCallMethodAcceptsFindOneBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
+    {
+        $object = new \stdClass();
+        $mockQueryResult = $this->createMock(QueryResultInterface::class);
+        $mockQueryResult->expects(self::once())->method('getFirst')->willReturn($object);
+        $mockQuery = $this->createMock(QueryInterface::class);
+        $mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
+        $mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($mockQuery);
+        $mockQuery->expects(self::once())->method('setLimit')->willReturn($mockQuery);
+        $mockQuery->expects(self::once())->method('execute')->willReturn($mockQueryResult);
+
+        $repository = $this->getMockBuilder(Repository::class)
+            ->onlyMethods(['createQuery'])
+            ->getMock();
+        $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
+
+        /** @phpstan-ignore-next-line */
+        self::assertSame($object, $repository->findOneByFoo('bar'));
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function magicCallMethodAcceptsCountBySomethingCallsAndExecutesAQueryWithThatCriteria(): void
+    {
+        $mockQuery = $this->createMock(QueryInterface::class);
+        $mockQueryResult = $this->createMock(QueryResultInterface::class);
+        $mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
+        $mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($mockQuery);
+        $mockQuery->expects(self::once())->method('execute')->willReturn($mockQueryResult);
+        $mockQueryResult->expects(self::once())->method('count')->willReturn(2);
+
+        $repository = $this->getMockBuilder(Repository::class)
+            ->onlyMethods(['createQuery'])
+            ->getMock();
+        $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
+
+        /** @phpstan-ignore-next-line */
+        self::assertSame(2, $repository->countByFoo('bar'));
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function magicCallMethodReturnsFirstArrayKeyInFindOneBySomethingIfQueryReturnsRawResult(): void
+    {
+        $queryResultArray = [
+            0 => [
+                'foo' => 'bar',
+            ],
+        ];
+        $this->mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
+        $this->mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($this->mockQuery);
+        $this->mockQuery->expects(self::once())->method('setLimit')->with(1)->willReturn($this->mockQuery);
+        $this->mockQuery->expects(self::once())->method('execute')->willReturn($queryResultArray);
+        /** @phpstan-ignore-next-line */
+        self::assertSame(['foo' => 'bar'], $this->subject->findOneByFoo('bar'));
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function magicCallMethodReturnsNullInFindOneBySomethingIfQueryReturnsEmptyRawResult(): void
+    {
+        $queryResultArray = [];
+        $this->mockQuery->expects(self::once())->method('equals')->with('foo', 'bar')->willReturn('matchCriteria');
+        $this->mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($this->mockQuery);
+        $this->mockQuery->expects(self::once())->method('setLimit')->with(1)->willReturn($this->mockQuery);
+        $this->mockQuery->expects(self::once())->method('execute')->willReturn($queryResultArray);
+        /** @phpstan-ignore-next-line */
+        self::assertNull($this->subject->findOneByFoo('bar'));
     }
 }

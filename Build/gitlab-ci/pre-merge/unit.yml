@@ -25,29 +25,6 @@ unit php 8.2 random pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unitRandom -p 8.2
 
-unit php 8.2 deprecated pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.2
-unit php 8.4 deprecated pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.4
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.4
-
 unit php 8.2 pre-merge:
   stage: main
   tags:

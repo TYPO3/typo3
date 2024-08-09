@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Resource;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
@@ -195,5 +196,13 @@ final class FilePathSanitizerTest extends UnitTestCase
     {
         self::expectException(InvalidPathException::class);
         (new FilePathSanitizer())->sanitize('something/../else');
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function sanitizeCorrectlyResolvesPathsForLegacySystemsEvenForPrivateResources(): void
+    {
+        $subject = new FilePathSanitizer();
+        self::assertSame('typo3/sysext/frontend/Resources/Private/Templates/MainPage.html', $subject->sanitize('EXT:frontend/Resources/Private/Templates/MainPage.html'));
     }
 }

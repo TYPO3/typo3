@@ -15,8 +15,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Cryptography;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Cryptography;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashService as CoreHashService;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
@@ -24,6 +25,9 @@ use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationExcepti
 use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @deprecated Remove together with HashService in v14.
+ */
 final class HashServiceTest extends UnitTestCase
 {
     protected HashService $hashService;
@@ -36,6 +40,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function generateHmacReturnsHashStringIfStringIsGiven(): void
     {
         $hash = $this->hashService->generateHmac('asdf');
@@ -43,6 +48,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function generateHmacReturnsHashStringWhichContainsSomeSalt(): void
     {
         $hash = $this->hashService->generateHmac('asdf');
@@ -50,6 +56,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function generateHmacReturnsDifferentHashStringsForDifferentInputStrings(): void
     {
         $hash1 = $this->hashService->generateHmac('asdf');
@@ -58,6 +65,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function generatedHmacCanBeValidatedAgain(): void
     {
         $string = 'asdf';
@@ -66,6 +74,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function generatedHmacWillNotBeValidatedIfHashHasBeenChanged(): void
     {
         $string = 'asdf';
@@ -74,6 +83,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function appendHmacAppendsHmacToGivenString(): void
     {
         $string = 'This is some arbitrary string ';
@@ -82,6 +92,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function validateAndStripHmacThrowsExceptionIfGivenStringIsTooShort(): void
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
@@ -90,6 +101,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function validateAndStripHmacThrowsExceptionIfGivenStringHasNoHashAppended(): void
     {
         $this->expectException(InvalidHashException::class);
@@ -98,6 +110,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function validateAndStripHmacThrowsExceptionIfTheAppendedHashIsInvalid(): void
     {
         $this->expectException(InvalidHashException::class);
@@ -106,6 +119,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function validateAndStripHmacReturnsTheStringWithoutHmac(): void
     {
         $string = ' Some arbitrary string with special characters: öäüß!"§$ ';

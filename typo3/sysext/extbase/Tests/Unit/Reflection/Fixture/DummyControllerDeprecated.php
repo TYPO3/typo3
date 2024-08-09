@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection\Fixture;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -23,8 +23,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 /**
  * Fixture class with @validate annotations
  * Note: This class is excluded from phpstan analysing, because of errors which are test-purpose related.
+ * @deprecated Remove along with deprecated MethodParameterTest tests
  */
-class DummyController extends ActionController
+class DummyControllerDeprecated extends ActionController
 {
     /**
      * @param $fooParam

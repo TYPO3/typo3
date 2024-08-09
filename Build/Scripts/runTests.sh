@@ -230,7 +230,6 @@ Options:
             - phpstan: phpstan tests
             - phpstanGenerateBaseline: regenerate phpstan baseline, handy after phpstan updates
             - unit (default): PHP unit tests
-            - unitDeprecated: deprecated PHP unit tests
             - unitJavascript: JavaScript unit tests
             - unitRandom: PHP unit tests in random order, "-- --random-order-seed=<number>" to use specific seed
 
@@ -311,7 +310,7 @@ Options:
         http://localhost:7900/. A browser tab is opened automatically if xdg-open is installed.
 
     -x
-        Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance|acceptanceComposer|acceptanceInstall
+        Only with -s functional|functionalDeprecated|unit|unitRandom|acceptance|acceptanceComposer|acceptanceInstall
         Send information to host instance for test or system under test break points. This is especially
         useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
@@ -1053,10 +1052,6 @@ case ${TEST_SUITE} in
         ;;
     unit)
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name unit-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} bin/phpunit -c Build/phpunit/UnitTests.xml "$@"
-        SUITE_EXIT_CODE=$?
-        ;;
-    unitDeprecated)
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name unit-deprecated-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} bin/phpunit -c Build/phpunit/UnitTestsDeprecated.xml "$@"
         SUITE_EXIT_CODE=$?
         ;;
     unitJavascript)

@@ -15,14 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Type\Fixture\Enumeration;
+namespace TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
 
 use TYPO3\CMS\Core\Type\Enumeration;
 
 /**
- * This is an enumeration without a default value so it must be called with a value
+ * @deprecated Remove together with EnumerationTest and Enumeration
  */
-final class MissingDefaultEnumeration extends Enumeration
+final class InvalidConstantEnumeration extends Enumeration
 {
-    public const FOO = 1;
+    public const FOO = 1.11;
 }

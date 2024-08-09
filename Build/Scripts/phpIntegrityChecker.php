@@ -59,7 +59,6 @@ final class PhpIntegrityChecker extends Command
     private array $finderFindIn = [
         __DIR__ . '/../../typo3/sysext/*/Classes',
         __DIR__ . '/../../typo3/sysext/*/Tests/Unit',
-        __DIR__ . '/../../typo3/sysext/*/Tests/UnitDeprecated',
         __DIR__ . '/../../typo3/sysext/*/Tests/Functional',
         __DIR__ . '/../../typo3/sysext/*/Tests/FunctionalDeprecated',
         __DIR__ . '/../../typo3/sysext/core/Tests/Acceptance',

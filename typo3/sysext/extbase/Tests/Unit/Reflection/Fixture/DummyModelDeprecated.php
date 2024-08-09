@@ -15,15 +15,15 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Reflection\Fixture;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
- * Fixture model
+ * @deprecated Remove along with deprecated PropertyTest tests
  */
-class DummyModel extends AbstractEntity
+class DummyModelDeprecated extends AbstractEntity
 {
     /**
      * @Extbase\Validate("TYPO3.CMS.Extbase:NotEmpty")

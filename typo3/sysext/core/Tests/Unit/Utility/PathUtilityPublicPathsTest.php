@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
@@ -131,17 +132,36 @@ final class PathUtilityPublicPathsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @throws InvalidFileException
-     */
     #[DataProvider('getPublicResourceWebPathResolvesUrlsCorrectlyDataProvider')]
     #[Test]
     public function getPublicResourceWebPathResolvesUrlsCorrectly(string $pathReference, string $expectedUrl, callable $setup): void
     {
         $setup();
-        self::assertSame(
-            $expectedUrl,
-            PathUtility::getPublicResourceWebPath($pathReference)
-        );
+        self::assertSame($expectedUrl, PathUtility::getPublicResourceWebPath($pathReference));
+    }
+
+    public static function getPublicResourceWebPathResolvesUrlsCorrectlyDataProviderDeprecated(): array
+    {
+        return [
+            'private assets are resolved to absolute url' => [
+                'EXT:core/Resources/Private/Font/nimbus.ttf',
+                '/typo3/sysext/core/Resources/Private/Font/nimbus.ttf',
+                fn() => self::simulateTraditionalWebRequest(),
+            ],
+            'private assets are resolved to absolute url with sub directory prefixed' => [
+                'EXT:core/Resources/Private/Font/nimbus.ttf',
+                '/cms/typo3/sysext/core/Resources/Private/Font/nimbus.ttf',
+                fn() => self::simulateTraditionalWebRequestInSubDirectory('/cms/'),
+            ],
+        ];
+    }
+
+    #[DataProvider('getPublicResourceWebPathResolvesUrlsCorrectlyDataProviderDeprecated')]
+    #[Test]
+    #[IgnoreDeprecations]
+    public function getPublicResourceWebPathResolvesUrlsCorrectlyDeprecated(string $pathReference, string $expectedUrl, callable $setup): void
+    {
+        $setup();
+        self::assertSame($expectedUrl, PathUtility::getPublicResourceWebPath($pathReference));
     }
 }

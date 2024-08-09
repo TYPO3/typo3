@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Tests\UnitDeprecated\Type\Fixture\Enumeration\CompleteEnumeration;
+use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration;
 use TYPO3\CMS\Core\Type\TypeInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Property\Exception\DuplicateTypeConverterException;

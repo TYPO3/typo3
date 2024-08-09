@@ -81,4 +81,21 @@ final class ReflectionServiceTest extends UnitTestCase
         self::assertInstanceOf(ReflectionService::class, $reflectionService);
         self::assertInstanceOf(ClassSchema::class, $reflectionService->getClassSchema($class));
     }
+
+    /**
+     * @deprecated This needs a look in v14, it can be *probably* removed along with the fixture file?!
+     */
+    #[Test]
+    public function reflectionServiceIsResetDuringWakeUp(): void
+    {
+        $insecureString = file_get_contents(__DIR__ . '/Fixture/InsecureSerializedReflectionService.txt');
+        // Note: We need to use the silence operator here for `unserialize()`, otherwise PHP8.3 would emit a warning
+        //       because of unneeded bytes in the content which needs to be unserialized.
+        $reflectionService = @unserialize($insecureString);
+
+        $reflectionClass = new \ReflectionClass($reflectionService);
+        $classSchemaProperty = $reflectionClass->getProperty('classSchemata');
+
+        self::assertSame([], $classSchemaProperty->getValue($reflectionService));
+    }
 }

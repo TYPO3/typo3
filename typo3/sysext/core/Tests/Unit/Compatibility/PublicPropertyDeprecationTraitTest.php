@@ -15,9 +15,10 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Compatibility;
+namespace TYPO3\CMS\Core\Tests\Unit\Compatibility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -79,14 +80,24 @@ final class PublicPropertyDeprecationTraitTest extends UnitTestCase
         ];
     }
 
+    /**
+     * Do NOT remove this test, even though it has IgnoreDeprecations attribute,
+     * we're testing the core's deprecation strategy here.
+     */
     #[DataProvider('issetDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function issetWorksAsExpected(bool $expected, string $property): void
     {
         self::assertSame($expected, isset($this->fixture->$property));
     }
 
+    /**
+     * Do NOT remove this test, even though it has IgnoreDeprecations attribute,
+     * we're testing the core's deprecation strategy here.
+     */
     #[Test]
+    #[IgnoreDeprecations]
     public function unknownPropertyCanBeHandledAsUsual(): void
     {
         // Uses __isset()
@@ -114,7 +125,12 @@ final class PublicPropertyDeprecationTraitTest extends UnitTestCase
         self::assertFalse(isset($this->fixture->unsetPublicProperty));
     }
 
+    /**
+     * Do NOT remove this test, even though it has IgnoreDeprecations attribute,
+     * we're testing the core's deprecation strategy here.
+     */
     #[Test]
+    #[IgnoreDeprecations]
     public function taggedPropertyCanBeHandledLikePublicProperty(): void
     {
         self::assertFalse(isset($this->fixture->unsetTaggedProperty));
@@ -123,16 +139,5 @@ final class PublicPropertyDeprecationTraitTest extends UnitTestCase
         self::assertSame(23, $this->fixture->unsetTaggedProperty);
         unset($this->fixture->unsetTaggedProperty);
         self::assertFalse(isset($this->fixture->unsetTaggedProperty));
-    }
-
-    /**
-     * @return array [[$property],]
-     */
-    public function invalidPropertiesDataProvider(): array
-    {
-        return [
-            'untagged' => ['untaggedProperty'],
-            'unknown' => ['unknownProperty'],
-        ];
     }
 }

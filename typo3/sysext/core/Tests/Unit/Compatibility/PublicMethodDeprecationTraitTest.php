@@ -15,10 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Compatibility;
+namespace TYPO3\CMS\Core\Tests\Unit\Compatibility;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Tests\UnitDeprecated\Compatibility\Fixtures\PublicMethodDeprecationTraitTextFixture;
+use TYPO3\CMS\Core\Tests\Unit\Compatibility\Fixtures\PublicMethodDeprecationTraitTextFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class PublicMethodDeprecationTraitTest extends UnitTestCase
@@ -35,6 +36,7 @@ final class PublicMethodDeprecationTraitTest extends UnitTestCase
     public function protectedMethodNotHandledByTraitThrowsError(): void
     {
         $this->expectException(\Error::class);
+        /** @phpstan-ignore-next-line */
         (new PublicMethodDeprecationTraitTextFixture())->standardProtectedMethod();
     }
 
@@ -42,28 +44,47 @@ final class PublicMethodDeprecationTraitTest extends UnitTestCase
     public function notExistingMethodThrowsError(): void
     {
         $this->expectException(\Error::class);
+        /** @phpstan-ignore-next-line */
         (new PublicMethodDeprecationTraitTextFixture())->doesNotExist();
     }
 
+    /**
+     * Do NOT remove this test, even though it has IgnoreDeprecations attribute,
+     * we're testing the core's deprecation strategy here.
+     */
     #[Test]
+    #[IgnoreDeprecations]
     public function methodMadeProtectedCanBeCalled(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1528822485);
+        /** @phpstan-ignore-next-line */
         (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtected();
     }
 
+    /**
+     * Do NOT remove this test, even though it has IgnoreDeprecations attribute,
+     * we're testing the core's deprecation strategy here.
+     */
     #[Test]
+    #[IgnoreDeprecations]
     public function methodMadeProtectedReturnsValue(): void
     {
+        /** @phpstan-ignore-next-line */
         self::assertEquals('foo', (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtectedWithReturn());
     }
 
+    /**
+     * Do NOT remove this test, even though it has IgnoreDeprecations attribute,
+     * we're testing the core's deprecation strategy here.
+     */
     #[Test]
+    #[IgnoreDeprecations]
     public function methodMadeProtectedCanBeCalledWithArguments(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1528822486);
+        /** @phpstan-ignore-next-line */
         (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtectedWithArguments('foo', 'bar');
     }
 }

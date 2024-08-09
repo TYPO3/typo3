@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -263,5 +264,19 @@ final class MathUtilityTest extends UnitTestCase
     public function isIntegerInRangeRejectsOtherDataTypes($inputValue): void
     {
         self::assertFalse(MathUtility::isIntegerInRange($inputValue, 0, 10));
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function convertToPositiveIntegerReturnsZeroForNegativeValues(): void
+    {
+        self::assertEquals(0, MathUtility::convertToPositiveInteger(-123));
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function convertToPositiveIntegerReturnsTheInputValueForPositiveValues(): void
+    {
+        self::assertEquals(123, MathUtility::convertToPositiveInteger(123));
     }
 }

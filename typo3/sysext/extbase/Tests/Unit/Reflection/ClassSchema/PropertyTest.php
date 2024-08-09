@@ -17,12 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\ClassSchema;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithLazyDoctrineAnnotation;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyModel;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyModelDeprecated;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\Validation\Validator\DummyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -312,5 +315,77 @@ final class PropertyTest extends UnitTestCase
 
         self::assertCount(1, $types);
         self::assertSame(ObjectStorage::class, $types[0]->getClassName());
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function classSchemaDetectsValidateAnnotationsModelPropertiesDeprecated(): void
+    {
+        $property = (new ClassSchema(DummyModelDeprecated::class))
+            ->getProperty('propertyWithValidateAnnotations');
+
+        self::assertSame(
+            [
+                [
+                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
+                    'options' => [],
+                    'className' => DummyValidator::class,
+                ],
+            ],
+            $property->getValidators()
+        );
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function classSchemaDetectsValidateAttributeModelPropertiesDeprecated(): void
+    {
+        $property = (new ClassSchema(DummyModelDeprecated::class))
+            ->getProperty('propertyWithValidateAttributes');
+
+        self::assertSame(
+            [
+                [
+                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
+                    'options' => [],
+                    'className' => DummyValidator::class,
+                ],
+            ],
+            $property->getValidators()
+        );
+    }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function classSchemaDetectsValidateAttributeOnPromotedModelPropertiesDeprecated(): void
+    {
+        $property = (new ClassSchema(DummyModelDeprecated::class))
+            ->getProperty('dummyPromotedProperty');
+
+        self::assertSame(
+            [
+                [
+                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
+                    'options' => [],
+                    'className' => DummyValidator::class,
+                ],
+            ],
+            $property->getValidators()
+        );
     }
 }

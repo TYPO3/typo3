@@ -791,31 +791,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/TreeDataProviderFactoryTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\UnitDeprecated\\\\Compatibility\\\\Fixtures\\\\PublicMethodDeprecationTraitTextFixture\\:\\:doesNotExist\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/UnitDeprecated/Compatibility/PublicMethodDeprecationTraitTest.php
-
-		-
-			message: "#^Call to protected method methodMadeProtected\\(\\) of class TYPO3\\\\CMS\\\\Core\\\\Tests\\\\UnitDeprecated\\\\Compatibility\\\\Fixtures\\\\PublicMethodDeprecationTraitTextFixture\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/UnitDeprecated/Compatibility/PublicMethodDeprecationTraitTest.php
-
-		-
-			message: "#^Call to protected method methodMadeProtectedWithArguments\\(\\) of class TYPO3\\\\CMS\\\\Core\\\\Tests\\\\UnitDeprecated\\\\Compatibility\\\\Fixtures\\\\PublicMethodDeprecationTraitTextFixture\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/UnitDeprecated/Compatibility/PublicMethodDeprecationTraitTest.php
-
-		-
-			message: "#^Call to protected method methodMadeProtectedWithReturn\\(\\) of class TYPO3\\\\CMS\\\\Core\\\\Tests\\\\UnitDeprecated\\\\Compatibility\\\\Fixtures\\\\PublicMethodDeprecationTraitTextFixture\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/UnitDeprecated/Compatibility/PublicMethodDeprecationTraitTest.php
-
-		-
-			message: "#^Call to protected method standardProtectedMethod\\(\\) of class TYPO3\\\\CMS\\\\Core\\\\Tests\\\\UnitDeprecated\\\\Compatibility\\\\Fixtures\\\\PublicMethodDeprecationTraitTextFixture\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/UnitDeprecated/Compatibility/PublicMethodDeprecationTraitTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$widgets of method TYPO3\\\\CMS\\\\Dashboard\\\\DashboardRepository\\:\\:updateWidgetConfig\\(\\) expects array\\<string\\>, array\\<string, array\\<string, string\\>\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/dashboard/Classes/Controller/WidgetAjaxController.php
@@ -1061,21 +1036,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Session\\:\\:method\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:expects\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:method\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$modifiedObject of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:update\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface, stdClass given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
@@ -1154,31 +1114,6 @@ parameters:
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
 			count: 5
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:findOneByFoo\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:countByFoo\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:findByFoo\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:findOneByFoo\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:expects\\(\\)\\.$#"
-			count: 8
-			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Persistence/RepositoryTest.php
 
 		-
 			message: "#^Parameter \\#2 \\$messageTitle of method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ActionController\\:\\:addFlashMessage\\(\\) expects string, int given\\.$#"
