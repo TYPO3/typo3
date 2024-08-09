@@ -164,7 +164,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         if (!$this->tag->hasAttribute('data-focus-area')) {
             $focusArea = $cropVariantCollection->getFocusArea($cropVariant);
             if (!$focusArea->isEmpty()) {
-                $this->tag->addAttribute('data-focus-area', $focusArea->makeAbsoluteBasedOnFile($image));
+                $this->tag->addAttribute('data-focus-area', (string)$focusArea->makeAbsoluteBasedOnFile($image));
             }
         }
         $this->tag->addAttribute('src', $imageUri);

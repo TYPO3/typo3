@@ -176,11 +176,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
-			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\Area given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/ViewHelpers/ThumbnailViewHelper.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$writeAttemptLog \\(bool\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractAuthenticationService.php
@@ -1244,16 +1239,6 @@ parameters:
 			message: "#^Call to function is_int\\(\\) with mixed will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/BytesViewHelper.php
-
-		-
-			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\Area given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/ImageViewHelper.php
-
-		-
-			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\Area given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/MediaViewHelper.php
 
 		-
 			message: "#^Parameter \\#1 \\$input of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceFactory\\:\\:retrieveFileOrFolderObject\\(\\) expects string, int given\\.$#"
