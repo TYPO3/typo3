@@ -245,7 +245,7 @@ class SiteMatcher implements SingletonInterface
         $requestContext = new RequestContext(
             '',
             $request->getMethod(),
-            (string)idn_to_ascii($uri->getHost()),
+            $uri->getHost() ? (string)idn_to_ascii($uri->getHost()) : '',
             $uri->getScheme(),
             // Ports are only necessary for URL generation in Symfony which is not used by TYPO3
             80,
