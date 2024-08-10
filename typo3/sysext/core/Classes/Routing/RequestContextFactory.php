@@ -38,7 +38,7 @@ class RequestContextFactory
         return new RequestContext(
             $this->backendEntryPointResolver->getPathFromRequest($request),
             $request->getMethod(),
-            (string)idn_to_ascii($request->getUri()->getHost()),
+            $request->getUri()->getHost() ? (string)idn_to_ascii($request->getUri()->getHost()) : '',
             $request->getUri()->getScheme(),
             $scheme === 'http' ? $request->getUri()->getPort() ?? 80 : 80,
             $scheme === 'https' ? $request->getUri()->getPort() ?? 443 : 443,
