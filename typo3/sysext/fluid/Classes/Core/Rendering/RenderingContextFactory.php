@@ -27,6 +27,7 @@ use TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\PassthroughSourceModifierTemplateProcessor;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\RemoveCommentsTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessorInterface;
 
 /**
@@ -68,6 +69,7 @@ final readonly class RenderingContextFactory
                 new EscapingModifierTemplateProcessor(),
                 new PassthroughSourceModifierTemplateProcessor(),
                 new NamespaceDetectionTemplateProcessor(),
+                new RemoveCommentsTemplateProcessor(),
             ];
         } else {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['preProcessors'] as $className) {

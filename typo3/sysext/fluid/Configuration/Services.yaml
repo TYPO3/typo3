@@ -39,3 +39,7 @@ services:
   TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor:
     public: true
     shared: false
+  TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\RemoveCommentsTemplateProcessor:
+    public: true
+    shared: false
+
