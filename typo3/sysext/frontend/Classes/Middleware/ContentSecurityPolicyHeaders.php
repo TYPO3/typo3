@@ -48,15 +48,17 @@ final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $site = $request->getAttribute('site');
         // return early in case CSP shall not be used
-        if (!$this->features->isFeatureEnabled('security.frontend.enforceContentSecurityPolicy')) {
+        if (!$this->features->isFeatureEnabled('security.frontend.enforceContentSecurityPolicy')
+            || ($site !== null && !($site->getConfiguration()['contentSecurityPolicies']['enable'] ?? true))
+        ) {
             return $handler->handle($request);
         }
         // make sure, the nonce value is set before processing the remaining middlewares
         $request = $request->withAttribute('nonce', $this->requestId->nonce);
         $response = $handler->handle($request);
 
-        $site = $request->getAttribute('site');
         $scope = Scope::frontendSite($site);
         if ($response->hasHeader('Content-Security-Policy') || $response->hasHeader('Content-Security-Policy-Report-Only')) {
             $this->logger->info('Content-Security-Policy not enforced due to existence of custom header', [
