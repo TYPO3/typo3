@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "603b1d6bd7f247a377b1291460d00b36",
+    "content-hash": "e13f0b47ea46f974a3df02f24c2cde96",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5169,16 +5169,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "5.1.1",
+            "version": "5.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "fcfa1d0ec2eb7439e5290fd3ea685b5d1f90075a"
+                "reference": "3b2d7d1a88e7e1d9dc0acb6d3c8f0acda0a37374"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/fcfa1d0ec2eb7439e5290fd3ea685b5d1f90075a",
-                "reference": "fcfa1d0ec2eb7439e5290fd3ea685b5d1f90075a",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/3b2d7d1a88e7e1d9dc0acb6d3c8f0acda0a37374",
+                "reference": "3b2d7d1a88e7e1d9dc0acb6d3c8f0acda0a37374",
                 "shasum": ""
             },
             "require": {
@@ -5273,7 +5273,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/Codeception/issues",
-                "source": "https://github.com/Codeception/Codeception/tree/5.1.1"
+                "source": "https://github.com/Codeception/Codeception/tree/5.1.2"
             },
             "funding": [
                 {
@@ -5281,7 +5281,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-02-23T21:42:47+00:00"
+            "time": "2024-03-07T07:19:42+00:00"
         },
         {
             "name": "codeception/lib-asserts",
@@ -5549,16 +5549,16 @@
         },
         {
             "name": "codeception/module-webdriver",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-webdriver.git",
-                "reference": "68bd12857f2b3321d3114c3c87c9ad9345b3bd5e"
+                "reference": "ef0ea8044eb01dc1e830df27fe431e71440a462f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/68bd12857f2b3321d3114c3c87c9ad9345b3bd5e",
-                "reference": "68bd12857f2b3321d3114c3c87c9ad9345b3bd5e",
+                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/ef0ea8044eb01dc1e830df27fe431e71440a462f",
+                "reference": "ef0ea8044eb01dc1e830df27fe431e71440a462f",
                 "shasum": ""
             },
             "require": {
@@ -5604,9 +5604,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-webdriver/issues",
-                "source": "https://github.com/Codeception/module-webdriver/tree/4.0.1"
+                "source": "https://github.com/Codeception/module-webdriver/tree/4.0.2"
             },
-            "time": "2024-02-16T12:47:00+00:00"
+            "time": "2024-08-10T00:18:42+00:00"
         },
         {
             "name": "codeception/stub",

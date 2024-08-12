@@ -1,4 +1,4 @@
-acceptance application sys_template mariadb 10.4 php 8.3 pre-merge:
+acceptance application sys_template mariadb 10.4 php 8.4 pre-merge:
   stage: main
   tags:
     - metal2
@@ -13,8 +13,8 @@ acceptance application sys_template mariadb 10.4 php 8.3 pre-merge:
       - typo3temp/var/tests/AcceptanceReports
   parallel: 13
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s acceptance -p 8.3 -d mariadb -i 10.4 -t systemplate -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.4
+    - Build/Scripts/runTests.sh -s acceptance -p 8.4 -d mariadb -i 10.4 -t systemplate -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 acceptance application composer postgres 15 php 8.2 pre-merge:
   stage: main

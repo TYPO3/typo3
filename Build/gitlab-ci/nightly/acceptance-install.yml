@@ -1,3 +1,21 @@
+acceptance install php 8.4 max:
+  stage: acceptance
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/AcceptanceReports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.10 -p 8.4
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -i 8.0 -p 8.4
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -i 15 -p 8.4
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.4
+
 acceptance install php 8.3 max:
   stage: acceptance
   tags:
