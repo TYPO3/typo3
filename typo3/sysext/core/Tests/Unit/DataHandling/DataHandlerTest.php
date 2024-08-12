@@ -1329,7 +1329,11 @@ final class DataHandlerTest extends UnitTestCase
                 ],
             ],
             'values' => [1, 2, 3, 4, 5],
-            'expected' => [1, 3, 5],
+            'expected' => [
+                0 => 1,
+                2 => 3,
+                4 => 5,
+            ],
         ];
 
         yield 'parameters are passed to the user function' => [
@@ -1344,7 +1348,10 @@ final class DataHandlerTest extends UnitTestCase
                 ],
             ],
             'values' => [1, 2, 3, 4, 5],
-            'expected' => [3, 5],
+            'expected' => [
+                2 => 3,
+                4 => 5,
+            ],
         ];
 
         yield 'no filters return value as is' => [
@@ -1358,7 +1365,7 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function applyFiltersToValuesFiltersValues(array $tcaFieldConfiguration, array $values, array $expected): void
     {
-        self::assertEqualsCanonicalizing($expected, $this->subject->_call('applyFiltersToValues', $tcaFieldConfiguration, $values));
+        self::assertSame($expected, $this->subject->_call('applyFiltersToValues', $tcaFieldConfiguration, $values));
     }
 
     #[Test]
