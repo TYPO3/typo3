@@ -251,7 +251,7 @@ final class PageRecordProvider implements SearchProviderInterface
         if ($this->getBackendUser()->isAdmin()) {
             return [];
         }
-        $mounts = $this->getBackendUser()->returnWebmounts();
+        $mounts = $this->getBackendUser()->getWebmounts();
         $pageList = $mounts;
         $repository = GeneralUtility::makeInstance(PageTreeRepository::class);
         $repository->setAdditionalWhereClause($this->userPermissions);

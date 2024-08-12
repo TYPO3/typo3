@@ -520,7 +520,7 @@ class TreeController
         $mountPoints = [];
         if ($entryPointIds === null) {
             //watch out for deleted pages returned as webmount
-            $mountPoints = array_map(intval(...), $backendUser->returnWebmounts());
+            $mountPoints = $backendUser->getWebmounts();
             $mountPoints = array_unique($mountPoints);
             $mountPoints = array_filter($mountPoints, fn(int $id): bool => !in_array($id, $this->hiddenRecords, true));
 
@@ -639,7 +639,7 @@ class TreeController
             if (!empty($this->alternativeEntryPoints)) {
                 return $this->alternativeEntryPoints;
             }
-            $mountPoints = array_map(intval(...), $this->getBackendUser()->returnWebmounts());
+            $mountPoints = $this->getBackendUser()->getWebmounts();
             return array_unique($mountPoints);
         }
         return [$mountPoints];

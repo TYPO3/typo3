@@ -620,7 +620,7 @@ class DatabaseIntegrityController
         }
 
         if (!$backendUserAuthentication->isAdmin()) {
-            $webMounts = $backendUserAuthentication->returnWebmounts();
+            $webMounts = $backendUserAuthentication->getWebmounts();
             $perms_clause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
             $webMountPageTree = '';
             $webMountPageTreePrefix = '';
@@ -1137,7 +1137,7 @@ class DatabaseIntegrityController
                             ->from($from_table)
                             ->orderBy('uid');
                         if (!$backendUserAuthentication->isAdmin()) {
-                            $webMounts = $backendUserAuthentication->returnWebmounts();
+                            $webMounts = $backendUserAuthentication->getWebmounts();
                             $perms_clause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
                             $webMountPageTree = '';
                             $webMountPageTreePrefix = '';
@@ -1917,7 +1917,7 @@ class DatabaseIntegrityController
                             ->from($from_table)
                             ->orderBy('uid');
                         if (!$backendUserAuthentication->isAdmin()) {
-                            $webMounts = $backendUserAuthentication->returnWebmounts();
+                            $webMounts = $backendUserAuthentication->getWebmounts();
                             $perms_clause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
                             $webMountPageTree = '';
                             $webMountPageTreePrefix = '';

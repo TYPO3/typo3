@@ -2872,7 +2872,7 @@ class DatabaseRecordList
             $backendUser = $this->getBackendUserAuthentication();
 
             if (!$backendUser->isAdmin() && $id === 0) {
-                $mountPoints = array_map(intval(...), $backendUser->returnWebmounts());
+                $mountPoints = $backendUser->getWebmounts();
                 $mountPoints = array_unique($mountPoints);
             } else {
                 $mountPoints = [$id];
