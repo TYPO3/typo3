@@ -3,9 +3,12 @@
 .. _include-default-typoscript:
 .. _using-the-rendering-definitions:
 
-==================================
-Include the default TypoScript set
-==================================
+=======================
+Use TypoScript includes
+=======================
+
+..  versionchanged:: 13.1
+    If you included the :ref:`site sets <include-site-set>`, skip this step.
 
 To use the default rendering definitions provided by *fluid_styled_content*, you
 have to add the extension's TypoScript set to your root TypoScript record.

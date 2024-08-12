@@ -12,6 +12,7 @@ First steps
     :titlesonly:
     :glob:
 
+    SiteSets
     DefaultTemplate
     DisplayContent
 

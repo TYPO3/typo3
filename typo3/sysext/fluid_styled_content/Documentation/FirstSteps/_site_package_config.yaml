@@ -1,0 +1,4 @@
+name: myvendor/my-site-package
+label: My sitepackage set
+dependencies:
+  - typo3/fluid-styled-content-css

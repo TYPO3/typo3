@@ -6,8 +6,10 @@
 TypoScript
 ==========
 
-At the section :ref:`using-the-rendering-definitions` you've already added the TypoScript
-sets. TypoScript sets are a collection of TypoScript files. These files are located
+At the section :ref:`include-site-set` you have already added the TypoScript by
+depending on the site set.
+
+The TypoScript of the site set includes files located
 in the directory :file:`EXT:fluid_styled_content/Configuration/TypoScript/`.
 
 .. figure:: /Images/ExternalScreenshots/TypoScriptFileStructure.png
@@ -17,11 +19,12 @@ in the directory :file:`EXT:fluid_styled_content/Configuration/TypoScript/`.
 
 In this folder there are two files:
 
--   :file:`constants.typoscript` - The file with the default constants. The *Constant Editor*, as
-    described above, is using this file for its default settings.
-
--   :file:`setup.typoscript` - This file will first include some other files which are located in
-    the :file:`Setup/` folder in the same directory. More about these files later.
+*   :file:`constants.typoscript` - This file is only used when for compatibility
+    reasons the TypoScript is included via import or `TypoScript` module in the
+    outdated fashion.
+*   :file:`setup.typoscript` - This file will first include some other files
+    which are located in the :file:`Setup/` folder in the same directory. More
+    about these files later.
 
 In the folder :file:`ContentElement/` there are files which are included by the file
 :file:`setup.typoscript` as mentioned above. These files contain the rendering definitions of all

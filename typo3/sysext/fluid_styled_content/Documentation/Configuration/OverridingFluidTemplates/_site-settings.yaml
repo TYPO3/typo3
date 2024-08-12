@@ -1,0 +1,5 @@
+styles:
+  templates:
+    templateRootPath: EXT:my_site_package/Resources/Private/Extensions/FluidStyledContent/Templates/
+    partialRootPath: EXT:my_site_package/Resources/Private/Extensions/FluidStyledContent/Partials/
+    layoutRootPath: EXT:my_site_package/Resources/Private/Extensions/FluidStyledContent/Layouts/

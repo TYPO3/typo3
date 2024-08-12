@@ -1,0 +1,6 @@
+  base: https://example.ddev.site
++ dependencies:
++   - typo3/fluid-styled-content-css
+  languages:
+    -
+      title: English
