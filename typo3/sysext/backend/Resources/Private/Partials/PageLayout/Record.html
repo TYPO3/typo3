@@ -1,15 +1,15 @@
 {f:if(condition: '{item.disabled} && {item.context.drawingConfiguration.showHidden} == 0', then: 'height: 0; display: none;') -> f:variable(name: 'style')}
 <div
     role="group"
-    aria-labelledby="element-tt_content-{item.record.uid}-label"
+    aria-labelledby="element-{item.table}-{item.record.uid}-label"
     class="t3-page-ce {item.wrapperClassName} t3js-page-ce t3js-page-ce-sortable"
-    id="element-tt_content-{item.record.uid}"
-    data-table="tt_content"
+    id="element-{item.table}-{item.record.uid}"
+    data-table="{item.table}"
     data-uid="{item.record.uid}"
     data-language-uid="{item.record.sys_language_uid}"
     style="{style}"
 >
-    <span id="element-tt_content-{item.record.uid}-label" class="visually-hidden">id={item.record.uid} - <f:if condition="{item.record.header}">{item.record.header} - </f:if>{item.contentTypeLabel}</span>
+    <span id="element-{item.table}-{item.record.uid}-label" class="visually-hidden">id={item.record.uid} - <f:if condition="{item.record.header}">{item.record.header} - </f:if>{item.contentTypeLabel}</span>
     <div class="t3-page-ce-element t3-page-ce-dragitem">
         <f:render partial="PageLayout/Record/{item.record.CType}/Header" arguments="{_all}" optional="1">
             <f:render partial="PageLayout/RecordDefault/Header" arguments="{_all}" />
