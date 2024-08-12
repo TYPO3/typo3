@@ -239,7 +239,7 @@ class WorkspaceService implements SingletonInterface
         } else {
             $pageList = '';
             // check if person may only see a "virtual" page-root
-            $mountPoints = array_map('intval', $backendUser->returnWebmounts());
+            $mountPoints = $backendUser->getWebmounts();
             $mountPoints = array_unique($mountPoints);
             if (!in_array(0, $mountPoints)) {
                 $tempPageIds = [];
@@ -642,7 +642,7 @@ class WorkspaceService implements SingletonInterface
         } else {
             $mountPoints = $backendUser->uc['pageTree_temporaryMountPoint'];
             if (!is_array($mountPoints) || empty($mountPoints)) {
-                $mountPoints = array_map('intval', $backendUser->returnWebmounts());
+                $mountPoints = $backendUser->getWebmounts();
                 $mountPoints = array_unique($mountPoints);
             }
             $pageList = [];

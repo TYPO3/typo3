@@ -513,7 +513,7 @@ class BackendUtility
         $rL = self::BEgetRootLine($pid);
         // First, find out what mount index to use (if more than one DB mount exists):
         $mountIndex = 0;
-        $mountKeys = $beUser->returnWebmounts();
+        $mountKeys = $beUser->getWebmounts();
 
         foreach ($rL as $rLDat) {
             if (isset($mountKeys[$rLDat['uid']])) {

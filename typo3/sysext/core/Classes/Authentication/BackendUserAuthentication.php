@@ -367,7 +367,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $readPerms = $this->getPagePermsClause(Permission::PAGE_SHOW);
         }
         if ($id > 0) {
-            $wM = $this->returnWebmounts();
+            $wM = $this->getWebmounts();
             $rL = BackendUtility::BEgetRootLine($id, ' AND ' . $readPerms, true);
             foreach ($rL as $v) {
                 if ($v['uid'] && in_array($v['uid'], $wM)) {
@@ -982,13 +982,28 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * If no webmounts, and empty array is returned.
      * Webmounts permissions are checked in fetchGroupData()
      *
-     * @return array of web mounts uids (may include '0')
+     * @return list<numeric-string> of web mounts uids (may include '0')
      */
     public function returnWebmounts()
     {
         $webMounts = $this->groupData['webmounts'] ?? null;
         return is_string($webMounts) && $webMounts !== ''
             ? explode(',', $webMounts)
+            : [];
+    }
+
+    /**
+     * Returns an array with the webmounts.
+     * If no webmounts, and empty array is returned.
+     * Webmounts permissions are checked in fetchGroupData()
+     *
+     * @return list<int> of web mounts uids (may include 0)
+     */
+    public function getWebmounts(): array
+    {
+        $webMounts = $this->groupData['webmounts'] ?? null;
+        return is_string($webMounts) && $webMounts !== ''
+            ? GeneralUtility::intExplode(',', $webMounts)
             : [];
     }
 

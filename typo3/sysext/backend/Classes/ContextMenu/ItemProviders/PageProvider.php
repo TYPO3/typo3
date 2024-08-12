@@ -469,7 +469,7 @@ class PageProvider extends RecordProvider
      */
     protected function isWebMount()
     {
-        return in_array($this->identifier, $this->backendUser->returnWebmounts());
+        return in_array($this->identifier, $this->backendUser->getWebmounts());
     }
 
     protected function getAdditionalAttributes(string $itemName): array
