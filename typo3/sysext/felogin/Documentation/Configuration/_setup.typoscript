@@ -1,0 +1,5 @@
+[{$tx_my_extension.settings.feature1Enabled} == 1]
+  plugin.tx_felogin_login.settings.pid = 123
+[ELSE]
+  plugin.tx_felogin_login.settings.pid = 42
+[END]

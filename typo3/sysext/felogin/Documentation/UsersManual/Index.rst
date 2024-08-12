@@ -26,23 +26,20 @@ The felogin plugin is available through the Content Wizard as :guilabel:`Login F
 
 .. _storage-folder:
 
-Choosing a User Storage Page for Website Users
+Choosing a user storage page for website users
 ==============================================
 
-In order for Website Users to be able to log in, the felogin plugin
+In order for Website Users to be able to log in, the "Frontend login" plugin
 must know where the records are stored. There are two possibilities
 for setting this storage folder:
 
-- Edit the felogin plugin, setting the field for the :guilabel:`User Storage
-  Page` to your storage page.
+The site's integrator may have set a default value for the
+:confval:`User Storage Page <felogin-felogin-pid>`. If you use the default
+folder to store frontend users in your project there is nothing to do here.
 
-- Or set the UID of you storage folder through TypoScript in the setup
-  field of your TypoScript record:
-
-.. code-block:: typoscript
-
-   plugin.tx_felogin_login.settings.pages = xxx
-
+If your project needs multiple storage folders for frontend users or
+if there is no default storage folder set, see :ref:`Example: Override the
+default storage page in the plugin's FlexForm <configuration-examples-flexform>`.
 
 .. _access-restrictions:
 

@@ -43,9 +43,9 @@ settings:
     description: 'Name used as sender of the change password emails'
   felogin.replyToEmail:
     default: ''
-    label: 'Reply to email Address'
+    label: 'Reply-to email Address'
     type: string
-    description: 'Reply to address used in the change password emails'
+    description: 'Reply-to address used in the change password emails'
   felogin.dateFormat:
     default: 'Y-m-d H:i'
     label: 'Date format'
@@ -68,14 +68,14 @@ settings:
     description: 'Path to partial directory used for emails'
   felogin.email.templateName:
     default: PasswordRecovery
-    label: 'Template name for emails. Plaintext emails get the .txt file extension.'
+    label: 'Template name for emails.'
     type: string
-    description: ''
+    description: 'HTML emails get the .html file extension, plaintext emails get the .txt file extension.'
   felogin.redirectMode:
     default: ''
     label: 'Redirect Mode'
     type: string
-    description: 'Comma separated list of redirect modes. Possible values: groupLogin, userLogin, login, getpost, referer, refererDomains, loginError, logout'
+    description: 'Comma separated list of redirect modes. Possible values: groupLogin, userLogin, login, getpost, referer, refererDomains, loginError, logout. Warning: redirects only work if neither the plugin nor the page it is displayed on are set to `hide at login`.'
   felogin.redirectFirstMethod:
     default: false
     label: 'Use First Supported Mode from Selection'
@@ -118,16 +118,16 @@ settings:
     description: 'Expose the information on whether or not the account for which a new password was requested exists. By default, that information is not disclosed for privacy reasons.'
   felogin.view.templateRootPath:
     default: ''
-    label: 'Path to template root (FE)'
+    label: 'Path to template root (frontend)'
     type: string
-    description: ''
+    description: 'Path to template directory used for the plugin in the frontend. Extends the default template location.'
   felogin.view.partialRootPath:
     default: ''
-    label: 'Path to template partials (FE)'
+    label: 'Path to template partials (frontend)'
     type: string
-    description: ''
+    description: 'Path to partial directory for the plugin in the frontend. Extends the default partial location.'
   felogin.view.layoutRootPath:
     default: ''
-    label: 'Path to template layouts (FE)'
+    label: 'Path to template layouts (frontend)'
     type: string
-    description: ''
+    description: 'Path to layout directory used for the plugin in the frontend. Can be used to introduce a custom layout.'

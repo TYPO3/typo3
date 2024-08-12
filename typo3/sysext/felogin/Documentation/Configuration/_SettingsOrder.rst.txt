@@ -1,0 +1,5 @@
+*   The corresponding :ref:`site set setting <configuration-site-set-settings>`
+*   The corresponding :ref:`TypoScript constant <configuration-examples-typoscript-constant>`
+*   Value set in :ref:`TypoScript setup <t3tsref:using-and-setting>` in the
+    scope :ref:`plugin.tx_felogin_login.settings <plugin-tx-felogin-login>`
+*   Setting from the :ref:`FlexForm of the plugin <plugin-tx-felogin-login>`
