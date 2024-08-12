@@ -1,0 +1,6 @@
+indexedsearch:
+  view:
+    templateRootPath: 'EXT:site_package/Resources/Private/Extensions/IndexedSearch/Templates/'
+    partialRootPath: 'EXT:site_package/Resources/Private/Extensions/IndexedSearch/Partials/'
+    layoutRootPath: 'EXT:site_package/Resources/Private/Extensions/IndexedSearch/Layouts/'
+

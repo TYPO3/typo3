@@ -11,7 +11,12 @@ TypoScript
 Plugin settings
 ===============
 
-Each of the following options is defined for the TypoScript setup path :typoscript:`plugin.tx_indexedsearch.settings`.
+..  versionchanged:: 13.3
+    It is recommended to change the settings via the :ref:`site-set` whenever
+    possible.
+
+Each of the following options is defined for the TypoScript setup path
+:typoscript:`plugin.tx_indexedsearch.settings`.
 
 ..  contents:: Table of Contents
     :depth: 2

@@ -1,0 +1,13 @@
+plugin.tx_indexedsearch.view {
+  templateRootPaths {
+    0 = EXT:indexed_search/Resources/Private/Templates/
+    10 = {$plugin.tx_indexedsearch.view.templateRootPath ?? $indexedsearch.view.templateRootPath}
+    20 = EXT:my_extension/Resources/Private/Templates/
+  }
+
+  partialRootPaths {
+    0 = EXT:indexed_search/Resources/Private/Partials/
+    10 = {$plugin.tx_indexedsearch.view.partialRootPath ?? $indexedsearch.view.partialRootPath}
+    20 = EXT:my_extension/Resources/Private/Partials/
+  }
+}

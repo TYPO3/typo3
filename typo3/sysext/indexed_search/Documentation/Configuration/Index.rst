@@ -1,18 +1,17 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
+..  _configuration:
 
-
-.. _configuration:
-
+=============
 Configuration
--------------
+=============
 
+..  toctree::
+    :maxdepth: 5
+    :titlesonly:
+    :glob:
 
-.. toctree::
-   :maxdepth: 5
-   :titlesonly:
-   :glob:
-
-   General/Index
-   TypoScript/Index
-   FluidTemplating/Index
+    General/Index
+    SiteSet/Index
+    TypoScript/Index
+    FluidTemplating/Index
