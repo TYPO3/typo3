@@ -131,9 +131,11 @@ class Installer {
       .get({ cache: 'no-cache' })
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
-        data.success
-          ? this.checkEnvironmentAndFolders()
-          : this.showInstallerNotAvailable();
+        if (data.success) {
+          this.checkEnvironmentAndFolders();
+        } else {
+          this.showInstallerNotAvailable();
+        }
       });
   }
 

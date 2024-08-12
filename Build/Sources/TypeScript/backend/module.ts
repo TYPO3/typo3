@@ -111,7 +111,7 @@ function getParsedInformation(): ParsedInformation|null {
     if (modulesInformation !== '') {
       try {
         parsedInformation = JSON.parse(modulesInformation);
-      } catch (e) {
+      } catch {
         console.error('Invalid modules information provided.');
         parsedInformation = null;
       }

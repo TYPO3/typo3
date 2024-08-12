@@ -482,7 +482,7 @@ class PageTreeToolbar extends TreeToolbar {
   @property({ type: EditablePageTree }) tree: EditablePageTree = null;
 
   protected render(): TemplateResult {
-    /* eslint-disable @typescript-eslint/indent */
+    /* eslint-disable @stylistic/indent */
     return html`
       <div class="tree-toolbar">
         <div class="tree-toolbar__menu">

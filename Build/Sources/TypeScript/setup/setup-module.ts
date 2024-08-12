@@ -42,7 +42,7 @@ class SetupModule {
         const addElement = document.getElementById('add_button_' + fieldName);
 
         addElement.addEventListener('click', (): void => this.avatarOpenFileBrowser(addElement.dataset.setupAvatarUrl));
-        clearElement && clearElement.addEventListener('click', (): void => this.avatarClearExistingImage(fieldName));
+        clearElement?.addEventListener('click', (): void => this.avatarClearExistingImage(fieldName));
       });
     if (document.querySelector('[data-setup-avatar-field]') !== null) {
       this.initializeMessageListener();
@@ -95,8 +95,12 @@ class SetupModule {
     const imageElement = document.getElementById('image_' + fieldName);
     const clearElement = document.getElementById('clear_button_' + fieldName);
 
-    clearElement && SetupModule.hideElement(clearElement);
-    imageElement && SetupModule.hideElement(imageElement);
+    if (clearElement) {
+      SetupModule.hideElement(clearElement);
+    }
+    if (imageElement) {
+      SetupModule.hideElement(imageElement);
+    }
     fieldElement.value = 'delete';
   }
 

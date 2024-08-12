@@ -78,10 +78,12 @@ export class CopyToClipboard extends LitElement {
       textarea.focus();
       textarea.select();
       try {
-        document.execCommand('copy')
-          ? Notification.success(lll('copyToClipboard.success'), '', 1)
-          : Notification.error(lll('copyToClipboard.error'));
-      } catch (err) {
+        if (document.execCommand('copy')) {
+          Notification.success(lll('copyToClipboard.success'), '', 1);
+        } else {
+          Notification.error(lll('copyToClipboard.error'));
+        }
+      } catch {
         Notification.error(lll('copyToClipboard.error'));
       }
       document.body.removeChild(textarea);

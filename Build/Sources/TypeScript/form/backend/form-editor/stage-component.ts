@@ -223,7 +223,7 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
 
   try {
     template = getHelper().getTemplate('FormElement-' + formElement.get('type')).clone();
-  } catch (error) {
+  } catch {
     template = getHelper().getTemplate('FormElement-_UnknownElement').clone();
     assert(
       template.length > 0,

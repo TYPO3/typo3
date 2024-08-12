@@ -1133,7 +1133,6 @@ export class TypoScriptStreamParserFactory {
         state.lexical.align = true;
       }
 
-      // eslint-disable-next-line no-constant-condition
       while (true) {
         const combinator = cc.length ? cc.pop() : statement;
         if (typeof combinator === 'function' && combinator(type, content)) {

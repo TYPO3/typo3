@@ -92,7 +92,7 @@ export class RecordDownloadButton extends LitElement {
           name: 'download',
           trigger: (): void => {
             const form: HTMLFormElement = modal.querySelector('form');
-            form && form.submit();
+            form?.submit();
             modal.hideModal();
           }
         }

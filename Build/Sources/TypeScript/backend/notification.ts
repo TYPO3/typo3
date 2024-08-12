@@ -226,7 +226,7 @@ export class NotificationMessage extends LitElement {
     );
 
     this.addEventListener('typo3-notification-clear-finish', (): void => {
-      this.parentNode && this.parentNode.removeChild(this);
+      this.parentNode?.removeChild(this);
     });
 
     const dispatchFinishEvent = (): void => {
@@ -278,7 +278,7 @@ export class NotificationMessage extends LitElement {
 
     const randomSuffix = (Math.random() + 1).toString(36).substring(2);
 
-    /* eslint-disable @typescript-eslint/indent */
+    /* eslint-disable @stylistic/indent */
     return html`
       <div
         id="${ifDefined(this.notificationId || undefined)}"
@@ -326,7 +326,7 @@ export class NotificationMessage extends LitElement {
         `}
       </div>
     `;
-    /* eslint-enable @typescript-eslint/indent */
+    /* eslint-enable @stylistic/indent */
   }
 }
 

@@ -279,7 +279,7 @@ function addPropertyValidators(): void {
       } else {
         isValid = false;
       }
-    } catch (e) {
+    } catch {
       isValid = false;
     }
 

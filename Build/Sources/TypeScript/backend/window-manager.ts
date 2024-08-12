@@ -48,7 +48,7 @@ class WindowManager {
       // Note: this will still fail if `existingWindow` points to a cross-origin frame
       // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof#instanceof_and_multiple_realms
       isInstanceOfWindow = existingWindow.constructor.name === 'Window';
-    } catch (DOMException) {
+    } catch {
       // Intended fall-thru
       // DOMException is thrown if existingWindow points to a cross-origin frame which we're not allowed to access
     }

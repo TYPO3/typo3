@@ -412,9 +412,11 @@ class LoginRefresh {
 
       if (!this.backendIsLocked) {
         if (data.login.timed_out || data.login.will_time_out) {
-          data.login.timed_out
-            ? this.showLoginForm()
-            : this.showTimeoutModal();
+          if (data.login.timed_out) {
+            this.showLoginForm();
+          } else {
+            this.showTimeoutModal();
+          }
         }
       }
     } catch {

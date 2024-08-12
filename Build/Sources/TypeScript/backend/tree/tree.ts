@@ -1508,7 +1508,7 @@ export class Tree extends LitElement {
         () => this.muteErrorNotifications = true,
         { once: true }
       );
-    } catch (e) {
+    } catch {
       console.error('Failed to check the existence of window.frameElement – using a foreign origin?');
       // Do nothing if an error occured during the event registration
     }

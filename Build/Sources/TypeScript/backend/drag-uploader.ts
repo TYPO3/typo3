@@ -714,7 +714,7 @@ class FileQueueItem {
                 this.uploadError(xhr);
               }
             }
-            catch (e) {
+            catch {
               // In case JSON can not be parsed, the upload failed due to server errors,
               // e.g. "POST Content-Length exceeds limit". Just handle as upload error.
               this.uploadError(xhr);
@@ -761,7 +761,7 @@ class FileQueueItem {
           Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity, 10);
         }
       }
-    } catch (e) {
+    } catch {
       // do nothing in case JSON could not be parsed
     }
 

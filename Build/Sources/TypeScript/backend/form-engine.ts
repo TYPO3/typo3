@@ -139,7 +139,9 @@ export default (function() {
     formElement: undefined,
     openedPopupWindow: null,
     legacyFieldChangedCb: function() {
-      !$.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb) || TYPO3.settings.FormEngine.legacyFieldChangedCb();
+      if ($.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb)) {
+        TYPO3.settings.FormEngine.legacyFieldChangedCb();
+      }
     },
     browserUrl: ''
   };

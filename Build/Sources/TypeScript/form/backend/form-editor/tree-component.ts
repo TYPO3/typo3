@@ -293,7 +293,7 @@ function saveExpanderStates(): void {
   for (const identifierPath of Object.keys(expanderStates)) {
     try {
       getFormEditorApp().getFormElementByIdentifierPath(identifierPath);
-    } catch (error) {
+    } catch {
       delete expanderStates[identifierPath];
     }
   }
