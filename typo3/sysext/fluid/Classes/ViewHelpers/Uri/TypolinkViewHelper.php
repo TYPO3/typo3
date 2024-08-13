@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Typolink\TypolinkParameter;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -64,7 +65,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
+        $this->registerArgument('parameter', 'mixed', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
         $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language');
         $this->registerArgument('addQueryString', 'string', 'If set, the current query parameters will be kept in the URL. If set to "untrusted", then ALL query parameters will be added. Be aware, that this might lead to problems when the generated link is cached.', false, false);
@@ -75,17 +76,19 @@ final class TypolinkViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $parameter = $arguments['parameter'] ?? '';
+        $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
 
-        $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-        $typoLinkConfiguration = $typoLinkCodec->decode((string)$parameter);
-        $mergedTypoLinkConfiguration = self::mergeTypoLinkConfiguration($typoLinkConfiguration, $arguments);
-        $typoLinkParameter = $typoLinkCodec->encode($mergedTypoLinkConfiguration);
-
-        $content = '';
-        if ($parameter) {
-            $content = self::invokeContentObjectRenderer($arguments, $typoLinkParameter);
+        if (!$parameter instanceof TypolinkParameter) {
+            $parameter = TypolinkParameter::createFromTypolinkParts(
+                is_scalar($parameter) ? $typoLinkCodecService->decode((string)$parameter) : []
+            );
         }
-        return $content;
+
+        // Merge the $parameter with other arguments and encode the typolink again
+        $typolink = $typoLinkCodecService->encode(
+            TypolinkParameter::createFromTypolinkParts(self::mergeTypoLinkConfiguration($parameter->toArray(), $arguments))->toArray()
+        );
+        return $typolink !== '' ? self::invokeContentObjectRenderer($arguments, $typolink) : '';
     }
 
     protected static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter): string

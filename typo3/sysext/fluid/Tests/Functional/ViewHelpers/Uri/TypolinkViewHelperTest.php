@@ -19,10 +19,17 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Uri;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Frontend\Typolink\TypolinkParameter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class TypolinkViewHelperTest extends FunctionalTestCase
 {
@@ -46,14 +53,18 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
-        $this->writeSiteConfiguration(
-            'test',
-            $this->buildSiteConfiguration(1, '/'),
+        $request = new ServerRequest('http://localhost/');
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = $request->withAttribute('routing', new PageArguments(1, '0', []));
+        $request = $request->withAttribute('site', new Site(
+            'site',
+            1,
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+                'base' => 'http://localhost/',
+                'languages' => [],
             ]
-        );
+        ));
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     public static function renderDataProvider(): array
@@ -114,6 +125,14 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
     #[Test]
     public function render(string $template, string $expected): void
     {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ]
+        );
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,
             'root' => 1,
@@ -134,5 +153,43 @@ EOT
             ->withQueryParameter('temp', 'test')
         );
         self::assertStringContainsString($expected, (string)$response->getBody());
+    }
+
+    public static function renderWithAssignedParametersDataProvider(): array
+    {
+        return [
+            'parameter' => [
+                '<f:uri.typolink parameter="{parameter}" />',
+                [
+                    'parameter' => 'http://typo3.org/',
+                ],
+                'http://typo3.org/',
+            ],
+            'typolinkParameter object' => [
+                '<f:uri.typolink parameter="{parameter}" />',
+                [
+                    'parameter' => new TypolinkParameter('http://typo3.org/'),
+                ],
+                'http://typo3.org/',
+            ],
+            'invalid parameter' => [
+                '<f:uri.typolink parameter="{parameter}" />',
+                [
+                    'parameter' => new \stdClass(),
+                ],
+                '',
+            ],
+        ];
+    }
+
+    #[DataProvider('renderWithAssignedParametersDataProvider')]
+    #[Test]
+    public function renderWithAssignedParameters(string $template, array $assigns, string $expected): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $view = new TemplateView($context);
+        $view->assignMultiple($assigns);
+        self::assertSame($expected, trim($view->render()));
     }
 }

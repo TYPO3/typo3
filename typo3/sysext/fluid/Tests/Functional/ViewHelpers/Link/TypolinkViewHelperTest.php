@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Frontend\Typolink\TypolinkParameter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -69,6 +70,10 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
     public static function renderDataProvider(): array
     {
         return [
+            'empty link' => [
+                '<f:link.typolink parameter="">This is a testlink</f:link.typolink>',
+                'This is a testlink',
+            ],
             'link: default' => [
                 '<f:link.typolink parameter="1">This is a testlink</f:link.typolink>',
                 '<a href="/en/">This is a testlink</a>',
@@ -177,6 +182,13 @@ EOT
     public static function renderWithAssignedParametersDataProvider(): array
     {
         return [
+            'empty parameter' => [
+                '<f:link.typolink parameter="{parameter}">Link text</f:link.typolink>',
+                [
+                    'parameter' => '',
+                ],
+                'Link text',
+            ],
             'target _self' => [
                 '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">Individual {typoLinkParts.target} {typoLinkParts.class} {typoLinkParts.title}</f:link.typolink>',
                 [
@@ -212,6 +224,20 @@ EOT
                     'parameter' => 'http://typo3.org/ "_self"',
                 ],
                 '<a href="http://typo3.org/" target="_self">_self</a>',
+            ],
+            'typolinkParameter object' => [
+                '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">{typoLinkParts.target}</f:link.typolink>{typoLinkParts.target}',
+                [
+                    'parameter' => new TypolinkParameter('http://typo3.org/', '_self'),
+                ],
+                '<a href="http://typo3.org/" target="_self">_self</a>',
+            ],
+            'invalid parameter' => [
+                '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">{typoLinkParts.target}</f:link.typolink>{typoLinkParts.target}',
+                [
+                    'parameter' => new \stdClass(),
+                ],
+                '',
             ],
         ];
     }

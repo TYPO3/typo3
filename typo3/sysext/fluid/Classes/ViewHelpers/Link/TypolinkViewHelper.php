@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Typolink\TypolinkParameter;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
@@ -101,7 +102,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
+        $this->registerArgument('parameter', 'mixed', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('target', 'string', 'Define where to display the linked URL', false, '');
         $this->registerArgument('class', 'string', 'Define classes for the link element', false, '');
         $this->registerArgument('title', 'string', 'Define the title for the link element', false, '');
@@ -123,23 +124,28 @@ final class TypolinkViewHelper extends AbstractViewHelper
     {
         $parameter = $arguments['parameter'] ?? '';
         $partsAs = $arguments['parts-as'] ?? 'typoLinkParts';
+        $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
 
-        $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-        $typoLinkConfiguration = $typoLinkCodec->decode((string)$parameter);
+        if (!$parameter instanceof TypolinkParameter) {
+            $parameter = TypolinkParameter::createFromTypolinkParts(
+                is_scalar($parameter) ? $typoLinkCodecService->decode((string)$parameter) : []
+            );
+        }
+
         // Merge the $parameter with other arguments
-        $mergedTypoLinkConfiguration = self::mergeTypoLinkConfiguration($typoLinkConfiguration, $arguments);
-        $typoLinkParameter = $typoLinkCodec->encode($mergedTypoLinkConfiguration);
+        $typolinkParameter = TypolinkParameter::createFromTypolinkParts(self::mergeTypoLinkConfiguration($parameter->toArray(), $arguments))->toArray();
 
         // expose internal typoLink configuration to Fluid child context
-        $variableProvider = new ScopedVariableProvider($renderingContext->getVariableProvider(), new StandardVariableProvider([$partsAs => $typoLinkConfiguration]));
+        $variableProvider = new ScopedVariableProvider($renderingContext->getVariableProvider(), new StandardVariableProvider([$partsAs => $typolinkParameter]));
         $renderingContext->setVariableProvider($variableProvider);
         // If no link has to be rendered, the inner content will be returned as such
         $content = (string)$renderChildrenClosure();
         // clean up exposed variables
         $renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
 
-        if ($parameter) {
-            $content = self::invokeContentObjectRenderer($arguments, $typoLinkParameter, $content);
+        $typolink = $typoLinkCodecService->encode($typolinkParameter);
+        if ($typolink !== '') {
+            $content = self::invokeContentObjectRenderer($arguments, $typolink, $content);
         }
         return $content;
     }
