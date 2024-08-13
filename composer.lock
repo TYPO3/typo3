@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e13f0b47ea46f974a3df02f24c2cde96",
+    "content-hash": "0d2fb6045fa35e3dd4fae5df917f99fd",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -707,16 +707,16 @@
         },
         {
             "name": "enshrined/svg-sanitize",
-            "version": "0.18.0",
+            "version": "0.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/darylldoyle/svg-sanitizer.git",
-                "reference": "6a2c069dab3843ca4d887ff09c972fc7033888d0"
+                "reference": "e95cd17be68e45f523cbfb0fe50cdd891b0cf20e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darylldoyle/svg-sanitizer/zipball/6a2c069dab3843ca4d887ff09c972fc7033888d0",
-                "reference": "6a2c069dab3843ca4d887ff09c972fc7033888d0",
+                "url": "https://api.github.com/repos/darylldoyle/svg-sanitizer/zipball/e95cd17be68e45f523cbfb0fe50cdd891b0cf20e",
+                "reference": "e95cd17be68e45f523cbfb0fe50cdd891b0cf20e",
                 "shasum": ""
             },
             "require": {
@@ -746,9 +746,9 @@
             "description": "An SVG sanitizer for PHP",
             "support": {
                 "issues": "https://github.com/darylldoyle/svg-sanitizer/issues",
-                "source": "https://github.com/darylldoyle/svg-sanitizer/tree/0.18.0"
+                "source": "https://github.com/darylldoyle/svg-sanitizer/tree/0.19.0"
             },
-            "time": "2024-02-22T17:51:05+00:00"
+            "time": "2024-06-18T10:27:15+00:00"
         },
         {
             "name": "firebase/php-jwt",

@@ -19,12 +19,8 @@ namespace TYPO3\CMS\Core\Resource\Security;
 
 use enshrined\svgSanitize\Sanitizer;
 
-class SvgSanitizer
+readonly class SvgSanitizer
 {
-    /**
-     * @param string|null $targetPath
-     * @throws \BadFunctionCallException
-     */
     public function sanitizeFile(string $sourcePath, ?string $targetPath = null): void
     {
         if ($targetPath === null) {
@@ -40,18 +36,10 @@ class SvgSanitizer
         }
     }
 
-    /**
-     * @throws \BadFunctionCallException
-     */
     public function sanitizeContent(string $svg): string
     {
-        // @todo: Simplify again when https://github.com/darylldoyle/svg-sanitizer/pull/90 is merged and released.
-        $previousXmlErrorHandling = libxml_use_internal_errors(true);
         $sanitizer = new Sanitizer();
         $sanitizer->removeRemoteReferences(true);
-        $sanitizedString = $sanitizer->sanitize($svg) ?: '';
-        libxml_clear_errors();
-        libxml_use_internal_errors($previousXmlErrorHandling);
-        return $sanitizedString;
+        return $sanitizer->sanitize($svg) ?: '';
     }
 }
