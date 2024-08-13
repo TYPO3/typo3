@@ -139,13 +139,16 @@ class ConnectionMigrator
             // With partial ext_tables.sql files the SchemaManager is detecting
             // existing columns as false positives for a column rename. In this
             // context every rename is actually a new column.
-            foreach ($changedTable->renamedColumns as $columnName => $renamedColumn) {
-                $changedTable->addedColumns[$renamedColumn->getName()] = new Column(
-                    $renamedColumn->getName(),
-                    $renamedColumn->getType(),
-                    $this->prepareColumnOptions($renamedColumn)
+            foreach ($changedTable->changedColumns as $columnName => $changedColumn) {
+                if (!$changedColumn->hasNameChanged()) {
+                    continue;
+                }
+                $changedTable->addedColumns[$changedColumn->getNewColumn()->getName()] = new Column(
+                    $changedColumn->getNewColumn()->getName(),
+                    $changedColumn->getNewColumn()->getType(),
+                    $this->prepareColumnOptions($changedColumn->getNewColumn())
                 );
-                unset($changedTable->renamedColumns[$columnName]);
+                unset($changedTable->changedColumns[$columnName]);
             }
 
             if ($createOnly) {
@@ -160,12 +163,12 @@ class ConnectionMigrator
                         },
                         $addedIndex->getColumns()
                     );
-                    $columnChanges = array_intersect($indexColumns, array_keys($changedTable->modifiedColumns));
+                    $columnChanges = array_intersect($indexColumns, array_keys($changedTable->changedColumns));
                     if (!empty($columnChanges)) {
                         unset($schemaDiff->alteredTables[$key]->addedIndexes[$indexName]);
                     }
                 }
-                $schemaDiff->alteredTables[$key]->modifiedColumns = [];
+                $schemaDiff->alteredTables[$key]->changedColumns = [];
                 $schemaDiff->alteredTables[$key]->modifiedIndexes = [];
                 $schemaDiff->alteredTables[$key]->renamedIndexes = [];
             }
@@ -388,11 +391,9 @@ class ConnectionMigrator
                         $this->buildQuotedTable($changedTable->getOldTable()),
                         // addedColumns
                         [$columnName => $addedColumn],
-                        // modifiedColumns
+                        // changedColumns
                         [],
                         // droppedColumns
-                        [],
-                        // renamedColumns
                         [],
                         // addedIndexes
                         [],
@@ -421,11 +422,9 @@ class ConnectionMigrator
                         $this->buildQuotedTable($changedTable->getOldTable()),
                         // addedColumns
                         [],
-                        // modifiedColumns
+                        // changedColumns
                         [],
                         // droppedColumns
-                        [],
-                        // renamedColumns
                         [],
                         // addedIndexes
                         [$indexName => $this->buildQuotedIndex($addedIndex)],
@@ -455,11 +454,9 @@ class ConnectionMigrator
                         $this->buildQuotedTable($changedTable->getOldTable()),
                         // addedColumns
                         [],
-                        // modifiedColumns
+                        // changedColumns
                         [],
                         // droppedColumns
-                        [],
-                        // renamedColumns
                         [],
                         // addedIndexes
                         [],
@@ -527,11 +524,9 @@ class ConnectionMigrator
                 $tableDiff->getOldTable(),
                 // addedColumns
                 [],
-                // modifiedColumns
+                // changedColumns
                 [],
                 // droppedColumns
-                [],
-                // renamedColumns
                 [],
                 // addedIndexes
                 [],
@@ -600,11 +595,9 @@ class ConnectionMigrator
                         $changedTable->getOldTable(),
                         // addedColumns
                         [],
-                        // modifiedColumns
+                        // changedColumns
                         [],
                         // droppedColumns
-                        [],
-                        // renamedColumns
                         [],
                         // addedIndexes
                         [],
@@ -657,11 +650,9 @@ class ConnectionMigrator
                     $changedTable->getOldTable(),
                     // addedColumns
                     [],
-                    // modifiedColumns
+                    // changedColumns
                     [],
                     // droppedColumns
-                    [],
-                    // renamedColumns
                     [],
                     // addedIndexes
                     [],
@@ -713,12 +704,12 @@ class ConnectionMigrator
                 }
             }
 
-            if (count($changedTable->modifiedColumns) !== 0) {
+            if (count($changedTable->changedColumns) !== 0) {
                 // Treat each changed column with a new diff to get a dedicated suggestions
                 // just for this single column.
-                foreach ($changedTable->modifiedColumns as $columnName => $changedColumn) {
+                foreach ($changedTable->changedColumns as $columnName => $changedColumn) {
                     // Field has been renamed and will be handled separately
-                    if ($changedColumn->getOldColumn()->getName() !== $changedColumn->getNewColumn()->getName()) {
+                    if ($changedColumn->hasNameChanged()) {
                         continue;
                     }
 
@@ -739,11 +730,9 @@ class ConnectionMigrator
                         $this->buildQuotedTable($changedTable->getOldTable()),
                         // addedColumns
                         [],
-                        // modifiedColumns
+                        // changedColumns
                         [$columnName => $changedColumn],
                         // droppedColumns
-                        [],
-                        // renamedColumns
                         [],
                         // addedIndexes
                         [],
@@ -823,11 +812,9 @@ class ConnectionMigrator
                     $changedTable->getOldTable(),
                     // addedColumns
                     [],
-                    // modifiedColumns
+                    // changedColumns
                     [],
                     // droppedColumns
-                    [],
-                    // renamedColumns
                     [],
                     // addedIndexes
                     [],
@@ -926,15 +913,15 @@ class ConnectionMigrator
         $databasePlatform = $this->connection->getDatabasePlatform();
         $changedTables = [];
         foreach ($schemaDiff->alteredTables as $tableName => $changedTable) {
-            if (count($changedTable->modifiedColumns) === 0) {
+            if (count($changedTable->changedColumns) === 0) {
                 continue;
             }
 
             // Treat each changed column with a new diff to get a dedicated suggestions
             // just for this single column.
-            foreach ($changedTable->modifiedColumns as $index => $changedColumn) {
+            foreach ($changedTable->changedColumns as $index => $changedColumn) {
                 // Field has not been renamed
-                if ($changedColumn->getOldColumn()->getName() === $changedColumn->getNewColumn()->getName()) {
+                if (!$changedColumn->hasNameChanged()) {
                     continue;
                 }
 
@@ -944,11 +931,9 @@ class ConnectionMigrator
                     $this->buildQuotedTable($changedTable->getOldTable()),
                     // addedColumns
                     [],
-                    // modifiedColumns
+                    // changedColumns
                     [$oldFieldName => $changedColumn],
                     // droppedColumns
-                    [],
-                    // renamedColumns
                     [],
                     // addedIndexes
                     [],
@@ -965,9 +950,6 @@ class ConnectionMigrator
                     // droppedForeignKeys
                     [],
                 );
-                if ($databasePlatform instanceof DoctrinePostgreSQLPlatform) {
-                    $renameColumnTableDiff->renamedColumns[$oldFieldName] = $changedColumn->getNewColumn();
-                }
                 $changedTables[$tableName . ':' . $changedColumn->getNewColumn()->getName()] = $renameColumnTableDiff;
 
                 if ($databasePlatform instanceof DoctrineSQLitePlatform) {
@@ -1027,12 +1009,10 @@ class ConnectionMigrator
                         $this->buildQuotedTable($changedTable->getOldTable()),
                         // addedColumns
                         [],
-                        // modifiedColumns
+                        // changedColumns
                         [],
                         // droppedColumns
                         [$columnName => $this->buildQuotedColumn($removedColumn)],
-                        // renamedColumns
-                        [],
                         // addedIndexes
                         [],
                         // modifiedIndexes
@@ -1064,11 +1044,9 @@ class ConnectionMigrator
                         $this->buildQuotedTable($changedTable->getOldTable()),
                         // addedColumns
                         [],
-                        // modifiedColumns
+                        // changedColumns
                         [],
                         // droppedColumns
-                        [],
-                        // renamedColumns
                         [],
                         // addedIndexes
                         [],
@@ -1102,11 +1080,9 @@ class ConnectionMigrator
                         $this->buildQuotedTable($changedTable->getOldTable()),
                         // addedColumns
                         [],
-                        // modifiedColumns
+                        // changedColumns
                         [],
                         // droppedColumns
-                        [],
-                        // renamedColumns
                         [],
                         // addedIndexes
                         [],
@@ -1223,11 +1199,9 @@ class ConnectionMigrator
                 $this->buildQuotedTable($removedTable),
                 // addedColumns
                 [],
-                // modifiedColumns
+                // changedColumns
                 [],
                 // droppedColumns
-                [],
-                // renamedColumns
                 [],
                 // addedIndexes
                 [],
@@ -1294,7 +1268,7 @@ class ConnectionMigrator
                 $columnDiff = new Typo3ColumnDiff($this->buildQuotedColumn($removedColumn), $renamedColumn);
 
                 // Add the column with the required rename information to the changed column list
-                $schemaDiff->alteredTables[$tableIndex]->modifiedColumns[$columnIndex] = $columnDiff;
+                $schemaDiff->alteredTables[$tableIndex]->changedColumns[$columnIndex] = $columnDiff;
 
                 // Remove the column from the list of columns to be dropped
                 unset($schemaDiff->alteredTables[$tableIndex]->droppedColumns[$columnIndex]);
@@ -1314,26 +1288,28 @@ class ConnectionMigrator
     protected function migrateColumnRenamesToDistinctActions(Typo3SchemaDiff $schemaDiff): Typo3SchemaDiff
     {
         foreach ($schemaDiff->alteredTables as $changedTable) {
-            if (count($changedTable->getRenamedColumns()) === 0) {
+            if (count($changedTable->getChangedColumns()) === 0) {
                 continue;
             }
 
             // Treat each renamed column with a new diff to get a dedicated
             // suggestion just for this single column.
-            foreach ($changedTable->renamedColumns as $originalColumnName => $renamedColumn) {
-                $columnOptions = $this->prepareColumnOptions($renamedColumn);
-                $changedTable->addedColumns[$renamedColumn->getName()] = new Column(
-                    $renamedColumn->getName(),
-                    $renamedColumn->getType(),
-                    $columnOptions
+            foreach ($changedTable->changedColumns as $originalColumnName => $changedColumn) {
+                if (!$changedColumn->hasNameChanged()) {
+                    continue;
+                }
+                $changedTable->addedColumns[$changedColumn->getNewColumn()->getName()] = new Column(
+                    $changedColumn->getNewColumn()->getName(),
+                    $changedColumn->getNewColumn()->getType(),
+                    $this->prepareColumnOptions($changedColumn->getNewColumn())
                 );
-                $changedTable->droppedColumns[$originalColumnName] = new Column(
-                    $originalColumnName,
-                    $renamedColumn->getType(),
-                    $columnOptions
+                $changedTable->droppedColumns[$changedColumn->getOldColumn()->getName()] = new Column(
+                    $changedColumn->getOldColumn()->getName(),
+                    $changedColumn->getOldColumn()->getType(),
+                    $this->prepareColumnOptions($changedColumn->getOldColumn())
                 );
 
-                unset($changedTable->renamedColumns[$originalColumnName]);
+                unset($changedTable->changedColumns[$originalColumnName]);
             }
         }
 

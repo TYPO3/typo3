@@ -347,7 +347,6 @@ final class SchemaMigratorTest extends FunctionalTestCase
             [],
             [],
             [],
-            [],
         );
         $schemaDiff = new SchemaDiff(
             [],

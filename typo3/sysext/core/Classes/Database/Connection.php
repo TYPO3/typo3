@@ -21,7 +21,6 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
-use Doctrine\DBAL\Exception as DbalException;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
@@ -330,24 +329,6 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             $query->andWhere($query->expr()->eq($identifier, $query->createNamedParameter($value)));
         }
         return (int)$query->executeQuery()->fetchOne();
-    }
-
-    /**
-     * Returns the version of the current platform if applicable.
-     *
-     * If no version information is available only the platform name will be shown.
-     * If the platform name is unknown or unsupported the driver name will be shown.
-     *
-     * @internal only and not part of public API.
-     */
-    public function getServerVersion(): string
-    {
-        try {
-            return parent::getServerVersion();
-        } catch (DbalException) {
-        }
-        // Return empty server version due to database connection error.
-        return '';
     }
 
     /**

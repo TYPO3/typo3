@@ -40,9 +40,8 @@ class TableDiff extends DoctrineTableDiff
      * Constructs a TableDiff object.
      *
      * @param array<string, Column>       $addedColumns
-     * @param array<string, ColumnDiff>   $modifiedColumns
+     * @param array<string, ColumnDiff>   $changedColumns
      * @param array<string, Column>       $droppedColumns
-     * @param array<string, Column>       $renamedColumns
      * @param array<string, Index>        $addedIndexes
      * @param array<string, Index>        $modifiedIndexes
      * @param array<string, Index>        $droppedIndexes
@@ -59,9 +58,8 @@ class TableDiff extends DoctrineTableDiff
     public function __construct(
         public Table $oldTable,
         public array $addedColumns,
-        public array $modifiedColumns,
+        public array $changedColumns,
         public array $droppedColumns,
-        public array $renamedColumns,
         public array $addedIndexes,
         public array $modifiedIndexes,
         public array $droppedIndexes,
@@ -124,21 +122,15 @@ class TableDiff extends DoctrineTableDiff
     }
 
     /** @return array<string, ColumnDiff> */
-    public function getModifiedColumns(): array
+    public function getChangedColumns(): array
     {
-        return $this->modifiedColumns;
+        return $this->changedColumns;
     }
 
     /** @return array<string, Column> */
     public function getDroppedColumns(): array
     {
         return $this->droppedColumns;
-    }
-
-    /** @return array<string, Column> */
-    public function getRenamedColumns(): array
-    {
-        return $this->renamedColumns;
     }
 
     /** @return array<string, Index> */
@@ -186,9 +178,8 @@ class TableDiff extends DoctrineTableDiff
     public function isEmpty(): bool
     {
         return count($this->getAddedColumns()) === 0
-            && count($this->getModifiedColumns()) === 0
+            && count($this->getChangedColumns()) === 0
             && count($this->getDroppedColumns()) === 0
-            && count($this->getRenamedColumns()) === 0
             && count($this->getAddedIndexes()) === 0
             && count($this->getModifiedIndexes()) === 0
             && count($this->getDroppedIndexes()) === 0
@@ -217,12 +208,10 @@ class TableDiff extends DoctrineTableDiff
             $tableDiff->getOldTable(),
             // addedColumns
             $tableDiff->getAddedColumns(),
-            // modifiedColumns
+            // changedColumns
             [],
             // droppedColumns
             $tableDiff->getDroppedColumns(),
-            // renamedColumns
-            $tableDiff->getRenamedColumns(),
             // addedIndexes
             $tableDiff->getAddedIndexes(),
             // modifiedIndexes
@@ -244,12 +233,12 @@ class TableDiff extends DoctrineTableDiff
         // doctrine/dbal 4+ removed the column name as array index for modified column definitions,
         // but we rely on it. Restore it !
         // Ensure to use custom ColumnDiff instance with more data and
-        foreach ($tableDiff->getModifiedColumns() as $modifiedColumn) {
-            $diff->modifiedColumns[$modifiedColumn->getOldColumn()->getName()] = new ColumnDiff(
+        foreach ($tableDiff->getChangedColumns() as $changedColumn) {
+            $diff->changedColumns[$changedColumn->getOldColumn()->getName()] = new ColumnDiff(
                 // oldColumn
-                $modifiedColumn->getOldColumn(),
+                $changedColumn->getOldColumn(),
                 // newColumn
-                $modifiedColumn->getNewColumn(),
+                $changedColumn->getNewColumn(),
             );
         }
 

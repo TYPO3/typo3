@@ -58,14 +58,22 @@ final class ConnectionMigratorTest extends UnitTestCase
     public function tableNamesStickToTheMaximumCharactersWhenPrefixedForRemoval(): void
     {
         $originalSchemaDiff = new SchemaDiff(
-            createdSchemas: [],
-            droppedSchemas: [],
-            createdTables: [],
-            alteredTables: [],
-            droppedTables: [$this->getTable()->getName() => $this->getTable()],
-            createdSequences: [],
-            alteredSequences: [],
-            droppedSequences: [],
+            // createdSchemas
+            [],
+            // droppedSchemas
+            [],
+            // createdTables
+            [],
+            // alteredTables
+            [],
+            // droppedTables
+            [$this->getTable()->getName() => $this->getTable()],
+            // createdSequences
+            [],
+            // alteredSequences
+            [],
+            // droppedSequences
+            [],
         );
         /** @var SchemaDiff $renamedSchemaDiff */
         $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
@@ -81,33 +89,51 @@ final class ConnectionMigratorTest extends UnitTestCase
     {
         $table = $this->getTable();
         $tableDiff = new TableDiff(
-            oldTable: $table,
-            addedColumns: [],
-            modifiedColumns: [],
-            droppedColumns: [$this->getColumn()->getName() => $this->getColumn()],
-            renamedColumns: [],
-            addedIndexes: [],
-            modifiedIndexes: [],
-            droppedIndexes: [],
-            renamedIndexes: [],
-            addedForeignKeys: [],
-            modifiedForeignKeys: [],
-            droppedForeignKeys: [],
+            // oldTable
+            $table,
+            // addedColumns
+            [],
+            // changedColumns
+            [],
+            // droppedColumns
+            [$this->getColumn()->getName() => $this->getColumn()],
+            // addedIndexes
+            [],
+            // modifiedIndexes
+            [],
+            // droppedIndexes
+            [],
+            // renamedIndexes
+            [],
+            // addedForeignKeys
+            [],
+            // modifiedForeignKeys
+            [],
+            // droppedForeignKeys
+            [],
         );
         $originalSchemaDiff = new SchemaDiff(
-            createdSchemas: [],
-            droppedSchemas: [],
-            createdTables: [],
-            alteredTables: [$tableDiff->getOldTable()->getName() => $tableDiff],
-            droppedTables: [],
-            createdSequences: [],
-            alteredSequences: [],
-            droppedSequences: [],
+            // createdSchemas
+            [],
+            // droppedSchemas
+            [],
+            // createdTables
+            [],
+            // alteredTables
+            [$tableDiff->getOldTable()->getName() => $tableDiff],
+            // droppedTables
+            [],
+            // createdSequences
+            [],
+            // alteredSequences
+            [],
+            // droppedSequences
+            [],
         );
         /** @var SchemaDiff $renamedSchemaDiff */
         $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedFieldsToRenames', $originalSchemaDiff);
-        $firstColumnName = array_key_first($renamedSchemaDiff->getAlteredTables()[$table->getName()]->getModifiedColumns());
-        $firstColumn = $renamedSchemaDiff->getAlteredTables()[$table->getName()]->getModifiedColumns()[$firstColumnName];
+        $firstColumnName = array_key_first($renamedSchemaDiff->getAlteredTables()[$table->getName()]->getChangedColumns());
+        $firstColumn = $renamedSchemaDiff->getAlteredTables()[$table->getName()]->getChangedColumns()[$firstColumnName];
 
         self::assertStringStartsWith(
             'zzz_deleted_',
