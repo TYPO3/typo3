@@ -19,7 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "11.5.*@dev"
+		"typo3/cms-core": "11.5.39"
 	},
 	"suggest": {
 		"typo3/cms-scheduler": "Remove deleted records after given time"
