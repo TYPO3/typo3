@@ -898,9 +898,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Webmounts permissions are checked in fetchGroupData()
      *
      * @return list<numeric-string> of web mounts uids (may include '0')
+     * @deprecated will be removed in TYPO3 v14, use getWebmounts() instead.
      */
     public function returnWebmounts()
     {
+        trigger_error('BackendUserAuthentication::returnWebmounts() will be removed in TYPO3 v14. Use getWebmounts() instead.', E_USER_DEPRECATED);
         $webMounts = $this->groupData['webmounts'] ?? null;
         return is_string($webMounts) && $webMounts !== ''
             ? explode(',', $webMounts)

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -68,6 +69,7 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function returnWebmountsFilterOutInaccessiblePages(): void
     {
         $subject = $this->setUpBackendUser(2);
