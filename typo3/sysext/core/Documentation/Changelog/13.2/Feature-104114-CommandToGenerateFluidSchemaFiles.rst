@@ -41,7 +41,8 @@ Impact
 To get autocompletion for all available ViewHelpers in supporting IDEs, the following
 CLI command can be executed in local development environments:
 
-::
+..  code-block:: bash
+
     vendor/bin/typo3 fluid:schema:generate
 
 .. index:: CLI, Fluid, ext:fluid
