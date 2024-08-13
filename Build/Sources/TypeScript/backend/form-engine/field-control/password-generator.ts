@@ -61,7 +61,9 @@ class PasswordGenerator {
           if (clearableContainer) {
             clearableContainer.classList.remove('form-control-clearable');
             const closeButton = <HTMLButtonElement>clearableContainer.querySelector('button.close');
-            closeButton && clearableContainer.removeChild(closeButton);
+            if (closeButton) {
+              clearableContainer.removeChild(closeButton);
+            }
           }
         }
       }

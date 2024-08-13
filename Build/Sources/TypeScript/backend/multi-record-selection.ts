@@ -257,12 +257,12 @@ class MultiRecordSelection {
     new RegularEvent('multiRecordSelection:actions:show', (e: CustomEvent): void => {
       const identifier: string = e.detail?.identifier || '';
       const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier));
-      actionContainers.length && actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container));
+      actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container));
     }).bindTo(document);
     new RegularEvent('multiRecordSelection:actions:hide', (e: CustomEvent): void => {
       const identifier: string = e.detail?.identifier || '';
       const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier));
-      actionContainers.length && actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container, false));
+      actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container, false));
     }).bindTo(document);
   }
 

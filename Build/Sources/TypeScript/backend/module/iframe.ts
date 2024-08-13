@@ -85,7 +85,7 @@ export class IframeModuleElement extends LitElement {
         title: iframe.contentDocument.title,
         module: iframe.contentDocument.body.querySelector('.module[data-module-name]')?.getAttribute('data-module-name')
       };
-    } catch (e) {
+    } catch {
       console.error('Failed to access contentWindow of module iframe – using a foreign origin?');
       return { url: this.endpoint, title: null };
     }

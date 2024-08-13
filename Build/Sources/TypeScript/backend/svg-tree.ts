@@ -1438,7 +1438,7 @@ export class SvgTree extends LitElement {
         () => this.muteErrorNotifications = true,
         { once: true }
       );
-    } catch (e) {
+    } catch {
       console.error('Failed to check the existence of window.frameElement – using a foreign origin?');
       // Do nothing if an error occured during the event registration
     }
@@ -1473,7 +1473,6 @@ export class Toolbar extends LitElement {
   }
 
   protected render(): TemplateResult {
-    /* eslint-disable @typescript-eslint/indent */
     return html`
       <div class="tree-toolbar">
         <div class="svg-toolbar__menu">

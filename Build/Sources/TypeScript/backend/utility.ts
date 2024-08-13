@@ -202,7 +202,7 @@ class Utility {
       const resource2 = uriObject2.origin + uriObject2.pathname + uriObject2.search;
 
       return resource1 === resource2;
-    } catch (exception) {
+    } catch {
       return false;
     }
   }
@@ -218,7 +218,7 @@ class Utility {
     try {
       new URL(url);
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   }

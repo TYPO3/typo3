@@ -135,7 +135,7 @@ namespace TYPO3 {
             elm.focus();
             try {
               document.execCommand('copy');
-            } catch (err) {
+            } catch {
               // nothing here
             }
           });

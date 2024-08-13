@@ -90,7 +90,11 @@ export class DragDrop {
       .drag()
       .filter((event) => { return event instanceof MouseEvent; })
       .clickDistance(5)
-      .on('start', function(evt: d3drag.D3DragEvent<any, any, any>) { dragHandler.onDragStart(evt.sourceEvent, evt.subject) && DragDrop.setDragStart(); })
+      .on('start', function(evt: d3drag.D3DragEvent<any, any, any>) {
+        if (dragHandler.onDragStart(evt.sourceEvent, evt.subject)) {
+          DragDrop.setDragStart()
+        }
+      })
       .on('drag', function(evt: d3drag.D3DragEvent<any, any, any>) { dragHandler.onDragOver(evt.sourceEvent, evt.subject); })
       .on('end', function(evt: d3drag.D3DragEvent<any, any, any>) { DragDrop.setDragEnd(); dragHandler.onDrop(evt.sourceEvent, evt.subject); });
   }

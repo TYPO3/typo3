@@ -68,8 +68,9 @@ class GlobalEventHandler {
 
   private handleChangeEvent(evt: Event, resolvedTarget: HTMLElement): void {
     evt.preventDefault();
-    this.handleFormChildAction(evt, resolvedTarget)
-      || this.handleFormChildNavigateAction(evt, resolvedTarget);
+    if (!this.handleFormChildAction(evt, resolvedTarget)) {
+      this.handleFormChildNavigateAction(evt, resolvedTarget);
+    }
   }
 
   private handleClickEvent(evt: Event, resolvedTarget: HTMLElement): void {

@@ -149,7 +149,7 @@ interface Require {
   const importMap: Record<string, unknown> = (() => {
     try {
       return JSON.parse(document.querySelector('script[type="importmap"]').innerHTML).imports || {};
-    } catch (e) {
+    } catch {
       return {}
     }
   })();

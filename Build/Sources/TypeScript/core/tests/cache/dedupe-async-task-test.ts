@@ -121,7 +121,7 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       let b: boolean|null;
       try {
         b = await bPromise;
-      } catch (e) {
+      } catch {
         b = null;
       }
 

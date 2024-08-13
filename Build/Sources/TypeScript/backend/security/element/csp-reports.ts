@@ -378,7 +378,7 @@ export class CspReports extends LitElement {
     try {
       const uri = new URL(value);
       return uri.hostname;
-    } catch (err) {
+    } catch {
       return value;
     }
   }

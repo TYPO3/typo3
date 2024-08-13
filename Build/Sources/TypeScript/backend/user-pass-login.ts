@@ -54,7 +54,7 @@ class UserPassLogin {
       ) {
         $usernameField.val(parent.opener.TYPO3.configuration.username);
       }
-    } catch (error) {
+    } catch {
       // continue
     }
 

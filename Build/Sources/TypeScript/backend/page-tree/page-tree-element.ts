@@ -127,7 +127,7 @@ export class EditablePageTree extends PageTree {
       try {
         inputWrapper.remove();
         this.nodeIsEdit = false;
-      } catch (e) {
+      } catch {
         // ...
       }
     }
@@ -472,7 +472,7 @@ class PageTreeToolbar extends Toolbar {
   }
 
   protected render(): TemplateResult {
-    /* eslint-disable @typescript-eslint/indent */
+    /* eslint-disable @stylistic/indent */
     return html`
       <div class="tree-toolbar">
         <div class="svg-toolbar__menu">
@@ -1106,7 +1106,9 @@ class PageTreeNodeDragHandler implements DragDropHandler {
     const done = function () {
       dropZone.style.transform = keyframes[1].transform;
       dropZone.classList.remove('animating');
-      onfinish && onfinish();
+      if (onfinish !== null) {
+        onfinish();
+      }
     };
     if ('animate' in dropZone) {
       dropZone.animate(keyframes, {
