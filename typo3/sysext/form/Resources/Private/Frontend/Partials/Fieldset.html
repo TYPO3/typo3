@@ -1,9 +1,12 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
 <formvh:renderRenderable renderable="{element}">
+    <f:variable name="fluidAdditionalAttributes" value="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"/>
     <f:variable name="additionalAttributes" value="" />
-    <f:for each="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}" as="value" key="key">
-        <f:variable name="additionalAttributes" value='{additionalAttributes} {key}="{value}"' />
-    </f:for>
+    <f:if condition="{fluidAdditionalAttributes}">
+        <f:for each="{fluidAdditionalAttributes}" as="value" key="key">
+            <f:variable name="additionalAttributes" value='{additionalAttributes} {key}="{value}"' />
+        </f:for>
+    </f:if>
     <fieldset id="{element.uniqueIdentifier}"
                 class="form-group{f:if(condition: element.properties.elementClassAttribute, then: ' {element.properties.elementClassAttribute}')}"
                 {additionalAttributes -> f:format.raw()}>
