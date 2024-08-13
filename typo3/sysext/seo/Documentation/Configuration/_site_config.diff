@@ -1,0 +1,5 @@
+  base: 'https://example.com/'
+  rootPageId: 1
+  dependencies:
+    - typo3/fluid-styled-content-css
++   - typo3/seo-sitemap

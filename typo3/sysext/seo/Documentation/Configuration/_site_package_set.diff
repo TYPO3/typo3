@@ -1,0 +1,9 @@
+name: my-vendor/my-site-package
+ label: My Site Package Set
+ settings:
+   website:
+     background:
+       color: '#386492'
+ dependencies:
+   - typo3/fluid-styled-content-css
++  - typo3/seo-sitemap
