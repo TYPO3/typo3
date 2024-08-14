@@ -2873,7 +2873,6 @@ class DatabaseRecordList
 
             if (!$backendUser->isAdmin() && $id === 0) {
                 $mountPoints = $backendUser->getWebmounts();
-                $mountPoints = array_unique($mountPoints);
             } else {
                 $mountPoints = [$id];
             }

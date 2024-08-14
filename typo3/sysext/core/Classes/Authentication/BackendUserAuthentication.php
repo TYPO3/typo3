@@ -908,7 +908,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Returns an array with the webmounts.
+     * Returns an unique array with the webmounts.
      * If no webmounts, and empty array is returned.
      * Webmounts permissions are checked in fetchGroupData()
      *
@@ -918,7 +918,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     {
         $webMounts = $this->groupData['webmounts'] ?? null;
         return is_string($webMounts) && $webMounts !== ''
-            ? GeneralUtility::intExplode(',', $webMounts)
+            ? array_unique(GeneralUtility::intExplode(',', $webMounts))
             : [];
     }
 
