@@ -14,19 +14,20 @@
         <f:variable name="columnIdentifier" value="columnIdentifier_column-{colpos}" />
     </f:else>
 </f:if>
+
+<f:variable name="columnClasses">
+    t3js-page-column t3-grid-cell t3-page-column
+    {f:if(condition: column.unassigned, then: 't3-grid-cell-unassigned')}
+    {f:if(condition: '!{column.active} && !{column.unused}', then: 't3-grid-cell-restricted')}
+    {f:if(condition: '!{column.active} && {hideRestrictedColumns} && !{column.unused}', then: 't3-grid-cell-hidden')}
+</f:variable>
 <td valign="top" colspan="{column.colSpan}" rowspan="{column.rowSpan}"
     data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
-    class="t3js-page-lang-column-{column.context.siteLanguage.languageId} t3js-page-column t3-grid-cell t3-page-column t3-page-column-{colpos}
-        {f:if(condition: column.unassigned, then: 't3-grid-cell-unassigned')}
-        {f:if(condition: '!{column.active} && !{column.unused}', then: 't3-grid-cell-restricted')}
-        {f:if(condition: '!{column.active} && {hideRestrictedColumns} && !{column.unused}', then: 't3-grid-cell-hidden')}
-        t3-gridCell-width{column.colSpan}
-        t3-gridCell-height{column.rowSpan}" role="group" aria-labelledby="{columnIdentifier}">
+    class="{columnClasses -> f:spaceless()}"
+    role="group" aria-labelledby="{columnIdentifier}">
     <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
     <f:if condition="{column.active} || {column.unused}">
-        <div data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
-            class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-{column.context.siteLanguage.languageId} t3-page-ce-wrapper
-            {f:if(condition: column.items, else: 't3-page-ce-empty')}">
+        <div data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}" class="t3-page-ce-wrapper">
             <f:for each="{column.items}" as="item">
                 <f:render partial="PageLayout/Record" arguments="{_all}" />
             </f:for>
