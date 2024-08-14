@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
@@ -236,10 +237,8 @@ class FormEditorController extends ActionController
 
     protected function getFormSettings(): array
     {
-        $formSettings = $this->extFormConfigurationManager->getConfiguration(
-            ExtFormConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS,
-            'form'
-        );
+        $typoScriptSettings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
+        $formSettings = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, false);
         if (!isset($formSettings['formManager'])) {
             // Config sub array formManager is crucial and should always exist. If it does
             // not, this indicates an issue in config loading logic. Except in this case.

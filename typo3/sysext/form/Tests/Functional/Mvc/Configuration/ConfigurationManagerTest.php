@@ -18,14 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Configuration;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
-use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManager;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
+use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ConfigurationManagerTest extends FunctionalTestCase
@@ -71,24 +69,15 @@ final class ConfigurationManagerTest extends FunctionalTestCase
         ];
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $serverRequest = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $configurationManagerMock = $this->getAccessibleMock(
-            ConfigurationManager::class,
-            [
-                'getTypoScriptSettings',
-                'getYamlSettingsFromCache',
-            ],
-            [
-                $this->get(FrontendConfigurationManager::class),
-                $this->get(BackendConfigurationManager::class),
-            ]
+        $cacheMock = $this->createMock(FrontendInterface::class);
+        $cacheMock->method('has')->willReturn(true);
+        $cacheMock->method('get')->willReturn($yamlSettings);
+        $configurationManagerMock = new ConfigurationManager(
+            $this->createMock(YamlSource::class),
+            $cacheMock,
+            $this->createMock(TypoScriptService::class),
         );
-        $configurationManagerMock->method('getYamlSettingsFromCache')->with(self::anything())->willReturn($yamlSettings);
-        $configurationManagerMock->method('getTypoScriptSettings')->with(self::anything())->willReturn([]);
-        $configurationManagerMock->setRequest($serverRequest);
-        $result = $configurationManagerMock->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+        $result = $configurationManagerMock->getYamlConfiguration([], true);
         self::assertSame($expected, $result);
     }
 }

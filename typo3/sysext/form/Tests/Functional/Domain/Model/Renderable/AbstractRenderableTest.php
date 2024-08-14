@@ -21,10 +21,11 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -39,10 +40,12 @@ final class AbstractRenderableTest extends FunctionalTestCase
     {
         // $prototypeConfiguration is a monster array. Get it up front.
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $configurationManager = $this->get(ConfigurationManagerInterface::class);
-        $configurationManager->setRequest($request);
+        $extbaseConfigurationManager = $this->get(ExtbaseConfigurationManagerInterface::class);
+        $extbaseConfigurationManager->setRequest($request);
+        $extFormConfigurationManager = $this->get(ExtFormConfigurationManagerInterface::class);
         $configurationService = new ConfigurationService(
-            $configurationManager,
+            $extbaseConfigurationManager,
+            $extFormConfigurationManager,
             $this->createMock(TranslationService::class),
             $this->createMock(FrontendInterface::class),
             $this->createMock(FrontendInterface::class),

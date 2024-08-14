@@ -17,16 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Configuration;
 
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager as ExtbaseConfigurationManager;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
-use TYPO3\CMS\Form\Mvc\Configuration\Exception\ExtensionNameRequiredException;
 
 /**
  * Extend the ExtbaseConfigurationManager to read YAML configurations.
@@ -34,42 +29,15 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\ExtensionNameRequiredException;
  * Scope: frontend / backend
  * @internal
  */
-class ConfigurationManager extends ExtbaseConfigurationManager implements ExtFormConfigurationManagerInterface
+#[AsAlias(ConfigurationManagerInterface::class, public: true)]
+readonly class ConfigurationManager implements ExtFormConfigurationManagerInterface
 {
-    /**
-     * @var FrontendInterface
-     */
-    protected $cache;
-
-    /**
-     * @var \TYPO3\CMS\Form\Mvc\Configuration\YamlSource
-     */
-    protected $yamlSource;
-
-    /**
-     * @internal
-     */
-    public function injectYamlSource(YamlSource $yamlSource)
-    {
-        $this->yamlSource = $yamlSource;
-    }
-
-    /**
-     * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
-     * @param string $extensionName if specified, the configuration for the given extension will be returned.
-     * @param string $pluginName if specified, the configuration for the given plugin will be returned.
-     * @return array The configuration
-     * @internal
-     */
-    public function getConfiguration(string $configurationType, ?string $extensionName = null, ?string $pluginName = null): array
-    {
-        switch ($configurationType) {
-            case self::CONFIGURATION_TYPE_YAML_SETTINGS:
-                return $this->getConfigurationFromYamlFile($extensionName);
-            default:
-                return parent::getConfiguration($configurationType, $extensionName, $pluginName);
-        }
-    }
+    public function __construct(
+        private YamlSource $yamlSource,
+        #[Autowire(service: 'cache.assets')]
+        private FrontendInterface $cache,
+        private TypoScriptService $typoScriptService,
+    ) {}
 
     /**
      * Load and parse YAML files which are configured within the TypoScript
@@ -84,98 +52,28 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements ExtFor
      * * return all configuration paths within TYPO3.CMS
      * * sort by array keys, if all keys within the current nesting level are numerical keys
      * * resolve possible TypoScript settings in FE mode
-     *
-     * @param string $extensionName
-     * @throws ExtensionNameRequiredException
      */
-    protected function getConfigurationFromYamlFile(string $extensionName): array
+    public function getYamlConfiguration(array $typoScriptSettings, bool $isFrontend): array
     {
-        if (empty($extensionName)) {
-            throw new ExtensionNameRequiredException(
-                'Please specify an extension key to load a YAML configuration',
-                1471473377
-            );
-        }
-
-        $typoscriptSettings = $this->getTypoScriptSettings($extensionName);
-
-        $yamlSettingsFilePaths = isset($typoscriptSettings['yamlConfigurations'])
-            ? ArrayUtility::sortArrayWithIntegerKeys($typoscriptSettings['yamlConfigurations'])
+        $yamlSettingsFilePaths = isset($typoScriptSettings['yamlConfigurations'])
+            ? ArrayUtility::sortArrayWithIntegerKeys($typoScriptSettings['yamlConfigurations'])
             : [];
-
-        $cacheKeySuffix = $extensionName . md5(json_encode($yamlSettingsFilePaths));
-
-        $yamlSettings = $this->getYamlSettingsFromCache($cacheKeySuffix);
-        if (!empty($yamlSettings)) {
-            return $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
+        $cacheKey = strtolower('YamlSettings_form' . md5(json_encode($yamlSettingsFilePaths)));
+        if ($this->cache->has($cacheKey)) {
+            $yamlSettings = $this->cache->get($cacheKey);
+        } else {
+            $yamlSettings = InheritancesResolverService::create($this->yamlSource->load($yamlSettingsFilePaths))->getResolvedConfiguration();
+            $yamlSettings = ArrayUtility::removeNullValuesRecursive($yamlSettings);
+            $yamlSettings = ArrayUtility::sortArrayWithIntegerKeysRecursive($yamlSettings);
+            $this->cache->set($cacheKey, $yamlSettings);
         }
-
-        $yamlSettings = InheritancesResolverService::create($this->yamlSource->load($yamlSettingsFilePaths))
-            ->getResolvedConfiguration();
-
-        $yamlSettings = ArrayUtility::removeNullValuesRecursive($yamlSettings);
-        $yamlSettings = ArrayUtility::sortArrayWithIntegerKeysRecursive($yamlSettings);
-        $this->setYamlSettingsIntoCache($cacheKeySuffix, $yamlSettings);
-
-        return $this->overrideConfigurationByTypoScript($yamlSettings, $extensionName);
-    }
-
-    protected function overrideConfigurationByTypoScript(array $yamlSettings, string $extensionName): array
-    {
-        $typoScript = parent::getConfiguration(self::CONFIGURATION_TYPE_SETTINGS, $extensionName);
-        if (is_array($typoScript['yamlSettingsOverrides'] ?? null) && !empty($typoScript['yamlSettingsOverrides'])) {
-            $yamlSettingsOverrides = $typoScript['yamlSettingsOverrides'];
-            if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-            ) {
-                $yamlSettingsOverrides = GeneralUtility::makeInstance(TypoScriptService::class)
-                    ->resolvePossibleTypoScriptConfiguration($yamlSettingsOverrides);
+        if (is_array($typoScriptSettings['yamlSettingsOverrides'] ?? null) && !empty($typoScriptSettings['yamlSettingsOverrides'])) {
+            $yamlSettingsOverrides = $typoScriptSettings['yamlSettingsOverrides'];
+            if ($isFrontend) {
+                $yamlSettingsOverrides = $this->typoScriptService->resolvePossibleTypoScriptConfiguration($yamlSettingsOverrides);
             }
-
-            ArrayUtility::mergeRecursiveWithOverrule(
-                $yamlSettings,
-                $yamlSettingsOverrides
-            );
+            ArrayUtility::mergeRecursiveWithOverrule($yamlSettings, $yamlSettingsOverrides);
         }
         return $yamlSettings;
-    }
-
-    protected function getCacheFrontend(): FrontendInterface
-    {
-        if ($this->cache === null) {
-            $this->cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
-        }
-        return $this->cache;
-    }
-
-    protected function getConfigurationCacheKey(string $cacheKeySuffix): string
-    {
-        return strtolower(ExtFormConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS . '_' . $cacheKeySuffix);
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getYamlSettingsFromCache(string $cacheKeySuffix)
-    {
-        return $this->getCacheFrontend()->get(
-            $this->getConfigurationCacheKey($cacheKeySuffix)
-        );
-    }
-
-    protected function setYamlSettingsIntoCache(string $cacheKeySuffix, array $yamlSettings): void
-    {
-        $this->getCacheFrontend()->set(
-            $this->getConfigurationCacheKey($cacheKeySuffix),
-            $yamlSettings
-        );
-    }
-
-    protected function getTypoScriptSettings(string $extensionName): array
-    {
-        return parent::getConfiguration(
-            ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            $extensionName
-        );
     }
 }

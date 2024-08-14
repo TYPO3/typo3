@@ -17,13 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Configuration;
 
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
-
 /**
  * Scope: frontend / backend
  * @internal
  */
-interface ConfigurationManagerInterface extends ExtbaseConfigurationManagerInterface
+interface ConfigurationManagerInterface
 {
-    public const CONFIGURATION_TYPE_YAML_SETTINGS = 'YamlSettings';
+    public function getYamlConfiguration(array $typoScriptSettings, bool $isFrontend): array;
 }

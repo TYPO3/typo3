@@ -71,7 +71,8 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
                         // the request explicitly here, to then fetch $formSettings from ext:form ConfigurationManager.
                         $request = $item->getContext()->getCurrentRequest();
                         $this->extbaseConfigurationManager->setRequest($request);
-                        $formSettings = $this->extFormConfigurationManager->getConfiguration(ExtFormConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+                        $typoScriptSettings = $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
+                        $formSettings = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, false);
                         $formDefinition = $this->formPersistenceManager->load($persistenceIdentifier, $formSettings, []);
                         $formLabel = $formDefinition['label'];
                     } else {

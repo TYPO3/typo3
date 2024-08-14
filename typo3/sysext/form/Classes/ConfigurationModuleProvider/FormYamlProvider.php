@@ -19,7 +19,8 @@ namespace TYPO3\CMS\Form\ConfigurationModuleProvider;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderInterface;
 
 class FormYamlProvider implements ProviderInterface
@@ -27,7 +28,8 @@ class FormYamlProvider implements ProviderInterface
     protected string $identifier;
 
     public function __construct(
-        protected readonly ConfigurationManagerInterface $configurationManager,
+        protected readonly ExtFormConfigurationManagerInterface $extFormConfigurationManager,
+        protected readonly ExtbaseConfigurationManagerInterface $extbaseConfigurationManager,
     ) {}
 
     public function __invoke(array $attributes): self
@@ -50,10 +52,12 @@ class FormYamlProvider implements ProviderInterface
 
     public function getConfiguration(): array
     {
-        $configuration = $this->configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS,
-            'form'
-        );
+        // Another hidden dependency to $GLOBALS['TYPO3_REQUEST'] made explicit here.
+        $request = $GLOBALS['TYPO3_REQUEST'];
+        $extbaseConfigurationManager = $this->extbaseConfigurationManager;
+        $extbaseConfigurationManager->setRequest($request);
+        $typoScriptSettings = $extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
+        $configuration = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, false);
         ArrayUtility::naturalKeySortRecursive($configuration);
         return $configuration;
     }

@@ -21,11 +21,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -36,8 +37,8 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     #[Test]
     public function getPrototypeConfigurationReturnsPrototypeConfiguration(): void
     {
-        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerMock->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
+        $configurationManagerMock = $this->createMock(ExtFormConfigurationManagerInterface::class);
+        $configurationManagerMock->method('getYamlConfiguration')
             ->willReturn([
                 'prototypes' => [
                     'standard' => [
@@ -46,6 +47,7 @@ final class ConfigurationServiceTest extends FunctionalTestCase
                 ],
             ]);
         $subject = new ConfigurationService(
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
             $configurationManagerMock,
             $this->createMock(TranslationService::class),
             $this->createMock(PhpFrontend::class),
@@ -60,14 +62,15 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     #[Test]
     public function getPrototypeConfigurationThrowsExceptionIfNoPrototypeFound(): void
     {
-        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerMock->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
+        $configurationManagerMock = $this->createMock(ExtFormConfigurationManagerInterface::class);
+        $configurationManagerMock->method('getYamlConfiguration')
             ->willReturn([
                 'prototypes' => [
                     'noStandard' => [],
                 ],
             ]);
         $subject = new ConfigurationService(
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
             $configurationManagerMock,
             $this->createMock(TranslationService::class),
             $this->createMock(PhpFrontend::class),
@@ -81,8 +84,8 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     #[Test]
     public function getSelectablePrototypeNamesDefinedInFormEditorSetupReturnsPrototypes(): void
     {
-        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerMock->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
+        $configurationManagerMock = $this->createMock(ExtFormConfigurationManagerInterface::class);
+        $configurationManagerMock->method('getYamlConfiguration')
             ->willReturn([
                 'formManager' => [
                     'selectablePrototypesConfiguration' => [
@@ -99,6 +102,7 @@ final class ConfigurationServiceTest extends FunctionalTestCase
                 ],
             ]);
         $subject = new ConfigurationService(
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
             $configurationManagerMock,
             $this->createMock(TranslationService::class),
             $this->createMock(PhpFrontend::class),
@@ -1225,7 +1229,8 @@ final class ConfigurationServiceTest extends FunctionalTestCase
                 'executeBuildFormDefinitionValidationConfigurationHooks',
             ],
             [
-                $this->createMock(ConfigurationManagerInterface::class),
+                $this->createMock(ExtbaseConfigurationManagerInterface::class),
+                $this->createMock(ExtFormConfigurationManagerInterface::class),
                 $translationServiceMock,
                 $this->createMock(FrontendInterface::class),
                 $this->createMock(FrontendInterface::class),

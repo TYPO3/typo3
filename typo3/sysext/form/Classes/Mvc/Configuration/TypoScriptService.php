@@ -26,7 +26,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * Scope: frontend
  */
-#[Autoconfigure(public: true)]
+#[Autoconfigure()]
 readonly class TypoScriptService
 {
     public function __construct(

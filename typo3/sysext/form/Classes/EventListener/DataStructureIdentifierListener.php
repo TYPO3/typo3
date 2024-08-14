@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -143,10 +144,14 @@ readonly class DataStructureIdentifierListener
         } else {
             $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         }
-        // @todo: extFormConfigurationManager->setRequest($request) needs to fall with higher priority than above todo!
-        $this->extFormConfigurationManager->setRequest($request);
         $this->extbaseConfigurationManager->setRequest($request);
-        $formSettings = $this->extFormConfigurationManager->getConfiguration(ExtFormConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+        // @todo: Is this really needed? Isn't this event listener bound to BE only?
+        $isFrontend = false;
+        if (ApplicationType::fromRequest($request)->isFrontend()) {
+            $isFrontend = true;
+        }
+        $typoScriptSettings = $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
+        $formSettings = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, $isFrontend);
         try {
             // Add list of existing forms to drop down if we find our key in the identifier
             $formIsAccessible = false;

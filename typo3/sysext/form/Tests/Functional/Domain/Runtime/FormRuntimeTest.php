@@ -20,12 +20,13 @@ namespace TYPO3\CMS\Form\Tests\Functional\Domain\Runtime;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -64,7 +65,7 @@ final class FormRuntimeTest extends FunctionalTestCase
     {
         $formDefinition = $this->buildFormDefinition();
         // This must be a class available in the container without implementing RendererInterface
-        $formDefinition->setOptions(['rendererClassName' => ConfigurationManagerInterface::class]);
+        $formDefinition->setOptions(['rendererClassName' => ExtFormConfigurationManagerInterface::class]);
         $formRuntime = $formDefinition->bind($this->request);
 
         $this->expectException(RenderingException::class);
@@ -113,7 +114,7 @@ final class FormRuntimeTest extends FunctionalTestCase
 
     private function loadDefaultYamlConfigurations(): void
     {
-        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->get(ExtbaseConfigurationManagerInterface::class);
         $configurationManager->setRequest(
             (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );

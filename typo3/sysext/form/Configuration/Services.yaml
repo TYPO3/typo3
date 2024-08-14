@@ -8,10 +8,6 @@ services:
     resource: '../Classes/*'
     exclude: '../Classes/{Domain/Model}'
 
-  TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface:
-    alias: TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManager
-    public: true
-
   TYPO3\CMS\Form\SoftReference\FormPersistenceIdentifierSoftReferenceParser:
     tags:
       - name: softreference.parser

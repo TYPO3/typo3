@@ -21,12 +21,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -56,7 +56,7 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
     {
         $this->loadDefaultYamlConfigurations();
         // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
+        $this->get(ExtbaseConfigurationManagerInterface::class)->setRequest(
             (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
         $definition = $this->buildFormDefinition();
@@ -114,7 +114,7 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
 
     private function loadDefaultYamlConfigurations(): void
     {
-        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager = $this->get(ExtbaseConfigurationManagerInterface::class);
         $configurationManager->setConfiguration([
             'plugin.' => [
                 'tx_form.' => [

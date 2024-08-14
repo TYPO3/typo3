@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
@@ -39,7 +42,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\Proper
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PredefinedDefaultsExtractor as CollectionPredefinedDefaultsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PropertyPathsExtractor as CollectionPropertyPathsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\SelectOptionsExtractor as CollectionSelectOptionsExtractor;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 
 /**
@@ -55,7 +58,8 @@ use TYPO3\CMS\Form\Service\TranslationService;
 class ConfigurationService
 {
     public function __construct(
-        protected ConfigurationManagerInterface $configurationManager,
+        protected ExtbaseConfigurationManagerInterface $extbaseConfigurationManager,
+        protected ExtFormConfigurationManagerInterface $extFormConfigurationManager,
         protected TranslationService $translationService,
         #[Autowire(service: 'cache.assets')]
         protected FrontendInterface $assetsCache,
@@ -471,10 +475,15 @@ class ConfigurationService
 
     protected function getFormSettings(): array
     {
-        return $this->configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS,
-            'form'
-        );
+        // @todo: This is needed for extFormConfigurationManager to apply stdWrap on TS configuration.
+        //        Find a way to get rid of this.
+        $isFrontend = false;
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
+            $isFrontend = ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend();
+        }
+        // @todo: Note this code relies on the fact that the request has been set to ExtbaseConfigurationManagerInterface already.
+        $typoScriptSettings = $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
+        return $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, $isFrontend);
     }
 
     /**

@@ -62,8 +62,8 @@ class FormFrontendController extends ActionController
     {
         $formDefinition = [];
         if (!empty($this->settings['persistenceIdentifier'])) {
-            $formSettings = $this->extFormConfigurationManager->getConfiguration(ExtFormConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
             $typoScriptSettings = $this->configurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
+            $formSettings = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, true);
             $formDefinition = $this->formPersistenceManager->load($this->settings['persistenceIdentifier'], $formSettings, $typoScriptSettings);
             $formDefinition['persistenceIdentifier'] = $this->settings['persistenceIdentifier'];
             $formDefinition = $this->overrideByFlexFormSettings($formDefinition);

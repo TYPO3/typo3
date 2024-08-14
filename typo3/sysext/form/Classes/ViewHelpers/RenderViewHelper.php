@@ -87,7 +87,7 @@ final class RenderViewHelper extends AbstractViewHelper
             $extbaseConfigurationManager->setRequest($request);
             $typoScriptSettings = $extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
             $extFormConfigurationManager = GeneralUtility::makeInstance(ExtFormConfigurationManagerInterface::class);
-            $formSettings = $extFormConfigurationManager->getConfiguration(ExtFormConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+            $formSettings = $extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, true);
             // @todo: Make this VH non-static, get FormPersistenceManagerInterface injected, removed 'public: true' in its AsAlias
             $formPersistenceManager = GeneralUtility::makeInstance(FormPersistenceManagerInterface::class);
             $formConfiguration = $formPersistenceManager->load($persistenceIdentifier, $formSettings, $typoScriptSettings);
