@@ -28,9 +28,7 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
-use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
 
@@ -40,17 +38,12 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
  * Scope: frontend / backend
  * @internal
  */
-class YamlSource
+readonly class YamlSource
 {
-    /**
-     * @var FilePersistenceSlot
-     */
-    protected $filePersistenceSlot;
-
-    public function injectFilePersistenceSlot(FilePersistenceSlot $filePersistenceSlot)
-    {
-        $this->filePersistenceSlot = $filePersistenceSlot;
-    }
+    public function __construct(
+        private FilePersistenceSlot $filePersistenceSlot,
+        private YamlFileLoader $yamlFileLoader,
+    ) {}
 
     /**
      * Loads the specified configuration files and returns its merged content
@@ -61,7 +54,6 @@ class YamlSource
     public function load(array $filesToLoad): array
     {
         $configuration = [];
-
         foreach ($filesToLoad as $fileToLoad) {
             if ($fileToLoad instanceof File) {
                 $loadedConfiguration = $this->loadFromFile($fileToLoad);
@@ -73,15 +65,9 @@ class YamlSource
                     $loadedConfiguration = array_replace_recursive($namespacedConfiguration, $loadedConfiguration);
                 }
             }
-
-            if (is_array($loadedConfiguration)) {
-                $configuration = array_replace_recursive($configuration, $loadedConfiguration);
-            }
+            $configuration = array_replace_recursive($configuration, $loadedConfiguration);
         }
-
-        $configuration = ArrayUtility::convertBooleanStringsToBooleanRecursive($configuration);
-
-        return $configuration;
+        return ArrayUtility::convertBooleanStringsToBooleanRecursive($configuration);
     }
 
     /**
@@ -92,11 +78,11 @@ class YamlSource
      * @throws FileWriteException if the file could not be written
      * @internal
      */
-    public function save($fileToSave, array $configuration)
+    public function save(File|string $fileToSave, array $configuration): void
     {
         try {
             $header = $this->getHeaderFromFile($fileToSave);
-        } catch (InsufficientFileAccessPermissionsException  $e) {
+        } catch (InsufficientFileAccessPermissionsException $e) {
             throw new FileWriteException($e->getMessage(), 1512584488, $e);
         }
 
@@ -135,10 +121,8 @@ class YamlSource
      */
     protected function loadFromFilePath(string $filePath): array
     {
-        $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
-
         try {
-            $loadedConfiguration = $loader->load($filePath);
+            $loadedConfiguration = $this->yamlFileLoader->load($filePath);
         } catch (\RuntimeException $e) {
             throw new ParseErrorException(
                 sprintf('An error occurred while parsing file "%s": %s', $filePath, $e->getMessage()),
@@ -146,7 +130,6 @@ class YamlSource
                 $e
             );
         }
-
         return $loadedConfiguration;
     }
 
@@ -154,20 +137,11 @@ class YamlSource
      * Load YAML configuration from a FAL file
      *
      * @throws ParseErrorException
-     * @throws NoSuchFileException
      */
     protected function loadFromFile(File $file): array
     {
         $fileIdentifier = $file->getIdentifier();
         $rawYamlContent = $file->getContents();
-
-        if ($rawYamlContent === false) {
-            throw new NoSuchFileException(
-                sprintf('The file "%s" does not exist', $fileIdentifier),
-                1498802253
-            );
-        }
-
         try {
             $loadedConfiguration = Yaml::parse($rawYamlContent);
         } catch (ParseException $e) {
@@ -177,7 +151,6 @@ class YamlSource
                 $e
             );
         }
-
         return $loadedConfiguration;
     }
 
@@ -185,10 +158,9 @@ class YamlSource
      * Read the header part from the given file. That means, every line
      * until the first non comment line is found.
      *
-     * @param File|string $file
      * @return string The header of the given YAML file
      */
-    protected function getHeaderFromFile($file): string
+    protected function getHeaderFromFile(File|string $file): string
     {
         $header = '';
         if ($file instanceof File) {
@@ -198,9 +170,8 @@ class YamlSource
         } else {
             return '';
         }
-
         foreach ($fileLines as $line) {
-            if (preg_match('/^#/', $line)) {
+            if (str_starts_with($line, '#')) {
                 $header .= $line;
             } else {
                 break;

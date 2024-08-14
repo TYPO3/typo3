@@ -1271,11 +1271,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Hooks/FormPagePreviewRenderer.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between string and false will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Configuration/YamlSource.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Persistence\\\\FormPersistenceManager\\:\\:getOrCreateFile\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Mvc/Persistence/FormPersistenceManager.php

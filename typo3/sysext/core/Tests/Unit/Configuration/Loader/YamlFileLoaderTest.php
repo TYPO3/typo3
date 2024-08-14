@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Loader;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -99,7 +100,11 @@ final class YamlFileLoaderTest extends UnitTestCase
         $fileContents = $yamlContent;
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
-        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
+        $subject = $this->getAccessibleMock(
+            YamlFileLoader::class,
+            ['getFileContents', 'getStreamlinedFileName'],
+            [$this->createMock(LoggerInterface::class)]
+        );
         $subject->expects(self::once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
         $subject->expects(self::once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
@@ -138,7 +143,11 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
-        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
+        $subject = $this->getAccessibleMock(
+            YamlFileLoader::class,
+            ['getFileContents', 'getStreamlinedFileName'],
+            [$this->createMock(LoggerInterface::class)]
+        );
         $subject->expects(self::once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
         $subject->expects(self::once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
@@ -198,7 +207,11 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
     #[Test]
     public function containsPlaceholderTest(mixed $placeholderValue, bool $expected): void
     {
-        $subject = $this->getAccessibleMock(YamlFileLoader::class, null);
+        $subject = $this->getAccessibleMock(
+            YamlFileLoader::class,
+            null,
+            [$this->createMock(LoggerInterface::class)]
+        );
         $output = $subject->_call('containsPlaceholder', $placeholderValue);
         self::assertSame($expected, $output);
     }

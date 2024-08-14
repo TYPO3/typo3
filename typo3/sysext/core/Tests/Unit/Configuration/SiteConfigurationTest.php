@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -59,9 +60,10 @@ final class SiteConfigurationTest extends UnitTestCase
         $settingsTypeRegistry = new SettingsTypeRegistry($this->createMock(ServiceLocator::class));
         $this->siteConfiguration = new SiteConfiguration(
             $this->fixturePath,
-            new SiteSettingsFactory($this->fixturePath, $setRegistry, $settingsTypeRegistry, new YamlFileLoader(), new NullFrontend('test'), $packageDependentCacheIdentifier),
+            new SiteSettingsFactory($this->fixturePath, $setRegistry, $settingsTypeRegistry, $this->createMock(YamlFileLoader::class), new NullFrontend('test'), $packageDependentCacheIdentifier),
             new NoopEventDispatcher(),
-            new NullFrontend('test')
+            new NullFrontend('test'),
+            new YamlFileLoader($this->createMock(LoggerInterface::class))
         );
     }
 

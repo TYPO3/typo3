@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Routing\Aspect;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -144,7 +145,8 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
         $cache = $this->get('cache.core');
         $eventDispatcher = $this->get(EventDispatcherInterface::class);
         GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
-        (new SiteWriter($path, $eventDispatcher, $cache))->write($site->getIdentifier(), $site->getConfiguration());
+        (new SiteWriter($path, $eventDispatcher, $cache, $this->get(YamlFileLoader::class)))
+            ->write($site->getIdentifier(), $site->getConfiguration());
     }
 
     public static function languageAwareRecordsAreResolvedDataProvider(): array

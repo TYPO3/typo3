@@ -101,7 +101,8 @@ class SiteConfiguration implements SingletonInterface
         protected SiteSettingsFactory $siteSettingsFactory,
         protected EventDispatcherInterface $eventDispatcher,
         #[Autowire(service: 'cache.core')]
-        protected PhpFrontend $cache
+        protected PhpFrontend $cache,
+        private YamlFileLoader $yamlFileLoader,
     ) {}
 
     /**
@@ -209,10 +210,9 @@ class SiteConfiguration implements SingletonInterface
             // Directory $this->configPath does not exist yet
             $finder = [];
         }
-        $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
         $siteConfiguration = [];
         foreach ($finder as $fileInfo) {
-            $configuration = $loader->load(GeneralUtility::fixWindowsFilePath((string)$fileInfo));
+            $configuration = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath((string)$fileInfo));
             $identifier = basename($fileInfo->getPath());
             $event = $this->eventDispatcher->dispatch(new SiteConfigurationLoadedEvent($identifier, $configuration));
             $siteConfiguration[$identifier] = $event->getConfiguration();

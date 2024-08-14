@@ -15,8 +15,7 @@
 
 namespace TYPO3\CMS\Core\Configuration\Loader;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlFileLoadingException;
@@ -43,18 +42,15 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * - Environment placeholder values set via %env(option)% will be replaced by env variables of the same name
  */
-class YamlFileLoader implements LoggerAwareInterface
+readonly class YamlFileLoader
 {
-    use LoggerAwareTrait;
-
     public const PATTERN_PARTS = '%[^(%]+?\([\'"]?([^(]*?)[\'"]?\)%|%([^%()]*?)%';
     public const PROCESS_PLACEHOLDERS = 1;
     public const PROCESS_IMPORTS = 2;
 
-    /**
-     * @var int
-     */
-    private $flags;
+    public function __construct(
+        private LoggerInterface $logger,
+    ) {}
 
     /**
      * Loads and parses a YAML file, and returns an array with the found data
@@ -65,8 +61,7 @@ class YamlFileLoader implements LoggerAwareInterface
      */
     public function load(string $fileName, int $flags = self::PROCESS_PLACEHOLDERS | self::PROCESS_IMPORTS): array
     {
-        $this->flags = $flags;
-        return $this->loadAndParse($fileName, null);
+        return $this->loadAndParse($fileName, $flags, null);
     }
 
     /**
@@ -76,7 +71,7 @@ class YamlFileLoader implements LoggerAwareInterface
      * @param string|null $currentFileName when called recursively
      * @return array the configuration as array
      */
-    protected function loadAndParse(string $fileName, ?string $currentFileName): array
+    protected function loadAndParse(string $fileName, int $flags, ?string $currentFileName): array
     {
         $sanitizedFileName = $this->getStreamlinedFileName($fileName, $currentFileName);
         $content = $this->getFileContents($sanitizedFileName);
@@ -89,10 +84,10 @@ class YamlFileLoader implements LoggerAwareInterface
             );
         }
 
-        if ($this->hasFlag(self::PROCESS_IMPORTS)) {
-            $content = $this->processImports($content, $sanitizedFileName);
+        if ($this->hasFlag($flags, self::PROCESS_IMPORTS)) {
+            $content = $this->processImports($content, $flags, $sanitizedFileName);
         }
-        if ($this->hasFlag(self::PROCESS_PLACEHOLDERS)) {
+        if ($this->hasFlag($flags, self::PROCESS_PLACEHOLDERS)) {
             // Check for "%" placeholders
             $content = $this->processPlaceholders($content, $content);
         }
@@ -148,7 +143,7 @@ class YamlFileLoader implements LoggerAwareInterface
      * Checks for the special "imports" key on the main level of a file,
      * which calls "load" recursively.
      */
-    protected function processImports(array $content, ?string $fileName): array
+    protected function processImports(array $content, int $flags, ?string $fileName): array
     {
         if (isset($content['imports']) && is_array($content['imports'])) {
             // Reverse the order of imports to follow the order of the declarations, see #92100
@@ -160,10 +155,10 @@ class YamlFileLoader implements LoggerAwareInterface
                     if ($import['glob'] ?? false) {
                         $resource = $this->getStreamlinedFileName($resource, $fileName);
                         foreach (array_reverse(glob($resource)) as $file) {
-                            $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($this->loadAndParse($file, $fileName), $content);
+                            $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($this->loadAndParse($file, $flags, $fileName), $content);
                         }
                     } else {
-                        $importedContent = $this->loadAndParse($resource, $fileName);
+                        $importedContent = $this->loadAndParse($resource, $flags, $fileName);
                         // override the imported content with the one from the current file
                         $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);
                     }
@@ -182,7 +177,6 @@ class YamlFileLoader implements LoggerAwareInterface
      *
      * @param array $content the current sub-level content array
      * @param array $referenceArray the global configuration array
-     *
      * @return array the modified sub-level content array
      */
     protected function processPlaceholders(array $content, array $referenceArray): array
@@ -215,10 +209,7 @@ class YamlFileLoader implements LoggerAwareInterface
         return $content;
     }
 
-    /**
-     * @return mixed
-     */
-    protected function processPlaceholderLine(string $line, array $referenceArray)
+    protected function processPlaceholderLine(string $line, array $referenceArray): mixed
     {
         $parts = $this->getParts($line);
         foreach ($parts as $partKey => $part) {
@@ -241,10 +232,7 @@ class YamlFileLoader implements LoggerAwareInterface
         return $line;
     }
 
-    /**
-     * @return mixed
-     */
-    protected function processSinglePlaceholder(string $placeholder, string $value, array $referenceArray)
+    protected function processSinglePlaceholder(string $placeholder, string $value, array $referenceArray): mixed
     {
         $processorList = GeneralUtility::makeInstance(
             PlaceholderProcessorList::class,
@@ -254,7 +242,7 @@ class YamlFileLoader implements LoggerAwareInterface
             if ($processor->canProcess($placeholder, $referenceArray)) {
                 try {
                     $result = $processor->process($value, $referenceArray);
-                } catch (\UnexpectedValueException $e) {
+                } catch (\UnexpectedValueException) {
                     $result = $placeholder;
                 }
                 if (is_array($result)) {
@@ -291,8 +279,8 @@ class YamlFileLoader implements LoggerAwareInterface
         return is_string($value) && substr_count($value, '%') >= 2;
     }
 
-    protected function hasFlag(int $flag): bool
+    protected function hasFlag(int $flags, int $flag): bool
     {
-        return ($this->flags & $flag) === $flag;
+        return ($flags & $flag) === $flag;
     }
 }

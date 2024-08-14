@@ -24,6 +24,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -185,7 +186,9 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getYamlFileLoader(ContainerInterface $container): Configuration\Loader\YamlFileLoader
     {
-        return self::new($container, Configuration\Loader\YamlFileLoader::class);
+        return self::new($container, Configuration\Loader\YamlFileLoader::class, [
+            $container->get(Log\LogManager::class)->getLogger(Configuration\Loader\YamlFileLoader::class),
+        ]);
     }
 
     public static function getSiteWriter(ContainerInterface $container): Configuration\SiteWriter
@@ -194,6 +197,7 @@ class ServiceProvider extends AbstractServiceProvider
             Environment::getConfigPath() . '/sites',
             $container->get(EventDispatcherInterface::class),
             $container->get('cache.core'),
+            $container->get(YamlFileLoader::class),
         ]);
     }
 

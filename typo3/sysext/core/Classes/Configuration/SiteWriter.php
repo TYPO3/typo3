@@ -62,7 +62,8 @@ class SiteWriter
     public function __construct(
         protected string $configPath,
         protected EventDispatcherInterface $eventDispatcher,
-        protected PhpFrontend $cache
+        protected PhpFrontend $cache,
+        private YamlFileLoader $yamlFileLoader,
     ) {}
 
     /**
@@ -119,11 +120,10 @@ class SiteWriter
                 $newConfiguration = $this->protectPlaceholders([], $newConfiguration);
             }
         } elseif (file_exists($fileName)) {
-            $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
             // load without any processing to have the unprocessed base to modify
-            $newConfiguration = $loader->load(GeneralUtility::fixWindowsFilePath($fileName), 0);
+            $newConfiguration = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName), 0);
             // load the processed configuration to diff changed values
-            $processed = $loader->load(GeneralUtility::fixWindowsFilePath($fileName));
+            $processed = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
             // find properties that were modified via GUI
             $newModified = array_replace_recursive(
                 self::findRemoved($processed, $configuration),

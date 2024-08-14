@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
@@ -52,7 +53,8 @@ final class SiteWriterTest extends UnitTestCase
         $this->siteWriter = new SiteWriter(
             $this->fixturePath,
             new NoopEventDispatcher(),
-            new NullFrontend('test')
+            new NullFrontend('test'),
+            new YamlFileLoader($this->createMock(LoggerInterface::class))
         );
     }
 
@@ -67,7 +69,7 @@ final class SiteWriterTest extends UnitTestCase
         copy($configFixture, $siteConfig);
 
         // load with resolved imports as the module does
-        $configuration = (new YamlFileLoader())
+        $configuration = (new YamlFileLoader($this->createMock(LoggerInterface::class)))
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS
@@ -96,7 +98,7 @@ final class SiteWriterTest extends UnitTestCase
         copy($configFixture, $siteConfig);
 
         // load with resolved imports as the module does
-        $configuration = (new YamlFileLoader())
+        $configuration = (new YamlFileLoader($this->createMock(LoggerInterface::class)))
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS
@@ -153,7 +155,7 @@ final class SiteWriterTest extends UnitTestCase
         $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
         copy($configFixture, $siteConfig);
         // load with resolved imports as the module does
-        $configuration = (new YamlFileLoader())
+        $configuration = (new YamlFileLoader($this->createMock(LoggerInterface::class)))
             ->load(
                 GeneralUtility::fixWindowsFilePath($siteConfig),
                 YamlFileLoader::PROCESS_IMPORTS
