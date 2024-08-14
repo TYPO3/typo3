@@ -72,8 +72,9 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
                 'redirect' => $this->R_URI,
             ]);
         }
+        $buttonLabelTransUnit = $this->copyMode === 'move' ? 'moveElementToHere' : 'copyElementToHere';
         return '
-            <a class="btn btn-link" href="' . htmlspecialchars($location) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:moveElementToHere')) . '">
+            <a class="btn btn-link" href="' . htmlspecialchars($location) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:' . $buttonLabelTransUnit)) . '">
                 ' . $this->iconFactory->getIcon('actions-arrow-left-alt', Icon::SIZE_SMALL)->render() . '
             </a>';
     }
