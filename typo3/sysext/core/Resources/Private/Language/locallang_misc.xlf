@@ -207,6 +207,9 @@
 			<trans-unit id="copyElements" resname="copyElements">
 				<source>Copy elements</source>
 			</trans-unit>
+			<trans-unit id="copyElementToHere" resname="copyElementToHere">
+				<source>Copy element to this position</source>
+			</trans-unit>
 			<trans-unit id="selectPositionOfElement" resname="selectPositionOfElement">
 				<source>Select position of the element</source>
 			</trans-unit>
