@@ -5,6 +5,7 @@
 processing:
   mode: default
   # Tags that are allowed in the content in general
+  # Note that some tags like <mark> require you to style them via custom CSS directives in your frontend.
   allowTags:
     - a
     - abbr
@@ -78,7 +79,7 @@ processing:
   ## CONTENT TO DATABASE
   HTMLparser_db:
     ## STRIP ALL ATTRIBUTES FROM THESE TAGS
-    ## If this list of tags is not set, it will default to: b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike.
+    ## If this list of tags is not set, it will default to: b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike,mark,s.
     ## However, we want to keep xml:lang attribute on most tags and tags from the default list were cleaned on entry.
     noAttrib: br
     # Can be disabled if you trust ckeditor (If Automatic Content Formatting is enabled, this should be OK)
