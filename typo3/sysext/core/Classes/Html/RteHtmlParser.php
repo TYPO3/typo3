@@ -54,7 +54,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     /**
      * List of all tags that are allowed by default
      */
-    protected string $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,figure,figcaption,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn';
+    protected string $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,figure,figcaption,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn,s,mark';
 
     /**
      * Set to the TSconfig options coming from page TSconfig
