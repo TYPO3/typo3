@@ -15,36 +15,53 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Controller;
+namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Form\Controller\FormEditorController;
+use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
+use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class FormEditorControllerTest extends UnitTestCase
+final class FormEditorControllerTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
+    protected bool $initializeDatabase = false;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
-    }
+    protected array $coreExtensionsToLoad = [
+        'form',
+    ];
 
     #[Test]
     public function getInsertRenderablesPanelConfigurationReturnsGroupedAndSortedConfiguration(): void
     {
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translate'], [], '', false);
-        GeneralUtility::setSingletonInstance(TranslationService::class, $mockTranslationService);
-        $mockTranslationService
-            ->method('translate')
-            ->willReturnArgument(4);
-
-        $subject = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
-        $subject->_set('prototypeConfiguration', [
+        $translationServiceMock = $this->createMock(TranslationService::class);
+        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $subjectMock = $this->getAccessibleMock(
+            FormEditorController::class,
+            null,
+            [
+                $this->get(ModuleTemplateFactory::class),
+                $this->createMock(PageRenderer::class),
+                $this->createMock(IconFactory::class),
+                $this->createMock(FormDefinitionConversionService::class),
+                $this->createMock(FormPersistenceManagerInterface::class),
+                $this->createMock(ExtFormConfigurationManagerInterface::class),
+                $translationServiceMock,
+                $this->createMock(ConfigurationService::class),
+                $this->createMock(UriBuilder::class),
+                $this->createMock(ArrayFormFactory::class),
+            ],
+        );
+        $prototypeConfiguration = [
             'formEditor' => [
                 'formElementGroups' => [
                     'input' => [
@@ -55,8 +72,7 @@ final class FormEditorControllerTest extends UnitTestCase
                     ],
                 ],
             ],
-        ]);
-
+        ];
         $input = [
             'Password' => [
                 'group' => 'input',
@@ -77,7 +93,6 @@ final class FormEditorControllerTest extends UnitTestCase
                 'label' => 'Single select label',
             ],
         ];
-
         $expected = [
             0 => [
                 'key' => 'input',
@@ -113,21 +128,32 @@ final class FormEditorControllerTest extends UnitTestCase
                 'label' => 'Select elements',
             ],
         ];
-
-        self::assertSame($expected, $subject->_call('getInsertRenderablesPanelConfiguration', $input));
+        $result = $subjectMock->_call('getInsertRenderablesPanelConfiguration', $prototypeConfiguration, $input);
+        self::assertSame($expected, $result);
     }
 
     #[Test]
     public function getFormEditorDefinitionsReturnReducedConfiguration(): void
     {
-        $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translateValuesRecursive'], [], '', false);
-        GeneralUtility::setSingletonInstance(TranslationService::class, $mockTranslationService);
-        $mockTranslationService
-            ->method('translateValuesRecursive')
-            ->willReturnArgument(0);
-
-        $subject = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
-        $subject->_set('prototypeConfiguration', [
+        $translationServiceMock = $this->createMock(TranslationService::class);
+        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $subjectMock = $this->getAccessibleMock(
+            FormEditorController::class,
+            null,
+            [
+                $this->get(ModuleTemplateFactory::class),
+                $this->createMock(PageRenderer::class),
+                $this->createMock(IconFactory::class),
+                $this->createMock(FormDefinitionConversionService::class),
+                $this->createMock(FormPersistenceManagerInterface::class),
+                $this->createMock(ExtFormConfigurationManagerInterface::class),
+                $translationServiceMock,
+                $this->createMock(ConfigurationService::class),
+                $this->createMock(UriBuilder::class),
+                $this->createMock(ArrayFormFactory::class),
+            ],
+        );
+        $prototypeConfiguration = [
             'formEditor' => [
                 'someOtherValues' => [
                     'horst' => [
@@ -207,8 +233,7 @@ final class FormEditorControllerTest extends UnitTestCase
                     'key' => 'value',
                 ],
             ],
-        ]);
-
+        ];
         $expected = [
             'formElements' => [
                 'Form' => [
@@ -232,8 +257,7 @@ final class FormEditorControllerTest extends UnitTestCase
                 ],
             ],
         ];
-
-        self::assertSame($expected, $subject->_call('getFormEditorDefinitions'));
+        self::assertSame($expected, $subjectMock->_call('getFormEditorDefinitions', $prototypeConfiguration));
     }
 
     #[Test]
@@ -241,18 +265,18 @@ final class FormEditorControllerTest extends UnitTestCase
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294721);
-
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
-
-        $mockController->_set('prototypeConfiguration', [
-            'formEditor' => [
-                'formEditorFluidConfiguration' => [
-                    'templatePathAndFilename' => '',
+        $mockController->_call(
+            'renderFormEditorTemplates',
+            [
+                'formEditor' => [
+                    'formEditorFluidConfiguration' => [
+                        'templatePathAndFilename' => '',
+                    ],
                 ],
             ],
-        ]);
-
-        $mockController->_call('renderFormEditorTemplates', []);
+            []
+        );
     }
 
     #[Test]
@@ -260,19 +284,19 @@ final class FormEditorControllerTest extends UnitTestCase
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294721);
-
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
-
-        $mockController->_set('prototypeConfiguration', [
-            'formEditor' => [
-                'formEditorFluidConfiguration' => [
-                    'templatePathAndFilename' => '',
-                    'layoutRootPaths' => '',
+        $mockController->_call(
+            'renderFormEditorTemplates',
+            [
+                'formEditor' => [
+                    'formEditorFluidConfiguration' => [
+                        'templatePathAndFilename' => '',
+                        'layoutRootPaths' => '',
+                    ],
                 ],
             ],
-        ]);
-
-        $mockController->_call('renderFormEditorTemplates', []);
+            []
+        );
     }
 
     #[Test]
@@ -280,19 +304,19 @@ final class FormEditorControllerTest extends UnitTestCase
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294722);
-
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
-
-        $mockController->_set('prototypeConfiguration', [
-            'formEditor' => [
-                'formEditorFluidConfiguration' => [
-                    'templatePathAndFilename' => '',
-                    'layoutRootPaths' => [],
+        $mockController->_call(
+            'renderFormEditorTemplates',
+            [
+                'formEditor' => [
+                    'formEditorFluidConfiguration' => [
+                        'templatePathAndFilename' => '',
+                        'layoutRootPaths' => [],
+                    ],
                 ],
             ],
-        ]);
-
-        $mockController->_call('renderFormEditorTemplates', []);
+            []
+        );
     }
 
     #[Test]
@@ -300,19 +324,19 @@ final class FormEditorControllerTest extends UnitTestCase
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1480294722);
-
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
-
-        $mockController->_set('prototypeConfiguration', [
-            'formEditor' => [
-                'formEditorFluidConfiguration' => [
-                    'templatePathAndFilename' => '',
-                    'layoutRootPaths' => [],
+        $mockController->_call(
+            'renderFormEditorTemplates',
+            [
+                'formEditor' => [
+                    'formEditorFluidConfiguration' => [
+                        'templatePathAndFilename' => '',
+                        'layoutRootPaths' => [],
+                    ],
                 ],
             ],
-        ]);
-
-        $mockController->_call('renderFormEditorTemplates', []);
+            []
+        );
     }
 
     #[Test]
@@ -320,23 +344,22 @@ final class FormEditorControllerTest extends UnitTestCase
     {
         $this->expectException(RenderingException::class);
         $this->expectExceptionCode(1485636499);
-
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
-
-        $mockController->_set('prototypeConfiguration', [
-            'formEditor' => [
-                'formEditorFluidConfiguration' => [],
+        $mockController->_call(
+            'renderFormEditorTemplates',
+            [
+                'formEditor' => [
+                    'formEditorFluidConfiguration' => [],
+                ],
             ],
-        ]);
-
-        $mockController->_call('renderFormEditorTemplates', []);
+            []
+        );
     }
 
     #[Test]
     public function transformMultiValuePropertiesForFormEditorConvertMultiValueDataIntoMetaData(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
-
         $input = [
             0 => [
                 'bar' => 'baz',
@@ -368,13 +391,11 @@ final class FormEditorControllerTest extends UnitTestCase
                 ],
             ],
         ];
-
         $multiValueProperties = [
             'TEST' => [
                 0 => 'properties.options',
             ],
         ];
-
         $expected = [
             0 => [
                 'bar' => 'baz',
@@ -406,7 +427,6 @@ final class FormEditorControllerTest extends UnitTestCase
                 ],
             ],
         ];
-
         self::assertSame($expected, $mockController->_call('transformMultiValuePropertiesForFormEditor', $input, 'type', $multiValueProperties));
     }
 
@@ -414,7 +434,6 @@ final class FormEditorControllerTest extends UnitTestCase
     public function filterEmptyArraysRemovesEmptyArrayKeys(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, null, [], '', false);
-
         $input = [
             'heinz' => 1,
             'klaus' => [],
@@ -427,7 +446,6 @@ final class FormEditorControllerTest extends UnitTestCase
                 ],
             ],
         ];
-
         $expected = [
             'heinz' => 1,
             'sabine' => [
@@ -437,7 +455,6 @@ final class FormEditorControllerTest extends UnitTestCase
                 ],
             ],
         ];
-
         self::assertSame($expected, $mockController->_call('filterEmptyArrays', $input));
     }
 }
