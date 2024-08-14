@@ -19,7 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"doctrine/dbal": "^3.8.1",
+		"doctrine/dbal": "^3.9",
 		"guzzlehttp/promises": "^1.5.2 || ^2.0",
 		"nikic/php-parser": "^4.15.4",
 		"symfony/finder": "^6.4 || ^7.0",

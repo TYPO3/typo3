@@ -50,7 +50,7 @@
 		"bacon/bacon-qr-code": "^2.0.7",
 		"christian-riesen/base32": "^1.6",
 		"doctrine/annotations": "^1.13.3 || ^2.0",
-		"doctrine/dbal": "^3.8.1",
+		"doctrine/dbal": "^3.9",
 		"doctrine/event-manager": "^2.0",
 		"doctrine/instantiator": "^1.5 || ^2.0",
 		"doctrine/lexer": "^2.0 || ^3.0",
