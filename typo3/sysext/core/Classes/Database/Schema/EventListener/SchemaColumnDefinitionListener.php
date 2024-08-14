@@ -66,7 +66,7 @@ class SchemaColumnDefinitionListener
         // Doctrine DBAL retrieves for MariaDB `ENUM()` and `SET()` field default values quotes with single quotes,
         // which leads to an endless field change reporting recursion in the database analyzer. The default value
         // is now trimmed to ensure a working field compare within `TYPO3\CMS\Core\Database\Schema\Comparator`.
-        if ($platform instanceof MariaDBPlatform && str_starts_with($default, "'") && str_ends_with($default, "'")) {
+        if (is_string($default) && $platform instanceof MariaDBPlatform && str_starts_with($default, "'") && str_ends_with($default, "'")) {
             $default = trim($default, "'");
         }
         $options = [
