@@ -119,7 +119,7 @@
 		"sokil/php-isocodes-db-i18n": "^4.0.22",
 		"symfony/translation": "^6.4 || ^7.0",
 		"typo3/cms-styleguide": "^12.0.5",
-		"typo3/testing-framework": "^8.2.0",
+		"typo3/testing-framework": "^8.2.1",
 		"webmozart/assert": "^1.11.0"
 	},
 	"suggest": {
