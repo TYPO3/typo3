@@ -93,10 +93,13 @@ class ContentCreationPagePositionMap extends AbstractContentPagePositionMap
             ]);
         }
 
+        $buttonLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere'));
         return '
-            <button type="button" class="btn btn-link" data-target="' . htmlspecialchars($target) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '">
-                ' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '
-            </button>';
+            <div class="page-position-action">
+                <button type="button" class="btn btn-default btn-sm" data-target="' . htmlspecialchars($target) . '" title="' . $buttonLabel . '">
+                    ' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . ' ' . $buttonLabel . '
+                </button>
+            </div>';
     }
 
     /**
@@ -105,9 +108,11 @@ class ContentCreationPagePositionMap extends AbstractContentPagePositionMap
     protected function getRecordHeader(array $row): string
     {
         return '
-            <span class="py-2" title="' . BackendUtility::getRecordIconAltText($row, 'tt_content') . '">
-                ' . $this->iconFactory->getIconForRecord('tt_content', $row, IconSize::SMALL)->render() . '
-                ' . BackendUtility::getRecordTitle('tt_content', $row, true) . '
-            </span>';
+            <div class="page-position-record">
+                <span title="' . BackendUtility::getRecordIconAltText($row, 'tt_content') . '">
+                    ' . $this->iconFactory->getIconForRecord('tt_content', $row, IconSize::SMALL)->render() . '
+                    ' . BackendUtility::getRecordTitle('tt_content', $row, true) . '
+                </span>
+            </div>';
     }
 }

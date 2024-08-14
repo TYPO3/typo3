@@ -13,31 +13,34 @@
         <span title="{recordTooltip}"><core:iconForRecord table="tt_content" row="{record}" /></span>
         {recordTitle -> f:format.raw()}
     </h3>
-    <div class="pt-2">
+    <div class="form-row">
         <div class="form-check form-switch">
             <input type="checkbox" name="makeCopy" id="makeCopy" value="1" {f:if(condition: makeCopyChecked, then: 'checked')} class="form-check-input"
                     data-global-event="change" data-action-navigate="$data" data-navigate-value="{makeCopyUrl}">
             <label for="makeCopy" class="form-check-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:makeCopy" /></label>
         </div>
     </div>
-    <h2><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:selectPositionOfElement" /></h2>
-    <div>
-        <f:if condition="{pageInfo}">
-            <span title="{ttContent.recordTooltip}"><core:iconForRecord table="pages" row="{pageInfo}" /></span>
-        </f:if>
-        {ttContent.recordTitle}<br />
-        {contentElementColumns -> f:format.raw()}<br />
-        <f:if condition="{pageInfo.pid} > 0">
-            <f:if condition="{goUpUrl}">
-                <f:then>
-                    <a href="{goUpUrl}"><core:icon identifier="actions-view-go-up" />{pidRecordTitle -> f:format.raw()}</a>
-                </f:then>
-                <f:else>
-                    <core:iconForRecord table="pages" row="{pidPageInfo}" /> {pidRecordTitle -> f:format.raw()}
-                </f:else>
+
+    <div class="page-position-map">
+        <h2 class="page-position-headline"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:selectPositionOfElement" /></h2>
+        <div class="page-position-info">
+            <f:if condition="{pageInfo}">
+                <span title="{ttContent.recordTooltip}"><core:iconForRecord table="pages" row="{pageInfo}" /></span>
             </f:if>
-        </f:if>
+            {ttContent.recordTitle}
+        </div>
+        {contentElementColumns -> f:format.raw()}
     </div>
+    <f:if condition="{pageInfo.pid} > 0">
+        <f:if condition="{goUpUrl}">
+            <f:then>
+                <a href="{goUpUrl}"><core:icon identifier="actions-view-go-up" />{pidRecordTitle -> f:format.raw()}</a>
+            </f:then>
+            <f:else>
+                <core:iconForRecord table="pages" row="{pidPageInfo}" /> {pidRecordTitle -> f:format.raw()}
+            </f:else>
+        </f:if>
+    </f:if>
     {positionTree -> f:format.raw()}
 
 </f:section>

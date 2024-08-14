@@ -194,7 +194,7 @@ abstract class AbstractContentPagePositionMap
                             $tableCellAttributes['class'] = 'hidden';
                         } else {
                             $cellContent = '
-                                <p>
+                                <p class="column-title">
                                     ' . $columnTitle . ' <em>(' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:noAccess')) . ')</em>
                                 </p>';
                             $tableCellAttributes['class'] .= ' danger';
@@ -213,10 +213,10 @@ abstract class AbstractContentPagePositionMap
                         }
                     } else {
                         // If not restricted and not unassigned, wrap column title and render list (if available)
-                        $cellContent = '<p>' . $columnTitle . '</p>';
+                        $cellContent = '<p class="column-title">' . $columnTitle . '</p>';
                         if (!empty($lines[$columnKey])) {
                             $cellContent .= '
-                                <ul class="list-unstyled m-0">
+                                <ul>
                                     ' . implode(LF, array_map(static fn(string $line): string => '<li>' . $line . '</li>', $lines[$columnKey])) . '
                                 </ul>';
                         }
@@ -231,7 +231,9 @@ abstract class AbstractContentPagePositionMap
             }
 
             // Create the table content
-            $tableContent = '<tbody>' . implode(LF, $tableRows) . '</tbody>';
+            $tableContent =
+                '<colgroup>' . str_repeat('<col span="1" style="width: calc(100% / ' . $colCount . ')">', $colCount) . '</colgroup>'
+                . '<tbody>' . implode(LF, $tableRows) . '</tbody>';
         } else {
             // Build position map based on TCA colPos configuration
             $tableCells = [];
@@ -248,15 +250,15 @@ abstract class AbstractContentPagePositionMap
                     // If this colPos is restricted, add an information to the column title and color the cell
                     $tableCellClasses .= ' danger';
                     $cellContent = '
-                        <p>
+                        <p class="column-title">
                             ' . $columnTitle . ' <em>(' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:noAccess')) . ')</em>
                         </p>';
                 } else {
                     // If not restricted, wrap column title and render list (if available)
-                    $cellContent = '<p>' . $columnTitle . '</p>';
+                    $cellContent = '<p class="column-title">' . $columnTitle . '</p>';
                     if (!empty($lines[$tcaColumnConfiguration['colPos']])) {
                         $cellContent .= '
-                            <ul class="list-unstyled">
+                            <ul>
                                 ' . implode(LF, array_map(static fn(string $line): string => '<li>' . $line . '</li>', $lines[$tcaColumnConfiguration['colPos']])) . '
                             </ul>';
                     }
@@ -272,11 +274,9 @@ abstract class AbstractContentPagePositionMap
 
         // Return the record map (table)
         return '
-            <div class="table-fit">
-                <table class="table table-bordered table-vertical-top">
-                    ' . $tableContent . '
-                </table>
-            </div>';
+            <table class="page-position-grid">
+                ' . $tableContent . '
+            </table>';
     }
 
     /**

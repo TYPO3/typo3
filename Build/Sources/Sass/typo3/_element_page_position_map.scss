@@ -1,0 +1,64 @@
+//
+// Page Position Map
+//
+.page-position-map {
+    --page-position-grid-border-radius: 5px;
+    --page-position-grid-border-color: color-mix(in srgb, var(--module-bg), currentColor 30%);
+    --page-position-grid-spacing: 1rem;
+    --page-position-grid-inner-spacing: 1rem;
+    --page-position-grid-cell-border-radius: 4px;
+    --page-position-grid-cell-bg: color-mix(in srgb, var(--module-bg), currentColor 3%);
+    --page-position-element-spacing: 1rem;
+    --page-position-element-bg: var(--typo3-surface-bright);
+    --page-position-element-border-radius: 2px;
+    --page-position-element-warning-bg: var(--typo3-surface-container-warning);
+    --page-position-element-hidden-bg: var(--page-position-grid-cell-bg);
+    overflow-y: hidden;
+    overflow-x: auto;
+    border-radius: var(--page-position-grid-border-radius);
+    border: 1px dotted var(--page-position-grid-border-color);
+    margin-bottom: var(--typo3-spacing);
+    background-color: var(--module-bg);
+
+    .page-position-headline,
+    .page-position-info {
+        margin: var(--page-position-grid-spacing) var(--page-position-grid-spacing) 0;
+    }
+
+    .page-position-grid {
+        border-collapse: separate;
+        border-spacing: var(--page-position-grid-spacing);
+        min-width: 100%;
+        table-layout: fixed;
+
+        td {
+            vertical-align: top;
+            border-radius: var(--page-position-grid-cell-border-radius);
+            background-color: var(--page-position-grid-cell-bg);
+            padding: calc(var(--page-position-grid-inner-spacing) - var(--page-position-grid-spacing)) 0;
+        }
+
+        .column-title {
+            margin: var(--page-position-element-spacing) var(--page-position-grid-inner-spacing);
+        }
+
+        ul {
+            padding: 0;
+            list-style: none;
+        }
+
+        .page-position-action {
+            text-align: center;
+        }
+
+        .page-position-record {
+            border: 1px solid var(--page-position-element-bg);
+            background-color: var(--page-position-element-bg);
+            border-radius: var(--page-position-element-border-radius);
+            box-shadow: var(--typo3-component-box-shadow-strong);
+            margin: var(--page-position-grid-spacing) var(--page-position-grid-inner-spacing);
+            padding: var(--page-position-element-spacing);
+            overflow: hidden;
+        }
+    }
+}
