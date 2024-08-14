@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Lowlevel\ConfigurationModuleProvider;
 interface ProviderInterface
 {
     /**
-     * This method must exists since it's called from the provider
+     * This method must exist since it's called from the provider
      * registry to provide the tag attributes from the definition.
      *
      * Note: We use __invoke so provider implementations are still

@@ -19,19 +19,16 @@ namespace TYPO3\CMS\Form\ConfigurationModuleProvider;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManager;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderInterface;
 
 class FormYamlProvider implements ProviderInterface
 {
     protected string $identifier;
-    protected ConfigurationManager $configurationManager;
 
-    public function __construct(ConfigurationManager $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-    }
+    public function __construct(
+        protected readonly ConfigurationManagerInterface $configurationManager,
+    ) {}
 
     public function __invoke(array $attributes): self
     {
