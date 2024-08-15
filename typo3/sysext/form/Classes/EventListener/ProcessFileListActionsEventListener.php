@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Form\EventListener;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
-use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
+use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
  * Event listener to disable certain actions when checking for form.yaml files.
@@ -36,7 +36,7 @@ class ProcessFileListActionsEventListener
             return;
         }
         $fullIdentifier = $event->getResource()->getCombinedIdentifier();
-        if (!str_ends_with($fullIdentifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION)) {
+        if (!str_ends_with($fullIdentifier, FormPersistenceManagerInterface::FORM_DEFINITION_FILE_EXTENSION)) {
             return;
         }
 

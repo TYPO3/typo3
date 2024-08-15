@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Resource\Event\BeforeFileRenamedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
+use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
  * A PSR-14 event listener for various FAL related functionality.
@@ -292,10 +292,7 @@ final class FilePersistenceSlot implements SingletonInterface
 
     protected function isFormDefinition(string $identifier): bool
     {
-        return str_ends_with(
-            $identifier,
-            FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION
-        );
+        return str_ends_with($identifier, FormPersistenceManagerInterface::FORM_DEFINITION_FILE_EXTENSION);
     }
 
     protected function isRecycleFolder(FolderInterface $folder): bool

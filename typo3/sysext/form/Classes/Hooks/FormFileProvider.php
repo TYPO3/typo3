@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Hooks;
 
 use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider;
-use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
+use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
  * Purges previously added form files from items for context menus.
@@ -42,7 +42,7 @@ class FormFileProvider extends FileProvider
     public function canHandle(): bool
     {
         return parent::canHandle()
-            && str_ends_with($this->identifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION);
+            && str_ends_with($this->identifier, FormPersistenceManagerInterface::FORM_DEFINITION_FILE_EXTENSION);
     }
 
     public function addItems(array $items): array

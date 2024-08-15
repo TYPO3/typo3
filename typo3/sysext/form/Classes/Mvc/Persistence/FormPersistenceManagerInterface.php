@@ -30,6 +30,8 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 interface FormPersistenceManagerInterface
 {
+    public const FORM_DEFINITION_FILE_EXTENSION = '.form.yaml';
+
     /**
      * Load the array form representation identified by $persistenceIdentifier, and return it
      */

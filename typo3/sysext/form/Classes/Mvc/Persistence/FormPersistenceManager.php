@@ -60,8 +60,6 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
  */
 class FormPersistenceManager implements FormPersistenceManagerInterface
 {
-    public const FORM_DEFINITION_FILE_EXTENSION = '.form.yaml';
-
     protected YamlSource $yamlSource;
     protected StorageRepository $storageRepository;
     protected FilePersistenceSlot $filePersistenceSlot;
