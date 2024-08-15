@@ -20,6 +20,7 @@ getText "asset" to cache-bust assets in TypoScript
 
 ..  code-block:: typoscript
     :caption: EXT:my_extension/Configuration/TypoScript/setup.typoscript
+    :emphasize-lines: 3
 
     page.20 = TEXT
     page.20 {
@@ -37,8 +38,12 @@ Cache-busted assets with the :html:`<f:uri.resource>` ViewHelper
 
 ..  code-block:: html
     :caption: EXT:my_extension/Resources/Private/Template/MyTemplate.html
+    :emphasize-lines: 3
 
-    <f:uri.resource path="EXT:core/Resources/Public/Icons/Extension.svg" useCacheBusting="true" />
+    <f:uri.resource
+        path="EXT:core/Resources/Public/Icons/Extension.svg"
+        useCacheBusting="true"
+    />
 
 ..  code-block:: text
     :caption: Comparison
