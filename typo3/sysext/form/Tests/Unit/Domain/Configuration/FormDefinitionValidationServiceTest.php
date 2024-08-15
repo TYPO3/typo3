@@ -27,6 +27,10 @@ use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @todo: Refactor this mess towards a functional test with less
+ *        mocking and have DI in FormDefinitionValidationService
+ */
 final class FormDefinitionValidationServiceTest extends UnitTestCase
 {
     protected HashService $hashService;
@@ -40,7 +44,7 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
 
     public function tearDown(): void
     {
-        GeneralUtility::resetSingletonInstances([]);
+        GeneralUtility::purgeInstances();
         parent::tearDown();
     }
 
@@ -398,7 +402,11 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
             ->willReturn($mockConfiguration['getFormElementPredefinedDefaultValueFromFormEditorSetup']);
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, null);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
 
         $subject = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $returnedExceptionCode = -1;
@@ -575,7 +583,11 @@ final class FormDefinitionValidationServiceTest extends UnitTestCase
         )->willReturn($mockConfiguration['getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup']);
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, null);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
+        GeneralUtility::addInstance(ConfigurationService::class, $configurationService);
 
         $subject = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $returnedExceptionCode = -1;

@@ -15,21 +15,23 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
+namespace TYPO3\CMS\Form\Tests\Functional\Domain\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class ConfigurationServiceTest extends UnitTestCase
+final class ConfigurationServiceTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
+    protected bool $initializeDatabase = false;
 
     #[Test]
     public function getPrototypeConfigurationReturnsPrototypeConfiguration(): void
@@ -43,13 +45,16 @@ final class ConfigurationServiceTest extends UnitTestCase
                     ],
                 ],
             ]);
-        $configurationService = new ConfigurationService($configurationManagerMock);
-
+        $subject = new ConfigurationService(
+            $configurationManagerMock,
+            $this->createMock(TranslationService::class),
+            $this->createMock(PhpFrontend::class),
+            $this->createMock(PhpFrontend::class),
+        );
         $expected = [
             'key' => 'value',
         ];
-
-        self::assertSame($expected, $configurationService->getPrototypeConfiguration('standard'));
+        self::assertSame($expected, $subject->getPrototypeConfiguration('standard'));
     }
 
     #[Test]
@@ -62,12 +67,15 @@ final class ConfigurationServiceTest extends UnitTestCase
                     'noStandard' => [],
                 ],
             ]);
-        $configurationService = new ConfigurationService($configurationManagerMock);
-
+        $subject = new ConfigurationService(
+            $configurationManagerMock,
+            $this->createMock(TranslationService::class),
+            $this->createMock(PhpFrontend::class),
+            $this->createMock(PhpFrontend::class),
+        );
         $this->expectException(PrototypeNotFoundException::class);
         $this->expectExceptionCode(1475924277);
-
-        $configurationService->getPrototypeConfiguration('standard');
+        $subject->getPrototypeConfiguration('standard');
     }
 
     #[Test]
@@ -90,718 +98,17 @@ final class ConfigurationServiceTest extends UnitTestCase
                     ],
                 ],
             ]);
-        $configurationService = new ConfigurationService($configurationManagerMock);
-
+        $subject = new ConfigurationService(
+            $configurationManagerMock,
+            $this->createMock(TranslationService::class),
+            $this->createMock(PhpFrontend::class),
+            $this->createMock(PhpFrontend::class),
+        );
         $expected = [
             'standard',
             'custom',
         ];
-
-        self::assertSame($expected, $configurationService->getSelectablePrototypeNamesDefinedInFormEditorSetup());
-    }
-
-    #[DataProvider('isFormElementPropertyDefinedInFormEditorSetupDataProvider')]
-    #[Test]
-    public function isFormElementPropertyDefinedInFormEditorSetup(
-        array $configuration,
-        ValidationDto $validationDto,
-        bool $expectedReturn
-    ): void {
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationService->isFormElementPropertyDefinedInFormEditorSetup($validationDto)
-        );
-    }
-
-    #[DataProvider('isPropertyCollectionPropertyDefinedInFormEditorSetupDataProvider')]
-    #[Test]
-    public function isPropertyCollectionPropertyDefinedInFormEditorSetup(
-        array $configuration,
-        ValidationDto $validationDto,
-        bool $expectedReturn
-    ): void {
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationService->isPropertyCollectionPropertyDefinedInFormEditorSetup($validationDto)
-        );
-    }
-
-    #[DataProvider('isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider')]
-    #[Test]
-    public function isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
-        array $configuration,
-        ValidationDto $validationDto,
-        bool $expectedReturn
-    ): void {
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationService->isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup($validationDto)
-        );
-    }
-
-    #[DataProvider('isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider')]
-    #[Test]
-    public function isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
-        array $configuration,
-        ValidationDto $validationDto,
-        bool $expectedReturn
-    ): void {
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationService->isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
-                $validationDto
-            )
-        );
-    }
-
-    #[Test]
-    public function getFormElementPredefinedDefaultValueFromFormEditorSetupThrowsExceptionIfNoPredefinedDefaultIsAvailable(
-    ): void {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528578401);
-
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
-        )->willReturn(false);
-        $validationDto = new ValidationDto(null, 'Text', null, 'properties.foo.1');
-
-        $configurationService->getFormElementPredefinedDefaultValueFromFormEditorSetup($validationDto);
-    }
-
-    #[Test]
-    public function getFormElementPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue(): void
-    {
-        $expected = 'foo';
-        $configuration = ['formElements' => ['Text' => ['predefinedDefaults' => ['properties.foo.1' => $expected]]]];
-
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            [
-                'buildFormDefinitionValidationConfigurationFromFormEditorSetup',
-                'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup',
-            ],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-        $configurationService->method(
-            'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
-        )->willReturn(true);
-
-        $validationDto = new ValidationDto('standard', 'Text', null, 'properties.foo.1');
-
-        self::assertSame(
-            $expected,
-            $configurationService->getFormElementPredefinedDefaultValueFromFormEditorSetup($validationDto)
-        );
-    }
-
-    #[Test]
-    public function getPropertyCollectionPredefinedDefaultValueFromFormEditorSetupThrowsExceptionIfNoPredefinedDefaultIsAvailable(
-    ): void {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528578402);
-
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
-        )->willReturn(false);
-        $validationDto = new ValidationDto(
-            null,
-            null,
-            null,
-            'properties.foo.1',
-            'validators',
-            'StringLength'
-        );
-
-        $configurationService->getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup($validationDto);
-    }
-
-    #[Test]
-    public function getPropertyCollectionPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue(): void
-    {
-        $expected = 'foo';
-        $configuration = ['collections' => ['validators' => ['StringLength' => ['predefinedDefaults' => ['properties.foo.1' => $expected]]]]];
-
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            [
-                'buildFormDefinitionValidationConfigurationFromFormEditorSetup',
-                'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup',
-            ],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-        $configurationService->method(
-            'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
-        )->willReturn(true);
-
-        $validationDto = new ValidationDto(
-            'standard',
-            null,
-            null,
-            'properties.foo.1',
-            'validators',
-            'StringLength'
-        );
-
-        self::assertSame(
-            $expected,
-            $configurationService->getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup($validationDto)
-        );
-    }
-
-    #[DataProvider('isFormElementTypeCreatableByFormEditorDataProvider')]
-    #[Test]
-    public function isFormElementTypeCreatableByFormEditor(
-        array $configuration,
-        ValidationDto $validationDto,
-        bool $expectedReturn
-    ): void {
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationService->isFormElementTypeCreatableByFormEditor($validationDto)
-        );
-    }
-
-    #[DataProvider('isPropertyCollectionElementIdentifierCreatableByFormEditorDataProvider')]
-    #[Test]
-    public function isPropertyCollectionElementIdentifierCreatableByFormEditor(
-        array $configuration,
-        ValidationDto $validationDto,
-        bool $expectedReturn
-    ): void {
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationService->isPropertyCollectionElementIdentifierCreatableByFormEditor($validationDto)
-        );
-    }
-
-    #[Test]
-    public function isFormElementTypeDefinedInFormSetup(): void
-    {
-        $configuration = [
-            'formElementsDefinition' => [
-                'Text' => [],
-            ],
-        ];
-
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['getPrototypeConfiguration'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method('getPrototypeConfiguration')->willReturn($configuration);
-
-        $validationDto = new ValidationDto('standard', 'Text');
-        self::assertTrue($configurationService->isFormElementTypeDefinedInFormSetup($validationDto));
-
-        $validationDto = new ValidationDto('standard', 'Foo');
-        self::assertFalse($configurationService->isFormElementTypeDefinedInFormSetup($validationDto));
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfHookResultIsNoFormDefinitionValidation(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528633966);
-
-        $configurationService = $this->getAccessibleMock(ConfigurationService::class, null, [], '', false);
-        $input = ['dummy'];
-
-        $configurationService->_call('addAdditionalPropertyPathsFromHook', '', '', $input, []);
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPrototypeDoesNotMatch(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528634966);
-
-        $configurationService = $this->getAccessibleMock(ConfigurationService::class, null, [], '', false);
-        $validationDto = new ValidationDto('Bar', 'Foo');
-        $input = [$validationDto];
-
-        $configurationService->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfFormElementTypeDoesNotMatch(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528633967);
-
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['isFormElementTypeDefinedInFormSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method('isFormElementTypeDefinedInFormSetup')->willReturn(false);
-        $validationDto = new ValidationDto('standard', 'Text');
-        $input = [$validationDto];
-
-        $configurationService->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPropertyCollectionNameIsInvalid(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528636941);
-
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['isFormElementTypeDefinedInFormSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
-        $validationDto = new ValidationDto('standard', 'Text', null, null, 'Bar', 'Baz');
-        $input = [$validationDto];
-
-        $configurationService->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookAddPaths(): void
-    {
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['isFormElementTypeDefinedInFormSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationService->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
-
-        $input = [
-            new ValidationDto('standard', 'Text', null, 'options.xxx', 'validators', 'Baz'),
-            new ValidationDto('standard', 'Text', null, 'options.yyy', 'validators', 'Baz'),
-            new ValidationDto('standard', 'Text', null, 'options.zzz', 'validators', 'Custom'),
-            new ValidationDto('standard', 'Text', null, 'properties.xxx'),
-            new ValidationDto('standard', 'Text', null, 'properties.yyy'),
-            new ValidationDto('standard', 'Custom', null, 'properties.xxx'),
-        ];
-        $expected = [
-            'formElements' => [
-                'Text' => [
-                    'collections' => [
-                        'validators' => [
-                            'Baz' => [
-                                'additionalPropertyPaths' => [
-                                    'options.xxx',
-                                    'options.yyy',
-                                ],
-                            ],
-                            'Custom' => [
-                                'additionalPropertyPaths' => [
-                                    'options.zzz',
-                                ],
-                            ],
-                        ],
-                    ],
-                    'additionalPropertyPaths' => [
-                        'properties.xxx',
-                        'properties.yyy',
-                    ],
-                ],
-                'Custom' => [
-                    'additionalPropertyPaths' => [
-                        'properties.xxx',
-                    ],
-                ],
-            ],
-        ];
-
-        self::assertSame(
-            $expected,
-            $configurationService->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, [])
-        );
-    }
-
-    #[DataProvider('buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider')]
-    #[Test]
-    public function buildFormDefinitionValidationConfigurationFromFormEditorSetup(array $configuration, array $expected): void
-    {
-        $configurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            [
-                'getCacheEntry',
-                'getPrototypeConfiguration',
-                'getTranslationService',
-                'executeBuildFormDefinitionValidationConfigurationHooks',
-                'setCacheEntry',
-            ],
-            [],
-            '',
-            false
-        );
-
-        $translationService = $this->getAccessibleMock(
-            TranslationService::class,
-            ['translateValuesRecursive'],
-            [],
-            '',
-            false
-        );
-        $translationService->method('translateValuesRecursive')->willReturnArgument(0);
-
-        $configurationService->method('getCacheEntry')->willReturn(null);
-        $configurationService->method('getPrototypeConfiguration')->willReturn($configuration);
-        $configurationService->method('getTranslationService')->willReturn($translationService);
-        $configurationService
-            ->method('executeBuildFormDefinitionValidationConfigurationHooks')
-            ->willReturnArgument(1);
-        $configurationService->method('setCacheEntry');
-
-        self::assertSame(
-            $expected,
-            $configurationService->_call('buildFormDefinitionValidationConfigurationFromFormEditorSetup', 'standard')
-        );
-    }
-
-    public static function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
-    {
-        return [
-            [
-                ['formElements' => ['Text' => []]],
-                new ValidationDto('standard', 'Text', null, 'properties.foo'),
-                false,
-            ],
-            [
-                ['formElements' => ['Text' => ['selectOptions' => []]]],
-                new ValidationDto('standard', 'Text', null, 'properties.foo'),
-                false,
-            ],
-            [
-                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []]]]],
-                new ValidationDto('standard', 'Text', null, 'properties.foo'),
-                true,
-            ],
-            [
-                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => []]]],
-                new ValidationDto('standard', 'Text', null, 'properties.foo.1'),
-                false,
-            ],
-            [
-                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => ['properties.foo']]]],
-                new ValidationDto('standard', 'Text', null, 'properties.foo.1'),
-                true,
-            ],
-        ];
-    }
-
-    #[DataProvider('formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider')]
-    #[Test]
-    public function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
-        array $configuration,
-        ValidationDto $validationDto,
-        bool $expectedReturn
-    ): void {
-        $configurationServiceMock = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationServiceMock->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationServiceMock->formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup($validationDto)
-        );
-    }
-
-    #[Test]
-    public function getAllowedValuesForFormElementPropertyFromFormEditorSetupThrowsExceptionIfNoLimitedAllowedValuesAreAvailable(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1614264312);
-
-        $configurationServiceMock = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationServiceMock->method(
-            'formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup'
-        )->willReturn(false);
-        $validationDto = new ValidationDto('standard', 'Text', null, 'properties.foo');
-
-        $configurationServiceMock->getAllowedValuesForFormElementPropertyFromFormEditorSetup($validationDto);
-    }
-
-    public static function getAllowedValuesForFormElementPropertyFromFormEditorSetupDataProvider(): array
-    {
-        return [
-            [
-                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []]]]],
-                new ValidationDto('standard', 'Text', null, 'properties.foo'),
-                [],
-            ],
-            [
-                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => ['properties.foo']]]],
-                new ValidationDto('standard', 'Text', null, 'properties.foo.1'),
-                [],
-            ],
-            [
-                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => ['bar', 'baz']]]]],
-                new ValidationDto('standard', 'Text', null, 'properties.foo'),
-                ['bar', 'baz'],
-            ],
-            [
-                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => ['bar', 'baz']], 'multiValueProperties' => ['properties.foo']]]],
-                new ValidationDto('standard', 'Text', null, 'properties.foo.1'),
-                ['bar', 'baz'],
-            ],
-        ];
-    }
-
-    #[DataProvider('getAllowedValuesForFormElementPropertyFromFormEditorSetupDataProvider')]
-    #[Test]
-    public function getAllowedValuesForFormElementPropertyFromFormEditorSetup(
-        array $configuration,
-        ValidationDto $validationDto,
-        array $expectedReturn
-    ): void {
-        $configurationServiceMock = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationServiceMock->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationServiceMock->getAllowedValuesForFormElementPropertyFromFormEditorSetup($validationDto)
-        );
-    }
-
-    public static function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
-    {
-        return [
-            [
-                ['collections' => ['validators' => ['StringLength' => []]]],
-                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
-                false,
-            ],
-            [
-                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => []]]]],
-                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
-                false,
-            ],
-            [
-                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []]]]]],
-                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
-                true,
-            ],
-            [
-                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => []]]]],
-                new ValidationDto('standard', null, null, 'properties.foo.1', 'validators', 'StringLength'),
-                false,
-            ],
-            [
-                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => ['properties.foo']]]]],
-                new ValidationDto('standard', null, null, 'properties.foo.1', 'validators', 'StringLength'),
-                true,
-            ],
-        ];
-    }
-
-    #[DataProvider('propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider')]
-    #[Test]
-    public function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(
-        array $configuration,
-        ValidationDto $validationDto,
-        bool $expectedReturn
-    ): void {
-        $configurationServiceMock = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationServiceMock->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationServiceMock->propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup($validationDto)
-        );
-    }
-
-    #[Test]
-    public function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupThrowsExceptionIfNoLimitedAllowedValuesAreAvailable(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1614264313);
-
-        $configurationServiceMock = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationServiceMock->method(
-            'propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup'
-        )->willReturn(false);
-        $validationDto = new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength');
-
-        $configurationServiceMock->getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup($validationDto);
-    }
-
-    public static function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupDataProvider(): array
-    {
-        return [
-            [
-                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []]]]]],
-                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
-                [],
-            ],
-            [
-                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => ['properties.foo']]]]],
-                new ValidationDto('standard', null, null, 'properties.foo.1', 'validators', 'StringLength'),
-                [],
-            ],
-            [
-                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => ['bar', 'baz']]]]]],
-                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
-                ['bar', 'baz'],
-            ],
-            [
-                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => ['bar', 'baz']], 'multiValueProperties' => ['properties.foo']]]]],
-                new ValidationDto('standard', null, null, 'properties.foo.1', 'validators', 'StringLength'),
-                ['bar', 'baz'],
-            ],
-        ];
-    }
-
-    #[DataProvider('getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupDataProvider')]
-    #[Test]
-    public function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup(
-        array $configuration,
-        ValidationDto $validationDto,
-        array $expectedReturn
-    ): void {
-        $configurationServiceMock = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
-            [],
-            '',
-            false
-        );
-        $configurationServiceMock->method(
-            'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
-        )->willReturn($configuration);
-
-        self::assertSame(
-            $expectedReturn,
-            $configurationServiceMock->getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup($validationDto)
-        );
+        self::assertSame($expected, $subject->getSelectablePrototypeNamesDefinedInFormEditorSetup());
     }
 
     public static function isFormElementPropertyDefinedInFormEditorSetupDataProvider(): array
@@ -885,67 +192,47 @@ final class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
+    #[DataProvider('isFormElementPropertyDefinedInFormEditorSetupDataProvider')]
+    #[Test]
+    public function isFormElementPropertyDefinedInFormEditorSetup(array $configuration, ValidationDto $validationDto, bool $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        self::assertSame($expectedReturn, $subjectMock->isFormElementPropertyDefinedInFormEditorSetup($validationDto));
+    }
+
     public static function isPropertyCollectionPropertyDefinedInFormEditorSetupDataProvider(): array
     {
         return [
             [
                 ['formElements' => ['Text' => ['collections' => ['validators' => ['StringLength' => ['propertyPaths' => ['properties.foo.1']]]]]]],
-                new ValidationDto(
-                    'standard',
-                    'Text',
-                    null,
-                    'properties.foo.1',
-                    'validators',
-                    'StringLength'
-                ),
+                new ValidationDto('standard', 'Text', null, 'properties.foo.1', 'validators', 'StringLength'),
                 true,
             ],
             [
                 ['formElements' => ['Text' => ['collections' => ['validators' => ['StringLength' => ['multiValueProperties' => ['properties.foo.1']]]]]]],
-                new ValidationDto(
-                    'standard',
-                    'Text',
-                    null,
-                    'properties.foo.1',
-                    'validators',
-                    'StringLength'
-                ),
+                new ValidationDto('standard', 'Text', null, 'properties.foo.1', 'validators', 'StringLength'),
                 true,
             ],
             [
                 ['formElements' => ['Text' => ['collections' => ['validators' => ['StringLength' => ['multiValueProperties' => ['properties.foo.1']]]]]]],
-                new ValidationDto(
-                    'standard',
-                    'Text',
-                    null,
-                    'properties.foo.1.bar',
-                    'validators',
-                    'StringLength'
-                ),
+                new ValidationDto('standard', 'Text', null, 'properties.foo.1.bar', 'validators', 'StringLength'),
                 true,
             ],
             [
                 ['formElements' => ['Text' => ['collections' => ['validators' => ['StringLength' => ['additionalPropertyPaths' => ['properties.foo.1']]]]]]],
-                new ValidationDto(
-                    'standard',
-                    'Text',
-                    null,
-                    'properties.foo.1',
-                    'validators',
-                    'StringLength'
-                ),
+                new ValidationDto('standard', 'Text', null, 'properties.foo.1', 'validators', 'StringLength'),
                 true,
             ],
             [
                 ['formElements' => ['Text' => ['collections' => ['validators' => ['StringLength' => ['propertyPaths' => ['properties.foo.1']]]]]]],
-                new ValidationDto(
-                    'standard',
-                    'Text',
-                    null,
-                    'properties.foo.2',
-                    'validators',
-                    'StringLength'
-                ),
+                new ValidationDto('standard', 'Text', null, 'properties.foo.2', 'validators', 'StringLength'),
                 false,
             ],
             [
@@ -965,26 +252,12 @@ final class ConfigurationServiceTest extends UnitTestCase
             ],
             [
                 ['formElements' => ['Text' => ['collections' => ['validators' => ['StringLength' => ['multiValueProperties' => ['properties.foo.1']]]]]]],
-                new ValidationDto(
-                    'standard',
-                    'Text',
-                    null,
-                    'properties.foo.2',
-                    'validators',
-                    'StringLength'
-                ),
+                new ValidationDto('standard', 'Text', null, 'properties.foo.2', 'validators', 'StringLength'),
                 false,
             ],
             [
                 ['formElements' => ['Text' => ['collections' => ['validators' => ['StringLength' => ['multiValueProperties' => ['properties.foo.1']]]]]]],
-                new ValidationDto(
-                    'standard',
-                    'Foo',
-                    null,
-                    'properties.foo.1.bar',
-                    'validators',
-                    'StringLength'
-                ),
+                new ValidationDto('standard', 'Foo', null, 'properties.foo.1.bar', 'validators', 'StringLength'),
                 false,
             ],
             [
@@ -1015,6 +288,21 @@ final class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
+    #[DataProvider('isPropertyCollectionPropertyDefinedInFormEditorSetupDataProvider')]
+    #[Test]
+    public function isPropertyCollectionPropertyDefinedInFormEditorSetup(array $configuration, ValidationDto $validationDto, bool $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        self::assertSame($expectedReturn, $subjectMock->isPropertyCollectionPropertyDefinedInFormEditorSetup($validationDto));
+    }
+
     public static function isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider(): array
     {
         return [
@@ -1034,6 +322,21 @@ final class ConfigurationServiceTest extends UnitTestCase
                 false,
             ],
         ];
+    }
+
+    #[DataProvider('isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider')]
+    #[Test]
+    public function isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup(array $configuration, ValidationDto $validationDto, bool $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        self::assertSame($expectedReturn, $subjectMock->isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup($validationDto));
     }
 
     public static function isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider(): array
@@ -1062,6 +365,96 @@ final class ConfigurationServiceTest extends UnitTestCase
         ];
     }
 
+    #[DataProvider('isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetupDataProvider')]
+    #[Test]
+    public function isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup(array $configuration, ValidationDto $validationDto, bool $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        $result = $subjectMock->isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup($validationDto);
+        self::assertSame($expectedReturn, $result);
+    }
+
+    #[Test]
+    public function getFormElementPredefinedDefaultValueFromFormEditorSetupThrowsExceptionIfNoPredefinedDefaultIsAvailable(): void
+    {
+        $this->expectException(PropertyException::class);
+        $this->expectExceptionCode(1528578401);
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup')->willReturn(false);
+        $validationDto = new ValidationDto(null, 'Text', null, 'properties.foo.1');
+        $subjectMock->getFormElementPredefinedDefaultValueFromFormEditorSetup($validationDto);
+    }
+
+    #[Test]
+    public function getFormElementPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue(): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            [
+                'buildFormDefinitionValidationConfigurationFromFormEditorSetup',
+                'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup',
+            ],
+            [],
+            '',
+            false
+        );
+        $configuration = ['formElements' => ['Text' => ['predefinedDefaults' => ['properties.foo.1' => 'foo']]]];
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        $subjectMock->method('isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup')->willReturn(true);
+        $validationDto = new ValidationDto('standard', 'Text', null, 'properties.foo.1');
+        self::assertSame('foo', $subjectMock->getFormElementPredefinedDefaultValueFromFormEditorSetup($validationDto));
+    }
+
+    #[Test]
+    public function getPropertyCollectionPredefinedDefaultValueFromFormEditorSetupThrowsExceptionIfNoPredefinedDefaultIsAvailable(): void
+    {
+        $this->expectException(PropertyException::class);
+        $this->expectExceptionCode(1528578402);
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup')->willReturn(false);
+        $validationDto = new ValidationDto(null, null, null, 'properties.foo.1', 'validators', 'StringLength');
+        $subjectMock->getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup($validationDto);
+    }
+
+    #[Test]
+    public function getPropertyCollectionPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue(): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            [
+                'buildFormDefinitionValidationConfigurationFromFormEditorSetup',
+                'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup',
+            ],
+            [],
+            '',
+            false
+        );
+        $configuration = ['collections' => ['validators' => ['StringLength' => ['predefinedDefaults' => ['properties.foo.1' => 'foo']]]]];
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        $subjectMock->method('isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup')->willReturn(true);
+        $validationDto = new ValidationDto('standard', null, null, 'properties.foo.1', 'validators', 'StringLength');
+        self::assertSame('foo', $subjectMock->getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup($validationDto));
+    }
+
     public static function isFormElementTypeCreatableByFormEditorDataProvider(): array
     {
         return [
@@ -1086,6 +479,21 @@ final class ConfigurationServiceTest extends UnitTestCase
                 false,
             ],
         ];
+    }
+
+    #[DataProvider('isFormElementTypeCreatableByFormEditorDataProvider')]
+    #[Test]
+    public function isFormElementTypeCreatableByFormEditor(array $configuration, ValidationDto $validationDto, bool $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        self::assertSame($expectedReturn, $subjectMock->isFormElementTypeCreatableByFormEditor($validationDto));
     }
 
     public static function isPropertyCollectionElementIdentifierCreatableByFormEditorDataProvider(): array
@@ -1117,6 +525,152 @@ final class ConfigurationServiceTest extends UnitTestCase
                 false,
             ],
         ];
+    }
+
+    #[DataProvider('isPropertyCollectionElementIdentifierCreatableByFormEditorDataProvider')]
+    #[Test]
+    public function isPropertyCollectionElementIdentifierCreatableByFormEditor(array $configuration, ValidationDto $validationDto, bool $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        self::assertSame($expectedReturn, $subjectMock->isPropertyCollectionElementIdentifierCreatableByFormEditor($validationDto));
+    }
+
+    #[Test]
+    public function isFormElementTypeDefinedInFormSetup(): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['getPrototypeConfiguration'],
+            [],
+            '',
+            false
+        );
+        $configuration = [
+            'formElementsDefinition' => [
+                'Text' => [],
+            ],
+        ];
+        $subjectMock->method('getPrototypeConfiguration')->willReturn($configuration);
+        $validationDto = new ValidationDto('standard', 'Text');
+        self::assertTrue($subjectMock->isFormElementTypeDefinedInFormSetup($validationDto));
+        $validationDto = new ValidationDto('standard', 'Foo');
+        self::assertFalse($subjectMock->isFormElementTypeDefinedInFormSetup($validationDto));
+    }
+
+    #[Test]
+    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfHookResultIsNoFormDefinitionValidation(): void
+    {
+        $this->expectException(PropertyException::class);
+        $this->expectExceptionCode(1528633966);
+        $subjectMock = $this->getAccessibleMock(ConfigurationService::class, null, [], '', false);
+        $input = ['dummy'];
+        $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', '', $input, []);
+    }
+
+    #[Test]
+    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPrototypeDoesNotMatch(): void
+    {
+        $this->expectException(PropertyException::class);
+        $this->expectExceptionCode(1528634966);
+        $subjectMock = $this->getAccessibleMock(ConfigurationService::class, null, [], '', false);
+        $validationDto = new ValidationDto('Bar', 'Foo');
+        $input = [$validationDto];
+        $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
+    }
+
+    #[Test]
+    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfFormElementTypeDoesNotMatch(): void
+    {
+        $this->expectException(PropertyException::class);
+        $this->expectExceptionCode(1528633967);
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['isFormElementTypeDefinedInFormSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('isFormElementTypeDefinedInFormSetup')->willReturn(false);
+        $validationDto = new ValidationDto('standard', 'Text');
+        $input = [$validationDto];
+        $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
+    }
+
+    #[Test]
+    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPropertyCollectionNameIsInvalid(): void
+    {
+        $this->expectException(PropertyException::class);
+        $this->expectExceptionCode(1528636941);
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['isFormElementTypeDefinedInFormSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
+        $validationDto = new ValidationDto('standard', 'Text', null, null, 'Bar', 'Baz');
+        $input = [$validationDto];
+        $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
+    }
+
+    #[Test]
+    public function addAdditionalPropertyPathsFromHookAddPaths(): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['isFormElementTypeDefinedInFormSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
+        $input = [
+            new ValidationDto('standard', 'Text', null, 'options.xxx', 'validators', 'Baz'),
+            new ValidationDto('standard', 'Text', null, 'options.yyy', 'validators', 'Baz'),
+            new ValidationDto('standard', 'Text', null, 'options.zzz', 'validators', 'Custom'),
+            new ValidationDto('standard', 'Text', null, 'properties.xxx'),
+            new ValidationDto('standard', 'Text', null, 'properties.yyy'),
+            new ValidationDto('standard', 'Custom', null, 'properties.xxx'),
+        ];
+        $expected = [
+            'formElements' => [
+                'Text' => [
+                    'collections' => [
+                        'validators' => [
+                            'Baz' => [
+                                'additionalPropertyPaths' => [
+                                    'options.xxx',
+                                    'options.yyy',
+                                ],
+                            ],
+                            'Custom' => [
+                                'additionalPropertyPaths' => [
+                                    'options.zzz',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'additionalPropertyPaths' => [
+                        'properties.xxx',
+                        'properties.yyy',
+                    ],
+                ],
+                'Custom' => [
+                    'additionalPropertyPaths' => [
+                        'properties.xxx',
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []));
     }
 
     public static function buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider(): array
@@ -1656,5 +1210,237 @@ final class ConfigurationServiceTest extends UnitTestCase
                 ],
             ],
         ];
+    }
+
+    #[DataProvider('buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider')]
+    #[Test]
+    public function buildFormDefinitionValidationConfigurationFromFormEditorSetup(array $configuration, array $expected): void
+    {
+        $translationServiceMock = $this->createMock(TranslationService::class);
+        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            [
+                'getPrototypeConfiguration',
+                'executeBuildFormDefinitionValidationConfigurationHooks',
+            ],
+            [
+                $this->createMock(ConfigurationManagerInterface::class),
+                $translationServiceMock,
+                $this->createMock(FrontendInterface::class),
+                $this->createMock(FrontendInterface::class),
+            ],
+        );
+        $subjectMock->method('getPrototypeConfiguration')->willReturn($configuration);
+        $subjectMock->method('executeBuildFormDefinitionValidationConfigurationHooks')->willReturnArgument(1);
+        self::assertSame($expected, $subjectMock->_call('buildFormDefinitionValidationConfigurationFromFormEditorSetup', 'standard'));
+    }
+
+    public static function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
+    {
+        return [
+            [
+                ['formElements' => ['Text' => []]],
+                new ValidationDto('standard', 'Text', null, 'properties.foo'),
+                false,
+            ],
+            [
+                ['formElements' => ['Text' => ['selectOptions' => []]]],
+                new ValidationDto('standard', 'Text', null, 'properties.foo'),
+                false,
+            ],
+            [
+                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []]]]],
+                new ValidationDto('standard', 'Text', null, 'properties.foo'),
+                true,
+            ],
+            [
+                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => []]]],
+                new ValidationDto('standard', 'Text', null, 'properties.foo.1'),
+                false,
+            ],
+            [
+                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => ['properties.foo']]]],
+                new ValidationDto('standard', 'Text', null, 'properties.foo.1'),
+                true,
+            ],
+        ];
+    }
+
+    #[DataProvider('formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider')]
+    #[Test]
+    public function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(array $configuration, ValidationDto $validationDto, bool $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        self::assertSame($expectedReturn, $subjectMock->formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup($validationDto));
+    }
+
+    #[Test]
+    public function getAllowedValuesForFormElementPropertyFromFormEditorSetupThrowsExceptionIfNoLimitedAllowedValuesAreAvailable(): void
+    {
+        $this->expectException(PropertyException::class);
+        $this->expectExceptionCode(1614264312);
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup')->willReturn(false);
+        $validationDto = new ValidationDto('standard', 'Text', null, 'properties.foo');
+        $subjectMock->getAllowedValuesForFormElementPropertyFromFormEditorSetup($validationDto);
+    }
+
+    public static function getAllowedValuesForFormElementPropertyFromFormEditorSetupDataProvider(): array
+    {
+        return [
+            [
+                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []]]]],
+                new ValidationDto('standard', 'Text', null, 'properties.foo'),
+                [],
+            ],
+            [
+                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => ['properties.foo']]]],
+                new ValidationDto('standard', 'Text', null, 'properties.foo.1'),
+                [],
+            ],
+            [
+                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => ['bar', 'baz']]]]],
+                new ValidationDto('standard', 'Text', null, 'properties.foo'),
+                ['bar', 'baz'],
+            ],
+            [
+                ['formElements' => ['Text' => ['selectOptions' => ['properties.foo' => ['bar', 'baz']], 'multiValueProperties' => ['properties.foo']]]],
+                new ValidationDto('standard', 'Text', null, 'properties.foo.1'),
+                ['bar', 'baz'],
+            ],
+        ];
+    }
+
+    #[DataProvider('getAllowedValuesForFormElementPropertyFromFormEditorSetupDataProvider')]
+    #[Test]
+    public function getAllowedValuesForFormElementPropertyFromFormEditorSetup(array $configuration, ValidationDto $validationDto, array $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        self::assertSame($expectedReturn, $subjectMock->getAllowedValuesForFormElementPropertyFromFormEditorSetup($validationDto));
+    }
+
+    public static function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array
+    {
+        return [
+            [
+                ['collections' => ['validators' => ['StringLength' => []]]],
+                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
+                false,
+            ],
+            [
+                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => []]]]],
+                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
+                false,
+            ],
+            [
+                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []]]]]],
+                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
+                true,
+            ],
+            [
+                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => []]]]],
+                new ValidationDto('standard', null, null, 'properties.foo.1', 'validators', 'StringLength'),
+                false,
+            ],
+            [
+                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => ['properties.foo']]]]],
+                new ValidationDto('standard', null, null, 'properties.foo.1', 'validators', 'StringLength'),
+                true,
+            ],
+        ];
+    }
+
+    #[DataProvider('propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider')]
+    #[Test]
+    public function propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup(array $configuration, ValidationDto $validationDto, bool $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        self::assertSame($expectedReturn, $subjectMock->propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup($validationDto));
+    }
+
+    #[Test]
+    public function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupThrowsExceptionIfNoLimitedAllowedValuesAreAvailable(): void
+    {
+        $this->expectException(PropertyException::class);
+        $this->expectExceptionCode(1614264313);
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('propertyCollectionPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetup')->willReturn(false);
+        $validationDto = new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength');
+        $subjectMock->getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup($validationDto);
+    }
+
+    public static function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupDataProvider(): array
+    {
+        return [
+            [
+                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []]]]]],
+                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
+                [],
+            ],
+            [
+                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => []], 'multiValueProperties' => ['properties.foo']]]]],
+                new ValidationDto('standard', null, null, 'properties.foo.1', 'validators', 'StringLength'),
+                [],
+            ],
+            [
+                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => ['bar', 'baz']]]]]],
+                new ValidationDto('standard', null, null, 'properties.foo', 'validators', 'StringLength'),
+                ['bar', 'baz'],
+            ],
+            [
+                ['collections' => ['validators' => ['StringLength' => ['selectOptions' => ['properties.foo' => ['bar', 'baz']], 'multiValueProperties' => ['properties.foo']]]]],
+                new ValidationDto('standard', null, null, 'properties.foo.1', 'validators', 'StringLength'),
+                ['bar', 'baz'],
+            ],
+        ];
+    }
+
+    #[DataProvider('getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetupDataProvider')]
+    #[Test]
+    public function getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup(array $configuration, ValidationDto $validationDto, array $expectedReturn): void
+    {
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('buildFormDefinitionValidationConfigurationFromFormEditorSetup')->willReturn($configuration);
+        self::assertSame($expectedReturn, $subjectMock->getAllowedValuesForPropertyCollectionPropertyFromFormEditorSetup($validationDto));
     }
 }

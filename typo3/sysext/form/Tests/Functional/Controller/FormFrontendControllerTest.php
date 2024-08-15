@@ -15,47 +15,42 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Controller;
+namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
-use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
-use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
-use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class FormFrontendControllerTest extends UnitTestCase
+final class FormFrontendControllerTest extends FunctionalTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-        $cacheManager = new CacheManager();
-        $cacheManager->registerCache(new NullFrontend('runtime'));
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
-    }
+    protected bool $initializeDatabase = false;
 
-    public function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
-    }
+    protected array $coreExtensionsToLoad = [
+        'form',
+    ];
 
     #[Test]
     public function overrideByFlexFormSettingsReturnsNoOverriddenConfigurationIfFlexformOverridesDisabled(): void
     {
-        $mockController = $this->getAccessibleMock(FormFrontendController::class, null, [], '', false);
-
         $configurationServiceMock = $this->createMock(ConfigurationService::class);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceMock);
+        $subjectMock = $this->getAccessibleMock(
+            FormFrontendController::class,
+            null,
+            [
+                $configurationServiceMock,
+                $this->createMock(FormPersistenceManagerInterface::class),
+                $this->get(FlexFormService::class),
+                $this->get(FlexFormTools::class),
+            ],
+        );
 
         $sheetIdentifier = md5(
             implode('', [
@@ -66,15 +61,14 @@ final class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation());
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
         $request = $request->withAttribute('currentContentObject', $contentObject);
         $contentObject->setRequest($request);
-        $mockController->_set('request', $request);
+        $subjectMock->_set('request', $request);
         $contentObject->data = [
-            'pi_flexform' => $flexFormTools->flexArray2Xml([
+            'pi_flexform' => $this->get(FlexFormTools::class)->flexArray2Xml([
                 'data' => [
                     $sheetIdentifier => [
                         'lDEF' => [
@@ -120,7 +114,7 @@ final class FormFrontendControllerTest extends UnitTestCase
             ],
         ]);
 
-        $mockController->_set('settings', [
+        $subjectMock->_set('settings', [
             'overrideFinishers' => 0,
             'finishers' => [
                 'EmailToReceiver' => [
@@ -169,18 +163,23 @@ final class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation()));
-
-        self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
+        self::assertSame($expected, $subjectMock->_call('overrideByFlexFormSettings', $input));
     }
 
     #[Test]
     public function overrideByFlexFormSettingsReturnsOverriddenConfigurationIfFlexformOverridesEnabled(): void
     {
-        $mockController = $this->getAccessibleMock(FormFrontendController::class, null, [], '', false);
-
         $configurationServiceMock = $this->createMock(ConfigurationService::class);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceMock);
+        $subjectMock = $this->getAccessibleMock(
+            FormFrontendController::class,
+            null,
+            [
+                $configurationServiceMock,
+                $this->createMock(FormPersistenceManagerInterface::class),
+                $this->get(FlexFormService::class),
+                $this->get(FlexFormTools::class),
+            ],
+        );
 
         $sheetIdentifier = md5(
             implode('', [
@@ -191,15 +190,14 @@ final class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        $flexFormTools = new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation());
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
         $request = $request->withAttribute('currentContentObject', $contentObject);
         $contentObject->setRequest($request);
-        $mockController->_set('request', $request);
+        $subjectMock->_set('request', $request);
         $contentObject->data = [
-            'pi_flexform' => $flexFormTools->flexArray2Xml([
+            'pi_flexform' => $this->get(FlexFormTools::class)->flexArray2Xml([
                 'data' => [
                     $sheetIdentifier => [
                         'lDEF' => [
@@ -258,7 +256,7 @@ final class FormFrontendControllerTest extends UnitTestCase
             ],
         ]);
 
-        $mockController->_set('settings', [
+        $subjectMock->_set('settings', [
             'overrideFinishers' => 1,
             'finishers' => [
                 'EmailToReceiver' => [
@@ -317,18 +315,23 @@ final class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation()));
-
-        self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
+        self::assertSame($expected, $subjectMock->_call('overrideByFlexFormSettings', $input));
     }
 
     #[Test]
     public function overrideByFlexFormSettingsReturnsNotOverriddenConfigurationKeyIfFlexformOverridesAreNotRepresentedInFormEngineConfiguration(): void
     {
-        $mockController = $this->getAccessibleMock(FormFrontendController::class, null, [], '', false);
-
         $configurationServiceMock = $this->createMock(ConfigurationService::class);
-        GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationServiceMock);
+        $mockController = $this->getAccessibleMock(
+            FormFrontendController::class,
+            null,
+            [
+                $configurationServiceMock,
+                $this->createMock(FormPersistenceManagerInterface::class),
+                $this->get(FlexFormService::class),
+                $this->get(FlexFormTools::class),
+            ],
+        );
 
         $sheetIdentifier = md5(
             implode('', [
@@ -339,9 +342,6 @@ final class FormFrontendControllerTest extends UnitTestCase
             ])
         );
 
-        GeneralUtility::addInstance(FlexFormTools::class, new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation()));
-
-        $flexFormTools = new FlexFormTools(new NoopEventDispatcher(), new TcaMigration(), new TcaPreparation());
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
@@ -349,7 +349,7 @@ final class FormFrontendControllerTest extends UnitTestCase
         $contentObject->setRequest($request);
         $mockController->_set('request', $request);
         $contentObject->data = [
-            'pi_flexform' => $flexFormTools->flexArray2Xml([
+            'pi_flexform' => $this->get(FlexFormTools::class)->flexArray2Xml([
                 'data' => [
                     $sheetIdentifier => [
                         'lDEF' => [

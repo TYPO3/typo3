@@ -18,12 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Model\Renderable;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class AbstractRenderableTest extends FunctionalTestCase
@@ -32,41 +34,33 @@ final class AbstractRenderableTest extends FunctionalTestCase
         'form',
     ];
 
-    protected AbstractRenderable $subject;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $this->subject = $this->buildAbstractRenderable();
-    }
-
     #[Test]
     public function setOptionsResetsValidatorsIfDefined(): void
     {
-        $this->subject->setOptions(['validators' => [
-            ['identifier' => 'NotEmpty'],
-            ['identifier' => 'EmailAddress'],
-        ]]);
-
-        self::assertCount(2, $this->subject->getValidators());
-
-        $this->subject->setOptions(['validators' => []], true);
-
-        self::assertCount(0, $this->subject->getValidators());
-    }
-
-    private function buildAbstractRenderable(): AbstractRenderable
-    {
+        // $prototypeConfiguration is a monster array. Get it up front.
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
-        $configurationService = new ConfigurationService($configurationManager);
+        $configurationManager->setRequest($request);
+        $configurationService = new ConfigurationService(
+            $configurationManager,
+            $this->createMock(TranslationService::class),
+            $this->createMock(FrontendInterface::class),
+            $this->createMock(FrontendInterface::class),
+        );
         $prototypeConfiguration = $configurationService->getPrototypeConfiguration('standard');
 
         $subject = new class () extends AbstractRenderable {};
         $subject->setIdentifier('Foo');
         $subject->setParentRenderable(new FormDefinition('foo', $prototypeConfiguration));
 
-        return $subject;
+        $subject->setOptions([
+            'validators' => [
+                ['identifier' => 'NotEmpty'],
+                ['identifier' => 'EmailAddress'],
+            ],
+        ]);
+        self::assertCount(2, $subject->getValidators());
+        $subject->setOptions(['validators' => []], true);
+        self::assertCount(0, $subject->getValidators());
     }
 }
