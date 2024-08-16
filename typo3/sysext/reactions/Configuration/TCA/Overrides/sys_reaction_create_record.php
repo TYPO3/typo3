@@ -42,7 +42,7 @@
     [
         'label' => ($GLOBALS['TCA']['pages']['ctrl']['title'] ?? '') ?: 'pages',
         'value' => 'pages',
-        'icon' => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class)->mapRecordTypeToIconIdentifier('pages', []),
+        'icon' => 'apps-pagetree-page-default',
     ]
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
@@ -51,7 +51,7 @@
     [
         'label' => ($GLOBALS['TCA']['sys_category']['ctrl']['title'] ?? '') ?: 'sys_category',
         'value' => 'sys_category',
-        'icon' => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class)->mapRecordTypeToIconIdentifier('sys_category', []),
+        'icon' => 'mimetypes-x-sys_category',
     ]
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
@@ -60,7 +60,7 @@
     [
         'label' => ($GLOBALS['TCA']['sys_file_collection']['ctrl']['title'] ?? '') ?: 'sys_file_collection',
         'value' => 'sys_file_collection',
-        'icon' => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class)->mapRecordTypeToIconIdentifier('sys_file_collection', []),
+        'icon' => 'apps-filetree-folder-media',
     ]
 );
 
