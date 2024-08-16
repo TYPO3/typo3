@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Crypto\HashService;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
@@ -32,8 +32,14 @@ use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
 /**
  * @internal
  */
-class FormDefinitionValidationService implements SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class FormDefinitionValidationService
 {
+    public function __construct(
+        protected HashService $hashService,
+        protected ConfigurationService $configurationService,
+    ) {}
+
     /**
      * Validate the form definition properties using the form setup.
      * Pseudo workflow:
@@ -156,20 +162,17 @@ class FormDefinitionValidationService implements SingletonInterface
             $propertyCollectionName
         );
 
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        if ($configurationService->isFormElementTypeCreatableByFormEditor($validationDto)) {
+        if ($this->configurationService->isFormElementTypeCreatableByFormEditor($validationDto)) {
             $this->validateAllPropertyValuesFromCreatableFormElement(
                 $currentFormElement,
                 $sessionToken,
                 $validationDto
             );
-
             foreach ($propertyCollectionElements as $propertyCollectionElement) {
                 $validationDto = $validationDto->withPropertyCollectionElementIdentifier(
                     $propertyCollectionElement['identifier']
                 );
-
-                if ($configurationService->isPropertyCollectionElementIdentifierCreatableByFormEditor($validationDto)) {
+                if ($this->configurationService->isPropertyCollectionElementIdentifierCreatableByFormEditor($validationDto)) {
                     $this->validateAllPropertyValuesFromCreatablePropertyCollectionElement(
                         $propertyCollectionElement,
                         $sessionToken,
@@ -185,7 +188,6 @@ class FormDefinitionValidationService implements SingletonInterface
             }
         } else {
             $this->validateAllFormElementPropertyValuesByHmac($currentFormElement, $sessionToken, $validationDto);
-
             foreach ($propertyCollectionElements as $propertyCollectionElement) {
                 $this->validateAllPropertyCollectionElementValuesByHmac(
                     $propertyCollectionElement,
@@ -212,20 +214,17 @@ class FormDefinitionValidationService implements SingletonInterface
      * in its original state.
      * If this is not the case (return value is FALSE), an exception must be thrown.
      *
-     * @param mixed $propertyValue
      * @throws PropertyException
      */
     public function isPropertyValueEqualToHistoricalValue(
         array $hmacContent,
-        $propertyValue,
+        mixed $propertyValue,
         array $hmacData,
         string $sessionToken
     ): bool {
         $this->checkHmacDataIntegrity($hmacData, $hmacContent, $sessionToken);
         $hmacContent[] = $propertyValue;
-
-        $hashService = GeneralUtility::makeInstance(HashService::class);
-        $expectedHash = $hashService->hmac(serialize($hmacContent), $sessionToken);
+        $expectedHash = $this->hashService->hmac(serialize($hmacContent), $sessionToken);
         return hash_equals($expectedHash, $hmacData['hmac']);
     }
 
@@ -242,11 +241,8 @@ class FormDefinitionValidationService implements SingletonInterface
         if (empty($hmac)) {
             throw new PropertyException('Hmac must not be empty. #1528538222', 1528538222);
         }
-
         $hmacContent[] = $hmacData['value'] ?? '';
-        $hashService = GeneralUtility::makeInstance(HashService::class);
-        $expectedHash = $hashService->hmac(serialize($hmacContent), $sessionToken);
-
+        $expectedHash = $this->hashService->hmac(serialize($hmacContent), $sessionToken);
         if (!hash_equals($expectedHash, $hmac)) {
             throw new PropertyException('Unauthorized modification of historical data. #1528538252', 1528538252);
         }
@@ -255,12 +251,10 @@ class FormDefinitionValidationService implements SingletonInterface
     /**
      * Walk through all form element properties and checks
      * if the values matches to their hmac hashes.
-     *
-     * @param string $sessionToken
      */
     protected function validateAllFormElementPropertyValuesByHmac(
         array $currentElement,
-        $sessionToken,
+        string $sessionToken,
         ValidationDto $validationDto
     ): void {
         GeneralUtility::makeInstance(ArrayProcessor::class, $currentElement)->forEach(
@@ -281,12 +275,10 @@ class FormDefinitionValidationService implements SingletonInterface
     /**
      * Walk through all property collection properties and checks
      * if the values matches to their hmac hashes.
-     *
-     * @param string $sessionToken
      */
     protected function validateAllPropertyCollectionElementValuesByHmac(
         array $currentElement,
-        $sessionToken,
+        string $sessionToken,
         ValidationDto $validationDto
     ): void {
         GeneralUtility::makeInstance(ArrayProcessor::class, $currentElement)->forEach(
@@ -310,12 +302,10 @@ class FormDefinitionValidationService implements SingletonInterface
      * or if the property is defined within the "predefinedDefaults" in the form editor setup
      * and the property value matches the predefined value
      * or if there is a valid hmac hash for the value.
-     *
-     * @param string $sessionToken
      */
     protected function validateAllPropertyValuesFromCreatableFormElement(
         array $currentElement,
-        $sessionToken,
+        string $sessionToken,
         ValidationDto $validationDto
     ): void {
         GeneralUtility::makeInstance(ArrayProcessor::class, $currentElement)->forEach(
@@ -339,12 +329,10 @@ class FormDefinitionValidationService implements SingletonInterface
      * or if the property is defined within the "predefinedDefaults" in the form editor setup
      * and the property value matches the predefined value
      * or if there is a valid hmac hash for the value.
-     *
-     * @param string $sessionToken
      */
     protected function validateAllPropertyValuesFromCreatablePropertyCollectionElement(
         array $currentElement,
-        $sessionToken,
+        string $sessionToken,
         ValidationDto $validationDto
     ): void {
         GeneralUtility::makeInstance(ArrayProcessor::class, $currentElement)->forEach(

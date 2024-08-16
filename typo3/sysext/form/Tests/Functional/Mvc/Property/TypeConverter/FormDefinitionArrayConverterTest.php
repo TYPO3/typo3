@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property\TypeConverter;
+namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Property\TypeConverter;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -23,62 +23,33 @@ use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\FormDefinitionArrayConverter;
 use TYPO3\CMS\Form\Type\FormDefinitionArray;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class FormDefinitionArrayConverterTest extends UnitTestCase
+final class FormDefinitionArrayConverterTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-    protected HashService $hashService;
+    protected bool $initializeDatabase = false;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
-        $this->hashService = new HashService();
-    }
+    protected array $coreExtensionsToLoad = [
+        'form',
+    ];
 
     #[Test]
     public function convertsJsonStringToFormDefinitionArray(): void
     {
-        $sessionToken = '123';
-
-        $data = [
-            'prototypeName' => 'standard',
-            'identifier' => 'test',
-            'type' => 'Text',
-            'enabled' => false,
-            'properties' => [
-                'options' => [
-                    [
-                        '_label' => 'label',
-                        '_value' => 'value',
-                    ],
-                ],
-            ],
-            '_orig_prototypeName' => [
-                'value' => 'standard',
-                'hmac' => $this->hashService->hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
-            ],
-            '_orig_identifier' => [
-                'value' => 'test',
-                'hmac' => $this->hashService->hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
-            ],
-        ];
-
-        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['getFormDefinitionValidationService', 'retrieveSessionToken'], callOriginalConstructor: false);
         $formDefinitionValidationServiceMock = $this->createMock(FormDefinitionValidationService::class);
         $formDefinitionValidationServiceMock->expects(self::atLeastOnce())->method('validateFormDefinitionProperties')->with(self::anything());
         $formDefinitionValidationServiceMock->method('isPropertyValueEqualToHistoricalValue')->with(self::anything())->willReturn(true);
 
-        $typeConverter->method(
-            'retrieveSessionToken'
-        )->willReturn($sessionToken);
+        $subjectMock = $this->getAccessibleMock(
+            FormDefinitionArrayConverter::class,
+            ['getFormDefinitionValidationService', 'retrieveSessionToken'],
+            [],
+            '',
+            false
+        );
+        $subjectMock->method('retrieveSessionToken')->willReturn('123');
+        $subjectMock->method('getFormDefinitionValidationService')->willReturn($formDefinitionValidationServiceMock);
 
-        $typeConverter->method(
-            'getFormDefinitionValidationService'
-        )->willReturn($formDefinitionValidationServiceMock);
-
-        $input = json_encode($data);
         $expected = [
             'prototypeName' => 'standard',
             'identifier' => 'test',
@@ -90,7 +61,31 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
                 ],
             ],
         ];
-        $result = $typeConverter->convertFrom($input, FormDefinitionArray::class);
+        $result = $subjectMock->convertFrom(
+            json_encode([
+                'prototypeName' => 'standard',
+                'identifier' => 'test',
+                'type' => 'Text',
+                'enabled' => false,
+                'properties' => [
+                    'options' => [
+                        [
+                            '_label' => 'label',
+                            '_value' => 'value',
+                        ],
+                    ],
+                ],
+                '_orig_prototypeName' => [
+                    'value' => 'standard',
+                    'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
+                ],
+                '_orig_identifier' => [
+                    'value' => 'test',
+                    'hmac' => (new HashService())->hmac(serialize(['test', 'identifier', 'test']), '123'),
+                ],
+            ]),
+            FormDefinitionArray::class
+        );
 
         self::assertInstanceOf(FormDefinitionArray::class, $result);
         self::assertSame($expected, $result->getArrayCopy());
@@ -101,18 +96,12 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1512578002);
-
-        $typeConverter = new FormDefinitionArrayConverter();
-        $input = '{"francine":"stan",';
-
-        $typeConverter->convertFrom($input, FormDefinitionArray::class);
+        (new FormDefinitionArrayConverter())->convertFrom('{"francine":"stan",', FormDefinitionArray::class);
     }
 
     #[Test]
     public function transformMultiValueElementsForFormFrameworkTransformValues(): void
     {
-        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, null, [], '', false);
-
         $input = [
             'foo1' => 'bar',
             'foo2' => [
@@ -136,7 +125,6 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
             '_label' => 'xxx',
             '_value' => 'yyy',
         ];
-
         $expected = [
             'foo1' => 'bar',
             'foo2' => [
@@ -150,8 +138,8 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
             '_label' => 'xxx',
             '_value' => 'yyy',
         ];
-
-        self::assertSame($expected, $typeConverter->_call('transformMultiValueElementsForFormFramework', $input));
+        $subjectMock = $this->getAccessibleMock(FormDefinitionArrayConverter::class, null, [], '', false);
+        self::assertSame($expected, $subjectMock->_call('transformMultiValueElementsForFormFramework', $input));
     }
 
     #[Test]
@@ -159,27 +147,20 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528538322);
-
-        $sessionToken = '123';
-        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['retrieveSessionToken'], [], '', false);
-
-        $typeConverter->method(
-            'retrieveSessionToken'
-        )->willReturn($sessionToken);
-
         $input = [
             'prototypeName' => 'foo',
             'identifier' => 'test',
             '_orig_prototypeName' => [
                 'value' => 'standard',
-                'hmac' => $this->hashService->hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
+                'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
             ],
             '_orig_identifier' => [
                 'value' => 'test',
-                'hmac' => $this->hashService->hmac(serialize(['test', 'identifier', 'test']), $sessionToken),
+                'hmac' => (new HashService())->hmac(serialize(['test', 'identifier', 'test']), '123'),
             ],
         ];
-
+        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['retrieveSessionToken'], [], '', false);
+        $typeConverter->method('retrieveSessionToken')->willReturn('123');
         $typeConverter->convertFrom(json_encode($input), FormDefinitionArray::class);
     }
 
@@ -188,27 +169,20 @@ final class FormDefinitionArrayConverterTest extends UnitTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528538322);
-
-        $sessionToken = '123';
-        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['retrieveSessionToken'], [], '', false);
-
-        $typeConverter->method(
-            'retrieveSessionToken'
-        )->willReturn($sessionToken);
-
         $input = [
             'prototypeName' => 'standard',
             'identifier' => 'xxx',
             '_orig_prototypeName' => [
                 'value' => 'standard',
-                'hmac' => $this->hashService->hmac(serialize(['test', 'prototypeName', 'standard']), $sessionToken),
+                'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
             ],
             '_orig_identifier' => [
                 'value' => 'test',
-                'hmac' => $this->hashService->hmac(serialize(['test', 'prototypeName', 'test']), $sessionToken),
+                'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'test']), '123'),
             ],
         ];
-
+        $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['retrieveSessionToken'], [], '', false);
+        $typeConverter->method('retrieveSessionToken')->willReturn('123');
         $typeConverter->convertFrom(json_encode($input), FormDefinitionArray::class);
     }
 }
