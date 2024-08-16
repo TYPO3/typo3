@@ -42,6 +42,10 @@ Redirect Configuration
 
    Configuration of the redirection options
 
+..  hint::
+
+  Be sure that in the overall `Access` tab under `User Group Access rights` the content 
+  element is not set to `Hide at login`, otherwise the redirect to the given page will not work.
 
 .. _messages-tab:
 
