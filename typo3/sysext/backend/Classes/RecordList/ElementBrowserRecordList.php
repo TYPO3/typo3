@@ -86,7 +86,7 @@ class ElementBrowserRecordList extends DatabaseRecordList
                     if (!$filter['userFunc']) {
                         continue;
                     }
-                    $parameters = $filter['parameters'] ?: [];
+                    $parameters = $filter['parameters'] ?? [];
                     $parameters['values'] = [$table . '_' . $row['uid']];
                     $parameters['tcaFieldConfig'] = $tcaFieldConfig;
                     $valueArray = GeneralUtility::callUserFunction($filter['userFunc'], $parameters, $this);
