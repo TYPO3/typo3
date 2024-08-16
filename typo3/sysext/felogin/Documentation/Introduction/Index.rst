@@ -37,11 +37,16 @@ General Settings
 Redirect Configuration
 ----------------------
 
-.. figure:: ../Images/RedirectConfiguration.png
-   :alt: Redirect Configuration
+..  figure:: ../Images/RedirectConfiguration.png
+    :alt: Redirect Configuration
 
-   Configuration of the redirection options
+    Configuration of the redirection options
 
+..  hint::
+
+    Be sure that in the overall `Access` tab under `User Group Access rights` the content
+    element and even the page itself is not set to `Hide at login`, otherwise the redirect
+    to the given page will not work.
 
 .. _messages-tab:
 
