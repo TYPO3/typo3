@@ -1,8 +1,5 @@
-.. include:: /Includes.rst.txt
-
-
-
-.. _configuration:
+..  include:: /Includes.rst.txt
+..  _configuration:
 
 =============
 Configuration
@@ -11,449 +8,210 @@ Configuration
 All configuration options are available in the FlexForm or TypoScript,
 with the FlexForm settings taking precedence.
 
+..  _plugin-tx-felogin-login:
 
-.. _plugin-tx-felogin-login:
+TypoScript setup / FlexForm settings
+====================================
 
-plugin.tx\_felogin\_login.settings
-==================================
+..  confval-menu::
+    :name: typoscript
+    :display: table
+    :type:
+    :default:
 
+    ..  _showforgotpassword:
 
-.. _showforgotpassword:
+    ..  confval:: showForgotPassword
+        :name: typoscript-showForgotPassword
+        :type: bool
 
-showForgotPassword
-------------------
-
-.. container:: table-row
-
-   Property
-         showForgotPassword
-
-   Data type
-         bool
-
-   Description
-         If set, the section in the template to display the link to the forgot
-         password dialogue is visible.
-
-         .. important::
-
+        If set, the section in the template to display the link to the forgot
+        password dialogue is visible.
+        ..  important::
              Be aware that having this option disabled also prevents the plugin to
              display the forgot password form. For instance if you access the link
              directly.
 
+    ..  _showpermalogin:
 
+    ..  confval:: showPermaLogin
+        :name: typoscript-showPermaLogin
+        :type: bool
 
-.. _showpermalogin:
+        If set, the section in the template to display the option to remember
+        the login (with a cookie) is visible.
 
-showPermaLogin
---------------
+    ..  _showlogoutformafterlogin:
 
-.. container:: table-row
+    ..  confval:: showLogoutFormAfterLogin
+        :name: typoscript-showLogoutFormAfterLogin
+        :type: bool
 
-   Property
-         showPermaLogin
-
-   Data type
-         bool
-
-   Description
-         If set, the section in the template to display the option to remember
-         the login (with a cookie) is visible.
-
-
-
-.. _showlogoutformafterlogin:
-
-showLogoutFormAfterLogin
-------------------------
-
-.. container:: table-row
-
-   Property
-         showLogoutFormAfterLogin
-
-   Data type
-         bool
-
-   Description
-         If set, the logout form will be displayed immediately after successful
-         login.
-
-         .. note::
-
+        If set, the logout form will be displayed immediately after successful
+        login.
+        ..  note::
             Setting this option will disable the redirect options!
             Instead of redirecting the plugin will show the logout form.
 
+    ..  _pages:
 
+    ..  confval:: pages
+        :name: typoscript-pages
+        :type: string
+        :default: {$styles.content.loginform.pid}
 
-.. _pages:
+        Define the User Storage Page with the Website User Records, using a
+        comma separated list or single value
 
-pages
------
+    ..  _recursive:
 
-.. container:: table-row
+    ..  confval:: recursive
+        :name: typoscript-recursive
+        :type: int
+        :default: {$styles.content.loginform.recursive}
 
-   Property
-         pages
+        If set, also any subfolders of the User Storage Page will be used
+        at configured recursive levels
 
-   Data type
-         string
+    ..  _redirectmode:
 
-   Default
-         {$styles.content.loginform.pid}
+    ..  confval:: redirectMode
+        :name: typoscript-redirectMode
+        :type: string
+        :default: {$styles.content.loginform.redirectMode}
 
-   Description
-         Define the User Storage Page with the Website User Records, using a
-         comma separated list or single value
+        Comma separated list of redirect modes. Possible values:
+        ``groupLogin``, ``userLogin``, ``login``, ``getpost``, ``referer``,
+        ``refererDomains``, ``loginError``, ``logout``
+        See section on redirect modes for details.
 
+    ..  _redirectfirstmethod:
 
+    ..  confval:: redirectFirstMethod
+        :name: typoscript-redirectFirstMethod
+        :type: bool
+        :default: {$styles.content.loginform.redirectFirstMethod}
 
-.. _recursive:
+        If set the first method from redirectMode which is possible will be
+        used
 
-recursive
----------
+    ..  _redirectpagelogin:
 
-.. container:: table-row
+    ..  confval:: redirectPageLogin
+        :name: typoscript-redirectPageLogin
+        :type: integer
+        :default: {$styles.content.loginform.redirectPageLogin}
 
-   Property
-         recursive
+        Page id to redirect to after Login
 
-   Data type
-         int
+    ..  _redirectpageloginerror:
 
-   Default
-         {$styles.content.loginform.recursive}
+    ..  confval:: redirectPageLoginError
+        :name: typoscript-redirectPageLoginError
+        :type: integer
+        :default: {$styles.content.loginform.redirectPageLoginError}
 
-   Description
-         If set, also any subfolders of the User Storage Page will be used
-         at configured recursive levels
+        Page id to redirect to after Login Error
 
+    ..  _redirectpagelogout:
 
+    ..  confval:: redirectPageLogout
+        :name: typoscript-redirectPageLogout
+        :type: integer
+        :default: {$styles.content.loginform.redirectPageLogout}
 
-.. _redirectmode:
+        Page id to redirect to after Logout
 
-redirectMode
-------------
+    ..  _redirectdisable:
 
-.. container:: table-row
+    ..  confval:: redirectDisable
+        :name: typoscript-redirectDisable
+        :type: bool
+        :default: {$styles.content.loginform.redirectDisable}
 
-   Property
-         redirectMode
+        If set redirecting is disabled
 
-   Data type
-         string
+    ..  _dateformat:
 
-   Default
-         {$styles.content.loginform.redirectMode}
+    ..  confval:: dateFormat
+        :name: typoscript-dateFormat
+        :type: date-conf
+        :default: Y-m-d H:i
 
-   Description
-         Comma separated list of redirect modes. Possible values:
+        Format for the link is valid until message (forgot password email)
 
-         ``groupLogin``, ``userLogin``, ``login``, ``getpost``, ``referer``,
-         ``refererDomains``, ``loginError``, ``logout``
+    ..  _email-from:
 
-         See section on redirect modes for details.
+    ..  confval:: email_from
+        :name: typoscript-email-from
+        :type: string
 
+        Email address used as sender of the change password emails
 
+    ..  _email-fromname:
 
-.. _redirectfirstmethod:
+    ..  confval:: email_fromName
+        :name: typoscript-email-fromName
+        :type: string
 
-redirectFirstMethod
--------------------
+        Name used as sender of the change password emails
 
-.. container:: table-row
+    ..  confval:: email
+        :name: typoscript-email
 
-   Property
-         redirectFirstMethod
+        ..  confval:: email.templateName
+            :name: typoscript-email.templateName
+            :type: string
+            :default: {$styles.content.loginform.email.templateName}
 
-   Data type
-         bool
+            Template name for emails. Plaintext emails get the .txt file extension.
 
-   Default
-         {$styles.content.loginform.redirectFirstMethod}
+        ..  confval:: email.layoutRootPaths
+            :name: typoscript-email.layoutRootPaths
+            :type: array
+            :default: {$styles.content.loginform.email.layoutRootPath}
 
-   Description
-         If set the first method from redirectMode which is possible will be
-         used
+            Path to layout directory used for emails
 
+        ..  confval:: email.templateRootPaths
+            :name: typoscript-email.templateRootPaths
+            :type: array
+            :default: {$styles.content.loginform.email.templateRootPaths}
 
+            Path to template directory used for emails
 
-.. _redirectpagelogin:
+        ..  confval:: email.partialRootPaths
+            :name: typoscript-email.partialRootPaths
+            :type: array
+            :default: {$styles.content.loginform.email.partialRootPaths}
 
-redirectPageLogin
------------------
+            Path to partial directory used for emails
 
-.. container:: table-row
+    ..  confval:: exposeNonexistentUserInForgotPasswordDialog
+        :name: typoscript-exposeNonexistentUserInForgotPasswordDialog
+        :type: bool
+        :default: {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog}
 
-   Property
-         redirectPageLogin
-
-   Data type
-         integer
-
-   Default
-         {$styles.content.loginform.redirectPageLogin}
-
-   Description
-         Page id to redirect to after Login
-
-
-
-.. _redirectpageloginerror:
-
-redirectPageLoginError
-----------------------
-
-.. container:: table-row
-
-   Property
-         redirectPageLoginError
-
-   Data type
-         integer
-
-   Default
-         {$styles.content.loginform.redirectPageLoginError}
-
-   Description
-         Page id to redirect to after Login Error
-
-
-
-.. _redirectpagelogout:
-
-redirectPageLogout
-------------------
-
-.. container:: table-row
-
-   Property
-         redirectPageLogout
-
-   Data type
-         integer
-
-   Default
-         {$styles.content.loginform.redirectPageLogout}
-
-   Description
-         Page id to redirect to after Logout
-
-
-
-.. _redirectdisable:
-
-redirectDisable
----------------
-
-.. container:: table-row
-
-   Property
-         redirectDisable
-
-   Data type
-         bool
-
-   Default
-         {$styles.content.loginform.redirectDisable}
-
-   Description
-         If set redirecting is disabled
-
-
-
-.. _dateformat:
-
-dateFormat
-----------
-
-.. container:: table-row
-
-   Property
-         dateFormat
-
-   Data type
-         date-conf
-
-   Default
-         Y-m-d H:i
-
-   Description
-         Format for the link is valid until message (forgot password email)
-
-
-
-.. _email-from:
-
-email\_from
------------
-
-.. container:: table-row
-
-   Property
-         email\_from
-
-   Data type
-         string
-
-   Description
-         Email address used as sender of the change password emails
-
-
-
-.. _email-fromname:
-
-email\_fromName
----------------
-
-.. container:: table-row
-
-   Property
-         email\_fromName
-
-   Data type
-         string
-
-   Description
-         Name used as sender of the change password emails
-
-
-
-email.templateName
-------------------
-
-.. container:: table-row
-
-   Property
-         email.templateName
-
-   Data type
-         string
-
-   Default
-         {$styles.content.loginform.email.templateName}
-
-   Description
-         Template name for emails. Plaintext emails get the .txt file extension.
-
-
-
-email.layoutRootPaths
----------------------
-
-.. container:: table-row
-
-   Property
-         email.layoutRootPaths
-
-   Data type
-         array
-
-   Default
-         {$styles.content.loginform.email.layoutRootPath}
-
-   Description
-         Path to layout directory used for emails
-
-
-
-email.templateRootPaths
------------------------
-
-.. container:: table-row
-
-   Property
-         email.templateRootPaths
-
-   Data type
-         array
-
-   Default
-         {$styles.content.loginform.email.templateRootPaths}
-
-   Description
-         Path to template directory used for emails
-
-
-
-email.partialRootPaths
-----------------------
-
-.. container:: table-row
-
-   Property
-         email.partialRootPaths
-
-   Data type
-         array
-
-   Default
-         {$styles.content.loginform.email.partialRootPaths}
-
-   Description
-         Path to partial directory used for emails
-
-
-
-exposeNonexistentUserInForgotPasswordDialog
--------------------------------------------
-
-.. container:: table-row
-
-   Property
-         exposeNonexistentUserInForgotPasswordDialog
-
-   Data type
-         bool
-
-   Default
-         {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog}
-
-   Description
-         If set and the user account cannot be found in the forgot password
-         dialogue, an error message will be shown that the account could not be
-         found.
-
-         .. warning::
-
+        If set and the user account cannot be found in the forgot password
+        dialogue, an error message will be shown that the account could not be
+        found.
+        ..  warning::
             Enabling this will disclose information about whether an
             email address is actually used for a frontend user account! Visitors
             can find out if a user is known as frontend user.
 
+    ..  confval:: forgotLinkHashValidTime
+        :name: typoscript-forgotLinkHashValidTime
+        :type: integer
+        :default: {$styles.content.loginform.forgotLinkHashValidTime}
 
+        Time in hours how long the link for forgot password is valid
 
-forgotLinkHashValidTime
------------------------
+    ..  _domains:
 
-.. container:: table-row
+    ..  confval:: domains
+        :name: typoscript-domains
+        :type: string
 
-   Property
-         forgotLinkHashValidTime
-
-   Data type
-         integer
-
-   Default
-         {$styles.content.loginform.forgotLinkHashValidTime}
-
-   Description
-         Time in hours how long the link for forgot password is valid
-
-
-
-.. _domains:
-
-domains
--------
-
-.. container:: table-row
-
-   Property
-         domains
-
-   Data type
-         string
-
-   Description
-         Comma separated list of domains which are allowed for the referrer
-         redirect mode
+        Comma separated list of domains which are allowed for the referrer
+        redirect mode
