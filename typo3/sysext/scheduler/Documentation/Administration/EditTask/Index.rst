@@ -13,7 +13,6 @@ When adding or editing a task, the following form will show up:
 
    Adding a new scheduled task
 
-
 Some fields require additional explanations (inline help is
 available by moving the mouse over the field labels):
 
@@ -28,6 +27,13 @@ available by moving the mouse over the field labels):
 
    Select the class of the scheduled task
 
+..  versionadded:: 13.3
+    Similar to editing regular content elements, it is now possible to save
+    scheduler tasks being edited via keyboard shortcuts as well.
+
+It is possible to invoke the :kbd:`Ctrl`/:kbd:`Cmd` + :kbd:`s` hotkey to save a
+scheduler task, altogether with the hotkey :kbd:`Ctrl`/:kbd:`Cmd` + :kbd:`Shift` + :kbd:`S`
+to save and close a scheduler task.
 
 - A task must have a start date. The end date is not mandatory, though.
   A task without end date will run forever. Dates and times must be
