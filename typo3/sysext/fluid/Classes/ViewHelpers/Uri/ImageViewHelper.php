@@ -102,6 +102,25 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *    <f:uri.image src="NonExistingImage.png" />
  *
  * ``Could not get image resource for "NonExistingImage.png".``
+ *
+ * Base 64
+ * =======
+ *
+ * When the :typo3:viewhelper-argument:`base64 <t3viewhelper:typo3-cms-fluid-viewhelpers-uri-imageviewhelper-base64>`
+ * argument is set to true, this ViewHelper returns a base 64 encoded version of the ressource.
+ *
+ * ..  code-block:: html
+ *
+ *     <img src="{f:uri.image(base64: 'true',
+ *                            src:'EXT:backend/Resources/Public/Images/typo3_logo_orange.svg')}">
+ *
+ * Will return the image encoded in base64:
+ *
+ * ..  code-block:: html
+ *
+ *     <img src="data:image/svg+xml;base64,PHN2...cuODQ4LTYuNzU3Ii8+Cjwvc3ZnPgo=">
+ *
+ * This can be particularly useful inside `FluidEmail` or to prevent unneeded HTTP calls.
  */
 final class ImageViewHelper extends AbstractViewHelper
 {
@@ -123,7 +142,7 @@ final class ImageViewHelper extends AbstractViewHelper
         $this->registerArgument('maxWidth', 'int', 'maximum width of the image');
         $this->registerArgument('maxHeight', 'int', 'maximum height of the image');
         $this->registerArgument('absolute', 'bool', 'Force absolute URL', false, false);
-        $this->registerArgument('base64', 'bool', 'Base64 encode the image', false, false);
+        $this->registerArgument('base64', 'bool', 'Return a base64 encoded version of the image', false, false);
     }
 
     /**
