@@ -28,7 +28,6 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
@@ -57,6 +56,7 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
  * Concrete implementation of the FormPersistenceManagerInterface
  *
  * Scope: frontend / backend
+ * @internal
  */
 class FormPersistenceManager implements FormPersistenceManagerInterface
 {
@@ -93,7 +93,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $request = $GLOBALS['TYPO3_REQUEST'];
         } else {
             $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-            $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         }
         $configurationManager->setRequest($request);
         $this->formSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
@@ -105,8 +104,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Load the array formDefinition identified by $persistenceIdentifier,
      * let event listeners modify it, override it by TypoScript settings, and
      * return it. Only files with the extension .yaml or .form.yaml are loaded.
-     *
-     * @internal
      */
     public function load(string $persistenceIdentifier): array
     {
@@ -149,7 +146,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * is set to true.
      *
      * @throws PersistenceManagerException
-     * @internal
      */
     public function save(string $persistenceIdentifier, array $formDefinition)
     {
@@ -186,7 +182,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Only files with the extension .form.yaml are removed.
      *
      * @throws PersistenceManagerException
-     * @internal
      */
     public function delete(string $persistenceIdentifier)
     {
@@ -221,7 +216,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * Check whether a form with the specified $persistenceIdentifier exists
      *
      * @return bool TRUE if a form with the given $persistenceIdentifier can be loaded, otherwise FALSE
-     * @internal
      */
     public function exists(string $persistenceIdentifier): bool
     {
@@ -248,7 +242,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * and 'persistenceIdentifier' (the unique identifier for the Form Persistence Manager e.g. the path to the saved form definition).
      *
      * @return array in the format [['name' => 'Form 01', 'persistenceIdentifier' => 'path1'], [ .... ]]
-     * @internal
      */
     public function listForms(): array
     {
@@ -321,8 +314,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
 
     /**
      * Check if any form definition is available
-     *
-     * @internal
      */
     public function hasForms(): bool
     {
@@ -344,71 +335,14 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * Retrieves yaml files from storage folders for further processing.
-     * At this time it's not determined yet, whether these files contain form data.
-     *
-     * @return File[]
-     * @internal
-     */
-    public function retrieveYamlFilesFromStorageFolders(): array
-    {
-        $filesFromStorageFolders = [];
-
-        $fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
-        $fileExtensionFilter->setAllowedFileExtensions(['yaml']);
-
-        foreach ($this->getAccessibleFormStorageFolders() as $folder) {
-            $storage = $folder->getStorage();
-            $storage->setFileAndFolderNameFilters([
-                [$fileExtensionFilter, 'filterFileList'],
-            ]);
-
-            $files = $folder->getFiles(
-                0,
-                0,
-                Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS,
-                true
-            );
-            $filesFromStorageFolders = array_merge($filesFromStorageFolders, array_values($files));
-            $storage->resetFileAndFolderNameFiltersToDefault();
-        }
-
-        return $filesFromStorageFolders;
-    }
-
-    /**
-     * Retrieves yaml files from extension folders for further processing.
-     * At this time it's not determined yet, whether these files contain form data.
-     *
-     * @return string[]
-     * @internal
-     */
-    public function retrieveYamlFilesFromExtensionFolders(): array
-    {
-        $filesFromExtensionFolders = [];
-
-        foreach ($this->getAccessibleExtensionFolders() as $relativePath => $fullPath) {
-            foreach (new \DirectoryIterator($fullPath) as $fileInfo) {
-                if ($fileInfo->getExtension() !== 'yaml') {
-                    continue;
-                }
-                $filesFromExtensionFolders[] = $relativePath . $fileInfo->getFilename();
-            }
-        }
-
-        return $filesFromExtensionFolders;
-    }
-
-    /**
      * Return a list of all accessible file mountpoints for the
      * current backend user.
      *
-     * Only registered mountpoints from
+     * Only registered mount points from
      * persistenceManager.allowedFileMounts
      * are listed.
      *
      * @return Folder[]
-     * @internal
      */
     public function getAccessibleFormStorageFolders(): array
     {
@@ -475,11 +409,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Return a list of all accessible extension folders
      *
-     * Only registered mountpoints from
+     * Only registered mount points from
      * persistenceManager.allowedExtensionPaths
      * are listed.
-     *
-     * @internal
      */
     public function getAccessibleExtensionFolders(): array
     {
@@ -524,7 +456,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      * @param string $formIdentifier lowerCamelCased form identifier
      * @return string unique form persistence identifier
      * @throws NoUniquePersistenceIdentifierException
-     * @internal
      */
     public function getUniquePersistenceIdentifier(string $formIdentifier, string $savePath): string
     {
@@ -557,7 +488,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      *
      * @return string unique form identifier
      * @throws NoUniqueIdentifierException
-     * @internal
      */
     public function getUniqueIdentifier(string $identifier): string
     {
@@ -581,11 +511,108 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * Check if an identifier is already used by a formDefinition.
-     *
-     * @internal
+     * Check if a persistence path or if a persistence identifier path
+     * is configured within the form setup
+     * (persistenceManager.allowedExtensionPaths / persistenceManager.allowedFileMounts).
+     * If the input is a persistence identifier an additional check for a
+     * valid file extension will be performed.
      */
-    public function checkForDuplicateIdentifier(string $identifier): bool
+    public function isAllowedPersistencePath(string $persistencePath): bool
+    {
+        $pathinfo = PathUtility::pathinfo($persistencePath);
+        $persistencePathIsFile = isset($pathinfo['extension']);
+        if ($persistencePathIsFile
+            && $this->pathIsIntendedAsExtensionPath($persistencePath)
+            && $this->hasValidFileExtension($persistencePath)
+            && $this->isFileWithinAccessibleExtensionFolders($persistencePath)
+        ) {
+            return true;
+        }
+        if ($persistencePathIsFile
+            && $this->pathIsIntendedAsFileMountPath($persistencePath)
+            && $this->hasValidFileExtension($persistencePath)
+            && $this->isFileWithinAccessibleFormStorageFolders($persistencePath)
+        ) {
+            return true;
+        }
+        if (!$persistencePathIsFile
+            && $this->pathIsIntendedAsExtensionPath($persistencePath)
+            && $this->isAccessibleExtensionFolder($persistencePath)
+        ) {
+            return true;
+        }
+        if (!$persistencePathIsFile
+            && $this->pathIsIntendedAsFileMountPath($persistencePath)
+            && $this->isAccessibleFormStorageFolder($persistencePath)
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hasValidFileExtension(string $fileName): bool
+    {
+        return str_ends_with($fileName, self::FORM_DEFINITION_FILE_EXTENSION);
+    }
+
+    /**
+     * Retrieves yaml files from extension folders for further processing.
+     * At this time it's not determined yet, whether these files contain form data.
+     *
+     * @return string[]
+     */
+    protected function retrieveYamlFilesFromExtensionFolders(): array
+    {
+        $filesFromExtensionFolders = [];
+
+        foreach ($this->getAccessibleExtensionFolders() as $relativePath => $fullPath) {
+            foreach (new \DirectoryIterator($fullPath) as $fileInfo) {
+                if ($fileInfo->getExtension() !== 'yaml') {
+                    continue;
+                }
+                $filesFromExtensionFolders[] = $relativePath . $fileInfo->getFilename();
+            }
+        }
+
+        return $filesFromExtensionFolders;
+    }
+
+    /**
+     * Retrieves yaml files from storage folders for further processing.
+     * At this time it's not determined yet, whether these files contain form data.
+     *
+     * @return File[]
+     */
+    protected function retrieveYamlFilesFromStorageFolders(): array
+    {
+        $filesFromStorageFolders = [];
+
+        $fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
+        $fileExtensionFilter->setAllowedFileExtensions(['yaml']);
+
+        foreach ($this->getAccessibleFormStorageFolders() as $folder) {
+            $storage = $folder->getStorage();
+            $storage->setFileAndFolderNameFilters([
+                [$fileExtensionFilter, 'filterFileList'],
+            ]);
+
+            $files = $folder->getFiles(
+                0,
+                0,
+                Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS,
+                true
+            );
+            $filesFromStorageFolders = array_merge($filesFromStorageFolders, array_values($files));
+            $storage->resetFileAndFolderNameFiltersToDefault();
+        }
+
+        return $filesFromStorageFolders;
+    }
+
+    /**
+     * Check if an identifier is already used by a formDefinition.
+     */
+    protected function checkForDuplicateIdentifier(string $identifier): bool
     {
         $identifierUsed = false;
         foreach ($this->listForms() as $formDefinition) {
@@ -595,54 +622,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             }
         }
         return $identifierUsed;
-    }
-
-    /**
-     * Check if a persistence path or if a persistence identifier path
-     * is configured within the form setup
-     * (persistenceManager.allowedExtensionPaths / persistenceManager.allowedFileMounts).
-     * If the input is a persistence identifier an additional check for a
-     * valid file extension will be performed.
-     * .
-     * @internal
-     */
-    public function isAllowedPersistencePath(string $persistencePath): bool
-    {
-        $pathinfo = PathUtility::pathinfo($persistencePath);
-        $persistencePathIsFile = isset($pathinfo['extension']);
-
-        if (
-            $persistencePathIsFile
-            && $this->pathIsIntendedAsExtensionPath($persistencePath)
-            && $this->hasValidFileExtension($persistencePath)
-            && $this->isFileWithinAccessibleExtensionFolders($persistencePath)
-        ) {
-            return true;
-        }
-        if (
-            $persistencePathIsFile
-            && $this->pathIsIntendedAsFileMountPath($persistencePath)
-            && $this->hasValidFileExtension($persistencePath)
-            && $this->isFileWithinAccessibleFormStorageFolders($persistencePath)
-        ) {
-            return true;
-        }
-        if (
-            !$persistencePathIsFile
-            && $this->pathIsIntendedAsExtensionPath($persistencePath)
-            && $this->isAccessibleExtensionFolder($persistencePath)
-        ) {
-            return true;
-        }
-        if (
-            !$persistencePathIsFile
-            && $this->pathIsIntendedAsFileMountPath($persistencePath)
-            && $this->isAccessibleFormStorageFolder($persistencePath)
-        ) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -884,14 +863,6 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $message = sprintf('The file "%s" could not be loaded. Please check your configuration option "persistenceManager.allowedExtensionPaths"', $persistenceIdentifier);
             throw new PersistenceManagerException($message, 1484071985);
         }
-    }
-
-    /**
-     * @internal only to be used within TYPO3 Core, not part of TYPO3 Core API
-     */
-    public function hasValidFileExtension(string $fileName): bool
-    {
-        return str_ends_with($fileName, self::FORM_DEFINITION_FILE_EXTENSION);
     }
 
     protected function isFileWithinAccessibleExtensionFolders(string $fileName): bool

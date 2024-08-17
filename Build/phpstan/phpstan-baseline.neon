@@ -1191,24 +1191,9 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Controller/FormEditorController.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Persistence\\\\FormPersistenceManagerInterface\\:\\:isAllowedPersistencePath\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/form/Classes/Controller/FormEditorController.php
-
-		-
 			message: "#^Parameter \\#1 \\$namespace of method TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:addInlineSettingArray\\(\\) expects string, null given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Controller/FormEditorController.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Persistence\\\\FormPersistenceManagerInterface\\:\\:getUniqueIdentifier\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/form/Classes/Controller/FormManagerController.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Persistence\\\\FormPersistenceManagerInterface\\:\\:isAllowedPersistencePath\\(\\)\\.$#"
-			count: 5
-			path: ../../typo3/sysext/form/Classes/Controller/FormManagerController.php
 
 		-
 			message: "#^Result of && is always false\\.$#"
@@ -1254,11 +1239,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Model\\\\Renderable\\\\RenderableInterface\\:\\:getRootForm\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Hooks/FormElementHooks.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Persistence\\\\FormPersistenceManagerInterface\\:\\:hasValidFileExtension\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Hooks/FormPagePreviewRenderer.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Persistence\\\\FormPersistenceManager\\:\\:getOrCreateFile\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"

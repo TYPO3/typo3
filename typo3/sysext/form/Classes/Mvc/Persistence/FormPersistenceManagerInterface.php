@@ -66,6 +66,11 @@ interface FormPersistenceManagerInterface
     public function listForms(): array;
 
     /**
+     * Check if any form definition is available
+     */
+    public function hasForms(): bool;
+
+    /**
      * Return a list of all accessible file mount points
      *
      * @return Folder[]
@@ -82,13 +87,9 @@ interface FormPersistenceManagerInterface
      */
     public function getUniquePersistenceIdentifier(string $formIdentifier, string $savePath): string;
 
-    /**
-     * Check if an identifier is already used by a formDefinition.
-     */
-    public function checkForDuplicateIdentifier(string $identifier): bool;
+    public function getUniqueIdentifier(string $identifier): string;
 
-    /**
-     * Check if any form definition is available
-     */
-    public function hasForms(): bool;
+    public function isAllowedPersistencePath(string $persistencePath): bool;
+
+    public function hasValidFileExtension(string $fileName): bool;
 }
