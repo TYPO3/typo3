@@ -43,15 +43,7 @@ final class FilePersistenceSlot implements SingletonInterface
     public const COMMAND_FILE_REPLACE = 'fileReplace';
     public const COMMAND_FILE_SET_CONTENTS = 'fileSetContents';
 
-    /**
-     * @var array
-     */
-    protected $definedInvocations = [];
-
-    /**
-     * @var array
-     */
-    protected $allowedInvocations = [];
+    protected array $allowedInvocations = [];
 
     public function __construct(private readonly HashService $hashService) {}
 
@@ -61,114 +53,58 @@ final class FilePersistenceSlot implements SingletonInterface
     }
 
     /**
-     * Defines invocations on command level only depending on the type:
-     *
-     * + true: whitelist command, takes precedence over $allowedInvocations
-     * + false: blacklist command, takes precedence over $allowedInvocations
-     * + removes previously definition for particular command
-     *
-     * @param string $command
-     * @param bool|null $type
-     */
-    public function defineInvocation(string $command, ?bool $type = null)
-    {
-        $this->definedInvocations[$command] = $type;
-        if ($type === null) {
-            unset($this->definedInvocations[$command]);
-        }
-    }
-
-    /**
      * Allows invocation for a particular combination of command and file
-     * identifier. Commands providing new content have have to submit a HMAC
+     * identifier. Commands providing new content have to submit a HMAC
      * signature on the content as well.
      *
      * @see getContentSignature
      */
-    public function allowInvocation(
-        string $command,
-        string $combinedFileIdentifier,
-        ?string $contentSignature = null
-    ): bool {
-        $index = $this->searchAllowedInvocation(
-            $command,
-            $combinedFileIdentifier,
-            $contentSignature
-        );
-
+    public function allowInvocation(string $command, string $combinedFileIdentifier, ?string $contentSignature = null): bool
+    {
+        $index = $this->searchAllowedInvocation($command, $combinedFileIdentifier, $contentSignature);
         if ($index !== null) {
             return false;
         }
-
         $this->allowedInvocations[] = [
             'command' => $command,
             'combinedFileIdentifier' => $combinedFileIdentifier,
             'contentSignature' => $contentSignature,
         ];
-
         return true;
     }
 
     #[AsEventListener('form-framework/creation')]
     public function onPreFileCreate(BeforeFileCreatedEvent $event): void
     {
-        $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $event->getFolder(),
-            $event->getFileName()
-        );
-
-        $this->assertFileName(
-            self::COMMAND_FILE_CREATE,
-            $combinedFileIdentifier
-        );
+        $combinedFileIdentifier = $this->buildCombinedIdentifier($event->getFolder(), $event->getFileName());
+        $this->assertFileName(self::COMMAND_FILE_CREATE, $combinedFileIdentifier);
     }
 
     #[AsEventListener('form-framework/add')]
     public function onPreFileAdd(BeforeFileAddedEvent $event): void
     {
-        $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $event->getTargetFolder(),
-            $event->getFileName()
-        );
-        // while assertFileName below also checks if it's a form definition
-        // we want an early return here to get rid of the file_get_contents
-        // below which would be triggered on every file add command otherwise
+        $combinedFileIdentifier = $this->buildCombinedIdentifier($event->getTargetFolder(), $event->getFileName());
+        // While assertFileName() below also checks if it's a form definition
+        // we want an early return here to not file_get_contents() below which
+        // would be triggered on every file add() command otherwise.
         if (!$this->isFormDefinition($combinedFileIdentifier)) {
             return;
         }
-        $this->assertFileName(
-            self::COMMAND_FILE_ADD,
-            $combinedFileIdentifier,
-            (string)file_get_contents($event->getSourceFilePath())
-        );
+        $this->assertFileName(self::COMMAND_FILE_ADD, $combinedFileIdentifier, (string)file_get_contents($event->getSourceFilePath()));
     }
 
     #[AsEventListener('form-framework/rename')]
     public function onPreFileRename(BeforeFileRenamedEvent $event): void
     {
-        $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $event->getFile()->getParentFolder(),
-            $event->getTargetFileName() ?? ''
-        );
-
-        $this->assertFileName(
-            self::COMMAND_FILE_RENAME,
-            $combinedFileIdentifier
-        );
+        $combinedFileIdentifier = $this->buildCombinedIdentifier($event->getFile()->getParentFolder(), $event->getTargetFileName() ?? '');
+        $this->assertFileName(self::COMMAND_FILE_RENAME, $combinedFileIdentifier);
     }
 
     #[AsEventListener('form-framework/replace')]
     public function onPreFileReplace(BeforeFileReplacedEvent $event): void
     {
-        $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $event->getFile()->getParentFolder(),
-            $event->getFile()->getName()
-        );
-
-        $this->assertFileName(
-            self::COMMAND_FILE_REPLACE,
-            $combinedFileIdentifier
-        );
+        $combinedFileIdentifier = $this->buildCombinedIdentifier($event->getFile()->getParentFolder(), $event->getFile()->getName());
+        $this->assertFileName(self::COMMAND_FILE_REPLACE, $combinedFileIdentifier);
     }
 
     #[AsEventListener('form-framework/move')]
@@ -183,94 +119,43 @@ final class FilePersistenceSlot implements SingletonInterface
             || $this->isRecycleFolder($event->getFolder())) {
             return;
         }
-
-        $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $event->getFolder(),
-            $event->getTargetFileName()
-        );
-
-        $this->assertFileName(
-            self::COMMAND_FILE_MOVE,
-            $combinedFileIdentifier
-        );
+        $combinedFileIdentifier = $this->buildCombinedIdentifier($event->getFolder(), $event->getTargetFileName());
+        $this->assertFileName(self::COMMAND_FILE_MOVE, $combinedFileIdentifier);
     }
 
     #[AsEventListener('form-framework/update-content')]
     public function onPreFileSetContents(BeforeFileContentsSetEvent $event): void
     {
-        $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $event->getFile()->getParentFolder(),
-            $event->getFile()->getName()
-        );
-
-        $this->assertFileName(
-            self::COMMAND_FILE_SET_CONTENTS,
-            $combinedFileIdentifier,
-            $event->getContent()
-        );
+        $combinedFileIdentifier = $this->buildCombinedIdentifier($event->getFile()->getParentFolder(), $event->getFile()->getName());
+        $this->assertFileName(self::COMMAND_FILE_SET_CONTENTS, $combinedFileIdentifier, $event->getContent());
     }
 
     /**
      * @throws FormDefinitionPersistenceException
      */
-    protected function assertFileName(
-        string $command,
-        string $combinedFileIdentifier,
-        ?string $content = null
-    ): void {
+    private function assertFileName(string $command, string $combinedFileIdentifier, ?string $content = null): void
+    {
         if (!$this->isFormDefinition($combinedFileIdentifier)) {
             return;
         }
-
-        $definedInvocation = $this->definedInvocations[$command] ?? null;
-        // whitelisted command
-        if ($definedInvocation === true) {
-            return;
-        }
-        // blacklisted command
-        if ($definedInvocation === false) {
-            throw new FormDefinitionPersistenceException(
-                sprintf(
-                    'Persisting form definition "%s" is denied',
-                    $combinedFileIdentifier
-                ),
-                1530281201
-            );
-        }
-
         $contentSignature = null;
         if ($content !== null) {
             $contentSignature = $this->getContentSignature($content);
         }
-        $allowedInvocationIndex = $this->searchAllowedInvocation(
-            $command,
-            $combinedFileIdentifier,
-            $contentSignature
-        );
-
+        $allowedInvocationIndex = $this->searchAllowedInvocation($command, $combinedFileIdentifier, $contentSignature);
         if ($allowedInvocationIndex === null) {
             throw new FormDefinitionPersistenceException(
-                sprintf(
-                    'Persisting form definition "%s" is denied',
-                    $combinedFileIdentifier
-                ),
+                sprintf('Persisting form definition "%s" is denied', $combinedFileIdentifier),
                 1530281202
             );
         }
         unset($this->allowedInvocations[$allowedInvocationIndex]);
     }
 
-    /**
-     * @param string|null $contentSignature
-     */
-    protected function searchAllowedInvocation(
-        string $command,
-        string $combinedFileIdentifier,
-        ?string $contentSignature = null
-    ): ?int {
+    private function searchAllowedInvocation(string $command, string $combinedFileIdentifier, ?string $contentSignature = null): ?int
+    {
         foreach ($this->allowedInvocations as $index => $allowedInvocation) {
-            if (
-                $command === $allowedInvocation['command']
+            if ($command === $allowedInvocation['command']
                 && $combinedFileIdentifier === $allowedInvocation['combinedFileIdentifier']
                 && $contentSignature === $allowedInvocation['contentSignature']
             ) {
@@ -280,22 +165,17 @@ final class FilePersistenceSlot implements SingletonInterface
         return null;
     }
 
-    protected function buildCombinedIdentifier(FolderInterface $folder, string $fileName): string
+    private function buildCombinedIdentifier(FolderInterface $folder, string $fileName): string
     {
-        return sprintf(
-            '%d:%s%s',
-            $folder->getStorage()->getUid(),
-            $folder->getIdentifier(),
-            $fileName
-        );
+        return sprintf('%d:%s%s', $folder->getStorage()->getUid(), $folder->getIdentifier(), $fileName);
     }
 
-    protected function isFormDefinition(string $identifier): bool
+    private function isFormDefinition(string $identifier): bool
     {
         return str_ends_with($identifier, FormPersistenceManagerInterface::FORM_DEFINITION_FILE_EXTENSION);
     }
 
-    protected function isRecycleFolder(FolderInterface $folder): bool
+    private function isRecycleFolder(FolderInterface $folder): bool
     {
         $role = $folder->getStorage()->getRole($folder);
         return $role === FolderInterface::ROLE_RECYCLER;
