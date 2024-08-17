@@ -103,7 +103,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertSame($expected, $subjectMock->_call('getAccessibleFormStorageFolders', true));
+        self::assertSame($expected, $subjectMock->_call('getAccessibleFormStorageFolders', [], true));
     }
 
     #[Test]
@@ -213,7 +213,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 'referenceCount' => 2,
             ],
         ];
-        self::assertSame($expected, $subjectMock->_call('getAvailableFormDefinitions'));
+        self::assertSame($expected, $subjectMock->_call('getAvailableFormDefinitions', []));
     }
 
     #[Test]

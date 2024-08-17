@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -49,9 +50,9 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->get(FlexFormService::class),
                 $this->get(FlexFormTools::class),
+                $this->createMock(ConfigurationManagerInterface::class),
             ],
         );
-
         $sheetIdentifier = md5(
             implode('', [
                 '1:/foo',
@@ -60,7 +61,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 'EmailToReceiver',
             ])
         );
-
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
@@ -99,7 +99,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ]),
         ];
-
         $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
@@ -113,7 +112,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ]);
-
         $subjectMock->_set('settings', [
             'overrideFinishers' => 0,
             'finishers' => [
@@ -126,7 +124,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ]);
-
         $input = [
             'identifier' => 'ext-form-identifier',
             'persistenceIdentifier' => '1:/foo',
@@ -144,7 +141,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-
         $expected = [
             'identifier' => 'ext-form-identifier',
             'persistenceIdentifier' => '1:/foo',
@@ -162,7 +158,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-
         self::assertSame($expected, $subjectMock->_call('overrideByFlexFormSettings', $input));
     }
 
@@ -178,9 +173,9 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->get(FlexFormService::class),
                 $this->get(FlexFormTools::class),
+                $this->createMock(ConfigurationManagerInterface::class),
             ],
         );
-
         $sheetIdentifier = md5(
             implode('', [
                 '1:/foo',
@@ -189,7 +184,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 'EmailToReceiver',
             ])
         );
-
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
@@ -228,7 +222,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ]),
         ];
-
         $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
@@ -255,7 +248,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ]);
-
         $subjectMock->_set('settings', [
             'overrideFinishers' => 1,
             'finishers' => [
@@ -271,7 +263,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ]);
-
         $input = [
             'persistenceIdentifier' => '1:/foo',
             'identifier' => 'ext-form-identifier',
@@ -289,7 +280,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-
         $expected = [
             'persistenceIdentifier' => '1:/foo',
             'identifier' => 'ext-form-identifier',
@@ -314,7 +304,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-
         self::assertSame($expected, $subjectMock->_call('overrideByFlexFormSettings', $input));
     }
 
@@ -330,6 +319,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->get(FlexFormService::class),
                 $this->get(FlexFormTools::class),
+                $this->createMock(ConfigurationManagerInterface::class),
             ],
         );
 
@@ -341,7 +331,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 'EmailToReceiver',
             ])
         );
-
         $request = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = (new Request($request));
         $contentObject = new ContentObjectRenderer();
@@ -380,7 +369,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ]),
         ];
-
         $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
@@ -402,7 +390,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ]);
-
         $mockController->_set('settings', [
             'overrideFinishers' => 1,
             'finishers' => [
@@ -418,7 +405,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ]);
-
         $input = [
             'persistenceIdentifier' => '1:/foo',
             'identifier' => 'ext-form-identifier',
@@ -436,7 +422,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-
         $expected = [
             'persistenceIdentifier' => '1:/foo',
             'identifier' => 'ext-form-identifier',
@@ -460,7 +445,6 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ],
         ];
-
         self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
 }

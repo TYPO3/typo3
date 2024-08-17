@@ -15,38 +15,33 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\EventListener;
+namespace TYPO3\CMS\Form\Tests\Functional\EventListener;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\EventListener\DataStructureIdentifierListener;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class DataStructureIdentifierListenerTest extends UnitTestCase
+final class DataStructureIdentifierListenerTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
+    protected bool $initializeDatabase = false;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $cacheManager = new CacheManager();
-        $cacheManager->registerCache(new NullFrontend('runtime'));
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-    }
+    protected array $coreExtensionsToLoad = [
+        'form',
+    ];
 
     #[Test]
     public function modifyIdentifiersReturnsIdentifierForNotMatchingScenario(): void
     {
         $givenIdentifier = ['aKey' => 'aValue'];
-
         $event = new AfterFlexFormDataStructureIdentifierInitializedEvent(
             [],
             'aTable',
@@ -54,9 +49,15 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
             [],
             $givenIdentifier,
         );
-
-        (new DataStructureIdentifierListener())->modifyDataStructureIdentifier($event);
-
+        $subject = new DataStructureIdentifierListener(
+            $this->createMock(FormPersistenceManagerInterface::class),
+            $this->createMock(ConfigurationService::class),
+            $this->createMock(TranslationService::class),
+            $this->createMock(FlashMessageService::class),
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            $this->createMock(ExtFormConfigurationManagerInterface::class),
+        );
+        $subject->modifyDataStructureIdentifier($event);
         self::assertSame($givenIdentifier, $event->getIdentifier());
     }
 
@@ -70,9 +71,15 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
             ['CType' => 'form_formframework'],
             [],
         );
-
-        (new DataStructureIdentifierListener())->modifyDataStructureIdentifier($event);
-
+        $subject = new DataStructureIdentifierListener(
+            $this->createMock(FormPersistenceManagerInterface::class),
+            $this->createMock(ConfigurationService::class),
+            $this->createMock(TranslationService::class),
+            $this->createMock(FlashMessageService::class),
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            $this->createMock(ExtFormConfigurationManagerInterface::class),
+        );
+        $subject->modifyDataStructureIdentifier($event);
         self::assertEquals(
             ['ext-form-persistenceIdentifier' => '', 'ext-form-overrideFinishers' => ''],
             $event->getIdentifier(),
@@ -106,7 +113,6 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
             'ext-form-persistenceIdentifier' => '1:user_upload/karl.yml',
             'ext-form-overrideFinishers' => '',
         ];
-
         $event = new AfterFlexFormDataStructureIdentifierInitializedEvent(
             [],
             'tt_content',
@@ -114,9 +120,15 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
             $row,
             $incomingIdentifier,
         );
-
-        (new DataStructureIdentifierListener())->modifyDataStructureIdentifier($event);
-
+        $subject = new DataStructureIdentifierListener(
+            $this->createMock(FormPersistenceManagerInterface::class),
+            $this->createMock(ConfigurationService::class),
+            $this->createMock(TranslationService::class),
+            $this->createMock(FlashMessageService::class),
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            $this->createMock(ExtFormConfigurationManagerInterface::class),
+        );
+        $subject->modifyDataStructureIdentifier($event);
         self::assertEquals($expected, $event->getIdentifier());
     }
 
@@ -143,7 +155,6 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
             'ext-form-persistenceIdentifier' => '',
             'ext-form-overrideFinishers' => 'enabled',
         ];
-
         $event = new AfterFlexFormDataStructureIdentifierInitializedEvent(
             [],
             'tt_content',
@@ -151,9 +162,15 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
             $row,
             [],
         );
-
-        (new DataStructureIdentifierListener())->modifyDataStructureIdentifier($event);
-
+        $subject = new DataStructureIdentifierListener(
+            $this->createMock(FormPersistenceManagerInterface::class),
+            $this->createMock(ConfigurationService::class),
+            $this->createMock(TranslationService::class),
+            $this->createMock(FlashMessageService::class),
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            $this->createMock(ExtFormConfigurationManagerInterface::class),
+        );
+        $subject->modifyDataStructureIdentifier($event);
         self::assertEquals($expected, $event->getIdentifier());
     }
 
@@ -162,75 +179,19 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
     {
         $dataStructure = ['foo' => 'bar'];
         $expected = $dataStructure;
-
         $event = new AfterFlexFormDataStructureParsedEvent(
             $dataStructure,
             [],
         );
-
-        (new DataStructureIdentifierListener())->modifyDataStructure($event);
-
-        self::assertEquals($expected, $event->getDataStructure());
-    }
-
-    #[DataProvider('modifyDataStructureDataProvider')]
-    #[Test]
-    public function modifyDataStructureAddsExistingFormItems(array $formDefinition, array $expectedItem): void
-    {
-        $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
-        $formPersistenceManagerMock->expects(self::atLeastOnce())->method('listForms')->willReturn([$formDefinition]);
-        GeneralUtility::addInstance(FormPersistenceManagerInterface::class, $formPersistenceManagerMock);
-
-        $incomingDataStructure = [
-            'sheets' => [
-                'sDEF' => [
-                    'ROOT' => [
-                        'el' => [
-                            'settings.persistenceIdentifier' => [
-                                'config' => [
-                                    'items' => [
-                                        0 => [
-                                            'label' => 'default, no value',
-                                            'value' => '',
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $expected = [
-            'sheets' => [
-                'sDEF' => [
-                    'ROOT' => [
-                        'el' => [
-                            'settings.persistenceIdentifier' => [
-                                'config' => [
-                                    'items' => [
-                                        0 => [
-                                            'label' => 'default, no value',
-                                            'value' => '',
-                                        ],
-                                        1 => $expectedItem,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $event = new AfterFlexFormDataStructureParsedEvent(
-            $incomingDataStructure,
-            ['ext-form-persistenceIdentifier' => ''],
+        $subject = new DataStructureIdentifierListener(
+            $this->createMock(FormPersistenceManagerInterface::class),
+            $this->createMock(ConfigurationService::class),
+            $this->createMock(TranslationService::class),
+            $this->createMock(FlashMessageService::class),
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            $this->createMock(ExtFormConfigurationManagerInterface::class),
         );
-
-        (new DataStructureIdentifierListener())->modifyDataStructure($event);
-
+        $subject->modifyDataStructure($event);
         self::assertEquals($expected, $event->getDataStructure());
     }
 
@@ -264,5 +225,68 @@ final class DataStructureIdentifierListenerTest extends UnitTestCase
                 ],
             ],
         ];
+    }
+
+    #[DataProvider('modifyDataStructureDataProvider')]
+    #[Test]
+    public function modifyDataStructureAddsExistingFormItems(array $formDefinition, array $expectedItem): void
+    {
+        $incomingDataStructure = [
+            'sheets' => [
+                'sDEF' => [
+                    'ROOT' => [
+                        'el' => [
+                            'settings.persistenceIdentifier' => [
+                                'config' => [
+                                    'items' => [
+                                        0 => [
+                                            'label' => 'default, no value',
+                                            'value' => '',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'sheets' => [
+                'sDEF' => [
+                    'ROOT' => [
+                        'el' => [
+                            'settings.persistenceIdentifier' => [
+                                'config' => [
+                                    'items' => [
+                                        0 => [
+                                            'label' => 'default, no value',
+                                            'value' => '',
+                                        ],
+                                        1 => $expectedItem,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $event = new AfterFlexFormDataStructureParsedEvent(
+            $incomingDataStructure,
+            ['ext-form-persistenceIdentifier' => ''],
+        );
+        $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
+        $formPersistenceManagerMock->expects(self::atLeastOnce())->method('listForms')->willReturn([$formDefinition]);
+        $subject = new DataStructureIdentifierListener(
+            $formPersistenceManagerMock,
+            $this->createMock(ConfigurationService::class),
+            $this->createMock(TranslationService::class),
+            $this->createMock(FlashMessageService::class),
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            $this->createMock(ExtFormConfigurationManagerInterface::class),
+        );
+        $subject->modifyDataStructure($event);
+        self::assertEquals($expected, $event->getDataStructure());
     }
 }

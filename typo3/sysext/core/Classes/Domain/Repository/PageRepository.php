@@ -168,6 +168,15 @@ class PageRepository implements LoggerAwareInterface
         if ($cacheEntry) {
             $this->where_hid_del = $cacheEntry;
         } else {
+            // @todo: This is bad. init() is called by __construct() which then performs stuff that
+            //        depends on DB setup being ready.
+            //        This makes early injection of PageRepository impossible - when DB does not
+            //        exist or has not been set up.
+            //        The acceptance tests with their early ext:styleguide for instance triggers
+            //        events that trigger this indirectly. See comment in ext:form DataStructureIdentifierListener,
+            //        it is the reason it declares some dependencies lazy.
+            //        After all, when PageRepository is injected, it must not by default start
+            //        preparing DB queries. This needs to vanish, the code must not be triggered by __construct().
             $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('pages')
                 ->expr();

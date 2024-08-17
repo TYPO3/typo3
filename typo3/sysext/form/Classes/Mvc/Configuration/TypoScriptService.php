@@ -27,14 +27,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * Scope: frontend
  */
 #[Autoconfigure(public: true)]
-class TypoScriptService
+readonly class TypoScriptService
 {
-    protected CoreTypoScriptService $coreTypoScriptService;
-
-    public function __construct(CoreTypoScriptService $coreTypoScriptService)
-    {
-        $this->coreTypoScriptService = $coreTypoScriptService;
-    }
+    public function __construct(
+        protected CoreTypoScriptService $coreTypoScriptService
+    ) {}
 
     /**
      * Parse a configuration with ContentObjectRenderer::cObjGetSingle()
@@ -46,8 +43,7 @@ class TypoScriptService
     {
         $configuration = $this->coreTypoScriptService->convertPlainArrayToTypoScriptArray($configuration);
         $configuration = $this->resolveTypoScriptConfiguration($configuration);
-        $configuration = $this->coreTypoScriptService->convertTypoScriptArrayToPlainArray($configuration);
-        return $configuration;
+        return $this->coreTypoScriptService->convertTypoScriptArrayToPlainArray($configuration);
     }
 
     /**
@@ -62,8 +58,6 @@ class TypoScriptService
      *     'value' => 'some value'
      *   ]
      * ]
-     *
-     * @param array $configuration
      */
     protected function resolveTypoScriptConfiguration(array $configuration = []): array
     {

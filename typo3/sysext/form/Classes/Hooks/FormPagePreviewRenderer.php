@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Hooks;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Core\Error\Exception;
@@ -27,6 +28,8 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
@@ -36,100 +39,105 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  * Contains a preview rendering for the page module of CType="form_formframework"
  * @internal
  */
+#[Autoconfigure(public: true)]
 class FormPagePreviewRenderer extends StandardContentPreviewRenderer
 {
     private const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
+
+    public function __construct(
+        protected readonly FlexFormService $flexFormService,
+        protected readonly FormPersistenceManagerInterface $formPersistenceManager,
+        protected readonly FlashMessageService $flashMessageService,
+        protected readonly ExtbaseConfigurationManagerInterface $extbaseConfigurationManager,
+        protected readonly ExtFormConfigurationManagerInterface $extFormConfigurationManager,
+    ) {}
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
         $row = $item->getRecord();
         $itemContent = $this->linkEditContent('<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong>', $row) . '<br />';
-
-        $flexFormData = GeneralUtility::makeInstance(FlexFormService::class)
-            ->convertFlexFormContentToArray($row['pi_flexform']);
-
+        $flexFormData = $this->flexFormService->convertFlexFormContentToArray($row['pi_flexform']);
         $persistenceIdentifier = $flexFormData['settings']['persistenceIdentifier'] ?? '';
+        $languageService = $this->getLanguageService();
         if (!empty($persistenceIdentifier)) {
             try {
-                $formPersistenceManager = GeneralUtility::makeInstance(FormPersistenceManagerInterface::class);
-
                 try {
-                    if (
-                        $formPersistenceManager->hasValidFileExtension($persistenceIdentifier)
-                        || PathUtility::isExtensionPath($persistenceIdentifier)
-                    ) {
-                        $formDefinition = $formPersistenceManager->load($persistenceIdentifier);
+                    if ($this->formPersistenceManager->hasValidFileExtension($persistenceIdentifier) || PathUtility::isExtensionPath($persistenceIdentifier)) {
+                        // The ConfigurationManager of ext:form needs ext:extbase ConfigurationManager to retrieve basic TS
+                        // settings (for "module.tx_form" allowed form storages). ConfigurationManager of extbase should *usually*
+                        // only be called in extbase context and needs a Request, which is usually set by extbase bootstrap.
+                        // We are however not in extbase context here.
+                        // To prevent a fallback of extbase ConfigurationManager to $GLOBALS['TYPO3_REQUEST'], we set
+                        // the request explicitly here, to then fetch $formSettings from ext:form ConfigurationManager.
+                        $request = $item->getContext()->getCurrentRequest();
+                        $this->extbaseConfigurationManager->setRequest($request);
+                        $formSettings = $this->extFormConfigurationManager->getConfiguration(ExtFormConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+                        $formDefinition = $this->formPersistenceManager->load($persistenceIdentifier, $formSettings, []);
                         $formLabel = $formDefinition['label'];
                     } else {
                         $formLabel = sprintf(
-                            $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                            $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
                             $persistenceIdentifier
                         );
                     }
                 } catch (ParseErrorException $e) {
                     $formLabel = sprintf(
-                        $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidPersistenceIdentifier'),
+                        $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidPersistenceIdentifier'),
                         $persistenceIdentifier
                     );
                 } catch (PersistenceManagerException $e) {
                     $formLabel = sprintf(
-                        $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                        $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
                         $persistenceIdentifier
                     );
                 } catch (Exception $e) {
                     $formLabel = sprintf(
-                        $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
+                        $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
                         $persistenceIdentifier
                     );
                 }
             } catch (NoSuchFileException $e) {
                 $this->addInvalidFrameworkConfigurationFlashMessage($persistenceIdentifier, $e);
                 $formLabel = sprintf(
-                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
+                    $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
                     $persistenceIdentifier
                 );
             } catch (ParseErrorException $e) {
                 $this->addInvalidFrameworkConfigurationFlashMessage($persistenceIdentifier, $e);
                 $formLabel = sprintf(
-                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration'),
+                    $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration'),
                     $persistenceIdentifier
                 );
             } catch (\Exception $e) {
                 // Top level catch - FAL throws top level exceptions on missing files, eg. in getFileInfoByIdentifier() of LocalDriver
                 $this->addInvalidFrameworkConfigurationFlashMessage($persistenceIdentifier, $e);
                 $formLabel = sprintf(
-                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
+                    $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
                     $persistenceIdentifier,
                     $e->getMessage()
                 );
             }
         } else {
-            $formLabel = $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.noPersistenceIdentifier');
+            $formLabel = $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.noPersistenceIdentifier');
         }
-
-        $itemContent .= $this->linkEditContent(
-            htmlspecialchars($formLabel),
-            $row
-        ) . '<br />';
-
+        $itemContent .= $this->linkEditContent(htmlspecialchars($formLabel), $row) . '<br />';
         return $itemContent;
     }
 
     protected function addInvalidFrameworkConfigurationFlashMessage(string $persistenceIdentifier, \Exception $e): void
     {
-        $messageText = sprintf(
-            $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
-            $persistenceIdentifier,
-            $e->getMessage()
-        );
-
-        GeneralUtility::makeInstance(FlashMessageService::class)
+        $languageService = $this->getLanguageService();
+        $this->flashMessageService
             ->getMessageQueueByIdentifier('core.template.flashMessages')
             ->enqueue(
                 GeneralUtility::makeInstance(
                     FlashMessage::class,
-                    $messageText,
-                    $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.title'),
+                    sprintf(
+                        $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
+                        $persistenceIdentifier,
+                        $e->getMessage()
+                    ),
+                    $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.title'),
                     ContextualFeedbackSeverity::ERROR,
                     true
                 )

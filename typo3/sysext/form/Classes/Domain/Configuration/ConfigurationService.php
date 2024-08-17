@@ -45,9 +45,14 @@ use TYPO3\CMS\Form\Service\TranslationService;
 /**
  * Helper for configuration settings
  * Scope: frontend / backend
+ *
+ * @todo: Get rid of ConfigurationManagerInterface by handing over $formSettings to
+ *        methods instead to make the indirect dependency to Request explicit in consuming classes.
+ * @todo: Declare readonly when ConfigurationService is no longer injected lazy, or wait
+ *        for PHP 8.3 minimum for symfony to allow both lazy and readonly dependencies.
  */
 #[Autoconfigure(public: true)]
-readonly class ConfigurationService
+class ConfigurationService
 {
     public function __construct(
         protected ConfigurationManagerInterface $configurationManager,

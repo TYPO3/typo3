@@ -12,10 +12,6 @@ services:
     alias: TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManager
     public: true
 
-  TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface:
-    alias: TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager
-    public: true
-
   TYPO3\CMS\Form\SoftReference\FormPersistenceIdentifierSoftReferenceParser:
     tags:
       - name: softreference.parser

@@ -1,0 +1,13 @@
+identifier: ext-form-identifier
+prototypeName: standard
+label: 'Label'
+renderables:
+  -
+    identifier: page-1
+    type: Page
+    label: 'Label'
+    renderables:
+      -
+        identifier: text-1
+        type: Text
+        label: 'Label'

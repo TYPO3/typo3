@@ -839,10 +839,10 @@ those).
 
    In general, you can override each and every ``form definition`` with the help
    of TypoScript (see ':ref:`TypoScript overrides<concepts-frontendrendering-runtimemanipulation-typoscriptoverrides>`').
-   This feature is not supported when you are rendering forms via the ``RenderViewHelper``.
 
-   Luckily, there is a solution for your problem: use the ':ref:`overrideConfiguration<apireference-frontendrendering-renderviewHelper-overrideconfiguration>`'
-   parameter instead. This way, you can override the form definition within your template.
+   When using the ``RenderViewHelper``, there is a second way:
+   The ':ref:`overrideConfiguration<apireference-frontendrendering-renderviewHelper-overrideconfiguration>`' parameter.
+   This way, you can override the form definition within your template.
    Provide an according array as shown in the example below.
 
    .. code-block:: html

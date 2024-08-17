@@ -73,11 +73,11 @@ class FormManagerController extends ActionController
      */
     protected function indexAction(int $page = 1, string $searchTerm = ''): ResponseInterface
     {
-        $hasForms = $this->formPersistenceManager->hasForms();
-        $forms = $hasForms ? $this->getAvailableFormDefinitions(trim($searchTerm)) : [];
+        $formSettings = $this->getFormSettings();
+        $hasForms = $this->formPersistenceManager->hasForms($formSettings);
+        $forms = $hasForms ? $this->getAvailableFormDefinitions($formSettings, trim($searchTerm)) : [];
         $arrayPaginator = new ArrayPaginator($forms, $page, self::PAGINATION_MAX);
         $pagination = new SimplePagination($arrayPaginator);
-        $formSettings = $this->getFormSettings();
         $moduleTemplate = $this->initializeModuleTemplate($this->request, $page, $searchTerm);
         $moduleTemplate->assignMultiple([
             'paginator' => $arrayPaginator,
@@ -128,10 +128,10 @@ class FormManagerController extends ActionController
      */
     protected function createAction(string $formName, string $templatePath, string $prototypeName, string $savePath): ResponseInterface
     {
-        if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath)) {
+        $formSettings = $this->getFormSettings();
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Save to path "%s" is not allowed', $savePath), 1614500657);
         }
-        $formSettings = $this->getFormSettings();
         if (!$this->isValidTemplatePath($formSettings, $prototypeName, $templatePath)) {
             throw new FormException(sprintf('The template path "%s" is not allowed', $templatePath), 1329233410);
         }
@@ -141,9 +141,9 @@ class FormManagerController extends ActionController
         $templatePath = GeneralUtility::getFileAbsFileName($templatePath);
         $form = Yaml::parse((string)file_get_contents($templatePath));
         $form['label'] = $formName;
-        $form['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($this->convertFormNameToIdentifier($formName));
+        $form['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($formSettings, $this->convertFormNameToIdentifier($formName));
         $form['prototypeName'] = $prototypeName;
-        $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($form['identifier'], $savePath);
+        $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($form['identifier'], $savePath, $formSettings);
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormCreate'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'beforeFormCreate')) {
@@ -159,7 +159,7 @@ class FormManagerController extends ActionController
         ];
         $form = ArrayUtility::stripTagsFromValuesRecursive($form);
         try {
-            $this->formPersistenceManager->save($formPersistenceIdentifier, $form);
+            $this->formPersistenceManager->save($formPersistenceIdentifier, $form, $formSettings);
         } catch (PersistenceManagerException $e) {
             $response = [
                 'status' => 'error',
@@ -194,16 +194,17 @@ class FormManagerController extends ActionController
      */
     protected function duplicateAction(string $formName, string $formPersistenceIdentifier, string $savePath): ResponseInterface
     {
-        if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath)) {
+        $formSettings = $this->getFormSettings();
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Save to path "%s" is not allowed', $savePath), 1614500658);
         }
-        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Read of "%s" is not allowed', $formPersistenceIdentifier), 1614500659);
         }
-        $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier);
+        $formToDuplicate = $this->formPersistenceManager->load($formPersistenceIdentifier, $formSettings, []);
         $formToDuplicate['label'] = $formName;
-        $formToDuplicate['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($this->convertFormNameToIdentifier($formName));
-        $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($formToDuplicate['identifier'], $savePath);
+        $formToDuplicate['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($formSettings, $this->convertFormNameToIdentifier($formName));
+        $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($formToDuplicate['identifier'], $savePath, $formSettings);
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDuplicate'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'beforeFormDuplicate')) {
@@ -219,7 +220,7 @@ class FormManagerController extends ActionController
         ];
         $formToDuplicate = ArrayUtility::stripTagsFromValuesRecursive($formToDuplicate);
         try {
-            $this->formPersistenceManager->save($formPersistenceIdentifier, $formToDuplicate);
+            $this->formPersistenceManager->save($formPersistenceIdentifier, $formToDuplicate, $formSettings);
         } catch (PersistenceManagerException $e) {
             $response = [
                 'status' => 'error',
@@ -254,7 +255,8 @@ class FormManagerController extends ActionController
      */
     protected function referencesAction(string $formPersistenceIdentifier): ResponseInterface
     {
-        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+        $formSettings = $this->getFormSettings();
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Read from "%s" is not allowed', $formPersistenceIdentifier), 1614500660);
         }
         // referencesAction uses the extbase JsonView::class.
@@ -277,7 +279,8 @@ class FormManagerController extends ActionController
      */
     protected function deleteAction(string $formPersistenceIdentifier): ResponseInterface
     {
-        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+        $formSettings = $this->getFormSettings();
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Delete "%s" is not allowed', $formPersistenceIdentifier), 1614500661);
         }
         if (empty($this->databaseService->getReferencesByPersistenceIdentifier($formPersistenceIdentifier))) {
@@ -289,9 +292,8 @@ class FormManagerController extends ActionController
                     );
                 }
             }
-            $this->formPersistenceManager->delete($formPersistenceIdentifier);
+            $this->formPersistenceManager->delete($formPersistenceIdentifier, $formSettings);
         } else {
-            $formSettings = $this->getFormSettings();
             $controllerConfiguration = $this->translationService->translateValuesRecursive(
                 $formSettings['formManager']['controller'],
                 $formSettings['formManager']['translationFiles'] ?? []
@@ -327,17 +329,17 @@ class FormManagerController extends ActionController
      * are listed. This list will be reduced by the configured
      * mount points for the current backend user.
      */
-    protected function getAccessibleFormStorageFolders(bool $allowSaveToExtensionPaths): array
+    protected function getAccessibleFormStorageFolders(array $formSettings, bool $allowSaveToExtensionPaths): array
     {
         $preparedAccessibleFormStorageFolders = [];
-        foreach ($this->formPersistenceManager->getAccessibleFormStorageFolders() as $identifier => $folder) {
+        foreach ($this->formPersistenceManager->getAccessibleFormStorageFolders($formSettings) as $identifier => $folder) {
             $preparedAccessibleFormStorageFolders[] = [
                 'label' => $folder->getStorage()->isPublic() ? $folder->getPublicUrl() : $identifier,
                 'value' => $identifier,
             ];
         }
         if ($allowSaveToExtensionPaths) {
-            foreach ($this->formPersistenceManager->getAccessibleExtensionFolders() as $relativePath => $fullPath) {
+            foreach ($this->formPersistenceManager->getAccessibleExtensionFolders($formSettings) as $relativePath => $fullPath) {
                 $preparedAccessibleFormStorageFolders[] = [
                     'label' => $relativePath,
                     'value' => $relativePath,
@@ -354,6 +356,7 @@ class FormManagerController extends ActionController
     protected function getFormManagerAppInitialData(array $formSettings): array
     {
         $accessibleFormStorageFolders = $this->getAccessibleFormStorageFolders(
+            $formSettings,
             $formSettings['persistenceManager']['allowSaveToExtensionPaths'] ?? false
         );
         $formManagerAppInitialData = [
@@ -377,22 +380,20 @@ class FormManagerController extends ActionController
      * List all formDefinitions which can be loaded through t form persistence
      * manager. Enrich this data by a reference counter.
      */
-    protected function getAvailableFormDefinitions(string $searchTerm = ''): array
+    protected function getAvailableFormDefinitions(array $formSettings, string $searchTerm = ''): array
     {
         $allReferencesForFileUid = $this->databaseService->getAllReferencesForFileUid();
         $allReferencesForPersistenceIdentifier = $this->databaseService->getAllReferencesForPersistenceIdentifier();
         $availableFormDefinitions = [];
-        foreach ($this->formPersistenceManager->listForms() as $formDefinition) {
+        foreach ($this->formPersistenceManager->listForms($formSettings) as $formDefinition) {
             $referenceCount  = 0;
-            if (
-                isset($formDefinition['fileUid'])
+            if (isset($formDefinition['fileUid'])
                 && array_key_exists($formDefinition['fileUid'], $allReferencesForFileUid)
             ) {
                 $referenceCount = $allReferencesForFileUid[$formDefinition['fileUid']];
             } elseif (array_key_exists($formDefinition['persistenceIdentifier'], $allReferencesForPersistenceIdentifier)) {
                 $referenceCount = $allReferencesForPersistenceIdentifier[$formDefinition['persistenceIdentifier']];
             }
-
             $formDefinition['referenceCount'] = $referenceCount;
             if ($searchTerm === ''
                 || $this->valueContainsSearchTerm($formDefinition['name'], $searchTerm)

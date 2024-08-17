@@ -77,15 +77,16 @@ class FormEditorController extends ActionController
      */
     protected function indexAction(string $formPersistenceIdentifier, ?string $prototypeName = null): ResponseInterface
     {
-        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+        $formSettings = $this->getFormSettings();
+        if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Read "%s" is not allowed', $formPersistenceIdentifier), 1614500662);
         }
         if (PathUtility::isExtensionPath($formPersistenceIdentifier)
-            && !($this->getFormSettings()['persistenceManager']['allowSaveToExtensionPaths'] ?? false)
+            && !($formSettings['persistenceManager']['allowSaveToExtensionPaths'] ?? false)
         ) {
             throw new PersistenceManagerException('Edit an extension formDefinition is not allowed.', 1478265661);
         }
-        $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier);
+        $formDefinition = $this->formPersistenceManager->load($formPersistenceIdentifier, $formSettings, []);
         if ($prototypeName === null) {
             $prototypeName = $formDefinition['prototypeName'] ?? 'standard';
         } else {
@@ -188,10 +189,11 @@ class FormEditorController extends ActionController
             'status' => 'success',
         ];
         try {
-            if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
+            $formSettings = $this->getFormSettings();
+            if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
                 throw new PersistenceManagerException(sprintf('Save "%s" is not allowed', $formPersistenceIdentifier), 1614500663);
             }
-            $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition);
+            $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition, $formSettings);
             $prototypeConfiguration = $this->configurationService->getPrototypeConfiguration($formDefinition['prototypeName']);
             $formDefinition = $this->transformFormDefinitionForFormEditor($prototypeConfiguration, $formDefinition);
             $response['formDefinition'] = $formDefinition;
