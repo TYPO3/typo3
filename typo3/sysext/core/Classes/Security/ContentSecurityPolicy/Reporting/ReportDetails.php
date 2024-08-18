@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting;
 
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Disposition;
+
 /**
  * @internal
  */
@@ -37,6 +39,11 @@ class ReportDetails extends \ArrayObject implements \JsonSerializable
             array_map(self::toCamelCase(...), array_keys($details)),
             array_values($details)
         );
+    }
+
+    public function resolveDisposition(): Disposition
+    {
+        return Disposition::tryFrom($this['disposition'] ?? '') ?? Disposition::enforce;
     }
 
     protected static function toCamelCase(string $value): string

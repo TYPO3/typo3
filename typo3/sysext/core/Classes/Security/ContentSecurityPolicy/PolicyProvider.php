@@ -48,12 +48,15 @@ final class PolicyProvider
     /**
      * Provides the complete, dynamically mutated policy to be used in HTTP responses.
      */
-    public function provideFor(Scope $scope, ?ServerRequestInterface $request = null): Policy
-    {
+    public function provideFor(
+        Scope $scope,
+        Disposition $disposition = Disposition::enforce,
+        ?ServerRequestInterface $request = null,
+    ): Policy {
         // @todo add policy cache per scope
         $defaultPolicy = new Policy();
         $mutationCollections = iterator_to_array(
-            $this->mutationRepository->findByScope($scope),
+            $this->mutationRepository->findByScope($scope, $disposition),
             false
         );
         // add temporary(!) mutations that were collected during processing this request

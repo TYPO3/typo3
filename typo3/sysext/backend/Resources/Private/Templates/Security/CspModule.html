@@ -22,8 +22,10 @@
                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.callout.featureDisabled.message" />
             </p>
             <ul class="mb-0">
-                <f:for each="{configurationStatus.featureDisabled}" as="value" key="key">
-                    <li><code>security.{key}.enforceContentSecurityPolicy</code></li>
+                <f:for each="{configurationStatus.featureDisabled}" as="dispositions" key="scope">
+                    <f:for each="{dispositions}" as="disposition" iteration="iteration">
+                        <li><code>security.{scope}.{disposition}ContentSecurityPolicy</code></li>
+                    </f:for>
                 </f:for>
             </ul>
         </f:be.infobox>

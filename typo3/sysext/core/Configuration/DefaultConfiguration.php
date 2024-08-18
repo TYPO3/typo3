@@ -76,6 +76,7 @@ return [
             'security.backend.enforceReferrer' => true,
             'security.backend.enforceContentSecurityPolicy' => false,
             'security.frontend.enforceContentSecurityPolicy' => false,
+            'security.frontend.reportContentSecurityPolicy' => false,
             'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,
             'security.usePasswordPolicyForFrontendUsers' => false,
             'security.frontend.allowInsecureFrameOptionInShowImageController' => false,
