@@ -100,4 +100,41 @@ final class MapTest extends UnitTestCase
         self::assertSame($aValue, $map[$aKey]);
         self::assertSame($bValue, $map[$bKey]);
     }
+
+    #[Test]
+    public function mapCanBeAssignedToOtherMap(): void
+    {
+        $aKey = new \stdClass();
+        $aValue = new \stdClass();
+        $bKey = new \stdClass();
+        $bValue = new \stdClass();
+
+        $map = new Map();
+        $map[$aKey] = $aValue;
+        $otherMap = new Map();
+        $otherMap[$bKey] = $bValue;
+
+        $otherMap->assign($map);
+
+        self::assertCount(2, $otherMap);
+        self::assertSame($bValue, $otherMap[$bKey]);
+        self::assertSame($aValue, $otherMap[$aKey]);
+    }
+
+    #[Test]
+    public function mapKeysAndValuesAreFetched(): void
+    {
+        $aKey = new \stdClass();
+        $aValue = new \stdClass();
+        $bKey = new \stdClass();
+        $bValue = new \stdClass();
+
+        $map = Map::fromEntries(
+            [$aKey, $aValue],
+            [$bKey, $bValue],
+        );
+
+        self::assertSame([$aKey, $bKey], $map->keys());
+        self::assertSame([$aValue, $bValue], $map->values());
+    }
 }

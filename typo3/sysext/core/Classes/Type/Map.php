@@ -113,6 +113,38 @@ final class Map implements \ArrayAccess, \Countable, \Iterator
         $this->storage->offsetUnset($offset);
     }
 
+    public function assign(self $source): void
+    {
+        if (count($source) === 0) {
+            return;
+        }
+        foreach ($source as $key => $value) {
+            $this[$key] = $value;
+        }
+    }
+
+    public function keys(): array
+    {
+        $keys = [];
+        $this->rewind();
+        while ($this->valid()) {
+            $keys[] = $this->key();
+            $this->next();
+        }
+        return $keys;
+    }
+
+    public function values(): array
+    {
+        $values = [];
+        $this->rewind();
+        while ($this->valid()) {
+            $values[] = $this->current();
+            $this->next();
+        }
+        return $values;
+    }
+
     public function count(): int
     {
         return count($this->storage);
