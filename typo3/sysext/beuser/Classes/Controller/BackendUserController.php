@@ -175,7 +175,7 @@ class BackendUserController extends ActionController
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $addUserButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
-            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.create', 'beuser'))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.backendUser.create', 'beuser'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
@@ -252,7 +252,7 @@ class BackendUserController extends ActionController
         $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         $addUserButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
-            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.create', 'beuser'))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.backendUser.create', 'beuser'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
@@ -303,7 +303,7 @@ class BackendUserController extends ActionController
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('backend_user_management')
             ->setArguments(['action' => 'compare'])
-            ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compareUsers', 'beuser'));
+            ->setDisplayName(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compareBackendUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         return $this->moduleTemplate->renderResponse('BackendUser/Compare');
@@ -377,7 +377,7 @@ class BackendUserController extends ActionController
         // terminating value of persisted session ID
         $success = $this->backendUserSessionRepository->terminateSessionByIdentifier($sessionId);
         if ($success) {
-            $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser') ?? '');
+            $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.online.flashMessage.terminateSessionSuccess', 'beuser') ?? '');
         }
         return new ForwardResponse('online');
     }
@@ -423,7 +423,7 @@ class BackendUserController extends ActionController
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $addGroupButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
-            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.create', 'beuser'))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.backendUserGroup.create', 'beuser'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_groups' => [0 => 'new']],

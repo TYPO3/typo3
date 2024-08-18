@@ -8,14 +8,25 @@
 
 <div class="table-fit">
     <table id="typo3-filemount-list" class="table table-striped table-hover">
+        <colgroup>
+            <col class="col-icon">
+            <col style="width: 20%;">
+        </colgroup>
+        <colgroup>
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+            <col class="col-min">
+            <col class="col-control">
+        </colgroup>
         <thead>
             <tr>
                 <th colspan="2"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.title" /></th>
                 <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description" /></th>
-                <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_storage" /> (Uid)</th>
+                <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_storage" /></th>
                 <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.identifier" /></th>
                 <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.read_only" /></th>
-                <th class="col-control"></th>
+                <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
             </tr>
         </thead>
         <tbody>
@@ -28,44 +39,62 @@
                             data-contextmenu-trigger="click"
                             data-contextmenu-table="sys_filemounts"
                             data-contextmenu-uid="{fileMount.uid}"
-                            title="{f:if(condition: '{fileMount.title}', then: '{fileMount.title} ')}(id={fileMount.uid})"
+                            title="{f:if(condition: '{fileMount.description}', then: '{fileMount.description} (id={fileMount.uid})', else: 'id={fileMount.uid}')}"
                             aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                         >
                             <beuser:spriteIconForRecord table="sys_filemounts" object="{fileMount}" />
                         </button>
                     </td>
-                    <td class="col-title">{fileMount.title}</td>
+                    <td>
+                        <backend:link.editRecord table="sys_filemounts" uid="{fileMount.uid}" title="{f:translate(key:'btn.edit')}">
+                            {fileMount.title}
+                        </backend:link.editRecord>
+                    </td>
                     <td>{fileMount.description}</td>
                     <td>
-                        <a href="{backend:moduleLink(route: 'media_management', query: 'id={fileMount.storage.uid}:/')}'">
-                            {fileMount.storage.name} <code>[{fileMount.storage.uid}]</code>
+                        <a
+                            href="{backend:moduleLink(route: 'media_management', query: 'id={fileMount.storage.uid}:/')}'"
+                            title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:filemount.link.openInFilelist')}"
+                        >
+                            {fileMount.storage.name}
                         </a>
                     </td>
                     <td>
-                        <a href="{backend:moduleLink(route: 'media_management', query: 'id={fileMount.storage.uid}:{fileMount.path}')}'">
+                        <a
+                            href="{backend:moduleLink(route: 'media_management', query: 'id={fileMount.storage.uid}:{fileMount.path}')}'"
+                            title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:filemount.link.openInFilelist')}"
+                        >
                             {fileMount.storage.configuration.basePath}{fileMount.path}
                         </a>
                     </td>
                     <td>
                         <f:if condition="{fileMount.readOnly} == true">
-                            <span class="text-success">
-                                <core:icon identifier="actions-check" />
-                            </span>
+                            <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:yes" />
                         </f:if>
                     </td>
                     <td class="col-control">
                         <div class="btn-group" role="group">
-                            <backend:link.editRecord class="btn btn-default" table="sys_filemounts" uid="{fileMount.uid}" title="{f:translate(key:'edit')}">
+                            <backend:link.editRecord class="btn btn-default" table="sys_filemounts" uid="{fileMount.uid}" title="{f:translate(key:'btn.edit')}">
                                 <core:icon identifier="actions-open" />
                             </backend:link.editRecord>
                             <f:if condition="{fileMount.hidden} == true">
                                 <f:then>
-                                    <a class="btn btn-default" href="{backend:moduleLink(route:'tce_db', query:'data[sys_filemounts][{fileMount.uid}][hidden]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.unhide')}">
+                                    <a
+                                        class="btn btn-default"
+                                        href="{backend:moduleLink(route:'tce_db', query:'data[sys_filemounts][{fileMount.uid}][hidden]=0', currentUrlParameterName:'redirect')}"
+                                        title="{f:translate(key:'btn.enable')}"
+                                        role="button"
+                                    >
                                         <core:icon identifier="actions-toggle-off" />
                                     </a>
                                 </f:then>
                                 <f:else>
-                                    <a class="btn btn-default" href="{backend:moduleLink(route:'tce_db', query:'data[sys_filemounts][{fileMount.uid}][hidden]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key:'visibility.hide')}">
+                                    <a
+                                        class="btn btn-default"
+                                        href="{backend:moduleLink(route:'tce_db', query:'data[sys_filemounts][{fileMount.uid}][hidden]=1', currentUrlParameterName:'redirect')}"
+                                        title="{f:translate(key:'btn.disable')}"
+                                        role="button"
+                                    >
                                         <core:icon identifier="actions-toggle-on" />
                                     </a>
                                 </f:else>
@@ -73,17 +102,25 @@
                             <a
                                 class="btn btn-default t3js-modal-trigger"
                                 href="{backend:moduleLink(route:'tce_db', query:'cmd[sys_filemounts][{fileMount.uid}][delete]=1', currentUrlParameterName:'redirect')}"
-                                title="{f:translate(key:'delete')}"
+                                title="{f:translate(key:'btn.delete')}"
                                 data-severity="warning"
                                 data-title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
                                 data-bs-content="{f:translate(key:'filemount.confirm.deletion',arguments:'{0:fileMount.title}')}"
                                 data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                                role="button"
                             >
                                 <core:icon identifier="actions-delete" />
                             </a>
                         </div>
                         <div class="btn-group" role="group">
-                            <a class="btn btn-default" href="#" title="{f:translate(key:'info')}" data-dispatch-action="TYPO3.InfoWindow.showItem" data-dispatch-args-list="sys_filemounts,{fileMount.uid}">
+                            <a
+                                class="btn btn-default"
+                                href="#"
+                                title="{f:translate(key:'btn.info')}"
+                                data-dispatch-action="TYPO3.InfoWindow.showItem"
+                                data-dispatch-args-list="sys_filemounts,{fileMount.uid}"
+                                role="button"
+                            >
                                 <core:icon identifier="actions-info" />
                             </a>
                         </div>
@@ -96,10 +133,10 @@
                 <td colspan="7">
                     <f:if condition="{totalAmountOfFilemounts} > 1" >
                         <f:then>
-                            <f:translate key="filemount.amount.multiple" arguments="{0:totalAmountOfFilemounts}" />
+                            {totalAmountOfFilemounts} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:filemount.amount.multiple" />
                         </f:then>
                         <f:else>
-                            <f:translate key="filemount.amount.singular" />
+                            {totalAmountOfFilemounts} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:filemount.amount.singular" />
                         </f:else>
                     </f:if>
                 </td>

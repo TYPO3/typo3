@@ -10,9 +10,9 @@
     <table id="typo3-backend-user-group-list" class="table table-striped table-hover">
         <thead>
             <tr>
-                <th colspan="2"><f:translate key="backendUserGroup" /></th>
-                <th><f:translate key="subGroups" /></th>
-                <th class="col-control"></th>
+                <th colspan="2"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.table.column.groupTitle" /></th>
+                <th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.list.table.column.subgroup" /></th>
+                <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
             </tr>
         </thead>
         <tbody>
@@ -25,26 +25,30 @@
                             data-contextmenu-trigger="click"
                             data-contextmenu-table="be_groups"
                             data-contextmenu-uid="{backendUserGroup.uid}"
-                            title="{f:if(condition: '{backendUserGroup.description}', then: '{backendUserGroup.description} ')}(id={backendUserGroup.uid})"
+                            title="{f:if(condition: '{backendUserGroup.description}', then: '{backendUserGroup.description} (id={backendUserGroup.uid})', else: 'id={backendUserGroup.uid}')}"
                             aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                         >
                             <beuser:spriteIconForRecord table="be_groups" object="{backendUserGroup}" />
                         </button>
                     </td>
-                    <td class="title">
-                        <backend:link.editRecord table="be_groups" uid="{backendUserGroup.uid}" title="{f:translate(key:'edit')}">
-                            <b>{backendUserGroup.title}</b><br>
-                            {backendUser.realName}
+                    <td class="col-50">
+                        <backend:link.editRecord table="be_groups" uid="{backendUserGroup.uid}" title="{f:translate(key:'btn.edit')}">
+                            {backendUserGroup.title}
                         </backend:link.editRecord>
                     </td>
-                    <td class="nowrap-disabled">
+                    <td class="col-50 nowrap-disabled">
                         <f:for each="{backendUserGroup.subgroups}" as="subgroup" iteration="subGroupIterator">
-                            <backend:link.editRecord table="be_groups" uid="{subgroup.uid}" title="{f:translate(key:'edit')}">{subgroup.title}</backend:link.editRecord><f:if condition="!{subGroupIterator.isLast}">,</f:if>
+                            <backend:link.editRecord table="be_groups" uid="{subgroup.uid}" title="{f:translate(key:'btn.edit')}">{subgroup.title}</backend:link.editRecord><f:if condition="!{subGroupIterator.isLast}">,</f:if>
                         </f:for>
                     </td>
                     <td class="col-control">
                         <div class="btn-group" role="group">
-                            <backend:link.editRecord class="btn btn-default" table="be_groups" uid="{backendUserGroup.uid}" title="{f:translate(key:'edit')}">
+                            <backend:link.editRecord
+                                class="btn btn-default"
+                                table="be_groups"
+                                uid="{backendUserGroup.uid}"
+                                title="{f:translate(key:'btn.edit')}"
+                            >
                                 <core:icon identifier="actions-open" />
                             </backend:link.editRecord>
                             <f:if condition="{backendUserGroup.hidden}">
@@ -52,7 +56,9 @@
                                     <a
                                         class="btn btn-default"
                                         href="{backend:moduleLink(route:'tce_db', query:'data[be_groups][{backendUserGroup.uid}][hidden]=0', currentUrlParameterName:'redirect')}"
-                                        title="{f:translate(key:'visibility.unhide')}">
+                                        title="{f:translate(key:'btn.enable')}"
+                                        role="button"
+                                    >
                                         <core:icon identifier="actions-edit-unhide" />
                                     </a>
                                 </f:then>
@@ -60,7 +66,9 @@
                                     <a
                                         class="btn btn-default"
                                         href="{backend:moduleLink(route:'tce_db', query:'data[be_groups][{backendUserGroup.uid}][hidden]=1', currentUrlParameterName:'redirect')}"
-                                        title="{f:translate(key:'visibility.hide')}">
+                                        title="{f:translate(key:'btn.disable')}"
+                                        role="button"
+                                    >
                                         <core:icon identifier="actions-edit-hide" />
                                     </a>
                                 </f:else>
@@ -74,7 +82,7 @@
                                 data-bs-content="{f:translate(key:'backendUserGroup.confirmDelete',arguments:'{0:backendUserGroup.title}')}"
                                 data-button-close-text="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
                                 data-button-ok-text="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.yes')}"
-                                title="{f:translate(key:'delete')}"
+                                title="{f:translate(key:'btn.delete')}"
                             >
                                 <core:icon identifier="actions-edit-delete"/>
                             </button>
@@ -83,21 +91,40 @@
                             </form>
                         </div>
                         <div class="btn-group" role="group">
-                            <a class="btn btn-default" href="#" data-dispatch-action="TYPO3.InfoWindow.showItem" data-dispatch-args-list="be_groups,{backendUserGroup.uid}">
+                            <a
+                                class="btn btn-default"
+                                href="#"
+                                title="{f:translate(key:'btn.info')}"
+                                data-dispatch-action="TYPO3.InfoWindow.showItem"
+                                data-dispatch-args-list="be_groups,{backendUserGroup.uid}"
+                                role="button"
+                            >
                                 <core:icon identifier="actions-document-info" />
                             </a>
                         </div>
                         <div class="btn-group" role="group">
                             <f:if condition="{compareGroupUidList.{backendUserGroup.uid}}">
                                 <f:then>
-                                    <f:link.action action="removeGroupFromCompareList" arguments="{uid: backendUserGroup.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
+                                    <f:link.action
+                                        action="removeGroupFromCompareList"
+                                        arguments="{uid: backendUserGroup.uid}"
+                                        class="btn btn-default"
+                                        title="{f:translate(key: 'btn.removeFromCompareList')}"
+                                        role="button"
+                                    >
                                         <core:icon identifier="actions-minus" size="small"/>
-                                        <f:translate key="compare" />
+                                        <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.compare" />
                                     </f:link.action>
                                 </f:then>
                                 <f:else>
-                                    <f:link.action action="addGroupToCompareList" arguments="{uid: backendUserGroup.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
-                                        <core:icon identifier="actions-plus" size="small"/> <f:translate key="compare" />
+                                    <f:link.action
+                                        action="addGroupToCompareList"
+                                        arguments="{uid: backendUserGroup.uid}"
+                                        class="btn btn-default"
+                                        title="{f:translate(key: 'btn.addToCompareList')}"
+                                        role="button"
+                                    >
+                                        <core:icon identifier="actions-plus" size="small"/> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.compare" />
                                     </f:link.action>
                                 </f:else>
                             </f:if>
@@ -110,8 +137,8 @@
             <tr>
                 <td colspan="4">
                     <f:if condition="{totalAmountOfBackendUserGroups} > 1">
-                        <f:then>{totalAmountOfBackendUserGroups} <f:translate key="groups" /></f:then>
-                        <f:else>{totalAmountOfBackendUserGroups} <f:translate key="group" /></f:else>
+                        <f:then>{totalAmountOfBackendUserGroups} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:groups" /></f:then>
+                        <f:else>{totalAmountOfBackendUserGroups} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:group" /></f:else>
                     </f:if>
                 </td>
             </tr>

@@ -100,7 +100,7 @@ final class ListUserCest
         }
         $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $expectedUsers);
 
-        $I->selectOption('#tx_Beuser_usertype', 'Admin only');
+        $I->selectOption('#tx_Beuser_usertype', 'Admin');
         $I->click('Filter');
         $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -108,7 +108,7 @@ final class ListUserCest
         // We expect exact two (composer-mode: three) fitting Backend Users created from the Fixtures
         $this->checkCountOfUsers($I, 2 + ($isComposerMode ? 1 : 0));
 
-        $I->selectOption('#tx_Beuser_usertype', 'Normal users only');
+        $I->selectOption('#tx_Beuser_usertype', 'Normal user');
         $I->click('Filter');
         $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -129,7 +129,7 @@ final class ListUserCest
         }
         $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $expectedUsers);
 
-        $I->selectOption('#tx_Beuser_status', 'Active only');
+        $I->selectOption('#tx_Beuser_status', 'Enabled');
         $I->click('Filter');
         $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -137,7 +137,7 @@ final class ListUserCest
         // We expect exact two (composer-mode three) fitting Backend Users created from the Fixtures
         $this->checkCountOfUsers($I, 2 + ($isComposerMode ? 1 : 0));
 
-        $I->selectOption('#tx_Beuser_status', 'Inactive only');
+        $I->selectOption('#tx_Beuser_status', 'Disabled');
         $I->click('Filter');
         $I->waitForElementNotVisible('div#nprogess');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -204,18 +204,14 @@ final class ListUserCest
         $I->click('button[value="reset-filters"]');
         $I->waitForElementVisible('#typo3-backend-user-list');
         $username = 'admin';
-        $adminRow = '//*[@id="typo3-backend-user-list"]//tr[contains(td[2]/a[1]/b[1], "' . $username . '")]';
+        $adminRow = '//*[@id="typo3-backend-user-list"]//tr[contains(td[2]/a, "' . $username . '")]';
 
         $I->amGoingTo('test the edit button');
         $I->click($adminRow . '//div[@role="group"]/a[@title="Edit"]');
         $this->openAndCloseTheEditForm($I, $username);
 
-        $I->amGoingTo('test the edit link on username');
-        $I->click($adminRow . '//td[@class="col-title"]/a[1]');
-        $this->openAndCloseTheEditForm($I, $username);
-
-        $I->amGoingTo('test the edit link on real name');
-        $I->click($adminRow . '//td[@class="col-title"]/a[2]');
+        $I->amGoingTo('test the edit link');
+        $I->click($adminRow . '//td[@class="col-50"]/a');
         $this->openAndCloseTheEditForm($I, $username);
     }
 

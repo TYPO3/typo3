@@ -39,7 +39,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:information.groups.th.groupTitle" /></th>
+                        <th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:information.groups.table.column.groupTitle" /></th>
                         <th{f:if(condition: '{hasColumnClasses}', then: ' class="col-min"')}><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compare.direct.direct" /></th>
                         <th{f:if(condition: '{hasColumnClasses}', then: ' class="col-min"')}><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compare.direct.inherit" /></th>
                     </tr>
@@ -62,7 +62,7 @@
                                 <backend:link.editRecord
                                     table="be_groups"
                                     uid="{group.row.uid}"
-                                    title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:link.editRecord')}"
+                                    title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.edit')}"
                                 >
                                     {group.row.title}
                                 </backend:link.editRecord>
@@ -104,7 +104,7 @@
                             <backend:link.editRecord
                                 table="pages"
                                 uid="{item.uid}"
-                                title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:link.editRecord')}"
+                                title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.edit')}"
                             >
                                 {item.title}
                             </backend:link.editRecord>
@@ -139,7 +139,7 @@
                             <backend:link.editRecord
                                 table="sys_filemounts"
                                 uid="{item.uid}"
-                                title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:link.editRecord')}"
+                                title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.edit')}"
                             >
                                 {item.title}
                             </backend:link.editRecord>
@@ -194,7 +194,7 @@
                             <backend:link.editRecord
                                 table="sys_category"
                                 uid="{item.uid}"
-                                title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:link.editRecord')}"
+                                title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.edit')}"
                             >
                                 {item.title}
                             </backend:link.editRecord>
@@ -229,7 +229,7 @@
                             <backend:link.editRecord
                                 table="sys_workspace"
                                 uid="{workspaces.record.uid}"
-                                title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:link.editRecord')}"
+                                title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.edit')}"
                             >{workspaces.record.title}</backend:link.editRecord>
                             (<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:information.defaultWorkspace" />)
                         </td>

@@ -9,84 +9,98 @@
 <f:layout name="Module" />
 <f:section name="Content">
 
-    <h1><f:translate key="onlineUsers" /></h1>
+    <h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.online.title" /></h1>
     <div class="table-fit">
-        <table class="table table-striped table-hover">
+        <table class="table beuser-online-table">
             <thead>
                 <tr>
-                    <th class="col-title" colspan="2"><f:translate key="userName" /> / <f:translate key="realName" /></th>
-                    <th class="col-datetime"><f:translate key="lastAccess" /></th>
-                    <th><f:translate key="ipAddress" /></th>
-                    <th class="col-control"></th>
+                    <th colspan="2"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:userName" /> / <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:realName" /></th>
+                    <th class="col-50"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.online.table.column.ipAddress" /></th>
+                    <th class="col-datetime"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.online.table.column.lastAccess" /></th>
+                    <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
                 </tr>
             </thead>
-            <tbody>
-                <f:for each="{onlineUsersAndSessions}" as="onlineUser">
-                    <f:for each="{onlineUser.sessions}" as="session" iteration="it">
-                        <tr>
-                            <f:if condition="{it.isFirst}">
+            <f:for each="{onlineUsersAndSessions}" as="onlineUser">
+                <tbody>
+                    <f:for each="{onlineUser.sessions}" as="session" iteration="backendUserIterator">
+                        <f:variable name="sessionAmount" value="{onlineUser.sessions -> f:count()}" />
+                        <tr{f:if(condition: '({sessionAmount} > 1) && !{backendUserIterator.isFirst}', then: ' class="beuser-online-table_row"')}>
+                            <f:if condition="{backendUserIterator.isFirst}">
                                 <f:then>
-                                    <td class="col-avatar">
+                                    <td {f:if(condition: '{sessionAmount} > 1', then: 'rowspan="{sessionAmount}" class="col-avatar align-top"', else: 'class="col-avatar"')}>
                                         <button
                                             type="button"
                                             class="btn btn-link p-0"
                                             data-contextmenu-trigger="click"
                                             data-contextmenu-table="be_users"
                                             data-contextmenu-uid="{onlineUser.backendUser.uid}"
-                                            title="{f:if(condition: '{onlineUser.backendUser.description}', then: '{onlineUser.backendUser.description} ')}(id={onlineUser.backendUser.uid})"
+                                            title="{f:if(condition: '{onlineUser.backendUser.description}', then: '{onlineUser.backendUser.description} (id={onlineUser.backendUser.uid})', else: 'id={onlineUser.backendUser.uid}')}"
                                             aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                                         >
                                             <backend:avatar backendUser="{onlineUser.backendUser.uid}" showIcon="true" />
                                         </button>
                                     </td>
-                                    <td class="col-title">
-                                        <b>{onlineUser.backendUser.userName}</b>
-                                        <span class="badge badge-success"><f:translate key="online" /></span>
-                                        <beuser:mfaStatus userUid="{onlineUser.backendUser.uid}"/><br>
-                                        {onlineUser.backendUser.realName}
+                                    <td {f:if(condition: '{sessionAmount} > 1', then: 'rowspan="{sessionAmount}" class="col-min align-top border-end"', else: 'class="col-min"')}>
+                                        <backend:link.editRecord table="be_users" uid="{onlineUser.backendUser.uid}" title="{f:translate(key:'btn.edit')}">
+                                            <f:if condition="{onlineUser.backendUser.realName}">
+                                                <f:then>
+                                                    {onlineUser.backendUser.realName}
+                                                    <beuser:mfaStatus userUid="{onlineUser.backendUser.uid}"/><br>
+                                                    <span class="text-muted">({onlineUser.backendUser.userName})</span>
+                                                </f:then>
+                                                <f:else>
+                                                    {onlineUser.backendUser.userName}
+                                                    <beuser:mfaStatus userUid="{onlineUser.backendUser.uid}"/>
+                                                </f:else>
+                                            </f:if>
+                                        </backend:link.editRecord>
                                     </td>
                                 </f:then>
-                                <f:else>
-                                    <td></td>
-                                    <td class="col-title"></td>
-                                </f:else>
                             </f:if>
+                            <td class="col-50">{session.ip}</td>
                             <td class="col-datetime">
                                 <f:format.date format="{dateFormat} {timeFormat}" date="{session.timestamp}" />
+                                <f:if condition="{currentSessionId} == {session.id}">
+                                    <span class="badge badge-notice"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.online.activeSession" /></span>
+                                </f:if>
                             </td>
-                            <td>{session.ip}</td>
                             <td class="col-control">
-                                <div class="btn-group" role="group">
-                                    <f:if condition="{currentSessionId} == {session.id}">
-                                        <f:else>
-                                            <f:link.action
-                                                class="btn btn-default t3js-modal-trigger"
-                                                action="terminateBackendUserSession"
-                                                controller="BackendUser"
-                                                arguments="{sessionId: session.id}"
-                                                data="{severity: 'warning', title: '{f:translate(key: \'endSession\')}', bs-content: '{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?', button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}'}"
-                                            >
-                                                <core:icon identifier="actions-close" />
-                                                <f:translate key="endSession" />
-                                            </f:link.action>
-                                        </f:else>
-                                    </f:if>
-                                    <a class="btn btn-default" href="#" data-dispatch-action="TYPO3.InfoWindow.showItem" data-dispatch-args-list="be_users,{onlineUser.backendUser.uid}">
-                                        <core:icon identifier="actions-document-info" />
-                                    </a>
-                                </div>
+                                <f:if condition="{currentSessionId} == {session.id}">
+                                    <f:else>
+                                        <f:link.action
+                                            class="btn btn-default t3js-modal-trigger"
+                                            action="terminateBackendUserSession"
+                                            controller="BackendUser"
+                                            arguments="{sessionId: session.id}"
+                                            data="{severity: 'warning', title: '{f:translate(key: \'backendUser.online.endSession\')}', bs-content: '{f:translate(key: \'backendUser.online.reallyLogout\')} {onlineUser.backendUser.userName}?', button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}'}"
+                                            role="button"
+                                        >
+                                            <core:icon identifier="actions-close" />
+                                            <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.online.endSession" />
+                                        </f:link.action>
+                                    </f:else>
+                                </f:if>
+                                <a
+                                    class="btn btn-default"
+                                    href="#"
+                                    data-dispatch-action="TYPO3.InfoWindow.showItem"
+                                    data-dispatch-args-list="be_users,{onlineUser.backendUser.uid}"
+                                    role="button"
+                                >
+                                    <core:icon identifier="actions-document-info" />
+                                </a>
                             </td>
                         </tr>
                     </f:for>
-                </f:for>
-            </tbody>
+                </tbody>
+            </f:for>
             <tfoot>
                 <tr>
                     <td colspan="5">
                         <f:variable name="onlineUsersAndSessionsCount">{onlineUsersAndSessions -> f:count()}</f:variable>
                         <f:if condition="{onlineUsersAndSessionsCount} > 1">
-                            <f:then>{onlineUsersAndSessionsCount} <f:translate key="users" /></f:then>
-                            <f:else>{onlineUsersAndSessionsCount} <f:translate key="user" /></f:else>
+                            <f:then>{onlineUsersAndSessionsCount} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:users" /></f:then>
+                            <f:else>{onlineUsersAndSessionsCount} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:user" /></f:else>
                         </f:if>
                     </td>
                 </tr>

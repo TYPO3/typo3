@@ -6,7 +6,7 @@
 <f:form action="list" objectName="demand" object="{demand}">
     <div class="form-row">
         <div class="form-group">
-            <label for="tx_Beuser_username" class="form-label"><f:translate key="userName">Username</f:translate></label>
+            <label for="tx_Beuser_username" class="form-label"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:userName" /></label>
             <f:form.textfield
                 type="search"
                 id="tx_Beuser_username"
@@ -15,34 +15,46 @@
             />
         </div>
         <div class="form-group">
-            <label for="tx_Beuser_usertype" class="form-label"><f:translate key="admin">Admin</f:translate></label>
+            <label for="tx_Beuser_usertype" class="form-label"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.list.filter.userType" /></label>
             <f:form.select
                 id="tx_Beuser_usertype"
                 class="form-select"
                 property="userType"
-                options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"adminOnly\")}', 2: '{f:translate(key:\"normalUserOnly\")}'}"
+                options="{
+                    0: '{f:translate(key:\"backendUser.list.filter.userType.all\")}',
+                    1: '{f:translate(key:\"backendUser.list.filter.userType.admin\")}',
+                    2: '{f:translate(key:\"backendUser.list.filter.userType.normalUser\")}'
+                }"
             />
         </div>
         <div class="form-group">
-            <label for="tx_Beuser_status" class="form-label"><f:translate key="status">Status</f:translate></label>
+            <label for="tx_Beuser_status" class="form-label"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.list.filter.status" /></label>
             <f:form.select
                 id="tx_Beuser_status"
                 class="form-select"
                 property="status"
-                options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"activeOnly\")}', 2: '{f:translate(key:\"inactiveOnly\")}'}"
+                options="{
+                    0: '{f:translate(key:\"backendUser.list.filter.status.all\")}',
+                    1: '{f:translate(key:\"backendUser.list.filter.status.enabled\")}',
+                    2: '{f:translate(key:\"backendUser.list.filter.status.disabled\")}'
+                }"
             />
         </div>
         <div class="form-group">
-            <label for="tx_Beuser_logins" class="form-label"><f:translate key="login">Login</f:translate></label>
+            <label for="tx_Beuser_logins" class="form-label"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.list.filter.loginState" /></label>
             <f:form.select
                 id="tx_Beuser_logins"
                 class="form-select"
                 property="logins"
-                options="{0: '{f:translate(key:\"both\")}', 1: '{f:translate(key:\"loginBefore\")}', 2: '{f:translate(key:\"neverLoggedIn\")}'}"
+                options="{
+                    0: '{f:translate(key:\"backendUser.list.filter.loginState.all\")}',
+                    1: '{f:translate(key:\"backendUser.list.filter.loginState.loginBefore\")}',
+                    2: '{f:translate(key:\"backendUser.list.filter.loginState.never\")}'
+                }"
             />
         </div>
         <div class="form-group">
-            <label for="tx_beuser_backendUserGroup" class="form-label"><f:translate key="backendUserGroup">User Group</f:translate></label>
+            <label for="tx_beuser_backendUserGroup" class="form-label"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.list.filter.group" /></label>
             <f:form.select
                 id="tx_beuser_backendUserGroup"
                 class="form-select"
@@ -53,8 +65,12 @@
             />
         </div>
         <div class="form-group align-self-end">
-            <f:form.button type="submit" name="operation" value="filter" class="btn btn-default">{f:translate(key: 'filter')}</f:form.button>
-            <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-link">{f:translate(key: 'reset')}</f:form.button>
+            <f:form.button type="submit" name="operation" value="filter" class="btn btn-default">
+                <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:filter" />
+            </f:form.button>
+            <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-link">
+                <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:reset" />
+            </f:form.button>
         </div>
     </div>
 </f:form>

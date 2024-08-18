@@ -23,11 +23,11 @@
 
 <f:section name="Content">
 
-    <h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compareBackendUsersGroups" /></h1>
+    <h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup.compare.title" /></h1>
 
     <f:variable name="comparedUserGroupAmount" value="{compareGroupList -> f:count()}" />
     <div class="table-fit">
-        <table class="table table-striped-columns table-bordered table-vertical-top beuser-comparison__table">
+        <table class="table table-striped-columns table-bordered table-vertical-top beuser-comparison-table">
             <colgroup>
                 <col style="width: 15%;">
                 <f:for each="{compareGroupList}" as="tmpColumn">
@@ -51,7 +51,7 @@
                                         table="be_groups"
                                         uid="{compareData.group.uid}"
                                         class="btn btn-default btn-sm"
-                                        title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:edit')}"
+                                        title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.edit')}"
                                     >
                                         <core:icon identifier="actions-open" />
                                     </backend:link.editRecord>
@@ -59,7 +59,7 @@
                                         action="removeGroupFromCompareList"
                                         arguments="{uid: compareData.group.uid, redirectToCompare:1}"
                                         class="btn btn-default btn-sm"
-                                        title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compare.link.removeFromCompareList')}"
+                                        title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.removeFromCompareList')}"
                                     >
                                         <core:icon identifier="actions-minus" size="small" />
                                     </f:link.action>

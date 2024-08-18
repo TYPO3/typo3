@@ -1,4 +1,7 @@
-.beuser-comparison__table {
+//
+// 'Compare' views
+//
+.beuser-comparison-table {
     @include media-breakpoint-up('lg') {
         table-layout: fixed;
     }
@@ -26,4 +29,28 @@
     white-space: wrap;
     word-break: break-word;
     padding-top: calc(var(--typo3-input-border-width) + var(--typo3-input-sm-padding-y));
+}
+
+//
+// 'Online users' view
+//
+.beuser-online-table {
+    tbody:nth-of-type(2n+1) > tr > * {
+        --bs-table-bg-type: var(--bs-table-striped-bg);
+        --bs-table-color-type: var(--bs-table-striped-color);
+    }
+
+    tbody:hover td[rowspan],
+    tbody tr:hover td {
+        --bs-table-bg-type: var(--bs-table-hover-bg);
+        --bs-table-color-type: var(--bs-table-hover-color);
+    }
+
+    .beuser-online-table_row td:first-child {
+        padding-inline-start: .5rem;
+    }
+
+    td.col-datetime span {
+        margin-left: .5rem;
+    }
 }

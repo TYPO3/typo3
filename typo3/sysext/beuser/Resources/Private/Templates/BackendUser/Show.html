@@ -23,7 +23,14 @@
 
 <f:section name="Content">
 
-    <h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser" />: {data.user.username}</h1>
+    <h1>
+        <f:translate
+            key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.show.title"
+            arguments="{
+                0: '{data.user.username}'
+            }"
+        />
+    </h1>
 
     <div class="row">
         <div class="col-md-10 col-lg-8">
@@ -71,7 +78,7 @@
                     <tr>
                         <th class="col-fieldname"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:avatar" /></th>
                         <td class="col-word-break">
-                            <backend:avatar backendUser="{data.user.uid}" showIcon="true"/>
+                            <backend:avatar backendUser="{data.user.uid}" />
                         </td>
                     </tr>
                     <tr>
