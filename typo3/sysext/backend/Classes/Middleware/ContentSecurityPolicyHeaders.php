@@ -25,6 +25,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Disposition;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
@@ -58,7 +59,7 @@ final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
             return $response;
         }
 
-        $policy = $this->policyProvider->provideFor($scope, $request);
+        $policy = $this->policyProvider->provideFor($scope, Disposition::enforce, $request);
         if ($policy->isEmpty()) {
             return $response;
         }
@@ -66,6 +67,9 @@ final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
         if ($reportingUri !== null) {
             $policy = $policy->report(UriValue::fromUri($reportingUri));
         }
-        return $response->withHeader('Content-Security-Policy', $policy->compile($this->requestId->nonce, $this->cache));
+        return $response->withHeader(
+            Disposition::enforce->getHttpHeaderName(),
+            $policy->compile($this->requestId->nonce, $this->cache)
+        );
     }
 }

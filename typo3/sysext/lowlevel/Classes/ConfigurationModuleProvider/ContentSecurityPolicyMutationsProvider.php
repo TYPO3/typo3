@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Lowlevel\ConfigurationModuleProvider;
 
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Disposition;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ModelService;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOrigin;
@@ -42,40 +43,48 @@ class ContentSecurityPolicyMutationsProvider extends AbstractProvider
         $data = [];
         /**
          * @var Scope $scope
-         * @var Map<MutationOrigin, MutationCollection> $scopeDetails
+         * @var Map<Disposition, Map<MutationOrigin, MutationCollection>> $scopeDetails
          */
         foreach ($this->mutationRepository->findAll() as $scope => $scopeDetails) {
             $policy = new Policy();
             $scopeValue = (string)$scope;
             $data[$scopeValue] = [];
-            /**
-             * @var MutationOrigin $mutationOrigin
-             * @var MutationCollection $mutationCollection
-             */
-            foreach ($scopeDetails as $mutationOrigin => $mutationCollection) {
-                $policy->mutate($mutationCollection);
-                $mutationOriginValue = sprintf(
-                    "%s '%s'",
-                    $mutationOrigin->type->value,
-                    $mutationOrigin->value
-                );
-                foreach ($mutationCollection->mutations as $mutation) {
-                    $sourceValues = array_map(
-                        // like `ModelService::compileSources()`, but for a single item & without a nonce
-                        fn(SourceInterface $source) => $source instanceof SourceValueInterface
-                            ? $source->compile()
-                            : $this->modelService->serializeSource($source),
-                        $mutation->sources
+
+            foreach ($scopeDetails as $disposition => $dispositionDetails) {
+                $data[$scopeValue][$disposition->value] = [];
+
+                /**
+                 * @var MutationOrigin $mutationOrigin
+                 * @var MutationCollection $mutationCollection
+                 */
+                foreach ($dispositionDetails as $mutationOrigin => $mutationCollection) {
+                    $policy->mutate($mutationCollection);
+                    $mutationOriginValue = sprintf(
+                        "%s '%s'",
+                        $mutationOrigin->type->value,
+                        $mutationOrigin->value
                     );
-                    $data[$scopeValue][$mutationOriginValue][] = sprintf(
-                        '%s: %s %s',
-                        $mutation->mode->value,
-                        $mutation->directive->value,
-                        implode(' ', $sourceValues)
-                    );
+                    foreach ($mutationCollection->mutations as $mutation) {
+                        $sourceValues = array_map(
+                            // like `ModelService::compileSources()`, but for a single item & without a nonce
+                            fn(SourceInterface $source) => $source instanceof SourceValueInterface
+                                ? $source->compile()
+                                : $this->modelService->serializeSource($source),
+                            $mutation->sources
+                        );
+                        $data[$scopeValue][$disposition->value][$mutationOriginValue][] = sprintf(
+                            '%s: %s %s',
+                            $mutation->mode->value,
+                            $mutation->directive->value,
+                            implode(' ', $sourceValues)
+                        );
+                    }
                 }
+                $data[$scopeValue][$disposition->value] = [
+                    '@policy' => $policy->compile($nonce),
+                    ...$data[$scopeValue][$disposition->value],
+                ];
             }
-            $data[$scopeValue] = ['@policy' => $policy->compile($nonce), ...$data[$scopeValue]];
         }
         ArrayUtility::naturalKeySortRecursive($data);
         return $data;

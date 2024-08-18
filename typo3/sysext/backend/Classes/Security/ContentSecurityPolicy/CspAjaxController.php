@@ -58,6 +58,9 @@ class CspAjaxController
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        if ($request->getMethod() === 'GET') {
+            return (new NullResponse())->withStatus(400);
+        }
         if (!$this->isSystemMaintainer()) {
             return (new NullResponse())->withStatus(403);
         }
@@ -182,7 +185,8 @@ class CspAjaxController
 
     protected function dispatchInvestigateMutationsEvent(Report $report): InvestigateMutationsEvent
     {
-        $policy = $this->policyProvider->provideFor($report->scope);
+        // @todo for future versions, it might be considered to distinguish `enforce` and `report` in the database
+        $policy = $this->policyProvider->provideFor($report->scope, $report->details->resolveDisposition());
         $event = new InvestigateMutationsEvent($policy, $report);
         $this->eventDispatcher->dispatch($event);
         return $event;

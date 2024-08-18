@@ -24,11 +24,12 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\RequestId;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionMapFactory;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
+use TYPO3\CMS\Core\Site\Entity\Site;
 
 /**
  * Adds Content-Security-Policy headers to response.
@@ -38,25 +39,28 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
 final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
 {
     public function __construct(
-        private Features $features,
         private RequestId $requestId,
         private LoggerInterface $logger,
         #[Autowire(service: 'cache.assets')]
         private FrontendInterface $cache,
         private PolicyProvider $policyProvider,
+        private DispositionMapFactory $dispositionMapFactory,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $site = $request->getAttribute('site');
+        $dispositionMap = $this->dispositionMapFactory->buildDispositionMap(
+            $site instanceof Site ? $site->getConfiguration()['contentSecurityPolicies'] : []
+        );
         // return early in case CSP shall not be used
-        if (!$this->features->isFeatureEnabled('security.frontend.enforceContentSecurityPolicy')) {
+        if ($dispositionMap->keys() === []) {
             return $handler->handle($request);
         }
         // make sure, the nonce value is set before processing the remaining middlewares
         $request = $request->withAttribute('nonce', $this->requestId->nonce);
         $response = $handler->handle($request);
 
-        $site = $request->getAttribute('site');
         $scope = Scope::frontendSite($site);
         if ($response->hasHeader('Content-Security-Policy') || $response->hasHeader('Content-Security-Policy-Report-Only')) {
             $this->logger->info('Content-Security-Policy not enforced due to existence of custom header', [
@@ -66,14 +70,20 @@ final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
             return $response;
         }
 
-        $policy = $this->policyProvider->provideFor($scope, $request);
-        if ($policy->isEmpty()) {
-            return $response;
+        foreach ($dispositionMap->keys() as $disposition) {
+            $policy = $this->policyProvider->provideFor($scope, $disposition, $request);
+            if ($policy->isEmpty()) {
+                continue;
+            }
+            $reportingUri = $this->policyProvider->getReportingUrlFor($scope, $request);
+            if ($reportingUri !== null) {
+                $policy = $policy->report(UriValue::fromUri($reportingUri));
+            }
+            $response = $response->withHeader(
+                $disposition->getHttpHeaderName(),
+                $policy->compile($this->requestId->nonce, $this->cache)
+            );
         }
-        $reportingUri = $this->policyProvider->getReportingUrlFor($scope, $request);
-        if ($reportingUri !== null) {
-            $policy = $policy->report(UriValue::fromUri($reportingUri));
-        }
-        return $response->withHeader('Content-Security-Policy', $policy->compile($this->requestId->nonce, $this->cache));
+        return $response;
     }
 }

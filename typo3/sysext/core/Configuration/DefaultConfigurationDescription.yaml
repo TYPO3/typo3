@@ -195,7 +195,10 @@ SYS:
                   required `Referer` header. As this is a potential security risk, it is recommended to enable this option.'
               security.frontend.enforceContentSecurityPolicy:
                 type: bool
-                description: 'If on, HTTP Content-Security-Policy header will be applied for each HTTP frontend request.'
+                description: 'If on, HTTP Content-Security-Policy header will be applied for each HTTP frontend request. This can be overruled using a csp.yaml site configuration.'
+              security.frontend.reportContentSecurityPolicy:
+                type: bool
+                description: 'If on, HTTP Content-Security-Policy-Report-Only header will be applied for each HTTP frontend request. This can be overruled using a csp.yaml site configuration.'
               security.frontend.allowInsecureFrameOptionInShowImageController:
                 type: bool
                 description: 'If on, the eID Script "tx_cms_showpic" respects the GET parameter "frame" without being signed. Should not be enabled as this allows uncontrolled resource consumption.'

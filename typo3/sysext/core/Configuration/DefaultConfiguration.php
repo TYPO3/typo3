@@ -85,6 +85,7 @@ return [
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
             'security.frontend.enforceContentSecurityPolicy' => false,
+            'security.frontend.reportContentSecurityPolicy' => false,
             'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,
             'security.frontend.allowInsecureFrameOptionInShowImageController' => false,
         ],

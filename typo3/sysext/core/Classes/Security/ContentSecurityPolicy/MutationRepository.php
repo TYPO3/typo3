@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionConfiguration;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionMapFactory;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ResolutionRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -28,6 +30,9 @@ use TYPO3\CMS\Core\Type\Map;
  */
 final class MutationRepository
 {
+    /**
+     * @var Map<Scope, Map<Disposition, Map<MutationOrigin, MutationCollection>>>
+     */
     private ?Map $resolvedMutations;
 
     /**
@@ -41,34 +46,32 @@ final class MutationRepository
         private readonly ModelService $modelService,
         private readonly ScopeRepository $scopeRepository,
         private readonly ResolutionRepository $resolutionRepository,
+        private readonly DispositionMapFactory $dispositionMapFactory,
     ) {
         $this->resolvedMutations = null;
     }
 
     /**
-     * @param bool $resolved whether to include resolved mutations (resolutions)
-     * @return Map<Scope, Map<MutationOrigin, MutationCollection>>
+     * @return Map<Scope, Map<Disposition, Map<MutationOrigin, MutationCollection>>>
      */
-    public function findAll(bool $resolved = true): Map
+    public function findAll(): Map
     {
-        if ($resolved) {
+        if ($this->resolvedMutations === null) {
             $this->resolveMutations();
-            return $this->resolvedMutations;
         }
-        return $this->staticMutations;
+        return $this->resolvedMutations;
     }
 
     /**
-     * @param bool $resolved whether to include resolved mutations (resolutions)
      * @return Map<MutationOrigin, MutationCollection>
      */
-    public function findByScope(Scope $scope, bool $resolved = true): Map
+    public function findByScope(Scope $scope, Disposition $disposition = Disposition::enforce): Map
     {
-        if ($resolved) {
+        if ($this->resolvedMutations === null) {
             $this->resolveMutations();
-            return $this->resolvedMutations[$scope] ?? new Map();
         }
-        return $this->staticMutations[$scope] ?? new Map();
+        $scope = $this->reduceScope($scope);
+        return $this->resolvedMutations[$scope][$disposition] ?? new Map();
     }
 
     private function resolveMutations(): void
@@ -76,58 +79,127 @@ final class MutationRepository
         if ($this->resolvedMutations !== null) {
             return;
         }
-        $this->resolvedMutations = clone $this->staticMutations;
+
+        $this->resolvedMutations = new Map();
         $allScopes = $this->scopeRepository->findAll();
-        // fetch resolution mutations from the database
+        // fetch resolutions from the database & assign them later to the resolved mutations map
+        $resolutions = new Map();
         foreach ($this->resolutionRepository->findAll() as $resolution) {
             // only for existing scopes (e.g. ignore scopes for sites, that are not existing anymore)
             if (in_array($resolution->scope, $allScopes, true)) {
                 $mutationOrigin = new MutationOrigin(MutationOriginType::resolution, $resolution->summary);
-                $target = $this->provideScopeInResolvedMutations($resolution->scope);
-                $target[$mutationOrigin] = $resolution->mutationCollection;
+                $scopedTarget = $this->provideScopeInMap($resolution->scope, $resolutions);
+                $scopedTarget[$mutationOrigin] = $resolution->mutationCollection;
             }
         }
-        // fetch site-specific mutations
-        foreach ($this->scopeRepository->findAllFrontendSites() as $scope) {
-            $site = $this->resolveSite($scope);
-            $target = $this->provideScopeInResolvedMutations($scope);
-            $shallInheritDefault = (bool)($site->getConfiguration()['contentSecurityPolicies']['inheritDefault'] ?? true);
-            if ($shallInheritDefault && $scope->isFrontendSite()) {
-                foreach ($this->resolvedMutations[Scope::frontend()] ?? [] as $existingOrigin => $existingCollection) {
-                    $target[$existingOrigin] = clone $existingCollection;
+        // assign generic backend and frontend scopes
+        foreach ([Scope::backend(), Scope::frontend()] as $scope) {
+            $scopedTarget = $this->provideScopeInMap($scope, $this->resolvedMutations);
+            $dispositions = $scope === Scope::frontend()
+                ? $this->dispositionMapFactory->resolveFallbackDispositions()
+                : [Disposition::enforce];
+            foreach ($dispositions as $disposition) {
+                $disposedTarget = $this->provideDispositionInMap($disposition, $scopedTarget);
+                if (isset($this->staticMutations[$scope])) {
+                    $disposedTarget->assign($this->staticMutations[$scope]);
+                }
+                if (isset($resolutions[$scope])) {
+                    $disposedTarget->assign($resolutions[$scope]);
                 }
             }
-            $mutationCollection = $this->resolveFrontendSiteMutationCollection($site);
-            if ($mutationCollection !== null) {
-                $mutationOrigin = new MutationOrigin(MutationOriginType::site, $scope->siteIdentifier);
-                $target[$mutationOrigin] = $mutationCollection;
+        }
+        // fetch and assign site-specific mutations
+        foreach ($this->scopeRepository->findAllFrontendSites() as $scope) {
+            $site = $this->resolveSite($scope);
+            $scopedTarget = $this->provideScopeInMap($scope, $this->resolvedMutations);
+            // fetch site-specific `enforce` and/or `report` disposition configuration
+            $dispositionMap = $this->dispositionMapFactory->buildDispositionMap(
+                $site->getConfiguration()['contentSecurityPolicies']
+            );
+            /**
+             * @var Disposition $disposition
+             * @var DispositionConfiguration $dispositionConfiguration
+             */
+            foreach ($dispositionMap as $disposition => $dispositionConfiguration) {
+                $disposedTarget = $this->provideDispositionInMap($disposition, $scopedTarget);
+                $disposedTarget->assign($this->resolveStaticMutations($scope, $dispositionConfiguration));
+                if ($dispositionConfiguration->includeResolutions && isset($resolutions[$scope])) {
+                    $disposedTarget->assign($resolutions[$scope]);
+                }
+                $mutationCollection = $this->resolveFrontendSiteMutationCollection($dispositionConfiguration);
+                if ($mutationCollection !== null) {
+                    $mutationOrigin = new MutationOrigin(MutationOriginType::site, $scope->siteIdentifier);
+                    $disposedTarget[$mutationOrigin] = $mutationCollection;
+                }
             }
         }
     }
 
-    private function resolveFrontendSiteMutationCollection(Site $site): ?MutationCollection
+    /**
+     * Resolves site-specific static mutations, applies `inheritDefault` configuration
+     * and filters generic static mutations based on the `packages` configuration.
+     *
+     * @return Map<MutationOrigin, MutationCollection>
+     */
+    private function resolveStaticMutations(Scope $scope, DispositionConfiguration $dispositionConfiguration): Map
     {
-        $mutationConfigurations = $site->getConfiguration()['contentSecurityPolicies']['mutations'] ?? [];
-        if (empty($mutationConfigurations) || !is_array($mutationConfigurations)) {
+        $target = new Map();
+        $scope = $this->reduceScope($scope);
+
+        if ($dispositionConfiguration->inheritDefault && isset($this->staticMutations[Scope::frontend()])) {
+            // mutations from `ContentSecurityPolicies.php` for generic frontend scope
+            $target->assign($this->staticMutations[Scope::frontend()]);
+        }
+        // mutations from `ContentSecurityPolicies.php` for a specific site identifier
+        if (isset($this->staticMutations[$scope])) {
+            $target->assign($this->staticMutations[$scope]);
+        }
+
+        // filter mutation origins by effective package names
+        $packageOrigins = array_filter(
+            $target->keys(),
+            static fn(MutationOrigin $origin) => $origin->type === MutationOriginType::package
+        );
+        $packageNames = array_map(static fn(MutationOrigin $origin) => $origin->value, $packageOrigins);
+        $effectivePackageNames = $dispositionConfiguration->resolveEffectivePackages(...$packageNames);
+        foreach ($packageOrigins as $mutationOrigin) {
+            if (!in_array($mutationOrigin->value, $effectivePackageNames, true)) {
+                unset($target[$mutationOrigin]);
+            }
+        }
+        return $target;
+    }
+
+    private function resolveFrontendSiteMutationCollection(DispositionConfiguration $dispositionConfiguration): ?MutationCollection
+    {
+        if ($dispositionConfiguration->mutations === []) {
             return null;
         }
         $mutations = array_map(
             fn(array $array) => $this->modelService->buildMutationFromArray($array),
-            $mutationConfigurations
+            $dispositionConfiguration->mutations
         );
         return new MutationCollection(...$mutations);
+    }
+
+    private function provideDispositionInMap(Disposition $disposition, Map $map): Map
+    {
+        if (!isset($map[$disposition])) {
+            $map[$disposition] = new Map();
+        }
+        return $map[$disposition];
     }
 
     /**
      * @return Map<MutationOrigin, MutationCollection>
      */
-    private function provideScopeInResolvedMutations(Scope $scope): Map
+    private function provideScopeInMap(Scope $scope, Map $map): Map
     {
         $reducedScope = $this->reduceScope($scope);
-        if (!isset($this->resolvedMutations[$reducedScope])) {
-            $this->resolvedMutations[$reducedScope] = new Map();
+        if (!isset($map[$reducedScope])) {
+            $map[$reducedScope] = new Map();
         }
-        return $this->resolvedMutations[$reducedScope];
+        return $map[$reducedScope];
     }
 
     /**
