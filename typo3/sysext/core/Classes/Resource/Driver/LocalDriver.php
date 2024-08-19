@@ -257,6 +257,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         // don't use $this->fileExists() because we need the absolute path to the file anyway, so we can directly
         // use PHP's filesystem method.
         if (!file_exists($absoluteFilePath) || !is_file($absoluteFilePath)) {
+            // @todo: This should be turned into a specific exception instead!
             throw new \InvalidArgumentException('File ' . $fileIdentifier . ' does not exist.', 1314516809);
         }
 

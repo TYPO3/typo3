@@ -73,9 +73,8 @@ class FileLinkHandler implements LinkHandlingInterface
         try {
             $file = $this->resolveFile($data);
             $fileNameValidator = GeneralUtility::makeInstance(FileNameValidator::class);
-            if (
-                !$fileNameValidator->isValid(basename($file->getIdentifier())) ||
-                !$fileNameValidator->isValid($file->getName())
+            if ($file !== null && (!$fileNameValidator->isValid(basename($file->getIdentifier())) ||
+                    !$fileNameValidator->isValid($file->getName()))
             ) {
                 $file = null;
             }

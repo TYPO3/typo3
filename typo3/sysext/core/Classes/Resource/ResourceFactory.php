@@ -181,9 +181,8 @@ readonly class ResourceFactory implements SingletonInterface
      *
      * @throws \InvalidArgumentException
      * @throws Exception\FileDoesNotExistException
-     * @return File
      */
-    public function getFileObject($uid, array $fileData = [])
+    public function getFileObject($uid, array $fileData = []): File
     {
         if (!is_numeric($uid)) {
             throw new \InvalidArgumentException('The UID of file has to be numeric. UID given: "' . $uid . '"', 1300096564);
