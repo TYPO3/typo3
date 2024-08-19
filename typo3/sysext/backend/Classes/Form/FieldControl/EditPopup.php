@@ -61,7 +61,7 @@ class EditPopup extends AbstractNode
                     . $this->data['flexFormSheetName']
                     . '/ROOT/el/'
                     . $this->data['flexFormFieldName']
-                    . '/TCEforms/config';
+                    . '/config';
             } else {
                 // flex form section container element
                 $flexFormDataStructurePath = 'sheets/'
@@ -72,7 +72,7 @@ class EditPopup extends AbstractNode
                     . $this->data['flexFormContainerName']
                     . '/el/'
                     . $this->data['flexFormContainerFieldName']
-                    . '/TCEforms/config';
+                    . '/config';
             }
         }
 
