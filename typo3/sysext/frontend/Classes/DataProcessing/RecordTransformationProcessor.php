@@ -41,6 +41,32 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  * If empty, "record" or "records" (if multiple records are given) is used.
  *
  * as = myRecords
+ *
+ * Example TypoScript configuration:
+ *
+ * page = PAGE
+ * page {
+ *     10 = PAGEVIEW
+ *     10 {
+ *         paths.10 = EXT:my_site_package/Resources/Private/Templates/
+ *         dataProcessing {
+ *             10 = database-query
+ *             10 {
+ *                 as = mainContent
+ *                 table = tt_content
+ *                 select.where = colPos=0
+ *                 dataProcessing {
+ *                     10 = record-transformation
+ *                     10 {
+ *                         as = myContent
+ *                     }
+ *                 }
+ *             }
+ *         }
+ *     }
+ * }
+ *
+ * which transforms all content elements fetched by the DatabaseQueryProcessor an provides them as "myContent".
  */
 readonly class RecordTransformationProcessor implements DataProcessorInterface
 {

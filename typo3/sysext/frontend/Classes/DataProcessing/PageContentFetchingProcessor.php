@@ -25,9 +25,28 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 
 /**
- * All-in-one data processor that loads all tt_content records from the current page layout into
- * the template with a given identifier for each colPos, also respecting slideMode or
- * collect options based on the page layouts content columns.
+ * All-in-one data processor that loads all tt_content records from the current page
+ * layout into the template with a given identifier for each colPos, also respecting
+ * slideMode or collect options based on the page layouts content columns.
+ *
+ * Use "as" for the target variable where the fetched content elements will be provided.
+ * If empty, "content" is used.
+ *
+ * Example TypoScript configuration:
+ *
+ * page = PAGE
+ * page {
+ *     10 = PAGEVIEW
+ *     10 {
+ *         paths.10 = EXT:my_site_package/Resources/Private/Templates/
+ *         dataProcessing {
+ *             10 = page-content
+ *             10.as = myContent
+ *         }
+ *     }
+ * }
+ *
+ * which fetches all content elements for the current page and provides them as "myContent".
  */
 readonly class PageContentFetchingProcessor implements DataProcessorInterface
 {
