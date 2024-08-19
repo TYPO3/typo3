@@ -233,7 +233,7 @@ final class ComponentsController
             'currentAction' => 'form',
             'routeIdentifier' => 'styleguide_components',
             'userGroups' => $userGroupArray,
-            'dateTimeFormat' => 'h:m d-m-Y',
+            'dateTimeFormat' => 'c',
         ]);
         return $view->renderResponse('Backend/Components/Form');
     }
