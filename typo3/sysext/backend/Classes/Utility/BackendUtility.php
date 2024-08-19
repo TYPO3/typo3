@@ -1051,7 +1051,7 @@ class BackendUtility
      * @param int|string $size Optional: $size is [w]x[h] of the thumbnail. 64 is default.
      * @param bool $linkInfoPopup Whether to wrap with a link opening the info popup
      * @return string Thumbnail image tag.
-     * @todo Unused in Core deprecate it!
+     * @deprecated Will be removed in TYPO3 v14
      */
     public static function thumbCode(
         $row,
@@ -1065,6 +1065,7 @@ class BackendUtility
         $size = '',
         $linkInfoPopup = true
     ) {
+        trigger_error('BackendUtility::thumbCode() will be removed in TYPO3 v14.', E_USER_DEPRECATED);
         $size = (int)(trim((string)$size) ?: 64);
         $targetDimension = new ImageDimension($size, $size);
         $thumbData = '';

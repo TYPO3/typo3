@@ -1634,4 +1634,11 @@ return [
             'Deprecation-104607-BackendUserAuthenticationReturnWebmounts.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 10,
+        'restFiles' => [
+            'Deprecation-104662-BackendUtilityThumbCode.rst',
+        ],
+    ],
 ];
