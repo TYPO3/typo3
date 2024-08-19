@@ -11,9 +11,8 @@
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: '@typo3/backend/element/immediate-action-element.js',
-            1: '@typo3/backend/tree/tree-node-toggle.js',
+            1: '@typo3/backend/element/collapsible-element.js',
             2: '@typo3/backend/utility/collapse-state-persister.js',
-            3: '@typo3/backend/element-information.js',
         }"
     />
     <f:variable name="args" value="{0: 'web', 1: extraFields.uid.value}" />
@@ -119,35 +118,28 @@
     </f:if>
 
     <h2><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.general" /></h2>
-    <div class="panel-group" id="fieldValues" role="tablist">
+    <typo3-backend-collapsible>
         <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-                <div class="panel-heading-row">
-                    <div class="panel-heading-title" id="fieldValues-heading-panel">
-                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.fieldValues" />
-                    </div>
-                    <div class="panel-heading-actions">
-                        <button
-                            type="button"
-                            class="btn btn-sm btn-default t3js-toggle-table"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#fieldValues-panel"
-                            data-record-id="{extraFields.uid.value}"
-                            aria-expanded="true"
-                            aria-controls="fieldValues-panel"
-                        >
-                            <core:icon identifier="actions-view-list-collapse" size="small" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="panel-collapse collapse"
-                id="fieldValues-panel"
-                data-persist-collapse-state="true"
-                role="tabpanel"
-                aria-labelledby="fieldValues-heading-panel"
+            <button
+                type="button"
+                class="panel-heading panel-heading-button"
+                aria-expanded="false"
+                aria-controls="fieldValues-panel"
+                data-bs-target="#fieldValues-panel"
+                data-bs-toggle="collapse"
             >
+                <span class="flex-grow-1 align-self-center">
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.fieldValues" />
+                </span>
+                <div class="panel-actions ml-auto">
+                    <span class="btn btn-sm btn-default">
+                        <span class="collapseIcon">
+                            <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                        </span>
+                    </span>
+                </div>
+            </button>
+            <div id="fieldValues-panel" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
                 <div class="table-fit table-fit-wrap">
                     <table class="table table-striped table-hover">
                         <tbody>
@@ -162,7 +154,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </typo3-backend-collapsible>
 
     <f:if condition="{returnUrl}">
         <a class="btn btn-primary" href="{returnUrl}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back')}">
@@ -176,35 +168,28 @@
     </f:if>
 
     <f:if condition="{refLines}">
-        <div class="panel-group" id="referencesToThisItem" role="tablist">
+        <typo3-backend-collapsible>
             <div class="panel panel-default">
-                <div class="panel-heading" role="tab">
-                    <div class="panel-heading-row">
-                        <div class="panel-heading-title" id="referencesToThisItem-heading-panel">
-                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem" />
-                        </div>
-                        <div class="panel-heading-actions">
-                            <button
-                                type="button"
-                                class="btn btn-sm btn-default t3js-toggle-table"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#referencesToThisItem-panel"
-                                data-record-id="{extraFields.uid.value}"
-                                aria-expanded="true"
-                                aria-controls="referencesToThisItem-panel"
-                            >
-                                <core:icon identifier="actions-view-list-collapse" size="small" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="panel-collapse collapse"
-                    id="referencesToThisItem-panel"
-                    data-persist-collapse-state="true"
-                    role="tabpanel"
-                    aria-labelledby="referencesToThisItem-heading-panel"
+                <button
+                    type="button"
+                    class="panel-heading panel-heading-button"
+                    aria-expanded="false"
+                    aria-controls="referencesToThisItem-panel"
+                    data-bs-target="#referencesToThisItem-panel"
+                    data-bs-toggle="collapse"
                 >
+                    <span class="flex-grow-1 align-self-center">
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem" />
+                    </span>
+                    <div class="panel-actions ml-auto">
+                        <span class="btn btn-sm btn-default">
+                            <span class="collapseIcon">
+                                <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                            </span>
+                        </span>
+                    </div>
+                </button>
+                <div id="referencesToThisItem-panel" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
                     <div class="table-fit">
                         <table class="table table-striped table-hover">
                             <thead>
@@ -229,39 +214,32 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </typo3-backend-collapsible>
     </f:if>
 
     <f:if condition="{refFromLines}">
-        <div class="panel-group" id="referencesFromThisItem" role="tablist">
+        <typo3-backend-collapsible>
             <div class="panel panel-default">
-                <div class="panel-heading" role="tab">
-                    <div class="panel-heading-row">
-                        <div class="panel-heading-title" id="referencesFromThisItem-heading-panel">
-                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesFromThisItem" />
-                        </div>
-                        <div class="panel-heading-actions">
-                            <button
-                                type="button"
-                                class="btn btn-sm btn-default t3js-toggle-table"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#referencesFromThisItem-panel"
-                                data-record-id="{extraFields.uid.value}"
-                                aria-expanded="true"
-                                aria-controls="referencesFromThisItem-panel"
-                            >
-                                <core:icon identifier="actions-view-list-collapse" size="small" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="panel-collapse collapse"
-                    id="referencesFromThisItem-panel"
-                    data-persist-collapse-state="true"
-                    aria-labelledby="referencesFromThisItem-heading-panel"
-                    role="tabpanel"
+                <button
+                    type="button"
+                    class="panel-heading panel-heading-button"
+                    aria-expanded="false"
+                    aria-controls="referencesFromThisItem-panel"
+                    data-bs-target="#referencesFromThisItem-panel"
+                    data-bs-toggle="collapse"
                 >
+                    <span class="flex-grow-1 align-self-center">
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesFromThisItem" />
+                    </span>
+                    <div class="panel-actions ml-auto">
+                        <span class="btn btn-sm btn-default">
+                            <span class="collapseIcon">
+                                <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
+                            </span>
+                        </span>
+                    </div>
+                </button>
+                <div id="referencesFromThisItem-panel" class="panel-collapse collapse" data-persist-collapse-state="true" role="tabpanel">
                     <div class="table-fit">
                         <table class="table table-striped table-hover">
                             <thead>
@@ -287,7 +265,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </typo3-backend-collapsible>
     </f:if>
 </f:section>
 
