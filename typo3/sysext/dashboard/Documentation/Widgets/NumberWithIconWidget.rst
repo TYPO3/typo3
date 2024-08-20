@@ -67,8 +67,7 @@ Dependencies
 .. option:: $dataProvider
 
    This class should provide the number to show.
-<<<<<<< HEAD   (a598d0 [TASK] Allow execution of acceptance tests with local chrome)
-   This data provider needs to implement the :php:class:`NumberWithIconDataProviderInterface`.
+   This data provider needs to implement the :php:`NumberWithIconDataProviderInterface`.
 
 .. option:: $view
 
@@ -77,6 +76,3 @@ Dependencies
    The default is to use the pre configured Fluid StandaloneView for EXT:dashboard.
 
    See :ref:`implement-new-widget-fluid` for further information.
-=======
-   This data provider needs to implement the :php:`NumberWithIconDataProviderInterface`.
->>>>>>> CHANGE (1bf527 [DOCS] Switch Dashboard documentation to PHP-based rendering)
