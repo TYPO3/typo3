@@ -4291,18 +4291,8 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Http/RequestHandler.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\GraphicalFunctions\\:\\:\\$setup \\(array\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 9
-			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 3
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
 
 		-

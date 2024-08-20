@@ -433,7 +433,7 @@ class GifBuilder extends GraphicalFunctions
                                     $isStdWrapped = [];
                                     foreach ($conf['shadow.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
-                                        if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+                                        if (!($isStdWrapped[$parameter] ?? false) && isset($conf[$parameter . '.'])) {
                                             $conf['shadow.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
                                             $isStdWrapped[$parameter] = 1;
                                         }
@@ -444,7 +444,7 @@ class GifBuilder extends GraphicalFunctions
                                     $isStdWrapped = [];
                                     foreach ($conf['emboss.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
-                                        if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+                                        if (!($isStdWrapped[$parameter] ?? false) && isset($conf[$parameter . '.'])) {
                                             $conf['emboss.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
                                             $isStdWrapped[$parameter] = 1;
                                         }
@@ -455,7 +455,7 @@ class GifBuilder extends GraphicalFunctions
                                     $isStdWrapped = [];
                                     foreach ($conf['outline.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
-                                        if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+                                        if (!($isStdWrapped[$parameter] ?? false) && isset($conf[$parameter . '.'])) {
                                             $conf['outline.'][$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
                                             $isStdWrapped[$parameter] = 1;
                                         }
