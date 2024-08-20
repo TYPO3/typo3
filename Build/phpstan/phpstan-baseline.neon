@@ -1416,16 +1416,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
 			message: "#^Cannot unset offset 'parameter\\.' on array\\{parameter\\: mixed\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
