@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller\Resource;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -29,6 +30,9 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\SysLog\Action\File as SystemLogFileAction;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -101,6 +105,8 @@ final class ResourceController
                 $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.' . ($success ? 'success' : 'error'))
             )
         );
+        // Next to the flash message, also log the action to be consistent with the use in ExtendedFileUtiltiy
+        $this->getBackendUser()->writelog(SystemLogType::FILE, SystemLogFileAction::RENAME, $success ? SystemLogErrorClassification::MESSAGE : SystemLogErrorClassification::USER_ERROR, 0, $message, []);
         return [
             'success' => $success,
             'status' => $flashMessageQueue,
@@ -125,6 +131,11 @@ final class ResourceController
             'uid' => $resource instanceof File ? $resource->getUid() : null,
             'metaUid' => $resource instanceof File ? $resource->getMetaData()->offsetGet('uid') : null,
         ];
+    }
+
+    private function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     private function getLanguageService(): LanguageService
