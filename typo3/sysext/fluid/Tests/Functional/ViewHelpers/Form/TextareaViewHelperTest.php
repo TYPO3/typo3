@@ -170,7 +170,6 @@ final class TextareaViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
         $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $psr7Request;
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();

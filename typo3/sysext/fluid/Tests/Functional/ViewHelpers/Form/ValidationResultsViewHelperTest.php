@@ -63,7 +63,6 @@ final class ValidationResultsViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $serverRequest = (new ServerRequest())->withAttribute('extbase', (new ExtbaseRequestParameters())->setOriginalRequestMappingResults($validationResults))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $context->setRequest(new Request($serverRequest));
 
         $context->getTemplatePaths()->setTemplateSource($template);

@@ -131,7 +131,6 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = new ServerRequest('http://localhost/typo3', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource('<f:link.page pageUid="42" absolute="1">foo</f:link.page>');
@@ -250,7 +249,6 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);
@@ -270,17 +268,18 @@ final class PageViewHelperTest extends FunctionalTestCase
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($frontendTypoScriptSetupArray);
         $frontendTypoScript->setConfigArray([]);
+        $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $request = $request->withAttribute('currentContentObject', $contentObjectRenderer);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $contentObjectRenderer->setRequest($request);
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $request = new Request($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);

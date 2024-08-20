@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -38,7 +39,8 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages />');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
+        $extbaseConfigurationManager = $this->get(ConfigurationManagerInterface::class);
+        $extbaseConfigurationManager->setRequest($serverRequest);
         $context->setRequest(new Request($serverRequest));
         self::assertEmpty((new TemplateView($context))->render());
     }

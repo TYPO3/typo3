@@ -68,7 +68,6 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
         $view->render();
         $pageRenderer = $this->get(PageRenderer::class);
         // PageRenderer depends on request to determine FE vs. BE
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/typo3/'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         self::assertStringContainsString($expected, $pageRenderer->renderResponse()->getBody()->__toString());
     }
 
@@ -80,14 +79,12 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('Backend');
         $serverRequest = (new ServerRequest('https://example.com/typo3/'))->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $view->render();
         $pageRenderer = $this->get(PageRenderer::class);
         // PageRenderer depends on request to determine FE vs. BE
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://example.com/typo3/'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         self::assertStringContainsString('"lang":{"login.header":"Login"}', $pageRenderer->renderResponse()->getBody()->__toString());
     }
 }

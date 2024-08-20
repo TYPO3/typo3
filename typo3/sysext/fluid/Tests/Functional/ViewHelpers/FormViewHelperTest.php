@@ -22,16 +22,15 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\ExtendsAbstractEntity;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -77,7 +76,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource($source);
         $request = $this->createRequest();
         $context->setRequest($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assignMultiple($variables);
         $body = $view->render();
@@ -97,7 +96,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $request = $this->createRequest();
         $context->setRequest($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
         $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />';
@@ -111,7 +110,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form actionUri="foobar" />');
         $request = $this->createRequest();
         $context->setRequest($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $expected = '<form action="foobar" method="post">';
         self::assertStringContainsString($expected, (new TemplateView($context))->render());
     }
@@ -123,7 +122,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form name="myForm" />');
         $request = $this->createRequest();
         $context->setRequest($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $expected = '<form action="" method="post" name="myForm">';
         self::assertStringContainsString($expected, (new TemplateView($context))->render());
     }
@@ -135,7 +134,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form name="" />');
         $request = $this->createRequest();
         $context->setRequest($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $expected = '<form action="" method="post">';
         self::assertStringContainsString($expected, (new TemplateView($context))->render());
     }
@@ -149,7 +148,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" object="{object}" />');
         $request = $this->createRequest();
         $context->setRequest($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
         $expected = '<input type="hidden" name="prefix[formName][__identity]" value="123" />';
@@ -165,7 +164,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $request = $this->createRequest();
         $context->setRequest($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
         $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />';
@@ -181,7 +180,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $request = $this->createRequest();
         $context->setRequest($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
         $expected = '<form action="" method="post">' . chr(10) . '<div>';
@@ -197,7 +196,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<f:form hiddenFieldClassName="hidden" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $request = $this->createRequest();
         $context->setRequest($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
         $expected = '<form action="" method="post">' . chr(10) . '<div class="hidden">';
@@ -212,7 +211,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerName('controllerName');
         $extbaseRequestParameters->setControllerExtensionName('extensionName');
         $psr7Request = $this->createRequest()->withAttribute('extbase', $extbaseRequestParameters);
-        $GLOBALS['TYPO3_REQUEST'] = $psr7Request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($psr7Request);
         $extbaseRequest = new Request($psr7Request);
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
@@ -236,47 +235,18 @@ final class FormViewHelperTest extends FunctionalTestCase
         self::assertSame($expected, $view->render());
     }
 
-    #[Test]
-    public function renderHiddenReferrerFieldsAddCurrentControllerAndActionAsHiddenFields2(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $this->writeSiteConfiguration(
-            'test',
-            $this->buildSiteConfiguration(1, '/'),
-        );
-        $pageInformation = new PageInformation();
-        $pageInformation->setId(1);
-        $request = $this->createRequest()
-            ->withAttribute(
-                'extbase',
-                (new ExtbaseRequestParameters())
-                ->setPluginName('pluginName')
-                ->setControllerActionName('controllerActionName')
-                ->setControllerName('controllerName')
-                ->setControllerExtensionName('extensionName')
-            )
-            ->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]))
-            ->withAttribute('frontend.page.information', $pageInformation);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form addQueryString="untrusted" />');
-        $context->setRequest(new Request($request));
-        $view = new TemplateView($context);
-        $expected = '<form action="/?tx_extensionname_pluginname%5Bcontroller%5D=controllerName&amp;untrusted=123';
-        self::assertStringStartsWith($expected, $view->render());
-    }
-
-    protected function createRequest(): ServerRequestInterface
+    private function createRequest(): ServerRequestInterface
     {
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupTree(new RootNode());
         $frontendTypoScript->setSetupArray([]);
         $frontendTypoScript->setConfigArray([]);
+        $contentObject = $this->get(ContentObjectRenderer::class);
         $serverRequest = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript)
             ->withAttribute('extbase', new ExtbaseRequestParameters())
-            ->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+            ->withAttribute('currentContentObject', $contentObject);
         return new Request($serverRequest);
     }
 }

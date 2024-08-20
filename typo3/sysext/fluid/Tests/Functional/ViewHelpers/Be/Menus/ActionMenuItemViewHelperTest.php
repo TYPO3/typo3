@@ -70,7 +70,6 @@ final class ActionMenuItemViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource($source);
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
         $context->setRequest(new Request($serverRequest));
         $view = new TemplateView($context);
         $view->assignMultiple($variables);

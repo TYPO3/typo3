@@ -512,7 +512,6 @@ EOT;
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
         $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $psr7Request;
         $extbaseRequest = new Request($psr7Request);
         GeneralUtility::addInstance(Request::class, $extbaseRequest);
 

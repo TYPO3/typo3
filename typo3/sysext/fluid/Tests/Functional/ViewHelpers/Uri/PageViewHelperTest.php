@@ -129,7 +129,6 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource('<f:uri.page pageUid="42" absolute="1">foo</f:uri.page>');
@@ -226,7 +225,6 @@ final class PageViewHelperTest extends FunctionalTestCase
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);
@@ -243,16 +241,17 @@ final class PageViewHelperTest extends FunctionalTestCase
             'test',
             $this->buildSiteConfiguration(1, '/'),
         );
+        $contentObject = $this->get(ContentObjectRenderer::class);
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
+        $request = $request->withAttribute('currentContentObject', $contentObject);
+        $contentObject->setRequest($request);
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $request = new Request($request);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
         $view = new StandaloneView();
         $view->setRequest($request);
         $view->setTemplateSource($template);
