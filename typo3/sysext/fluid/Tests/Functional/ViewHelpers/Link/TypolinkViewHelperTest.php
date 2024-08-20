@@ -50,23 +50,6 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
         ],
     ];
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $request = new ServerRequest('http://localhost/');
-        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $request = $request->withAttribute('routing', new PageArguments(1, '0', []));
-        $request = $request->withAttribute('site', new Site(
-            'site',
-            1,
-            [
-                'base' => 'http://localhost/',
-                'languages' => [],
-            ]
-        ));
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-    }
-
     public static function renderDataProvider(): array
     {
         return [
@@ -248,6 +231,18 @@ EOT
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
+        $request = new ServerRequest('http://localhost/');
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = $request->withAttribute('routing', new PageArguments(1, '0', []));
+        $request = $request->withAttribute('site', new Site(
+            'site',
+            1,
+            [
+                'base' => 'http://localhost/',
+                'languages' => [],
+            ]
+        ));
+        $context->setRequest($request);
         $view = new TemplateView($context);
         $view->assignMultiple($assigns);
         self::assertSame($expected, trim($view->render()));

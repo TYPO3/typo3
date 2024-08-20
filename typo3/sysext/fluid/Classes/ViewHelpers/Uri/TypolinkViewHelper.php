@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\TypolinkParameter;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -88,10 +90,12 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $typolink = $typoLinkCodecService->encode(
             TypolinkParameter::createFromTypolinkParts(self::mergeTypoLinkConfiguration($parameter->toArray(), $arguments))->toArray()
         );
-        return $typolink !== '' ? self::invokeContentObjectRenderer($arguments, $typolink) : '';
+        /** @var RenderingContext $renderingContext */
+        $request = $renderingContext->getRequest();
+        return $typolink !== '' ? self::invokeContentObjectRenderer($arguments, $typolink, $request) : '';
     }
 
-    protected static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter): string
+    protected static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter, ?ServerRequestInterface $request): string
     {
         $addQueryString = $arguments['addQueryString'] ?? false;
         $addQueryStringExclude = $arguments['addQueryStringExclude'] ?? '';
@@ -112,6 +116,9 @@ final class TypolinkViewHelper extends AbstractViewHelper
         }
 
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        if ($request) {
+            $contentObject->setRequest($request);
+        }
         return $contentObject->createUrl($instructions);
     }
 
