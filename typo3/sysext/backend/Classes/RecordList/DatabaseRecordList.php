@@ -2003,7 +2003,7 @@ class DatabaseRecordList
                 $title = htmlspecialchars($languageInformation[$lUid_OnPage]['title'] ?? '');
 
                 $lC = ($languageInformation[$lUid_OnPage]['flagIcon'] ?? false)
-                    ? $this->iconFactory->getIcon($languageInformation[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->render()
+                    ? $this->iconFactory->getIcon($languageInformation[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL)->setTitle($title)->render()
                     : $title;
 
                 $out .= '<a href="' . htmlspecialchars($href) . '"'
