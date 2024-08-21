@@ -21,12 +21,16 @@
 
 <template id="t3js-clearTypo3temp-stat-template">
     <div class="form-group form-group-dashed">
-        <button class="btn btn-warning t3js-clearTypo3temp-delete" type="button">
-            <span>
-                Delete <strong class="t3js-clearTypo3temp-stat-numberOfFiles"></strong> files in
-                <strong class="t3js-clearTypo3temp-stat-directory"></strong>
-            </span>
-        </button>
+        <div class="module-action-list">
+            <div class="module-action-list-description">
+                <strong class="t3js-clearTypo3temp-stat-directory"></strong> contains <output class="t3js-clearTypo3temp-stat-numberOfFiles"></output> files
+            </div>
+            <div class="module-action-list-action">
+                <button class="btn btn-default btn-sm t3js-clearTypo3temp-delete" type="button">
+                    <core:icon identifier="actions-delete" size="small" /> Delete files
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 

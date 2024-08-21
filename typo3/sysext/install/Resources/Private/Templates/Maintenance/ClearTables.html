@@ -17,14 +17,16 @@
 
 <template id="t3js-clearTables-stat-template">
     <div class="form-group form-group-dashed">
-        <label class="form-label t3js-clearTables-stat-description">{clearTableStatistic.description}</label>
-        <div>
-            <button class="btn btn-warning t3js-clearTables-clear">
-                <span>
-                    Delete <strong class="t3js-clearTables-stat-rows"></strong> row(s)
-                    from table "<strong class="t3js-clearTables-stat-name"></strong>"
-                </span>
-            </button>
+        <div class="module-action-list">
+            <div class="module-action-list-description">
+                <label class="form-label t3js-clearTables-stat-description">{clearTableStatistic.description}</label><br>
+                <strong class="t3js-clearTables-stat-rows"></strong> row(s) found in table <code class="t3js-clearTables-stat-name"></code>
+            </div>
+            <div class="module-action-list-action">
+                <button class="btn btn-default btn-sm t3js-clearTables-clear">
+                    <core:icon identifier="actions-delete" size="small" /> Delete rows
+                </button>
+            </div>
         </div>
     </div>
 </template>

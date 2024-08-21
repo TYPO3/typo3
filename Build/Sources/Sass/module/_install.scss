@@ -127,6 +127,16 @@
     ul {
         word-wrap: anywhere;
     }
+
+    .module-action-list {
+        display: flex;
+        align-items: center;
+        gap: var(--typo3-spacing);
+
+        .module-action-list-description {
+            flex-grow: 1;
+        }
+    }
 }
 
 //
