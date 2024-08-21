@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Pagination;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
@@ -28,10 +29,7 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    /**
-     * @var PostRepository
-     */
-    protected $postRepository;
+    private PostRepository $postRepository;
 
     protected function setUp(): void
     {
@@ -39,7 +37,7 @@ final class QueryResultPaginatorTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/QueryResultPaginatorTestImport.csv');
         $this->postRepository = $this->get(PostRepository::class);
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
     }
 
     /**

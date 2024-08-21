@@ -39,6 +39,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\RegistryEntryRepository;
 
+/**
+ * @todo: $GLOBALS['TYPO3_REQUEST'] is used throughout this test setup since
+ *        Typo3DbQueryParser determines FE / BE mode by accessing it.
+ */
 final class Typo3DbQueryParserTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [

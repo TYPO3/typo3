@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
@@ -28,12 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ConjunctionValidatorTest extends FunctionalTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
-    }
-
     #[Test]
     public function addingValidatorsToAJunctionValidatorWorks(): void
     {

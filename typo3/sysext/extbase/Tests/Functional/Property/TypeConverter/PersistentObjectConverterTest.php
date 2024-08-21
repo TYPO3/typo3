@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -37,16 +38,12 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/be_users.csv');
-
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     #[Test]
     public function converterReturnsNullWithEmptyStringsOrIntegers(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
-
         self::assertNull($propertyMapper->convert(0, BackendUser::class));
         self::assertNull($propertyMapper->convert('', BackendUser::class));
     }
@@ -57,7 +54,6 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": The identity property "foo" is no UID.');
-
         $this->get(PropertyMapper::class)->convert('foo', BackendUser::class);
     }
 
@@ -67,17 +63,20 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $this->expectException(TargetNotFoundException::class);
         $this->expectExceptionCode(1297933823);
         $this->expectExceptionMessage('Object of type TYPO3\CMS\Beuser\Domain\Model\BackendUser with identity "2" not found.');
-
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager->setRequest($request);
         $this->get(PropertyMapper::class)->convert(2, BackendUser::class);
     }
 
     #[Test]
     public function converterFetchesObjectFromPersistenceIfSourceIsAnInteger(): void
     {
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager->setRequest($request);
         $propertyMapper = $this->get(PropertyMapper::class);
-
         $backendUser = $propertyMapper->convert(1, BackendUser::class);
-
         self::assertInstanceOf(BackendUser::class, $backendUser);
         self::assertSame(1, $backendUser->getUid());
     }
@@ -85,10 +84,11 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     #[Test]
     public function converterFetchesObjectFromPersistenceIfSourceIsANumericString(): void
     {
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager->setRequest($request);
         $propertyMapper = $this->get(PropertyMapper::class);
-
         $backendUser = $propertyMapper->convert('1', BackendUser::class);
-
         self::assertInstanceOf(BackendUser::class, $backendUser);
         self::assertSame(1, $backendUser->getUid());
     }
@@ -97,9 +97,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     public function converterBuildsEmptyObjectIfSourceIsAnEmptyArray(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
-
         $backendUser = $propertyMapper->convert([], BackendUser::class);
-
         self::assertInstanceOf(BackendUser::class, $backendUser);
         self::assertNull($backendUser->getUid());
     }
@@ -107,10 +105,11 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     #[Test]
     public function converterFetchesObjectFromPersistenceIfSourceIsAnArrayWithIdentityKey(): void
     {
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager->setRequest($request);
         $propertyMapper = $this->get(PropertyMapper::class);
-
         $backendUser = $propertyMapper->convert(['__identity' => 1], BackendUser::class);
-
         self::assertInstanceOf(BackendUser::class, $backendUser);
         self::assertSame(1, $backendUser->getUid());
     }
@@ -121,14 +120,12 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": Creation of objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_CREATION_ALLOWED" to TRUE');
-
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->setTypeConverterOption(
             PersistentObjectConverter::class,
             PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
             false
         );
-
         $this->get(PropertyMapper::class)->convert(
             [],
             BackendUser::class,
@@ -140,9 +137,7 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
     public function converterRespectsAndSetsProperties(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
-
         $backendUser = $propertyMapper->convert(['userName' => 'johndoe'], BackendUser::class);
-
         self::assertInstanceOf(BackendUser::class, $backendUser);
         self::assertNull($backendUser->getUid());
         self::assertSame('johndoe', $backendUser->getUserName());
@@ -154,7 +149,6 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": Property "nonExistant" was not found in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser".');
-
         $this->get(PropertyMapper::class)->convert(['nonExistant' => 'johndoe'], BackendUser::class);
     }
 
@@ -164,7 +158,6 @@ final class PersistentObjectConverterTest extends FunctionalTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": Property "uid" having a value of type "int" could not be set in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser"');
-
         $this->get(PropertyMapper::class)->convert(['uid' => 7], BackendUser::class);
     }
 }

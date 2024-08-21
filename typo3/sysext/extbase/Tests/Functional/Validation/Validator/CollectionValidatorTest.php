@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixtures\Entity;
@@ -35,14 +32,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CollectionValidatorTest extends FunctionalTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-    }
-
     #[Test]
     public function collectionValidatorReturnsNoErrorsForANullValue(): void
     {

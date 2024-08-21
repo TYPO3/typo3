@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Property;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -41,13 +42,6 @@ final class PropertyMapperTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/',
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/type_converter_test/',
     ];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-    }
 
     #[Test]
     public function convertCreatesAPropertyMappingConfigurationIfNotGiven(): void
@@ -71,7 +65,9 @@ final class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(TargetNotFoundException::class);
         $this->expectExceptionCode(1297933823);
-
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager->setRequest($request);
         $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert(9999, Blog::class);
     }

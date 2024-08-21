@@ -57,16 +57,17 @@ final class Typo3DbBackendTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbBackendTestImport.csv');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+        $request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
-
         $blogRepository = $this->get(BlogRepository::class);
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(1));
         $context->setAspect('language', new LanguageAspect(0, 0));
         GeneralUtility::setSingletonInstance(Context::class, $context);
-        $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager->setRequest($request);
+        $querySettings = new Typo3QuerySettings($context, $configurationManager);
         $querySettings->setRespectStoragePage(false);
         $query = $blogRepository->createQuery();
         $query->setQuerySettings($querySettings);
