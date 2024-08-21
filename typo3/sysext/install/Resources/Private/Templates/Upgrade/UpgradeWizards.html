@@ -6,93 +6,6 @@
     records or explicitly install extensions that ship with the latest TYPO3 version.
 </p>
 
-<div style="display: none">
-    <div class="t3js-upgradeWizards-blocking-charset-template">
-        <p>
-            The default database charset of the main MySQL database is not utf-8.
-            <br />
-            You have to run this update wizard before you can run any other update
-            wizard to make sure new tables and fields are created with the correct
-            charset.
-            <br />
-            WARNING: This will NOT convert any existing data.
-        </p>
-        <button class="btn btn-default t3js-upgradeWizards-blocking-charset-fix" type="button">
-            Set default charset to utf8
-        </button>
-    </div>
-
-    <div class="t3js-upgradeWizards-blocking-adds-template">
-        <p>
-            There are tables or fields in the database which need to be created.
-            <br />
-            You have to run this update wizard before you can run any other update
-            wizard to make sure all needed tables and fields are present.
-        </p>
-        <div>
-            <div class="t3js-upgradeWizards-blocking-adds-rows"></div>
-        </div>
-        <button class="btn btn-default t3js-upgradeWizards-blocking-adds-execute" type="button">
-            Create missing tables and fields
-        </button>
-    </div>
-
-    <div class="t3js-upgradeWizards-list-template">
-        <f:comment><!--
-            @todo: this whole "partial" gets reloaded everytime the "Upgrade status" is re-calculated
-                this is an issue with the progress bar as it thus is re-rendered all the time
-        --></f:comment>
-        <h4 class="mt-4">Upgrade status</h4>
-        <typo3-backend-progress-bar value="0" max="100"></typo3-backend-progress-bar>
-        <div class="t3js-upgradeWizards-list-rows mt-4"></div>
-    </div>
-    <div class="t3js-upgradeWizards-list-row-template form-group form-group-dashed">
-        <h4 class="t3js-upgradeWizards-list-row-title"></h4>
-        <p class="row-explanation t3js-upgradeWizards-list-row-explanation"></p>
-        <button class="btn btn-default t3js-upgradeWizards-list-row-execute" type="button">
-            Execute
-        </button>
-    </div>
-
-    <div class="t3js-upgradeWizards-input">
-        <form>
-            <h4 class="t3js-upgradeWizards-input-title">{updateData.title}</h4>
-            <p class="t3js-upgradeWizards-input-description">{updateData.description}</p>
-            <div class="t3js-upgradeWizards-input-html"></div>
-            <button class="btn btn-warning t3js-upgradeWizards-input-perform" type="button">
-                Perform updates!
-            </button>
-            <button class="btn btn-default t3js-upgradeWizards-input-abort" type="button">
-                Abort
-            </button>
-        </form>
-    </div>
-
-    <div class="t3js-upgradeWizards-done-body-template">
-        <div class="table-fit mb-0">
-            <table class="table table-striped">
-                <tbody class="t3js-upgradeWizards-done-rows"></tbody>
-            </table>
-        </div>
-    </div>
-    <div class="t3js-upgradeWizards-done-row-template">
-        <table>
-                <tr>
-                    <td>
-                        <button
-                            type="button"
-                            class="btn btn-default t3js-upgradeWizards-done-markUndone"
-                        >
-                            Mark undone
-                        </button>
-                    </td>
-                    <td class="t3js-upgradeWizards-done-title">
-                    </td>
-                </tr>
-        </table>
-    </div>
-</div>
-
 <div class="t3js-upgrade-status-section">
     <div class="upgradeWizards-wizards-output t3js-upgradeWizards-wizards-output"></div>
 
@@ -112,5 +25,92 @@
         <div class="t3js-upgradeWizards-done-output"></div>
     </div>
 </div>
+
+<template id="t3js-upgradeWizards-blocking-charset-template">
+    <p>
+        The default database charset of the main MySQL database is not utf-8.
+        <br />
+        You have to run this update wizard before you can run any other update
+        wizard to make sure new tables and fields are created with the correct
+        charset.
+        <br />
+        WARNING: This will NOT convert any existing data.
+    </p>
+    <button class="btn btn-default t3js-upgradeWizards-blocking-charset-fix" type="button">
+        Set default charset to utf8
+    </button>
+</template>
+
+<template id="t3js-upgradeWizards-blocking-adds-template">
+    <p>
+        There are tables or fields in the database which need to be created.
+        <br />
+        You have to run this update wizard before you can run any other update
+        wizard to make sure all needed tables and fields are present.
+    </p>
+    <div>
+        <div class="t3js-upgradeWizards-blocking-adds-rows"></div>
+    </div>
+    <button class="btn btn-default t3js-upgradeWizards-blocking-adds-execute" type="button">
+        Create missing tables and fields
+    </button>
+</template>
+
+<template id="t3js-upgradeWizards-list-template">
+    <f:comment><!--
+            @todo: this whole "partial" gets reloaded everytime the "Upgrade status" is re-calculated
+                this is an issue with the progress bar as it thus is re-rendered all the time
+        --></f:comment>
+    <h4 class="mt-4">Upgrade status</h4>
+    <typo3-backend-progress-bar value="0" max="100"></typo3-backend-progress-bar>
+    <div class="t3js-upgradeWizards-list-rows mt-4"></div>
+</template>
+
+<template id="t3js-upgradeWizards-list-row-template">
+    <div class="form-group form-group-dashed">
+        <h4 class="t3js-upgradeWizards-list-row-title"></h4>
+        <p class="row-explanation t3js-upgradeWizards-list-row-explanation"></p>
+        <button class="btn btn-default t3js-upgradeWizards-list-row-execute" type="button">
+            Execute
+        </button>
+    </div>
+</template>
+
+<template id="t3js-upgradeWizards-input">
+    <form>
+        <h4 class="t3js-upgradeWizards-input-title">{updateData.title}</h4>
+        <p class="t3js-upgradeWizards-input-description">{updateData.description}</p>
+        <div class="t3js-upgradeWizards-input-html"></div>
+        <button class="btn btn-warning t3js-upgradeWizards-input-perform" type="button">
+            Perform updates!
+        </button>
+        <button class="btn btn-default t3js-upgradeWizards-input-abort" type="button">
+            Abort
+        </button>
+    </form>
+</template>
+
+<template id="t3js-upgradeWizards-done-body-template">
+    <div class="table-fit mb-0">
+        <table class="table table-striped">
+            <tbody class="t3js-upgradeWizards-done-rows"></tbody>
+        </table>
+    </div>
+</template>
+
+<template id="t3js-upgradeWizards-done-row-template">
+    <tr>
+        <td>
+            <button
+                type="button"
+                class="btn btn-default t3js-upgradeWizards-done-markUndone"
+            >
+                Mark undone
+            </button>
+        </td>
+        <td class="t3js-upgradeWizards-done-title">
+        </td>
+    </tr>
+</template>
 
 </html>

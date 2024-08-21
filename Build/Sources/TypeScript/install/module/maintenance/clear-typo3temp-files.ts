@@ -36,10 +36,9 @@ type TemporaryAssetsClearedResponse = {
 
 enum Identifiers {
   deleteTrigger = '.t3js-clearTypo3temp-delete',
-  outputContainer = '.t3js-clearTypo3temp-output',
   statContainer = '.t3js-clearTypo3temp-stat-container',
   statsTrigger = '.t3js-clearTypo3temp-stats',
-  statTemplate = '.t3js-clearTypo3temp-stat-template',
+  statTemplate = '#t3js-clearTypo3temp-stat-template',
   statNumberOfFiles = '.t3js-clearTypo3temp-stat-numberOfFiles',
   statDirectory = '.t3js-clearTypo3temp-stat-directory'
 }
@@ -54,7 +53,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
-      currentModal.querySelector(Identifiers.outputContainer).innerHTML = '';
+      currentModal.querySelector(Identifiers.statContainer).innerHTML = '';
       this.getStats();
     }).delegateTo(currentModal, Identifiers.statsTrigger);
 
@@ -81,7 +80,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element: any): void => {
                 if (element.numberOfFiles > 0) {
-                  const aStat = modalContent.querySelector(Identifiers.statTemplate).cloneNode(true) as HTMLElement;
+                  const aStat = (modalContent.querySelector(Identifiers.statTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
                   aStat.querySelector<HTMLElement>(Identifiers.statNumberOfFiles).innerText = (element.numberOfFiles);
                   aStat.querySelector<HTMLElement>(Identifiers.statDirectory).innerText = (element.directory);
                   aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-folder', element.directory);

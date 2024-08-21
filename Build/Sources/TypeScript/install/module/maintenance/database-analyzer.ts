@@ -27,12 +27,12 @@ enum Identifiers {
   analyzeTrigger = '.t3js-databaseAnalyzer-analyze',
   executeTrigger = '.t3js-databaseAnalyzer-execute',
   outputContainer = '.t3js-databaseAnalyzer-output',
-  suggestionBlock = '.t3js-databaseAnalyzer-suggestion-block',
+  suggestionBlock = '#t3js-databaseAnalyzer-suggestion-block',
   suggestionBlockCheckbox = '.t3js-databaseAnalyzer-suggestion-block-checkbox',
   suggestionBlockLegend = '.t3js-databaseAnalyzer-suggestion-block-legend',
   suggestionBlockLabel = '.t3js-databaseAnalyzer-suggestion-block-label',
   suggestionList = '.t3js-databaseAnalyzer-suggestion-list',
-  suggestionLineTemplate = '.t3js-databaseAnalyzer-suggestion-line-template',
+  suggestionLineTemplate = '#t3js-databaseAnalyzer-suggestion-line-template',
   suggestionLineCheckbox = '.t3js-databaseAnalyzer-suggestion-line-checkbox',
   suggestionLineLabel = '.t3js-databaseAnalyzer-suggestion-line-label',
   suggestionLineStatement = '.t3js-databaseAnalyzer-suggestion-line-statement',
@@ -137,8 +137,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
             }
             if (Array.isArray(data.suggestions)) {
               data.suggestions.forEach((element: any): void => {
-                const aBlock = modalContent.querySelector(Identifiers.suggestionBlock).cloneNode(true) as HTMLElement;
-                aBlock.classList.remove(Identifiers.suggestionBlock.substring(1));
+                const aBlock = (modalContent.querySelector(Identifiers.suggestionBlock) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
                 const key = element.key;
                 aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLegend).innerText = element.label;
                 aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockCheckbox).setAttribute('id', 't3-install-' + key + '-checkbox');
@@ -147,7 +146,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
                 }
                 aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLabel).setAttribute('for', 't3-install-' + key + '-checkbox');
                 element.children.forEach((line: any): void => {
-                  const aLine = modalContent.querySelector<HTMLElement>(Identifiers.suggestionLineTemplate).children[0].cloneNode(true) as HTMLElement;
+                  const aLine = (modalContent.querySelector(Identifiers.suggestionLineTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
                   const hash = line.hash;
                   const checkbox = aLine.querySelector<HTMLInputElement>(Identifiers.suggestionLineCheckbox);
                   checkbox.setAttribute('id', 't3-install-db-' + hash);

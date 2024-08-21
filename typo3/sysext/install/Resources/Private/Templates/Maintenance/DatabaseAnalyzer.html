@@ -6,48 +6,48 @@
     Depending on the specification, the analyzer can update, delete, and change tables and fields.
 </p>
 
-<div style="display:none;">
-    <div class="t3js-databaseAnalyzer-suggestion-block">
-        <fieldset>
-            <h4 class="t3js-databaseAnalyzer-suggestion-block-legend"></h4>
-            <ol class="list-unstyled t3js-databaseAnalyzer-suggestion-list">
-                <li class="t3-install-form-label-after">
-                    <div class="form-check">
-                        <input
-                            type="checkbox"
-                            class="form-check-input t3js-databaseAnalyzer-suggestion-block-checkbox"
-                        />
-                        <label class="form-check-label t3js-databaseAnalyzer-suggestion-block-label">select/deselect all</label>
-                    </div>
-                </li>
-            </ol>
-        </fieldset>
-    </div>
-    <ul class="t3js-databaseAnalyzer-suggestion-line-template">
-        <li class="t3js-databaseAnalyzer-suggestion-line t3-install-form-label-after">
-            <div class="form-check">
-                <input
-                    type="checkbox"
-                    class="form-check-input t3js-databaseAnalyzer-suggestion-line-checkbox"
-                    value="1"
-                />
-                <label class="form-check-label t3js-databaseAnalyzer-suggestion-line-label">
-                    <span class="t3js-databaseAnalyzer-suggestion-line-statement"></span>
-                    <span class="t3js-databaseAnalyzer-suggestion-line-current" style="display:none;">
-                        <br>
-                        Current value: <span class="t3js-databaseAnalyzer-suggestion-line-current-value"></span>
-                    </span>
-                    <span class="t3js-databaseAnalyzer-suggestion-line-count" style="display:none;">
-                        <br>
-                        Rows in table: <span class="t3js-databaseAnalyzer-suggestion-line-count-value"></span>
-                    </span>
-                </label>
-            </div>
-        </li>
-    </ul>
-</div>
 <div class="t3js-module-content" data-database-analyzer-execute-token="{databaseAnalyzerExecuteToken}">
     <div class="t3js-databaseAnalyzer-output"></div>
 </div>
+
+<template id="t3js-databaseAnalyzer-suggestion-block">
+    <fieldset>
+        <h4 class="t3js-databaseAnalyzer-suggestion-block-legend"></h4>
+        <ol class="list-unstyled t3js-databaseAnalyzer-suggestion-list">
+            <li class="t3-install-form-label-after">
+                <div class="form-check">
+                    <input
+                        type="checkbox"
+                        class="form-check-input t3js-databaseAnalyzer-suggestion-block-checkbox"
+                    />
+                    <label class="form-check-label t3js-databaseAnalyzer-suggestion-block-label">select/deselect all</label>
+                </div>
+            </li>
+        </ol>
+    </fieldset>
+</template>
+
+<template id="t3js-databaseAnalyzer-suggestion-line-template">
+    <li class="t3js-databaseAnalyzer-suggestion-line t3-install-form-label-after">
+        <div class="form-check">
+            <input
+                type="checkbox"
+                class="form-check-input t3js-databaseAnalyzer-suggestion-line-checkbox"
+                value="1"
+            />
+            <label class="form-check-label t3js-databaseAnalyzer-suggestion-line-label">
+                <span class="t3js-databaseAnalyzer-suggestion-line-statement"></span>
+                <span class="t3js-databaseAnalyzer-suggestion-line-current" style="display:none;">
+                    <br>
+                    Current value: <span class="t3js-databaseAnalyzer-suggestion-line-current-value"></span>
+                </span>
+                <span class="t3js-databaseAnalyzer-suggestion-line-count" style="display:none;">
+                    <br>
+                    Rows in table: <span class="t3js-databaseAnalyzer-suggestion-line-count-value"></span>
+                </span>
+            </label>
+        </div>
+    </li>
+</template>
 
 </html>

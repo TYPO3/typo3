@@ -16,26 +16,18 @@
 </p>
 
 <div class="t3js-module-content" data-clear-typo3temp-delete-token="{clearTypo3tempFilesToken}">
-
-    <div class="t3js-clearTypo3temp-output mt-4"></div>
-    <div class="t3js-clearTypo3temp-stat-container mt-4"></div>
-
-    <div style="display:none;">
-        <div class="t3js-clearTypo3temp-stat-template">
-            <div class="form-group form-group-dashed">
-                <button
-                    class="btn btn-warning t3js-clearTypo3temp-delete"
-                    type="button"
-                >
-                    <span>
-                        Delete <strong class="t3js-clearTypo3temp-stat-numberOfFiles"></strong> files in
-                        <strong class="t3js-clearTypo3temp-stat-directory"></strong>
-                    </span>
-                </button>
-            </div>
-        </div>
-    </div>
-
+    <div class="t3js-clearTypo3temp-stat-container"></div>
 </div>
+
+<template id="t3js-clearTypo3temp-stat-template">
+    <div class="form-group form-group-dashed">
+        <button class="btn btn-warning t3js-clearTypo3temp-delete" type="button">
+            <span>
+                Delete <strong class="t3js-clearTypo3temp-stat-numberOfFiles"></strong> files in
+                <strong class="t3js-clearTypo3temp-stat-directory"></strong>
+            </span>
+        </button>
+    </div>
+</template>
 
 </html>

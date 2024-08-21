@@ -27,7 +27,7 @@ import type { ModalElement } from '@typo3/backend/modal';
 enum Identifiers {
   executeTrigger = '.t3js-imageProcessing-execute',
   testContainer = '.t3js-imageProcessing-twinContainer',
-  twinImageTemplate = '.t3js-imageProcessing-twinImage-template',
+  twinImageTemplate = '#t3js-imageProcessing-twinImage-template',
   commandContainer = '.t3js-imageProcessing-command',
   commandText = '.t3js-imageProcessing-command-text',
   twinImages = '.t3js-imageProcessing-images'
@@ -83,7 +83,7 @@ class ImageProcessing extends AbstractInteractableModule {
     const modalContent: HTMLElement = this.getModalBody();
     this.setModalButtonsState(false);
 
-    const twinImageTemplate = this.findInModal(Identifiers.twinImageTemplate);
+    const twinImageTemplate = this.findInModal(Identifiers.twinImageTemplate) as HTMLTemplateElement;
     const promises: Array<Promise<void>> = [];
     modalContent.querySelectorAll(Identifiers.testContainer).forEach((container: HTMLElement): void => {
       container.replaceChildren(InfoBox.create(Severity.loading, 'Loading...'));
@@ -99,8 +99,7 @@ class ImageProcessing extends AbstractInteractableModule {
                   container.append(InfoBox.create(element.severity, element.title, element.message));
                 });
               }
-              const aTwin: HTMLElement = twinImageTemplate.cloneNode(true) as HTMLElement;
-              aTwin.classList.remove('t3js-imageProcessing-twinImage-template');
+              const aTwin: HTMLElement = twinImageTemplate.content.cloneNode(true) as HTMLElement;
               if (data.fileExists === true) {
                 aTwin.querySelector('img.reference')?.setAttribute('src', data.referenceFile);
                 aTwin.querySelector('img.result')?.setAttribute('src', data.outputFile);

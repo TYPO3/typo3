@@ -37,9 +37,8 @@ type DatabaseTableClearedResponse = {
 enum Identifiers {
   clearTrigger = '.t3js-clearTables-clear',
   statsTrigger = '.t3js-clearTables-stats',
-  outputContainer = '.t3js-clearTables-output',
   statContainer = '.t3js-clearTables-stat-container',
-  statTemplate = '.t3js-clearTables-stat-template',
+  statTemplate = '#t3js-clearTables-stat-template',
   statDescription = '.t3js-clearTables-stat-description',
   statRows = '.t3js-clearTables-stat-rows',
   statName = '.t3js-clearTables-stat-name'
@@ -55,7 +54,7 @@ class ClearTables extends AbstractInteractableModule {
 
     new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
-      currentModal.querySelector(Identifiers.outputContainer).innerHTML = '';
+      currentModal.querySelector(Identifiers.statContainer).innerHTML = '';
       this.getStats();
     }).delegateTo(currentModal, Identifiers.statsTrigger);
 
@@ -81,7 +80,7 @@ class ClearTables extends AbstractInteractableModule {
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element: any): void => {
                 if (element.rowCount > 0) {
-                  const aStat = modalContent.querySelector<HTMLElement>(Identifiers.statTemplate).cloneNode(true) as HTMLElement;
+                  const aStat = (modalContent.querySelector(Identifiers.statTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
                   aStat.querySelector<HTMLElement>(Identifiers.statDescription).innerText = element.description;
                   aStat.querySelector<HTMLElement>(Identifiers.statName).innerText = element.name;
                   aStat.querySelector<HTMLElement>(Identifiers.statRows).innerText = element.rowCount;

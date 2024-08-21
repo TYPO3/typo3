@@ -12,26 +12,21 @@
 </p>
 
 <div class="t3js-module-content" data-clear-tables-clear-token="{clearTablesClearToken}">
+    <div class="t3js-clearTables-stat-container"></div>
+</div>
 
-    <div class="t3js-clearTables-output mt-4"></div>
-    <div class="t3js-clearTables-stat-container mt-4"></div>
-
-    <div style="display:none;">
-        <div class="t3js-clearTables-stat-template">
-            <div class="form-group form-group-dashed">
-                <label class="form-label t3js-clearTables-stat-description">{clearTableStatistic.description}</label>
-                <div>
-                    <button class="btn btn-warning t3js-clearTables-clear">
-                        <span>
-                            Delete <strong class="t3js-clearTables-stat-rows"></strong> row(s)
-                            from table "<strong class="t3js-clearTables-stat-name"></strong>"
-                        </span>
-                    </button>
-                </div>
-            </div>
+<template id="t3js-clearTables-stat-template">
+    <div class="form-group form-group-dashed">
+        <label class="form-label t3js-clearTables-stat-description">{clearTableStatistic.description}</label>
+        <div>
+            <button class="btn btn-warning t3js-clearTables-clear">
+                <span>
+                    Delete <strong class="t3js-clearTables-stat-rows"></strong> row(s)
+                    from table "<strong class="t3js-clearTables-stat-name"></strong>"
+                </span>
+            </button>
         </div>
     </div>
-
-</div>
+</template>
 
 </html>
