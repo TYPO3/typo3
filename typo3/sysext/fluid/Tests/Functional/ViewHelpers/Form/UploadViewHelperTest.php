@@ -77,9 +77,8 @@ final class UploadViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.upload property="someProperty" errorClass="myError" /></f:form>');
-        $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.

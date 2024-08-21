@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\TypolinkParameter;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -90,8 +89,10 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $typolink = $typoLinkCodecService->encode(
             TypolinkParameter::createFromTypolinkParts(self::mergeTypoLinkConfiguration($parameter->toArray(), $arguments))->toArray()
         );
-        /** @var RenderingContext $renderingContext */
-        $request = $renderingContext->getRequest();
+        $request = null;
+        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        }
         return $typolink !== '' ? self::invokeContentObjectRenderer($arguments, $typolink, $request) : '';
     }
 

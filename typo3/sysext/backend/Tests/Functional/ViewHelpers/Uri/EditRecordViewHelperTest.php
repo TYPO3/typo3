@@ -42,8 +42,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderReturnsValidLinkInExplicitFormat(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->setRequest($this->request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:uri.editRecord uid="42" table="a_table">edit record a_table:42</be:uri.editRecord>');
         $result = urldecode((new TemplateView($context))->render());
@@ -55,8 +54,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderReturnsValidLinkInInlineFormat(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->setRequest($this->request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('{be:uri.editRecord(uid: 21, table: \'b_table\')}');
         $result = urldecode((new TemplateView($context))->render());
@@ -81,8 +79,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderReturnsValidLinkWithField(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->setRequest($this->request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:uri.editRecord uid="43" table="c_table" fields="canonical_url">edit record c_table:43</be:uri.editRecord>');
         $result = urldecode((new TemplateView($context))->render());
@@ -95,8 +92,7 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderReturnsValidLinkWithFields(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->setRequest($this->request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:uri.editRecord uid="43" table="c_table" fields="canonical_url,title">edit record c_table:43</be:uri.editRecord>');
         $result = urldecode((new TemplateView($context))->render());

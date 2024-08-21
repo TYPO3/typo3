@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -78,16 +78,16 @@ final class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
         $arguments = $this->arguments['arguments'];
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
-        $request = $renderingContext->getRequest();
-        if (!$request instanceof RequestInterface) {
+        if (!$this->renderingContext->hasAttribute(ServerRequestInterface::class)
+            || !$this->renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface) {
             // Throw if not an extbase request
             throw new \RuntimeException(
                 'ViewHelper f:be.menus.actionMenuItem needs an extbase Request object to create URIs.',
                 1639741792
             );
         }
+        /** @var RequestInterface $request */
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $uriBuilder->setRequest($request);
 
         $uri = $uriBuilder->reset()->uriFor($action, $arguments, $controller);
@@ -103,10 +103,8 @@ final class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
 
     protected function evaluateSelectItemState(string $controller, string $action, array $arguments): void
     {
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
         /** @var RequestInterface $request */
-        $request = $renderingContext->getRequest();
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $flatRequestArguments = ArrayUtility::flattenPlain(
             array_merge([
                 'controller' => $request->getControllerName(),

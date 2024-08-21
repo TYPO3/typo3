@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -53,7 +54,6 @@ use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface as FluidStandaloneViewInterface;
@@ -486,9 +486,7 @@ abstract class ActionController implements ControllerInterface
         $this->setViewConfiguration($view);
         if ($view instanceof FluidViewAdapter) {
             $renderingContext = $view->getRenderingContext();
-            if ($renderingContext instanceof RenderingContext) {
-                $renderingContext->setRequest($this->request);
-            }
+            $renderingContext->setAttribute(ServerRequestInterface::class, $this->request);
             $renderingContext->setControllerName($this->request->getControllerName());
             $renderingContext->setControllerAction($this->request->getControllerActionName());
             $templatePaths = $view->getRenderingContext()->getTemplatePaths();

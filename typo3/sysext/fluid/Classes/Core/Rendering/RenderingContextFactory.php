@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Core\Rendering;
 
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactoryInterface;
@@ -47,15 +48,15 @@ use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessorInterface;
  *
  * @internal May change / vanish any time
  */
-final class RenderingContextFactory
+final readonly class RenderingContextFactory
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly CacheManager $cacheManager,
-        private readonly ViewHelperResolverFactoryInterface $viewHelperResolverFactory,
+        private ContainerInterface $container,
+        private CacheManager $cacheManager,
+        private ViewHelperResolverFactoryInterface $viewHelperResolverFactory,
     ) {}
 
-    public function create(array $templatePathsArray = []): RenderingContext
+    public function create(array $templatePathsArray = [], ?ServerRequestInterface $request = null): RenderingContext
     {
         /** @var TemplateProcessorInterface[] $processors */
         $processors = [];
@@ -91,12 +92,16 @@ final class RenderingContextFactory
             $templatePaths->setPartialRootPaths($templatePathsArray['partialRootPaths']);
         }
 
-        return new RenderingContext(
+        $renderingContext = new RenderingContext(
             $this->viewHelperResolverFactory->create(),
             $cache,
             $processors,
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['expressionNodeTypes'],
             $templatePaths
         );
+        if ($request) {
+            $renderingContext->setAttribute(ServerRequestInterface::class, $request);
+        }
+        return $renderingContext;
     }
 }

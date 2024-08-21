@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -213,9 +212,10 @@ final class DateViewHelper extends AbstractViewHelper
     private static function resolveLocale(RenderingContextInterface $renderingContext): Locale
     {
         $request = null;
-        if ($renderingContext instanceof RenderingContext) {
-            $request = $renderingContext->getRequest();
+        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
         } elseif (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
+            // @todo: deprecate
             $request = $GLOBALS['TYPO3_REQUEST'];
         }
         if ($request && ApplicationType::fromRequest($request)->isFrontend()) {

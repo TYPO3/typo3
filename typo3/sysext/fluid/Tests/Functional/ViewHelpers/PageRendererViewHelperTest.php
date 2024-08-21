@@ -74,12 +74,11 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderResolvesLabelWithExtbaseRequest(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:be.pageRenderer addJsInlineLabels="{0: \'login.header\'}" />');
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('Backend');
         $serverRequest = (new ServerRequest('https://example.com/typo3/'))->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:be.pageRenderer addJsInlineLabels="{0: \'login.header\'}" />');
         $view = new TemplateView($context);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $view->render();

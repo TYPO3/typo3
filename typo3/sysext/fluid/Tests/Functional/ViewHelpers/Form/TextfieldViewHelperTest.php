@@ -57,10 +57,9 @@ final class TextfieldViewHelperTest extends FunctionalTestCase
     #[Test]
     public function render(string $template, string $expected): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource($template);
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource($template);
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
@@ -79,9 +78,8 @@ final class TextfieldViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.textfield property="someProperty" errorClass="myError" /></f:form>');
-        $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.

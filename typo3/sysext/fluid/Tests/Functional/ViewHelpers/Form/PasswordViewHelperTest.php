@@ -32,40 +32,36 @@ final class PasswordViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderCorrectlySetsTagName(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form.password />');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password />');
         self::assertSame('<input type="password" name="" value="" />', (new TemplateView($context))->render());
     }
 
     #[Test]
     public function renderCorrectlySetsTypeNameAndValueAttributes(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="NameOfTextbox" value="Current value" />');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="NameOfTextbox" value="Current value" />');
         self::assertSame('<input type="password" name="NameOfTextbox" value="Current value" />', (new TemplateView($context))->render());
     }
 
     #[Test]
     public function renderCorrectlySetsAutocompleteTagAttribute(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myNewPassword" value="" autocomplete="new-password" />');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myNewPassword" value="" autocomplete="new-password" />');
         self::assertSame('<input autocomplete="new-password" type="password" name="myNewPassword" value="" />', (new TemplateView($context))->render());
     }
 
     #[Test]
     public function renderCorrectlySetsSizeTagAttribute(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myNewPassword" size="42" />');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myNewPassword" size="42" />');
         self::assertSame('<input size="42" type="password" name="myNewPassword" value="" />', (new TemplateView($context))->render());
     }
 }

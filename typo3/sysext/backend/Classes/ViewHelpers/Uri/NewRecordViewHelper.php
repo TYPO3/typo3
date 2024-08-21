@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers\Uri;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -100,8 +100,7 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
         }
 
         if (empty($arguments['returnUrl'])) {
-            /** @var RenderingContext $renderingContext */
-            $request = $renderingContext->getRequest();
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
             $arguments['returnUrl'] = $request->getAttribute('normalizedParams')->getRequestUri();
         }
 

@@ -66,11 +66,10 @@ final class ActionMenuItemViewHelperTest extends FunctionalTestCase
     #[Test]
     public function isRendered(string $source, array $variables, string $expectation): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource($source);
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource($source);
         $view = new TemplateView($context);
         $view->assignMultiple($variables);
         self::assertSame($expectation, $view->render());

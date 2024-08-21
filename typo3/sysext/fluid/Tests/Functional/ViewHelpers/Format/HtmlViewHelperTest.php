@@ -177,10 +177,8 @@ EOT
     #[Test]
     public function throwsExceptionIfCalledInBackendContext(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $context->setRequest($request);
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:format.html>TYPO3 is a cool CMS</f:format.html>');
 
         $this->expectException(\RuntimeException::class);

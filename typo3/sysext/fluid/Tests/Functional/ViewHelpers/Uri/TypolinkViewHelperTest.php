@@ -169,8 +169,6 @@ EOT
     #[Test]
     public function renderWithAssignedParameters(string $template, array $assigns, string $expected): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource($template);
         $request = new ServerRequest('http://localhost/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', []));
@@ -182,7 +180,8 @@ EOT
                 'languages' => [],
             ]
         ));
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource($template);
         $view = new TemplateView($context);
         $view->assignMultiple($assigns);
         self::assertSame($expected, trim($view->render()));

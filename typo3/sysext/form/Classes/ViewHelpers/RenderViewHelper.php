@@ -21,11 +21,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
@@ -71,9 +71,8 @@ final class RenderViewHelper extends AbstractViewHelper
         $persistenceIdentifier = $arguments['persistenceIdentifier'];
         $prototypeName = $arguments['prototypeName'];
         $overrideConfiguration = $arguments['overrideConfiguration'];
-        /** @var RenderingContext $renderingContext */
         /** @var RequestInterface $request */
-        $request = $renderingContext->getRequest();
+        $request = $renderingContext->getAttribute(ServerRequestInterface::class);
         // @todo: formvh:render() does not make sense without a persistenceIdentifier, does it?
         if (!empty($persistenceIdentifier)) {
             // The ConfigurationManager of ext:form needs ext:extbase ConfigurationManager to retrieve basic TS

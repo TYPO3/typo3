@@ -220,8 +220,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         $request = $request
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('language', new SiteLanguage(0, 'de_CH.utf8', new Uri('https://example.ch/'), []));
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource($template);
         self::assertSame($expected, (new TemplateView($context))->render());
     }
@@ -351,9 +350,8 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerExtensionName('test_translate');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = (new Request($serverRequest));
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource($template);
-        $context->setRequest($extbaseRequest);
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
@@ -366,9 +364,8 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerExtensionName('test_translate');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = (new Request($serverRequest));
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:translate key="localized.to.de" languageKey="{myLocale}" />');
-        $context->setRequest($extbaseRequest);
         $templateView = new TemplateView($context);
         $templateView->assign('myLocale', (new Locales())->createLocale('de'));
         self::assertSame('DE label', $templateView->render());
@@ -383,9 +380,8 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerExtensionName('test_translate');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = (new Request($serverRequest));
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:translate key="localized.to.de" languageKey="{myLocale}" />');
-        $context->setRequest($extbaseRequest);
         $templateView = new TemplateView($context);
         $templateView->assign('myLocale', (new Locales())->createLocale('de_at'));
         self::assertSame('DE label', $templateView->render());
@@ -400,9 +396,8 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerExtensionName('test_translate');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = (new Request($serverRequest));
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:translate key="localized.to.de_at" languageKey="{myLocale}" />');
-        $context->setRequest($extbaseRequest);
         $templateView = new TemplateView($context);
         $templateView->assign('myLocale', (new Locales())->createLocale('de_at'));
         self::assertSame('DE_AT label', $templateView->render());

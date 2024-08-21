@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Renderer;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\TemplateView;
@@ -146,7 +147,7 @@ class FluidFormRenderer extends AbstractElementRenderer
         $renderingOptions = $this->formRuntime->getRenderingOptions();
 
         $view = GeneralUtility::makeInstance(TemplateView::class);
-        $view->getRenderingContext()->setRequest($this->getFormRuntime()->getRequest());
+        $view->getRenderingContext()->setAttribute(ServerRequestInterface::class, $this->getFormRuntime()->getRequest());
 
         if (!isset($renderingOptions['templateRootPaths'])) {
             throw new RenderingException(

@@ -32,10 +32,9 @@ final class HiddenViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderCorrectlySetsTagNameAndDefaultAttributes(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form.hidden name="foo" value="bar" />');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.hidden name="foo" value="bar" />');
         self::assertSame('<input type="hidden" name="foo" value="bar" />', (new TemplateView($context))->render());
     }
 }

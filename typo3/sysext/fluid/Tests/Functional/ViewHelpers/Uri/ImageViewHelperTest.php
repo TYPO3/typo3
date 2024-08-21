@@ -146,8 +146,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource($template);
         (new TemplateView($context))->render();
     }

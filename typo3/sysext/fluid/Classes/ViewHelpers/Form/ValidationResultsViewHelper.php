@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
-use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
@@ -98,9 +98,12 @@ final class ValidationResultsViewHelper extends AbstractViewHelper
         $for = $arguments['for'];
         $as = $arguments['as'];
 
-        /** @var RenderingContext $renderingContext */
-        /** @var ExtbaseRequestParameters $extbaseRequestParameters */
-        $extbaseRequestParameters = $renderingContext->getRequest()->getAttribute('extbase');
+        if (!$renderingContext->hasAttribute(ServerRequestInterface::class)
+            || !$renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface
+        ) {
+            throw new \RuntimeException('ValidationResultsViewHelper needs an extbase request to work.', 1724244193);
+        }
+        $extbaseRequestParameters = $renderingContext->getAttribute(ServerRequestInterface::class)->getAttribute('extbase');
         $validationResults = $extbaseRequestParameters->getOriginalRequestMappingResults();
         if ($validationResults !== null && $for !== '') {
             $validationResults = $validationResults->forProperty($for);

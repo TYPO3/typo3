@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
-use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
@@ -64,9 +61,6 @@ final class RenderingContextTest extends UnitTestCase
     public function setControllerActionProcessesInputCorrectly(string $input, string $expected): void
     {
         $subject = $this->getMockBuilder(RenderingContext::class)->onlyMethods([])->disableOriginalConstructor()->getMock();
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = new Request($serverRequest);
-        $subject->setRequest($request);
         $subject->setControllerAction($input);
         self::assertSame($expected, $subject->getControllerAction());
     }

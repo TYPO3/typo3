@@ -35,19 +35,17 @@ final class ResourceViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1639672666);
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], new ServerRequest());
         $context->getTemplatePaths()->setTemplateSource('<f:uri.resource path="Icons/Extension.svg" />');
-        $context->setRequest(new ServerRequest());
         (new TemplateView($context))->render();
     }
 
     #[Test]
     public function renderingFailsWhenExtensionNameNotSetInExtbaseRequest(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:uri.resource path="Icons/Extension.svg" />');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:uri.resource path="Icons/Extension.svg" />');
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1640097205);
         (new TemplateView($context))->render();
@@ -110,9 +108,8 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerExtensionName('Core');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
         $extbaseRequest = (new Request($serverRequest));
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource($template);
-        $context->setRequest($extbaseRequest);
         self::assertEquals($expected, (new TemplateView($context))->render());
     }
 

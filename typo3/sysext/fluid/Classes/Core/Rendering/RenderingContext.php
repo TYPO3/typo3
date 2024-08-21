@@ -32,8 +32,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
 {
-    protected ?ServerRequestInterface $request = null;
-
     /**
      * @var string
      */
@@ -122,14 +120,35 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      * It is currently allowed to setRequest(null) to unset a
      * request object created by factories. Some tests use this
      * to make sure no extbase request is set. This may change.
+     *
+     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14.
+     *             Use RenderingContextFactory->create($pathArray, $request) instead.
      */
-    public function setRequest(?ServerRequestInterface $request): void
+    public function setRequest(?ServerRequestInterface $request = null): void
     {
-        $this->request = $request;
+        trigger_error(
+            __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14. Use RenderingContextFactory->create($pathArray, $request) instead',
+            E_USER_DEPRECATED
+        );
+        if ($request) {
+            $this->setAttribute(ServerRequestInterface::class, $request);
+        }
     }
 
+    /**
+     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14.
+     *             Use $renderingContext->hasAttribute(ServerRequestInterface::class) and
+     *             $renderingContext->getAttribute(ServerRequestInterface::class) instead.
+     */
     public function getRequest(): ?ServerRequestInterface
     {
-        return $this->request;
+        trigger_error(
+            __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14. Use $renderingContext->getAttribute(ServerRequestInterface::class) instead',
+            E_USER_DEPRECATED
+        );
+        if (!$this->hasAttribute(ServerRequestInterface::class)) {
+            return null;
+        }
+        return $this->getAttribute(ServerRequestInterface::class);
     }
 }

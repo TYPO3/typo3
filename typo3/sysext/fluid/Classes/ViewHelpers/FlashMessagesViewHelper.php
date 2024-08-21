@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
@@ -137,9 +137,8 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
         $queueIdentifier = $arguments['queueIdentifier'];
 
         if ($queueIdentifier === null) {
-            /** @var RenderingContext $renderingContext */
-            $request = $renderingContext->getRequest();
-            if (!$request instanceof RequestInterface) {
+            if (!$renderingContext->hasAttribute(ServerRequestInterface::class)
+                || !$renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface) {
                 // Throw if not an extbase request
                 throw new \RuntimeException(
                     'ViewHelper f:flashMessages needs an extbase Request object to resolve the Queue identifier magically.'
@@ -147,6 +146,7 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
                     1639821269
                 );
             }
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
             $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
             $pluginNamespace = $extensionService->getPluginNamespace($request->getControllerExtensionName(), $request->getPluginName());
             $queueIdentifier = 'extbase.flashmessages.' . $pluginNamespace;

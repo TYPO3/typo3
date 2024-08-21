@@ -31,11 +31,11 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 /**
  * Creates a View for backend usage. This is a low level factory. Extensions typically use ModuleTemplate instead.
  */
-final class BackendViewFactory
+final readonly class BackendViewFactory
 {
     public function __construct(
-        protected readonly RenderingContextFactory $renderingContextFactory,
-        protected readonly PackageManager $packageManager,
+        protected RenderingContextFactory $renderingContextFactory,
+        protected PackageManager $packageManager,
     ) {}
 
     /**
@@ -112,8 +112,7 @@ final class BackendViewFactory
             }
         }
 
-        $renderingContext = $this->renderingContextFactory->create($templatePaths);
-        $renderingContext->setRequest($request);
+        $renderingContext = $this->renderingContextFactory->create($templatePaths, $request);
         $fluidView = new FluidTemplateView($renderingContext);
         return new FluidViewAdapter($fluidView);
     }

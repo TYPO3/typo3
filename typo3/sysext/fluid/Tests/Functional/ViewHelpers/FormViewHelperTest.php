@@ -72,10 +72,9 @@ final class FormViewHelperTest extends FunctionalTestCase
     #[Test]
     public function isRendered(string $source, array $variables, string $expectation): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource($source);
         $request = $this->createRequest();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource($source);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assignMultiple($variables);
@@ -92,10 +91,9 @@ final class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $request = $this->createRequest();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
@@ -106,10 +104,9 @@ final class FormViewHelperTest extends FunctionalTestCase
     #[Test]
     public function setFormActionUriRespectsOverriddenArgument(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form actionUri="foobar" />');
         $request = $this->createRequest();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:form actionUri="foobar" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $expected = '<form action="foobar" method="post">';
         self::assertStringContainsString($expected, (new TemplateView($context))->render());
@@ -118,10 +115,9 @@ final class FormViewHelperTest extends FunctionalTestCase
     #[Test]
     public function nameAttributeIsSetIfGiven(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form name="myForm" />');
         $request = $this->createRequest();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:form name="myForm" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $expected = '<form action="" method="post" name="myForm">';
         self::assertStringContainsString($expected, (new TemplateView($context))->render());
@@ -130,10 +126,9 @@ final class FormViewHelperTest extends FunctionalTestCase
     #[Test]
     public function emptyNameAttributeIsNotSet(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form name="" />');
         $request = $this->createRequest();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:form name="" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $expected = '<form action="" method="post">';
         self::assertStringContainsString($expected, (new TemplateView($context))->render());
@@ -144,10 +139,9 @@ final class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" object="{object}" />');
         $request = $this->createRequest();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" object="{object}" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
@@ -160,10 +154,9 @@ final class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $request = $this->createRequest();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
@@ -176,10 +169,9 @@ final class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $request = $this->createRequest();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
@@ -192,10 +184,9 @@ final class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form hiddenFieldClassName="hidden" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $request = $this->createRequest();
-        $context->setRequest($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:form hiddenFieldClassName="hidden" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
@@ -215,9 +206,8 @@ final class FormViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
-        $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
         $expected = '<form action="" method="post">

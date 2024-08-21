@@ -49,10 +49,9 @@ final class RadioViewHelperTest extends FunctionalTestCase
     #[Test]
     public function render(string $template, string $expected): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource($template);
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource($template);
         self::assertSame($expected, (new TemplateView($context))->render());
     }
 
@@ -61,11 +60,10 @@ final class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = false;
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" checked="true" /></f:form>');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" checked="true" /></f:form>');
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
@@ -76,11 +74,10 @@ final class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = true;
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
@@ -91,11 +88,10 @@ final class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = [];
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="foo" />', $view->render());
@@ -106,11 +102,10 @@ final class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = '';
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="foo" />', $view->render());
@@ -121,11 +116,10 @@ final class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = null;
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $context->setRequest(new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="foo" />', $view->render());
@@ -146,9 +140,8 @@ final class RadioViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" errorClass="myError" /></f:form>');
-        $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.
@@ -169,9 +162,8 @@ final class RadioViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
-        $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="foo" class="f3-form-error" />', $view->render());
@@ -191,9 +183,8 @@ final class RadioViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" class="myClass" /></f:form>');
-        $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
         self::assertStringContainsString('<input class="myClass f3-form-error" type="radio" name="myFieldPrefix[myObjectName][someProperty]" value="foo" />', $view->render());

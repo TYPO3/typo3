@@ -30,7 +30,6 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper;
 
@@ -137,10 +136,8 @@ class FormViewHelper extends AbstractFormViewHelper
 
     public function render(): string
     {
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
-        $request = $renderingContext->getRequest();
-        if (!$request instanceof RequestInterface) {
+        if (!$this->renderingContext->hasAttribute(ServerRequestInterface::class)
+            || !$this->renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface) {
             throw new \RuntimeException(
                 'ViewHelper f:form can be used only in extbase context and needs a request implementing extbase RequestInterface.',
                 1639821904
@@ -204,10 +201,8 @@ class FormViewHelper extends AbstractFormViewHelper
         if ($this->hasArgument('actionUri')) {
             $formActionUri = $this->arguments['actionUri'];
         } else {
-            /** @var RenderingContext $renderingContext */
-            $renderingContext = $this->renderingContext;
             /** @var RequestInterface $request */
-            $request = $renderingContext->getRequest();
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $uriBuilder
                 ->reset()
@@ -268,10 +263,8 @@ class FormViewHelper extends AbstractFormViewHelper
      */
     protected function renderHiddenReferrerFields(): string
     {
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
         /** @var RequestInterface $request */
-        $request = $renderingContext->getRequest();
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $extensionName = $request->getControllerExtensionName();
         $controllerName = $request->getControllerName();
         $actionName = $request->getControllerActionName();
@@ -405,15 +398,10 @@ class FormViewHelper extends AbstractFormViewHelper
      */
     protected function getDefaultFieldNamePrefix(): string
     {
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
         /** @var RequestInterface $request */
-        $request = $renderingContext->getRequest();
-        // Backend URLs do not have a prefix
-        if ($request instanceof ServerRequestInterface
-            && $request->getAttribute('applicationType')
-            && ApplicationType::fromRequest($request)->isBackend()
-        ) {
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        if ($request->getAttribute('applicationType') && ApplicationType::fromRequest($request)->isBackend()) {
+            // Backend URLs do not have a prefix
             return '';
         }
         if ($this->hasArgument('extensionName')) {

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\View;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\View\ViewInterface as CoreViewInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext as CoreRenderingContext;
 use TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperResolver;
@@ -218,14 +217,13 @@ readonly class FluidViewAdapter implements CoreViewInterface, FluidStandaloneVie
             . ' and getRenderingContext()->getTemplatePaths()->setFormat() instead.',
             E_USER_DEPRECATED
         );
-        if (!$this->getRenderingContext() instanceof CoreRenderingContext) {
-            // @todo: This needs a transition towards hasAttribute()
-            throw new \RuntimeException('The rendering context must be of type ' . CoreRenderingContext::class, 1721889120);
-        }
-        $request = $this->getRenderingContext()->getRequest();
-        if ($request instanceof RequestInterface) {
-            $request = $request->withFormat($format);
-            $this->getRenderingContext()->setRequest($request);
+        $renderingContext = $this->getRenderingContext();
+        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+            if ($request instanceof RequestInterface) {
+                $request = $request->withFormat($format);
+                $renderingContext->setAttribute(ServerRequestInterface::class, $request);
+            }
         }
         $this->getRenderingContext()->getTemplatePaths()->setFormat($format);
     }
@@ -236,9 +234,8 @@ readonly class FluidViewAdapter implements CoreViewInterface, FluidStandaloneVie
             __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14. Use getRenderingContext()->setAttribute(ServerRequestInterface::class) instead.',
             E_USER_DEPRECATED
         );
-        // @todo: This needs a transition towards setAttribute()
-        if ($this->getRenderingContext() instanceof CoreRenderingContext) {
-            $this->getRenderingContext()->setRequest($request);
+        if ($request) {
+            $this->getRenderingContext()->setAttribute(ServerRequestInterface::class, $request);
         }
     }
 

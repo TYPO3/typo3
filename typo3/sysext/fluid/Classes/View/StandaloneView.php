@@ -38,10 +38,13 @@ class StandaloneView extends AbstractTemplateView
         if (!$this->baseRenderingContext instanceof RenderingContext) {
             throw new \RuntimeException('The rendering context must be of type ' . RenderingContext::class, 1482251886);
         }
-        $request = $this->baseRenderingContext->getRequest();
-        if ($request instanceof RequestInterface) {
-            $request = $request->withFormat($format);
-            $this->baseRenderingContext->setRequest($request);
+        $renderingContext = $this->baseRenderingContext;
+        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+            if ($request instanceof RequestInterface) {
+                $request = $request->withFormat($format);
+                $renderingContext->setAttribute(ServerRequestInterface::class, $request);
+            }
         }
         $this->baseRenderingContext->getTemplatePaths()->setFormat($format);
     }
@@ -51,8 +54,8 @@ class StandaloneView extends AbstractTemplateView
      */
     public function setRequest(?ServerRequestInterface $request = null): void
     {
-        if ($this->baseRenderingContext instanceof RenderingContext) {
-            $this->baseRenderingContext->setRequest($request);
+        if ($request) {
+            $this->baseRenderingContext->setAttribute(ServerRequestInterface::class, $request);
         }
     }
 

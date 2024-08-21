@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -425,7 +426,7 @@ class FormEditorController extends ActionController
         }
         $insertRenderablesPanelConfiguration = $this->getInsertRenderablesPanelConfiguration($prototypeConfiguration, $formEditorDefinitions['formElements']);
         $view = GeneralUtility::makeInstance(TemplateView::class);
-        $view->getRenderingContext()->setRequest($this->request);
+        $view->getRenderingContext()->setAttribute(ServerRequestInterface::class, $this->request);
         $view->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($fluidConfiguration);
         $view->setTemplatePathAndFilename($fluidConfiguration['templatePathAndFilename']);
         $view->assignMultiple([

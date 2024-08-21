@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers\Be;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
@@ -62,7 +63,11 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
         $content = '';
         $contentElementUid = $arguments['contentElementUid'];
         $contentRecord = BackendUtility::getRecord('tt_content', $contentElementUid);
-        if (!empty($contentRecord) && ($request = $renderingContext->getRequest()) !== null) {
+        $request = null;
+        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        }
+        if (!empty($contentRecord) && $request !== null) {
             $backendLayout = GeneralUtility::makeInstance(BackendLayout::class, 'dummy', 'dummy', []);
             $pageRow = BackendUtility::getRecord('pages', $contentRecord['pid']);
             $pageLayoutContext = GeneralUtility::makeInstance(

@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * ViewHelper which renders a record list as known from the TYPO3 list module.
@@ -103,7 +102,7 @@ final class TableListViewHelper extends AbstractBackendViewHelper
      * Renders a record list as known from the TYPO3 list module
      * Note: This feature is experimental!
      *
-     * @see \TYPO3\CMS\Backend\RecordList\DatabaseRecordList
+     * @see DatabaseRecordList
      */
     public function render(): string
     {
@@ -121,15 +120,13 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $enableControlPanels = $this->arguments['enableControlPanels'];
 
         $backendUser = $this->getBackendUser();
-        /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->renderingContext;
-        $request = $renderingContext->getRequest();
-        if (!$request instanceof ServerRequestInterface) {
+        if (!$this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
             // All views in backend have at least ServerRequestInterface, no matter if created by
             // old StandaloneView via BackendViewFactory. Should be fine to assume having a request
             // here, the early return is just sanitation.
             return '';
         }
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
 
         $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/recordlist.js');
         $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/record-download-button.js');

@@ -35,13 +35,13 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderReturnsEmptyStringIfNoFlashMessagesAreInQueue(): void
     {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:flashMessages />');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $extbaseRequest = (new Request($serverRequest));
+        $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
+        $context->getTemplatePaths()->setTemplateSource('<f:flashMessages />');
         $extbaseConfigurationManager = $this->get(ConfigurationManagerInterface::class);
-        $extbaseConfigurationManager->setRequest($serverRequest);
-        $context->setRequest(new Request($serverRequest));
+        $extbaseConfigurationManager->setRequest($extbaseRequest);
         self::assertEmpty((new TemplateView($context))->render());
     }
 
