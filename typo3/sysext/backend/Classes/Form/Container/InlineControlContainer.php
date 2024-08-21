@@ -491,7 +491,9 @@ class InlineControlContainer extends AbstractContainer
                 <div class="form-text">
                     ' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedRelations')) . '
                     <br>
-                    ' . implode(' ', array_map(static fn(string $item): string => '<span class="badge badge-success">' . strtoupper($item) . '</span>', $allowed)) . '
+                    <ul class="badge-list">
+                    ' . implode(' ', array_map(static fn(string $item): string => '<li><span class="badge badge-success">' . strtoupper($item) . '</span></li>', $allowed)) . '
+                    </ul>
                 </div>';
         }
         return '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $item . '</div>';
@@ -547,9 +549,6 @@ class InlineControlContainer extends AbstractContainer
                 <button type="button" class="btn btn-default t3js-create-new-button" title="' . $createNewRelationText . '">
                     ' . $this->iconFactory->getIcon('actions-plus', IconSize::SMALL)->render() . $createNewRelationText . '
                 </button>';
-        } else {
-            $item .= '
-            <span class="btn"></span>';
         }
 
         // Wrap the selector and add a spacer to the bottom

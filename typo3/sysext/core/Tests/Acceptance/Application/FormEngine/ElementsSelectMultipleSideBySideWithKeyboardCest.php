@@ -42,7 +42,7 @@ final class ElementsSelectMultipleSideBySideWithKeyboardCest
     public function addElementsWithEnterKey(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > fieldset:nth-of-type(1)';
-        $formWizardsWrap = $fieldset . ' .form-wizards-element';
+        $formWizardsWrap = $fieldset . ' .form-wizards-item-element';
         $selectAvailable = $formWizardsWrap . ' > div:nth-of-type(1) > div:nth-of-type(2) select';
 
         $I->amGoingTo('move the focus to the select with available items');
@@ -61,7 +61,7 @@ final class ElementsSelectMultipleSideBySideWithKeyboardCest
     public function removeElementWithDeleteKey(ApplicationTester $I): void
     {
         $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > fieldset:nth-of-type(1)';
-        $formWizardsWrap = $fieldset . ' .form-wizards-element';
+        $formWizardsWrap = $fieldset . ' .form-wizards-item-element';
         $selectSelected = $formWizardsWrap . ' > div:nth-of-type(1) > div:nth-of-type(1) select';
 
         $I->amGoingTo('the first item in the list');

@@ -223,7 +223,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
 
         // Html stuff for filter and select filter on top of right side of multi select boxes
-        $filterTextfield[] = '<span class="input-group input-group-sm">';
+        $filterTextfield[] = '<span class="input-group">';
         $filterTextfield[] =    '<span class="input-group-text">';
         $filterTextfield[] =        $this->iconFactory->getIcon('actions-filter', IconSize::SMALL)->render();
         $filterTextfield[] =    '</span>';
@@ -242,15 +242,15 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             }
         }
         $filterHtml = [];
-        $filterHtml[] = '<div class="form-multigroup-item-wizard">';
+        $filterHtml[] = '<div class="form-wizards-item-filter">';
         if (!empty($filterDropDownOptions)) {
             $filterHtml[] = '<div class="t3js-formengine-multiselect-filter-container form-multigroup-wrap">';
-            $filterHtml[] =     '<div class="form-multigroup-item form-multigroup-element">';
-            $filterHtml[] =         '<select class="form-select form-select-sm t3js-formengine-multiselect-filter-dropdown">';
+            $filterHtml[] =     '<div class="form-multigroup-item">';
+            $filterHtml[] =         '<select class="form-select t3js-formengine-multiselect-filter-dropdown">';
             $filterHtml[] =             implode(LF, $filterDropDownOptions);
             $filterHtml[] =         '</select>';
             $filterHtml[] =     '</div>';
-            $filterHtml[] =     '<div class="form-multigroup-item form-multigroup-element">';
+            $filterHtml[] =     '<div class="form-multigroup-item">';
             $filterHtml[] =         implode(LF, $filterTextfield);
             $filterHtml[] =     '</div>';
             $filterHtml[] = '</div>';
@@ -286,15 +286,15 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
-        $html[] =       '<div class="form-wizards-element">';
+        $html[] =       '<div class="form-wizards-item-element">';
         $html[] =           '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($elementName) . '" value="' . (int)$itemCanBeSelectedMoreThanOnce . '" />';
         $html[] =           '<div class="form-multigroup-wrap t3js-formengine-field-group">';
-        $html[] =               '<div class="form-multigroup-item form-multigroup-element">';
+        $html[] =               '<div class="form-multigroup-item">';
         $html[] =                   '<label>';
         $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selected'));
         $html[] =                   '</label>';
-        $html[] =                   '<div class="form-wizards-wrap form-wizards-aside">';
-        $html[] =                       '<div class="form-wizards-element">';
+        $html[] =                   '<div class="form-wizards-wrap">';
+        $html[] =                       '<div class="form-wizards-item-element">';
         $html[] =                           '<select';
         $html[] =                               ' id="' . $selectedOptionsFieldId . '"';
         $html[] =                               ' size="' . $size . '"';
@@ -305,7 +305,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                               implode(LF, $selectedItemsHtml);
         $html[] =                           '</select>';
         $html[] =                       '</div>';
-        $html[] =                       '<div class="form-wizards-items-aside form-wizards-items-aside--move">';
+        $html[] =                       '<div class="form-wizards-item-aside form-wizards-item-aside--move">';
         $html[] =                           '<div class="btn-group-vertical">';
         if ($maxItems > 1 && $size >= 2) {
             $html[] =                           '<button type="button"';
@@ -358,13 +358,13 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                       '</div>';
         $html[] =                   '</div>';
         $html[] =               '</div>';
-        $html[] =               '<div class="form-multigroup-item form-multigroup-element">';
+        $html[] =               '<div class="form-multigroup-item">';
         $html[] =                   '<label>';
         $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.items'));
         $html[] =                   '</label>';
-        $html[] =                   '<div class="form-wizards-wrap form-wizards-aside">';
-        $html[] =                       '<div class="form-wizards-element">';
-        $html[] =                           implode(LF, $filterHtml);
+        $html[] =                   '<div class="form-wizards-wrap">';
+        $html[] =                       implode(LF, $filterHtml);
+        $html[] =                       '<div class="form-wizards-item-element">';
         $selectElementAttrs = array_merge(
             [
                 'size' => $size,
@@ -381,7 +381,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                           '</select>';
         $html[] =                       '</div>';
         if (!empty($fieldControlHtml)) {
-            $html[] =                       '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+            $html[] =                       '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
             $html[] =                           '<div class="btn-group-vertical">';
             $html[] =                               $fieldControlHtml;
             $html[] =                           '</div>';
@@ -393,7 +393,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =           '<input type="hidden" name="' . htmlspecialchars($elementName) . '" value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '" />';
         $html[] =       '</div>';
         if (!empty($fieldWizardHtml)) {
-            $html[] = '<div class="form-wizards-items-bottom">';
+            $html[] = '<div class="form-wizards-item-bottom">';
             $html[] = $fieldWizardHtml;
             $html[] = '</div>';
         }
@@ -464,12 +464,12 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
-        $html[] =       '<div class="form-wizards-element">';
+        $html[] =       '<div class="form-wizards-item-element">';
         $html[] =           '<label>';
         $html[] =               htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selected'));
         $html[] =           '</label>';
-        $html[] =           '<div class="form-wizards-wrap form-wizards-aside">';
-        $html[] =               '<div class="form-wizards-element">';
+        $html[] =           '<div class="form-wizards-wrap">';
+        $html[] =               '<div class="form-wizards-item-element">';
         $html[] =                   '<select';
         $html[] =                       ' id="' . $selectId . '"';
         $html[] =                       ' size="' . $size . '"';

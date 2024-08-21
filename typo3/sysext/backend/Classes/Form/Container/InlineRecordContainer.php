@@ -314,7 +314,7 @@ class InlineRecordContainer extends AbstractContainer
         if (empty($data['processedTca']['ctrl']['formattedLabel_userFunc'])
             && $this->getBackendUserAuthentication()->shallDisplayDebugInformation()
         ) {
-            $recordTitle .= ' <code class="m-0">[' . htmlspecialchars($foreignTable) . ']</code>';
+            $recordTitle .= ' <code>[' . htmlspecialchars($foreignTable) . ']</code>';
         }
 
         $objectId = htmlspecialchars($domObjectId . '-' . $foreignTable . '-' . ($record['uid'] ?? 0));

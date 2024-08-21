@@ -227,7 +227,7 @@ class SelectSingleElement extends AbstractFormElement
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';
-        $html[] =           '<div class="form-wizards-element">';
+        $html[] =           '<div class="form-wizards-item-element">';
         if ($hasIcons) {
             $html[] =           '<div class="input-group">';
             $html[] =               '<span class="input-group-text input-group-icon">';
@@ -242,14 +242,14 @@ class SelectSingleElement extends AbstractFormElement
         }
         $html[] =           '</div>';
         if (!$disabled && !empty($fieldControlHtml)) {
-            $html[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+            $html[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
             $html[] =          '<div class="btn-group">';
             $html[] =              $fieldControlHtml;
             $html[] =          '</div>';
             $html[] =      '</div>';
         }
         if (!$disabled && !empty($fieldWizardHtml)) {
-            $html[] =       '<div class="form-wizards-items-bottom">';
+            $html[] =       '<div class="form-wizards-item-bottom">';
             $html[] =           $fieldWizardHtml;
             $html[] =       '</div>';
         }

@@ -115,7 +115,7 @@ class DatetimeElement extends AbstractFormElement
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
-            $html[] =       '<div class="form-wizards-element">';
+            $html[] =       '<div class="form-wizards-item-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
             $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" name="' . htmlspecialchars($itemName) . '" value="' . htmlspecialchars($itemValue) . '" type="text" disabled>';
             $html[] =           '</div>';
@@ -206,7 +206,7 @@ class DatetimeElement extends AbstractFormElement
         $expansionHtml = [];
         $expansionHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $expansionHtml[] =  '<div class="form-wizards-wrap">';
-        $expansionHtml[] =      '<div class="form-wizards-element">';
+        $expansionHtml[] =      '<div class="form-wizards-item-element">';
         $expansionHtml[] =          '<div class="input-group">';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
@@ -216,14 +216,14 @@ class DatetimeElement extends AbstractFormElement
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
         if (!empty($fieldControlHtml)) {
-            $expansionHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+            $expansionHtml[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
             $expansionHtml[] =          '<div class="btn-group">';
             $expansionHtml[] =              $fieldControlHtml;
             $expansionHtml[] =          '</div>';
             $expansionHtml[] =      '</div>';
         }
         if (!empty($fieldWizardHtml)) {
-            $expansionHtml[] = '<div class="form-wizards-items-bottom">';
+            $expansionHtml[] = '<div class="form-wizards-item-bottom">';
             $expansionHtml[] = $fieldWizardHtml;
             $expansionHtml[] = '</div>';
         }

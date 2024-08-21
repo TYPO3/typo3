@@ -135,8 +135,8 @@ class SelectSingleBoxElement extends AbstractFormElement
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-        $html[] =       '<div class="form-wizards-wrap form-wizards-aside">';
-        $html[] =           '<div class="form-wizards-element">';
+        $html[] =       '<div class="form-wizards-wrap">';
+        $html[] =           '<div class="form-wizards-item-element">';
         if (!$disabled) {
             // Add an empty hidden field which will send a blank value if all items are unselected.
             $html[] =           '<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="">';
@@ -145,21 +145,21 @@ class SelectSingleBoxElement extends AbstractFormElement
         $html[] =           '</div>';
         if (!$disabled) {
             if (!empty($fieldControlHtml)) {
-                $html[] =       '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+                $html[] =       '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
                 $html[] =           $fieldControlHtml;
                 $html[] =       '</div>';
             }
-            $html[] = '</div>'; // Close form-wizards-aside
-            $html[] =   '<p>';
+            $html[] = '</div>';
+            $html[] =   '<div class="form-text">';
             $html[] =       '<em>' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.holdDownCTRL')) . '</em>';
-            $html[] =   '</p>';
+            $html[] =   '</div>';
             if (!empty($fieldWizardHtml)) {
-                $html[] = '<div class="form-wizards-items-bottom">';
+                $html[] = '<div class="form-wizards-item-bottom">';
                 $html[] = $fieldWizardHtml;
                 $html[] = '</div>';
             }
         } else {
-            $html[] = '</div>'; // Close form-wizards-aside
+            $html[] = '</div>';
         }
         $html[] =   '</div>';
         $html[] = '</div>';

@@ -1,0 +1,27 @@
+//
+// Form Hint
+//
+.form-hint {
+    --typo3-formhint-color: inherit;
+    --typo3-formhint-bg: inherit;
+    --typo3-formhint-border-color: transparent;
+    --typo3-formhint-border-width: var(--typo3-input-border-width);
+    --typo3-formhint-border-radius: var(--typo3-input-border-radius);
+    --typo3-formhint-box-shadow: none;
+    font-size: .625rem;
+    color: var(--typo3-formhint-color);
+    padding: calc(var(--typo3-input-padding-y) / 2) var(--typo3-input-padding-x);
+    background-color: var(--typo3-formhint-bg);
+    border: var(--typo3-formhint-border-width) solid var(--typo3-formhint-border-color);
+    border-radius: var(--typo3-formhint-border-radius);
+    box-shadow: var(--typo3-formhint-box-shadow);
+}
+
+// Colors
+@each $state in $base-variants {
+    .form-hint--#{$state} {
+        --typo3-formhint-color: var(--typo3-state-#{$state}-color);
+        --typo3-formhint-bg: var(--typo3-state-#{$state}-bg);
+        --typo3-formhint-border-color: var(--typo3-state-#{$state}-border-color);
+    }
+}

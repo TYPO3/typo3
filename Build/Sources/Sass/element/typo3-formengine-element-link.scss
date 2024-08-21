@@ -1,0 +1,11 @@
+//
+// CSS for custom element:
+// typo3-formengine-element-link
+//
+typo3-formengine-element-link {
+    .form-control-explanation:not([hidden]) {
+        ~ .form-control-clearable-wrapper {
+            display: none;
+        }
+    }
+}

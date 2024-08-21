@@ -444,7 +444,6 @@ typo3-backend-form-selecttree {
 
 typo3-backend-form-selecttree-toolbar {
     display: block;
-    border-bottom: 1px solid rgba(0, 0, 0, .25);
 }
 
 //
@@ -453,7 +452,7 @@ typo3-backend-form-selecttree-toolbar {
 .tree-element {
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(0, 0, 0, .25);
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
 
     & > .tree-wrapper {
         flex: 1 0 0;
@@ -466,9 +465,9 @@ typo3-backend-form-selecttree-toolbar {
 
 .tree-toolbar {
     color-scheme: light dark;
-    padding: 5px 12px;
+    padding: var(--module-docheader-padding-y) 12px;
     color: var(--module-color);
-    border-bottom: 1px solid var(--module-docheader-border);
+    border-bottom: 1px solid var(--module-docheader-border-color);
     background-color: var(--module-docheader-bg);
 
     &__menu {
@@ -480,20 +479,6 @@ typo3-backend-form-selecttree-toolbar {
     &__search {
         flex: 1 0 auto;
         margin: 0 .5rem 0 .25rem;
-
-        .form-control {
-            color: var(--typo3-text-color-base);
-            background-color: var(--typo3-surface-container-lowest);
-            border-color: color-mix(in srgb, var(--typo3-surface-container-lowest), var(--typo3-text-color-base) 20%);
-
-            &:hover {
-                border-color: color-mix(in srgb, var(--typo3-surface-container-lowest), var(--typo3-text-color-base) 30%);
-            }
-
-            &:focus {
-                border-color: color-mix(in srgb, var(--typo3-surface-container-lowest), var(--typo3-text-color-base) 40%);
-            }
-        }
     }
 
     &__menuitem {
@@ -511,6 +496,6 @@ typo3-backend-form-selecttree-toolbar {
 
     &__submenu {
         margin-top: var(--module-docheader-spacing-y);
-        min-height: 25px;
+        min-height: var(--module-docheader-bar-height);
     }
 }

@@ -80,6 +80,12 @@ h3 {
     color: var(--typo3-text-color-default) !important;
 }
 
+code,
+.text-code,
+.text-code-emphasis {
+    color: var(--typo3-text-color-code) !important;
+}
+
 .text-reset {
     color: inherit !important;
 }

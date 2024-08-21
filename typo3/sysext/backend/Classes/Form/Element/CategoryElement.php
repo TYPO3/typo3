@@ -111,7 +111,7 @@ class CategoryElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
         if (!$readOnly && !empty($fieldWizardHtml)) {
-            $fieldWizardHtml = '<div class="form-wizards-items-bottom">' . $fieldWizardHtml . '</div>';
+            $fieldWizardHtml = '<div class="form-wizards-item-bottom">' . $fieldWizardHtml . '</div>';
         }
 
         $recordElementAttributes = [
@@ -147,7 +147,7 @@ class CategoryElement extends AbstractFormElement
                 ' . $fieldInformationHtml . '
                 <div class="form-control-wrap">
                     <div class="form-wizards-wrap">
-                        <div class="form-wizards-element">
+                        <div class="form-wizards-item-element">
                             <div class="typo3-tceforms-tree">
                                 <input ' . GeneralUtility::implodeAttributes(array_map(strval(...), $recordElementAttributes), true, true) . '/>
                             </div>

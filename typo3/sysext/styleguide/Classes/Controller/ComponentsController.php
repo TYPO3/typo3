@@ -53,13 +53,16 @@ final class ComponentsController
         'flashMessages',
         'form',
         'infobox',
+        'input',
         'modal',
         'notifications',
         'pagination',
         'progressIndicators',
         'progressTrackers',
+        'select',
         'tab',
         'tables',
+        'textarea',
         'trees',
     ];
 
@@ -87,13 +90,16 @@ final class ComponentsController
             'flashMessages' => $this->renderFlashMessagesView($request),
             'form' => $this->renderFormView($request),
             'infobox' => $this->renderInfoboxView($request),
+            'input' => $this->renderInputView($request),
             'modal' => $this->renderModalView($request),
             'notifications' => $this->renderNotificationsView($request),
             'pagination' => $this->renderPaginationView($request),
             'progressIndicators' => $this->renderProgressIndicatorsView($request),
             'progressTrackers' => $this->renderProgressTrackersView($request),
+            'select' => $this->renderSelectView($request),
             'tab' => $this->renderTabView($request),
             'tables' => $this->renderTablesView($request),
+            'textarea' => $this->renderTextareaView($request),
             'trees' => $this->renderTreesView($request),
             // Fallback: Render overview
             default => $this->componentsOverviewAction($request),
@@ -216,24 +222,11 @@ final class ComponentsController
 
     private function renderFormView(ServerRequestInterface $request): ResponseInterface
     {
-        // Prepare example data for dropdown
-        $userGroupArray = [
-            0 => '[All users]',
-            -1 => 'Self',
-            'gr-7' => 'Group styleguide demo group 1',
-            'gr-8' => 'Group styleguide demo group 2',
-            'us-9' => 'User _cli_',
-            'us-1' => 'User admin',
-            'us-10' => 'User styleguide demo user 1',
-            'us-11' => 'User styleguide demo user 2',
-        ];
         $view = $this->createModuleTemplate($request, 'form');
         $view->assignMultiple([
             'actions' => $this->allowedActions,
             'currentAction' => 'form',
             'routeIdentifier' => 'styleguide_components',
-            'userGroups' => $userGroupArray,
-            'dateTimeFormat' => 'c',
         ]);
         return $view->renderResponse('Backend/Components/Form');
     }
@@ -247,6 +240,17 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Infobox');
+    }
+
+    private function renderInputView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'input');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'input',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/Input');
     }
 
     private function renderModalView(ServerRequestInterface $request): ResponseInterface
@@ -347,6 +351,17 @@ final class ComponentsController
         return $view->renderResponse('Backend/Components/ProgressTrackers');
     }
 
+    private function renderSelectView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'select');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'select',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/Select');
+    }
+
     private function renderTabView(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->createModuleTemplate($request, 'tab');
@@ -367,6 +382,17 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Tables');
+    }
+
+    private function renderTextareaView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'textarea');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'textarea',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/Textarea');
     }
 
     private function renderTreesView(ServerRequestInterface $request): ResponseInterface

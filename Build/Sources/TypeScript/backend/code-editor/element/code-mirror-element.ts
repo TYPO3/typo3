@@ -81,14 +81,13 @@ export class CodeMirrorElement extends LitElement {
       overflow: hidden;
       border-radius: var(--typo3-input-border-radius);
       border: var(--typo3-input-border-width) solid var(--typo3-input-border-color);
-      box-shadow: var(--typo3-input-box-shadow);
       transition: outline-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
 
     .cm-focused {
-      outline: none !important;
       border-color: var(--typo3-input-focus-border-color);
-      box-shadow: var(--typo3-input-box-shadow), var(--typo3-input-focus-box-shadow);
+      outline-offset: 0;
+      outline: .25rem solid color-mix(in srgb, var(--typo3-form-control-focus-border-color), transparent 25%);
     }
 
     .cm-gutters {

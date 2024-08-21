@@ -1,0 +1,221 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.headline" /></h1>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.default.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlDefault',
+                    fieldLabel: 'Form label',
+                    type: 'text'
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.placeholder.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlPlaceholder',
+                    fieldLabel: 'Input field with a placeholder and a form label with many words to fill the space and test the length',
+                    type: 'text',
+                    placeholder: 'Please insert your value here'
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.disabled.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlDisabled',
+                    fieldLabel: 'Form label',
+                    type: 'text',
+                    placeholder: 'This form field is disabled',
+                    disabled: 1
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.additionalText.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlDefaultAdditionalText',
+                    fieldLabel: 'Form label',
+                    type: 'text',
+                    formText: 'Additional text is displayed below the form field.'
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.state.headline" /></h2>
+        <f:variable name="codeSnippetState">
+            .has-change
+            .has-error
+            .has-success
+            .has-warning
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetState}">
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlHasChange',
+                    fieldLabel: 'Has change',
+                    type: 'text',
+                    placeholder: 'placeholder has change',
+                    additionalClass: 'has-change'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlHasError',
+                    fieldLabel: 'Has error',
+                    type: 'text',
+                    placeholder: 'placeholder has error',
+                    additionalClass: 'has-error'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlHasSuccess',
+                    fieldLabel: 'Has success',
+                    type: 'text',
+                    placeholder: 'placeholder has success',
+                    additionalClass: 'has-success'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlHasWarning',
+                    fieldLabel: 'Has warning',
+                    type: 'text',
+                    placeholder: 'placeholder has warning',
+                    additionalClass: 'has-warning'
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.fileUpload.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlFile',
+                    fieldLabel: 'Default file input example',
+                    type: 'file'
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.email.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlEmail',
+                    fieldLabel: 'Email address',
+                    type: 'email'
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.input.section.password.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlPassword',
+                    fieldLabel: 'Password',
+                    type: 'password'
+                }"
+            />
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <sg:colorScheme>
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlColorDefault',
+                    fieldLabel: 'Default',
+                    type: 'text',
+                    placeholder: 'placeholder default'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlColorHasChange',
+                    fieldLabel: 'Has change',
+                    type: 'text',
+                    placeholder: 'placeholder has change',
+                    additionalClass: 'has-change'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlColorHasError',
+                    fieldLabel: 'Has error',
+                    type: 'text',
+                    placeholder: 'placeholder has error',
+                    additionalClass: 'has-error'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlColorHasSuccess',
+                    fieldLabel: 'Has success',
+                    type: 'text',
+                    placeholder: 'placeholder has success',
+                    additionalClass: 'has-success'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Input"
+                arguments="{
+                    identifier: 'inputFormControlColorHasWarning',
+                    fieldLabel: 'Has warning',
+                    type: 'text',
+                    placeholder: 'placeholder has warning',
+                    additionalClass: 'has-warning'
+                }"
+            />
+        </sg:colorScheme>
+    </div>
+
+</f:section>
+
+</html>

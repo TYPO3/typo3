@@ -9,38 +9,30 @@
 // According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
 // Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
 //
-$login-width: 320px;
-$login-width-large: 960px;
-$login-bg: #eee;
-$login-border-radius: 3px;
-$login-highlight: #f80;
-$login-btn-text: #fff;
-$login-btn-bg: $login-highlight;
-$login-copyright-text: #444;
-$login-input-height: $input-height-large;
-$login-input-font-size: 12px;
-$login-input-line-height: $line-height-large;
-$login-input-border-radius: 2px;
-$login-input-border-color: #949494;
-$login-input-padding-vertical: $padding-large-vertical;
-$login-input-padding-horizontal: $padding-large-horizontal;
-$login-container-padding-horizontal: 2.5em;
-$login-link-focus-outline-color: #1a1d1d;
 
 //
 // Login
 //
-
 body[data-typo3-login-ready] {
     overflow-y: auto;
 }
 
 .typo3-login {
+    --typo3-login-highlight: #f80;
+    --typo3-login-btn-color: #fff;
+    --typo3-login-btn-bg: var(--typo3-login-highlight);
+    --typo3-login-width: 320px;
+    --typo3-login-width-large: 960px;
+    --typo3-login-color: var(--typo3-text-color-base);
+    --typo3-login-bg: var(--typo3-surface-base);
+    --typo3-login-padding-x: 2.5em;
+    --typo3-login-copyright-color: var(--typo3-text-color-variant);
     display: flex;
     flex-direction: row;
     width: 100%;
     height: auto !important;
-    background-color: $login-bg;
+    color: var(--typo3-login-color);
+    background-color: var(--typo3-login-bg);
     background-size: cover;
     background-position: center center;
 }
@@ -86,11 +78,11 @@ body[data-typo3-login-ready] {
 
 .typo3-login-wrap {
     width: 100%;
-    max-width: $login-width;
+    max-width: var(--typo3-login-width);
     margin: 0 auto;
 
     &.typo3-login-wrap-large {
-        max-width: $login-width-large;
+        max-width: var(--typo3-login-large);
     }
 }
 
@@ -142,34 +134,23 @@ body[data-typo3-login-ready] {
 // Bootstrap card
 //
 .card-login {
-    border-color: darken($login-bg, 10%);
-    border-radius: $login-border-radius;
     overflow: visible;
 
     .card-heading {
-        padding: 2.5em $login-container-padding-horizontal 0;
-        border-top-left-radius: $login-border-radius - 1;
-        border-top-right-radius: $login-border-radius - 1;
+        padding: 2.5em var(--typo3-login-padding-x) 0;
     }
 
     .card-body {
-        padding: 1.75em $login-container-padding-horizontal 2.5em;
+        padding: 1.75em var(--typo3-login-padding-x) 2.5em;
     }
 
     .card-footer {
-        padding: 1.5em $login-container-padding-horizontal;
-        border-top: 3px solid $login-highlight;
-        border-bottom-left-radius: $login-border-radius - 1;
-        border-bottom-right-radius: $login-border-radius - 1;
+        padding: 1.5em var(--typo3-login-padding-x);
+        border-top: 3px solid var(--typo3-login-highlight);
     }
 
     a {
         font-weight: bold;
-
-        &:focus-visible {
-            outline: 1px solid $login-link-focus-outline-color;
-            outline-offset: 1px;
-        }
     }
 
     @include media-breakpoint-down('md') {
@@ -188,37 +169,28 @@ body[data-typo3-login-ready] {
 //
 // Forms
 //
-@include input-size('.input-login', $login-input-height, $login-input-padding-vertical, $login-input-padding-horizontal, $login-input-font-size, $login-input-line-height, $login-input-border-radius);
-
 .input-login {
-    border-color: $login-input-border-color;
-
-    &:active,
-    &:active:focus,
-    &:active:hover,
-    &:hover,
-    &:focus {
-        outline: 1px solid #000;
-        outline-offset: -1px;
-    }
+    --typo3-input-padding-x: 12px;
+    --typo3-input-padding-y: 12px;
+    --typo3-input-line-height: 1.3em;
 }
 
 .btn-login {
     --typo3-btn-padding-y: 12px;
     --typo3-btn-padding-x: 12px;
     --typo3-btn-line-height: 1.3em;
-    --typo3-btn-color: #{$login-btn-text};
-    --typo3-btn-bg: #{$login-btn-bg};
-    --typo3-btn-border-color: hsl(from #{$login-btn-bg} h s calc(l - 5));
-    --typo3-btn-hover-color: #{$login-btn-text};
-    --typo3-btn-hover-bg: hsl(from #{$login-btn-bg} h s calc(l - 3));
-    --typo3-btn-hover-border-color: hsl(from #{$login-btn-bg} h s calc(l - 8));
-    --typo3-btn-focus-color: #{$login-btn-text};
-    --typo3-btn-focus-bg: hsl(from #{$login-btn-bg} h s calc(l - 6));
-    --typo3-btn-focus-border-color: hsl(from #{$login-btn-bg} h s calc(l - 11));
-    --typo3-btn-disabled-color: #{$login-btn-text};
-    --typo3-btn-disabled-bg: #{$login-btn-bg};
-    --typo3-btn-disabled-border-color: hsl(from #{$login-btn-bg} h s calc(l - 5));
+    --typo3-btn-color: var(--typo3-login-btn-color);
+    --typo3-btn-bg: var(--typo3-login-btn-bg);
+    --typo3-btn-border-color: hsl(from var(--typo3-login-btn-bg) h s calc(l - 5));
+    --typo3-btn-hover-color: var(--typo3-login-btn-color);
+    --typo3-btn-hover-bg: hsl(from var(--typo3-login-btn-bg) h s calc(l - 3));
+    --typo3-btn-hover-border-color: hsl(from var(--typo3-login-btn-bg) h s calc(l - 8));
+    --typo3-btn-focus-color: var(--typo3-login-btn-color);
+    --typo3-btn-focus-bg: hsl(from var(--typo3-login-btn-bg) h s calc(l - 6));
+    --typo3-btn-focus-border-color: hsl(from var(--typo3-login-btn-bg) h s calc(l - 11));
+    --typo3-btn-disabled-color: var(--typo3-login-btn-color);
+    --typo3-btn-disabled-bg: var(--typo3-login-btn-bg);
+    --typo3-btn-disabled-border-color: hsl(from var(--typo3-login-btn-bg) h s calc(l - 5));
 }
 
 //
@@ -226,7 +198,7 @@ body[data-typo3-login-ready] {
 //
 
 .typo3-login-carousel {
-    padding: $login-container-padding-horizontal; // use horizontal padding also as vertical padding
+    padding: var(--typo3-login-padding-x); // use horizontal padding also as vertical padding
 }
 
 .typo3-login-carousel-control {
@@ -235,7 +207,7 @@ body[data-typo3-login-ready] {
     height: 60px;
     line-height: 60px;
     width: 20px;
-    background-color: #fff;
+    background-color: var(--typo3-card-bg);
     text-align: center;
     position: absolute;
     opacity: .75;
@@ -249,16 +221,16 @@ body[data-typo3-login-ready] {
 
     &.left {
         inset-inline-start: -20px;
-        border: 1px solid darken($login-bg, 10%);
+        border: 1px solid var(--typo3-card-border-color);
         border-inline-end: 0;
-        border-radius: 2px 0 0 2px;
+        border-radius: var(--typo3-card-border-radius) 0 0 var(--typo3-card-border-radius);
     }
 
     &.right {
         inset-inline-end: -20px;
-        border: 1px solid darken($login-bg, 10%);
+        border: 1px solid var(--typo3-card-border-color);
         border-inline-start: 0;
-        border-radius: 0 2px 2px 0;
+        border-radius: 0 var(--typo3-card-border-radius) var(--typo3-card-border-radius) 0;
     }
 }
 
@@ -279,7 +251,7 @@ body[data-typo3-login-ready] {
 .typo3-login-copyright-text {
     font-size: .95em;
     padding-top: 1em;
-    color: $login-copyright-text;
+    color: var(--typo3-login-copyright-color);
 
     > *:first-child {
         margin-top: 0;

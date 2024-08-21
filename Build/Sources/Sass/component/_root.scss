@@ -45,6 +45,7 @@
     --typo3-text-color-success: light-dark(var(--token-color-green-70), var(--token-color-green-50));
     --typo3-text-color-warning: light-dark(var(--token-color-yellow-80), var(--token-color-yellow-40));
     --typo3-text-color-danger: light-dark(var(--token-color-red-60), var(--token-color-red-40));
+    --typo3-text-color-code: light-dark(var(--token-color-magenta-60), var(--token-color-magenta-35));
     --typo3-text-color-notice: light-dark(var(--token-color-neutral-75), var(--token-color-neutral-40));
     --typo3-text-color-default: var(--typo3-text-color-base);
 
@@ -216,8 +217,8 @@
     // Component
     --typo3-component-color: var(--typo3-text-color-base);
     --typo3-component-variant-color: var(--typo3-text-color-variant);
-    --typo3-component-primary-color: light-dark(#{$primary}, #{tint-color($primary, 40%)});
-    --typo3-component-secondary-color: light-dark(#{tint-color($body-color, 40%)}, #{shade-color($white, 40%)});
+    --typo3-component-primary-color: var(--typo3-text-color-primary);
+    --typo3-component-secondary-color: var(--typo3-text-color-secondary);
     --typo3-component-match-highlight-color: inherit;
     --typo3-component-match-highlight-bg: rgba(234, 92, 0, .33);
     --typo3-component-bg: var(--typo3-surface-container-lowest);
@@ -270,24 +271,33 @@
     --typo3-legend-font-weight: 600;
 
     // Input fields
-    --typo3-input-color: #{$input-color};
-    --typo3-input-color-placeholder: #{$input-color-placeholder};
     --typo3-input-font-size: .75rem;
     --typo3-input-line-height: 1.5;
     --typo3-input-padding-y: .5rem;
     --typo3-input-padding-x: .75rem;
-    --typo3-input-bg: #{$input-bg};
-    --typo3-input-border-width: #{$input-border-width};
-    --typo3-input-border-color: #{$input-border-color};
-    --typo3-input-border-radius: #{$border-radius};
-    --typo3-input-box-shadow: #{$input-box-shadow};
-    --typo3-input-focus-color: #{$input-focus-color};
-    --typo3-input-focus-bg: #{$input-focus-bg};
-    --typo3-input-focus-border-color: #{$input-focus-border-color};
-    --typo3-input-focus-box-shadow: #{$input-focus-box-shadow};
-    --typo3-input-disabled-color: #{$input-disabled-color};
-    --typo3-input-disabled-bg: #{$input-disabled-bg};
-    --typo3-input-disabled-border-color: #{$input-disabled-border-color};
+    --typo3-input-sm-padding-y: .3125rem;
+    --typo3-input-sm-padding-x: .5rem;
+    --typo3-input-sm-font-size: .6875rem;
+    --typo3-input-border-width: 1px;
+    --typo3-input-border-radius: var(--typo3-component-border-radius);
+    --typo3-input-color: var(--typo3-text-color-base);
+    --typo3-input-placeholder-color: color-mix(in srgb, var(--typo3-input-color), transparent 30%);
+    --typo3-input-bg: var(--typo3-surface-container-lowest);
+    --typo3-input-group-addon-bg: color-mix(in srgb, var(--typo3-input-bg), var(--typo3-input-color) 10%);
+    --typo3-input-border-color: var(--typo3-state-default-border-color);
+    --typo3-input-hover-color: var(--typo3-input-color);
+    --typo3-input-hover-bg: var(--typo3-input-bg);
+    --typo3-input-hover-border-color: var(--typo3-state-default-hover-border-color);
+    --typo3-input-focus-color: var(--typo3-input-color);
+    --typo3-input-focus-bg: var(--typo3-input-bg);
+    --typo3-input-focus-border-color: var(--typo3-state-primary-focus-border-color);
+    --typo3-input-active-color: var(--typo3-state-primary-color);
+    --typo3-input-active-bg: var(--typo3-state-primary-bg);
+    --typo3-input-active-border-color: var(--typo3-state-primary-focus-border-color);
+    --typo3-input-disabled-color: var(--typo3-state-default-disabled-color);
+    --typo3-input-disabled-bg: var(--typo3-state-default-disabled-bg);
+    --typo3-input-disabled-border-color: var(--typo3-state-default-disabled-border-color);
+    --typo3-input-disabled-opacity: .65;
 }
 
 [data-color-scheme="auto"] {

@@ -117,12 +117,12 @@ class UuidElement extends AbstractFormElement
         $html[] =     $fieldInformationHtml;
         $html[] =     '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $html[] =         '<div class="form-wizards-wrap">';
-        $html[] =             '<div class="form-wizards-element">';
+        $html[] =             '<div class="form-wizards-item-element">';
         $html[] =                 $uuidElement;
         $html[] =             '</div>';
 
         if (!empty($fieldControlHtml)) {
-            $html[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+            $html[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
             $html[] =          '<div class="btn-group">';
             $html[] =              $fieldControlHtml;
             $html[] =          '</div>';

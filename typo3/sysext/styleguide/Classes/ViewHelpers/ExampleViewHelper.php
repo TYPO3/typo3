@@ -64,6 +64,7 @@ final class ExampleViewHelper extends AbstractViewHelper
         $this->registerArgument('codeLanguage', 'string', 'the code language identifier used for the code preview, e.g. html, php, etc.', false, false);
         $this->registerArgument('customCode', 'string', 'custom code displayed as code preview', false, false);
         $this->registerArgument('decodeEntities', 'bool', 'if true, entities like &lt; and &gt; are decoded', false, false);
+        $this->registerArgument('rtlDirection', 'bool', 'if true direction is set to right-to-left', false, false);
     }
 
     public function render(): string
@@ -115,10 +116,17 @@ final class ExampleViewHelper extends AbstractViewHelper
             ];
         }
 
+        $directionSetting = '';
+        if ($this->arguments['rtlDirection']) {
+            $directionSetting = 'dir="rtl"';
+        }
+
+        $uniqueId = uniqid('code');
+
         $markup = [];
         $markup[] = '<div class="styleguide-example">';
-        $markup[] =     '<div class="styleguide-example-content">';
-        $markup[] =         $content;
+        $markup[] =     '<div class="styleguide-example-content" ' . $directionSetting . '>';
+        $markup[] =         str_replace('<UNIQUEID>', $uniqueId, $content);
         $markup[] =     '</div>';
         if ($this->arguments['codePreview']) {
             $markup[] = '<div class="styleguide-example-code">';
@@ -126,9 +134,9 @@ final class ExampleViewHelper extends AbstractViewHelper
             $markup[] =         '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
             $markup[] =             '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
             if ($this->arguments['decodeEntities']) {
-                $markup[] =             htmlspecialchars_decode(str_replace('<UNIQUEID>', uniqid('code'), $code));
+                $markup[] =             htmlspecialchars_decode(str_replace('<UNIQUEID>', $uniqueId, $code));
             } else {
-                $markup[] =             htmlspecialchars(str_replace('<UNIQUEID>', uniqid('code'), $code));
+                $markup[] =             htmlspecialchars(str_replace('<UNIQUEID>', $uniqueId, $code));
             }
             $markup[] =             '</textarea>';
             $markup[] =         '</typo3-t3editor-codemirror>';

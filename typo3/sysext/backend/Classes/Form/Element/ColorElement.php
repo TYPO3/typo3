@@ -93,7 +93,7 @@ class ColorElement extends AbstractFormElement
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
-            $html[] =       '<div class="form-wizards-element">';
+            $html[] =       '<div class="form-wizards-item-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
             $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" name="' . htmlspecialchars($itemName) . '" value="' . htmlspecialchars((string)$itemValue) . '" type="text" disabled>';
             $html[] =           '</div>';
@@ -162,18 +162,18 @@ class ColorElement extends AbstractFormElement
         $mainFieldHtml = [];
         $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
-        $mainFieldHtml[] =      '<div class="form-wizards-element">';
+        $mainFieldHtml[] =      '<div class="form-wizards-item-element">';
         $mainFieldHtml[] =          '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $mainFieldHtml[] =          '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
-        $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+        $mainFieldHtml[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
         $mainFieldHtml[] =          '<div class="btn-group">';
         $mainFieldHtml[] =              $fieldControlHtml;
         $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
         $mainFieldHtml[] =          '</div>';
         $mainFieldHtml[] =      '</div>';
         if (!empty($fieldWizardHtml)) {
-            $mainFieldHtml[] = '<div class="form-wizards-items-bottom">';
+            $mainFieldHtml[] = '<div class="form-wizards-item-bottom">';
             $mainFieldHtml[] = $fieldWizardHtml;
             $mainFieldHtml[] = '</div>';
         }

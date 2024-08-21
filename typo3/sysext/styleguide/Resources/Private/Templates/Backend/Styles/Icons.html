@@ -131,26 +131,24 @@
 
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane form-section active" id="all">
-                    <div class="row">
-                        <form>
-                            <div class="form-group col-md-12">
-                                <label>Filter: </label><br/>
-                                <div class="input-group">
-                                    <div class="btn-group t3js-filter-buttons">
-                                        <button class="btn btn-default" data-filter="type:bitmap">Bitmap</button>
-                                        <button class="btn btn-default" data-filter="type:font">Font</button>
-                                        <button class="btn btn-default" data-filter="type:vector">Vector</button>
-                                    </div>
+                    <form class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Filter: </label>
+                            <div class="input-group">
+                                <div class="btn-group t3js-filter-buttons">
+                                    <button class="btn btn-default" data-filter="type:bitmap">Bitmap</button>
+                                    <button class="btn btn-default" data-filter="type:font">Font</button>
+                                    <button class="btn btn-default" data-filter="type:vector">Vector</button>
                                 </div>
                             </div>
-                            <div class="form-group col-md-12">
-                                <div class="input-group">
-                                    <div class="input-group-text"><core:icon identifier="actions-search" size="default" /></div>
-                                    <input type="text" class="form-control input-lg" id="search-field" placeholder="Icon identifier">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-text"><core:icon identifier="actions-search" size="default" /></div>
+                                <input type="text" class="form-control" id="search-field" placeholder="Icon identifier">
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                     <div class="row" id="t3js-filter-container">
                         <f:for each="{allIcons}" as="icon">
                             <div class="col-md-2 icon-container" data-icon-identifier="{icon}">

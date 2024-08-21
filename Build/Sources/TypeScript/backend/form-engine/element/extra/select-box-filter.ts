@@ -48,7 +48,7 @@ class SelectBoxFilter {
   }
 
   private initializeEvents(): void {
-    const wizardsElement = this.selectElement.closest('.form-wizards-element');
+    const wizardsElement = this.selectElement.closest('.form-wizards-wrap');
     if (wizardsElement === null) {
       return;
     }

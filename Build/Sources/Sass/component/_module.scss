@@ -10,7 +10,6 @@
 :root {
     --module-bg: var(--typo3-surface-base);
     --module-color: var(--typo3-text-color-base);
-    --module-docheader-height: 67px;
     --module-docheader-zindex: 300;
     --module-docheader-padding-y: 5px;
     --module-docheader-padding-x: 24px;
@@ -19,9 +18,11 @@
     --module-docheader-spacing-x: 8px;
     --module-docheader-spacing: var(--module-docheader-spacing-y) var(--module-docheader-spacing-x);
     --module-docheader-bg: var(--typo3-surface-container-high);
-    --module-docheader-border: color-mix(in srgb, var(--module-docheader-bg), var(--module-color) 10%);
-    --module-docheader-bar-height: 26px;
+    --module-docheader-border-color: color-mix(in srgb, var(--module-docheader-bg), var(--module-color) 10%);
+    --module-docheader-border-width: 1px;
+    --module-docheader-bar-height: 27.75px;
     --module-docheader-scroll-offset: calc(-1 * (var(--module-docheader-bar-height) + var(--module-docheader-padding-y)));
+    --module-docheader-height: calc(var(--module-docheader-bar-height) * 2 + var(--module-docheader-padding-y) * 2 + var(--module-docheader-spacing-y) + var(--module-docheader-border-width));
     --module-body-padding-y: 24px;
     --module-body-padding-x: 24px;
     --module-body-padding: var(--module-body-padding-y) var(--module-body-padding-x);
@@ -70,7 +71,7 @@
     min-height: var(--module-docheader-height);
     z-index: var(--module-docheader-zindex);
     background-color: var(--module-docheader-bg);
-    border-bottom: 1px solid var(--module-docheader-border);
+    border-bottom: 1px solid var(--module-docheader-border-color);
     padding: var(--module-docheader-padding);
     gap: var(--module-docheader-spacing);
 

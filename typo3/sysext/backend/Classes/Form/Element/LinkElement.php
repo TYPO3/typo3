@@ -123,7 +123,7 @@ class LinkElement extends AbstractFormElement
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
-            $html[] =       '<div class="form-wizards-element">';
+            $html[] =       '<div class="form-wizards-item-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
             $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" name="' . htmlspecialchars($itemName) . '" value="' . htmlspecialchars((string)$itemValue) . '" type="text" disabled>';
             $html[] =           '</div>';
@@ -213,29 +213,31 @@ class LinkElement extends AbstractFormElement
         $expansionHtml = [];
         $expansionHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $expansionHtml[] =  '<div class="form-wizards-wrap">';
-        $expansionHtml[] =      '<div class="form-wizards-element">';
+        $expansionHtml[] =      '<div class="form-wizards-item-element">';
         $expansionHtml[] =          '<div class="input-group t3js-form-field-link">';
         $expansionHtml[] =              '<span class="t3js-form-field-link-icon input-group-text">' . ($linkExplanation['icon'] ?? '') . '</span>';
-        $expansionHtml[] =              '<input class="form-control t3js-form-field-link-explanation" title="' . $explanation . '" value="' . $explanation . '"' . ' readonly' . ($hasExplanation ? '' : ' hidden') . '>';
+        $expansionHtml[] =              '<input class="form-control form-control-explanation t3js-form-field-link-explanation" title="' . $explanation . '" value="' . $explanation . '"' . ' readonly' . ($hasExplanation ? '' : ' hidden') . '>';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
+        $expansionHtml[] =              '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $expansionHtml[] =              '<button class="btn btn-default t3js-form-field-link-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '"' . ($hasExplanation ? '' : ' disabled') . '>';
         $expansionHtml[] =                  $this->iconFactory->getIcon('actions-version-workspaces-preview-link', IconSize::SMALL)->render();
         $expansionHtml[] =              '</button>';
-        $expansionHtml[] =              '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
-            $expansionHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+            $expansionHtml[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
             $expansionHtml[] =          '<div class="btn-group">';
             $expansionHtml[] =              implode(LF, $valuePickerHtml);
             $expansionHtml[] =              $fieldControlHtml;
             $expansionHtml[] =          '</div>';
             $expansionHtml[] =      '</div>';
         }
-        $expansionHtml[] =      '<div class="form-wizards-items-bottom">';
-        $expansionHtml[] =          $linkExplanation['additionalAttributes'] ?? '';
-        $expansionHtml[] =          $fieldWizardHtml;
-        $expansionHtml[] =      '</div>';
+        if (!empty($fieldWizardHtml) || !empty($linkExplanation['additionalAttributes'])) {
+            $expansionHtml[] =      '<div class="form-wizards-item-bottom">';
+            $expansionHtml[] =          $linkExplanation['additionalAttributes'] ?? '';
+            $expansionHtml[] =          $fieldWizardHtml;
+            $expansionHtml[] =      '</div>';
+        }
         $expansionHtml[] =  '</div>';
         $expansionHtml[] = '</div>';
         $expansionHtml = implode(LF, $expansionHtml);

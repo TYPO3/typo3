@@ -100,7 +100,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';
-        $html[] =           '<div class="form-wizards-element">';
+        $html[] =           '<div class="form-wizards-item-element">';
         $html[] =               '<input';
         $html[] =                   ' type="hidden"';
         $html[] =                   ' name="' . htmlspecialchars($this->data['parameterArray']['itemFormElName']) . '"';
@@ -115,7 +115,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] =                   ' codeMirrorConfig="' . htmlspecialchars($codeMirrorConfig) . '"';
         $html[] =               '></typo3-backend-grid-editor>';
         if (!$readOnly && !empty($fieldWizardHtml)) {
-            $html[] =           '<div class="form-wizards-items-bottom">' . $fieldWizardHtml . '</div>';
+            $html[] =           '<div class="form-wizards-item-bottom">' . $fieldWizardHtml . '</div>';
         }
         $html[] =           '</div>';
         $html[] =       '</div>';

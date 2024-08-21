@@ -1,0 +1,160 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.headline" /></h1>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.section.default.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlDefault',
+                    fieldLabel: 'Form label'
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.section.placeholder.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlPlaceholder',
+                    fieldLabel: 'Textarea field with a placeholder and a form label with many words to fill the space and test the length',
+                    placeholder: 'Please insert your value here'
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.section.disabled.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlDisabled',
+                    fieldLabel: 'Form label',
+                    placeholder: 'This form field is disabled',
+                    disabled: 1
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.textarea.section.state.headline" /></h2>
+        <f:variable name="codeSnippetState">
+            has-change
+            has-error
+            has-success
+            has-warning
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetState}">
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlHasChange',
+                    fieldLabel: 'Has change',
+                    placeholder: 'placeholder has change',
+                    additionalClass: 'has-change'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlHasError',
+                    fieldLabel: 'Has error',
+                    placeholder: 'placeholder has error',
+                    additionalClass: 'has-error'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlHasSuccess',
+                    fieldLabel: 'Has success',
+                    placeholder: 'placeholder has success',
+                    additionalClass: 'has-success'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlHasWarning',
+                    fieldLabel: 'Has warning',
+                    placeholder: 'placeholder has warning',
+                    additionalClass: 'has-warning'
+                }"
+            />
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+        <sg:colorScheme>
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlColorDefault',
+                    fieldLabel: 'Form label',
+                    placeholder: 'placeholder default'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlColorHasChange',
+                    fieldLabel: 'Has change',
+                    placeholder: 'placeholder has change',
+                    additionalClass: 'has-change'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlColorHasError',
+                    fieldLabel: 'Has error',
+                    placeholder: 'placeholder has error',
+                    additionalClass: 'has-error'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlColorHasSuccess',
+                    fieldLabel: 'Has success',
+                    placeholder: 'placeholder has success',
+                    additionalClass: 'has-success'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Textarea"
+                arguments="{
+                    identifier: 'textareaFormControlColorHasWarning',
+                    fieldLabel: 'Has warning',
+                    placeholder: 'placeholder has warning',
+                    additionalClass: 'has-warning'
+                }"
+            />
+        </sg:colorScheme>
+    </div>
+
+</f:section>
+
+</html>

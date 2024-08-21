@@ -1,6 +1,12 @@
 typo3-backend-formengine-char-counter {
     inset-inline-start: 0;
     position: absolute;
+    z-index: 5;
     top: 100%;
     display: flex;
+
+    .form-hint {
+        --typo3-formhint-box-shadow: var(--typo3-component-box-shadow-tooltip);
+        margin-top: .5rem;
+    }
 }

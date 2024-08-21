@@ -7,7 +7,6 @@
 //
 // Load global variables
 //
-@import "../../node_modules/@typo3/icons/dist/scss/icons-variables-actions.scss";
 @import "../../node_modules/bootstrap/scss/functions";
 @import "variables/main";
 @import "../../node_modules/bootstrap/scss/variables";
@@ -68,17 +67,8 @@ $tree-line-height: 20px;
     padding: 0 .5em;
 }
 
-.form-control-wrap {
-    margin: 0;
-    padding: .5rem 0;
-}
-
 .form-group-select {
     padding-bottom: .5rem;
-
-    .form-control-wrap {
-        padding: 0;
-    }
 
     .t3-form-add-collection-element {
         padding-bottom: 0;
@@ -304,7 +294,7 @@ $tree-line-height: 20px;
     h4 {
         margin: 0;
         padding: .1em .2em .2em .5em;
-        border-top: 1px solid var(--module-docheader-border);
+        border-top: 1px solid var(--module-docheader-border-color);
         clear: both;
         font: inherit;
         font-weight: bold;
@@ -313,7 +303,7 @@ $tree-line-height: 20px;
     h2 {
         padding-bottom: 1em;
         border: none;
-        border-bottom: 1px solid var(--module-docheader-border);
+        border-bottom: 1px solid var(--module-docheader-border-color);
     }
 
     > h2:first-child {
@@ -335,23 +325,13 @@ $tree-line-height: 20px;
         }
     }
 
-    .form-section-headline {
-        padding: 0;
-    }
-
     .icon-size-small {
         line-height: $line-height-base;
     }
 
-    .input-group {
-        .t3-form-controls {
-            flex: 1 1 auto;
-        }
-    }
-
     > .t3-form-remove-element-button {
         padding-top: 1rem;
-        border-top: 1px solid var(--module-docheader-border);
+        border-top: 1px solid var(--module-docheader-border-color);
 
         .btn {
             width: 100%;
@@ -434,7 +414,7 @@ $tree-line-height: 20px;
 .t3-form-collection-element {
     position: relative;
     margin-bottom: .5em;
-    border: 1px solid var(--module-docheader-border);
+    border: 1px solid var(--module-docheader-border-color);
     border-top: none;
     background: $navigation-bg;
 
@@ -534,8 +514,8 @@ $tree-line-height: 20px;
 
     .form-sortable-ghost {
         height: 45px;
-        border-inline-start: 1px solid var(--module-docheader-border) !important;
-        border-inline-end: 1px solid var(--module-docheader-border) !important;
+        border-inline-start: 1px solid var(--module-docheader-border-color) !important;
+        border-inline-end: 1px solid var(--module-docheader-border-color) !important;
         outline-offset: -5px !important;
     }
 }
@@ -562,10 +542,6 @@ $tree-line-height: 20px;
     ol,
     ul {
         list-style: none;
-    }
-
-    .form-section {
-        border: none;
     }
 
     .panel-heading {
@@ -899,7 +875,7 @@ $tree-line-height: 20px;
             font-size: 12px;
             line-height: $line-height-base;
             background-image: none;
-            border: 1px solid var(--module-docheader-border);
+            border: 1px solid var(--module-docheader-border-color);
             border-radius: 2px;
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
             transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -919,7 +895,7 @@ $tree-line-height: 20px;
         }
 
         legend.t3-form-form-element-selected {
-            border-color: var(--module-docheader-border);
+            border-color: var(--module-docheader-border-color);
         }
 
         .form-navigation {

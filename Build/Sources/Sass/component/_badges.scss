@@ -1,6 +1,9 @@
 //
 // Badges
 //
+// Markup:
+// <span class="badge badge-success">success</span>
+//
 
 // Mixins
 @mixin badge-create-variant($state) {
@@ -55,7 +58,7 @@
     color: var(--typo3-badge-color);
     white-space: nowrap;
     text-align: center;
-    vertical-align: baseline;
+    vertical-align: middle;
     border-radius: var(--typo3-badge-border-radius);
     border: 1px solid var(--typo3-badge-border-color);
     outline-offset: 0;
@@ -116,4 +119,22 @@
 
 .badge-pill {
     --typo3-badge-border-radius: 1em;
+}
+
+//
+// List
+//
+// Markup:
+// <ul class="badge-list">
+//   <li><span class="badge badge-success">success</span></li>
+//   <li><span class="badge badge-danger">danger</span></li>
+// </ul>
+//
+.badge-list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    gap: .25rem;
+    list-style: none;
 }

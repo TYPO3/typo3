@@ -159,7 +159,7 @@ export class CspReports extends LitElement {
 
   protected renderNavigation(): TemplateResult {
     return html`
-      <div class="btn-group">
+      <div class="btn-toolbar">
         <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="${lll('label.scope') || 'Scope'}">
           ${null === this.selectedScope ? lll('label.all') || 'ALL' : this.selectedScope}
         </button>
@@ -180,7 +180,7 @@ export class CspReports extends LitElement {
               </button>
             </li>`)}
         </ul>
-        <button type="button" class="btn btn-danger mx-3" title="${lll('label.removeAll') || 'Remove all'}" @click=${() => this.invokeDeleteReportsAction()}>
+        <button type="button" class="btn btn-danger" title="${lll('label.removeAll') || 'Remove all'}" @click=${() => this.invokeDeleteReportsAction()}>
           ${lll('label.removeAll') || 'Remove all'}
           ${this.selectedScope !== null ? html`"${this.selectedScope}"` : nothing}
         </button>

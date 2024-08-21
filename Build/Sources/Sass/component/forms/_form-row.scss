@@ -1,0 +1,28 @@
+//
+// Row
+//
+@mixin make-form-row() {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--typo3-spacing);
+    align-items: flex-end;
+    margin-bottom: var(--typo3-spacing);
+
+    > .form-group {
+        margin-bottom: 0;
+
+        > [class*="form-row"] {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
+        .form-row#{$infix} {
+            @include make-form-row();
+        }
+    }
+}

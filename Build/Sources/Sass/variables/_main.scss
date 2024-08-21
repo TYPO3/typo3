@@ -3,6 +3,11 @@
 // ================
 
 //
+// Icons
+//
+@import "../../../node_modules/@typo3/icons/dist/scss/icons-variables-actions.scss";
+
+//
 // TYPO3
 // =====
 //
@@ -136,21 +141,6 @@ $table-striped-bg-factor: .025;
 $table-hover-bg-factor: .035;
 $table-active-bg-factor: .045;
 $table-border-factor: .1;
-
-// Forms
-$input-bg: #fefefe;
-$input-color: #333;
-$input-border: #bbb;
-$input-border-focus: #aaa;
-$input-color-placeholder: $gray-500;
-$input-color-disabled: $gray-600;
-$input-height-large: (ceil($font-size-large * $line-height-large) + ($padding-large-vertical * 1.6) + 2);
-$input-border-color: $gray-500;
-$form-label-font-weight: 600;
-$input-btn-padding-x: .75rem;
-$input-padding-x: $input-btn-padding-x;
-$form-select-padding-x: $input-padding-x;
-$form-select-bg-position: var(--typo3-position-end) $form-select-padding-x center;
 
 // Navbar
 $navbar-height: 45px;

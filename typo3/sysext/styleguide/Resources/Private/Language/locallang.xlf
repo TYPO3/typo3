@@ -79,6 +79,9 @@
 			<trans-unit id="action.infobox" resname="action.infobox">
 				<source>Infobox</source>
 			</trans-unit>
+			<trans-unit id="action.input" resname="action.input">
+				<source>Input</source>
+			</trans-unit>
 			<trans-unit id="action.managePageTrees" resname="action.managePageTrees">
 				<source>Manage example page trees</source>
 			</trans-unit>
@@ -97,6 +100,9 @@
 			<trans-unit id="action.progressTrackers" resname="action.progressTrackers">
 				<source>Progress trackers</source>
 			</trans-unit>
+			<trans-unit id="action.select" resname="action.select">
+				<source>Select</source>
+			</trans-unit>
 			<trans-unit id="action.shadows" resname="action.shadows">
 				<source>Shadows</source>
 			</trans-unit>
@@ -111,6 +117,9 @@
 			</trans-unit>
 			<trans-unit id="action.tables" resname="action.tables">
 				<source>Tables</source>
+			</trans-unit>
+			<trans-unit id="action.textarea" resname="action.textarea">
+				<source>Textarea</source>
 			</trans-unit>
 			<trans-unit id="action.trees" resname="action.trees">
 				<source>Trees</source>
@@ -382,8 +391,17 @@
 			<trans-unit id="component.form.headline" resname="component.form.headline">
 				<source>Form</source>
 			</trans-unit>
-			<trans-unit id="component.form.section.filter.headline" resname="component.form.section.filter.headline">
-				<source>Filter</source>
+			<trans-unit id="component.form.section.allFields.headline" resname="component.form.section.allFields.headline">
+				<source>Form with all fields and labels</source>
+			</trans-unit>
+			<trans-unit id="component.form.section.allFieldsRtlDirection.headline" resname="component.form.section.allFieldsRtlDirection.headline">
+				<source>Form with all fields and labels (right-to-left direction)</source>
+			</trans-unit>
+			<trans-unit id="component.form.section.formFieldsInRows.headline" resname="component.form.section.formFieldsInRows.headline">
+				<source>Form fields in rows</source>
+			</trans-unit>
+			<trans-unit id="component.form.section.loginFormExample.headline" resname="component.form.section.loginFormExample.headline">
+				<source>Login form example</source>
 			</trans-unit>
 
 			<!-- Component: Infobox -->
@@ -407,6 +425,35 @@
 			</trans-unit>
 			<trans-unit id="component.infobox.section.withoutIcon.headline" resname="component.infobox.section.withoutIcon.headline">
 				<source>Without icon</source>
+			</trans-unit>
+
+			<!-- Component: Input -->
+			<trans-unit id="component.input.headline" resname="component.input.headline">
+				<source>Input</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.default.headline" resname="component.input.section.default.headline">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.disabled.headline" resname="component.input.disabled.default.headline">
+				<source>Disabled</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.fileUpload.headline" resname="component.input.section.fileUpload.headline">
+				<source>File upload</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.email.headline" resname="component.input.section.email.headline">
+				<source>Email</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.placeholder.headline" resname="component.input.section.placeholder.headline">
+				<source>Placeholder</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.additionalText.headline" resname="component.input.section.additionalText.headline">
+				<source>Additional text</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.password.headline" resname="component.input.section.password.headline">
+				<source>Password</source>
+			</trans-unit>
+			<trans-unit id="component.input.section.state.headline" resname="component.input.section.state.headline">
+				<source>State</source>
 			</trans-unit>
 
 			<!-- Component: Modal -->
@@ -515,6 +562,35 @@
 				<source>Active stage</source>
 			</trans-unit>
 
+			<!-- Component: Select -->
+			<trans-unit id="component.select.headline" resname="component.select.headline">
+				<source>Select</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.default.headline" resname="component.select.section.default.headline">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.multiple.headline" resname="component.select.section.multiple.headline">
+				<source>Multiple selection</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.optgroup.headline" resname="component.select.section.optgroup.headline">
+				<source>Option groups</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.optgroup.single.headline" resname="component.select.section.optgroup.single.headline">
+				<source>Single selection with option groups</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.optgroup.multiple.headline" resname="component.select.section.optgroup.multiple.headline">
+				<source>Multiple selection with option groups</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.state.headline" resname="component.select.section.state.headline">
+				<source>State</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.colorScheme.optgroup.single.headline" resname="component.select.section.colorScheme.optgroup.single.headline">
+				<source>Single selection with option groups</source>
+			</trans-unit>
+			<trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline" resname="component.select.section.colorScheme.optgroup.multiple.headline">
+				<source>Multiple selection with option groups</source>
+			</trans-unit>
+
 			<!-- Component: Tabs -->
 			<trans-unit id="component.tabs.headline" resname="component.tabs.headline">
 				<source>Tab</source>
@@ -553,6 +629,23 @@
 			</trans-unit>
 			<trans-unit id="component.table.section.wideTables.text" resname="component.table.section.wideTables.text">
 				<source><![CDATA[Wide tables should be wrapped in with <code>div.table-fit</code>.]]></source>
+			</trans-unit>
+
+			<!-- Component: Textarea -->
+			<trans-unit id="component.textarea.headline" resname="component.textarea.headline">
+				<source>Textarea</source>
+			</trans-unit>
+			<trans-unit id="component.textarea.section.default.headline" resname="component.textarea.section.default.headline">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="component.textarea.section.disabled.headline" resname="component.textarea.disabled.default.headline">
+				<source>Disabled</source>
+			</trans-unit>
+			<trans-unit id="component.textarea.section.placeholder.headline" resname="component.textarea.section.placeholder.headline">
+				<source>Placeholder</source>
+			</trans-unit>
+			<trans-unit id="component.textarea.section.state.headline" resname="component.textarea.section.state.headline">
+				<source>State</source>
 			</trans-unit>
 
 			<!-- Component: Tree -->

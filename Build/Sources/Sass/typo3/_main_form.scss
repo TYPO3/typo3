@@ -1,81 +1,8 @@
-@import "../../../node_modules/@typo3/icons/dist/scss/icons-variables-actions.scss";
-
-//
-// Disable ms-clear pseudo-element globally to avoid confusion with the
-// existing clearable integration in TYPO3
-//
-// https://msdn.microsoft.com/en-us/library/windows/apps/hh465740.aspx
-//
-*::-ms-clear {
-    display: none;
-}
-
-//
-// Form control state additions
-//
-.has-change {
-    @include form-control-validation($info, $info, shift-color($info, -85%));
-
-    .thumbnail-status {
-        border: 1px solid $info;
-    }
-    // A loading order issue prevents .has-change to be overridden with .has-error
-    // this is a workaround needs to be cleaned up in a less file restructuring
-    &.has-error {
-        @extend .has-error;
-    }
-}
-
-//
-// Input group additions
-//
-.input-group-icon {
-    vertical-align: middle;
-
-    img {
-        max-height: 18px;
-    }
-}
-
-.input-group-text {
-    min-width: 2.5rem;
-}
-
 //
 // Form control additions
 //
-.form-control {
-    min-width: 120px;
-
-    &::placeholder {
-        color: var(--typo3-input-color-placeholder);
-    }
-}
-
-.form-control-adapt {
-    width: auto;
-    max-width: 100%;
-}
-
-.form-control-wrap {
-    margin: .5rem 0;
-}
-
 .form-control-holder {
     position: relative;
-}
-
-// disable MS Edge default password reveal button
-::-ms-reveal {
-    display: none;
-}
-
-.row {
-    > .form-group {
-        > .form-control-wrap {
-            margin-bottom: 0;
-        }
-    }
 }
 
 .formengine-field-item {
@@ -90,26 +17,10 @@
     }
 }
 
-.form-control[disabled],
-.form-control[readonly],
-fieldset[disabled] .form-control {
-    color: $input-color-disabled;
-}
-
 //
 // Form group validation states
 //
 .form-group.has-error {
-    > .formengine-field-item > .form-label:before,
-    > .form-label:before,
-    > fieldset > .form-legend:before,
-    > fieldset > .formengine-field-item > .form-legend:before {
-        @include icon-background($icon-actions-exclamation-circle, $danger);
-        border-radius: 50%;
-        width: 14px;
-        height: 14px;
-    }
-
     .btn-toolbar {
         label:before {
             font-family: inherit;
@@ -120,194 +31,6 @@ fieldset[disabled] .form-control {
             color: inherit;
             display: block;
         }
-    }
-}
-
-//
-// Select
-//
-select {
-    &.form-select {
-        &[multiple],
-        &[size]:not([size="1"]) {
-            min-height: 156px;
-        }
-
-        > optgroup {
-            margin-top: 9px;
-
-            &:first-child {
-                margin-top: 0;
-            }
-        }
-
-        option {
-            padding-top: 2px;
-            padding-bottom: 2px;
-        }
-    }
-
-    &.icon-select {
-        option {
-            padding-inline-start: 22px;
-        }
-    }
-}
-
-//
-// Styles for the "clearable" plugin.
-//
-// <div class="form-control-clearable-wrapper">
-//  <input type="text" class="form-control form-control-clearable" />
-// </div>
-//
-.form-control-clearable {
-    padding-inline-end: 2.3em;
-}
-
-.form-control-clearable-wrapper {
-    position: relative;
-    border: 0;
-    padding: 0;
-
-    input[type=search]::-webkit-search-cancel-button {
-        display: none;
-    }
-
-    .form-control {
-        padding-inline-end: 2.3em;
-    }
-
-    .close {
-        border: none;
-        background-color: transparent;
-        position: absolute;
-        height: 16px;
-        z-index: 3;
-        top: 50%;
-        inset-inline-end: .5em;
-        transform: translate(0, -50%);
-        opacity: .2;
-
-        &:hover {
-            opacity: .5;
-        }
-
-        .icon {
-            vertical-align: 0;
-        }
-    }
-
-    &:focus {
-        box-shadow: none;
-        border-color: inherit;
-    }
-
-    &:focus-within {
-        z-index: 3;
-    }
-}
-
-//
-// Styles for the "capslock" jquery plugin.
-//
-.form-notice-capslock {
-    position: absolute;
-    inset-inline-end: 25px;
-    top: 50%;
-    margin-top: -10px;
-    height: 20px;
-    width: 20px;
-    padding: 3px;
-    z-index: 10;
-    background-color: #fff;
-
-    > img {
-        display: block;
-        opacity: .5;
-    }
-}
-
-//
-// Form Sections
-//
-.form-section {
-    border: 1px solid #ccc;
-    background-color: #fafafa;
-    padding: 15px 12px 3px;
-
-    & + .form-section {
-        margin-top: -1px;
-    }
-}
-
-.form-section-headline {
-    font-size: $h4-font-size;
-    margin-top: 0;
-    margin-bottom: 10px;
-
-    & + .form-section-description {
-        margin-top: -5px;
-        margin-bottom: 10px;
-    }
-}
-
-//
-// Form Wizards
-//
-.form-wizards-wrap {
-    width: 100%;
-    display: grid;
-    grid-template: "top . ." "main  side-move side-control" "bottom . .";
-    grid-template-rows: auto;
-    grid-template-columns: 1fr auto auto;
-
-    > .form-wizards-element {
-        grid-area: main;
-        min-width: 120px;
-
-        .col-icon img,
-        .inline-icon img {
-            max-width: 2em;
-            max-height: 2em;
-        }
-
-        .radio:not(.disabled) input[type="radio"] {
-            cursor: pointer;
-        }
-    }
-
-    > .form-wizards-items-top {
-        width: 100%;
-        margin-bottom: .25rem;
-        grid-area: top;
-    }
-
-    > .form-wizards-items-aside {
-        align-self: flex-start;
-        white-space: nowrap;
-        padding-inline-start: 5px;
-
-        &--move {
-            grid-area: side-move;
-        }
-
-        &--field-control {
-            grid-area: side-control;
-        }
-    }
-
-    > .form-wizards-items-bottom {
-        grid-area: bottom;
-
-        .tablelist-item-nolink {
-            padding: 6px;
-            display: inline-block;
-        }
-    }
-
-    > .form-wizards-items-bottom:first-child {
-        margin-top: 4px;
     }
 }
 
@@ -365,36 +88,6 @@ select {
 }
 
 //
-// Form Multi Group
-//
-.form-multigroup-wrap {
-    width: 100%;
-    display: flex;
-
-    .form-multigroup-item {
-        width: 50%;
-        align-self: flex-start;
-
-        + .form-multigroup-item {
-            padding-inline-start: 5px;
-        }
-    }
-
-    .form-multigroup-item-wizard {
-        margin-bottom: 5px;
-
-        + select.form-select[multiple],
-        + select.form-select[size] {
-            min-height: 125px;
-        }
-    }
-
-    .form-wizards-wrap {
-        width: 100%;
-    }
-}
-
-//
 // Autoresize for Textareas
 //
 // no manual resizing for textareas (works on non-IE browser only anyways)
@@ -404,27 +97,6 @@ textarea {
     &.formengine-textarea {
         resize: none;
     }
-}
-
-//
-// This is needed for input links, because the input is wrapped dynamically
-// with a clearable div. If the field is unlocked for explanation view, the
-// wrap should grow to 100%, else it should shrink to 0%.
-//
-.input-group > .form-control-clearable-wrapper {
-    flex: 1 1 auto;
-    width: 1%;
-    min-width: 0;
-}
-
-.form-control:not(.hidden):not([hidden]) + .form-control-clearable-wrapper {
-    flex-grow: 0;
-    width: auto;
-}
-
-.form-control[hidden] + .close,
-.form-control.hidden + .close {
-    display: none;
 }
 
 /**

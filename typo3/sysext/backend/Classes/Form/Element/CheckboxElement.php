@@ -133,11 +133,11 @@ class CheckboxElement extends AbstractFormElement
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
-        $html[] =       '<div class="form-wizards-element">';
+        $html[] =       '<div class="form-wizards-item-element">';
         $html[] =           $elementHtml;
         $html[] =       '</div>';
         if (!$disabled && !empty($fieldWizardHtml)) {
-            $html[] =   '<div class="form-wizards-items-bottom">';
+            $html[] =   '<div class="form-wizards-item-bottom">';
             $html[] =       $fieldWizardHtml;
             $html[] =   '</div>';
         }

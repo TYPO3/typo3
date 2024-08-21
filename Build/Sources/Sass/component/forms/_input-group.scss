@@ -1,0 +1,148 @@
+//
+// Input Group
+//
+.input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap; // For form validation feedback
+    align-items: stretch;
+    width: 100%;
+    border-radius: var(--typo3-input-border-radius);
+
+    > .form-control-clearable-wrapper,
+    > .form-control,
+    > .form-select,
+    > .form-floating {
+        position: relative; // For focus state's z-index
+        flex: 1 1 auto;
+        width: 1%;
+        min-width: 0; // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+    }
+
+    // Bring the "active" form control to the top of surrounding elements
+    > .form-control:focus,
+    > .form-select:focus,
+    > .form-floating:focus-within {
+        z-index: 5;
+    }
+
+    // Ensure buttons are always above inputs for more visually pleasing borders.
+    // This isn't needed for `.input-group-text` since it shares the same border-color
+    // as our inputs.
+    .btn {
+        position: relative;
+        z-index: 2;
+
+        &:focus {
+            z-index: 5;
+        }
+    }
+}
+
+//
+// Text
+//
+.input-group-text {
+    display: flex;
+    align-items: center;
+    min-width: 2.5rem;
+    padding: var(--typo3-input-padding-y) var(--typo3-input-padding-x);
+    font-size: var(--typo3-input-font-size);
+    font-weight: normal;
+    line-height: var(--typo3-input-line-height);
+    color: var(--typo3-input-color);
+    text-align: center;
+    white-space: nowrap;
+    background-color: var(--typo3-input-group-addon-bg);
+    border: var(--typo3-input-border-width) solid var(--typo3-input-border-color);
+    border-radius: var(--typo3-input-border-radius);
+}
+
+//
+// Icon
+//
+.input-group-icon {
+    vertical-align: middle;
+
+    img {
+        max-height: 16px;
+    }
+}
+
+//
+// Sizing
+//
+.input-group-sm {
+    --typo3-input-font-size: var(--typo3-input-sm-font-size);
+    --typo3-input-padding-y: var(--typo3-input-sm-padding-y);
+    --typo3-input-padding-x: var(--typo3-input-sm-padding-x);
+}
+
+//
+// Border Radius
+//
+.input-group {
+    &:not(.has-validation) {
+        > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+        > .dropdown-toggle:nth-last-child(n + 3),
+        > .form-floating:not(:last-child) > .form-control,
+        > .form-floating:not(:last-child) > .form-select {
+            border-start-end-radius: 0;
+            border-end-end-radius: 0;
+        }
+    }
+
+    &.has-validation {
+        > :nth-last-child(n + 3):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+        > .dropdown-toggle:nth-last-child(n + 4),
+        > .form-floating:nth-last-child(n + 3) > .form-control,
+        > .form-floating:nth-last-child(n + 3) > .form-select {
+            border-start-end-radius: 0;
+            border-end-end-radius: 0;
+        }
+    }
+
+    > * + .form-control-clearable-wrapper {
+        > .form-control,
+        > .form-select {
+            border-start-start-radius: 0;
+            border-end-start-radius: 0;
+        }
+    }
+
+    > .form-control-clearable-wrapper:not(:last-child) {
+        > .form-control,
+        > .form-select {
+            border-start-end-radius: 0;
+            border-end-end-radius: 0;
+        }
+    }
+
+    $validation-messages: "";
+
+    @each $state in map-keys($form-validation-states) {
+        $validation-messages: $validation-messages + ":not(." + unquote($state) + "-tooltip)" + ":not(." + unquote($state) + "-feedback)";
+    }
+
+    > :not(:first-child):not(.dropdown-menu)#{$validation-messages} {
+        margin-inline-start: calc(var(--typo3-input-border-width) * -1);
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+    }
+
+    > .form-floating:not(:first-child) {
+        > .form-control,
+        > .form-select {
+            border-start-start-radius: 0;
+            border-end-start-radius: 0;
+        }
+    }
+
+    > label.visually-hidden:first-child {
+        & + .form-control,
+        & + .form-select {
+            border-start-start-radius: inherit !important;
+            border-end-start-radius: inherit !important;
+        }
+    }
+}

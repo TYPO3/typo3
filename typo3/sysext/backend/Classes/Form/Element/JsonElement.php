@@ -113,7 +113,7 @@ class JsonElement extends AbstractFormElement
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
-            $html[] =       '<div class="form-wizards-element">';
+            $html[] =       '<div class="form-wizards-item-element">';
             $html[] =           '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
             $html[] =               '<textarea class="form-control font-monospace" id="' . htmlspecialchars($fieldId) . '" rows="' . $rows . '" disabled>';
             $html[] =                   htmlspecialchars($itemValue);
@@ -207,7 +207,7 @@ class JsonElement extends AbstractFormElement
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
             if (!empty($fieldControlHtml)) {
-                $additionalHtml[] = '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+                $additionalHtml[] = '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
                 $additionalHtml[] =     '<div class="btn-group">';
                 $additionalHtml[] =         $fieldControlHtml;
                 $additionalHtml[] =     '</div>';
@@ -219,7 +219,7 @@ class JsonElement extends AbstractFormElement
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
             if (!empty($fieldWizardHtml)) {
-                $additionalHtml[] = '<div class="form-wizards-items-bottom">';
+                $additionalHtml[] = '<div class="form-wizards-item-bottom">';
                 $additionalHtml[] =     $fieldWizardHtml;
                 $additionalHtml[] = '</div>';
             }
@@ -230,7 +230,7 @@ class JsonElement extends AbstractFormElement
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
         $html[] =       '<div class="form-wizards-wrap">';
-        $html[] =           '<div class="form-wizards-element">';
+        $html[] =           '<div class="form-wizards-item-element">';
         $html[] =               $editorHtml;
         $html[] =           '</div>';
         $html[] =           implode(LF, $additionalHtml);

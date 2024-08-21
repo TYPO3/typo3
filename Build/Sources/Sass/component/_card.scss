@@ -202,11 +202,12 @@
     --typo3-card-color: var(--typo3-text-color-base);
     --typo3-card-color-subtle: var(--typo3-text-color-variant);
     --typo3-card-bg: var(--typo3-surface-container-low);
+    --typo3-card-border-radius: var(--typo3-component-border-radius);
     --typo3-card-border-color: color-mix(in srgb, var(--typo3-card-bg), var(--typo3-card-color) 15%);
     color: var(--typo3-card-color);
     background: var(--typo3-card-bg);
     border: 1px solid var(--typo3-card-border-color);
-    border-radius: var(--typo3-component-border-radius);
+    border-radius: var(--typo3-card-border-radius);
     box-shadow: var(--typo3-component-box-shadow);
     position: relative;
     display: flex;

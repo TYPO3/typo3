@@ -11,7 +11,7 @@
         <label class="form-label" for="tceforms-datetimefield-task_start_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.start"/></label>
         <div class="form-control-wrap">
             <div class="form-wizards-wrap">
-                <div class="form-wizards-element">
+                <div class="form-wizards-item-element">
                     <div class="input-group" id="tceforms-datetimefield-task_start_row-wrapper">
                         <input
                             name="tx_scheduler[start]"
@@ -34,7 +34,7 @@
         <label class="form-label" for="tceforms-datetimefield-task_end_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.end"/></label>
         <div class="form-control-wrap">
             <div class="form-wizards-wrap">
-                <div class="form-wizards-element">
+                <div class="form-wizards-item-element">
                     <div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">
                         <f:variable name="formattedEnd"><f:if condition="{currentData.end}"><f:then>{f:format.date(format: dateFormat, date: currentData.end)}</f:then><f:else></f:else></f:if></f:variable>
                         <input

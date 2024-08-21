@@ -131,19 +131,19 @@ class RichTextElement extends AbstractFormElement
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';
-        $html[] =           '<div class="form-wizards-element">';
+        $html[] =           '<div class="form-wizards-item-element">';
         $html[] =               '<typo3-rte-ckeditor-ckeditor5 ' . $ckeditorAttributes . '>';
         $html[] =               '</typo3-rte-ckeditor-ckeditor5>';
         $html[] =           '</div>';
         if (!empty($fieldControlHtml)) {
-            $html[] =           '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+            $html[] =           '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
             $html[] =               '<div class="btn-group">';
             $html[] =                   $fieldControlHtml;
             $html[] =               '</div>';
             $html[] =           '</div>';
         }
         if (!empty($fieldWizardHtml)) {
-            $html[] = '<div class="form-wizards-items-bottom">';
+            $html[] = '<div class="form-wizards-item-bottom">';
             $html[] = $fieldWizardHtml;
             $html[] = '</div>';
         }

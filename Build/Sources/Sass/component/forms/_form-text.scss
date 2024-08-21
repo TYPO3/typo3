@@ -1,0 +1,14 @@
+//
+// Form Text
+//
+.form-text {
+    margin-top: calc(var(--typo3-spacing) * .25);
+}
+
+//
+// Form Description
+//
+.form-description {
+    color: var(--typo3-text-color-variant);
+    margin-bottom: calc(var(--typo3-spacing) * .25);
+}

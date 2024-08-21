@@ -1,0 +1,14 @@
+//
+// Form Label
+//
+.form-label {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    font-style: normal;
+    font-weight: bold;
+    color: inherit;
+    margin-bottom: calc(var(--typo3-spacing) * .25);
+    cursor: pointer;
+    word-break: break-word;
+}

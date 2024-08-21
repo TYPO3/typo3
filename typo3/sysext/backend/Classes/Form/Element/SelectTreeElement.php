@@ -144,7 +144,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-control-wrap">';
         $html[] =       '<div class="form-wizards-wrap">';
-        $html[] =           '<div class="form-wizards-element">';
+        $html[] =           '<div class="form-wizards-item-element">';
         $html[] =               '<div class="typo3-tceforms-tree">';
         $html[] =                   '<input class="treeRecord" type="hidden" id="' . htmlspecialchars($fieldId) . '"';
         $html[] =                       ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
@@ -175,7 +175,7 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =               '<div id="' . $treeWrapperId . '" class="tree-element" style="height: ' . $heightInPx . 'px;"></div>';
         $html[] =           '</div>';
         if (!$readOnly && !empty($fieldWizardHtml)) {
-            $html[] =       '<div class="form-wizards-items-bottom">';
+            $html[] =       '<div class="form-wizards-item-bottom">';
             $html[] =           $fieldWizardHtml;
             $html[] =       '</div>';
         }

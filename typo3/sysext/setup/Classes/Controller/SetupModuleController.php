@@ -608,26 +608,26 @@ class SetupModuleController
             }
             if ($type === 'check') {
                 $htmlPrepended = '<div class="formengine-field-item t3js-formengine-field-item"><div class="form-wizards-wrap">'
-                    . '<div class="form-wizards-element"><div class="form-check form-switch">';
+                    . '<div class="form-wizards-item-element"><div class="form-check form-switch">';
                 $htmlAppended = '</div></div></div></div>';
             }
             if ($type === 'select' || $type === 'language') {
                 $htmlPrepended = '<div class="formengine-field-item t3js-formengine-field-item"><div class="form-control-wrap">'
-                    . '<div class="form-wizards-wrap"><div class="form-wizards-element"><div class="input-group">';
+                    . '<div class="form-wizards-wrap"><div class="form-wizards-item-element"><div class="input-group">';
                 $htmlAppended = '</div></div></div></div></div>';
             }
             if ($type === 'text' || $type === 'number' || $type === 'email' || $type === 'password') {
                 $htmlPrepended = '<div class="formengine-field-item t3js-formengine-field-item"><div class="form-control-wrap">'
-                    . '<div class="form-wizards-wrap"><div class="form-wizards-element">';
+                    . '<div class="form-wizards-wrap"><div class="form-wizards-item-element">';
                 $htmlAppended = '</div></div></div></div>';
             }
 
-            $code[] = '<fieldset class="form-section"><div class="row"><div class="form-group col-md-12">'
+            $code[] = '<fieldset class="form-section"><div class="form-group">'
                 . $label
                 . $htmlPrepended
                 . $html
                 . $htmlAppended
-                . '</div></div></fieldset>';
+                . '</div></fieldset>';
         }
 
         $result[] = [

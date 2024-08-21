@@ -1,0 +1,29 @@
+//
+// Form group
+//
+.form-group {
+    margin-bottom: var(--typo3-spacing);
+}
+
+.form-group-dashed {
+    & + & {
+        padding-top: var(--typo3-spacing);
+        border-top: 1px dashed rgba(0, 0, 0, .15);
+    }
+}
+
+//
+// Form Multi Group
+//
+// Markup:
+// <div class="form-multigroup">
+//     <div class="form-multigroup-item"></div>
+//     <div class="form-multigroup-item"></div>
+// </div>
+//
+.form-multigroup-wrap {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--typo3-spacing);
+}

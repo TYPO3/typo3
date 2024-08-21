@@ -105,7 +105,7 @@ export abstract class AbstractSortableSelectItems {
   protected registerSortableEventHandler = (fieldElement: HTMLSelectElement): void => {
     this.registerKeyboardEventHandler(fieldElement);
 
-    const aside = fieldElement.closest('.form-wizards-wrap').querySelector('.form-wizards-items-aside');
+    const aside = fieldElement.closest('.form-wizards-wrap').querySelector('.form-wizards-item-aside');
     if (aside === null) {
       return;
     }

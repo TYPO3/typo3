@@ -155,7 +155,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         $html[] = '<typo3-backend-collapsible class="formengine-field-item t3js-formengine-field-item" data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '">';
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
-        $html[] =       '<div class="form-wizards-element">';
+        $html[] =       '<div class="form-wizards-item-element">';
 
         if (!$readOnly) {
             // Add an empty hidden field which will send a blank value if all items are unselected.
@@ -264,7 +264,7 @@ class SelectCheckBoxElement extends AbstractFormElement
 
         $html[] =       '</div>';
         if (!$readOnly && !empty($fieldWizardHtml)) {
-            $html[] =   '<div class="form-wizards-items-bottom">';
+            $html[] =   '<div class="form-wizards-item-bottom">';
             $html[] =       $fieldWizardHtml;
             $html[] =   '</div>';
         }

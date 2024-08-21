@@ -109,7 +109,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
-        $html[] =       '<div class="form-wizards-element">';
+        $html[] =       '<div class="form-wizards-item-element">';
         $html[] =           '<div class="form-check form-switch">';
         $html[] =               '<input type="checkbox"';
         $html[] =                   ' class="form-check-input"';

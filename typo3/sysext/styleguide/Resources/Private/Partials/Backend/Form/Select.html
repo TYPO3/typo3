@@ -1,0 +1,41 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<div class="form-group{f:if(condition: additionalClass, then: ' {additionalClass}')}">
+    <label for="{identifier}" class="form-label">{f:if(condition: fieldLabel, then: fieldLabel, else: 'Field label')}</label>
+    <select class="form-select" id="{identifier}"{f:if(condition: multiple, then: ' multiple')}{f:if(condition: ariaLabel, then: ' aria-label="{ariaLabel}"')}>
+    <f:if condition="{hasOptGroup}">
+        <f:then>
+        <optgroup label="Theropods">
+            <option>Tyrannosaurus</option>
+            <option>Velociraptor</option>
+            <option>Deinonychus</option>
+        </optgroup>
+        <optgroup label="Sauropods">
+            <option>Diplodocus</option>
+            <option>Saltasaurus</option>
+            <option>Apatosaurus</option>
+        </optgroup>
+        </f:then>
+        <f:else>
+            <f:if condition="{firstOptionWithoutValue}">
+                <f:then>
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+                </f:then>
+                <f:else>
+        <option selected value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+    </select>
+</div>
+
+</html>

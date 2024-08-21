@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,o,r){var i,a=arguments.length,l=a<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,o):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(e,t,o,r);else for(var n=e.length-1;n>=0;n--)(i=e[n])&&(l=(a<3?i(l):a>3?i(t,o,l):i(t,o))||l);return a>3&&l&&Object.defineProperty(t,o,l),l};import{LitElement,html,css}from"lit";import{customElement,property,state}from"lit/decorators.js";import{EditorView,lineNumbers,highlightSpecialChars,drawSelection,keymap,placeholder}from"@codemirror/view";import{EditorState,Compartment}from"@codemirror/state";import{syntaxHighlighting,defaultHighlightStyle}from"@codemirror/language";import{defaultKeymap,indentWithTab}from"@codemirror/commands";import{oneDark}from"@codemirror/theme-one-dark";import{executeJavaScriptModuleInstruction,loadModule,resolveSubjectRef}from"@typo3/core/java-script-item-processor.js";import"@typo3/backend/element/spinner-element.js";let CodeMirrorElement=class extends LitElement{constructor(){super(...arguments),this.mode=null,this.addons=[],this.keymaps=[],this.lineDigits=0,this.autoheight=!1,this.nolazyload=!1,this.readonly=!1,this.fullscreen=!1,this.panel="bottom",this.editorTheme=null,this.editorView=null}render(){return html`
+var __decorate=function(e,t,o,r){var i,l=arguments.length,a=l<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,o):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,o,r);else for(var n=e.length-1;n>=0;n--)(i=e[n])&&(a=(l<3?i(a):l>3?i(t,o,a):i(t,o))||a);return l>3&&a&&Object.defineProperty(t,o,a),a};import{LitElement,html,css}from"lit";import{customElement,property,state}from"lit/decorators.js";import{EditorView,lineNumbers,highlightSpecialChars,drawSelection,keymap,placeholder}from"@codemirror/view";import{EditorState,Compartment}from"@codemirror/state";import{syntaxHighlighting,defaultHighlightStyle}from"@codemirror/language";import{defaultKeymap,indentWithTab}from"@codemirror/commands";import{oneDark}from"@codemirror/theme-one-dark";import{executeJavaScriptModuleInstruction,loadModule,resolveSubjectRef}from"@typo3/core/java-script-item-processor.js";import"@typo3/backend/element/spinner-element.js";let CodeMirrorElement=class extends LitElement{constructor(){super(...arguments),this.mode=null,this.addons=[],this.keymaps=[],this.lineDigits=0,this.autoheight=!1,this.nolazyload=!1,this.readonly=!1,this.fullscreen=!1,this.panel="bottom",this.editorTheme=null,this.editorView=null}render(){return html`
       ${this.label&&"top"===this.panel?html`<div class="codemirror-label codemirror-label-top">${this.label}</div>`:""}
       <div id="codemirror-parent" @keydown=${e=>this.onKeydown(e)}></div>
       ${this.label&&"bottom"===this.panel?html`<div class="codemirror-label codemirror-label-bottom">${this.label}</div>`:""}
@@ -60,14 +60,13 @@ var __decorate=function(e,t,o,r){var i,a=arguments.length,l=a<3?t:null===r?r=Obj
       overflow: hidden;
       border-radius: var(--typo3-input-border-radius);
       border: var(--typo3-input-border-width) solid var(--typo3-input-border-color);
-      box-shadow: var(--typo3-input-box-shadow);
       transition: outline-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
 
     .cm-focused {
-      outline: none !important;
       border-color: var(--typo3-input-focus-border-color);
-      box-shadow: var(--typo3-input-box-shadow), var(--typo3-input-focus-box-shadow);
+      outline-offset: 0;
+      outline: .25rem solid color-mix(in srgb, var(--typo3-form-control-focus-border-color), transparent 25%);
     }
 
     .cm-gutters {

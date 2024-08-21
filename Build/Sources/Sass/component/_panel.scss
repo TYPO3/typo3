@@ -197,10 +197,10 @@ $panel-heading-bg-scale: -85%;
     }
     /* stylelint-enable */
 
-    a,
-    a:hover,
-    a:focus,
-    a:active {
+    a:not(.btn),
+    a:not(.btn):hover,
+    a:not(.btn):focus,
+    a:not(.btn):active {
         text-decoration: none;
         color: inherit;
     }
@@ -379,7 +379,7 @@ $panel-heading-bg-scale: -85%;
         margin: 0;
         border: none;
         border-top: var(--panel-border-width) solid var(--panel-border-color);
-        --typo3-alert-padding-x: var(--panel-header-padding-x);
+        --typo3-alert-border-radius: 0;
     }
 
     > .form-section,

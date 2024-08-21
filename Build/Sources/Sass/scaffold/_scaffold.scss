@@ -325,16 +325,13 @@ body {
         height: 30px;
         border-inline-end: 0;
         background: transparent;
-        transform: translate(calc(-38px * var(--typo3-position-modifier)), 4px);
+        transform: translate(calc(-41px * var(--typo3-position-modifier)), var(--module-docheader-padding-y));
         z-index: 3;
         padding: 0;
     }
 
     .scaffold-content-navigation-switcher-btn {
-        --typo3-btn-padding-y: .25rem;
-        --typo3-btn-padding-x: .325rem;
         display: inline-flex;
-        margin-top: .125rem;
     }
 
     .scaffold-content-navigation-switcher-open {

@@ -1,0 +1,110 @@
+//
+// Form Wizards
+//
+// Markup:
+// <div class="form-wizards-wrap">
+//     <div class="form-wizards-item-top"></div>
+//     <div class="form-wizards-item-filter"></div>
+//     <div class="form-wizards-item-element"></div>
+//     <div class="form-wizards-item-aside form-wizards-item-aside--move"></div>
+//     <div class="form-wizards-item-aside form-wizards-item-aside--field-control"></div>
+//     <div class="form-wizards-item-bottom"></div>
+// </div>
+//
+.form-wizards-wrap {
+    width: 100%;
+    display: grid;
+    gap: .25rem;
+    grid-template-columns: 1fr;
+
+    > * {
+        grid-column: 1 / 2;
+
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    > .form-wizards-item-element {
+        min-width: 120px;
+
+        .form-select[multiple],
+        .form-select[size]:not([size="1"]) {
+            height: 100%;
+        }
+    }
+
+    > .form-wizards-item-aside {
+        grid-column: 2 / 3;
+        align-self: flex-start;
+        white-space: nowrap;
+    }
+
+    > .form-wizards-item-aside + .form-wizards-item-aside {
+        grid-column: 3 / 4;
+    }
+}
+
+//
+// SelectIcons FieldWizard
+//
+.form-wizard-icon-list {
+    color: var(--typo3-component-color);
+    background: var(--typo3-component-bg);
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    border-radius: var(--typo3-input-border-radius);
+    margin-top: $form-text-margin-top;
+    padding: calc(var(--typo3-spacing) / 4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+}
+
+.form-wizard-icon-list-item {
+    a {
+        display: flex;
+        height: 100%;
+        color: var(--typo3-component-color);
+        border-radius: calc(var(--typo3-component-border-radius) / 2);
+        padding: calc(var(--typo3-spacing) / 2);
+        align-items: center;
+        justify-content: center;
+        outline-offset: -1px;
+
+        &:hover {
+            color: var(--typo3-list-item-hover-color);
+            background-color: var(--typo3-list-item-hover-bg);
+            outline: 1px solid var(--typo3-list-item-hover-border-color);
+        }
+
+        &:focus {
+            color: var(--typo3-list-item-focus-color);
+            background-color: var(--typo3-list-item-focus-bg);
+            outline: 1px solid var(--typo3-list-item-focus-border-color);
+        }
+
+        &:active,
+        &.active {
+            color: var(--typo3-list-item-active-color);
+            background-color: var(--typo3-list-item-active-bg);
+            outline: 1px solid var(--typo3-list-item-active-border-color);
+        }
+    }
+
+    a,
+    a > span[title] {
+        display: block;
+        line-height: 1;
+    }
+
+    img {
+        display: block;
+        min-width: 16px;
+        max-width: 128px;
+        max-height: 128px;
+    }
+}

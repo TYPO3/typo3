@@ -74,10 +74,10 @@ export class ResizableNavigation extends LitElement {
   protected render(): TemplateResult {
     return html`
       <div class="scaffold-content-navigation-switcher">
-        <button @click="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="${lll('viewport_navigation_show')}">
+        <button @click="${this.toggleNavigation}" class="btn btn-sm btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="${lll('viewport_navigation_show')}">
           <typo3-backend-icon identifier="actions-chevron-right" size="small"></typo3-backend-icon>
         </button>
-        <button @click="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-close" role="button" title="${lll('viewport_navigation_hide')}">
+        <button @click="${this.toggleNavigation}" class="btn btn-sm btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-close" role="button" title="${lll('viewport_navigation_hide')}">
           <typo3-backend-icon identifier="actions-chevron-left" size="small"></typo3-backend-icon>
         </button>
       </div>

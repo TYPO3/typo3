@@ -143,7 +143,6 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
     public function getSupportingImages(): array
     {
         return [
-            'capslock' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/icon_capslock.svg'),
             'typo3' => $this->getUriForFileName('EXT:core/Resources/Public/Images/typo3_orange.svg'),
         ];
     }

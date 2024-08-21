@@ -9,7 +9,7 @@
     {fieldInformation -> f:format.raw()}
 
     <div class="form-wizards-wrap">
-        <div class="form-wizards-element">
+        <div class="form-wizards-item-element">
             <f:if condition="{isAllowedFileExtension} && {image.properties.width}">
                 <f:then>
                     <f:if condition="{config.readOnly}">
@@ -43,7 +43,7 @@
                             </div>
                         </f:else>
                     </f:if>
-                    <div class="row media-gallery__list">
+                    <div class="row media-gallery__list mt-2">
                         <f:for each="{config.cropVariants}" as="cropVariant">
                             <div class="col-6 col-sm-4 col-md-3 media-gallery__item">
                                 <p>
@@ -98,13 +98,13 @@
             </f:if>
         </div>
 
-        <div class="form-wizards-items-aside form-wizards-items-aside--field-control">
+        <div class="form-wizards-item-aside form-wizards-item-aside--field-control">
             <div class="btn-group">
                 {fieldControl -> f:format.raw()}
             </div>
         </div>
 
-        <div class="form-wizards-items-bottom">
+        <div class="form-wizards-item-bottom">
             {fieldWizard -> f:format.raw()}
         </div>
     </div>

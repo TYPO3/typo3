@@ -14,11 +14,11 @@
         <f:if condition="{item.editable} && {allowEditContent}">
             <div class="btn-toolbar">
                 <div class="btn-group btn-group-sm">
-                    <a href="{item.editUrl}" class="btn btn-default btn-borderless" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
+                    <a href="{item.editUrl}" class="btn btn-sm btn-default btn-borderless" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
                         <core:icon identifier="actions-open" />
                     </a>
                     <f:if condition="{item.visibilityToggling}">
-                        <a class="btn btn-default btn-borderless" href="{item.visibilityToggleUrl}" title="{item.visibilityToggleTitle}">
+                        <a class="btn btn-sm btn-default btn-borderless" href="{item.visibilityToggleUrl}" title="{item.visibilityToggleTitle}">
                             <core:icon identifier="actions-edit-{item.visibilityToggleIconName}" />
                         </a>
                     </f:if>

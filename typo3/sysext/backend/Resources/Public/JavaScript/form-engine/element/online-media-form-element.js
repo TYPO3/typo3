@@ -16,9 +16,11 @@ var __decorate=function(e,t,r,o){var n,i=arguments.length,l=i<3?t:null===o?o=Obj
           <input type="text" class="form-control" name="online-media-url" placeholder="${this.placeholder}" required>
           <div class="form-text">
             ${this.allowedExtensionsHelpText}<br>
+            <ul class="badge-list">
             ${this.allowedExtensions.split(",").map((e=>html`
-              <span class="badge badge-success">${e.trim().toUpperCase()}</span>
+              <li><span class="badge badge-success">${e.trim().toUpperCase()}</span></li>
             `))}
+            </ul>
           </div>
         </div>
       </form>

@@ -83,7 +83,7 @@ class RadioElement extends AbstractFormElement
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
-        $html[] =       '<div class="form-wizards-element">';
+        $html[] =       '<div class="form-wizards-item-element">';
         foreach ($this->data['parameterArray']['fieldConf']['config']['items'] as $itemNumber => $itemLabelAndValue) {
             $label = $itemLabelAndValue['label'];
             $value = $itemLabelAndValue['value'];
@@ -110,7 +110,7 @@ class RadioElement extends AbstractFormElement
         }
         $html[] =       '</div>';
         if (!$disabled && !empty($fieldWizardHtml)) {
-            $html[] =   '<div class="form-wizards-items-bottom">';
+            $html[] =   '<div class="form-wizards-item-bottom">';
             $html[] =       $fieldWizardHtml;
             $html[] =   '</div>';
         }

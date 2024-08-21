@@ -70,7 +70,7 @@
 .element-browser-nav {
     padding: calc(var(--typo3-spacing) / 2) var(--typo3-spacing);
     background-color: var(--module-docheader-bg);
-    border-bottom: 1px solid var(--module-docheader-border);
+    border-bottom: 1px solid var(--module-docheader-border-color);
 
     .element-browser-header + & {
         padding-top: 0;
@@ -169,14 +169,14 @@
         display: flex;
         align-items: center;
         gap: calc(var(--typo3-spacing) / 2);
-    }
 
-    .form-label {
-        width: 180px;
-        flex-shrink: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-bottom: 0 !important;
+        .form-label {
+            width: 180px;
+            flex-shrink: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 0 !important;
+        }
     }
 }
 

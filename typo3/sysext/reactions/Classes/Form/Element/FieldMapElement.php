@@ -88,7 +88,7 @@ class FieldMapElement extends AbstractFormElement
         $html[] =     $fieldInformationHtml;
         $html[] =     '<div class="form-control-wrap" style="max-width: ' . $this->formMaxWidth($this->defaultInputWidth) . 'px">';
         $html[] =         '<div class="form-wizards-wrap">';
-        $html[] =             '<div class="form-wizards-element">';
+        $html[] =             '<div class="form-wizards-item-element">';
         $html[] =                 $fieldsHtml;
         $html[] =             '</div>';
         $html[] =         '</div>';

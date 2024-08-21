@@ -35,9 +35,11 @@ export class OnlineMediaFormElement extends LitElement {
           <input type="text" class="form-control" name="online-media-url" placeholder="${this.placeholder}" required>
           <div class="form-text">
             ${this.allowedExtensionsHelpText}<br>
+            <ul class="badge-list">
             ${this.allowedExtensions.split(',').map((ext: string) => html`
-              <span class="badge badge-success">${ext.trim().toUpperCase()}</span>
+              <li><span class="badge badge-success">${ext.trim().toUpperCase()}</span></li>
             `)}
+            </ul>
           </div>
         </div>
       </form>

@@ -1,0 +1,126 @@
+//
+// Form Control
+//
+.form-control {
+    --typo3-form-control-font-size: var(--typo3-input-font-size);
+    --typo3-form-control-line-height: var(--typo3-input-line-height);
+    --typo3-form-control-padding-x: var(--typo3-input-padding-x);
+    --typo3-form-control-padding-y: var(--typo3-input-padding-y);
+    --typo3-form-control-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    --typo3-form-control-color: var(--typo3-input-color);
+    --typo3-form-control-placeholder-color: color-mix(in srgb, var(--typo3-input-color), transparent 75%);
+    --typo3-form-control-bg: var(--typo3-input-bg);
+    --typo3-form-control-border-radius: var(--typo3-input-border-radius);
+    --typo3-form-control-border-width: var(--typo3-input-border-width);
+    --typo3-form-control-border-color: var(--typo3-input-border-color);
+    --typo3-form-control-hover-color: var(--typo3-input-hover-color);
+    --typo3-form-control-hover-bg: var(--typo3-input-hover-bg);
+    --typo3-form-control-hover-border-color: var(--typo3-input-hover-border-color);
+    --typo3-form-control-focus-color: var(--typo3-input-focus-color);
+    --typo3-form-control-focus-bg: var(--typo3-input-focus-bg);
+    --typo3-form-control-focus-border-color: var(--typo3-input-focus-border-color);
+    --typo3-form-control-disabled-color: var(--typo3-input-disabled-color);
+    --typo3-form-control-disabled-bg: var(--typo3-input-disabled-bg);
+    --typo3-form-control-disabled-border-color: var(--typo3-input-disabled-border-color);
+    --typo3-form-control-disabled-opacity: var(--typo3-input-disabled-opacity);
+    --typo3-form-control-min-height: calc(var(--typo3-form-control-padding-y) * 2 + var(--typo3-form-control-font-size) * var(--typo3-form-control-line-height) + var(--typo3-form-control-border-width) * 2);
+    display: block;
+    width: 100%;
+    padding: var(--typo3-form-control-padding-y) var(--typo3-form-control-padding-x);
+    font-size: var(--typo3-form-control-font-size);
+    font-weight: normal;
+    line-height: var(--typo3-form-control-line-height);
+    color: var(--typo3-form-control-color);
+    appearance: none; // Fix appearance for date inputs in Safari
+    background-color: var(--typo3-form-control-bg);
+    background-clip: padding-box;
+    border: var(--typo3-form-control-border-width) solid var(--typo3-form-control-border-color);
+    border-radius: var(--typo3-form-control-border-radius);
+    transition: var(--typo3-form-control-transition);
+    outline-offset: 0;
+    min-height: var(--typo3-form-control-min-height);
+    min-width: 120px;
+
+    &[type="file"] {
+        overflow: hidden; // prevent pseudo element button overlap
+
+        &:not(:disabled):not([readonly]) {
+            cursor: pointer;
+        }
+    }
+
+    &:hover {
+        --typo3-form-control-color: var(--typo3-form-control-hover-color);
+        --typo3-form-control-bg: var(--typo3-form-control-hover-bg);
+        --typo3-form-control-border-color: var(--typo3-form-control-hover-border-color);
+        z-index: 2 !important;
+    }
+
+    &:focus {
+        --typo3-form-control-color: var(--typo3-form-control-focus-color);
+        --typo3-form-control-bg: var(--typo3-form-control-focus-bg);
+        --typo3-form-control-border-color: var(--typo3-form-control-focus-border-color);
+        outline: .25rem solid color-mix(in srgb, var(--typo3-form-control-focus-border-color), transparent 25%);
+        z-index: 3 !important;
+    }
+
+    &::placeholder {
+        color: var(--typo3-input-placeholder-color);
+        opacity: 1;
+    }
+
+    &:read-only,
+    &:disabled {
+        --typo3-form-control-color: color-mix(in srgb, var(--typo3-form-control-disabled-color), transparent calc((1 - var(--typo3-input-disabled-opacity)) * 100%));
+        --typo3-form-control-bg: var(--typo3-form-control-disabled-bg);
+        --typo3-form-control-border-color: var(--typo3-form-control-disabled-border-color);
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    // disable MS Edge default password reveal button
+    &::-ms-reveal {
+        display: none;
+    }
+
+    //
+    // Disable ms-clear pseudo-element globally to avoid confusion with the
+    // existing clearable integration in TYPO3
+    //
+    // https://msdn.microsoft.com/en-us/library/windows/apps/hh465740.aspx
+    //
+    *::-ms-clear {
+        display: none;
+    }
+
+    // File input buttons theming
+    &::file-selector-button {
+        padding: var(--typo3-form-control-padding-y) var(--typo3-form-control-padding-x);
+        margin: calc(var(--typo3-form-control-padding-y) * -1) calc(var(--typo3-form-control-padding-x) * -1);
+        margin-inline-end: var(--typo3-form-control-padding-x);
+        pointer-events: none;
+        border-color: inherit;
+        border-style: solid;
+        border-width: 0;
+        border-inline-end-width: var(--typo3-form-control-border-width);
+        border-radius: 0;
+        color: var(--typo3-form-control-color);
+        background-color: color-mix(in srgb, var(--typo3-form-control-bg), var(--typo3-form-control-color) 7.5%);
+        transition: var(--typo3-form-control-transition);
+    }
+
+    &:hover:not(:disabled):not([readonly])::file-selector-button {
+        background-color: color-mix(in srgb, var(--typo3-form-control-bg), var(--typo3-form-control-color) 15%);
+    }
+}
+
+.form-control-sm {
+    --typo3-form-control-padding-y: var(--typo3-input-sm-padding-y);
+    --typo3-form-control-padding-x: var(--typo3-input-sm-padding-x);
+    --typo3-form-control-font-size: var(--typo3-input-sm-font-size);
+}
+
+.form-control-adapt {
+    width: auto;
+    max-width: 100%;
+}

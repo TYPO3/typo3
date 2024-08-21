@@ -80,6 +80,13 @@
         max-width: 40ch;
     }
 
+    .col-checkbox {
+        .form-check {
+            --typo3-form-check-top-correction: 0;
+            --typo3-form-check-margin-bottom: 0;
+        }
+    }
+
     .col-checkbox,
     .col-icon {
         width: 16px;

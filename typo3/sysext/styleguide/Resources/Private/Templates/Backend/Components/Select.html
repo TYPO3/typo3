@@ -1,0 +1,229 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.headline" /></h1>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.default.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlDefault',
+                    fieldLabel: 'Select example',
+                    ariaLabel: 'Small select example',
+                    firstOptionWithoutValue: '1'
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.multiple.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlMultiple',
+                    fieldLabel: 'Multiple select example',
+                    ariaLabel: 'Multiple select example',
+                    multiple: 1
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.optgroup.headline" /></h2>
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.optgroup.single.headline" /></h3>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlOptgroup',
+                    fieldLabel: 'Optgroup select example',
+                    hasOptGroup: '1'
+                }"
+            />
+        </sg:example>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.optgroup.multiple.headline" /></h3>
+        <sg:example codePreview="true" codeLanguage="html">
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlOptgroupMultiple',
+                    fieldLabel: 'Optgroup multiple select example',
+                    hasOptGroup: '1',
+                    multiple: 1
+                }"
+            />
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.state.headline" /></h2>
+        <sg:example>
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlHasChange',
+                    fieldLabel: 'Select example has change',
+                    ariaLabel: 'Small select example',
+                    firstOptionWithoutValue: '1',
+                    additionalClass: 'has-change'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlHasSuccess',
+                    fieldLabel: 'Select example has success',
+                    ariaLabel: 'Small select example',
+                    firstOptionWithoutValue: '1',
+                    additionalClass: 'has-success'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlHasWarning',
+                    fieldLabel: 'Select example has warning',
+                    ariaLabel: 'Small select example',
+                    firstOptionWithoutValue: '1',
+                    additionalClass: 'has-warning'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlHasError',
+                    fieldLabel: 'Select example has error',
+                    ariaLabel: 'Small select example',
+                    firstOptionWithoutValue: '1',
+                    additionalClass: 'has-error'
+                }"
+            />
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.colorScheme.optgroup.single.headline" /></h4>
+        <sg:colorScheme>
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorSingleDefault',
+                    fieldLabel: 'Select example default',
+                    hasOptGroup: '1'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorSingleHasChange',
+                    fieldLabel: 'Select example has change',
+                    hasOptGroup: '1',
+                    additionalClass: 'has-change'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorSingleHasSuccess',
+                    fieldLabel: 'Select example has success',
+                    hasOptGroup: '1',
+                    additionalClass: 'has-success'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorSingleHasWarning',
+                    fieldLabel: 'Select example has warning',
+                    hasOptGroup: '1',
+                    additionalClass: 'has-warning'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorSingleHasError',
+                    fieldLabel: 'Select example has error',
+                    hasOptGroup: '1',
+                    additionalClass: 'has-error'
+                }"
+            />
+        </sg:colorScheme>
+
+        <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.select.section.colorScheme.optgroup.multiple.headline" /></h4>
+        <sg:colorScheme>
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorMultipleDefault',
+                    fieldLabel: 'Select example default',
+                    hasOptGroup: '1',
+                    multiple: 1
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorMultipleHasChange',
+                    fieldLabel: 'Select example has change',
+                    hasOptGroup: '1',
+                    multiple: 1,
+                    additionalClass: 'has-change'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorMultipleHasSuccess',
+                    fieldLabel: 'Select example has success',
+                    hasOptGroup: '1',
+                    multiple: 1,
+                    additionalClass: 'has-success'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorMultipleHasWarning',
+                    fieldLabel: 'Select example has warning',
+                    hasOptGroup: '1',
+                    multiple: 1,
+                    additionalClass: 'has-warning'
+                }"
+            />
+            <f:render
+                partial="Backend/Form/Select"
+                arguments="{
+                    identifier: 'selectFormControlColorMultipleHasError',
+                    fieldLabel: 'Select example has error',
+                    hasOptGroup: '1',
+                    multiple: 1,
+                    additionalClass: 'has-error'
+                }"
+            />
+        </sg:colorScheme>
+    </div>
+
+</f:section>
+
+</html>

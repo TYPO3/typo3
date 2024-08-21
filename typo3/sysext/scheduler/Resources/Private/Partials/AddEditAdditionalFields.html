@@ -27,10 +27,10 @@
                     <f:comment><!--  A page browser button. Used in ext:linkvalidator task. See issue #12211. --></f:comment>
                     <div class="formengine-field-item t3js-formengine-field-item">
                         <div class="form-wizards-wrap">
-                            <div class="form-wizards-element">
+                            <div class="form-wizards-item-element">
                                 {field.code -> f:format.raw()}
                             </div>
-                            <div class="form-wizards-items-aside form-wizards-items-aside--field-control">
+                            <div class="form-wizards-item-aside form-wizards-item-aside--field-control">
                                 <div class="btn-group-vertical">
                                     <f:be.link
                                         route="wizard_element_browser"
@@ -43,8 +43,8 @@
                                 </div>
                             </div>
                             <f:if condition="{field.pageUid}">
-                                <div class="form-wizards-items-bottom">
-                                    <div class="table-fit mt-1 mb-0">
+                                <div class="form-wizards-item-bottom">
+                                    <div class="table-fit">
                                         <table class="table">
                                             <tbody>
                                                 <tr>
@@ -69,7 +69,7 @@
                             <div class="formengine-field-item t3js-formengine-field-item">
                                 <div class="form-control-wrap">
                                     <div class="form-wizards-wrap">
-                                        <div class="form-wizards-element">
+                                        <div class="form-wizards-item-element">
                                             {field.code -> f:format.raw()}
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                 </f:if>
                                 <div class="form-control-wrap">
                                     <div class="form-wizards-wrap">
-                                        <div class="form-wizards-element">
+                                        <div class="form-wizards-item-element">
                                             {field.code -> f:format.raw()}
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
                             <typo3-formengine-element-text class="formengine-field-item t3js-formengine-field-item">
                                 <div class="form-control-wrap">
                                     <div class="form-wizards-wrap">
-                                        <div class="form-wizards-element">
+                                        <div class="form-wizards-item-element">
                                             {field.code -> f:format.raw()}
                                         </div>
                                     </div>
@@ -104,7 +104,7 @@
                         <f:else if="{field.type} == 'check'">
                             <div class="formengine-field-item t3js-formengine-field-item">
                                 <div class="form-wizards-wrap">
-                                    <div class="form-wizards-element">
+                                    <div class="form-wizards-item-element">
                                         <div class="form-check form-check-type-icon-toggle">
                                             {field.code -> f:format.raw()}
                                             <label class="form-check-label" for="{field.fieldID}">
@@ -125,7 +125,7 @@
                         <f:else if="{field.type} == 'checkToggle'">
                             <div class="formengine-field-item t3js-formengine-field-item">
                                 <div class="form-wizards-wrap">
-                                    <div class="form-wizards-element">
+                                    <div class="form-wizards-item-element">
                                         <div class="form-check form-switch">
                                             {field.code -> f:format.raw()}
                                         </div>
@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="form-control-wrap">
                                     <div class="form-wizards-wrap">
-                                        <div class="form-wizards-element">
+                                        <div class="form-wizards-item-element">
                                             {field.code.optionValueField -> f:format.raw()}
                                         </div>
                                     </div>

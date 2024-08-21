@@ -16,17 +16,17 @@
                 <f:if condition="{allowedFileExtensions}">
                     <f:then>
                         <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions"/><br>
-                        <ul class="file-extension-list">
+                        <ul class="badge-list">
                             <f:for each="{allowedFileExtensions}" as="allowedFileExtension">
-                                <li class="badge badge-success">{allowedFileExtension}</li>
+                                <li><span class="badge badge-success">{allowedFileExtension}</span></li>
                             </f:for>
                         </ul>
                     </f:then>
                     <f:else if="{disallowedFileExtensions}">
                         <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.disallowedFileExtensions"/><br>
-                        <ul>
+                        <ul class="badge-list">
                             <f:for each="{disallowedFileExtensions}" as="disallowedFileExtension">
-                                <li class="badge badge-danger">{disallowedFileExtension}</li>
+                                <li><span class="badge badge-danger">{disallowedFileExtension}</span></li>
                             </f:for>
                         </ul>
                     </f:else>

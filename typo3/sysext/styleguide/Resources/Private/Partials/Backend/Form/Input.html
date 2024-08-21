@@ -1,0 +1,13 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<div class="form-group{f:if(condition: additionalClass, then: ' {additionalClass}')}">
+    <label for="{identifier}" class="form-label">{f:if(condition: fieldLabel, then: fieldLabel, else: 'Field label')}</label>
+    <f:if condition="{formDescription}"><div class="form-description">{formDescription}</div></f:if>
+    <input type="{type}" class="form-control" id="{identifier}"{f:if(condition: placeholder, then: ' placeholder="{placeholder}"')}{f:if(condition: formText, then: ' aria-describedby="form-text-{identifier}"')}{f:if(condition: disabled, then: ' disabled')}>
+    <f:if condition="{formText}"><div id="form-text-{identifier}" class="form-text">{formText}</div></f:if>
+</div>
+
+</html>

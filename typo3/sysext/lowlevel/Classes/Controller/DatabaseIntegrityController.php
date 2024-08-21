@@ -2447,7 +2447,7 @@ class DatabaseIntegrityController
         }
 
         $markup = [];
-        $markup[] = '<div class="form-row align-items-sm-end">';
+        $markup[] = '<div class="form-row">';
         $markup[] = '  <div class="form-group">';
         $markup[] = '    <label for="query-store" class="form-label">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryStore.storage.label') . '</label>';
         $markup[] = '    <div class="input-group">';

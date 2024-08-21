@@ -22,13 +22,14 @@
     --typo3-btn-disabled-color: inherit;
     --typo3-btn-disabled-bg: transparent;
     --typo3-btn-disabled-border-color: transparent;
+    --typo3-btn-min-height: calc(var(--typo3-btn-padding-y) * 2 + var(--typo3-btn-font-size) * var(--typo3-btn-line-height) + var(--typo3-btn-border-width) * 2);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: .35em;
     color: var(--typo3-btn-color);
     background-color: var(--typo3-btn-bg);
-    padding: calc(var(--typo3-btn-padding-y) - var(--typo3-btn-border-width)) calc(var(--typo3-btn-padding-x) - var(--typo3-btn-border-width));
+    padding: var(--typo3-btn-padding-y) var(--typo3-btn-padding-x);
     font-size: var(--typo3-btn-font-size);
     font-weight: normal;
     line-height: var(--typo3-btn-line-height);
@@ -40,6 +41,7 @@
     border-radius: var(--typo3-btn-border-radius);
     transition: var(--typo3-btn-transition);
     outline-offset: 0;
+    min-height: var(--typo3-btn-min-height);
     cursor: pointer;
 
     &:hover {
@@ -78,7 +80,6 @@
         opacity: var(--typo3-btn-disabled-opacity);
         pointer-events: none;
         cursor: not-allowed;
-        box-shadow: none;
     }
 }
 
@@ -86,15 +87,15 @@
 // Size
 //
 .btn-sm {
-    --typo3-btn-padding-y: .3125rem;
-    --typo3-btn-padding-x: .5rem;
-    --typo3-btn-font-size: .65625rem;
+    --typo3-btn-padding-y: var(--typo3-input-sm-padding-y);
+    --typo3-btn-padding-x: var(--typo3-input-sm-padding-x);
+    --typo3-btn-font-size: var(--typo3-input-sm-font-size);
 }
 
 // Icon Button
 .btn-icon {
-    --typo3-btn-padding-y: .3125rem;
-    --typo3-btn-padding-x: .3125rem;
+    --typo3-btn-padding-y: var(--typo3-input-sm-padding-y);
+    --typo3-btn-padding-x: var(--typo3-input-sm-padding-y);
 }
 
 //

@@ -1,0 +1,380 @@
+//
+// Check/radio
+//
+.form-check {
+    --typo3-form-check-mask-position: center center;
+    --typo3-form-check-mask-image-none: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 0 0'></svg>");
+    --typo3-form-check-mask-image-indeterminate: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M12.5 9h-9c-.3 0-.5-.2-.5-.5v-1c0-.3.2-.5.5-.5h9c.3 0 .5.2.5.5v1c0 .3-.2.5-.5.5Z'/></svg>");
+    --typo3-form-check-mask-image-switch: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='5' /></svg>");
+    --typo3-form-check-mask-image-check-checked: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='m13.3 4.8-.7-.7c-.2-.2-.5-.2-.7 0L6.5 9.5 4 6.9c-.2-.2-.5-.2-.7 0l-.6.7c-.2.2-.2.5 0 .7l3.6 3.6c.2.2.5.2.7 0l6.4-6.4c.1-.2.1-.5-.1-.7z'/></svg>");
+    --typo3-form-check-mask-image-radio-checked: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='5' /></svg>");
+    --typo3-form-check-mask-image: var(--typo3-form-check-mask-image-none);
+    --typo3-form-check-top-correction: calc((1.5em - var(--typo3-form-check-height)) / 2);
+    --typo3-form-check-margin-bottom: calc(var(--typo3-spacing) / 2);
+    --typo3-form-check-space: .5em;
+    --typo3-form-check-width: 1em;
+    --typo3-form-check-height: 1em;
+    --typo3-form-check-padding-inline-start: var(--typo3-form-check-width);
+    --typo3-form-check-border-radius: var(--typo3-input-border-radius);
+    --typo3-form-check-color: var(--typo3-input-color);
+    --typo3-form-check-bg: var(--typo3-input-bg);
+    --typo3-form-check-border-width: var(--typo3-input-border-width);
+    --typo3-form-check-border-color: var(--typo3-input-border-color);
+    --typo3-form-check-hover-color: var(--typo3-input-hover-color);
+    --typo3-form-check-hover-bg: var(--typo3-input-hover-bg);
+    --typo3-form-check-hover-border-color: var(--typo3-input-hover-border-color);
+    --typo3-form-check-focus-border-color: var(--typo3-input-focus-border-color);
+    --typo3-form-check-checked-color: var(--typo3-input-active-color);
+    --typo3-form-check-checked-bg: var(--typo3-input-active-bg);
+    --typo3-form-check-checked-border-color: var(--typo3-input-active-border-color);
+    --typo3-form-check-disabled-opacity: var(--typo3-input-disabled-opacity);
+    --typo3-form-check-transition-time: .2s;
+    --typo3-form-check-transition: color var(--typo3-form-check-transition-time) ease-in-out, background-color var(--typo3-form-check-transition-time) ease-in-out, border-color var(--typo3-form-check-transition-time) ease-in-out, box-shadow var(--typo3-form-check-transition-time) ease-in-out, mask-position var(--typo3-form-check-transition-time) ease-in-out;
+
+    @media (prefers-reduced-motion) {
+        --typo3-form-check-transition: none;
+    }
+    display: flex;
+    position: relative;
+    gap: var(--typo3-form-check-space);
+    margin-bottom: var(--typo3-form-check-margin-bottom);
+}
+
+.form-check-input {
+    display: inline-flex;
+    cursor: pointer;
+    color: var(--typo3-form-check-color);
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: var(--typo3-form-check-height);
+    width: var(--typo3-form-check-width);
+    appearance: none;
+    background-color: var(--typo3-form-check-bg);
+    border: var(--typo3-form-check-border-width) solid var(--typo3-form-check-border-color);
+    transition: var(--typo3-form-check-transition);
+    align-items: center;
+    justify-content: center;
+    margin-top: var(--typo3-form-check-top-correction);
+
+    &:before {
+        content: '';
+        display: block;
+        height: var(--typo3-form-check-height);
+        width: var(--typo3-form-check-width);
+        pointer-events: none;
+        background-color: var(--typo3-form-check-color);
+        transition: var(--typo3-form-check-transition);
+        mask-repeat: no-repeat;
+        mask-image: var(--typo3-form-check-mask-image);
+        mask-position: var(--typo3-form-check-mask-position);
+        mask-size: contain;
+    }
+
+    &[type="checkbox"] {
+        border-radius: var(--typo3-form-check-border-radius);
+    }
+
+    &[type="radio"] {
+        border-radius: 50%;
+    }
+
+    &:hover {
+        --typo3-form-check-color: var(--typo3-form-check-hover-color);
+        --typo3-form-check-bg: var(--typo3-form-check-hover-bg);
+        --typo3-form-check-border-color: var(--typo3-form-check-hover-border-color);
+
+        ~ .form-check-label {
+            --typo3-form-check-color: var(--typo3-form-check-hover-color);
+        }
+    }
+
+    &:focus {
+        --typo3-form-check-border-color: var(--typo3-form-check-focus-border-color);
+        outline: .25rem solid color-mix(in srgb, var(--typo3-form-check-focus-border-color), transparent 25%);
+    }
+
+    &:indeterminate[type="checkbox"] {
+        --typo3-form-check-mask-image: var(--typo3-form-check-mask-image-indeterminate);
+    }
+
+    &:checked {
+        --typo3-form-check-color: var(--typo3-form-check-checked-color);
+        --typo3-form-check-bg: var(--typo3-form-check-checked-bg);
+        --typo3-form-check-border-color: var(--typo3-form-check-checked-border-color);
+
+        ~ .form-check-label {
+            --typo3-form-check-color: var(--typo3-form-check-checked-color);
+        }
+
+        &[type="checkbox"] {
+            --typo3-form-check-mask-image: var(--typo3-form-check-mask-image-check-checked);
+        }
+
+        &[type="radio"] {
+            --typo3-form-check-mask-image: var(--typo3-form-check-mask-image-radio-checked);
+        }
+    }
+
+    &:disabled {
+        pointer-events: none;
+        opacity: var(--typo3-form-check-disabled-opacity);
+    }
+
+    &[disabled],
+    &:disabled {
+        ~ .form-check-label {
+            cursor: default;
+            opacity: var(--typo3-form-check-disabled-opacity);
+        }
+    }
+}
+
+.form-check-label {
+    cursor: pointer;
+}
+
+//
+// Switch
+//
+.form-switch {
+    --typo3-form-check-mask-position: left center;
+    --typo3-form-check-width: 2em;
+    --typo3-form-check-border-radius: .5em;
+
+    .form-check-input {
+        --typo3-form-check-mask-image: var(--typo3-form-check-mask-image-switch) !important;
+
+        &:indeterminate {
+            --typo3-form-check-mask-position: center center;
+        }
+
+        &:checked {
+            --typo3-form-check-mask-position: right center;
+        }
+    }
+}
+
+//
+// Inline
+//
+.form-check-inline {
+    display: inline-flex;
+    margin-right: var(--typo3-spacing);
+}
+
+//
+// Button Check
+//
+.btn-check {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
+
+    &[disabled],
+    &:disabled {
+        + .btn {
+            pointer-events: none;
+            filter: none;
+            opacity: var(--typo3-form-check-disabled-opacity);
+        }
+    }
+}
+
+//
+// Labeled Toggle
+//
+// Markup:
+// <div class="form-check form-check-type-labeled-toggle">
+//     <input
+//         type="checkbox"
+//         class="form-check-input"
+//         value="1"
+//         data-form-check-label-checked="Enabled"
+//         data-form-check-label-unchecked="Disabled"
+//         id="checkbox-labeled-toggle"
+//     >
+//     <label class="form-check-label" for="checkbox-labeled-toggle">
+//         Foo
+//     </label>
+// </div>
+//
+// Styleguide component.checkbox.1
+//
+.form-check.form-check-type-labeled-toggle {
+    display: flex;
+    align-items: center;
+    padding-inline-start: 0;
+    gap: var(--typo3-form-check-space);
+
+    &.form-check-inline {
+        display: inline-flex;
+    }
+
+    .form-check-input {
+        height: auto;
+        width: auto;
+        display: inline-flex;
+        align-items: center;
+        padding: .5em .75em;
+        border-radius: var(--typo3-form-check-border-radius);
+        background-image: none !important;
+        float: none;
+        margin: 0;
+        flex-grow: 0;
+        flex-shrink: 0;
+        font-size: 1em;
+        line-height: 1;
+        color: var(--typo3-form-check-color);
+
+        &:before {
+            height: auto;
+            width: auto;
+            background-color: transparent;
+            mask-image: none;
+            content: attr(data-form-check-label-unchecked);
+        }
+
+        &:checked {
+            &:before {
+                content: attr(data-form-check-label-checked);
+            }
+        }
+    }
+}
+
+//
+// Icon Toggle
+//
+// Markup:
+// <div class="form-check form-check-type-icon-toggle">
+//     <input type="checkbox" class="form-check-input" value="1" id="checkbox-icon-toggle">
+//     <label class="form-check-label" for="checkbox-icon-toggle">
+//         <span class="form-check-label-icon">
+//             <span class="form-check-label-icon-checked">
+//                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-check" data-identifier="actions-check">
+//                     <span class="icon-markup">
+//                         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 16 16"><g fill="currentColor"><path d="m13.3 4.8-.7-.7c-.2-.2-.5-.2-.7 0L6.5 9.5 4 6.9c-.2-.2-.5-.2-.7 0l-.6.7c-.2.2-.2.5 0 .7l3.6 3.6c.2.2.5.2.7 0l6.4-6.4c.1-.2.1-.5-.1-.7z"/></g></svg>
+//                     </span>
+//                 </span>
+//             </span>
+//             <span class="form-check-label-icon-unchecked">
+//                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-close" data-identifier="actions-close">
+//                     <span class="icon-markup">
+//                         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 16 16"><g fill="currentColor"><path d="M11.9 5.5 9.4 8l2.5 2.5c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0L8 9.4l-2.5 2.5c-.2.2-.5.2-.7 0l-.7-.7c-.2-.2-.2-.5 0-.7L6.6 8 4.1 5.5c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0L8 6.6l2.5-2.5c.2-.2.5-.2.7 0l.7.7c.2.2.2.5 0 .7z"/></g></svg>
+//                     </span>
+//                 </span>
+//             </span>
+//             <span class="form-check-label-icon-indeterminate">
+//                 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-minus" data-identifier="actions-minus">
+//                     <span class="icon-markup">
+//                         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 16 16"><g fill="currentColor"><path d="M12.5 9h-9c-.3 0-.5-.2-.5-.5v-1c0-.3.2-.5.5-.5h9c.3 0 .5.2.5.5v1c0 .3-.2.5-.5.5Z"/></g></svg>
+//                     </span>
+//                 </span>
+//             </span>
+//         </span>
+//         foo
+//     </label>
+// </div>
+//
+// Styleguide component.checkbox.2
+//
+.form-check.form-check-type-icon-toggle {
+    --typo3-form-check-width: 1.5em;
+    --typo3-form-check-height: 1.5em;
+
+    .form-check-input {
+        &:before {
+            display: none;
+        }
+    }
+
+    .form-check-label-icon {
+        user-select: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: var(--typo3-form-check-height);
+        width: var(--typo3-form-check-width);
+        position: absolute;
+        top: var(--typo3-form-check-top-correction);
+        inset-inline-start: 0;
+        color: var(--typo3-form-check-color);
+
+        > * {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .form-check-label-icon-checked {
+        display: none !important;
+    }
+
+    .form-check-label-icon-indeterminate {
+        display: none !important;
+    }
+
+    .form-check-label-icon-unchecked {
+        display: flex !important;
+    }
+
+    .form-check-input:checked ~ .form-check-label {
+        .form-check-label-icon-checked {
+            display: flex !important;
+        }
+
+        .form-check-label-icon-unchecked {
+            display: none !important;
+        }
+
+        .form-check-label-icon-indeterminate {
+            display: none !important;
+        }
+    }
+
+    .form-check-input:indeterminate ~ .form-check-label {
+        .form-check-label-icon-checked {
+            display: none !important;
+        }
+
+        .form-check-label-icon-unchecked {
+            display: none !important;
+        }
+
+        .form-check-label-icon-indeterminate {
+            display: flex !important;
+        }
+    }
+}
+
+//
+// Toggle
+// A toggle checkbox. Using TYPO3 icons.
+//
+// Markup:
+// <div class="form-check form-check-type-toggle">
+//     <input
+//         type="checkbox"
+//         class="form-check-input"
+//         value="1"
+//         id="checkbox-labeled-toggle"
+//     >
+// </div>
+//
+// Styleguide component.checkbox.3
+//
+.form-check.form-check-type-toggle {
+    --typo3-form-check-width: calc(16 / 12 * 1em);
+    --typo3-form-check-height: calc(16 / 12 * 1em);
+}
+
+//
+// Utility
+//
+// Used in .form-groups to align checkboxes with inputs
+//
+.form-check.form-check-size-input {
+    margin-top: calc(var(--typo3-spacing) / 2);
+    margin-bottom: calc(var(--typo3-spacing) / 2);
+}

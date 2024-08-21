@@ -32,17 +32,18 @@ img.t3-tceforms-sysfile-imagepreview {
 
 // show text of default language under the translated input field
 .t3-form-original-language {
-    background-color: #dadada;
-    border: 1px solid #c0c0c0;
-    padding: 2px;
-    font-size: .9em;
-    margin-top: 4px;
+    color: var(--typo3-state-default-color);
+    background-color: var(--typo3-state-default-bg);
+    border: var(--typo3-input-border-width) solid var(--typo3-state-default-border-color);
+    padding: calc(var(--typo3-input-padding-y) / 2) var(--typo3-input-padding-x);
+    border-radius: var(--typo3-input-border-radius);
+    font-size: .625rem;
     word-break: break-all;
 }
 
 .t3-form-original-language-diff {
-    border: 1px solid #c0c0c0;
-    font-size: .9em;
+    border: 1px solid var(--typo3-state-default-border-color);
+    font-size: .625rem;
     margin-top: 4px;
 }
 

@@ -1,3 +1,18 @@
+@import "forms/form-section";
+@import "forms/form-group";
+@import "forms/form-row";
+@import "forms/form-label";
+@import "forms/form-legend";
+@import "forms/form-control";
+@import "forms/form-select";
+@import "forms/form-check";
+@import "forms/form-text";
+@import "forms/form-validation";
+@import "forms/form-hint";
+@import "forms/form-wizard";
+@import "forms/form-clearable";
+@import "forms/input-group";
+
 //
 // Form
 //
@@ -5,146 +20,8 @@
     margin-bottom: var(--typo3-spacing);
 }
 
-//
-// Row
-//
-@mixin make-form-row() {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--typo3-spacing);
-    margin-bottom: var(--typo3-spacing);
-
-    > .form-group {
-        margin-bottom: 0;
-
-        > [class*="form-row"] {
-            margin-bottom: 0;
-        }
-    }
-}
-
-@each $breakpoint in map-keys($grid-breakpoints) {
-    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-
-    @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
-        .form-row#{$infix} {
-            @include make-form-row();
-        }
-    }
-}
-
-//
-// Legend
-//
-.form-legend {
-    font-size: var(--typo3-component-font-size);
-    font-weight: var(--typo3-legend-font-weight);
-    word-break: break-all;
-    float: none;
-}
-
-//
-// Label
-//
-.form-label {
-    word-break: break-all;
-}
-
-//
-// Description
-//
-.form-description {
-    opacity: .75;
-    margin-bottom: $form-label-margin-bottom;
-}
-
-.form-label + .form-description {
-    margin-top: calc($form-label-margin-bottom / 2 * -1);
-}
-
-//
-// Form group
-//
-.form-group {
-    margin-bottom: var(--typo3-spacing);
-}
-
-.form-text {
-    .file-extension-list {
-        padding-left: 0;
-    }
-}
-
-.form-group-dashed {
-    & + .form-group-dashed {
-        padding-top: var(--typo3-spacing);
-        border-top: 1px dashed rgba(0, 0, 0, .15);
-    }
-}
-
 // Search results can be displayed as badges next to the search input field. Wrap the search
 // result with a .form-group.form-group-search-result to properly align the output.
 .form-group-search-result {
     padding-bottom: 7px;
-}
-
-//
-// SelectIcons FieldWizard
-//
-.form-wizard-icon-list {
-    color-scheme: light dark;
-    color: var(--typo3-component-color);
-    background: var(--typo3-component-bg);
-    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
-    border-radius: $input-border-radius;
-    margin-top: $form-text-margin-top;
-    padding: calc(var(--typo3-spacing) / 4);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px;
-}
-
-.form-wizard-icon-list-item {
-    a {
-        display: flex;
-        height: 100%;
-        color: var(--typo3-component-color);
-        border-radius: calc(var(--typo3-component-border-radius) / 2);
-        padding: calc(var(--typo3-spacing) / 2);
-        align-items: center;
-        justify-content: center;
-        outline-offset: -1px;
-
-        &:hover {
-            color: var(--typo3-list-item-hover-color);
-            background-color: var(--typo3-list-item-hover-bg);
-            outline: 1px solid var(--typo3-list-item-hover-border-color);
-        }
-
-        &:focus {
-            color: var(--typo3-list-item-focus-color);
-            background-color: var(--typo3-list-item-focus-bg);
-            outline: 1px solid var(--typo3-list-item-focus-border-color);
-        }
-
-        &:active,
-        &.active {
-            color: var(--typo3-list-item-active-color);
-            background-color: var(--typo3-list-item-active-bg);
-            outline: 1px solid var(--typo3-list-item-active-border-color);
-        }
-    }
-
-    a,
-    a > span[title] {
-        display: block;
-        line-height: 1;
-    }
-
-    img {
-        display: block;
-        min-width: 16px;
-        max-width: 128px;
-        max-height: 128px;
-    }
 }

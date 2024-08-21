@@ -125,7 +125,7 @@ class InputSlugElement extends AbstractFormElement
             $html[] =     $fieldInformationHtml;
             $html[] =     '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
             $html[] =         '<div class="form-wizards-wrap">';
-            $html[] =             '<div class="form-wizards-element">';
+            $html[] =             '<div class="form-wizards-item-element">';
             $html[] =                 '<div class="input-group">';
             $html[] =                     ($baseUrl ? '<span class="input-group-text">' . htmlspecialchars($baseUrl) . '</span>' : '');
             $html[] =                     '<input ' . GeneralUtility::implodeAttributes($disabledFieldAttributes, true) . ' disabled>';
@@ -157,7 +157,7 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =  $fieldInformationHtml;
         $mainFieldHtml[] =  '<div class="form-control-wrap" style="max-width: ' . $width . 'px" id="' . htmlspecialchars($thisSlugId) . '">';
         $mainFieldHtml[] =      '<div class="form-wizards-wrap">';
-        $mainFieldHtml[] =          '<div class="form-wizards-element">';
+        $mainFieldHtml[] =          '<div class="form-wizards-item-element">';
         $mainFieldHtml[] =              '<div class="input-group">';
         $mainFieldHtml[] =                  ($baseUrl ? '<span class="input-group-text">' . htmlspecialchars($baseUrl) . '</span>' : '');
         // We deal with 3 fields here: a readonly field for current / default values, an input
@@ -190,13 +190,13 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =              '</div>';
         $mainFieldHtml[] =          '</div>';
         if (!empty($fieldControlHtml)) {
-            $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+            $mainFieldHtml[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
             $mainFieldHtml[] =          '<div class="btn-group">';
             $mainFieldHtml[] =              $fieldControlHtml;
             $mainFieldHtml[] =          '</div>';
             $mainFieldHtml[] =      '</div>';
         }
-        $mainFieldHtml[] =          '<div class="form-wizards-items-bottom">';
+        $mainFieldHtml[] =          '<div class="form-wizards-item-bottom">';
         $mainFieldHtml[] =              '<div class="t3js-form-proposal-accepted callout callout-success hidden mt-3 mb-0">';
         $mainFieldHtml[] =                  '<div class="callout-content">';
         $mainFieldHtml[] =                      '<div class="callout-body">';

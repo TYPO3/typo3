@@ -49,7 +49,7 @@ export class CharCounter extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <span class=${this.determineCounterClass()}>
+      <span class="form-hint form-hint--${this.determineCounterClass()}">
         ${lll(('FormEngine.remainingCharacters')).replace('{0}', this.remainingCharacters.toString(10))}
       </span>
     `;
@@ -96,12 +96,12 @@ export class CharCounter extends LitElement {
 
   private determineCounterClass(): string {
     if (this.remainingCharacters < this.threshold) {
-      return 'text-danger';
+      return 'danger';
     }
     if (this.remainingCharacters < this.threshold * 2) {
-      return 'text-warning';
+      return 'warning';
     }
-    return 'text-info';
+    return 'info';
   }
 }
 

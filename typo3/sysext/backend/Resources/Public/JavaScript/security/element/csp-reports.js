@@ -61,7 +61,7 @@ var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s
         </div>
       </div>
     `}renderNavigation(){return html`
-      <div class="btn-group">
+      <div class="btn-toolbar">
         <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="${lll("label.scope")||"Scope"}">
           ${null===this.selectedScope?lll("label.all")||"ALL":this.selectedScope}
         </button>
@@ -82,7 +82,7 @@ var CspReportAttribute,__decorate=function(e,t,l,o){var i,s=arguments.length,n=s
               </button>
             </li>`))}
         </ul>
-        <button type="button" class="btn btn-danger mx-3" title="${lll("label.removeAll")||"Remove all"}" @click=${()=>this.invokeDeleteReportsAction()}>
+        <button type="button" class="btn btn-danger" title="${lll("label.removeAll")||"Remove all"}" @click=${()=>this.invokeDeleteReportsAction()}>
           ${lll("label.removeAll")||"Remove all"}
           ${null!==this.selectedScope?html`"${this.selectedScope}"`:nothing}
         </button>

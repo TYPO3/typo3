@@ -509,7 +509,7 @@ class FileReferenceContainer extends AbstractContainer
 
         // In debug mode, add the table name to the record title
         if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
-            $title .= '<div class="col"><code class="m-0">[' . self::FILE_REFERENCE_TABLE . ']</code></div>';
+            $title .= '<div class="col"><code>[' . self::FILE_REFERENCE_TABLE . ']</code></div>';
         }
 
         return '<dl class="row row-cols-auto gx-2">' . $title . '</dl>';

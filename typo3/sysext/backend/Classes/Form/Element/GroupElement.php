@@ -161,7 +161,7 @@ class GroupElement extends AbstractFormElement
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
-            $html[] =       '<div class="form-wizards-element">';
+            $html[] =       '<div class="form-wizards-item-element">';
             $html[] =           '<select';
             $html[] =               ' size="' . $size . '"';
             $html[] =               ' disabled="disabled"';
@@ -253,7 +253,7 @@ class GroupElement extends AbstractFormElement
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
         if (!isset($config['hideSuggest']) || (bool)$config['hideSuggest'] !== true) {
-            $html[] =   '<div class="form-wizards-items-top">';
+            $html[] =   '<div class="form-wizards-item-top">';
             $html[] =       '<div class="autocomplete t3-form-suggest-container">';
             $html[] =           '<div class="input-group">';
             $html[] =               '<span class="input-group-text">';
@@ -281,14 +281,14 @@ class GroupElement extends AbstractFormElement
             $html[] =       '</div>';
             $html[] =   '</div>';
         }
-        $html[] =       '<div class="form-wizards-element">';
+        $html[] =       '<div class="form-wizards-item-element">';
         $html[] =           '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($elementName) . '" value="' . $itemCanBeSelectedMoreThanOnce . '" />';
         $html[] =           '<select ' . GeneralUtility::implodeAttributes($selectorAttributes, true) . '>';
         $html[] =               implode(LF, $selectorOptionsHtml);
         $html[] =           '</select>';
         $html[] =       '</div>';
         if (($maxItems > 1 && $size > 1 && $showMoveIcons) || $showDeleteControl) {
-            $html[] =       '<div class="form-wizards-items-aside form-wizards-items-aside--move">';
+            $html[] =       '<div class="form-wizards-item-aside form-wizards-item-aside--move">';
             $html[] =           '<div class="btn-group-vertical">';
             if ($maxItems > 1 && $size >= 2 && $showMoveIcons) {
                 $html[] =           '<button type="button"';
@@ -343,14 +343,14 @@ class GroupElement extends AbstractFormElement
             $html[] =       '</div>';
         }
         if ($fieldControlHtml !== '') {
-            $html[] =       '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
+            $html[] =       '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
             $html[] =           '<div class="btn-group-vertical">';
             $html[] =               $fieldControlHtml;
             $html[] =           '</div>';
             $html[] =       '</div>';
         }
         if (!empty($fieldWizardHtml)) {
-            $html[] = '<div class="form-wizards-items-bottom">';
+            $html[] = '<div class="form-wizards-item-bottom">';
             $html[] = $fieldWizardHtml;
             $html[] = '</div>';
         }
