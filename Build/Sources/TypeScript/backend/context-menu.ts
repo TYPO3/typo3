@@ -72,8 +72,8 @@ class ContextMenu {
    * Main function, called from most context menu links
    *
    * @param {string} table Table from where info should be fetched
-   * @param {number} uid The UID of the item
-   * @param {string} context Context of the item
+   * @param {number|string} uid The UID of the item
+   * @param {string|null} context Context of the item
    * @param {string} unusedParam1
    * @param {string} unusedParam2
    * @param {HTMLElement} eventSource Source Element
@@ -82,7 +82,7 @@ class ContextMenu {
   public show(
     table: string,
     uid: number | string,
-    context: string,
+    context: string | null,
     unusedParam1: string,
     unusedParam2: string,
     eventSource: HTMLElement = null,
@@ -118,6 +118,14 @@ class ContextMenu {
     const contextTrigger: string = element.dataset.contextmenuTrigger;
     if (contextTrigger === 'click' || contextTrigger === event.type) {
       event.preventDefault();
+      if ((element.dataset.contextmenuTable ?? '') === '') {
+        console.error('Referenced element misses data-contextmenu-table', element);
+        throw new Error('No data-contextmenu-table attribute provided in contextmenu trigger markup');
+      }
+      if ((element.dataset.contextmenuUid ?? '') === '') {
+        console.error('Referenced element misses data-contextmenu-uid', element);
+        throw new Error('No data-contextmenu-uid attribute provided in contextmenu trigger markup');
+      }
       this.show(
         element.dataset.contextmenuTable ?? '',
         element.dataset.contextmenuUid ?? '',
@@ -164,7 +172,7 @@ export class ContextMenuElement extends LitElement {
       if (uid !== '') {
         parameters.set('uid', uid.toString());
       }
-      if (context !== '') {
+      if ((context ?? '') !== '') {
         parameters.set('context', context);
       }
       if (parameters.size === 0) {

@@ -459,7 +459,7 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
     }
     ContextMenu.show(
       node.recordType,
-      parseInt(node.identifier, 10),
+      node.identifier,
       'tree',
       '',
       '',
