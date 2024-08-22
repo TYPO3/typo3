@@ -19,12 +19,17 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TemplatePathsTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     public static function getPathSetterMethodTestValues(): array
     {
         $generator = static function ($method, $indexType = 'numeric') {
@@ -84,12 +89,9 @@ final class TemplatePathsTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string $method
-     */
     #[DataProvider('getPathSetterMethodTestValues')]
     #[Test]
-    public function pathSetterMethodSortsPathsByKeyDescending($method, array $paths, array $expected): void
+    public function pathSetterMethodSortsPathsByKeyDescending(string $method, array $paths, array $expected): void
     {
         $setter = 'set' . ucfirst($method);
         $getter = 'get' . ucfirst($method);
@@ -126,11 +128,10 @@ final class TemplatePathsTest extends UnitTestCase
                 ],
             ],
         ]);
-        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode']);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManager);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getExtensionPrivateResourcesPath']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
-        $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects(self::once())->method('isBackendMode')->willReturn(false);
-        $subject->expects(self::once())->method('isFrontendMode')->willReturn(true);
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [
@@ -181,11 +182,10 @@ final class TemplatePathsTest extends UnitTestCase
                 ],
             ],
         ]);
-        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode']);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManager);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getExtensionPrivateResourcesPath']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
-        $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects(self::once())->method('isBackendMode')->willReturn(true);
-        $subject->expects(self::never())->method('isFrontendMode');
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [
@@ -236,11 +236,9 @@ final class TemplatePathsTest extends UnitTestCase
                 ],
             ],
         ]);
-        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode']);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManager);
+        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getExtensionPrivateResourcesPath']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
-        $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects(self::once())->method('isBackendMode')->willReturn(false);
-        $subject->expects(self::once())->method('isFrontendMode')->willReturn(false);
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [
@@ -279,11 +277,10 @@ final class TemplatePathsTest extends UnitTestCase
                 ],
             ],
         ]);
-        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'isBackendMode', 'isFrontendMode']);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManager);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $subject = $this->getAccessibleMock(TemplatePaths::class, ['getExtensionPrivateResourcesPath']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
-        $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects(self::once())->method('isBackendMode')->willReturn(false);
-        $subject->expects(self::once())->method('isFrontendMode')->willReturn(true);
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [
