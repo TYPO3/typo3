@@ -28,10 +28,11 @@ use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ActionViewHelperTest extends FunctionalTestCase
 {
@@ -56,10 +57,9 @@ final class ActionViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1690360598);
-        $view = new StandaloneView();
-        $view->setRequest();
-        $view->setTemplateSource('<f:uri.action />');
-        $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:uri.action />');
+        (new TemplateView($context))->render();
     }
 
     #[Test]
@@ -70,10 +70,9 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('routing', new PageArguments(1, '0', []));
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1639819692);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:uri.action />');
-        $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:uri.action />');
+        (new TemplateView($context))->render();
     }
 
     #[Test]
@@ -84,10 +83,9 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = $request->withQueryParams(['route' => 'web_layout']);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1690360598);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:uri.action />');
-        $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:uri.action />');
+        (new TemplateView($context))->render();
     }
 
     public static function renderInFrontendWithCoreContextAndAllNecessaryExtbaseArgumentsDataProvider(): \Generator
@@ -120,10 +118,9 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource($template);
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $result = (new TemplateView($context))->render();
         self::assertSame($expected, $result);
     }
 
@@ -210,10 +207,9 @@ final class ActionViewHelperTest extends FunctionalTestCase
         $pageInformation->setId(1);
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $request = new Request($request);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource($template);
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $result = (new TemplateView($context))->render();
         self::assertSame($expected, $result);
     }
 }

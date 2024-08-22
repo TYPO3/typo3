@@ -28,10 +28,11 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class PageViewHelperTest extends FunctionalTestCase
 {
@@ -56,10 +57,9 @@ final class PageViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1639819269);
-        $view = new StandaloneView();
-        $view->setRequest();
-        $view->setTemplateSource('<f:link.page>foo</f:link.page>');
-        $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:link.page>foo</f:link.page>');
+        (new TemplateView($context))->render();
     }
 
     #[Test]
@@ -67,10 +67,9 @@ final class PageViewHelperTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:link.page>foo</f:link.page>');
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:link.page>foo</f:link.page>');
+        $result = (new TemplateView($context))->render();
         self::assertSame('foo', $result);
     }
 
@@ -80,10 +79,9 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withQueryParams(['route' => 'web_layout']);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:link.page addQueryString="1" pageUid="42">foo</f:link.page>');
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:link.page addQueryString="1" pageUid="42">foo</f:link.page>');
+        $result = (new TemplateView($context))->render();
         self::assertSame('<a href="/typo3/module/web/layout?token=dummyToken&amp;id=42">foo</a>', $result);
     }
 
@@ -92,10 +90,9 @@ final class PageViewHelperTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:link.page additionalParams="{\'route\': \'web_layout\'}" pageUid="42">foo</f:link.page>');
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:link.page additionalParams="{\'route\': \'web_layout\'}" pageUid="42">foo</f:link.page>');
+        $result = (new TemplateView($context))->render();
         self::assertSame('<a href="/typo3/module/web/layout?token=dummyToken&amp;id=42">foo</a>', $result);
     }
 
@@ -105,10 +102,9 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:link.page pageUid="42">foo</f:link.page>');
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:link.page pageUid="42">foo</f:link.page>');
+        $result = (new TemplateView($context))->render();
         self::assertSame('<a href="/typo3/module/web/layout?token=dummyToken&amp;id=42">foo</a>', $result);
     }
 
@@ -118,10 +114,9 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = new ServerRequest('http://localhost/typo3/');
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:link.page pageUid="42" section="mySection">foo</f:link.page>');
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:link.page pageUid="42" section="mySection">foo</f:link.page>');
+        $result = (new TemplateView($context))->render();
         self::assertSame('<a href="/typo3/module/web/layout?token=dummyToken&amp;id=42#mySection">foo</a>', $result);
     }
 
@@ -131,10 +126,9 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = new ServerRequest('http://localhost/typo3', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('route', new Route('dummy', ['_identifier' => 'web_layout']));
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:link.page pageUid="42" absolute="1">foo</f:link.page>');
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:link.page pageUid="42" absolute="1">foo</f:link.page>');
+        $result = (new TemplateView($context))->render();
         self::assertSame('<a href="http://localhost/typo3/module/web/layout?token=dummyToken&amp;id=42">foo</a>', $result);
     }
 
@@ -147,10 +141,9 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = $request->withQueryParams(['id' => 42]);
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($request);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:link.page>foo</f:link.page>');
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:link.page>foo</f:link.page>');
+        $result = (new TemplateView($context))->render();
         self::assertSame('<a href="/typo3/module/web/layout?token=dummyToken&amp;id=42">foo</a>', $result);
     }
 
@@ -163,10 +156,9 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = $request->withQueryParams(['id' => 42]);
         $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($request);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource('<f:link.page absolute="1">foo</f:link.page>');
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:link.page absolute="1">foo</f:link.page>');
+        $result = (new TemplateView($context))->render();
         self::assertSame('<a href="http://localhost/typo3/module/web/layout?token=dummyToken&amp;id=42">foo</a>', $result);
     }
 
@@ -249,10 +241,9 @@ final class PageViewHelperTest extends FunctionalTestCase
         $request = $request->withAttribute('routing', new PageArguments(1, '0', ['untrusted' => 123]));
         $request = $request->withAttribute('currentContentObject', $this->get(ContentObjectRenderer::class));
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource($template);
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $result = (new TemplateView($context))->render();
         self::assertSame($expected, $result);
     }
 
@@ -280,10 +271,9 @@ final class PageViewHelperTest extends FunctionalTestCase
         $pageInformation->setId(1);
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $request = new Request($request);
-        $view = new StandaloneView();
-        $view->setRequest($request);
-        $view->setTemplateSource($template);
-        $result = $view->render();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $result = (new TemplateView($context))->render();
         self::assertSame($expected, $result);
     }
 }
