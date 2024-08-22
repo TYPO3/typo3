@@ -29,15 +29,11 @@ use TYPO3Tests\BlogExample\Domain\Repository\TtContentRepository;
 
 class ContentController extends ActionController
 {
-    private TtContentRepository $contentRepository;
-    protected string $defaultViewObjectName = JsonView::class;
-
-    private DataMapFactory $dataMapFactory;
-
-    public function __construct(TtContentRepository $contentRepository, DataMapFactory $dataMapFactory)
-    {
-        $this->contentRepository = $contentRepository;
-        $this->dataMapFactory = $dataMapFactory;
+    public function __construct(
+        private readonly TtContentRepository $contentRepository,
+        private readonly DataMapFactory $dataMapFactory
+    ) {
+        $this->defaultViewObjectName = JsonView::class;
     }
 
     public function listAction(): ResponseInterface

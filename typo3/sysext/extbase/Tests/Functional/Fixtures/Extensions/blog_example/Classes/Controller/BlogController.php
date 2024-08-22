@@ -32,15 +32,11 @@ use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 
 class BlogController extends ActionController
 {
-    private BlogRepository $blogRepository;
-    protected string $defaultViewObjectName = JsonView::class;
-
-    private DataMapFactory $dataMapFactory;
-
-    public function __construct(BlogRepository $blogRepository, DataMapFactory $dataMapFactory)
-    {
-        $this->blogRepository = $blogRepository;
-        $this->dataMapFactory = $dataMapFactory;
+    public function __construct(
+        private readonly BlogRepository $blogRepository,
+        private readonly DataMapFactory $dataMapFactory
+    ) {
+        $this->defaultViewObjectName = JsonView::class;
     }
 
     public function listAction(): ResponseInterface

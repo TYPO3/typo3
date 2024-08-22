@@ -24,21 +24,15 @@ use TYPO3Tests\TestIrreForeignfield\Domain\Model\Content;
 use TYPO3Tests\TestIrreForeignfield\Domain\Repository\ContentRepository;
 use TYPO3Tests\TestIrreForeignfield\Service\QueueService;
 
-/**
- * ContentController
- */
 class ContentController extends AbstractController
 {
-    private ContentRepository $contentRepository;
-    protected string $defaultViewObjectName = JsonView::class;
-
     public function __construct(
         DataMapFactory $dataMapFactory,
         QueueService $queueService,
-        ContentRepository $contentRepository
+        private readonly ContentRepository $contentRepository
     ) {
         parent::__construct($dataMapFactory, $queueService);
-        $this->contentRepository = $contentRepository;
+        $this->defaultViewObjectName = JsonView::class;
     }
 
     public function listAction()

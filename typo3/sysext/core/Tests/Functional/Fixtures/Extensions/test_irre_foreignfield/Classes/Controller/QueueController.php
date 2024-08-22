@@ -23,32 +23,18 @@ use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
-use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3Tests\TestIrreForeignfield\Domain\Repository\ContentRepository;
 use TYPO3Tests\TestIrreForeignfield\Service\QueueService;
 
-/**
- * ContentController
- */
 class QueueController extends ActionController
 {
-    protected DataMapFactory $dataMapFactory;
-    protected QueueService $queueService;
-    private ContentRepository $contentRepository;
-    private PersistenceManagerInterface $persistenceManager;
-    protected string $defaultViewObjectName = JsonView::class;
-
     public function __construct(
-        DataMapFactory $dataMapFactory,
-        QueueService $queueService,
-        ContentRepository $contentRepository,
-        PersistenceManagerInterface $persistenceManager
+        private readonly QueueService $queueService,
+        private readonly ContentRepository $contentRepository,
+        private readonly PersistenceManagerInterface $persistenceManager
     ) {
-        $this->dataMapFactory = $dataMapFactory;
-        $this->queueService = $queueService;
-        $this->contentRepository = $contentRepository;
-        $this->persistenceManager = $persistenceManager;
+        $this->defaultViewObjectName = JsonView::class;
     }
 
     public function indexAction(): ResponseInterface
