@@ -50,12 +50,9 @@ class JsonView implements ViewInterface
      *
      * @var string[]
      */
-    protected $variablesToRender = ['value'];
+    protected array $variablesToRender = ['value'];
 
-    /**
-     * @var string
-     */
-    protected $currentVariable = '';
+    protected string $currentVariable = '';
 
     /**
      * The rendering configuration for this JSON view which
@@ -98,7 +95,7 @@ class JsonView implements ViewInterface
      * include all its properties (of the next level).
      *
      * The configuration of each property in "_descend" has the same syntax
-     * like at the top level. Therefore - theoretically - infinitely nested
+     * as the top level. Therefore - theoretically - infinitely nested
      * structures can be configured.
      *
      * To export indexed arrays the "_descendAll" section can be used to
@@ -152,23 +149,15 @@ class JsonView implements ViewInterface
      * without the namespace, for example (summarized):
      * {"customer":{"firstName":"John","__class":"Customer"}}
      * This might be of interest to not provide information about the package or domain structure behind.
-     *
-     * @var array
      */
-    protected $configuration = [];
+    protected array $configuration = [];
 
-    /**
-     * @var PersistenceManagerInterface
-     */
-    protected $persistenceManager;
+    protected PersistenceManagerInterface $persistenceManager;
 
     /**
      * View variables and their values
-     *
-     * @var array
-     * @see assign()
      */
-    protected $variables = [];
+    protected array $variables = [];
 
     /**
      * @internal
@@ -186,7 +175,7 @@ class JsonView implements ViewInterface
      * @param mixed $value Value of object
      * @return self an instance of $this, to enable chaining
      */
-    public function assign($key, $value): ViewInterface
+    public function assign(string $key, mixed $value): ViewInterface
     {
         $this->variables[$key] = $value;
         return $this;
@@ -209,6 +198,8 @@ class JsonView implements ViewInterface
     /**
      * Specifies which variables this JsonView should render
      * By default only the variable 'value' will be rendered
+     *
+     * @param string[] $variablesToRender
      */
     public function setVariablesToRender(array $variablesToRender): void
     {
@@ -262,12 +253,9 @@ class JsonView implements ViewInterface
     }
 
     /**
-     * Loads the configuration and transforms the value to a serializable
-     * array.
-     *
-     * @return mixed
+     * Loads the configuration and transforms the value to a serializable array.
      */
-    protected function renderArray()
+    protected function renderArray(): mixed
     {
         if (count($this->variablesToRender) === 1) {
             $firstLevel = false;
@@ -292,10 +280,9 @@ class JsonView implements ViewInterface
      *
      * @param mixed $value The value to transform
      * @param array $configuration Configuration for transforming the value
-     * @param bool $firstLevel
      * @return mixed The transformed value
      */
-    protected function transformValue($value, array $configuration, $firstLevel = false)
+    protected function transformValue(mixed $value, array $configuration, bool $firstLevel = false): mixed
     {
         // ObjectStorage returns $key as string, which causes the resulting JSON to be an object instead of the expected array
         if ($value instanceof ObjectStorage) {
@@ -328,20 +315,18 @@ class JsonView implements ViewInterface
     }
 
     /**
-     * Traverses the given object structure in order to transform it into an
-     * array structure.
+     * Traverses the given object structure in order to transform it into an array structure.
      *
      * @param object $object Object to traverse
      * @param array $configuration Configuration for transforming the given object or NULL
      * @return array|string Object structure as an array or as a rendered string (for a DateTime instance)
      */
-    protected function transformObject(object $object, array $configuration)
+    protected function transformObject(object $object, array $configuration): array|string
     {
         if ($object instanceof \DateTimeInterface) {
             return $object->format(\DateTimeInterface::ATOM);
         }
         $propertyNames = ObjectAccess::getGettablePropertyNames($object);
-
         $propertiesToRender = [];
         foreach ($propertyNames as $propertyName) {
             if (isset($configuration['_only']) && is_array($configuration['_only']) && !in_array($propertyName, $configuration['_only'], true)) {
@@ -350,9 +335,7 @@ class JsonView implements ViewInterface
             if (isset($configuration['_exclude']) && is_array($configuration['_exclude']) && in_array($propertyName, $configuration['_exclude'], true)) {
                 continue;
             }
-
             $propertyValue = ObjectAccess::getProperty($object, $propertyName);
-
             if (!is_array($propertyValue) && !is_object($propertyValue)) {
                 $propertiesToRender[$propertyName] = $propertyValue;
             } elseif (isset($configuration['_descend']) && array_key_exists($propertyName, $configuration['_descend'])) {
@@ -374,7 +357,6 @@ class JsonView implements ViewInterface
             $classNameParts = explode('\\', $className);
             $propertiesToRender['__class'] = ($configuration['_exposeClassName'] === self::EXPOSE_CLASSNAME_FULLY_QUALIFIED ? $className : array_pop($classNameParts));
         }
-
         return $propertiesToRender;
     }
 }
