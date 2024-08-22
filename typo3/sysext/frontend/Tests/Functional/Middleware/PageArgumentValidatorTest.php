@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
+namespace TYPO3\CMS\Frontend\Tests\Functional\Middleware;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
@@ -24,17 +24,13 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Middleware\PageArgumentValidator;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class PageArgumentValidatorTest extends UnitTestCase
+final class PageArgumentValidatorTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     private RequestHandlerInterface $responseOutputHandler;
 
     protected function setUp(): void
@@ -47,7 +43,6 @@ final class PageArgumentValidatorTest extends UnitTestCase
                 return new Response();
             }
         };
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
     #[Test]
@@ -55,15 +50,11 @@ final class PageArgumentValidatorTest extends UnitTestCase
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/?cHash=XYZ';
         $expectedResult = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
-
         $pageArguments = new PageArguments(13, '1', ['cHash' => 'XYZ'], ['parameter-from' => 'path']);
-
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
-
         $subject = new PageArgumentValidator(new CacheHashCalculator());
         $subject->setLogger(new NullLogger());
-
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(308, $response->getStatusCode());
         self::assertEquals($expectedResult, $response->getHeader('Location')[0]);
@@ -73,17 +64,10 @@ final class PageArgumentValidatorTest extends UnitTestCase
     public function givenCacheHashNotMatchingCalculatedCacheHashTriggers404(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/?cHash=YAZ';
-
         $pageArguments = new PageArguments(13, '1', ['cHash' => 'XYZ', 'dynamic' => 'argument'], ['parameter-from' => 'path']);
-
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
-
         $subject = new PageArgumentValidator(new CacheHashCalculator());
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->expects(self::once())->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
-
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }
@@ -93,11 +77,7 @@ final class PageArgumentValidatorTest extends UnitTestCase
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
         $request = new ServerRequest($incomingUrl, 'GET');
-
         $subject = new PageArgumentValidator(new CacheHashCalculator());
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->expects(self::once())->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }
@@ -106,12 +86,9 @@ final class PageArgumentValidatorTest extends UnitTestCase
     public function staticPageArgumentsSkipProcessingAndReturnsSuccess(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
-
         $pageArguments = new PageArguments(13, '1', [], ['parameter-from' => 'path']);
-
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
-
         $subject = new PageArgumentValidator(new CacheHashCalculator());
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(200, $response->getStatusCode());
@@ -121,16 +98,10 @@ final class PageArgumentValidatorTest extends UnitTestCase
     public function invalidCacheHashWithDynamicArgumentsTriggers404(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
-
         $pageArguments = new PageArguments(13, '1', ['cHash' => 'coolio', 'download' => true], ['parameter-from' => 'path']);
-
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
-
         $subject = new PageArgumentValidator(new CacheHashCalculator());
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->expects(self::once())->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $response = $subject->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }

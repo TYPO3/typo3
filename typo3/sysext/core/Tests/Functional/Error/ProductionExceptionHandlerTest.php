@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Error;
+namespace TYPO3\CMS\Core\Tests\Functional\Error;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -24,14 +24,12 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Error\ProductionExceptionHandler;
-use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class ProductionExceptionHandlerTest extends UnitTestCase
+final class ProductionExceptionHandlerTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-    protected ProductionExceptionHandler&MockObject $subject;
+    private ProductionExceptionHandler&MockObject $subject;
 
     protected function setUp(): void
     {
@@ -57,9 +55,6 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
     #[Test]
     public function echoExceptionWebEscapesExceptionMessage(): void
     {
-        $typo3InformationMock = $this->createMock(Typo3Information::class);
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $message = '<b>b</b><script>alert(1);</script>';
         $exception = new \Exception($message, 1476049364);
         ob_start();
@@ -73,9 +68,6 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
     #[Test]
     public function echoExceptionWebEscapesExceptionTitle(): void
     {
-        $typo3InformationMock = $this->createMock(Typo3Information::class);
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $title = '<b>b</b><script>alert(1);</script>';
         $exception = $this->createMock(StatusException::class);
         $exception->method('getTitle')->willReturn($title);
@@ -121,9 +113,6 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
     #[Test]
     public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl): void
     {
-        $typo3InformationMock = $this->createMock(Typo3Information::class);
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $subject = new ProductionExceptionHandler();
         $logger = new class () implements LoggerInterface {
             use LoggerTrait;

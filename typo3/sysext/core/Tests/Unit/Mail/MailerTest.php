@@ -25,7 +25,6 @@ use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Log\LogManagerInterface;
 use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
@@ -95,7 +94,6 @@ final class MailerTest extends UnitTestCase
         return [
             'smtp but no host' => [['transport' => 'smtp']],
             'mbox but no file' => [['transport' => 'mbox']],
-            'no instance of TransportInterface' => [['transport' => ErrorPageController::class]],
         ];
     }
 

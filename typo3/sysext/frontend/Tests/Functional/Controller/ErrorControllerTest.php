@@ -15,26 +15,19 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
+namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Information\Typo3Information;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class ErrorControllerTest extends UnitTestCase
+final class ErrorControllerTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     #[Test]
     public function pageNotFoundHandlingReturns404ResponseIfNotConfigured(): void
     {
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -46,9 +39,6 @@ final class ErrorControllerTest extends UnitTestCase
     #[Test]
     public function unavailableHandlingReturns503ResponseIfNotConfigured(): void
     {
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -62,7 +52,6 @@ final class ErrorControllerTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-
         $this->expectExceptionMessage('All your system are belong to us!');
         $this->expectExceptionCode(1518472181);
         $request = new ServerRequest();
@@ -74,9 +63,6 @@ final class ErrorControllerTest extends UnitTestCase
     #[Test]
     public function internalErrorHandlingReturns500ResponseIfNotConfigured(): void
     {
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -90,7 +76,6 @@ final class ErrorControllerTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-
         $this->expectExceptionMessage('All your system are belong to us!');
         $this->expectExceptionCode(1607585445);
         $request = new ServerRequest();
@@ -102,9 +87,6 @@ final class ErrorControllerTest extends UnitTestCase
     #[Test]
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForPageNotFoundAction(): void
     {
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -130,9 +112,6 @@ final class ErrorControllerTest extends UnitTestCase
     #[Test]
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForUnavailableAction(): void
     {
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -158,9 +137,6 @@ final class ErrorControllerTest extends UnitTestCase
     #[Test]
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForInternalErrorAction(): void
     {
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
@@ -186,9 +162,6 @@ final class ErrorControllerTest extends UnitTestCase
     #[Test]
     public function defaultErrorHandlerWithHtmlResponseIsChosenWhenNoSiteConfiguredForAccessDeniedAction(): void
     {
-        $typo3InformationMock = $this->getMockBuilder(Typo3Information::class)->disableOriginalConstructor()->getMock();
-        $typo3InformationMock->method('getCopyrightYear')->willReturn('1999-20XX');
-        GeneralUtility::addInstance(Typo3Information::class, $typo3InformationMock);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = new ErrorController();
