@@ -17,16 +17,13 @@
 
 .beuser-comparison-element {
     display: flex;
-    flex-direction: column;
-    align-content: space-between;
+    align-items: flex-start;
+    gap: var(--typo3-spacing);
 }
 
 .beuser-comparison-element__title {
+    flex-grow: 1;
     white-space: wrap;
-    word-break: break-all;
-}
-
-.beuser-comparison-element__action {
-    padding-bottom: var(--typo3-component-padding-y);
-    text-align: right;
+    word-break: break-word;
+    padding-top: calc(var(--typo3-input-border-width) + var(--typo3-input-sm-padding-y));
 }
