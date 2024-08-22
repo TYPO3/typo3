@@ -253,7 +253,7 @@ class BackendLayoutView implements SingletonInterface
         if (!empty($tsConfig['removeItems'])) {
             foreach (GeneralUtility::trimExplode(',', $tsConfig['removeItems'], true) as $removeId) {
                 foreach ($tcaItems as $key => $item) {
-                    if ($item[1] == $removeId) {
+                    if ($item['value'] == $removeId) {
                         unset($tcaItems[$key]);
                     }
                 }
