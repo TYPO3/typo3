@@ -22,7 +22,7 @@ use Egulias\EmailValidator\Validation\EmailValidation;
 use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
 use Egulias\EmailValidator\Validation\RFCValidation;
 use Egulias\EmailValidator\Warning\CFWSNearAt;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -1577,7 +1577,7 @@ class GeneralUtility
             $requestFactory = static::makeInstance(RequestFactory::class);
             try {
                 $response = $requestFactory->request($url);
-            } catch (RequestException $exception) {
+            } catch (TransferException $exception) {
                 return false;
             }
             $content = $response->getBody()->getContents();
