@@ -87,6 +87,7 @@ class TcaMigration
         $tca = $this->removeMmInsertFields($tca);
         $tca = $this->removeMmHasUidField($tca);
         $tca = $this->migrateT3EditorToCodeEditor($tca);
+        $tca = $this->removeAllowLanguageSynchronizationFromColumnsOverrides($tca);
 
         return $tca;
     }
@@ -1466,6 +1467,31 @@ class TcaMigration
                         $this->messages[] = 'The TCA column override \'' . $columnOverride . '\' of table \'' . $table . '\' uses '
                             . '\'renderType\' with the value \'t3editor\', which has been migrated to \'codeEditor\'. '
                             . 'Please adjust your TCA accordingly.';
+                    }
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Setting "allowLanguageSynchronization" for columns via columnsOverride is currently not supported
+     * see Localization\State and therefore leads to an exception in the LocalizationStateSelector wizard.
+     * Therefore, the setting is removed for now and the integrator is informed accordingly.
+     */
+    protected function removeAllowLanguageSynchronizationFromColumnsOverrides(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!is_array($tableDefinition['types'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['types'] ?? [] as $typeName => $typeConfig) {
+                foreach ($typeConfig['columnsOverrides'] ?? [] as $columnOverride => $columnOverrideConfig) {
+                    if (isset($columnOverrideConfig['config']['behaviour']['allowLanguageSynchronization'])) {
+                        unset($tca[$table]['types'][$typeName]['columnsOverrides'][$columnOverride]['config']['behaviour']['allowLanguageSynchronization']);
+                        $this->messages[] = 'The TCA columns override of column \'' . $columnOverride . '\' for type \'' . $typeName . '\' '
+                            . 'of table  \'' . $table . '\' sets \'[behaviour][allowLanguageSynchronization]\'. Setting '
+                            . 'this option in \'columnsOverrides\' is currently not supported. Please adjust your TCA accordingly.';
                     }
                 }
             }
