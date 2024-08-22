@@ -53,7 +53,7 @@
     --typo3-callout-padding-x: 1rem;
     display: flex;
     gap: calc(var(--typo3-callout-padding-x) * .75);
-    color: var(--callout-color);
+    color: var(--typo3-callout-color);
     background-color: var(--typo3-callout-bg);
     border-inline-start: .5rem solid var(--typo3-callout-border-color);
     border-radius: var(--typo3-callout-border-radius);
