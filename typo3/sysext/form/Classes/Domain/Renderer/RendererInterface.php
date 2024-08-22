@@ -40,7 +40,7 @@ interface RendererInterface
      */
     public function render(): string;
 
-    public function setFormRuntime(FormRuntime $formRuntime);
+    public function setFormRuntime(FormRuntime $formRuntime): void;
 
     public function getFormRuntime(): FormRuntime;
 }

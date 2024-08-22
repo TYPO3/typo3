@@ -31,12 +31,9 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  */
 abstract class AbstractElementRenderer implements RendererInterface
 {
-    /**
-     * @var \TYPO3\CMS\Form\Domain\Runtime\FormRuntime
-     */
-    protected $formRuntime;
+    protected FormRuntime $formRuntime;
 
-    public function setFormRuntime(FormRuntime $formRuntime)
+    public function setFormRuntime(FormRuntime $formRuntime): void
     {
         $this->formRuntime = $formRuntime;
     }
