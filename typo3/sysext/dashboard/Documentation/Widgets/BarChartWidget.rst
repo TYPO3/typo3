@@ -28,6 +28,7 @@ Example
        class: 'TYPO3\CMS\Dashboard\Widgets\BarChartWidget'
        arguments:
          $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogErrorsDataProvider'
+         $view: '@dashboard.views.widget'
          $buttonProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider'
          $options:
             refreshAvailable: true
