@@ -78,18 +78,9 @@
 .t3-form-collection-element .panel-collapse .form-editor:first-child{margin-top:1em}
 .t3-form-validator-editor .collapsed .icon-actions-view-table-expand{transform:rotate(0);transition:transform .2s}
 .t3-form-validator-editor .icon-actions-view-table-expand{transform:rotate(90deg);transition:transform .2s}
-.property-grid .form-control{min-width:auto;font-size:.9em}
-.property-grid .table th{font-size:.9em}
-.property-grid .table>tbody>tr{cursor:pointer;background-color:#fff}
-.property-grid .table>tbody>tr:last-child{cursor:auto}
-.property-grid .table>tbody>tr>td{padding:.6em .3em;text-align:center}
-.property-grid .table>tbody>tr>td:first-child{width:35px}
-.property-grid .table>tbody>tr>td:nth-child(2),.property-grid .table>tbody>tr>td:nth-child(3){width:75px}
-.property-grid .table>tbody>tr>td:nth-child(4){width:65px}
-.property-grid .table>tbody>tr>td:nth-child(5){width:35px}
+.property-grid .form-control{min-width:auto}
 .property-grid .sort-row-field{cursor:move}
-.property-grid .form-sortable-drag td{border:none}
-.property-grid .form-sortable-ghost{height:45px;border-inline-start:1px solid var(--module-docheader-border-color)!important;border-inline-end:1px solid var(--module-docheader-border-color)!important;outline-offset:-5px!important}
+.property-grid .form-sortable-ghost{outline-offset:-5px!important}
 #t3-form-stage-inner-container{position:relative;inset-inline-start:-5px;display:inline-block;width:90%;max-width:800px;text-align:start}
 #t3-form-stage-container{overflow:auto;position:relative;height:calc(100% - var(--module-docheader-height));max-height:100%;text-align:center}
 #t3-form-stage-container ol,#t3-form-stage-container ul{list-style:none}

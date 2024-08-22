@@ -1,63 +1,56 @@
 //
-// Default table styling
+// Basic table
 //
 .table {
-    .table {
-        + .table {
-            margin-top: 6px;
+    --typo3-table-font-size: var(--typo3-font-size);
+    --typo3-table-color: var(--typo3-component-color);
+    --typo3-table-bg: var(--typo3-component-bg);
+    --typo3-table-bg-type: initial;
+    --typo3-table-bg-state: initial;
+    --typo3-table-border-style: none;
+    --typo3-table-border-width: var(--typo3-component-border-width);
+    --typo3-table-border-color: var(--typo3-component-border-color);
+    --typo3-table-padding-y: .75rem;
+    --typo3-table-padding-x: 1rem;
+    --typo3-table-sm-font-size: var(--typo3-font-size-small);
+    --typo3-table-sm-padding-y: .5rem;
+    --typo3-table-sm-padding-x: .75rem;
+
+    @each $state in $base-variants {
+        --typo3-table-#{$state}-color: var(--typo3-surface-container-#{$state}-text);
+        --typo3-table-#{$state}-bg: var(--typo3-surface-container-#{$state});
+        --typo3-table-#{$state}-border-color: var(--typo3-state-#{$state}-border-color);
+    }
+    font-size: var(--typo3-table-font-size);
+    width: 100%;
+    border-color: var(--typo3-table-border-color);
+    margin-bottom: var(--typo3-spacing);
+
+    > :not(caption) > * > * {
+        padding: var(--typo3-table-padding-y) calc(var(--typo3-table-padding-x) / 2);
+        color: var(--typo3-table-color);
+        background-color: var(--typo3-table-bg-state, var(--typo3-table-bg-type, var(--typo3-table-bg)));
+        border-color: var(--typo3-table-border-color);
+        border-bottom-width: var(--typo3-table-border-width);
+        vertical-align: middle;
+
+        &:is(th) {
+            white-space: nowrap;
         }
-        margin: 0;
-    }
 
-    > thead,
-    > tbody,
-    > tfoot {
-        > tr {
-            > th {
-                white-space: nowrap;
-                vertical-align: middle;
-            }
-
-            > td {
-                vertical-align: middle;
-            }
-        }
-    }
-
-    > thead > tr {
-        th.col-checkbox {
-            + th.col-title {
-                label {
-                    margin-bottom: 0;
-                }
-            }
-        }
-
-        th,
-        td {
-            i {
-                font-weight: normal;
-            }
-        }
-    }
-
-    > tbody > tr {
-        border-color: $gray-400;
-    }
-
-    .pagination {
-        margin: 0;
-    }
-
-    th,
-    td {
         &:first-child {
-            padding-inline-start: var(--typo3-component-padding-x);
+            padding-inline-start: var(--typo3-table-padding-x);
         }
 
         &:last-child {
-            padding-inline-end: var(--typo3-component-padding-x);
+            padding-inline-end: var(--typo3-table-padding-x);
         }
+    }
+
+    caption {
+        padding-top: var(--typo3-table-padding-y);
+        padding-bottom: var(--typo3-table-padding-y);
+        color: var(--typo3-text-color-variant);
     }
 
     .col-icon,
@@ -166,7 +159,7 @@
     }
 
     .col-border-left {
-        border-inline-start: 1px solid var(--bs-table-border-color);
+        border-inline-start: var(--typo3-table-border-width) solid var(--typo3-table-border-color);
     }
 
     .col-min {
@@ -190,13 +183,54 @@
 }
 
 //
-// States
+// Condensed table
 //
-@each $state, $value in $table-variants {
-    table.#{$state},
-    tr.#{$state},
-    td.#{$state} {
-        @extend .table-#{$state};
+.table-sm {
+    --typo3-table-font-size: var(--typo3-table-sm-font-size);
+    --typo3-table-padding-x: var(--typo3-table-sm-padding-x);
+}
+
+//
+// Change placement of captions with a class
+//
+.caption-top {
+    caption-side: top;
+}
+
+//
+// Zebra-striping
+//
+.table-striped {
+    > tbody > tr:nth-of-type(odd) > * {
+        --typo3-table-bg-type: color-mix(in srgb, var(--typo3-table-bg), var(--typo3-table-color) 3%);
+    }
+}
+
+.table-striped-columns {
+    > :not(caption) > tr > :nth-child(even) {
+        --typo3-table-bg-type: color-mix(in srgb, var(--typo3-table-bg), var(--typo3-table-color) 3%);
+    }
+}
+
+//
+// Hover effect
+//
+.table-hover {
+    > tbody > tr:hover > * {
+        --typo3-table-bg-state: color-mix(in srgb, var(--typo3-table-bg-type, var(--typo3-table-bg)), var(--typo3-table-color) 6%);
+    }
+}
+
+//
+// Bordered
+//
+.table-bordered {
+    > :not(caption) > * {
+        border-width: var(--typo3-table-border-width) 0;
+
+        > * {
+            border-width: 0 var(--typo3-table-border-width);
+        }
     }
 }
 
@@ -204,42 +238,32 @@
 // Options
 //
 .table-transparent {
-    --bs-table-bg: transparent;
+    --typo3-table-bg: transparent;
 }
 
 .table-vertical-top {
-    th,
-    td {
-        vertical-align: top !important;
+    > :not(caption) > * > * {
+        vertical-align: top;
     }
 }
 
 .table-center {
-    th,
-    td {
-        text-align: center !important;
+    > :not(caption) > * > * {
+        text-align: center;
     }
-}
-
-//
-// Map active state
-//
-tr.active,
-td.active {
-    @extend .table-primary;
-    @extend .table-active;
-}
-
-tr.selected,
-td.selected {
-    @extend .table-info;
 }
 
 //
 // Fits the table in the viewport and makes overflow possible
 //
 .table-fit {
+    --typo3-table-color: var(--typo3-component-color);
+    --typo3-table-bg: var(--typo3-component-bg);
+    --typo3-table-border-width: var(--typo3-component-border-width);
+    --typo3-table-border-color: var(--typo3-component-border-color);
+    position: relative;
     width: 100%;
+    color: var(--typo3-table-color);
     border-radius: var(--typo3-component-border-radius);
     box-shadow: var(--typo3-component-box-shadow);
     margin-bottom: var(--typo3-spacing);
@@ -247,64 +271,50 @@ td.selected {
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid $table-border-color;
+    border: 1px solid var(--typo3-table-border-color);
+    background-color: var(--typo3-table-bg);
 
-    .table-bordered {
-        > :not(caption) > * {
-            border-width: 0;
-
-            > * {
-                border-top: 0;
-                border-width: $table-border-width;
-            }
-        }
+    td & {
+        margin-bottom: 0;
     }
 
     caption {
-        border-top: $table-border-width solid $table-border-color;
-        padding-left: var(--typo3-component-padding-x);
-        padding-right: var(--typo3-component-padding-x);
+        border-top: var(--typo3-table-border-width) solid var(--typo3-table-border-color);
+        padding-inline-start: var(--typo3-component-padding-x);
+        padding-inline-end: var(--typo3-component-padding-x);
     }
 
     .caption-top {
         caption {
             border-top: 0;
-            border-bottom: $table-border-width solid $table-border-color;
+            border-bottom: var(--typo3-table-border-width) solid var(--typo3-table-border-color);
         }
     }
 
     > .table {
         margin-bottom: 0;
 
-        colgroup:first-child + tbody,
-        tbody:first-child {
-            tr:first-child {
-                th,
-                td {
-                    border-top: 0 !important;
-                }
+        > colgroup:first-child + *,
+        > *:first-child {
+            > * {
+                border-top-width: 0;
             }
         }
 
-        tr {
-            > th:first-child,
-            > td:first-child {
-                border-left: 0 !important;
+        > * > * > * {
+            &:first-child {
+                border-inline-start: 0;
             }
 
-            > th:last-child,
-            > td:last-child {
-                border-right: 0 !important;
+            &:last-child {
+                border-inline-end: 0;
             }
         }
 
-        tbody:last-child,
-        tfoot:last-child {
-            tr:last-child {
-                th,
-                td {
-                    border-bottom: 0 !important;
-                }
+        > *:last-child {
+            > *:last-child,
+            > *:last-child > * {
+                border-bottom-width: 0;
             }
         }
     }
@@ -328,9 +338,9 @@ td.selected {
     }
 }
 
-/**
- * Sorting
- */
+//
+// Sorting
+//
 .table-sorting-button {
     padding: 0;
     border: 0;
@@ -351,4 +361,30 @@ td.selected {
     .table-sorting-button-active & {
         color: var(--typo3-light-primary-color);
     }
+}
+
+//
+// Variants
+//
+@each $state, $value in $base-variants {
+    .table-#{$state},
+    .table .#{$state} {
+        --typo3-table-color: var(--typo3-table-#{$state}-color);
+        --typo3-table-bg: var(--typo3-table-#{$state}-bg);
+        --typo3-table-border-color: color-mix(in srgb, var(--typo3-table-bg), var(--typo3-table-color) 10%);
+    }
+}
+
+.table-active,
+.table .active {
+    --typo3-table-color: var(--typo3-table-primary-color);
+    --typo3-table-bg: var(--typo3-table-primary-bg);
+    --typo3-table-border-color: color-mix(in srgb, var(--typo3-table-bg), var(--typo3-table-color) 10%);
+}
+
+.table-selected,
+.table .selected {
+    --typo3-table-color: var(--typo3-table-info-color);
+    --typo3-table-bg: var(--typo3-table-info-bg);
+    --typo3-table-border-color: var(--typo3-table-info-border-color);
 }

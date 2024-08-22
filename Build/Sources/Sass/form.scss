@@ -462,60 +462,13 @@ $tree-line-height: 20px;
 .property-grid {
     .form-control {
         min-width: auto;
-        font-size: .9em;
-    }
-
-    .table {
-        th {
-            font-size: .9em;
-        }
-
-        > tbody > tr {
-            cursor: pointer;
-            background-color: $table-bg;
-
-            &:last-child {
-                cursor: auto;
-            }
-
-            > td {
-                padding: .6em .3em;
-                text-align: center;
-
-                &:first-child {
-                    width: 35px;
-                }
-
-                &:nth-child(2),
-                &:nth-child(3) {
-                    width: 75px;
-                }
-
-                &:nth-child(4) {
-                    width: 65px;
-                }
-
-                &:nth-child(5) {
-                    width: 35px;
-                }
-            }
-        }
     }
 
     .sort-row-field {
         cursor: move;
     }
 
-    .form-sortable-drag {
-        td {
-            border: none;
-        }
-    }
-
     .form-sortable-ghost {
-        height: 45px;
-        border-inline-start: 1px solid var(--module-docheader-border-color) !important;
-        border-inline-end: 1px solid var(--module-docheader-border-color) !important;
         outline-offset: -5px !important;
     }
 }

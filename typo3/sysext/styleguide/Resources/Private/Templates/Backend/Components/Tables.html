@@ -23,47 +23,47 @@
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.table.section.default.headline" /></h2>
         <f:variable name="codeSnippetDefault">
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                        <th class="col-control"><span class="visually-hidden">&lt;f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /&gt;</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>First row</td>
-                        <td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</td>
-                        <td class="col-control">
-                            <div class="btn-group" role="group">
-                                <button class="btn btn-default" title="#">
-                                    &lt;core:icon identifier="actions-view-page" size="small" &gt;
-                                </button>
-                                <a class="btn btn-default" href="#" title="#">
-                                    &lt;core:icon identifier="actions-open" size="small" /&gt;
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>...</tr>
-                    <tr>...</tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">3 records</td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <caption>Table caption</caption>
+                    <thead>
+                        <tr>
+                            <th>Column 1</th>
+                            <th>Column 2</th>
+                            <th class="col-control"><span class="visually-hidden">&lt;f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /&gt;</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>First row</td>
+                            <td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</td>
+                            <td class="col-control">
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-default" title="#">
+                                        &lt;core:icon identifier="actions-view-page" size="small" &gt;
+                                    </button>
+                                    <a class="btn btn-default" href="#" title="#">
+                                        &lt;core:icon identifier="actions-open" size="small" /&gt;
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>...</tr>
+                        <tr>...</tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">3 records</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
             <f:render section="tableDefault" arguments="{_all}" />
         </sg:example>
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.table.section.wideTables.headline" /></h2>
-        <p>
-            <f:sanitize.html><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.table.section.wideTables.text" /></f:sanitize.html>
-        </p>
         <sg:example>
             <div class="table-fit">
                 <table class="table">
@@ -141,55 +141,55 @@
             danger
         </f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetColor}">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                        <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="active">
-                        <td>Active</td>
-                        <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="info">
-                        <td>Info</td>
-                        <td>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="success">
-                        <td>Sucess</td>
-                        <td>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="warning">
-                        <td>Warning</td>
-                        <td>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="danger">
-                        <td>Danger</td>
-                        <td>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-fit">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Column 1</th>
+                            <th>Column 2</th>
+                            <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="active">
+                            <td>Active</td>
+                            <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="info">
+                            <td>Info</td>
+                            <td>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="success">
+                            <td>Sucess</td>
+                            <td>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="warning">
+                            <td>Warning</td>
+                            <td>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="danger">
+                            <td>Danger</td>
+                            <td>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </sg:example>
-
-        <hr>
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
 
@@ -201,101 +201,103 @@
 
         <h4><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.table.section.colorScheme.colorFullExample.headline" /></h4>
         <sg:colorScheme>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                        <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Default (even)</td>
-                        <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Default (odd)</td>
-                        <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="active">
-                        <td>Active (even)</td>
-                        <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="active">
-                        <td>Active (odd)</td>
-                        <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="info">
-                        <td>Info (even)</td>
-                        <td>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="info">
-                        <td>Info (odd)</td>
-                        <td>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="success">
-                        <td>Sucess (even)</td>
-                        <td>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="success">
-                        <td>Sucess (odd)</td>
-                        <td>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="warning">
-                        <td>Warning (even)</td>
-                        <td>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="warning">
-                        <td>Warning (odd)</td>
-                        <td>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="danger">
-                        <td>Danger (even)</td>
-                        <td>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                    <tr class="danger">
-                        <td>Danger (odd)</td>
-                        <td>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</td>
-                        <td class="col-control">
-                            <f:render section="buttonGroup" arguments="{_all}" />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-fit">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Column 1</th>
+                            <th>Column 2</th>
+                            <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Default (even)</td>
+                            <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Default (odd)</td>
+                            <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="active">
+                            <td>Active (even)</td>
+                            <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="active">
+                            <td>Active (odd)</td>
+                            <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="info">
+                            <td>Info (even)</td>
+                            <td>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="info">
+                            <td>Info (odd)</td>
+                            <td>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="success">
+                            <td>Sucess (even)</td>
+                            <td>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="success">
+                            <td>Sucess (odd)</td>
+                            <td>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="warning">
+                            <td>Warning (even)</td>
+                            <td>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="warning">
+                            <td>Warning (odd)</td>
+                            <td>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="danger">
+                            <td>Danger (even)</td>
+                            <td>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                        <tr class="danger">
+                            <td>Danger (odd)</td>
+                            <td>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</td>
+                            <td class="col-control">
+                                <f:render section="buttonGroup" arguments="{_all}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </sg:colorScheme>
     </div>
 
@@ -313,43 +315,46 @@
 </f:section>
 
 <f:section name="tableDefault">
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>Column 1</th>
-                <th>Column 2</th>
-                <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>First row</td>
-                <td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</td>
-                <td class="col-control">
-                    <f:render section="buttonGroup" arguments="{_all}" />
-                </td>
-            </tr>
-            <tr>
-                <td>Second row</td>
-                <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
-                <td class="col-control">
-                    <f:render section="buttonGroup" arguments="{_all}" />
-                </td>
-            </tr>
-            <tr>
-                <td>Third row</td>
-                <td>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
-                <td class="col-control">
-                    <f:render section="buttonGroup" arguments="{_all}" />
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3">3 records</td>
-            </tr>
-        </tfoot>
-    </table>
+    <div class="table-fit">
+        <table class="table table-striped table-hover">
+            <caption>Table caption</caption>
+            <thead>
+                <tr>
+                    <th>Column 1</th>
+                    <th>Column 2</th>
+                    <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>First row</td>
+                    <td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</td>
+                    <td class="col-control">
+                        <f:render section="buttonGroup" arguments="{_all}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Second row</td>
+                    <td>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</td>
+                    <td class="col-control">
+                        <f:render section="buttonGroup" arguments="{_all}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Third row</td>
+                    <td>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
+                    <td class="col-control">
+                        <f:render section="buttonGroup" arguments="{_all}" />
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">3 records</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </f:section>
 
 </html>

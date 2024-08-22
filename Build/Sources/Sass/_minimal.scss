@@ -31,7 +31,7 @@
 @import "../../node_modules/bootstrap/scss/images";
 @import "../../node_modules/bootstrap/scss/containers";
 @import "../../node_modules/bootstrap/scss/grid";
-@import "../../node_modules/bootstrap/scss/tables";
+// @import "../../node_modules/bootstrap/scss/tables";
 // @import "../../node_modules/bootstrap/scss/forms";
 // @import "../../node_modules/bootstrap/scss/buttons";
 @import "../../node_modules/bootstrap/scss/transitions";
@@ -40,7 +40,7 @@
 @import "../../node_modules/bootstrap/scss/nav";
 @import "../../node_modules/bootstrap/scss/navbar";
 // @import "../../node_modules/bootstrap/scss/card";
-// @import "../../node_modules/bootstrap/scss/accordion";       @TODO evaluate
+// @import "../../node_modules/bootstrap/scss/accordion";
 @import "../../node_modules/bootstrap/scss/breadcrumb";
 @import "../../node_modules/bootstrap/scss/pagination";
 // @import "../../node_modules/bootstrap/scss/badge";
@@ -53,8 +53,8 @@
 @import "../../node_modules/bootstrap/scss/popover";
 @import "../../node_modules/bootstrap/scss/carousel";
 @import "../../node_modules/bootstrap/scss/spinners";
-// @import "../../node_modules/bootstrap/scss/offcanvas";       @TODO evaluate
-// @import "../../node_modules/bootstrap/scss/placeholders";    @TODO evaluate
+// @import "../../node_modules/bootstrap/scss/offcanvas";
+// @import "../../node_modules/bootstrap/scss/placeholders";
 
 // Helpers
 @import "../../node_modules/bootstrap/scss/helpers";
@@ -98,4 +98,5 @@
 @import "component/diff";
 @import "component/module";
 @import "component/panel";
+@import "component/table";
 @import "component/simpletable";

@@ -43,7 +43,7 @@ final class CompareUserCest
         $I->waitForElementVisible('table#typo3-backend-user-list-compare', 20);
         $I->canSeeNumberOfElements('#typo3-backend-user-list-compare tbody tr', 2);
         $I->click('body > div > div.module-body.t3js-module-body .t3js-acceptance-compare');
-        $I->waitForElementVisible('table.table-striped');
+        $I->waitForElementVisible('table.table-striped-columns');
 
         // first user can be edited
         $usernameFirstCompare = $I->grabTextFrom('table.beuser-comparison__table > thead > tr > th:nth-child(2) .beuser-comparison-element__title > span:nth-child(2)');
@@ -54,7 +54,7 @@ final class CompareUserCest
 
         // back to compare view
         $I->click('.module-docheader a[title="Close"]');
-        $I->waitForElementVisible('table.table-striped');
+        $I->waitForElementVisible('table.table-striped-columns');
         $I->canSee('Compare backend users', 'h1');
 
         // second user can be edited

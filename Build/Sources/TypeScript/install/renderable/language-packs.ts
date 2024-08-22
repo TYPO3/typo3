@@ -72,23 +72,25 @@ export class LanguageMatrixElement extends LitElement {
     return html`
       <div>
         <h3>Active languages</h3>
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>
-                <div class="btn-group">
-                  ${this.globalActions()}
-                </div>
-              </th>
-              <th>Locale</th>
-              <th>Dependencies</th>
-              <th>Last update</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${this.renderLanguages()}
-          </tbody>
-        </table>
+        <div class="table-fit">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>
+                  <div class="btn-group">
+                    ${this.globalActions()}
+                  </div>
+                </th>
+                <th>Locale</th>
+                <th>Dependencies</th>
+                <th>Last update</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${this.renderLanguages()}
+            </tbody>
+          </table>
+        </div>
       </div>
     `;
   }
@@ -198,17 +200,19 @@ export class ExtensionMatrixElement extends LitElement {
     return html`
       <div>
         <h3>Translation status</h3>
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Extension</th>
-              <th>Key</th>
-              ${this.headerActions()}
-          </thead>
-          <tbody>
-            ${this.renderExtensions()}
-          </tbody>
-        </table>
+        <div class="table-fit">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Extension</th>
+                <th>Key</th>
+                ${this.headerActions()}
+            </thead>
+            <tbody>
+              ${this.renderExtensions()}
+            </tbody>
+          </table>
+        </div>
       </div>
     `;
   }

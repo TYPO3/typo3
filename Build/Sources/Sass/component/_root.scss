@@ -27,6 +27,8 @@
     scroll-behavior: smooth;
 
     // General
+    --typo3-font-size: 12px;
+    --typo3-font-size-small: 11px;
     --typo3-font-family-sans-serif: #{$font-family-sans-serif};
     --typo3-font-family-monospace: #{$font-family-monospace};
     --typo3-font-family: var(--typo3-font-family-sans-serif);

@@ -630,9 +630,6 @@
 			<trans-unit id="component.table.section.wideTables.headline" resname="component.table.section.wideTables.headline">
 				<source>Wide tables</source>
 			</trans-unit>
-			<trans-unit id="component.table.section.wideTables.text" resname="component.table.section.wideTables.text">
-				<source><![CDATA[Wide tables should be wrapped in with <code>div.table-fit</code>.]]></source>
-			</trans-unit>
 
 			<!-- Component: Textarea -->
 			<trans-unit id="component.textarea.headline" resname="component.textarea.headline">

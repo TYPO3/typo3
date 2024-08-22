@@ -13,23 +13,25 @@
 var __decorate=function(t,e,a,n){var i,s=arguments.length,o=s<3?e:null===n?n=Object.getOwnPropertyDescriptor(e,a):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)o=Reflect.decorate(t,e,a,n);else for(var l=t.length-1;l>=0;l--)(i=t[l])&&(o=(s<3?i(o):s>3?i(e,a,o):i(e,a))||o);return s>3&&o&&Object.defineProperty(e,a,o),o};import{customElement,property,state}from"lit/decorators.js";import{LitElement,html,nothing}from"lit";import{classMap}from"lit/directives/class-map.js";let LanguageMatrixElement=class extends LitElement{constructor(){super(...arguments),this.configurationIsWritable=!1,this.data=null,this.addLanguagesActive=!1}createRenderRoot(){return this}render(){return html`
       <div>
         <h3>Active languages</h3>
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>
-                <div class="btn-group">
-                  ${this.globalActions()}
-                </div>
-              </th>
-              <th>Locale</th>
-              <th>Dependencies</th>
-              <th>Last update</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${this.renderLanguages()}
-          </tbody>
-        </table>
+        <div class="table-fit">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>
+                  <div class="btn-group">
+                    ${this.globalActions()}
+                  </div>
+                </th>
+                <th>Locale</th>
+                <th>Dependencies</th>
+                <th>Last update</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${this.renderLanguages()}
+            </tbody>
+          </table>
+        </div>
       </div>
     `}globalActions(){const t={btn:!0,"btn-default":!0,"update-all":!0,disabled:!this.hasActiveLanguages()};return html`
       ${this.configurationIsWritable?html`
@@ -80,17 +82,19 @@ var __decorate=function(t,e,a,n){var i,s=arguments.length,o=s<3?e:null===n?n=Obj
       `:html`
       <div>
         <h3>Translation status</h3>
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Extension</th>
-              <th>Key</th>
-              ${this.headerActions()}
-          </thead>
-          <tbody>
-            ${this.renderExtensions()}
-          </tbody>
-        </table>
+        <div class="table-fit">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Extension</th>
+                <th>Key</th>
+                ${this.headerActions()}
+            </thead>
+            <tbody>
+              ${this.renderExtensions()}
+            </tbody>
+          </table>
+        </div>
       </div>
     `}headerActions(){return this.data.activeLanguages.map((t=>html`
       <th>

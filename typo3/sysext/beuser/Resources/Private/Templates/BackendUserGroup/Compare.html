@@ -27,12 +27,12 @@
     <h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:compareBackendUsersGroups" /></h1>
 
     <f:variable name="comparedUserGroupAmount" value="{compareGroupList -> f:count()}" />
-    <div class="table-fit table-responsive">
-        <table class="table table-striped table-bordered table-vertical-top beuser-comparison__table">
+    <div class="table-fit">
+        <table class="table table-striped-columns table-bordered table-vertical-top beuser-comparison__table">
             <colgroup>
                 <col style="width: 15%;">
                 <f:for each="{compareGroupList}" as="tmpColumn">
-                    <col style="width: calc(85% / {comparedUserAmount})">
+                    <col style="width: calc(85% / {comparedUserGroupAmount})">
                 </f:for>
             </colgroup>
             <thead>
