@@ -67,17 +67,12 @@ readonly class FluidViewAdapter implements CoreViewInterface, FluidStandaloneVie
     {
         if ($this->view instanceof FluidStandaloneAbstractTemplateView) {
             $this->view->setRenderingContext($renderingContext);
-            // @todo: This is needed because $this->view->setRenderingContext() sets *its own view* as
-            //        view within VariableContainer, but we want to keep *$this*. In the end, this entire
-            //        thing is a loop dependency and getView() on ViewHelperVariableContainer should fully
-            //        vanish somehow.
-            $this->view->getRenderingContext()->getViewHelperVariableContainer()->setView($this);
             return;
         }
         throw new \RuntimeException('view must be an instance of ext:fluid \TYPO3Fluid\Fluid\View\AbstractTemplateView', 1721578954);
     }
 
-    public function renderSection($sectionName, array $variables = [], $ignoreUnknown = false): string
+    public function renderSection($sectionName, array $variables = [], $ignoreUnknown = false): mixed
     {
         if ($this->view instanceof FluidStandaloneAbstractTemplateView) {
             return $this->view->renderSection($sectionName, $variables, $ignoreUnknown);
@@ -85,7 +80,7 @@ readonly class FluidViewAdapter implements CoreViewInterface, FluidStandaloneVie
         throw new \RuntimeException('view must be an instance of ext:fluid \TYPO3Fluid\Fluid\View\AbstractTemplateView', 1721746411);
     }
 
-    public function renderPartial($partialName, $sectionName, array $variables, $ignoreUnknown = false): string
+    public function renderPartial($partialName, $sectionName, array $variables, $ignoreUnknown = false): mixed
     {
         if ($this->view instanceof FluidStandaloneAbstractTemplateView) {
             return $this->view->renderPartial($partialName, $sectionName, $variables, $ignoreUnknown);
