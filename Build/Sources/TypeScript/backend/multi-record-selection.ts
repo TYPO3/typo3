@@ -47,7 +47,6 @@ enum CheckboxState {
  */
 class MultiRecordSelection {
   static activeClass: string = 'active';
-  static disabledClass: string = 'disabled';
   private lastChecked: HTMLInputElement = null;
 
   constructor() {
@@ -165,7 +164,7 @@ class MultiRecordSelection {
         return;
       }
       // Start the evaluation by disabling the action
-      action.classList.add(this.disabledClass);
+      action.disabled = true;
       // Get all currently checked elements
       const checked: NodeListOf<HTMLInputElement> = MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier);
       for (let i = 0; i < checked.length; i++) {
@@ -173,7 +172,7 @@ class MultiRecordSelection {
         if ((checked[i].closest(MultiRecordSelectionSelectors.elementSelector) as HTMLElement)?.dataset[configuration.idField]) {
           // If a checked element contains the idField, remove the "disabled"
           // state and end the search since the action can be performed.
-          action.classList.remove(this.disabledClass);
+          action.disabled = false;
           break;
         }
       }
@@ -381,7 +380,7 @@ class MultiRecordSelection {
       ].join(' '));
 
       if (checkAll !== null) {
-        checkAll.classList.toggle('disabled', !MultiRecordSelection.getCheckboxes(CheckboxState.unchecked, identifier).length);
+        checkAll.disabled = !MultiRecordSelection.getCheckboxes(CheckboxState.unchecked, identifier).length;
       }
 
       const checkNone: HTMLButtonElement = document.querySelector([
@@ -390,7 +389,7 @@ class MultiRecordSelection {
       ].join(' '));
 
       if (checkNone !== null) {
-        checkNone.classList.toggle('disabled', !MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier).length);
+        checkNone.disabled = !MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier).length;
       }
 
       const toggle: HTMLButtonElement = document.querySelector([
@@ -399,7 +398,7 @@ class MultiRecordSelection {
       ].join(' '));
 
       if (toggle !== null) {
-        toggle.classList.toggle('disabled', !MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).length);
+        toggle.disabled = !MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).length;
       }
     }).delegateTo(document, MultiRecordSelectionSelectors.checkboxActionsToggleSelector);
   }

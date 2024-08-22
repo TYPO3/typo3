@@ -99,13 +99,13 @@
                         <f:if condition="{editActionConfiguration}">
                             <div class="col">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration -> f:format.raw()}">
+                                    <button type="button" class="btn btn-default btn-sm" disabled="disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration -> f:format.raw()}">
                                         <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked')}">
                                             <core:icon identifier="actions-open" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked" />
                                         </span>
                                     </button>
                                     <f:if condition="{editColumnsActionConfiguration}">
-                                        <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editColumnsActionConfiguration -> f:format.raw()}">
+                                        <button type="button" class="btn btn-default btn-sm" disabled="disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editColumnsActionConfiguration -> f:format.raw()}">
                                             <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editColumns')}">
                                                 <core:icon identifier="actions-open" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editColumns" />
                                             </span>
@@ -126,12 +126,12 @@
                         <f:if condition="{showClipboardPanel} && {enableClipBoard.mode} != 'normal'">
                             <div class="col">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="copyMarked">
+                                    <button type="button" class="btn btn-default btn-sm" {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')} data-multi-record-selection-action="copyMarked">
                                         <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked')}">
                                             <core:icon identifier="actions-edit-copy" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked" />
                                         </span>
                                     </button>
-                                    <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="removeMarked">
+                                    <button type="button" class="btn btn-default btn-sm" {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')} data-multi-record-selection-action="removeMarked">
                                         <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked')}">
                                             <core:icon identifier="actions-minus" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked" />
                                         </span>

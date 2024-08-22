@@ -82,6 +82,7 @@ final class RecyclerModuleCest
 
         $I->amGoingTo('Recover the page and its contents');
         $I->click('tr[data-recordtitle="' . self::$pageTitle . '"] .t3js-multi-record-selection-check');
+        $I->waitForElementClickable('button[data-multi-record-selection-action="massundo"]');
         $I->click('button[data-multi-record-selection-action="massundo"]');
         $this->modalDialog->canSeeDialog();
         $I->click('#undo-recursive');

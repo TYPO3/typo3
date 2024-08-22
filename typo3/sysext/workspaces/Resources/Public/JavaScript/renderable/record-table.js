@@ -22,7 +22,7 @@ var __decorate=function(e,t,n,a){var o,l=arguments.length,i=l<3?t:null===a?a=Obj
                 </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                   <li>
-                    <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title=${TYPO3.lang["labels.checkAll"]}>
+                    <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-all" title=${TYPO3.lang["labels.checkAll"]}>
                       <span class="dropdown-item-columns">
                         <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                           <typo3-backend-icon identifier="actions-selection-elements-all" size="small"></typo3-backend-icon>
@@ -34,7 +34,7 @@ var __decorate=function(e,t,n,a){var o,l=arguments.length,i=l<3?t:null===a?a=Obj
                     </button>
                   </li>
                   <li>
-                    <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title=${TYPO3.lang["labels.uncheckAll"]}>
+                    <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-none" title=${TYPO3.lang["labels.uncheckAll"]}>
                       <span class="dropdown-item-columns">
                           <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                             <typo3-backend-icon identifier="actions-selection-elements-none" size="small"></typo3-backend-icon>

@@ -3116,7 +3116,7 @@ class DatabaseRecordList
 
         $dropdownItems['checkAll'] = '
             <li>
-                <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
+                <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
                     ' . $this->iconFactory->getIcon('actions-selection-elements-all', IconSize::SMALL)->render() . '
                     ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '
                 </button>
@@ -3124,7 +3124,7 @@ class DatabaseRecordList
 
         $dropdownItems['checkNone'] = '
             <li>
-                <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
+                <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
                     ' . $this->iconFactory->getIcon('actions-selection-elements-none', IconSize::SMALL)->render() . '
                     ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '
                 </button>
@@ -3132,7 +3132,7 @@ class DatabaseRecordList
 
         $dropdownItems['toggleSelection'] = '
             <li>
-                <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
+                <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
                     ' . $this->iconFactory->getIcon('actions-selection-elements-invert', IconSize::SMALL)->render() . '
                     ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '
                 </button>
@@ -3219,7 +3219,8 @@ class DatabaseRecordList
         if ($addClipboardActions && (string)($this->modTSconfig['enableClipBoard'] ?? '') !== 'deactivated') {
             $copyMarked = '
                 <button type="button"
-                    class="btn btn-sm btn-default ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '"
+                    class="btn btn-sm btn-default"
+                    ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '
                     title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '"
                     data-multi-record-selection-action="copyMarked"
                 >
@@ -3228,7 +3229,8 @@ class DatabaseRecordList
                 </button>';
             $removeMarked = '
                 <button type="button"
-                    class="btn btn-sm btn-default ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '"
+                    class="btn btn-sm btn-default"
+                    ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '
                     title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '"
                     data-multi-record-selection-action="removeMarked"
                 >

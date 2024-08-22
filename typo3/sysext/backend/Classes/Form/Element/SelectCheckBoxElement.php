@@ -313,7 +313,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                 </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                     <li>
-                        <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
+                        <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
                             <span class="dropdown-item-columns">
                                 <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                                     ' . $this->iconFactory->getIcon('actions-selection-elements-all', IconSize::SMALL)->render() . '
@@ -325,7 +325,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
+                        <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
                             <span class="dropdown-item-columns">
                                 <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                                     ' . $this->iconFactory->getIcon('actions-selection-elements-none', IconSize::SMALL)->render() . '

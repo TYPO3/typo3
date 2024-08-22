@@ -77,9 +77,9 @@ final class FileClipboardCest
         $I->wait(1);
         $I->click('Clipboard #1 (multi-selection mode)');
         $I->click('.t3js-multi-record-selection-check-actions-toggle');
-        $I->waitForElementVisible('button[data-multi-record-selection-check-action="check-all"]:not(.disabled)');
+        $I->waitForElementClickable('button[data-multi-record-selection-check-action="check-all"]');
         $I->click('button[data-multi-record-selection-check-action="check-all"]');
-        $I->waitForElementVisible('button[data-multi-record-selection-action="copyMarked"]:not(.disabled)');
+        $I->waitForElementClickable('button[data-multi-record-selection-action="copyMarked"]');
         $I->click('button[data-multi-record-selection-action="copyMarked"]');
 
         foreach ($expectedFiles as $file) {
