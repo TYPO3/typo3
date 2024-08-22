@@ -99,14 +99,13 @@ final class FluidBasedContentPreviewRenderer implements LoggerAwareInterface
                 'file' => $fluidTemplateFileAbsolutePath,
                 'exception' => $e,
             ]);
-
             if ($this->getBackendUser()->shallDisplayDebugInformation()) {
                 $view = GeneralUtility::makeInstance(StandaloneView::class);
+                $view->setTemplatePathAndFilename('EXT:backend/Resources/Private/Templates/PageLayout/FluidBasedContentPreviewRenderingException.html');
                 $view->assign('error', [
                     'message' => str_replace(Environment::getProjectPath(), '', $e->getMessage()),
                     'title' => 'Error while rendering FluidTemplate preview using ' . str_replace(Environment::getProjectPath(), '', $fluidTemplateFileAbsolutePath),
                 ]);
-                $view->setTemplateSource('<f:be.infobox title="{error.title}" state="{f:constant(name: \'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR\')}">{error.message}</f:be.infobox>');
                 return $view->render();
             }
             return null;
