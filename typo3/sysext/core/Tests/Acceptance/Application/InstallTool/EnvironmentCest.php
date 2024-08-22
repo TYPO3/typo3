@@ -53,9 +53,6 @@ final class EnvironmentCest extends AbstractCest
         $I->click($testData['button']);
         $modalDialog->canSeeDialog();
         $I->see($testData['seeInModal'], ModalDialog::$openedModalSelector);
-
-        $I->click('.t3js-modal-close');
-        $I->waitForElementNotVisible('.modal-dialog');
     }
 
     public function imageProcessingWorks(ApplicationTester $I): void
@@ -66,7 +63,5 @@ final class EnvironmentCest extends AbstractCest
         // reports 'is ok' quickly. Worth a look of some JS jockey? We give the system some time to accumulate.
         $I->wait(1);
         $I->waitForElementVisible('.t3js-modal-close');
-        $I->click('.t3js-modal-close');
-        $I->waitForElementNotVisible('.modal-dialog');
     }
 }

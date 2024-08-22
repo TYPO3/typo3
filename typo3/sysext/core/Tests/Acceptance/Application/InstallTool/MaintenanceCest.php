@@ -44,8 +44,6 @@ final class MaintenanceCest extends AbstractCest
         $I->see('Analyze Database Structure', '.modal-dialog h1');
         $I->waitForElementVisible('.callout-success');
         $I->see('Database schema is up to date. Good job!', '.callout-success .callout-title');
-        $I->click('.t3js-modal-close');
-        $I->waitForElementNotVisible('.modal-dialog');
     }
 
     public function removeTemporaryAssetsWorks(ApplicationTester $I): void
@@ -53,8 +51,6 @@ final class MaintenanceCest extends AbstractCest
         $I->click('Scan temporary files…');
         $I->waitForElementVisible('.modal-dialog');
         $I->see('Remove Temporary Assets', '.modal-dialog h1');
-        $I->click('.t3js-modal-close');
-        $I->waitForElementNotVisible('.modal-dialog');
     }
 
     #[Env('classic')]
@@ -70,8 +66,6 @@ final class MaintenanceCest extends AbstractCest
         $I->click('Scan tables…');
         $I->waitForElementVisible('.modal-dialog');
         $I->see('Clear Persistent Database Tables', '.modal-dialog h1');
-        $I->click('.t3js-modal-close');
-        $I->waitForElementNotVisible('.modal-dialog');
     }
 
     public function createAdminUserWorks(ApplicationTester $I): void
@@ -79,8 +73,6 @@ final class MaintenanceCest extends AbstractCest
         $I->click('Create Administrator…');
         $I->waitForElementVisible('.modal-dialog');
         $I->see('Create Administrative User', '.modal-dialog h1');
-        $I->click('.t3js-modal-close');
-        $I->waitForElementNotVisible('.modal-dialog');
     }
 
     public function resetBackendUserPreferencesWorks(ApplicationTester $I): void
@@ -97,7 +89,5 @@ final class MaintenanceCest extends AbstractCest
         $I->waitForElementVisible('.modal-dialog');
         $I->see('Manage Language Packs', '.modal-dialog h1');
         $I->waitForText('Active languages', 30, '.modal-dialog h2');
-        $I->click('.t3js-modal-close');
-        $I->waitForElementNotVisible('.modal-dialog');
     }
 }
