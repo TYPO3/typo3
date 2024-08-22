@@ -1,6 +1,6 @@
 import{directive as e}from"lit-html/directive.js";import{UnsafeHTMLDirective as le}from"lit-html/directives/unsafe-html.js";
 /**
  * @license
- * Copyright 2017 Google LLC
+ * Copyright 2024 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */class pe extends le{}pe.directiveName="unsafeSVG",pe.resultType=2;const fe=e(pe);export{fe as unsafeSVG};
+ */class he extends le{}he.directiveName="unsafeMath",he.resultType=3;const de=e(he);export{de as unsafeMathML};

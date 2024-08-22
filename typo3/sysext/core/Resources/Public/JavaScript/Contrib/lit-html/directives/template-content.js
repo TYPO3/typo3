@@ -1,6 +1,6 @@
-import{noChange as t}from"lit-html/lit-html.js";import{directive as r,Directive as e,PartType as n}from"lit-html/directive.js";
+import{noChange as R}from"lit-html/lit-html.js";import{directive as e,Directive as i,PartType as t}from"lit-html/directive.js";
 /**
  * @license
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const o=r(class extends e{constructor(t){if(super(t),t.type!==n.CHILD)throw Error("templateContent can only be used in child bindings")}render(r){return this.vt===r?t:(this.vt=r,document.importNode(r.content,!0))}});export{o as templateContent};
+ */const oe=e(class extends i{constructor(r){if(super(r),r.type!==t.CHILD)throw Error("templateContent can only be used in child bindings")}render(t){return this.vt===t?R:(this.vt=t,document.importNode(t.content,!0))}});export{oe as templateContent};
