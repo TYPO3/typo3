@@ -1586,21 +1586,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Updates/DatabaseRowsUpdateWizard.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{string, string, string\\} and array\\<TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\> will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
-
-		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{string\\} and array\\<TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\> will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
-
-		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{string\\} and array\\<TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\> will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/FileNodeTest.php
-
-		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/CronCommand.php

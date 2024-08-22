@@ -288,7 +288,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['fixSelf'])
             ->getMock();
-        $uniqueReturn = [StringUtility::getUniqueId('foo_')];
+        $uniqueReturn = [new FlashMessage(StringUtility::getUniqueId('foo_'))];
         $node->expects(self::once())->method('fixSelf')->willReturn($uniqueReturn);
         self::assertSame($uniqueReturn, $node->fix());
     }
@@ -297,15 +297,15 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     public function fixCallsFixOnChildrenAndReturnsMergedResult(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, ['fixSelf'], [], '', false);
-        $uniqueReturnSelf = StringUtility::getUniqueId('foo_');
+        $uniqueReturnSelf = new FlashMessage(StringUtility::getUniqueId('foo_'));
         $node->expects(self::once())->method('fixSelf')->willReturn([$uniqueReturnSelf]);
 
         $childMock1 = $this->createMock(NodeInterface::class);
-        $uniqueReturnChild1 = StringUtility::getUniqueId('foo_');
+        $uniqueReturnChild1 = new FlashMessage(StringUtility::getUniqueId('foo_'));
         $childMock1->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild1]);
 
         $childMock2 = $this->createMock(NodeInterface::class);
-        $uniqueReturnChild2 = StringUtility::getUniqueId('foo_');
+        $uniqueReturnChild2 = new FlashMessage(StringUtility::getUniqueId('foo_'));
         $childMock2->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild2]);
 
         $node->_set('children', [$childMock1, $childMock2]);

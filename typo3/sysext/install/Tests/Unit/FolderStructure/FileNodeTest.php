@@ -332,7 +332,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
             '',
             false
         );
-        $uniqueReturn = [StringUtility::getUniqueId('foo_')];
+        $uniqueReturn = [new FlashMessage(StringUtility::getUniqueId('foo_'))];
         $node->expects(self::once())->method('fixSelf')->willReturn($uniqueReturn);
         self::assertSame($uniqueReturn, $node->fix());
     }
