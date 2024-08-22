@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\View\FluidViewAdapter;
@@ -54,6 +55,7 @@ use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface as FluidStandaloneViewInterface;
@@ -477,51 +479,36 @@ abstract class ActionController implements ControllerInterface
              */
             $this->viewResolver->setDefaultViewClass($this->defaultViewObjectName);
         }
-
-        $view = $this->viewResolver->resolve(
-            $this->request->getControllerObjectName(),
-            $this->request->getControllerActionName(),
-            $this->request->getFormat()
-        );
-        $this->setViewConfiguration($view);
+        $view = $this->viewResolver->resolve($this->request->getControllerObjectName(), $this->request->getControllerActionName(), $this->request->getFormat());
         if ($view instanceof FluidViewAdapter) {
+            // This specific magic is tailored to Fluid. Ignore if we're not dealing with a fluid view here.
+            $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+            $extensionKey = $this->request->getControllerExtensionKey();
+            $templateRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Templates/'];
+            if (!empty($configuration['view']['templateRootPaths']) && is_array($configuration['view']['templateRootPaths'])) {
+                $templateRootPaths = array_merge($templateRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['templateRootPaths']));
+            }
+            $layoutRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Layouts/'];
+            if (!empty($configuration['view']['layoutRootPaths']) && is_array($configuration['view']['layoutRootPaths'])) {
+                $layoutRootPaths = array_merge($layoutRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['layoutRootPaths']));
+            }
+            $partialRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Partials/'];
+            if (!empty($configuration['view']['partialRootPaths']) && is_array($configuration['view']['partialRootPaths'])) {
+                $partialRootPaths = array_merge($partialRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['partialRootPaths']));
+            }
             $renderingContext = $view->getRenderingContext();
             $renderingContext->setAttribute(ServerRequestInterface::class, $this->request);
             $renderingContext->setControllerName($this->request->getControllerName());
             $renderingContext->setControllerAction($this->request->getControllerActionName());
+            /** @var TemplatePaths $templatePaths */
             $templatePaths = $view->getRenderingContext()->getTemplatePaths();
-            $templatePaths->fillDefaultsByPackageName($this->request->getControllerExtensionKey());
+            $templatePaths->setTemplateRootPaths($templateRootPaths);
+            $templatePaths->setPartialRootPaths($partialRootPaths);
+            $templatePaths->setLayoutRootPaths($layoutRootPaths);
             $templatePaths->setFormat($this->request->getFormat());
         }
         $view->assign('settings', $this->settings);
         return $view;
-    }
-
-    /**
-     * @internal
-     * @todo: Set signature to setViewConfiguration(ViewInterface $view) in v14.
-     */
-    protected function setViewConfiguration(FluidStandaloneViewInterface|ViewInterface $view): void
-    {
-        if (!$view instanceof FluidViewAdapter && !method_exists($view, 'getRenderingContext')) {
-            // @todo: simplify to "if (!$view instanceof FluidViewAdapter) in v14.
-            // This specific magic is tailored to Fluid. Return if we're not dealing with a fluid view here.
-            return;
-        }
-        $renderingContext = $view->getRenderingContext();
-        $templatePaths = $renderingContext->getTemplatePaths();
-        $configuration = $this->configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
-        );
-        if (!empty($configuration['view']['templateRootPaths']) && is_array($configuration['view']['templateRootPaths'])) {
-            $templatePaths->setTemplateRootPaths($configuration['view']['templateRootPaths']);
-        }
-        if (!empty($configuration['view']['layoutRootPaths']) && is_array($configuration['view']['layoutRootPaths'])) {
-            $templatePaths->setLayoutRootPaths($configuration['view']['layoutRootPaths']);
-        }
-        if (!empty($configuration['view']['partialRootPaths']) && is_array($configuration['view']['partialRootPaths'])) {
-            $templatePaths->setPartialRootPaths($configuration['view']['partialRootPaths']);
-        }
     }
 
     /**

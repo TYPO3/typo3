@@ -50,9 +50,16 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
      * if not defined, uses fallback paths by convention.
      *
      * @param string $packageName
+     * @deprecated since TYPO3 v13, will be removed in v14. Also removed in Fluid standalone v4.
      */
     public function fillDefaultsByPackageName($packageName): void
     {
+        trigger_error(
+            __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14.'
+            . ' Please calculate proper paths in the consuming class and use the setters'
+            . ' to set template, partial and layout paths.',
+            E_USER_DEPRECATED
+        );
         $this->fillFromConfigurationArray($this->getContextSpecificViewConfiguration($packageName));
     }
 
@@ -109,6 +116,9 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
         return $reference;
     }
 
+    /**
+     * @deprecated Remove in v14 along with fillDefaultsByPackageName()
+     */
     protected function getContextSpecificViewConfiguration(string $extensionKey): array
     {
         if (empty($extensionKey)) {
@@ -159,6 +169,9 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
         return $paths;
     }
 
+    /**
+     * @deprecated Remove in v14 along with fillDefaultsByPackageName()
+     */
     protected function getExtensionPrivateResourcesPath(string $extensionKey): ?string
     {
         $extensionKey = trim($extensionKey);

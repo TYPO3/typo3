@@ -34,9 +34,7 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
-use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 use TYPO3Tests\ActionControllerTest\Controller\TestController;
 
@@ -229,70 +227,6 @@ final class ActionControllerTest extends FunctionalTestCase
         $reflectionMethod = $reflectionClass->getProperty('view');
         $view = $reflectionMethod->getValue($subject);
         self::assertInstanceOf(JsonView::class, $view);
-    }
-
-    #[Test]
-    public function setViewConfigurationConfiguresViewWithArray(): void
-    {
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
-        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerMock->method('getConfiguration')->willReturn(
-            [
-                'view' => [
-                    'templateRootPaths' => ['a template path'],
-                    'layoutRootPaths' => ['a layout path'],
-                    'partialRootPaths' => ['a partial path'],
-                ],
-            ],
-        );
-
-        $templatePaths = $this->createMock(TemplatePaths::class);
-        $templatePaths->expects(self::once())->method('setTemplateRootPaths')->with(['a template path']);
-        $templatePaths->expects(self::once())->method('setLayoutRootPaths')->with(['a layout path']);
-        $templatePaths->expects(self::once())->method('setPartialRootPaths')->with(['a partial path']);
-        $renderingContext = $this->createMock(RenderingContextInterface::class);
-        $renderingContext->expects(self::once())->method('getTemplatePaths')->willReturn($templatePaths);
-        $viewMock = $this->createMock(FluidTemplateView::class);
-        $viewMock->expects(self::once())->method('getRenderingContext')->willReturn($renderingContext);
-
-        $subject = $this->get(TestController::class);
-        $subject->injectConfigurationManager($configurationManagerMock);
-        $subject->setViewConfiguration($viewMock);
-    }
-
-    #[Test]
-    public function setViewConfigurationDoesNotCallSettersWithEmptyArray(): void
-    {
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
-        $configurationManagerMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerMock->method('getConfiguration')->willReturn(
-            [
-                'view' => [
-                    'templateRootPaths' => [],
-                    'layoutRootPaths' => [],
-                    'partialRootPaths' => [],
-                ],
-            ],
-        );
-
-        $templatePaths = $this->createMock(TemplatePaths::class);
-        $templatePaths->expects(self::never())->method('setTemplateRootPaths')->with(['a template path']);
-        $templatePaths->expects(self::never())->method('setLayoutRootPaths')->with(['a layout path']);
-        $templatePaths->expects(self::never())->method('setPartialRootPaths')->with(['a partial path']);
-        $renderingContext = $this->createMock(RenderingContextInterface::class);
-        $renderingContext->expects(self::once())->method('getTemplatePaths')->willReturn($templatePaths);
-        $viewMock = $this->createMock(FluidTemplateView::class);
-        $viewMock->expects(self::once())->method('getRenderingContext')->willReturn($renderingContext);
-
-        $subject = $this->get(TestController::class);
-        $subject->injectConfigurationManager($configurationManagerMock);
-        $subject->setViewConfiguration($viewMock);
     }
 
     #[Test]

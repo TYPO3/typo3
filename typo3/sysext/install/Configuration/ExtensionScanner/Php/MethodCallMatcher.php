@@ -6351,4 +6351,11 @@ return [
             'Deprecation-104463-FluidStandaloneOverrideArgument.rst',
         ],
     ],
+    'TYPO3\CMS\Fluid\View\TemplatePaths->fillDefaultsByPackageName' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-104764-FluidTemplatePaths-fillDefaultsByPackageName.rst',
+        ],
+    ],
 ];

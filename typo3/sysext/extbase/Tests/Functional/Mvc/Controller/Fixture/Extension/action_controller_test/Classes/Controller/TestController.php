@@ -19,13 +19,11 @@ namespace TYPO3Tests\ActionControllerTest\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
-use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3Fluid\Fluid\View\ViewInterface as FluidStandaloneViewInterface;
 use TYPO3Tests\ActionControllerTest\Domain\Model\Model;
 
 /**
@@ -51,11 +49,6 @@ class TestController extends ActionController
     public function initializeActionMethodArguments(): void
     {
         parent::initializeActionMethodArguments();
-    }
-
-    public function setViewConfiguration(FluidStandaloneViewInterface|ViewInterface $view): void
-    {
-        parent::setViewConfiguration($view);
     }
 
     public function getFlashMessageQueue(?string $identifier = null): FlashMessageQueue
