@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\RecoveryCodes;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -208,7 +209,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
     {
         $this->setupUser();
         $response = $this->subject->handleRequest(
-            new ServerRequest('https://example.com', 'GET'),
+            (new ServerRequest('https://example.com', 'GET'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE),
             MfaProviderPropertyManager::create($this->subject, $this->user),
             MfaViewType::SETUP
         );
@@ -218,7 +219,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
     #[Test]
     public function editViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'));
+        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->setupUser([
             'recovery-codes' => [
                 'codes' => ['some-code', 'another-code'],
@@ -240,7 +241,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
     #[Test]
     public function authViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'));
+        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->setupUser(['recovery-codes' => ['active' => true, 'codes' => ['some-code']]]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::AUTH)->getBody()->getContents();

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -221,7 +222,7 @@ final class TotpProviderTest extends FunctionalTestCase
     #[Test]
     public function setupViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'));
+        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::SETUP)->getBody()->getContents();
 
@@ -234,7 +235,7 @@ final class TotpProviderTest extends FunctionalTestCase
     #[Test]
     public function editViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'));
+        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->setupUser(['name' => 'some name', 'updated' => 1616099471, 'lastUsed' => 1616099472]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::EDIT)->getBody()->getContents();
@@ -247,7 +248,7 @@ final class TotpProviderTest extends FunctionalTestCase
     #[Test]
     public function authViewTest(): void
     {
-        $request = (new ServerRequest('https://example.com', 'POST'));
+        $request = (new ServerRequest('https://example.com', 'POST'))->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->setupUser(['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 0]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::AUTH)->getBody()->getContents();
