@@ -220,11 +220,13 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
             return '';
         }
         $table = $this->configuration['table'];
+        $modTSconfig = BackendUtility::getPagesTSconfig($selectedPage)['mod.']['web_list.'] ?? [];
         $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageInfo = BackendUtility::readPageAccess($selectedPage, $permsClause);
         $selectedTable = (string)($request->getParsedBody()['table'] ?? $request->getQueryParams()['table'] ?? '');
         $searchWord = (string)($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? '');
         $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
+        $searchLevels = (int)($request->getParsedBody()['search_levels'] ?? $request->getQueryParams()['search_levels'] ?? $modTSconfig['searchLevel.']['default'] ?? 0);
 
         // If table is 'pages', add a pre-entry to make selected page selectable directly.
         $titleLen = (int)$backendUser->uc['titleLen'];
@@ -252,9 +254,11 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $dbList->clickMenuEnabled = false;
         $dbList->displayRecordDownload = false;
         $dbList->tableList = $table;
-        $dbList->start($selectedPage, $selectedTable, MathUtility::forceIntegerInRange($pointer, 0, 100000), $searchWord);
+        $dbList->start($selectedPage, $selectedTable, MathUtility::forceIntegerInRange($pointer, 0, 100000), $searchWord, $searchLevels);
 
         $html[] = $this->recordSearchBoxComponent
+            ->setAllowedSearchLevels((array)($modTSconfig['searchLevel.']['items.'] ?? []))
+            ->setSearchLevel($searchLevels)
             ->setSearchWord($searchWord)
             ->render($request, $dbList->listURL('', '-1', 'pointer,searchTerm'));
         $html[] = $dbList->generateList();
