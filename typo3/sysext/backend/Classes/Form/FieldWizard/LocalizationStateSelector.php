@@ -40,8 +40,14 @@ class LocalizationStateSelector extends AbstractNode
         $fieldName = $this->data['fieldName'];
         $fieldId = $this->data['parameterArray']['itemFormElID'];
         $l10nStateFieldName = 'l10n_state';
+
+        $localizationState = State::fromJSON(
+            $this->data['tableName'],
+            $this->data['databaseRow'][$l10nStateFieldName] ?? null
+        );
+
         if (
-            !$l10nStateFieldName
+            $localizationState === null
             || !isset($this->data['defaultLanguageRow'])
             || !isset($this->data['processedTca']['columns'][$fieldName]['config']['behaviour']['allowLanguageSynchronization'])
             || !$this->data['processedTca']['columns'][$fieldName]['config']['behaviour']['allowLanguageSynchronization']
@@ -69,11 +75,6 @@ class LocalizationStateSelector extends AbstractNode
             }
             $fieldValueInParentRow = (string)$this->data['defaultLanguageRow'][$fieldName];
         }
-
-        $localizationState = State::fromJSON(
-            $this->data['tableName'],
-            $this->data['databaseRow'][$l10nStateFieldName] ?? null
-        );
 
         $fieldElementName = 'data[' . htmlspecialchars($this->data['tableName']) . ']'
             . '[' . htmlspecialchars((string)$this->data['databaseRow']['uid']) . ']'

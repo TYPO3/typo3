@@ -3638,4 +3638,79 @@ final class TcaMigrationTest extends UnitTestCase
         ];
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
+
+    #[Test]
+    public function removeAllowLanguageSynchronizationFromColumnsOverrides(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                            'config' => [
+                                'behaviour' => [
+                                    'allowLanguageSynchronization' => true,
+                                ],
+                            ],
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'bColumn',
+                        'columnsOverrides' => [
+                            'bColumn' => [
+                                'config' => [
+                                    'behaviour' => [
+                                        'allowLanguageSynchronization' => true,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                            'config' => [
+                                'behaviour' => [
+                                    'allowLanguageSynchronization' => true,
+                                ],
+                            ],
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'bColumn',
+                        'columnsOverrides' => [
+                            'bColumn' => [
+                                'config' => [
+                                    'behaviour' => [
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
 }

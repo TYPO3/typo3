@@ -88,6 +88,7 @@ class TcaMigration
         $tca = $this->removePassContentFromTypeNone($tca);
         $tca = $this->migrateItemsToAssociativeArray($tca);
         $tca = $this->removeMmInsertFields($tca);
+        $tca = $this->removeAllowLanguageSynchronizationFromColumnsOverrides($tca);
 
         return $tca;
     }
@@ -1466,6 +1467,31 @@ class TcaMigration
                     $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
                         . '\'MM_insert_fields\'. This config key is obsolete and should be removed. '
                         . 'Please adjust your TCA accordingly.';
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Setting "allowLanguageSynchronization" for columns via columnsOverride is currently not supported
+     * see Localization\State and therefore leads to an exception in the LocalizationStateSelector wizard.
+     * Therefore, the setting is removed for now and the integrator is informed accordingly.
+     */
+    protected function removeAllowLanguageSynchronizationFromColumnsOverrides(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!is_array($tableDefinition['types'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['types'] ?? [] as $typeName => $typeConfig) {
+                foreach ($typeConfig['columnsOverrides'] ?? [] as $columnOverride => $columnOverrideConfig) {
+                    if (isset($columnOverrideConfig['config']['behaviour']['allowLanguageSynchronization'])) {
+                        unset($tca[$table]['types'][$typeName]['columnsOverrides'][$columnOverride]['config']['behaviour']['allowLanguageSynchronization']);
+                        $this->messages[] = 'The TCA columns override of column \'' . $columnOverride . '\' for type \'' . $typeName . '\' '
+                            . 'of table  \'' . $table . '\' sets \'[behaviour][allowLanguageSynchronization]\'. Setting '
+                            . 'this option in \'columnsOverrides\' is currently not supported. Please adjust your TCA accordingly.';
+                    }
                 }
             }
         }
