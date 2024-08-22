@@ -541,6 +541,9 @@
 			<trans-unit id="component.progressIndicator.section.maxValue.headline" resname="component.progressIndicator.section.maxValue.headline">
 				<source>Max value</source>
 			</trans-unit>
+			<trans-unit id="component.progressIndicator.section.ridiculousMaxValue.headline" resname="component.progressIndicator.section.ridiculousMaxValue.headline">
+				<source>Ridiculous max value</source>
+			</trans-unit>
 			<trans-unit id="component.progressIndicator.section.severity.headline" resname="component.progressIndicator.section.severity.headline">
 				<source>Severity</source>
 			</trans-unit>

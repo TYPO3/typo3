@@ -53,10 +53,18 @@
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.maxValue.headline" /></h2>
         <f:variable name="codeSnippetMaxValue">
-            &lt;typo3-backend-progress-bar  value="0.5" max="1" label="Progress with value=0.5, max=1"&gt;&lt;/typo3-backend-progress-bar&gt;
+            &lt;typo3-backend-progress-bar value="0.5" max="1" label="Progress with value=0.5, max=1"&gt;&lt;/typo3-backend-progress-bar&gt;
         </f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetMaxValue}" decodeEntities="true">
-            <typo3-backend-progress-bar  value="0.5" max="1" label="Progress with value=0.5, max=1"></typo3-backend-progress-bar>
+            <typo3-backend-progress-bar value="0.5" max="1" label="Progress with value=0.5, max=1"></typo3-backend-progress-bar>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.ridiculousMaxValue.headline" /></h2>
+        <f:variable name="codeSnippetMaxValue">
+            &lt;typo3-backend-progress-bar value="33934584568974" max="3393458456897459" label="Progress with a ridiculous max value"&gt;&lt;/typo3-backend-progress-bar&gt;
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetMaxValue}" decodeEntities="true">
+            <typo3-backend-progress-bar value="239345845689745928946789" max="339345845689745928946756" label="Progress with a ridiculous max value"></typo3-backend-progress-bar>
         </sg:example>
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.severity.headline" /></h2>

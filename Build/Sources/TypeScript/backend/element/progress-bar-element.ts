@@ -117,7 +117,7 @@ export class ProgressBarElement extends LitElement {
       indeterminate: isIndeterminate,
     });
     const styles = isIndeterminate ? nothing : styleMap({
-      width: (this.clamp(this.value, 0, 100) / this.max * 100).toString() + '%',
+      width: (this.clamp(this.value, 0, this.max) / this.max * 100).toString() + '%',
     });
 
     return html`
