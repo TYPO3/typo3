@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ViewhelperLibraryTest extends FunctionalTestCase
 {

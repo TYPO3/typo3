@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
-use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class FeatureViewHelperTest extends FunctionalTestCase
 {
@@ -39,7 +39,6 @@ final class FeatureViewHelperTest extends FunctionalTestCase
     public function render(?bool $featureStatus, string $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['viewHelperTestFeature'] = $featureStatus;
-
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(
             '<f:feature name="viewHelperTestFeature"><f:then>enabled</f:then><f:else>disabled</f:else></f:feature>'

@@ -35,7 +35,6 @@ use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validat
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
-use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
@@ -256,7 +255,7 @@ final class ActionControllerTest extends FunctionalTestCase
         $templatePaths->expects(self::once())->method('setPartialRootPaths')->with(['a partial path']);
         $renderingContext = $this->createMock(RenderingContextInterface::class);
         $renderingContext->expects(self::once())->method('getTemplatePaths')->willReturn($templatePaths);
-        $viewMock = $this->createMock(TemplateView::class);
+        $viewMock = $this->createMock(FluidTemplateView::class);
         $viewMock->expects(self::once())->method('getRenderingContext')->willReturn($renderingContext);
 
         $subject = $this->get(TestController::class);
@@ -288,7 +287,7 @@ final class ActionControllerTest extends FunctionalTestCase
         $templatePaths->expects(self::never())->method('setPartialRootPaths')->with(['a partial path']);
         $renderingContext = $this->createMock(RenderingContextInterface::class);
         $renderingContext->expects(self::once())->method('getTemplatePaths')->willReturn($templatePaths);
-        $viewMock = $this->createMock(TemplateView::class);
+        $viewMock = $this->createMock(FluidTemplateView::class);
         $viewMock->expects(self::once())->method('getRenderingContext')->willReturn($renderingContext);
 
         $subject = $this->get(TestController::class);
