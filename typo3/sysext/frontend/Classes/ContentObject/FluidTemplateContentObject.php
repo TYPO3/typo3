@@ -15,11 +15,14 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\FluidViewAdapter;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 
 /**
@@ -28,8 +31,9 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 class FluidTemplateContentObject extends AbstractContentObject
 {
     public function __construct(
-        protected ContentDataProcessor $contentDataProcessor,
-        protected StandaloneView $view
+        private readonly ContentDataProcessor $contentDataProcessor,
+        private readonly TypoScriptService $typoScriptService,
+        private readonly ViewFactoryInterface $viewFactory,
     ) {}
 
     /**
@@ -58,69 +62,31 @@ class FluidTemplateContentObject extends AbstractContentObject
      * }
      *
      * @param array $conf Array of TypoScript properties
-     * @return string The HTML output
      */
-    public function render($conf = [])
+    public function render($conf = []): string
     {
-        $this->view->setRequest($this->request);
-
         if (!is_array($conf)) {
             $conf = [];
         }
 
-        $this->setFormat($conf);
-        $this->setTemplate($conf);
-        $this->setLayoutRootPath($conf);
-        $this->setPartialRootPath($conf);
-        $this->setExtbaseVariables($conf);
-        $this->assignSettings($conf);
-        $variables = $this->getContentObjectVariables($conf);
-        $variables = $this->contentDataProcessor->process($this->cObj, $conf, $variables);
+        $request = $this->buildExtbaseRequestIfNeeded($this->request, $conf);
+        $templateFilename = '';
+        $templateSource = null;
 
-        $this->view->assignMultiple($variables);
-
-        $this->renderFluidTemplateAssetsIntoPageRenderer($variables);
-        $content = $this->renderFluidView();
-        return $this->applyStandardWrapToRenderedContent($content, $conf);
-    }
-
-    /**
-     * Attempts to render HeaderAssets and FooterAssets sections from the
-     * Fluid template, then adds each (if not empty) to either header or
-     * footer, as appropriate, using PageRenderer.
-     */
-    protected function renderFluidTemplateAssetsIntoPageRenderer(array $variables)
-    {
-        $pageRenderer = $this->getPageRenderer();
-        $headerAssets = $this->view->renderSection('HeaderAssets', [...$variables, 'contentObject' => $this], true);
-        $footerAssets = $this->view->renderSection('FooterAssets', [...$variables, 'contentObject' => $this], true);
-        if (!empty(trim($headerAssets))) {
-            $pageRenderer->addHeaderData($headerAssets);
-        }
-        if (!empty(trim($footerAssets))) {
-            $pageRenderer->addFooterData($footerAssets);
-        }
-    }
-
-    /**
-     * Set template
-     *
-     * @param array $conf With possibly set file resource
-     * @throws \InvalidArgumentException
-     */
-    protected function setTemplate(array $conf)
-    {
-        // Fetch the Fluid template by templateName
-        if (
-            (!empty($conf['templateName']) || !empty($conf['templateName.']))
+        if ((!empty($conf['templateName']) || !empty($conf['templateName.']))
             && !empty($conf['templateRootPaths.']) && is_array($conf['templateRootPaths.'])
         ) {
-            $templateRootPaths = $this->applyStandardWrapToFluidPaths($conf['templateRootPaths.']);
-            $this->view->setTemplateRootPaths($templateRootPaths);
-            $templateName = $this->cObj->stdWrapValue('templateName', $conf);
-            $this->view->setTemplate($templateName);
+            // This is the most preferred way to render fluid: set up paths, then call render('My/Template')
+            $viewFactoryData = new ViewFactoryData(
+                templateRootPaths: $this->applyStandardWrapToFluidPaths($conf['templateRootPaths.']),
+                partialRootPaths: $this->getPartialRootPaths($conf),
+                layoutRootPaths: $this->getLayoutRootPaths($conf),
+                request: $request,
+                format: $this->cObj->stdWrapValue('format', $conf, null),
+            );
+            $templateFilename = $this->cObj->stdWrapValue('templateName', $conf);
         } elseif (!empty($conf['template']) && !empty($conf['template.'])) {
-            // Fetch the Fluid template by template cObject
+            // Fetch the Fluid template by template cObject "template = TEXT, template.value = <f:foo ..."
             $templateSource = $this->cObj->cObjGetSingle($conf['template'], $conf['template.'], 'template');
             if ($templateSource === '') {
                 throw new ContentRenderingException(
@@ -128,26 +94,59 @@ class FluidTemplateContentObject extends AbstractContentObject
                     1437420865
                 );
             }
-            $this->view->setTemplateSource($templateSource);
+            $viewFactoryData = new ViewFactoryData(
+                partialRootPaths: $this->getPartialRootPaths($conf),
+                layoutRootPaths: $this->getLayoutRootPaths($conf),
+                request: $request,
+                format: $this->cObj->stdWrapValue('format', $conf, null),
+            );
         } else {
-            // Fetch the Fluid template by file stdWrap
+            // Fetch the Fluid template by file stdWrap "file = EXT:myExt/.../Foo.html"
             $file = (string)$this->cObj->stdWrapValue('file', $conf);
             // Get the absolute file name
             $templatePathAndFilename = GeneralUtility::getFileAbsFileName($file);
-            $this->view->setTemplatePathAndFilename($templatePathAndFilename);
+            $viewFactoryData = new ViewFactoryData(
+                partialRootPaths: $this->getPartialRootPaths($conf),
+                layoutRootPaths: $this->getLayoutRootPaths($conf),
+                templatePathAndFilename: $templatePathAndFilename,
+                request: $request,
+                format: $this->cObj->stdWrapValue('format', $conf, null),
+            );
         }
+
+        $view = $this->viewFactory->create($viewFactoryData);
+        if (!$view instanceof FluidViewAdapter) {
+            throw new ContentRenderingException(
+                'The FLUIDTEMPLATE content object only works with FluidViewAdapter view. Use a different'
+                . ' content object to render some other view',
+                1724680477
+            );
+        }
+
+        if ($templateSource) {
+            $view->getRenderingContext()->getTemplatePaths()->setTemplateSource($templateSource);
+        }
+
+        if (isset($conf['settings.'])) {
+            $settings = $this->typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
+            $view->assign('settings', $settings);
+        }
+        $variables = $this->getContentObjectVariables($conf);
+        $variables = $this->contentDataProcessor->process($this->cObj, $conf, $variables);
+        $view->assignMultiple($variables);
+
+        $this->renderFluidTemplateAssetsIntoPageRenderer($view, $variables);
+
+        $content = $view->render($templateFilename);
+        if (isset($conf['stdWrap.'])) {
+            return $this->cObj->stdWrap($content, $conf['stdWrap.']);
+        }
+        return $content;
     }
 
-    /**
-     * Set layout root path if given in configuration
-     *
-     * @param array $conf Configuration array
-     */
-    protected function setLayoutRootPath(array $conf)
+    protected function getLayoutRootPaths(array $conf): ?array
     {
-        // Override the default layout path via typoscript
         $layoutPaths = [];
-
         $layoutRootPath = (string)$this->cObj->stdWrapValue('layoutRootPath', $conf);
         if ($layoutRootPath !== '') {
             $layoutPaths[] = GeneralUtility::getFileAbsFileName($layoutRootPath);
@@ -155,20 +154,12 @@ class FluidTemplateContentObject extends AbstractContentObject
         if (isset($conf['layoutRootPaths.'])) {
             $layoutPaths = array_replace($layoutPaths, $this->applyStandardWrapToFluidPaths($conf['layoutRootPaths.']));
         }
-        if (!empty($layoutPaths)) {
-            $this->view->setLayoutRootPaths($layoutPaths);
-        }
+        return !empty($layoutPaths) ? $layoutPaths : null;
     }
 
-    /**
-     * Set partial root path if given in configuration
-     *
-     * @param array $conf Configuration array
-     */
-    protected function setPartialRootPath(array $conf)
+    protected function getPartialRootPaths(array $conf): ?array
     {
         $partialPaths = [];
-
         $partialRootPath = (string)$this->cObj->stdWrapValue('partialRootPath', $conf);
         if ($partialRootPath !== '') {
             $partialPaths[] = GeneralUtility::getFileAbsFileName($partialRootPath);
@@ -176,39 +167,21 @@ class FluidTemplateContentObject extends AbstractContentObject
         if (isset($conf['partialRootPaths.'])) {
             $partialPaths = array_replace($partialPaths, $this->applyStandardWrapToFluidPaths($conf['partialRootPaths.']));
         }
-        if (!empty($partialPaths)) {
-            $this->view->setPartialRootPaths($partialPaths);
-        }
+        return !empty($partialPaths) ? $partialPaths : null;
     }
 
     /**
-     * Set different format if given in configuration
-     *
-     * @param array $conf Configuration array
+     * @todo: This magic has to fall one way or the other. It has been introduced for ext:form to
+     *        mimic extbase, see https://forge.typo3.org/issues/78842. This is actively used when
+     *        rendering forms using the formvh:render strategy, see the documentation.
      */
-    protected function setFormat(array $conf)
-    {
-        $format = $this->cObj->stdWrapValue('format', $conf);
-        if ($format) {
-            $this->view->setFormat($format);
-        }
-    }
-
-    /**
-     * Set some extbase variables if given
-     *
-     * @param array $conf Configuration array
-     */
-    protected function setExtbaseVariables(array $conf)
+    protected function buildExtbaseRequestIfNeeded(ServerRequestInterface $request, array $conf): ServerRequestInterface
     {
         $requestPluginName = (string)$this->cObj->stdWrapValue('pluginName', $conf['extbase.'] ?? []);
         $requestControllerExtensionName = (string)$this->cObj->stdWrapValue('controllerExtensionName', $conf['extbase.'] ?? []);
         $requestControllerName = (string)$this->cObj->stdWrapValue('controllerName', $conf['extbase.'] ?? []);
         $requestControllerActionName = (string)$this->cObj->stdWrapValue('controllerActionName', $conf['extbase.'] ?? []);
         if ($requestPluginName && $requestControllerExtensionName && $requestControllerName && $requestControllerActionName) {
-            // @todo: Yep, ugly. Having all four properties indicates an extbase plugin and then starts
-            //        extbase configuration manager. See https://forge.typo3.org/issues/78842 and investigate
-            //        if we still need this?
             $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
             $configurationManager->setConfiguration([
                 'extensionName' => $requestControllerExtensionName,
@@ -224,19 +197,33 @@ class FluidTemplateContentObject extends AbstractContentObject
                 ];
             }
             $requestBuilder = GeneralUtility::makeInstance(RequestBuilder::class);
-            $this->request = $requestBuilder->build($this->request);
-            $this->view->setRequest($this->request);
+            $request = $requestBuilder->build($request);
+        }
+        return $request;
+    }
+
+    /**
+     * Attempts to render HeaderAssets and FooterAssets sections from the
+     * Fluid template, then adds each (if not empty) to either header or
+     * footer, as appropriate, using PageRenderer.
+     */
+    protected function renderFluidTemplateAssetsIntoPageRenderer(FluidViewAdapter $view, array $variables): void
+    {
+        $pageRenderer = $this->getPageRenderer();
+        $headerAssets = $view->renderSection('HeaderAssets', [...$variables, 'contentObject' => $this], true);
+        $footerAssets = $view->renderSection('FooterAssets', [...$variables, 'contentObject' => $this], true);
+        if (!empty(trim($headerAssets))) {
+            $pageRenderer->addHeaderData($headerAssets);
+        }
+        if (!empty(trim($footerAssets))) {
+            $pageRenderer->addFooterData($footerAssets);
         }
     }
 
     /**
-     * Compile rendered content objects in variables array ready to assign to the view
-     *
-     * @param array $conf Configuration array
-     * @return array the variables to be assigned
-     * @throws \InvalidArgumentException
+     * Compile rendered content objects in variables array ready to assign to the view.
      */
-    protected function getContentObjectVariables(array $conf)
+    protected function getContentObjectVariables(array $conf): array
     {
         $variables = [];
         $reservedVariables = ['data', 'current'];
@@ -261,53 +248,7 @@ class FluidTemplateContentObject extends AbstractContentObject
         return $variables;
     }
 
-    /**
-     * Set any TypoScript settings to the view. This is similar to a
-     * default MVC action controller in extbase.
-     *
-     * @param array $conf Configuration
-     */
-    protected function assignSettings(array $conf)
-    {
-        if (isset($conf['settings.'])) {
-            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-            $settings = $typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
-            $this->view->assign('settings', $settings);
-        }
-    }
-
-    /**
-     * Render fluid standalone view
-     *
-     * @return string
-     */
-    protected function renderFluidView()
-    {
-        return $this->view->render();
-    }
-
-    /**
-     * Apply standard wrap to content
-     *
-     * @param string $content Rendered HTML content
-     * @param array $conf Configuration array
-     * @return string Standard wrapped content
-     */
-    protected function applyStandardWrapToRenderedContent($content, array $conf)
-    {
-        if (isset($conf['stdWrap.'])) {
-            $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
-        }
-        return $content;
-    }
-
-    /**
-     * Applies stdWrap on Fluid path definitions
-     *
-     *
-     * @return array
-     */
-    protected function applyStandardWrapToFluidPaths(array $paths)
+    protected function applyStandardWrapToFluidPaths(array $paths): array
     {
         $finalPaths = [];
         foreach ($paths as $key => $path) {

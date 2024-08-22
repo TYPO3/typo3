@@ -25,6 +25,7 @@ use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 
 /**
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
+ * @deprecated since TYPO3 v13, will be removed in v14.
  */
 class GenericViewResolver implements ViewResolverInterface
 {

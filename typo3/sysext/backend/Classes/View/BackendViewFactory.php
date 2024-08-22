@@ -112,6 +112,7 @@ final readonly class BackendViewFactory
             }
         }
 
+        // @todo: Inject ViewFactoryInterface instead, and use it.
         $renderingContext = $this->renderingContextFactory->create($templatePaths, $request);
         $fluidView = new FluidTemplateView($renderingContext);
         return new FluidViewAdapter($fluidView);

@@ -30,18 +30,23 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * MFA provider for time-based one-time password authentication
  *
  * @internal should only be used by the TYPO3 Core
  */
-class TotpProvider implements MfaProviderInterface
+final readonly class TotpProvider implements MfaProviderInterface
 {
     private const MAX_ATTEMPTS = 3;
 
-    public function __construct(protected readonly Context $context, protected readonly HashService $hashService) {}
+    public function __construct(
+        private Context $context,
+        private HashService $hashService,
+        private ViewFactoryInterface $viewFactory,
+    ) {}
 
     /**
      * Check if a TOTP is given in the current request
@@ -68,7 +73,6 @@ class TotpProvider implements MfaProviderInterface
     public function isLocked(MfaProviderPropertyManager $propertyManager): bool
     {
         $attempts = (int)$propertyManager->getProperty('attempts', 0);
-
         // Assume the provider is locked in case the maximum attempts are exceeded.
         // A provider however can only be locked if set up - an entry exists in database.
         return $propertyManager->hasProviderEntry() && $attempts >= self::MAX_ATTEMPTS;
@@ -150,12 +154,10 @@ class TotpProvider implements MfaProviderInterface
             // Can not update an inactive or locked provider
             return false;
         }
-
         $name = (string)($request->getParsedBody()['name'] ?? '');
         if ($name !== '') {
             return $propertyManager->updateProperties(['name' => $name]);
         }
-
         // Provider properties successfully updated
         return true;
     }
@@ -169,7 +171,6 @@ class TotpProvider implements MfaProviderInterface
             // Can not unlock an inactive or not locked provider
             return false;
         }
-
         // Reset the attempts
         return $propertyManager->updateProperties(['attempts' => 0]);
     }
@@ -177,7 +178,7 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Handle the deactivate action. For security reasons, the provider entry
      * is completely deleted and setting up this provider again, will therefore
-     * create a brand new entry.
+     * create a brand-new entry.
      */
     public function deactivate(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
@@ -185,7 +186,6 @@ class TotpProvider implements MfaProviderInterface
             // Can not deactivate an inactive provider
             return false;
         }
-
         // Delete the provider entry
         return $propertyManager->deleteProviderEntry();
     }
@@ -199,72 +199,54 @@ class TotpProvider implements MfaProviderInterface
         MfaProviderPropertyManager $propertyManager,
         MfaViewType $type
     ): ResponseInterface {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths(['EXT:core/Resources/Private/Templates/Authentication/MfaProvider/Totp']);
-        switch ($type) {
-            case MfaViewType::SETUP:
-                $this->prepareSetupView($view, $propertyManager);
-                break;
-            case MfaViewType::EDIT:
-                $this->prepareEditView($view, $propertyManager);
-                break;
-            case MfaViewType::AUTH:
-                $this->prepareAuthView($view, $propertyManager);
-                break;
-        }
-        return new HtmlResponse($view->assign('providerIdentifier', $propertyManager->getIdentifier())->render());
-    }
-
-    /**
-     * Generate a new shared secret, generate the otpauth URL and create a qr-code
-     * for improved usability. Set template and assign necessary variables for the
-     * setup view.
-     */
-    protected function prepareSetupView(StandaloneView $view, MfaProviderPropertyManager $propertyManager): void
-    {
-        $userData = $propertyManager->getUser()->user ?? [];
-        $secret = Totp::generateEncodedSecret([(string)($userData['uid'] ?? ''), (string)($userData['username'] ?? '')]);
-        $totpInstance = GeneralUtility::makeInstance(Totp::class, $secret);
-        $totpAuthUrl = $totpInstance->getTotpAuthUrl(
-            (string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? 'TYPO3'),
-            (string)($userData['email'] ?? '') ?: (string)($userData['username'] ?? '')
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:core/Resources/Private/Templates'],
+            partialRootPaths: ['EXT:core/Resources/Private/Partials'],
+            layoutRootPaths: ['EXT:core/Resources/Private/Layouts'],
+            request: $request,
         );
-        $view->setTemplate('Setup');
-        $view->assignMultiple([
-            'secret' => $secret,
-            'totpAuthUrl' => $totpAuthUrl,
-            'qrCode' => $this->getSvgQrCode($totpAuthUrl),
-            // Generate hmac of the secret to prevent it from being changed in the setup from
-            'checksum' => $this->hashService->hmac($secret, 'totp-setup'),
-        ]);
-    }
-
-    /**
-     * Set the template and assign necessary variables for the edit view
-     */
-    protected function prepareEditView(StandaloneView $view, MfaProviderPropertyManager $propertyManager): void
-    {
-        $view->setTemplate('Edit');
-        $view->assignMultiple([
-            'name' => $propertyManager->getProperty('name'),
-            'lastUsed' => $this->getDateTime($propertyManager->getProperty('lastUsed', 0)),
-            'updated' => $this->getDateTime($propertyManager->getProperty('updated', 0)),
-        ]);
-    }
-
-    /**
-     * Set the template for the auth view where the user has to provide the TOTP
-     */
-    protected function prepareAuthView(StandaloneView $view, MfaProviderPropertyManager $propertyManager): void
-    {
-        $view->setTemplate('Auth');
-        $view->assign('isLocked', $this->isLocked($propertyManager));
+        $view = $this->viewFactory->create($viewFactoryData);
+        if ($type === MfaViewType::SETUP) {
+            // Generate a new shared secret, generate the otpauth URL and create a qr-code for improved usability.
+            $userData = $propertyManager->getUser()->user ?? [];
+            $secret = Totp::generateEncodedSecret([(string)($userData['uid'] ?? ''), (string)($userData['username'] ?? '')]);
+            $totpInstance = GeneralUtility::makeInstance(Totp::class, $secret);
+            $totpAuthUrl = $totpInstance->getTotpAuthUrl(
+                (string)($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? 'TYPO3'),
+                (string)($userData['email'] ?? '') ?: (string)($userData['username'] ?? '')
+            );
+            $view->assignMultiple([
+                'secret' => $secret,
+                'totpAuthUrl' => $totpAuthUrl,
+                'qrCode' => $this->getSvgQrCode($totpAuthUrl),
+                // Generate hmac of the secret to prevent it from being changed in the setup from
+                'checksum' => $this->hashService->hmac($secret, 'totp-setup'),
+                'providerIdentifier' => $propertyManager->getIdentifier(),
+            ]);
+            return new HtmlResponse($view->render('Authentication/MfaProvider/Totp/Setup'));
+        }
+        if ($type === MfaViewType::EDIT) {
+            $view->assignMultiple([
+                'name' => $propertyManager->getProperty('name'),
+                'lastUsed' => $this->getDateTime($propertyManager->getProperty('lastUsed', 0)),
+                'updated' => $this->getDateTime($propertyManager->getProperty('updated', 0)),
+                'providerIdentifier' => $propertyManager->getIdentifier(),
+            ]);
+            return new HtmlResponse($view->render('Authentication/MfaProvider/Totp/Edit'));
+        }
+        if ($type === MfaViewType::AUTH) {
+            $view->assignMultiple([
+                'isLocked' => $this->isLocked($propertyManager),
+                'providerIdentifier' => $propertyManager->getIdentifier(),
+            ]);
+            return new HtmlResponse($view->render('Authentication/MfaProvider/Totp/Auth'));
+        }
     }
 
     /**
      * Internal helper method for fetching the TOTP from the request
      */
-    protected function getTotp(ServerRequestInterface $request): string
+    private function getTotp(ServerRequestInterface $request): string
     {
         return trim((string)($request->getQueryParams()['totp'] ?? $request->getParsedBody()['totp'] ?? ''));
     }
@@ -272,25 +254,20 @@ class TotpProvider implements MfaProviderInterface
     /**
      * Internal helper method for generating a svg QR-code for TOTP applications
      */
-    protected function getSvgQrCode(string $content): string
+    private function getSvgQrCode(string $content): string
     {
-        $qrCodeRenderer = new ImageRenderer(
-            new RendererStyle(225, 4),
-            new SvgImageBackEnd()
-        );
-
+        $qrCodeRenderer = new ImageRenderer(new RendererStyle(225, 4), new SvgImageBackEnd());
         return (new Writer($qrCodeRenderer))->writeString($content);
     }
 
     /**
      * Return the timestamp as local time (date string) by applying the globally configured format
      */
-    protected function getDateTime(int $timestamp): string
+    private function getDateTime(int $timestamp): string
     {
         if ($timestamp === 0) {
             return '';
         }
-
         return date(
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             $timestamp

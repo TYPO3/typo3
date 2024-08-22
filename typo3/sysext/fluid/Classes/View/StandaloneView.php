@@ -25,6 +25,8 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 /**
  * A standalone template view.
  * Should be used as view if you want to use Fluid without Extbase extensions
+ *
+ * @deprecated: since TYPO3 v13, will be removed in v14. Use ext:core ViewFactoryInterface instead.
  */
 class StandaloneView extends AbstractTemplateView
 {

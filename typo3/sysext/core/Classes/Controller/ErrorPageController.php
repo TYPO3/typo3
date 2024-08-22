@@ -17,60 +17,45 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Controller;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\View\TemplateView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * A class representing error messages shown on a page, rendered via fluid.
  * Classic Example: "No pages are found on rootlevel"
  */
-class ErrorPageController
+#[Autoconfigure(public: true)]
+readonly class ErrorPageController
 {
-    /**
-     * The view object
-     * @var TemplateView
-     */
-    protected $view;
+    public function __construct(
+        protected ViewFactoryInterface $viewFactory,
+        protected RequestId $requestId,
+        protected Typo3Information $typo3Information,
+    ) {}
 
     /**
-     * Sets up the view
+     * Renders the view and returns the content.
      */
-    public function __construct()
+    public function errorAction(string $title, string $message, int $errorCode = 0, ?int $httpStatusCode = null): string
     {
-        // @todo: Change to StandaloneView when StandaloneView has less dependencies.
-        $this->view = GeneralUtility::makeInstance(TemplateView::class);
-        $this->view->getRenderingContext()
-            ->getTemplatePaths()
-            ->setTemplatePathAndFilename(
-                GeneralUtility::getFileAbsFileName('EXT:core/Resources/Private/Templates/ErrorPage/Error.html')
-            );
-    }
-
-    /**
-     * Renders the view and returns the content
-     *
-     * @param string $title The title to be shown
-     * @param string $message The message to be shown
-     * @param int $errorCode The error code to be referenced
-     * @param int|null $httpStatusCode The http status code
-     * @return string the output of the view
-     */
-    public function errorAction(
-        string $title,
-        string $message,
-        int $errorCode = 0,
-        ?int $httpStatusCode = null
-    ): string {
-        $this->view->assign('message', $message);
-        $this->view->assign('title', $title);
-        $this->view->assign('httpStatusCode', $httpStatusCode);
-        $this->view->assign('errorCodeUrlPrefix', Typo3Information::URL_EXCEPTION);
-        $this->view->assign('donationUrl', Typo3Information::URL_DONATE);
-        $this->view->assign('errorCode', $errorCode);
-        $this->view->assign('requestId', GeneralUtility::makeInstance(RequestId::class));
-        $this->view->assign('copyrightYear', GeneralUtility::makeInstance(Typo3Information::class)->getCopyrightYear());
-        return $this->view->render();
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:core/Resources/Private/Templates'],
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
+        $view->assignMultiple([
+            'message' => $message,
+            'title' => $title,
+            'httpStatusCode' => $httpStatusCode,
+            'errorCodeUrlPrefix' => Typo3Information::URL_EXCEPTION,
+            'donationUrl' => Typo3Information::URL_DONATE,
+            'errorCode' => $errorCode,
+            'requestId' => GeneralUtility::makeInstance(RequestId::class),
+            'copyrightYear' => GeneralUtility::makeInstance(Typo3Information::class)->getCopyrightYear(),
+        ]);
+        return $view->render('ErrorPage/Error');
     }
 }

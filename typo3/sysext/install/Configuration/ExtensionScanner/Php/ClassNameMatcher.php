@@ -2522,4 +2522,24 @@ return [
             'Deprecation-103244-ClassSlugEnricher.rst',
         ],
     ],
+    'TYPO3\CMS\Fluid\View\StandaloneView' => [
+        'restFiles' => [
+            'Deprecation-104773-CustomFluidViewsAndExtbase.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\View\TemplateView' => [
+        'restFiles' => [
+            'Deprecation-104773-CustomFluidViewsAndExtbase.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface' => [
+        'restFiles' => [
+            'Deprecation-104773-CustomFluidViewsAndExtbase.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver' => [
+        'restFiles' => [
+            'Deprecation-104773-CustomFluidViewsAndExtbase.rst',
+        ],
+    ],
 ];

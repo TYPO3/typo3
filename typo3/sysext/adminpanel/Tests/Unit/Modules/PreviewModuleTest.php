@@ -19,12 +19,14 @@ namespace TYPO3\CMS\Adminpanel\Tests\Unit\Modules;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -64,7 +66,11 @@ final class PreviewModuleTest extends UnitTestCase
         ];
         $configurationService->method('getConfigurationOption')->withAnyParameters()->willReturnMap($valueMap);
 
-        $previewModule = new PreviewModule($this->createMock(CacheManager::class));
+        $previewModule = new PreviewModule(
+            $this->createMock(CacheManager::class),
+            $this->createMock(ViewFactoryInterface::class),
+            $this->createMock(LoggerInterface::class),
+        );
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich(new ServerRequest());
 
@@ -101,7 +107,11 @@ final class PreviewModuleTest extends UnitTestCase
             });
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
-        $previewModule = new PreviewModule($this->createMock(CacheManager::class));
+        $previewModule = new PreviewModule(
+            $this->createMock(CacheManager::class),
+            $this->createMock(ViewFactoryInterface::class),
+            $this->createMock(LoggerInterface::class),
+        );
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich($request);
     }

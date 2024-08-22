@@ -196,6 +196,10 @@ options.templateRootPaths
            options:
              templateRootPaths:
                10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Confirmation/'
+             layoutRootPaths:
+               10: 'EXT:form/Resources/Private/Frontend/Layout/Finishers/Confirmation/'
+             partialRootPaths:
+               10: 'EXT:form/Resources/Private/Frontend/Partials/Finishers/Confirmation/'
 
 :aspect:`Description`
       Used to define several paths for templates, which will be tried in reversed order (the paths are searched from bottom to top).

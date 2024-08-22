@@ -34,21 +34,23 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * MFA provider for authentication with recovery codes
  *
  * @internal should only be used by the TYPO3 Core
  */
-class RecoveryCodesProvider implements MfaProviderInterface
+final readonly class RecoveryCodesProvider implements MfaProviderInterface
 {
     public function __construct(
-        protected readonly MfaProviderRegistry $mfaProviderRegistry,
-        protected readonly Context $context,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly FlashMessageService $flashMessageService,
-        protected readonly HashService $hashService,
+        private MfaProviderRegistry $mfaProviderRegistry,
+        private Context $context,
+        private UriBuilder $uriBuilder,
+        private FlashMessageService $flashMessageService,
+        private HashService $hashService,
+        private ViewFactoryInterface $viewFactory,
     ) {}
 
     private const MAX_ATTEMPTS = 3;
@@ -82,7 +84,6 @@ class RecoveryCodesProvider implements MfaProviderInterface
     {
         $attempts = (int)$propertyManager->getProperty('attempts', 0);
         $codes = (array)$propertyManager->getProperty('codes', []);
-
         // Assume the provider is locked in case either the maximum attempts are exceeded or no codes
         // are available. A provider however can only be locked if set up - an entry exists in database.
         return $propertyManager->hasProviderEntry() && ($attempts >= self::MAX_ATTEMPTS || $codes === []);
@@ -128,49 +129,58 @@ class RecoveryCodesProvider implements MfaProviderInterface
         MfaProviderPropertyManager $propertyManager,
         MfaViewType $type
     ): ResponseInterface {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths(['EXT:core/Resources/Private/Templates/Authentication/MfaProvider/RecoveryCodes']);
-        switch ($type) {
-            case MfaViewType::SETUP:
-                if (!$this->activeProvidersExist($propertyManager)) {
-                    // If no active providers are present for the current user, add a flash message and redirect
-                    $lang = $this->getLanguageService();
-                    $this->addFlashMessage(
-                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.noActiveProviders.message'),
-                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.noActiveProviders.title'),
-                        ContextualFeedbackSeverity::WARNING
-                    );
-                    if (($normalizedParams = $request->getAttribute('normalizedParams'))) {
-                        $returnUrl = $normalizedParams->getHttpReferer();
-                    } else {
-                        // @todo this will not work for FE - make this more generic!
-                        $returnUrl = $this->uriBuilder->buildUriFromRoute('mfa');
-                    }
-                    throw new PropagateResponseException(new RedirectResponse($returnUrl, 303), 1612883326);
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:core/Resources/Private/Templates'],
+            partialRootPaths: ['EXT:core/Resources/Private/Partials'],
+            layoutRootPaths: ['EXT:core/Resources/Private/Layouts'],
+            request: $request,
+        );
+        if ($type === MfaViewType::SETUP) {
+            if (!$this->activeProvidersExist($propertyManager)) {
+                // If no active providers are present for the current user, add a flash message and redirect
+                $lang = $this->getLanguageService();
+                $this->addFlashMessage(
+                    $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.noActiveProviders.message'),
+                    $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.recoveryCodes.noActiveProviders.title'),
+                    ContextualFeedbackSeverity::WARNING
+                );
+                if (($normalizedParams = $request->getAttribute('normalizedParams'))) {
+                    $returnUrl = $normalizedParams->getHttpReferer();
+                } else {
+                    // @todo this will not work for FE - make this more generic!
+                    $returnUrl = $this->uriBuilder->buildUriFromRoute('mfa');
                 }
-                $codes = GeneralUtility::makeInstance(RecoveryCodes::class, $this->getMode($propertyManager))->generatePlainRecoveryCodes();
-                $view->setTemplate('Setup');
-                $view->assignMultiple([
-                    'recoveryCodes' => implode(PHP_EOL, $codes),
-                    // Generate hmac of the recovery codes to prevent them from being changed in the setup from
-                    'checksum' => $this->hashService->hmac(json_encode($codes) ?: '', 'recovery-codes-setup'),
-                ]);
-                break;
-            case MfaViewType::EDIT:
-                $view->setTemplate('Edit');
-                $view->assignMultiple([
-                    'name' => $propertyManager->getProperty('name'),
-                    'amountOfCodesLeft' => count($propertyManager->getProperty('codes', [])),
-                    'lastUsed' => $this->getDateTime($propertyManager->getProperty('lastUsed', 0)),
-                    'updated' => $this->getDateTime($propertyManager->getProperty('updated', 0)),
-                ]);
-                break;
-            case MfaViewType::AUTH:
-                $view->setTemplate('Auth');
-                $view->assign('isLocked', $this->isLocked($propertyManager));
-                break;
+                throw new PropagateResponseException(new RedirectResponse($returnUrl, 303), 1612883326);
+            }
+            $codes = GeneralUtility::makeInstance(RecoveryCodes::class, $this->getMode($propertyManager))->generatePlainRecoveryCodes();
+            $view = $this->viewFactory->create($viewFactoryData);
+            $view->assignMultiple([
+                'providerIdentifier' => $propertyManager->getIdentifier(),
+                'recoveryCodes' => implode(PHP_EOL, $codes),
+                // Generate hmac of the recovery codes to prevent them from being changed in the setup from
+                'checksum' => $this->hashService->hmac(json_encode($codes) ?: '', 'recovery-codes-setup'),
+            ]);
+            return new HtmlResponse($view->render('Authentication/MfaProvider/RecoveryCodes/Setup'));
         }
-        return new HtmlResponse($view->assign('providerIdentifier', $propertyManager->getIdentifier())->render());
+        if ($type === MfaViewType::EDIT) {
+            $view = $this->viewFactory->create($viewFactoryData);
+            $view->assignMultiple([
+                'providerIdentifier' => $propertyManager->getIdentifier(),
+                'name' => $propertyManager->getProperty('name'),
+                'amountOfCodesLeft' => count($propertyManager->getProperty('codes', [])),
+                'lastUsed' => $this->getDateTime($propertyManager->getProperty('lastUsed', 0)),
+                'updated' => $this->getDateTime($propertyManager->getProperty('updated', 0)),
+            ]);
+            return new HtmlResponse($view->render('Authentication/MfaProvider/RecoveryCodes/Edit'));
+        }
+        if ($type === MfaViewType::AUTH) {
+            $view = $this->viewFactory->create($viewFactoryData);
+            $view->assignMultiple([
+                'providerIdentifier' => $propertyManager->getIdentifier(),
+                'isLocked' => $this->isLocked($propertyManager),
+            ]);
+            return new HtmlResponse($view->render('Authentication/MfaProvider/RecoveryCodes/Auth'));
+        }
     }
 
     /**
@@ -217,13 +227,12 @@ class RecoveryCodesProvider implements MfaProviderInterface
     public function deactivate(ServerRequestInterface $request, MfaProviderPropertyManager $propertyManager): bool
     {
         // Only check for the active property here to enable bulk deactivation,
-        // e.g. in FormEngine. Otherwise it would not be possible to deactivate
+        // e.g. in FormEngine. Otherwise, it would not be possible to deactivate
         // this provider if the last "fully" provider was deactivated before.
         if (!(bool)$propertyManager->getProperty('active')) {
             // Can not deactivate an inactive provider
             return false;
         }
-
         // Delete the provider entry
         return $propertyManager->deleteProviderEntry();
     }
@@ -308,7 +317,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Check if the current user has other active providers
      */
-    protected function activeProvidersExist(MfaProviderPropertyManager $currentPropertyManager): bool
+    private function activeProvidersExist(MfaProviderPropertyManager $currentPropertyManager): bool
     {
         $user = $currentPropertyManager->getUser();
         foreach ($this->mfaProviderRegistry->getProviders() as $identifier => $provider) {
@@ -323,7 +332,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Internal helper method for fetching the recovery code from the request
      */
-    protected function getRecoveryCode(ServerRequestInterface $request): string
+    private function getRecoveryCode(ServerRequestInterface $request): string
     {
         return trim((string)($request->getQueryParams()['rc'] ?? $request->getParsedBody()['rc'] ?? ''));
     }
@@ -331,7 +340,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Determine the mode (used for the hash instance) based on the current users table
      */
-    protected function getMode(MfaProviderPropertyManager $propertyManager): string
+    private function getMode(MfaProviderPropertyManager $propertyManager): string
     {
         return $propertyManager->getUser()->loginType;
     }
@@ -340,7 +349,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
      * Add a custom flash message for this provider
      * Note: The flash messages added by the main controller are still shown to the user.
      */
-    protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
+    private function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {
         $this->flashMessageService->getMessageQueueByIdentifier()->enqueue(
             GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true)
@@ -350,19 +359,18 @@ class RecoveryCodesProvider implements MfaProviderInterface
     /**
      * Return the timestamp as local time (date string) by applying the globally configured format
      */
-    protected function getDateTime(int $timestamp): string
+    private function getDateTime(int $timestamp): string
     {
         if ($timestamp === 0) {
             return '';
         }
-
         return date(
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             $timestamp
         ) ?: '';
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

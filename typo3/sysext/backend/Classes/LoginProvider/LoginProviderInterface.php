@@ -36,10 +36,15 @@ interface LoginProviderInterface
      * Example:
      *    $view->setTemplatePathAndFilename($pathAndFilename);
      *    $view->assign('foo', 'bar');
-     *
-     * @param StandaloneView $view
-     * @param PageRenderer $pageRenderer
-     * @param LoginController $loginController
      */
     public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController);
+
+    /**
+     * Interface to render the backend login view.
+     * See UsernamePasswordLoginProvider on how this can be used.
+     *
+     * @return string Template file to render
+     * @todo: Activate in v14 and remove render()
+     */
+    //public function modifyView(ServerRequestInterface $request, ViewInterface $view): string;
 }

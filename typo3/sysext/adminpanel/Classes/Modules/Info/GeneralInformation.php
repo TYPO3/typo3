@@ -27,7 +27,8 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * General information module displaying info about the current request
@@ -37,6 +38,10 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 #[Autoconfigure(public: true)]
 class GeneralInformation extends AbstractSubModule implements DataProviderInterface
 {
+    /**
+     * @todo: See comment in MainController why DI in adminpanel modules that
+     *        implement DataProviderInterface is a *bad* idea.
+     */
     public function __construct(
         private readonly TimeTracker $timeTracker,
         private readonly Context $context,
@@ -75,13 +80,16 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
      */
     public function getContent(ModuleData $data): string
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Info/General.html';
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:adminpanel/Resources/Private/Templates'],
+            partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
+            layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
+        );
+        $viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
+        $view = $viewFactory->create($viewFactoryData);
         $view->assignMultiple($data->getArrayCopy());
         $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
-        return $view->render();
+        return $view->render('Modules/Info/General');
     }
 
     public function getIdentifier(): string

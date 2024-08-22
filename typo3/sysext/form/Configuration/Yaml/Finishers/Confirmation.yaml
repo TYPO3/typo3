@@ -5,8 +5,18 @@ prototypes:
         implementationClassName: TYPO3\CMS\Form\Domain\Finishers\ConfirmationFinisher
         options:
           templateName: Confirmation
+          # @todo: These paths are unfortunate. They should in general be
+          #        "EXT:form/Resources/Private/(Templates / Layout / Partials),
+          #        and then "Frontend/Finishers/Confirmation/Confirmation" as templateName
+          #        to be fed to render(), to follow general core view rendering practice
+          #        of having global "extension entry paths". Create some b/w compat layer,
+          #        move position of default templates around and deprecate the old way.
           templateRootPaths:
             10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Confirmation/'
+          layoutRootPaths:
+            10: 'EXT:form/Resources/Private/Frontend/Layout/Finishers/Confirmation/'
+          partialRootPaths:
+            10: 'EXT:form/Resources/Private/Frontend/Partials/Finishers/Confirmation/'
         formEditor:
           iconIdentifier: form-finisher
           label: formEditor.elements.Form.finisher.Confirmation.editor.header.label

@@ -29,7 +29,8 @@ use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\Utility\HtmlDumper;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * Shows all dispatched Events of the current request
@@ -37,6 +38,10 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 #[Autoconfigure(public: true)]
 class Events extends AbstractSubModule implements DataProviderInterface
 {
+    /**
+     * @todo: See comment in MainController why DI in adminpanel modules that
+     *        implement DataProviderInterface is a *bad* idea.
+     */
     public function __construct(private readonly RequestId $requestId) {}
 
     public function getIdentifier(): string
@@ -67,10 +72,13 @@ class Events extends AbstractSubModule implements DataProviderInterface
 
     public function getContent(ModuleData $data): string
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Debug/Events.html';
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:adminpanel/Resources/Private/Templates'],
+            partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
+            layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
+        );
+        $viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
+        $view = $viewFactory->create($viewFactoryData);
         $values = $data->getArrayCopy();
         $events = $values['events'] ?? null;
 
@@ -81,6 +89,6 @@ class Events extends AbstractSubModule implements DataProviderInterface
         $view->assign('events', $events instanceof Data ? $dumper->dump($events, true) : null);
         $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
 
-        return $view->render();
+        return $view->render('Modules/Debug/Events');
     }
 }

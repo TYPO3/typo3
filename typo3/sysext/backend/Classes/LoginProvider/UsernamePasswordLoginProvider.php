@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\LoginProvider;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -28,20 +30,30 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class UsernamePasswordLoginProvider implements LoginProviderInterface
+#[Autoconfigure(public: true)]
+final readonly class UsernamePasswordLoginProvider implements LoginProviderInterface
 {
+    public function __construct(
+        private PasswordReset $passwordReset,
+    ) {}
+
+    /**
+     * @deprecated Remove in v14 when method is removed from LoginProviderInterface
+     */
     public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController): void
     {
-        $view->setTemplate('Login/UserPassLoginForm');
-        $request = $loginController->getCurrentRequest();
+        throw new \RuntimeException('Legacy interface implementation. Should not be called', 1724768908);
+    }
+
+    public function modifyView(ServerRequestInterface $request, ViewInterface $view): string
+    {
         if ($request->getAttribute('normalizedParams')->isHttps()) {
-            $username = $request->getParsedBody()['u'] ?? $request->getQueryParams()['u'] ?? null;
-            $password = $request->getParsedBody()['p'] ?? $request->getQueryParams()['p'] ?? null;
             $view->assignMultiple([
-                'presetUsername' => $username,
-                'presetPassword' => $password,
+                'presetUsername' => $request->getParsedBody()['u'] ?? $request->getQueryParams()['u'] ?? null,
+                'presetPassword' => $request->getParsedBody()['p'] ?? $request->getQueryParams()['p'] ?? null,
             ]);
         }
-        $view->assign('enablePasswordReset', GeneralUtility::makeInstance(PasswordReset::class)->isEnabled());
+        $view->assign('enablePasswordReset', $this->passwordReset->isEnabled());
+        return 'Login/UserPassLoginForm';
     }
 }

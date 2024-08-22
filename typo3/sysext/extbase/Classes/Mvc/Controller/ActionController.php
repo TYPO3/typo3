@@ -33,6 +33,8 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\View\FluidViewAdapter;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent;
@@ -45,6 +47,7 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
+use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
@@ -56,7 +59,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
-use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface as FluidStandaloneViewInterface;
 
@@ -87,12 +89,12 @@ abstract class ActionController implements ControllerInterface
     protected $view;
 
     /**
-     * The default view object to use if none of the resolved views can render
-     * a response for the current request.
+     * The default view class to use. Keep this 'null' for default fluid
+     * view, or set to 'JsonView::class' or some inheriting class.
      *
-     * @var class-string
+     * @var class-string|null
      */
-    protected string $defaultViewObjectName = TemplateView::class;
+    protected ?string $defaultViewObjectName = null;
 
     /**
      * Name of the action method
@@ -120,6 +122,8 @@ abstract class ActionController implements ControllerInterface
      * @internal
      */
     protected ValidatorResolver $validatorResolver;
+
+    private ViewFactoryInterface $viewFactory;
 
     protected Arguments $arguments;
 
@@ -177,6 +181,11 @@ abstract class ActionController implements ControllerInterface
     public function injectViewResolver(ViewResolverInterface $viewResolver): void
     {
         $this->viewResolver = $viewResolver;
+    }
+
+    final public function injectViewFactory(ViewFactoryInterface $viewFactory): void
+    {
+        $this->viewFactory = $viewFactory;
     }
 
     /**
@@ -272,7 +281,7 @@ abstract class ActionController implements ControllerInterface
     /**
      * Adds the needed validators to the Arguments:
      *
-     * - Validators checking the data type from the @param annotation
+     * - Validators checking the data type from the param annotation
      * - Custom validators specified with validate annotations.
      * - Model-based validators (validate annotations in the model)
      * - Custom model validator classes
@@ -364,12 +373,15 @@ abstract class ActionController implements ControllerInterface
         }
         $this->mapRequestArgumentsToControllerArguments();
         $this->view = $this->resolveView();
-        if ($this->view !== null && method_exists($this, 'initializeView')) {
+        if (method_exists($this, 'initializeView')) {
+            // @todo: We may want to get rid of this and declare actions should actively create own
+            //        views using ViewFactoryInterface instead. See comment on resolveView() below.
+            //        Currently, this method is pretty much only helpful in 'xclass' scenarios,
+            //        since actions can already do whatever happens here within their action body.
             $this->initializeView($this->view);
         }
         $response = $this->callActionMethod($request);
         $this->renderAssetsForRequest($request);
-
         return $response;
     }
 
@@ -464,44 +476,85 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * Prepares a view for the current action.
-     * By default, this method tries to locate a view with a name matching the current action.
      *
      * @internal
      * @todo Set "protected function resolveView(): ViewInterface" in v14.
+     * @todo We may want to decide in extbase to go away from the automatic view preparation via
+     *       processRequest() and this method for actions. We could very well postulate actions
+     *       should take care of creating "their" view on their own using a ViewFactoryInterface
+     *       implementation, similar to what is done with request creation already (which needs
+     *       further work, too), and have a helper in this class to easily create a standard view.
+     *       This would dissolve the ugly $this->defaultViewObjectName property, which is more
+     *       a burden than helpful since controllers then need to have an initializeFooAction()
+     *       just to set this property when different actions want different views. Also, it does
+     *       not allow actions to have no view prepared at all, for instance when they just want to
+     *       create a json response by json_encode()'ing stuff. We should look at this in v14, when
+     *       GenericViewResolver and ViewResolverInterface are gone, which renders property
+     *       defaultViewObjectName even more useless.
      */
     protected function resolveView(): FluidStandaloneViewInterface|ViewInterface
     {
+        if ($this->defaultViewObjectName !== null && is_a($this->defaultViewObjectName, JsonView::class, true)) {
+            // @todo: JsonView is a very extbase specific thing. It comes with setVariablesToRender() and
+            //        setConfiguration(). We don't let it run through a factory here, since consumers need
+            //        to deal with these specialities anyways. Often, one would rather want to either have
+            //        an own view prepared in a controller (or action), or have a custom factory that deals
+            //        with stuff and returns a ViewInterface, or directly json_encode() data in an action.
+            //        This is related to the comment above, too.
+            $view = new JsonView();
+            $view->assign('settings', $this->settings);
+            return $view;
+        }
+        $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $extensionKey = $this->request->getControllerExtensionKey();
+        $templateRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Templates/'];
+        if (!empty($configuration['view']['templateRootPaths']) && is_array($configuration['view']['templateRootPaths'])) {
+            $templateRootPaths = array_merge($templateRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['templateRootPaths']));
+        }
+        $layoutRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Layouts/'];
+        if (!empty($configuration['view']['layoutRootPaths']) && is_array($configuration['view']['layoutRootPaths'])) {
+            $layoutRootPaths = array_merge($layoutRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['layoutRootPaths']));
+        }
+        $partialRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Partials/'];
+        if (!empty($configuration['view']['partialRootPaths']) && is_array($configuration['view']['partialRootPaths'])) {
+            $partialRootPaths = array_merge($partialRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['partialRootPaths']));
+        }
+        if ($this->defaultViewObjectName === null) {
+            $viewFactoryData = new ViewFactoryData(
+                templateRootPaths: $templateRootPaths,
+                partialRootPaths: $partialRootPaths,
+                layoutRootPaths: $layoutRootPaths,
+                request: $this->request,
+                format: $this->request->getFormat(),
+            );
+            $view = $this->viewFactory->create($viewFactoryData);
+            if ($view instanceof FluidViewAdapter) {
+                // This specific magic is tailored to Fluid. Ignore if we're not dealing with a fluid view here.
+                $renderingContext = $view->getRenderingContext();
+                $renderingContext->setControllerName($this->request->getControllerName());
+                $renderingContext->setControllerAction($this->request->getControllerActionName());
+            }
+            $view->assign('settings', $this->settings);
+            return $view;
+        }
+        // @deprecated Drop everything below in v14 and remove GenericViewResolver and ViewResolverInterface
+        trigger_error(
+            'The only allowed values for $this->defaultViewObjectName are null or extbase JsonView::class. Please'
+            . ' create an own view in your action if that is not sufficient, or inject a different ViewFactoryInterface',
+            E_USER_DEPRECATED
+        );
         if ($this->viewResolver instanceof GenericViewResolver) {
-            /*
-             * This setter is not part of the ViewResolverInterface as it's only necessary to set
-             * the default view class from this point when using the generic view resolver which
-             * must respect the possibly overridden property defaultViewObjectName.
-             */
             $this->viewResolver->setDefaultViewClass($this->defaultViewObjectName);
         }
         $view = $this->viewResolver->resolve($this->request->getControllerObjectName(), $this->request->getControllerActionName(), $this->request->getFormat());
-        if ($view instanceof FluidViewAdapter) {
+        if ($view instanceof FluidViewAdapter || method_exists($view, 'getRenderingContext')) {
             // This specific magic is tailored to Fluid. Ignore if we're not dealing with a fluid view here.
-            $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-            $extensionKey = $this->request->getControllerExtensionKey();
-            $templateRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Templates/'];
-            if (!empty($configuration['view']['templateRootPaths']) && is_array($configuration['view']['templateRootPaths'])) {
-                $templateRootPaths = array_merge($templateRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['templateRootPaths']));
-            }
-            $layoutRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Layouts/'];
-            if (!empty($configuration['view']['layoutRootPaths']) && is_array($configuration['view']['layoutRootPaths'])) {
-                $layoutRootPaths = array_merge($layoutRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['layoutRootPaths']));
-            }
-            $partialRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Partials/'];
-            if (!empty($configuration['view']['partialRootPaths']) && is_array($configuration['view']['partialRootPaths'])) {
-                $partialRootPaths = array_merge($partialRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['partialRootPaths']));
-            }
             $renderingContext = $view->getRenderingContext();
             $renderingContext->setAttribute(ServerRequestInterface::class, $this->request);
             $renderingContext->setControllerName($this->request->getControllerName());
             $renderingContext->setControllerAction($this->request->getControllerActionName());
             /** @var TemplatePaths $templatePaths */
-            $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+            $templatePaths = $renderingContext->getTemplatePaths();
             $templatePaths->setTemplateRootPaths($templateRootPaths);
             $templatePaths->setPartialRootPaths($partialRootPaths);
             $templatePaths->setLayoutRootPaths($layoutRootPaths);

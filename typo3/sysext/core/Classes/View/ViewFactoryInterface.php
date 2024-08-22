@@ -15,15 +15,16 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Mvc\View;
-
-use TYPO3\CMS\Core\View\ViewInterface;
+namespace TYPO3\CMS\Core\View;
 
 /**
- * @internal only to be used within Extbase, not part of TYPO3 Core API.
- * @deprecated since TYPO3 v13, will be removed in v14.
+ * Generic TYPO3 view factory - the V in MVC.
+ *
+ * This interface is used in TYPO3 and should be used via dependency
+ * injection to create a view instance in custom TYPO3 extensions
+ * whenever a view should be rendered.
  */
-interface ViewResolverInterface
+interface ViewFactoryInterface
 {
-    public function resolve(string $controllerObjectName, string $actionName, string $format): ViewInterface;
+    public function create(ViewFactoryData $data): ViewInterface;
 }

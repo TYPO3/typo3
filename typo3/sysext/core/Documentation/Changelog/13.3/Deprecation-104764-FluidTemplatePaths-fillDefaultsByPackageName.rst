@@ -19,6 +19,9 @@ Fluid template paths should be set directly using the methods
 :php:`setPartialRootPaths()`, or - even better - be handled by
 :php:`ViewFactoryInterface`, which comes as new feature in TYPO3 v13.
 
+See :ref:`feature-104773-1724939348` for more details of the generic
+view interface.
+
 
 Impact
 ======

@@ -32,12 +32,9 @@ A basic usage of the :typoscript:`PAGEVIEW` cObject is as follows:
     If a page has a layout named "with_sidebar", the template file is then resolved
     to :file:`EXT:mysite/Resources/Private/Templates/Pages/With_sidebar.html`.
 
-2.  Fluid features for layouts and partials are wired automatically, thus they
+2.  Fluid features for layouts and partials are wired automatically. They
     can be placed into :file:`EXT:mysite/Resources/Private/Templates/Layouts/`
-    and :file:`EXT:mysite/Resources/Private/Templates/Partials/`.
-
-    In order to reduce the burden for integrators, the folder names for "pages",
-    "layouts" and "partials" can start with a lowercase or an uppercase letter.
+    and :file:`EXT:mysite/Resources/Private/Templates/Partials/` with above example.
 
 3.  Default variables are available in the Fluid template:
 
@@ -91,15 +88,15 @@ Before
             }
 
             templateRootPaths {
-                100 = {$plugin.tx_mysite.paths.templates}
+                100 = {$plugin.tx_mysite.templateRootPaths}
             }
 
             partialRootPaths {
-                100 = {$plugin.tx_mysite.paths.partials}
+                100 = {$plugin.tx_mysite.partialRootPaths}
             }
 
             layoutRootPaths {
-                100 = {$plugin.tx_mysite.paths.layouts}
+                100 = {$plugin.tx_mysite.layoutRootPaths}
             }
 
             variables {
@@ -133,7 +130,7 @@ After
         10 = PAGEVIEW
         10 {
             paths {
-                100 = {$plugin.tx_mysite.paths.templates}
+                100 = {$plugin.tx_mysite.templatePaths}
             }
             variables {
                 parentPageTitle = TEXT

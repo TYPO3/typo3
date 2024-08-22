@@ -24,12 +24,28 @@ use Symfony\Component\Mime\Part\AbstractPart;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\FluidViewAdapter;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
  * Send out templated HTML/plain text emails with Fluid.
+ *
+ * @todo: This construct needs an overhaul because it violates "Composition over inheritance".
+ *        This is obvious when looking at __construct() already. FluidEmail extends symfony Email
+ *        (which is a symfony Message), and thus has to deal with things it shouldn't at this point.
+ *        The repeated calls to $this->resetBody() are the proof something is really wrong here.
+ *        At first glance it looks as if something like this should happen: The class responsibility
+ *        should be rendering of the subject and body only. It should probably be created using a factory,
+ *        returning an instance of some interface, with the factory interface being injected to consumers.
+ *        This would allow rendering emails with some different template engine, by injecting a different
+ *        factory interface implementation that returns some different class. With subject and body being
+ *        created by this, a symfony email should be created (maybe with a facade or factory again). And
+ *        then hand the mail over to something that can send it.
+ *        Working on this may go along with a renaming of the class structure, and we may want to
+ *        ensure abstraction does not explode too much along the way ...
  */
 class FluidEmail extends Email
 {
@@ -42,18 +58,26 @@ class FluidEmail extends Email
      */
     protected array $format = ['html', 'plain'];
     protected string $templateName = 'Default';
-    protected StandaloneView $view;
+    protected FluidViewAdapter $view;
 
     public function __construct(?TemplatePaths $templatePaths = null, ?Headers $headers = null, ?AbstractPart $body = null)
     {
         parent::__construct($headers, $body);
-        $this->initializeView($templatePaths);
-    }
-
-    protected function initializeView(?TemplatePaths $templatePaths = null): void
-    {
+        $viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
+        $view = $viewFactory->create(new ViewFactoryData());
+        if (!$view instanceof FluidViewAdapter) {
+            throw new \RuntimeException(
+                'Class FluidEmail can only deal with Fluid views via FluidViewAdapter',
+                1724686399
+            );
+        }
+        $this->view = $view;
+        // @todo: This is where the problem starts: TemplatePaths() is hardcoded fluid, and part of the
+        //        current FluidEmail API. We can not put this into ViewFactoryData() directly. While
+        //        we *could* unpack the paths and format to an array again, we should probably better
+        //        redesign this implementation and work on the main comment above along the way.
+        //        Also note methods like getViewHelperVariableContainer() are hard-bound to fluid, too.
         $templatePaths = $templatePaths ?? new TemplatePaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']);
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRenderingContext()->setTemplatePaths($templatePaths);
         $this->view->assignMultiple($this->getDefaultVariables());
         $this->format($GLOBALS['TYPO3_CONF_VARS']['MAIL']['format'] ?? self::FORMAT_BOTH);
@@ -97,7 +121,7 @@ class FluidEmail extends Email
      */
     public function setRequest(ServerRequestInterface $request): static
     {
-        $this->view->setRequest($request);
+        $this->view->getRenderingContext()->setAttribute(ServerRequestInterface::class, $request);
         $this->view->assign('request', $request);
         if ($request->getAttribute('normalizedParams') instanceof NormalizedParams) {
             $this->view->assign('normalizedParams', $request->getAttribute('normalizedParams'));
@@ -200,9 +224,8 @@ class FluidEmail extends Email
 
     protected function renderContent(string $format): string
     {
-        $this->view->setFormat($format);
-        $this->view->setTemplate($this->templateName);
-        return $this->view->render();
+        $this->view->getRenderingContext()->getTemplatePaths()->setFormat($format);
+        return $this->view->render($this->templateName);
     }
 
     protected function resetBody(): void

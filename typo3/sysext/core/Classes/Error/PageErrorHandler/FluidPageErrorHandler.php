@@ -21,8 +21,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\TemplateView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * An error handler that renders a fluid template.
@@ -31,41 +31,46 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 class FluidPageErrorHandler implements PageErrorHandlerInterface
 {
     /**
-     * @var ViewInterface
+     * @todo: Change this "API" to not pollute __construct() anymore
      */
-    protected $view;
-
-    /**
-     * @var int
-     */
-    protected $statusCode;
-
-    /**
-     * FluidPageErrorHandler constructor.
-     */
-    public function __construct(int $statusCode, array $configuration)
-    {
-        $this->statusCode = $statusCode;
-        $this->view = GeneralUtility::makeInstance(TemplateView::class);
-        if (!empty($configuration['errorFluidTemplatesRootPath'])) {
-            $this->view->setTemplateRootPaths([$configuration['errorFluidTemplatesRootPath']]);
-        }
-        if (!empty($configuration['errorFluidLayoutsRootPath'])) {
-            $this->view->setLayoutRootPaths([$configuration['errorFluidLayoutsRootPath']]);
-        }
-        if (!empty($configuration['errorFluidPartialsRootPath'])) {
-            $this->view->setPartialRootPaths([$configuration['errorFluidPartialsRootPath']]);
-        }
-        $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($configuration['errorFluidTemplate']));
-    }
+    public function __construct(
+        protected int $statusCode,
+        protected array $configuration
+    ) {}
 
     public function handlePageError(ServerRequestInterface $request, string $message, array $reasons = []): ResponseInterface
     {
-        $this->view->assignMultiple([
+        $configuration = $this->configuration;
+        $templateRootPaths = null;
+        if (is_string($configuration['errorFluidTemplatesRootPath']) && !empty($configuration['errorFluidTemplatesRootPath'])) {
+            $templateRootPaths = [$configuration['errorFluidTemplatesRootPath']];
+        }
+        $layoutRootPaths = null;
+        if (is_string($configuration['errorFluidLayoutsRootPath']) && !empty($configuration['errorFluidLayoutsRootPath'])) {
+            $layoutRootPaths = [$configuration['errorFluidLayoutsRootPath']];
+        }
+        $partialRootPaths = null;
+        if (is_string($configuration['errorFluidPartialsRootPath']) && !empty($configuration['errorFluidPartialsRootPath'])) {
+            $partialRootPaths = [$configuration['errorFluidPartialsRootPath']];
+        }
+        $templatePathAndFilename = null;
+        if (is_string($configuration['errorFluidTemplate']) && !empty($configuration['errorFluidTemplate'])) {
+            $templatePathAndFilename = GeneralUtility::getFileAbsFileName($configuration['errorFluidTemplate']);
+        }
+        $viewFactoryDate = new ViewFactoryData(
+            templateRootPaths: $templateRootPaths,
+            partialRootPaths: $partialRootPaths,
+            layoutRootPaths: $layoutRootPaths,
+            templatePathAndFilename: $templatePathAndFilename,
+            request: $request,
+        );
+        $viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
+        $view = $viewFactory->create($viewFactoryDate);
+        $view->assignMultiple([
             'request' => $request,
             'message' => $message,
             'reasons' => $reasons,
         ]);
-        return new HtmlResponse($this->view->render(), $this->statusCode);
+        return new HtmlResponse($view->render(), $this->statusCode);
     }
 }

@@ -18,10 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\FluidViewAdapter;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -57,40 +58,31 @@ class ConfirmationFinisher extends AbstractFinisher
         'typoscriptObjectPath' => 'lib.tx_form.contentElementRendering',
     ];
 
-    protected array $typoScriptSetup = [];
-
-    protected ConfigurationManagerInterface $configurationManager;
-
-    protected ContentObjectRenderer $contentObjectRenderer;
-
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-        $this->typoScriptSetup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-    }
-
-    public function injectContentObjectRenderer(ContentObjectRenderer $contentObjectRenderer)
-    {
-        $this->contentObjectRenderer = $contentObjectRenderer;
-    }
+    public function __construct(
+        private readonly ExtbaseConfigurationManagerInterface $extbaseConfigurationManager,
+        private readonly ViewFactoryInterface $viewFactory,
+    ) {}
 
     /**
-     * Executes this finisher
-     *
-     * @see AbstractFinisher::execute()
-     * @return string
-     *
      * @throws FinisherException
      */
-    protected function executeInternal()
+    protected function executeInternal(): string
     {
+        $options = $this->options;
+        if (!isset($options['templateName']) || !is_string($options['templateName'])) {
+            throw new FinisherException(
+                'The option "templateName" must be set for the ConfirmationFinisher.',
+                1521573955
+            );
+        }
+
         $contentElementUid = $this->parseOption('contentElementUid');
         $typoscriptObjectPath = $this->parseOption('typoscriptObjectPath');
         $typoscriptObjectPath = is_string($typoscriptObjectPath) ? $typoscriptObjectPath : '';
         if (!empty($contentElementUid)) {
             $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
             $lastSegment = array_pop($pathSegments);
-            $setup = $this->typoScriptSetup;
+            $setup = $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
             foreach ($pathSegments as $segment) {
                 if (!array_key_exists($segment . '.', $setup)) {
                     throw new FinisherException(
@@ -100,55 +92,36 @@ class ConfirmationFinisher extends AbstractFinisher
                 }
                 $setup = $setup[$segment . '.'];
             }
-            $this->contentObjectRenderer->setRequest($this->finisherContext->getRequest()->withoutAttribute('extbase'));
-            $this->contentObjectRenderer->start([$contentElementUid]);
-            $this->contentObjectRenderer->setCurrentVal((string)$contentElementUid);
-            $message = $this->contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'], $lastSegment);
+            $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $contentObjectRenderer->setRequest($this->finisherContext->getRequest()->withoutAttribute('extbase'));
+            $contentObjectRenderer->start([$contentElementUid]);
+            $contentObjectRenderer->setCurrentVal((string)$contentElementUid);
+            $message = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'], $lastSegment);
         } else {
             $message = $this->parseOption('message');
         }
 
-        $standaloneView = $this->initializeStandaloneView(
-            $this->finisherContext->getFormRuntime()
+        $formRuntime = $this->finisherContext->getFormRuntime();
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: is_array($options['templateRootPaths'] ?? false) ? $options['templateRootPaths'] : [],
+            partialRootPaths: is_array($options['partialRootPaths'] ?? false) ? $options['partialRootPaths'] : [],
+            layoutRootPaths: is_array($options['layoutRootPaths'] ?? false) ? $options['layoutRootPaths'] : [],
+            request: $this->finisherContext->getRequest(),
         );
-
-        $standaloneView->assignMultiple([
+        $view = $this->viewFactory->create($viewFactoryData);
+        if ($view instanceof FluidViewAdapter) {
+            $view->getRenderingContext()->getViewHelperVariableContainer()
+                ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $formRuntime);
+        }
+        if (isset($this->options['variables']) && is_array($this->options['variables'])) {
+            $view->assignMultiple($this->options['variables']);
+        }
+        $view->assignMultiple([
+            'form' => $formRuntime,
+            'finisherVariableProvider' => $this->finisherContext->getFinisherVariableProvider(),
             'message' => $message,
             'isPreparedMessage' => !empty($contentElementUid),
         ]);
-
-        return $standaloneView->render();
-    }
-
-    /**
-     * @throws FinisherException
-     */
-    protected function initializeStandaloneView(FormRuntime $formRuntime): StandaloneView
-    {
-        $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
-        $standaloneView->setRequest($this->finisherContext->getRequest());
-
-        if (!isset($this->options['templateName'])) {
-            throw new FinisherException(
-                'The option "templateName" must be set for the ConfirmationFinisher.',
-                1521573955
-            );
-        }
-
-        $standaloneView->setTemplate($this->options['templateName']);
-        $standaloneView->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($this->options);
-
-        if (isset($this->options['variables']) && is_array($this->options['variables'])) {
-            $standaloneView->assignMultiple($this->options['variables']);
-        }
-
-        $standaloneView->assign('form', $formRuntime);
-        $standaloneView->assign('finisherVariableProvider', $this->finisherContext->getFinisherVariableProvider());
-
-        $standaloneView->getRenderingContext()
-            ->getViewHelperVariableContainer()
-            ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $formRuntime);
-
-        return $standaloneView;
+        return $view->render($options['templateName']);
     }
 }

@@ -19,16 +19,17 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 
 /**
  * PAGEVIEW Content Object.
  *
  * Built to render a full page with Fluid, and does the following
- * - uses the template from the given Page Layout / Backend Layout of the current page in a folder "pages/mylayout.html"
+ * - uses the template from the given Page Layout / Backend Layout of the current page in a folder "Pages/Mylayout.html"
  * - paths are resolved from "paths." configuration
- * - automatically adds templateRootPaths to the layoutRootPaths and partialRootPaths as well with a suffix "layouts/" and "partials/"
+ * - automatically adds templateRootPaths to the layoutRootPaths and partialRootPaths
  * - injects pageInformation, site and siteLanguage (= language) as variables by default
  * - adds all page settings (= TypoScript constants) into the settings variable of the View
  *
@@ -40,15 +41,15 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
  *
  * @internal this cObject is considered experimental until TYPO3 v13 LTS
  */
-class PageViewContentObject extends AbstractContentObject
+final class PageViewContentObject extends AbstractContentObject
 {
-    protected array $reservedVariables = ['site', 'language', 'page'];
+    private const reservedVariables = ['site', 'language', 'page'];
 
     public function __construct(
-        protected readonly ContentDataProcessor $contentDataProcessor,
-        protected readonly StandaloneView $view,
-        protected readonly TypoScriptService $typoScriptService,
-        protected readonly PageLayoutResolver $pageLayoutResolver,
+        private readonly ContentDataProcessor $contentDataProcessor,
+        private readonly TypoScriptService $typoScriptService,
+        private readonly PageLayoutResolver $pageLayoutResolver,
+        private readonly ViewFactoryInterface $viewFactory,
     ) {}
 
     /**
@@ -60,40 +61,46 @@ class PageViewContentObject extends AbstractContentObject
      *  - dataProcessing array of data processors which are classes to manipulate $data
      *
      * Example:
-     * page.10 = PAGEVIEW
-     * page.10.paths.10 = EXT:site_configuration/Resources/Private/Templates/
-     * page.10.variables {
-     *   mylabel = TEXT
-     *   mylabel.value = Label from TypoScript
-     * }
+     *   page.10 = PAGEVIEW
+     *   page.10.paths.10 = EXT:site_configuration/Resources/Private/Templates/
+     *   page.10.variables {
+     *     mylabel = TEXT
+     *     mylabel.value = Label from TypoScript
+     *   }
      *
      * @param array $conf Array of TypoScript properties
      * @return string The HTML output
+     * @throws ContentRenderingException
      */
     public function render($conf = []): string
     {
         if (!is_array($conf)) {
             $conf = [];
         }
-        $this->view->setRequest($this->request);
+        if (!is_array($conf['paths.'] ?? false) || $conf['paths.'] === []) {
+            throw new ContentRenderingException(
+                'PAGEVIEW content object needs a "paths." TypoScript array',
+                1724601907
+            );
+        }
+        $viewFactoryData = new ViewFactoryData(
+            // @todo: Do discuss: Rename 'paths.' to 'templateRootPaths.' again?
+            templateRootPaths: $conf['paths.'],
+            // @todo: We should *still* allow setting both partialRootPaths and layoutRootPaths, and only fall back to
+            //        [templateRootPaths]/Partials and [templateRootPaths]/Layouts if not set. And the fallback should be
+            //        advertised as best practice.
+            partialRootPaths: array_map(static fn(string $path): string => $path . 'Partials/', $conf['paths.']),
+            layoutRootPaths: array_map(static fn(string $path): string => $path . 'Layouts/', $conf['paths.']),
+            request: $this->request,
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
 
-        $this->setTemplate($conf);
-        $this->assignSettings();
+        $pageSettings = $this->request->getAttribute('frontend.typoscript')->getSettingsTree()->toArray();
+        $view->assign('settings', $this->typoScriptService->convertTypoScriptArrayToPlainArray($pageSettings));
         $variables = $this->getContentObjectVariables($conf);
         $variables = $this->contentDataProcessor->process($this->cObj, $conf, $variables);
+        $view->assignMultiple($variables);
 
-        $this->view->assignMultiple($variables);
-
-        return (string)$this->view->render();
-    }
-
-    protected function setTemplate(array $conf): void
-    {
-        if (is_array($conf['paths.'] ?? false) && $conf['paths.'] !== []) {
-            $this->view->setTemplateRootPaths($conf['paths.']);
-            $this->setLayoutPaths();
-            $this->setPartialPaths();
-        }
         // Fetch the Fluid template by the name of the Page Layout and underneath "Pages"
         $pageInformationObject = $this->request->getAttribute('frontend.page.information');
         $pageLayoutName = $this->pageLayoutResolver->getLayoutIdentifierForPageWithoutPrefix(
@@ -101,54 +108,7 @@ class PageViewContentObject extends AbstractContentObject
             $pageInformationObject->getRootLine()
         );
 
-        $this->view->getRenderingContext()->setControllerAction($pageLayoutName);
-        $this->view->getRenderingContext()->setControllerName('pages');
-        // Also allow an upper case folder as fallback
-        if (!$this->view->hasTemplate()) {
-            $this->view->getRenderingContext()->setControllerName('Pages');
-        }
-        // If template still does not exist, rendering is not possible.
-        if (!$this->view->hasTemplate()) {
-            $configuredTemplateRootPaths = implode(', ', $this->view->getTemplateRootPaths());
-            throw new ContentRenderingException(
-                sprintf(
-                    'Could not find template source file "pages/%1$s.html" or "Pages/%1$s.html" in lookup paths: %2$s',
-                    ucfirst($pageLayoutName),
-                    $configuredTemplateRootPaths
-                ),
-                1711797936
-            );
-        }
-    }
-
-    /**
-     * Set layout root paths from the template paths
-     */
-    protected function setLayoutPaths(): void
-    {
-        // Define the default root paths to be located in the base paths under "layouts/" subfolder
-        // Handle unix paths to allow upper-case folders as well
-        $templateRootPathsLowerCase = array_map(static fn(string $path): string => $path . 'layouts/', $this->view->getTemplateRootPaths());
-        $templateRootPathsUpperCase = array_map(static fn(string $path): string => $path . 'Layouts/', $this->view->getTemplateRootPaths());
-        $layoutPaths = array_merge($templateRootPathsUpperCase, $templateRootPathsLowerCase);
-        if ($layoutPaths !== []) {
-            $this->view->setLayoutRootPaths($layoutPaths);
-        }
-    }
-
-    /**
-     * Set partial root path from the template root paths
-     */
-    protected function setPartialPaths(): void
-    {
-        // Define the default root paths to be located in the base paths under "partials/" subfolder
-        // Handle unix paths to allow upper-case folders as well
-        $templateRootPathsLowerCase = array_map(static fn(string $path): string => $path . 'partials/', $this->view->getTemplateRootPaths());
-        $templateRootPathsUpperCase = array_map(static fn(string $path): string => $path . 'Partials/', $this->view->getTemplateRootPaths());
-        $partialPaths = array_merge($templateRootPathsUpperCase, $templateRootPathsLowerCase);
-        if ($partialPaths !== []) {
-            $this->view->setPartialRootPaths($partialPaths);
-        }
+        return $view->render('Pages/' . ucfirst($pageLayoutName));
     }
 
     /**
@@ -156,9 +116,8 @@ class PageViewContentObject extends AbstractContentObject
      *
      * @param array $conf Configuration array
      * @return array the variables to be assigned
-     * @throws \InvalidArgumentException
      */
-    protected function getContentObjectVariables(array $conf): array
+    private function getContentObjectVariables(array $conf): array
     {
         $variables = [
             'site' => $this->request->getAttribute('site'),
@@ -171,7 +130,7 @@ class PageViewContentObject extends AbstractContentObject
                 if (!is_string($cObjType)) {
                     continue;
                 }
-                if (in_array($variableName, $this->reservedVariables, true)) {
+                if (in_array($variableName, self::reservedVariables, true)) {
                     throw new \InvalidArgumentException(
                         'Cannot use reserved name "' . $variableName . '" as variable name in PAGEVIEW.',
                         1711748615
@@ -182,15 +141,5 @@ class PageViewContentObject extends AbstractContentObject
             }
         }
         return $variables;
-    }
-
-    /**
-     * Set any TypoScript settings to the view, which take precedence over the page-specific settings.
-     */
-    protected function assignSettings(): void
-    {
-        $pageSettings = $this->request->getAttribute('frontend.typoscript')->getSettingsTree()->toArray();
-        $pageSettings = $this->typoScriptService->convertTypoScriptArrayToPlainArray($pageSettings);
-        $this->view->assign('settings', $pageSettings);
     }
 }

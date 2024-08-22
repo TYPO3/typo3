@@ -27,7 +27,8 @@ use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 
 /**
@@ -58,6 +59,7 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
     public function __construct(
         private readonly ConfigurationService $configurationService,
         private readonly TimeTracker $timeTracker,
+        private readonly ViewFactoryInterface $viewFactory,
     ) {}
 
     public function getIdentifier(): string
@@ -88,11 +90,12 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
      */
     public function getContent(ModuleData $data): string
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/TsDebug/TypoScript.html';
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
-
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:adminpanel/Resources/Private/Templates'],
+            partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
+            layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
         $view->assignMultiple(
             [
                 'tree' => (int)$this->getConfigurationOption('tree'),
@@ -107,17 +110,17 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
                 'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
             ]
         );
-
-        return $view->render();
+        return $view->render('Modules/TsDebug/TypoScript');
     }
 
     public function getSettings(): string
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/TsDebug/TypoScriptSettings.html';
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
-
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:adminpanel/Resources/Private/Templates'],
+            partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
+            layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
         $view->assignMultiple(
             [
                 'tree' => (int)$this->getConfigurationOption('tree'),
@@ -131,8 +134,7 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
                 'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
             ]
         );
-
-        return $view->render();
+        return $view->render('Modules/TsDebug/TypoScriptSettings');
     }
 
     protected function getConfigurationOption(string $option): bool

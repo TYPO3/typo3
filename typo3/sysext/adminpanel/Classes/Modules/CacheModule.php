@@ -26,12 +26,17 @@ use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 
 #[Autoconfigure(public: true)]
 class CacheModule extends AbstractModule implements PageSettingsProviderInterface, RequestEnricherInterface, ResourceProviderInterface
 {
+    public function __construct(
+        private readonly ViewFactoryInterface $viewFactory,
+    ) {}
+
     public function getIconIdentifier(): string
     {
         return 'apps-toolbar-menu-cache';
@@ -39,10 +44,12 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
 
     public function getPageSettings(): string
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Modules/Settings/Cache.html';
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:adminpanel/Resources/Private/Templates'],
+            partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
+            layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $feCacheClear = $this->getBackendUser()->isAdmin()
@@ -70,7 +77,7 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
             ]
         );
 
-        return $view->render();
+        return $view->render('Modules/Settings/Cache');
     }
 
     public function getIdentifier(): string

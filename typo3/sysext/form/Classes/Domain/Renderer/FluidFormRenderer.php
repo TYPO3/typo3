@@ -21,10 +21,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Renderer;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3\CMS\Core\View\FluidViewAdapter;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 
@@ -128,6 +129,10 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 #[Autoconfigure(public: true, shared: false)]
 class FluidFormRenderer extends AbstractElementRenderer
 {
+    public function __construct(
+        protected readonly ViewFactoryInterface $viewFactory,
+    ) {}
+
     /**
      * Renders the FormDefinition.
      *
@@ -145,48 +150,36 @@ class FluidFormRenderer extends AbstractElementRenderer
     {
         $formElementType = $this->formRuntime->getType();
         $renderingOptions = $this->formRuntime->getRenderingOptions();
-
-        $view = GeneralUtility::makeInstance(TemplateView::class);
-        $view->getRenderingContext()->setAttribute(ServerRequestInterface::class, $this->getFormRuntime()->getRequest());
-
-        if (!isset($renderingOptions['templateRootPaths'])) {
-            throw new RenderingException(
-                sprintf('The option templateRootPaths must be set for renderable "%s"', $formElementType),
-                1480293084
-            );
+        if (!isset($renderingOptions['templateRootPaths']) || !is_array($renderingOptions['templateRootPaths'])) {
+            throw new RenderingException(sprintf('The option templateRootPaths must be set for renderable "%s"', $formElementType), 1480293084);
         }
-        if (!isset($renderingOptions['layoutRootPaths'])) {
-            throw new RenderingException(
-                sprintf('The option layoutRootPaths must be set for renderable "%s"', $formElementType),
-                1480293085
-            );
+        if (!isset($renderingOptions['layoutRootPaths']) || !is_array($renderingOptions['layoutRootPaths'])) {
+            throw new RenderingException(sprintf('The option layoutRootPaths must be set for renderable "%s"', $formElementType), 1480293085);
         }
-        if (!isset($renderingOptions['partialRootPaths'])) {
-            throw new RenderingException(
-                sprintf('The option partialRootPaths must be set for renderable "%s"', $formElementType),
-                1480293086
-            );
+        if (!isset($renderingOptions['partialRootPaths']) || !is_array($renderingOptions['partialRootPaths'])) {
+            throw new RenderingException(sprintf('The option partialRootPaths must be set for renderable "%s"', $formElementType), 1480293086);
         }
-
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: $renderingOptions['templateRootPaths'],
+            partialRootPaths: $renderingOptions['partialRootPaths'],
+            layoutRootPaths: $renderingOptions['layoutRootPaths'],
+            request: $this->getFormRuntime()->getRequest(),
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
         $view->assign('form', $this->formRuntime);
-
-        $view->getRenderingContext()
-            ->getViewHelperVariableContainer()
-            ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $this->formRuntime);
-
-        // Configure the fluid TemplatePaths with the rendering options from the renderable
-        $view->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($renderingOptions);
-
+        if ($view instanceof FluidViewAdapter) {
+            // @todo: Find a different solution than setting this state here. This happens in other
+            //        ext:form places as well and should vanish to be more non-fluid view friendly.
+            $view->getRenderingContext()
+                ->getViewHelperVariableContainer()
+                ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $this->formRuntime);
+        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'beforeRendering')) {
-                $hookObj->beforeRendering(
-                    $this->formRuntime,
-                    $this->formRuntime->getFormDefinition()
-                );
+                $hookObj->beforeRendering($this->formRuntime, $this->formRuntime->getFormDefinition());
             }
         }
-
         return $view->render($this->formRuntime->getTemplateName());
     }
 }

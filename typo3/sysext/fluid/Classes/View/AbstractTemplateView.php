@@ -25,6 +25,8 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
  * Abstract Fluid Template View.
  *
  * Contains the fundamental methods which any Fluid based template view needs.
+ *
+ * @deprecated: since TYPO3 v13, will be removed in v14. Use ext:core ViewFactoryInterface instead.
  */
 abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView
 {
@@ -33,6 +35,11 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView
      */
     public function __construct(?RenderingContextInterface $context = null)
     {
+        trigger_error(
+            'Classes AbstractTemplateView, StandaloneView and TemplateView have been marked as deprecated in'
+            . ' TYPO3 v13 and will be removed in v14. Use ext:core ViewFactoryInterface instead.',
+            E_USER_DEPRECATED
+        );
         if (!$context) {
             $context = GeneralUtility::makeInstance(RenderingContextFactory::class)->create();
         }

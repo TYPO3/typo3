@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Fluid\View;
 
 /**
  * The main template view. Should be used as view if you want Fluid Templating
+ *
+ * @deprecated: since TYPO3 v13, will be removed in v14. Use ext:core ViewFactoryInterface instead.
  */
 class TemplateView extends AbstractTemplateView
 {

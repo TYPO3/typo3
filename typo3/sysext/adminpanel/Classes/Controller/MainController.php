@@ -35,7 +35,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * Main controller for the admin panel.
@@ -57,6 +58,7 @@ class MainController
         private readonly ModuleLoader $moduleLoader,
         private readonly UriBuilder $uriBuilder,
         private readonly RequestId $requestId,
+        private readonly ViewFactoryInterface $viewFactory,
     ) {
         $this->adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
     }
@@ -105,11 +107,13 @@ class MainController
             $GLOBALS['TYPO3_REQUEST'] = $request;
         }
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel/Resources/Private/Templates/Main.html';
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-        $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
-        $view->setLayoutRootPaths(['EXT:adminpanel/Resources/Private/Layouts']);
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:adminpanel/Resources/Private/Templates'],
+            partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
+            layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
+            request: $request,
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
 
         $view->assignMultiple([
             'toggleActiveUrl' => $this->generateBackendUrl('ajax_adminPanel_toggle'),
@@ -156,7 +160,7 @@ class MainController
                 'backendUrl' => $backendUrl,
             ]);
         }
-        $result = $view->render();
+        $result = $view->render('Main');
         if ($backupRequest) {
             $GLOBALS['TYPO3_REQUEST'] = $backupRequest;
         }
@@ -177,6 +181,18 @@ class MainController
                 GeneralUtility::makeInstance(ModuleDataStorageCollection::class)
             );
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('adminpanel_requestcache');
+            // @todo: Huge mess! $data is an SplObjectStorage with the module object plus its ModuleData
+            //        (getDataToStore($request)) as "info" via attach($module, $moduleData), for each module
+            //        that implements DataProviderInterface. This is put to DB backend data cache here,
+            //        which means it is serialize()'d. This means the entire module objects are serialized.
+            //        DI properties are serialized along the way. See issue #104724. Not only of the modules
+            //        itself, but of the module data as well. The module data at least has some API to deal
+            //        with such cases, though. The module object itself does not.
+            //        This for instance triggers issues if either the module class, or some of the ModuleData
+            //        objects decide to add DI, which can lead to *huge* entries, or fails when they
+            //        contain some closure (closures can't be serialized). Plus, it is a hard to see side
+            //        effect, when some patch adds DI to some class, and adminpanel references instances of
+            //        it in module data (by accident since that be a bigger object tree ...).
             $cache->set($request->getAttribute('adminPanelRequestId'), $data);
             $cache->collectGarbage();
         }

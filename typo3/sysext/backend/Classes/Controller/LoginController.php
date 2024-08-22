@@ -48,12 +48,21 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller responsible for rendering the TYPO3 Backend login form.
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
+ * @todo: The central template rendering magic needs an overhaul: Currently, LoginProviderInterface has to
+ *        be implemented, which retrieves a "prepared" view with tons of variable used by the default Layout "Login.html".
+ *        Single LoginProviderInterface then set their template path ("Login/UserPassLoginForm" in UsernamePasswordLoginProvider),
+ *        which sets Login.html as layout in its template to then get its sections "loginFormFields" and "ResetPassword"
+ *        rendered. This strategy is a major mess and needs to be turned around somehow.
+ *        Note there is also this BE "relogin" and "login refresh" foo with lots of attached JS magic that
+ *        should either be streamlined to actually work, or (preferred) be thrown away.
  */
 #[AsController]
 class LoginController
@@ -61,7 +70,7 @@ class LoginController
     use PageRendererBackendSetupTrait;
 
     /**
-     * @todo: Only set for getCurrentRequest(). Should vanish.
+     * @deprecated Remove in v14 along with getCurrentRequest()
      */
     protected ServerRequestInterface $request;
 
@@ -79,6 +88,7 @@ class LoginController
         protected readonly Locales $locales,
         protected readonly ConnectionPool $connectionPool,
         protected readonly AuthenticationStyleInformation $authenticationStyleInformation,
+        protected readonly ViewFactoryInterface $viewFactory,
     ) {}
 
     /**
@@ -170,26 +180,45 @@ class LoginController
             'loginNewsItems' => $this->getSystemNews(),
         ];
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setRequest();
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->assignMultiple($viewVariables);
-
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);
         $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
 
-        $this->eventDispatcher->dispatch(new ModifyPageLayoutOnLoginProviderSelectionEvent($this, $view, $this->pageRenderer));
-
         $loginProviderConfiguration = $this->loginProviderResolver->getLoginProviderConfigurationByIdentifier($loginProviderIdentifier);
-        /** @var LoginProviderInterface $loginProvider */
         $loginProvider = GeneralUtility::makeInstance($loginProviderConfiguration['provider']);
-        $loginProvider->render($view, $this->pageRenderer, $this);
-
-        $this->pageRenderer->setBodyContent('<body>' . $view->render());
+        if (!$loginProvider instanceof LoginProviderInterface) {
+            throw new \RuntimeException($loginProviderConfiguration['provider'] . ' must implement LoginProviderInterface', 1724772171);
+        }
+        if (method_exists($loginProvider, 'modifyView')) {
+            // @todo / @deprecated: Activate modifyView() in LoginProviderInterface in v14, remove render() fallback.
+            $viewFactoryData = new ViewFactoryData(
+                templateRootPaths: ['EXT:backend/Resources/Private/Templates'],
+                partialRootPaths: ['EXT:backend/Resources/Private/Partials'],
+                layoutRootPaths: ['EXT:backend/Resources/Private/Layouts'],
+                request: $request,
+            );
+            $view = $this->viewFactory->create($viewFactoryData);
+            $view->assignMultiple($viewVariables);
+            $this->eventDispatcher->dispatch(new ModifyPageLayoutOnLoginProviderSelectionEvent($this, $view, $this->pageRenderer, $request));
+            $templateFile = $loginProvider->modifyView($request, $view);
+            $content = $view->render($templateFile);
+        } else {
+            // @deprecated: Will be removed in v14, have modifyView() only.
+            trigger_error(
+                'Method LoginProviderInterface->render() has been marked as deprecated. Implement modifyView() in ' . $loginProviderConfiguration['provider'] . ' instead.',
+                E_USER_DEPRECATED
+            );
+            $view = GeneralUtility::makeInstance(StandaloneView::class);
+            $view->setRequest();
+            $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+            $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+            $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+            $view->assignMultiple($viewVariables);
+            $this->eventDispatcher->dispatch(new ModifyPageLayoutOnLoginProviderSelectionEvent($this, $view, $this->pageRenderer, $request));
+            $loginProvider->render($view, $this->pageRenderer, $this);
+            $content = $view->render();
+        }
+        $this->pageRenderer->setBodyContent('<body>' . $content);
         $response = $this->pageRenderer->renderResponse();
-
         return $this->appendLoginProviderCookie($request, $response);
     }
 
@@ -206,7 +235,7 @@ class LoginController
     }
 
     /**
-     * @todo: Ugly. This can be used by login providers, they receive an instance of $this.
+     * @deprecated Remove in v14 along with LoginProviderInterface->render()
      */
     public function getLoginProviderIdentifier(): string
     {
@@ -214,7 +243,7 @@ class LoginController
     }
 
     /**
-     * @todo: Ugly. This can be used by login providers, they receive an instance of $this.
+     * @deprecated Remove in v14 along with LoginProviderInterface->render(). Also removed $this->request property.
      */
     public function getCurrentRequest(): ServerRequestInterface
     {

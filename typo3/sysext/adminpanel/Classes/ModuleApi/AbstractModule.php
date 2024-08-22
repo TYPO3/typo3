@@ -34,6 +34,10 @@ abstract class AbstractModule implements ModuleInterface, ConfigurableInterface,
     protected ConfigurationService $configurationService;
     protected ModuleDataStorageCollection $moduleData;
 
+    /**
+     * @todo: See comment in MainController why DI in adminpanel modules that
+     *        implement DataProviderInterface is a *bad* idea.
+     */
     public function injectConfigurationService(ConfigurationService $configurationService): void
     {
         $this->configurationService = $configurationService;

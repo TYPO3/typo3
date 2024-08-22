@@ -15,8 +15,10 @@
 
 namespace TYPO3\CMS\Backend\LoginProvider\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -25,23 +27,49 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 final readonly class ModifyPageLayoutOnLoginProviderSelectionEvent
 {
     public function __construct(
+        // @deprecated Remove in v14
         private LoginController $controller,
-        private StandaloneView $view,
-        private PageRenderer $pageRenderer
+        // @deprecated Set to ViewInterface in v14 when StandaloneView is removed
+        private StandaloneView|ViewInterface $view,
+        // @deprecated Remove in v14
+        private PageRenderer $pageRenderer,
+        private ServerRequestInterface $request,
     ) {}
 
+    /**
+     * @deprecated Remove in v14.
+     */
     public function getController(): LoginController
     {
+        trigger_error(
+            'ModifyPageLayoutOnLoginProviderSelectionEvent->getController() is deprecated, it has no useful public methods anymore.',
+            E_USER_DEPRECATED
+        );
         return $this->controller;
     }
 
-    public function getView(): StandaloneView
+    /**
+     * @todo Set to ViewInterface in v14 when StandaloneView is removed
+     */
+    public function getView(): StandaloneView|ViewInterface
     {
         return $this->view;
     }
 
+    /**
+     * @deprecated Remove in v14.
+     */
     public function getPageRenderer(): PageRenderer
     {
+        trigger_error(
+            'ModifyPageLayoutOnLoginProviderSelectionEvent->getPageRenderer() is deprecated, retrieve an instance using dependency injection instead.',
+            E_USER_DEPRECATED
+        );
         return $this->pageRenderer;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }

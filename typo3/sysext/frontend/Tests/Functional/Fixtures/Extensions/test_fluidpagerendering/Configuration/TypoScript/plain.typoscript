@@ -2,8 +2,3 @@ page = PAGE
 page.10 = PAGEVIEW
 page.10.paths.100 = EXT:test_fluidpagerendering/Resources/Private/Templates/
 
-lowercasepage = PAGE
-lowercasepage.typeNum = 123
-lowercasepage.10 = PAGEVIEW
-lowercasepage.10.paths.100 = EXT:test_fluidpagerendering/Resources/Private/templates_in_lowercase/
-
