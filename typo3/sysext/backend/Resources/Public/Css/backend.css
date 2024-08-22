@@ -2531,7 +2531,7 @@ hr.spacer{border-top:none;margin-top:var(--typo3-spacing);margin-bottom:var(--ty
 .alert-inner{display:flex;gap:calc(var(--typo3-alert-padding-x) * .75)}
 .alert-content{flex-grow:1;align-self:center}
 .alert-title{font-size:1.12em;line-height:1.2;font-weight:700;margin-bottom:.25em}
-.alert-message{white-space:pre-wrap;word-wrap:break-word}
+.alert-message{word-wrap:break-word}
 .alert-body,.alert-message{margin:0;font-size:.9em}
 .alert-body>:last-child,.alert-message>:last-child{margin-bottom:0}
 .alert-body>ul,.alert-message>ul{padding-left:0;padding-inline-start:1.5em}
