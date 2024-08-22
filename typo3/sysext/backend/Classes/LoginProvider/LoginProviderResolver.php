@@ -33,30 +33,61 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @internal This resolver class itself is not part of the TYPO3 Core API as it is only used in TYPO3's Backend login.
  */
-class LoginProviderResolver
+readonly class LoginProviderResolver
 {
-    protected array $loginProviders = [];
-
-    public function __construct(?array $loginProviders = null)
+    /**
+     * Get all registered login providers in correct order
+     */
+    public function getLoginProviders(): array
     {
-        if ($loginProviders === null) {
-            $loginProviders = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] ?? [];
-            if (!is_array($loginProviders)) {
-                $loginProviders = [];
-            }
-        }
+        return $this->getValidatedAndSortedProviders();
+    }
 
-        $this->loginProviders = $this->validateAndSortLoginProviders($loginProviders);
+    public function getLoginProviderConfigurationByIdentifier(string $identifier): array
+    {
+        return $this->getValidatedAndSortedProviders()[$identifier] ?? [];
     }
 
     /**
-     * Validates the registered login providers
-     *
-     * @return array the sorted login providers
-     * @throws \RuntimeException
+     * Return the identifier of the first login provider / with the highest priority.
      */
-    protected function validateAndSortLoginProviders(array $providers): array
+    public function getPrimaryLoginProviderIdentifier(): string
     {
+        return (string)key($this->getValidatedAndSortedProviders());
+    }
+
+    /**
+     * Fetch the login provider identifier from request, check for POST Body, then Query Param, and then checks for the cookie.
+     */
+    public function resolveLoginProviderIdentifierFromRequest(ServerRequestInterface $request, string $cookieName): string
+    {
+        $loginProvider = (string)($request->getParsedBody()['loginProvider'] ?? $request->getQueryParams()['loginProvider'] ?? '');
+        if ((empty($loginProvider) || !$this->hasLoginProvider($loginProvider)) && !empty($request->getCookieParams()[$cookieName] ?? null)) {
+            $loginProvider = $request->getCookieParams()[$cookieName];
+        }
+        if (empty($loginProvider) || !$this->hasLoginProvider($loginProvider)) {
+            $loginProvider = $this->getPrimaryLoginProviderIdentifier();
+        }
+        return (string)$loginProvider;
+    }
+
+    /**
+     * Check if the login provider is registered.
+     */
+    protected function hasLoginProvider(string $identifier): bool
+    {
+        return isset($this->getValidatedAndSortedProviders()[$identifier]);
+    }
+
+    /**
+     * Validates and sort registered login providers
+     */
+    protected function getValidatedAndSortedProviders(): array
+    {
+        $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] ?? [];
+        if (!is_array($providers)) {
+            throw new \RuntimeException('$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'backend\'][\'loginProviders\'] must be an array', 1724699173);
+        }
         if (empty($providers)) {
             throw new \RuntimeException('No login providers are registered in $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'backend\'][\'loginProviders\'].', 1433417281);
         }
@@ -77,58 +108,9 @@ class LoginProviderResolver
                 throw new \RuntimeException('Missing sorting definition for login provider "' . $identifier . '".', 1433416046);
             }
         }
-        // sort providers
         uasort($providers, static function (array $a, array $b): int {
             return (int)$b['sorting'] - (int)$a['sorting'];
         });
         return $providers;
-    }
-
-    /**
-     * Get all registered login providers in the right order
-     */
-    public function getLoginProviders(): array
-    {
-        return $this->loginProviders;
-    }
-
-    /**
-     * Check if the login provider is registered.
-     *
-     * @internal
-     */
-    public function hasLoginProvider(string $identifier): bool
-    {
-        return isset($this->loginProviders[$identifier]);
-    }
-
-    public function getLoginProviderConfigurationByIdentifier(string $identifier): array
-    {
-        return $this->loginProviders[$identifier] ?? [];
-    }
-
-    /**
-     * Returns the identifier of the first login provider / with the highest priority.
-     */
-    public function getPrimaryLoginProviderIdentifier(): string
-    {
-        reset($this->loginProviders);
-        return (string)key($this->loginProviders);
-    }
-
-    /**
-     * Fetches the login provider identifier from a ServerRequest, checking for POST Body, then Query Param,
-     * and then checks for the cookie.
-     */
-    public function resolveLoginProviderIdentifierFromRequest(ServerRequestInterface $request, string $cookieName): string
-    {
-        $loginProvider = (string)($request->getParsedBody()['loginProvider'] ?? $request->getQueryParams()['loginProvider'] ?? '');
-        if ((empty($loginProvider) || !$this->hasLoginProvider($loginProvider)) && !empty($request->getCookieParams()[$cookieName] ?? null)) {
-            $loginProvider = $request->getCookieParams()[$cookieName];
-        }
-        if (empty($loginProvider) || !$this->hasLoginProvider($loginProvider)) {
-            $loginProvider = $this->getPrimaryLoginProviderIdentifier();
-        }
-        return (string)$loginProvider;
     }
 }

@@ -26,27 +26,37 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LoginProviderResolverTest extends UnitTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders']);
-    }
+    private const LOGIN_PROVIDERS = [
+        '123456789' => [
+            'provider' => UsernamePasswordLoginProvider::class,
+            'sorting' => 20,
+            'label' => 'foo',
+            'iconIdentifier' => 'foo',
+        ],
+        '987654321' => [
+            'provider' => UsernamePasswordLoginProvider::class,
+            'sorting' => 30,
+            'label' => 'bar',
+            'iconIdentifier' => 'bar',
+        ],
+    ];
 
     #[Test]
     public function validateAndSortLoginProvidersDetectsMissingProviderConfiguration(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1433417281);
-        new LoginProviderResolver();
+        unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders']);
+        (new LoginProviderResolver())->getLoginProviders();
     }
 
     #[Test]
     public function validateAndSortLoginProvidersDetectsNonArrayProviderConfiguration(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1433417281);
+        $this->expectExceptionCode(1724699173);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = 'foo';
-        new LoginProviderResolver();
+        (new LoginProviderResolver())->getLoginProviders();
     }
 
     #[Test]
@@ -55,7 +65,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1433417281);
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [];
-        new LoginProviderResolver();
+        (new LoginProviderResolver())->getLoginProviders();
     }
 
     #[Test]
@@ -66,7 +76,7 @@ final class LoginProviderResolverTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = [
             1433419736 => [],
         ];
-        new LoginProviderResolver();
+        (new LoginProviderResolver())->getLoginProviders();
     }
 
     #[Test]
@@ -79,7 +89,7 @@ final class LoginProviderResolverTest extends UnitTestCase
                 'provider' => \stdClass::class,
             ],
         ];
-        new LoginProviderResolver();
+        (new LoginProviderResolver())->getLoginProviders();
     }
 
     #[Test]
@@ -94,7 +104,7 @@ final class LoginProviderResolverTest extends UnitTestCase
                 'iconIdentifier' => 'foo',
             ],
         ];
-        new LoginProviderResolver();
+        (new LoginProviderResolver())->getLoginProviders();
     }
 
     #[Test]
@@ -109,7 +119,7 @@ final class LoginProviderResolverTest extends UnitTestCase
                 'label' => 'foo',
             ],
         ];
-        new LoginProviderResolver();
+        (new LoginProviderResolver())->getLoginProviders();
     }
 
     #[Test]
@@ -124,57 +134,33 @@ final class LoginProviderResolverTest extends UnitTestCase
                 'iconIdentifier' => 'foo',
             ],
         ];
-        new LoginProviderResolver();
-    }
-
-    #[Test]
-    public function loginProviderResolverRespectsConstructorArgument(): void
-    {
-        $loginProviders = [
-            1433419736 => [
-                'provider' => UsernamePasswordLoginProvider::class,
-                'sorting' => 30,
-                'label' => 'foo',
-                'iconIdentifier' => 'foo',
-            ],
-        ];
-
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = $loginProviders;
-        $loginProviders[1433419736]['label'] = 'provided-by-constructor-argument';
-
-        self::assertEquals(
-            'provided-by-constructor-argument',
-            (new LoginProviderResolver($loginProviders))->getLoginProviderConfigurationByIdentifier('1433419736')['label']
-        );
+        (new LoginProviderResolver())->getLoginProviders();
     }
 
     #[Test]
     public function hasLoginProviderTest(): void
     {
-        $subject = (new LoginProviderResolver($this->getDefaultLoginProviders()));
-
-        self::assertFalse($subject->hasLoginProvider('123321123'));
-        self::assertTrue($subject->hasLoginProvider('123456789'));
-        self::assertTrue($subject->hasLoginProvider('987654321'));
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = self::LOGIN_PROVIDERS;
+        $subject = $this->getAccessibleMock(LoginProviderResolver::class, null);
+        self::assertFalse($subject->_call('hasLoginProvider', '123321123'));
+        self::assertTrue($subject->_call('hasLoginProvider', '123456789'));
+        self::assertTrue($subject->_call('hasLoginProvider', '987654321'));
     }
 
     #[Test]
     public function getLoginProviderConfigurationByIdentifierTest(): void
     {
-        $subject = (new LoginProviderResolver($this->getDefaultLoginProviders()));
-
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = self::LOGIN_PROVIDERS;
+        $subject = new LoginProviderResolver();
         self::assertNotEmpty($subject->getLoginProviderConfigurationByIdentifier('123456789'));
-        self::assertEquals(
-            30,
-            $subject->getLoginProviderConfigurationByIdentifier('987654321')['sorting']
-        );
+        self::assertEquals(30, $subject->getLoginProviderConfigurationByIdentifier('987654321')['sorting']);
     }
 
     #[Test]
     public function getLoginProvidersTest(): void
     {
-        $resolvedLoginProviders = (new LoginProviderResolver($this->getDefaultLoginProviders()))->getLoginProviders();
-
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = self::LOGIN_PROVIDERS;
+        $resolvedLoginProviders = (new LoginProviderResolver())->getLoginProviders();
         self::assertCount(2, $resolvedLoginProviders);
         // sorting is applied 987654321 is now first
         self::assertEquals('bar', array_shift($resolvedLoginProviders)['label']);
@@ -183,15 +169,16 @@ final class LoginProviderResolverTest extends UnitTestCase
     #[Test]
     public function getPrimaryLoginProviderIdentifierTest(): void
     {
-        $subject = (new LoginProviderResolver($this->getDefaultLoginProviders()));
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = self::LOGIN_PROVIDERS;
+        $subject = (new LoginProviderResolver());
         self::assertEquals('987654321', $subject->getPrimaryLoginProviderIdentifier());
     }
 
     #[Test]
     public function resolveLoginProviderIdentifierFromRequestTest(): void
     {
-        $subject = (new LoginProviderResolver($this->getDefaultLoginProviders()));
-
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'] = self::LOGIN_PROVIDERS;
+        $subject = new LoginProviderResolver();
         // First provider is returned on "empty" request
         self::assertEquals(
             '987654321',
@@ -200,7 +187,6 @@ final class LoginProviderResolverTest extends UnitTestCase
                 'be_lastLoginProvider'
             )
         );
-
         // First provider is returned on invalid request
         self::assertEquals(
             '987654321',
@@ -210,7 +196,6 @@ final class LoginProviderResolverTest extends UnitTestCase
                 'be_lastLoginProvider'
             )
         );
-
         // query params contain provider
         self::assertEquals(
             '123456789',
@@ -220,7 +205,6 @@ final class LoginProviderResolverTest extends UnitTestCase
                 'be_lastLoginProvider'
             )
         );
-
         // cookie contains provider
         self::assertEquals(
             '123456789',
@@ -230,7 +214,6 @@ final class LoginProviderResolverTest extends UnitTestCase
                 'be_lastLoginProvider'
             )
         );
-
         // query params and cookie contain provider - query params precedes
         self::assertEquals(
             '123456789',
@@ -241,23 +224,5 @@ final class LoginProviderResolverTest extends UnitTestCase
                 'be_lastLoginProvider'
             )
         );
-    }
-
-    protected function getDefaultLoginProviders(): array
-    {
-        return [
-            '123456789' => [
-                'provider' => UsernamePasswordLoginProvider::class,
-                'sorting' => 20,
-                'label' => 'foo',
-                'iconIdentifier' => 'foo',
-            ],
-            '987654321' => [
-                'provider' => UsernamePasswordLoginProvider::class,
-                'sorting' => 30,
-                'label' => 'bar',
-                'iconIdentifier' => 'bar',
-            ],
-        ];
     }
 }

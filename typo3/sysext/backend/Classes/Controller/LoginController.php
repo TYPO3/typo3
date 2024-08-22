@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -62,46 +61,6 @@ class LoginController
     use PageRendererBackendSetupTrait;
 
     /**
-     * The URL to redirect to after login.
-     *
-     * @var string
-     */
-    protected $redirectUrl;
-
-    /**
-     * Set to the redirect URL of the form (may be redirect_url or "index.php?M=main")
-     *
-     * @var string
-     */
-    protected $redirectToURL;
-
-    /**
-     * the active login provider identifier
-     */
-    protected string $loginProviderIdentifier = '';
-
-    /**
-     * Login-refresh bool; The backend will call this script
-     * with this value set when the login is close to being expired
-     * and the form needs to be redrawn.
-     *
-     * @var bool
-     */
-    protected $loginRefresh;
-
-    /**
-     * Value of forms submit button for login.
-     *
-     * @var string
-     */
-    protected $submitValue;
-
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
-
-    /**
      * @todo: Only set for getCurrentRequest(). Should vanish.
      */
     protected ServerRequestInterface $request;
@@ -118,6 +77,8 @@ class LoginController
         protected readonly BackendEntryPointResolver $backendEntryPointResolver,
         protected readonly FormProtectionFactory $formProtectionFactory,
         protected readonly Locales $locales,
+        protected readonly ConnectionPool $connectionPool,
+        protected readonly AuthenticationStyleInformation $authenticationStyleInformation,
     ) {}
 
     /**
@@ -127,9 +88,7 @@ class LoginController
     public function formAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
-        $this->init($request);
-        $response = $this->createLoginLogoutForm($request);
-        return $this->appendLoginProviderCookie($request, $request->getAttribute('normalizedParams'), $response);
+        return $this->createLoginLogout($request, (bool)($request->getParsedBody()['loginRefresh'] ?? $request->getQueryParams()['loginRefresh'] ?? false));
     }
 
     /**
@@ -138,10 +97,100 @@ class LoginController
     public function refreshAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
-        $this->init($request);
-        $this->loginRefresh = true;
-        $response = $this->createLoginLogoutForm($request);
-        return $this->appendLoginProviderCookie($request, $request->getAttribute('normalizedParams'), $response);
+        return $this->createLoginLogout($request, true);
+    }
+
+    /**
+     * @param bool $loginRefresh The backend triggers this with this value set when the login is
+     *                           close to being expired and the form needs to be redrawn.
+     * @throws PropagateResponseException
+     * @throws RouteNotFoundException
+     */
+    protected function createLoginLogout(ServerRequestInterface $request, bool $loginRefresh): ResponseInterface
+    {
+        $backendUser = $this->getBackendUserAuthentication();
+        if (!empty($backendUser->user['uid'])) {
+            // If BE user is logged in, redirect to backend. Also handles "refresh" foo.
+            $this->checkRedirect($request, $backendUser, $loginRefresh);
+        }
+
+        $languageService = $this->getLanguageService();
+        if (empty($backendUser->user['uid'])) {
+            // If no user is logged in, initialize LanguageService with preferred browser language and set the
+            // language to the backend user object, so labels in fluid views are translated.
+            $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? '';
+            $preferredBrowserLanguage = $this->locales->getPreferredClientLanguage($httpAcceptLanguage);
+            $languageService->init($this->locales->createLocale($preferredBrowserLanguage));
+            $backendUser->user['lang'] = $preferredBrowserLanguage;
+        }
+
+        if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles()) !== '') {
+            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, useNonce: true);
+        }
+        if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {
+            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, useNonce: true);
+        }
+        if (($logo = $this->authenticationStyleInformation->getLogo()) !== '') {
+            $logoAlt = $this->authenticationStyleInformation->getLogoAlt() ?: $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
+        } else {
+            $logo = $this->authenticationStyleInformation->getDefaultLogo();
+            $logoAlt = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
+            $this->pageRenderer->addCssInlineBlock('loginLogo', $this->authenticationStyleInformation->getDefaultLogoStyles(), useNonce: true);
+        }
+        $loginProviderIdentifier = $this->loginProviderResolver->resolveLoginProviderIdentifierFromRequest($request, 'be_lastLoginProvider');
+        if (empty($backendUser->user['uid'])) {
+            // Show login form
+            $action = 'login';
+            $formActionUrl = $this->uriBuilder->buildUriWithRedirect('login', ['loginProvider' => $loginProviderIdentifier], RouteRedirect::createFromRequest($request));
+        } else {
+            // Show logout form
+            $action = 'logout';
+            $formActionUrl = $this->uriBuilder->buildUriFromRoute('logout');
+        }
+        $forgotPasswordUrl = $this->uriBuilder->buildUriWithRedirect('password_forget', ['loginProvider' => $loginProviderIdentifier], RouteRedirect::createFromRequest($request));
+        $viewVariables = [
+            'logo' => $logo,
+            'logoAlt' => $logoAlt,
+            'images' => $this->authenticationStyleInformation->getSupportingImages(),
+            'copyright' => $this->typo3Information->getCopyrightNotice(),
+            'loginFootnote' => $this->authenticationStyleInformation->getFooterNote(),
+            'referrerCheckEnabled' => $this->features->isFeatureEnabled('security.backend.enforceReferrer'),
+            'loginUrl' => (string)$request->getUri(),
+            'loginProviderIdentifier' => $loginProviderIdentifier,
+            'backendUser' => $backendUser->user,
+            'hasLoginError' => $this->isLoginInProgress($request),
+            'action' => $action,
+            'formActionUrl' => $formActionUrl,
+            'requestTokenName' => RequestToken::PARAM_NAME,
+            'requestTokenValue' => $this->provideRequestTokenJwt(),
+            'forgetPasswordUrl' => $forgotPasswordUrl,
+            'redirectUrl' => GeneralUtility::sanitizeLocalUrl($request->getParsedBody()['redirect_url'] ?? $request->getQueryParams()['redirect_url'] ?? ''),
+            'loginRefresh' => $loginRefresh,
+            'loginProviders' => $this->loginProviderResolver->getLoginProviders(),
+            'loginNewsItems' => $this->getSystemNews(),
+        ];
+
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setRequest();
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->assignMultiple($viewVariables);
+
+        $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);
+        $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
+
+        $this->eventDispatcher->dispatch(new ModifyPageLayoutOnLoginProviderSelectionEvent($this, $view, $this->pageRenderer));
+
+        $loginProviderConfiguration = $this->loginProviderResolver->getLoginProviderConfigurationByIdentifier($loginProviderIdentifier);
+        /** @var LoginProviderInterface $loginProvider */
+        $loginProvider = GeneralUtility::makeInstance($loginProviderConfiguration['provider']);
+        $loginProvider->render($view, $this->pageRenderer, $this);
+
+        $this->pageRenderer->setBodyContent('<body>' . $view->render());
+        $response = $this->pageRenderer->renderResponse();
+
+        return $this->appendLoginProviderCookie($request, $response);
     }
 
     /**
@@ -158,11 +207,10 @@ class LoginController
 
     /**
      * @todo: Ugly. This can be used by login providers, they receive an instance of $this.
-     *        Unused in core, though. It should vanish when login providers receive love.
      */
     public function getLoginProviderIdentifier(): string
     {
-        return $this->loginProviderIdentifier;
+        return $this->loginProviderResolver->resolveLoginProviderIdentifierFromRequest($this->request, 'be_lastLoginProvider');
     }
 
     /**
@@ -174,21 +222,45 @@ class LoginController
     }
 
     /**
+     * @throws PropagateResponseException
+     */
+    protected function checkRedirect(ServerRequestInterface $request, BackendUserAuthentication $backendUser, bool $loginRefresh): void
+    {
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
+        if (!$formProtection instanceof BackendFormProtection) {
+            throw new \RuntimeException('The Form Protection retrieved does not match the expected one.', 1432080411);
+        }
+        if ($loginRefresh) {
+            // Triggering `TYPO3/CMS/Backend/LoginRefresh` module happens in JS `TYPO3/CMS/Backend/Login`
+            $formProtection->setSessionTokenFromRegistry();
+            $formProtection->persistSessionToken();
+        } else {
+            $formProtection->storeSessionTokenInRegistry();
+            // @todo: Consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different
+            $redirectToURL = (string)($backendUser->getTSConfig()['auth.']['BE.']['redirectToURL'] ?? '')
+                ?: (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
+            throw new PropagateResponseException(new RedirectResponse($redirectToURL, 303), 1724705833);
+        }
+    }
+
+    /**
      * If a login provider was chosen in the previous request, which is not the default provider,
      * it is stored in a Cookie and appended to the HTTP Response.
      */
-    protected function appendLoginProviderCookie(ServerRequestInterface $request, NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
+    protected function appendLoginProviderCookie(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        if ($this->loginProviderIdentifier === $this->loginProviderResolver->getPrimaryLoginProviderIdentifier()) {
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        $loginProviderIdentifier = $this->loginProviderResolver->resolveLoginProviderIdentifierFromRequest($request, 'be_lastLoginProvider');
+        if ($loginProviderIdentifier === $this->loginProviderResolver->getPrimaryLoginProviderIdentifier()) {
             return $response;
         }
-        // Use the secure option when the current request is served by a secure connection
         $cookie = new Cookie(
             'be_lastLoginProvider',
-            $this->loginProviderIdentifier,
+            $loginProviderIdentifier,
             $GLOBALS['EXEC_TIME'] + 7776000, // 90 days
             $this->backendEntryPointResolver->getPathFromRequest($request),
             '',
+            // Use the secure option when the current request is served by a secure connection
             $normalizedParams->isHttps(),
             true,
             false,
@@ -198,235 +270,39 @@ class LoginController
     }
 
     /**
-     * Initialize the login box. Will also react on a &L=OUT flag and exit.
-     */
-    protected function init(ServerRequestInterface $request): void
-    {
-        $languageService = $this->getLanguageService();
-        $backendUser = $this->getBackendUserAuthentication();
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-
-        // Try to get the preferred browser language
-        $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? '';
-        $preferredBrowserLanguage = $this->locales->getPreferredClientLanguage($httpAcceptLanguage);
-
-        // If we found a $preferredBrowserLanguage, which is not the default language, while no user is logged in,
-        // initialize $this->getLanguageService() and set the language to the backend user object, so labels in fluid
-        // views are translated
-        if (empty($backendUser->user['uid'])) {
-            $languageService->init($this->locales->createLocale($preferredBrowserLanguage));
-            $backendUser->user['lang'] = $preferredBrowserLanguage;
-        }
-
-        $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);
-        $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
-
-        $this->redirectUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['redirect_url'] ?? $queryParams['redirect_url'] ?? '');
-        $this->loginProviderIdentifier = $this->loginProviderResolver->resolveLoginProviderIdentifierFromRequest($request, 'be_lastLoginProvider');
-
-        $this->loginRefresh = (bool)($parsedBody['loginRefresh'] ?? $queryParams['loginRefresh'] ?? false);
-        // Value of "Login" button. If set, the login button was pressed.
-        $this->submitValue = $parsedBody['commandLI'] ?? $queryParams['commandLI'] ?? null;
-
-        // Setting the redirect URL to "index.php?M=main" if no alternative input is given
-        if ($this->redirectUrl) {
-            $this->redirectToURL = $this->redirectUrl;
-        } else {
-            // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
-            $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
-        }
-
-        // @todo: This should be ViewInterface. But this breaks LoginProviderInterface AND ModifyPageLayoutOnLoginProviderSelectionEvent
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        // StandaloneView should NOT receive a request at all, override the default StandaloneView constructor here.
-        $this->view->setRequest();
-        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $this->provideCustomLoginStyling();
-        $this->view->assign('referrerCheckEnabled', $this->features->isFeatureEnabled('security.backend.enforceReferrer'));
-        $this->view->assign('loginUrl', (string)$request->getUri());
-        $this->view->assign('loginProviderIdentifier', $this->loginProviderIdentifier);
-    }
-
-    protected function provideCustomLoginStyling(): void
-    {
-        $languageService = $this->getLanguageService();
-        $authenticationStyleInformation = GeneralUtility::makeInstance(AuthenticationStyleInformation::class);
-        if (($backgroundImageStyles = $authenticationStyleInformation->getBackgroundImageStyles()) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, useNonce: true);
-        }
-        if (($footerNote = $authenticationStyleInformation->getFooterNote()) !== '') {
-            $this->view->assign('loginFootnote', $footerNote);
-        }
-        if (($highlightColorStyles = $authenticationStyleInformation->getHighlightColorStyles()) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, useNonce: true);
-        }
-        if (($logo = $authenticationStyleInformation->getLogo()) !== '') {
-            $logoAlt = $authenticationStyleInformation->getLogoAlt() ?: $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
-        } else {
-            $logo = $authenticationStyleInformation->getDefaultLogo();
-            $logoAlt = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
-            $this->pageRenderer->addCssInlineBlock('loginLogo', $authenticationStyleInformation->getDefaultLogoStyles(), useNonce: true);
-        }
-        $this->view->assignMultiple([
-            'logo' => $logo,
-            'logoAlt' => $logoAlt,
-            'images' => $authenticationStyleInformation->getSupportingImages(),
-            'copyright' => $this->typo3Information->getCopyrightNotice(),
-        ]);
-    }
-
-    /**
-     * Main function - creating the login/logout form
-     */
-    protected function createLoginLogoutForm(ServerRequestInterface $request): ResponseInterface
-    {
-        $backendUser = $this->getBackendUserAuthentication();
-
-        // Checking, if we should make a redirect.
-        // Might set JavaScript in the header to close window.
-        $this->checkRedirect($request);
-
-        // Show login form
-        if (empty($backendUser->user['uid'])) {
-            $action = 'login';
-            $formActionUrl = $this->uriBuilder->buildUriWithRedirect(
-                'login',
-                [
-                    'loginProvider' => $this->loginProviderIdentifier,
-                ],
-                RouteRedirect::createFromRequest($request)
-            );
-        } else {
-            // Show logout form
-            $action = 'logout';
-            $formActionUrl = $this->uriBuilder->buildUriFromRoute('logout');
-        }
-        $this->view->assignMultiple([
-            'backendUser' => $backendUser->user,
-            'hasLoginError' => $this->isLoginInProgress($request),
-            'action' => $action,
-            'formActionUrl' => $formActionUrl,
-            'requestTokenName' => RequestToken::PARAM_NAME,
-            'requestTokenValue' => $this->provideRequestTokenJwt(),
-            'forgetPasswordUrl' => $this->uriBuilder->buildUriWithRedirect(
-                'password_forget',
-                ['loginProvider' => $this->loginProviderIdentifier],
-                RouteRedirect::createFromRequest($request)
-            ),
-            'redirectUrl' => $this->redirectUrl,
-            'loginRefresh' => $this->loginRefresh,
-            'loginProviders' => $this->loginProviderResolver->getLoginProviders(),
-            'loginNewsItems' => $this->getSystemNews(),
-        ]);
-
-        // Initialize interface selectors:
-        $this->renderHtmlViaLoginProvider();
-
-        $this->pageRenderer->setBodyContent('<body>' . $this->view->render());
-        return $this->pageRenderer->renderResponse();
-    }
-
-    protected function renderHtmlViaLoginProvider(): void
-    {
-        $loginProviderConfiguration = $this->loginProviderResolver->getLoginProviderConfigurationByIdentifier($this->loginProviderIdentifier);
-        /** @var LoginProviderInterface $loginProvider */
-        $loginProvider = GeneralUtility::makeInstance($loginProviderConfiguration['provider']);
-        $this->eventDispatcher->dispatch(
-            new ModifyPageLayoutOnLoginProviderSelectionEvent(
-                $this,
-                $this->view,
-                $this->pageRenderer
-            )
-        );
-        $loginProvider->render($this->view, $this->pageRenderer, $this);
-    }
-
-    /**
-     * Checking, if we should perform some sort of redirection OR closing of windows.
-     * Do a redirect if a user is logged in.
-     *
-     * @throws \RuntimeException
-     * @throws \UnexpectedValueException
-     * @throws RouteNotFoundException
-     */
-    protected function checkRedirect(ServerRequestInterface $request): void
-    {
-        $backendUser = $this->getBackendUserAuthentication();
-        if (empty($backendUser->user['uid'])) {
-            return;
-        }
-
-        $redirectToUrl = (string)($backendUser->getTSConfig()['auth.']['BE.']['redirectToURL'] ?? '');
-        if (!empty($redirectToUrl)) {
-            $this->redirectToURL = $redirectToUrl;
-        } else {
-            // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
-            $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
-        }
-
-        $formProtection = $this->formProtectionFactory->createFromRequest($request);
-        if (!$formProtection instanceof BackendFormProtection) {
-            throw new \RuntimeException('The Form Protection retrieved does not match the expected one.', 1432080411);
-        }
-        if ($this->loginRefresh) {
-            $formProtection->setSessionTokenFromRegistry();
-            $formProtection->persistSessionToken();
-            // triggering `TYPO3/CMS/Backend/LoginRefresh` module happens in `TYPO3/CMS/Backend/Login`
-        } else {
-            $formProtection->storeSessionTokenInRegistry();
-            $this->redirectToUrl();
-        }
-    }
-
-    /**
      * Gets news as array from sys_news and converts them into a
      * format suitable for showing them at the login screen.
      */
     protected function getSystemNews(): array
     {
-        $systemNewsTable = 'sys_news';
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($systemNewsTable);
         $systemNews = [];
-        $systemNewsRecords = $queryBuilder
+        $queryResult = $this->connectionPool
+            ->getQueryBuilderForTable('sys_news')
             ->select('uid', 'title', 'content', 'crdate')
-            ->from($systemNewsTable)
+            ->from('sys_news')
             ->orderBy('crdate', 'DESC')
-            ->executeQuery()
-            ->fetchAllAssociative();
-        foreach ($systemNewsRecords as $systemNewsRecord) {
+            ->executeQuery();
+        while ($row = $queryResult->fetchAssociative()) {
             $systemNews[] = [
-                'uid' => $systemNewsRecord['uid'],
-                'date' => $systemNewsRecord['crdate'] ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)$systemNewsRecord['crdate']) : '',
-                'header' => $systemNewsRecord['title'],
-                'content' => $systemNewsRecord['content'],
+                'uid' => $row['uid'],
+                'date' => $row['crdate'] ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)$row['crdate']) : '',
+                'header' => $row['title'],
+                'content' => $row['content'],
             ];
         }
         return $systemNews;
     }
 
     /**
-     * Checks if login credentials are currently submitted
+     * Checks if login credentials have been submitted
      */
     protected function isLoginInProgress(ServerRequestInterface $request): bool
     {
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $username = $parsedBody['username'] ?? $queryParams['username'] ?? null;
-        return !empty($username) || !empty($this->submitValue);
-    }
-
-    /**
-     * Wrapper method to redirect to configured redirect URL.
-     *
-     * @throws PropagateResponseException
-     */
-    protected function redirectToUrl(): void
-    {
-        throw new PropagateResponseException(new RedirectResponse($this->redirectToURL, 303), 1607271511);
+        // @todo: Restrict to POST?!
+        // Value of forms submit button for login. If set, the login button was pressed.
+        $submitValue = $request->getParsedBody()['commandLI'] ?? $request->getQueryParams()['commandLI'] ?? '';
+        $username = $request->getParsedBody()['username'] ?? $request->getQueryParams()['username'] ?? null;
+        return !empty($username) || !empty($submitValue);
     }
 
     protected function provideRequestTokenJwt(): string

@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,20 +29,16 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class AuthenticationStyleInformation implements LoggerAwareInterface
+readonly class AuthenticationStyleInformation
 {
-    use LoggerAwareTrait;
-
-    protected array $backendExtensionConfiguration;
-
-    public function __construct(ExtensionConfiguration $extensionConfiguration)
-    {
-        $this->backendExtensionConfiguration = (array)$extensionConfiguration->get('backend');
-    }
+    public function __construct(
+        private ExtensionConfiguration $extensionConfiguration,
+        private LoggerInterface $logger,
+    ) {}
 
     public function getBackgroundImageStyles(): string
     {
-        $backgroundImage = (string)($this->backendExtensionConfiguration['loginBackgroundImage'] ?? '');
+        $backgroundImage = (string)($this->getBackendExtensionConfiguration()['loginBackgroundImage'] ?? '');
         if ($backgroundImage === '') {
             return '';
         }
@@ -67,13 +62,11 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
 
     public function getHighlightColorStyles(): string
     {
-        $highlightColor = (string)($this->backendExtensionConfiguration['loginHighlightColor'] ?? '');
+        $highlightColor = (string)($this->getBackendExtensionConfiguration()['loginHighlightColor'] ?? '');
         if ($highlightColor === '') {
             return '';
         }
-
         $highlightColor = GeneralUtility::sanitizeCssVariableValue($highlightColor);
-
         return '
             .btn-login {
                 --typo3-btn-color: #fff;
@@ -95,7 +88,7 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
 
     public function getFooterNote(): string
     {
-        $footerNote = (string)($this->backendExtensionConfiguration['loginFootnote'] ?? '');
+        $footerNote = (string)($this->getBackendExtensionConfiguration()['loginFootnote'] ?? '');
         if ($footerNote === '') {
             return '';
         }
@@ -105,7 +98,7 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
 
     public function getLogo(): string
     {
-        $logo = ($this->backendExtensionConfiguration['loginLogo'] ?? '');
+        $logo = ($this->getBackendExtensionConfiguration()['loginLogo'] ?? '');
         if ($logo === '') {
             return '';
         }
@@ -122,13 +115,13 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
 
     public function getLogoAlt(): string
     {
-        return trim((string)($this->backendExtensionConfiguration['loginLogoAlt'] ?? ''));
+        return trim((string)($this->getBackendExtensionConfiguration()['loginLogoAlt'] ?? ''));
     }
 
     public function getDefaultLogo(): string
     {
         // Use TYPO3 logo depending on highlight color
-        $logo = ((string)($this->backendExtensionConfiguration['loginHighlightColor'] ?? '') !== '')
+        $logo = ((string)($this->getBackendExtensionConfiguration()['loginHighlightColor'] ?? '') !== '')
             ? 'EXT:core/Resources/Public/Images/typo3_black.svg'
             : 'EXT:core/Resources/Public/Images/typo3_orange.svg';
 
@@ -168,5 +161,10 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
             $filename = PathUtility::getAbsoluteWebPath($absoluteFilename);
         }
         return $filename;
+    }
+
+    protected function getBackendExtensionConfiguration(): array
+    {
+        return (array)$this->extensionConfiguration->get('backend');
     }
 }
