@@ -1,4 +1,4 @@
-import{Command as e,Plugin as t}from"@ckeditor/ckeditor5-core";import{parseKeystroke as a,getCode as c}from"@ckeditor/ckeditor5-utils";import{ButtonView as i,MenuBarMenuListItemButtonView as l}from"@ckeditor/ckeditor5-ui";
+import{Command as e,Plugin as t}from"@ckeditor/ckeditor5-core";import{getCode as a,parseKeystroke as c}from"@ckeditor/ckeditor5-utils";import{ButtonView as i,MenuBarMenuListItemButtonView as l}from"@ckeditor/ckeditor5-ui";
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -6,7 +6,7 @@ import{Command as e,Plugin as t}from"@ckeditor/ckeditor5-core";import{parseKeyst
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */const o=a("Ctrl+A");class r extends t{static get pluginName(){return"SelectAllEditing"}init(){const e=this.editor,t=e.t,a=e.editing.view.document;e.commands.add("selectAll",new s(e)),this.listenTo(a,"keydown",((t,a)=>{c(a)===o&&(e.execute("selectAll"),a.preventDefault())})),e.accessibility.addKeystrokeInfos({keystrokes:[{label:t("Select all"),keystroke:"CTRL+A"}]})}}
+ */const o=c("Ctrl+A");class r extends t{static get pluginName(){return"SelectAllEditing"}init(){const e=this.editor,t=e.t,c=e.editing.view.document;e.commands.add("selectAll",new s(e)),this.listenTo(c,"keydown",((t,c)=>{a(c)===o&&(e.execute("selectAll"),c.preventDefault())})),e.accessibility.addKeystrokeInfos({keystrokes:[{label:t("Select all"),keystroke:"CTRL+A"}]})}}
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license

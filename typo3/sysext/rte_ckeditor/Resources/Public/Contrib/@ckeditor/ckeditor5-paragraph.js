@@ -15,4 +15,4 @@ import{Command as e,Plugin as t,icons as r}from"@ckeditor/ckeditor5-core";import
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
-const l=r.paragraph;class d extends t{static get requires(){return[c]}init(){const e=this.editor,t=e.t;e.ui.componentFactory.add("paragraph",(r=>{const a=new i(r),n=e.commands.get("paragraph");return a.label=t("Paragraph"),a.icon=l,a.tooltip=!0,a.isToggleable=!0,a.bind("isEnabled").to(n),a.bind("isOn").to(n,"value"),a.on("execute",(()=>{e.execute("paragraph")})),a}))}}export{c as Paragraph,d as ParagraphButtonUI};
+class l extends t{static get requires(){return[c]}init(){const e=this.editor,t=e.t;e.ui.componentFactory.add("paragraph",(a=>{const n=new i(a),o=e.commands.get("paragraph");return n.label=t("Paragraph"),n.icon=r.paragraph,n.tooltip=!0,n.isToggleable=!0,n.bind("isEnabled").to(o),n.bind("isOn").to(o,"value"),n.on("execute",(()=>{e.execute("paragraph")})),n}))}}export{c as Paragraph,l as ParagraphButtonUI};
