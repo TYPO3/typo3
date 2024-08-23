@@ -36,7 +36,7 @@ Basic Usage
 
 .. code-block:: html
 
-   <f:translate key="someKey" languageKey="dk" />
+   <f:translate key="someKey" languageKey="da" />
 
 
 .. index:: Fluid, PHP-API

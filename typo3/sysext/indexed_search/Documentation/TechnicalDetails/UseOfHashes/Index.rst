@@ -1,11 +1,9 @@
 .. include:: /Includes.rst.txt
-
-
-
 .. _use-of-hashes:
 
+=============
 Use of hashes
-^^^^^^^^^^^^^
+=============
 
 The hashes used are md5 hashes where the first 7 chars are converted
 into an integer which is used as the hash in the database. This is

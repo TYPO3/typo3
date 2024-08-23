@@ -1,11 +1,9 @@
 .. include:: /Includes.rst.txt
-
-
-
 .. _external-media:
 
+==============
 External media
-^^^^^^^^^^^^^^
+==============
 
 External media (pdf, doc, html, txt) is tricky. External media is
 always detected as links to local files in the content of a TYPO3 page
@@ -19,4 +17,3 @@ external media will be listed only once (grouping by phash), but say
 two TYPO3 pages are linking to the document, then only one of them
 will be shown as the path where the link can be found. However if both
 TYPO3 pages are not available, then the document will not be shown.
-

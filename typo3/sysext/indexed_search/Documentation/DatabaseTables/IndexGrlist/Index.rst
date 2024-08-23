@@ -1,11 +1,9 @@
 .. include:: /Includes.rst.txt
-
-
-
 .. _index-grlist:
 
+=============
 index\_grlist
-^^^^^^^^^^^^^
+=============
 
 This table will hold records related to a phash-row. Records in this
 table confirms that certain gr\_lists would actually share the same

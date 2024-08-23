@@ -1,20 +1,17 @@
 .. include:: /Includes.rst.txt
-
-
-
 .. _index-phash:
 
+============
 index\_phash
-^^^^^^^^^^^^
+============
 
 This table contains references to TYPO3 pages or external documents.
 The fields are like this:
 
-
 .. _index-phash-phash:
 
 phash
-"""""
+=====
 
 ..  versionchanged:: 13.0
     The field has been transformed to a varchar field, full md5 hashes are
@@ -46,7 +43,7 @@ phash
 .. _index-phash-phash-grouping:
 
 phash\_grouping
-"""""""""""""""
+===============
 
 ..  versionchanged:: 13.0
     The field has been transformed to a varchar field, full md5 hashes are
@@ -70,12 +67,10 @@ phash\_grouping
          Currently a search result does not either group or limit by this, but
          rather the result display may group the result into logical units.
 
-
-
 .. _index-phash-item-mtime:
 
 item\_mtime
-"""""""""""
+===========
 
 .. container:: table-row
 
@@ -97,7 +92,7 @@ item\_mtime
 .. _index-phash-tstamp:
 
 tstamp
-""""""
+======
 
 .. container:: table-row
 
@@ -119,7 +114,7 @@ tstamp
 .. _index-phash-static_page_arguments:
 
 static_page_arguments
-"""""""""""""""""""""
+=====================
 
 .. container:: table-row
 
@@ -139,7 +134,7 @@ static_page_arguments
 .. _index-phash-item-type:
 
 item\_type
-""""""""""
+==========
 
 .. container:: table-row
 
@@ -154,12 +149,10 @@ item\_type
          1- external files like pdf (2), doc (3), html (1), txt (4) and so on.
          See the class.indexer.php file
 
-
-
 .. _index-phash-item-title:
 
 item\_title
-"""""""""""
+===========
 
 .. container:: table-row
 
@@ -178,7 +171,7 @@ item\_title
 .. _index-phash-item-description:
 
 item\_description
-"""""""""""""""""
+=================
 
 .. container:: table-row
 
@@ -194,7 +187,7 @@ item\_description
 .. _index-phash-data-page-id:
 
 data\_page\_id
-""""""""""""""
+==============
 
 .. container:: table-row
 
@@ -209,7 +202,7 @@ data\_page\_id
 .. _index-phash-data-page-type:
 
 data\_page\_type
-""""""""""""""""
+================
 
 .. container:: table-row
 
@@ -224,7 +217,7 @@ data\_page\_type
 .. _index-phash-data-filename:
 
 data\_filename
-""""""""""""""
+==============
 
 .. container:: table-row
 
@@ -239,7 +232,7 @@ data\_filename
 .. _index-phash-contenthash:
 
 contentHash
-"""""""""""
+===========
 
 ..  versionchanged:: 13.0
     The field has been transformed to a varchar field, full md5 hashes are
@@ -260,7 +253,7 @@ contentHash
 .. _index-phash-crdate:
 
 crdate
-""""""
+======
 
 .. container:: table-row
 
@@ -276,7 +269,7 @@ crdate
 .. _index-phash-parsetime:
 
 parsetime
-"""""""""
+=========
 
 .. container:: table-row
 
@@ -291,7 +284,7 @@ parsetime
 .. _index-phash-sys-language-uid:
 
 sys\_language\_uid
-""""""""""""""""""
+==================
 
 .. container:: table-row
 
@@ -306,7 +299,7 @@ sys\_language\_uid
 .. _index-phash-item-crdate:
 
 item\_crdate
-""""""""""""
+============
 
 .. container:: table-row
 
@@ -322,7 +315,7 @@ item\_crdate
 .. _index-phash-gr-list:
 
 gr\_list
-""""""""
+========
 
 .. container:: table-row
 
@@ -332,5 +325,3 @@ gr\_list
    Description
          Contains the gr\_list of the user initiating the indexing of the
          document.
-
-

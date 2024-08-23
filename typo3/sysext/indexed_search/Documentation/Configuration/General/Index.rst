@@ -1,11 +1,10 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
+..  _configuration-general:
 
-
-.. _configuration-general:
-
+=======
 General
-^^^^^^^
+=======
 
 The most basic requirement for the search engine to work is that pages
 are getting indexed. That will not happen by just installing the
@@ -19,9 +18,9 @@ which actually shows the page content.
 Lets say that you have a PAGE object called "page" (that is pretty
 typical), then you will have to set this config-option:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-   page.config.index_enable = 1
+    page.config.index_enable = 1
 
 When this option is set you should begin to see your pages being
 indexed when they are shown next time. Remember that only cached pages
@@ -31,11 +30,10 @@ This is documented in :ref:`CONFIG section of the TSref <t3tsref:config>`. Pleas
 for further options. For instance indexing of external media can also
 be enabled there.
 
-
-.. _configuration-languages:
+..  _configuration-languages:
 
 Languages
-"""""""""
+=========
 
 The plugin supports all system languages in TYPO3. Translation is done
 using the typo3.org tools.
@@ -44,7 +42,7 @@ If you want to use eg. danish language that will automatically be used
 if this option is set in your template (the value is the internal
 language key):
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-   config.language = dk
+    config.language = da
 
