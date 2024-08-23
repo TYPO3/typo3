@@ -1,7 +1,5 @@
 .. include:: /Includes.rst.txt
 
-.. highlight:: php
-
 .. _create-widget-group:
 
 ===================
@@ -12,27 +10,30 @@ Widget groups are used to group widgets into tabs.
 This will have an effect when adding new widgets to an dashboard.
 See :ref:`adding-widgets` to get an idea of the UI.
 
-Groups are defines as PHP array in :file:`Configuration/Backend/DashboardWidgetGroups.php`::
+Groups are defined as PHP array:
 
-   <?php
+..  code-block:: php
+    :caption: Example from EXT:dashboard/Configuration/Backend/DashboardWidgetGroups.php
 
-   return [
-       'general' => [
-           'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.general',
-       ],
-       'systemInfo' => [
-           'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.system',
-       ],
-       'typo3' => [
-           'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.typo3',
-       ],
-       'news' => [
-           'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.news',
-       ],
-       'documentation' => [
-           'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.documentation',
-       ],
-   ];
+    <?php
+
+    return [
+        'general' => [
+            'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.general',
+        ],
+        'systemInfo' => [
+            'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.system',
+        ],
+        'typo3' => [
+            'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.typo3',
+        ],
+        'news' => [
+            'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.news',
+        ],
+        'documentation' => [
+            'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.documentation',
+        ],
+    ];
 
 The file has to return an array of groups.
 Each group consists of an array key used as identifier and an single option :php:`title`.

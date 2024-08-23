@@ -17,27 +17,28 @@ This kind of widgets are useful if you want to show some simple stats.
 Example
 -------
 
-:file:`Configuration/Services.yaml`::
+..  code-block:: yaml
+    :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
 
-   services:
+    services:
 
-     dashboard.widget.failedLogins:
-       class: 'TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget'
-       arguments:
-         $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\NumberOfFailedLoginsDataProvider'
-         $view: '@dashboard.views.widget'
-         $options:
-           title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
-           subtitle: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle'
-           icon: 'content-elements-login'
-           refreshAvailable: true
-       tags:
-         - name: dashboard.widget
-           identifier: 'failedLogins'
-           groupNames: 'systemInfo'
-           title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
-           description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.description'
-           iconIdentifier: 'content-widget-number'
+      dashboard.widget.failedLogins:
+        class: 'TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget'
+        arguments:
+          $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\NumberOfFailedLoginsDataProvider'
+          $view: '@dashboard.views.widget'
+          $options:
+            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
+            subtitle: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle'
+            icon: 'content-elements-login'
+            refreshAvailable: true
+        tags:
+          - name: dashboard.widget
+            identifier: 'failedLogins'
+            groupNames: 'systemInfo'
+            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
+            description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.description'
+            iconIdentifier: 'content-widget-number'
 
 Options
 -------

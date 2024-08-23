@@ -19,10 +19,10 @@ website that is used a lot by the users.
 Example
 -------
 
-:file:`Configuration/Services.yaml`::
+..  code-block:: yaml
+    :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
 
-   services:
-
+    services:
       dashboard.widget.docGettingStarted:
        class: 'TYPO3\CMS\Dashboard\Widgets\CtaWidget'
        arguments:

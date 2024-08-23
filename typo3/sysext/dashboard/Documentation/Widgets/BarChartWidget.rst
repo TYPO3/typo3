@@ -1,7 +1,5 @@
 .. include:: /Includes.rst.txt
 
-.. highlight:: php
-
 .. _bar-chart-widget:
 
 ================
@@ -20,10 +18,10 @@ historical data.
 Example
 -------
 
-:file:`Configuration/Services.yaml`::
+..  code-block:: yaml
+    :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
 
-   services:
-
+    services:
       dashboard.widget.sysLogErrors:
        class: 'TYPO3\CMS\Dashboard\Widgets\BarChartWidget'
        arguments:
@@ -31,16 +29,16 @@ Example
          $view: '@dashboard.views.widget'
          $buttonProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider'
          $options:
-            refreshAvailable: true
-       tags:
-         - name: dashboard.widget
-           identifier: 'sysLogErrors'
-           groupNames: 'systemInfo'
-           title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.title'
-           description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.description'
-           iconIdentifier: 'content-widget-chart-bar'
-           height: 'medium'
-           width: 'medium'
+           refreshAvailable: true
+         tags:
+           - name: dashboard.widget
+             identifier: 'sysLogErrors'
+             groupNames: 'systemInfo'
+             title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.title'
+             description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.description'
+             iconIdentifier: 'content-widget-chart-bar'
+             height: 'medium'
+             width: 'medium'
 
 Options
 -------
