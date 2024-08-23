@@ -24,7 +24,7 @@ To make the dashboard aware of this workflow, some interfaces come together:
 
 * :php:`AdditionalCssInterface`
 
-* :php:class:`RequireJsModuleInterface`
+* :class:`RequireJsModuleInterface`
 
 Also the existing template file :file:`Widget/ChartWidget` is used, which provides necessary HTML to render the chart.
 The provided ``eventData`` will be rendered as a chart and therefore has to match the expected structure.

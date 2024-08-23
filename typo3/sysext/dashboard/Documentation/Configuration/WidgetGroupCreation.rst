@@ -41,5 +41,5 @@ The title will be processed through translation and can be an ``LLL`` reference.
 
 Each extension can create arbitrary widget groups.
 
-Widgets can be assigned to multiple groups using the :option:`groupNames`.
+Widgets can be assigned to multiple groups using the :confval:`widget-tag-groupNames`.
 Please read :ref:`register-new-widget` to understand how this is done.

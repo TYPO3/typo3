@@ -49,21 +49,27 @@ The configuration is done through an configured Instance of the dependency, for 
          $buttonProvider: '@dashboard.buttons.t3news'
          # …
 
-.. php:class:: TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider
+See also: :php:`\TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider`.
 
-.. option:: $title
+..  confval:: $title
+    :type: string
+    :name: button-title
 
-   The title used for the button. E.g. an ``LLL:EXT:`` reference like
-   ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems``.
+    The title used for the button. E.g. an ``LLL:EXT:`` reference like
+    ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems``.
 
-.. option:: $link
+..  confval:: $link
+    :type: string
+    :name: button-link
 
-   The link to use for the button. Clicking the button will open the link.
+    The link to use for the button. Clicking the button will open the link.
 
-.. option:: $target
+..  confval:: $target
+    :type: string
+    :name: button-target
 
-   The target of the link, e.g. ``_blank``.
-   ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems``.
+    The target of the link, e.g. ``_blank``.
+    ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems``.
 
 Implementation
 --------------

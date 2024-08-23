@@ -41,29 +41,38 @@ Example
 Options
 -------
 
-.. include:: Options/RefreshAvailable.rst.txt
+..  include:: Options/RefreshAvailable.rst.txt
 
-.. option:: title
+..  confval:: title
+    :type: string
+    :name: number-widget-title
+    :Example: `LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title`
 
-   The main title that will be shown in the widget as an explanation of the shown number.
-   You can either enter a normal string or a translation string.
-   e.g. ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title``
+    The main title that will be shown in the widget as an explanation of the shown number.
+    You can either enter a normal string or a translation string.
 
-.. option:: subtitle
+..  confval:: subtitle
+    :type: string
+    :name: number-widget-subtitle
+    :Example: `LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle`
 
-   The optional subtitle that will give some additional information about the number and title.
-   You can either enter a normal string or a translation string
-   e.g. ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle``
+    The optional subtitle that will give some additional information about the number and title.
+    You can either enter a normal string or a translation string.
 
-.. option:: icon
+..  confval:: icon
+    :type: string
+    :name: number-widget-icon
 
-   The icon-identifier of the icon that should be shown in the widget.
-   You should register your icon with the :ref:`t3coreapi:icon`.
+    The icon-identifier of the icon that should be shown in the widget.
+    You should register your icon with the :ref:`t3coreapi:icon`.
 
 Dependencies
 ------------
 
-.. option:: $dataProvider
+..  confval:: $dataProvider
+    :type: :php:`\TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface`
+    :name: number-widget-dataProvider
 
-   This class should provide the number to show.
-   This data provider needs to implement the :php:`NumberWithIconDataProviderInterface`.
+    This class should provide the number to show.
+    This data provider needs to implement the
+    :php-short:`\TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface`.
