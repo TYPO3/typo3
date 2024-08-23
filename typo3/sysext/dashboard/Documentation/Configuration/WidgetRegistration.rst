@@ -84,94 +84,121 @@ This way the same PHP class can be used with different configuration to create n
 
 The following keys are defined for the service:
 
-.. option:: class
+..  confval:: class
+    :type: string
+    :name: widget-class
+    :Example: :php:`TYPO3\CMS\Dashboard\Widgets\RssWidget`
 
-   In example: :php:`TYPO3\CMS\Dashboard\Widgets\RssWidget`.
+    Defines the concrete PHP class to use as the implementation of the widget.
 
-   Defines concrete PHP class to use as implementation.
+..  confval:: arguments
+    :type: map
+    :name: widget-arguments
 
-.. option:: arguments
+    A set of key-value pairs, where the keys are the argument names and the
+    values are the corresponding argument values. The specific arguments depend
+    on the widget being configured, and each widget can define custom arguments.
 
-   Highly depending on the used widget.
-   Each widget can define custom arguments, which should be documented.
+    Documentation for the provided widgets is available at :ref:`widgets`.
 
-   Documentation for provided widgets is available at :ref:`widgets`.
+..  confval:: tags
+    :type: array of dictionaries
+    :name: widget-tags
 
-.. option:: tags
+    Registers the service as an actual widget for :composer:`typo3/cms-dashboard`. Each entry in
+    the array is a dictionary that can include various properties like name,
+    identifier, groupNames, and so on, used to categorize and identify the widget.
 
-   Registers the service as an actual widget for ext:dashboard.
-   See :ref:`register-new-widget-tags-section`.
+    See :ref:`register-new-widget-tags-section`.
 
 .. _register-new-widget-tags-section:
 
 Tags Section
 """"""""""""
 
-In order to turn the instance into a widget, the tag ``dashboard.widget`` is configured in `tags` section.
+In order to turn the instance into a widget, the tag `dashboard.widget` is configured in `tags` section.
 The following options are mandatory and need to be provided:
 
-.. option:: name
+..  confval:: name
+    :type: string
+    :name: widget-tag-name
+    :required:
+    :Example: `dashboard.widget`
 
-   Always has to be ``dashboard.widget``.
-   Defines that this tag configured the service to be registered as a widget for
-   ext:dashboard.
+    Always has to be `dashboard.widget`.
+    Defines that this tag configures the service to be registered as a widget for
+    ext:dashboard.
 
-.. option:: identifier
+..  confval:: identifier
+    :type: string
+    :name: widget-tag-identifier
+    :required:
+    :Example: `t3news`
 
-   In example: ``t3news``.
+    Used to store which widgets are currently assigned to dashboards.
+    Furthermore, it is used to allow access control, see :ref:`permission-handling-of-widgets`.
 
-   Used to store which widgets are currently assigned to dashboards.
-   Furthermore used to allow access control, see :ref:`permission-handling-of-widgets`.
+..  confval:: groupNames
+    :type: string (comma-separated)
+    :name: widget-tag-groupNames
+    :required:
+    :Example: `news`
 
-.. option:: groupNames
+    Defines which groups should contain the widget.
+    Used when adding widgets to a dashboard to group related widgets in tabs.
+    Multiple names can be defined as a comma-separated string, e.g.: `typo3, general`.
 
-   In example: ``news``.
+    See :ref:`create-widget-group` regarding how to create new widget groups.
+    There is no difference between custom groups and existing groups.
+    Widgets are registered to all groups by their name.
 
-   Defines which groups should contain the widget.
-   Used when adding widgets to a dashboard to group related widgets in tabs.
-   Multiple names can be defined as comma separated string, e.g.: ``typo3, general``.
+..  confval:: title
+    :type: string (language reference)
+    :name: widget-tag-title
+    :required:
+    :Example: `LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title`
 
-   See :ref:`create-widget-group` regarding how to create new widget groups.
-   There is no difference between custom groups and existing groups.
-   Widgets are registered to all groups by their name.
+    Defines the title of the widget. Language references are resolved.
 
-.. option:: title
+..  confval:: description
+    :type: string (language reference)
+    :name: widget-tag-description
+    :required:
+    :Example: `LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description`
 
-   In example: ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title``.
+    Defines the description of the widget. Language references are resolved.
 
-   Defines the title of the widget. Language references are resolved.
+..  confval:: iconIdentifier
+    :type: string
+    :name: widget-tag-iconIdentifier
+    :required:
+    :Example: `content-widget-rss`
 
-.. option:: description
-
-   In example: ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description``.
-
-   Defines the description of the widget. Language references are resolved.
-
-.. option:: iconIdentifier
-
-   In example: ``content-widget-rss``.
-
-   One of registered icons.
-   Icons can be registered through :ref:`t3coreapi:icon`.
+    One of the registered icons.
+    Icons can be registered through :ref:`t3coreapi:icon`.
 
 The following options are optional and have default values which will be used if not defined:
 
-.. option:: height
+..  confval:: height
+    :type: string
+    :name: widget-tag-height
+    :Example: `large`
 
-   In example: ``large``.
+    Has to be a string value: `large`, `medium`, or `small`.
 
-   Has to be an string value ``large``, ``medium`` or ``small``.
+..  confval:: width
+    :type: string
+    :name: widget-tag-width
+    :Example: `medium`
 
-.. option:: width
+    Has to be a string value: `large`, `medium`, or `small`.
 
-   In example ``medium``.
+..  confval:: additionalCssClasses
+    :type: string
+    :name: widget-tag-additionalCssClasses
 
-   Has to be an string value ``large``, ``medium`` or ``small``.
-
-.. option:: additionalCssClasses
-
-   Will be added to the surrounding rendered markup.
-   Usually used when working with Graphs.
+    Will be added to the surrounding rendered markup.
+    Usually used when working with Graphs.
 
 Splitting up Services.yaml
 --------------------------
