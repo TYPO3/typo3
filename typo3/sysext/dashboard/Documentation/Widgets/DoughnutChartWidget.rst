@@ -17,24 +17,24 @@ between data.
 Example
 -------
 
-:file:`Configuration/Services.yaml`::
+..  code-block:: yaml
+    :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
 
-   services:
-
-    dashboard.widget.typeOfUsers:
-       class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
-       arguments:
-         $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\TypeOfUsersChartDataProvider'
-         $options:
-            refreshAvailable: true
-       tags:
-         - name: dashboard.widget
-           identifier: 'typeOfUsers'
-           groupNames: 'systemInfo'
-           title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.title'
-           description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.description'
-           iconIdentifier: 'content-widget-chart-pie'
-           height: 'medium'
+    services:
+     dashboard.widget.typeOfUsers:
+        class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
+        arguments:
+          $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\TypeOfUsersChartDataProvider'
+          $options:
+             refreshAvailable: true
+        tags:
+          - name: dashboard.widget
+            identifier: 'typeOfUsers'
+            groupNames: 'systemInfo'
+            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.title'
+            description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.description'
+            iconIdentifier: 'content-widget-chart-pie'
+            height: 'medium'
 
 Options
 -------
