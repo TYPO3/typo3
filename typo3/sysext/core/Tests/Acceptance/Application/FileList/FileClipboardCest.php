@@ -75,7 +75,17 @@ final class FileClipboardCest
 
         $I->amGoingTo('add multiple elements to clipboard');
         $I->wait(1);
+
+        // Flag current iframe content as old.
+        $I->waitForJS('return document.cestIsOldPage = true;');
+        // Click reloads iframe.
         $I->click('Clipboard #1 (multi-selection mode)');
+        // Check that the iframe does not have the old content anymore.
+        $I->waitForJS('return !("cestIsOldPage" in document);');
+        // Wait for 'Clipboard #1' as it is one of the last activated elements on page.
+        $I->waitForText('Clipboard #1 (multi-selection mode)');
+
+        $I->waitForElementVisible('.t3js-multi-record-selection-check-actions-toggle');
         $I->click('.t3js-multi-record-selection-check-actions-toggle');
         $I->waitForElementClickable('button[data-multi-record-selection-check-action="check-all"]');
         $I->click('button[data-multi-record-selection-check-action="check-all"]');
