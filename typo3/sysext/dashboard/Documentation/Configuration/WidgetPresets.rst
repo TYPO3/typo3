@@ -1,7 +1,5 @@
 .. include:: /Includes.rst.txt
 
-.. highlight:: php
-
 .. _dashboard-presets:
 
 =================
@@ -16,19 +14,22 @@ The extension already ships a ``default`` as well as an ``empty`` dashboard pres
 Create preset
 -------------
 
-New presets can be configured via :file:`Configuration/Backend/DashboardPresets.php`::
+New presets can be configured:
 
-   <?php
+..  code-block:: php
+    :caption: Example from EXT:dashboard/Configuration/Backend/DashboardPresets.php
 
-   return [
-       'default' => [
-           'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.default',
-           'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.default.description',
-           'iconIdentifier' => 'content-dashboard',
-           'defaultWidgets' => ['t3information', 't3news', 'docGettingStarted'],
-           'showInWizard' => false,
-       ],
-   ];
+    <?php
+
+    return [
+        'default' => [
+            'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.default',
+            'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.default.description',
+            'iconIdentifier' => 'content-dashboard',
+            'defaultWidgets' => ['t3information', 't3news', 'docGettingStarted'],
+            'showInWizard' => false,
+        ],
+    ];
 
 The file has to return an array with all presets.
 Each prefix itself is an array, with an identifier as key.

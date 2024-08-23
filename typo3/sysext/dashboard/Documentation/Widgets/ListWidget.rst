@@ -15,25 +15,25 @@ provider.
 Example
 -------
 
-:file:`Configuration/Services.yaml`::
+..  code-block:: yaml
+    :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
 
-   services:
-
-     dashboard.widget.testList:
-       class: 'TYPO3\CMS\Dashboard\Widgets\ListWidget'
-       arguments:
-         $dataProvider: '@Vendor\Ext\Widgets\Provider\TestListWidgetDataProvider'
-         $options:
-            refreshAvailable: true
-       tags:
-         - name: dashboard.widget
-           identifier: 'testList'
-           groupNames: 'general'
-           title: 'List widget'
-           description: 'Description of widget'
-           iconIdentifier: 'content-widget-list'
-           height: 'large'
-           width: 'large'
+    services:
+      dashboard.widget.testList:
+        class: 'TYPO3\CMS\Dashboard\Widgets\ListWidget'
+        arguments:
+          $dataProvider: '@Vendor\Ext\Widgets\Provider\TestListWidgetDataProvider'
+          $options:
+             refreshAvailable: true
+        tags:
+          - name: dashboard.widget
+            identifier: 'testList'
+            groupNames: 'general'
+            title: 'List widget'
+            description: 'Description of widget'
+            iconIdentifier: 'content-widget-list'
+            height: 'large'
+            width: 'large'
 
 Options
 -------

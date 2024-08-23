@@ -38,32 +38,35 @@ Services.yaml File
 ------------------
 
 In order to turn the PHP class :php:`\TYPO3\CMS\Dashboard\Widgets\RssWidget` into an actual widget,
-the following service registration can be used inside of :file:`Configuration/Services.yaml`::
+the following service registration can be used:
 
-   services:
-     _defaults:
-       autowire: true
-       autoconfigure: true
-       public: false
+..  code-block:: yaml
+    :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
 
-     TYPO3\CMS\Dashboard\:
-       resource: '../Classes/*'
+    services:
+      _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-     dashboard.widget.t3news:
-       class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
-       arguments:
-         $buttonProvider: '@dashboard.buttons.t3news'
-         $options:
-           feedUrl: 'https://www.typo3.org/rss'
-       tags:
-         - name: dashboard.widget
-           identifier: 't3news'
-           groupNames: 'news'
-           title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title'
-           description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description'
-           iconIdentifier: 'content-widget-rss'
-           height: 'large'
-           width: 'medium'
+      TYPO3\CMS\Dashboard\:
+        resource: '../Classes/*'
+
+      dashboard.widget.t3news:
+        class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
+        arguments:
+          $buttonProvider: '@dashboard.buttons.t3news'
+          $options:
+          feedUrl: 'https://www.typo3.org/rss'
+        tags:
+          - name: dashboard.widget
+            identifier: 't3news'
+            groupNames: 'news'
+            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title'
+            description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description'
+            iconIdentifier: 'content-widget-rss'
+            height: 'large'
+            width: 'medium'
 
 The beginning of the file is not related to the widget itself, but dependency injection in general,
 see: :ref:`t3coreapi:configure-dependency-injection-in-extensions`.
@@ -175,48 +178,50 @@ In case the :file:`Services.yaml` is getting to large, it can be split up.
 The official documentation can be found at `symfony.com <https://symfony.com/doc/current/service_container/import.html>`__.
 An example to split up all Widget related configuration would look like:
 
-:file:`Configuration/Services.yaml`::
+..  code-block:: yaml
+    :caption: Excerpt from EXT:dashboard/Configuration/Services.yaml
 
-   imports:
-     - { resource: Backend/DashboardWidgets.yaml }
+    imports:
+      - { resource: Backend/DashboardWidgets.yaml }
 
 .. note::
 
    Note that you have to repeat all necessary information, e.g. :yaml:`services:` section with :yaml:`_defaults:` again.
 
-:file:`Configuration/Backend/DashboardWidgets.yaml`::
+..  code-block:: yaml
+    :caption: Excerpt from EXT:dashboard/Configuration/Backend/DashboardWidgets.yaml
 
-   services:
-     _defaults:
-       autowire: true
-       autoconfigure: true
-       public: false
+    services:
+      _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-     TYPO3\CMS\Dashboard\Widgets\:
-       resource: '../Classes/Widgets/*'
+      TYPO3\CMS\Dashboard\Widgets\:
+        resource: '../Classes/Widgets/*'
 
-     dashboard.buttons.t3news:
-       class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
-       arguments:
-         $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems'
-         $link: 'https://typo3.org/project/news'
-         $target: '_blank'
+      dashboard.buttons.t3news:
+        class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
+        arguments:
+          $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems'
+          $link: 'https://typo3.org/project/news'
+          $target: '_blank'
 
-     dashboard.widget.t3news:
-       class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
-       arguments:
-         $buttonProvider: '@dashboard.buttons.t3news'
-         $options:
-           feedUrl: 'https://www.typo3.org/rss'
-       tags:
-         - name: dashboard.widget
-           identifier: 't3news'
-           groupNames: 'news'
-           title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title'
-           description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description'
-           iconIdentifier: 'content-widget-rss'
-           height: 'large'
-           width: 'medium'
+      dashboard.widget.t3news:
+        class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
+        arguments:
+          $buttonProvider: '@dashboard.buttons.t3news'
+          $options:
+            feedUrl: 'https://www.typo3.org/rss'
+        tags:
+          - name: dashboard.widget
+            identifier: 't3news'
+            groupNames: 'news'
+            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title'
+            description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description'
+            iconIdentifier: 'content-widget-rss'
+            height: 'large'
+            width: 'medium'
 
 
 Services.php File
@@ -239,7 +244,6 @@ services to be registered with deterministic ordering.
 The following example demonstrates how a widget can be registered via :file:`Services.php`:
 
 .. code-block:: php
-
 
    <?php
 
