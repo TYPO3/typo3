@@ -11,7 +11,7 @@ import{Command as e,Plugin as t,icons as o}from"@ckeditor/ckeditor5-core";import
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
-class f extends t{static get pluginName(){return"BlockQuoteUI"}init(){const e=this.editor,t=e.commands.get("blockQuote");e.ui.componentFactory.add("blockQuote",(()=>{const e=this._createButton(c);return e.set({tooltip:!0}),e.bind("isOn").to(t,"value"),e})),e.ui.componentFactory.add("menuBar:blockQuote",(()=>this._createButton(s)))}_createButton(e){const t=this.editor,i=t.locale,n=t.commands.get("blockQuote"),r=new e(t.locale),c=i.t;return r.set({label:c("Block quote"),icon:o.quote,isToggleable:!0}),r.bind("isEnabled").to(n,"isEnabled"),this.listenTo(r,"execute",(()=>{t.execute("blockQuote"),t.editing.view.focus()})),r}}
+class f extends t{static get pluginName(){return"BlockQuoteUI"}init(){const e=this.editor;e.ui.componentFactory.add("blockQuote",(()=>{const e=this._createButton(c);return e.set({tooltip:!0}),e})),e.ui.componentFactory.add("menuBar:blockQuote",(()=>{const e=this._createButton(s);return e.set({role:"menuitemcheckbox"}),e}))}_createButton(e){const t=this.editor,i=t.locale,n=t.commands.get("blockQuote"),r=new e(t.locale),c=i.t;return r.set({label:c("Block quote"),icon:o.quote,isToggleable:!0}),r.bind("isEnabled").to(n,"isEnabled"),r.bind("isOn").to(n,"value"),this.listenTo(r,"execute",(()=>{t.execute("blockQuote"),t.editing.view.focus()})),r}}
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
