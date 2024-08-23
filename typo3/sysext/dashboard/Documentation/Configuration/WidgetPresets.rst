@@ -39,33 +39,43 @@ Each preset consists of the following options:
 
 .. php:class:: TYPO3\CMS\Dashboard\DashboardPreset
 
-.. option:: title
+..  confval:: title
+    :type: string
+    :name: widget-presets-title
 
-   The title used for the preset. E.g. a ``LLL:EXT:`` reference..
+    The title used for the preset. E.g. a ``LLL:EXT:`` reference..
 
-.. option:: description
+..  confval:: description
+    :type: string
+    :name: widget-presets-description
 
-   The description used for the preset. E.g. a ``LLL:EXT:`` reference..
+    The description used for the preset. E.g. a ``LLL:EXT:`` reference..
 
-.. option:: iconIdentifier
+..  confval:: iconIdentifier
+    :type: string
+    :name: widget-presets-iconIdentifier
 
-   The identifier of the icon to use.
+    The identifier of the icon to use.
 
-.. option:: defaultWidgets
+..  confval:: defaultWidgets
+    :type: array
+    :name: widget-presets-defaultWidgets
 
-   An array of widget identifiers, that should be part of the dashboard preset.
+    An array of widget identifiers, that should be part of the dashboard preset.
 
-   Widgets are always filtered by permissions of each user.
-   Only widgets with access are actually part of the dashboard.
-   Have a look at :ref:`permission-handling-of-widgets` to understand how to handle permissions.
+    Widgets are always filtered by permissions of each user.
+    Only widgets with access are actually part of the dashboard.
+    Have a look at :ref:`permission-handling-of-widgets` to understand how to handle permissions.
 
-.. option:: showInWizard
+..  confval:: showInWizard
+    :type: bool
+    :name: widget-presets-showInWizard
 
-   Boolean value to indicate, whether this preset should be visible in the wizard,
-   when creating new dashboards, see :ref:`adding-dashboard`.
+    Boolean value to indicate, whether this preset should be visible in the wizard,
+    when creating new dashboards, see :ref:`adding-dashboard`.
 
-   This can be disabled, to add presets via :ref:`configure-preset-for-user`, without
-   showing up in the wizard.
+    This can be disabled, to add presets via :ref:`configure-preset-for-user`, without
+    showing up in the wizard.
 
 .. highlight:: typoscript
 .. _configure-preset-for-user:

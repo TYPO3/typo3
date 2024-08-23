@@ -1,6 +1,9 @@
-.. option:: refreshAvailable
+..  confval:: refreshAvailable
+    :type: boolean
+    :default: :yaml:`false`
+    :noindex:
 
-   Boolean value, either :yaml:`false` or :yaml:`true`.
+    Boolean value, either :yaml:`false` or :yaml:`true`.
 
-   Provides a refresh button to backend users to refresh the widget.
-   If the option is omitted :yaml:`false` is assumed.
+    Provides a refresh button to backend users to refresh the widget.
+    If the option is omitted :yaml:`false` is assumed.

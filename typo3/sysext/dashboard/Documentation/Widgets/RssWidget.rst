@@ -59,29 +59,36 @@ Options
 
 The following options are available via :yaml:`services.dashboard.widget.t3news.arguments.$options`:
 
-.. option:: feedUrl
+..  confval:: feedUrl
+    :type: string
+    :name: rss-widget-feedUrl
 
-   Defines the URL or file providing the RSS Feed.
-   This is read by the widget in order to fetch entries to show.
+    Defines the URL or file providing the RSS Feed.
+    This is read by the widget in order to fetch entries to show.
 
-.. option:: lifeTime
+..  confval:: lifeTime
+    :type: int
+    :name: rss-widget-lifeTime
+    :Default: `43200`
 
-   Default: ``43200``
+    Defines how long to wait, in seconds, until fetching RSS Feed again.
 
-   Defines how long to wait, in seconds, until fetching RSS Feed again.
+..  confval:: limit
+    :type: int
+    :name: rss-widget-limit
+    :Default: `5`
 
-.. option:: limit
-
-   Default: ``5``
-
-   Defines how many RSS items should be shown.
+    Defines how many RSS items should be shown.
 
 Dependencies
 ------------
 
-.. option:: $buttonProvider
+..  confval:: $buttonProvider
+    :type: :php:`\TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface`
+    :name: rss-widget-buttonProvider
 
-   Provides an optional button to show which is used to open the source of RSS data.
-   This button should be provided by a ButtonProvider that implements the interface :php:`ButtonProviderInterface`.
+    Provides an optional button to show which is used to open the source of RSS data.
+    This button should be provided by a ButtonProvider that implements the interface
+    :php-short:`\TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface`.
 
-   See :ref:`adding-buttons` for further info and configuration options.
+    See :ref:`adding-buttons` for further info and configuration options.

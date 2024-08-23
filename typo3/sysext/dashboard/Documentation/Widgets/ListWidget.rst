@@ -43,7 +43,10 @@ Options
 Dependencies
 ------------
 
-.. option:: $dataProvider
+..  confval:: $dataProvider
+    :type: :php:`\TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface`
+    :name: list-widget-dataProvider
 
-   This class should provide the items to show.
-   This data provider needs to implement the :php:`ListDataProviderInterface`.
+    This class should provide the items to show.
+    This data provider needs to implement the
+    :php-short:`\TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface`.

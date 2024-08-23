@@ -44,16 +44,21 @@ Options
 Dependencies
 ------------
 
-.. option:: $dataProvider
+..  confval:: $dataProvider
+    :type: :php:`\TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface`
+    :name: doughnut-chart-widget-dataProvider
 
-   To add data to a Bar Chart widget, you need to have a DataProvider that implements
-   the interface :php:`ChartDataProviderInterface`.
+    To add data to a Bar Chart widget, you need to have a DataProvider that implements
+    the interface :php-short:`\TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface`.
 
-   See :ref:`graph-widget-implementation` for further information.
+    See :ref:`graph-widget-implementation` for further information.
 
-.. option:: $buttonProvider
+..  confval:: $buttonProvider
+    :type: :php:`\TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface`
+    :name: doughnut-chart-widget-buttonProvider
 
-   Optionally you can add a button with a link to some additional data.
-   This button should be provided by a ButtonProvider that implements the interface :php:`ButtonProviderInterface`.
+    Optionally you can add a button with a link to some additional data.
+    This button should be provided by a ButtonProvider that implements the interface
+    :php-short:`\TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface`.
 
-   See :ref:`adding-buttons` for further info and configuration options.
+    See :ref:`adding-buttons` for further info and configuration options.
