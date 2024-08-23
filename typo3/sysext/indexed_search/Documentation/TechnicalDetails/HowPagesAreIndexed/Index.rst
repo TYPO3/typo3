@@ -1,11 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
+..  _how-pages-are-indexed:
 
-
-
-.. _how-pages-are-indexed:
-
+=====================
 How pages are indexed
-^^^^^^^^^^^^^^^^^^^^^
+=====================
 
 First of all a page must be cacheable. For pages where the cache is
 disabled, no indexing will occur.
@@ -43,4 +41,3 @@ item\_type=0, that is TYPO3 pages). But it may also hold many more
 records. These point to the phash-row in question in the case of other
 gr\_list combinations which actually had the SAME content - and thus
 refers to the same phash-row.
-

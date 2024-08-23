@@ -1,4 +1,4 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 ..  _start:
 
@@ -7,26 +7,26 @@ TYPO3 Indexed Search
 ====================
 
 :Extension key:
-   indexed_search
+    indexed_search
 
 :Package name:
-   typo3/cms-indexed-search
+    typo3/cms-indexed-search
 
 :Version:
-   |release|
+    |release|
 
 :Language:
-   en
+    en
 
 :Author:
-   TYPO3 contributors
+    TYPO3 contributors
 
 :License:
-   This document is published under the
-   `Open Content License <https://www.openhub.net/licenses/opl>`__.
+    This document is published under the
+    `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-   |today|
+    |today|
 
 ----
 
@@ -38,24 +38,24 @@ backend module for statistics of the indexer and a frontend plugin.
 
 **Table of Contents:**
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+..  toctree::
+    :maxdepth: 2
+    :titlesonly:
 
-   Introduction/Index
-   UserManual/Index
-   Installation/Index
-   Administration/Index
-   IndexingConfigurations/Index
-   Configuration/Index
-   TechnicalDetails/Index
-   AnalysingIndexedData/Index
-   DatabaseTables/Index
-   KnownProblems/Index
+    Introduction/Index
+    UserManual/Index
+    Installation/Index
+    Administration/Index
+    IndexingConfigurations/Index
+    Configuration/Index
+    TechnicalDetails/Index
+    AnalysingIndexedData/Index
+    DatabaseTables/Index
+    KnownProblems/Index
 
-.. Meta Menu
+..  Meta Menu
 
-.. toctree::
-   :hidden:
+..  toctree::
+    :hidden:
 
-   Sitemap
+    Sitemap

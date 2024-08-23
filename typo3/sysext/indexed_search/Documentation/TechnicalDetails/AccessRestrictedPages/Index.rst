@@ -1,11 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
+..  _access-restricted-pages:
 
-
-
-.. _access-restricted-pages:
-
+=======================
 Access restricted pages
-^^^^^^^^^^^^^^^^^^^^^^^
+=======================
 
 A TYPO3 page will always be available in the search result only if
 there is access to the page. This is secured in the final result
@@ -18,11 +16,10 @@ from usergroup to usergroup or just without login. Still the result
 display will display only one occurrence, because similar pages
 (determined based on phash\_grouping) will be detected.
 
-
-.. _access-restricted-tricky:
+..  _access-restricted-tricky:
 
 The tricky scenario
-"""""""""""""""""""
+===================
 
 Say that a page has a content element with some secret information
 visible for only one usergroup. The page as a whole will be visible
@@ -38,10 +35,10 @@ confirm positively that the combination of usergroups of the user has
 access to the result. So the result is there, but no resume shown (The
 resume might contain hidden text).
 
-.. _access-restricted-media:
+..  _access-restricted-media:
 
 External media
-""""""""""""""
+==============
 
 Equally for external media they are linked from a TYPO3 page. When an
 external media is selected we can be sure that the page linking to it
@@ -53,11 +50,11 @@ is not available we should not display a link to the document and not
 show resume, but rather link to the page, from which the user can see
 the real link to the document.
 
-.. note::
+..  note::
 
-   These tricky scenarios exist only if the content on a page differs
-   based on login. It does not affect situations with access restriction
-   to the page as a whole. A general lesson from this is to reduce the
-   number of hidden content elements! Instead use hidden pages. Better,
-   more reliable.
+    These tricky scenarios exist only if the content on a page differs
+    based on login. It does not affect situations with access restriction
+    to the page as a whole. A general lesson from this is to reduce the
+    number of hidden content elements! Instead use hidden pages. Better,
+    more reliable.
 

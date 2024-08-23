@@ -1,10 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
+..  _about-indexing-configurations:
 
-
-.. _about-indexing-configurations:
-
+=======================================
 Generally about indexing configurations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=======================================
 
 Indexing configuration sets up indexing jobs that are performed by a
 cron-script independently of frontend requests. The "crawler"
@@ -19,11 +18,10 @@ The Indexing configuration contains two parts
 
 Below you see what all Indexing Configurations have in common:
 
-.. figure:: ../../Images/CommonIndexingConfigurations.png
-   :alt: Common indexing configurations
+..  figure:: ../../Images/CommonIndexingConfigurations.png
+    :alt: Common indexing configurations
 
-   Common parameters in indexing configurations
-
+    Common parameters in indexing configurations
 
 These settings are described in the context sensitive help so please
 refer to that for more information.
@@ -38,10 +36,9 @@ The title of a configuration can be translated in order to ease usage
 for backend users who use a different language than your default one.
 Translation strings can be provided via TypoScript:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-   plugin.tx_indexedsearch.settings._LOCAL_LANG {
-      de.indexingConfigurations.13 = Mein Titel in Deutsch für Konfiguration 13
-      de.indexingConfigurationHeader.13 = Alle Ergebnisse für Konfiguration 13
-   }
-
+    plugin.tx_indexedsearch.settings._LOCAL_LANG {
+        de.indexingConfigurations.13 = Mein Titel in Deutsch für Konfiguration 13
+        de.indexingConfigurationHeader.13 = Alle Ergebnisse für Konfiguration 13
+    }

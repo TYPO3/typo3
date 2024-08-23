@@ -1,10 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
+..  _indexing-files-separately:
 
-
-.. _indexing-files-separately:
-
+==================================
 Indexing files on pages separately
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==================================
 
 If enabled, links to local files found on pages will initiate indexing
 of those external files. However, this often has the unpleasant effect
@@ -17,8 +16,7 @@ cronscript!
 This behaviour is configured in the extension managers configuration
 for "Indexed search":
 
-.. figure:: ../../Images/CrawlerForLinkedFiles.png
-   :alt: Set crawler for linked files
+..  figure:: ../../Images/CrawlerForLinkedFiles.png
+    :alt: Set crawler for linked files
 
-   Setting the crawler to be used for linked files
-
+    Setting the crawler to be used for linked files

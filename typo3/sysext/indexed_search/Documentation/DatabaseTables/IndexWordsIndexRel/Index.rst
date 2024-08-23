@@ -1,20 +1,16 @@
 .. include:: /Includes.rst.txt
-
-
-
 .. _index-words-index-rel:
 
 index\_words, index\_rel
-^^^^^^^^^^^^^^^^^^^^^^^^
+========================
 
 Words-table and word-relation table. Almost self-explanatory. For the
 index\_rel table some fields require explanation:
 
-
 .. _index-words-index-rel-count:
 
 count
-"""""
+=====
 
 .. container:: table-row
 
@@ -25,11 +21,10 @@ count
          Number of occurrences on the page
 
 
-
 .. _index-words-index-rel-first:
 
 first
-"""""
+=====
 
 .. container:: table-row
 
@@ -40,11 +35,10 @@ first
          How close to the top (low number is better)
 
 
-
 .. _index-words-index-rel-freq:
 
 freq
-""""
+====
 
 .. container:: table-row
 
@@ -56,11 +50,10 @@ freq
          from some floating point to an integer)
 
 
-
 .. _index-words-index-rel-flags:
 
 flags
-"""""
+=====
 
 .. container:: table-row
 
@@ -80,5 +73,3 @@ flags
          hierarchy. The result rows are ordered by this value if the
          "Weight/Frequency" sorting is selected. Thus results with a hit in the
          title, keywords or description are ranked higher in the result list.
-
-

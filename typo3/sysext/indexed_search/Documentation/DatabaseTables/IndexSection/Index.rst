@@ -1,11 +1,9 @@
 .. include:: /Includes.rst.txt
-
-
-
 .. _index-section:
 
+==============
 index\_section
-^^^^^^^^^^^^^^
+==============
 
 Points out the section where an entry in index\_phash belongs.
 
@@ -13,7 +11,7 @@ Points out the section where an entry in index\_phash belongs.
 .. _index-section-phash:
 
 phash
-"""""
+=====
 
 .. container:: table-row
 
@@ -28,7 +26,7 @@ phash
 .. _index-section-phash-t3:
 
 phash\_t3
-"""""""""
+=========
 
 .. container:: table-row
 
@@ -60,7 +58,7 @@ phash\_t3
 .. _index-section-rl0:
 
 rl0
-"""
+===
 
 .. container:: table-row
 
@@ -75,7 +73,7 @@ rl0
 .. _index-section-rl1:
 
 rl1
-"""
+===
 
 .. container:: table-row
 
@@ -90,7 +88,7 @@ rl1
 .. _index-section-rl2:
 
 rl2
-"""
+===
 
 .. container:: table-row
 
@@ -105,7 +103,7 @@ rl2
 .. _index-section-page-id:
 
 page\_id
-""""""""
+========
 
 .. container:: table-row
 
@@ -120,7 +118,7 @@ page\_id
 .. _index-section-uniqid:
 
 uniqid
-""""""
+======
 
 .. container:: table-row
 
