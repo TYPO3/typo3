@@ -4,9 +4,6 @@
 		  product-name="adminpanel">
 		<header/>
 		<body>
-			<trans-unit id="deprecatedModuleLabel" resname="deprecatedModuleLabel">
-				<source>General</source>
-			</trans-unit>
 			<trans-unit id="settings.label" resname="settings.label">
 				<source>Settings</source>
 			</trans-unit>

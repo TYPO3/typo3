@@ -1,5 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+
 <f:layout name="Default" />
+
 <f:section name="Module">
     <f:for each="{parentModules}" as="module" iteration="iteration">
         <f:variable name="uid">{iteration.index}</f:variable>
@@ -10,22 +12,9 @@
         <f:variable name="information">{module.shortInfo}</f:variable>
         <f:render partial="Modules/Item" arguments="{module: module, uid: uid, icon: icon, label: label, information: information, data: data, languageKey: languageKey}" debug="false" />
     </f:for>
-
-    <f:if condition="{hookObjectModuleContent}">
-        <f:variable name="uid">hook</f:variable>
-        <f:variable name="icon">
-            <core:icon identifier="actions-window-open" alternativeMarkupIdentifier="inline" />
-        </f:variable>
-        <f:variable name="label">
-            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:deprecatedModuleLabel" languageKey="{languageKey}" />
-        </f:variable>
-        <f:variable name="mainContent">{hookObjectModuleContent}</f:variable>
-        <f:render partial="Modules/Item" arguments="{uid: uid, icon: icon, label: label, mainContent: mainContent, data: data, languageKey: languageKey}}" debug="false" />
-    </f:if>
-
 </f:section>
-<f:section name="Settings">
 
+<f:section name="Settings">
     <f:variable name="uid">settings</f:variable>
     <f:variable name="icon">
         <core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline" />
@@ -74,4 +63,5 @@
         </div>
     </div>
 </f:section>
+
 </html>
