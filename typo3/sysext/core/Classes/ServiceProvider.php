@@ -475,6 +475,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Resource\ResourceFactory::class, [
             $container->get(Resource\StorageRepository::class),
+            $container->get('cache.runtime'),
         ]);
     }
 
