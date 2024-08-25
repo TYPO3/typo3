@@ -1,6 +1,5 @@
 .. include:: /Includes.rst.txt
 
-
 .. _for-editors:
 
 ===========
@@ -24,6 +23,12 @@ An alternative way is to use the context menu.
 * Open :guilabel:`Web > Page` module
 * Right click the page you want to edit in the page tree
 * Select the Edit action
+
+..  toctree::
+    :hidden:
+    :glob:
+
+    *
 
 General tab
 ===========
@@ -104,6 +109,10 @@ give the user a clear overview of the topic of this page.
 
    It is best practice to use at least the keywords you want to be found on in this description. Make sure the
    description is not too long, so it fits in the search result snippets.
+
+..  seealso::
+    You can use the :ref:`dashboard-widgets-missing-description` to get an
+    overview of all pages without a description and edit them directly.
 
 .. _index-page:
 
