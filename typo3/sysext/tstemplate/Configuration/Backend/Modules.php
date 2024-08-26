@@ -28,7 +28,7 @@ return [
         'path' => '/module/web/typoscript/records-overview',
         'iconIdentifier' => 'module-template',
         'labels' => [
-            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.templateRecordsOverview',
+            'title' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:submodules.option.typoscriptOverview',
         ],
         'routes' => [
             '_default' => [

@@ -16,9 +16,9 @@
     />
 
     <h1>
-        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.title" />
+        <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.title" />
     </h1>
-    <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.description" /></p>
+    <p><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.description" /></p>
 
     <f:if condition="{pageTree}">
         <f:then>
@@ -26,9 +26,10 @@
                 <table class="table table-striped table-hover" id="ts-overview">
                     <thead>
                         <tr>
-                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.pageTitle" /></th>
-                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.typoscriptRecords" /></th>
-                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.table.column.root" /></th>
+                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.table.column.pageTitle" /></th>
+                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.table.column.typoscriptRecords" /></th>
+                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.table.column.site" /></th>
+                            <th class="nowrap align-top"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.table.column.root" /></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +48,7 @@
         </f:then>
         <f:else>
             <f:be.infobox
-                message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.noRecordsFound')}"
+                message="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.noRecordsFound')}"
                 state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
             />
         </f:else>
@@ -96,7 +97,28 @@
         <td class="align-top">
             <f:for each="{page._templates}" as="templateFile" iteration="templateIterator">
                 <div class="{f:if(condition: '{templateIterator.isLast}', then: '', else: 'mb-2')}">
-                    {f:if(condition: '{templateFile.root}', then: '{core:icon(identifier: \'status-status-checked\')}', else: '&nbsp;' )}
+                    <f:if condition="{templateFile.type} == 'site'">
+                        <f:then>
+                            <core:icon identifier="status-status-checked"/>
+                        </f:then>
+                        <f:else>
+                            &nbsp;
+                        </f:else>
+                    </f:if>
+                </div>
+            </f:for>
+        </td>
+        <td class="align-top">
+            <f:for each="{page._templates}" as="templateFile" iteration="templateIterator">
+                <div class="{f:if(condition: '{templateIterator.isLast}', then: '', else: 'mb-2')}">
+                    <f:if condition="{templateFile.root}">
+                        <f:then>
+                            <core:icon identifier="status-status-checked"/>
+                        </f:then>
+                        <f:else>
+                            &nbsp;
+                        </f:else>
+                    </f:if>
                 </div>
             </f:for>
         </td>

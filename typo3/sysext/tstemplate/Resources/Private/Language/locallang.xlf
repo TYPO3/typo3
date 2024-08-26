@@ -24,8 +24,8 @@
 			<trans-unit id="submodules.option.templateAnalyzer" resname="submodules.option.templateAnalyzer">
 				<source>Included TypoScript</source>
 			</trans-unit>
-			<trans-unit id="submodules.option.templateRecordsOverview" resname="submodules.option.templateRecordsOverview">
-				<source>TypoScript Records Overview</source>
+			<trans-unit id="submodules.option.typoscriptOverview" resname="submodules.option.typoscriptOverview">
+				<source>TypoScript Overview</source>
 			</trans-unit>
 			<trans-unit id="noRecordFound.infobox.title" resname="noRecordFound.infobox.title">
 				<source>No TypoScript record on the current page</source>

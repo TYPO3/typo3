@@ -149,7 +149,7 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutTitle = sprintf(
             '%s: %s [%d]',
-            $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_records_overview.xlf:typoscriptRecords.title'),
+            $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf:typoscriptRecords.title'),
             BackendUtility::getRecordTitle('pages', $pageInfo),
             $pageUid
         );

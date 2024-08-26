@@ -42,7 +42,7 @@ final class TemplateCest
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#ts-overview');
-        $I->see('Global overview of all pages in the database containing one or more TypoScript records.');
+        $I->see('Global overview of all pages with active TypoScript definitions (database records and site sets).');
 
         $I->switchToMainFrame();
         // click on website root page
@@ -58,7 +58,7 @@ final class TemplateCest
 
     public function addANewSiteTemplate(ApplicationTester $I): void
     {
-        $I->waitForText('TypoScript records');
+        $I->waitForText('TypoScript definitions');
         $I->switchToMainFrame();
         $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
         $I->switchToContentFrame();
