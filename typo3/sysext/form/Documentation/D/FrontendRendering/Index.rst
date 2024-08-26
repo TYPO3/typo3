@@ -249,7 +249,7 @@ Implement a ``FormFactory`` and build the form::
            $page2 = $form->createPage('page2');
            $message = $page2->createElement('message', 'Textarea');
            $message->setLabel('Message');
-           $message->addValidator(GeneralUtility::makeInstance(StringLengthValidator::class, ['minimum' => 5, 'maximum' => 20]));
+           $message->createValidator('StringLength', ['minimum' => 5, 'maximum' => 20]);
 
            // Creating a RadioButton/MultiCheckbox
            $page3 = $form->createPage('page3');
