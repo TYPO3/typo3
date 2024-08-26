@@ -24,6 +24,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
@@ -124,11 +125,15 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             $controller->config['pageTitleCache'] = $pageCacheRow['pageTitleCache'];
             $controller->content = $pageCacheRow['content'];
             $controller->setContentType($pageCacheRow['contentType']);
-            $controller->cacheExpires = $pageCacheRow['expires'];
-            $controller->pageCacheTags = $pageCacheRow['cacheTags'];
             $controller->cacheGenerated = $pageCacheRow['tstamp'];
             $controller->pageContentWasLoadedFromCache = true;
             $pageContentWasLoadedFromCache = true;
+
+            // Restore the current tags and add them to the CacheTageCollector
+            $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+            $lifetime = $pageCacheRow['expires'] - $GLOBALS['EXEC_TIME'];
+            $cacheTags = array_map(fn(string $cacheTag) => new CacheTag($cacheTag, $lifetime), $pageCacheRow['cacheTags'] ?? []);
+            $cacheDataCollector->addCacheTags(...$cacheTags);
         }
 
         try {

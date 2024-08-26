@@ -24,6 +24,16 @@ return [
                 'typo3/cms-frontend/timetracker',
             ],
         ],
+        /** internal: do not use or reference this middleware in your own code */
+        'typo3/cms-core/cache-tags-attribute' => [
+            'target' => \TYPO3\CMS\Core\Middleware\CacheDataCollectorAttribute::class,
+            'after' => [
+                'typo3/cms-core/normalized-params-attribute',
+            ],
+            'before' => [
+                'typo3/cms-frontend/site',
+            ],
+        ],
         /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/eid' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\EidHandler::class,
@@ -142,12 +152,21 @@ return [
                 'typo3/cms-frontend/tsfe',
             ],
         ],
+        /** internal: do not use or reference this middleware in your own code */
+        'typo3/cms-core/cache-timout' => [
+            'target' => \TYPO3\CMS\Frontend\Middleware\CacheTimeout::class,
+            'after' => [
+                'typo3/cms-core/cache-tags-attribute',
+                'typo3/cms-frontend/tsfe',
+            ],
+        ],
         /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */
         'typo3/cms-frontend/tsfe' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\TypoScriptFrontendInitialization::class,
             'after' => [
                 'typo3/cms-frontend/eid',
                 'typo3/cms-frontend/page-argument-validator',
+                'typo3/cms-core/cache-tags-attribute',
             ],
         ],
         /** internal: do not use or reference this middleware in your own code, as this will be possibly be removed */

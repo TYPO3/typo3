@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForPageEvent;
+use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForRowEvent;
 
 /**
  * Calculates the max lifetime the given page should be stored in TYPO3's page cache.
@@ -50,6 +51,47 @@ class CacheLifetimeCalculator
     ) {}
 
     /**
+     * Get the cache lifetime in seconds for the given record.
+     */
+    public function calculateLifetimeForRow(string $tableName, array $record, int $defaultCacheTimoutInSeconds = 0): int
+    {
+        $cachedCacheLifetimeIdentifier = sprintf('calculateLifetimeForRow_%s_%d', $tableName, ($record['uid'] ?? 0));
+        $cachedCacheLifetime = $this->runtimeCache->get($cachedCacheLifetimeIdentifier);
+        if ($cachedCacheLifetime !== false) {
+            return $cachedCacheLifetime;
+        }
+
+        $cacheTimeout = $defaultCacheTimoutInSeconds ?: $this->defaultCacheTimeout;
+
+        // If the record has a starttime or endtime, we have to adjust the cache timeout
+        foreach (['starttime', 'endtime'] as $field) {
+            if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
+                $timeField = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
+
+                if (array_key_exists($timeField, $record) && $record[$timeField] > 0) {
+                    $cacheTimeout = min($cacheTimeout, (int)$record[$field] - $GLOBALS['ACCESS_TIME']);
+                }
+            }
+        }
+
+        // Get the time, rounded to the minute (do not pollute MySQL cache!)
+        // It is ok that we do not take seconds into account here because this
+        // value will be subtracted later. So we never get the time "before"
+        // the cache change.
+        $currentTimestamp = (int)$GLOBALS['ACCESS_TIME'];
+        $cacheTimeout = min($currentTimestamp, $cacheTimeout);
+
+        $event = new ModifyCacheLifetimeForRowEvent(
+            $cacheTimeout,
+            $tableName,
+            $record
+        );
+        $event = $this->eventDispatcher->dispatch($event);
+        $this->runtimeCache->set($cachedCacheLifetimeIdentifier, $event->cacheLifetime);
+        return $cacheTimeout;
+    }
+
+    /**
      * Get the cache lifetime in seconds for the given page.
      */
     public function calculateLifetimeForPage(int $pageId, array $pageRecord, array $renderingInstructions, int $defaultCacheTimoutInSeconds, Context $context): int
@@ -67,20 +109,8 @@ class CacheLifetimeCalculator
             // otherwise it's the default of 24 hours
             $cacheTimeout = $defaultCacheTimoutInSeconds ?: (int)($renderingInstructions['cache_period'] ?? $this->defaultCacheTimeout);
         }
-        // A pages endtime limits the upper bound of the maxmium cache lifetime
-        $pageEndtime = (int)($pageRecord['endtime'] ?? 0);
-        if ($pageEndtime > 0) {
-            $cacheTimeout = min($cacheTimeout, $pageEndtime - $GLOBALS['EXEC_TIME']);
-        }
-        if (!empty($renderingInstructions['cache_clearAtMidnight'])) {
-            $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
-            $midnightTime = mktime(0, 0, 0, (int)date('m', $timeOutTime), (int)date('d', $timeOutTime), (int)date('Y', $timeOutTime));
-            // If the midnight time of the expire-day is greater than the current time,
-            // we may set the timeOutTime to the new midnighttime.
-            if ($midnightTime > $GLOBALS['EXEC_TIME']) {
-                $cacheTimeout = $midnightTime - $GLOBALS['EXEC_TIME'];
-            }
-        }
+
+        $cacheTimeout = $this->calculateLifetimeForRow('pages', $pageRecord, $cacheTimeout);
 
         // Calculate the timeout time for records on the page and adjust cache timeout if necessary
         // Get the configuration

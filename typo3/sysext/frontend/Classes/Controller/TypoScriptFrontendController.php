@@ -22,7 +22,9 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheEntry;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
@@ -129,12 +131,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public bool $pageContentWasLoadedFromCache = false;
 
     /**
-     * Set to the expiry time of cached content
-     * @internal Used by a middleware. Will be removed.
-     */
-    public int $cacheExpires = 0;
-
-    /**
      * @internal Used by a middleware. Will be removed.
      */
     public int $cacheGenerated = 0;
@@ -231,11 +227,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected FrontendInterface $pageCache;
 
     /**
-     * @internal Used by a middleware. Will be removed.
-     */
-    public array $pageCacheTags = [];
-
-    /**
      * Content type HTTP header being sent in the request.
      * @todo Ticket: #63642 Should be refactored to a request/response model later
      */
@@ -319,21 +310,38 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Sets cache content; Inserts the content string into the pages cache.
      *
+     * @param ServerRequestInterface $request
      * @param string $content The content to store in the HTML field of the cache table
-     * @param int $expirationTstamp Expiration timestamp
-     * @see populatePageDataFromCache()
+     * @param array $INTincScript
+     * @param array $INTincScript_ext
+     * @param array $pageTitleCache
+     *
+     * @see PrepareTypoScriptFrontendRendering
      */
     protected function setPageCacheContent(
         ServerRequestInterface $request,
         string $content,
         array $INTincScript,
         array $INTincScript_ext,
-        array $pageTitleCache,
-        int $expirationTstamp
-    ): array {
+        array $pageTitleCache
+    ): void {
         $pageInformation = $request->getAttribute('frontend.page.information');
         $pageId = $pageInformation->getId();
         $pageRecord = $pageInformation->getPageRecord();
+
+        $lifetime = $this->get_cache_timeout($request);
+        $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+        $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $pageId, $lifetime));
+
+        // Respect the page cache when content of pid is shown
+        if ($pageId !== $pageInformation->getContentFromPid()) {
+            $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $this->contentPid, $lifetime));
+        }
+        if (!empty($pageRecord['cache_tags'])) {
+            $tags = GeneralUtility::trimExplode(',', $pageRecord['cache_tags'], true);
+            array_walk($tags, fn(string $tag) => $cacheDataCollector->addCacheTags(new CacheTag($tag, $lifetime)));
+        }
+
         $cacheData = [
             'page_id' => $pageId,
             'content' => $content,
@@ -341,24 +349,28 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'INTincScript' => $INTincScript,
             'INTincScript_ext' => $INTincScript_ext,
             'pageTitleCache' => $pageTitleCache,
-            'expires' => $expirationTstamp,
             'tstamp' => $GLOBALS['EXEC_TIME'],
         ];
-        $this->cacheExpires = $expirationTstamp;
-        $this->pageCacheTags[] = 'pageId_' . $pageId;
-        // Respect the page cache when content of pid is shown
-        if ($pageId !== $pageInformation->getContentFromPid()) {
-            $this->pageCacheTags[] = 'pageId_' . $pageInformation->getContentFromPid();
-        }
-        if (!empty($pageRecord['cache_tags'])) {
-            $tags = GeneralUtility::trimExplode(',', $pageRecord['cache_tags'], true);
-            $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
-        }
-        $this->pageCacheTags = array_unique($this->pageCacheTags);
-        // Add the cache themselves as well, because they are fetched by getPageCacheTags()
-        $cacheData['cacheTags'] = $this->pageCacheTags;
-        $this->pageCache->set($this->newHash, $cacheData, $this->pageCacheTags, $expirationTstamp - $GLOBALS['EXEC_TIME']);
-        return $cacheData;
+
+        $cacheDataCollector->enqueueCacheEntry(
+            new CacheEntry(
+                identifier: 'tsfe-page-cache',
+                content: $cacheData,
+                persist: function (ServerRequestInterface $request, string $identifier, mixed $content) {
+                    $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+                    $cacheTimeout = $cacheDataCollector->resolveLifetime();
+                    $pageCacheTags = array_map(fn(CacheTag $cacheTag) => $cacheTag->name, $cacheDataCollector->getCacheTags());
+
+                    $content['cacheTags'] = $pageCacheTags;
+                    $content['expires'] = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
+                    $this->pageCache->set($this->newHash, $content, $pageCacheTags, $cacheTimeout);
+
+                    // Event for cache post processing (eg. writing static files)
+                    $event = new AfterCachedPageIsPersistedEvent($request, $this, $this->newHash, $content, $cacheTimeout);
+                    GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
+                }
+            )
+        );
     }
 
     /**
@@ -398,15 +410,32 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Adds tags to this page's cache entry, you can then f.e. remove cache
      * entries by tag
+     *
+     * @param array $tags An array of tag
+     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14. Use $request->getAttribute('frontend.cache.collector')->addCacheTags(new CacheTag($tag, $lifetime)) instead.
      */
-    public function addCacheTags(array $tags): void
+    public function addCacheTags(array $tags)
     {
-        $this->pageCacheTags = array_merge($this->pageCacheTags, $tags);
+        trigger_error(
+            'TypoScriptFrontendController->addCacheTags has been marked as deprecated in TYPO3 v13. Use $request->getAttribute(\'cacheTags\')->addCacheTags(new CacheTag($tag, $lifetime)) instead.',
+            E_USER_DEPRECATED,
+        );
+        $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
+        $cacheDataCollector->addCacheTags(array_map(fn(string $tag) => new CacheTag($tag), $tags));
     }
 
+    /**
+     * @return array
+     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14. Use $request->getAttribute('frontend.cache.collector')->getCacheTags() instead.
+     */
     public function getPageCacheTags(): array
     {
-        return $this->pageCacheTags;
+        trigger_error(
+            'TypoScriptFrontendController->getPageCacheTags has been marked as deprecated in TYPO3 v13. Use $request->getAttribute(\'cacheTags\')->getCacheTags() instead.',
+            E_USER_DEPRECATED,
+        );
+        $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
+        return array_map(fn(CacheTag $cacheTag) => $cacheTag->name, $cacheDataCollector->getCacheTags());
     }
 
     /**
@@ -453,22 +482,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Processing if caching is enabled
         if ($event->isCachingEnabled()) {
-            // Seconds until a cached page is too old
-            $cacheTimeout = $this->get_cache_timeout($request);
-            $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
             // Write the page to cache, but do not cache localRootLine since that is always determined
             // and coming from PageInformation->getLocalRootLine().
-            $cachedInformation = $this->setPageCacheContent(
+            $this->setPageCacheContent(
                 $request,
                 $this->content,
                 $this->config['INTincScript'] ?? [],
                 $this->config['INTincScript_ext'] ?? [],
-                $this->config['pageTitleCache'] ?? [],
-                $timeOutTime
+                $this->config['pageTitleCache'] ?? []
             );
-            // Event for cache post processing (eg. writing static files)
-            $event = new AfterCachedPageIsPersistedEvent($request, $this, $this->newHash, $cachedInformation, $cacheTimeout);
-            $eventDispatcher->dispatch($event);
         }
         $this->setSysLastChanged($request);
     }
@@ -772,14 +794,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
         // Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
         $isClientCachable = $doCache && !$isBackendUserLoggedIn && !$isInWorkspace;
+        $lifetime = $request->getAttribute('frontend.cache.collector')->resolveLifetime();
         if ($isClientCachable) {
             // Only send the headers to the client that they are allowed to cache if explicitly activated.
             $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
             if (!empty($typoScriptConfigArray['sendCacheHeaders'])) {
                 $headers = [
-                    'Expires' => gmdate('D, d M Y H:i:s T', $this->cacheExpires),
+                    'Expires' => gmdate('D, d M Y H:i:s T', ($GLOBALS['EXEC_TIME'] + $lifetime)),
                     'ETag' => '"' . md5($this->content) . '"',
-                    'Cache-Control' => 'max-age=' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']),
+                    'Cache-Control' => 'max-age=' . $lifetime,
                     // no-cache
                     'Pragma' => 'public',
                 ];
@@ -792,7 +815,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
             if ($isBackendUserLoggedIn) {
                 if ($doCache) {
-                    $this->getTimeTracker()->setTSlogMessage('Cache-headers with max-age "' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']) . '" would have been sent');
+                    $this->getTimeTracker()->setTSlogMessage('Cache-headers with max-age "' . $lifetime . '" would have been sent');
                 } else {
                     $reasonMsg = [];
                     if (!$request->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {

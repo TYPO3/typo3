@@ -24,6 +24,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
@@ -667,7 +668,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     'cacheTags' => $tags,
                 ];
                 $cacheFrontend->set($key, $cachedData, $tags, $lifetime);
-                $this->getTypoScriptFrontendController()->addCacheTags($tags);
+                $this->getRequest()->getAttribute('frontend.cache.collector')->addCacheTags(
+                    ...array_map(fn(string $tag) => new CacheTag($tag), $tags)
+                );
             }
         }
 
@@ -1202,7 +1205,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $tags = (string)$this->stdWrapValue('addPageCacheTags', $conf ?? []);
         if (!empty($tags)) {
             $cacheTags = GeneralUtility::trimExplode(',', $tags, true);
-            $this->getTypoScriptFrontendController()->addCacheTags($cacheTags);
+            $this->getRequest()->getAttribute('frontend.cache.collector')->addCacheTags(
+                ...array_map(fn(string $tag) => new CacheTag($tag), $cacheTags)
+            );
         }
         return $content;
     }
@@ -2369,7 +2374,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $event->getTags(),
                 $event->getLifetime()
             );
-        $this->getTypoScriptFrontendController()->addCacheTags($event->getTags());
+        $this->getRequest()->getAttribute('frontend.cache.collector')->addCacheTags(
+            ...array_map(fn(string $tag) => new CacheTag($tag, $event->getLifetime()), $event->getTags())
+        );
         return $event->getContent();
     }
 
@@ -5323,7 +5330,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($cachedData === false) {
             return false;
         }
-        $this->getTypoScriptFrontendController()->addCacheTags($cachedData['cacheTags'] ?? []);
+        $this->getRequest()->getAttribute('frontend.cache.collector')->addCacheTags(
+            ...array_map(fn(string $tag) => new CacheTag($tag), $cachedData['cacheTags'])
+        );
         return $cachedData['content'] ?? false;
     }
 

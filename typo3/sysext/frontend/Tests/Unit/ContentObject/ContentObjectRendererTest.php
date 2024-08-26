@@ -24,7 +24,10 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Cache\CacheDataCollector;
+use TYPO3\CMS\Core\Cache\CacheDataCollectorInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Features;
@@ -2868,20 +2871,18 @@ final class ContentObjectRendererTest extends UnitTestCase
             ->method('calculateCacheKey')
             ->with($conf)
             ->willReturn($cacheKey);
-        $request = (new ServerRequest())->withAttribute('frontend.cache.instruction', new CacheInstruction());
-        $subject
-            ->expects(self::once())
-            ->method('getRequest')
-            ->willReturn($request);
-        $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
-        $typoScriptFrontendController
+        $cacheDataCollector = $this->createMock(CacheDataCollectorInterface::class);
+        $cacheDataCollector
             ->expects(self::exactly($times))
             ->method('addCacheTags')
-            ->with($tags);
+            ->with(self::isInstanceOf(CacheTag::class));
+        $request = (new ServerRequest())
+            ->withAttribute('frontend.cache.collector', $cacheDataCollector)
+            ->withAttribute('frontend.cache.instruction', new CacheInstruction());
         $subject
-            ->expects(self::exactly($times))
-            ->method('getTypoScriptFrontendController')
-            ->willReturn($typoScriptFrontendController);
+            ->expects(self::atLeastOnce())
+            ->method('getRequest')
+            ->willReturn($request);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
         $cacheFrontend
             ->expects(self::exactly($times))
@@ -3160,11 +3161,11 @@ final class ContentObjectRendererTest extends UnitTestCase
                 ['addPageCacheTags' => ''],
             ],
             'Two expectedTags' => [
-                ['tag1', 'tag2'],
+                [new CacheTag('tag1'), new CacheTag('tag2')],
                 ['addPageCacheTags' => 'tag1,tag2'],
             ],
             'Two expectedTags plus one with stdWrap' => [
-                ['tag1', 'tag2', 'tag3'],
+                [new CacheTag('tag1'), new CacheTag('tag2'), new CacheTag('tag3')],
                 [
                     'addPageCacheTags' => 'tag1,tag2',
                     'addPageCacheTags.' => ['wrap' => '|,tag3'],
@@ -3177,8 +3178,13 @@ final class ContentObjectRendererTest extends UnitTestCase
     #[Test]
     public function stdWrap_addPageCacheTagsAddsPageTags(array $expectedTags, array $configuration): void
     {
+        $cacheDataCollector = new CacheDataCollector();
+        $request = new ServerRequest();
+        $request = $request->withAttribute('frontend.cache.collector', $cacheDataCollector);
+        $this->subject->setRequest($request);
         $this->subject->stdWrap_addPageCacheTags('', $configuration);
-        self::assertEquals($expectedTags, $this->frontendControllerMock->_get('pageCacheTags'));
+
+        self::assertEquals($expectedTags, $cacheDataCollector->getCacheTags());
     }
 
     /**
@@ -3643,15 +3649,15 @@ final class ContentObjectRendererTest extends UnitTestCase
                 'calculateCacheKey',
                 'calculateCacheTags',
                 'calculateCacheLifetime',
-                'getTypoScriptFrontendController',
+                'getRequest',
             ]
         );
         $subject->expects(self::once())->method('calculateCacheKey')->with($cacheConfig)->willReturn($key);
         $subject->expects(self::once())->method('calculateCacheTags')->with($cacheConfig)->willReturn($tags);
         $subject->expects(self::once())->method('calculateCacheLifetime')->with($cacheConfig)->willReturn($lifetime);
-        $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
-        $typoScriptFrontendController->expects(self::once())->method('addCacheTags')->with($tags);
-        $subject->expects(self::once())->method('getTypoScriptFrontendController')->willReturn($typoScriptFrontendController);
+        $cacheDataCollector = new CacheDataCollector();
+        $request = (new ServerRequest())->withAttribute('frontend.cache.collector', $cacheDataCollector);
+        $subject->expects(self::once())->method('getRequest')->willReturn($request);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
         $cacheFrontend
             ->expects(self::once())
@@ -3674,6 +3680,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         self::assertSame($lifetime, $beforeStdWrapContentStoredInCacheEvent->getLifetime());
         self::assertSame($configuration, $beforeStdWrapContentStoredInCacheEvent->getConfiguration());
         self::assertSame($subject, $beforeStdWrapContentStoredInCacheEvent->getContentObjectRenderer());
+        self::assertCount(count($tags), $cacheDataCollector->getCacheTags());
     }
 
     /**

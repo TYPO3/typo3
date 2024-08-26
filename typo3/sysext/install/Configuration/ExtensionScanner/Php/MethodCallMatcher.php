@@ -6358,4 +6358,18 @@ return [
             'Deprecation-104764-FluidTemplatePaths-fillDefaultsByPackageName.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addCacheTags' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-102422-TypoScriptFrontendController-addCacheTags.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPageCacheTags' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-102422-TypoScriptFrontendController-addCacheTags.rst',
+        ],
+    ],
 ];

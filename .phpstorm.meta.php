@@ -88,6 +88,7 @@ namespace PHPSTORM_META {
         'moduleData',
         'frontend.controller',
         'frontend.typoscript',
+        'frontend.cache.collector',
         'frontend.cache.instruction',
         'frontend.page.information',
     );
@@ -101,6 +102,7 @@ namespace PHPSTORM_META {
         'moduleData' => \TYPO3\CMS\Backend\Module\ModuleData::class,
         'frontend.controller' => \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
         'frontend.typoscript' => \TYPO3\CMS\Core\TypoScript\FrontendTypoScript::class,
+        'frontend.cache.collector' => \TYPO3\CMS\Core\Cache\CacheDataCollector::class,
         'frontend.cache.instruction' => \TYPO3\CMS\Frontend\Cache\CacheInstruction::class,
         'frontend.page.information' => \TYPO3\CMS\Frontend\Page\PageInformation::class,
     ]));
