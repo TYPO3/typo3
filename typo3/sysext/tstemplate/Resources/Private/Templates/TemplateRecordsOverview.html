@@ -80,7 +80,14 @@
                     <f:if condition="{templateFile.type} == 'site'">
                         <span title="{templateFile.title} (site:{templateFile.site.identifier})">
                             <core:icon identifier="mimetypes-x-content-template" overlay="mimetypes-x-content-domain" size="small"/>
-                            {templateFile.title -> f:format.crop(maxCharacters: maxCharacters)}
+                            <f:if condition="{templateFile.title}">
+                                <f:then>
+                                    {templateFile.title -> f:format.crop(maxCharacters: maxCharacters)}
+                                </f:then>
+                                <f:else>
+                                    {templateFile.site.identifier -> f:format.crop(maxCharacters: maxCharacters)}
+                                </f:else>
+                            </f:if>
                         </span>
                     </f:if>
                 </div>
