@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Cache\CacheDataCollector;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,7 +57,9 @@ final class ContentContentObjectTest extends FunctionalTestCase
         $pageInformation = new PageInformation();
         $pageInformation->setId(1);
         $pageInformation->setContentFromPid(1);
-        $request = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
+        $request = (new ServerRequest())
+            ->withAttribute('frontend.page.information', $pageInformation)
+            ->withAttribute('frontend.cache.collector', new CacheDataCollector());
         $contentObjectRenderer->setRequest($request);
         $subject = $contentObjectRenderer->getContentObject('CONTENT');
         $result = $subject->render(['table' => 'tt_content']);

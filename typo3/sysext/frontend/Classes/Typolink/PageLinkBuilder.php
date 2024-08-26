@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Frontend\Typolink;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
@@ -46,6 +49,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Event\ModifyPageLinkConfigurationEvent;
 
 /**
@@ -217,6 +221,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 $result = $result->withAttributes($additionalAttributes);
             }
         }
+
+        $this->sendCacheTagEvent($page);
 
         // Setting title if blank value to link
         $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $page['title'] ?? '');
@@ -857,5 +863,29 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             PageRepository::class,
             $context
         );
+    }
+
+    protected function sendCacheTagEvent(array $page): void
+    {
+        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('frontend.cache.autoTagging')) {
+            $lifetime = $this->getPageCacheTimeout($page);
+            GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+                new AddCacheTagEvent(
+                    new CacheTag(sprintf('pages_%s', $page['uid']), $lifetime)
+                )
+            );
+        }
+    }
+
+    /**
+     * Get the cache lifetime for the given page record.
+     */
+    protected function getPageCacheTimeout(array $record): int
+    {
+        return GeneralUtility::makeInstance(CacheLifetimeCalculator::class)
+            ->calculateLifetimeForRow(
+                'pages',
+                $record
+            );
     }
 }

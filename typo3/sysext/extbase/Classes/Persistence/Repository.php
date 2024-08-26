@@ -15,10 +15,15 @@
 
 namespace TYPO3\CMS\Extbase\Persistence;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
 /**
@@ -28,10 +33,9 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
  */
 class Repository implements RepositoryInterface, SingletonInterface
 {
-    /**
-     * @var PersistenceManagerInterface
-     */
-    protected $persistenceManager;
+    protected PersistenceManagerInterface $persistenceManager;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected bool $autoTagging;
 
     /**
      * @var string
@@ -55,6 +59,16 @@ class Repository implements RepositoryInterface, SingletonInterface
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
     {
         $this->persistenceManager = $persistenceManager;
+    }
+
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function injectFeatures(Features $features): void
+    {
+        $this->autoTagging = $features->isFeatureEnabled('frontend.cache.autoTagging');
     }
 
     /**
@@ -119,7 +133,9 @@ class Repository implements RepositoryInterface, SingletonInterface
      */
     public function findAll()
     {
-        return $this->createQuery()->execute();
+        $query = $this->createQuery();
+        $this->addTableToCacheTags($query);
+        return $query->execute();
     }
 
     /**
@@ -129,7 +145,9 @@ class Repository implements RepositoryInterface, SingletonInterface
      */
     public function countAll()
     {
-        return $this->createQuery()->execute()->count();
+        $query = $this->createQuery();
+        $this->addTableToCacheTags($query);
+        return $query->execute()->count();
     }
 
     /**
@@ -234,6 +252,7 @@ class Repository implements RepositoryInterface, SingletonInterface
             );
             $propertyName = lcfirst(substr($methodName, 6));
             $query = $this->createQuery();
+            $this->addStorageCacheTags($query);
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
             return $result;
         }
@@ -244,6 +263,7 @@ class Repository implements RepositoryInterface, SingletonInterface
             );
             $propertyName = lcfirst(substr($methodName, 9));
             $query = $this->createQuery();
+            $this->addStorageCacheTags($query);
 
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute();
             if ($result instanceof QueryResultInterface) {
@@ -259,6 +279,7 @@ class Repository implements RepositoryInterface, SingletonInterface
             );
             $propertyName = lcfirst(substr($methodName, 7));
             $query = $this->createQuery();
+            $this->addStorageCacheTags($query);
             $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
             return $result;
         }
@@ -299,6 +320,7 @@ class Repository implements RepositoryInterface, SingletonInterface
             $query->setOffset($offset);
         }
 
+        $this->addStorageCacheTags($query);
         return $query->execute();
     }
 
@@ -329,5 +351,44 @@ class Repository implements RepositoryInterface, SingletonInterface
     protected function getRepositoryClassName()
     {
         return static::class;
+    }
+
+    /**
+     * Add the tablename to the cache tags, depending on the storage page settings.
+     */
+    protected function addTableToCacheTags(QueryInterface $query): void
+    {
+        if (!$this->autoTagging) {
+            return;
+        }
+        $storagePageIds = $query->getQuerySettings()->getStoragePageIds();
+        if (empty($storagePageIds) || $query->getQuerySettings()->getRespectStoragePage() === false) {
+            /** @var SelectorInterface $source */
+            $source = $query->getSource();
+            $this->eventDispatcher->dispatch(
+                new AddCacheTagEvent(new CacheTag($source->getSelectorName()))
+            );
+        } else {
+            $this->addStorageCacheTags($query);
+        }
+    }
+
+    /**
+     * Add the combination of tablename and storage pid as cache tag.
+     */
+    protected function addStorageCacheTags(QueryInterface $query): void
+    {
+        if (!$this->autoTagging) {
+            return;
+        }
+        /** @var SelectorInterface $source */
+        $source = $query->getSource();
+        $tableName = $source->getSelectorName();
+        $storagePageIds = $query->getQuerySettings()->getStoragePageIds();
+        foreach ($storagePageIds as $storagePageId) {
+            $this->eventDispatcher->dispatch(
+                new AddCacheTagEvent(new CacheTag(sprintf('%s_pid_%s', $tableName, $storagePageId)))
+            );
+        }
     }
 }

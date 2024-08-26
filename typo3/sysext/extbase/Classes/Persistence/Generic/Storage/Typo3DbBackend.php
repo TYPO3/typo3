@@ -18,8 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -47,23 +51,23 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Service\CacheService;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 
 /**
  * A Storage backend
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Typo3DbBackend implements BackendInterface, SingletonInterface
+readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
 {
-    protected ConnectionPool $connectionPool;
-    protected ReflectionService $reflectionService;
-    protected CacheService $cacheService;
-
-    public function __construct(CacheService $cacheService, ReflectionService $reflectionService)
-    {
-        $this->cacheService = $cacheService;
-        $this->reflectionService = $reflectionService;
-        $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-    }
+    public function __construct(
+        protected CacheService $cacheService,
+        protected ConnectionPool $connectionPool,
+        protected ReflectionService $reflectionService,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected CacheLifetimeCalculator $cacheLifetimeCalculator,
+        #[Autowire(expression: 'service("features").isFeatureEnabled("frontend.cache.autoTagging")')]
+        protected bool $autoTagging,
+    ) {}
 
     /**
      * Adds a row to the storage
@@ -227,6 +231,12 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
         if (!empty($rows)) {
             $rows = $this->overlayLanguageAndWorkspace($query->getSource(), $rows, $query);
+            if ($this->autoTagging) {
+                /** @var SelectorInterface $source */
+                $source = $query->getSource() instanceof JoinInterface ? $query->getSource()->getRight() : $query->getSource();
+                $tableName = $source->getSelectorName();
+                $this->addCacheTagsForRows($tableName, $rows);
+            }
         }
 
         return $rows;
@@ -589,5 +599,17 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $rows = $movedRecords;
         }
         return $rows;
+    }
+
+    protected function addCacheTagsForRows(string $tableName, array $rows): void
+    {
+        foreach ($rows as $row) {
+            $lifetime = $this->cacheLifetimeCalculator->calculateLifetimeForRow($tableName, $row);
+            $this->eventDispatcher->dispatch(
+                new AddCacheTagEvent(
+                    new CacheTag(sprintf('%s_%s', $tableName, ($row['uid'] ?? 0)), $lifetime)
+                )
+            );
+        }
     }
 }

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration;
 
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
+
 /**
  * A lightweight API class to check if a feature is enabled.
  *
@@ -52,6 +54,7 @@ namespace TYPO3\CMS\Core\Configuration;
  *   ... do stuff here ...
  * }
  */
+#[AsAlias('features', public: true)]
 class Features
 {
     /**

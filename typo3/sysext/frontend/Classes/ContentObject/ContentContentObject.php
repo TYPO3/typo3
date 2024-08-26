@@ -16,8 +16,11 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent;
 
 /**
@@ -25,6 +28,14 @@ use TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEven
  */
 class ContentContentObject extends AbstractContentObject
 {
+    public function __construct(
+        private readonly TimeTracker $timeTracker,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly CacheLifetimeCalculator $cacheLifetimeCalculator,
+        #[Autowire(expression: 'service("features").isFeatureEnabled("frontend.cache.autoTagging")')]
+        private readonly bool $autoTagging,
+    ) {}
+
     /**
      * Rendering the cObject, CONTENT
      *
@@ -72,7 +83,7 @@ class ContentContentObject extends AbstractContentObject
 
         do {
             $cobjValue = '';
-            $modifyRecordsEvent = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            $modifyRecordsEvent = $this->eventDispatcher->dispatch(
                 new ModifyRecordsAfterFetchingContentEvent(
                     $this->cObj->getRecords($conf['table'], $conf['select.']),
                     $theValue,
@@ -93,7 +104,7 @@ class ContentContentObject extends AbstractContentObject
             $conf = $modifyRecordsEvent->getConfiguration();
 
             if ($records !== []) {
-                $this->getTimeTracker()->setTSlogMessage('NUMROWS: ' . count($records));
+                $this->timeTracker->setTSlogMessage('NUMROWS: ' . count($records));
 
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $frontendController);
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
@@ -110,6 +121,13 @@ class ContentContentObject extends AbstractContentObject
                         $cObj->start($row, $conf['table']);
                         $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
                         $cobjValue .= $tmpValue;
+                    }
+
+                    if ($this->autoTagging) {
+                        // Only add cache tags when the record is rendered
+                        $lifetime = $this->cacheLifetimeCalculator->calculateLifetimeForRow($conf['table'], $row);
+                        $cacheCollectorAttribute = $this->request->getAttribute('frontend.cache.collector');
+                        $cacheCollectorAttribute->addCacheTags(new CacheTag(sprintf('%s_%s', $conf['table'], ($row['uid'] ?? 0)), $lifetime));
                     }
                 }
             }
@@ -149,10 +167,5 @@ class ContentContentObject extends AbstractContentObject
             --$frontendController->recordRegister[$originalRec];
         }
         return $theValue;
-    }
-
-    protected function getTimeTracker(): TimeTracker
-    {
-        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

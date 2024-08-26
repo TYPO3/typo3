@@ -20,11 +20,15 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
@@ -39,6 +43,9 @@ use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Domain\Repository\EntityRep
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @todo: These tests smell as if they should be turned into functional tests
+ */
 final class RepositoryTest extends UnitTestCase
 {
     private Repository&MockObject&AccessibleObjectInterface $subject;
@@ -112,14 +119,19 @@ final class RepositoryTest extends UnitTestCase
     public function findAllCreatesQueryAndReturnsResultOfExecuteCall(): void
     {
         $expectedResult = $this->createMock(QueryResultInterface::class);
+        $mockSource = $this->createMock(Selector::class);
+        $mockSource->method('getSelectorName')->willReturn('tx_myext_domain_model_foo');
 
-        $mockQuery = $this->createMock(QueryInterface::class);
-        $mockQuery->expects(self::once())->method('execute')->with()->willReturn($expectedResult);
-
+        $this->mockQuery->method('getSource')->willReturn($mockSource);
+        $this->mockQuery->expects(self::once())->method('execute')->with()->willReturn($expectedResult);
+        $this->mockQuerySettings->method('getStoragePageIds')->willReturn([]);
         $repository = $this->getMockBuilder(Repository::class)
             ->onlyMethods(['createQuery'])
             ->getMock();
-        $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
+        $repository->expects(self::exactly(1))->method('createQuery')->willReturn($this->mockQuery);
+        $features = $this->createMock(Features::class);
+        $features->method('isFeatureEnabled')->willReturn(false);
+        $repository->injectFeatures($features);
 
         self::assertSame($expectedResult, $repository->findAll());
     }
@@ -275,6 +287,9 @@ final class RepositoryTest extends UnitTestCase
             ->onlyMethods(['createQuery'])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
+        $features = $this->createMock(Features::class);
+        $features->method('isFeatureEnabled')->willReturn(false);
+        $repository->injectFeatures($features);
 
         /** @phpstan-ignore-next-line */
         self::assertSame($mockQueryResult, $repository->findByFoo('bar'));
@@ -297,6 +312,9 @@ final class RepositoryTest extends UnitTestCase
             ->onlyMethods(['createQuery'])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
+        $features = $this->createMock(Features::class);
+        $features->method('isFeatureEnabled')->willReturn(false);
+        $repository->injectFeatures($features);
 
         /** @phpstan-ignore-next-line */
         self::assertSame($object, $repository->findOneByFoo('bar'));
@@ -317,6 +335,9 @@ final class RepositoryTest extends UnitTestCase
             ->onlyMethods(['createQuery'])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
+        $features = $this->createMock(Features::class);
+        $features->method('isFeatureEnabled')->willReturn(false);
+        $repository->injectFeatures($features);
 
         /** @phpstan-ignore-next-line */
         self::assertSame(2, $repository->countByFoo('bar'));
@@ -335,6 +356,9 @@ final class RepositoryTest extends UnitTestCase
         $this->mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($this->mockQuery);
         $this->mockQuery->expects(self::once())->method('setLimit')->with(1)->willReturn($this->mockQuery);
         $this->mockQuery->expects(self::once())->method('execute')->willReturn($queryResultArray);
+        $features = $this->createMock(Features::class);
+        $features->method('isFeatureEnabled')->willReturn(false);
+        $this->subject->injectFeatures($features);
         /** @phpstan-ignore-next-line */
         self::assertSame(['foo' => 'bar'], $this->subject->findOneByFoo('bar'));
     }
@@ -348,7 +372,42 @@ final class RepositoryTest extends UnitTestCase
         $this->mockQuery->expects(self::once())->method('matching')->with('matchCriteria')->willReturn($this->mockQuery);
         $this->mockQuery->expects(self::once())->method('setLimit')->with(1)->willReturn($this->mockQuery);
         $this->mockQuery->expects(self::once())->method('execute')->willReturn($queryResultArray);
+        $features = $this->createMock(Features::class);
+        $features->method('isFeatureEnabled')->willReturn(false);
+        $this->subject->injectFeatures($features);
         /** @phpstan-ignore-next-line */
         self::assertNull($this->subject->findOneByFoo('bar'));
+    }
+
+    #[Test]
+    public function findAllCreatesTableCacheTagForEmptyStoragePid(): void
+    {
+        $mockQuery = $this->createMock(QueryResultInterface::class);
+        $mockSource = $this->createMock(Selector::class);
+        $mockSource->method('getSelectorName')->willReturn('tx_myext_domain_model_foo');
+
+        $this->mockQuerySettings->method('getStoragePageIds')->willReturn([]);
+        $this->mockQuery->method('execute')->willReturn($mockQuery);
+        $this->mockQuery->method('getSource')->willReturn($mockSource);
+
+        $mockEventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $mockEventDispatcher->expects(self::once())->method('dispatch')->with(
+            self::isInstanceOf(AddCacheTagEvent::class),
+        )->willReturnCallback(
+            function (AddCacheTagEvent $event) {
+                self::assertSame('tx_myext_domain_model_foo', $event->cacheTag->name);
+            }
+        );
+
+        $repository = $this->getMockBuilder(Repository::class)
+            ->onlyMethods(['createQuery'])
+            ->getMock();
+        $repository->expects(self::exactly(1))->method('createQuery')->willReturn($this->mockQuery);
+        $repository->injectEventDispatcher($mockEventDispatcher);
+        $features = $this->createMock(Features::class);
+        $features->method('isFeatureEnabled')->willReturn(true);
+        $repository->injectFeatures($features);
+
+        self::assertSame($mockQuery, $repository->findAll());
     }
 }

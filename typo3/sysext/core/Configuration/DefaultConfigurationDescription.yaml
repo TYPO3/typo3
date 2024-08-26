@@ -182,6 +182,9 @@ SYS:
             type: container
             description: 'New features of TYPO3 that are activated on new installations but upgrading installations can still use the old behaviour'
             items:
+              frontend.cache.autoTagging:
+                type: bool
+                description: 'If on, frontend caches are automatically tagged to identify used records, and affected caches will be evicted when changing records.'
               redirects.hitCount:
                 type: bool
                 description: 'If on, and if extension "redirects" is loaded, each performed redirect is counted and last hit time is logged to the database.'

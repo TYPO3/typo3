@@ -33,19 +33,28 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 class CacheService implements SingletonInterface
 {
     protected array $clearCacheForTables = [];
-    protected \SplStack $pageIdStack;
+    protected \SplStack $cacheTagStack;
 
     public function __construct(
         private readonly ConfigurationManagerInterface $configurationManager,
         private readonly CacheManager $cacheManager,
         private readonly ConnectionPool $connectionPool,
     ) {
-        $this->pageIdStack = new \SplStack();
+        $this->cacheTagStack = new \SplStack();
     }
 
+    /**
+     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14. Use CacheService->getCacheTagStack() instead.
+     * Push cache tags directly instead of page IDs.
+     */
     public function getPageIdStack(): \SplStack
     {
-        return $this->pageIdStack;
+        return $this->cacheTagStack;
+    }
+
+    public function getCacheTagStack(): \SplStack
+    {
+        return $this->cacheTagStack;
     }
 
     /**
@@ -83,13 +92,15 @@ class CacheService implements SingletonInterface
                 }
             }
         }
-        if (!$this->pageIdStack->isEmpty()) {
-            $pageIds = [];
-            while (!$this->pageIdStack->isEmpty()) {
-                $pageIds[] = (int)$this->pageIdStack->pop();
+        if (!$this->cacheTagStack->isEmpty()) {
+            $cacheTags = [];
+            while (!$this->cacheTagStack->isEmpty()) {
+                $cacheTagValue = $this->cacheTagStack->pop();
+                // Add fallback to old behavior. Pushing pageIds directly to the stack is possible. So we need to handle int values as well.
+                $cacheTags[] = is_int($cacheTagValue) ? sprintf('pageId_%s', $cacheTagValue) : (string)$cacheTagValue;
             }
-            $pageIds = array_values(array_unique($pageIds));
-            $this->clearPageCache($pageIds);
+            $cacheTags = array_values(array_unique($cacheTags));
+            $this->cacheManager->flushCachesInGroupByTags('pages', $cacheTags);
         }
     }
 
@@ -125,6 +136,8 @@ class CacheService implements SingletonInterface
         $pageIdsToClear = [];
         $storagePage = null;
 
+        $this->getCacheTagStack()->push($tableName);
+        $this->getCacheTagStack()->push(sprintf('%s_%s', $tableName, $uid));
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()->removeAll();
         $result = $queryBuilder
@@ -157,7 +170,8 @@ class CacheService implements SingletonInterface
         }
 
         foreach ($pageIdsToClear as $pageIdToClear) {
-            $this->getPageIdStack()->push($pageIdToClear);
+            $this->getCacheTagStack()->push('pageId_' . $pageIdToClear);
+            $this->getCacheTagStack()->push(sprintf('%s_pid_%s', $tableName, $pageIdToClear));
         }
     }
 }

@@ -19,6 +19,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -1377,7 +1380,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param ResourceInterface $resourceObject The file or folder object
      * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
-    public function getPublicUrl(ResourceInterface $resourceObject)
+    public function getPublicUrl(ResourceInterface $resourceObject): ?string
     {
         $publicUrl = null;
         if ($this->isOnline()) {
@@ -1412,6 +1415,25 @@ class ResourceStorage implements ResourceStorageInterface
                     $queryParameterArray['token'] = $hashService->hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile');
                     $publicUrl = GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'));
                     $publicUrl .= '?' . http_build_query($queryParameterArray, '', '&', PHP_QUERY_RFC3986);
+                }
+            }
+
+            if ($resourceObject instanceof AbstractFile
+                && GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('frontend.cache.autoTagging')
+            ) {
+                $fileResourceObject = method_exists($resourceObject, 'getOriginalFile') ? $resourceObject->getOriginalFile() : $resourceObject;
+                $this->eventDispatcher->dispatch(
+                    new AddCacheTagEvent(
+                        new CacheTag(sprintf('sys_file_%s', $fileResourceObject->getUid()))
+                    )
+                );
+                $metaData = method_exists($fileResourceObject, 'getMetaData') ? $fileResourceObject->getMetaData()->get() : [];
+                if (array_key_exists('uid', $metaData)) {
+                    $this->eventDispatcher->dispatch(
+                        new AddCacheTagEvent(
+                            new CacheTag(sprintf('sys_file_metadata_%s', $metaData['uid']))
+                        )
+                    );
                 }
             }
         }

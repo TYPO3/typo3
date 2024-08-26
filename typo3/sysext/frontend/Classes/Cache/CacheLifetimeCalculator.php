@@ -41,7 +41,7 @@ use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForRowEvent;
 #[Autoconfigure(public: true)]
 class CacheLifetimeCalculator
 {
-    protected int $defaultCacheTimeout = 86400;
+    protected const defaultCacheTimeout = 86400;
 
     public function __construct(
         #[Autowire(service: 'cache.runtime')]
@@ -61,7 +61,7 @@ class CacheLifetimeCalculator
             return $cachedCacheLifetime;
         }
 
-        $cacheTimeout = $defaultCacheTimoutInSeconds ?: $this->defaultCacheTimeout;
+        $cacheTimeout = $defaultCacheTimoutInSeconds ?: self::defaultCacheTimeout;
 
         // If the record has a starttime or endtime, we have to adjust the cache timeout
         foreach (['starttime', 'endtime'] as $field) {
@@ -107,7 +107,7 @@ class CacheLifetimeCalculator
         } else {
             // Cache period was set via TypoScript "config.cache_period",
             // otherwise it's the default of 24 hours
-            $cacheTimeout = $defaultCacheTimoutInSeconds ?: (int)($renderingInstructions['cache_period'] ?? $this->defaultCacheTimeout);
+            $cacheTimeout = $defaultCacheTimoutInSeconds ?: (int)($renderingInstructions['cache_period'] ?? self::defaultCacheTimeout);
         }
 
         $cacheTimeout = $this->calculateLifetimeForRow('pages', $pageRecord, $cacheTimeout);
