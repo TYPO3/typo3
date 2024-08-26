@@ -230,7 +230,7 @@ class BackendUserController extends ActionController
         $data = $this->userInformationService->getUserInformation($uid);
         $this->moduleTemplate->assignMultiple([
             'data' => $data,
-            'showUid', $this->getBackendUser()->shallDisplayDebugInformation(),
+            'showUid' => $this->getBackendUser()->shallDisplayDebugInformation(),
         ]);
 
         $this->addMainMenu('show');
@@ -289,7 +289,7 @@ class BackendUserController extends ActionController
         $this->moduleTemplate->assignMultiple([
             'compareUserList' => $compareData,
             'onlineBackendUsers' => $this->getOnlineBackendUsers(),
-            'showUid', $this->getBackendUser()->shallDisplayDebugInformation(),
+            'showUid' => $this->getBackendUser()->shallDisplayDebugInformation(),
         ]);
 
         $this->addMainMenu('compare');
@@ -455,7 +455,7 @@ class BackendUserController extends ActionController
 
         $this->moduleTemplate->assignMultiple([
             'compareGroupList' => $compareData,
-            'showUid', $this->getBackendUser()->shallDisplayDebugInformation(),
+            'showUid' => $this->getBackendUser()->shallDisplayDebugInformation(),
         ]);
 
         $this->addMainMenu('compareGroups');
