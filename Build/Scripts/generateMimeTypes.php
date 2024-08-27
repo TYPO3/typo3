@@ -61,7 +61,7 @@ final class MimeTypeCollection
 {
     private $map = [
 ' . rtrim($mimeTypeString, ',') .
-'   ];
+'    ];
 
     /**
      * @return array<string, List<string>>
