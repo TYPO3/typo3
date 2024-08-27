@@ -83,8 +83,8 @@ from `editor.config.wordcount` to `editor.config.wordCount`:
             - { name: 'right', className: 'text-end' }
             - { name: 'justify', className: 'text-justify' }
 
-   in addition, the extraPlugins `justify` is not needed anymore. The new
-   plugin called `Alignment` is always active.
+    In addition, the extraPlugins `justify` is not needed anymore. The new
+    plugin called `Alignment` is always active.
 
 *   `editor.config.format_tags` was used to populate various block-level elements
     with a syntax like `p;h1;h2;h3;h4;h5;pre`. This is now moved to `editor.config.heading`:
@@ -178,20 +178,6 @@ from `editor.config.wordcount` to `editor.config.wordCount`:
 
     Removal of single buttons via `editor.config.removeButtons` is now of limited
     need, however a list of `editor.config.toolbar.removeItems` can be given.
-
-*   `editor.config.stylesSet` which is used for the dropdown of custom
-    style elements, is moved to `editor.config.style.definitions`
-    with a similar syntax.
-
-    ..  code-block:: yaml
-
-        style:
-          definitions:
-            # block level styles
-            - { name: "Lead", element: "p", classes: ['lead'] }
-            - { name: "Small", element: "small", classes: [] }
-            # Inline styles
-            - { name: "Muted", element: "span", classes: ['text-muted'] }
 
 CKEditor 5 integration is still experimental and subject to change to adapt
 to further needs until TYPO3 v12 LTS.
