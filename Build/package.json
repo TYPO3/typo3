@@ -56,7 +56,7 @@
     "grunt-stylelint": "^0.18.0",
     "grunt-terser": "^2.0.0",
     "lintspaces-cli": "^0.8.0",
-    "mime-db": "^1.46.0",
+    "mime-db": "^1.53.0",
     "pofile": "^1.1.4",
     "postcss-banner": "^4.0.1",
     "postcss-clean": "^1.2.2",
