@@ -141,7 +141,7 @@ class Typo3tempFileService
     protected function getStatsFromStorage(ResourceStorage $storage): array
     {
         $storageConfiguration = $storage->getConfiguration();
-        $storageBasePath = rtrim($storageConfiguration['basePath'], '/');
+        $storageBasePath = rtrim($storageConfiguration['basePath'] ?? '', '/');
         $processedPath = '/' . $storageBasePath . $storage->getProcessingFolder()->getIdentifier();
         $numberOfFiles = $this->processedFileRepository->countByStorage($storage);
 
