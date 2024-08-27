@@ -22,17 +22,22 @@ use TYPO3\CMS\Core\Schema\RelationshipType;
 /**
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-final readonly class CategoryFieldType extends AbstractFieldType implements FieldTypeInterface, RelationalFieldTypeInterface
+final readonly class CategoryFieldType extends AbstractFieldType implements RelationalFieldTypeInterface
 {
     public function __construct(
         protected string $name,
         protected array $configuration,
-        protected array $relations,
+        protected array $relations
     ) {}
 
     public function getType(): string
     {
         return 'category';
+    }
+
+    public function getTreeConfiguration(): array
+    {
+        return $this->configuration['treeConfig'] ?? [];
     }
 
     public function getRelations(): array
@@ -43,10 +48,5 @@ final readonly class CategoryFieldType extends AbstractFieldType implements Fiel
     public function getRelationshipType(): RelationshipType
     {
         return RelationshipType::fromTcaConfiguration($this->configuration);
-    }
-
-    public static function __set_state(array $state): self
-    {
-        return new self(...$state);
     }
 }

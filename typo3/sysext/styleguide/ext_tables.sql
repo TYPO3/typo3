@@ -33,6 +33,7 @@ CREATE TABLE tx_styleguide_elements_basic (
     none_1 text,
     none_2 text,
     none_3 text,
+    none_4 text,
 
     # type=passthrough needs manual configuration
     passthrough_1 text,

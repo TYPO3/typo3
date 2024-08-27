@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Schema\RelationshipType;
  *
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-final readonly class SelectRelationFieldType extends AbstractFieldType implements FieldTypeInterface, RelationalFieldTypeInterface
+final readonly class SelectRelationFieldType extends AbstractFieldType implements RelationalFieldTypeInterface
 {
     public function __construct(
         protected string $name,
@@ -45,10 +45,5 @@ final readonly class SelectRelationFieldType extends AbstractFieldType implement
     public function getRelationshipType(): RelationshipType
     {
         return RelationshipType::fromTcaConfiguration($this->configuration);
-    }
-
-    public static function __set_state(array $state): self
-    {
-        return new self(...$state);
     }
 }

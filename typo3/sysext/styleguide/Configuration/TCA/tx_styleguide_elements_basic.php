@@ -1550,6 +1550,18 @@ backend_layout {
                 'format' => 'datetime',
             ],
         ],
+        'none_4' => [
+            'label' => 'none_4',
+            'description' => 'format=date with format configuration',
+            'config' => [
+                'type' => 'none',
+                'format' => 'date',
+                'format.' => [
+                    'option' => '%d-%m',
+                    'strftime' => true,
+                ],
+            ],
+        ],
 
         'passthrough_1' => [
             'label' => 'passthrough_1',
@@ -1914,7 +1926,7 @@ backend_layout {
                 --div--;language,
                     language_1,
                 --div--;none,
-                    none_1, none_2, none_3,
+                    none_1, none_2, none_3, none_4,
                 --div--;passthrough,
                     passthrough_1, passthrough_2,
                 --div--;user,

@@ -29,6 +29,11 @@ final readonly class FieldCollection implements \ArrayAccess, \IteratorAggregate
         protected array $fieldDefinitions = []
     ) {}
 
+    public static function __set_state(array $state): self
+    {
+        return new self(...$state);
+    }
+
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->fieldDefinitions[$offset]);
@@ -60,10 +65,5 @@ final readonly class FieldCollection implements \ArrayAccess, \IteratorAggregate
     public function count(): int
     {
         return count($this->fieldDefinitions);
-    }
-
-    public static function __set_state(array $state): self
-    {
-        return new self(...$state);
     }
 }

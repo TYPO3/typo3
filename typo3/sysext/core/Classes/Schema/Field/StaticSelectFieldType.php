@@ -17,20 +17,28 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema\Field;
 
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+
 /**
  * This is a select type without any MM or foreign table logic.
  *
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-final readonly class StaticSelectFieldType extends AbstractFieldType implements FieldTypeInterface
+final readonly class StaticSelectFieldType extends AbstractFieldType
 {
     public function getType(): string
     {
         return 'select';
     }
 
-    public static function __set_state(array $state): self
+    /**
+     * @return SelectItem[]
+     */
+    public function getItems(): array
     {
-        return new self(...$state);
+        return is_array($this->configuration['items'] ?? false) ? array_map(
+            static fn($item): SelectItem => SelectItem::fromTcaItemArray($item),
+            $this->configuration['items']
+        ) : [];
     }
 }

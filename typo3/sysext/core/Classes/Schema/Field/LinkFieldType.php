@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Schema\Field;
 /**
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-final readonly class LinkFieldType extends AbstractFieldType implements FieldTypeInterface
+final readonly class LinkFieldType extends AbstractFieldType
 {
     public function getType(): string
     {
@@ -30,10 +30,5 @@ final readonly class LinkFieldType extends AbstractFieldType implements FieldTyp
     public function getAllowedLinkTypes(): array
     {
         return $this->configuration['allowedTypes'] ?? ['*'];
-    }
-
-    public static function __set_state(array $state): self
-    {
-        return new self(...$state);
     }
 }

@@ -17,18 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema\Field;
 
+use TYPO3\CMS\Core\Schema\FieldFormat;
+
 /**
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-final readonly class NoneFieldType extends AbstractFieldType implements FieldTypeInterface
+final readonly class NoneFieldType extends AbstractFieldType
 {
     public function getType(): string
     {
         return 'none';
     }
 
-    public static function __set_state(array $state): self
+    public function getFormat(): FieldFormat
     {
-        return new self(...$state);
+        return FieldFormat::fromTcaConfiguration($this->configuration);
     }
 }

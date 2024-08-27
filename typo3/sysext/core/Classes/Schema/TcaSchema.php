@@ -48,9 +48,15 @@ readonly class TcaSchema implements SchemaInterface
         return $this->name;
     }
 
-    public function getFields(): FieldCollection
+    public function getFields(...$fieldNames): FieldCollection
     {
-        return $this->fields;
+        if ($fieldNames === []) {
+            return $this->fields;
+        }
+
+        return new FieldCollection(
+            array_filter(iterator_to_array($this->fields), static fn(FieldTypeInterface $field): bool => in_array($field->getName(), $fieldNames, true))
+        );
     }
 
     public function hasField(string $fieldName): bool

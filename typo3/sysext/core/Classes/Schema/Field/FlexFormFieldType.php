@@ -20,20 +20,15 @@ namespace TYPO3\CMS\Core\Schema\Field;
 /**
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-final readonly class FlexFormFieldType extends AbstractFieldType implements FieldTypeInterface
+final readonly class FlexFormFieldType extends AbstractFieldType
 {
-    public function __construct(
-        protected string $name,
-        protected array $configuration,
-    ) {}
-
     public function getType(): string
     {
         return 'flex';
     }
 
-    public static function __set_state(array $state): self
+    public function getDataStructure(): array
     {
-        return new self(...$state);
+        return is_array($this->configuration['ds'] ?? null) ? $this->configuration['ds'] : [];
     }
 }

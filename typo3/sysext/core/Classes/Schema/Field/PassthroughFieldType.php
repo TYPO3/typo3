@@ -20,15 +20,10 @@ namespace TYPO3\CMS\Core\Schema\Field;
 /**
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-final readonly class PassthroughFieldType extends AbstractFieldType implements FieldTypeInterface
+final readonly class PassthroughFieldType extends AbstractFieldType
 {
     public function getType(): string
     {
         return 'passthrough';
-    }
-
-    public static function __set_state(array $state): self
-    {
-        return new self(...$state);
     }
 }

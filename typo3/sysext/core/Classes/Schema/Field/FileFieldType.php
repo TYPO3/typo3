@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Schema\Field;
 
 use TYPO3\CMS\Core\Schema\RelationshipType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This is a field to a "file" (which is very similar to "inline") but with a hard-coded
@@ -25,7 +26,7 @@ use TYPO3\CMS\Core\Schema\RelationshipType;
  *
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-final readonly class FileFieldType extends AbstractFieldType implements FieldTypeInterface, RelationalFieldTypeInterface
+final readonly class FileFieldType extends AbstractFieldType implements RelationalFieldTypeInterface
 {
     public function __construct(
         protected string $name,
@@ -38,6 +39,20 @@ final readonly class FileFieldType extends AbstractFieldType implements FieldTyp
         return 'file';
     }
 
+    public function getAllowedFileExtensions(): array
+    {
+        return is_array($this->configuration['allowed'] ?? null)
+            ? $this->configuration['allowed']
+            : GeneralUtility::trimExplode(',', $this->configuration['allowed'] ?? '', true);
+    }
+
+    public function getDisallowedFileExtensions(): array
+    {
+        return is_array($this->configuration['disallowed'] ?? null)
+            ? $this->configuration['disallowed']
+            : GeneralUtility::trimExplode(',', $this->configuration['disallowed'] ?? '', true);
+    }
+
     public function getRelations(): array
     {
         return $this->relations;
@@ -46,10 +61,5 @@ final readonly class FileFieldType extends AbstractFieldType implements FieldTyp
     public function getRelationshipType(): RelationshipType
     {
         return RelationshipType::fromTcaConfiguration($this->configuration);
-    }
-
-    public static function __set_state(array $state): self
-    {
-        return new self(...$state);
     }
 }

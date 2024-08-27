@@ -29,6 +29,12 @@ abstract readonly class AbstractFieldType implements FieldTypeInterface
         protected array $configuration,
     ) {}
 
+    public static function __set_state(array $state): self
+    {
+        /** @phpstan-ignore-next-line Usage is safe because state is exported by PHP var_export() from the static instance */
+        return new static(...$state);
+    }
+
     abstract public function getType(): string;
 
     public function getName(): string

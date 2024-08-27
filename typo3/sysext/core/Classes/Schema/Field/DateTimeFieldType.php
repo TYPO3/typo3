@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 /**
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-final readonly class DateTimeFieldType extends AbstractFieldType implements FieldTypeInterface
+final readonly class DateTimeFieldType extends AbstractFieldType
 {
     public function getType(): string
     {
@@ -37,15 +37,5 @@ final readonly class DateTimeFieldType extends AbstractFieldType implements Fiel
     public function getPersistenceType(): ?string
     {
         return in_array($this->configuration['dbType'] ?? null, QueryHelper::getDateTimeTypes(), true) ? $this->configuration['dbType'] : null;
-    }
-
-    public function isNullable(): bool
-    {
-        return (bool)($this->configuration['nullable'] ?? false);
-    }
-
-    public static function __set_state(array $state): self
-    {
-        return new self(...$state);
     }
 }
