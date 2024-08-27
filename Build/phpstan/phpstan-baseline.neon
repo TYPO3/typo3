@@ -21,6 +21,11 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
 		-
+			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/EventListener/FailedLoginAttemptNotification.php
+
+		-
 			message: "#^Offset 'eval' on array on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/AbstractNode.php
@@ -176,6 +181,16 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
+			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/belog/Classes/Domain/Model/LogEntry.php
+
+		-
+			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/belog/Classes/ViewHelpers/FormatDetailsViewHelper.php
+
+		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$writeAttemptLog \\(bool\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractAuthenticationService.php
@@ -199,6 +214,11 @@ parameters:
 			message: "#^Parameter \\#2 \\$values of function vsprintf expects array\\<bool\\|float\\|int\\|string\\|null\\>, array\\<int\\|string, array\\<int, mixed\\>\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/AuthenticationService.php
+
+		-
+			message: "#^Call to function in_array\\(\\) with arguments non\\-empty\\-string, array\\{\\} and true will always evaluate to false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/Provider/RecoveryCodes.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\AbstractBackend\\:\\:flushByTag\\(\\)\\.$#"
@@ -236,6 +256,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
 
 		-
+			message: "#^Offset 2 on \\*NEVER\\* on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Configuration/CKEditor5Migrator.php
+
+		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Configuration/ExtensionConfiguration.php
@@ -261,6 +286,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Crypto/HashService.php
 
 		-
+			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapProcessor\\:\\:fetchDependencies\\(\\) should return array\\<array\\<TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\> but returns array\\<int\\|string, array\\<string, array\\<int, TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\>\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
@@ -269,6 +299,16 @@ parameters:
 			message: "#^Parameter \\#1 \\$dependencies of method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\:\\:setDependencies\\(\\) expects array\\<array\\<TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\>\\>, array\\<TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\DataMapItem\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
+
+		-
+			message: "#^Offset 'aspects' on array\\{0\\: string, flags\\: non\\-falsy\\-string, 1\\: non\\-falsy\\-string, scope\\: non\\-empty\\-string\\|null, 2\\: non\\-empty\\-string\\|null, subject\\: non\\-empty\\-string, 3\\: non\\-empty\\-string, aspects\\: non\\-falsy\\-string, \\.\\.\\.\\} in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
+
+		-
+			message: "#^Offset 'flags' on array\\{0\\: string, flags\\: non\\-falsy\\-string, 1\\: non\\-falsy\\-string, scope\\: non\\-empty\\-string\\|null, 2\\: non\\-empty\\-string\\|null, subject\\: non\\-empty\\-string, 3\\: non\\-empty\\-string, aspects\\: non\\-falsy\\-string, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:getUid\\(\\)\\.$#"
@@ -382,6 +422,11 @@ parameters:
 
 		-
 			message: "#^Offset 'group' does not exist on string\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
+
+		-
+			message: "#^Offset 1 does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
 
@@ -684,6 +729,11 @@ parameters:
 			message: "#^Parameter \\#4 \\$lifetime of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\RedisBackend\\:\\:set\\(\\) expects int\\|null, array given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
+
+		-
+			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Tests/Functional/DataScenarios/AbstractDataHandlerActionTestCase.php
 
 		-
 			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\Typo3DatabaseBackend\\:\\:set\\(\\) expects string, array\\<int, string\\> given\\.$#"
@@ -1586,6 +1636,16 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Updates/DatabaseRowsUpdateWizard.php
 
 		-
+			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/install/Classes/Updates/SysLogSerializationUpdate.php
+
+		-
+			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/lowlevel/Classes/Command/ListSysLogCommand.php
+
+		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/CronCommand.php
@@ -1599,3 +1659,8 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between non\\-falsy\\-string and '' will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
+
+		-
+			message: "#^Offset 1 on array\\{string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/RemoteServer.php
