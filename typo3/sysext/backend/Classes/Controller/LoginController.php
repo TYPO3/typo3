@@ -237,12 +237,6 @@ class LoginController
             $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
         }
 
-        // If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
-        if (($parsedBody['L'] ?? $queryParams['L'] ?? null) === 'OUT' && is_object($backendUser)) {
-            $backendUser->logoff();
-            $this->redirectToUrl();
-        }
-
         // @todo: This should be ViewInterface. But this breaks LoginProviderInterface AND ModifyPageLayoutOnLoginProviderSelectionEvent
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         // StandaloneView should NOT receive a request at all, override the default StandaloneView constructor here.
