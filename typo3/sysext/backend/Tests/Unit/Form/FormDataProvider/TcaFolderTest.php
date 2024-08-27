@@ -21,13 +21,10 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaFolderTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     #[Test]
     public function addDataReturnsFieldUnchangedIfFieldIsNotTypeFolder(): void
     {
@@ -46,7 +43,7 @@ final class TcaFolderTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        self::assertSame($expected, (new TcaFolder())->addData($input));
+        self::assertSame($expected, (new TcaFolder($this->createMock(ResourceFactory::class)))->addData($input));
     }
 
     #[Test]
@@ -71,7 +68,6 @@ final class TcaFolderTest extends UnitTestCase
         $folderMock = $this->createMock(Folder::class);
 
         $resourceFactoryMock = $this->createMock(ResourceFactory::class);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryMock);
         $resourceFactoryMock->expects(self::atLeastOnce())->method('retrieveFileOrFolderObject')
             ->with('1:/aFolder/anotherFolder/')->willReturn($folderMock);
 
@@ -81,6 +77,6 @@ final class TcaFolderTest extends UnitTestCase
                 'folder' => '1:/aFolder/anotherFolder/',
             ],
         ];
-        self::assertSame($expected, (new TcaFolder())->addData($input));
+        self::assertSame($expected, (new TcaFolder($resourceFactoryMock))->addData($input));
     }
 }
