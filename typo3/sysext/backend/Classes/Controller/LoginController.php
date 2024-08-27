@@ -365,18 +365,6 @@ class LoginController
             return;
         }
 
-        // If no cookie has been set previously, we tell people that this is a problem.
-        // This assumes that a cookie-setting script (like this one) has been hit at
-        // least once prior to this instance.
-        if (!isset($request->getCookieParams()[BackendUserAuthentication::getCookieName()])) {
-            if ($this->submitValue === 'setCookie') {
-                // we tried it a second time but still no cookie
-                throw new \RuntimeException('Login-error: Yeah, that\'s a classic. No cookies, no TYPO3. ' .
-                    'Please accept cookies from TYPO3 - otherwise you\'ll not be able to use the system.', 1294586846);
-            }
-            // try it once again - that might be needed for auto login
-            $this->redirectToURL = 'index.php?commandLI=setCookie';
-        }
         $redirectToUrl = (string)($backendUser->getTSConfig()['auth.']['BE.']['redirectToURL'] ?? '');
         if (!empty($redirectToUrl)) {
             $this->redirectToURL = $redirectToUrl;
