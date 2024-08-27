@@ -63,13 +63,11 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentContentObject;
-use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
@@ -89,7 +87,6 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\TestSanitizerBuilder;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
@@ -161,16 +158,13 @@ final class ContentObjectRendererTest extends UnitTestCase
         $request = new ServerRequest();
         $this->subject->setRequest($request);
 
+        // @todo: This thing needs a review and should be refactored away, for instance by putting
+        //        whatever is really needed into single tests instead. Also, ContentObjectFactory
+        //        needs an overhaul in general.
         $contentObjectFactoryMock = $this->createContentObjectFactoryMock();
         $cObj = $this->subject;
         foreach ($this->contentObjectMap as $name => $className) {
-            $contentObjectFactoryMock->addGetContentObjectCallback(
-                $name,
-                $className,
-                $request,
-                $cObj,
-                $this->getMockBuilder(DataProcessorRegistry::class)->disableOriginalConstructor()->getMock()
-            );
+            $contentObjectFactoryMock->addGetContentObjectCallback($name, $className, $request, $cObj);
         }
         $container = new Container();
         $container->set(ContentObjectFactory::class, $contentObjectFactoryMock);
@@ -7389,20 +7383,10 @@ final class ContentObjectRendererTest extends UnitTestCase
             /**
              * @internal This method is just for testing purpose.
              */
-            public function addGetContentObjectCallback(string $name, string $className, ServerRequestInterface $request, ContentObjectRenderer $cObj, MockObject&DataProcessorRegistry $dataProcessorRegistry): void
+            public function addGetContentObjectCallback(string $name, string $className, ServerRequestInterface $request, ContentObjectRenderer $cObj): void
             {
-                $this->getContentObjectCallbacks[$name] = static function () use ($className, $request, $cObj, $dataProcessorRegistry) {
-                    if ($className === 'FluidTemplateContentObject') {
-                        $contentObject = new FluidTemplateContentObject(
-                            new ContentDataProcessor(
-                                new Container(),
-                                $dataProcessorRegistry
-                            ),
-                            new StandaloneView()
-                        );
-                    } else {
-                        $contentObject = new $className();
-                    }
+                $this->getContentObjectCallbacks[$name] = static function () use ($className, $request, $cObj) {
+                    $contentObject = new $className();
                     $contentObject->setRequest($request);
                     $contentObject->setContentObjectRenderer($cObj);
                     return $contentObject;
