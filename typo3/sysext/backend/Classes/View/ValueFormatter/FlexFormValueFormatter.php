@@ -196,8 +196,8 @@ class FlexFormValueFormatter
                 if ($relationTable !== null && $labelUserFunction !== null) {
                     $parameters = [
                         'table' => $relationTable,
-                        'row' => BackendUtility::getRecord($relationTable, $valueStructure[$elementKey]['vDEF']),
-                        'title' => $valueStructure[$elementKey]['vDEF'],
+                        'row' => BackendUtility::getRecord($relationTable, $valueStructure[$elementKey]['vDEF'] ?? ''),
+                        'title' => $valueStructure[$elementKey]['vDEF'] ?? '',
                     ];
                     GeneralUtility::callUserFunction($labelUserFunction, $parameters);
                     $processedValue = $parameters['title'];
