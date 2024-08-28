@@ -50,7 +50,6 @@ class DefaultSanitizerBuilder extends CommonBuilder implements SingletonInterfac
 
         // extends common attributes for TYPO3-specific URIs
         $this->srcAttr->addValues($isOnCurrentHost);
-        $this->srcsetAttr->addValues($isOnCurrentHost);
         $this->hrefAttr->addValues($isOnCurrentHost, $isTypo3Uri);
 
         // @todo `style` used in Introduction Package, inline CSS should be removed
