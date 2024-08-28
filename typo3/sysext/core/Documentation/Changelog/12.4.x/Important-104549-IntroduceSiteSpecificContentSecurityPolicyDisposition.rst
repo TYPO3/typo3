@@ -129,7 +129,7 @@ enforced disposition and only applies it to the reporting disposition.
       packages:
         # all (`*`) packages shall be included (`true`)
         '*': true
-        # the package `my-vendor/my-package` shall be dropped (`false`)
+        # the package `my-vendor/my-package` shall be included (`true`)
         my-vendor/my-package: true
 
 .. index:: Frontend, YAML, ext:frontend
