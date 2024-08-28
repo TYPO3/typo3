@@ -104,6 +104,7 @@ class ServiceProvider extends AbstractServiceProvider
             Command\LanguagePackCommand::class => self::getLanguagePackCommand(...),
             Command\UpgradeWizardRunCommand::class => self::getUpgradeWizardRunCommand(...),
             Command\UpgradeWizardListCommand::class => self::getUpgradeWizardListCommand(...),
+            Command\UpgradeWizardMarkUndoneCommand::class => self::getUpgradeWizardMarkUndoneCommand(...),
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
@@ -396,6 +397,14 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
+    public static function getUpgradeWizardMarkUndoneCommand(ContainerInterface $container): Command\UpgradeWizardMarkUndoneCommand
+    {
+        return new Command\UpgradeWizardMarkUndoneCommand(
+            'upgrade:mark:undone',
+            $container->get(Service\LateBootService::class),
+        );
+    }
+
     public static function getSetupCommand(ContainerInterface $container): Command\SetupCommand
     {
         return new Command\SetupCommand(
@@ -454,6 +463,11 @@ class ServiceProvider extends AbstractServiceProvider
             'upgrade:list',
             Command\UpgradeWizardListCommand::class,
             'List available upgrade wizards.'
+        );
+        $commandRegistry->addLazyCommand(
+            'upgrade:mark:undone',
+            Command\UpgradeWizardMarkUndoneCommand::class,
+            'Mark upgrade wizard as undone.'
         );
         $commandRegistry->addLazyCommand(
             'setup',
