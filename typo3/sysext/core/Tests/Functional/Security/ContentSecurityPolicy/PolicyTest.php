@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceInterface;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceScheme;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\UriValue;
@@ -170,13 +171,32 @@ final class PolicyTest extends FunctionalTestCase
         self::assertSame("default-src 'self'; script-src 'unsafe-inline'", $policy->compile($this->nonce));
     }
 
+    public static function directiveIsReducedDataProvider(): \Generator
+    {
+        yield 'one source remains' => [
+            'defaultSources' => [SourceKeyword::self, SourceKeyword::unsafeInline],
+            'reduceSources' => [SourceKeyword::self],
+            'expectation' => "script-src 'unsafe-inline'",
+        ];
+        yield 'directive is purged' => [
+            'defaultSources' => [SourceKeyword::self],
+            'reduceSources' => [SourceKeyword::self],
+            'expectation' => '',
+        ];
+    }
+
+    /**
+     * @param list<SourceInterface> $defaultSources
+     * @param list<SourceInterface> $reduceSources
+     */
+    #[DataProvider('directiveIsReducedDataProvider')]
     #[Test]
-    public function directiveIsReduced(): void
+    public function directiveIsReduced(array $defaultSources, array $reduceSources, string $expectation): void
     {
         $policy = (new Policy())
-            ->set(Directive::ScriptSrc, SourceKeyword::self, SourceKeyword::unsafeInline)
-            ->reduce(Directive::ScriptSrc, SourceKeyword::self);
-        self::assertSame("script-src 'unsafe-inline'", $policy->compile($this->nonce));
+            ->set(Directive::ScriptSrc, ...$defaultSources)
+            ->reduce(Directive::ScriptSrc, ...$reduceSources);
+        self::assertSame($expectation, $policy->compile($this->nonce));
     }
 
     #[Test]

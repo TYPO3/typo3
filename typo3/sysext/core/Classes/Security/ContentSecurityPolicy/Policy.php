@@ -246,12 +246,18 @@ class Policy
         return implode('; ', $policyParts);
     }
 
+    /**
+     * Determines whether all sources are contained (in terms of instances and values, but without inference).
+     */
     public function containsDirective(Directive $directive, SourceCollection|SourceInterface ...$sources): bool
     {
         $sources = $this->asMergedSourceCollection(...$sources);
         return (bool)$this->directives[$directive]?->contains(...$sources->sources);
     }
 
+    /**
+     * Determines whether all sources are covered (in terms of CSP inference, considering wildcards and similar).
+     */
     public function coversDirective(Directive $directive, SourceCollection|SourceInterface ...$sources): bool
     {
         $sources = $this->asMergedSourceCollection(...$sources);
@@ -298,7 +304,8 @@ class Policy
 
     protected function changeDirectiveSources(Directive $directive, SourceCollection $sources): self
     {
-        if ($sources->isEmpty() && !$directive->isStandAlone()) {
+        $isAlreadyEmpty = empty($this->directives[$directive]) || $this->directives[$directive]->isEmpty();
+        if ($isAlreadyEmpty && $sources->isEmpty() && !$directive->isStandAlone()) {
             return $this;
         }
         $target = clone $this;
