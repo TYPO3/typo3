@@ -339,7 +339,7 @@ class PageInformationController extends InfoModuleController
             switch ($field) {
                 case 'title':
                     $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
-                    $pTitle = htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
+                    $pTitle = htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 20, false, false, 0, true, 0, $row));
                     $theData[$field] = '<div class="treeline-container">'
                         . ($row['treeIcons'] ?? '')
                         . $theIcon
@@ -448,7 +448,7 @@ class PageInformationController extends InfoModuleController
      */
     protected function getPagesTableFieldValue(string $field, array $row): string
     {
-        return htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field]));
+        return htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 0, false, false, 0, true, 0, $row));
     }
 
     /**

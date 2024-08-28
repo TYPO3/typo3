@@ -775,13 +775,17 @@ class FileList
                     return htmlspecialchars($storage->getName());
                 }
             } else {
+                $metaData = $resourceView->resource->getMetaData()->get();
                 return htmlspecialchars(
                     (string)BackendUtility::getProcessedValueExtra(
                         $this->getConcreteTableName($field),
                         $field,
                         $resourceView->resource->getProperty($field),
                         $this->maxTitleLength,
-                        $resourceView->resource->getMetaData()->offsetGet('uid')
+                        $metaData['uid'],
+                        false,
+                        0,
+                        $metaData,
                     )
                 );
             }

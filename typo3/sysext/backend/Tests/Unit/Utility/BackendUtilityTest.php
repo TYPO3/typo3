@@ -1073,6 +1073,59 @@ final class BackendUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    public function getProcessedValueReturnsLabelsFormItemsProcFuncUsingRow(): void
+    {
+        $table = 'foobar';
+        $col = 'someColumn';
+        $uid = 123;
+        $tca = [
+            'columns' => [
+                'someColumn' => [
+                    'config' => [
+                        'type' => 'select',
+                        'itemsProcFunc' => static function (array $parameters, $pObj) {
+                            $parameters['items'] = [
+                                ['label' => $parameters['row']['title'], 'value' => 'foo'],
+                                ['label' => $parameters['row']['title2'], 'value' => 'bar'],
+                                ['label' => (string)$parameters['row']['uid'], 'value' => 'uidIsApplied'],
+                            ];
+                        },
+                    ],
+                ],
+            ],
+        ];
+        // Stub LanguageService and let sL() return the same value that came in again
+        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG']->method('sL')->willReturnArgument(0);
+
+        $cacheManagerMock = $this->createMock(CacheManager::class);
+        $cacheMock = $this->createMock(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('runtime')->willReturn($cacheMock);
+        $cacheMock->method('get')->willReturnMap([
+            ['pageTsConfig-pid-to-hash-0', 'hash'],
+            ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode())],
+        ]);
+        $siteFinderMock = $this->createMock(SiteFinder::class);
+        GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService($siteFinderMock));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
+
+        $row = [
+            'title' => 'itemTitle',
+            'title2' => 'itemTitle2',
+        ];
+
+        $GLOBALS['TCA'][$table] = $tca;
+        $label = BackendUtility::getProcessedValue(
+            table: $table,
+            col: $col,
+            value: 'foo,invalidKey,bar,uidIsApplied',
+            uid: $uid,
+            fullRow: $row
+        );
+        self::assertEquals($row['title'] . ', ' . $row['title2'] . ', ' . $uid, $label);
+    }
+
+    #[Test]
     public function getProcessedValueReturnsPlainValueIfItemIsNotFound(): void
     {
         $table = 'foobar';

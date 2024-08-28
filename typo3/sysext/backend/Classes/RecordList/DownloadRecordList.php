@@ -138,7 +138,7 @@ class DownloadRecordList
                 if ($columnName === $GLOBALS['TCA'][$table]['ctrl']['label']) {
                     $row[$columnName] = BackendUtility::getRecordTitle($table, $row);
                 } elseif ($columnName !== 'pid') {
-                    $row[$columnName] = BackendUtility::getProcessedValueExtra($table, $columnName, $row[$columnName], 0, $row['uid']);
+                    $row[$columnName] = BackendUtility::getProcessedValueExtra($table, $columnName, $row[$columnName], 0, $row['uid'], false, 0, $row);
                 }
             }
         }
