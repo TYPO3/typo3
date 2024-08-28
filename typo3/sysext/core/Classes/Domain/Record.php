@@ -79,9 +79,14 @@ class Record implements \ArrayAccess, RecordInterface
             return true;
         }
 
-        // Only fall back to the raw record in case no record type is defined.
-        // This allows to properly check for only record type specific fields.
+        if (in_array($offset, ['uid', 'pid'], true)) {
+            // Enable access of uid and pid via array access
+            return true;
+        }
+
         if ($this->getRecordType() === null && isset($this->rawRecord[$offset])) {
+            // Only fall back to the raw record in case no record type is defined.
+            // This allows to properly check for only record type specific fields.
             return true;
         }
 

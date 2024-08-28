@@ -36,6 +36,16 @@ final class RecordFactoryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function uidAndPidPropertiesAreAccessible(): void
+    {
+        $dbRow = BackendUtility::getRecord('pages', 1);
+        $subject = $this->get(RecordFactory::class);
+        $result = $subject->createFromDatabaseRow('pages', $dbRow);
+        self::assertSame(1, $result['uid']);
+        self::assertSame(0, $result['pid']);
+    }
+
+    #[Test]
     public function typesAreResolvedProperlyForPageRecord(): void
     {
         $dbRow = BackendUtility::getRecord('pages', 1);
