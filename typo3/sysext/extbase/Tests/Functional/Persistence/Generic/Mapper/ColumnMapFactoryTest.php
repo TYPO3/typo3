@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Schema\FieldTypeFactory;
+use TYPO3\CMS\Core\Schema\RelationMap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
@@ -32,11 +34,13 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
     protected bool $initializeDatabase = false;
 
     protected ColumnMapFactory $columnMapFactory;
+    protected FieldTypeFactory $fieldTypeFactory;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->columnMapFactory = $this->get(ColumnMapFactory::class);
+        $this->fieldTypeFactory = $this->get(FieldTypeFactory::class);
     }
 
     public static function createWithGroupTypeDataProvider(): \Generator
@@ -97,7 +101,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
     {
         self::assertEquals(
             $expectedColumnMap,
-            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class)
+            $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class)
         );
     }
 
@@ -219,7 +223,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
     {
         self::assertEquals(
             $expectedColumnMap,
-            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class)
+            $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class)
         );
     }
 
@@ -248,7 +252,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
     {
         self::assertEquals(
             $expectedColumnMap,
-            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class)
+            $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class)
         );
     }
 
@@ -284,7 +288,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
     {
         self::assertEquals(
             $expectedColumnMap,
-            $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class)
+            $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class)
         );
     }
 
@@ -304,8 +308,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class);
-
+        $columnMap = $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class);
         self::assertSame(
             [
                 'fieldname' => 'foo_model',
@@ -330,8 +333,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class);
-
+        $columnMap = $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class);
         self::assertSame(
             [
                 'fieldname' => 'foo_model',
@@ -364,7 +366,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class));
+        $columnMap = $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class);
+        self::assertEquals($expectedColumnMap, $columnMap);
     }
 
     #[Test]
@@ -390,7 +393,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class));
+        $columnMap = $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class);
+        self::assertEquals($expectedColumnMap, $columnMap);
     }
 
     #[Test]
@@ -416,7 +420,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expectedColumnMap, $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class));
+        $columnMap = $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class);
+        self::assertEquals($expectedColumnMap, $columnMap);
     }
 
     public static function columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider(): array
@@ -442,8 +447,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class);
-
+        $columnMap = $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class);
         self::assertSame($expectedValue, $columnMap->getDateTimeStorageFormat());
     }
 
@@ -490,8 +494,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ],
         ];
 
-        $columnMap = $this->columnMapFactory->create($columnName, $columnConfiguration, $propertyName, ColumnMapFactoryEntityFixture::class);
-
+        $columnMap = $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class);
         self::assertSame($expectedType, $columnMap->getType());
     }
 }

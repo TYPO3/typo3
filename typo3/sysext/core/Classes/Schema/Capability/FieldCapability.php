@@ -44,4 +44,9 @@ final readonly class FieldCapability implements SchemaCapabilityInterface
     {
         return $this->field;
     }
+
+    public function __toString(): string
+    {
+        return $this->getFieldName();
+    }
 }

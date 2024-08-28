@@ -72,9 +72,14 @@ enum RelationshipType: string
         return self::Undefined;
     }
 
-    public function isToOne(): bool
+    public function hasOne(): bool
     {
         return in_array($this, [self::OneToOne, self::ManyToOne], true);
+    }
+
+    public function hasMany(): bool
+    {
+        return in_array($this, [self::ManyToMany, self::OneToMany, self::List], true);
     }
 
     public function isSingularRelationship(): bool

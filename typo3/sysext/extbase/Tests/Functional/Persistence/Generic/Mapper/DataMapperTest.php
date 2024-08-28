@@ -367,17 +367,17 @@ final class DataMapperTest extends FunctionalTestCase
     #[Test]
     public function mapDateTimeHandlesDifferentFieldEvaluations(string|int|null $value, ?string $storageFormat, ?string $expectedValue): void
     {
-        $GLOBALS['TCA']['tx_testdatamapper_domain_model_example']['columns']['initialized_date_time_property']['config']['dbType'] = $storageFormat;
         $rows = [
             [
                 'uid' => 123,
-                'initialized_date_time_property' => $value,
+                'initialized_date_time_property' . ($storageFormat !== null ? '_' . $storageFormat : '') => $value,
             ],
         ];
         $dataMapper = $this->get(DataMapper::class);
         $mappedObjectsArray = $dataMapper->map(Example::class, $rows);
 
-        self::assertSame($expectedValue, $mappedObjectsArray[0]->getInitializedDateTimeProperty()?->format('c'));
+        $getter = 'getInitializedDateTimeProperty' . ($storageFormat !== null ? ucfirst($storageFormat) : '');
+        self::assertSame($expectedValue, $mappedObjectsArray[0]->{$getter}()?->format('c'));
 
         // Flush DataMapFactory cache on each run.
         $cacheManager = $this->get(CacheManager::class);
@@ -404,18 +404,18 @@ final class DataMapperTest extends FunctionalTestCase
         date_default_timezone_set('America/Chicago');
         $usedTimeZone = date_default_timezone_get();
 
-        $GLOBALS['TCA']['tx_testdatamapper_domain_model_example']['columns']['initialized_date_time_property']['config']['dbType'] = $storageFormat;
         $rows = [
             [
                 'uid' => 123,
-                'initialized_date_time_property' => $value,
+                'initialized_date_time_property' . ($storageFormat !== null ? '_' . $storageFormat : '') => $value,
             ],
         ];
         $dataMapper = $this->get(DataMapper::class);
         $mappedObjectsArray = $dataMapper->map(Example::class, $rows);
 
+        $getter = 'getInitializedDateTimeProperty' . ($storageFormat !== null ? ucfirst($storageFormat) : '');
         $expectedValue = $expectedValue !== null ? new \DateTime($expectedValue, new \DateTimeZone($usedTimeZone)) : $expectedValue;
-        self::assertEquals($expectedValue, $mappedObjectsArray[0]->getInitializedDateTimeProperty());
+        self::assertEquals($expectedValue, $mappedObjectsArray[0]->{$getter}());
 
         // Flush DataMapFactory cache on each run.
         $cacheManager = $this->get(CacheManager::class);

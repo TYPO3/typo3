@@ -43,6 +43,24 @@ return [
                 'type' => 'datetime',
             ],
         ],
+        'initialized_date_time_property_date' => [
+            'config' => [
+                'type' => 'datetime',
+                'dbType' => 'date',
+            ],
+        ],
+        'initialized_date_time_property_datetime' => [
+            'config' => [
+                'type' => 'datetime',
+                'dbType' => 'datetime',
+            ],
+        ],
+        'initialized_date_time_property_time' => [
+            'config' => [
+                'type' => 'datetime',
+                'dbType' => 'time',
+            ],
+        ],
         'custom_date_time' => [
             'config' => [
                 'type' => 'datetime',

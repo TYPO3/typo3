@@ -88,7 +88,7 @@ readonly class RecordFieldTransformer
 
         // type=file needs to be handled before RelationalFieldTypeInterface
         if ($fieldInformation instanceof FileFieldType) {
-            if ($fieldInformation->getRelationshipType()->isToOne()) {
+            if ($fieldInformation->getRelationshipType()->hasOne()) {
                 return new RecordPropertyClosure(
                     function () use ($rawRecord, $fieldInformation, $context): ?FileReference {
                         $fileReference = $this->relationResolver->resolveFileReferences($rawRecord, $fieldInformation, $context)[0] ?? null;
@@ -108,7 +108,7 @@ readonly class RecordFieldTransformer
             /** @var RecordFactory $recordFactory */
             // @todo This method is called by RecordFactory -> instantiating the factory here again shows, that those classes should actually be somehow belong together.
             $recordFactory = GeneralUtility::makeInstance(RecordFactory::class);
-            if ($fieldInformation->getRelationshipType()->isToOne()) {
+            if ($fieldInformation->getRelationshipType()->hasOne()) {
                 return new RecordPropertyClosure(
                     function () use ($rawRecord, $fieldInformation, $context, $recordFactory): ?RecordInterface {
                         $recordData = $this->relationResolver->resolve($rawRecord, $fieldInformation, $context)[0] ?? null;

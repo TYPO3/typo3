@@ -36,4 +36,9 @@ final readonly class SystemInternalFieldCapability implements SchemaCapabilityIn
     {
         return $this->fieldName;
     }
+
+    public function __toString(): string
+    {
+        return $this->getFieldName();
+    }
 }

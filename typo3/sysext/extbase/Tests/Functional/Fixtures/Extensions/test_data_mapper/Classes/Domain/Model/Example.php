@@ -29,6 +29,9 @@ class Example extends AbstractEntity
     protected ?\DateTime $uninitializedDateTimeProperty;
     protected \DateTime $uninitializedMandatoryDateTimeProperty;
     protected ?\DateTime $initializedDateTimeProperty = null;
+    protected ?\DateTime $initializedDateTimePropertyDate = null;
+    protected ?\DateTime $initializedDateTimePropertyDatetime = null;
+    protected ?\DateTime $initializedDateTimePropertyTime = null;
     protected ?CustomDateTime $customDateTime = null;
     public $unknownType;
     public Enum\StringBackedEnum $stringBackedEnum;
@@ -114,6 +117,36 @@ class Example extends AbstractEntity
     public function setInitializedDateTimeProperty(?\DateTime $initializedDateTimeProperty): void
     {
         $this->initializedDateTimeProperty = $initializedDateTimeProperty;
+    }
+
+    public function getInitializedDateTimePropertyDate(): ?\DateTime
+    {
+        return $this->initializedDateTimePropertyDate;
+    }
+
+    public function setInitializedDateTimePropertyDate(?\DateTime $initializedDateTimePropertyDate): void
+    {
+        $this->initializedDateTimePropertyDate = $initializedDateTimePropertyDate;
+    }
+
+    public function getInitializedDateTimePropertyDatetime(): ?\DateTime
+    {
+        return $this->initializedDateTimePropertyDatetime;
+    }
+
+    public function setInitializedDateTimePropertyDatetime(?\DateTime $initializedDateTimePropertyDatetime): void
+    {
+        $this->initializedDateTimePropertyDatetime = $initializedDateTimePropertyDatetime;
+    }
+
+    public function getInitializedDateTimePropertyTime(): ?\DateTime
+    {
+        return $this->initializedDateTimePropertyTime;
+    }
+
+    public function setInitializedDateTimePropertyTime(?\DateTime $initializedDateTimePropertyTime): void
+    {
+        $this->initializedDateTimePropertyTime = $initializedDateTimePropertyTime;
     }
 
     public function getCustomDateTime(): ?CustomDateTime

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema\Field;
 
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+
 /**
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
@@ -34,7 +36,7 @@ final readonly class DateTimeFieldType extends AbstractFieldType implements Fiel
 
     public function getPersistenceType(): ?string
     {
-        return $this->configuration['dbtype'] ?? null;
+        return in_array($this->configuration['dbType'] ?? null, QueryHelper::getDateTimeTypes(), true) ? $this->configuration['dbType'] : null;
     }
 
     public function isNullable(): bool

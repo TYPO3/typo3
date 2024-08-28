@@ -21,6 +21,8 @@ use Doctrine\Instantiator\InstantiatorInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Schema\Field\SelectRelationFieldType;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
@@ -58,6 +60,7 @@ final class DataMapperTest extends UnitTestCase
             $this->createMock(CacheManager::class),
             $this->createMock(ClassesConfiguration::class),
             $this->columnMapFactory,
+            $this->createMock(TcaSchemaFactory::class),
             'foo'
         );
 
@@ -78,9 +81,7 @@ final class DataMapperTest extends UnitTestCase
         // Arrange
         $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
-            [
-                'foreign_table' => 'tx_myextension_bar',
-            ]
+            new SelectRelationFieldType('foo', ['foreign_table' => 'tx_myextension_bar'], [])
         );
 
         // Act
@@ -96,10 +97,7 @@ final class DataMapperTest extends UnitTestCase
         // Arrange
         $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
-            [
-                'foreign_table' => 'tx_myextension_bar',
-                'foreign_default_sortby' => '',
-            ]
+            new SelectRelationFieldType('foo', ['foreign_table' => 'tx_myextension_bar', 'foreign_default_sortby' => ''], [])
         );
 
         // Act
@@ -115,10 +113,7 @@ final class DataMapperTest extends UnitTestCase
         // Arrange
         $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
-            [
-                'foreign_table' => 'tx_myextension_bar',
-                'foreign_default_sortby' => 'pid invalid',
-            ]
+            new SelectRelationFieldType('foo', ['foreign_table' => 'tx_myextension_bar', 'foreign_default_sortby' => 'pid invalid'], [])
         );
 
         // Act
@@ -137,10 +132,7 @@ final class DataMapperTest extends UnitTestCase
         // Arrange
         $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
-            [
-                'foreign_table' => 'tx_myextension_bar',
-                'foreign_sortby' => 'uid',
-            ]
+            new SelectRelationFieldType('foo', ['foreign_table' => 'tx_myextension_bar', 'foreign_sortby' => 'uid'], [])
         );
 
         // Act
@@ -159,11 +151,7 @@ final class DataMapperTest extends UnitTestCase
         // Arrange
         $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
-            [
-                'foreign_table' => 'tx_myextension_bar',
-                'foreign_sortby' => 'uid',
-                'foreign_default_sortby' => 'pid',
-            ]
+            new SelectRelationFieldType('foo', ['foreign_table' => 'tx_myextension_bar', 'foreign_sortby' => 'uid', 'foreign_default_sortby' => 'pid'], [])
         );
 
         // Act
@@ -182,10 +170,7 @@ final class DataMapperTest extends UnitTestCase
         // Arrange
         $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
-            [
-                'foreign_table' => 'tx_myextension_bar',
-                'foreign_default_sortby' => 'pid',
-            ]
+            new SelectRelationFieldType('foo', ['foreign_table' => 'tx_myextension_bar', 'foreign_default_sortby' => 'pid'], [])
         );
 
         // Act
@@ -204,10 +189,7 @@ final class DataMapperTest extends UnitTestCase
         // Arrange
         $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
-            [
-                'foreign_table' => 'tx_myextension_bar',
-                'foreign_default_sortby' => 'pid desc',
-            ]
+            new SelectRelationFieldType('foo', ['foreign_table' => 'tx_myextension_bar', 'foreign_default_sortby' => 'pid desc'], [])
         );
 
         // Act
@@ -226,10 +208,7 @@ final class DataMapperTest extends UnitTestCase
         // Arrange
         $this->columnMapFactory->setOneToManyRelation(
             $this->columnMap,
-            [
-                'foreign_table' => 'tx_myextension_bar',
-                'foreign_default_sortby' => 'pid desc, title, uid asc',
-            ]
+            new SelectRelationFieldType('foo', ['foreign_table' => 'tx_myextension_bar', 'foreign_default_sortby' => 'pid desc, title, uid asc'], [])
         );
 
         // Act

@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -66,6 +68,8 @@ class DataMapFactory implements SingletonInterface
 
     private ColumnMapFactory $columnMapFactory;
 
+    private TcaSchemaFactory $tcaSchemaFactory;
+
     protected string $baseCacheIdentifier;
 
     public function __construct(
@@ -74,6 +78,7 @@ class DataMapFactory implements SingletonInterface
         CacheManager $cacheManager,
         ClassesConfiguration $classesConfiguration,
         ColumnMapFactory $columnMapFactory,
+        TcaSchemaFactory $tcaSchemaFactory,
         string $baseCacheIdentifier
     ) {
         $this->reflectionService = $reflectionService;
@@ -82,6 +87,7 @@ class DataMapFactory implements SingletonInterface
         $this->dataMapCache = $this->cacheManager->getCache('extbase');
         $this->classesConfiguration = $classesConfiguration;
         $this->columnMapFactory = $columnMapFactory;
+        $this->tcaSchemaFactory = $tcaSchemaFactory;
         $this->baseCacheIdentifier = $baseCacheIdentifier;
     }
 
@@ -147,13 +153,12 @@ class DataMapFactory implements SingletonInterface
         $dataMap = GeneralUtility::makeInstance(DataMap::class, $className, $tableName, $recordType, $subclasses);
         $dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 
-        foreach ($this->getColumnsDefinition($tableName) as $columnName => $columnDefinition) {
+        foreach ($this->tcaSchemaFactory->get($tableName)->getFields() as $columnName => $columnDefinition) {
             $propertyName = $fieldNameToPropertyNameMapping[$columnName]
                 ?? GeneralUtility::underscoredToLowerCamelCase($columnName);
             $dataMap->addColumnMap(
                 $propertyName,
                 $this->columnMapFactory->create(
-                    $columnName,
                     $columnDefinition,
                     $propertyName,
                     $className
@@ -183,62 +188,55 @@ class DataMapFactory implements SingletonInterface
         return $tableName;
     }
 
-    /**
-     * Returns the TCA columns array of the specified table
-     *
-     * @param string $tableName An optional table name to fetch the columns definition from
-     * @return array The TCA columns definition
-     */
-    protected function getColumnsDefinition(string $tableName): array
-    {
-        return is_array($GLOBALS['TCA'][$tableName]['columns'] ?? null) ? $GLOBALS['TCA'][$tableName]['columns'] : [];
-    }
-
     protected function addMetaDataColumnNames(DataMap $dataMap, string $tableName): DataMap
     {
-        $controlSection = $GLOBALS['TCA'][$tableName]['ctrl'] ?? null;
-        if ($controlSection === null) {
+        if (!$this->tcaSchemaFactory->has($tableName)) {
             return $dataMap;
         }
+        $schema = $this->tcaSchemaFactory->get($tableName);
         $dataMap->setPageIdColumnName('pid');
-        if (isset($controlSection['tstamp'])) {
-            $dataMap->setModificationDateColumnName($controlSection['tstamp']);
+        if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
+            $dataMap->setModificationDateColumnName((string)$schema->getCapability(TcaSchemaCapability::UpdatedAt));
         }
-        if (isset($controlSection['crdate'])) {
-            $dataMap->setCreationDateColumnName($controlSection['crdate']);
+        if ($schema->hasCapability(TcaSchemaCapability::CreatedAt)) {
+            $dataMap->setCreationDateColumnName((string)$schema->getCapability(TcaSchemaCapability::CreatedAt));
         }
-        if (isset($controlSection['delete'])) {
-            $dataMap->setDeletedFlagColumnName($controlSection['delete']);
+        if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+            $dataMap->setDeletedFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::SoftDelete));
         }
-        if (isset($controlSection['languageField'])) {
-            $dataMap->setLanguageIdColumnName($controlSection['languageField']);
+        if ($schema->hasCapability(TcaSchemaCapability::Language)) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $dataMap->setLanguageIdColumnName($languageCapability->getLanguageField()->getName());
+            $dataMap->setTranslationOriginColumnName($languageCapability->getTranslationOriginPointerField()->getName());
+            if ($languageCapability->hasDiffSourceField()) {
+                $dataMap->setTranslationOriginDiffSourceName($languageCapability->getDiffSourceField()->getName());
+            }
         }
-        if (isset($controlSection['transOrigPointerField'])) {
-            $dataMap->setTranslationOriginColumnName($controlSection['transOrigPointerField']);
+        if ($schema->getSubSchemaDivisorField() !== null) {
+            $dataMap->setRecordTypeColumnName($schema->getSubSchemaDivisorField()->getName());
         }
-        if (isset($controlSection['transOrigDiffSourceField'])) {
-            $dataMap->setTranslationOriginDiffSourceName($controlSection['transOrigDiffSourceField']);
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionRootLevel)) {
+            // @todo Evaluate if this is correct. We currently have to use canExistOnPages() to keep previous
+            //       behaviour, which is (bool)$rootlevel, so treating "-1" and "1" as TURE, and only 0 als FALSE.
+            $dataMap->setRootLevel($schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->canExistOnPages());
         }
-        if (isset($controlSection['type'])) {
-            $dataMap->setRecordTypeColumnName($controlSection['type']);
+        if (isset($schema->getRawConfiguration()['is_static'])) {
+            $dataMap->setIsStatic($schema->getRawConfiguration()['is_static']);
         }
-        if (isset($controlSection['rootLevel'])) {
-            $dataMap->setRootLevel($controlSection['rootLevel']);
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionDisabledField));
         }
-        if (isset($controlSection['is_static'])) {
-            $dataMap->setIsStatic($controlSection['is_static']);
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
+            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionStartTime));
         }
-        if (isset($controlSection['enablecolumns']['disabled'])) {
-            $dataMap->setDisabledFlagColumnName($controlSection['enablecolumns']['disabled']);
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
+            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionEndTime));
         }
-        if (isset($controlSection['enablecolumns']['starttime'])) {
-            $dataMap->setStartTimeColumnName($controlSection['enablecolumns']['starttime']);
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionUserGroup)) {
+            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionUserGroup));
         }
-        if (isset($controlSection['enablecolumns']['endtime'])) {
-            $dataMap->setEndTimeColumnName($controlSection['enablecolumns']['endtime']);
-        }
-        if (isset($controlSection['enablecolumns']['fe_group'])) {
-            $dataMap->setFrontEndUserGroupColumnName($controlSection['enablecolumns']['fe_group']);
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionDisabledField));
         }
         return $dataMap;
     }
