@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\ExtensionScanner\Php\Matcher;
 
+use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 
 /**
@@ -59,8 +59,8 @@ class InterfaceMethodChangedMatcher extends AbstractCoreMatcher
         // Match method name of a class, must be public, wouldn't make sense as interface if protected/private
         if ($node instanceof ClassMethod
             && array_key_exists($node->name->name, $this->matcherDefinitions)
-            && $node->flags & Class_::MODIFIER_PUBLIC // public
-            && ($node->flags & Class_::MODIFIER_STATIC) !== Class_::MODIFIER_STATIC // not static
+            && $node->flags & Modifiers::PUBLIC // public
+            && ($node->flags & Modifiers::STATIC) !== Modifiers::STATIC // not static
         ) {
             $methodName = $node->name->name;
             $numberOfUsedArguments = 0;
