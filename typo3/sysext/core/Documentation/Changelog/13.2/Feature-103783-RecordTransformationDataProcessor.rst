@@ -149,6 +149,16 @@ Overview of all possibilities:
     {data.versionInfo.state.value}
     {data.versionInfo.stageId}
 
+.. note::
+
+    The :html:`{record}` object contains only the properties, relevant for
+    the current record type (e.g. `CType` for :php:`tt_content`). In case
+    you need to access properties, which are not defined for the record
+    type, which is usually the case for fields of TCA type `passthrough`,
+    the "raw" record can be used by accessing it via :html:`{record.rawRecord}`.
+    Note that those properties are not transformed (:ref:`feature-103581-1723209131`).
+
+
 Available options
 ------------------
 
