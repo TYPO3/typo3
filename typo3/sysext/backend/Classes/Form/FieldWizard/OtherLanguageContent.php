@@ -66,7 +66,8 @@ class OtherLanguageContent extends AbstractNode
             false,
             $defaultLanguageRow['uid'],
             true,
-            $defaultLanguageRow['pid']
+            $defaultLanguageRow['pid'],
+            $defaultLanguageRow
         ) ?? '';
         if ($defaultLanguageValue !== '') {
             $iconIdentifier = ($this->data['systemLanguageRows'][0]['flagIconIdentifier'] ?? false) ?: 'flags-multiple';
@@ -82,7 +83,12 @@ class OtherLanguageContent extends AbstractNode
                 $fieldName,
                 $previewLanguage[$fieldName],
                 0,
-                true
+                true,
+                false,
+                0,
+                true,
+                0,
+                $previewLanguage
             ) ?? '';
             if ($defaultLanguageValue !== '') {
                 $html[] = '<div class="t3-form-original-language">';

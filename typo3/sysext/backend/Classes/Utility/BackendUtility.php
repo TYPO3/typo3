@@ -1529,7 +1529,9 @@ class BackendUtility
                     false,
                     false,
                     $row['uid'] ?? null,
-                    $forceResult
+                    $forceResult,
+                    0,
+                    $row
                 ) ?? '';
                 if (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt'])
                     && (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) || $recordTitle === '')
@@ -1545,7 +1547,7 @@ class BackendUtility
                             $recordTitle = trim(strip_tags((string)($row[$fN] ?? '')));
                         }
                         if ($recordTitle !== '') {
-                            $recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, false, false, $row['uid'] ?? 0);
+                            $recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, false, false, $row['uid'] ?? 0, true, 0, $row);
                             if (!($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] ?? false)) {
                                 break;
                             }
@@ -1626,6 +1628,7 @@ class BackendUtility
      * @param int $uid Uid of the current record
      * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
      * @param int $pid Optional page uid is used to evaluate page TSconfig for the given field
+     * @param array $fullRow Optional full database row to provide additional context, e.g. to be used in itemsProcFunc
      * @throws \InvalidArgumentException
      * @return string|null
      */
@@ -1638,7 +1641,8 @@ class BackendUtility
         $noRecordLookup = false,
         $uid = 0,
         $forceResult = true,
-        $pid = 0
+        $pid = 0,
+        $fullRow = [],
     ) {
         if ($col === 'uid') {
             // uid is not in TCA-array
@@ -1662,11 +1666,25 @@ class BackendUtility
             GeneralUtility::callUserFunction($_funcRef, $theColConf, $referenceObject);
         }
 
+        // Label functions can transport the full $row as context.
+        // If missing, a minimal context row is constructed.
+        // @see #102698
+        if ($fullRow === []) {
+            $fullRow = ['uid' => (int)$uid, 'pid' => (int)$pid];
+        } else {
+            // Ensure uid and pid are always provided in full $row
+            if (!isset($fullRow['uid'])) {
+                $fullRow['uid'] = (int)$uid;
+            }
+            if (!isset($fullRow['pid'])) {
+                $fullRow['pid'] = (int)$pid;
+            }
+        }
         $l = '';
         $lang = static::getLanguageService();
         switch ((string)($theColConf['type'] ?? '')) {
             case 'radio':
-                $l = $lang->sL(self::getLabelFromItemlist($table, $col, $value, ['uid' => (int)$uid, 'pid' => (int)$pid]));
+                $l = $lang->sL(self::getLabelFromItemlist($table, $col, $value, $fullRow));
                 if ($l === '' && !empty($value)) {
                     // Use plain database value when label is empty
                     $l = $value;
@@ -1698,7 +1716,7 @@ class BackendUtility
                             $columnTsConfig = $pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'];
                         }
                     }
-                    $l = self::getLabelsFromItemsList($table, $col, (string)$value, $columnTsConfig, ['uid' => (int)$uid, 'pid' => (int)$pid]);
+                    $l = self::getLabelsFromItemsList($table, $col, (string)$value, $columnTsConfig, $fullRow);
                     if (!empty($theColConf['foreign_table']) && !$l && !empty($GLOBALS['TCA'][$theColConf['foreign_table']])) {
                         if ($noRecordLookup) {
                             $l = $value;
@@ -1932,6 +1950,7 @@ class BackendUtility
      * @param int $uid Uid of the current record
      * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
      * @param int $pid Optional page uid is used to evaluate page TSconfig for the given field
+     * @param array $fullRow Optional full database row to provide additional context, e.g. to be used in itemsProcFunc
      * @return string
      * @see getProcessedValue()
      */
@@ -1942,9 +1961,10 @@ class BackendUtility
         $fixed_lgd_chars = 0,
         $uid = 0,
         $forceResult = true,
-        $pid = 0
+        $pid = 0,
+        $fullRow = []
     ) {
-        $fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, true, false, $uid, $forceResult, $pid);
+        $fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, true, false, $uid, $forceResult, $pid, $fullRow);
         if (!isset($fVnew)) {
             if (is_array($GLOBALS['TCA'][$table])) {
                 if ($fN == ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? 0) || $fN == ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? 0)) {

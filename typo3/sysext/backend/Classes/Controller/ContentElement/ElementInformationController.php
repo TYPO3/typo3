@@ -247,7 +247,7 @@ class ElementInformationController
             $label = $label ?: $name;
 
             $propertiesForTable['fields'][] = [
-                'fieldValue' => BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, false, false, $uid),
+                'fieldValue' => BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, false, false, $uid, true, 0, $this->row),
                 'fieldLabel' => htmlspecialchars($label),
             ];
         }
@@ -314,7 +314,7 @@ class ElementInformationController
                             $label = $label ?: $name;
 
                             $propertiesForTable['fields'][] = [
-                                'fieldValue' => BackendUtility::getProcessedValue($table, $name, $metaData[$name], 0, false, false, (int)$metaData['uid']),
+                                'fieldValue' => BackendUtility::getProcessedValue($table, $name, $metaData[$name], 0, false, false, (int)$metaData['uid'], true, 0, $metaData),
                                 'fieldLabel' => htmlspecialchars($label),
                             ];
                         }
