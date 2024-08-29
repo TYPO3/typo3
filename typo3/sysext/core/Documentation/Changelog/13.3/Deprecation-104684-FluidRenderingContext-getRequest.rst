@@ -69,5 +69,19 @@ After:
         $request = $renderingContext->getAttribute(ServerRequestInterface::class);
     }
 
+To stay compatible to previous TYPO3 versions while avoiding deprecation notices,
+the following code can be used:
+
+.. code-block:: php
+
+    if (
+        method_exists($renderingContext, 'getAttribute') &&
+        method_exists($renderingContext, 'hasAttribute') &&
+        $renderingContext->hasAttribute(ServerRequestInterface::class)
+    ) {
+        $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+    } else {
+        $request = $renderingContext->getRequest();
+    }
 
 .. index:: Fluid, PHP-API, NotScanned, ext:fluid
