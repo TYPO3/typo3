@@ -3,116 +3,8 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="shortcut_edit">
-				<source>Edit</source>
-			</trans-unit>
-			<trans-unit id="shortcut_create">
-				<source>Create</source>
-			</trans-unit>
-			<trans-unit id="shortcut_editID">
-				<source>Edit/Search</source>
-			</trans-unit>
-			<trans-unit id="shortcut_save">
-				<source>Update shortcut title</source>
-			</trans-unit>
-			<trans-unit id="shortcut_saveClose">
-				<source>Update and close editor</source>
-			</trans-unit>
-			<trans-unit id="shortcut_close">
-				<source>Close shortcut editor</source>
-			</trans-unit>
-			<trans-unit id="shortcut_delete">
-				<source>Remove shortcut</source>
-			</trans-unit>
-			<trans-unit id="shortcut_loadEdit">
-				<source>Loading page</source>
-			</trans-unit>
-			<trans-unit id="shortcut_searchFor">
-				<source>Search for</source>
-			</trans-unit>
-			<trans-unit id="shortcut_notEditable">
-				<source>No editable page found!</source>
-			</trans-unit>
-			<trans-unit id="shortcut_group">
-				<source>Group</source>
-			</trans-unit>
-			<trans-unit id="shortcut_group_1">
-				<source>Pages</source>
-			</trans-unit>
-			<trans-unit id="shortcut_group_2">
-				<source>Records</source>
-			</trans-unit>
-			<trans-unit id="shortcut_group_3">
-				<source>Files</source>
-			</trans-unit>
-			<trans-unit id="shortcut_group_4">
-				<source>Tools</source>
-			</trans-unit>
-			<trans-unit id="shortcut_group_5">
-				<source>Miscellaneous</source>
-			</trans-unit>
-			<trans-unit id="shortcut_global">
-				<source>Global</source>
-			</trans-unit>
-			<trans-unit id="shortcut_all">
-				<source>All</source>
-			</trans-unit>
-			<trans-unit id="shortcut_onlyAdmin">
-				<source>You cannot edit a shared shortcut!</source>
-			</trans-unit>
-			<trans-unit id="shortcut_selSC">
-				<source>Select shortcut</source>
-			</trans-unit>
-			<trans-unit id="shortcut_delAllInCat">
-				<source>Delete all shortcuts in this group?</source>
-			</trans-unit>
 			<trans-unit id="shortcut_onlineWS">
 				<source>LIVE workspace</source>
-			</trans-unit>
-			<trans-unit id="shortcut_active">
-				<source>active</source>
-			</trans-unit>
-			<trans-unit id="shortcut_inactive">
-				<source>inactive</source>
-			</trans-unit>
-			<trans-unit id="shortcut_noWSfound">
-				<source>ERROR: No workspaces found!</source>
-			</trans-unit>
-			<trans-unit id="shortcut_FEPreview">
-				<source>Enable Frontend Preview</source>
-			</trans-unit>
-			<trans-unit id="shortcut_workspace">
-				<source>Go to Workspace Module</source>
-			</trans-unit>
-			<trans-unit id="bookmark_edit">
-				<source>Edit</source>
-			</trans-unit>
-			<trans-unit id="bookmark_create">
-				<source>Create</source>
-			</trans-unit>
-			<trans-unit id="bookmark_editID">
-				<source>Edit/Search</source>
-			</trans-unit>
-			<trans-unit id="bookmark_save">
-				<source>Update bookmark title</source>
-			</trans-unit>
-			<trans-unit id="bookmark_saveClose">
-				<source>Update and close editor</source>
-			</trans-unit>
-			<trans-unit id="bookmark_close">
-				<source>Close bookmark editor</source>
-			</trans-unit>
-			<trans-unit id="bookmark_delete">
-				<source>Remove bookmark</source>
-			</trans-unit>
-			<trans-unit id="bookmark_loadEdit">
-				<source>Loading page</source>
-			</trans-unit>
-			<trans-unit id="bookmark_searchFor">
-				<source>Search for</source>
-			</trans-unit>
-			<trans-unit id="bookmark_notEditable">
-				<source>No editable page found!</source>
 			</trans-unit>
 			<trans-unit id="bookmark_group">
 				<source>Group</source>
@@ -137,30 +29,6 @@
 			</trans-unit>
 			<trans-unit id="bookmark_all">
 				<source>All</source>
-			</trans-unit>
-			<trans-unit id="bookmark_onlyAdmin">
-				<source>You cannot edit a shared bookmark!</source>
-			</trans-unit>
-			<trans-unit id="bookmark_selSC">
-				<source>Select bookmark</source>
-			</trans-unit>
-			<trans-unit id="bookmark_delAllInCat">
-				<source>Delete all bookmarks in this group</source>
-			</trans-unit>
-			<trans-unit id="bookmark_onlineWS">
-				<source>LIVE workspace</source>
-			</trans-unit>
-			<trans-unit id="bookmark_active">
-				<source>active</source>
-			</trans-unit>
-			<trans-unit id="bookmark_inactive">
-				<source>inactive</source>
-			</trans-unit>
-			<trans-unit id="bookmark_FEPreview">
-				<source>Enable Frontend Preview</source>
-			</trans-unit>
-			<trans-unit id="bookmark_workspaceComparisonView">
-				<source>Enable comparison view</source>
 			</trans-unit>
 			<trans-unit id="overwriteExistingFiles">
 				<source>Overwrite existing files</source>
@@ -198,9 +66,6 @@
 			<trans-unit id="moveElementToHere">
 				<source>Move element to this position</source>
 			</trans-unit>
-			<trans-unit id="moveElement">
-				<source>Move element</source>
-			</trans-unit>
 			<trans-unit id="moveElements">
 				<source>Move elements</source>
 			</trans-unit>
@@ -210,12 +75,6 @@
 			<trans-unit id="copyElementToHere">
 				<source>Copy element to this position</source>
 			</trans-unit>
-			<trans-unit id="selectPositionOfElement">
-				<source>Select position of the element</source>
-			</trans-unit>
-			<trans-unit id="movingElement">
-				<source>Move element</source>
-			</trans-unit>
 			<trans-unit id="makeCopy">
 				<source>Make copy instead of moving element</source>
 			</trans-unit>
@@ -224,12 +83,6 @@
 			</trans-unit>
 			<trans-unit id="newRecordWizard.filter.noResults">
 				<source>Unfortunately no record type matches your query, please try a different one.</source>
-			</trans-unit>
-			<trans-unit id="newContentElement">
-				<source>New content element</source>
-			</trans-unit>
-			<trans-unit id="newContentElement.filter.label">
-				<source>Filter by:</source>
 			</trans-unit>
 			<trans-unit id="newContentElement.filter.placeholder">
 				<source>Search for any content type</source>
@@ -264,23 +117,8 @@
 			<trans-unit id="CM_showInMenus">
 				<source>Show in menu</source>
 			</trans-unit>
-			<trans-unit id="CM_perms">
-				<source>Access</source>
-			</trans-unit>
-			<trans-unit id="CM_moveWizard">
-				<source>Move element</source>
-			</trans-unit>
-			<trans-unit id="CM_moveWizard_page">
-				<source>Move page</source>
-			</trans-unit>
 			<trans-unit id="CM_newWizard">
 				<source>'Create New' wizard</source>
-			</trans-unit>
-			<trans-unit id="CM_editPageProperties">
-				<source>Edit page properties</source>
-			</trans-unit>
-			<trans-unit id="noEditPage">
-				<source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
 			</trans-unit>
 			<trans-unit id="localize">
 				<source>Localize</source>
@@ -288,122 +126,17 @@
 			<trans-unit id="localize.isLocalizable">
 				<source>Record can be localized</source>
 			</trans-unit>
-			<trans-unit id="localize.wasRemovedInOriginal">
-				<source>Record was removed in original language</source>
-			</trans-unit>
 			<trans-unit id="localizeAllRecords">
 				<source>Localize all records</source>
 			</trans-unit>
 			<trans-unit id="synchronizeWithOriginalLanguage">
 				<source>Synchronize with original language</source>
 			</trans-unit>
-			<trans-unit id="pageTree_filter">
-				<source>Filter</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_windowTitle">
-				<source>File Upload Progress</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_buttonSelectFiles">
-				<source>Select Files</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_buttonCancelAll">
-				<source>Cancel All Uploads</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentMaxFileSize">
-				<source>You can upload files with a maximum size of {0}.</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentFileUploadLimit">
-				<source>You can upload a total of {0}.</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentFileTypeLimit">
-				<source>You can upload the following file types {0}.</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentOverrideFiles">
-				<source>Overwrite existing files</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_processRunning">
-				<source>Another process is already uploading</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_uploadWait">
-				<source>Waiting to start upload of {0}</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_uploadStarting">
-				<source>Starting upload of {0}</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_uploadProgress">
-				<source>{0}% of {1} uploaded</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_uploadSuccess">
-				<source>{0} was successfully uploaded!</source>
-			</trans-unit>
-			<trans-unit id="pagetree_networkErrorTitle">
-				<source>Page tree error</source>
-			</trans-unit>
-			<trans-unit id="pagetree_networkErrorDesc">
-				<source>Got unexpected response from the server. Please check logs for details.</source>
-			</trans-unit>
 			<trans-unit id="tree_networkError">
 				<source>Navigation loading error</source>
 			</trans-unit>
 			<trans-unit id="tree_networkErrorDescription">
 				<source>Got unexpected response from the server. Please check logs for details.</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueLimitExceeded">
-				<source>Too many files selected</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueFileSizeLimit">
-				<source>{0} is too big</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueZeroByteFile">
-				<source>{0} is empty</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueInvalidFiletype">
-				<source>Filetype not allowed for {0}</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadHttp">
-				<source>Too many files selected</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadHttpError">
-				<source>A HTTP error occurred: {0}</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadMissingUrl">
-				<source>Internal error: No Upload URL set</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadIO">
-				<source>Internal error: Problems while reading/writing the file</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadSecurityError">
-				<source>Internal error: {0}</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadLimit">
-				<source>Upload limit exceeded</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFailed">
-				<source>Upload failed</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFileIDNotFound">
-				<source>Internal error: File ID not found</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFileValidation">
-				<source>Internal error while validating the file</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFileCancelled">
-				<source>Upload of {0} canceled</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadStopped">
-				<source>Upload of {0} stopped</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_allErrorMessageTitle">
-				<source>All uploads failed</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_allErrorMessageText">
-				<source>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_allError401">
-				<source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
-			</trans-unit>
-			<trans-unit id="fileUpload_allError2038">
-				<source>An input/output error occurred (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
 			</trans-unit>
 			<trans-unit id="synchronizeFolderRelations.afterFolderRenamed">
 				<source>%d %s records referencing the renamed directory were updated.</source>
