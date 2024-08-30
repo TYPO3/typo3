@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Security\Cryptography;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Crypto\HashService as CoreHashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
  *
  * Note: Remove used exception codes in AbstractExceptionHandler::IGNORED_HMAC_EXCEPTION_CODES in v14.0
  */
+#[Autoconfigure(public: true)]
 class HashService
 {
     public function __construct(protected readonly CoreHashService $hashService) {}

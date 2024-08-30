@@ -44,7 +44,6 @@ class ServiceProvider extends AbstractServiceProvider
             Reflection\ReflectionService::class => self::getReflectionService(...),
             Service\ExtensionService::class => self::getExtensionService(...),
             Service\ImageService::class => self::getImageService(...),
-            Security\Cryptography\HashService::class => self::getHashService(...),
         ];
     }
 
@@ -74,10 +73,5 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Service\ImageService::class, [
             $container->get(ResourceFactory::class),
         ]);
-    }
-
-    public static function getHashService(ContainerInterface $container): Security\Cryptography\HashService
-    {
-        return self::new($container, Security\Cryptography\HashService::class);
     }
 }
