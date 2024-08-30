@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * ViewHelper for rendering a styled content infobox markup.
@@ -63,8 +61,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 final class InfoboxViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public const STATE_NOTICE = -2;
     public const STATE_INFO = -1;
     public const STATE_OK = 0;
@@ -87,20 +83,19 @@ final class InfoboxViewHelper extends AbstractViewHelper
         $this->registerArgument('disableIcon', 'bool', 'If set to TRUE, the icon is not rendered.', false, false);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $title = $arguments['title'];
-        $message = $renderChildrenClosure();
-        $state = $arguments['state'];
+        $title = $this->arguments['title'];
+        $message = $this->renderChildren();
+        $state = $this->arguments['state'];
         $isInRange = MathUtility::isIntegerInRange($state, -2, 2);
         if (!$isInRange) {
             $state = -2;
         }
-
         $severity = ContextualFeedbackSeverity::from($state);
-        $disableIcon = $arguments['disableIcon'];
-        $icon = $arguments['iconName'] ?? $severity->getIconIdentifier();
+        $disableIcon = $this->arguments['disableIcon'];
+        $icon = $this->arguments['iconName'] ?? $severity->getIconIdentifier();
         $iconTemplate = '';
         if (!$disableIcon) {
             $iconTemplate = '' .
@@ -126,7 +121,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
     /**
      * Explicitly set argument name to be used as content.
      */
-    public function resolveContentArgumentName(): string
+    public function getContentArgumentName(): string
     {
         return 'message';
     }

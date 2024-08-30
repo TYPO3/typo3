@@ -20,9 +20,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Use this ViewHelper to crop the text between its opening and closing tags.
@@ -91,8 +89,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class CropViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * The output may contain HTML and can not be escaped.
      *
@@ -108,13 +104,13 @@ final class CropViewHelper extends AbstractViewHelper
         $this->registerArgument('respectHtml', 'bool', 'If TRUE the cropped string will respect HTML tags and entities. Technically that means, that cropHTML() is called rather than crop()', false, true);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $maxCharacters = (int)$arguments['maxCharacters'];
-        $append = (string)$arguments['append'];
-        $respectWordBoundaries = (bool)($arguments['respectWordBoundaries']);
-        $respectHtml = (bool)$arguments['respectHtml'];
-        $stringToTruncate = (string)$renderChildrenClosure();
+        $maxCharacters = (int)$this->arguments['maxCharacters'];
+        $append = (string)$this->arguments['append'];
+        $respectWordBoundaries = (bool)($this->arguments['respectWordBoundaries']);
+        $respectHtml = (bool)$this->arguments['respectHtml'];
+        $stringToTruncate = (string)$this->renderChildren();
         $cropperClass = $respectHtml
             ? HtmlCropper::class
             : TextCropper::class;

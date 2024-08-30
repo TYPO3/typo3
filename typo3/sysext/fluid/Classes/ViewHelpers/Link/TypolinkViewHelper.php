@@ -22,11 +22,9 @@ use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\TypolinkParameter;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * A ViewHelper to create links from fields supported by the link wizard
@@ -94,8 +92,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class TypolinkViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -121,36 +117,32 @@ final class TypolinkViewHelper extends AbstractViewHelper
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $parameter = $arguments['parameter'] ?? '';
-        $partsAs = $arguments['parts-as'] ?? 'typoLinkParts';
+        $parameter = $this->arguments['parameter'] ?? '';
+        $partsAs = $this->arguments['parts-as'] ?? 'typoLinkParts';
         $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-
         if (!$parameter instanceof TypolinkParameter) {
             $parameter = TypolinkParameter::createFromTypolinkParts(
                 is_scalar($parameter) ? $typoLinkCodecService->decode((string)$parameter) : []
             );
         }
-
         // Merge the $parameter with other arguments
-        $typolinkParameter = TypolinkParameter::createFromTypolinkParts(self::mergeTypoLinkConfiguration($parameter->toArray(), $arguments))->toArray();
-
+        $typolinkParameter = TypolinkParameter::createFromTypolinkParts(self::mergeTypoLinkConfiguration($parameter->toArray(), $this->arguments))->toArray();
         // expose internal typoLink configuration to Fluid child context
-        $variableProvider = new ScopedVariableProvider($renderingContext->getVariableProvider(), new StandardVariableProvider([$partsAs => $typolinkParameter]));
-        $renderingContext->setVariableProvider($variableProvider);
+        $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$partsAs => $typolinkParameter]));
+        $this->renderingContext->setVariableProvider($variableProvider);
         // If no link has to be rendered, the inner content will be returned as such
-        $content = (string)$renderChildrenClosure();
+        $content = (string)$this->renderChildren();
         // clean up exposed variables
-        $renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
-
+        $this->renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
         $typolink = $typoLinkCodecService->encode($typolinkParameter);
         if ($typolink !== '') {
             $request = null;
-            if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
-                $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+            if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+                $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
             }
-            $content = self::invokeContentObjectRenderer($arguments, $typolink, $content, $request);
+            $content = self::invokeContentObjectRenderer($this->arguments, $typolink, $content, $request);
         }
         return $content;
     }

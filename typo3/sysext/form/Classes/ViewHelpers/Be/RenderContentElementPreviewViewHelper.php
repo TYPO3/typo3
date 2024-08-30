@@ -27,10 +27,7 @@ use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageViewMode;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Used by the form editor.
@@ -41,8 +38,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -55,17 +50,14 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
         $this->registerArgument('contentElementUid', 'int', 'The uid of a content element');
     }
 
-    /**
-     * @param RenderingContext $renderingContext
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
         $content = '';
-        $contentElementUid = $arguments['contentElementUid'];
+        $contentElementUid = $this->arguments['contentElementUid'];
         $contentRecord = BackendUtility::getRecord('tt_content', $contentElementUid);
         $request = null;
-        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
-            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         }
         if (!empty($contentRecord) && $request !== null) {
             $backendLayout = GeneralUtility::makeInstance(BackendLayout::class, 'dummy', 'dummy', []);

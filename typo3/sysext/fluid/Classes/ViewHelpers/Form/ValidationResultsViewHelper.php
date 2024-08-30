@@ -19,11 +19,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Validation results ViewHelper
@@ -75,8 +73,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class ValidationResultsViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -93,29 +89,24 @@ final class ValidationResultsViewHelper extends AbstractViewHelper
     /**
      * @return mixed @todo: Really mixed here, not string?
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $for = $arguments['for'];
-        $as = $arguments['as'];
-
-        if (!$renderingContext->hasAttribute(ServerRequestInterface::class)
-            || !$renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface
+        $for = $this->arguments['for'];
+        $as = $this->arguments['as'];
+        if (!$this->renderingContext->hasAttribute(ServerRequestInterface::class)
+            || !$this->renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface
         ) {
             throw new \RuntimeException('ValidationResultsViewHelper needs an extbase request to work.', 1724244193);
         }
-        $extbaseRequestParameters = $renderingContext->getAttribute(ServerRequestInterface::class)->getAttribute('extbase');
+        $extbaseRequestParameters = $this->renderingContext->getAttribute(ServerRequestInterface::class)->getAttribute('extbase');
         $validationResults = $extbaseRequestParameters->getOriginalRequestMappingResults();
         if ($validationResults !== null && $for !== '') {
             $validationResults = $validationResults->forProperty($for);
         }
-
-        $variableProvider = new ScopedVariableProvider($renderingContext->getVariableProvider(), new StandardVariableProvider([$as => $validationResults]));
-        $renderingContext->setVariableProvider($variableProvider);
-
-        $output = $renderChildrenClosure();
-
-        $renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
-
+        $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$as => $validationResults]));
+        $this->renderingContext->setVariableProvider($variableProvider);
+        $output = $this->renderChildren();
+        $this->renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
         return $output;
     }
 }

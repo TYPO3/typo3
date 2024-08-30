@@ -23,9 +23,7 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 
 use TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Renders the values of a form
@@ -34,8 +32,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class RenderAllFormValuesViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -50,30 +46,27 @@ final class RenderAllFormValuesViewHelper extends AbstractViewHelper
     /**
      * Return array element by key.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $renderable = $arguments['renderable'];
-
+        $renderable = $this->arguments['renderable'];
         if ($renderable instanceof CompositeRenderableInterface) {
             $elements = $renderable->getRenderablesRecursively();
         } else {
             $elements = [$renderable];
         }
-
-        $as = $arguments['as'];
+        $as = $this->arguments['as'];
         $output = '';
-
         foreach ($elements as $element) {
-            $output .= RenderFormValueViewHelper::renderStatic(
+            $output .= $this->renderingContext->getViewHelperInvoker()->invoke(
+                RenderFormValueViewHelper::class,
                 [
                     'renderable' => $element,
                     'as' => $as,
                 ],
-                $renderChildrenClosure,
-                $renderingContext
+                $this->renderingContext,
+                $this->renderChildren(...),
             );
         }
-
         return $output;
     }
 }

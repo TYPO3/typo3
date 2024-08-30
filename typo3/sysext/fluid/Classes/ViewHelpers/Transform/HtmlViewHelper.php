@@ -19,9 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Transform;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Html\HtmlWorker;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Transforms HTML and substitutes internal link scheme aspects.
@@ -51,8 +49,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class HtmlViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     protected const MAP_ON_FAILURE = [
         '' => 0,
         'null' => 0,
@@ -78,19 +74,16 @@ final class HtmlViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array{selector: string, onFailure: string} $arguments
      * @return string transformed markup
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $content = $renderChildrenClosure();
+        $content = $this->renderChildren();
         /** @var HtmlWorker $worker */
         $worker = GeneralUtility::makeInstance(HtmlWorker::class);
-
-        $selector = $arguments['selector'];
-        $onFailure = $arguments['onFailure'];
+        $selector = $this->arguments['selector'];
+        $onFailure = $this->arguments['onFailure'];
         $onFailureFlags = self::MAP_ON_FAILURE[$onFailure] ?? HtmlWorker::REMOVE_ENCLOSURE_ON_FAILURE;
-
         return (string)$worker
             ->parse((string)$content)
             ->transformUri($selector, $onFailureFlags);

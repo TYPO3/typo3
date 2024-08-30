@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Get page path string from page id
@@ -40,18 +39,6 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
      */
     public function render(): string
     {
-        return self::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
-    }
-
-    /**
-     * @param array{pid: int, titleLimit: int} $arguments
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
-    {
-        return BackendUtility::getRecordPath($arguments['pid'], '', $arguments['titleLimit']);
+        return BackendUtility::getRecordPath($this->arguments['pid'], '', $this->arguments['titleLimit']);
     }
 }

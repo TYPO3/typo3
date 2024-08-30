@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Html\SanitizerInitiator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 use TYPO3\HtmlSanitizer\Sanitizer;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Passes a given content through `typo3/html-sanitizer` to mitigate potential
@@ -57,8 +55,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class HtmlViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -74,13 +70,10 @@ final class HtmlViewHelper extends AbstractViewHelper
         $this->registerArgument('build', 'string', 'preset name or class-like name of sanitization builder', false, 'default');
     }
 
-    /**
-     * @param array{build: string|class-string} $arguments
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $value = $renderChildrenClosure();
-        $build = $arguments['build'];
+        $value = $this->renderChildren();
+        $build = $this->arguments['build'];
         return self::createSanitizer($build)->sanitize((string)$value, self::createInitiator());
     }
 

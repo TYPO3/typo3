@@ -26,11 +26,9 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Renders a single value of a form
@@ -39,8 +37,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class RenderFormValueViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -55,16 +51,13 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
     /**
      * Return array element by key
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $element = $arguments['renderable'];
-
+        $element = $this->arguments['renderable'];
         if (!$element instanceof FormElementInterface || !self::isEnabled($element)) {
             return '';
         }
-
         $renderingOptions = $element->getRenderingOptions();
-
         if ($renderingOptions['_isSection'] ?? false) {
             $data = [
                 'element' => $element,
@@ -73,23 +66,21 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
         } elseif ($renderingOptions['_isCompositeFormElement'] ?? false) {
             return '';
         } else {
-            $formRuntime = $renderingContext
+            $formRuntime = $this->renderingContext
                 ->getViewHelperVariableContainer()
                 ->get(RenderRenderableViewHelper::class, 'formRuntime');
             $value = $formRuntime[$element->getIdentifier()];
             $data = [
                 'element' => $element,
                 'value' => $value,
-                'processedValue' => self::processElementValue($element, $value, $renderChildrenClosure, $renderingContext),
+                'processedValue' => $this->processElementValue($element, $value),
                 'isMultiValue' => is_iterable($value),
             ];
         }
-
-        $variableProvider = new ScopedVariableProvider($renderingContext->getVariableProvider(), new StandardVariableProvider([$arguments['as'] => $data]));
-        $renderingContext->setVariableProvider($variableProvider);
-        $output = (string)$renderChildrenClosure();
-        $renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
-
+        $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$this->arguments['as'] => $data]));
+        $this->renderingContext->setVariableProvider($variableProvider);
+        $output = (string)$this->renderChildren();
+        $this->renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
         return $output;
     }
 
@@ -99,19 +90,18 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      * @param mixed $value
      * @return mixed
      */
-    protected static function processElementValue(
+    protected function processElementValue(
         FormElementInterface $element,
-        $value,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
+        $value
     ) {
         $properties = $element->getProperties();
         $options = $properties['options'] ?? null;
         if (is_array($options)) {
-            $options = (array)TranslateElementPropertyViewHelper::renderStatic(
+            $options = (array)$this->renderingContext->getViewHelperInvoker()->invoke(
+                TranslateElementPropertyViewHelper::class,
                 ['element' => $element, 'property' => 'options'],
-                $renderChildrenClosure,
-                $renderingContext
+                $this->renderingContext,
+                $this->renderChildren(...),
             );
             if (is_array($value)) {
                 return self::mapValuesToOptions($value, $options);

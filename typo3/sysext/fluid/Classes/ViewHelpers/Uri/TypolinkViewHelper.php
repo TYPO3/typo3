@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\TypolinkParameter;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * A ViewHelper to create uris from fields supported by the link wizard.
@@ -62,8 +60,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class TypolinkViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('parameter', 'mixed', 'stdWrap.typolink style parameter string', true);
@@ -74,26 +70,24 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $parameter = $arguments['parameter'] ?? '';
+        $parameter = $this->arguments['parameter'] ?? '';
         $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-
         if (!$parameter instanceof TypolinkParameter) {
             $parameter = TypolinkParameter::createFromTypolinkParts(
                 is_scalar($parameter) ? $typoLinkCodecService->decode((string)$parameter) : []
             );
         }
-
         // Merge the $parameter with other arguments and encode the typolink again
         $typolink = $typoLinkCodecService->encode(
-            TypolinkParameter::createFromTypolinkParts(self::mergeTypoLinkConfiguration($parameter->toArray(), $arguments))->toArray()
+            TypolinkParameter::createFromTypolinkParts(self::mergeTypoLinkConfiguration($parameter->toArray(), $this->arguments))->toArray()
         );
         $request = null;
-        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
-            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         }
-        return $typolink !== '' ? self::invokeContentObjectRenderer($arguments, $typolink, $request) : '';
+        return $typolink !== '' ? self::invokeContentObjectRenderer($this->arguments, $typolink, $request) : '';
     }
 
     protected static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter, ?ServerRequestInterface $request): string

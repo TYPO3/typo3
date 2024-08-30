@@ -18,9 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Formats a string using PHPs :php:`str_pad` function.
@@ -62,8 +60,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 final class PaddingViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.
      *
@@ -82,26 +78,25 @@ final class PaddingViewHelper extends AbstractViewHelper
     /**
      * Pad a string to a certain length with another string.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $value = $renderChildrenClosure();
+        $value = $this->renderChildren();
         $padTypes = [
             'left' => STR_PAD_LEFT,
             'right' => STR_PAD_RIGHT,
             'both' => STR_PAD_BOTH,
         ];
-        $padType = $arguments['padType'];
+        $padType = $this->arguments['padType'];
         if (!isset($padTypes[$padType])) {
             $padType = 'right';
         }
-
-        return StringUtility::multibyteStringPad((string)$value, (int)$arguments['padLength'], (string)$arguments['padString'], $padTypes[$padType]);
+        return StringUtility::multibyteStringPad((string)$value, (int)$this->arguments['padLength'], (string)$this->arguments['padString'], $padTypes[$padType]);
     }
 
     /**
      * Explicitly set argument name to be used as content.
      */
-    public function resolveContentArgumentName(): string
+    public function getContentArgumentName(): string
     {
         return 'value';
     }

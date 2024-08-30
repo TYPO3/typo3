@@ -20,9 +20,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get workspace title from workspace id
@@ -31,8 +29,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class WorkspaceTitleViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * First level cache of workspace titles
      */
@@ -46,12 +42,11 @@ final class WorkspaceTitleViewHelper extends AbstractViewHelper
     /**
      * Return resolved workspace title or empty string if it can not be resolved.
      *
-     * @param array{uid: int} $arguments
      * @throws \InvalidArgumentException
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $uid = $arguments['uid'];
+        $uid = $this->arguments['uid'];
         if (isset(self::$workspaceTitleRuntimeCache[$uid])) {
             return self::$workspaceTitleRuntimeCache[$uid];
         }

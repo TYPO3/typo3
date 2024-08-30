@@ -23,9 +23,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ViewHelper to register backend module resources like CSS and JavaScript using the PageRenderer.
@@ -49,8 +47,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class PageRendererViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('pageTitle', 'string', 'title tag of the module. Not required by default, as BE modules are shown in a frame', false, '');
@@ -61,20 +57,18 @@ final class PageRendererViewHelper extends AbstractViewHelper
         $this->registerArgument('addInlineSettings', 'array', 'Adds Javascript Inline Setting');
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): void
+    public function render(): void
     {
         $pageRenderer = self::getPageRenderer();
-        $pageTitle = $arguments['pageTitle'];
-        $includeCssFiles = $arguments['includeCssFiles'];
-        $includeJsFiles = $arguments['includeJsFiles'];
-        $addJsInlineLabels = $arguments['addJsInlineLabels'];
-        $includeJavaScriptModules = $arguments['includeJavaScriptModules'];
-        $addInlineSettings = $arguments['addInlineSettings'];
-
+        $pageTitle = $this->arguments['pageTitle'];
+        $includeCssFiles = $this->arguments['includeCssFiles'];
+        $includeJsFiles = $this->arguments['includeJsFiles'];
+        $addJsInlineLabels = $this->arguments['addJsInlineLabels'];
+        $includeJavaScriptModules = $this->arguments['includeJavaScriptModules'];
+        $addInlineSettings = $this->arguments['addInlineSettings'];
         if ($pageTitle) {
             $pageRenderer->setTitle($pageTitle);
         }
-
         // Include custom CSS and JS files
         if (is_array($includeCssFiles)) {
             foreach ($includeCssFiles as $addCssFile) {
@@ -91,17 +85,15 @@ final class PageRendererViewHelper extends AbstractViewHelper
                 $pageRenderer->loadJavaScriptModule($addJavaScriptModule);
             }
         }
-
         if (is_array($addInlineSettings)) {
             $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         }
-
         // Add inline language labels
         if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
-            if ($renderingContext->hasAttribute(ServerRequestInterface::class)
-                && $renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface) {
+            if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)
+                && $this->renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface) {
                 // Extbase request resolves extension key and allows overriding labels using TypoScript configuration.
-                $extensionKey = $renderingContext->getAttribute(ServerRequestInterface::class)->getControllerExtensionKey();
+                $extensionKey = $this->renderingContext->getAttribute(ServerRequestInterface::class)->getControllerExtensionKey();
                 foreach ($addJsInlineLabels as $key) {
                     $label = LocalizationUtility::translate($key, $extensionKey);
                     $pageRenderer->addInlineLanguageLabel($key, $label);

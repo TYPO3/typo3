@@ -21,9 +21,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Displays icon for a FAL resource (file or folder means a :php:`TYPO3\CMS\Core\Resource\ResourceInterface`).
@@ -45,8 +43,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class IconForResourceViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * ViewHelper returns HTML, thus we need to disable output escaping
      *
@@ -63,12 +59,12 @@ final class IconForResourceViewHelper extends AbstractViewHelper
         $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative markup identifier');
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $resource = $arguments['resource'];
-        $size = $arguments['size'];
-        $overlay = $arguments['overlay'];
+        $resource = $this->arguments['resource'];
+        $size = $this->arguments['size'];
+        $overlay = $this->arguments['overlay'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $iconFactory->getIconForResource($resource, $size, $overlay, $arguments['options'])->render($arguments['alternativeMarkupIdentifier']);
+        return $iconFactory->getIconForResource($resource, $size, $overlay, $this->arguments['options'])->render($this->arguments['alternativeMarkupIdentifier']);
     }
 }

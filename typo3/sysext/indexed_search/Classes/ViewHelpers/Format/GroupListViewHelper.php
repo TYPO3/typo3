@@ -17,17 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @internal
  */
 final class GroupListViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('groups', 'array', '', false, []);
@@ -36,10 +32,9 @@ final class GroupListViewHelper extends AbstractViewHelper
     /**
      * Render the given group information as string.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $groups = $arguments['groups'];
-
+        $groups = $this->arguments['groups'];
         $str = [];
         foreach ($groups as $row) {
             $str[] = $row['gr_list'] === '0,-1' ? 'NL' : $row['gr_list'];

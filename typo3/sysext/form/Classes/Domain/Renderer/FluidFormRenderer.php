@@ -141,7 +141,7 @@ class FluidFormRenderer extends AbstractElementRenderer
      * This method call the 'beforeRendering' hook initially.
      * Each other hooks will be called from the
      * renderRenderable viewHelper.
-     * {@link \TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper::renderStatic()}
+     * {@link \TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper::render()}
      *
      * @return string the rendered $formRuntime
      * @internal

@@ -18,9 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Beuser\ViewHelpers;
 
 use TYPO3\CMS\Beuser\Exception;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get a value from an array by given key.
@@ -29,8 +27,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class ArrayElementViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('array', 'array', 'Array to search in', true);
@@ -41,14 +37,13 @@ final class ArrayElementViewHelper extends AbstractViewHelper
     /**
      * Return array element by key. Accessed values must be scalar (string, int, float or double)
      *
-     * @param array{'array': array, 'key': string, 'subKey': string} $arguments
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $array = $arguments['array'];
-        $key = $arguments['key'];
-        $subKey = $arguments['subKey'];
+        $array = $this->arguments['array'];
+        $key = $this->arguments['key'];
+        $subKey = $this->arguments['subKey'];
         $result = '';
         if (isset($array[$key])) {
             $result = $array[$key];

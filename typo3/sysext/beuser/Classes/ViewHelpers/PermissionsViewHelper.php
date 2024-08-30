@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Render permission icon group (user / group / others) of the "Access" module.
@@ -36,8 +34,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class PermissionsViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     protected const MASKS = [1, 16, 2, 4, 8];
 
     /**
@@ -56,16 +52,12 @@ final class PermissionsViewHelper extends AbstractViewHelper
         $this->registerArgument('pageId', 'int', 'Page ID to evaluate permission for', true);
     }
 
-    /**
-     * @param array{permission: int, scope: string, pageId: int} $arguments
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
         $icon = '';
         foreach (self::MASKS as $mask) {
-            if ($arguments['permission'] & $mask) {
+            if ($this->arguments['permission'] & $mask) {
                 $iconIdentifier = 'actions-check';
                 $iconClass = 'text-success';
                 $mode = 'delete';
@@ -77,18 +69,17 @@ final class PermissionsViewHelper extends AbstractViewHelper
 
             $label = self::resolvePermissionLabel($mask);
             $icon .= '<button'
-                . ' aria-label="' . htmlspecialchars($label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars($arguments['scope']) . '"'
+                . ' aria-label="' . htmlspecialchars($label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars($this->arguments['scope']) . '"'
                 . ' title="' . htmlspecialchars($label) . '"'
-                . ' data-page="' . htmlspecialchars((string)$arguments['pageId']) . '"'
-                . ' data-permissions="' . htmlspecialchars((string)$arguments['permission']) . '"'
-                . ' data-who="' . htmlspecialchars($arguments['scope']) . '"'
+                . ' data-page="' . htmlspecialchars((string)$this->arguments['pageId']) . '"'
+                . ' data-permissions="' . htmlspecialchars((string)$this->arguments['permission']) . '"'
+                . ' data-who="' . htmlspecialchars($this->arguments['scope']) . '"'
                 . ' data-bits="' . htmlspecialchars((string)$mask) . '"'
                 . ' data-mode="' . htmlspecialchars($mode) . '"'
                 . ' class="btn btn-default btn-icon btn-borderless change-permission ' . htmlspecialchars($iconClass) . '">'
                 . $iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE)
                 . '</button>';
         }
-
         return $icon;
     }
 

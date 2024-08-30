@@ -20,9 +20,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Create detail string from log entry
@@ -31,7 +29,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class FormatDetailsViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
     use LogDataTrait;
 
     public function initializeArguments(): void
@@ -47,13 +44,11 @@ final class FormatDetailsViewHelper extends AbstractViewHelper
      * with the substitutions.
      * Furthermore, possible files in logData are stripped to their basename if
      * the action logged was a file action
-     *
-     * @param array{logEntry: LogEntry} $arguments
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
         /** @var LogEntry $logEntry */
-        $logEntry = $arguments['logEntry'];
+        $logEntry = $this->arguments['logEntry'];
         $detailString = $logEntry->getDetails();
         $substitutes = $logEntry->getLogData();
         // Strip paths from file names if the log was a file action

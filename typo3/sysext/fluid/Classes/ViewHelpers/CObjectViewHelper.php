@@ -25,10 +25,8 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * This ViewHelper renders CObjects from the global TypoScript configuration.
@@ -85,8 +83,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 final class CObjectViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * Disable escaping of child nodes' output
      *
@@ -114,16 +110,16 @@ final class CObjectViewHelper extends AbstractViewHelper
      *
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $data = $renderChildrenClosure() ?? [];
-        $typoscriptObjectPath = (string)$arguments['typoscriptObjectPath'];
-        $currentValueKey = $arguments['currentValueKey'];
-        $table = $arguments['table'];
-        if (!$renderingContext->hasAttribute(ServerRequestInterface::class)) {
+        $data = $this->renderChildren() ?? [];
+        $typoscriptObjectPath = (string)$this->arguments['typoscriptObjectPath'];
+        $currentValueKey = $this->arguments['currentValueKey'];
+        $table = $this->arguments['table'];
+        if (!$this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
             throw new \RuntimeException('Required request not found in RenderingContext', 1724243608);
         }
-        $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $contentObjectRenderer = self::getContentObjectRenderer($request);
         $contentObjectRenderer->setRequest($request);
         $tsfeBackup = null;
@@ -231,7 +227,7 @@ final class CObjectViewHelper extends AbstractViewHelper
     /**
      * Explicitly set argument name to be used as content.
      */
-    public function resolveContentArgumentName(): string
+    public function getContentArgumentName(): string
     {
         return 'data';
     }

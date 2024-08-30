@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Renders a string by passing it to a TYPO3 `parseFunc`_.
@@ -117,8 +115,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class HtmlViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * Children must not be escaped, to be able to pass {bodytext} directly to it
      *
@@ -142,17 +138,16 @@ final class HtmlViewHelper extends AbstractViewHelper
         $this->registerArgument('table', 'string', 'The table name associated with the "data" argument.', false, '');
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $parseFuncTSPath = $arguments['parseFuncTSPath'];
-        $data = $arguments['data'];
-        $current = $arguments['current'];
-        $currentValueKey = $arguments['currentValueKey'];
-        $table = $arguments['table'];
-
+        $parseFuncTSPath = $this->arguments['parseFuncTSPath'];
+        $data = $this->arguments['data'];
+        $current = $this->arguments['current'];
+        $currentValueKey = $this->arguments['currentValueKey'];
+        $table = $this->arguments['table'];
         $request = null;
-        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
-            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         }
         $isBackendRequest = $request instanceof ServerRequestInterface && ApplicationType::fromRequest($request)->isBackend();
         if ($isBackendRequest) {
@@ -161,26 +156,21 @@ final class HtmlViewHelper extends AbstractViewHelper
                 1686813703
             );
         }
-
-        $value = $renderChildrenClosure() ?? '';
-
+        $value = $this->renderChildren() ?? '';
         // Prepare data array
         if (is_object($data)) {
             $data = ObjectAccess::getGettableProperties($data);
         } elseif (!is_array($data)) {
             $data = (array)$data;
         }
-
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObject->setRequest($request);
         $contentObject->start($data, $table);
-
         if ($current !== null) {
             $contentObject->setCurrentVal($current);
         } elseif ($currentValueKey !== null && isset($data[$currentValueKey])) {
             $contentObject->setCurrentVal($data[$currentValueKey]);
         }
-
         $content = $contentObject->parseFunc($value, null, '< ' . $parseFuncTSPath);
         return $content;
     }

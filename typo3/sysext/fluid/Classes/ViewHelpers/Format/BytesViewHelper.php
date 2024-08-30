@@ -19,9 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Formats an integer with a byte count into human readable form.
@@ -63,8 +61,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 final class BytesViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.
      *
@@ -84,17 +80,15 @@ final class BytesViewHelper extends AbstractViewHelper
     /**
      * Render the supplied byte count as a human-readable string.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        if ($arguments['units'] !== null) {
-            $units = $arguments['units'];
+        if ($this->arguments['units'] !== null) {
+            $units = $this->arguments['units'];
         } else {
             $units = LocalizationUtility::translate('viewhelper.format.bytes.units', 'fluid');
         }
         $units = GeneralUtility::trimExplode(',', (string)$units, true);
-
-        $value = $renderChildrenClosure();
-
+        $value = $this->renderChildren();
         if (is_numeric($value)) {
             $value = (float)$value;
         }
@@ -105,14 +99,13 @@ final class BytesViewHelper extends AbstractViewHelper
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
         $pow = min($pow, count($units) - 1);
         $bytes /= 2 ** (10 * $pow);
-
         return sprintf(
             '%s %s',
             number_format(
-                round($bytes, 4 * $arguments['decimals']),
-                (int)$arguments['decimals'],
-                $arguments['decimalSeparator'],
-                $arguments['thousandsSeparator']
+                round($bytes, 4 * $this->arguments['decimals']),
+                (int)$this->arguments['decimals'],
+                $this->arguments['decimalSeparator'],
+                $this->arguments['thousandsSeparator']
             ),
             $units[$pow]
         );
@@ -121,7 +114,7 @@ final class BytesViewHelper extends AbstractViewHelper
     /**
      * Explicitly set argument name to be used as content.
      */
-    public function resolveContentArgumentName(): string
+    public function getContentArgumentName(): string
     {
         return 'value';
     }

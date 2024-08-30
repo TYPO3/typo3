@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * ViewHelper which returns the current page path as known from TYPO3 backend modules.
@@ -52,14 +51,9 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
 
     public function render(): string
     {
-        return self::renderStatic([], $this->buildRenderChildrenClosure(), $this->renderingContext);
-    }
-
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
-    {
         $id = 0;
-        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
-            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
             $id = $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0;
         }
         $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));

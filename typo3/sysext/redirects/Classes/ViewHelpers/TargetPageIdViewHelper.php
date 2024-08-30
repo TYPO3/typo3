@@ -21,9 +21,7 @@ use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownUrnException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * The target of a redirect can contain a t3://page link.
@@ -33,8 +31,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class TargetPageIdViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('target', 'string', 'The target of the redirect.', true);
@@ -43,15 +39,14 @@ final class TargetPageIdViewHelper extends AbstractViewHelper
     /**
      * Renders the page ID
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        if (!str_starts_with($arguments['target'] ?? '', 't3://page')) {
+        if (!str_starts_with($this->arguments['target'] ?? '', 't3://page')) {
             return '';
         }
-
         try {
             $linkService = GeneralUtility::makeInstance(LinkService::class);
-            $resolvedLink = $linkService->resolveByStringRepresentation($arguments['target']);
+            $resolvedLink = $linkService->resolveByStringRepresentation($this->arguments['target']);
             return (string)($resolvedLink['pageuid'] ?? '');
         } catch (UnknownUrnException|UnknownLinkHandlerException $e) {
             return '';

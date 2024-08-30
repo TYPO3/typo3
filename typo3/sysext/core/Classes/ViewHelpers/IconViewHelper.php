@@ -21,9 +21,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Displays icon identified by icon identifier.
@@ -57,8 +55,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class IconViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * ViewHelper returns HTML, thus we need to disable output escaping
      *
@@ -79,17 +75,17 @@ final class IconViewHelper extends AbstractViewHelper
     /**
      * Prints icon html for $identifier key
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $identifier = $arguments['identifier'];
-        $size = IconSize::from($arguments['size']);
-        $overlay = $arguments['overlay'];
-        $state = IconState::tryFrom($arguments['state']);
-        $alternativeMarkupIdentifier = $arguments['alternativeMarkupIdentifier'];
+        $identifier = $this->arguments['identifier'];
+        $size = IconSize::from($this->arguments['size']);
+        $overlay = $this->arguments['overlay'];
+        $state = IconState::tryFrom($this->arguments['state']);
+        $alternativeMarkupIdentifier = $this->arguments['alternativeMarkupIdentifier'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon = $iconFactory->getIcon($identifier, $size, $overlay, $state);
-        if ($arguments['title'] ?? false) {
-            $icon->setTitle($arguments['title']);
+        if ($this->arguments['title'] ?? false) {
+            $icon->setTitle($this->arguments['title']);
         }
         return $icon->render($alternativeMarkupIdentifier);
     }

@@ -18,17 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @internal
  */
 final class DateTimeViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * The rendered children are fed into data() function, which expects an integer.
      * It reduces overhead and is safe to disable children escaping here.
@@ -40,8 +36,8 @@ final class DateTimeViewHelper extends AbstractViewHelper
     /**
      * Render the given timestamp as date & time.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        return BackendUtility::datetime((int)$renderChildrenClosure());
+        return BackendUtility::datetime((int)$this->renderChildren());
     }
 }

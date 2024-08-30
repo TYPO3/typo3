@@ -21,14 +21,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 class RatingViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('row', 'array', '', true);
@@ -36,13 +32,12 @@ class RatingViewHelper extends AbstractViewHelper
         $this->registerArgument('sortOrder', 'string', '', true);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $row = $arguments['row'];
-        $firstRow = $arguments['firstRow'];
-
+        $row = $this->arguments['row'];
+        $firstRow = $this->arguments['firstRow'];
         $default = ' ';
-        switch ($arguments['sortOrder']) {
+        switch ($this->arguments['sortOrder']) {
             case 'rank_count':
                 return $row['order_val'] . ' ' . LocalizationUtility::translate('result.ratingMatches', 'IndexedSearch');
             case 'rank_first':

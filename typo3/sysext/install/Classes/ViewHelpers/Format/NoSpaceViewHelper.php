@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\ViewHelpers\Format;
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Remove all spaces in a string
@@ -28,8 +26,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class NoSpaceViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -39,8 +35,8 @@ final class NoSpaceViewHelper extends AbstractViewHelper
     /**
      * Render a string with whitespaces stripped.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        return preg_replace('/\s+/', '', $arguments['value']);
+        return preg_replace('/\s+/', '', $this->arguments['value']);
     }
 }

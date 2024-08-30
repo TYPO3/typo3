@@ -25,7 +25,6 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * A ViewHelper for creating URIs to resources.
@@ -79,8 +78,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class ResourceViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('path', 'string', 'The path and filename of the resource (relative to Public resource directory of the extension).', true);
@@ -96,13 +93,13 @@ final class ResourceViewHelper extends AbstractViewHelper
      * @throws InvalidFileException
      * @throws \RuntimeException
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $uri = PathUtility::getPublicResourceWebPath(self::resolveExtensionPath($arguments, $renderingContext));
-        if ($arguments['useCacheBusting']) {
+        $uri = PathUtility::getPublicResourceWebPath(self::resolveExtensionPath($this->arguments, $this->renderingContext));
+        if ($this->arguments['useCacheBusting']) {
             $uri = GeneralUtility::createVersionNumberedFilename($uri);
         }
-        if ($arguments['absolute']) {
+        if ($this->arguments['absolute']) {
             $uri = GeneralUtility::locationHeaderUrl($uri);
         }
         return $uri;

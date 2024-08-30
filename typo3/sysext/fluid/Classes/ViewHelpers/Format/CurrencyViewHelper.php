@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Formats a given float to a currency representation.
@@ -79,8 +77,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class CurrencyViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * Output is escaped already. We must not escape children, to avoid double encoding.
      *
@@ -99,28 +95,25 @@ final class CurrencyViewHelper extends AbstractViewHelper
         $this->registerArgument('useDash', 'bool', 'Use the dash instead of decimal 00', false, false);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $currencySign = $arguments['currencySign'];
-        $decimalSeparator = $arguments['decimalSeparator'];
-        $thousandsSeparator = $arguments['thousandsSeparator'];
-        $prependCurrency = $arguments['prependCurrency'];
-        $separateCurrency = $arguments['separateCurrency'];
-        $decimals = (int)$arguments['decimals'];
-        $useDash = $arguments['useDash'];
-
-        $floatToFormat = $renderChildrenClosure();
+        $currencySign = $this->arguments['currencySign'];
+        $decimalSeparator = $this->arguments['decimalSeparator'];
+        $thousandsSeparator = $this->arguments['thousandsSeparator'];
+        $prependCurrency = $this->arguments['prependCurrency'];
+        $separateCurrency = $this->arguments['separateCurrency'];
+        $decimals = (int)$this->arguments['decimals'];
+        $useDash = $this->arguments['useDash'];
+        $floatToFormat = $this->renderChildren();
         if (empty($floatToFormat)) {
             $floatToFormat = 0.0;
         } else {
             $floatToFormat = (float)$floatToFormat;
         }
         $output = number_format($floatToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
-
         if ($useDash && $floatToFormat === floor($floatToFormat)) {
             $output = explode($decimalSeparator, $output)[0] . $decimalSeparator . '—';
         }
-
         if ($currencySign !== '') {
             $currencySeparator = $separateCurrency ? ' ' : '';
             if ($prependCurrency === true) {

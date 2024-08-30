@@ -19,9 +19,7 @@ namespace TYPO3\CMS\Core\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Normalizes a path that uses EXT: syntax or an absolute URL to an absolute web path
@@ -49,8 +47,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 final class NormalizedUrlViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('pathOrUrl', 'string', 'Absolute path to file using EXT: syntax or URL.');
@@ -59,9 +55,9 @@ final class NormalizedUrlViewHelper extends AbstractViewHelper
     /**
      * Output what is given as URL or extension relative path as absolute URL
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $pathOrUrl = $renderChildrenClosure();
+        $pathOrUrl = $this->renderChildren();
         if (PathUtility::hasProtocolAndScheme($pathOrUrl)) {
             return $pathOrUrl;
         }
@@ -71,7 +67,7 @@ final class NormalizedUrlViewHelper extends AbstractViewHelper
     /**
      * Explicitly set argument name to be used as content.
      */
-    public function resolveContentArgumentName(): string
+    public function getContentArgumentName(): string
     {
         return 'pathOrUrl';
     }

@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
-
 /**
  * Applies :php:`htmlentities()` escaping to a value.
  * See https://www.php.net/manual/function.htmlentities.php.
@@ -51,8 +48,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 final class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * Output gets encoded by this viewhelper
      *
@@ -81,13 +76,12 @@ final class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
      * @see https://www.php.net/manual/function.htmlentities.php
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $value = $renderChildrenClosure();
-        $encoding = $arguments['encoding'];
-        $keepQuotes = $arguments['keepQuotes'];
-        $doubleEncode = $arguments['doubleEncode'];
-
+        $value = $this->renderChildren();
+        $encoding = $this->arguments['encoding'];
+        $keepQuotes = $this->arguments['keepQuotes'];
+        $doubleEncode = $this->arguments['doubleEncode'];
         if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;
         }
@@ -101,7 +95,7 @@ final class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
     /**
      * Explicitly set argument name to be used as content.
      */
-    public function resolveContentArgumentName(): string
+    public function getContentArgumentName(): string
     {
         return 'value';
     }

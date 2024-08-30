@@ -18,17 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\ViewHelpers;
 
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Scope: frontend
  */
 final class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -39,20 +35,16 @@ final class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelpe
         $this->registerArgument('element', RootRenderableInterface::class, 'A RootRenderableInterface instance', true);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $formElement = $arguments['element'];
-
+        $formElement = $this->arguments['element'];
         $gridRowElement = $formElement->getParentRenderable();
         $gridRowChildElements = $gridRowElement->getElements();
-
         $gridViewPortConfiguration = $gridRowElement->getProperties()['gridColumnClassAutoConfiguration'];
-
         if (empty($gridViewPortConfiguration)) {
             return '';
         }
         $gridSize = (int)$gridViewPortConfiguration['gridSize'];
-
         $columnsToCalculate = [];
         $usedColumns = [];
         foreach ($gridRowChildElements as $childElement) {
@@ -82,7 +74,6 @@ final class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelpe
                 }
             }
         }
-
         $classes = [];
         foreach ($gridViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
             if (isset($usedColumns[$viewPortName]['concreteNumbersOfColumnsToUse'])) {
@@ -106,7 +97,6 @@ final class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelpe
                 $configuration['classPattern']
             );
         }
-
         return implode(' ', $classes);
     }
 }

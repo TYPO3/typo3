@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\ViewHelpers\Format;
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Transform PHP error code to readable text
@@ -28,8 +26,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class PhpErrorCodeViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     protected static array $levelNames = [
         E_ERROR => 'E_ERROR',
         E_WARNING => 'E_WARNING',
@@ -56,9 +52,9 @@ final class PhpErrorCodeViewHelper extends AbstractViewHelper
     /**
      * Render a readable string for PHP error code.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $phpErrorCode = (int)$arguments['phpErrorCode'];
+        $phpErrorCode = (int)$this->arguments['phpErrorCode'];
         $levels = [];
         if (($phpErrorCode & E_ALL) == E_ALL) {
             $levels[] = 'E_ALL';
@@ -69,12 +65,10 @@ final class PhpErrorCodeViewHelper extends AbstractViewHelper
                 $levels[] = $name;
             }
         }
-
         $output = '';
         if (!empty($levels)) {
             $output = implode(' | ', $levels);
         }
-
         return $output;
     }
 }

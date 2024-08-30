@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * A ViewHelper for creating URIs to external targets.
@@ -48,18 +46,16 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class ExternalViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('uri', 'string', 'target URI', true);
         $this->registerArgument('defaultScheme', 'string', 'scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already', false, 'https');
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $uri = $arguments['uri'];
-        $defaultScheme = $arguments['defaultScheme'];
+        $uri = $this->arguments['uri'];
+        $defaultScheme = $this->arguments['defaultScheme'];
         $scheme = parse_url($uri, PHP_URL_SCHEME);
         if ($scheme === null && $defaultScheme !== '') {
             $uri = $defaultScheme . '://' . $uri;

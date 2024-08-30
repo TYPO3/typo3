@@ -18,9 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * This ViewHelper generates a HTML dump of the tagged variable.
@@ -55,8 +53,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class DebugViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * This prevents double escaping as the output is encoded in DebuggerUtility::var_dump
      *
@@ -85,17 +81,17 @@ final class DebugViewHelper extends AbstractViewHelper
     /**
      * A wrapper for \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump().
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
         return DebuggerUtility::var_dump(
-            $renderChildrenClosure(),
-            $arguments['title'],
-            $arguments['maxDepth'],
-            $arguments['plainText'],
-            $arguments['ansiColors'],
-            $arguments['inline'],
-            $arguments['blacklistedClassNames'],
-            $arguments['blacklistedPropertyNames']
+            $this->renderChildren(),
+            $this->arguments['title'],
+            $this->arguments['maxDepth'],
+            $this->arguments['plainText'],
+            $this->arguments['ansiColors'],
+            $this->arguments['inline'],
+            $this->arguments['blacklistedClassNames'],
+            $this->arguments['blacklistedPropertyNames']
         );
     }
 }

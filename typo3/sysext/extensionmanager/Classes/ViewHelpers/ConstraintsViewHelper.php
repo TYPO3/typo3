@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -35,10 +34,10 @@ final class ConstraintsViewHelper extends AbstractViewHelper
         $this->registerArgument('extension', Extension::class, 'extension to process', true);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): array
+    public function render(): array
     {
         $groupedConstraints = [];
-        foreach ($arguments['extension']->getDependencies() as $dependency) {
+        foreach ($this->arguments['extension']->getDependencies() as $dependency) {
             $groupedConstraints[$dependency->getType()][self::getTransformedIdentifier($dependency->getIdentifier())] = [
                 'version' => self::getVersionString($dependency->getLowestVersion(), $dependency->getHighestVersion()),
                 'versionCompatible' => self::isVersionCompatible($dependency),

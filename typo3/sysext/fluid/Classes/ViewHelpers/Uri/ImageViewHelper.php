@@ -27,7 +27,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Resizes a given image (if required) and returns its relative path.
@@ -124,8 +123,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class ImageViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('src', 'string', 'src', false, '');
@@ -150,29 +147,26 @@ final class ImageViewHelper extends AbstractViewHelper
      *
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $src = (string)$arguments['src'];
-        $image = $arguments['image'];
-        $treatIdAsReference = (bool)$arguments['treatIdAsReference'];
-        $cropString = $arguments['crop'];
-        $absolute = $arguments['absolute'];
-
+        $src = (string)$this->arguments['src'];
+        $image = $this->arguments['image'];
+        $treatIdAsReference = (bool)$this->arguments['treatIdAsReference'];
+        $cropString = $this->arguments['crop'];
+        $absolute = $this->arguments['absolute'];
         if (($src === '' && $image === null) || ($src !== '' && $image !== null)) {
-            throw new Exception(self::getExceptionMessage('You must either specify a string src or a File object.', $renderingContext), 1460976233);
+            throw new Exception(self::getExceptionMessage('You must either specify a string src or a File object.', $this->renderingContext), 1460976233);
         }
-
-        if ((string)$arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$arguments['fileExtension'])) {
+        if ((string)$this->arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$this->arguments['fileExtension'])) {
             throw new Exception(
                 self::getExceptionMessage(
-                    'The extension ' . $arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
+                    'The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
                     . ' as a valid image file extension and can not be processed.',
-                    $renderingContext
+                    $this->renderingContext
                 ),
                 1618992262
             );
         }
-
         try {
             $imageService = self::getImageService();
             $image = $imageService->getImage($src, $image, $treatIdAsReference);
@@ -187,36 +181,36 @@ final class ImageViewHelper extends AbstractViewHelper
             }
 
             $cropVariantCollection = CropVariantCollection::create((string)$cropString);
-            $cropVariant = $arguments['cropVariant'] ?: 'default';
+            $cropVariant = $this->arguments['cropVariant'] ?: 'default';
             $cropArea = $cropVariantCollection->getCropArea($cropVariant);
             $processingInstructions = [
-                'width' => $arguments['width'],
-                'height' => $arguments['height'],
-                'minWidth' => $arguments['minWidth'],
-                'minHeight' => $arguments['minHeight'],
-                'maxWidth' => $arguments['maxWidth'],
-                'maxHeight' => $arguments['maxHeight'],
+                'width' => $this->arguments['width'],
+                'height' => $this->arguments['height'],
+                'minWidth' => $this->arguments['minWidth'],
+                'minHeight' => $this->arguments['minHeight'],
+                'maxWidth' => $this->arguments['maxWidth'],
+                'maxHeight' => $this->arguments['maxHeight'],
                 'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
             ];
-            if (!empty($arguments['fileExtension'])) {
-                $processingInstructions['fileExtension'] = $arguments['fileExtension'];
+            if (!empty($this->arguments['fileExtension'])) {
+                $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
             }
 
             $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
 
-            if ($arguments['base64']) {
+            if ($this->arguments['base64']) {
                 return 'data:' . $processedImage->getMimeType() . ';base64,' . base64_encode($processedImage->getContents());
             }
             return $imageService->getImageUri($processedImage, $absolute);
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist
-            throw new Exception(self::getExceptionMessage($e->getMessage(), $renderingContext), 1509741907, $e);
+            throw new Exception(self::getExceptionMessage($e->getMessage(), $this->renderingContext), 1509741907, $e);
         } catch (\UnexpectedValueException $e) {
             // thrown if a file has been replaced with a folder
-            throw new Exception(self::getExceptionMessage($e->getMessage(), $renderingContext), 1509741908, $e);
+            throw new Exception(self::getExceptionMessage($e->getMessage(), $this->renderingContext), 1509741908, $e);
         } catch (\InvalidArgumentException $e) {
             // thrown if file storage does not exist
-            throw new Exception(self::getExceptionMessage($e->getMessage(), $renderingContext), 1509741910, $e);
+            throw new Exception(self::getExceptionMessage($e->getMessage(), $this->renderingContext), 1509741910, $e);
         }
     }
 

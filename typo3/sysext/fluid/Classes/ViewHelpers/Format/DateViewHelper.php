@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Formats an object implementing :php:`\DateTimeInterface`.
@@ -131,8 +130,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 final class DateViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * Needed as child node's output can return a DateTime object which can't be escaped
      *
@@ -152,32 +149,27 @@ final class DateViewHelper extends AbstractViewHelper
     /**
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $format = $arguments['format'] ?? '';
-        $pattern = $arguments['pattern'] ?? null;
-        $base = $arguments['base'] ?? GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+        $format = $this->arguments['format'] ?? '';
+        $pattern = $this->arguments['pattern'] ?? null;
+        $base = $this->arguments['base'] ?? GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         if (is_string($base)) {
             $base = trim($base);
         }
-
         if ($format === '') {
             $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
         }
-
-        $date = $renderChildrenClosure();
+        $date = $this->renderChildren();
         if ($date === null) {
             return '';
         }
-
         if (is_string($date)) {
             $date = trim($date);
         }
-
         if ($date === '') {
             $date = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp', 'now');
         }
-
         if (!$date instanceof \DateTimeInterface) {
             $base = $base instanceof \DateTimeInterface
                 ? (int)$base->format('U')
@@ -188,14 +180,13 @@ final class DateViewHelper extends AbstractViewHelper
             }
             $date = (new \DateTime())->setTimestamp($dateTimestamp);
         }
-
         if ($pattern !== null) {
-            $locale = $arguments['locale'] ?? self::resolveLocale($renderingContext);
+            $locale = $this->arguments['locale'] ?? self::resolveLocale($this->renderingContext);
             return (new DateFormatter())->format($date, $pattern, $locale);
         }
         if (str_contains($format, '%')) {
             // @todo: deprecate this syntax in TYPO3 v13.
-            $locale = $arguments['locale'] ?? self::resolveLocale($renderingContext);
+            $locale = $this->arguments['locale'] ?? self::resolveLocale($this->renderingContext);
             return (new DateFormatter())->strftime($format, $date, $locale);
         }
         return $date->format($format);
@@ -204,7 +195,7 @@ final class DateViewHelper extends AbstractViewHelper
     /**
      * Explicitly set argument name to be used as content.
      */
-    public function resolveContentArgumentName(): string
+    public function getContentArgumentName(): string
     {
         return 'date';
     }

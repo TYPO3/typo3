@@ -22,9 +22,7 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Translate form element properties.
@@ -33,24 +31,20 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class TranslateElementErrorViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
         $this->registerArgument('error', Error::class, 'Error', true);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $element = $arguments['element'];
-        $error = $arguments['error'];
-
+        $element = $this->arguments['element'];
+        $error = $this->arguments['error'];
         /** @var FormRuntime $formRuntime */
-        $formRuntime = $renderingContext
+        $formRuntime = $this->renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
-
         return GeneralUtility::makeInstance(TranslationService::class)->translateFormElementError(
             $element,
             $error->getCode(),

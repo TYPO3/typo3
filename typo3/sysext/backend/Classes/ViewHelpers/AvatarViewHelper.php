@@ -21,9 +21,7 @@ use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Render the avatar markup, including the :html:`<img>` tag, for a given backend user.
@@ -65,8 +63,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class AvatarViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -83,12 +79,10 @@ final class AvatarViewHelper extends AbstractViewHelper
 
     /**
      * Resolve user avatar from a given backend user id.
-     *
-     * @param array{backendUser: int, size: int, showIcon: bool} $arguments
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        if ($arguments['backendUser'] > 0) {
+        if ($this->arguments['backendUser'] > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
             $queryBuilder->getRestrictions()->removeAll();
             $backendUser = $queryBuilder
@@ -97,7 +91,7 @@ final class AvatarViewHelper extends AbstractViewHelper
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($arguments['backendUser'], Connection::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->arguments['backendUser'], Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -110,6 +104,6 @@ final class AvatarViewHelper extends AbstractViewHelper
             return '';
         }
         $avatar = GeneralUtility::makeInstance(Avatar::class);
-        return $avatar->render($backendUser, $arguments['size'], $arguments['showIcon']);
+        return $avatar->render($backendUser, $this->arguments['size'], $this->arguments['showIcon']);
     }
 }

@@ -21,10 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Translate form element properties.
@@ -33,8 +31,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class TranslateElementPropertyViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
@@ -47,19 +43,16 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
      *
      * @return string|array
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        self::assertArgumentTypes($arguments);
-
-        $element = $arguments['element'];
-
+        self::assertArgumentTypes($this->arguments);
+        $element = $this->arguments['element'];
         $property = null;
-        if (!empty($arguments['property'])) {
-            $property = $arguments['property'];
-        } elseif (!empty($arguments['renderingOptionProperty'])) {
-            $property = $arguments['renderingOptionProperty'];
+        if (!empty($this->arguments['property'])) {
+            $property = $this->arguments['property'];
+        } elseif (!empty($this->arguments['renderingOptionProperty'])) {
+            $property = $this->arguments['renderingOptionProperty'];
         }
-
         if (empty($property)) {
             $propertyParts = [];
         } elseif (is_array($property)) {
@@ -67,12 +60,10 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
         } else {
             $propertyParts = [$property];
         }
-
         /** @var FormRuntime $formRuntime */
-        $formRuntime = $renderingContext
+        $formRuntime = $this->renderingContext
             ->getViewHelperVariableContainer()
             ->get(RenderRenderableViewHelper::class, 'formRuntime');
-
         return GeneralUtility::makeInstance(TranslationService::class)->translateFormElementValue($element, $propertyParts, $formRuntime);
     }
 

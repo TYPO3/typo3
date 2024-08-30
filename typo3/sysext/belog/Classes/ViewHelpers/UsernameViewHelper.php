@@ -18,9 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Belog\ViewHelpers;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get username from backend user id
@@ -29,8 +27,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class UsernameViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * First level cache of user names
      */
@@ -46,12 +42,10 @@ final class UsernameViewHelper extends AbstractViewHelper
 
     /**
      * Resolve user name from backend user id. Can return empty string if there is no user with that UID.
-     *
-     * @param array{uid: int} $arguments
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $uid = $arguments['uid'];
+        $uid = $this->arguments['uid'];
         if (isset(self::$usernameRuntimeCache[$uid])) {
             return self::$usernameRuntimeCache[$uid];
         }

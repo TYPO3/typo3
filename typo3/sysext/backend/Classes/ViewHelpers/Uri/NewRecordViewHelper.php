@@ -21,9 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Use this ViewHelper to provide 'create new record' links.
@@ -73,8 +71,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('uid', 'int', 'uid < 0 will insert the record after the given uid');
@@ -85,34 +81,28 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @param array<string, mixed> $arguments
-     *
      * @throws \InvalidArgumentException
      * @throws RouteNotFoundException
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        if ($arguments['uid'] && $arguments['pid']) {
+        if ($this->arguments['uid'] && $this->arguments['pid']) {
             throw new \InvalidArgumentException('Can\'t handle both uid and pid for new records', 1526136338);
         }
-        if (isset($arguments['uid']) && $arguments['uid'] >= 0) {
-            throw new \InvalidArgumentException('Uid must be negative integer, ' . $arguments['uid'] . ' given', 1526136362);
+        if (isset($this->arguments['uid']) && $this->arguments['uid'] >= 0) {
+            throw new \InvalidArgumentException('Uid must be negative integer, ' . $this->arguments['uid'] . ' given', 1526136362);
         }
-
-        if (empty($arguments['returnUrl'])) {
-            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
-            $arguments['returnUrl'] = $request->getAttribute('normalizedParams')->getRequestUri();
+        if (empty($this->arguments['returnUrl'])) {
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+            $this->arguments['returnUrl'] = $request->getAttribute('normalizedParams')->getRequestUri();
         }
-
         $params = [
-            'edit' => [$arguments['table'] => [$arguments['uid'] ?? $arguments['pid'] ?? 0 => 'new']],
-            'returnUrl' => $arguments['returnUrl'],
+            'edit' => [$this->arguments['table'] => [$this->arguments['uid'] ?? $this->arguments['pid'] ?? 0 => 'new']],
+            'returnUrl' => $this->arguments['returnUrl'],
         ];
-
-        if ($arguments['defaultValues']) {
-            $params['defVals'] = $arguments['defaultValues'];
+        if ($this->arguments['defaultValues']) {
+            $params['defVals'] = $this->arguments['defaultValues'];
         }
-
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
     }

@@ -31,9 +31,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExtbaseUriBuilder;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * A ViewHelper for creating URIs to TYPO3 pages.
@@ -76,8 +74,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 final class PageViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('pageUid', 'int', 'target PID');
@@ -92,21 +88,21 @@ final class PageViewHelper extends AbstractViewHelper
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'arguments to be removed from the URI. Only active if $addQueryString = TRUE', false, []);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
         $request = null;
-        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
-            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         }
         if ($request instanceof ExtbaseRequestInterface) {
-            return self::renderWithExtbaseContext($request, $arguments);
+            return self::renderWithExtbaseContext($request, $this->arguments);
         }
         if ($request instanceof ServerRequestInterface) {
             if (ApplicationType::fromRequest($request)->isFrontend()) {
                 // Use the regular typolink functionality.
-                return self::renderFrontendLinkWithCoreContext($request, $arguments, $renderChildrenClosure);
+                return self::renderFrontendLinkWithCoreContext($request, $this->arguments, $this->renderChildren(...));
             }
-            return self::renderBackendLinkWithCoreContext($request, $arguments);
+            return self::renderBackendLinkWithCoreContext($request, $this->arguments);
         }
         throw new \RuntimeException(
             'The rendering context of ViewHelper f:uri.page is missing a valid request object.',
