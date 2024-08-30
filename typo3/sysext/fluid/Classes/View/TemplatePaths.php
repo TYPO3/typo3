@@ -35,16 +35,6 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
 {
     /**
-     * @var string
-     */
-    protected $templateSource;
-
-    /**
-     * @var string
-     */
-    protected $templatePathAndFilename;
-
-    /**
      * Fills the path arrays with defaults, by package name.
      * Reads those defaults from TypoScript if possible and
      * if not defined, uses fallback paths by convention.
@@ -90,9 +80,9 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
     /**
      * Get absolute path to template file
      *
-     * @return string Returns the absolute path to a Fluid template file
+     * @return string|null Returns the absolute path to a Fluid template file
      */
-    public function getTemplatePathAndFilename(): string
+    public function getTemplatePathAndFilename(): ?string
     {
         return $this->templatePathAndFilename;
     }
@@ -103,17 +93,11 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
      * relative path or a FILE: or EXT: reference
      * but cannot be a FAL resource identifier.
      *
-     * @param string|array $reference
+     * @param string $reference
      */
-    protected function ensureAbsolutePath($reference): array|string
+    protected function ensureAbsolutePath($reference): string
     {
-        if (!is_array($reference)) {
-            return PathUtility::isAbsolutePath($reference) ? $reference : GeneralUtility::getFileAbsFileName($reference);
-        }
-        foreach ($reference as &$subValue) {
-            $subValue = $this->ensureAbsolutePath($subValue);
-        }
-        return $reference;
+        return PathUtility::isAbsolutePath($reference) ? $reference : GeneralUtility::getFileAbsFileName($reference);
     }
 
     /**
