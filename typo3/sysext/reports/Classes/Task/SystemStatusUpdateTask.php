@@ -116,10 +116,15 @@ class SystemStatusUpdateTask extends AbstractTask
         $message .= implode(CRLF, $systemIssues);
         $message .= CRLF . CRLF;
 
-        $templateConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
-        $templateConfiguration['templateRootPaths'][20] = 'EXT:reports/Resources/Private/Templates/Email/';
+        $templatePaths = new TemplatePaths();
+        $templatePaths->setTemplateRootPaths(array_replace(
+            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? [],
+            [20 => 'EXT:reports/Resources/Private/Templates/Email/'],
+        ));
+        $templatePaths->setLayoutRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'] ?? []);
+        $templatePaths->setPartialRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'] ?? []);
 
-        $email = GeneralUtility::makeInstance(FluidEmail::class, new TemplatePaths($templateConfiguration));
+        $email = GeneralUtility::makeInstance(FluidEmail::class, $templatePaths);
         $email
             ->to(...$sendEmailsTo)
             ->format('plain')

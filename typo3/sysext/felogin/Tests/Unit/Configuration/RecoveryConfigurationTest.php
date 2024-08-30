@@ -175,9 +175,9 @@ final class RecoveryConfigurationTest extends UnitTestCase
         $actualTemplatePaths = $this->subject->getMailTemplatePaths();
         self::assertSame(
             [
-                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
-                Environment::getPublicPath() . '/typo3/sysext/backend/Resources/Private/Templates/',
-                '/some/path/to/a/template/folder/',
+                0 => Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
+                10 => Environment::getPublicPath() . '/typo3/sysext/backend/Resources/Private/Templates/',
+                20 => '/some/path/to/a/template/folder/',
             ],
             $actualTemplatePaths->getTemplateRootPaths()
         );
@@ -195,8 +195,8 @@ final class RecoveryConfigurationTest extends UnitTestCase
         $actualTemplatePaths = $this->subject->getMailTemplatePaths();
         self::assertSame(
             [
-                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
-                '/some/path/to/a/template/folder/',
+                0 => Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
+                10 => '/some/path/to/a/template/folder/',
             ],
             $actualTemplatePaths->getTemplateRootPaths()
         );

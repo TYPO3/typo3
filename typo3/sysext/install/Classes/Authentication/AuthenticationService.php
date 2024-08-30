@@ -41,9 +41,13 @@ class AuthenticationService
 
     public function __construct(protected readonly MailerInterface $mailer)
     {
-        $templateConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
-        $templateConfiguration['templateRootPaths'][20] = 'EXT:install/Resources/Private/Templates/Email/';
-        $this->templatePaths = new TemplatePaths($templateConfiguration);
+        $this->templatePaths = new TemplatePaths();
+        $this->templatePaths->setTemplateRootPaths(array_replace(
+            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? [],
+            [20 => 'EXT:install/Resources/Private/Templates/Email/'],
+        ));
+        $this->templatePaths->setLayoutRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'] ?? []);
+        $this->templatePaths->setPartialRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'] ?? []);
     }
 
     /**

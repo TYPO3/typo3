@@ -77,7 +77,13 @@ class FluidEmail extends Email
         //        we *could* unpack the paths and format to an array again, we should probably better
         //        redesign this implementation and work on the main comment above along the way.
         //        Also note methods like getViewHelperVariableContainer() are hard-bound to fluid, too.
-        $templatePaths = $templatePaths ?? new TemplatePaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']);
+        if ($templatePaths === null) {
+            $templatePaths = new TemplatePaths();
+            $templatePaths->setTemplateRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? []);
+            $templatePaths->setLayoutRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'] ?? []);
+            $templatePaths->setPartialRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'] ?? []);
+        }
+
         $this->view->getRenderingContext()->setTemplatePaths($templatePaths);
         $this->view->assignMultiple($this->getDefaultVariables());
         $this->format($GLOBALS['TYPO3_CONF_VARS']['MAIL']['format'] ?? self::FORMAT_BOTH);

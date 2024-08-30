@@ -65,20 +65,20 @@ class RecoveryConfiguration implements LoggerAwareInterface
      */
     public function getMailTemplatePaths(): TemplatePaths
     {
-        $pathArray = array_replace_recursive(
-            [
-                'layoutRootPaths'   => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'],
-                'templateRootPaths' => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'],
-                'partialRootPaths'  => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'],
-            ],
-            [
-                'layoutRootPaths'   => $this->settings['email']['layoutRootPaths'],
-                'templateRootPaths' => $this->settings['email']['templateRootPaths'],
-                'partialRootPaths'  => $this->settings['email']['partialRootPaths'],
-            ]
-        );
-
-        return new TemplatePaths($pathArray);
+        $templatePaths = new TemplatePaths();
+        $templatePaths->setTemplateRootPaths(array_replace(
+            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? [],
+            $this->settings['email']['templateRootPaths'] ?? [],
+        ));
+        $templatePaths->setLayoutRootPaths(array_replace(
+            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'] ?? [],
+            $this->settings['email']['layoutRootPaths'] ?? [],
+        ));
+        $templatePaths->setPartialRootPaths(array_replace(
+            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'] ?? [],
+            $this->settings['email']['partialRootPaths'] ?? [],
+        ));
+        return $templatePaths;
     }
 
     /**

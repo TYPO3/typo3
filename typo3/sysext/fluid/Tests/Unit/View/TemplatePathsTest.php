@@ -77,15 +77,15 @@ final class TemplatePathsTest extends UnitTestCase
             return [$method, $set, $expected];
         };
         return [
-            'simple numeric index, template' => $generator(TemplatePaths::CONFIG_TEMPLATEROOTPATHS, 'numeric'),
-            'alpha index, template' => $generator(TemplatePaths::CONFIG_TEMPLATEROOTPATHS, 'alpha'),
-            'alpha-numeric index, template' => $generator(TemplatePaths::CONFIG_TEMPLATEROOTPATHS, 'alphanumeric'),
-            'simple numeric index, partial' => $generator(TemplatePaths::CONFIG_PARTIALROOTPATHS, 'numeric'),
-            'alpha index, partial' => $generator(TemplatePaths::CONFIG_PARTIALROOTPATHS, 'alpha'),
-            'alpha-numeric index, partial' => $generator(TemplatePaths::CONFIG_PARTIALROOTPATHS, 'alphanumeric'),
-            'simple numeric index, layout' => $generator(TemplatePaths::CONFIG_LAYOUTROOTPATHS, 'numeric'),
-            'alpha index, layout' => $generator(TemplatePaths::CONFIG_LAYOUTROOTPATHS, 'alpha'),
-            'alpha-numeric index, layout' => $generator(TemplatePaths::CONFIG_LAYOUTROOTPATHS, 'alphanumeric'),
+            'simple numeric index, template' => $generator('templateRootPaths', 'numeric'),
+            'alpha index, template' => $generator('templateRootPaths', 'alpha'),
+            'alpha-numeric index, template' => $generator('templateRootPaths', 'alphanumeric'),
+            'simple numeric index, partial' => $generator('partialRootPaths', 'numeric'),
+            'alpha index, partial' => $generator('partialRootPaths', 'alpha'),
+            'alpha-numeric index, partial' => $generator('partialRootPaths', 'alphanumeric'),
+            'simple numeric index, layout' => $generator('layoutRootPaths', 'numeric'),
+            'alpha index, layout' => $generator('layoutRootPaths', 'alpha'),
+            'alpha-numeric index, layout' => $generator('layoutRootPaths', 'alphanumeric'),
         ];
     }
 
