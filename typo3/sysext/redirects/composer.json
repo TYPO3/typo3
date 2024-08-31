@@ -19,10 +19,10 @@
 		"sort-packages": true
 	},
 	"require": {
-		"doctrine/dbal": "^4.1",
+		"doctrine/dbal": "^4.1.1",
 		"psr/http-message": "^1.1 || ^2.0",
-		"psr/log": "^2.0 || ^3.0",
-		"symfony/console": "^7.1",
+		"psr/log": "^3.0.1",
+		"symfony/console": "^7.1.4",
 		"typo3/cms-backend": "13.3.*@dev",
 		"typo3/cms-core": "13.3.*@dev",
 		"typo3fluid/fluid": "^2.15"
