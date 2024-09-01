@@ -2542,4 +2542,14 @@ return [
             'Deprecation-104773-CustomFluidViewsAndExtbase.rst',
         ],
     ],
+    'TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic' => [
+        'restFiles' => [
+            'Deprecation-104789-RenderStaticForFluidViewHelpers.rst',
+        ],
+    ],
+    'TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic' => [
+        'restFiles' => [
+            'Deprecation-104789-RenderStaticForFluidViewHelpers.rst',
+        ],
+    ],
 ];
