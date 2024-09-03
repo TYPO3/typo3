@@ -46,6 +46,7 @@ use TYPO3\CMS\Install\CoreVersion\CoreRelease;
 use TYPO3\CMS\Install\ExtensionScanner\CodeScannerInterface;
 use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
 use TYPO3\CMS\Install\ExtensionScanner\Php\GeneratorClassesResolver;
+use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\AbstractMethodImplementationMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayDimensionMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ArrayGlobalMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\ClassConstantMatcher;
@@ -142,6 +143,10 @@ class UpgradeController extends AbstractController
         [
             'class' => FunctionCallMatcher::class,
             'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/FunctionCallMatcher.php',
+        ],
+        [
+            'class' => AbstractMethodImplementationMatcher::class,
+            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/AbstractMethodImplementationMatcher.php',
         ],
         [
             'class' => InterfaceMethodChangedMatcher::class,
