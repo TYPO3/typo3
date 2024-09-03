@@ -145,5 +145,5 @@ Admin Panel extension. Short ones for a quick look are:
 *  `adminpanel/Classes/Modules/Info/PhpInformation.php` (Submodule)
 *  `adminpanel/Classes/Modules/InfoModule.php` (Main module, serves as
    submodule wrapper only)
-*  `adminpanel/Classes/Modules/EditModule.php` (Main module, custom rendering
+*  `adminpanel/Classes/Modules/CacheModule.php` (Main module, custom rendering
    settings)
