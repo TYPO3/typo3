@@ -1,0 +1,76 @@
+"sys_file"
+,"uid","storage","type","metadata","identifier","identifier_hash","folder_hash","extension","mime_type","sha1","size"
+,"100","1","1","0","/contact4.form.yaml","ab5b2e8188d771677ddf4b82ebe6b9de193d1872","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","text/plain","faked","4711"
+,"200","2","1","0","/contact3.form.yaml","d5e5f94123178881be510e7be3eca0738c2e416f","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","text/plain","faked","4711"
+,"300","3","1","0","/contact5.form.yaml","4ab1ad03214f3d482f1905333cf832e93d7dd6c2","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","text/plain","faked","4711"
+,"4712","1","1","0","/contact6.form.yaml","4ab1ad03214f3d482f1905333cf832e93d7dd6c3","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","text/plain","faked","4711"
+"sys_file_storage"
+,"uid","pid","name","processingfolder","driver","is_browsable","is_public","is_writable","is_online","configuration"
+,1,0,"fileadmin/ (auto-created)","temp/assets/_processed_/","Local",1,1,1,1,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+	<data>
+		<sheet index=""sDEF"">
+			<language index=""lDEF"">
+				<field index=""basePath"">
+					<value index=""vDEF"">fileadmin/</value>
+				</field>
+				<field index=""pathType"">
+					<value index=""vDEF"">relative</value>
+				</field>
+				<field index=""caseSensitive"">
+					<value index=""vDEF"">1</value>
+				</field>
+			</language>
+		</sheet>
+	</data>
+</T3FlexForms>"
+,2,0,"fileadmin-private/ (auto-created)","temp/private_assets/_processed_/","Local",1,0,0,1,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+	<data>
+		<sheet index=""sDEF"">
+			<language index=""lDEF"">
+				<field index=""basePath"">
+					<value index=""vDEF"">fileadmin-private/</value>
+				</field>
+				<field index=""pathType"">
+					<value index=""vDEF"">relative</value>
+				</field>
+				<field index=""caseSensitive"">
+					<value index=""vDEF"">1</value>
+				</field>
+			</language>
+		</sheet>
+	</data>
+</T3FlexForms>"
+,3,0,"fileadmin-offline/ (auto-created)",temp/offline_assets/_processed_/,"Local",1,0,0,0,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+	<data>
+		<sheet index=""sDEF"">
+			<language index=""lDEF"">
+				<field index=""basePath"">
+					<value index=""vDEF"">fileadmin-offline/</value>
+				</field>
+				<field index=""pathType"">
+					<value index=""vDEF"">relative</value>
+				</field>
+				<field index=""caseSensitive"">
+					<value index=""vDEF"">1</value>
+				</field>
+			</language>
+		</sheet>
+	</data>
+</T3FlexForms>"
+"sys_refindex"
+,"hash","softref_key","ref_uid","ref_string"
+,"d41d8cd98f00b204e9800998ecf8427a","formPersistenceIdentifier","0","EXT:form_references/Resources/Public/Forms/contact2.form.yaml"
+,"d41d8cd98f00b204e9800998ecf8427b","formPersistenceIdentifier","0","EXT:form_references/Resources/Private/Forms/contact1.form.yaml"
+,"d41d8cd98f00b204e9800998ecf8427c","formPersistenceIdentifier","0","/fileadmin/contact4.form.yaml"
+,"d41d8cd98f00b204e9800998ecf8427d","formPersistenceIdentifier","0","/fileadmin-private/contact3.form.yaml"
+,"d41d8cd98f00b204e9800998ecf8427e","formPersistenceIdentifier","0","/fileadmin-offline/contact5.form.yaml"
+,"d41d8cd98f00b204e9800998ecf8427f","formPersistenceIdentifier","4712","note - unset is used here to prevent certain RDBMs yielding this resultset for an input that is ' ' (one space). This is irrelevant for this testing scenario."
+,"d41d8cd98f00b204e9800998ecf8427g","formPersistenceIdentifier","0","1:/contact4.form.yaml"
+,"d41d8cd98f00b204e9800998ecf8427h","formPersistenceIdentifier","0","2:/contact3.form.yaml"
+,"d41d8cd98f00b204e9800998ecf8427i","formPersistenceIdentifier","0","3:/contact5.form.yaml"
+,"d41d8cd98f00b204e9800998ecf8427j","formPersistenceIdentifier","100","unset"
+,"d41d8cd98f00b204e9800998ecf8427k","formPersistenceIdentifier","200","unset"
+,"d41d8cd98f00b204e9800998ecf8427l","formPersistenceIdentifier","300","unset"
