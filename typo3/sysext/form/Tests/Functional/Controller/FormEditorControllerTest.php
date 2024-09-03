@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Form\Controller\FormEditorController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
@@ -59,6 +60,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 $this->createMock(ConfigurationService::class),
                 $this->createMock(UriBuilder::class),
                 $this->createMock(ArrayFormFactory::class),
+                $this->createMock(ViewFactoryInterface::class),
             ],
         );
         $prototypeConfiguration = [
@@ -151,6 +153,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 $this->createMock(ConfigurationService::class),
                 $this->createMock(UriBuilder::class),
                 $this->createMock(ArrayFormFactory::class),
+                $this->createMock(ViewFactoryInterface::class),
             ],
         );
         $prototypeConfiguration = [

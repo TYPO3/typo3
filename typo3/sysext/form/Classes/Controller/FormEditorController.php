@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -33,11 +32,12 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
-use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
@@ -70,6 +70,7 @@ class FormEditorController extends ActionController
         protected readonly ConfigurationService $configurationService,
         protected readonly UriBuilder $coreUriBuilder,
         protected readonly ArrayFormFactory $arrayFormFactory,
+        protected readonly ViewFactoryInterface $viewFactory,
     ) {}
 
     /**
@@ -425,10 +426,13 @@ class FormEditorController extends ActionController
             throw new RenderingException('The option partialRootPaths must be set.', 1480294722);
         }
         $insertRenderablesPanelConfiguration = $this->getInsertRenderablesPanelConfiguration($prototypeConfiguration, $formEditorDefinitions['formElements']);
-        $view = GeneralUtility::makeInstance(TemplateView::class);
-        $view->getRenderingContext()->setAttribute(ServerRequestInterface::class, $this->request);
-        $view->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($fluidConfiguration);
-        $view->setTemplatePathAndFilename($fluidConfiguration['templatePathAndFilename']);
+        $viewFactoryData = new ViewFactoryData(
+            templatePathAndFilename: $fluidConfiguration['templatePathAndFilename'],
+            partialRootPaths: $fluidConfiguration['partialRootPaths'],
+            layoutRootPaths: $fluidConfiguration['layoutRootPaths'],
+            request: $this->request,
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
         $view->assignMultiple([
             'insertRenderablesPanelConfiguration' => $insertRenderablesPanelConfiguration,
             'formEditorPartials' => $formEditorPartials,
