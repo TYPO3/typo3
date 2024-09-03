@@ -1,0 +1,14 @@
+{
+	"name": "typo3tests/test-form-references",
+	"type": "typo3-cms-extension",
+	"description": "",
+	"license": ["GPL-2.0-or-later"],
+	"require": {
+		"typo3/cms-core": "14.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "form_references"
+		}
+	}
+}
