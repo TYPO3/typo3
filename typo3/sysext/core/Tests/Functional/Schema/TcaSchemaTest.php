@@ -69,6 +69,7 @@ final class TcaSchemaTest extends FunctionalTestCase
             'space_after_class',
             'sectionIndex',
             'linkToTop',
+            'categories',
             'sys_language_uid',
             'l18n_parent',
             'hidden',
@@ -76,7 +77,6 @@ final class TcaSchemaTest extends FunctionalTestCase
             'endtime',
             'fe_group',
             'editlock',
-            'categories',
             'rowDescription',
         ], $usedColumns);
 

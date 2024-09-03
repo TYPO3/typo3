@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration\Tca;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -48,6 +49,7 @@ readonly class TcaPreparation
         $tca = $this->configureLinkSoftReferences($tca);
         $tca = $this->configureSelectSingle($tca);
         $tca = $this->configureRelationshipToOne($tca);
+        $tca = $this->addSystemFieldsToShowitemTypes($tca);
         return $tca;
     }
 
@@ -384,5 +386,196 @@ readonly class TcaPreparation
             }
         }
         return $tca;
+    }
+
+    /**
+     * Ensure that all system fields (CType, colPos, hidden etc.) are automatically added
+     * to the showitem list of all CTypes in tt_content. As custom CTypes might have added
+     * the fields, the respective fields also need to be removed first.
+     */
+    protected function addSystemFieldsToShowitemTypes(array $tca): array
+    {
+        // @todo Only deal with this for tt_content in v13, as other parts might be too intrusive
+        //       might change in v14
+        if (!isset($tca['tt_content'])) {
+            return $tca;
+        }
+        // Only proceed in case the record type field is defined
+        $typeField = (string)($tca['tt_content']['ctrl']['type'] ?? '');
+        if ($typeField === '') {
+            return $tca;
+        }
+        // Build list of values (fields and palettes) which should be removed
+        // from custom palettes, because they will be added automatically.
+        $listOfValuesToRemove = [
+            '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general',
+            '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language',
+            '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access',
+            '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes',
+            '--palette--;;general',
+            '--palette--;;language',
+            '--palette--;;access',
+            '--palette--;;hidden',
+            'colPos',
+        ];
+        $listOfValuesToRemove[] = $typeField;
+        if (($languageField = (string)($tca['tt_content']['ctrl']['languageField'] ?? '')) !== '') {
+            $listOfValuesToRemove[] = $languageField;
+        }
+        if (($transOrigPointerField = (string)($tca['tt_content']['ctrl']['transOrigPointerField'] ?? '')) !== '') {
+            $listOfValuesToRemove[] = $transOrigPointerField;
+        }
+        $enablecolumns = $tca['tt_content']['ctrl']['enablecolumns'] ?? [];
+        foreach ($enablecolumns as $fieldName) {
+            $listOfValuesToRemove[] = $fieldName;
+        }
+        if (($editlock = (string)($tca['tt_content']['ctrl']['editlock'] ?? '')) !== '') {
+            $listOfValuesToRemove[] = $editlock;
+        }
+        if (($descriptionColumn = (string)($tca['tt_content']['ctrl']['descriptionColumn'] ?? '')) !== '') {
+            $listOfValuesToRemove[] = $descriptionColumn;
+        }
+
+        // Remove any system field from custom palettes
+        foreach ($tca['tt_content']['palettes'] as $paletteName => &$paletteConfig) {
+            if (in_array($paletteName, ['general', 'language', 'access', 'hidden'], true)) {
+                continue;
+            }
+            $showItemSplitted = GeneralUtility::trimExplode(',', $paletteConfig['showitem'], true);
+            $paletteConfig['showitem'] = implode(',', array_diff($this->removeCustomFieldLabels($showItemSplitted, $listOfValuesToRemove), $listOfValuesToRemove));
+        }
+        unset($paletteConfig);
+
+        // Process the content types
+        foreach ($tca['tt_content']['types'] as $type => $typeInformation) {
+            // Remove any of the special fields from the content type's current showitem
+            $showItemSplitted = GeneralUtility::trimExplode(',', $typeInformation['showitem'] ?? '', true);
+            $showItemFiltered = array_diff($this->removeCustomFieldLabels($showItemSplitted, $listOfValuesToRemove), $listOfValuesToRemove);
+
+            // Extract all fields of the extended tab to add it at the end
+            [$showItemList, $extendedParts] = $this->extractExtendedParts($showItemFiltered);
+
+            // Add record type field (usually "CType") and colPos either using the "general" palette
+            // or manually, in case the palette does not exist or does not contain the fields.
+            $generalPaletteItems = $this->removeCustomFieldLabels(GeneralUtility::trimExplode(',', $tca['tt_content']['palettes']['general']['showitem'] ?? '', true), $listOfValuesToRemove);
+            if (in_array($typeField, $generalPaletteItems, true) && in_array('colPos', $generalPaletteItems, true)) {
+                $showItemParts = ['--palette--;;general'];
+            } else {
+                $showItemParts = [
+                    $typeField === 'CType' ? 'CType;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType_formlabel' : $typeField,
+                    'colPos;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos_formlabel',
+                ];
+            }
+
+            // Because FormEngine will add the general tab automatically, we will not do this here
+            // However, if the first item in the $showItemList is actually a tab (--div--), we need to
+            // add if before the "first fields"
+            if (str_starts_with($showItemList[0] ?? '', '--div--')) {
+                array_unshift($showItemParts, $showItemList[0]);
+                unset($showItemList[0]);
+            }
+            $showItemParts = array_merge($showItemParts, $showItemList);
+
+            // Add language field either using the "language" palette or manually,
+            // in case the palette does not exist or does not contain the field.
+            if ($languageField !== '') {
+                $showItemParts[] = '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language';
+                $languagePaletteItems = $this->removeCustomFieldLabels(GeneralUtility::trimExplode(',', $tca['tt_content']['palettes']['language']['showitem'] ?? '', true), $listOfValuesToRemove);
+                if (in_array($languageField, $languagePaletteItems, true)
+                    && ($transOrigPointerField === '' || in_array($transOrigPointerField, $languagePaletteItems, true))
+                ) {
+                    $showItemParts[] = '--palette--;;language';
+                } else {
+                    $showItemParts[] = $languageField;
+                    if ($transOrigPointerField) {
+                        $showItemParts[] = $transOrigPointerField;
+                    }
+                }
+            }
+
+            // Add enable fields either using the "hidden" amd "access" palettes or
+            // manually, in case the palettes do not exist or do not contain the fields.
+            if ($enablecolumns !== [] || $editlock !== '') {
+                $showItemParts[] = '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access';
+                if (isset($enablecolumns['disabled'])) {
+                    $hiddenPaletteParts = $this->removeCustomFieldLabels(GeneralUtility::trimExplode(',', $tca['tt_content']['palettes']['hidden']['showitem'] ?? '', true), $listOfValuesToRemove);
+                    if (in_array($enablecolumns['disabled'], $hiddenPaletteParts, true)) {
+                        $showItemParts[] = '--palette--;;hidden';
+                    } else {
+                        $showItemParts[] = $enablecolumns['disabled'];
+                    }
+                }
+                if ((isset($enablecolumns['starttime']) || isset($enablecolumns['endtime']) || isset($enablecolumns['fe_group']) || $editlock)) {
+                    $accessPaletteParts = $this->removeCustomFieldLabels(GeneralUtility::trimExplode(',', $tca['tt_content']['palettes']['access']['showitem'] ?? '', true), $listOfValuesToRemove);
+                    if ((!isset($enablecolumns['starttime']) || in_array($enablecolumns['starttime'], $accessPaletteParts, true))
+                        && (!isset($enablecolumns['endtime']) || in_array($enablecolumns['endtime'], $accessPaletteParts, true))
+                        && (!isset($enablecolumns['fe_group']) || in_array($enablecolumns['fe_group'], $accessPaletteParts, true))
+                        && (!$editlock || in_array($editlock, $accessPaletteParts, true))
+                    ) {
+                        $showItemParts[] = '--palette--;;access';
+                    } else {
+                        if (isset($enablecolumns['starttime'])) {
+                            $showItemParts[] = $enablecolumns['starttime'];
+                        }
+                        if (isset($enablecolumns['endtime'])) {
+                            $showItemParts[] = $enablecolumns['endtime'];
+                        }
+                        if (isset($enablecolumns['fe_group'])) {
+                            $showItemParts[] = $enablecolumns['fe_group'];
+                        }
+                        if ($editlock) {
+                            $showItemParts[] = $editlock;
+                        }
+                    }
+                }
+            }
+
+            // Add description column if defined
+            if ($descriptionColumn !== '') {
+                $showItemParts[] = '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,' . $descriptionColumn;
+            }
+
+            // Add extended tab at the end - if it exists
+            $showItemParts = array_merge($showItemParts, $extendedParts);
+
+            // Merge parts together
+            $tca['tt_content']['types'][$type]['showitem'] = trim(implode(',', $showItemParts), ',');
+        }
+        return $tca;
+    }
+
+    private function extractExtendedParts(array $showItemFiltered): array
+    {
+        $extendedParts = [];
+        $addFields = false;
+        foreach ($showItemFiltered as $key => $part) {
+            if ($part === '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended') {
+                $extendedParts[] = $part;
+                $addFields = true;
+                unset($showItemFiltered[$key]);
+            } elseif ($addFields) {
+                if (str_starts_with($part, '--div--')) {
+                    break;
+                }
+                $extendedParts[] = $part;
+                unset($showItemFiltered[$key]);
+            }
+        }
+        return [$showItemFiltered, $extendedParts];
+    }
+
+    private function removeCustomFieldLabels(array $showitemParts, array $fieldList): array
+    {
+        foreach ($showitemParts as &$showItem) {
+            // Check if we deal with a field
+            if (!str_starts_with($showItem, '--div--') && !str_starts_with($showItem, '--palette--')) {
+                $parts = GeneralUtility::trimExplode(';', $showItem, true, 2);
+                // Just keep the first part => the fieldname in case field is defined in the $fieldList
+                if ($fieldList !== [] && in_array($parts[0], $fieldList, true)) {
+                    $showItem = $parts[0];
+                }
+            }
+        }
+        return $showitemParts;
     }
 }
