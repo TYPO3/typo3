@@ -133,6 +133,11 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
     protected $connectionTimeout = 0;
 
     /**
+     * Used as prefix for all Redis keys/identifiers
+     */
+    protected string $keyPrefix = '';
+
+    /**
      * Construct this backend
      *
      * @param string $context Unused, for backward compatibility only
@@ -292,6 +297,11 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
         $this->connectionTimeout = $connectionTimeout;
     }
 
+    protected function setKeyPrefix(string $keyPrefix): void
+    {
+        $this->keyPrefix = $keyPrefix;
+    }
+
     /**
      * Save data in the cache
      *
@@ -445,14 +455,21 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
 
     /**
      * Removes all cache entries of this cache.
-     *
-     * Scales O(1) with number of cache entries
      */
     public function flush(): void
     {
-        if ($this->connected) {
-            $this->redis->flushDB();
+        if (!$this->connected) {
+            return;
         }
+        // unless we have a key prefix all data can be flushed
+        if ($this->keyPrefix === '') {
+            $this->redis->flushDB();
+            return;
+        }
+        $keys = $this->redis->keys($this->keyPrefix . '*');
+        $queue = $this->redis->multi();
+        $queue->del($keys);
+        $queue->exec();
     }
 
     /**
@@ -556,16 +573,16 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
 
     protected function getDataIdentifier(string $identifier): string
     {
-        return self::IDENTIFIER_DATA_PREFIX . $identifier;
+        return $this->keyPrefix . self::IDENTIFIER_DATA_PREFIX . $identifier;
     }
 
     protected function getTagsIdentifier(string $identifier): string
     {
-        return self::IDENTIFIER_TAGS_PREFIX . $identifier;
+        return $this->keyPrefix . self::IDENTIFIER_TAGS_PREFIX . $identifier;
     }
 
     protected function getTagIdentifier(string $tag): string
     {
-        return self::TAG_IDENTIFIERS_PREFIX . $tag;
+        return $this->keyPrefix . self::TAG_IDENTIFIERS_PREFIX . $tag;
     }
 }

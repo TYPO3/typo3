@@ -218,6 +218,96 @@ final class RedisBackendTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function setSavesEntryWithSpecifiedKeyPrefix(): void
+    {
+        $firstBackend = $this->setUpSubject(['keyPrefix' => 'kp1_']);
+        $secondBackend = $this->setUpSubject(['keyPrefix' => 'kp2_']);
+        $redis = $this->setUpRedis();
+
+        $identifier = StringUtility::getUniqueId('identifier');
+        $data = 'data';
+
+        $firstBackend->set($identifier, $data);
+        self::assertSame($data, $firstBackend->get($identifier));
+        self::assertSame($data, $redis->get(sprintf('kp1_identData:%s', $identifier)));
+        self::assertFalse($redis->get(sprintf('kp2_identData:%s', $identifier)));
+        self::assertFalse($secondBackend->get($identifier));
+    }
+
+    #[Test]
+    public function flushOnPrefixedBackendDoesNotDeleteKeysOfSecondPrefixedBackend(): void
+    {
+        $firstBackend = $this->setUpSubject(['keyPrefix' => 'kp1_']);
+        $secondBackend = $this->setUpSubject(['keyPrefix' => 'kp2_']);
+        $redis = $this->setUpRedis();
+        $redis->flushAll();
+
+        $identifier = StringUtility::getUniqueId('identifier');
+        $data = 'data';
+
+        $firstBackend->set($identifier, $data);
+        $secondBackend->set($identifier, $data);
+        self::assertSame($data, $firstBackend->get($identifier));
+        self::assertSame($data, $secondBackend->get($identifier));
+        self::assertSame($data, $redis->get(sprintf('kp1_identData:%s', $identifier)));
+        self::assertSame($data, $redis->get(sprintf('kp2_identData:%s', $identifier)));
+
+        $firstBackend->flush();
+        self::assertFalse($firstBackend->get($identifier));
+        self::assertFalse($redis->get(sprintf('kp1_identData:%s', $identifier)));
+        self::assertSame($data, $secondBackend->get($identifier));
+        self::assertSame($data, $redis->get(sprintf('kp2_identData:%s', $identifier)));
+    }
+
+    #[Test]
+    public function flushByTagOnPrefixedBackendDoesNotDeleteKeysOfSecondPrefixedBackend(): void
+    {
+        $firstBackend = $this->setUpSubject(['keyPrefix' => 'kp1_']);
+        $secondBackend = $this->setUpSubject(['keyPrefix' => 'kp2_']);
+        $redis = $this->setUpRedis();
+        $redis->flushAll();
+
+        $identifier = StringUtility::getUniqueId('identifier');
+        $tagName = 'some-tag';
+        $data = 'data';
+
+        $firstBackend->set($identifier, $data, [$tagName]);
+        $secondBackend->set($identifier, $data, [$tagName]);
+        self::assertSame($data, $firstBackend->get($identifier));
+        self::assertSame($data, $secondBackend->get($identifier));
+        self::assertSame($data, $redis->get(sprintf('kp1_identData:%s', $identifier)));
+        self::assertSame($data, $redis->get(sprintf('kp2_identData:%s', $identifier)));
+
+        $firstBackend->flushByTag($tagName);
+        self::assertFalse($firstBackend->get($identifier));
+        self::assertFalse($redis->get(sprintf('kp1_identData:%s', $identifier)));
+        self::assertSame($data, $secondBackend->get($identifier));
+        self::assertSame($data, $redis->get(sprintf('kp2_identData:%s', $identifier)));
+    }
+
+    #[Test]
+    public function flushByTagsOnPrefixedBackendDoesNotDeleteKeysOfSecondPrefixedBackend(): void
+    {
+        $firstBackend = $this->setUpSubject(['keyPrefix' => 'kp1_']);
+        $secondBackend = $this->setUpSubject(['keyPrefix' => 'kp2_']);
+        $redis = $this->setUpRedis();
+        $redis->flushAll();
+
+        $identifier = StringUtility::getUniqueId('identifier');
+        $tagName = 'some-tag';
+        $data = 'data';
+
+        $firstBackend->set($identifier, $data, [$tagName]);
+        $secondBackend->set($identifier, $data, [$tagName]);
+        self::assertSame($data, $firstBackend->get($identifier));
+        self::assertSame($data, $secondBackend->get($identifier));
+
+        $firstBackend->flushByTags([$tagName]);
+        self::assertFalse($firstBackend->get($identifier));
+        self::assertSame($data, $secondBackend->get($identifier));
+    }
+
+    #[Test]
     public function setSavesEntryWithUnlimitedLifeTime(): void
     {
         $subject = $this->setUpSubject();

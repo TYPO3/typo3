@@ -60,7 +60,7 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
 
         $this->configuration = $configuration;
         $this->identifier = $identifier;
-        $this->applicationIdentifier = 'typo3_ses_'
+        $this->applicationIdentifier = ($configuration['keyPrefix'] ?? '') . 'typo3_ses_'
             . $identifier . '_'
             . sha1($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '_';
     }
