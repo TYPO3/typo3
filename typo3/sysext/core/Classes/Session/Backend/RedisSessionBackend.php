@@ -31,37 +31,22 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var array
-     */
-    protected $configuration = [];
+    protected array $configuration = [];
 
     /**
      * Indicates whether the server is connected
-     *
-     * @var bool
      */
-    protected $connected = false;
+    protected bool $connected = false;
 
     /**
      * Used as instance independent identifier
      * (e.g. if multiple installations write into the same database)
-     *
-     * @var string
      */
-    protected $applicationIdentifier = '';
+    protected string $applicationIdentifier = '';
 
-    /**
-     * Instance of the PHP redis class
-     *
-     * @var \Redis
-     */
-    protected $redis;
+    protected \Redis $redis;
 
-    /**
-     * @var string
-     */
-    protected $identifier;
+    protected string $identifier;
 
     /**
      * Initializes the session backend
@@ -69,7 +54,7 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
      * @param string $identifier Name of the session type, e.g. FE or BE
      * @internal To be used only by SessionManager
      */
-    public function initialize(string $identifier, array $configuration)
+    public function initialize(string $identifier, array $configuration): void
     {
         $this->redis = new \Redis();
 
@@ -86,7 +71,7 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
      * @throws \InvalidArgumentException
      * @internal To be used only by SessionManager
      */
-    public function validateConfiguration()
+    public function validateConfiguration(): void
     {
         if (!extension_loaded('redis')) {
             throw new \RuntimeException(
@@ -224,17 +209,15 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
      * @param int $maximumLifetime maximum lifetime of authenticated user sessions, in seconds.
      * @param int $maximumAnonymousLifetime maximum lifetime of non-authenticated user sessions, in seconds. If set to 0, nothing is collected.
      */
-    public function collectGarbage(int $maximumLifetime, int $maximumAnonymousLifetime = 0)
+    public function collectGarbage(int $maximumLifetime, int $maximumAnonymousLifetime = 0): void
     {
         foreach ($this->getAll() as $sessionRecord) {
             if (!($sessionRecord['ses_userid'] ?? false)) {
                 if ($maximumAnonymousLifetime > 0 && ($sessionRecord['ses_tstamp'] + $maximumAnonymousLifetime) < $GLOBALS['EXEC_TIME']) {
                     $this->redis->del($this->getSessionKeyName($sessionRecord['ses_id']));
                 }
-            } else {
-                if (($sessionRecord['ses_tstamp'] + $maximumLifetime) < $GLOBALS['EXEC_TIME']) {
-                    $this->redis->del($this->getSessionKeyName($sessionRecord['ses_id']));
-                }
+            } elseif (($sessionRecord['ses_tstamp'] + $maximumLifetime) < $GLOBALS['EXEC_TIME']) {
+                $this->redis->del($this->getSessionKeyName($sessionRecord['ses_id']));
             }
         }
     }
@@ -244,7 +227,7 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
      *
      * @throws \RuntimeException if access to redis with password is denied or if database selection fails
      */
-    protected function initializeConnection()
+    protected function initializeConnection(): void
     {
         if ($this->connected) {
             return;

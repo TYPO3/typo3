@@ -226,11 +226,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Cache/Backend/AbstractBackend.php
 
 		-
-			message: "#^Parameter \\#1 \\$key1 of method Redis\\:\\:sUnion\\(\\) expects string, array\\<int\\<0, max\\>, string\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/RedisBackend.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\BackendInterface\\:\\:require\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Cache/Frontend/PhpFrontend.php
