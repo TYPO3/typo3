@@ -384,12 +384,13 @@ class ExtensionManagementUtility
      * @throws \RuntimeException If reference to related position fields can not
      * @param string $table Name of TCA table
      * @param string $field Name of TCA field
-     * @param array $item New item to add
+     * @param array|SelectItem $item New item to add
      * @param string $relativeToField Add item relative to existing field
      * @param string $relativePosition Valid keywords: 'before', 'after'
      */
-    public static function addTcaSelectItem(string $table, string $field, array $item, string $relativeToField = '', string $relativePosition = ''): void
+    public static function addTcaSelectItem(string $table, string $field, array|SelectItem $item, string $relativeToField = '', string $relativePosition = ''): void
     {
+        $item = $item instanceof SelectItem ? $item->toArray() : $item;
         if ($relativePosition !== '' && $relativePosition !== 'before' && $relativePosition !== 'after' && $relativePosition !== 'replace') {
             throw new \InvalidArgumentException('Relative position must be either empty or one of "before", "after", "replace".', 1303236967);
         }
@@ -799,6 +800,65 @@ class ExtensionManagementUtility
      *	 Adding FRONTEND features
      *
      ***************************************/
+
+    /**
+     * Convenience method so you don't have to deal with strings and arrays and $GLOBALS[TCA] directly that much.
+     *
+     * Adds a new entry to an existing TCA DB table that has a type field configured (via $TCA[$table][ctrl][type])
+     * such as "tt_content" or "pages" tables.
+     *
+     * Takes the $item (label, value[, icon] etc.) and adds the item to the items-array of $TCA[$table]
+     * of the "type" field. The position in the list can be chosen via the $position argument.
+     *
+     * In addition, a type-icon gets registered, and, based on the $item[value], the record type is also added
+     * to $TCA[$table]['types'][$newType], where $showItemList is added as 'showitem' key, as well as $additionalTypeInformation
+     * such as 'columnsOverride' or 'creationOptions'.
+     *
+     * In addition, the $showItemList will receive a 'extended' tab at the very end, so other extensions
+     * that add additional fields, will receive this at the extended tab automatically.
+     *
+     * Can be used in favor of addPlugin() and addTcaSelectItem().
+     *
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
+     *
+     * @param array|SelectItem $item The item to add to the select field
+     * @param string $showItemList A string containing all fields to be used / displayed in this type
+     * @param array $additionalTypeInformation Additional type information to be added to the type in $TCA[$table]['types']
+     * @param string $position The position in the list where the new item should be added, something like "after:textpic"
+     * @param string $table The table name, defaults to 'tt_content'
+     */
+    public static function addRecordType(array|SelectItem $item, string $showItemList, array $additionalTypeInformation = [], string $position = '', string $table = 'tt_content'): void
+    {
+        $selectItem = is_array($item) ? SelectItem::fromTcaItemArray($item) : $item;
+        $typeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? null;
+        // Throw exception if no type is set
+        if ($typeField === null) {
+            throw new \RuntimeException('Cannot add record type "' . $selectItem->getValue() . '" for TCA table "' . $table . '" without type field defined.', 1725997543);
+        }
+        // Set the type icon as well
+        if ($selectItem->getIcon()) {
+            $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$selectItem->getValue()] = $selectItem->getIcon();
+        }
+        if (!$selectItem->hasGroup()) {
+            $selectItem = $selectItem->withGroup('default');
+        }
+
+        $relativeInformation = GeneralUtility::trimExplode(':', $position, true, 2);
+        self::addTcaSelectItem($table, $typeField, $selectItem, $relativeInformation[0] ?? '', $relativeInformation[1] ?? '');
+
+        $showItemList = trim($showItemList, ', ');
+        // Add the extended tab if not already added manually at the very end.
+        if ($showItemList !== '' && !str_contains($showItemList, '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended')) {
+            $showItemList .= ',--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended';
+        }
+        if ($showItemList !== '') {
+            $showItemList .= ',';
+        }
+
+        $additionalTypeInformation['showitem'] = $showItemList;
+        $GLOBALS['TCA'][$table]['types'][$selectItem->getValue()] = $additionalTypeInformation;
+    }
+
     /**
      * Adds an entry to the list of plugins in content elements of type "Insert plugin"
      * Takes the $itemArray (label, value[,icon]) and adds to the items-array of $GLOBALS['TCA'][tt_content] elements with CType "listtype" (or another field if $type points to another fieldname)

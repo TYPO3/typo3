@@ -2,20 +2,6 @@
 
 defined('TYPO3') or die();
 
-$contentType = 'table';
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content',
-    'CType',
-    [
-        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.table',
-        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.table.description',
-        'value' => $contentType,
-        'icon' => 'content-table',
-        'group' => 'lists',
-    ]
-);
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tt_content',
     [
@@ -117,45 +103,39 @@ $contentType = 'table';
     ]
 );
 
-$GLOBALS['TCA']['tt_content'] = array_replace_recursive(
-    $GLOBALS['TCA']['tt_content'],
+$GLOBALS['TCA']['tt_content']['palettes']['tableconfiguration'] = [
+    'showitem' => 'table_delimiter,table_enclosure',
+];
+$GLOBALS['TCA']['tt_content']['palettes']['tablelayout'] = [
+    'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.table_layout',
+    'showitem' => 'cols, table_class, table_header_position, table_tfoot',
+];
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addRecordType(
     [
-        'ctrl' => [
-            'typeicon_classes' => [
-                $contentType => 'mimetypes-x-content-table',
-            ],
-        ],
-        'palettes' => [
-            'tableconfiguration' => [
-                'showitem' => 'table_delimiter,table_enclosure',
-            ],
-            'tablelayout' => [
-                'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.table_layout',
-                'showitem' => 'cols, table_class, table_header_position, table_tfoot',
-            ],
-        ],
-        'types' => [
-            $contentType => [
-                'showitem' => '
-                        --palette--;;headers,
-                        bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:field.table.bodytext,
-                        --palette--;;tableconfiguration,
-                        table_caption,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
-                        --palette--;;frames,
-                        --palette--;;tablelayout,
-                        --palette--;;appearanceLinks,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
-                        categories,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-                ',
-                'columnsOverrides' => [
-                    'bodytext' => [
-                        'config' => [
-                            'renderType' => 'textTable',
-                            'wrap' => 'off',
-                        ],
-                    ],
+        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.table',
+        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.table.description',
+        'value' => 'table',
+        'icon' => 'mimetypes-x-content-table',
+        'group' => 'lists',
+    ],
+    '
+        --palette--;;headers,
+        bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:field.table.bodytext,
+        --palette--;;tableconfiguration,
+        table_caption,
+    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+        --palette--;;frames,
+        --palette--;;tablelayout,
+        --palette--;;appearanceLinks,
+    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+        categories',
+    [
+        'columnsOverrides' => [
+            'bodytext' => [
+                'config' => [
+                    'renderType' => 'textTable',
+                    'wrap' => 'off',
                 ],
             ],
         ],

@@ -2,20 +2,6 @@
 
 defined('TYPO3') or die();
 
-$contentType = 'uploads';
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content',
-    'CType',
-    [
-        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.uploads',
-        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.uploads.description',
-        'value' => $contentType,
-        'icon' => 'content-special-uploads',
-        'group' => 'lists',
-    ]
-);
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'tt_content',
     [
@@ -121,50 +107,42 @@ $contentType = 'uploads';
     ]
 );
 
-$GLOBALS['TCA']['tt_content'] = array_replace_recursive(
-    $GLOBALS['TCA']['tt_content'],
+$GLOBALS['TCA']['tt_content']['palettes']['uploads'] = [
+    'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media',
+    'showitem' => '
+        media;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.ALT.uploads_formlabel,
+        --linebreak--,
+        file_collections;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:file_collections.ALT.uploads_formlabel,
+        --linebreak--,
+        filelink_sorting,
+        filelink_sorting_direction,
+        target
+    ',
+];
+$GLOBALS['TCA']['tt_content']['palettes']['uploadslayout'] = [
+    'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.uploads_layout',
+    'showitem' => '
+        filelink_size;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size_formlabel,
+        uploads_description,
+        uploads_type
+    ',
+];
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addRecordType(
     [
-        'ctrl' => [
-            'typeicon_classes' => [
-                $contentType => 'mimetypes-x-content-list-files',
-            ],
-        ],
-        'palettes' => [
-            'uploads' => [
-                'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media',
-                'showitem' => '
-                    media;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.ALT.uploads_formlabel,
-                    --linebreak--,
-                    file_collections;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:file_collections.ALT.uploads_formlabel,
-                    --linebreak--,
-                    filelink_sorting,
-                    filelink_sorting_direction,
-                    target
-                ',
-            ],
-            'uploadslayout' => [
-                'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.uploads_layout',
-                'showitem' => '
-                    filelink_size;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size_formlabel,
-                    uploads_description,
-                    uploads_type
-                ',
-            ],
-        ],
-        'types' => [
-            $contentType => [
-                'showitem' => '
-                        --palette--;;headers,
-                        --palette--;;uploads,
-                        --palette--;;uploadslayout,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
-                        --palette--;;frames,
-                        --palette--;;appearanceLinks,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
-                        categories,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-                ',
-            ],
-        ],
-    ]
+        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.uploads',
+        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.uploads.description',
+        'value' => 'uploads',
+        'icon' => 'mimetypes-x-content-list-files',
+        'group' => 'lists',
+    ],
+    '
+        --palette--;;headers,
+        --palette--;;uploads,
+        --palette--;;uploadslayout,
+    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+        --palette--;;frames,
+        --palette--;;appearanceLinks,
+    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+        categories'
 );

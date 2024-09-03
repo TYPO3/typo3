@@ -2,41 +2,20 @@
 
 defined('TYPO3') or die();
 
-$contentType = 'menu_section';
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content',
-    'CType',
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addRecordType(
     [
         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.menu_section',
         'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.menu_section.description',
-        'value' => $contentType,
+        'value' => 'menu_section',
         'icon' => 'content-menu-section',
         'group' => 'menu',
     ],
-);
-
-$GLOBALS['TCA']['tt_content'] = array_replace_recursive(
-    $GLOBALS['TCA']['tt_content'],
-    [
-        'ctrl' => [
-            'typeicon_classes' => [
-                $contentType => 'content-menu-section',
-            ],
-        ],
-        'types' => [
-            $contentType => [
-                'showitem' => '
-                        --palette--;;headers,
-                        pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
-                        --palette--;;frames,
-                        --palette--;;appearanceLinks,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
-                        categories,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-                ',
-            ],
-        ],
-    ]
+    '
+        --palette--;;headers,
+        pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,
+    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
+        --palette--;;frames,
+        --palette--;;appearanceLinks,
+    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+        categories'
 );
