@@ -43,25 +43,27 @@ class DatabaseService
             throw new \InvalidArgumentException('$persistenceIdentifier must not be empty.', 1472238493);
         }
 
-        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $file = $resourceFactory->retrieveFileOrFolderObject($persistenceIdentifier);
-
-        if ($file === null) {
-            return [];
-        }
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $constraints = [$queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier'))];
+
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        try {
+            $file = $resourceFactory->retrieveFileOrFolderObject($persistenceIdentifier);
+
+            if ($file === null) {
+                return [];
+            } else {
+                $constraints[] = $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($file->getUid(), Connection::PARAM_INT));
+            }
+        } catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
+            // File can not be retrieved if it is located in an extension's "Resources/Private/..." folder. So get references by form file identifier.
+            $constraints[] = $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($persistenceIdentifier));
+        }
 
         return $queryBuilder
             ->select('*')
             ->from('sys_refindex')
-            ->where(
-                $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier')),
-                $queryBuilder->expr()->or(
-                    $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($persistenceIdentifier)),
-                    $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($file->getUid(), Connection::PARAM_INT))
-                )
-            )
+            ->where(...$constraints)
             ->executeQuery()
             ->fetchAllAssociative();
     }
