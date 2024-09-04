@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Controller\Page\TreeController;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tests\Functional\Tree\Repository\Fixtures\Tree\NormalizeTreeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -29,7 +31,9 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -61,7 +65,7 @@ final class TreeControllerTest extends FunctionalTestCase
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
             $writer = DataHandlerWriter::withBackendUser($this->backendUser);
             $writer->invokeFactory($factory);
-            static::failIfArrayIsNotEmpty($writer->getErrors());
+            self::failIfArrayIsNotEmpty($writer->getErrors());
         }, function () {
             $this->backendUser = $this->setUpBackendUser(1);
             $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
@@ -74,7 +78,16 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getAllEntryPointPageTrees(): void
     {
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -189,7 +202,16 @@ final class TreeControllerTest extends FunctionalTestCase
     public function getAllEntryPointPageTreesWithRootPageAsMountPoint(): void
     {
         $this->backendUser->setWebMounts([0, 7000]);
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -301,7 +323,16 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getAllEntryPointPageTreesWithSearch(): void
     {
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees', 0, 'Groups');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -345,7 +376,16 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getSubtreeForAccessiblePage(): void
     {
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees', 1200);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -377,7 +417,16 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getSubtreeForNonAccessiblePage(): void
     {
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees', 1510);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -390,7 +439,16 @@ final class TreeControllerTest extends FunctionalTestCase
     #[Test]
     public function getSubtreeForPageOutsideMountPoint(): void
     {
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees', 7000);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -404,7 +462,16 @@ final class TreeControllerTest extends FunctionalTestCase
     public function getAllEntryPointPageTreesWithMountPointPreservesOrdering(): void
     {
         $this->backendUser->setWebmounts([1210, 1100]);
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -439,7 +506,16 @@ final class TreeControllerTest extends FunctionalTestCase
         $this->backendUser->workspace = 1;
         $context = $this->get(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(1));
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees');
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -624,7 +700,16 @@ final class TreeControllerTest extends FunctionalTestCase
         $context = $this->get(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(1));
         // the record was changed from live "Groups" to "Teams modified" in a workspace
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees', 0, $search);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -658,7 +743,16 @@ final class TreeControllerTest extends FunctionalTestCase
         $this->backendUser->workspace = 1;
         $context = $this->get(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(1));
-        $subject = $this->getAccessibleMock(TreeController::class, null);
+        $subject = $this->getAccessibleMock(
+            TreeController::class,
+            null,
+            [
+                $this->get(IconFactory::class),
+                $this->get(UriBuilder::class),
+                $this->get(EventDispatcherInterface::class),
+                $this->get(SiteFinder::class),
+            ]
+        );
         $actual = $subject->_call('getAllEntryPointPageTrees', 1200);
         $keepProperties = array_flip(['uid', 'title', '_children']);
         $actual = $this->sortTreeArray($actual);
@@ -711,7 +805,7 @@ final class TreeControllerTest extends FunctionalTestCase
 
         $request = new ServerRequest(new Uri('https://example.com'));
 
-        (new TreeController())->fetchDataAction($request);
+        $this->get(TreeController::class)->fetchDataAction($request);
 
         self::assertInstanceOf(AfterPageTreeItemsPreparedEvent::class, $afterPageTreeItemsPreparedEvent);
         self::assertEquals($request, $afterPageTreeItemsPreparedEvent->getRequest());

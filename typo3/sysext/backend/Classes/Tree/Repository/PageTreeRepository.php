@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tree\Repository;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -67,6 +68,8 @@ class PageTreeRepository
 
     protected ?string $additionalWhereClause = null;
 
+    protected EventDispatcherInterface $eventDispatcher;
+
     /**
      * @param int $workspaceId the workspace ID to be checked for.
      * @param array $additionalFieldsToQuery an array with more fields that should be accessed.
@@ -111,6 +114,8 @@ class PageTreeRepository
         ], $additionalFieldsToQuery);
         $this->additionalQueryRestrictions = $additionalQueryRestrictions;
 
+        // @todo: use DI in the future
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $this->quotedFields = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages')
             ->quoteIdentifiersForSelect($this->fields);
@@ -478,6 +483,9 @@ class PageTreeRepository
     {
         $page['_children'] = $groupedAndSortedPagesByPid[(int)$page['uid']] ?? [];
         ksort($page['_children']);
+
+        $event = $this->eventDispatcher->dispatch(new AfterRawPageRowPreparedEvent($page, $this->currentWorkspace));
+        $page = $event->getRawPage();
         foreach ($page['_children'] as &$child) {
             $this->addChildrenToPage($child, $groupedAndSortedPagesByPid);
         }
@@ -757,8 +765,6 @@ class PageTreeRepository
 
     /**
      * Group pages by parent page and sort pages based on sorting property
-     *
-     * @param array $groupedAndSortedPagesByPid
      */
     protected function groupAndSortPages(array $pages, array $groupedAndSortedPagesByPid = []): array
     {

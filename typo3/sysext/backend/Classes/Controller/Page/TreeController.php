@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller\Page;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Dto\Tree\Label\Label;
 use TYPO3\CMS\Backend\Dto\Tree\PageTreeItem;
@@ -44,42 +45,33 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Controller providing data to the page tree
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
+#[AsController]
 class TreeController
 {
     /**
      * Option to use the nav_title field for outputting in the tree items, set via userTS.
-     *
-     * @var bool
      */
-    protected $useNavTitle = false;
+    protected bool $useNavTitle = false;
 
     /**
      * Option to prefix the page ID when outputting the tree items, set via userTS.
-     *
-     * @var bool
      */
-    protected $addIdAsPrefix = false;
+    protected bool $addIdAsPrefix = false;
 
     /**
      * Option to prefix the domain name of sys_domains when outputting the tree items, set via userTS.
-     *
-     * @var bool
      */
-    protected $addDomainName = false;
+    protected bool $addDomainName = false;
 
     /**
      * Option to add the rootline path above each mount point, set via userTS.
-     *
-     * @var bool
      */
-    protected $showMountPathAboveMounts = false;
+    protected bool $showMountPathAboveMounts = false;
 
     /**
      * A list of pages not to be shown.
-     *
-     * @var array
      */
-    protected $hiddenRecords = [];
+    protected array $hiddenRecords = [];
 
     /**
      * An array of background colors for a branch in the tree, set via userTS.
@@ -91,37 +83,23 @@ class TreeController
 
     /**
      * An array of labels for a branch in the tree, set via userTS.
-     *
-     * @var array
      */
     protected array $labels = [];
 
     /**
      * Contains the state of all items that are expanded.
-     *
-     * @var array
      */
-    protected $expandedState = [];
-
-    /**
-     * Instance of the icon factory, to be used for generating the items.
-     *
-     * @var IconFactory
-     */
-    protected $iconFactory;
+    protected array $expandedState = [];
 
     /**
      * Number of tree levels which should be returned on the first page tree load
-     *
-     * @var int
      */
-    protected $levelsToFetch = 2;
+    protected int $levelsToFetch = 2;
 
     /**
      * When set to true all nodes returend by API will be expanded
-     * @var bool
      */
-    protected $expandAllNodes = false;
+    protected bool $expandAllNodes = false;
 
     /**
      * Used in the record link picker to limit the page tree only to a specific list
@@ -129,20 +107,16 @@ class TreeController
      */
     protected array $alternativeEntryPoints = [];
 
-    protected UriBuilder $uriBuilder;
-
     protected PageTreeRepository $pageTreeRepository;
 
     protected bool $userHasAccessToModifyPagesAndToDefaultLanguage = false;
 
-    /**
-     * Constructor to set up common objects needed in various places.
-     */
-    public function __construct()
-    {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-    }
+    public function __construct(
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly SiteFinder $siteFinder,
+    ) {}
 
     protected function initializeConfiguration(ServerRequestInterface $request)
     {
@@ -568,7 +542,7 @@ class TreeController
                     $entryPointRecord = $this->pageTreeRepository->getTree($entryPointRecord['uid'], null, $entryPointIds);
                 }
 
-                if (is_array($entryPointRecord) && !empty($entryPointRecord)) {
+                if ($entryPointRecord !== []) {
                     $entryPointRecords[$k] = $entryPointRecord;
                 }
             }
@@ -582,16 +556,13 @@ class TreeController
      */
     protected function getDomainNameForPage(int $pageId): string
     {
-        $domain = '';
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         try {
-            $site = $siteFinder->getSiteByRootPageId($pageId);
-            $domain = (string)$site->getBase();
-        } catch (SiteNotFoundException $e) {
+            $site = $this->siteFinder->getSiteByRootPageId($pageId);
+            return (string)$site->getBase();
+        } catch (SiteNotFoundException) {
             // No site found
         }
-
-        return $domain;
+        return '';
     }
 
     /**
@@ -678,7 +649,7 @@ class TreeController
                     mountPoint: (int)($item['mountPoint'] ?? 0),
                 );
             },
-            GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            $this->eventDispatcher->dispatch(
                 new AfterPageTreeItemsPreparedEvent($request, $items)
             )->getItems()
         );
