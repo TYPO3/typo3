@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Fluid;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Core\View\FluidViewFactory;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * @internal
@@ -45,6 +47,13 @@ class ServiceProvider extends AbstractServiceProvider
         ];
     }
 
+    public function getExtensions(): array
+    {
+        return [
+            ViewFactoryInterface::class => self::provideFallbackViewFactory(...),
+        ] + parent::getExtensions();
+    }
+
     public static function getRenderingContextFactory(ContainerInterface $container): Core\Rendering\RenderingContextFactory
     {
         return self::new($container, Core\Rendering\RenderingContextFactory::class, [
@@ -64,5 +73,15 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getViewHelperResolverFactoryInterface(ContainerInterface $container): Core\ViewHelper\ViewHelperResolverFactoryInterface
     {
         return $container->get(Core\ViewHelper\ViewHelperResolverFactory::class);
+    }
+
+    public static function provideFallbackViewFactory(
+        ContainerInterface $container,
+        ?ViewFactoryInterface $viewFactory = null
+    ): ViewFactoryInterface {
+        // Provide the default FluidViewFactory for the install tool when $viewFactory is null (that means when we run without symfony DI)
+        return $viewFactory ?? new FluidViewFactory(
+            $container->get(Core\Rendering\RenderingContextFactory::class),
+        );
     }
 }
