@@ -202,7 +202,7 @@
 	AddType application/xml                             rdf xml
 
 	# JavaScript
-	AddType application/javascript                      js
+	AddType application/javascript                      js mjs
 
 	# Manifest files
 	AddType application/manifest+json                   webmanifest
