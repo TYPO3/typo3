@@ -1,2 +1,2 @@
 name: typo3/indexed-search
-label: Indexed Search
+labels: EXT:indexed_search/Resources/Private/Language/locallang_set.xlf

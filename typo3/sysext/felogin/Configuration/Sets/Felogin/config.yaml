@@ -1,2 +1,2 @@
 name: typo3/felogin
-label: Frontend Login
+labels: EXT:felogin/Resources/Private/Language/locallang_set.xlf

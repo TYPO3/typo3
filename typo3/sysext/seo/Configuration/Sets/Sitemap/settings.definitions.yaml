@@ -1,31 +1,19 @@
 settings:
   seo.sitemap.view.templateRootPath:
     default: 'EXT:seo/Resources/Private/Templates/'
-    label: 'Path to template root (FE)'
     type: string
-    description: ''
   seo.sitemap.view.partialRootPath:
     default: 'EXT:seo/Resources/Private/Partials/'
-    label: 'Path to template partials (FE)'
     type: string
-    description: ''
   seo.sitemap.view.layoutRootPath:
     default: 'EXT:seo/Resources/Private/Layouts/'
-    label: 'Path to template layouts (FE)'
     type: string
-    description: ''
   seo.sitemap.pages.excludedDoktypes:
     default: '3, 4, 6, 7, 199, 254'
-    label: 'Doktypes to exclude'
     type: string
-    description: ''
   seo.sitemap.pages.excludePagesRecursive:
     default: ''
-    label: 'List of page uids which should be excluded recursive'
     type: string
-    description: ''
   seo.sitemap.pages.additionalWhere:
     default: "{#no_index} = 0 AND {#canonical_link} = ''"
-    label: 'Additional where clause'
     type: string
-    description: ''

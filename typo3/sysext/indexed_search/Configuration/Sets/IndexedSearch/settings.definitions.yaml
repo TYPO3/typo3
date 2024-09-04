@@ -1,26 +1,16 @@
 settings:
   indexedsearch.view.templateRootPath:
     default: 'EXT:indexed_search/Resources/Private/Templates/'
-    label: 'Path to template root (FE)'
     type: string
-    description: ''
   indexedsearch.view.partialRootPath:
     default: 'EXT:indexed_search/Resources/Private/Partials/'
-    label: 'Path to template partials (FE)'
     type: string
-    description: ''
   indexedsearch.view.layoutRootPath:
     default: 'EXT:indexed_search/Resources/Private/Layouts/'
-    label: 'Path to template layouts (FE)'
     type: string
-    description: ''
   indexedsearch.targetPid:
     default: 0
-    label: 'Set the target page where search results are shown'
     type: int
-    description: ''
   indexedsearch.rootPidList:
     default: ''
-    label: 'A list of integer which should be root-pages to search from'
     type: string
-    description: ''

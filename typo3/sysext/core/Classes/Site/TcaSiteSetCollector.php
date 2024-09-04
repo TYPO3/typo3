@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Site;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Set\SetCollector;
 
 /**
@@ -34,9 +35,14 @@ final readonly class TcaSiteSetCollector
     {
         foreach ($this->setCollector->getSetDefinitions() as $set) {
             $fieldConfiguration['items'][] = [
-                'label' => $set->label,
+                'label' => $this->getLanguageService()->sL($set->label),
                 'value' => $set->name,
             ];
         }
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

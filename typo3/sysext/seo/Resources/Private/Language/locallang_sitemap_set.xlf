@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_sitemap_set.xlf" date="2018-09-04T12:30:00Z"
+		  product-name="seo">
+		<header/>
+		<body>
+			<trans-unit id="label" resname="label">
+				<source>SEO Sitemap</source>
+			</trans-unit>
+
+			<trans-unit id="settings.seo.sitemap.view.templateRootPath" resname="settings.seo.sitemap.view.templateRootPath">
+				<source>Path to template root (FE)</source>
+			</trans-unit>
+			<trans-unit id="settings.description.seo.sitemap.view.templateRootPath" resname="settings.description.seo.sitemap.view.templateRootPath">
+				<source>Test description</source>
+			</trans-unit>
+			<trans-unit id="settings.seo.sitemap.view.partialRootPath" resname="settings.seo.sitemap.view.partialRootPath">
+				<source>Path to template partials (FE)</source>
+			</trans-unit>
+			<trans-unit id="settings.seo.sitemap.view.layoutRootPath" resname="settings.seo.sitemap.view.layoutRootPath">
+				<source>Path to template layouts (FE)</source>
+			</trans-unit>
+			<trans-unit id="settings.seo.sitemap.pages.excludedDoktypes" resname="settings.seo.sitemap.pages.excludedDoktypes">
+				<source>Doktypes to exclude</source>
+			</trans-unit>
+			<trans-unit id="settings.seo.sitemap.pages.excludePagesRecursive" resname="settings.seo.sitemap.pages.excludePagesRecursive">
+				<source>List of page uids which should be excluded recursive</source>
+			</trans-unit>
+			<trans-unit id="settings.seo.sitemap.pages.additionalWhere" resname="settings.seo.sitemap.pages.additionalWhere">
+				<source>Additional where clause</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

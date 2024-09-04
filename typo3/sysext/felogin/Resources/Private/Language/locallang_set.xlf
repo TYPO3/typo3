@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang_set.xlf" date="2024-09-05T08:00:00Z" product-name="felogin">
+		<header/>
+		<body>
+			<trans-unit id="label" resname="label">
+				<source>Frontend Login</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.pid" resname="settings.felogin.pid">
+				<source>User Storage Page</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.pid" resname="settings.description.felogin.pid">
+				<source>Define the Storage Folder with the Website User Records, using a comma separated list or single value</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.recursive" resname="settings.felogin.recursive">
+				<source>Recursive</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.recursive" resname="settings.description.felogin.recursive">
+				<source>If set, also subfolder at configured recursive levels of the User Storage Page will be used</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.showForgotPassword" resname="settings.felogin.showForgotPassword">
+				<source>Display Password Recovery Link</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.showForgotPassword" resname="settings.description.felogin.showForgotPassword">
+				<source>If set, the section in the template to display the link to the forgot password dialogue is visible.</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.showPermaLogin" resname="settings.felogin.showPermaLogin">
+				<source>Display Remember Login Option</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.showPermaLogin" resname="settings.description.felogin.showPermaLogin">
+				<source>If set, the section in the template to display the option to remember the login (with a cookie) is visible.</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.showLogoutFormAfterLogin" resname="settings.felogin.showLogoutFormAfterLogin">
+				<source>Disable redirect after successful login, but display logout-form</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.showLogoutFormAfterLogin" resname="settings.description.felogin.showLogoutFormAfterLogin">
+				<source>If set, the logout form will be displayed immediately after successful login.</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.emailFrom" resname="settings.felogin.emailFrom">
+				<source>Email Sender Address</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.emailFrom" resname="settings.description.felogin.emailFrom">
+				<source>email address used as sender of the change password emails</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.emailFromName" resname="settings.felogin.emailFromName">
+				<source>Email Sender Name</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.emailFromName" resname="settings.description.felogin.emailFromName">
+				<source>Name used as sender of the change password emails</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.replyToEmail" resname="settings.felogin.replyToEmail">
+				<source>Reply-to email Address</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.replyToEmail" resname="settings.description.felogin.replyToEmail">
+				<source>Reply-to address used in the change password emails</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.dateFormat" resname="settings.felogin.dateFormat">
+				<source>Date format</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.dateFormat" resname="settings.description.felogin.dateFormat">
+				<source>Format for the link is valid until message (forgot password email)</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.email.layoutRootPath" resname="settings.felogin.email.layoutRootPath">
+				<source>Layout root path</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.email.layoutRootPath" resname="settings.description.felogin.email.layoutRootPath">
+				<source>Path to layout directory used for emails</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.email.templateRootPath" resname="settings.felogin.email.templateRootPath">
+				<source>Template root path</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.email.templateRootPath" resname="settings.description.felogin.email.templateRootPath">
+				<source>Path to template directory used for emails</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.email.partialRootPath" resname="settings.felogin.email.partialRootPath">
+				<source>Partial root path</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.email.partialRootPath" resname="settings.description.felogin.email.partialRootPath">
+				<source>Path to partial directory used for emails</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.email.templateName" resname="settings.felogin.email.templateName">
+				<source>Template name for emails.</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.email.templateName" resname="settings.description.felogin.email.templateName">
+				<source>HTML emails get the .html file extension, plaintext emails get the .txt file extension.</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.redirectMode" resname="settings.felogin.redirectMode">
+				<source>Redirect Mode</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.redirectMode" resname="settings.description.felogin.redirectMode">
+				<source>Comma separated list of redirect modes. Possible values: groupLogin, userLogin, login, getpost, referer, refererDomains, loginError, logout. Warning: redirects only work if neither the plugin nor the page it is displayed on are set to `hide at login`.</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.redirectFirstMethod" resname="settings.felogin.redirectFirstMethod">
+				<source>Use First Supported Mode from Selection</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.redirectFirstMethod" resname="settings.description.felogin.redirectFirstMethod">
+				<source>If set the first method from redirectMode which is possible will be used</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.redirectPageLogin" resname="settings.felogin.redirectPageLogin">
+				<source>After Successful Login Redirect to Page</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.redirectPageLogin" resname="settings.description.felogin.redirectPageLogin">
+				<source>Page id to redirect to after Login</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.redirectPageLoginError" resname="settings.felogin.redirectPageLoginError">
+				<source>After Failed Login Redirect to Page</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.redirectPageLoginError" resname="settings.description.felogin.redirectPageLoginError">
+				<source>Page id to redirect to after Login Error</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.redirectPageLogout" resname="settings.felogin.redirectPageLogout">
+				<source>After Logout Redirect to Page</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.redirectPageLogout" resname="settings.description.felogin.redirectPageLogout">
+				<source>Page id to redirect to after Logout</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.redirectDisable" resname="settings.felogin.redirectDisable">
+				<source>Disable Redirect</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.redirectDisable" resname="settings.description.felogin.redirectDisable">
+				<source>If set redirecting is disabled</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.forgotLinkHashValidTime" resname="settings.felogin.forgotLinkHashValidTime">
+				<source>Time in hours how long the link for forgot password is valid</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.forgotLinkHashValidTime" resname="settings.description.felogin.forgotLinkHashValidTime">
+				<source>How many hours the link for forgot password is valid</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.domains" resname="settings.felogin.domains">
+				<source>Allowed Referrer-Redirect-Domains</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.domains" resname="settings.description.felogin.domains">
+				<source>Comma separated list of domains which are allowed for the referrer redirect mode</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.exposeNonexistentUserInForgotPasswordDialog" resname="settings.felogin.exposeNonexistentUserInForgotPasswordDialog">
+				<source>Expose existing users</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.exposeNonexistentUserInForgotPasswordDialog" resname="settings.description.felogin.exposeNonexistentUserInForgotPasswordDialog">
+				<source>Expose the information on whether or not the account for which a new password was requested exists. By default, that information is not disclosed for privacy reasons.</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.view.templateRootPath" resname="settings.felogin.view.templateRootPath">
+				<source>Path to template root (frontend)</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.view.templateRootPath" resname="settings.description.felogin.view.templateRootPath">
+				<source>Path to template directory used for the plugin in the frontend. Extends the default template location.</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.view.partialRootPath" resname="settings.felogin.view.partialRootPath">
+				<source>Path to template partials (frontend)</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.view.partialRootPath" resname="settings.description.felogin.view.partialRootPath">
+				<source>Path to partial directory for the plugin in the frontend. Extends the default partial location.</source>
+			</trans-unit>
+			<trans-unit id="settings.felogin.view.layoutRootPath" resname="settings.felogin.view.layoutRootPath">
+				<source>Path to template layouts (frontend)</source>
+			</trans-unit>
+			<trans-unit id="settings.description.felogin.view.layoutRootPath" resname="settings.description.felogin.view.layoutRootPath">
+				<source>Path to layout directory used for the plugin in the frontend. Can be used to introduce a custom layout.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,2 +1,2 @@
 name: typo3/seo-sitemap
-label: SEO Sitemap
+labels: EXT:seo/Resources/Private/Language/locallang_sitemap_set.xlf

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:fluid_styled_content/Resources/Private/Language/locallang_set.xlf" date="2024-09-05T08:00:00Z" product-name="fluid_styled_content">
+		<header/>
+		<body>
+			<trans-unit id="label" resname="label">
+				<source>Fluid Styled Content</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.defaultHeaderType" resname="settings.styles.content.defaultHeaderType">
+				<source>Default Header type</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.defaultHeaderType" resname="settings.description.styles.content.defaultHeaderType">
+				<source>Enter the number of the header layout to be used by default</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.shortcut.tables" resname="settings.styles.content.shortcut.tables">
+				<source>List of accepted tables</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.allowTags" resname="settings.styles.content.allowTags">
+				<source>List of allowed HTML tags when rendering RTE content</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.image.lazyLoading" resname="settings.styles.content.image.lazyLoading">
+				<source>Default settings for browser-native image lazy loading</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.image.lazyLoading" resname="settings.description.styles.content.image.lazyLoading">
+				<source>Can be "lazy" (browsers could choose to load images later), "eager" (load images right away) or "auto" (browser will determine whether the image should be lazy loaded or not)</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.image.imageDecoding" resname="settings.styles.content.image.imageDecoding">
+				<source>Default settings for an image decoding hint to the browser</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.image.imageDecoding" resname="settings.description.styles.content.image.imageDecoding">
+				<source>Can be "sync" (synchronously for atomic presentation with other content), "async" (asynchronously to avoid delaying presentation of other content), "auto" (no preference in decoding mode) or an empty value to omit the usage of the decoding attribute (same as "auto")</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.maxW" resname="settings.styles.content.textmedia.maxW">
+				<source>Max Image/Media Width</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.maxW" resname="settings.description.styles.content.textmedia.maxW">
+				<source>This indicates that maximum number of pixels (width) a block of media elements inserted as content is allowed to consume</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.maxWInText" resname="settings.styles.content.textmedia.maxWInText">
+				<source>Max Image/Media Width (Text)</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.maxWInText" resname="settings.description.styles.content.textmedia.maxWInText">
+				<source>Same as above, but this is the maximum width when text is wrapped around an block of media elements. Default is 50% of the normal Max Media Item Width</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.columnSpacing" resname="settings.styles.content.textmedia.columnSpacing">
+				<source>Advanced, Column space</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.columnSpacing" resname="settings.description.styles.content.textmedia.columnSpacing">
+				<source>Horizontal distance between media elements in a block in content elements of type "Media &amp; Images". If you change this manually in your CSS, you need to adjust this setting accordingly</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.rowSpacing" resname="settings.styles.content.textmedia.rowSpacing">
+				<source>Advanced, Row space</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.rowSpacing" resname="settings.description.styles.content.textmedia.rowSpacing">
+				<source>Vertical distance after each media elements row in content elements of type ""Text &amp; Media". If you change this manually in your CSS, you need to adjust this setting accordingly</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.textMargin" resname="settings.styles.content.textmedia.textMargin">
+				<source>Advanced, Margin to text</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.textMargin" resname="settings.description.styles.content.textmedia.textMargin">
+				<source>Horizontal distance between an imageblock and text in content elements of type "Text &amp; Images"</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.borderColor" resname="settings.styles.content.textmedia.borderColor">
+				<source>Media element border, color</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.borderColor" resname="settings.description.styles.content.textmedia.borderColor">
+				<source>Bordercolor of media elements in content elements when "Border"-option for an element is set</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.borderWidth" resname="settings.styles.content.textmedia.borderWidth">
+				<source>Media element border, thickness</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.borderWidth" resname="settings.description.styles.content.textmedia.borderWidth">
+				<source>Thickness of border around media elements in content elements when "Border"-option for element is set</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.borderPadding" resname="settings.styles.content.textmedia.borderPadding">
+				<source>Media element border, padding</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.borderPadding" resname="settings.description.styles.content.textmedia.borderPadding">
+				<source>Padding left and right to the media element, around the border</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.linkWrap.width" resname="settings.styles.content.textmedia.linkWrap.width">
+				<source>Click-enlarge Media Width</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.linkWrap.width" resname="settings.description.styles.content.textmedia.linkWrap.width">
+				<source>This specifies the width of the enlarged media element when click-enlarge is enabled</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.linkWrap.height" resname="settings.styles.content.textmedia.linkWrap.height">
+				<source>Click-enlarge Media Height</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.linkWrap.height" resname="settings.description.styles.content.textmedia.linkWrap.height">
+				<source>This specifies the height of the enlarged media element when click-enlarge is enabled</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.linkWrap.newWindow" resname="settings.styles.content.textmedia.linkWrap.newWindow">
+				<source>Advanced, New window</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.linkWrap.newWindow" resname="settings.description.styles.content.textmedia.linkWrap.newWindow">
+				<source>If set, every click-enlarged media element will open in it's own popup window and not the current popup window (which may have a wrong size for the media element to fit in)</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.linkWrap.lightboxEnabled" resname="settings.styles.content.textmedia.linkWrap.lightboxEnabled">
+				<source>Lightbox click-enlarge rendering</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.linkWrap.lightboxEnabled" resname="settings.description.styles.content.textmedia.linkWrap.lightboxEnabled">
+				<source>Whether media elements with click-enlarge checked should be rendered lightbox-compliant</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.linkWrap.lightboxCssClass" resname="settings.styles.content.textmedia.linkWrap.lightboxCssClass">
+				<source>Lightbox CSS class</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.linkWrap.lightboxCssClass" resname="settings.description.styles.content.textmedia.linkWrap.lightboxCssClass">
+				<source>Which CSS class to use for lightbox links (only applicable if lightbox rendering is enabled)</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.textmedia.linkWrap.lightboxRelAttribute" resname="settings.styles.content.textmedia.linkWrap.lightboxRelAttribute">
+				<source>Lightbox rel="" attribute</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.textmedia.linkWrap.lightboxRelAttribute" resname="settings.description.styles.content.textmedia.linkWrap.lightboxRelAttribute">
+				<source>Which rel="" attribute to use for lightbox links (only applicable if lightbox rendering is enabled)</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.links.extTarget" resname="settings.styles.content.links.extTarget">
+				<source>Target for external links</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.content.links.keep" resname="settings.styles.content.links.keep">
+				<source>Parts to keep when building links</source>
+			</trans-unit>
+			<trans-unit id="settings.description.styles.content.links.keep" resname="settings.description.styles.content.links.keep">
+				<source>Comma separated list of the link parts to show when building the link-text: scheme,path,query. Example: "" (empty) =&gt; www.example.com, "scheme,path" =&gt; http://www.example.com</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.templates.templateRootPath" resname="settings.styles.templates.templateRootPath">
+				<source>Path of Fluid Templates for all defined content elements</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.templates.partialRootPath" resname="settings.styles.templates.partialRootPath">
+				<source>Path of Fluid Partials for all defined content elements</source>
+			</trans-unit>
+			<trans-unit id="settings.styles.templates.layoutRootPath" resname="settings.styles.templates.layoutRootPath">
+				<source>Path of Fluid Layouts for all defined content elements</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

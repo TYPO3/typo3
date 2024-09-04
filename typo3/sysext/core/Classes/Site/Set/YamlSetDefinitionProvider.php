@@ -89,7 +89,18 @@ class YamlSetDefinitionProvider
     {
         try {
             $settingsDefinitions = [];
+            $labels = $set['labels'] ?? null;
+            unset($set['labels']);
+
+            if ($labels) {
+                $set['label'] ??= 'LLL:' . $labels . ':label';
+            }
+
             foreach (($set['settingsDefinitions'] ?? []) as $setting => $options) {
+                if ($labels) {
+                    $options['label'] ??= 'LLL:' . $labels . ':settings.' . $setting;
+                    $options['description'] ??= 'LLL:' . $labels . ':settings.description.' . $setting;
+                }
                 try {
                     $definition = new SettingDefinition(...[...['key' => $setting], ...$options]);
                 } catch (\Error $e) {
