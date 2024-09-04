@@ -82,13 +82,13 @@ class Recycler {
 
     // changing the search field
     new RegularEvent('keyup', (event: KeyboardEvent) => {
-      const input = event.currentTarget as HTMLInputElement;
+      const input = event.target as HTMLInputElement;
       const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
 
       if (input.value !== '') {
-        searchSubmitButton.classList.remove('disabled');
+        searchSubmitButton.disabled = false;
       } else {
-        searchSubmitButton.classList.add('disabled');
+        searchSubmitButton.disabled = true;
         this.loadDeletedElements();
       }
     }).delegateTo(document, Identifiers.searchText);
@@ -123,7 +123,7 @@ class Recycler {
       {
         onClear: () => {
           const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
-          searchSubmitButton.classList.add('disabled');
+          searchSubmitButton.disabled = true;
           this.loadDeletedElements();
         },
       },
