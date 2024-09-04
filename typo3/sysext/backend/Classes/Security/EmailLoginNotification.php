@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
@@ -76,7 +77,7 @@ final class EmailLoginNotification implements LoggerAwareInterface
         if (!$genericLoginWarning && !$userLoginNotification) {
             return;
         }
-        $this->request = $event->getRequest() ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
+        $this->request = $event->getRequest() ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         if ($genericLoginWarning) {
             $prefix = $currentUser->isAdmin() ? '[AdminLoginWarning]' : '[LoginWarning]';

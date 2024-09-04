@@ -1884,7 +1884,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($this->loginSessionStarted && !($this->getSessionData('mfa') ?? false)) {
             // Handling user logged in. By checking for the mfa session key, it's ensured, the
             // handling is only done once, since MfaController does the handling on its own.
-            $this->handleUserLoggedIn();
+            $this->handleUserLoggedIn($request);
         }
     }
 
