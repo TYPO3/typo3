@@ -114,4 +114,42 @@ After:
         }
     }
 
+Here is a basic recipe to perform this migration, preferably utilizing
+statical code analysis/replacement tools on your :file:`*ViewHelper.php`
+files:
+
+*   Find definitions of :php:`renderStatic`
+
+*   Rename method to :php:`render()`, remove the arguments, remove :php:`static` declaration
+
+*   Within that method:
+
+    *   Replace :php:`$arguments` with :php:`$this->arguments`
+    *   Replace :php:`$renderingContext` with :php:`$this->renderingContext`
+    *   Replace :php:`$renderChildrenClosure()` with :php:`$this->renderChildren()`
+    *   Replace remaining :php:`$renderChildrenClosure` usages with proper closure handling, like :php:`$this->renderChildren(...)`.
+
+*   Replace :php:`resolveContentArgumentName(` with :php:`getContentArgumentName(`
+
+*   Remove the mentioned definitions:
+
+    *   :php:`use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+    *   :php:`use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;`
+    *   :php:`use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;`
+    *   :php:`use CompileWithRenderStatic;` (class trait)
+    *   :php:`use CompileWithContentArgumentAndRenderStatic;` (class trait)
+
+*   (Optionally remove custom phpdoc annotations to the `renderStatic` parameters)
+
+*   If you previously called ViewHelper's :php:`renderStatic` methods in other places,
+    you may utilize something like:
+
+    ..  code-block:: php
+        $this->renderingContext->getViewHelperInvoker()->invoke(
+            MyViewHelper::class,
+            $arguments,
+            $this->renderingContext,
+            $this->renderChildren(...),
+        );
+
 .. index:: Fluid, PartiallyScanned, ext:fluid
