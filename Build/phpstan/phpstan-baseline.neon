@@ -256,7 +256,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
 
 		-
-			message: "#^Offset 2 on \\*NEVER\\* on left side of \\?\\? always exists and is not nullable\\.$#"
+			message: "#^Offset 2 on array\\{string, non\\-empty\\-string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Configuration/CKEditor5Migrator.php
 
