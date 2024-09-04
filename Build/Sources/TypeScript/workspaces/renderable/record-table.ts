@@ -341,27 +341,19 @@ export class RecordTableElement extends LitElement {
    * @return {JQuery}
    */
   private getAction(condition: boolean, action: string, iconIdentifier: string, additionalAttributes?: Record<string, string>): TemplateResult {
-    if (condition) {
-      return html`
-        <button
-          class="btn btn-default"
-          data-action="${action}"
-          title=${ifDefined(additionalAttributes.title)}
-          data-bs-target=${ifDefined(additionalAttributes['data-bs-target'])}
-          data-bs-toggle=${ifDefined(additionalAttributes['data-bs-toggle'])}
-          aria-expanded=${ifDefined(additionalAttributes['aria-expanded'])}>
-          <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(iconIdentifier)} size="small"></typo3-backend-icon>
-        </button>
-      `;
-    }
-    return html`<span
-      class="btn btn-default disabled"
-      title=${ifDefined(additionalAttributes.title)}
-      data-bs-target=${ifDefined(additionalAttributes['data-bs-target'])}
-      data-bs-toggle=${ifDefined(additionalAttributes['data-bs-toggle'])}
-      aria-expanded=${ifDefined(additionalAttributes['aria-expanded'])}>
-      <typo3-backend-icon identifier=${IconHelper.getIconIdentifier('empty-empty')} size="small"></typo3-backend-icon>
-    </span>`;
+    return html`
+      <button
+        type="button"
+        class="btn btn-default"
+        disabled="${condition ? nothing : ''}"
+        data-action="${condition ? action : nothing}"
+        title=${ifDefined(additionalAttributes.title)}
+        data-bs-target=${ifDefined(additionalAttributes['data-bs-target'])}
+        data-bs-toggle=${ifDefined(additionalAttributes['data-bs-toggle'])}
+        aria-expanded=${ifDefined(additionalAttributes['aria-expanded'])}>
+        <typo3-backend-icon identifier=${IconHelper.getIconIdentifier((condition ? iconIdentifier : 'empty-empty'))} size="small"></typo3-backend-icon>
+      </button>
+    `;
   }
 }
 
