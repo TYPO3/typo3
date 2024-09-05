@@ -75,7 +75,7 @@ class CheckboxToggleElement extends AbstractFormElement
             $disabled = true;
         }
         // Traversing the array of items
-        $items = $this->data['parameterArray']['fieldConf']['config']['items'];
+        $items = $this->data['parameterArray']['fieldConf']['config']['items'] ?? [];
 
         $numberOfItems = count($items);
         if ($numberOfItems === 0) {
