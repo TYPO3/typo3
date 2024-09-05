@@ -38,14 +38,16 @@ final class RedirectLoginErrorHandler implements PageErrorHandlerInterface
 {
     private const PAGE_ID_LOGIN_FORM = 656;
 
-    private readonly int $loginRedirectPid;
-    private readonly string $loginRedirectParameter;
-    private readonly Context $context;
-    private readonly LinkService $linkService;
-    private readonly ErrorPageController $errorPageController;
+    private int $loginRedirectPid;
+    private string $loginRedirectParameter;
+    private Context $context;
+    private LinkService $linkService;
+    private ErrorPageController $errorPageController;
+    private int $statusCode;
 
-    public function __construct(private readonly int $statusCode)
+    public function __construct(int $statusCode)
     {
+        $this->statusCode = $statusCode;
         $configuration = [
             // TODO: Replace with $siteSettings[...] or something else
             'loginRedirectTarget' => 't3://page?uid=' . self::PAGE_ID_LOGIN_FORM,
