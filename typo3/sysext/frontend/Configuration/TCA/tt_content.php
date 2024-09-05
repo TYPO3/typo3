@@ -41,7 +41,6 @@ return [
             'uploads' => 'mimetypes-x-content-list-files',
             'list' => 'mimetypes-x-content-plugin',
             'shortcut' => 'mimetypes-x-content-link',
-            'script' => 'mimetypes-x-content-script',
             'div' => 'mimetypes-x-content-divider',
             'html' => 'mimetypes-x-content-html',
             'default' => 'mimetypes-x-content-text',
