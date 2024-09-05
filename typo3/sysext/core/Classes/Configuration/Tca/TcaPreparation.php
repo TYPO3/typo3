@@ -566,14 +566,33 @@ readonly class TcaPreparation
 
     private function removeCustomFieldLabels(array $showitemParts, array $fieldList): array
     {
+        if ($fieldList === []) {
+            return $showitemParts;
+        }
         foreach ($showitemParts as &$showItem) {
-            // Check if we deal with a field
-            if (!str_starts_with($showItem, '--div--') && !str_starts_with($showItem, '--palette--')) {
-                $parts = GeneralUtility::trimExplode(';', $showItem, true, 2);
-                // Just keep the first part => the fieldname in case field is defined in the $fieldList
-                if ($fieldList !== [] && in_array($parts[0], $fieldList, true)) {
-                    $showItem = $parts[0];
+            // Tabs keep their labels
+            if (str_starts_with($showItem, '--div--')) {
+                continue;
+            }
+            // Remove label of palette
+            if (str_starts_with($showItem, '--palette--')) {
+                $parts = GeneralUtility::trimExplode(';', $showItem, true, 3);
+                // Palette without label, continue.
+                if (count($parts) !== 3) {
+                    continue;
                 }
+                $paletteName = '--palette--;;' . $parts[2];
+                if (in_array($paletteName, $fieldList, true)) {
+                    $showItem = $paletteName;
+                }
+                continue;
+            }
+            // This must be a field.
+            $parts = GeneralUtility::trimExplode(';', $showItem, true, 2);
+            $fieldName = $parts[0];
+            // Just keep the first part => the fieldname in case field is defined in the $fieldList
+            if (in_array($fieldName, $fieldList, true)) {
+                $showItem = $fieldName;
             }
         }
         return $showitemParts;
