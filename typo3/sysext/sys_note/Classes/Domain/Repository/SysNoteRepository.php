@@ -17,8 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\SysNote\Domain\Repository;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
 /**
  * Sys_note repository
@@ -76,5 +79,69 @@ class SysNoteRepository
         }
 
         return $res->executeQuery()->fetchAllAssociative();
+    }
+
+    /**
+     * Find notes by given category but restricted to backend user permissions
+     *
+     * @param int $category Category id
+     *
+     * @return array
+     */
+    public function findByCategoryRestricted(?int $category = null): array
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_note');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $queryBuilder = $queryBuilder
+            ->select('sys_note.*')
+            ->from('sys_note')
+            ->where(
+                $queryBuilder->expr()->eq('sys_note.deleted', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->eq('sys_note.personal', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_note.cruser', $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], Connection::PARAM_INT))
+                )
+            )
+            ->orderBy('sorting', 'asc')
+            ->addOrderBy('crdate', 'desc');
+
+        if ($category !== null) {
+            $queryBuilder = $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('sys_note.category', $queryBuilder->createNamedParameter($category, Connection::PARAM_INT)),
+            );
+        }
+
+        $results = [];
+        foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $result) {
+            if ($this->checkPermissions($result)) {
+                $results[] = $result;
+            }
+        }
+
+        return $results;
+    }
+
+    private function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    private function checkPermissions(array $result): bool
+    {
+        $backendUser = $this->getBackendUser();
+        $pageId = $result['pid'];
+        if ($pageId > 0 && !$backendUser->isAdmin()) {
+            // Check for WebMount access
+            if ($backendUser->isInWebMount($pageId) === null) {
+                return false;
+            }
+            // Check for record access
+            $pageRow = BackendUtility::getRecord('pages', $pageId);
+            if ($pageRow === null || !$backendUser->doesUserHaveAccess($pageRow, Permission::PAGE_SHOW)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

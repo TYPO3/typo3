@@ -1,6 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+        xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+        xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
 >
 <f:if condition="{notes}">
     <h2><f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:internal_note" /></h2>
@@ -10,13 +10,13 @@
                 <div class="note-header">
                     <div class="note-header-bar">
                         <button
-                            type="button"
-                            class="btn btn-link p-0 note-icon"
-                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
-                            data-contextmenu-trigger="click"
-                            data-contextmenu-table="sys_note"
-                            data-contextmenu-uid="{note.uid}"
-                            aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
+                                type="button"
+                                class="btn btn-link p-0 note-icon"
+                                title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
+                                data-contextmenu-trigger="click"
+                                data-contextmenu-table="sys_note"
+                                data-contextmenu-uid="{note.uid}"
+                                aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.contextMenu.open')}"
                         >
                             <core:icon identifier="sysnote-type-{note.category}" />
                         </button>
@@ -49,13 +49,13 @@
                                         <input type="hidden" name="cmd[sys_note][{note.uid}][delete]" value="1" />
                                         <input type="hidden" name="redirect" value="{returnUrl}" />
                                         <button
-                                            type="submit"
-                                            class="btn btn-default btn-sm t3js-modal-trigger"
-                                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
-                                            data-severity="warning"
-                                            data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
-                                            data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
-                                            data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                                                type="submit"
+                                                class="btn btn-default btn-sm t3js-modal-trigger"
+                                                title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
+                                                data-severity="warning"
+                                                data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
+                                                data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
+                                                data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
                                         >
                                             <core:icon identifier="actions-edit-delete" />
                                         </button>

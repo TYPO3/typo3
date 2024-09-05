@@ -51,6 +51,7 @@ final class DashboardModuleCest
         $I->click('.dashboard-button-tab-add');
         $modalDialog->canSeeDialog();
         $I->fillField('#dashboardModalAdd-title', self::$customDashboardTitle);
+        $I->click('label[for="dashboardKey-empty"]');
         $I->click('button[name="save"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->switchToContentFrame();
         $I->see(self::$customDashboardTitle, self::$dashboardActiveSelector);

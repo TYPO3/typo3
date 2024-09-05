@@ -69,6 +69,11 @@
 .widget-content-title{padding:10px 20px;padding-inline-end:76px;border-bottom:1px solid #d7d7d7;font-family:"Source Sans 3",sans-serif;font-size:16px;font-weight:700;line-height:1.25}
 .widget-content-title span{overflow:hidden;display:block;white-space:nowrap;text-overflow:ellipsis}
 .widget-content-title h2{margin-bottom:0}
+div[data-widget-key=sys_note_default] .widget-content-title{background-color:var(--note-default-header-bg)}
+div[data-widget-key=sys_note_todos] .widget-content-title{background-color:var(--note-success-header-bg)}
+div[data-widget-key=sys_note_instructions] .widget-content-title{background-color:var(--note-info-header-bg)}
+div[data-widget-key=sys_note_notes] .widget-content-title{background-color:var(--note-notice-header-bg)}
+div[data-widget-key=sys_note_template] .widget-content-title{background-color:var(--note-warning-header-bg)}
 .widget-content-main{flex-grow:1;overflow-y:auto;padding:20px}
 .widget-content-footer{padding:20px;padding-top:0}
 .widget-actions{position:absolute;display:flex;top:calc(16px * 1.25 / 2 + 20px / 2);inset-inline-end:10px;transform:translate(0,-50%);opacity:0;transition:opacity .2s ease-in-out}

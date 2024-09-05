@@ -40,6 +40,26 @@
     h2 {
         margin-bottom: 0;
     }
+
+    div[data-widget-key="sys_note_default"] & {
+        background-color: var(--note-default-header-bg);
+    }
+
+    div[data-widget-key="sys_note_todos"] & {
+        background-color: var(--note-success-header-bg);
+    }
+
+    div[data-widget-key="sys_note_instructions"] & {
+        background-color: var(--note-info-header-bg);
+    }
+
+    div[data-widget-key="sys_note_notes"] & {
+        background-color: var(--note-notice-header-bg);
+    }
+
+    div[data-widget-key="sys_note_template"] & {
+        background-color: var(--note-warning-header-bg);
+    }
 }
 
 .widget-content-main {

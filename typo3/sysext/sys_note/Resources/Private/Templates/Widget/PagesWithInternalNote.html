@@ -1,0 +1,46 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+>
+<f:layout name="Widget/Widget" />
+
+<f:section name="main">
+    <div class="widget-table-wrapper">
+        <table class="table table-striped table-hover widget-table">
+            <thead>
+            <tr>
+                <th>
+                    <f:if condition="{category}"><core:icon identifier="sysnote-type-{category}" /> </f:if><f:translate key="subjectmessage" extensionName="sys_note" />
+                </th>
+                <th colspan="2"><f:translate key="created" extensionName="sys_note" /></th>
+            </tr>
+            </thead>
+            <tbody>
+            <f:for each="{sysNotes}" as="sysNote">
+                <f:switch expression="{sysNote.category}">
+                    <f:case value="1"><f:variable name="rowClass" value="info" /></f:case>
+                    <f:case value="2"><f:variable name="rowClass" value="warning" /></f:case>
+                    <f:case value="3"><f:variable name="rowClass" value="notice" /></f:case>
+                    <f:case value="4"><f:variable name="rowClass" value="success" /></f:case>
+                    <f:defaultCase><f:variable name="rowClass" value="" /></f:defaultCase>
+                </f:switch>
+                <tr class="{rowClass}">
+                    <td><strong><f:format.crop maxCharacters="30">{sysNote.subject}</f:format.crop> ({sysNote.pid})</strong><br /><f:format.crop maxCharacters="50">{sysNote.message}</f:format.crop></td>
+                    <td><f:format.date format="{dateFormat} {timeFormat}">{sysNote.crdate}</f:format.date></td>
+                    <td class="text-end">
+                        <f:be.link class="btn btn-default" route="web_layout" parameters="{id: sysNote.pid}">
+                            <core:icon identifier="actions-document-view" size="small" /> <f:translate key="goto_page" extensionName="sys_note"/>
+                        </f:be.link>
+                    </td>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </div>
+
+</f:section>
+<f:section name="footer">
+    <f:if condition="{button}">
+        <a href="{button.link}" target="{button.target}" class="widget-cta">{f:translate(id: button.title, default: button.title)}</a>
+    </f:if>
+</f:section>
+</html>
