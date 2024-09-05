@@ -57,7 +57,7 @@ the following service registration can be used:
         arguments:
           $buttonProvider: '@dashboard.buttons.t3news'
           $options:
-          feedUrl: 'https://www.typo3.org/rss'
+            feedUrl: 'https://www.typo3.org/rss'
         tags:
           - name: dashboard.widget
             identifier: 't3news'
