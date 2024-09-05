@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Adminpanel\Utility;
 
-use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
+use TYPO3\CMS\Frontend\Authentication\FrontendBackendUserAuthentication;
 
 /**
  * Helper class to check if the admin panel is enabled and active from outside

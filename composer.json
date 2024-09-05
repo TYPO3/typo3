@@ -147,7 +147,8 @@
 		"typo3/class-alias-loader": {
 			"class-alias-maps": [
 				"typo3/sysext/backend/Migrations/Code/ClassAliasMap.php",
-				"typo3/sysext/extensionmanager/Migrations/Code/ClassAliasMap.php"
+				"typo3/sysext/extensionmanager/Migrations/Code/ClassAliasMap.php",
+				"typo3/sysext/frontend/Migrations/Code/ClassAliasMap.php"
 			],
 			"always-add-alias-loader": true
 		},
