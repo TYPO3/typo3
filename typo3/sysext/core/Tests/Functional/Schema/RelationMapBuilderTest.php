@@ -72,8 +72,10 @@ final class RelationMapBuilderTest extends FunctionalTestCase
         // find the relation back to tt_content
         $relationToTtContent = array_filter($result, static fn(PassiveRelation $relation) => $relation->fromTable() === 'tt_content');
         $relationToTtContent = array_values($relationToTtContent);
-        self::assertEquals('image', $relationToTtContent[0]->fromField());
-        self::assertEquals('assets', $relationToTtContent[1]->fromField());
-        self::assertEquals('media', $relationToTtContent[2]->fromField());
+
+        self::assertEquals(
+            ['image', 'assets', 'media'],
+            array_map(static fn(PassiveRelation $relation) => $relation->fromField(), $relationToTtContent)
+        );
     }
 }
