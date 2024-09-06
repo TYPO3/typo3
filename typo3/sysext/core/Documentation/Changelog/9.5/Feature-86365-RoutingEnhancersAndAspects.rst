@@ -1,5 +1,4 @@
 .. include:: /Includes.rst.txt
-.. highlight:: yaml
 
 .. _feature-86365:
 

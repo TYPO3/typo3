@@ -1,5 +1,4 @@
 .. include:: /Includes.rst.txt
-.. highlight:: yaml
 
 .. _feature-86214:
 
@@ -37,15 +36,17 @@ StaticText
 The :yaml:`staticText` option allows to deliver simple text content. The text can be added through a text field directly in
 the site configuration. This is suitable for files like :file:`robots.txt` or :file:`humans.txt`.
 
-YAML Configuration Example::
+YAML Configuration Example:
 
-   route: robots.txt
-   type: staticText
-   content: |
-     Sitemap: https://example.com/sitemap.xml
-     User-agent: *
-     Allow: /
-     Disallow: /forbidden/
+..  code-block:: yaml
+
+    route: robots.txt
+    type: staticText
+    content: |
+      Sitemap: https://example.com/sitemap.xml
+      User-agent: *
+      Allow: /
+      Disallow: /forbidden/
 
 TYPO3 URL (t3://)
 -----------------
@@ -53,16 +54,18 @@ TYPO3 URL (t3://)
 The type :yaml:`uri` for TYPO3 URL provides the option to render either a file, page or url. Internally a request to the
 file or URL is done and its content delivered.
 
-YAML Configuration Examples::
+YAML Configuration Examples:
 
-   -
-     route: sitemap.xml
-     type: uri
-     source: 't3://page?uid=1&type=1533906435'
-   -
-     route: favicon.ico
-     type: uri
-     source: 't3://file?uid=77'
+..  code-block:: yaml
+
+    -
+      route: sitemap.xml
+      type: uri
+      source: 't3://page?uid=1&type=1533906435'
+    -
+      route: favicon.ico
+      type: uri
+      source: 't3://file?uid=77'
 
 
 Implementation

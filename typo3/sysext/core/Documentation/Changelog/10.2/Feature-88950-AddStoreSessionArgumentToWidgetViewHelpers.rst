@@ -1,5 +1,4 @@
 .. include:: /Includes.rst.txt
-.. highlight:: xml
 
 .. _feature-88950:
 
@@ -20,13 +19,17 @@ As this is not always a desired behaviour (gdpr),
 a boolean argument ``storeSession`` has been added to :php:`\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper`,
 which defaults to true and can be used to disable session storage for this ViewHelper.
 
-This will automatically create a ``fe_typo_user`` cookie in the frontend::
+This will automatically create a ``fe_typo_user`` cookie in the frontend:
 
-   <f:widget.autocomplete for="name" objects="{posts}" searchProperty="author" />
+..  code-block:: html
 
-This will not create a cookie in frontend::
+    <f:widget.autocomplete for="name" objects="{posts}" searchProperty="author" />
 
-   <f:widget.autocomplete for="name" objects="{posts}" searchProperty="author" storeSession="false" />
+This will not create a cookie in frontend:
+
+..  code-block:: html
+
+    <f:widget.autocomplete for="name" objects="{posts}" searchProperty="author" storeSession="false" />
 
 Impact
 ======
