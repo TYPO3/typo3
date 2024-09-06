@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang_set.xlf" date="2024-09-05T08:00:00Z" product-name="felogin">
+	<file source-language="en" datatype="plaintext" original="EXT:felogin/Configuration/Sets/Felogin/labels.xlf" date="2024-09-05T08:00:00Z" product-name="felogin">
 		<header/>
 		<body>
 			<trans-unit id="label" resname="label">

@@ -82,6 +82,13 @@ class YamlSetDefinitionProvider
             $set['settings'] = $settings;
         }
 
+        if (($set['labels'] ?? '') === '') {
+            $labelsFile = $path . '/labels.xlf';
+            if (is_file($labelsFile)) {
+                $set['labels'] = $labelsFile;
+            }
+        }
+
         return $this->createDefinition($set, $path);
     }
 
