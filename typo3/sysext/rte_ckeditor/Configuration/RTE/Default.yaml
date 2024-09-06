@@ -6,7 +6,12 @@ imports:
     #- { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/LinkBrowser.yaml' }
 # Additional optional TYPO3 specific configuration is available via ./Editor/LinkBrowser.yaml
 # See https://docs.typo3.org/c/typo3/cms-rte-ckeditor/main/en-us/Configuration/Reference.html
-
+#
+# The keys typing.transformations.extra.from and htmlSupport.allow.name allow
+# to have a special array with a key `pattern` that allows to specify Regular Expressions:
+# - { from: { pattern: '(typoscript|TYPOScript|typo3script)$' }, to: 'TypoScript' }
+# see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.4.x/Important-104827-AllowToUseRegularExpressionsInCKEditorYAML.html
+#
 # Add configuration for the editor
 # For complete documentation see https://ckeditor.com/docs/ckeditor5/latest/features/index.html
 editor:
