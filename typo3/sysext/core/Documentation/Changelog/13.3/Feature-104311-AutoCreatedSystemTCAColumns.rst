@@ -143,7 +143,7 @@ Default configuration added by the core:
 :php:`['ctrl']['enablecolumns']['endtime']`
 ...........................................
 
-This setting makes database table rows "endtime aware": A row having a end
+This setting makes database table rows "endtime aware": A row having an end
 time in the past is not rendered in the frontend.
 
 Typical usage:
@@ -453,7 +453,8 @@ Impact
 ======
 
 Extension developers can typically remove :php:`columns` definitions of all the
-above fields an rely on TYPO3 core creating them with a good default definition.
+above fields and rely on TYPO3 core creating them with a good default
+definition.
 
 It is only required to define the desired table capabilities in :php:`ctrl` with
 its field names, and the system will create the according :php:`columns`

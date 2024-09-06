@@ -18,8 +18,8 @@ specific value of a database field.
 TYPO3 has the functionality enabled for the database tables :sql:`fe_users` and
 :sql:`fe_groups`.
 
-The respective default models, which do not make a lot of sense, as models are
-depending on a specific domain, have been removed in previous TYPO3 versions.
+The respective default models, which do not make a lot of sense as models
+depend on a specific domain, have been removed in previous TYPO3 versions.
 
 For frontend user groups, the usage and the usefulness for TYPO3 to ship this out
 of the box, has shown little impact. For this reason, the functionality has been

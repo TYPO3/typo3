@@ -11,7 +11,7 @@ See :issue:`104221`
 Description
 ===========
 
-When using a RTE HTML content element, two transformations
+When using an RTE HTML content element, two transformations
 take place within the TYPO3 backend:
 
 *  From database: Fetching the current content from the database (`persistence`) and

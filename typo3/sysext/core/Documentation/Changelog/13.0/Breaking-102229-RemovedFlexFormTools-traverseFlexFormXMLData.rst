@@ -41,7 +41,7 @@ Impact
 ======
 
 In general, these changes should have relatively low impact on extensions, if they
-don't built additional low level functionality on top of the general TYPO3 Core
+don't build additional low level functionality on top of the general TYPO3 Core
 FlexForm related features. Extensions like the TemplaVoila forks may need to have
 a look for required adaptions, though.
 

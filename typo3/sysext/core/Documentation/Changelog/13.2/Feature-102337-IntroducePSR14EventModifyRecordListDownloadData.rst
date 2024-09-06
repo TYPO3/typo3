@@ -22,7 +22,7 @@ and
 hooks, which have been :ref:`deprecated <deprecation-102337-1715591179>`.
 
 The event allows to modify both body and header section of the data
-dump, so it can e.g. be use to redact sepcific data for GDPR compliance,
+dump, so it can e.g. be used to redact specific data for GDPR compliance,
 transform / translate specific data, trigger creation of archives or web hooks,
 log export access and more.
 
@@ -34,7 +34,7 @@ The event offers the following methods:
 - :php:`setRecords()`: Sets the modified body rows of the dataset.
 - :php:`getRequest()`: Returns the PSR request context.
 - :php:`getTable()`: Returns the name of the database table of the dataset.
-- :php:`getFormat()`: Returns the the format of the download action (CSV/JSON).
+- :php:`getFormat()`: Returns the format of the download action (CSV/JSON).
 - :php:`getFilename()`: Returns the name of the download filename (for browser output).
 - :php:`getId()`: Returns the page UID of the download origin.
 - :php:`getModTSconfig()`: Returns the active module TSconfig of the download origin.

@@ -11,7 +11,7 @@ See :issue:`104095`
 Description
 ===========
 
-Using the "Show columns" action in the the :guilabel:`File > Filelist`
+Using the "Show columns" action in the :guilabel:`File > Filelist`
 backend module allows to select the columns to be displayed file and
  folder listing.
 

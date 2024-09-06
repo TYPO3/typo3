@@ -52,7 +52,7 @@ Advanced example with value quoting
 
     CREATE TABLE a_textfield_test_table
     (
-        # JSON object default value containting single quote in json field
+        # JSON object default value containing single quote in json field
         field1 JSON NOT NULL DEFAULT '{"key1": "value1", "key2": 123, "key3": "value with a '' single quote"}',
 
         # JSON object default value containing double-quote in json field

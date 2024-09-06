@@ -28,7 +28,7 @@ login process is handled. Additionally, the :php:`loginRedirectParameter`
 must be set to the URL parameter that will be used to hand over the original
 URL to the target page.
 
-The redirect is ensures that the original URL is added to the configured GET
+The redirect ensures that the original URL is added to the configured GET
 parameter :php:`loginRedirectParameter`, so that the user can be redirected
 back to the original page after a successful login.
 

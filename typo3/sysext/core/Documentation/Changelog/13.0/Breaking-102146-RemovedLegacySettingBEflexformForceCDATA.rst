@@ -14,7 +14,7 @@ Description
 The TYPO3 configuration option :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['flexformForceCDATA']`
 has been removed without substitution.
 
-This setting was an ancient work around for an issue in libxml in old PHP versions that has
+This setting was an ancient workaround for an issue in libxml in old PHP versions that has
 been resolved long ago.
 
 This was the last usage of :php:`useCDATA` option in FlexForm-related XML methods in

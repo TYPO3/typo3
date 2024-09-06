@@ -34,7 +34,7 @@ with shared requirements:
 
 * Each SELECT must return the same fields in number, naming and order.
 * Each SELECT must not have ORDER BY, expect MySQL allowing it to be used as sub
-  query expression encapsulated in parenthesis.
+  query expression encapsulated in parentheses.
 
 Generic :sql:`UNION` clause support has been contributed to `Doctrine DBAL` and
 is included since `Release 4.1.0 <https://github.com/doctrine/dbal/releases/tag/4.1.0>`__
@@ -79,7 +79,7 @@ Each subsequent part needs to be defined either as :sql:`UNION DISTINCT` or
 For example, using :sql:`UNION ALL` for all parts in between except for the last
 one would generate larger result sets first, but discards duplicates when adding
 the last result set. On the other side, using :sql:`UNION ALL` tells the query
-optimizer **not** to scan for duplicats and remove them at all which can be a
+optimizer **not** to scan for duplicates and remove them at all which can be a
 performance improvement - if you can deal with duplicates it can be ensured that
 each part does not produce same outputs.
 
@@ -87,7 +87,7 @@ Example: Compose a :sql:`UNION` clause query
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ..  code-block:: php
-    :caption: Custom service class using an UNION query to retrieve data.
+    :caption: Custom service class using a UNION query to retrieve data.
 
     use TYPO3\CMS\Core\Database\Connection;
     use TYPO3\CMS\Core\Database\ConnectionPool;

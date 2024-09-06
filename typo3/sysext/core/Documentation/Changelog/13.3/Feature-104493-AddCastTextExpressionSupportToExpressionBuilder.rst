@@ -93,7 +93,7 @@ Impact
 ======
 
 Extension authors can use the new expression method to build more advanced
-queries without the the requirement to deal with the correct implementation
+queries without the requirement to deal with the correct implementation
 for all supported database vendors - at least to some grade.
 
 .. index:: Database, PHP-API, ext:core

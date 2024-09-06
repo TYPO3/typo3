@@ -15,7 +15,7 @@ A new PSR-14 event :php:`\TYPO3\CMS\Core\Country\Event\BeforeCountriesEvaluatedE
 has been introduced to modify the list of countries provided by
 :php:`\TYPO3\CMS\Core\Country\CountryProvider`.
 
-This event allows to to add, remove and alter countries from the list used by the
+This event allows to add, remove and alter countries from the list used by the
 provider class itself and ViewHelpers like :html:`<f:form.countrySelect />`.
 
 ..  note::

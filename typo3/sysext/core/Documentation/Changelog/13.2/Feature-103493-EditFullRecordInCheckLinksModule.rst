@@ -16,7 +16,7 @@ provided the possibility to edit the field of a record, a broken link has
 been identified for. However, in some cases relevant context might be missing,
 e.g. when editing redirect records.
 
-Therefore, a new button has been introdcued, which allows to edit the
+Therefore, a new button has been introduced, which allows to edit the
 full record of the broken link. The new button is placed next to the
 existing - single field - edit button.
 

@@ -11,7 +11,7 @@ See :issue:`102902`
 Description
 ===========
 
-The "Rules" section in Indexed Search stems from a time where today's knowledge
+The "Rules" section in Indexed Search stems from a time when today's knowledge
 how a search works was considered "advanced". By today's standards, it can be
 considered common sense and therefore the rules and its related TypoScript
 configuration have been removed.

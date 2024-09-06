@@ -38,7 +38,7 @@ by the core listeners to store their result, which was previously passed
 to the :doc:`removed <../13.0/Breaking-102935-OverhauledExtensionInstallationInExtensionManager>`
 `EXT:extensionmanager` PSR-14 events.
 
-Listeners can access those information using corresponding :php:`getStorageEntry()`
+Listeners can access that information using corresponding :php:`getStorageEntry()`
 method. Those entries are a :php:`PackageInitializationResult` object, which
 features the following methods:
 

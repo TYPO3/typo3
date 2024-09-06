@@ -42,7 +42,7 @@ expanded automatically:
 * :php:`link`
 * :php:`select` with a static list of entries
 
-Each of the fields receive a full-fledged resolved value, based on the field
+Each of the fields receives a full-fledged resolved value, based on the field
 configuration from TCA.
 
 In case of relations (:php:`category`, :php:`group`, :php:`inline`,
@@ -113,7 +113,7 @@ Fields of TCA type :php:`datetime` will be transformed into a full
 Fields of TCA type :php:`json` will provide the decoded JSON value.
 
 Fields of TCA type :php:`link` will provide the :php:`TypolinkParameter` object,
-which is a object oriented representation of the corresponding TypoLink
+which is an object oriented representation of the corresponding TypoLink
 :typoscript:`parameter` configuration.
 
 Fields of TCA type :php:`select` without a :php:`relationship` will always provide

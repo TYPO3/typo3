@@ -17,7 +17,7 @@ in the :guilabel:`File > Filelist` module. Additionally, also the context menu o
 such files has been extended for the new action.
 
 The action allows to reload the corresponding information from the external
-service. Those information are, for example, the preview image, the author or the
+service. That information is, for example, the preview image, the author or the
 dimensions of the online media asset.
 
 Impact

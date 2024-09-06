@@ -45,7 +45,7 @@ Migration
 The field to be rendered have to be passed as :php:`array` under the
 corresponding table name.
 
-An example, buidling such link using the `UriBuilder`:
+An example, building such link using the `UriBuilder`:
 
 .. code-block:: php
 

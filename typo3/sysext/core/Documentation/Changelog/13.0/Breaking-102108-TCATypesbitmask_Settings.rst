@@ -2,9 +2,9 @@
 
 .. _breaking-102108-1696618684:
 
-===================================================
-Breaking: #102108 - TCA [types][bitmask_*] settings
-===================================================
+=====================================================
+Breaking: #102108 - TCA `[types][bitmask_*]` settings
+=====================================================
 
 See :issue:`102108`
 
@@ -14,8 +14,8 @@ Description
 Handling of two settings has been removed from the
 TYPO3 Core codebase:
 
-* `$GLOBALS['TCA']['someTable']['types']['bitmask_excludelist_bits']`
-* `$GLOBALS['TCA']['someTable']['types']['bitmask_value_field']`
+* :php:`$GLOBALS['TCA']['someTable']['types']['bitmask_excludelist_bits']`
+* :php:`$GLOBALS['TCA']['someTable']['types']['bitmask_value_field']`
 
 
 Impact

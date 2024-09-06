@@ -13,7 +13,7 @@ Description
 
 The :php:`\TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent`, used by listeners
 to manipulate the URL of the `canonical` tag, has been improved. The event is
-is now being dispatched after the standard functionality, such as fetching the
+now being dispatched after the standard functionality, such as fetching the
 URL from the page properties, has been executed.
 
 Additionally, the event is now even dispatched, in case the canonical tag

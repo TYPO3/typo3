@@ -68,7 +68,7 @@ holistically as a graph. Passive Relations
 are currently only connected to a Schema, and Active Relations to a Field or
 a Schema.
 
-As the Schema API fetches information solely based on TCA, a Active Relation
+As the Schema API fetches information solely based on TCA, an Active Relation
 only points to _possible_ references, however, the actual reference
 (does a record really have a connection to another database table) would
 require an actual Record instance (a database row) to evaluate this information.

@@ -11,7 +11,7 @@ See :issue:`101559`
 Description
 ===========
 
-The default view of ext:extbase now returns an view that implements
+The default view of ext:extbase now returns a view that implements
 :php:`TYPO3\CMS\Core\View\ViewInterface` and not only
 :php:`TYPO3Fluid\Fluid\View\ViewInterface` anymore. This allows
 implementing any view that implements :php:`TYPO3\CMS\Core\View\ViewInterface`,

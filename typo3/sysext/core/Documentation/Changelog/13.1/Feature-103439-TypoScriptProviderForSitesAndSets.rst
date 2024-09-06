@@ -69,7 +69,7 @@ Impact
 ======
 
 Sites and sets can ship TypoScript without the need for :sql:`sys_template`
-records in database, and dependencies can expressed via sets, allowing for
+records in database, and dependencies can be expressed via sets, allowing for
 automatic ordering and deduplication.
 
 .. index:: Backend, Frontend, PHP-API, TypoScript, YAML, ext:core

@@ -13,7 +13,7 @@ Description
 
 The internal search of TYPO3, Indexed Search exists since over 20 years. Some
 functionality that is shipped with the search form is not considered up-to-date
-anymore, in regards to templating, as Indexed Search has an Extbase and
+anymore, in regard to templating, as Indexed Search has an Extbase and
 Fluid-based plugin since TYPO3 v6.2 (10 years).
 
 Some functionality was never removed, which is now the case:

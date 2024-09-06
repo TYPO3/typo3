@@ -14,7 +14,7 @@ Description
 Up until TYPO3 v9, it was possible to alter the rendering of one of TYPO3's
 superpowers — the page tree in the TYPO3 Backend User Interface.
 
-This was done via a "Hook", but was removed due to the migration towards a
+This was done via a "Hook", but was removed due to the migration towards an
 SVG-based tree rendering.
 
 As the Page Tree Rendering has evolved, and the hook system has been replaced

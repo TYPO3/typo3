@@ -36,7 +36,7 @@ On a code level, the removal affects these areas:
 
 * Class :php:`\TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility` has been
   removed.
-* The "hook" :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']
+* The "hook" :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['metaphone']`
   to register an own "metaphone" solution has been removed.
 * The extension configuration option :php:`enableMetaphoneSearch` has been removed.
 * The database columns :sql:`index_fulltext.metaphonedata` and :sql:`index_words.metaphone`

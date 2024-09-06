@@ -21,7 +21,7 @@ Note that the maintenance tool is still available via `/typo3/install.php`.
 Impact
 ======
 
-The TYPO3 backend route path is made configurable in order to protected against
+The TYPO3 backend route path is made configurable in order to protect against
 application admin interface infrastructure enumeration (`WSTG-CONF-05`_).
 Therefore, all requests are handled by the PHP script `/index.php` in order to
 allow for variable admin interface URLs.

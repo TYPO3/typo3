@@ -23,7 +23,7 @@ By using the new `static` route configuration directive, custom aspect
 mapper implementations can be avoided. However, static route variables
 are only applied for a particular variable name if
 
- * there is not other aspect mapper configured - aspect mappers are
+ * there is no aspect mapper configured - aspect mappers are
    considered more specific and will take precedence
  * there is a companion `requirements` definition which narrows the
    set of possible values, and should be as restrictive as possible
