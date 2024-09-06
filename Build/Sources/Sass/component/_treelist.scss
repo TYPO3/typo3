@@ -30,14 +30,15 @@
 //
 
 //
-// Variables
+// Component
 //
-:root {
-    --treelist-color: #333;
-    --treelist-comment-color: #666;
-    --treelist-bg: #fff;
+.treelist,
+.treeline-container {
+    --treelist-color: var(--typo3-text-color-base);
+    --treelist-comment-color: var(--typo3-text-color-variant);
+    --treelist-bg: var(--typo3-surface-base);
     --treelist-border-width: 1px;
-    --treelist-border-color: #ddd;
+    --treelist-border-color: color-mix(in srgb, var(--treelist-bg), var(--treelist-color) 10%);
     --treelist-indentation: 1rem;
     --treelist-indentation-spacer: .5rem;
     --treelist-item-spacer: 2px;
@@ -45,9 +46,6 @@
     --treelist-control-size: 16px;
 }
 
-//
-// Component
-//
 .treelist,
 .treelist ul {
     color: var(--treelist-color);
@@ -236,5 +234,24 @@
 .treelist-root-clean {
     > li {
         padding-inline-start: 0;
+    }
+}
+
+//
+// Adaptions
+//
+.panel {
+    .treelist,
+    .treeline-container {
+        --treelist-color: var(--typo3-panel-color);
+        --treelist-bg: var(--typo3-panel-bg);
+    }
+}
+
+.form-section {
+    .treelist,
+    .treeline-container {
+        --treelist-color: var(--typo3-form-section-color);
+        --treelist-bg: var(--typo3-form-section-bg);
     }
 }

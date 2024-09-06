@@ -1,20 +1,16 @@
 //
-// Variables
-//
-$navigation-bg: $gray-100;
-
-//
 // Treeline Icons
 //
 .treeline-icon {
     position: relative;
     display: inline-block;
-    margin-top: -.5rem;
-    margin-bottom: -.5rem;
+    margin-top: -.75rem;
+    margin-bottom: -.75rem;
     margin-inline-end: 2px;
     padding: 0;
-    height: 41px;
+    height: 54px;
     width: 16px;
+    flex-shrink: 0;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: middle;
@@ -71,6 +67,7 @@ $navigation-bg: $gray-100;
  */
 .treeline-container {
     display: flex;
+    align-items: center;
     gap: calc(var(--typo3-spacing) * .25);
 }
 
@@ -114,9 +111,5 @@ span.dragIcon {
 
     .tree-wrapper {
         flex: 1 0 0;
-    }
-
-    .navigation-tree-container {
-        background-color: $navigation-bg;
     }
 }

@@ -340,7 +340,12 @@ class PageInformationController extends InfoModuleController
                 case 'title':
                     $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
                     $pTitle = htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
-                    $theData[$field] = ($row['treeIcons'] ?? '') . $theIcon . ($showPageId ? '[' . $row['uid'] . '] ' : '') . $pTitle;
+                    $theData[$field] = '<div class="treeline-container">'
+                        . ($row['treeIcons'] ?? '')
+                        . $theIcon
+                        . ($showPageId ? '[' . $row['uid'] . '] ' : '')
+                        . $pTitle
+                        . '</div>';
                     break;
                 case 'php_tree_stop':
                     // Intended fall through
@@ -396,7 +401,7 @@ class PageInformationController extends InfoModuleController
                     // the actual uid to be able to add it as data attribute to the table data cell.
                     // This also makes distinction between record rows and the header line simpler.
                     $theData['_UID_'] = $uid;
-                    $theData[$field] = '<div class="btn-group" role="group">' . $editButton . '</div>';
+                    $theData[$field] = '<div class="btn-group btn-group-sm" role="group">' . $editButton . '</div>';
                     break;
                 case 'shortcut':
                 case 'shortcut_mode':
@@ -416,7 +421,7 @@ class PageInformationController extends InfoModuleController
                     }
             }
         }
-        $this->addElement_tdCssClass['title'] = $row['_CSSCLASS'] ?? '';
+        $this->addElement_tdCssClass['title'] = 'col-title-flexible';
         return $this->addElement($theData);
     }
 
@@ -503,8 +508,7 @@ class PageInformationController extends InfoModuleController
             if (isset($data[$vKey])) {
                 if ($lastKey) {
                     $cssClass = $this->addElement_tdCssClass[$lastKey] ?? '';
-                    $out .= '
-						<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
+                    $out .= '<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
                 }
                 $lastKey = $vKey;
                 $c = 1;

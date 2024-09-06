@@ -161,13 +161,15 @@ class TranslationStatusController extends InfoModuleController
                 $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $data['row']['uid']);
             }
 
-            $tCells[] = '<td' . (!empty($data['row']['_CSSCLASS']) ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '') . '>' .
-                (!empty($data['depthData']) ? $data['depthData'] : '') .
-                ($data['HTML'] ?? '') .
-                $icon .
-                $pageModuleLink .
-                ((string)$data['row']['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]' : '') .
-                '</td>';
+            $tCells[] = '<td class="col-nowrap' . (!empty($data['row']['_CSSCLASS']) ? ' ' . $data['row']['_CSSCLASS'] : '') . '">'
+                . '<div class="treeline-container">'
+                . (!empty($data['depthData']) ? $data['depthData'] : '')
+                . ($data['HTML'] ?? '')
+                . $icon
+                . $pageModuleLink
+                . ((string)$data['row']['nav_title'] !== '' ? ' <span>[Nav: <em>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]</span>' : '')
+                . '</div>'
+                . '</td>';
             $previewUriBuilder = PreviewUriBuilder::create((int)$data['row']['uid']);
             // DEFAULT language:
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['row']['l18n_cfg'] ?? 0));
@@ -194,7 +196,7 @@ class TranslationStatusController extends InfoModuleController
             $info .= $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1')) . '">D</span>' : '&nbsp;';
             $info .= $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2')) . '">N</span>' : '&nbsp;';
             // Put into cell:
-            $tCells[] = '<td class="' . $status . ' col-border-left"><div class="btn-group">' . $info . '</div></td>';
+            $tCells[] = '<td class="' . $status . ' col-border-left col-nowrap"><div class="btn-group btn-group-sm">' . $info . '</div></td>';
             $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
             ) . '" align="center">' . ($this->getContentElementCount((int)$data['row']['uid'], 0) ?: '-') . '</td>';
@@ -232,7 +234,7 @@ class TranslationStatusController extends InfoModuleController
                         }
                         $icon = $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL);
                         $iconMarkup = '<span title="' . BackendUtility::getRecordIconAltText($row, 'pages') . '">' . $icon->render() . '</span>';
-                        $tCells[] = '<td class="' . $status . ' col-border-left">' .
+                        $tCells[] = '<td class="' . $status . ' col-border-left col-nowrap">' .
                             BackendUtility::wrapClickMenuOnIcon($iconMarkup, 'pages', (int)$row['uid']) .
                             $pageModuleLink .
                             '</td>';
@@ -256,7 +258,7 @@ class TranslationStatusController extends InfoModuleController
                             . '" class="btn btn-default" title="' . $lang->sL(
                                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLanguageOverlayRecord'
                             ) . '">' . $this->iconFactory->getIcon('actions-open', IconSize::SMALL)->render() . '</a>';
-                        $tCells[] = '<td class="' . $status . '"><div class="btn-group">' . $info . '</div></td>';
+                        $tCells[] = '<td class="' . $status . '"><div class="btn-group btn-group-sm">' . $info . '</div></td>';
                         $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
                             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
                         ) . '" align="center">' . ($this->getContentElementCount((int)$data['row']['uid'], $languageId) ?: '-') . '</td>';
@@ -277,11 +279,7 @@ class TranslationStatusController extends InfoModuleController
                     }
                 }
             }
-            $output .= '
-				<tr>
-					' . implode('
-					', $tCells) . '
-				</tr>';
+            $output .= '<tr>' . implode('', $tCells) . '</tr>';
         }
         // Put together HEADER:
         $headerCells = [];
@@ -299,7 +297,7 @@ class TranslationStatusController extends InfoModuleController
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
             ]);
             $editIco = '<a href="' . htmlspecialchars($editUrl)
-                . '" class="btn btn-default" title="' . $lang->sL(
+                . '" class="btn btn-default btn-sm" title="' . $lang->sL(
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageProperties'
                 ) . '">' . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '</a>';
         } else {
@@ -343,7 +341,7 @@ class TranslationStatusController extends InfoModuleController
                 $createLink = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                     'redirect' => $request->getAttribute('normalizedParams')->getRequestUri(),
                 ]);
-                $newButton = '<a href="' . htmlspecialchars($createLink) . '" data-edit-url="' . htmlspecialchars($createLink) . '" class="btn btn-default disabled t3js-language-new" data-lang="' . $languageId . '" title="' . $lang->sL(
+                $newButton = '<a href="' . htmlspecialchars($createLink) . '" data-edit-url="' . htmlspecialchars($createLink) . '" class="btn btn-default btn-sm disabled t3js-language-new" data-lang="' . $languageId . '" title="' . $lang->sL(
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
                 ) . '">' . $this->iconFactory->getIcon('actions-document-new', IconSize::SMALL)->render() . '</a>';
 
