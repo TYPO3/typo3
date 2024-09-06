@@ -224,6 +224,96 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function moveLanguageAllContentToDifferentPageIntoSiteModeFallback(): void
+    {
+        // Inherit site configuration from setUp(): DA fallback to EN
+        parent::moveLanguageAllContentToDifferentPageInto();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageIntoSiteModeFallback.csv');
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageIntoSiteModeFree(): void
+    {
+        // Set up "danish" to not have overlays: "free" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DA', '/da/', [], 'free'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
+            ]
+        );
+        parent::moveLanguageAllContentToDifferentPageInto();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageIntoSiteModeFree.csv');
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageIntoSiteModeStrict(): void
+    {
+        // Set up "danish" to "strict" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
+            ]
+        );
+        parent::moveLanguageAllContentToDifferentPageInto();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageIntoSiteModeStrict.csv');
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageAfterSiteModeFallback(): void
+    {
+        // Inherit site configuration from setUp(): DA fallback to EN
+        parent::moveLanguageAllContentToDifferentPageAfter();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageAfterSiteModeFallback.csv');
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageAfterSiteModeFree(): void
+    {
+        // Set up "danish" to not have overlays: "free" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DA', '/da/', [], 'free'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
+            ]
+        );
+        parent::moveLanguageAllContentToDifferentPageAfter();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageAfterSiteModeFree.csv');
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageAfterSiteModeStrict(): void
+    {
+        // Set up "danish" to "strict" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
+            ]
+        );
+        parent::moveLanguageAllContentToDifferentPageAfter();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageAfterSiteModeStrict.csv');
+    }
+
+    #[Test]
     public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();

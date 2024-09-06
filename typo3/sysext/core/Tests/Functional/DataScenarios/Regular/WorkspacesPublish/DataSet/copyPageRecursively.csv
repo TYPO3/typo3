@@ -24,7 +24,8 @@
 ,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,0,0,,,,,
 "tt_content",,,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header",,,,
-,296,88,256,0,0,0,0,0,0,0,0,"Regular Element #0",,,,
+,200,88,256,0,0,0,0,0,0,0,0,"Regular Element #0"
+,201,88,512,0,-1,0,0,0,0,0,0,"Language all element"
 ,297,89,384,0,0,0,0,0,0,0,0,"Regular Element #1",,,,
 ,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2",,,,
 ,299,89,768,0,0,0,0,0,0,0,0,"Regular Element #3",,,,
@@ -32,13 +33,14 @@
 ,301,89,384,0,1,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1",,,,
 ,302,89,448,0,2,297,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",,,,
 ,320,89,512,0,0,0,0,2,2,0,298,"Regular Element #2",,,,
-,321,95,256,0,0,0,0,1,1,0,0,"Regular Element #0",,,,
-,322,99,256,0,0,0,0,1,1,0,0,"Regular Element #3",,,,
-,323,99,128,0,1,322,322,1,1,0,0,"[Translate to Dansk:] Regular Element #3",,,,
-,324,99,64,0,0,0,0,0,0,0,0,"Regular Element #2",,,,
-,325,99,32,0,0,0,0,0,0,0,0,"Regular Element #1",,,,
-,326,99,16,0,1,325,325,1,1,0,0,"[Translate to Dansk:] Regular Element #1",,,,
-,327,99,8,0,2,325,326,1,1,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",,,,
+,321,95,256,0,-1,0,0,1,1,0,0,"Language all element",,,,
+,322,95,128,0,0,0,0,1,1,0,0,"Regular Element #0"
+,323,99,256,0,0,0,0,1,1,0,0,"Regular Element #3",,,,
+,324,99,128,0,1,323,323,1,1,0,0,"[Translate to Dansk:] Regular Element #3",,,,
+,325,99,64,0,0,0,0,0,0,0,0,"Regular Element #2",,,,
+,326,99,32,0,0,0,0,0,0,0,0,"Regular Element #1",,,,
+,327,99,16,0,1,326,326,1,1,0,0,"[Translate to Dansk:] Regular Element #1",,,,
+,328,99,8,0,2,326,327,1,1,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",,,,
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
 ,"02aa95a647ed365ffeeac881bd1af449","pages",91,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
@@ -54,6 +56,6 @@
 ,"d6bb6d7d99ef1fbbaf7bf616b7d5748c","pages",97,"l10n_parent",0,0,2147483647,1,,,,0,1,"pages",95,,0,0,2147483647,0,0,
 ,"61feda332257e4d2e4b455037e8339cc","pages",100,"l10n_parent",0,0,2147483647,1,,,,0,1,"pages",99,,0,0,2147483647,0,0,
 ,"17fd9c3be72ddab3ab509c2ee018542e","pages",101,"l10n_parent",0,0,2147483647,1,,,,0,1,"pages",99,,0,0,2147483647,0,0,
-,"0a09e2bcaf4f597a6a834508ca8a0f8c","tt_content",323,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",322,,0,0,2147483647,0,0,
-,"358110ea24fe162ef4d4b058c62c2718","tt_content",326,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",325,,0,0,2147483647,0,0,
-,"9b6b80d7c6d8e19731d7256a6ac3e481","tt_content",327,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",325,,0,0,2147483647,0,0,
+,"715579cec7fdefee01ca4808eae48ac9","tt_content",324,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",323,,0,0,2147483647,0,0,
+,"ff6f9561c4d4cae6fe1ebd2daf6461c5","tt_content",327,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",326,,0,0,2147483647,0,0,
+,"6e666ce194cfe588f5ae6014ef07bc52","tt_content",328,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",326,,0,0,2147483647,0,0,
