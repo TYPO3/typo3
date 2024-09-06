@@ -7,6 +7,7 @@ import type { Editor, EditorConfig, PluginConstructor } from '@ckeditor/ckeditor
 import type { WordCount, WordCountConfig } from '@ckeditor/ckeditor5-word-count';
 import type { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import type { GeneralHtmlSupportConfig } from '@ckeditor/ckeditor5-html-support';
+import type { TypingConfig } from '@ckeditor/ckeditor5-typing';
 
 type PluginModuleDescriptor = {
   module: string,
@@ -138,6 +139,12 @@ export class CKEditor5Element extends LitElement {
 
     if (htmlSupport !== undefined) {
       config.htmlSupport = convertPseudoRegExp(htmlSupport) as GeneralHtmlSupportConfig;
+    }
+
+    if (config?.typing?.transformations !== undefined) {
+      // Implement variant of CKEditor's native buildQuotesRegExp() method.
+      // This allows to convert a 'pattern' sub-object into the proper object.
+      config.typing.transformations = convertPseudoRegExp(config.typing.transformations) as TypingConfig['transformations'];
     }
 
     ClassicEditor
