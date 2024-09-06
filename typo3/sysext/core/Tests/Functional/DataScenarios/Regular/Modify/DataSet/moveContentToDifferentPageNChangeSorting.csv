@@ -11,7 +11,8 @@
 ,92,88,256,0,2,89,0,0,0,0,"[Translate to Deutsch:] Relations","/data-handler/translate-to-deutsch-relations"
 "tt_content",,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header"
-,296,88,256,0,0,0,0,0,0,0,0,"Regular Element #0"
+,200,88,256,0,0,0,0,0,0,0,0,"Regular Element #0"
+,201,88,512,0,-1,0,0,0,0,0,0,"Language all element"
 ,297,90,512,0,0,0,0,0,0,0,0,"Regular Element #1"
 ,298,90,256,0,0,0,0,0,0,0,0,"Regular Element #2"
 ,299,89,768,0,0,0,0,0,0,0,0,"Regular Element #3"

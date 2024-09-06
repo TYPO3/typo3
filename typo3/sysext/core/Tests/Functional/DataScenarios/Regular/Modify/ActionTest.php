@@ -476,6 +476,162 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function moveLanguageAllContentToDifferentPageIntoSiteModeFallback(): void
+    {
+        // Inherit site configuration from setUp(): DA fallback to EN
+        parent::moveLanguageAllContentToDifferentPageInto();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageIntoSiteModeFallback.csv');
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        // Verify "Language all element" exists
+        self::assertThat(
+            $responseSections,
+            (new HasRecordConstraint())->setTable(self::TABLE_Content)->setField('header')->setValues('Language all element')
+        );
+        // Verify "Language all element" is output as first element
+        self::assertEquals(
+            self::VALUE_ContentLanguageAll,
+            array_slice($responseSections[0]->getStructure()['pages:' . self::VALUE_PageId]['__contents'], 0, 1)['tt_content:' . self::VALUE_ContentLanguageAll]['uid']
+        );
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageIntoSiteModeFree(): void
+    {
+        // Set up "danish" to not have overlays: "free" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DA', '/da/', [], 'free'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
+            ]
+        );
+        parent::moveLanguageAllContentToDifferentPageInto();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageIntoSiteModeFree.csv');
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        // Verify "Language all element" exists
+        self::assertThat(
+            $responseSections,
+            (new HasRecordConstraint())->setTable(self::TABLE_Content)->setField('header')->setValues('Language all element')
+        );
+        // Verify "Language all element" is output as first element
+        self::assertEquals(
+            self::VALUE_ContentLanguageAll,
+            array_slice($responseSections[0]->getStructure()['pages:' . self::VALUE_PageId]['__contents'], 0, 1)['tt_content:' . self::VALUE_ContentLanguageAll]['uid']
+        );
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageIntoSiteModeStrict(): void
+    {
+        // Set up "danish" to "strict" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
+            ]
+        );
+        parent::moveLanguageAllContentToDifferentPageInto();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageIntoSiteModeStrict.csv');
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        // Verify "Language all element" exists
+        self::assertThat(
+            $responseSections,
+            (new HasRecordConstraint())->setTable(self::TABLE_Content)->setField('header')->setValues('Language all element')
+        );
+        // Verify "Language all element" is output as first element
+        self::assertEquals(
+            self::VALUE_ContentLanguageAll,
+            array_slice($responseSections[0]->getStructure()['pages:' . self::VALUE_PageId]['__contents'], 0, 1)['tt_content:' . self::VALUE_ContentLanguageAll]['uid']
+        );
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageAfterSiteModeFallback(): void
+    {
+        // Inherit site configuration from setUp(): DA fallback to EN
+        parent::moveLanguageAllContentToDifferentPageAfter();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageAfterSiteModeFallback.csv');
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        // Verify "Language all element" exists
+        self::assertThat(
+            $responseSections,
+            (new HasRecordConstraint())->setTable(self::TABLE_Content)->setField('header')->setValues('Language all element')
+        );
+        // Verify "Language all element" is output as second element
+        self::assertEquals(
+            self::VALUE_ContentLanguageAll,
+            array_slice($responseSections[0]->getStructure()['pages:' . self::VALUE_PageId]['__contents'], 1, 1)['tt_content:' . self::VALUE_ContentLanguageAll]['uid']
+        );
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageAfterSiteModeFree(): void
+    {
+        // Set up "danish" to not have overlays: "free" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DA', '/da/', [], 'free'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
+            ]
+        );
+        parent::moveLanguageAllContentToDifferentPageAfter();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageAfterSiteModeFree.csv');
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        // Verify "Language all element" exists
+        self::assertThat(
+            $responseSections,
+            (new HasRecordConstraint())->setTable(self::TABLE_Content)->setField('header')->setValues('Language all element')
+        );
+        // Verify "Language all element" is output as second element
+        self::assertEquals(
+            self::VALUE_ContentLanguageAll,
+            array_slice($responseSections[0]->getStructure()['pages:' . self::VALUE_PageId]['__contents'], 1, 1)['tt_content:' . self::VALUE_ContentLanguageAll]['uid']
+        );
+    }
+
+    #[Test]
+    public function moveLanguageAllContentToDifferentPageAfterSiteModeStrict(): void
+    {
+        // Set up "danish" to "strict" mode
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DA', 'EN']),
+            ]
+        );
+        parent::moveLanguageAllContentToDifferentPageAfter();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLanguageAllContentToDifferentPageAfterSiteModeStrict.csv');
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        // Verify "Language all element" exists
+        self::assertThat(
+            $responseSections,
+            (new HasRecordConstraint())->setTable(self::TABLE_Content)->setField('header')->setValues('Language all element')
+        );
+        // Verify "Language all element" is output as second element
+        self::assertEquals(
+            self::VALUE_ContentLanguageAll,
+            array_slice($responseSections[0]->getStructure()['pages:' . self::VALUE_PageId]['__contents'], 1, 1)['tt_content:' . self::VALUE_ContentLanguageAll]['uid']
+        );
+    }
+
+    #[Test]
     public function movePasteContentToDifferentPage(): void
     {
         parent::movePasteContentToDifferentPage();

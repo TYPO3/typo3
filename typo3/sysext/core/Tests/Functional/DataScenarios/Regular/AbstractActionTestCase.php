@@ -30,6 +30,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_PageIdTarget = 90;
     protected const VALUE_PageIdWebsite = 1;
     protected const VALUE_PageIdParent = 88;
+    protected const VALUE_ContentLanguageAll = 201;
     protected const VALUE_ContentIdFirst = 297;
     protected const VALUE_ContentIdSecond = 298;
     protected const VALUE_ContentIdThird = 299;
@@ -295,6 +296,16 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function moveContentToDifferentPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
+    }
+
+    public function moveLanguageAllContentToDifferentPageInto(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll, self::VALUE_PageId);
+    }
+
+    public function moveLanguageAllContentToDifferentPageAfter(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll, -self::VALUE_ContentIdFirst);
     }
 
     public function hideContentAndMoveToDifferentPage(): void

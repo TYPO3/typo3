@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular;
 abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 {
     protected const VALUE_ParentPageId = 88;
-    protected const VALUE_ContentIdZero = 296;
+    protected const VALUE_ContentIdZero = 200;
 
     protected const VALUE_WorkspaceId = 1;
 

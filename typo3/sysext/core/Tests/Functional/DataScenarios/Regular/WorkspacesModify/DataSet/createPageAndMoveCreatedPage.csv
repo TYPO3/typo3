@@ -14,16 +14,17 @@
 "sys_workspace_stage",,,,,,,,,,,,,,,,,
 ,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","notification_defaults","allow_notificaton_settings",,,,,
 ,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,0,0,,,,,
-"tt_content",,,,,,,,,,,,,,,,,
-,"uid","pid","sorting","hidden","deleted","sys_language_uid","l18n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","bodytext",,
-,296,88,256,0,0,0,0,0,0,0,0,0,"Regular Element #0",,,
-,297,89,384,0,0,0,0,0,0,0,0,0,"Regular Element #1",,,
-,298,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2",,,
-,299,89,768,0,0,0,0,0,0,0,0,0,"Regular Element #3",,,
-,300,89,1024,0,0,1,299,299,0,0,0,0,"[Translate to Dansk:] Regular Element #3",,,
-,301,89,384,0,0,1,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1",,,
-,302,89,448,0,0,2,297,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",,,
-,320,89,512,0,0,0,0,0,2,2,0,298,"Regular Element #2",,,
+"tt_content"
+,"uid","pid","sorting","hidden","deleted","sys_language_uid","l18n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header"
+,200,88,256,0,0,0,0,0,0,0,0,0,"Regular Element #0"
+,201,88,512,0,0,-1,0,0,0,0,0,0,"Language all element"
+,297,89,384,0,0,0,0,0,0,0,0,0,"Regular Element #1"
+,298,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2"
+,299,89,768,0,0,0,0,0,0,0,0,0,"Regular Element #3"
+,300,89,1024,0,0,1,299,299,0,0,0,0,"[Translate to Dansk:] Regular Element #3"
+,301,89,384,0,0,1,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
+,302,89,448,0,0,2,297,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
+,320,89,512,0,0,0,0,0,2,2,0,298,"Regular Element #2"
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
 ,"02aa95a647ed365ffeeac881bd1af449","pages",91,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
