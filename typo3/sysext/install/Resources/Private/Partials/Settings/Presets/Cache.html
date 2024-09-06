@@ -1,13 +1,24 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingSeven">
-        <h4 class="panel-title">
-            <a role="button" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven" class="collapsed">
+    <div class="panel-heading" role="tab">
+        <div class="panel-heading-row">
+            <button
+                class="panel-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-parent="#accordion"
+                data-bs-target="#collapseSeven"
+                aria-controls="collapseSeven"
+                aria-expanded="false"
+                id="headingSeven"
+            >
+                <div class="panel-title">
+                    <strong>Cache settings</strong>
+                </div>
                 <span class="caret"></span>
-                <strong>Cache settings</strong>
-            </a>
-        </h4>
+            </button>
+        </div>
     </div>
     <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
         <div class="panel-body">

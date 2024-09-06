@@ -83,14 +83,23 @@
 
 <f:section name="TreePanel">
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title" id="pagetsconfig-includes-{type}-tree-heading">
-                <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#pagetsconfig-includes-{type}-tree-body" aria-expanded="false" aria-controls="pagetsconfig-includes-{type}-tree-body">
+        <h3 class="panel-heading" role="tab" id="pagetsconfig-includes-{type}-tree-heading">
+            <div class="panel-heading-row">
+                <button
+                    class="panel-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#pagetsconfig-includes-{type}-tree-body"
+                    aria-controls="pagetsconfig-includes-{type}-tree-body"
+                    aria-expanded="false"
+                >
+                    <div class="panel-title">
+                        <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.configuration"/></strong>
+                    </div>
                     <span class="caret"></span>
-                    <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.configuration"/></strong>
-                </a>
-            </h3>
-        </div>
+                </button>
+            </div>
+        </h3>
         <div id="pagetsconfig-includes-{type}-tree-body" class="panel-collapse collapse" data-persist-collapse-state="true" aria-labelledby="pagetsconfig-includes-{type}-tree-heading">
             <div class="panel-body panel-body-overflow">
                 <ul class="treelist">
@@ -224,33 +233,31 @@
 <f:section name="SyntaxErrors">
     <f:if condition="{errors}">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="row align-items-center justify-content-between">
-                    <div class="col align-middle">
-                        <h3 class="panel-title" id="pagetsconfig-includes-errors-heading">
-                            <a
-                                href="#"
-                                class="collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#pagetsconfig-includes-errors-body"
-                                aria-expanded="false"
-                                aria-controls="pagetsconfig-includes-errors-body"
-                            >
-                                <span class="caret"></span>
-                                <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.syntaxErrors"/></strong>
-                            </a>
-                        </h3>
-                    </div>
-                    <div class="col text-end">
-                        <span class="badge badge-warning">
-                            <f:translate
-                                key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.syntaxErrorCount.{f:if(condition: '{errorCount} > 1', then:'multiple', else: 'single')}"
-                                arguments="{0: errorCount}"
-                            />
-                        </span>
-                    </div>
+            <h3 class="panel-heading" role="tab" id="pagetsconfig-includes-errors-heading">
+                <div class="panel-heading-row">
+                    <button
+                        class="panel-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#pagetsconfig-includes-errors-body"
+                        aria-controls="pagetsconfig-includes-errors-body"
+                        aria-expanded="false"
+                    >
+                        <div class="panel-title">
+                            <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.syntaxErrors"/></strong>
+                        </div>
+                        <div class="panel-badge">
+                            <span class="badge badge-warning">
+                                <f:translate
+                                    key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.syntaxErrorCount.{f:if(condition: '{errorCount} > 1', then:'multiple', else: 'single')}"
+                                    arguments="{0: errorCount}"
+                                />
+                            </span>
+                        </div>
+                        <span class="caret"></span>
+                    </button>
                 </div>
-            </div>
+            </h3>
             <div id="pagetsconfig-includes-errors-body" class="panel-collapse collapse" data-persist-collapse-state="true" aria-labelledby="pagetsconfig-includes-errors-heading">
                 <div class="panel-body">
                     <f:for each="{errors}" as="error">
@@ -285,26 +292,22 @@
 <f:section name="Conditions">
     <f:if condition="{conditions}">
         <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-                <f:if condition="{conditionActiveCount}">
-                    <f:then>
-                        <div class="row align-items-center justify-content-between">
-                            <div class="col align-middle">
-                                <h3 class="panel-title" id="pagetsconfig-includes-conditions-heading">
-                                    <a
-                                        href="#"
-                                        class="collapsed"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#pagetsconfig-includes-conditions-body"
-                                        aria-expanded="false"
-                                        aria-controls="pagetsconfig-includes-conditions-body"
-                                    >
-                                        <span class="caret"></span>
-                                        <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.conditions"/></strong>
-                                    </a>
-                                </h3>
-                            </div>
-                            <div class="col text-end">
+            <h3 class="panel-heading" role="tab" id="pagetsconfig-includes-conditions-heading">
+                <div class="panel-heading-row">
+                    <button
+                        class="panel-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#pagetsconfig-includes-conditions-body"
+                        aria-controls="pagetsconfig-includes-conditions-body"
+                        aria-expanded="false"
+                        id="panel-tree-heading-{type}"
+                    >
+                        <div class="panel-title">
+                            <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.conditions"/></strong>
+                        </div>
+                        <f:if condition="{conditionActiveCount}">
+                            <div class="panel-badge">
                                 <span class="badge badge-info">
                                     <f:translate
                                         key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.info.conditionActiveCount.{f:if(condition: '{conditionActiveCount} > 1', then:'multiple', else: 'single')}"
@@ -312,25 +315,11 @@
                                     />
                                 </span>
                             </div>
-                        </div>
-                    </f:then>
-                    <f:else>
-                        <h3 class="panel-title" id="pagetsconfig-includes-conditions-heading">
-                            <a
-                                href="#"
-                                class="collapsed"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#pagetsconfig-includes-conditions-body"
-                                aria-expanded="false"
-                                aria-controls="pagetsconfig-includes-conditions-body"
-                            >
-                                <span class="caret"></span>
-                                <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_includes.panel.header.conditions"/></strong>
-                            </a>
-                        </h3>
-                    </f:else>
-                </f:if>
-            </div>
+                        </f:if>
+                        <span class="caret"></span>
+                    </button>
+                </div>
+            </h3>
             <div
                 class="panel-collapse collapse"
                 id="pagetsconfig-includes-conditions-body"

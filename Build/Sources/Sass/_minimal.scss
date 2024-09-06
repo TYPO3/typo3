@@ -81,8 +81,10 @@
 //
 @import "component/root";
 @import "component/type";
+@import "component/order";
 @import "component/nav";
 @import "component/icon";
+@import "component/caret";
 @import "component/spacer";
 @import "component/alert";
 @import "component/autocomplete";
@@ -100,3 +102,4 @@
 @import "component/panel";
 @import "component/table";
 @import "component/simpletable";
+@import "component/tabs";

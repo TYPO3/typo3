@@ -549,7 +549,7 @@ class FilesControlContainer extends HTMLElement {
     }
 
     new RegularEvent('transitionend', (): void => {
-      recordContainer.parentElement.removeChild(recordContainer);
+      recordContainer.remove();
       FormEngineValidation.validate(this.container);
     }).bindTo(recordContainer);
 

@@ -10,44 +10,19 @@
     position: relative;
 }
 
-.form-group {
-    .panel,
-    .panel-group {
-        overflow: visible;
-    }
-}
-
-//
-// Form group validation states
-//
-.form-group.has-error {
-    .btn-toolbar {
-        label:before {
-            font-family: inherit;
-            font-size: inherit;
-            margin-right: inherit;
-            text-align: inherit;
-            content: '';
-            color: inherit;
-            display: block;
-        }
-    }
-}
-
 //
 // Form Irre
 //
 .form-irre-header {
     display: flex;
     align-items: center;
-    margin: -5px;
     user-select: none;
+    gap: .25rem;
 }
 
 .form-irre-header-cell {
     vertical-align: middle;
     white-space: nowrap;
-    padding: 5px;
 }
 
 .form-irre-header-button {
@@ -58,15 +33,14 @@
     background: transparent;
     border: 0;
     width: 100%;
-    margin-inline-start: -15px;
-    padding-inline-start: 20px;
+    padding: 0;
+    gap: .25rem;
 }
 
 .form-irre-header-body {
     width: 100%;
     font-weight: normal;
     white-space: normal;
-    padding-inline-start: 5px;
 
     dl,
     dd,
@@ -80,11 +54,13 @@
 }
 
 .form-irre-header-thumbnail {
-    padding-inline-end: 5px;
+    padding-inline-end: .25rem;
 }
 
 .form-irre-header-control {
-    cursor: auto;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
 }
 
 //

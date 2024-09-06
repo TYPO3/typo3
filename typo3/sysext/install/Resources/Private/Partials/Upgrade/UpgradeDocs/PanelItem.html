@@ -4,28 +4,35 @@
     data-namespace-typo3-fluid="true">
 
 <div class="t3js-upgrade-doc panel panel-rst panel-{fileArray.class} risk-medium" data-item-tags="{fileArray.tagList}" data-item-version="{fileArray.version}" data-item-state="{state}" id="heading{id}">
-    <div class="panel-heading" role="tab">
-        <h3 class="panel-title">
+    <h3 class="panel-heading" role="tab">
+        <div class="panel-heading-row">
+            <button
+                class="panel-button order-2 collapsed"
+                type="button"
+                data-bs-target="#collapse{id}"
+                data-bs-toggle="collapse"
+                aria-expanded="false"
+                aria-controls="collapse{id}"
+            >
+                <div class="panel-title"><strong>{fileArray.headline}</strong></div>
+                <span class="caret"></span>
+            </button>
             <f:if condition="{read}">
                 <f:then>
-                    <button type="button" class="btn btn-link link-action t3js-upgradeDocs-unmarkRead float-end" data-filepath="{fileArray.filepath}" title="Mark as not read">
+                    <button type="button" class="btn btn-link t3js-upgradeDocs-unmarkRead" data-filepath="{fileArray.filepath}" title="Mark as not read">
                         <core:icon identifier="actions-ban" size="small" />
                         <span class="visually-hidden">restore this document</span>
                     </button>
                 </f:then>
                 <f:else>
-                    <button type="button" class="btn btn-link link-action t3js-upgradeDocs-markRead float-end" data-filepath="{fileArray.filepath}" title="Mark as read">
+                    <button type="button" class="btn btn-link t3js-upgradeDocs-markRead" data-filepath="{fileArray.filepath}" title="Mark as read">
                         <core:icon identifier="actions-check" size="small" />
                         <span class="visually-hidden">ignore this document</span>
                     </button>
                 </f:else>
             </f:if>
-            <a role="button" data-bs-toggle="collapse" href="#collapse{id}" aria-expanded="true" aria-controls="collapse{id}" class="collapsed">
-                <span class="caret"></span>
-                <strong>{fileArray.headline}</strong>
-            </a>
-        </h3>
-    </div>
+        </div>
+    </h3>
     <div id="collapse{id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{id}">
         <div class="rst-tags">
             <f:for each="{fileArray.tags}" as="tag">

@@ -5,13 +5,23 @@
 >
 
 <div class="panel panel-default searchhit">
-    <div class="panel-heading" role="tab" id="heading-{extensionKey}">
-        <h3 class="panel-title">
-            <a role="button" data-bs-toggle="collapse" href="#collapse-{extensionKey}" aria-expanded="false" aria-controls="collapse-{extensionKey}" class="collapsed">
+    <div class="panel-heading" role="tab">
+        <div class="panel-heading-row">
+            <button
+                class="panel-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-{extensionKey}"
+                aria-controls="collapse-{extensionKey}"
+                aria-expanded="false"
+                id="heading-{extensionKey}"
+            >
+                <div class="panel-title">
+                    <strong>{extensionKey}</strong>
+                </div>
                 <span class="caret"></span>
-                <strong>{extensionKey}</strong>
-            </a>
-        </h3>
+            </button>
+        </div>
     </div>
     <div id="collapse-{extensionKey}" class="panel-collapse collapse search-item" role="tabpanel" aria-labelledby="heading-{extensionKey}">
         <div class="panel-body">

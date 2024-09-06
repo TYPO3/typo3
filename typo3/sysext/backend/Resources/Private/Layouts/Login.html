@@ -124,11 +124,18 @@
                     <f:render partial="Login/LoginNews" arguments="{_all}" />
                     <footer class="card-footer">
                         <div class="typo3-login-copyright-wrap">
-                            <a href="#loginCopyright" class="typo3-login-copyright-link t3js-login-copyright-link collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="loginCopyright">
+                            <button
+                                type="button"
+                                class="typo3-login-copyright-link t3js-login-copyright-link collapsed"
+                                data-bs-target="#loginCopyright"
+                                data-bs-toggle="collapse"
+                                aria-expanded="false"
+                                aria-controls="loginCopyright"
+                            >
                                 <span><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.copyrightLink" /></span>
                                 <f:comment>the image within the button is only decorative</f:comment>
                                 <img src="{images.typo3}" alt="" width="70" height="20" />
-                            </a>
+                            </button>
                             <div id="loginCopyright" class="collapse">
                                 <div class="typo3-login-copyright-text">
                                     <p>

@@ -36,18 +36,24 @@
     <div class="panel-group" role="tablist" aria-multiselectable="true">
         <f:for each="{upgradeDocsVersions}" as="version" iteration="iterator">
             <div class="panel panel-default panel-version t3js-version-changes" data-version="{version}">
-                <div class="panel-heading" role="tab" id="heading-{iterator.index}">
-                    <h2 class="panel-title">
-                        <a href="#version-{iterator.index}"
-                            class="collapsed" data-bs-toggle="collapse"
+                <div class="panel-heading" role="tab">
+                    <div class="panel-heading-row">
+                        <button
+                            class="panel-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#version-{iterator.index}"
+                            aria-controls="version-{iterator.index}"
                             aria-expanded="false"
-                            aria-controls="#version-{iterator.index}"
+                            id="heading-{iterator.index}"
                         >
+                            <div class="panel-title">
+                                Version: <strong>{version}</strong>
+                                <span class="t3js-panel-loading"><core:icon identifier="spinner-circle" size="small" /></span>
+                            </div>
                             <span class="caret"></span>
-                            Version: <strong>{version}</strong>
-                            <span class="float-end t3js-panel-loading"><core:icon identifier="spinner-circle" size="small" /></span>
-                        </a>
-                    </h2>
+                        </button>
+                    </div>
                 </div>
                 <div class="panel-collapse collapse"
                         id="version-{iterator.index}" role="tabpanel" data-group-version="{version}">
@@ -57,14 +63,23 @@
         </f:for>
 
         <div class="panel panel-default panel-version">
-            <div class="panel-heading" role="tab" id="heading-read">
-                <h2 class="panel-title">
-                    <a href="#collapseRead" class="collapsed" data-bs-toggle="collapse" aria-expanded="false"
-                        aria-controls="collapseRead">
+            <div class="panel-heading" role="tab">
+                <div class="panel-heading-row">
+                    <button
+                        class="panel-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseRead"
+                        aria-controls="collapseRead"
+                        aria-expanded="false"
+                        id="heading-read"
+                    >
+                        <div class="panel-title">
+                            Files marked as read
+                        </div>
                         <span class="caret"></span>
-                        Files marked as read
-                    </a>
-                </h2>
+                    </button>
+                </div>
             </div>
             <div class="panel-collapse collapse" id="collapseRead" role="tabpanel" data-group-version="read">
                 <div class="panel-body panel-body-read t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>
@@ -72,13 +87,23 @@
         </div>
 
         <div class="panel panel-default panel-version">
-            <div class="panel-heading" role="tab" id="heading-not-affected">
-                <h2 class="panel-title">
-                    <a href="#collapseNotAffected" class="collapsed" data-bs-toggle="collapse">
+            <div class="panel-heading" role="tab">
+                <div class="panel-heading-row">
+                    <button
+                        class="panel-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseNotAffected"
+                        aria-controls="collapseNotAffected"
+                        aria-expanded="false"
+                        id="heading-not-affected"
+                    >
+                        <div class="panel-title">
+                            Files marked as not affected by extension scanner
+                        </div>
                         <span class="caret"></span>
-                        Files marked as not affected by extension scanner
-                    </a>
-                </h2>
+                    </button>
+                </div>
             </div>
             <div class="panel-collapse collapse" id="collapseNotAffected" role="tabpanel" data-group-version="notAffected">
                 <div class="panel-body panel-body-not-affected t3js-changelog-list" role="tablist" aria-multiselectable="false"></div>

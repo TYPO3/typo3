@@ -94,6 +94,9 @@
 			<trans-unit id="action.pagination" resname="action.pagination">
 				<source>Pagination</source>
 			</trans-unit>
+			<trans-unit id="action.panels" resname="action.panels">
+				<source>Panels</source>
+			</trans-unit>
 			<trans-unit id="action.progressIndicators" resname="action.progressIndicators">
 				<source>Progress indicators</source>
 			</trans-unit>
@@ -235,23 +238,6 @@
 			</trans-unit>
 			<trans-unit id="component.avatar.section.withStatus.text" resname="component.avatar.section.withStatus.text">
 				<source>If set, the backend user type (normal user or admin user) and its status (disabled or not) will be displayed next to the avatar. </source>
-			</trans-unit>
-
-			<!-- Component: Accordion -->
-			<trans-unit id="component.accordion.headline" resname="component.accordion.headline">
-				<source>Accordion</source>
-			</trans-unit>
-			<trans-unit id="component.accordion.section.default.headline" resname="component.accordion.section.default.headline">
-				<source>Default</source>
-			</trans-unit>
-			<trans-unit id="component.accordion.section.default.text" resname="component.accordion.section.default.text">
-				<source>By default, accordion elements are closed.</source>
-			</trans-unit>
-			<trans-unit id="component.accordion.section.firstPanelOpened.headline" resname="component.accordion.section.firstPanelOpened.headline">
-				<source>Open an accordion element by default</source>
-			</trans-unit>
-			<trans-unit id="component.accordion.section.firstPanelOpened.text" resname="component.accordion.section.firstPanelOpened.text">
-				<source><![CDATA[If necessary, you can specify that an accordion element should be open by default. To achieve this, add an additional class "show" to <code>.panel-collapse</code> and set "aria-expanded" of <code>.panel-title a</code> to "true".]]></source>
 			</trans-unit>
 
 			<!-- Component: Badge -->
@@ -517,6 +503,44 @@
 			</trans-unit>
 			<trans-unit id="component.pagination.section.default.headline" resname="component.pagination.section.default.headline">
 				<source>Default</source>
+			</trans-unit>
+
+			<!-- Component: Panels -->
+			<trans-unit id="component.panels.headline" resname="component.panels.headline">
+				<source>Panels</source>
+			</trans-unit>
+			<trans-unit id="component.panels.collapsible.headline" resname="component.panels.collapsible.headline">
+				<source>Collapsible</source>
+			</trans-unit>
+			<trans-unit id="component.panels.nesting.headline" resname="component.panels.nesting.headline">
+				<source>Nesting</source>
+			</trans-unit>
+			<trans-unit id="component.panels.variants.headline" resname="component.panels.variants.headline">
+				<source>Variants</source>
+			</trans-unit>
+			<trans-unit id="component.panels.loader.headline" resname="component.panels.loader.headline">
+				<source>Loader</source>
+			</trans-unit>
+			<trans-unit id="component.panels.size.headline" resname="component.panels.size.headline">
+				<source>Size</source>
+			</trans-unit>
+			<trans-unit id="component.panels.progress.headline" resname="component.panels.progress.headline">
+				<source>Progress</source>
+			</trans-unit>
+			<trans-unit id="component.panels.header.headline" resname="component.panels.header.headline">
+				<source>Header</source>
+			</trans-unit>
+			<trans-unit id="component.panels.body.headline" resname="component.panels.body.headline">
+				<source>Body</source>
+			</trans-unit>
+			<trans-unit id="component.panels.footer.headline" resname="component.panels.footer.headline">
+				<source>Footer</source>
+			</trans-unit>
+			<trans-unit id="component.panels.list.headline" resname="component.panels.list.headline">
+				<source>List</source>
+			</trans-unit>
+			<trans-unit id="component.panels.table.headline" resname="component.panels.table.headline">
+				<source>Table</source>
 			</trans-unit>
 
 			<!-- Component: Progress indicator -->

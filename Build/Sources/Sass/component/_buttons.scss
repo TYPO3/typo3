@@ -60,6 +60,7 @@
     }
 
     .btn-check:focus-visible + &,
+    &:has(*:focus-visible),
     &:focus-visible {
         outline: .25rem solid color-mix(in srgb, var(--typo3-btn-focus-border-color), transparent 25%);
     }

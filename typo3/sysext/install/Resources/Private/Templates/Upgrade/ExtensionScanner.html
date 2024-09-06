@@ -14,15 +14,26 @@
 <div style="display: none">
     <div id="t3js-extensionScanner-file-hit-template">
         <div class="panel t3js-extensionScanner-hit-panel risk-medium">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a href="#collapse" class="collapsed t3js-extensionScanner-hit-file-panel-head" data-bs-toggle="collapse">
+            <div class="panel-heading" role="tab">
+                <div class="panel-heading-row">
+                    <button
+                        class="panel-button collapsed t3js-extensionScanner-hit-file-panel-head"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse"
+                        aria-controls="collapse"
+                        aria-expanded="false"
+                        id="heading-not-affected"
+                    >
+                        <div class="panel-title">
+                            <div><strong class="t3js-extensionScanner-hit-filename">aFile</strong></div>
+                            <div class="t3js-extensionScanner-hit-message">aMessage</div>
+                        </div>
+                        <div class="panel-badge t3js-extensionScanner-hit-badges">
+                        </div>
                         <span class="caret"></span>
-                        <span class="float-end badges"></span>
-                        <span class="t3js-extensionScanner-hit-filename file">aFile</span>
-                        <span class="t3js-extensionScanner-hit-message message">aMessage</span>
-                    </a>
-                </h3>
+                    </button>
+                </div>
             </div>
             <div id="collapse" class="panel-collapse collapse t3js-extensionScanner-hit-file-panel-body">
                 <div class="panel-body">
@@ -34,17 +45,25 @@
     </div>
     <div id="t3js-extensionScanner-file-hit-rest-template">
         <div class="panel t3js-extensionScanner-hit-rest-panel risk-medium">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a href="#collapse-rest"
-                        class="collapsed t3js-extensionScanner-hit-rest-panel-head"
+            <div class="panel-heading" role="tab">
+                <div class="panel-heading-row">
+                    <button
+                        class="panel-button collapsed t3js-extensionScanner-hit-rest-panel-head"
+                        type="button"
                         data-bs-toggle="collapse"
+                        data-bs-target="#collapse-rest"
+                        aria-controls="collapse-rest"
+                        aria-expanded="false"
                     >
-                        <span class="badge float-end">aBadge</span>
+                        <div class="panel-title">
+                            <strong class="t3js-extensionScanner-hit-rest-headline">restFileHeadline</strong>
+                        </div>
+                        <div class="panel-badge">
+                            <span class="badge badge-default t3js-extensionScanner-hit-rest-badge">aBadge</span>
+                        </div>
                         <span class="caret"></span>
-                        <strong class="t3js-extensionScanner-hit-rest-headline">restFileHeadline</strong>
-                    </a>
-                </h3>
+                    </button>
+                </div>
             </div>
             <div id="collapse-rest" class="panel-collapse collapse t3js-extensionScanner-hit-rest-panel-body">
                 <pre class="panel-body t3js-extensionScanner-hit-rest-body">restFileContent</pre>
@@ -69,16 +88,28 @@
                 class="panel panel-default t3js-extensionScanner-extension t3js-extensionScanner-extension-{extension}"
                 data-extension="{extension}">
                 <div class="panel-progress">
-                    <div class="panel-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;"><span class="visually-hidden"></span></div>
+                    <div class="panel-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
+                        <span class="visually-hidden">0%</span>
+                    </div>
                 </div>
-                <div class="panel-heading">
-                    <h2 class="panel-title">
-                        <a href="#extension-{iterator.index}" class="collapsed" data-bs-toggle="collapse">
+                <div class="panel-heading" role="tab">
+                    <div class="panel-heading-row">
+                        <button
+                            class="panel-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#extension-{iterator.index}"
+                            aria-controls="extension-{iterator.index}"
+                            aria-expanded="false"
+                        >
+                            <div class="panel-title">
+                                Extension: <strong>{extension}</strong>
+                            </div>
+                            <div class="panel-heading-text t3js-extensionScanner-number-of-files">
+                            </div>
                             <span class="caret"></span>
-                            Extension: <strong>{extension}</strong>
-                            <span class="float-end t3js-extensionScanner-number-of-files"></span>
-                        </a>
-                    </h2>
+                        </button>
+                    </div>
                 </div>
                 <div class="panel-collapse collapse" id="extension-{iterator.index}">
                     <div class="panel-body hide t3js-extensionScanner-extension-body"></div>

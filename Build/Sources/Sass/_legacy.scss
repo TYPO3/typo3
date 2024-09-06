@@ -52,17 +52,6 @@ $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) !
     display: none !important;
 }
 
-.caret {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    margin-left: .125rem;
-    vertical-align: middle;
-    border-top: .25rem dashed $gray-700;
-    border-right: .25rem solid transparent;
-    border-left: .25rem solid transparent;
-}
-
 // nav fallback
 // todo add ".nav-item" and ".nav-link" classes to markup
 .nav.nav-tabs {

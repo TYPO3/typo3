@@ -6,26 +6,21 @@
 
 <f:if condition="{conditions}">
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab">
-            <f:if condition="{conditionActiveCount}">
-                <f:then>
-                    <div class="row align-items-center justify-content-between">
-                        <div class="col align-middle">
-                            <h3 class="panel-title" id="template-analyzer-{type}-conditions-heading">
-                                <a
-                                    href="#"
-                                    class="collapsed"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#template-analyzer-{type}-conditions-body"
-                                    aria-expanded="false"
-                                    aria-controls="template-analyzer-{type}-conditions-body"
-                                >
-                                    <span class="caret"></span>
-                                    <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.header.conditions"/></strong>
-                                </a>
-                            </h3>
-                        </div>
-                        <div class="col text-end">
+        <h3 class="panel-heading" role="tab" id="template-analyzer-{type}-conditions-heading">
+            <div class="panel-heading-row">
+                <button
+                    class="panel-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#template-analyzer-{type}-conditions-body"
+                    aria-controls="template-analyzer-{type}-conditions-body"
+                    aria-expanded="false"
+                >
+                    <div class="panel-title">
+                        <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.header.conditions"/></strong>
+                    </div>
+                    <f:if condition="{conditionActiveCount}">
+                        <div class="panel-badge">
                             <span class="badge badge-info">
                                 <f:translate
                                     key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.info.conditionActiveCount.{f:if(condition: '{conditionActiveCount} > 1', then:'multiple', else: 'single')}"
@@ -33,31 +28,17 @@
                                 />
                             </span>
                         </div>
-                    </div>
-                </f:then>
-                <f:else>
-                    <h3 class="panel-title" id="template-analyzer-{type}-conditions-heading">
-                        <a
-                            href="#"
-                            class="collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#template-analyzer-{type}-conditions-body"
-                            aria-expanded="false"
-                            aria-controls="template-analyzer-{type}-conditions-body"
-                        >
-                            <span class="caret"></span>
-                            <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.header.conditions"/></strong>
-                        </a>
-                    </h3>
-                </f:else>
-            </f:if>
-        </div>
+                    </f:if>
+                    <span class="caret"></span>
+                </button>
+            </div>
+        </h3>
         <div
             class="panel-collapse collapse"
             id="template-analyzer-{type}-conditions-body"
-            data-persist-collapse-state="true"
-            role="tabpanel"
             aria-labelledby="template-analyzer-{type}-conditions-heading"
+            role="tabpanel"
+            data-persist-collapse-state="true"
         >
             <div class="panel-body">
                 <form action="{f:be.uri(route: 'web_typoscript_analyzer', parameters: '{id: pageUid}')}" method="post">

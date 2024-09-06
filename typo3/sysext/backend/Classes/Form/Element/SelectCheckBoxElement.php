@@ -152,7 +152,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
-        $html[] = '<typo3-backend-collapsible class="formengine-field-item t3js-formengine-field-item" data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '">';
+        $html[] = '<div class="formengine-field-item t3js-formengine-field-item" data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '">';
         $html[] = $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
         $html[] =       '<div class="form-wizards-item-element">';
@@ -171,21 +171,21 @@ class SelectCheckBoxElement extends AbstractFormElement
 
             $html[] = '<div id="' . $groupId . '" class="panel panel-default" data-multi-record-selection-identifier="' . $groupId . '">';
             if ($hasGroupHeader) {
-                $expanded = ($config['appearance']['expandAll'] ?? false) ? 'true' : 'false';
-                $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon((($config['appearance']['expandAll'] ?? false) ? 'actions-view-list-collapse' : 'actions-view-list-expand'), IconSize::SMALL)->render() . '</span>';
-
-                $html[] = '<button type="button" class="panel-heading panel-heading-button" aria-expanded="' . $expanded . '"';
-                $html[] = ' aria-controls="' . $groupCollapsibleId . '" data-bs-target="#' . $groupCollapsibleId . '" data-bs-toggle="collapse">';
-                $html[] = '<span class="flex-grow-1 align-self-center">';
-                $html[] =   $group['header']['icon'];
-                $html[] =   htmlspecialchars($group['header']['title']);
-                $html[] = '</span>';
-                $html[] = '<div class="panel-actions ml-auto">';
-                $html[] = '<span class="btn btn-sm btn-default">';
-                $html[] =  $icon;
-                $html[] = '</span>';
+                $expanded = ($config['appearance']['expandAll'] ?? false);
+                $html[] = '<div class="panel-heading" role="tab">';
+                $html[] =   '<div class="panel-heading-row">';
+                $html[] =     '<button type="button" class="panel-button' . (!$expanded ? ' collapsed' : '') . '" aria-expanded="' . ($expanded ? 'true' : 'false') . '"';
+                $html[] =       ' aria-controls="' . $groupCollapsibleId . '" data-bs-target="#' . $groupCollapsibleId . '" data-bs-toggle="collapse">';
+                $html[] =       '<div class="panel-icon">';
+                $html[] =         $group['header']['icon'];
+                $html[] =       '</div>';
+                $html[] =       '<div class="panel-title">';
+                $html[] =         htmlspecialchars($group['header']['title']);
+                $html[] =       '</div>';
+                $html[] =       '<span class="caret"></span>';
+                $html[] =     '</button>';
+                $html[] =   '</div>';
                 $html[] = '</div>';
-                $html[] = '</button>';
             }
             if (!empty($group['items']) && is_array($group['items'])) {
                 $tableRows = [];
@@ -237,7 +237,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                 }
 
                 $html[] =    '<div class="table-fit">';
-                $html[] =        '<table class="table table-transparent table-hover">';
+                $html[] =        '<table class="table table-hover">';
                 if (!$readOnly) {
                     // Add table header with actions, in case the element is not readOnly
                     $html[] =            '<thead>';
@@ -249,7 +249,6 @@ class SelectCheckBoxElement extends AbstractFormElement
 
                     // Add JavaScript module. This is only needed, in case the element
                     // is not readOnly, since otherwise no checkbox changes take place.
-                    $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/element/collapsible-element.js');
                     $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/multi-record-selection.js');
                 }
                 $html[] =            '<tbody>' . implode(LF, $tableRows) . '</tbody>';
@@ -269,7 +268,7 @@ class SelectCheckBoxElement extends AbstractFormElement
             $html[] =   '</div>';
         }
         $html[] =   '</div>';
-        $html[] = '</typo3-backend-collapsible>';
+        $html[] = '</div>';
 
         $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $html));
         return $resultArray;

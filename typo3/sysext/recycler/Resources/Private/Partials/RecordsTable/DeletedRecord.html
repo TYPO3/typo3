@@ -43,22 +43,23 @@
             </f:if>
         </div>
         <div class="btn-group">
-            <a
+            <button
                 class="btn btn-default"
+                type="button"
                 data-action="expand"
                 data-bs-toggle="collapse"
                 data-bs-target="#{record.table}_{record.uid}"
                 title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.expand')}"
-                role="button"
             >
                 <core:icon identifier="actions-document-info" />
-            </a>
+            </button>
         </div>
     </td>
 </tr>
 <tr class="collapse table-active" id="{record.table}_{record.uid}">
-    <td colspan="7">
-        <table class="table table-transparent table-borderless">
+    <td></td>
+    <td colspan="6" class="p-0">
+        <table class="table table-active table-hover">
             <tbody>
                 <tr>
                     <th scope="row" class="col-recordtitle"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.crdate" /></th>

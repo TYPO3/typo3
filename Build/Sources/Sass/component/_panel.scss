@@ -23,113 +23,45 @@
 //   </div>
 // </div>
 //
-//
-
-//
-// Variables
-//
-$panel-border-scale: -60%;
-$panel-heading-bg-scale: -85%;
-
-// Mixins
-@mixin panel-create-variant($name, $value, $border-scale: $panel-border-scale, $heading-scale: $panel-heading-bg-scale, $panel-progress-bg: null) {
-    $panel-border: shift-color($value, $border-scale);
-    $panel-heading-bg: shift-color($value, $heading-scale);
-    $panel-heading-color: color-contrast($panel-heading-bg);
-
-    @if $panel-progress-bg == null {
-        $panel-progress-bg: $value;
-    }
-    --panel-#{$name}-border-color: #{$panel-border};
-    --panel-#{$name}-progress-bg: #{$panel-progress-bg};
-    --panel-#{$name}-heading-color: #{$panel-heading-color};
-    --panel-#{$name}-heading-bg: #{$panel-heading-bg};
-}
-
-@mixin panel-use-variant($name) {
-    --panel-border-color: var(--panel-#{$name}-border-color);
-    --panel-progress-bg: var(--panel-#{$name}-progress-bg);
-    --panel-heading-color: var(--panel-#{$name}-heading-color);
-    --panel-heading-bg: var(--panel-#{$name}-heading-bg);
-}
-
-// Variables
-:root {
-    --panel-bg: #fff;
-    --panel-border-color: #ccc;
-    --panel-border-radius: var(--typo3-component-border-radius);
-    --panel-border-width: var(--typo3-component-border-width);
-    --panel-padding: var(--typo3-component-padding-x);
-    --panel-header-padding-x: var(--typo3-component-padding-x);
-    --panel-header-padding-y: var(--typo3-component-padding-y);
-    --panel-spacing: var(--typo3-component-spacing);
-    --panel-box-shadow: var(--typo3-component-box-shadow);
-
-    @each $name, $value in $theme-colors {
-        @if $name == light {
-            @include panel-create-variant($name, $value, 20%, 0%, darken($value, 10%));
-        }
-
-        @else if $name == default {
-            @include panel-create-variant($name, $value, 20%, 0%, darken($value, 10%));
-        }
-
-        @else {
-            @include panel-create-variant($name, $value);
-        }
-    }
-}
-
-//
-// Group
-//
-.panel-group {
-    display: flex;
-    flex-flow: column;
-    overflow: hidden;
-    margin-bottom: var(--typo3-spacing);
-    border-radius: var(--panel-border-radius);
-    box-shadow: var(--panel-box-shadow);
-
-    > .panel {
-        border-radius: 0;
-        margin-bottom: 0;
-        box-shadow: none;
-        margin-top: calc(var(--panel-border-width) * -1);
-
-        &:first-child {
-            margin-top: 0;
-            border-top-left-radius: var(--panel-border-radius);
-            border-top-right-radius: var(--panel-border-radius);
-        }
-
-        &:last-child {
-            border-bottom-left-radius: var(--panel-border-radius);
-            border-bottom-right-radius: var(--panel-border-radius);
-        }
-    }
-}
-
-//
-// Component
-//
 .panel {
+    --typo3-panel-color: var(--typo3-component-color);
+    --typo3-panel-bg: var(--typo3-component-bg);
+    --typo3-panel-border-color: color-mix(in srgb, var(--typo3-panel-bg), var(--typo3-panel-color) 15%);
+    --typo3-panel-border-width: var(--typo3-component-border-width);
+    --typo3-panel-border-radius: var(--typo3-component-border-radius);
+    --typo3-panel-border-radius-top: var(--typo3-panel-border-radius);
+    --typo3-panel-border-radius-bottom: var(--typo3-panel-border-radius);
+    --typo3-panel-border-radius-inner-top: max(0px, calc(var(--typo3-panel-border-radius-top) - var(--typo3-panel-border-width)));
+    --typo3-panel-border-radius-inner-bottom: max(0px, calc(var(--typo3-panel-border-radius-bottom) - var(--typo3-panel-border-width)));
+    --typo3-panel-padding-y: .75rem;
+    --typo3-panel-padding-x: 1rem;
+    --typo3-panel-sm-padding-y: .5rem;
+    --typo3-panel-sm-padding-x: .75rem;
+    --typo3-panel-header-bg: var(--typo3-surface-container-low);
+    --typo3-panel-header-color: var(--typo3-text-color-base);
+    --typo3-panel-box-shadow: var(--typo3-component-box-shadow);
+    --typo3-panel-progress-bg: var(--typo3-state-primary-bg);
+
+    @each $state in $base-variants {
+        --typo3-panel-#{$state}-header-color: var(--typo3-surface-container-#{$state}-text);
+        --typo3-panel-#{$state}-header-bg: var(--typo3-surface-container-#{$state});
+        --typo3-panel-#{$state}-border-color: color-mix(in srgb, var(--typo3-panel-#{$state}-header-bg), var(--typo3-panel-#{$state}-header-color) 15%);
+    }
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     min-width: 0;
     word-wrap: break-word;
     background-clip: border-box;
-    background-color: var(--panel-bg);
-    border: var(--panel-border-width) solid var(--panel-border-color);
-    border-radius: var(--panel-border-radius);
-    box-shadow: var(--panel-box-shadow);
+    color: var(--typo3-panel-color);
+    background-color: var(--typo3-panel-bg);
+    border: var(--typo3-panel-border-width) solid var(--typo3-panel-border-color);
+    border-radius: var(--typo3-panel-border-radius-top) var(--typo3-panel-border-radius-top) var(--typo3-panel-border-radius-bottom) var(--typo3-panel-border-radius-bottom);
+    box-shadow: var(--typo3-panel-box-shadow);
     margin-block-end: var(--typo3-spacing);
-    transition: all .2s ease-in-out;
-    transition-property: box-shadow, border, transform;
     position: relative;
 
-    .table-fit {
+    > .table-fit,
+    .panel-collapse > .table-fit {
         box-shadow: none;
         border-radius: 0;
         border-left: 0;
@@ -137,18 +69,41 @@ $panel-heading-bg-scale: -85%;
         border-bottom: 0;
         margin-bottom: 0;
     }
+
+    > .table-fit:last-child {
+        border-end-start-radius: var(--typo3-panel-border-radius-inner-bottom);
+        border-end-end-radius: var(--typo3-panel-border-radius-inner-bottom);
+    }
 }
 
 //
 // Loader
 //
+// <div class="panel panel-default">
+//   <div class="panel-loader">
+//     <typo3-backend-spinner size="small"></typo3-backend-spinner>
+//   </div>
+// </div>
+//
 .panel-loader {
-    padding: var(--panel-padding);
+    padding: var(--typo3-panel-padding-y) var(--typo3-panel-padding-x);
 }
 
 //
 // Progress
 //
+// <div class="panel panel-default panel-has-progress">
+//   <div class="panel-progress">
+//     <div class="panel-progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+//       <span class="visually-hidden">50%</span>
+//     </div>
+//   </div>
+// </div>
+//
+.panel:has(.panel-progress) {
+    min-height: 5px;
+}
+
 .panel-progress {
     display: none;
     position: absolute;
@@ -158,11 +113,13 @@ $panel-heading-bg-scale: -85%;
     width: 100%;
     z-index: 1;
     background-color: transparent;
+    overflow: hidden;
+    border-radius: var(--typo3-panel-border-radius-inner-top) var(--typo3-panel-border-radius-inner-top) 0 0;
 
     .panel-progress-bar {
         display: block;
         height: 100%;
-        background-color: var(--panel-progress-bg, $primary);
+        background-color: var(--typo3-panel-progress-bg);
     }
 }
 
@@ -173,88 +130,136 @@ $panel-heading-bg-scale: -85%;
 }
 
 //
+// Button
+//
+.panel-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-align: start;
+    padding: 0;
+    gap: .25rem;
+    background: transparent;
+    border: none;
+    flex-grow: 1;
+    width: 100%;
+
+    &:after {
+        position: absolute;
+        content: '';
+        left: 0;
+        right: 0;
+        top: calc(var(--typo3-panel-padding-y) * -1);
+        bottom: calc(var(--typo3-panel-padding-y) * -1);
+    }
+}
+
+//
 // Heading
 //
 .panel-heading {
+    font-size: var(--typo3-font-size);
+    font-weight: normal;
     position: relative;
-    color: var(--panel-heading-color);
-    background-color: var(--panel-heading-bg);
-    font-weight: bold;
-    padding: var(--panel-header-padding-y) var(--panel-header-padding-x);
+    color: var(--typo3-panel-header-color);
+    background-color: var(--typo3-panel-header-bg);
+    padding: var(--typo3-panel-padding-y) var(--typo3-panel-padding-x);
+    border-radius: var(--typo3-panel-border-radius-inner-top) var(--typo3-panel-border-radius-inner-top) var(--typo3-panel-border-radius-inner-bottom) var(--typo3-panel-border-radius-inner-bottom);
+    outline-offset: 0;
+    margin: 0;
+
+    &:not(:last-child):not(.collapsed):not(:has(.collapsed)) {
+        --typo3-panel-border-radius-inner-bottom: 0;
+    }
+
+    [data-bs-toggle="collapse"] {
+        outline: none;
+    }
+
+    &:has([data-bs-toggle="collapse"]:focus-visible) {
+        z-index: 1;
+        outline: .25rem solid color-mix(in srgb, var(--typo3-panel-border-color), transparent 25%);
+    }
 
     .caret {
-        @include transition(all .25s ease-in-out);
-        border-top-color: var(--panel-heading-color);
+        --typo3-caret-color: var(--typo3-panel-header-color);
     }
 
-    /* stylelint-disable */
-    .panel-collapsed &,
-    .collapsed > ,
-    .collapsed > .form-irre-header-icon {
+    &.collapsed,
+    &:has(.collapsed),
+    &:has(.form-irre-header-button[aria-expanded="false"]) {
         .caret {
-            transform: rotate(-90deg);
+            --typo3-caret-rotation: calc(-90deg * var(--typo3-position-modifier));
         }
-    }
-    /* stylelint-enable */
-
-    a:not(.btn),
-    a:not(.btn):hover,
-    a:not(.btn):focus,
-    a:not(.btn):active {
-        text-decoration: none;
-        color: inherit;
     }
 
     &-row {
         flex-grow: 1;
         display: flex;
         align-items: center;
-        flex-wrap: wrap;
         max-width: 100%;
-        gap: var(--panel-header-padding-y) var(--panel-header-padding-x);
-    }
+        gap: .5rem;
 
-    &-title {
-        font-weight: bold;
-        flex-grow: 1;
-        width: 250px;
-        max-width: 100%;
-    }
-
-    &-actions {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: .25rem;
-    }
-
-    &-button {
-        display: flex;
-        text-align: start;
-        align-items: center;
-        align-self: stretch;
-        border: 0;
-        width: 100%;
+        .panel-button {
+            width: auto;
+        }
     }
 }
 
 //
 // Title
 //
+// <div class="panel panel-default panel-has-progress">
+//   <h2 class="panel-heading">
+//     Panel Title
+//   </h2>
+// </div>
+//
 .panel-title {
-    font-size: $font-size-base;
+    font-size: var(--typo3-font-size);
     margin-top: 0;
     margin-bottom: 0;
+    flex-grow: 1;
+}
+
+.panel-heading:has([data-bs-toggle="collapse"]:hover) {
+    .panel-title {
+        text-decoration: underline;
+    }
+}
+
+//
+// Elements
+//
+.panel-icon,
+.panel-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .25rem;
 }
 
 //
 // Body
 //
+// <div class="panel panel-default">
+//   <div class="panel-body">
+//     ...
+//   </div>
+// </div>
+//
 .panel-body {
-    padding: var(--panel-padding);
+    padding: var(--typo3-panel-padding-y) var(--typo3-panel-padding-x);
 
-    > p > a {
-        text-decoration: underline;
+    &:last-child {
+        border-end-start-radius: var(--typo3-panel-border-radius-inner-bottom);
+        border-end-end-radius: var(--typo3-panel-border-radius-inner-bottom);
     }
 
     > *:first-child {
@@ -272,45 +277,69 @@ $panel-heading-bg-scale: -85%;
 }
 
 //
-// Footer
+// Collapse
 //
-.panel-footer {
-    padding: var(--panel-padding);
+.panel-collapse {
+    overflow: hidden;
+
+    &:last-child {
+        border-end-start-radius: var(--typo3-panel-border-radius-inner-bottom);
+        border-end-end-radius: var(--typo3-panel-border-radius-inner-bottom);
+    }
 }
 
 //
-// Table
+// Footer
 //
-.panel-table {
-    th:first-child,
-    td:first-child {
-        padding-inline-start: var(--panel-header-padding-x);
-    }
-
-    th:last-child,
-    td:last-child {
-        padding-inline-end: var(--panel-header-padding-x);
-    }
+// <div class="panel panel-default">
+//   <div class="panel-body">
+//     ...
+//   </div>
+//   <div class="panel-footer">
+//     ...
+//   </div>
+// </div>
+//
+.panel-footer {
+    padding: var(--typo3-panel-padding-y) var(--typo3-panel-padding-x);
 }
 
 //
 // List
 //
+// <div class="panel panel-default">
+//   <div class="panel-body">
+//     <ul class="panel-list">
+//       <li>Item 1</li>
+//       <li>Item 2</li>
+//       <li>Item 3</li>
+//     </ul>
+//   </div>
+// </div>
+//
 .panel-list {
-    padding-left: var(--panel-padding);
+    padding-left: var(--typo3-panel-padding-x);
 
-    li {
-        padding-bottom: .2rem;
+    > li + li {
+        margin-top: .2rem;
     }
 }
 
 //
 // Condensed
 //
+// <div class="panel panel-default panel-condensed">
+//   <div class="panel-body">
+//     ...
+//   </div>
+//   <div class="panel-footer">
+//     ...
+//   </div>
+// </div>
+//
 .panel-condensed {
-    --panel-padding: .5rem;
-    --panel-header-padding-x: .5rem;
-    --panel-header-padding-y: .5rem;
+    --typo3-panel-padding-y: var(--typo3-panel-sm-padding-y);
+    --typo3-panel-padding-x: var(--typo3-panel-sm-padding-x);
 }
 
 //
@@ -324,48 +353,78 @@ $panel-heading-bg-scale: -85%;
 }
 
 //
-// Panel Tab
-//
-.panel-tab {
-    --panel-border-radius: 0;
-    border: 1px solid $nav-tabs-active-link-hover-border-color;
-    background-color: $nav-tabs-active-link-bg;
-}
-
-.tab-pane {
-    > h2 + .form-section,
-    > .panel-tab:first-child {
-        border-top: none;
-    }
-}
-
-//
 // Colors
 //
-@each $state, $value in $theme-colors {
-    .panel-#{$state} {
-        @include panel-use-variant($state);
+@each $variant in $base-variants {
+    .panel-#{$variant} {
+        --typo3-panel-header-color: var(--typo3-panel-#{$variant}-header-color);
+        --typo3-panel-header-bg: var(--typo3-panel-#{$variant}-header-bg);
+        --typo3-panel-border-color: var(--typo3-panel-#{$variant}-border-color);
     }
 }
 
 .panel-active {
-    @include panel-use-variant('primary');
+    @extend .panel-primary;
 }
 
 .panel-feature {
-    @include panel-use-variant('success');
+    @extend .panel-success;
 }
 
 .panel-important {
-    @include panel-use-variant('info');
+    @extend .panel-info;
 }
 
 .panel-deprecation {
-    @include panel-use-variant('warning');
+    @extend .panel-warning;
 }
 
 .panel-breaking {
-    @include panel-use-variant('danger');
+    @extend .panel-danger;
+}
+
+//
+// Group
+//
+.panel-group {
+    --typo3-panel-group-border-radius: var(--typo3-component-border-radius);
+    --typo3-panel-group-border-radius-top: var(--typo3-panel-group-border-radius);
+    --typo3-panel-group-border-radius-bottom: var(--typo3-panel-group-border-radius);
+    --typo3-panel-group-box-shadow: var(--typo3-component-box-shadow);
+    display: flex;
+    flex-flow: column;
+    margin-bottom: var(--typo3-spacing);
+    border-radius: var(--typo3-panel-group-border-radius-top) var(--typo3-panel-group-border-radius-top) var(--typo3-panel-group-border-radius-bottom) var(--typo3-panel-group-border-radius-bottom);
+    box-shadow: var(--typo3-panel-group-box-shadow);
+
+    > .panel {
+        // Disable stylelint to preserve units
+        /* stylelint-disable */
+        --typo3-panel-border-radius-top: 0px;
+        --typo3-panel-border-radius-bottom: 0px;
+        /* stylelint-enable */
+        margin-bottom: 0;
+        box-shadow: none;
+        margin-top: calc(var(--typo3-panel-border-width) * -1);
+
+        &:first-child {
+            margin-top: 0;
+            --typo3-panel-border-radius-top: var(--typo3-panel-group-border-radius);
+        }
+
+        &:last-child {
+            --typo3-panel-border-radius-bottom: var(--typo3-panel-group-border-radius);
+        }
+    }
+}
+
+//
+// Animation
+//
+.panel,
+.panel-heading {
+    transition: all .2s ease-in-out;
+    transition-property: box-shadow, border, border-radius, transform;
 }
 
 //
@@ -378,7 +437,7 @@ $panel-heading-bg-scale: -85%;
     > .alert {
         margin: 0;
         border: none;
-        border-top: var(--panel-border-width) solid var(--panel-border-color);
+        border-top: var(--typo3-panel-border-width) solid var(--typo3-panel-border-color);
         --typo3-alert-border-radius: 0;
     }
 
@@ -394,7 +453,7 @@ $panel-heading-bg-scale: -85%;
 
     > [role="tabpanel"] > .nav-tabs,
     > .nav-tabs {
-        border-top: 1px solid $panel-default-border;
+        border-top: 1px solid var(--typo3-panel-border-color);
         padding-top: 8px;
 
         > li {

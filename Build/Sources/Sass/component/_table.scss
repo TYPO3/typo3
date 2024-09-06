@@ -34,6 +34,10 @@
         border-bottom-width: var(--typo3-table-border-width);
         vertical-align: middle;
 
+        > *:last-child {
+            margin-bottom: 0;
+        }
+
         &:is(th) {
             white-space: nowrap;
         }

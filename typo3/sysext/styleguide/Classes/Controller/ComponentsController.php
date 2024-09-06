@@ -44,7 +44,6 @@ final class ComponentsController
      */
     private array $allowedActions = [
         'componentsOverview',
-        'accordion',
         'avatar',
         'badges',
         'buttons',
@@ -57,6 +56,7 @@ final class ComponentsController
         'modal',
         'notifications',
         'pagination',
+        'panels',
         'progressIndicators',
         'progressTrackers',
         'select',
@@ -81,7 +81,6 @@ final class ComponentsController
 
         // Actions from components navigation
         return match ($queryAction) {
-            'accordion' => $this->renderAccordionView($request),
             'avatar' => $this->renderAvatarView($request),
             'badges' => $this->renderBadgesView($request),
             'buttons' => $this->renderButtonsView($request),
@@ -94,6 +93,7 @@ final class ComponentsController
             'modal' => $this->renderModalView($request),
             'notifications' => $this->renderNotificationsView($request),
             'pagination' => $this->renderPaginationView($request),
+            'panels' => $this->renderPanelsView($request),
             'progressIndicators' => $this->renderProgressIndicatorsView($request),
             'progressTrackers' => $this->renderProgressTrackersView($request),
             'select' => $this->renderSelectView($request),
@@ -115,17 +115,6 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/ComponentsOverview');
-    }
-
-    private function renderAccordionView(ServerRequestInterface $request): ResponseInterface
-    {
-        $view = $this->createModuleTemplate($request, 'accordion');
-        $view->assignMultiple([
-            'actions' => $this->allowedActions,
-            'currentAction' => 'accordion',
-            'routeIdentifier' => 'styleguide_components',
-        ]);
-        return $view->renderResponse('Backend/Components/Accordion');
     }
 
     private function renderAvatarView(ServerRequestInterface $request): ResponseInterface
@@ -327,6 +316,18 @@ final class ComponentsController
             'pagination' => new SimplePagination($paginator),
         ]);
         return $view->renderResponse('Backend/Components/Pagination');
+    }
+
+    private function renderPanelsView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'panels');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'panels',
+            'routeIdentifier' => 'styleguide_components',
+            'variants' => ['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'notice', 'default'],
+        ]);
+        return $view->renderResponse('Backend/Components/Panels');
     }
 
     private function renderProgressIndicatorsView(ServerRequestInterface $request): ResponseInterface

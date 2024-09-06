@@ -54,12 +54,12 @@ final class UpgradeCest extends AbstractCest
 
         $I->amGoingTo('mark an item as read');
         // pick 2nd named version (e.g. `12.4`), current dev versions might be empty (e.g. `13.0` and `12.4.x`)
-        $I->click('#heading-2 > h2:nth-child(1) > a:nth-child(1) > strong:nth-child(2)');
+        $I->click('#heading-2');
         $I->waitForElement('#version-2', 5, ModalDialog::$openedModalSelector);
 
         $textCurrentFirstPanelHeading = $I->grabTextFrom($versionPanel . ' .panel-heading');
 
-        $I->click($versionPanel . ' a[data-bs-toggle="collapse"]');
+        $I->click($versionPanel . ' button[data-bs-toggle="collapse"]');
         $I->click($versionPanel . ' .t3js-upgradeDocs-markRead');
 
         $I->dontSee($textCurrentFirstPanelHeading, '#version-2');

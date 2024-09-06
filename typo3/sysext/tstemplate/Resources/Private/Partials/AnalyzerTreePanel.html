@@ -4,15 +4,30 @@
 >
 
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title" id="template-analyzer-{type}-tree-heading">
-            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#template-analyzer-{type}-tree-body" aria-expanded="false" aria-controls="template-analyzer-{type}-tree-body">
+    <h3 class="panel-heading" role="tab" id="template-analyzer-{type}-tree-heading">
+        <div class="panel-heading-row">
+            <button
+                class="panel-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#template-analyzer-{type}-tree-body"
+                aria-controls="template-analyzer-{type}-tree-body"
+                aria-expanded="false"
+            >
+                <div class="panel-title">
+                    <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.header.configuration"/></strong>
+                </div>
                 <span class="caret"></span>
-                <strong><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:panel.header.configuration"/></strong>
-            </a>
-        </h3>
-    </div>
-    <div id="template-analyzer-{type}-tree-body" class="panel-collapse collapse" data-persist-collapse-state="true" aria-labelledby="template-analyzer-{type}-tree-heading">
+            </button>
+        </div>
+    </h3>
+    <div
+        class="panel-collapse collapse"
+        id="template-analyzer-{type}-tree-body"
+        data-persist-collapse-state="true"
+        role="tabpanel"
+        aria-labelledby="template-analyzer-{type}-tree-heading"
+    >
         <div class="panel-body panel-body-overflow">
             <ul class="treelist">
                 <f:render

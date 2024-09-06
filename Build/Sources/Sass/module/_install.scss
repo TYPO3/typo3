@@ -23,10 +23,6 @@
         .panel-heading {
             position: relative;
 
-            button.link-action {
-                padding: 0;
-            }
-
             strong {
                 line-height: 1.5em;
             }
@@ -36,11 +32,11 @@
             position: absolute;
             display: flex;
             gap: .5rem;
-            top: calc(var(--panel-padding) / 2);
-            inset-inline-end: var(--panel-padding);
+            top: calc(var(--typo3-panel-padding-y) / 2);
+            inset-inline-end: var(--typo3-panel-padding-x);
 
             ~ .panel-body {
-                padding-top: calc(var(--panel-padding) * 2);
+                padding-top: calc(var(--typo3-panel-padding-y) * 2);
             }
         }
 
@@ -48,11 +44,11 @@
             position: absolute;
             display: flex;
             gap: .5rem;
-            bottom: calc(var(--panel-padding) / 2);
-            inset-inline-end: var(--panel-padding);
+            bottom: calc(var(--typo3-panel-padding-y) / 2);
+            inset-inline-end: var(--typo3-panel-padding-x);
 
             ~ .panel-body {
-                padding-bottom: calc(var(--panel-padding) * 2);
+                padding-bottom: calc(var(--typo3-panel-padding-y) * 2);
             }
         }
     }
@@ -67,11 +63,6 @@
                 color: #fff;
             }
         }
-    }
-
-    // Collapsibles clickable on full length
-    a[data-bs-toggle="collapse"] {
-        display: block;
     }
 
     // Styles for specific modals: language pack handling
@@ -137,57 +128,6 @@
             flex-grow: 1;
         }
     }
-}
-
-//
-// Panel Severity Variants
-//
-
-// $panel-border-scale: -60%;
-// $panel-heading-bg-scale: -85%;
-$risk-high-border-scale: -20%;
-$risk-high-bg-scale: -45%;
-$risk-medium-border-scale: -40%;
-$risk-medium-bg-scale: -65%;
-
-.panel-success.risk-high {
-    @include panel-create-variant('success-high', $success, $risk-high-border-scale, $risk-high-bg-scale);
-    @include panel-use-variant('success-high');
-}
-
-.panel-success.risk-medium {
-    @include panel-create-variant('success-medium', $success, $risk-medium-border-scale, $risk-medium-bg-scale);
-    @include panel-use-variant('success-medium');
-}
-
-.panel-warning.risk-high {
-    @include panel-create-variant('warning-high', $warning, $risk-high-border-scale, $risk-high-bg-scale);
-    @include panel-use-variant('warning-high');
-}
-
-.panel-warning.risk-medium {
-    @include panel-create-variant('warning-medium', $warning, $risk-medium-border-scale, $risk-medium-bg-scale);
-    @include panel-use-variant('warning-medium');
-}
-
-.panel-danger.risk-high {
-    @include panel-create-variant('danger-high', $danger, $risk-high-border-scale, $risk-high-bg-scale);
-    @include panel-use-variant('danger-high');
-}
-
-.panel-danger.risk-medium {
-    @include panel-create-variant('danger-medium', $danger, $risk-medium-border-scale, $risk-medium-bg-scale);
-    @include panel-use-variant('danger-medium');
-}
-
-.panel-info.risk-high {
-    @include panel-create-variant('info-high', $info, $risk-high-border-scale, $risk-high-bg-scale);
-    @include panel-use-variant('info-high');
-}
-
-.panel-info.risk-medium {
-    @include panel-create-variant('info-medium', $info, $risk-medium-border-scale, $risk-medium-bg-scale);
-    @include panel-use-variant('info-medium');
 }
 
 //

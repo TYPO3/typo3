@@ -111,11 +111,11 @@
             <div class="panel-heading multi-record-selection-panel">
                 <div class="panel-heading-row">
                     <f:if condition="{group.hidden}">
-                        <div class="panel-heading-badge">
+                        <div class="panel-badge">
                             <span class="badge badge-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group.isDisabled" /></span>
                         </div>
                     </f:if>
-                    <div class="panel-heading-title">
+                    <div class="panel-title">
                         <f:if condition="!{group.uid}">
                             <f:then>
                                 {f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noGroup')}
@@ -131,7 +131,7 @@
                             </f:else>
                         </f:if>
                     </div>
-                    <div class="panel-heading-actions">
+                    <div class="panel-actions">
                         <form name="tx_scheduler_form_group_toggle_hidden" id="tx_scheduler_form_group_toggle_hidden" method="post">
                             <input name="action[group][uid]" type="hidden" value="{group.uid}">
                             <a

@@ -155,22 +155,6 @@ $modal-sidebar-button-space: $padding-small-vertical;
             width: $modal-sidebar-md;
         }
     }
-
-    .panel-heading {
-        .is-active {
-            // Disable pointer events to make
-            // sure the active panel stays open
-            pointer-events: none;
-        }
-    }
-
-    .panel {
-        margin-bottom: 0;
-    }
-
-    .panel-body {
-        border-inline-start: 2px solid $color-orange;
-    }
 }
 
 //

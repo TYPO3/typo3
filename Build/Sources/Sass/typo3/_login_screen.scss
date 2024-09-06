@@ -238,9 +238,17 @@ body[data-typo3-login-ready] {
 // Copyright
 //
 .typo3-login-copyright-link {
+    display: flex;
+    border: none;
+    padding: 0;
+    width: 100%;
+    background-color: transparent;
+    justify-content: space-between;
     font-weight: normal !important;
 
-    @extend .clearfix;
+    &:hover {
+        text-decoration: underline;
+    }
 
     > img {
         float: var(--typo3-position-end);
