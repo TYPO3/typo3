@@ -1,6 +1,5 @@
 .. include:: /Includes.rst.txt
 
-.. highlight:: php
 
 .. _implement-new-widget:
 
@@ -30,7 +29,9 @@ PHP class
 ---------
 
 Each Widget has to be a PHP class.
-This class has to implement the :php:`WidgetInterface` and could look like this::
+This class has to implement the :php:`WidgetInterface` and could look like this:
+
+..  code-block:: php
 
     class RssWidget implements WidgetInterface, RequestAwareWidgetInterface
     {
@@ -73,7 +74,7 @@ This class has to implement the :php:`WidgetInterface` and could look like this:
         {
             return $this->options;
         }
-   }
+    }
 
 The class should always provide documentation how to use in :file:`Services.yaml`.
 The above class is documented at :ref:`rss-widget`.
@@ -106,6 +107,7 @@ JavaScript module
     Implement :php:`\TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface`:
 
     ..  code-block:: php
+
 
         class ExampleChartWidget implements JavaScriptInterface
         {
@@ -169,15 +171,17 @@ Providing custom CSS
 
 It is possible to add custom Css to style widgets.
 
-Implement :php:`AdditionalCssInterface`::
+Implement :php:`AdditionalCssInterface`:
 
-   class RssWidget implements WidgetInterface, AdditionalCssInterface
-   {
-         public function getCssFiles(): array
-         {
-            return [
-                'EXT:my_extension/Resources/Public/Css/widgets.css',
-                'EXT:my_extension/Resources/Public/Css/list-widget.css',
-            ];
-         }
-   }
+..  code-block:: php
+
+    class RssWidget implements WidgetInterface, AdditionalCssInterface
+    {
+          public function getCssFiles(): array
+          {
+             return [
+                 'EXT:my_extension/Resources/Public/Css/widgets.css',
+                 'EXT:my_extension/Resources/Public/Css/list-widget.css',
+             ];
+          }
+    }

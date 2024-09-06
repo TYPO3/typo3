@@ -1,6 +1,5 @@
 .. include:: /Includes.rst.txt
 
-.. highlight:: php
 
 .. _interfaces:
 
@@ -97,12 +96,14 @@ For up to date information, please check the source code.
 
    .. php:method:: getJsFiles()
 
-      Returns a list of JavaScript file names that should be included, e.g.::
+      Returns a list of JavaScript file names that should be included, e.g.:
 
-         return [
-             'EXT:my_extension/Resources/Public/JavaScript/file.js',
-             'EXT:my_extension/Resources/Public/JavaScript/file2.js',
-         ];
+      ..  code-block:: php
+
+          return [
+              'EXT:my_extension/Resources/Public/JavaScript/file.js',
+              'EXT:my_extension/Resources/Public/JavaScript/file2.js',
+          ];
 
       :returntype: array
       :returns: List of JS files to load.
@@ -114,12 +115,14 @@ For up to date information, please check the source code.
 
    .. php:method:: getCssFiles()
 
-      Returns a list of Css file names that should be included, e.g.::
+      Returns a list of Css file names that should be included, e.g.:
 
-         return [
-             'EXT:my_extension/Resources/Public/Css/widgets.css',
-             'EXT:my_extension/Resources/Public/Css/list-widget.css',
-         ];
+      ..  code-block:: php
+
+          return [
+              'EXT:my_extension/Resources/Public/Css/widgets.css',
+              'EXT:my_extension/Resources/Public/Css/list-widget.css',
+          ];
 
       :returntype: array
       :returns: List of Css files to load.

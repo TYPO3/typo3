@@ -1,6 +1,5 @@
 .. include:: /Includes.rst.txt
 
-.. highlight:: php
 
 .. _make-refreshable:
 

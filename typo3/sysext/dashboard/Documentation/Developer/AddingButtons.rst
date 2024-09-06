@@ -1,6 +1,5 @@
 .. include:: /Includes.rst.txt
 
-.. highlight:: php
 
 .. _adding-buttons:
 
@@ -76,30 +75,31 @@ Implementation
 
 An example implementation could look like this:
 
-:file:`Classes/Widgets/RssWidget.php`::
+..  code-block:: php
+    :caption: Classes/Widgets/RssWidget.php
 
-   class RssWidget implements WidgetInterface
-   {
-       public function __construct(
-           // …
-           private readonly ButtonProviderInterface $buttonProvider = null,
-           // …
-       ) {
-       }
+    class RssWidget implements WidgetInterface
+    {
+        public function __construct(
+            // …
+            private readonly ButtonProviderInterface $buttonProvider = null,
+            // …
+        ) {
+        }
 
-       public function renderWidgetContent(): string
-       {
-           // …
-           $this->view->assignMultiple([
-               // …
-               'button' => $this->buttonProvider,
-               // …
-           ]);
-           // …
-       }
+        public function renderWidgetContent(): string
+        {
+            // …
+            $this->view->assignMultiple([
+                // …
+                'button' => $this->buttonProvider,
+                // …
+            ]);
+            // …
+        }
 
-       public function getOptions(): array
-       {
-           return $this->options;
-       }
-   }
+        public function getOptions(): array
+        {
+            return $this->options;
+        }
+    }
