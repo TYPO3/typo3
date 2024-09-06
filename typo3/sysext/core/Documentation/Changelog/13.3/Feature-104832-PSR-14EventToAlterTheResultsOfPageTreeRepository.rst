@@ -26,7 +26,7 @@ Example
 =======
 
 The event listener class, using the PHP attribute :php:`#[AsEventListener]` for
-registration, will rmoeve any children for displaying for the page with the
+registration, will remove any children for displaying for the page with the
 UID 123:
 
 ..  code-block:: php

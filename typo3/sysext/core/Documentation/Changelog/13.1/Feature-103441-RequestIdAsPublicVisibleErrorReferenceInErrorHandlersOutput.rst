@@ -20,7 +20,7 @@ occurred!" followed by a timestamp and a hash. This is part of log messages.
 Whenever an error/exception is logged, the log message contains the request ID.
 
 With this the request ID is also shown in web output of error/exception handlers
- as public visible error reference.
+as public visible error reference.
 
 
 Impact

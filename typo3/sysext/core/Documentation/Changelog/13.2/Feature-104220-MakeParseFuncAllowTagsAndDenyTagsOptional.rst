@@ -63,7 +63,6 @@ The example above only allows :html:`<u>` and encodes any other tag.
     }
 
 The example above allows all tags, the new :typoscript:`allowTags = *`
-takes precendence over :typoscript:`denyTags = *`.
-
+takes precedence over :typoscript:`denyTags = *`.
 
 .. index:: Frontend, TypoScript, ext:core

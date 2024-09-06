@@ -34,7 +34,7 @@ This should rarely happen, as it would involve using :php:`$view->assign('true',
 Migration
 =========
 
-Template code using these variables should be adjusted to use diffferent variable names.
+Template code using these variables should be adjusted to use different variable names.
 In Fluid v4, the variables will contain their matching PHP counterparts.
 
 .. index:: Fluid, NotScanned, ext:fluid

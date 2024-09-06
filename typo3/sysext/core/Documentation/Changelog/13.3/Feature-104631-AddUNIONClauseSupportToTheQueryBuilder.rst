@@ -42,11 +42,11 @@ which introduces two new API method on the QueryBuilder:
 
 * :php:`union(string|QueryBuilder $part)` to create first UNION query part
 * :php:`addUnion(string|QueryBuilder $part, UnionType $type = UnionType::DISTINCT)`
-  to add addtional :sql:`UNION (ALL|DISTINCT)` query parts with the selected union
+  to add additional :sql:`UNION (ALL|DISTINCT)` query parts with the selected union
   query type.
 
 TYPO3 decorates the Doctrine DBAL QueryBuilder to provide for most API methods automatic
-quoting of identifiers and values **and**  to appliy database restrictions automatically
+quoting of identifiers and values **and**  to apply database restrictions automatically
 for :sql:`SELECT` queries.
 
 The Doctrine DBAL API has been adopted now to provide the same surface for the
