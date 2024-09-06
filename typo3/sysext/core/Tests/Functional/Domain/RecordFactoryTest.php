@@ -18,13 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Domain;
 
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Domain\Event\RecordCreationEvent;
 use TYPO3\CMS\Core\Domain\Exception\IncompleteRecordException;
+use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -167,5 +171,75 @@ final class RecordFactoryTest extends FunctionalTestCase
         $this->expectExceptionCode(1726046919);
 
         $this->get(RecordFactory::class)->createFromDatabaseRow('pages', $dbRow);
+    }
+
+    #[Test]
+    public function recordCreationEventIsCalled(): void
+    {
+        $recordCreationEvent = null;
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set(
+            'record-creation-listener',
+            static function (RecordCreationEvent $event) use (&$recordCreationEvent) {
+                $recordCreationEvent = $event;
+                $recordCreationEvent->setProperty('title', 'custom title');
+                $recordCreationEvent->setProperty('customProperty', 'somePropertyValue');
+            }
+        );
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(RecordCreationEvent::class, 'record-creation-listener');
+
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $dbRow = $pageRepository->getPage(3);
+        self::assertNull($dbRow['customProperty'] ?? null);
+
+        $subject = $this->get(RecordFactory::class);
+        $result = $subject->createFromDatabaseRow('pages', $dbRow);
+
+        self::assertEquals('Dummy 1-3', $dbRow['title']);
+        self::assertEquals('custom title', $result->get('title'));
+        self::assertEquals('somePropertyValue', $result->get('customProperty'));
+        self::assertInstanceOf(RecordCreationEvent::class, $recordCreationEvent);
+        self::assertEquals('somePropertyValue', $recordCreationEvent->getProperty('customProperty'));
+    }
+
+    #[Test]
+    public function recordCreationEventIsStopped(): void
+    {
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set(
+            'record-creation-listener-stop-propagation',
+            static function (RecordCreationEvent $event) {
+                $rawRecord = $event->getRawRecord();
+                $event->setRecord(
+                    new Record(
+                        new RawRecord(123, 456, array_replace_recursive($rawRecord->toArray(), ['uid' => 123, 'pid' => 456]), $rawRecord->getComputedProperties(), $rawRecord->getFullType()),
+                        ['customProperty' => 'somePropertyValue'],
+                        $event->getSystemProperties()
+                    )
+                );
+            }
+        );
+        $container->set(
+            'record-creation-listener-not-executed',
+            static function (RecordCreationEvent $event) {
+                $event->setProperty('anotherProperty', 'anotherPropertyValuer');
+            }
+        );
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(RecordCreationEvent::class, 'record-creation-listener-stop-propagation');
+        $eventListener->addListener(RecordCreationEvent::class, 'record-creation-listener-not-executed');
+
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $dbRow = $pageRepository->getPage(3);
+        $subject = $this->get(RecordFactory::class);
+        $result = $subject->createFromDatabaseRow('pages', $dbRow);
+
+        self::assertEquals('somePropertyValue', $result->get('customProperty'));
+        self::assertEquals(123, $result->getUid());
+        self::assertEquals(456, $result->getPid());
+        self::assertFalse($result->has('anotherProperty'));
     }
 }

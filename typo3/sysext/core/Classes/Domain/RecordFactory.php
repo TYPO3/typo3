@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Domain;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
+use TYPO3\CMS\Core\Domain\Event\RecordCreationEvent;
 use TYPO3\CMS\Core\Domain\Exception\IncompleteRecordException;
 use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
@@ -57,6 +59,7 @@ readonly class RecordFactory
     public function __construct(
         protected TcaSchemaFactory $schemaFactory,
         protected RecordFieldTransformer $fieldTransformer,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {}
 
     /**
@@ -119,7 +122,7 @@ readonly class RecordFactory
                 $context
             );
         }
-        return $this->createRecord($rawRecord, $properties);
+        return $this->createRecord($rawRecord, $properties, $context);
     }
 
     /**
@@ -154,15 +157,20 @@ readonly class RecordFactory
     /**
      * Quick helper function in order to avoid duplicate code.
      */
-    protected function createRecord(RawRecord $rawRecord, array $properties): RecordInterface
+    protected function createRecord(RawRecord $rawRecord, array $properties, ?Context $context = null): RecordInterface
     {
+        $context = $context ?? GeneralUtility::makeInstance(Context::class);
         $schema = $this->schemaFactory->get($rawRecord->getMainType());
         [$properties, $systemProperties] = $this->extractSystemInformation(
             $schema,
             $rawRecord,
             $properties,
         );
-        return new Record($rawRecord, $properties, $systemProperties);
+        $event = new RecordCreationEvent($properties, $rawRecord, $systemProperties, $context);
+        $this->eventDispatcher->dispatch($event);
+        return $event->isPropagationStopped()
+            ? $event->getRecord()
+            : new Record($event->getRawRecord(), $event->getProperties(), $event->getSystemProperties());
     }
 
     protected function extractComputedProperties(array &$record): ComputedProperties

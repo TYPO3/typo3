@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Domain;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
 use TYPO3\CMS\Core\Domain\RecordFactory;
@@ -28,6 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RecordFactoryTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     #[Test]
     public function createFromDatabaseRowThrowsExceptionWhenTableIsNotTcaTable(): void
     {
@@ -41,7 +44,11 @@ final class RecordFactoryTest extends UnitTestCase
             $cacheMock
         );
         $schemaFactory->load(['existing_schema' => ['ctrl' => [], 'columns' => []]]);
-        $subject = new RecordFactory($schemaFactory, $this->createMock(RecordFieldTransformer::class));
+        $subject = new RecordFactory(
+            $schemaFactory,
+            $this->createMock(RecordFieldTransformer::class),
+            $this->createMock(EventDispatcherInterface::class),
+        );
         $subject->createFromDatabaseRow('foo', ['foo' => 1]);
     }
 
@@ -63,9 +70,14 @@ final class RecordFactoryTest extends UnitTestCase
                 'types' => ['bar' => ['showitem' => 'type']],
             ],
         ]);
-        $subject = new RecordFactory($schemaFactory, $this->createMock(RecordFieldTransformer::class));
+        $subject = new RecordFactory(
+            $schemaFactory,
+            $this->createMock(RecordFieldTransformer::class),
+            $this->createMock(EventDispatcherInterface::class),
+        );
         $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'bar']);
         self::assertEquals('bar', $recordObject->toArray()['type']);
+        self::assertEquals('bar', $recordObject->get('type'));
     }
 
     #[Test]
@@ -86,7 +98,11 @@ final class RecordFactoryTest extends UnitTestCase
                 'types' => ['foo' => ['showitem' => 'foo']],
             ],
         ]);
-        $subject = new RecordFactory($schemaFactory, $this->createMock(RecordFieldTransformer::class));
+        $subject = new RecordFactory(
+            $schemaFactory,
+            $this->createMock(RecordFieldTransformer::class),
+            $this->createMock(EventDispatcherInterface::class),
+        );
         $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'foo', 'foo' => 'fooValue', 'bar' => 'barValue']);
         self::assertFalse($recordObject->has('bar'));
         self::assertTrue($recordObject->has('foo'));
