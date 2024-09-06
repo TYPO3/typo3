@@ -77,24 +77,29 @@ Each preset consists of the following options:
     This can be disabled, to add presets via :ref:`configure-preset-for-user`, without
     showing up in the wizard.
 
-.. highlight:: typoscript
 .. _configure-preset-for-user:
 
 Configure preset for user
 -------------------------
 
-To define the default preset for a backend user, the following User TSconfig can be added::
+To define the default preset for a backend user, the following User TSconfig can be added:
 
-   options.dashboard.dashboardPresetsForNewUsers = default
+..  code-block:: typoscript
+
+    options.dashboard.dashboardPresetsForNewUsers = default
 
 Where ``default`` is the identifier of the preset.
-Even a comma separated list of identifiers is possible::
+Even a comma separated list of identifiers is possible:
 
-   options.dashboard.dashboardPresetsForNewUsers = default, companyDefault
+..  code-block:: typoscript
 
-It is also possible to add another dashboard to the set of dashboards::
+    options.dashboard.dashboardPresetsForNewUsers = default, companyDefault
 
-   options.dashboard.dashboardPresetsForNewUsers := addToList(anotherOne)
+It is also possible to add another dashboard to the set of dashboards:
+
+..  code-block:: typoscript
+
+    options.dashboard.dashboardPresetsForNewUsers := addToList(anotherOne)
 
 If nothing is configured, ``default`` will be used as identifier.
 

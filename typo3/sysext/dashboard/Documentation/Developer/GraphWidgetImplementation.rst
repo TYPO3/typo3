@@ -1,7 +1,5 @@
 .. include:: /Includes.rst.txt
 
-.. highlight:: php
-
 .. _graph-widget-implementation:
 
 ======================
@@ -29,62 +27,65 @@ To make the dashboard aware of this workflow, some interfaces come together:
 Also the existing template file :file:`Widget/ChartWidget` is used, which provides necessary HTML to render the chart.
 The provided ``eventData`` will be rendered as a chart and therefore has to match the expected structure.
 
-An example would be :file:`Classes/Widgets/BarChartWidget.php`::
+An example would be :file:`Classes/Widgets/BarChartWidget.php`:
 
-   class BarChartWidget implements WidgetInterface, EventDataInterface, AdditionalCssInterface, RequireJsModuleInterface
-   {
-       public function __construct(
-           // …
-           private readonly ChartDataProviderInterface $dataProvider,
-           // …
-       ) {
-           // …
-           $this->dataProvider = $dataProvider;
-           // …
-       }
+..  code-block:: php
+    :caption: Classes/Widgets/BarChartWidget.php
 
-       public function renderWidgetContent(): string
-       {
-           // …
-           $this->view->assignMultiple([
-               // …
-               'configuration' => $this->configuration,
-               // …
-           ]);
-           // …
-       }
+    class BarChartWidget implements WidgetInterface, EventDataInterface, AdditionalCssInterface, RequireJsModuleInterface
+    {
+        public function __construct(
+            // …
+            private readonly ChartDataProviderInterface $dataProvider,
+            // …
+        ) {
+            // …
+            $this->dataProvider = $dataProvider;
+            // …
+        }
 
-       public function getEventData(): array
-       {
-           return [
-               'graphConfig' => [
-                   'type' => 'bar',
-                   'options' => [
-                       // …
-                   ],
-                   'data' => $this->dataProvider->getChartData(),
-               ],
-           ];
-       }
+        public function renderWidgetContent(): string
+        {
+            // …
+            $this->view->assignMultiple([
+                // …
+                'configuration' => $this->configuration,
+                // …
+            ]);
+            // …
+        }
 
-       public function getCssFiles(): array
-       {
-           return [];
-       }
+        public function getEventData(): array
+        {
+            return [
+                'graphConfig' => [
+                    'type' => 'bar',
+                    'options' => [
+                        // …
+                    ],
+                    'data' => $this->dataProvider->getChartData(),
+                ],
+            ];
+        }
 
-       public function getRequireJsModules(): array
-       {
-           return [
-               'TYPO3/CMS/Dashboard/Contrib/chartjs',
-               'TYPO3/CMS/Dashboard/ChartInitializer',
-           ];
-       }
+        public function getCssFiles(): array
+        {
+            return [];
+        }
 
-       public function getOptions(): array
-       {
-           return $this->options;
-       }
-   }
+        public function getRequireJsModules(): array
+        {
+            return [
+                'TYPO3/CMS/Dashboard/Contrib/chartjs',
+                'TYPO3/CMS/Dashboard/ChartInitializer',
+            ];
+        }
+
+        public function getOptions(): array
+        {
+            return $this->options;
+        }
+    }
 
 Together with :file:`Services.yaml`:
 
@@ -103,85 +104,86 @@ Together with :file:`Services.yaml`:
 The configuration adds necessary CSS classes, as well as the ``dataProvider`` to use.
 The provider implements :php:`ChartDataProviderInterface` and could look like the following.
 
-:file:`Classes/Widgets/Provider/SysLogErrorsDataProvider`::
+..  code-block:: php
+    :caption: Classes/Widgets/Provider/SysLogErrorsDataProvider
 
-   class SysLogErrorsDataProvider implements ChartDataProviderInterface
-   {
-       /**
-        * Number of days to gather information for.
-        *
-        * @var int
-        */
-       protected $days = 31;
+    class SysLogErrorsDataProvider implements ChartDataProviderInterface
+    {
+        /**
+         * Number of days to gather information for.
+         *
+         * @var int
+         */
+        protected $days = 31;
 
-       /**
-        * @var array
-        */
-       protected $labels = [];
+        /**
+         * @var array
+         */
+        protected $labels = [];
 
-       /**
-        * @var array
-        */
-       protected $data = [];
+        /**
+         * @var array
+         */
+        protected $data = [];
 
-       public function __construct(int $days = 31)
-       {
-           $this->days = $days;
-       }
+        public function __construct(int $days = 31)
+        {
+            $this->days = $days;
+        }
 
-       public function getChartData(): array
-       {
-           $this->calculateDataForLastDays();
-           return [
-               'labels' => $this->labels,
-               'datasets' => [
-                   [
-                       'label' => $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.chart.dataSet.0'),
-                       'backgroundColor' => WidgetApi::getDefaultChartColors()[0],
-                       'border' => 0,
-                       'data' => $this->data
-                   ]
-               ]
-           ];
-       }
+        public function getChartData(): array
+        {
+            $this->calculateDataForLastDays();
+            return [
+                'labels' => $this->labels,
+                'datasets' => [
+                    [
+                        'label' => $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.chart.dataSet.0'),
+                        'backgroundColor' => WidgetApi::getDefaultChartColors()[0],
+                        'border' => 0,
+                        'data' => $this->data
+                    ]
+                ]
+            ];
+        }
 
-       protected function getNumberOfErrorsInPeriod(int $start, int $end): int
-       {
-           $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
-           return (int)$queryBuilder
-               ->count('*')
-               ->from('sys_log')
-               ->where(
-                   $queryBuilder->expr()->eq(
-                       'type',
-                       $queryBuilder->createNamedParameter(SystemLogType::ERROR, Connection::PARAM_INT)
-                   ),
-                   $queryBuilder->expr()->gte(
-                       'tstamp',
-                       $queryBuilder->createNamedParameter($start, Connection::PARAM_INT)
-                   ),
-                   $queryBuilder->expr()->lte(
-                       'tstamp',
-                       $queryBuilder->createNamedParameter($end, Connection::PARAM_INT)
-                   )
-               )
-               ->execute()
-               ->fetchColumn();
-       }
+        protected function getNumberOfErrorsInPeriod(int $start, int $end): int
+        {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+            return (int)$queryBuilder
+                ->count('*')
+                ->from('sys_log')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'type',
+                        $queryBuilder->createNamedParameter(SystemLogType::ERROR, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->gte(
+                        'tstamp',
+                        $queryBuilder->createNamedParameter($start, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->lte(
+                        'tstamp',
+                        $queryBuilder->createNamedParameter($end, Connection::PARAM_INT)
+                    )
+                )
+                ->execute()
+                ->fetchColumn();
+        }
 
-       protected function calculateDataForLastDays(): void
-       {
-           $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
-           for ($daysBefore = $this->days; $daysBefore >= 0; $daysBefore--) {
-               $this->labels[] = date($format, strtotime('-' . $daysBefore . ' day'));
-               $startPeriod = strtotime('-' . $daysBefore . ' day 0:00:00');
-               $endPeriod =  strtotime('-' . $daysBefore . ' day 23:59:59');
-               $this->data[] = $this->getNumberOfErrorsInPeriod($startPeriod, $endPeriod);
-           }
-       }
+        protected function calculateDataForLastDays(): void
+        {
+            $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
+            for ($daysBefore = $this->days; $daysBefore >= 0; $daysBefore--) {
+                $this->labels[] = date($format, strtotime('-' . $daysBefore . ' day'));
+                $startPeriod = strtotime('-' . $daysBefore . ' day 0:00:00');
+                $endPeriod =  strtotime('-' . $daysBefore . ' day 23:59:59');
+                $this->data[] = $this->getNumberOfErrorsInPeriod($startPeriod, $endPeriod);
+            }
+        }
 
-       protected function getLanguageService(): LanguageService
-       {
-           return $GLOBALS['LANG'];
-       }
-   }
+        protected function getLanguageService(): LanguageService
+        {
+            return $GLOBALS['LANG'];
+        }
+    }
