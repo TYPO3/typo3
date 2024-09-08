@@ -157,7 +157,9 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
             ],
         ];
         $subject = $this->get(PageTsConfigFactory::class);
-        $siteSettings = new SiteSettings(['aSiteSetting' => 'aSiteSettingValue']);
+        $siteSettings = SiteSettings::createFromSettingsTree(
+            ['aSiteSetting' => 'aSiteSettingValue'],
+        );
         $site = new Site('siteIdentifier', 1, [], $siteSettings);
         $pageTsConfig = $subject->create($rootLine, $site);
         self::assertSame('aSiteSettingValue', $pageTsConfig->getPageTsConfigArray()['siteSetting']);

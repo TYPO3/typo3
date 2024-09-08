@@ -59,7 +59,11 @@ readonly class SiteSettingsFactory
         } catch (\Error) {
         }
 
-        $settings = $this->createSettings($siteIdentifier, $siteConfiguration);
+        $settings = $this->createSettings(
+            $siteConfiguration['dependencies'] ?? [],
+            $siteIdentifier,
+            $siteConfiguration['settings'] ?? [],
+        );
         $this->cache->set($cacheIdentifier, 'return ' . var_export($settings, true) . ';');
         return $settings;
     }
@@ -72,12 +76,29 @@ readonly class SiteSettingsFactory
      *       implementing a GUI for the settings - which should either get a dedicated method or a flag to control if
      *       placeholder should be resolved during yaml file loading or not. The SiteConfiguration save action currently
      *       avoid calling this method.
+     * @internal
      */
-    public function createSettings(string $siteIdentifier, array $siteConfiguration): SiteSettings
+    public function createSettings(array $sets = [], ?string $siteIdentifier = null, array $inlineSettings = []): SiteSettings
     {
-        $sets = $siteConfiguration['dependencies'] ?? [];
-        $settings = [];
+        $settingsTree = [];
+        if ($siteIdentifier !== null) {
+            $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
+            if (file_exists($fileName)) {
+                $settingsTree = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
+            } else {
+                $settingsTree = $inlineSettings;
+            }
+        }
 
+        return $this->composeSettings($settingsTree, $sets);
+    }
+
+    /**
+     * @internal
+     */
+    public function composeSettings(array $settingsTree, array $sets): SiteSettings
+    {
+        $settings = [];
         $definitions = [];
         $activeSets = [];
         if (is_array($sets) && $sets !== []) {
@@ -98,16 +119,20 @@ readonly class SiteSettingsFactory
             ArrayUtility::mergeRecursiveWithOverrule($settings, $this->validateSettings($set->settings, $definitions));
         }
 
-        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
-        if (file_exists($fileName)) {
-            $siteSettings = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
-        } else {
-            $siteSettings = $siteConfiguration['settings'] ?? [];
+        if ($settingsTree !== []) {
+            ArrayUtility::mergeRecursiveWithOverrule($settings, $this->validateSettings($settingsTree, $definitions));
         }
 
-        ArrayUtility::mergeRecursiveWithOverrule($settings, $this->validateSettings($siteSettings, $definitions));
+        /** @var array<string, string|int|float|bool|array|null> $settingsMap */
+        $settingsMap = [];
+        foreach ($definitions as $settingDefinition) {
+            $settingsMap[$settingDefinition->key] = ArrayUtility::getValueByPath($settings, $settingDefinition->key, '.');
+        }
 
-        return new SiteSettings($settings);
+        return SiteSettings::create(
+            settingsMap: $settingsMap,
+            settingsTree: $settings,
+        );
     }
 
     protected function validateSettings(array $settings, array $definitions): array

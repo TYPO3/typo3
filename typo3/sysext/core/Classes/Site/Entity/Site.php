@@ -96,7 +96,8 @@ class Site implements SiteInterface
         $this->identifier = $identifier;
         $this->rootPageId = $rootPageId;
         if ($settings === null) {
-            $settings = new SiteSettings($configuration['settings'] ?? []);
+            // @todo deprecate null settings argument
+            $settings = SiteSettings::createFromSettingsTree($configuration['settings'] ?? []);
         }
         $this->settings = $settings;
         $this->typoscript = $typoscript;

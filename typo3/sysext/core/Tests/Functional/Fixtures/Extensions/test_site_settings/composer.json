@@ -1,0 +1,14 @@
+{
+	"name": "typo3tests/test-site-settings",
+	"type": "typo3-cms-extension",
+	"description": "This extension contains site settings fixtures.",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.3.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_site_settings"
+		}
+	}
+}

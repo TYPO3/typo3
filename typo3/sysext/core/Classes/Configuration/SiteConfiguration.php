@@ -158,7 +158,8 @@ class SiteConfiguration implements SingletonInterface
         foreach ($siteConfiguration as $identifier => $configuration) {
             // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
             $identifier = (string)$identifier;
-            $siteSettings = new SiteSettings($configuration['settings'] ?? []);
+            $inlineSettings = $configuration['settings'] ?? [];
+            $siteSettings = SiteSettings::createFromSettingsTree($inlineSettings);
             $siteTypoScript = $this->getSiteTypoScript($identifier);
 
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
