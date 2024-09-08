@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -71,6 +72,7 @@ class DataMapper
         private readonly QueryFactoryInterface $queryFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly InstantiatorInterface $instantiator,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function setQuery(QueryInterface $query): void
@@ -201,7 +203,7 @@ class DataMapper
                 $object->_setProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['_LOCALIZED_UID']);
             }
         }
-        if (!empty($row['_ORIG_uid']) && !empty($GLOBALS['TCA'][$dataMap->getTableName()]['ctrl']['versioningWS'])) {
+        if (!empty($row['_ORIG_uid']) && $this->tcaSchemaFactory->get($dataMap->getTableName())->isWorkspaceAware()) {
             $object->_setProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['_ORIG_uid']);
         }
         foreach ($classSchema->getDomainObjectProperties() as $property) {
@@ -606,10 +608,10 @@ class DataMapper
         $relationHandler->setUseLiveParentIds(true);
         $tableName = $dataMap->getTableName();
         $fieldName = $columnMap->getColumnName();
-        $fieldConfiguration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? null;
-        if (!is_array($fieldConfiguration)) {
+        if (!$this->tcaSchemaFactory->get($tableName)->hasField($fieldName)) {
             return [];
         }
+        $fieldConfiguration = $this->tcaSchemaFactory->get($tableName)->getField($fieldName)->getConfiguration();
         $relationHandler->start(
             $fieldValue,
             $fieldConfiguration['allowed'] ?? $fieldConfiguration['foreign_table'] ?? '',

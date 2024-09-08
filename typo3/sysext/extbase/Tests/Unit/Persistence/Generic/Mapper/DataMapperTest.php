@@ -72,6 +72,7 @@ final class DataMapperTest extends UnitTestCase
             $this->createMock(QueryFactory::class),
             $this->createMock(EventDispatcherInterface::class),
             $this->createMock(InstantiatorInterface::class),
+            $this->createMock(TcaSchemaFactory::class),
         );
     }
 
