@@ -207,9 +207,6 @@
                 <field index="recursive" type="integer">0</field>
                 <field index="imageheight" type="integer">0</field>
                 <field index="pi_flexform" type="NULL"></field>
-                <field index="accessibility_title"></field>
-                <field index="accessibility_bypass" type="integer">0</field>
-                <field index="accessibility_bypass_text"></field>
                 <field index="selected_categories"></field>
                 <field index="category_field"></field>
                 <field index="table_class"></field>
@@ -309,9 +306,6 @@
                 <field index="recursive" type="integer">0</field>
                 <field index="imageheight" type="integer">0</field>
                 <field index="pi_flexform" type="NULL"></field>
-                <field index="accessibility_title"></field>
-                <field index="accessibility_bypass" type="integer">0</field>
-                <field index="accessibility_bypass_text"></field>
                 <field index="selected_categories"></field>
                 <field index="category_field"></field>
                 <field index="table_class"></field>
@@ -411,9 +405,6 @@
                 <field index="recursive" type="integer">0</field>
                 <field index="imageheight" type="integer">0</field>
                 <field index="pi_flexform" type="NULL"></field>
-                <field index="accessibility_title"></field>
-                <field index="accessibility_bypass" type="integer">0</field>
-                <field index="accessibility_bypass_text"></field>
                 <field index="selected_categories"></field>
                 <field index="category_field"></field>
                 <field index="table_class"></field>

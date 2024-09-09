@@ -668,33 +668,6 @@ return [
                 ],
             ],
         ],
-        'accessibility_title' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:accessibility_title',
-            'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'max' => 30,
-                'eval' => 'trim',
-                'default' => '',
-            ],
-        ],
-        'accessibility_bypass' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:accessibility_bypass',
-            'config' => [
-                'type' => 'check',
-                'renderType' => 'checkboxToggle',
-            ],
-        ],
-        'accessibility_bypass_text' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:accessibility_bypass_text',
-            'config' => [
-                'type' => 'input',
-                'size' => 20,
-                'max' => 30,
-                'eval' => 'trim',
-                'default' => '',
-            ],
-        ],
         'selected_categories' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:selected_categories',
             'config' => [
@@ -824,15 +797,6 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.imagelinks',
             'showitem' => '
                 image_zoom;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom_formlabel
-            ',
-        ],
-        'menu_accessibility' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.menu_accessibility',
-            'showitem' => '
-                accessibility_title;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:menu.ALT.accessibility_title_formlabel,
-                --linebreak--,
-                accessibility_bypass;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:menu.ALT.accessibility_bypass_formlabel,
-                accessibility_bypass_text;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:menu.ALT.accessibility_bypass_text_formlabel
             ',
         ],
         'hidden' => [

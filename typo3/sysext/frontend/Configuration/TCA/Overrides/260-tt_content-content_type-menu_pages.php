@@ -32,8 +32,6 @@ $GLOBALS['TCA']['tt_content'] = array_replace_recursive(
                     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
                         --palette--;;frames,
                         --palette--;;appearanceLinks,
-                    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:accessibility,
-                        --palette--;;menu_accessibility,
                     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
                         categories,
                     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,

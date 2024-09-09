@@ -363,15 +363,6 @@
 			<trans-unit id="pi_flexform" resname="pi_flexform">
 				<source>Plugin Options</source>
 			</trans-unit>
-			<trans-unit id="accessibility_title" resname="accessibility_title">
-				<source>Block title</source>
-			</trans-unit>
-			<trans-unit id="accessibility_bypass" resname="accessibility_bypass">
-				<source>Add link to bypass block</source>
-			</trans-unit>
-			<trans-unit id="accessibility_bypass_text" resname="accessibility_bypass_text">
-				<source>Link text to bypass block</source>
-			</trans-unit>
 			<trans-unit id="selected_categories" resname="selected_categories">
 				<source>Selected categories</source>
 			</trans-unit>
@@ -383,15 +374,6 @@
 			</trans-unit>
 			<trans-unit id="pages.ALT.list_formlabel" resname="pages.ALT.list_formlabel">
 				<source>Record Storage Page</source>
-			</trans-unit>
-			<trans-unit id="menu.ALT.accessibility_title_formlabel" resname="menu.ALT.accessibility_title_formlabel">
-				<source>Menu block title</source>
-			</trans-unit>
-			<trans-unit id="menu.ALT.accessibility_bypass_formlabel" resname="menu.ALT.accessibility_bypass_formlabel">
-				<source>Add link to bypass navigation block</source>
-			</trans-unit>
-			<trans-unit id="menu.ALT.accessibility_bypass_text_formlabel" resname="menu.ALT.accessibility_bypass_text_formlabel">
-				<source>Link text to bypass navigation block</source>
 			</trans-unit>
 			<trans-unit id="tabs.text" resname="tabs.text">
 				<source>Text</source>
@@ -454,9 +436,6 @@
 				<source>Behavior</source>
 			</trans-unit>
 			<trans-unit id="palette.image_accessibility" resname="palette.image_accessibility">
-				<source>Accessibility</source>
-			</trans-unit>
-			<trans-unit id="palette.menu_accessibility" resname="palette.menu_accessibility">
 				<source>Accessibility</source>
 			</trans-unit>
 			<trans-unit id="palette.uploads_layout" resname="palette.uploads_layout">
