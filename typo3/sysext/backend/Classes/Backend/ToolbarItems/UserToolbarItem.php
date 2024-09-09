@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Backend\ColorScheme;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -115,6 +117,9 @@ class UserToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
             'modules' => $modules,
             'switchUserMode' => $this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode() !== null,
             'recentUsers' => $mostRecentUsers,
+            'colorSchemeSwitchEnabled' => $this->getColorSchemeSwitchEnabled(),
+            'activeColorScheme' => $backendUser->uc['colorScheme'] ?? 'auto',
+            'colorSchemes' => $this->getColorSchemes(),
         ]);
         return $view->render('ToolbarItems/UserToolbarItemDropDown');
     }
@@ -152,5 +157,35 @@ class UserToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    protected function getColorSchemeSwitchEnabled(): bool
+    {
+        $backendUser = $this->getBackendUser();
+        $userTS = $backendUser->getTSConfig();
+
+        return !isset($userTS['setup.']['fields.']['colorScheme.']['disabled']) || $userTS['setup.']['fields.']['colorScheme.']['disabled'] !== '1';
+    }
+
+    protected function getColorSchemes(): array
+    {
+        $schemes = [];
+
+        foreach (ColorScheme::cases() as $scheme) {
+            $schemeItem = [
+                'label' => $this->getLanguageService()->sL($scheme->getLabel()),
+                'value' => $scheme->value,
+                'icon' => $scheme->getIcon(),
+            ];
+
+            $schemes[] = $schemeItem;
+        }
+
+        return $schemes;
     }
 }

@@ -87,7 +87,7 @@ class BackendModuleController
         $this->sessionService->startSession();
         $this->sessionService->setAuthorizedBackendSession($userSession);
         $entryPointResolver = GeneralUtility::makeInstance(BackendEntryPointResolver::class);
-        $redirectLocation = $entryPointResolver->getUriFromRequest($request, 'install.php')->withQuery('?install[controller]=' . $controller . '&install[context]=backend');
+        $redirectLocation = $entryPointResolver->getUriFromRequest($request, 'install.php')->withQuery('?install[controller]=' . $controller . '&install[context]=backend' . '&install[colorScheme]=' . ($this->getBackendUser()->uc['colorScheme'] ?? ''));
         return new RedirectResponse($redirectLocation, 303);
     }
 

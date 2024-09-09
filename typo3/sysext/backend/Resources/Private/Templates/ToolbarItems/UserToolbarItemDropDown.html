@@ -5,7 +5,8 @@
 >
 <f:be.pageRenderer
     includeJavaScriptModules="{
-        0: '@typo3/backend/switch-user.js'
+        0: '@typo3/backend/switch-user.js',
+        1: '@typo3/backend/color-scheme-switch.js',
     }"
 />
 <p class="h3 dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}</p>
@@ -57,6 +58,11 @@
             </li>
         </f:for>
     </ul>
+</f:if>
+<f:if condition="{colorSchemeSwitchEnabled}">
+    <hr class="dropdown-divider" aria-hidden="true">
+    <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:colorScheme" /></p>
+    <typo3-backend-color-scheme-switch data="{colorSchemes -> f:format.json()}" activeColorScheme="{activeColorScheme}"></typo3-backend-color-scheme-switch>
 </f:if>
 <hr class="dropdown-divider" aria-hidden="true">
 <f:if condition="{switchUserMode}">

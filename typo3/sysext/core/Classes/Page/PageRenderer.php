@@ -283,6 +283,14 @@ class PageRenderer implements SingletonInterface
             if ($this->locale->isRightToLeftLanguageDirection()) {
                 $attributes['dir'] = 'rtl';
             }
+            // TODO: build an API to add HTML attributes cleanly
+            if ($this->getApplicationType() === 'BE' && !empty($GLOBALS['BE_USER'])) {
+                $userTS = $GLOBALS['BE_USER']->getTSConfig();
+
+                if (!isset($userTS['setup.']['fields.']['colorScheme.']['disabled']) || $userTS['setup.']['fields.']['colorScheme.']['disabled'] !== '1') {
+                    $attributes['data-color-scheme'] = $GLOBALS['BE_USER']->uc['colorScheme'] ?? 'auto';
+                }
+            }
             $this->setHtmlTag('<html ' . GeneralUtility::implodeAttributes($attributes, true) . '>');
         }
     }

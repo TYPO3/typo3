@@ -413,4 +413,9 @@ return [
         'path' => '/code-editor/codecompletion/load-templates',
         'target' => \TYPO3\CMS\Backend\Controller\CodeEditor\CodeCompletionController::class . '::loadCompletions',
     ],
+
+    'color_scheme_update' => [
+        'path' => '/color-scheme/update',
+        'target' => Controller\ColorSchemeController::class . '::updateAction',
+    ],
 ];

@@ -313,10 +313,34 @@
 
 [data-color-scheme="dark"] {
     color-scheme: only dark;
+
+    & .nodes-container,
+    & .tree-toolbar,
+    & .dropdown-menu,
+    & .scaffold-content-navigation-drag,
+    & .scaffold-content-navigation-switcher,
+    & .alwan,
+    & .context-menu,
+    & .flatpickr-calendar,
+    & .dragging-tooltip {
+        color-scheme: only dark;
+    }
 }
 
 [data-color-scheme="light"] {
     color-scheme: only light;
+
+    & .nodes-container,
+    & .tree-toolbar,
+    & .dropdown-menu,
+    & .scaffold-content-navigation-drag,
+    & .scaffold-content-navigation-switcher,
+    & .alwan,
+    & .context-menu,
+    & .flatpickr-calendar,
+    & .dragging-tooltip {
+        color-scheme: only light;
+    }
 }
 
 //

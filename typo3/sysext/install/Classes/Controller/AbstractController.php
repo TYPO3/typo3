@@ -51,6 +51,7 @@ class AbstractController
             'context' => $request->getQueryParams()['install']['context'] ?? '',
             'composerMode' => Environment::isComposerMode(),
             'currentTypo3Version' => (string)(new Typo3Version()),
+            'colorScheme' => $request->getQueryParams()['install']['colorScheme'] ?? '',
         ]);
         return $view;
     }

@@ -189,6 +189,18 @@
 			<trans-unit id="editdocument.moduleMenu.dropdown.label" resname="editdocument.moduleMenu.dropdown.label">
 				<source>Record language</source>
 			</trans-unit>
+			<trans-unit id="colorScheme" resname="colorScheme">
+				<source>Color scheme</source>
+			</trans-unit>
+			<trans-unit id="colorScheme.auto" resname="colorScheme.auto">
+				<source>OS default</source>
+			</trans-unit>
+			<trans-unit id="colorScheme.light" resname="colorScheme.light">
+				<source>Light</source>
+			</trans-unit>
+			<trans-unit id="colorScheme.dark" resname="colorScheme.dark">
+				<source>Dark</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
