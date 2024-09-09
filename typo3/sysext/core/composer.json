@@ -38,7 +38,7 @@
 		"doctrine/event-manager": "^2.0",
 		"doctrine/lexer": "^3.0",
 		"egulias/email-validator": "^4.0",
-		"enshrined/svg-sanitize": "^0.19.0",
+		"enshrined/svg-sanitize": "^0.20.0",
 		"firebase/php-jwt": "^6.10.1",
 		"guzzlehttp/guzzle": "^7.9.2",
 		"guzzlehttp/psr7": "^2.7.0",
