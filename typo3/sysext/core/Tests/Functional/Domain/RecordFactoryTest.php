@@ -21,6 +21,8 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Domain\Exception\IncompleteRecordException;
+use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,8 +43,10 @@ final class RecordFactoryTest extends FunctionalTestCase
         $dbRow = BackendUtility::getRecord('pages', 1);
         $subject = $this->get(RecordFactory::class);
         $result = $subject->createFromDatabaseRow('pages', $dbRow);
-        self::assertSame(1, $result['uid']);
-        self::assertSame(0, $result['pid']);
+        self::assertSame(1, $result->getUid());
+        self::assertSame(1, $result->get('uid'));
+        self::assertSame(0, $result->getPid());
+        self::assertSame(0, $result->get('pid'));
     }
 
     #[Test]
@@ -50,6 +54,7 @@ final class RecordFactoryTest extends FunctionalTestCase
     {
         $dbRow = BackendUtility::getRecord('pages', 1);
         $subject = $this->get(RecordFactory::class);
+        /** @var Record $result */
         $result = $subject->createFromDatabaseRow('pages', $dbRow);
         self::assertSame($dbRow, $result->getRawRecord()->toArray());
         self::assertArrayNotHasKey('mount_pid', $result->toArray());
@@ -68,6 +73,7 @@ final class RecordFactoryTest extends FunctionalTestCase
     {
         $dbRow = BackendUtility::getRecord('tt_content', 1);
         $subject = $this->get(RecordFactory::class);
+        /** @var Record $result */
         $result = $subject->createFromDatabaseRow('tt_content', $dbRow);
         self::assertSame($dbRow, $result->getRawRecord()->toArray());
         self::assertArrayNotHasKey('pi_flexform', $result->toArray());
@@ -82,11 +88,12 @@ final class RecordFactoryTest extends FunctionalTestCase
     {
         $dbRow = BackendUtility::getRecord('be_groups', 9);
         $subject = $this->get(RecordFactory::class);
+        /** @var Record $result */
         $result = $subject->createFromDatabaseRow('be_groups', $dbRow);
         self::assertNull($result->getRecordType());
         self::assertSame('be_groups', $result->getFullType());
         self::assertSame($dbRow, $result->getRawRecord()->toArray());
-        self::assertSame('readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile', $result['file_permissions']);
+        self::assertSame('readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile', $result->get('file_permissions'));
     }
 
     #[Test]
@@ -97,6 +104,7 @@ final class RecordFactoryTest extends FunctionalTestCase
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $dbRow = $pageRepository->getPage(3);
         $subject = $this->get(RecordFactory::class);
+        /** @var Record $result */
         $result = $subject->createFromDatabaseRow('pages', $dbRow);
         self::assertSame(903, $result->getOverlaidUid());
         self::assertSame(903, $result->getComputedProperties()->getLocalizedUid());
@@ -113,6 +121,7 @@ final class RecordFactoryTest extends FunctionalTestCase
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $dbRow = $pageRepository->getPage(3);
         $subject = $this->get(RecordFactory::class);
+        /** @var Record $result */
         $result = $subject->createFromDatabaseRow('pages', $dbRow);
         self::assertSame(0, $result->getVersionInfo()->getWorkspaceId());
         self::assertSame(3, $result->getLanguageInfo()->getTranslationParent());
@@ -122,5 +131,41 @@ final class RecordFactoryTest extends FunctionalTestCase
         self::assertArrayNotHasKey('shortcut', $result->toArray());
         self::assertSame(1, $result->getComputedProperties()->getRequestedOverlayLanguageId());
         self::assertNull($result->getComputedProperties()->getVersionedUid());
+    }
+
+    #[Test]
+    public function throwsIncompleteRecordExceptionForMissingLangauegField(): void
+    {
+        $dbRow = BackendUtility::getRecord('pages', 1);
+        unset($dbRow['sys_language_uid']);
+
+        $this->expectException(IncompleteRecordException::class);
+        $this->expectExceptionCode(1726046917);
+
+        $this->get(RecordFactory::class)->createFromDatabaseRow('pages', $dbRow);
+    }
+
+    #[Test]
+    public function throwsIncompleteRecordExceptionForMissingWorkspaceField(): void
+    {
+        $dbRow = BackendUtility::getRecord('pages', 1);
+        unset($dbRow['t3ver_oid']);
+
+        $this->expectException(IncompleteRecordException::class);
+        $this->expectExceptionCode(1726046918);
+
+        $this->get(RecordFactory::class)->createFromDatabaseRow('pages', $dbRow);
+    }
+
+    #[Test]
+    public function throwsIncompleteRecordExceptionForMissingSystemPropertyField(): void
+    {
+        $dbRow = BackendUtility::getRecord('pages', 1);
+        unset($dbRow['deleted']);
+
+        $this->expectException(IncompleteRecordException::class);
+        $this->expectExceptionCode(1726046919);
+
+        $this->get(RecordFactory::class)->createFromDatabaseRow('pages', $dbRow);
     }
 }

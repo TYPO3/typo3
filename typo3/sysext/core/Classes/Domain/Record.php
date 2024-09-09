@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Domain;
 
+use TYPO3\CMS\Core\Domain\Exception\RecordPropertyException;
+use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Domain\Record\LanguageInfo;
 use TYPO3\CMS\Core\Domain\Record\SystemProperties;
@@ -27,12 +29,12 @@ use TYPO3\CMS\Core\Domain\Record\VersionInfo;
  *
  * @internal not part of public API, as this needs to be streamlined and proven
  */
-class Record implements \ArrayAccess, RecordInterface
+class Record implements RecordInterface
 {
     public function __construct(
         protected readonly RawRecord $rawRecord,
         protected array $properties,
-        protected readonly ?SystemProperties $systemProperties
+        protected readonly ?SystemProperties $systemProperties = null,
     ) {}
 
     public function getUid(): int
@@ -73,18 +75,18 @@ class Record implements \ArrayAccess, RecordInterface
         return ['uid' => $this->getUid(), 'pid' => $this->getPid()] + $this->properties;
     }
 
-    public function offsetExists(mixed $offset): bool
+    public function has(string $id): bool
     {
-        if (isset($this->properties[$offset])) {
+        if (array_key_exists($id, $this->properties)) {
             return true;
         }
 
-        if (in_array($offset, ['uid', 'pid'], true)) {
+        if (in_array($id, ['uid', 'pid'], true)) {
             // Enable access of uid and pid via array access
             return true;
         }
 
-        if ($this->getRecordType() === null && isset($this->rawRecord[$offset])) {
+        if ($this->getRecordType() === null && $this->rawRecord->has($id)) {
             // Only fall back to the raw record in case no record type is defined.
             // This allows to properly check for only record type specific fields.
             return true;
@@ -93,39 +95,38 @@ class Record implements \ArrayAccess, RecordInterface
         return false;
     }
 
-    public function offsetGet(mixed $offset): mixed
+    public function get(string $id): mixed
     {
-        if (isset($this->properties[$offset])) {
-            $property = $this->properties[$offset];
+        if (array_key_exists($id, $this->properties)) {
+            $property = $this->properties[$id];
             if ($property instanceof RecordPropertyClosure) {
-                $property = $property->instantiate();
-                $this->properties[$offset] = $property;
+                try {
+                    $property = $property->instantiate();
+                } catch (\Exception $e) {
+                    // Consumers of this method can rely on catching ContainerExceptionInterface
+                    throw new RecordPropertyException(
+                        'An exception occured while instantiating record property "' . $id . '"',
+                        1725892139,
+                        $e
+                    );
+                }
+                $this->properties[$id] = $property;
             }
             return $property;
         }
 
-        if (in_array($offset, ['uid', 'pid'], true)) {
+        if (in_array($id, ['uid', 'pid'], true)) {
             // Enable access of uid and pid via array access
-            return $this->rawRecord[$offset];
+            return $this->rawRecord->get($id);
         }
 
-        if ($this->getRecordType() === null && isset($this->rawRecord[$offset])) {
+        if ($this->getRecordType() === null && $this->rawRecord->has($id)) {
             // Only fall back to the raw record in case no record type is defined.
             // This ensures that only record type specific fields are being returned.
-            return $this->rawRecord[$offset];
+            return $this->rawRecord->get($id);
         }
 
-        return null;
-    }
-
-    public function offsetSet(mixed $offset, mixed $value): void
-    {
-        throw new \InvalidArgumentException('Record properties cannot be modified.', 1712139281);
-    }
-
-    public function offsetUnset(mixed $offset): void
-    {
-        throw new \InvalidArgumentException('Record properties cannot be unset.', 1712139282);
+        throw new RecordPropertyNotFoundException('Record property "' . $id . '" is not available.', 1725892138);
     }
 
     public function getVersionInfo(): ?VersionInfo

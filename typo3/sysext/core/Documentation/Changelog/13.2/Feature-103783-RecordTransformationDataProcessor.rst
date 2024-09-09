@@ -89,9 +89,9 @@ is most of all a better organized overview of all available information. E.g.
 the property `properties` lists all relevant fields for the current Content
 Type.
 
-We are dealing with an object here, which behaves like an array. In short: you
-can access your record properties as you are used to with :html:`{record.title}`
-or :html:`{record.uid}`. In addition, you gain special, context-aware properties
+We are dealing with an object here. You however can access your record
+properties as you are used to with :html:`{record.title}` or
+:html:`{record.uid}`. In addition, you gain special, context-aware properties
 like the language :html:`{record.languageId}` or workspace
 :html:`{data.versionInfo.workspaceId}`.
 

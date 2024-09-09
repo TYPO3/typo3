@@ -115,17 +115,19 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             case 'header':
                 break;
             case 'uploads':
-                if ($recordObj['media'] ?? false) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($recordObj['media']), $record);
+                if ($recordObj->has('media') && ($media = $recordObj->get('media'))) {
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($media), $record);
                 }
                 break;
             case 'shortcut':
-                if (!empty($recordObj['records'])) {
+                if ($recordObj->has('records') && ($records = $recordObj->get('records'))) {
                     $shortcutContent = '';
-                    $shortcutRecords = $recordObj['records'] instanceof \Traversable ? $recordObj['records'] : [$recordObj['records']];
+                    $shortcutRecords = $records instanceof \Traversable ? $records : [$records];
                     foreach ($shortcutRecords as $shortcutRecord) {
                         $shortcutTableName = $shortcutRecord->getMainType();
-                        $shortcutRecord = $this->translateShortcutRecord($recordObj, $shortcutRecord, $shortcutTableName);
+                        if ($recordObj instanceof Record) {
+                            $shortcutRecord = $this->translateShortcutRecord($recordObj, $shortcutRecord, $shortcutTableName);
+                        }
                         $icon = $this->getIconFactory()->getIconForRecord($shortcutTableName, $shortcutRecord->toArray(), IconSize::SMALL)->render();
                         $icon = BackendUtility::wrapClickMenuOnIcon(
                             $icon,
@@ -168,17 +170,17 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 }
                 break;
             default:
-                if ($recordObj['bodytext'] ?? false) {
-                    $out .= $this->linkEditContent($this->renderText($record['bodytext']), $record);
+                if ($recordObj->has('bodytext') && ($bodytext = $recordObj->get('bodytext'))) {
+                    $out .= $this->linkEditContent($this->renderText($bodytext), $record);
                 }
-                if ($recordObj['image'] ?? false) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($recordObj['image']), $record);
+                if ($recordObj->has('image') && ($image = $recordObj->get('image'))) {
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($image), $record);
                 }
-                if ($recordObj['media'] ?? false) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($recordObj['media']), $record);
+                if ($recordObj->has('media') && ($media = $recordObj->get('media'))) {
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($media), $record);
                 }
-                if ($recordObj['assets'] ?? false) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($recordObj['assets']), $record);
+                if ($recordObj->has('assets') && ($assets = $recordObj->get('assets'))) {
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($assets), $record);
                 }
         }
 

@@ -107,7 +107,7 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
             );
             // 1b. Sort the records into the contentArea they belong to
             foreach ($flatRecords as $recordToSort) {
-                $colPosOfRecord = (int)$recordToSort['colPos'];
+                $colPosOfRecord = (int)$recordToSort->get('colPos');
                 $groupIdentifier = $contentAreasWithoutSlideMode[$colPosOfRecord]['identifier'];
                 $groupedContents[$groupIdentifier]['records'][] = $recordToSort;
             }

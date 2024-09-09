@@ -17,10 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Domain;
 
+use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
+
 /**
  * An interface for database / TCA records.
  */
-interface RecordInterface
+interface RecordInterface extends ContainerInterface
 {
     public function getUid(): int;
     public function getPid(): int;
@@ -43,4 +46,8 @@ interface RecordInterface
     public function getMainType(): string;
 
     public function toArray(): array;
+
+    public function getRawRecord(): ?RawRecord;
+
+    public function getComputedProperties(): ComputedProperties;
 }

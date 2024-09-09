@@ -93,6 +93,7 @@ final readonly class FluidBasedContentPreviewRenderer
             if ($table === 'tt_content' && !empty($row['pi_flexform'])) {
                 $view->assign('pi_flexform_transformed', $this->flexFormService->convertFlexFormContentToArray($row['pi_flexform']));
             }
+            // @todo Should we make sure that "record" is actually a Record object?
             $view->assign('record', $this->recordFactory->createResolvedRecordFromDatabaseRow($table, $row));
             return $view->render();
         } catch (\Exception $e) {

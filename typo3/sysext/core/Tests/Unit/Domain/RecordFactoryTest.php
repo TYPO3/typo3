@@ -88,9 +88,9 @@ final class RecordFactoryTest extends UnitTestCase
         ]);
         $subject = new RecordFactory($schemaFactory, $this->createMock(RecordFieldTransformer::class));
         $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'foo', 'foo' => 'fooValue', 'bar' => 'barValue']);
-        self::assertFalse($recordObject->offsetExists('bar'));
-        self::assertTrue($recordObject->offsetExists('foo'));
-        self::assertTrue($recordObject->getRawRecord()->offsetExists('foo'));
-        self::assertTrue($recordObject->getRawRecord()->offsetExists('bar'));
+        self::assertFalse($recordObject->has('bar'));
+        self::assertTrue($recordObject->has('foo'));
+        self::assertTrue($recordObject->getRawRecord()->has('foo'));
+        self::assertTrue($recordObject->getRawRecord()->has('bar'));
     }
 }

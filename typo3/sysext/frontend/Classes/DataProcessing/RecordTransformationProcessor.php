@@ -104,6 +104,7 @@ readonly class RecordTransformationProcessor implements DataProcessorInterface
             $defaultTargetVariableName = 'record';
         }
         $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, $defaultTargetVariableName);
+        // @todo Should we make sure that $output is actually a Record object?
         $processedData[$targetVariableName] = $output;
         return $processedData;
     }

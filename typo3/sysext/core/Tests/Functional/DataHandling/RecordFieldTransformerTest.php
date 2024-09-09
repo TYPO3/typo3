@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
+use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordPropertyClosure;
@@ -58,7 +59,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $propertyClosure = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -70,8 +71,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertIsArray($result->getProperties());
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertInstanceOf(FileReference::class, $resolvedRecord['image']);
-        self::assertEquals('/kasper-skarhoj1.jpg', $resolvedRecord['image']->getIdentifier());
+        self::assertInstanceOf(FileReference::class, $resolvedRecord->get('image'));
+        self::assertEquals('/kasper-skarhoj1.jpg', $resolvedRecord->get('image')->getIdentifier());
     }
 
     #[Test]
@@ -83,7 +84,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $propertyClosure = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -92,7 +93,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertNull($result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertNull($resolvedRecord['image']);
+        self::assertNull($resolvedRecord->get('image'));
     }
 
     #[Test]
@@ -104,7 +105,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -117,9 +118,9 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertInstanceOf(LazyFileReferenceCollection::class, $result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertInstanceOf(LazyFileReferenceCollection::class, $resolvedRecord['media']);
-        self::assertInstanceOf(FileReference::class, $resolvedRecord['media'][0]);
-        self::assertEquals('/kasper-skarhoj1.jpg', $resolvedRecord['media'][0]->getIdentifier());
+        self::assertInstanceOf(LazyFileReferenceCollection::class, $resolvedRecord->get('media'));
+        self::assertInstanceOf(FileReference::class, $resolvedRecord->get('media')[0]);
+        self::assertEquals('/kasper-skarhoj1.jpg', $resolvedRecord->get('media')[0]->getIdentifier());
     }
 
     #[Test]
@@ -131,7 +132,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -144,10 +145,10 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertInstanceOf(LazyFileReferenceCollection::class, $result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertCount(1, $resolvedRecord['assets']);
-        self::assertInstanceOf(LazyFileReferenceCollection::class, $resolvedRecord['assets']);
-        self::assertInstanceOf(FileReference::class, $resolvedRecord['assets'][0]);
-        self::assertEquals('/kasper-skarhoj1.jpg', $resolvedRecord['assets'][0]->getIdentifier());
+        self::assertCount(1, $resolvedRecord->get('assets'));
+        self::assertInstanceOf(LazyFileReferenceCollection::class, $resolvedRecord->get('assets'));
+        self::assertInstanceOf(FileReference::class, $resolvedRecord->get('assets')[0]);
+        self::assertEquals('/kasper-skarhoj1.jpg', $resolvedRecord->get('assets')[0]->getIdentifier());
     }
 
     #[Test]
@@ -159,7 +160,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $propertyClosure = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -171,10 +172,10 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertCount(1, $result->getFiles());
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertInstanceOf(Folder::class, $resolvedRecord['typo3tests_contentelementb_folder']);
-        self::assertEquals('/', $resolvedRecord['typo3tests_contentelementb_folder']->getIdentifier());
-        self::assertEquals('1:/', $resolvedRecord['typo3tests_contentelementb_folder']->getCombinedIdentifier());
-        self::assertCount(1, $resolvedRecord['typo3tests_contentelementb_folder']->getFiles());
+        self::assertInstanceOf(Folder::class, $resolvedRecord->get('typo3tests_contentelementb_folder'));
+        self::assertEquals('/', $resolvedRecord->get('typo3tests_contentelementb_folder')->getIdentifier());
+        self::assertEquals('1:/', $resolvedRecord->get('typo3tests_contentelementb_folder')->getCombinedIdentifier());
+        self::assertCount(1, $resolvedRecord->get('typo3tests_contentelementb_folder')->getFiles());
     }
 
     #[Test]
@@ -186,7 +187,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $propertyClosure = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -195,7 +196,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertNull($result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertNull($resolvedRecord['typo3tests_contentelementb_folder']);
+        self::assertNull($resolvedRecord->get('typo3tests_contentelementb_folder'));
     }
 
     #[Test]
@@ -207,7 +208,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class),
         );
 
@@ -225,12 +226,12 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertCount(1, $result[1]->getFiles());
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertInstanceOf(LazyFolderCollection::class, $resolvedRecord['typo3tests_contentelementb_folder_recursive']);
-        self::assertCount(2, $resolvedRecord['typo3tests_contentelementb_folder_recursive']);
-        self::assertInstanceOf(Folder::class, $resolvedRecord['typo3tests_contentelementb_folder_recursive'][0]);
-        self::assertEquals('/sub/', $resolvedRecord['typo3tests_contentelementb_folder_recursive'][1]->getIdentifier());
-        self::assertEquals('1:/sub/', $resolvedRecord['typo3tests_contentelementb_folder_recursive'][1]->getCombinedIdentifier());
-        self::assertCount(1, $resolvedRecord['typo3tests_contentelementb_folder_recursive'][1]->getFiles());
+        self::assertInstanceOf(LazyFolderCollection::class, $resolvedRecord->get('typo3tests_contentelementb_folder_recursive'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_folder_recursive'));
+        self::assertInstanceOf(Folder::class, $resolvedRecord->get('typo3tests_contentelementb_folder_recursive')[0]);
+        self::assertEquals('/sub/', $resolvedRecord->get('typo3tests_contentelementb_folder_recursive')[1]->getIdentifier());
+        self::assertEquals('1:/sub/', $resolvedRecord->get('typo3tests_contentelementb_folder_recursive')[1]->getCombinedIdentifier());
+        self::assertCount(1, $resolvedRecord->get('typo3tests_contentelementb_folder_recursive')[1]->getFiles());
     }
 
     #[Test]
@@ -242,20 +243,20 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
-        self::assertSame('lorem foo bar', $result[0]['fieldA']);
-        self::assertSame('lorem foo bar 2', $result[1]['fieldA']);
+        self::assertSame('lorem foo bar', $result[0]->get('fieldA'));
+        self::assertSame('lorem foo bar 2', $result[1]->get('fieldA'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord['typo3tests_contentelementb_collection']);
-        self::assertCount(2, $resolvedRecord['typo3tests_contentelementb_collection']);
-        self::assertSame('lorem foo bar', $resolvedRecord['typo3tests_contentelementb_collection'][0]['fieldA']);
-        self::assertSame('lorem foo bar 2', $resolvedRecord['typo3tests_contentelementb_collection'][1]['fieldA']);
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_collection'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_collection'));
+        self::assertSame('lorem foo bar', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('fieldA'));
+        self::assertSame('lorem foo bar 2', $resolvedRecord->get('typo3tests_contentelementb_collection')[1]->get('fieldA'));
     }
 
     #[Test]
@@ -267,26 +268,26 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
-        self::assertSame('lorem foo bar A', $result[0]['fieldA']);
-        self::assertSame('lorem foo bar A2', $result[1]['fieldA']);
-        self::assertCount(2, $result[0]['collection_inner']);
-        self::assertSame('lorem foo bar B', $result[0]['collection_inner'][0]['fieldB']);
-        self::assertSame('lorem foo bar B2', $result[0]['collection_inner'][1]['fieldB']);
+        self::assertSame('lorem foo bar A', $result[0]->get('fieldA'));
+        self::assertSame('lorem foo bar A2', $result[1]->get('fieldA'));
+        self::assertCount(2, $result[0]->get('collection_inner'));
+        self::assertSame('lorem foo bar B', $result[0]->get('collection_inner')[0]->get('fieldB'));
+        self::assertSame('lorem foo bar B2', $result[0]->get('collection_inner')[1]->get('fieldB'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord['typo3tests_contentelementb_collection_recursive']);
-        self::assertCount(2, $resolvedRecord['typo3tests_contentelementb_collection_recursive']);
-        self::assertSame('lorem foo bar A', $resolvedRecord['typo3tests_contentelementb_collection_recursive'][0]['fieldA']);
-        self::assertSame('lorem foo bar A2', $resolvedRecord['typo3tests_contentelementb_collection_recursive'][1]['fieldA']);
-        self::assertCount(2, $resolvedRecord['typo3tests_contentelementb_collection_recursive'][0]['collection_inner']);
-        self::assertSame('lorem foo bar B', $resolvedRecord['typo3tests_contentelementb_collection_recursive'][0]['collection_inner'][0]['fieldB']);
-        self::assertSame('lorem foo bar B2', $resolvedRecord['typo3tests_contentelementb_collection_recursive'][0]['collection_inner'][1]['fieldB']);
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_collection_recursive'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_collection_recursive'));
+        self::assertSame('lorem foo bar A', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('fieldA'));
+        self::assertSame('lorem foo bar A2', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[1]->get('fieldA'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner'));
+        self::assertSame('lorem foo bar B', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('fieldB'));
+        self::assertSame('lorem foo bar B2', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[1]->get('fieldB'));
     }
 
     #[Test]
@@ -306,20 +307,20 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
-        self::assertSame('lorem foo bar WS', $result[0]['fieldA']);
-        self::assertSame('lorem foo bar 2 WS', $result[1]['fieldA']);
+        self::assertSame('lorem foo bar WS', $result[0]->get('fieldA'));
+        self::assertSame('lorem foo bar 2 WS', $result[1]->get('fieldA'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord['typo3tests_contentelementb_collection']);
-        self::assertCount(2, $resolvedRecord['typo3tests_contentelementb_collection']);
-        self::assertSame('lorem foo bar WS', $resolvedRecord['typo3tests_contentelementb_collection'][0]['fieldA']);
-        self::assertSame('lorem foo bar 2 WS', $resolvedRecord['typo3tests_contentelementb_collection'][1]['fieldA']);
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_collection'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_collection'));
+        self::assertSame('lorem foo bar WS', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('fieldA'));
+        self::assertSame('lorem foo bar 2 WS', $resolvedRecord->get('typo3tests_contentelementb_collection')[1]->get('fieldA'));
     }
 
     #[Test]
@@ -331,19 +332,19 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
-        self::assertSame('Category 1', $result[0]['title']);
-        self::assertSame('Category 2', $result[1]['title']);
+        self::assertSame('Category 1', $result[0]->get('title'));
+        self::assertSame('Category 2', $result[1]->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord['typo3tests_contentelementb_categories_mm']);
-        self::assertCount(2, $resolvedRecord['typo3tests_contentelementb_categories_mm']);
-        self::assertSame('Category 1', $resolvedRecord['typo3tests_contentelementb_categories_mm'][0]['title']);
-        self::assertSame('Category 2', $resolvedRecord['typo3tests_contentelementb_categories_mm'][1]['title']);
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_categories_mm'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_categories_mm'));
+        self::assertSame('Category 1', $resolvedRecord->get('typo3tests_contentelementb_categories_mm')[0]->get('title'));
+        self::assertSame('Category 2', $resolvedRecord->get('typo3tests_contentelementb_categories_mm')[1]->get('title'));
     }
 
     #[Test]
@@ -365,14 +366,14 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
         // @todo: this should be the other way around, but currently RelationResolver cannot handle different sorting in WS
-        self::assertSame('Category 2 ws', $result[1]['title']);
-        self::assertSame('Category 1 ws', $result[0]['title']);
+        self::assertSame('Category 2 ws', $result[1]->get('title'));
+        self::assertSame('Category 1 ws', $result[0]->get('title'));
     }
 
     #[Test]
@@ -392,17 +393,17 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $context
         );
 
         self::assertCount(1, $result);
-        self::assertSame('Category 1 translated', $result[0]['title']);
+        self::assertSame('Category 1 translated', $result[0]->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', array_replace($dummyRecord->toArray(), ['uid' => 381]), $context);
-        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord['typo3tests_contentelementb_categories_mm']);
-        self::assertCount(1, $resolvedRecord['typo3tests_contentelementb_categories_mm']);
-        self::assertSame('Category 1 translated', $resolvedRecord['typo3tests_contentelementb_categories_mm'][0]['title']);
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_categories_mm'));
+        self::assertCount(1, $resolvedRecord->get('typo3tests_contentelementb_categories_mm'));
+        self::assertSame('Category 1 translated', $resolvedRecord->get('typo3tests_contentelementb_categories_mm')[0]->get('title'));
     }
 
     #[Test]
@@ -422,17 +423,17 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $context
         );
 
         self::assertCount(1, $result);
-        self::assertSame('Category 1 translated', $result[0]['title']);
+        self::assertSame('Category 1 translated', $result[0]->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', array_replace($dummyRecord->toArray(), ['uid' => 381]), $context);
-        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord['typo3tests_contentelementb_categories_mm']);
-        self::assertCount(1, $resolvedRecord['typo3tests_contentelementb_categories_mm']);
-        self::assertSame('Category 1 translated', $resolvedRecord['typo3tests_contentelementb_categories_mm'][0]['title']);
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_categories_mm'));
+        self::assertCount(1, $resolvedRecord->get('typo3tests_contentelementb_categories_mm'));
+        self::assertSame('Category 1 translated', $resolvedRecord->get('typo3tests_contentelementb_categories_mm')[0]->get('title'));
     }
 
     #[Test]
@@ -446,7 +447,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $propertyClosure = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -454,12 +455,12 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $propertyClosure->instantiate();
         self::assertInstanceOf(Record::class, $result);
         self::assertSame(2, $result->getUid());
-        self::assertSame('Category 1', $result['title']);
+        self::assertSame('Category 1', $result->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertInstanceOf(Record::class, $resolvedRecord['typo3tests_contentelementb_categories_11']);
-        self::assertSame(2, $resolvedRecord['typo3tests_contentelementb_categories_11']['uid']);
-        self::assertSame('Category 1', $resolvedRecord['typo3tests_contentelementb_categories_11']['title']);
+        self::assertInstanceOf(Record::class, $resolvedRecord->get('typo3tests_contentelementb_categories_11'));
+        self::assertSame(2, $resolvedRecord->get('typo3tests_contentelementb_categories_11')->getUid());
+        self::assertSame('Category 1', $resolvedRecord->get('typo3tests_contentelementb_categories_11')->get('title'));
     }
 
     #[Test]
@@ -473,20 +474,20 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
-        self::assertSame('Category 1', $result[0]['title']);
-        self::assertSame('Category 2', $result[1]['title']);
+        self::assertSame('Category 1', $result[0]->get('title'));
+        self::assertSame('Category 2', $result[1]->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertCount(2, $resolvedRecord['typo3tests_contentelementb_categories_1m']);
-        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord['typo3tests_contentelementb_categories_1m']);
-        self::assertSame('Category 1', $resolvedRecord['typo3tests_contentelementb_categories_1m'][0]['title']);
-        self::assertSame('Category 2', $resolvedRecord['typo3tests_contentelementb_categories_1m'][1]['title']);
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_categories_1m'));
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_categories_1m'));
+        self::assertSame('Category 1', $resolvedRecord->get('typo3tests_contentelementb_categories_1m')[0]->get('title'));
+        self::assertSame('Category 2', $resolvedRecord->get('typo3tests_contentelementb_categories_1m')[1]->get('title'));
     }
 
     #[Test]
@@ -500,7 +501,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $propertyClosure = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -508,15 +509,15 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $propertyClosure->instantiate();
         self::assertInstanceOf(Record::class, $result);
         self::assertSame(1906, $result->getUid());
-        self::assertSame(1906, $result['uid']);
-        self::assertSame('Page 1', $result['title']);
+        self::assertSame(1906, $result->get('uid'));
+        self::assertSame('Page 1', $result->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_pages_relation'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_pages_relation');
         self::assertInstanceOf(Record::class, $resolvedRelation);
         self::assertSame(1906, $resolvedRelation->getUid());
-        self::assertSame(1906, $resolvedRelation['uid']);
-        self::assertSame('Page 1', $resolvedRelation['title']);
+        self::assertSame(1906, $resolvedRelation->get('uid'));
+        self::assertSame('Page 1', $resolvedRelation->get('title'));
     }
 
     #[Test]
@@ -530,23 +531,23 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
-        self::assertSame('Page 1', $result[0]['title']);
-        self::assertSame('Page 2', $result[1]['title']);
+        self::assertSame('Page 1', $result[0]->get('title'));
+        self::assertSame('Page 2', $result[1]->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_pages_relations'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_pages_relations');
         self::assertCount(2, $resolvedRelation);
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
         self::assertSame(1906, $resolvedRelation[0]->getUid());
-        self::assertSame(1906, $resolvedRelation[0]['uid']);
-        self::assertSame('Page 1', $resolvedRelation[0]['title']);
-        self::assertSame('Page 2', $resolvedRelation[1]['title']);
+        self::assertSame(1906, $resolvedRelation[0]->get('uid'));
+        self::assertSame('Page 1', $resolvedRelation[0]->get('title'));
+        self::assertSame('Page 2', $resolvedRelation[1]->get('title'));
     }
 
     #[Test]
@@ -560,7 +561,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -569,11 +570,11 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame(260, $result[0]->getUid());
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_circular_relation'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_circular_relation');
         self::assertCount(1, $resolvedRelation);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
         self::assertSame(260, $resolvedRelation[0]->getUid());
-        self::assertSame(260, $resolvedRelation[0]['uid']);
+        self::assertSame(260, $resolvedRelation[0]->get('uid'));
     }
 
     #[Test]
@@ -587,29 +588,29 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertInstanceOf(LazyRecordCollection::class, $result);
         self::assertCount(2, $result);
-        self::assertSame('Record 1', $result[0]['title']);
-        self::assertSame('Record 2', $result[1]['title']);
-        self::assertCount(1, $result[0]['record_collection']);
-        self::assertCount(1, $result[1]['record_collection']);
-        self::assertSame('Collection 1', $result[0]['record_collection'][0]['text']);
-        self::assertSame('Collection 2', $result[1]['record_collection'][0]['text']);
+        self::assertSame('Record 1', $result[0]->get('title'));
+        self::assertSame('Record 2', $result[1]->get('title'));
+        self::assertCount(1, $result[0]->get('record_collection'));
+        self::assertCount(1, $result[1]->get('record_collection'));
+        self::assertSame('Collection 1', $result[0]->get('record_collection')[0]->get('text'));
+        self::assertSame('Collection 2', $result[1]->get('record_collection')[0]->get('text'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_record_relation_recursive'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_record_relation_recursive');
         self::assertCount(2, $resolvedRelation);
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
-        self::assertSame('Record 1', $resolvedRelation[0]['title']);
-        self::assertSame('Record 2', $resolvedRelation[1]['title']);
-        self::assertCount(1, $resolvedRelation[0]['record_collection']);
-        self::assertCount(1, $resolvedRelation[1]['record_collection']);
-        self::assertSame('Collection 1', $resolvedRelation[0]['record_collection'][0]['text']);
-        self::assertSame('Collection 2', $resolvedRelation[1]['record_collection'][0]['text']);
+        self::assertSame('Record 1', $resolvedRelation[0]->get('title'));
+        self::assertSame('Record 2', $resolvedRelation[1]->get('title'));
+        self::assertCount(1, $resolvedRelation[0]->get('record_collection'));
+        self::assertCount(1, $resolvedRelation[1]->get('record_collection'));
+        self::assertSame('Collection 1', $resolvedRelation[0]->get('record_collection')[0]->get('text'));
+        self::assertSame('Collection 2', $resolvedRelation[1]->get('record_collection')[0]->get('text'));
     }
 
     #[Test]
@@ -630,21 +631,21 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
-        self::assertSame('Page 1 ws', $result[0]['title']);
-        self::assertSame('Page 2 ws', $result[1]['title']);
+        self::assertSame('Page 1 ws', $result[0]->get('title'));
+        self::assertSame('Page 2 ws', $result[1]->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_pages_relations'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_pages_relations');
         self::assertCount(2, $resolvedRelation);
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
-        self::assertSame('Page 1 ws', $resolvedRelation[0]['title']);
-        self::assertSame('Page 2 ws', $resolvedRelation[1]['title']);
+        self::assertSame('Page 1 ws', $resolvedRelation[0]->get('title'));
+        self::assertSame('Page 2 ws', $resolvedRelation[1]->get('title'));
     }
 
     #[Test]
@@ -658,24 +659,24 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
         self::assertCount(4, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
-        self::assertSame('Page 1', $result[0]['title']);
-        self::assertSame('Page 2', $result[1]['title']);
-        self::assertSame('Content 1', $result[2]['header']);
-        self::assertSame('Content 2', $result[3]['header']);
+        self::assertSame('Page 1', $result[0]->get('title'));
+        self::assertSame('Page 2', $result[1]->get('title'));
+        self::assertSame('Content 1', $result[2]->get('header'));
+        self::assertSame('Content 2', $result[3]->get('header'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_pages_content_relation'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_pages_content_relation');
         self::assertCount(4, $resolvedRelation);
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
-        self::assertSame('Page 1', $resolvedRelation[0]['title']);
-        self::assertSame('Page 2', $resolvedRelation[1]['title']);
-        self::assertSame('Content 1', $resolvedRelation[2]['header']);
-        self::assertSame('Content 2', $resolvedRelation[3]['header']);
+        self::assertSame('Page 1', $resolvedRelation[0]->get('title'));
+        self::assertSame('Page 2', $resolvedRelation[1]->get('title'));
+        self::assertSame('Content 1', $resolvedRelation[2]->get('header'));
+        self::assertSame('Content 2', $resolvedRelation[3]->get('header'));
     }
 
     #[Test]
@@ -690,21 +691,21 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
-        self::assertSame('Page 1', $result[0]['title']);
-        self::assertSame('Page 2', $result[1]['title']);
+        self::assertSame('Page 1', $result[0]->get('title'));
+        self::assertSame('Page 2', $result[1]->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_pages_mm'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_pages_mm');
         self::assertCount(2, $resolvedRelation);
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
-        self::assertSame('Page 1', $resolvedRelation[0]['title']);
-        self::assertSame('Page 2', $resolvedRelation[1]['title']);
+        self::assertSame('Page 1', $resolvedRelation[0]->get('title'));
+        self::assertSame('Page 2', $resolvedRelation[1]->get('title'));
     }
 
     public static function multipleItemsAsArrayConversionDataProvider(): \Generator
@@ -752,14 +753,14 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertSame($expected, $result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertSame($expected, $resolvedRecord[$fieldName]);
+        self::assertSame($expected, $resolvedRecord->get($fieldName));
     }
 
     public static function canConvertDateTimeDataProvider(): \Generator
@@ -802,14 +803,14 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertSame($expected, $result?->format('c'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertSame($expected, $resolvedRecord[$fieldName]?->format('c'));
+        self::assertSame($expected, $resolvedRecord->get($fieldName)?->format('c'));
     }
 
     #[Test]
@@ -822,14 +823,14 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertSame('1', $result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertSame('1', $resolvedRecord['typo3tests_contentelementb_select_single']);
+        self::assertSame('1', $resolvedRecord->get('typo3tests_contentelementb_select_single'));
     }
 
     #[Test]
@@ -843,19 +844,19 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $propertyClosure = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
         $result = $propertyClosure->instantiate();
         self::assertInstanceOf(Record::class, $result);
-        self::assertSame('Record 1', $result['title']);
+        self::assertSame('Record 1', $result->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_select_one_to_one'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_select_one_to_one');
         self::assertInstanceOf(Record::class, $resolvedRelation);
-        self::assertSame('Record 1', $resolvedRelation['title']);
+        self::assertSame('Record 1', $resolvedRelation->get('title'));
     }
 
     /**
@@ -872,19 +873,19 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $propertyClosure = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
         $result = $propertyClosure->instantiate();
         self::assertInstanceOf(Record::class, $result);
-        self::assertSame('Record 1', $result['title']);
+        self::assertSame('Record 1', $result->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedField = $resolvedRecord['typo3tests_contentelementb_select_foreign_native'];
+        $resolvedField = $resolvedRecord->get('typo3tests_contentelementb_select_foreign_native');
         self::assertInstanceOf(Record::class, $resolvedField);
-        self::assertSame('Record 1', $resolvedField['title']);
+        self::assertSame('Record 1', $resolvedField->get('title'));
     }
 
     /**
@@ -901,7 +902,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $propertyClosure = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -910,7 +911,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertNull($result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertNull($resolvedRecord['typo3tests_contentelementb_select_foreign_native']);
+        self::assertNull($resolvedRecord->get('typo3tests_contentelementb_select_foreign_native'));
     }
 
     /**
@@ -927,7 +928,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -935,7 +936,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertCount(0, $result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_select_foreign'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_select_foreign');
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
         self::assertCount(0, $resolvedRelation);
     }
@@ -954,7 +955,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -962,7 +963,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertCount(0, $result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_select_foreign_multiple'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_select_foreign_multiple');
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
         self::assertCount(0, $resolvedRelation);
     }
@@ -978,20 +979,20 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
-        self::assertSame('Record 1', $result[0]['title']);
-        self::assertSame('Record 2', $result[1]['title']);
+        self::assertSame('Record 1', $result[0]->get('title'));
+        self::assertSame('Record 2', $result[1]->get('title'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_select_foreign_multiple'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_select_foreign_multiple');
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
         self::assertCount(2, $resolvedRelation);
-        self::assertSame('Record 1', $resolvedRelation[0]['title']);
-        self::assertSame('Record 2', $resolvedRelation[1]['title']);
+        self::assertSame('Record 1', $resolvedRelation[0]->get('title'));
+        self::assertSame('Record 2', $resolvedRelation[1]->get('title'));
     }
 
     #[Test]
@@ -1005,25 +1006,25 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(2, $result);
-        self::assertSame('Record 1', $result[0]['title']);
-        self::assertSame('Collection 1', $result[0]['record_collection'][0]['text']);
-        self::assertSame('Record 1', $result[1]['title']);
-        self::assertSame('Collection 1', $result[1]['record_collection'][0]['text']);
+        self::assertSame('Record 1', $result[0]->get('title'));
+        self::assertSame('Collection 1', $result[0]->get('record_collection')[0]->get('text'));
+        self::assertSame('Record 1', $result[1]->get('title'));
+        self::assertSame('Collection 1', $result[1]->get('record_collection')[0]->get('text'));
         self::assertSame($result[0], $result[1]);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_select_foreign_multiple'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_select_foreign_multiple');
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
         self::assertCount(2, $resolvedRelation);
-        self::assertSame('Record 1', $resolvedRelation[0]['title']);
-        self::assertSame('Collection 1', $resolvedRelation[0]['record_collection'][0]['text']);
-        self::assertSame('Record 1', $resolvedRelation[1]['title']);
-        self::assertSame('Collection 1', $resolvedRelation[1]['record_collection'][0]['text']);
+        self::assertSame('Record 1', $resolvedRelation[0]->get('title'));
+        self::assertSame('Collection 1', $resolvedRelation[0]->get('record_collection')[0]->get('text'));
+        self::assertSame('Record 1', $resolvedRelation[1]->get('title'));
+        self::assertSame('Collection 1', $resolvedRelation[1]->get('record_collection')[0]->get('text'));
         self::assertSame($resolvedRelation[0], $resolvedRelation[1]);
     }
 
@@ -1038,24 +1039,24 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
         self::assertCount(1, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
         $result = $result[0];
-        self::assertSame('Record 1', $result['title']);
-        self::assertCount(1, $result['record_collection']);
-        self::assertSame('Collection 1', $result['record_collection'][0]['text']);
+        self::assertSame('Record 1', $result->get('title'));
+        self::assertCount(1, $result->get('record_collection'));
+        self::assertSame('Collection 1', $result->get('record_collection')[0]->get('text'));
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_select_foreign'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_select_foreign');
         self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
         self::assertCount(1, $resolvedRelation);
-        self::assertSame('Record 1', $resolvedRelation[0]['title']);
-        self::assertCount(1, $resolvedRelation[0]['record_collection']);
-        self::assertSame('Collection 1', $resolvedRelation[0]['record_collection'][0]['text']);
+        self::assertSame('Record 1', $resolvedRelation[0]->get('title'));
+        self::assertCount(1, $resolvedRelation[0]->get('record_collection'));
+        self::assertSame('Collection 1', $resolvedRelation[0]->get('record_collection')[0]->get('text'));
     }
 
     #[Test]
@@ -1083,7 +1084,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -1092,7 +1093,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('Text in Flex', $result['textarea']);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_flexfield'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
         self::assertIsArray($resolvedRelation);
         self::assertSame('Header in Flex', $resolvedRelation['header']);
         self::assertSame('Text in Flex', $resolvedRelation['textarea']);
@@ -1133,7 +1134,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
-            $dummyRecord->getRawRecord(),
+            $dummyRecord,
             $this->get(Context::class)
         );
 
@@ -1144,7 +1145,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('12', $result['number']);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord['typo3tests_contentelementb_flexfield'];
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
         self::assertIsArray($resolvedRelation);
         self::assertSame('Header in Flex', $resolvedRelation['header']);
         self::assertSame('Text in Flex', $resolvedRelation['textarea']);
@@ -1165,6 +1166,14 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
             'pid' => 1,
             'sys_language_uid' => 0,
             'l18n_parent' => 0,
+            't3ver_wsid' => 0,
+            't3ver_oid' => 0,
+            't3ver_state' => 0,
+            't3ver_stage' => 0,
+            'crdate' => 0,
+            'tstamp' => 0,
+            'deleted' => 0,
+            'sorting' => 0,
             'hidden' => 0,
             'starttime' => 0,
             'endtime' => 0,
@@ -1201,10 +1210,12 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         ];
     }
 
-    protected function createTestRecordObject(array $overriddenValues = []): Record
+    protected function createTestRecordObject(array $overriddenValues = []): RawRecord
     {
         $dummyRecordData = $this->getTestRecord();
         $dummyRecordData = array_replace($dummyRecordData, $overriddenValues);
-        return $this->get(RecordFactory::class)->createFromDatabaseRow('tt_content', $dummyRecordData);
+        return $this->get(RecordFactory::class)
+            ->createFromDatabaseRow('tt_content', $dummyRecordData)
+            ->getRawRecord();
     }
 }

@@ -84,7 +84,7 @@ readonly class RecordFieldTransformer
 
     public function transformField(FieldTypeInterface $fieldInformation, RawRecord $rawRecord, Context $context): mixed
     {
-        $fieldValue = $rawRecord[$fieldInformation->getName()];
+        $fieldValue = $rawRecord->get($fieldInformation->getName());
 
         // type=file needs to be handled before RelationalFieldTypeInterface
         if ($fieldInformation instanceof FileFieldType) {

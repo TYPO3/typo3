@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Domain;
 
+use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -25,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal not part of public API, as this needs to be streamlined and proven
  */
-readonly class RawRecord implements \ArrayAccess, RecordInterface
+readonly class RawRecord implements RecordInterface
 {
     public function __construct(
         protected int $uid,
@@ -71,36 +72,30 @@ readonly class RawRecord implements \ArrayAccess, RecordInterface
         return $this->properties + ['uid' => $this->uid, 'pid' => $this->pid];
     }
 
-    /**
-     * In addition to `isset()`, this considers `null` values as well.
-     */
-    public function isDefined(int|string $offset): bool
+    public function has(string $id): bool
     {
-        return array_key_exists($offset, $this->properties);
+        return array_key_exists($id, $this->properties);
     }
 
-    public function offsetExists(mixed $offset): bool
+    public function get(string $id): mixed
     {
-        return isset($this->properties[$offset]);
-    }
+        if (!$this->has($id)) {
+            throw new RecordPropertyNotFoundException(
+                'Record property "' . $id . '" is not available.',
+                1725892140
+            );
+        }
 
-    public function offsetGet(mixed $offset): mixed
-    {
-        return $this->properties[$offset] ?? null;
-    }
-
-    public function offsetSet(mixed $offset, mixed $value): void
-    {
-        throw new \InvalidArgumentException('Record properties cannot be set.', 1712139284);
-    }
-
-    public function offsetUnset(mixed $offset): void
-    {
-        throw new \InvalidArgumentException('Record properties cannot be unset.', 1712139283);
+        return $this->properties[$id] ?? null;
     }
 
     public function getComputedProperties(): ComputedProperties
     {
         return $this->computedProperties;
+    }
+
+    public function getRawRecord(): RawRecord
+    {
+        return $this;
     }
 }
