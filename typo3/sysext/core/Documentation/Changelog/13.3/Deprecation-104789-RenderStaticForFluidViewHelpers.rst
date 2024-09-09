@@ -133,7 +133,7 @@ files:
 
 *   Remove the mentioned definitions:
 
-    *   :php:`use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+    *   :php:`use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;`
     *   :php:`use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;`
     *   :php:`use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;`
     *   :php:`use CompileWithRenderStatic;` (class trait)
