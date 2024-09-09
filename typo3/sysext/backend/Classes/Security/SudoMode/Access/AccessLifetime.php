@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Backend\Security\SudoMode\Access;
 
 /**
  * Defines the lifetime of the sudo mode in a human-readable form.
- *
- * @internal
  */
 enum AccessLifetime: string
 {
