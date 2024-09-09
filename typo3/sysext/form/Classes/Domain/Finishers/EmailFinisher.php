@@ -160,38 +160,42 @@ class EmailFinisher extends AbstractFinisher
         GeneralUtility::makeInstance(MailerInterface::class)->send($mail);
     }
 
+    protected function initializeTemplatePaths(array $globalConfig, array $localConfig): TemplatePaths
+    {
+        if (is_array($localConfig['templateRootPaths'] ?? null)) {
+            $globalConfig['templateRootPaths'] = array_replace_recursive(
+                $globalConfig['templateRootPaths'],
+                $localConfig['templateRootPaths']
+            );
+            ksort($globalConfig['templateRootPaths']);
+        }
+
+        if (is_array($localConfig['partialRootPaths'] ?? null)) {
+            $globalConfig['partialRootPaths'] = array_replace_recursive(
+                $globalConfig['partialRootPaths'],
+                $localConfig['partialRootPaths']
+            );
+            ksort($globalConfig['partialRootPaths']);
+        }
+
+        if (is_array($localConfig['layoutRootPaths'] ?? null)) {
+            $globalConfig['layoutRootPaths'] = array_replace_recursive(
+                $globalConfig['layoutRootPaths'],
+                $localConfig['layoutRootPaths']
+            );
+            ksort($globalConfig['layoutRootPaths']);
+        }
+
+        return GeneralUtility::makeInstance(TemplatePaths::class, $globalConfig);
+    }
+
     protected function initializeFluidEmail(FormRuntime $formRuntime): FluidEmail
     {
-        $templateConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
-
-        if (is_array($this->options['templateRootPaths'] ?? null)) {
-            $templateConfiguration['templateRootPaths'] = array_replace_recursive(
-                $templateConfiguration['templateRootPaths'],
-                $this->options['templateRootPaths']
-            );
-            ksort($templateConfiguration['templateRootPaths']);
-        }
-
-        if (is_array($this->options['partialRootPaths'] ?? null)) {
-            $templateConfiguration['partialRootPaths'] = array_replace_recursive(
-                $templateConfiguration['partialRootPaths'],
-                $this->options['partialRootPaths']
-            );
-            ksort($templateConfiguration['partialRootPaths']);
-        }
-
-        if (is_array($this->options['layoutRootPaths'] ?? null)) {
-            $templateConfiguration['layoutRootPaths'] = array_replace_recursive(
-                $templateConfiguration['layoutRootPaths'],
-                $this->options['layoutRootPaths']
-            );
-            ksort($templateConfiguration['layoutRootPaths']);
-        }
-
-        $fluidEmail = GeneralUtility::makeInstance(
-            FluidEmail::class,
-            GeneralUtility::makeInstance(TemplatePaths::class, $templateConfiguration)
+        $templatePaths = $this->initializeTemplatePaths(
+            $GLOBALS['TYPO3_CONF_VARS']['MAIL'],
+            $this->options,
         );
+        $fluidEmail = GeneralUtility::makeInstance(FluidEmail::class, $templatePaths);
 
         if (!isset($this->options['templateName']) || $this->options['templateName'] === '') {
             throw new FinisherException('The option "templateName" must be set to use FluidEmail.', 1599834020);
