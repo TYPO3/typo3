@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Typolink;
+namespace TYPO3\CMS\Core\LinkHandling;
 
 /**
  * This class represents an object containing the resolved parameters of a typolink
