@@ -162,31 +162,20 @@ class EmailFinisher extends AbstractFinisher
 
     protected function initializeTemplatePaths(array $globalConfig, array $localConfig): TemplatePaths
     {
-        if (is_array($localConfig['templateRootPaths'] ?? null)) {
-            $globalConfig['templateRootPaths'] = array_replace_recursive(
-                $globalConfig['templateRootPaths'],
-                $localConfig['templateRootPaths']
-            );
-            ksort($globalConfig['templateRootPaths']);
-        }
-
-        if (is_array($localConfig['partialRootPaths'] ?? null)) {
-            $globalConfig['partialRootPaths'] = array_replace_recursive(
-                $globalConfig['partialRootPaths'],
-                $localConfig['partialRootPaths']
-            );
-            ksort($globalConfig['partialRootPaths']);
-        }
-
-        if (is_array($localConfig['layoutRootPaths'] ?? null)) {
-            $globalConfig['layoutRootPaths'] = array_replace_recursive(
-                $globalConfig['layoutRootPaths'],
-                $localConfig['layoutRootPaths']
-            );
-            ksort($globalConfig['layoutRootPaths']);
-        }
-
-        return GeneralUtility::makeInstance(TemplatePaths::class, $globalConfig);
+        $templatePaths = new TemplatePaths();
+        $templatePaths->setTemplateRootPaths(array_replace(
+            $globalConfig['templateRootPaths'] ?? [],
+            $localConfig['templateRootPaths'] ?? [],
+        ));
+        $templatePaths->setLayoutRootPaths(array_replace(
+            $globalConfig['layoutRootPaths'] ?? [],
+            $localConfig['layoutRootPaths'] ?? [],
+        ));
+        $templatePaths->setPartialRootPaths(array_replace(
+            $globalConfig['partialRootPaths'] ?? [],
+            $localConfig['partialRootPaths'] ?? [],
+        ));
+        return $templatePaths;
     }
 
     protected function initializeFluidEmail(FormRuntime $formRuntime): FluidEmail

@@ -506,14 +506,13 @@ class ValidatorTask extends AbstractTask
      */
     protected function getFluidEmail(): FluidEmail
     {
-        $templateConfiguration = array_replace_recursive(
-            $GLOBALS['TYPO3_CONF_VARS']['MAIL'],
-            ['templateRootPaths' => [20 => 'EXT:linkvalidator/Resources/Private/Templates/Email/']]
-        );
-
-        // must be sorted after adding the default path to ensure already registered custom paths are called first
-        ksort($templateConfiguration['templateRootPaths']);
-        $templatePaths = GeneralUtility::makeInstance(TemplatePaths::class, $templateConfiguration);
+        $templatePaths = new TemplatePaths();
+        $templatePaths->setTemplateRootPaths(array_replace(
+            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? [],
+            [20 => 'EXT:linkvalidator/Resources/Private/Templates/Email/'],
+        ));
+        $templatePaths->setLayoutRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'] ?? []);
+        $templatePaths->setPartialRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'] ?? []);
 
         if ($this->emailTemplateName === '' || !$this->templateFilesExist($templatePaths->getTemplateRootPaths())) {
             // Add default template name to task if empty or given template name does not exist
