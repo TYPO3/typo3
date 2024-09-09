@@ -198,6 +198,7 @@ Options:
             - cglHeaderGit: test and fix latest committed patch for CGL file header compliance
             - checkBom: check UTF-8 files do not contain BOM
             - checkComposer: check composer.json files for version integrity
+            - checkIntegritySetLabels: check labels.xlf file integrity of site sets
             - checkExtensionScannerRst: test all .rst files referenced by extension scanner exist
             - checkFilePathLength: test core file paths do not exceed maximum length
             - checkGitSubmodule: test core git has no sub modules defined
@@ -891,6 +892,10 @@ case ${TEST_SUITE} in
         ;;
     checkBom)
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-utf8bom-${SUFFIX} ${IMAGE_PHP} Build/Scripts/checkUtf8Bom.sh
+        SUITE_EXIT_CODE=$?
+        ;;
+    checkIntegritySetLabels)
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-integrity-set-labels-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/checkIntegritySetLabels.php
         SUITE_EXIT_CODE=$?
         ;;
     checkComposer)
