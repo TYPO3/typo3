@@ -286,7 +286,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/Mfa/Provider/RecoveryCodes.php
 
 		-
-			message: "#^Parameter \\#1 \\$key1 of method Redis\\:\\:sUnion\\(\\) expects string, array\\<int\\<0, max\\>, string\\> given\\.$#"
+			message: "#^Parameter \\#1 \\$key of method Redis\\:\\:sUnion\\(\\) expects string, array\\<int\\<0, max\\>, string\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Cache/Backend/RedisBackend.php
 
