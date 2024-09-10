@@ -17,14 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Settings;
 
-use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use TYPO3\CMS\Core\Exception;
 
 /**
  * @internal
  */
-interface SettingsInterface extends ContainerInterface
-{
-    public function getIdentifiers(): array;
-
-    public static function __set_state(array $state): SettingsInterface;
-}
+class SettingNotFoundException extends Exception implements NotFoundExceptionInterface {}

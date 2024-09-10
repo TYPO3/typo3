@@ -34,7 +34,7 @@ readonly class Settings implements SettingsInterface
     public function get(string $identifier): mixed
     {
         if (!$this->has($identifier)) {
-            throw new \InvalidArgumentException('Setting does not exist', 1709555772);
+            throw new SettingNotFoundException('Setting does not exist', 1709555772);
         }
         return $this->settings[$identifier];
     }
