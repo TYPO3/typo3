@@ -78,8 +78,6 @@ final class StylesController
             'currentAction' => 'stylesOverview',
             'routeIdentifier' => 'styleguide_styles',
         ]);
-        $this->addDocHeaderShortcutButton($view, 'stylesOverview');
-
         return $view->renderResponse('Backend/StylesOverview');
     }
 
