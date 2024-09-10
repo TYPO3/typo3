@@ -2890,6 +2890,11 @@ a.dropdown-toggle{text-decoration:none}
   container-type: inline-size;
 }
 
+@container (max-width: 800px) {
+  .statusreport {
+    grid-template: "statusreport-indicator statusreport-title statusreport-body"/calc(var(--statusreport-icon-size) * 1.5) 200px auto;
+  }
+}
 @container (max-width: 500px) {
   .statusreport {
     grid-template: "statusreport-indicator statusreport-title" "statusreport-indicator statusreport-body"/calc(var(--statusreport-icon-size) * 1.5) auto;
