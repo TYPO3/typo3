@@ -1,0 +1,20 @@
+//
+// Container
+// =========
+//
+@mixin container-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+    $min: breakpoint-min($name, $breakpoints);
+
+    @if $min {
+        /* clean-css ignore:start */
+        @container (min-width: #{$min}) {
+            @content;
+        }
+
+        /* clean-css ignore:end */
+    }
+
+    @else {
+        @content;
+    }
+}
