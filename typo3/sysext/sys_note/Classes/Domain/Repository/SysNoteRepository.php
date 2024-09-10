@@ -83,10 +83,6 @@ class SysNoteRepository
 
     /**
      * Find notes by given category but restricted to backend user permissions
-     *
-     * @param int $category Category id
-     *
-     * @return array
      */
     public function findByCategoryRestricted(?int $category = null): array
     {
@@ -112,8 +108,10 @@ class SysNoteRepository
             );
         }
 
+        $statement = $queryBuilder->executeQuery();
+
         $results = [];
-        foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $result) {
+        while ($result = $statement->fetchAssociative()) {
             if ($this->checkPermissions($result)) {
                 $results[] = $result;
             }
