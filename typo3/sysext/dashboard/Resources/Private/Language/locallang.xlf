@@ -199,6 +199,49 @@
 				<source>More TYPO3 security advisories</source>
 			</trans-unit>
 
+			<trans-unit id="widgets.latestChangedPages.title" resname="widgets.latestChangedPages.title" xml:space="preserve">
+				<source>Latest changed pages</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.description" resname="widgets.latestChangedPages.description" xml:space="preserve">
+				<source>Show a list of pages where the latest changes where made</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.empty" resname="widgets.latestChangedPages.empty" xml:space="preserve">
+				<source>No history found</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.datetime" resname="widgets.latestChangedPages.column.datetime" xml:space="preserve">
+				<source>Datetime</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.user" resname="widgets.latestChangedPages.column.user" xml:space="preserve">
+				<source>User</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.user.userNotFound" resname="widgets.latestChangedPages.column.user.userNotFound" xml:space="preserve">
+				<source>Not Found</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.recordTitle" resname="widgets.latestChangedPages.column.recordTitle" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.recordTitle.workspace" resname="widgets.latestChangedPages.column.recordTitle.workspace" xml:space="preserve">
+				<source>Changes in current selected workspace</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.recordTitle.pagetree" resname="widgets.latestChangedPages.column.recordTitle.pagetree" xml:space="preserve">
+				<source>Position in pagetree</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.control" resname="widgets.latestChangedPages.column.control" xml:space="preserve">
+				<source>Control</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.control.recordHistory" resname="widgets.latestChangedPages.column.control.recordHistory" xml:space="preserve">
+				<source>Show history</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.control.viewWebpage" resname="widgets.latestChangedPages.column.control.viewWebpage" xml:space="preserve">
+				<source>View webpage</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.control.editPageContent" resname="widgets.latestChangedPages.column.control.editPageContent" xml:space="preserve">
+				<source>Edit page content</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.column.control.editPage" resname="widgets.latestChangedPages.column.control.editPage" xml:space="preserve">
+				<source>Edit page properties</source>
+			</trans-unit>
+
 			<trans-unit id="widget_group.general" resname="widget_group.general" xml:space="preserve">
 				<source>General</source>
  			</trans-unit>
@@ -214,6 +257,9 @@
 			<trans-unit id="widget_group.system" resname="widget_group.system" xml:space="preserve">
 				<source>System Information</source>
  			</trans-unit>
+			<trans-unit id="widget_group.content" resname="widget_group.content" xml:space="preserve">
+				<source>Content</source>
+			</trans-unit>
 
 			<trans-unit id="dashboard.empty.content.title" resname="dashboard.empty.content.title" xml:space="preserve">
 				<source>No widgets</source>

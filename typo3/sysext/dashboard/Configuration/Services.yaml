@@ -189,3 +189,18 @@ services:
         title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
         description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.description'
         iconIdentifier: 'content-widget-number'
+
+  dashboard.widget.latestChangedPages:
+    class: 'TYPO3\CMS\Dashboard\Widgets\LatestChangedPagesWidget'
+    arguments:
+      $options:
+          refreshAvailable: true
+    tags:
+      - name: dashboard.widget
+        identifier: 'latestChangedPages'
+        groupNames: 'content'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.description'
+        iconIdentifier: 'content-widget-list'
+        height: 'medium'
+        width: 'medium'

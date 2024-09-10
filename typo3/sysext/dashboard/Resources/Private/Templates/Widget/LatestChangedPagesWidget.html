@@ -1,0 +1,116 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+<f:layout name="Widget/Widget"/>
+<f:section name="main">
+
+    <f:if condition="{latestPages}">
+        <f:then>
+            <div class="widget-table-wrapper">
+                <table class="widget-table table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-time">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.datetime')}</th>
+                            <th colspan="2">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.user')}</th>
+                            <th colspan="2">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.recordTitle')}</th>
+                            <th class="col-control nowrap"><span class="visually-hidden">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.control')}</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{latestPages}" as="page">
+                            <tr>
+                                <td class="col-datetime">
+                                    {page.pageRecord.tstamp -> f:format.date(format: dateFormat)}
+                                </td>
+                                <td class="col-avatar">
+                                    <be:avatar backendUser="{page.history.userid}" size="32" showIcon="true" />
+                                </td>
+                                <td class="col-username col-responsive" style="max-width: 140px;">
+                                    <f:if condition="{page.realName}">
+                                        <f:then>
+                                            {page.realName}
+                                            <f:if condition="{page.userName}">
+                                                <div class="text-muted">({page.userName})</div>
+                                            </f:if>
+                                        </f:then>
+                                        <f:else>
+                                            {f:if(condition: page.userName, then: page.userName, else: '{f:translate(key: \'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.user.userNotFound\')}')}
+                                        </f:else>
+                                    </f:if>
+                                </td>
+                                <td class="col-icon col-nowrap">
+                                    <span title="id={page.pageRecord.uid}">
+                                        <core:iconForRecord table="pages" row="{page}" />
+                                    </span>
+                                    <f:if condition="{page.pageRecord.t3ver_wsid}">
+                                        <span title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.recordTitle.workspace')}">
+                                            <core:icon identifier="apps-toolbar-menu-workspace" size="small" />
+                                        </span>
+                                    </f:if>
+                                </td>
+                                <td class="col-title">
+                                    {page.pageRecord.title}
+                                    <f:if condition="{page.rootline}">
+                                        <div><small class="text-muted" title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.recordTitle.pagetree')}">{page.rootline}</small></div>
+                                    </f:if>
+                                </td>
+                                <td class="col-control nowrap">
+                                    <div class="btn-group">
+                                        <f:be.link
+                                            route="record_history"
+                                            parameters="{element: 'pages:{page.pageRecord.uid}'}"
+                                            class="btn btn-default btn-sm"
+                                            title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.control.recordHistory')}">
+                                            <core:icon identifier="actions-history" />
+                                        </f:be.link>
+
+                                        <a href="{page.viewLink}"
+                                            class="btn btn-default btn-sm"
+                                            title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.control.viewWebpage')}"
+                                            target="_blank">
+                                            <core:icon identifier="actions-view-page" />
+                                        </a>
+
+                                        <f:be.link
+                                            route="web_layout"
+                                            parameters="{id: page.pageRecord.uid}"
+                                            class="btn btn-default btn-sm"
+                                            title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.control.editPageContent')}">
+                                            <core:icon identifier="actions-document-edit" />
+                                        </f:be.link>
+
+                                        <be:link.editRecord
+                                            uid="{page.pageRecord.uid}"
+                                            table="pages"
+                                            class="btn btn-default btn-sm"
+                                            title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.control.editPage')}"
+                                            returnUrl="{f:be.uri(route: 'dashboard')}">
+                                            <core:icon identifier="actions-page-open" />
+                                        </be:link.editRecord>
+                                    </div>
+                                </td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <div class="callout callout-info">
+                <div class="callout-icon">
+                    <span class="icon-emphasized">
+                        <core:icon identifier="actions-history" />
+                    </span>
+                </div>
+                <div class="callout-content">
+                    <div class="callout-title">
+                        <f:translate key="LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.empty" />
+                    </div>
+                </div>
+            </div>
+        </f:else>
+    </f:if>
+
+</f:section>
+</html>

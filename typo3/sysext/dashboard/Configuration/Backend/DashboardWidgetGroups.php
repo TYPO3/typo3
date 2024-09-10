@@ -18,4 +18,7 @@ return [
     'documentation' => [
         'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.documentation',
     ],
+    'content' => [
+        'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.content',
+    ],
 ];
