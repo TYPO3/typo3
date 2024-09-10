@@ -33,7 +33,7 @@ final class UsersCest extends AbstractCest
     private string $contextMenuExport = '#contentMenu1 li.context-menu-item[data-callback-action=exportT3d]';
     private string $contextMenuImport = '#contentMenu1 li.context-menu-item[data-callback-action=importT3d]';
     private string $buttonViewPage = 'span[data-identifier="actions-view-page"]';
-    private string $tabUpload = 'a[href="#import-upload"]';
+    private string $tabUpload = 'button[data-bs-target="#import-upload"]';
     private string $checkboxForceAllUids = 'input#checkForce_all_UIDS';
 
     public function _before(ApplicationTester $I): void
@@ -199,7 +199,7 @@ final class UsersCest extends AbstractCest
         $I->waitForText('Backend user groups');
         $I->click('//table/tbody/tr[descendant::button[@data-contextmenu-uid="' . $userGroupId . '"]]/td[2]/a');
         $I->waitForElementVisible('#EditDocumentController');
-        $I->click('//form[@id="EditDocumentController"]//ul/li[3]/a');
+        $I->click('//form[@id="EditDocumentController"]//ul/li[3]/button');
 
         foreach ($modAccessByName as $modName => $modAccess) {
             if ((bool)$modAccess) {
@@ -232,7 +232,7 @@ final class UsersCest extends AbstractCest
         $I->waitForElement('#typo3-backend-user-list');
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::button[@data-contextmenu-uid="' . $userId . '"]]//a[@title="Edit"]');
         $I->waitForElement('#EditDocumentController');
-        $I->click('//form[@id="EditDocumentController"]//ul/li[5]/a');
+        $I->click('//form[@id="EditDocumentController"]//ul/li[5]/button');
         $I->waitForElementVisible($codeMirrorSelector);
         $I->executeJS("document.querySelector('" . $codeMirrorSelector . "').setContent('" . $userTsConfig . "')");
         $I->click($this->inModuleHeader . ' .btn[title="Save"]');

@@ -97,7 +97,7 @@ final class RecordDownloadWithPresetCest
         $I->click('//table[@id="typo3-backend-user-list"]/tbody/tr[descendant::button[@data-contextmenu-uid="' . $userId . '"]]//a[@title="Edit"]');
         $I->waitForElement('#EditDocumentController');
         // This was "li[5]" in UsersCest. Don't know why, for me the TSconfig is on the third tab...
-        $I->click('//form[@id="EditDocumentController"]//ul/li[3]/a');
+        $I->click('//form[@id="EditDocumentController"]//ul/li[3]/button');
         $I->waitForElementVisible($codeMirrorSelector);
         $I->executeJS("document.querySelector('" . $codeMirrorSelector . "').setContent('" . $userTsConfig . "')");
         $I->click($this->inModuleHeader . ' .btn[title="Save"]');

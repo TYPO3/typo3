@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,r,o){var s,n=arguments.length,i=n<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,r):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,t,r,o);else for(var a=e.length-1;a>=0;a--)(s=e[a])&&(i=(n<3?s(i):n>3?s(t,r,i):s(t,r))||i);return n>3&&i&&Object.defineProperty(t,r,i),i};import{customElement,property}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import{unsafeHTML}from"lit/directives/unsafe-html.js";import"@typo3/workspaces/renderable/diff-view.js";import"@typo3/workspaces/renderable/comment-view.js";import"@typo3/workspaces/renderable/history-view.js";let RecordInformationElement=class extends LitElement{constructor(){super(...arguments),this.TYPO3lang=null}createRenderRoot(){return this}render(){return html`
+var __decorate=function(e,t,r,o){var s,n=arguments.length,a=n<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,r):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,r,o);else for(var i=e.length-1;i>=0;i--)(s=e[i])&&(a=(n<3?s(a):n>3?s(t,r,a):s(t,r))||a);return n>3&&a&&Object.defineProperty(t,r,a),a};import{customElement,property}from"lit/decorators.js";import{html,LitElement,nothing}from"lit";import{unsafeHTML}from"lit/directives/unsafe-html.js";import"@typo3/workspaces/renderable/diff-view.js";import"@typo3/workspaces/renderable/comment-view.js";import"@typo3/workspaces/renderable/history-view.js";let RecordInformationElement=class extends LitElement{constructor(){super(...arguments),this.TYPO3lang=null}createRenderRoot(){return this}render(){return html`
       <div>
         <p>${unsafeHTML(this.TYPO3lang.path.replace("{0}",this.record.path_Live))}</p>
         <p>${unsafeHTML(this.TYPO3lang.current_step.replace("{0}",this.record.label_Stage).replace("{1}",this.record.stage_position).replace("{2}",this.record.stage_count))}</p>
@@ -45,13 +45,16 @@ var __decorate=function(e,t,r,o){var s,n=arguments.length,i=n<3?t:null===o?o=Obj
       </div>
     `}renderNavLink(e,t,r=0){return html`
       <li class="nav-item" role="presentation">
-        <a class="nav-link"
-           data-bs-toggle="tab"
-           href="${t}"
-           role="tab"
-           aria-controls="${t}">
+        <button
+          type="button"
+          class="nav-link"
+          data-bs-toggle="tab"
+          data-bs-target="${t}"
+          aria-controls="${t}"
+          role="tab"
+        >
           ${e}
           ${r>0?html`<span class="badge">${r}</span>`:nothing}
-        </a>
+        </button>
       </li>
     `}firstUpdated(){this.renderRoot.querySelector(".nav-link").classList.add("active"),this.renderRoot.querySelector(".tab-pane").classList.add("active")}};__decorate([property({type:Object})],RecordInformationElement.prototype,"record",void 0),__decorate([property({type:Object})],RecordInformationElement.prototype,"TYPO3lang",void 0),RecordInformationElement=__decorate([customElement("typo3-workspaces-record-information")],RecordInformationElement);export{RecordInformationElement};

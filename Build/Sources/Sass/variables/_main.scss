@@ -105,10 +105,10 @@ $link-hover-decoration: underline;
 // Typography
 $font-family-sans-serif: Verdana, Arial, Helvetica, sans-serif;
 $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-$font-size-root: 16px;
-$font-size-base: 12px;
-$font-size-large: 16px;
-$font-size-small: 11px;
+$font-size-root: 1rem;
+$font-size-base: .75rem;
+$font-size-large: 1rem;
+$font-size-small: .6875rem;
 $h1-font-size: 28px;
 $h2-font-size: 20px;
 $h3-font-size: 16px;
@@ -119,14 +119,14 @@ $headings-margin-bottom: calc(var(--typo3-spacing) / 2);
 $paragraph-margin-bottom: var(--typo3-spacing);
 
 // Components
-$padding-base-vertical: 6px;
-$padding-base-horizontal: 6px;
-$padding-large-vertical: 12px;
-$padding-large-horizontal: 12px;
-$padding-small-vertical: 4px;
-$padding-small-horizontal: 4px;
-$padding-xs-vertical: 2px;
-$padding-xs-horizontal: 4px;
+$padding-base-vertical: .375rem;
+$padding-base-horizontal: .375rem;
+$padding-large-vertical: .75rem;
+$padding-large-horizontal: .75rem;
+$padding-small-vertical: .25rem;
+$padding-small-horizontal: .25rem;
+$padding-xs-vertical: .125rem;
+$padding-xs-horizontal: .25rem;
 $line-height-large: 1.3333333;
 $line-height-small: 1.5;
 $border-radius: .125rem;
@@ -159,24 +159,6 @@ $navbar-inverse-link-active-color: #fff;
 $navbar-inverse-link-active-bg: $navbar-inverse-link-hover-bg;
 $navbar-inverse-link-disabled-color: darken($navbar-inverse-color, 30%);
 $navbar-inverse-link-disabled-bg: darken($navbar-inverse-bg, 20%);
-
-// Navs
-$nav-open-link-hover-color: #fff;
-$nav-link-padding-y: 6px;
-$nav-link-padding-x: 12px;
-$nav-disabled-link-hover-color: $gray-700;
-
-// Tabs
-$nav-tabs-border-color: #ccc;
-$nav-tabs-link-hover-bg: darken(#fafafa, 10%);
-$nav-tabs-link-hover-border-color: $gray-300;
-$nav-tabs-active-link-bg: #fafafa;
-$nav-tabs-active-link-hover-bg: $body-bg;
-$nav-tabs-active-link-hover-color: #000;
-$nav-tabs-active-link-hover-border-color: #ccc;
-$nav-tabs-active-link-hover-bg: darken(#fafafa, 5%);
-$nav-tabs-justified-link-border-color: #ccc;
-$nav-tabs-justified-active-link-border-color: $nav-tabs-border-color;
 
 // Panels
 $panel-default-border: #ccc;

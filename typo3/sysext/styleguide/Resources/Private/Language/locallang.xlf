@@ -88,6 +88,9 @@
 			<trans-unit id="action.modal" resname="action.modal">
 				<source>Modal</source>
 			</trans-unit>
+			<trans-unit id="action.navs" resname="action.navs">
+				<source>Navs</source>
+			</trans-unit>
 			<trans-unit id="action.notifications" resname="action.notifications">
 				<source>Notifications</source>
 			</trans-unit>
@@ -458,6 +461,24 @@
 			<trans-unit id="component.modal.section.severity.headline" resname="component.modal.section.severity.headline">
 				<source>Severity</source>
 			</trans-unit>
+
+			<!-- Component: Navs -->
+			<trans-unit id="component.navs.headline" resname="component.navs.headline">
+				<source>Navs</source>
+			</trans-unit>
+			<trans-unit id="component.navs.basic.headline" resname="component.navs.basic.headline">
+				<source>Basic</source>
+			</trans-unit>
+			<trans-unit id="component.navs.flat.headline" resname="component.navs.flat.headline">
+				<source>Flat</source>
+			</trans-unit>
+			<trans-unit id="component.navs.pills.headline" resname="component.navs.pills.headline">
+				<source>Pills</source>
+			</trans-unit>
+			<trans-unit id="component.navs.tabs.headline" resname="component.navs.tabs.headline">
+				<source>Tabs</source>
+			</trans-unit>
+
 
 			<!-- Component: Notification -->
 			<trans-unit id="component.notification.headline" resname="component.notification.headline">

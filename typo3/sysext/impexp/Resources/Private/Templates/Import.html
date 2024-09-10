@@ -30,30 +30,58 @@
         <input type="hidden" name="id" value="{id}" />
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize active" href="#import-import" aria-controls="import-import" role="tab" data-bs-toggle="tab">
+                <button
+                    type="button"
+                    class="nav-link active"
+                    data-bs-toggle="tab"
+                    data-bs-target="#import-import"
+                    aria-controls="import-import"
+                    role="tab"
+                >
                     <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_import" />
-                </a>
+                </button>
             </li>
             <f:if condition="{importFolder}">
                 <li role="presentation" class="nav-item">
-                    <a class="nav-link text-capitalize" href="#import-upload" aria-controls="import-upload" role="tab" data-bs-toggle="tab">
+                    <button
+                        type="button"
+                        class="nav-link"
+                        data-bs-toggle="tab"
+                        data-bs-target="#import-upload"
+                        aria-controls="import-upload"
+                        role="tab"
+                    >
                         <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload" />
-                    </a>
+                    </button>
                 </li>
             </f:if>
             <f:if condition="{import.metaData}">
                 <li role="presentation" class="nav-item">
-                    <a class="nav-link text-capitalize" href="#import-metadata" aria-controls="import-metadata" role="tab" data-bs-toggle="tab">
+                    <button
+                        type="button"
+                        class="nav-link"
+                        data-bs-toggle="tab"
+                        data-bs-target="#import-metadata"
+                        aria-controls="import-metadata"
+                        role="tab"
+                    >
                         <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_metaData_1387" />
-                    </a>
+                    </button>
                 </li>
             </f:if>
             <f:if condition="{errors -> f:count()} > 0">
                 <li role="presentation" class="nav-item">
-                    <a class="nav-link text-capitalize" href="#import-errors" aria-controls="import-errors" role="tab" data-bs-toggle="tab">
+                    <button
+                        type="button"
+                        class="nav-link"
+                        data-bs-toggle="tab"
+                        data-bs-target="#import-errors"
+                        aria-controls="import-errors"
+                        role="tab"
+                    >
                         <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_messages" />
                         <core:icon identifier="status-dialog-warning" />
-                    </a>
+                    </button>
                 </li>
             </f:if>
         </ul>

@@ -90,14 +90,17 @@ export class RecordInformationElement extends LitElement {
   protected renderNavLink(text: string, target: string, count: number = 0) {
     return html`
       <li class="nav-item" role="presentation">
-        <a class="nav-link"
-           data-bs-toggle="tab"
-           href="${target}"
-           role="tab"
-           aria-controls="${target}">
+        <button
+          type="button"
+          class="nav-link"
+          data-bs-toggle="tab"
+          data-bs-target="${target}"
+          aria-controls="${target}"
+          role="tab"
+        >
           ${text}
           ${count > 0 ? html`<span class="badge">${count}</span>` : nothing}
-        </a>
+        </button>
       </li>
     `;
   }

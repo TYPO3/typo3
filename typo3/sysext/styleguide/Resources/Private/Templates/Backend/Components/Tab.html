@@ -48,8 +48,6 @@
             </div>
         </sg:example>
 
-        <hr>
-
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
 
         <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
@@ -93,10 +91,17 @@
 </f:section>
 
 <f:section name="tabNavigationItem">
-    <li role="presentation" class="t3js-tabmenu-item">
-        <a href="#{identifier}-{iterator}"{f:if(condition: '{iterator} == 1', then: ' class="active"')} title="" aria-controls="{identifier}-{iterator}" role="tab" data-bs-toggle="tab">
+    <li role="presentation" class="nav-item t3js-tabmenu-item">
+        <button
+            type="button"
+            class="nav-link{f:if(condition: '{iterator} == 1', then: ' active')}"
+            data-bs-toggle="tab"
+            data-bs-target="#{identifier}-{iterator}"
+            aria-controls="{identifier}-{iterator}"
+            role="tab"
+        >
             Tab {iterator}
-        </a>
+        </button>
     </li>
 </f:section>
 

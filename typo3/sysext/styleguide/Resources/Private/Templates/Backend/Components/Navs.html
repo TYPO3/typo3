@@ -1,0 +1,129 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.headline" /></h1>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.basic.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.flat.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <nav class="nav">
+                <a class="nav-link active" aria-current="page" href="#">Active</a>
+                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </nav>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.tabs.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <div role="tabpanel">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation">
+                        <button
+                            type="button"
+                            class="nav-link active"
+                            title="Tab 1"
+                            data-bs-toggle="tab"
+                            data-bs-target="#panel-1-<UNIQUEID>"
+                            aria-controls="panel-1-<UNIQUEID>"
+                            role="tab"
+                        >
+                            Tab 1
+                        </button>
+                    </li>
+                    <li role="presentation">
+                        <button
+                            type="button"
+                            class="nav-link"
+                            title="Tab 2"
+                            data-bs-toggle="tab"
+                            data-bs-target="#panel-2-<UNIQUEID>"
+                            aria-controls="panel-2-<UNIQUEID>"
+                            role="tab"
+                        >
+                            Tab 2
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="panel-1-<UNIQUEID>">
+                        <div class="panel">
+                            <div class="panel-body">
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+                                sed diam nonumy eirmod tempor invidunt ut labore et dolore
+                                magna aliquyam erat, sed diam voluptua. At vero eos et
+                                accusam et justo duo dolores.
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="panel-2-<UNIQUEID>">
+                        <div class="panel">
+                            <div class="panel-body">
+                                In venenatis consequat tellus, vel luctus nisi sollicitudin
+                                ut. Interdum et malesuada fames ac ante ipsum primis in
+                                faucibus. Integer dapibus enim viverra quam placerat, eu
+                                varius libero elementum. Duis vitae dictum velit.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.navs.pills.headline" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+        </sg:example>
+
+    </div>
+
+</f:section>

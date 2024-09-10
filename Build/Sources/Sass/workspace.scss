@@ -77,40 +77,6 @@ $workspace-topbar-logo-width: 22px;
     vertical-align: top;
 }
 
-.typo3-topbar-tabs {
-    margin-inline-end: 2em;
-    float: var(--typo3-position-start);
-    position: relative;
-
-    .nav-tabs {
-        overflow: hidden;
-        border-radius: 2px;
-        border: none;
-        background: none;
-
-        > li {
-            + li {
-                margin-inline-start: 0;
-                border-inline-start: 1px solid rgba(0, 0, 0, .5);
-            }
-            margin-bottom: 0;
-
-            &.active > a {
-                background-color: #fff;
-            }
-
-            > a {
-                padding-top: 0;
-                padding-bottom: 0;
-                line-height: $workspace-topbar-line-height;
-                background-color: #ccc;
-                border: none !important;
-                border-radius: 0;
-            }
-        }
-    }
-}
-
 .typo3-topbar-workspace-actions {
     clear: none;
     float: var(--typo3-position-start);

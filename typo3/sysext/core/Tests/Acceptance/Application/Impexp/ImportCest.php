@@ -35,8 +35,8 @@ final class ImportCest extends AbstractCest
     private string $inFlashMessages = '.typo3-messages';
     private string $contextMenuMore = '#contentMenu0 li.context-menu-item-submenu';
     private string $contextMenuImport = '#contentMenu1 li.context-menu-item[data-callback-action=importT3d]';
-    private string $tabUpload = 'a[href="#import-upload"]';
-    private string $tabMessages = 'a[href="#import-errors"]';
+    private string $tabUpload = 'button[data-bs-target="#import-upload"]';
+    private string $tabMessages = 'button[data-bs-target="#import-errors"]';
     private string $inputUploadFile = 'input[type=file]';
     private string $checkboxOverwriteFile = 'input#checkOverwriteExistingFiles';
     private string $buttonUploadFile = '_upload';

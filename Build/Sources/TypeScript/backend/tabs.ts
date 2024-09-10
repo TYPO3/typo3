@@ -27,14 +27,17 @@ class Tabs {
       tabContainers.forEach((tabContainer: HTMLElement): void => {
         const currentActiveTab = Tabs.receiveActiveTab(tabContainer.id);
         if (currentActiveTab) {
-          new Tab(document.querySelector('a[href="' + currentActiveTab + '"]')).show();
+          const tabButton = document.querySelector('[data-bs-target="#' + currentActiveTab + '"]');
+          if (tabButton) {
+            new Tab(tabButton).show();
+          }
         }
 
         const storeLastActiveTab = tabContainer.dataset.storeLastTab === '1';
         if (storeLastActiveTab) {
           tabContainer.addEventListener('show.bs.tab', (e: Event): void => {
             const id = (e.currentTarget as HTMLElement).id;
-            const tabTarget = (e.target as HTMLAnchorElement).hash;
+            const tabTarget = (e.target as HTMLButtonElement).dataset.bsTarget.slice(1);
             Tabs.storeActiveTab(id, tabTarget);
           });
         }

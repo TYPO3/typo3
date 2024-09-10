@@ -30,7 +30,16 @@
                     <f:for each="{extensionData}" as="category" key="categoryName" iteration="iteration">
                         <f:if condition="{categoryName}">
                             <li role="presentation" class="nav-item">
-                                <a class="nav-link text-capitalize {f:if(condition:'{iteration.isFirst}', then:'active')}" href="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-bs-toggle="tab">{categoryName}</a>
+                                <button
+                                    type="button"
+                                    class="nav-link{f:if(condition:'{iteration.isFirst}', then:' active')}"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}"
+                                    aria-controls="category-{extensionKey}-{categoryName}"
+                                    role="tab"
+                                >
+                                    {categoryName}
+                                </button>
                             </li>
                         </f:if>
                     </f:for>

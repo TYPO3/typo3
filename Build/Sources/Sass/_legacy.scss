@@ -52,18 +52,6 @@ $input-height-base: ($line-height-computed + ($padding-base-vertical * 2) + 2) !
     display: none !important;
 }
 
-// nav fallback
-// todo add ".nav-item" and ".nav-link" classes to markup
-.nav.nav-tabs {
-    > li:not(.nav-item) {
-        @extend .nav-item !optional;
-
-        > a:not(.nav-link) {
-            @extend .nav-link !optional;
-        }
-    }
-}
-
 .page-header {
     padding: .625rem 1rem;
     margin: 2rem 0 1rem;

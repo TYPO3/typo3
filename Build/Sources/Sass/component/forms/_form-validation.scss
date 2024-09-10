@@ -1,21 +1,20 @@
 //
 // Form Validation
 //
-.is-invalid,
-.has-error {
-    --typo3-input-color: var(--typo3-surface-container-danger-text);
-    --typo3-input-bg: var(--typo3-surface-container-danger);
+.has-change {
+    --typo3-input-color: var(--typo3-surface-container-info-text);
+    --typo3-input-bg: var(--typo3-surface-container-info);
     --typo3-input-group-addon-bg: color-mix(in srgb, var(--typo3-input-bg), var(--typo3-input-color) 10%);
-    --typo3-input-border-color: var(--typo3-state-danger-border-color);
+    --typo3-input-border-color: var(--typo3-state-info-border-color);
     --typo3-input-hover-color: var(--typo3-input-color);
     --typo3-input-hover-bg: var(--typo3-input-bg);
-    --typo3-input-hover-border-color: var(--typo3-state-danger-hover-border-color);
+    --typo3-input-hover-border-color: var(--typo3-state-info-hover-border-color);
     --typo3-input-focus-color: var(--typo3-input-color);
     --typo3-input-focus-bg: var(--typo3-input-bg);
-    --typo3-input-focus-border-color: var(--typo3-state-danger-focus-border-color);
+    --typo3-input-focus-border-color: var(--typo3-state-info-focus-border-color);
 
     .form-label:before {
-        @include icon-background($icon-actions-exclamation-circle, var(--typo3-text-color-danger));
+        @include icon-background($icon-actions-exclamation-circle, var(--typo3-text-color-info));
         width: calc(16 / 12 * 1em);
         height: calc(16 / 12 * 1em);
     }
@@ -41,25 +40,6 @@
     }
 }
 
-.has-change {
-    --typo3-input-color: var(--typo3-surface-container-info-text);
-    --typo3-input-bg: var(--typo3-surface-container-info);
-    --typo3-input-group-addon-bg: color-mix(in srgb, var(--typo3-input-bg), var(--typo3-input-color) 10%);
-    --typo3-input-border-color: var(--typo3-state-info-border-color);
-    --typo3-input-hover-color: var(--typo3-input-color);
-    --typo3-input-hover-bg: var(--typo3-input-bg);
-    --typo3-input-hover-border-color: var(--typo3-state-info-hover-border-color);
-    --typo3-input-focus-color: var(--typo3-input-color);
-    --typo3-input-focus-bg: var(--typo3-input-bg);
-    --typo3-input-focus-border-color: var(--typo3-state-info-focus-border-color);
-
-    .form-label:before {
-        @include icon-background($icon-actions-exclamation-circle, var(--typo3-text-color-info));
-        width: calc(16 / 12 * 1em);
-        height: calc(16 / 12 * 1em);
-    }
-}
-
 .has-warning {
     --typo3-input-color: var(--typo3-surface-container-warning-text);
     --typo3-input-bg: var(--typo3-surface-container-warning);
@@ -74,6 +54,26 @@
 
     .form-label:before {
         @include icon-background($icon-actions-exclamation-triangle, var(--typo3-text-color-warning));
+        width: calc(16 / 12 * 1em);
+        height: calc(16 / 12 * 1em);
+    }
+}
+
+.is-invalid,
+.has-error {
+    --typo3-input-color: var(--typo3-surface-container-danger-text);
+    --typo3-input-bg: var(--typo3-surface-container-danger);
+    --typo3-input-group-addon-bg: color-mix(in srgb, var(--typo3-input-bg), var(--typo3-input-color) 10%);
+    --typo3-input-border-color: var(--typo3-state-danger-border-color);
+    --typo3-input-hover-color: var(--typo3-input-color);
+    --typo3-input-hover-bg: var(--typo3-input-bg);
+    --typo3-input-hover-border-color: var(--typo3-state-danger-hover-border-color);
+    --typo3-input-focus-color: var(--typo3-input-color);
+    --typo3-input-focus-bg: var(--typo3-input-bg);
+    --typo3-input-focus-border-color: var(--typo3-state-danger-focus-border-color);
+
+    .form-label:before {
+        @include icon-background($icon-actions-exclamation-circle, var(--typo3-text-color-danger));
         width: calc(16 / 12 * 1em);
         height: calc(16 / 12 * 1em);
     }

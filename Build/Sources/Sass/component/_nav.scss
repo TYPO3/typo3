@@ -1,9 +1,191 @@
 //
 // Nav
-// ===
-//
-// Bugfixes for Bootstrap to support RTL
 //
 .nav {
+    --typo3-nav-link-padding-x: 1rem;
+    --typo3-nav-link-padding-y: .5rem;
+    --typo3-nav-link-font-size: var(--typo3-font-size);
+    --typo3-nav-link-font-weight: normal;
+    --typo3-nav-link-color: var(--typo3-text-color-link);
+    --typo3-nav-link-hover-color: var(--typo3-text-color-link);
+    --typo3-nav-link-disabled-color: var(--typo3-text-color-variant);
+    --typo3-nav-link-focusring-base-color: var(--typo3-nav-link-color);
+    display: flex;
+    gap: 1px;
+    flex-wrap: wrap;
     padding-inline: 0;
+    margin-bottom: 0;
+    list-style: none;
+    font-size: var(--typo3-nav-link-font-size);
+}
+
+.nav-link {
+    display: block;
+    padding: var(--typo3-nav-link-padding-y) var(--typo3-nav-link-padding-x);
+    font-size: var(--typo3-nav-link-font-size);
+    font-weight: var(--typo3-nav-link-font-weight);
+    color: var(--typo3-nav-link-color);
+    background: none;
+    border: 0;
+    transition:
+        color .2s ease-in-out,
+        background-color .2s ease-in-out,
+        border-color .2s ease-in-out;
+    outline-offset: 0;
+
+    &:hover,
+    &:focus {
+        color: var(--typo3-nav-link-hover-color);
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: .25rem solid color-mix(in srgb, var(--typo3-nav-link-focusring-base-color), transparent 25%);
+    }
+
+    // Disabled state lightens text
+    &.disabled,
+    &:disabled {
+        color: var(--typo3-nav-link-disabled-color);
+        pointer-events: none;
+        cursor: default;
+    }
+}
+
+//
+// Tabs
+//
+.nav-tabs {
+    --typo3-nav-tabs-color: var(--typo3-component-color);
+    --typo3-nav-tabs-bg: var(--typo3-component-bg);
+    --typo3-nav-tabs-border-color: color-mix(in srgb, var(--typo3-nav-tabs-bg), var(--typo3-nav-tabs-color) 15%);
+    --typo3-nav-tabs-border-width: var(--typo3-component-border-width);
+    --typo3-nav-tabs-border-radius: var(--typo3-component-border-radius);
+    position: relative;
+    gap: 2px 1px;
+    z-index: 1;
+    border-bottom: var(--typo3-nav-tabs-border-width) solid var(--typo3-nav-tabs-border-color);
+
+    .nav-link {
+        --typo3-nav-tabs-link-state-color: initial;
+        --typo3-nav-tabs-link-state-bg: initial;
+        --typo3-nav-tabs-link-color: var(--typo3-nav-tabs-link-state-color, var(--typo3-nav-tabs-color));
+        --typo3-nav-tabs-link-bg: var(--typo3-nav-tabs-link-state-bg, var(--typo3-nav-tabs-bg));
+        --typo3-nav-tabs-link-border-color: color-mix(in srgb, var(--typo3-nav-tabs-link-bg), var(--typo3-nav-tabs-link-color) 15%);
+        --typo3-nav-tabs-link-active-color: var(--typo3-nav-tabs-color);
+        --typo3-nav-tabs-link-active-bg: var(--typo3-nav-tabs-bg);
+        --typo3-nav-tabs-link-danger-color: var(--typo3-surface-container-danger-text);
+        --typo3-nav-tabs-link-danger-bg: var(--typo3-surface-container-danger);
+        --typo3-nav-tabs-link-danger-active-color: var(--typo3-nav-tabs-link-active-color);
+        --typo3-nav-tabs-link-danger-active-bg: var(--typo3-nav-tabs-link-active-bg);
+        --typo3-nav-link-focusring-base-color: var(--typo3-nav-tabs-link-border-color);
+        position: relative;
+        color: var(--typo3-nav-tabs-link-color);
+        background-color: var(--typo3-nav-tabs-link-bg);
+        margin-bottom: calc(-1 * var(--typo3-nav-tabs-border-width));
+        border: var(--typo3-nav-tabs-border-width) solid var(--typo3-nav-tabs-link-border-color);
+        border-start-start-radius: var(--typo3-nav-tabs-border-radius);
+        border-start-end-radius: var(--typo3-nav-tabs-border-radius);
+
+        &:focus,
+        &:hover {
+            text-decoration: none;
+            isolation: isolate;
+        }
+
+        &:hover {
+            background: color-mix(in srgb, var(--typo3-nav-tabs-link-bg), var(--typo3-nav-tabs-link-color) 6%);
+        }
+    }
+
+    .nav-link.active,
+    .nav-item.show .nav-link {
+        &,
+        &:hover {
+            --typo3-nav-tabs-link-state-color: var(--typo3-nav-tabs-link-active-color);
+            --typo3-nav-tabs-link-state-bg: var(--typo3-nav-tabs-link-active-bg);
+            background-color: var(--typo3-nav-tabs-link-bg);
+            border-bottom-color: var(--typo3-nav-tabs-link-bg);
+        }
+    }
+
+    .nav-item.has-validation-error .nav-link {
+        --typo3-nav-tabs-link-state-color: var(--typo3-nav-tabs-link-danger-color);
+        --typo3-nav-tabs-link-state-bg: var(--typo3-nav-tabs-link-danger-bg);
+        padding-inline-start: calc(var(--typo3-nav-link-padding-x) + 16px + .25rem);
+
+        &.active {
+            --typo3-nav-tabs-link-state-color: var(--typo3-nav-tabs-link-danger-active-color);
+            --typo3-nav-tabs-link-state-bg: var(--typo3-nav-tabs-link-danger-active-bg);
+        }
+
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            inset-inline: var(--typo3-nav-link-padding-x);
+            transform: translate(0, -50%);
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+        }
+
+        &:before {
+            background-color: var(--typo3-state-danger-bg);
+        }
+
+        &:after {
+            background-color: var(--typo3-state-danger-color);
+            mask-repeat: no-repeat;
+            mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%23fff'%3e%3ccircle cx='8' cy='11' r='1'/%3e%3cpath d='M8.5 9h-1l-.445-4.45A.5.5 0 0 1 7.552 4h.896a.5.5 0 0 1 .497.55L8.5 9z'/%3e%3c/g%3e%3c/svg%3e");
+            mask-position: center center;
+            mask-size: contain;
+        }
+    }
+}
+
+//
+// Pills
+//
+.nav-pills {
+    --typo3-nav-pills-border-radius: var(--typo3-component-border-radius);
+    --typo3-nav-pills-link-active-color: var(--typo3-state-primary-color);
+    --typo3-nav-pills-link-active-bg: var(--typo3-state-primary-bg);
+
+    .nav-link {
+        border-radius: var(--typo3-nav-pills-border-radius);
+    }
+
+    .nav-link.active,
+    .show > .nav-link {
+        --typo3-nav-link-focusring-base-color: var(--typo3-nav-pills-link-active-bg);
+        background-color: var(--typo3-nav-pills-link-active-bg);
+        color: var(--typo3-nav-pills-link-active-color);
+        text-decoration: none;
+    }
+}
+
+//
+// Tabs
+//
+.tab-content {
+    > .tab-pane {
+        display: none;
+    }
+
+    > .active {
+        display: block;
+    }
+}
+
+.tab-pane {
+    > .panel {
+        --typo3-panel-border-radius-top: 0;
+    }
+
+    > .visually-hidden:first-child + .form-section,
+    > *:first-child {
+        border-top: none;
+    }
 }

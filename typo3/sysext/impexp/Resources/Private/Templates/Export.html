@@ -30,26 +30,54 @@
         <input type="hidden" name="id" value="{id}" />
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize active" href="#export-configuration" aria-controls="export-configuration" role="tab" data-bs-toggle="tab">
+                <button
+                    type="button"
+                    class="nav-link active"
+                    data-bs-toggle="tab"
+                    data-bs-target="#export-configuration"
+                    aria-controls="export-configuration"
+                    role="tab"
+                >
                     <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:tableselec_configuration" />
-                </a>
+            </button>
             </li>
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#export-filepreset" aria-controls="export-filepreset" role="tab" data-bs-toggle="tab">
+                <button
+                    type="button"
+                    class="nav-link"
+                    data-bs-toggle="tab"
+                    data-bs-target="#export-filepreset"
+                    aria-controls="export-filepreset"
+                    role="tab"
+                >
                     <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_filePreset" />
-                </a>
+                </button>
             </li>
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#export-advancedoptions" aria-controls="export-advancedoptions" role="tab" data-bs-toggle="tab">
+                <button
+                    type="button"
+                    class="nav-link"
+                    data-bs-toggle="tab"
+                    data-bs-target="#export-advancedoptions"
+                    aria-controls="export-advancedoptions"
+                    role="tab"
+                >
                     <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_advancedOptions" />
-                </a>
+                </button>
             </li>
             <f:if condition="{errors -> f:count()} > 0">
                 <li role="presentation" class="nav-item">
-                    <a class="nav-link text-capitalize" href="#export-errors" aria-controls="export-errors" role="tab" data-bs-toggle="tab">
+                    <button
+                        type="button"
+                        class="nav-link"
+                        data-bs-toggle="tab"
+                        data-bs-target="#export-errors"
+                        aria-controls="export-errors"
+                        role="tab"
+                    >
                         <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_messages" />
                         <core:icon identifier="status-dialog-warning" />
-                    </a>
+                    </button>
                 </li>
             </f:if>
         </ul>

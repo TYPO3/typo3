@@ -20,12 +20,6 @@
 .typo3-topbar-site-logo{padding-top:1px;padding-inline-end:.25em;display:inline-block;vertical-align:top}
 .typo3-topbar-site-logo img{display:block;height:22px;width:22px}
 .typo3-topbar-site-name{vertical-align:top}
-.typo3-topbar-tabs{margin-inline-end:2em;float:var(--typo3-position-start);position:relative}
-.typo3-topbar-tabs .nav-tabs{overflow:hidden;border-radius:2px;border:none;background:0 0}
-.typo3-topbar-tabs .nav-tabs>li{margin-bottom:0}
-.typo3-topbar-tabs .nav-tabs>li+li{margin-inline-start:0;border-inline-start:1px solid rgba(0,0,0,.5)}
-.typo3-topbar-tabs .nav-tabs>li.active>a{background-color:#fff}
-.typo3-topbar-tabs .nav-tabs>li>a{padding-top:0;padding-bottom:0;line-height:26px;background-color:#ccc;border:none!important;border-radius:0}
 .typo3-topbar-workspace-actions{clear:none;float:var(--typo3-position-start)}
 .typo3-topbar-workspace-actions .workspace-action{margin-top:0;margin-bottom:0;float:var(--typo3-position-start);margin-inline-end:2em}
 @media (max-width:920px){

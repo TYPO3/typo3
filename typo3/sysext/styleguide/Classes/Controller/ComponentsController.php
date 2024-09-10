@@ -54,6 +54,7 @@ final class ComponentsController
         'infobox',
         'input',
         'modal',
+        'navs',
         'notifications',
         'pagination',
         'panels',
@@ -91,6 +92,7 @@ final class ComponentsController
             'infobox' => $this->renderInfoboxView($request),
             'input' => $this->renderInputView($request),
             'modal' => $this->renderModalView($request),
+            'navs' => $this->renderNavsView($request),
             'notifications' => $this->renderNotificationsView($request),
             'pagination' => $this->renderPaginationView($request),
             'panels' => $this->renderPanelsView($request),
@@ -252,6 +254,17 @@ final class ComponentsController
             'variants' => ['notice', 'info', 'ok', 'warning', 'error'],
         ]);
         return $view->renderResponse('Backend/Components/Modal');
+    }
+
+    private function renderNavsView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'navs');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'navs',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/Navs');
     }
 
     private function renderNotificationsView(ServerRequestInterface $request): ResponseInterface

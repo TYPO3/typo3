@@ -8,7 +8,15 @@
         <f:for each="{items}" as="item" iteration="iteration">
             <f:if condition="{item.content}">
                 <li role="presentation" class="t3js-tabmenu-item nav-item">
-                    <a href="#{id}-{iteration.cycle}" class="nav-link {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}" title="{item.linkTitle}" aria-controls="{id}-{iteration.cycle}" role="tab" data-bs-toggle="tab">
+                    <button
+                        type="button"
+                        class="nav-link {f:if(condition: '{iteration.cycle} == {defaultTabIndex}', then: ' active')}"
+                        title="{item.linkTitle}"
+                        data-bs-toggle="tab"
+                        data-bs-target="#{id}-{iteration.cycle}"
+                        aria-controls="{id}-{iteration.cycle}"
+                        role="tab"
+                    >
                         <f:if condition="{item.icon}">
                             <f:format.raw>{item.icon}</f:format.raw>
                         </f:if>
@@ -19,7 +27,7 @@
                         <f:if condition="{item.stateIcon}">
                             <f:render partial="ModuleTemplate/StateIcon" arguments="{item: item}" />
                         </f:if>
-                    </a>
+                    </button>
                 </li>
             </f:if>
         </f:for>

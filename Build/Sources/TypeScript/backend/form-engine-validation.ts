@@ -613,7 +613,7 @@ export default (function() {
 
       const id = pane.id;
       formEngineFormElement
-        .querySelector('a[href="#' + id + '"]')
+        .querySelector('[data-bs-target="#' + id + '"]')
         .closest('.t3js-tabmenu-item')
         .classList.toggle('has-validation-error', !isValid);
     });
