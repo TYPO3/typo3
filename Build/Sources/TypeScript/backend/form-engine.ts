@@ -521,7 +521,7 @@ export default (function() {
           outerMostRequest.getProcessedData().response
         );
       // show confirmation dialog
-      } else if (FormEngine.hasChange()) {
+      } else if (FormEngine.hasChange() || FormEngine.isNew()) {
         FormEngine.preventExitIfNotSaved(function(response: boolean) {
           outerMostRequest.setProcessedData(
             { response: response }
@@ -747,6 +747,13 @@ export default (function() {
   };
 
   /**
+   * @return {boolean}
+   */
+  FormEngine.isNew = function(): boolean {
+    return (document.querySelector('form[name="' + FormEngine.formName + '"] .typo3-TCEforms.is-new') !== null);
+  };
+
+  /**
    * @param {boolean} response
    */
   FormEngine.preventExitIfNotSavedCallback = (): void => {
@@ -776,7 +783,7 @@ export default (function() {
   FormEngine.preventExitIfNotSaved = function(callback: (response: boolean) => void): void {
     callback = callback || FormEngine.preventExitIfNotSavedCallback;
 
-    if (FormEngine.hasChange()) {
+    if (FormEngine.hasChange() || FormEngine.isNew()) {
       const title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to close without saving?';
       const content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes. Are you sure you want to discard these changes?';
       const buttons: Array<{text: string, btnClass: string, name: string, active?: boolean}> = [
@@ -919,7 +926,7 @@ export default (function() {
     const previewUrl = (event.currentTarget as HTMLAnchorElement).href;
     const isNew = ('isNew' in (event.target as HTMLAnchorElement).dataset);
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedokview').attr('value', '1');
-    if (FormEngine.hasChange()) {
+    if (FormEngine.hasChange() || FormEngine.isNew()) {
       FormEngine.showPreviewModal(previewUrl, isNew, $actionElement, callback);
     } else {
       $(selector`form[name="${FormEngine.formName}"]`).append($actionElement);
@@ -1025,7 +1032,7 @@ export default (function() {
 
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_savedoknew').attr('value', '1');
     const isNew = ('isNew' in (event.target as HTMLElement).dataset);
-    if (FormEngine.hasChange()) {
+    if (FormEngine.hasChange() || FormEngine.isNew()) {
       FormEngine.showNewModal(isNew, $actionElement, callback);
     } else {
       $(selector`form[name="${FormEngine.formName}"]`).append($actionElement);
@@ -1116,7 +1123,7 @@ export default (function() {
 
     const $actionElement = $('<input />').attr('type', 'hidden').attr('name', '_duplicatedoc').attr('value', '1');
     const isNew = ('isNew' in (event.target as HTMLElement).dataset);
-    if (FormEngine.hasChange()) {
+    if (FormEngine.hasChange() || FormEngine.isNew()) {
       FormEngine.showDuplicateModal(isNew, $actionElement, callback);
     } else {
       $(selector`form[name="${FormEngine.formName}"]`).append($actionElement);
