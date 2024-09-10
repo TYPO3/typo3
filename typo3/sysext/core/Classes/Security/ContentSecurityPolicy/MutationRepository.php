@@ -114,7 +114,7 @@ final class MutationRepository
             $scopedTarget = $this->provideScopeInMap($scope, $this->resolvedMutations);
             // fetch site-specific `enforce` and/or `report` disposition configuration
             $dispositionMap = $this->dispositionMapFactory->buildDispositionMap(
-                $site->getConfiguration()['contentSecurityPolicies']
+                $site->getConfiguration()['contentSecurityPolicies'] ?? []
             );
             /**
              * @var Disposition $disposition

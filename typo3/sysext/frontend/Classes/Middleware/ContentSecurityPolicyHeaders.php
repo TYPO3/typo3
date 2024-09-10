@@ -51,7 +51,7 @@ final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
     {
         $site = $request->getAttribute('site');
         $dispositionMap = $this->dispositionMapFactory->buildDispositionMap(
-            $site instanceof Site ? $site->getConfiguration()['contentSecurityPolicies'] : []
+            $site instanceof Site ? ($site->getConfiguration()['contentSecurityPolicies'] ?? []) : []
         );
         // return early in case CSP shall not be used
         if ($dispositionMap->keys() === []) {
