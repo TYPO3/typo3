@@ -259,10 +259,6 @@ class Backend extends Workspaces {
 
     new RegularEvent('submit', (event: Event) => {
       event.preventDefault();
-
-      const searchTextField = document.querySelector(Identifiers.searchTextField) as HTMLInputElement;
-
-      this.settings.filterTxt = searchTextField.value;
       this.getWorkspaceInfos();
     }).delegateTo(document, Identifiers.searchForm);
 
@@ -270,9 +266,17 @@ class Backend extends Workspaces {
       const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
 
       if (target.value !== '') {
-        searchSubmitButton.classList.remove('disabled');
+        searchSubmitButton.disabled = false;
       } else {
-        searchSubmitButton.classList.add('disabled');
+        searchSubmitButton.disabled = true;
+        this.settings.filterTxt = '';
+        this.getWorkspaceInfos();
+      }
+    }).delegateTo(document, Identifiers.searchTextField);
+
+    new RegularEvent('change', (event: Event, target: HTMLInputElement) => {
+      this.settings.filterTxt = target.value;
+      if (this.settings.filterTxt !== '') {
         this.getWorkspaceInfos();
       }
     }).delegateTo(document, Identifiers.searchTextField);
@@ -283,7 +287,7 @@ class Backend extends Workspaces {
         {
           onClear: (): void => {
             const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
-            searchSubmitButton.classList.add('disabled');
+            searchSubmitButton.disabled = true;
             this.settings.filterTxt = '';
             this.getWorkspaceInfos();
           },
