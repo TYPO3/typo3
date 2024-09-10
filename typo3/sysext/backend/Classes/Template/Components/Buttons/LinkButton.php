@@ -68,6 +68,36 @@ class LinkButton extends AbstractButton
     }
 
     /**
+     * `role` attribute of the link
+     *
+     * @var string
+     */
+    protected $role = 'button';
+
+    /**
+     * Get role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Set role
+     *
+     * @param string $role `role` attribute
+     *
+     * @return LinkButton
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+        return $this;
+    }
+
+    /**
      * Validates the current button
      *
      * @return bool
@@ -93,6 +123,7 @@ class LinkButton extends AbstractButton
     public function render()
     {
         $attributes = [
+            'role' => $this->getRole(),
             'href' => $this->getHref(),
             'class' => 'btn btn-sm btn-default ' . $this->getClasses(),
             'title' => $this->getTitle(),
@@ -105,7 +136,7 @@ class LinkButton extends AbstractButton
             $attributes['data-' . $attributeName] = $attributeValue;
         }
         if ($this->isDisabled()) {
-            $attributes['disabled'] = 'disabled';
+            $attributes['aria-disabled'] = 'true';
             $attributes['class'] .= ' disabled';
         }
         $attributesString = GeneralUtility::implodeAttributes($attributes, true);
