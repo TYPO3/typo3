@@ -23,7 +23,7 @@
                         </p>
                     </details>
 
-                    <f:if condition="{c.localSettings.allFlat->f:count()} > 0">
+                    <f:if condition="{c.localSettings.map->f:count()} > 0">
                         <details open name="details-{c.site.identifier}">
                             <summary><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.customSettingsSummary" arguments="{0: '{c.localSettings.map->f:count()}'}"/></summary>
                             <p>
