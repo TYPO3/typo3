@@ -198,6 +198,12 @@
       "svg": "svgs/actions/actions-brand-linux.svg",
       "sprite": "sprites/actions.svg#actions-brand-linux"
     },
+    "actions-brand-mastodon": {
+      "identifier": "actions-brand-mastodon",
+      "category": "actions",
+      "svg": "svgs/actions/actions-brand-mastodon.svg",
+      "sprite": "sprites/actions.svg#actions-brand-mastodon"
+    },
     "actions-brand-php": {
       "identifier": "actions-brand-php",
       "category": "actions",
@@ -209,6 +215,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-brand-slack.svg",
       "sprite": "sprites/actions.svg#actions-brand-slack"
+    },
+    "actions-brand-threads": {
+      "identifier": "actions-brand-threads",
+      "category": "actions",
+      "svg": "svgs/actions/actions-brand-threads.svg",
+      "sprite": "sprites/actions.svg#actions-brand-threads"
     },
     "actions-brand-typo3": {
       "identifier": "actions-brand-typo3",
@@ -293,6 +305,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-canvas.svg",
       "sprite": "sprites/actions.svg#actions-canvas"
+    },
+    "actions-capslock": {
+      "identifier": "actions-capslock",
+      "category": "actions",
+      "svg": "svgs/actions/actions-capslock.svg",
+      "sprite": "sprites/actions.svg#actions-capslock"
     },
     "actions-caret-bar-bottom": {
       "identifier": "actions-caret-bar-bottom",
@@ -1848,6 +1866,12 @@
       "svg": "svgs/actions/actions-store.svg",
       "sprite": "sprites/actions.svg#actions-store"
     },
+    "actions-surfboard": {
+      "identifier": "actions-surfboard",
+      "category": "actions",
+      "svg": "svgs/actions/actions-surfboard.svg",
+      "sprite": "sprites/actions.svg#actions-surfboard"
+    },
     "actions-swap": {
       "identifier": "actions-swap",
       "category": "actions",
@@ -2045,6 +2069,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-wallet.svg",
       "sprite": "sprites/actions.svg#actions-wallet"
+    },
+    "actions-wave": {
+      "identifier": "actions-wave",
+      "category": "actions",
+      "svg": "svgs/actions/actions-wave.svg",
+      "sprite": "sprites/actions.svg#actions-wave"
     },
     "actions-webhook": {
       "identifier": "actions-webhook",
@@ -4235,6 +4265,12 @@
       "category": "module",
       "svg": "svgs/module/module-setup.svg",
       "sprite": "sprites/module.svg#module-setup"
+    },
+    "module-site-settings": {
+      "identifier": "module-site-settings",
+      "category": "module",
+      "svg": "svgs/module/module-site-settings.svg",
+      "sprite": "sprites/module.svg#module-site-settings"
     },
     "module-sites": {
       "identifier": "module-sites",
