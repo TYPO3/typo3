@@ -15,10 +15,10 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';
 import AjaxDataHandler from '@typo3/backend/ajax-data-handler';
 import Modal from '@typo3/backend/modal';
-import ModuleMenu from '@typo3/backend/module-menu';
 import Notification from '@typo3/backend/notification';
 import ImmediateAction from '@typo3/backend/action-button/immediate-action';
 import { lll } from '@typo3/core/lit-helper';
+import Viewport from '@typo3/backend/viewport';
 
 export class MoveContentElement {
   public constructor() {
@@ -47,6 +47,7 @@ export class MoveContentElement {
       const targetPage = (document.querySelector('#pageRecordTitle') as HTMLInputElement).value;
       const pageUid = (document.querySelector('#pageUid') as HTMLInputElement).value;
       const url = new URL(window.location.href);
+      const returnUrl = new URL(url.searchParams.get('returnUrl'), window.origin);
 
       const isCopyAction = modeCheckbox.checked;
       const action = isCopyAction ? 'copy' : 'move';
@@ -83,13 +84,14 @@ export class MoveContentElement {
             {
               label: lll('moveElement.notification.elementPasted.action.open').replace('%s', targetPage),
               action: new ImmediateAction((): void => {
-                ModuleMenu.App.showModule('web_list', 'id=' + pageUid);
+                returnUrl.searchParams.set('id', pageUid);
+                Viewport.ContentContainer.setUrl(returnUrl.toString());
               })
             }
           ]
         );
 
-        ModuleMenu.App.showModule('web_list', 'id=' + url.searchParams.get('originalPid'));
+        Viewport.ContentContainer.setUrl(returnUrl.toString());
       });
     }).delegateTo(container, '[data-action="paste"]');
   }

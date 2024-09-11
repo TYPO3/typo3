@@ -302,7 +302,7 @@ class PageLayoutContext
                             'record_edit',
                             [
                                 'justLocalized' => 'pages:' . $this->pageId . ':' . $languageUid,
-                                'returnUrl' => $this->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
+                                'returnUrl' => $this->getReturnUrl(),
                             ]
                         ),
                     ]
@@ -334,6 +334,11 @@ class PageLayoutContext
             $this->recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
         }
         return $this->recordIdentityMap;
+    }
+
+    public function getReturnUrl(): string
+    {
+        return $this->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri();
     }
 
     protected function getLanguageService(): LanguageService

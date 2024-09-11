@@ -7,6 +7,7 @@
     data-table="{item.table}"
     data-uid="{item.record.uid}"
     data-language-uid="{item.record.sys_language_uid}"
+    data-move-element-url="{f:be.uri(route: 'move_element', parameters: '{uid: item.record.uid, originalPid: item.record.pid, expandPage: item.record.pid, returnUrl: context.returnUrl}')}"
     style="{style}"
 >
     <span id="element-{item.table}-{item.record.uid}-label" class="visually-hidden">id={item.record.uid} - <f:if condition="{item.record.header}">{item.record.header} - </f:if>{item.contentTypeLabel}</span>

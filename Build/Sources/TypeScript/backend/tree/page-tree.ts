@@ -14,6 +14,10 @@
 import { Tree } from '@typo3/backend/tree/tree';
 import { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 import { TemplateResult, html } from 'lit';
+import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
+import { ContentElementDragDropData } from '@typo3/backend/layout-module/drag-drop';
+import Modal from '@typo3/backend/modal';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
 
 /**
  * A Tree based on for pages, which has a AJAX-based loading of the tree
@@ -56,5 +60,86 @@ export class PageTree extends Tree
         `
       : super.createNodeToggle(node)
     }`;
+  }
+
+  protected handleNodeDragOver(event: DragEvent): boolean {
+    // @todo incorporate isDropAllowed
+    if (super.handleNodeDragOver(event)) {
+      return true;
+    }
+
+    // @TODO Unity with parent
+    if (event.dataTransfer.types.includes(DataTransferTypes.content)) {
+      // Find the current hovered node
+      // Exit when no node was hovered
+      const targetNode = this.getNodeFromDragEvent(event);
+      if (targetNode === null) {
+        return false;
+      }
+
+      this.cleanDrag();
+
+      // Add hover styling to the current hovered node
+      // element, during the drag the default mouse over
+      // is disabled by the browser
+      const hoverElement = this.getElementFromNode(targetNode);
+      hoverElement.classList.add('node-hover');
+
+      // Open node with children while holding the
+      // node/element over this node for 1 second
+      if (targetNode.hasChildren && !targetNode.expanded) {
+        if (this.openNodeTimeout.targetNode != targetNode) {
+          this.openNodeTimeout.targetNode = targetNode;
+          clearTimeout(this.openNodeTimeout.timeout);
+          this.openNodeTimeout.timeout = setTimeout(() => {
+            this.showChildren(this.openNodeTimeout.targetNode);
+            this.openNodeTimeout.targetNode = null;
+            this.openNodeTimeout.timeout = null;
+          }, 1000);
+        }
+      } else {
+        clearTimeout(this.openNodeTimeout.timeout);
+        this.openNodeTimeout.targetNode = null;
+        this.openNodeTimeout.timeout = null;
+      }
+
+      // allow drop
+      event.preventDefault();
+      return true;
+    }
+
+    return false;
+  }
+
+  protected handleNodeDrop(event: DragEvent): boolean {
+    if (super.handleNodeDrop(event)) {
+      return true;
+    }
+    if (event.dataTransfer.types.includes(DataTransferTypes.content)) {
+      const node = this.getNodeFromDragEvent(event);
+      if (node === null) {
+        return false;
+      }
+
+      const newNodeData = event.dataTransfer.getData(DataTransferTypes.content);
+      const parsedData = JSON.parse(newNodeData) as ContentElementDragDropData;
+
+      // allow drop
+      event.preventDefault();
+
+      const moveElementUrl = new URL(parsedData.moveElementUrl, window.origin);
+      moveElementUrl.searchParams.set('expandPage', node.identifier);
+      moveElementUrl.searchParams.set('originalPid', node.identifier);
+
+      Modal.advanced({
+        content: moveElementUrl.toString(),
+        severity: SeverityEnum.notice,
+        size: Modal.sizes.large,
+        type: Modal.types.iframe,
+      });
+
+      return true;
+    }
+    return false;
   }
 }

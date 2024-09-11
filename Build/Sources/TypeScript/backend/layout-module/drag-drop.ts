@@ -31,11 +31,12 @@ interface Parameters {
   CB?: { paste: string, update: { colPos: number | boolean, sys_language_uid: number } };
 }
 
-type ContentElementDragDropData = {
+export type ContentElementDragDropData = {
   pid: number;
   uid: number;
   language: number;
   content: string;
+  moveElementUrl: string;
 }
 
 enum Identifiers {
@@ -126,6 +127,7 @@ class DragDrop {
       uid: parseInt(content.dataset.uid, 10),
       language: parseInt(content.dataset.languageUid, 10),
       content: content.outerHTML,
+      moveElementUrl: content.dataset.moveElementUrl,
     } as ContentElementDragDropData));
 
     const metadata: DragTooltipMetadata = this.getDragTooltipMetadataFromContentElement(content);
