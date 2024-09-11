@@ -64,7 +64,7 @@ return [
                 'items' => [
                     [
                         'label' => 'LLL:EXT:webhooks/Resources/Private/Language/locallang_db.xlf:sys_webhook.webhook_type.select',
-                        'vaule' => '',
+                        'value' => '',
                     ],
                 ],
                 'itemsProcFunc' => \TYPO3\CMS\Webhooks\Tca\ItemsProcFunc\WebhookTypesItemsProcFunc::class . '->getWebhookTypes',
