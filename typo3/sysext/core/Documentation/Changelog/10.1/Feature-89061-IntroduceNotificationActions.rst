@@ -58,7 +58,7 @@ Example:
 
    const immediateActionCallback = new ImmediateAction(function () {
      require(['TYPO3/CMS/Backend/ModuleMenu'], function (ModuleMenu) {
-       ModuleMenu.showModule('web_layout');
+       ModuleMenu.App.showModule('web_layout');
      });
    });
 
