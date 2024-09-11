@@ -228,7 +228,7 @@ class NewContentElementController
     {
         $wizards = $this->loadAvailableWizardsFromContentElements();
         $pluginWizards = $this->loadAvailableWizardsFromPluginSubTypes();
-        $wizards = array_replace_recursive($wizards, $pluginWizards);
+        $wizards = $this->mergeContentElementAndPluginSubTypeWizards($wizards, $pluginWizards);
         $newContentElementWizardTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.'] ?? [];
         $wizardsFromPageTSConfig = $this->migrateCommonGroupToDefault($newContentElementWizardTsConfig['wizardItems.'] ?? []);
         $wizardsFromPageTSConfig = $this->migratePositionalCommonGroupToDefault($wizardsFromPageTSConfig);
@@ -358,6 +358,25 @@ class NewContentElementController
         }
         $mergedWizards = array_replace_recursive($contentElementWizards, $pageTsConfigWizards);
         return $mergedWizards;
+    }
+
+    /**
+     * This method merges wizards defined from CType itemGroups (Content Elements)
+     * and list_type itemGroups (Plugin subtypes). It is important that labels
+     * from list_type do not override labels from CType. The "default" group is a
+     * prominent example. This is why we do not do a simple array_replace_recursive.
+     */
+    protected function mergeContentElementAndPluginSubTypeWizards(array $contentElementWizards, array $pluginSubTypeWizards): array
+    {
+        foreach ($pluginSubTypeWizards as $group => $wizard) {
+            // Add new group exclusive for list_type, if no group with same identifier exists.
+            $contentElementWizards[$group] ??= $wizard;
+            $contentElementWizardElements = $contentElementWizards[$group]['elements.'] ?? [];
+            $pluginSubTypeWizardElements = $wizard['elements.'] ?? [];
+            // Append plugin subtypes at the end of the elements list.
+            $contentElementWizards[$group]['elements.'] = array_merge($contentElementWizardElements, $pluginSubTypeWizardElements);
+        }
+        return $contentElementWizards;
     }
 
     /**

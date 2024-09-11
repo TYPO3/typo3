@@ -101,6 +101,69 @@ final class NewContentElementControllerTest extends UnitTestCase
 
         self::assertSame($expected, $result);
     }
+
+    #[Test]
+    public function contentElementWizardItemsAreMergedCorrectlyWithPluginSubTypeWizards(): void
+    {
+        $inputContentElements = [
+            'default.' => [
+                'elements.' => [
+                    'd_element.' => [
+                        'title' => 'bar',
+                    ],
+                ],
+                'header' => 'Typical Page Content',
+            ],
+            'special.' => [
+                'elements.' => [
+                    'f_element.' => [
+                        'title' => 'foo',
+                    ],
+                ],
+                'header' => 'Special',
+            ],
+        ];
+
+        $inputContentPluginSubtypes = [
+            'default.' => [
+                'elements.' => [
+                    'plugin_subtype.' => [
+                        'title' => 'bar',
+                    ],
+                ],
+                'header' => 'Default',
+            ],
+        ];
+
+        $expected = [
+            'default.' => [
+                'elements.' => [
+                    'd_element.' => [
+                        'title' => 'bar',
+                    ],
+                    'plugin_subtype.' => [
+                        'title' => 'bar',
+                    ],
+                ],
+                'header' => 'Typical Page Content',
+            ],
+            'special.' => [
+                'elements.' => [
+                    'f_element.' => [
+                        'title' => 'foo',
+                    ],
+                ],
+                'header' => 'Special',
+            ],
+        ];
+
+        $result = (new \ReflectionClass(NewContentElementController::class))
+            ->getMethod('mergeContentElementAndPluginSubTypeWizards')
+            ->invokeArgs($this->createMock(NewContentElementController::class), [$inputContentElements, $inputContentPluginSubtypes]);
+
+        self::assertSame($expected, $result);
+    }
+
     #[Test]
     public function removeWizardsByPageTsTest(): void
     {
