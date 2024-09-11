@@ -45,6 +45,7 @@ integration various:
     - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 8.1
     - Build/Scripts/runTests.sh -s lintServicesYaml -p 8.1
     - Build/Scripts/runTests.sh -s lintYaml -p 8.1
+    - Build/Scripts/runTests.sh -s checkFilesAndPathsForSpaces -p 8.1
 
 iso database max:
   stage: integrity

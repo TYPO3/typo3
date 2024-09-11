@@ -11,11 +11,13 @@
 USE_EXIT_CODE=0
 script=Build/Scripts/cglFixMyCommit.sh
 scriptFileHeader=Build/Scripts/cglFixMyCommitFileHeader.sh
+scriptSpacesInFilesAndPaths=Build/Scripts/spacesInPathsAndFilenames.sh
 
 ABORT_ON_ERROR="no"
 ERROR_TEXT="\n"
 ERROR_CODE=0
 ERROR_CODE_FILE_HEADER=0
+ERROR_CODE_SPACES=0
 
 if [ -z "${TYPO3_GIT_HOOK_ABORT_ON_ERROR+x}" ]; then
     ABORT_ON_ERROR=${TYPO3_GIT_HOOK_ABORT_ON_ERROR}
@@ -65,6 +67,24 @@ if [ ${ERROR_CODE_FILE_HEADER} -ne 0 ];then
     echo -e "   Please refer to [2] for details on contribution                  "
     echo -e "   [1] https://docs.typo3.org/typo3cms/CoreApiReference/CodingGuidelines/Index.html"
     echo -e "   [2] https://docs.typo3.org/typo3cms/ContributionWorkflowGuide/   "
+    echo -e "------------------------------------------------------------------\n"
+    if [[ ${ABORT_ON_ERROR} == "yes" ]];then
+        echo -e "   Your commit is being aborted ... Fix and try again!          "
+        USE_EXIT_CODE=1
+    else
+        echo -e "   You must fix this and then commit again (git commit --amend) "
+    fi
+fi
+
+TMP="$( $scriptSpacesInFilesAndPaths )"
+ERROR_CODE_SPACES=$?
+
+if [ ${ERROR_CODE_SPACES} -ne 0 ];then
+
+    echo -e "\n-----------------------------------------------------------------\n"
+    echo -e "  >> ERROR: There are spaces in file or path names.                 "
+    echo -e "${TMP}"
+    echo -e " "
     echo -e "------------------------------------------------------------------\n"
     if [[ ${ABORT_ON_ERROR} == "yes" ]];then
         echo -e "   Your commit is being aborted ... Fix and try again!          "
