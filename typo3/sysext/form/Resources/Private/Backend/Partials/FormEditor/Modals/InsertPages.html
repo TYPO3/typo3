@@ -8,13 +8,13 @@
             <div class="row">
                 <f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
                     <div class="col-sm-4">
-                        <a class="t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default d-block" title="{element.key}" data-element-type="{element.key}">
+                        <button type="button" class="t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default d-block" title="{element.key}" data-element-type="{element.key}">
                             <span class="float-start">
                                 <core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
                                 <span>{element.label}</span>
                             </span>
                             <span class="clearfix"></span>
-                        </a>
+                        </button>
                     </div>
                 </f:for>
             </div>
