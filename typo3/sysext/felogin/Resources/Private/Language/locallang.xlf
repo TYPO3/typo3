@@ -65,6 +65,9 @@ Another possibility is that cookies might be disabled in your web browser.</sour
 			<trans-unit id="change_password_header" resname="change_password_header">
 				<source>Change your password</source>
 			</trans-unit>
+			<trans-unit id="change_password_message" resname="change_password_message">
+				<source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
+			</trans-unit>
 			<trans-unit id="change_password_description" resname="change_password_description">
 				<source>Please enter your new password twice.</source>
 			</trans-unit>
