@@ -43,6 +43,7 @@ use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
+use TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
 
@@ -348,17 +349,11 @@ readonly class RedirectService
         if ($site === null || $site instanceof NullSite) {
             return null;
         }
+        $builderType = $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']];
         $controller = $this->bootFrontendController($site, $queryParams, $originalRequest);
-        $linkBuilder = GeneralUtility::makeInstance(
-            $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
-            $controller->cObj,
-            $controller
-        );
-        if (!$linkBuilder instanceof AbstractTypolinkBuilder) {
-            // @todo: Add a proper interface.
-            throw new \RuntimeException('Single link builder must extend AbstractTypolinkBuilder', 1646504471);
-        }
-        try {
+        if ($builderType && is_subclass_of($builderType, TypolinkBuilderInterface::class)) {
+            /** @var TypolinkBuilderInterface $linkBuilder */
+            $linkBuilder = GeneralUtility::makeInstance($builderType);
             $configuration = [
                 'parameter' => (string)$redirectRecord['target'],
                 'forceAbsoluteUrl' => true,
@@ -370,12 +365,41 @@ readonly class RedirectService
             if ($redirectRecord['keep_query_parameters']) {
                 $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
             }
-            $result = $linkBuilder->build($linkDetails, '', '', $configuration);
-            $this->cleanupTSFE();
-            return new Uri($result->getUrl());
-        } catch (UnableToLinkException $e) {
-            $this->cleanupTSFE();
-            return null;
+            $request = $originalRequest->withAttribute('currentContentObject', $controller->cObj);
+            try {
+                $result = $linkBuilder->buildLink($linkDetails, $configuration, $request);
+                $this->cleanupTSFE();
+                return new Uri($result->getUrl());
+            } catch (UnableToLinkException $e) {
+                $this->cleanupTSFE();
+                return null;
+            }
+        } else {
+            // @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0 - however this code is kept without
+            // a trigger_error() to not SPAM deprecation logs via redirects.
+            if (!is_subclass_of($builderType, AbstractTypolinkBuilder::class)) {
+                throw new \RuntimeException('Single link builder must extend AbstractTypolinkBuilder', 1646504471);
+            }
+            $linkBuilder = GeneralUtility::makeInstance($builderType);
+            try {
+                $configuration = [
+                    'parameter' => (string)$redirectRecord['target'],
+                    'forceAbsoluteUrl' => true,
+                    'linkAccessRestrictedPages' => true,
+                ];
+                if ($redirectRecord['force_https']) {
+                    $configuration['forceAbsoluteUrl.']['scheme'] = 'https';
+                }
+                if ($redirectRecord['keep_query_parameters']) {
+                    $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
+                }
+                $result = $linkBuilder->_build($linkDetails, '', '', $configuration, $originalRequest, $controller->cObj);
+                $this->cleanupTSFE();
+                return new Uri($result->getUrl());
+            } catch (UnableToLinkException $e) {
+                $this->cleanupTSFE();
+                return null;
+            }
         }
     }
 

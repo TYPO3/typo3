@@ -4,6 +4,11 @@ services:
     autoconfigure: true
     public: false
 
+  # Make all TypolinkBuilder implementations public automatically
+  _instanceof:
+    TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface:
+      public: true
+
   TYPO3\CMS\Frontend\:
     resource: '../Classes/*'
     # glob for services that have been previously available as

@@ -17,44 +17,50 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Abstract class to provide proper helper for most types necessary
- * Hands in the ContentObject and TSFE which are needed here for all the stdWrap magic.
  */
 abstract class AbstractTypolinkBuilder
 {
+    /**
+     * @deprecated this will be removed in TYPO3 v15.0. The ContentObjectRenderer will be passed to the buildLink() method of TypolinkBuilderInterface via the PSR-7 Request attribute "currentContentObject" instead.
+     */
     protected ContentObjectRenderer $contentObjectRenderer;
-    protected ?TypoScriptFrontendController $typoScriptFrontendController = null;
-
-    public function __construct(ContentObjectRenderer $contentObjectRenderer, ?TypoScriptFrontendController $typoScriptFrontendController = null)
-    {
-        $this->contentObjectRenderer = $contentObjectRenderer;
-        $this->typoScriptFrontendController = $typoScriptFrontendController ?? $GLOBALS['TSFE'] ?? null;
-    }
 
     /**
-     * Should be implemented by all subclasses to return an array with three parts:
-     * - URL
-     * - Link Text (can be modified)
-     * - Target (can be modified)
-     * - Tag Attributes (optional)
+     * The method is not implemented anymore, the class now only serves as a wrapper for helper methods.
      *
      * @param array $linkDetails parsed link details by the LinkService
      * @param string $linkText the link text
      * @param string $target the target to point to
      * @param array $conf the TypoLink configuration array
      * @throws UnableToLinkException
+     * @deprecated this method will be removed from this class in TYPO3 v15.
      */
-    abstract public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface;
+    // abstract public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface;
+
+    /**
+     * This method is only here to keep BC for the build() method which will be removed in TYPO3 v15.0.
+     * The actual implementation should be done in buildLink() instead.
+     * @internal this method will be removed in TYPO3 v15.0 again.
+     */
+    public function _build(array &$linkDetails, string $linkText, string $target, array $conf, ServerRequestInterface $request, ContentObjectRenderer $contentObjectRenderer): LinkResultInterface
+    {
+        // For people already migrating in v13, adding the method but not the interface, this works as well :)
+        if (method_exists($this, 'buildLink')) {
+            return $this->buildLink($linkDetails, $conf, $request, $linkText);
+        }
+        // This one is in order to keep BC for v14 as we avoid adding the abstract method "build" to implement by subclasses
+        $this->contentObjectRenderer = $contentObjectRenderer;
+        if (method_exists($this, 'build')) {
+            return $this->build($linkDetails, '', '', $conf);
+        }
+        throw new UnableToLinkException('Invalid link builder, so ' . $linkText . ' was not linked.', 1756746193, null, $linkText);
+    }
 
     /**
      * Forces a given URL to be absolute.
@@ -63,10 +69,9 @@ abstract class AbstractTypolinkBuilder
      * @param array $configuration TypoScript configuration of typolink
      * @return string The absolute URL
      */
-    protected function forceAbsoluteUrl(string $url, array $configuration): string
+    protected function forceAbsoluteUrl(string $url, array $configuration, ?ServerRequestInterface $request = null): string
     {
-        $request = $this->contentObjectRenderer->getRequest();
-        $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
+        $frontendTypoScriptConfigArray = $request ? $request->getAttribute('frontend.typoscript')?->getConfigArray() : [];
         if ($frontendTypoScriptConfigArray['forceAbsoluteUrls'] ?? false) {
             $forceAbsoluteUrl = true;
         } else {
@@ -82,18 +87,18 @@ abstract class AbstractTypolinkBuilder
             $isUrlModified = false;
             // Set scheme and host if not yet part of the URL
             if (empty($urlParts['host'])) {
-                $normalizedParams = $request->getAttribute('normalizedParams');
-                // @todo: This fallback should vanish mid-term: typolink has a dependency to ServerRequest
-                //        and should expect the normalizedParams argument is properly set as well. When for
-                //        instance CLI triggers this code, it should have set up a proper request.
-                $normalizedParams ??= NormalizedParams::createFromRequest($this->contentObjectRenderer->getRequest());
-                $urlParts['scheme'] = $normalizedParams->isHttps() ? 'https' : 'http';
-                $urlParts['host'] = $normalizedParams->getHttpHost();
-                $urlParts['path'] = '/' . ltrim($urlParts['path'], '/');
                 // absRefPrefix has been prepended to $url beforehand
                 // so we only modify the path if no absRefPrefix has been set
                 // otherwise we would destroy the path
-                if ($this->getTypoScriptFrontendController()->absRefPrefix === '') {
+                if ($this->getAbsRefPrefix($request) === '') {
+                    $normalizedParams = $request->getAttribute('normalizedParams');
+                    // @todo: This fallback should vanish mid-term: typolink has a dependency to ServerRequest
+                    //        and should expect the normalizedParams argument is properly set as well. When for
+                    //        instance CLI triggers this code, it should have set up a proper request.
+                    $normalizedParams ??= NormalizedParams::createFromRequest($request);
+                    $urlParts['scheme'] = $normalizedParams->isHttps() ? 'https' : 'http';
+                    $urlParts['host'] = $normalizedParams->getHttpHost();
+                    $urlParts['path'] = '/' . ltrim($urlParts['path'], '/');
                     $urlParts['path'] = $normalizedParams->getSitePath() . ltrim($urlParts['path'], '/');
                 }
                 $isUrlModified = true;
@@ -118,37 +123,6 @@ abstract class AbstractTypolinkBuilder
     }
 
     /**
-     * Determines whether lib.parseFunc is defined.
-     */
-    protected function isLibParseFuncDefined(): bool
-    {
-        $configuration = $this->contentObjectRenderer->mergeTSRef(
-            ['parseFunc' => '< lib.parseFunc'],
-            'parseFunc'
-        );
-        return !empty($configuration['parseFunc.']) && is_array($configuration['parseFunc.']);
-    }
-
-    /**
-     * Helper method to a fallback method parsing HTML out of it
-     *
-     * @param string $originalLinkText the original string, if empty, the fallback link text
-     * @param string $fallbackLinkText the string to be used.
-     * @return string the final text
-     */
-    protected function parseFallbackLinkTextIfLinkTextIsEmpty(string $originalLinkText, string $fallbackLinkText): string
-    {
-        if ($originalLinkText !== '') {
-            return $originalLinkText;
-        }
-        if ($this->isLibParseFuncDefined()) {
-            return $this->contentObjectRenderer->parseFunc($fallbackLinkText, ['makelinks' => 0], '< lib.parseFunc');
-        }
-        // encode in case `lib.parseFunc` is not configured
-        return $this->encodeFallbackLinkTextIfLinkTextIsEmpty($originalLinkText, $fallbackLinkText);
-    }
-
-    /**
      * Helper method to a fallback method properly encoding HTML.
      *
      * @param string $originalLinkText the original string, if empty, the fallback link text
@@ -170,13 +144,13 @@ abstract class AbstractTypolinkBuilder
      * @param string $name the key, usually "target", "extTarget" or "fileTarget"
      * @return string the value of the target attribute, if there is one
      */
-    protected function resolveTargetAttribute(array $conf, string $name): string
+    protected function resolveTargetAttribute(array $conf, string $name, ?ContentObjectRenderer $contentObjectRenderer = null): string
     {
         $target = '';
         if (isset($conf[$name]) && $conf[$name] !== '') {
             $target = $conf[$name];
         } elseif (!($conf['directImageLink'] ?? false)) {
-            $frontendTypoScriptConfigArray = $this->contentObjectRenderer->getRequest()->getAttribute('frontend.typoscript')?->getConfigArray();
+            $frontendTypoScriptConfigArray = $contentObjectRenderer ? $contentObjectRenderer->getRequest()->getAttribute('frontend.typoscript')?->getConfigArray() : [];
             switch ($name) {
                 case 'extTarget':
                 case 'fileTarget':
@@ -188,41 +162,27 @@ abstract class AbstractTypolinkBuilder
             }
         }
         if (isset($conf[$name . '.']) && $conf[$name . '.']) {
-            $target = (string)$this->contentObjectRenderer->stdWrap($target, $conf[$name . '.'] ?? []);
+            if ($contentObjectRenderer) {
+                $target = (string)$contentObjectRenderer->stdWrap($target, $conf[$name . '.'] ?? []);
+            }
         }
         return $target;
     }
 
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
+    protected function getAbsRefPrefix(ServerRequestInterface $request): string
     {
-        if ($this->typoScriptFrontendController instanceof TypoScriptFrontendController) {
-            return $this->typoScriptFrontendController;
+        $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
+        $absRefPrefix = trim($typoScriptConfigArray['absRefPrefix'] ?? '');
+        // calculate the absolute path prefix
+        if ($absRefPrefix === 'auto') {
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            $absRefPrefix = $normalizedParams->getSitePath();
         }
-
-        // This usually happens when typolink is created by the TYPO3 Backend, where no TSFE object
-        // is there. This functionality is currently completely internal, as these links cannot be
-        // created properly from the Backend.
-        // However, this is added to avoid any exceptions when trying to create a link.
-        // Detecting the "first" site usually comes from the fact that TSFE needs to be instantiated
-        // during tests
-        $request = $this->contentObjectRenderer->getRequest();
-        $site = $request->getAttribute('site');
-        if (!$site instanceof Site) {
-            $sites = GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
-            $site = reset($sites);
-            if (!$site instanceof Site) {
-                $site = new NullSite();
-            }
+        // config.forceAbsoluteUrls will override absRefPrefix
+        if ($typoScriptConfigArray['forceAbsoluteUrls'] ?? false) {
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            $absRefPrefix = $normalizedParams->getSiteUrl();
         }
-        $language = $request->getAttribute('language');
-        if (!$language instanceof SiteLanguage) {
-            $language = $site->getDefaultLanguage();
-        }
-        $request = $request->withAttribute('language', $language);
-
-        $this->typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-        $this->typoScriptFrontendController->initializePageRenderer($request);
-        $this->typoScriptFrontendController->initializeLanguageService($request);
-        return $this->typoScriptFrontendController;
+        return $absRefPrefix;
     }
 }

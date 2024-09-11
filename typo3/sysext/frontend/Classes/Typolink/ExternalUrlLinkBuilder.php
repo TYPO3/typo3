@@ -17,27 +17,33 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 
 /**
  * Builds a TypoLink to an external URL
  */
-class ExternalUrlLinkBuilder extends AbstractTypolinkBuilder
+class ExternalUrlLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilderInterface
 {
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
-    {
+    public function buildLink(
+        array $linkDetails,
+        array $configuration,
+        ServerRequestInterface $request,
+        string $linkText = '',
+    ): LinkResultInterface {
         $url = $linkDetails['url'] ?? '';
+        $target = $linkDetails['target'] ?? '';
         // issue https://forge.typo3.org/issues/101083 forces absolute path URLs
         // like `/path/some-file.png` to be handled as external URL, and that's
         // why the URL is forced to contain a fully qualified domain name as well
-        $url = $this->forceAbsoluteUrl($url, $conf);
+        $url = $this->forceAbsoluteUrl($url, $configuration, $request);
         $fallbackTarget = str_starts_with($url, '/') && !str_starts_with($url, '//') ? 'target' : 'extTarget';
 
         $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $url);
         return (new LinkResult(LinkService::TYPE_URL, (string)$url))
-            ->withLinkConfiguration($conf)
+            ->withLinkConfiguration($configuration)
             ->withTarget(
-                $target ?: $this->resolveTargetAttribute($conf, $fallbackTarget),
+                $target ?: $this->resolveTargetAttribute($configuration, $fallbackTarget, $request->getAttribute('currentContentObject')),
             )
             ->withLinkText($linkText);
     }

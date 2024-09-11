@@ -17,16 +17,22 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
 
 /**
  * Builds a TypoLink to a folder or file
  */
-class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
+class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilderInterface
 {
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
-    {
+    public function buildLink(
+        array $linkDetails,
+        array $configuration,
+        ServerRequestInterface $request,
+        string $linkText = '',
+    ): LinkResultInterface {
+        $target = $linkDetails['target'] ?? '';
         $fileOrFolderObject = ($linkDetails['file'] ?? false) ?: ($linkDetails['folder'] ?? null);
         // check if the file exists or if a / is contained (same check as in detectLinkType)
         if (!($fileOrFolderObject instanceof FileInterface) && !($fileOrFolderObject instanceof Folder)) {
@@ -49,9 +55,9 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
         if (!empty($linkDetails['fragment'])) {
             $url .= '#' . $linkDetails['fragment'];
         }
-        return (new LinkResult($linkDetails['type'], $this->forceAbsoluteUrl($url, $conf)))
-            ->withLinkConfiguration($conf)
-            ->withTarget($target ?: $this->resolveTargetAttribute($conf, 'fileTarget'))
+        return (new LinkResult($linkDetails['type'], $this->forceAbsoluteUrl($url, $configuration, $request)))
+            ->withLinkConfiguration($configuration)
+            ->withTarget($target ?: $this->resolveTargetAttribute($configuration, 'fileTarget', $request->getAttribute('currentContentObject')))
             ->withLinkText($linkText);
     }
 }

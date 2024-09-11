@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\AfterLinkIsGeneratedEvent;
 
 /**
@@ -132,21 +131,37 @@ class LinkFactory implements LoggerAwareInterface
      */
     protected function buildLinkResult(string $linkText, array $linkDetails, string $target, array $linkConfiguration, ContentObjectRenderer $contentObjectRenderer): LinkResultInterface
     {
-        if (isset($linkDetails['type']) && isset($GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']])) {
-            /** @var AbstractTypolinkBuilder $linkBuilder */
-            $linkBuilder = GeneralUtility::makeInstance(
-                $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
-                $contentObjectRenderer,
-                // AbstractTypolinkBuilder type hints an optional dependency to TypoScriptFrontendController.
-                // Some core parts however "fake" $GLOBALS['TSFE'] to stdCLass() due to its long list of
-                // dependencies. f:html view helper is such a scenario. This of course crashes if given to typolink builder
-                // classes. For now, we check the instance and hand over 'null', giving the link builders the option
-                // to take care of tsfe themselves. This scenario is for instance triggered when in BE login when sys_news
-                // records set links.
-                $contentObjectRenderer->getTypoScriptFrontendController() instanceof TypoScriptFrontendController ? $contentObjectRenderer->getTypoScriptFrontendController() : null
-            );
+        if (isset($linkDetails['type'])) {
+            $builderType = $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']] ?? null;
+        } else {
+            $builderType = null;
+        }
+        if ($builderType && is_subclass_of($builderType, TypolinkBuilderInterface::class)) {
+            /** @var TypolinkBuilderInterface $linkBuilder */
+            $linkBuilder = GeneralUtility::makeInstance($builderType);
+            $linkDetails['target'] = $target;
             try {
-                return $linkBuilder->build($linkDetails, $linkText, $target, $linkConfiguration);
+                $request = $contentObjectRenderer->getRequest();
+                $request = $request->withAttribute('currentContentObject', $contentObjectRenderer);
+                return $linkBuilder->buildLink($linkDetails, $linkConfiguration, $request, $linkText);
+            } catch (UnableToLinkException $e) {
+                $this->logger->debug('Unable to link "{text}"', [
+                    'text' => $e->getLinkText(),
+                    'exception' => $e,
+                ]);
+                // Only return the link text directly
+                throw $e;
+            }
+        } elseif ($builderType !== null) {
+            /** @var AbstractTypolinkBuilder $linkBuilder */
+            $linkBuilder = GeneralUtility::makeInstance($builderType, $contentObjectRenderer);
+            try {
+                $request = $contentObjectRenderer->getRequest();
+                $request = $request->withAttribute('currentContentObject', $contentObjectRenderer);
+                if (!method_exists($linkBuilder, 'buildLink')) {
+                    trigger_error($builderType . ' is not a valid TypolinkBuilderInterface, and will stop working in TYPO3 v15.0', E_USER_DEPRECATED);
+                }
+                return $linkBuilder->_build($linkDetails, $linkText, $target, $linkConfiguration, $request, $contentObjectRenderer);
             } catch (UnableToLinkException $e) {
                 $this->logger->debug('Unable to link "{text}"', [
                     'text' => $e->getLinkText(),

@@ -57,7 +57,6 @@ final class PageLinkBuilderTest extends UnitTestCase
         $request = new ServerRequest('https://example.com');
         $request = $request->withQueryParams($queryParameters);
         $request = $request->withAttribute('routing', new PageArguments(1, '', $queryParameters, [], []));
-        $GLOBALS['TSFE'] = new \stdClass();
         $cObj = new ContentObjectRenderer();
         $cObj->setRequest($request);
         $subject = $this->getAccessibleMock(PageLinkBuilder::class, null, [], '', false);

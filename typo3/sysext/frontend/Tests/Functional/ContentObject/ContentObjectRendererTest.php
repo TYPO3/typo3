@@ -227,8 +227,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
 
         $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
         $tcaSchemaFactory->load($tca, true);
-        $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-        $subject = new ContentObjectRenderer($typoScriptFrontendController);
+        $subject = new ContentObjectRenderer();
         $request = $this->getPreparedRequest();
         $pageInformation = new PageInformation();
         $pageInformation->setId(0);
@@ -811,10 +810,13 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     #[Test]
     public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefix(string $linkText, array $configuration, string $absRefPrefix, string $expectedResult): void
     {
-        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $tsfe->absRefPrefix = $absRefPrefix;
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $typoScript->setConfigArray(['absRefPrefix' => $absRefPrefix]);
+
+        $subject = new ContentObjectRenderer();
         $request = new ServerRequest();
-        $subject = new ContentObjectRenderer($tsfe);
+        $request = $request->withAttribute('frontend.typoscript', $typoScript);
+        $request = $request->withAttribute('currentContentObject', $subject);
         $subject->setRequest($request);
         self::assertEquals($expectedResult, $subject->typoLink($linkText, $configuration));
     }
@@ -900,8 +902,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     #[Test]
     public function searchWhereWithTooShortSearchWordWillReturnValidWhereStatement(): void
     {
-        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $subject = new ContentObjectRenderer($tsfe);
+        $subject = new ContentObjectRenderer();
         $subject->setRequest($this->getPreparedRequest());
         $subject->start([], 'tt_content');
 
@@ -913,8 +914,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     #[Test]
     public function libParseFuncProperlyKeepsTagsUnescaped(): void
     {
-        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
-        $subject = new ContentObjectRenderer($tsfe);
+        $subject = new ContentObjectRenderer();
         $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $typoScript->setConfigArray([]);
         $request = $this->getPreparedRequest()->withAttribute('frontend.typoscript', $typoScript);

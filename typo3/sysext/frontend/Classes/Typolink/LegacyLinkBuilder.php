@@ -17,34 +17,35 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 
 /**
  * Builds a TypoLink to a file (relative to fileadmin/ or something)
  * or otherwise detects as an external URL
  */
-class LegacyLinkBuilder extends AbstractTypolinkBuilder
+class LegacyLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilderInterface
 {
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
+    public function buildLink(array $linkDetails, array $configuration, ServerRequestInterface $request, string $linkText = ''): LinkResultInterface
     {
-        $tsfe = $this->getTypoScriptFrontendController();
+        $target = $linkDetails['target'] ?? '';
         if ($linkDetails['file'] ?? false) {
             $linkDetails['type'] = LinkService::TYPE_FILE;
             $linkLocation = $linkDetails['file'];
             // Setting title if blank value to link
             $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-            $linkLocation = (!str_starts_with($linkLocation, '/') ? $tsfe->absRefPrefix : '') . $linkLocation;
+            $linkLocation = (!str_starts_with($linkLocation, '/') ? $this->getAbsRefPrefix($request) : '') . $linkLocation;
             $url = $linkLocation;
-            $url = $this->forceAbsoluteUrl($url, $conf);
-            $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget');
+            $url = $this->forceAbsoluteUrl($url, $configuration, $request);
+            $target = $target ?: $this->resolveTargetAttribute($configuration, 'fileTarget', $request->getAttribute('currentContentObject'));
         } elseif ($linkDetails['url'] ?? false) {
             $linkDetails['type'] = LinkService::TYPE_URL;
-            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget');
+            $target = $target ?: $this->resolveTargetAttribute($configuration, 'extTarget', $request->getAttribute('currentContentObject'));
             $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
             $url = $linkDetails['url'];
         } else {
             throw new UnableToLinkException('Unknown link detected, so ' . $linkText . ' was not linked.', 1490990031, null, $linkText);
         }
-        return (new LinkResult((string)$linkDetails['type'], (string)$url))->withTarget($target)->withLinkConfiguration($conf)->withLinkText($linkText);
+        return (new LinkResult((string)$linkDetails['type'], (string)$url))->withTarget($target)->withLinkConfiguration($configuration)->withLinkText($linkText);
     }
 }

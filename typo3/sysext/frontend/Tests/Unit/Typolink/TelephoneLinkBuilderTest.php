@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Frontend\Typolink\TelephoneLinkBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,8 +31,8 @@ final class TelephoneLinkBuilderTest extends UnitTestCase
             'type' => 'telephone',
             'typoLinkParameter' => 'tel:+49 221 4710 999',
         ];
-        $subject = $this->getAccessibleMock(TelephoneLinkBuilder::class, null, [], '', false);
-        $actualResult = $subject->build($linkDetails, '', '', []);
+        $subject = new TelephoneLinkBuilder();
+        $actualResult = $subject->buildLink($linkDetails, [], new ServerRequest('https://example.com'));
         self::assertSame('', $actualResult->getLinkText());
     }
 
@@ -42,8 +43,8 @@ final class TelephoneLinkBuilderTest extends UnitTestCase
             'type' => 'telephone',
             'typoLinkParameter' => 'tel:+49 221 4710 999',
         ];
-        $subject = $this->getAccessibleMock(TelephoneLinkBuilder::class, null, [], '', false);
-        $actualResult = $subject->build($linkDetails, 'Phone number', '', []);
+        $subject = new TelephoneLinkBuilder();
+        $actualResult = $subject->buildLink($linkDetails, [], new ServerRequest('https://example.com'), 'Phone number');
         self::assertSame('Phone number', $actualResult->getLinkText());
     }
 
@@ -55,8 +56,8 @@ final class TelephoneLinkBuilderTest extends UnitTestCase
             'typoLinkParameter' => 'tel:+49 221 4710 999',
             'telephone' => '+49 221 4710 999',
         ];
-        $subject = $this->getAccessibleMock(TelephoneLinkBuilder::class, null, [], '', false);
-        $actualResult = $subject->build($linkDetails, '', '', []);
+        $subject = new TelephoneLinkBuilder();
+        $actualResult = $subject->buildLink($linkDetails, [], new ServerRequest('https://example.com'));
         self::assertSame('+49 221 4710 999', $actualResult->getLinkText());
     }
 
@@ -67,8 +68,8 @@ final class TelephoneLinkBuilderTest extends UnitTestCase
             'type' => 'telephone',
             'typoLinkParameter' => 'tel:+49 221 4710 999',
         ];
-        $subject = $this->getAccessibleMock(TelephoneLinkBuilder::class, null, [], '', false);
-        $actualResult = $subject->build($linkDetails, '', '', []);
+        $subject = new TelephoneLinkBuilder();
+        $actualResult = $subject->buildLink($linkDetails, [], new ServerRequest('https://example.com'));
         self::assertSame('tel:+49 221 4710 999', $actualResult->getUrl());
     }
 }

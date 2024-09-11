@@ -17,14 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Builds a TypoLink to a telephone number
  */
-class TelephoneLinkBuilder extends AbstractTypolinkBuilder
+class TelephoneLinkBuilder implements TypolinkBuilderInterface
 {
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
+    public function buildLink(array $linkDetails, array $configuration, ServerRequestInterface $request, string $linkText = ''): LinkResultInterface
     {
         $linkText = $linkText ?: $linkDetails['telephone'] ?? '';
-        return (new LinkResult($linkDetails['type'], $linkDetails['typoLinkParameter']))->withLinkConfiguration($conf)->withLinkText($linkText);
+        return (new LinkResult($linkDetails['type'], $linkDetails['typoLinkParameter']))->withLinkConfiguration($configuration)->withLinkText($linkText);
     }
 }

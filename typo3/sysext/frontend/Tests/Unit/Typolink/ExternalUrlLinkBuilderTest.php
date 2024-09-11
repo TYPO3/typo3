@@ -18,12 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\ExternalUrlLinkBuilder;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExternalUrlLinkBuilderTest extends UnitTestCase
@@ -34,9 +33,11 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
         $linkDetails = [
             'type' => 'url',
             'url' => 'https://example.com',
+            'target' => 'custom-target',
         ];
-        $subject = $this->prepareSubject();
-        $actualResult = $subject->build($linkDetails, '', 'custom-target', []);
+        $request = $this->prepareRequest();
+        $subject = $this->buildSubject($request);
+        $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('https://example.com', $actualResult->getLinkText());
         self::assertSame('https://example.com', $actualResult->getUrl());
         self::assertSame('custom-target', $actualResult->getTarget());
@@ -49,8 +50,9 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
             'type' => 'url',
             'url' => 'https://example.com',
         ];
-        $subject = $this->prepareSubject();
-        $actualResult = $subject->build($linkDetails, '', '', []);
+        $request = $this->prepareRequest();
+        $subject = $this->buildSubject($request);
+        $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('externalFallback', $actualResult->getTarget());
     }
 
@@ -62,8 +64,9 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
             // see https://en.wikipedia.org/wiki/Wikipedia:Protocol-relative_URL
             'url' => '//example.com',
         ];
-        $subject = $this->prepareSubject();
-        $actualResult = $subject->build($linkDetails, '', '', []);
+        $request = $this->prepareRequest();
+        $subject = $this->buildSubject($request);
+        $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('externalFallback', $actualResult->getTarget());
     }
     #[Test]
@@ -73,16 +76,25 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
             'type' => 'url',
             'url' => '/other-system-like-a-blog-on-the-same-domain',
         ];
-        $subject = $this->prepareSubject();
-        $actualResult = $subject->build($linkDetails, '', '', []);
+        $request = $this->prepareRequest();
+        $subject = $this->buildSubject($request);
+        $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('internalFallback', $actualResult->getTarget());
     }
 
-    private function prepareSubject(): ExternalUrlLinkBuilder&MockObject&AccessibleObjectInterface
+    private function buildSubject(ServerRequestInterface &$request): ExternalUrlLinkBuilder
+    {
+        $contentObject = new ContentObjectRenderer();
+        $request = $request->withAttribute('currentContentObject', $contentObject);
+        $contentObject->setRequest($request);
+        return new ExternalUrlLinkBuilder();
+    }
+
+    private function prepareRequest(): ServerRequestInterface
     {
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('routing', new PageArguments(1, '', [], [], []));
-        $request = $request->withAttribute('frontend.typoscript', new class () {
+        return $request->withAttribute('frontend.typoscript', new class () {
             public function getConfigArray(): array
             {
                 return [
@@ -91,10 +103,5 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
                 ];
             }
         });
-        $cObj = new ContentObjectRenderer();
-        $cObj->setRequest($request);
-        $subject = $this->getAccessibleMock(ExternalUrlLinkBuilder::class, null, [], '', false);
-        $subject->_set('contentObjectRenderer', $cObj);
-        return $subject;
     }
 }

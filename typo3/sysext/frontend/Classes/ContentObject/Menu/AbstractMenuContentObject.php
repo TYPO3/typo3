@@ -639,15 +639,15 @@ abstract class AbstractMenuContentObject
             $specialValue = $this->request->getAttribute('frontend.page.information')->getId();
         }
         $items = GeneralUtility::intExplode(',', (string)$specialValue);
-        $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
+        $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class);
         foreach ($items as $id) {
-            $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($id);
+            $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($id, $this->parent_cObj->getRequest());
             // Checking if a page is a mount page and if so, change the ID and set the MP var properly.
             $mount_info = $this->sys_page->getMountPointInfo($id);
             if (is_array($mount_info)) {
                 if ($mount_info['overlay']) {
                     // Overlays should already have their full MPvars calculated:
-                    $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps((int)$mount_info['mount_pid']);
+                    $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps((int)$mount_info['mount_pid'], $this->parent_cObj->getRequest());
                     $MP = $MP ?: $mount_info['MPvar'];
                 } else {
                     $MP = ($MP ? $MP . ',' : '') . $mount_info['MPvar'];
@@ -688,10 +688,10 @@ abstract class AbstractMenuContentObject
             array_flip(array_intersect(array_values($pageIds), array_keys($pageRecords))),
             $pageRecords
         );
-        $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
+        $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class);
         foreach ($pageRecords as $row) {
             $pageId = (int)$row['uid'];
-            $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($pageId);
+            $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($pageId, $this->parent_cObj->getRequest());
             // Keep mount point?
             $mount_info = $this->sys_page->getMountPointInfo($pageId, $row);
             // $pageId is a valid mount point
@@ -709,7 +709,7 @@ abstract class AbstractMenuContentObject
                 $row['_MP_PARAM'] = $mount_info['MPvar'];
                 // Overlays should already have their full MPvars calculated, that's why we unset the
                 // existing $row['_MP_PARAM'], as the full $MP will be added again below
-                $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($mountedPageId);
+                $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($mountedPageId, $this->parent_cObj->getRequest());
                 if ($MP) {
                     unset($row['_MP_PARAM']);
                 }

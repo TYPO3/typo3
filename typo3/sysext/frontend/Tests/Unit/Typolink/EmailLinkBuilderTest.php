@@ -18,10 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Frontend\Typolink\EmailLinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -38,10 +36,8 @@ final class EmailLinkBuilderTest extends UnitTestCase
             'email' => 'michael@bluth-company.com',
             'typoLinkParameter' => 'michael@bluth-company.com',
         ];
-        $contentObjectRenderer = $this->createMock(ContentObjectRenderer::class);
-        $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
-        $subject = $this->getAccessibleMock(EmailLinkBuilder::class, null, [$contentObjectRenderer, $typoScriptFrontendController]);
-        $actualResult = $subject->build($linkDetails, '', '', []);
+        $subject = new EmailLinkBuilder(new LinkService());
+        $actualResult = $subject->buildLink($linkDetails, [], new ServerRequest('https://example.com'));
         self::assertSame('michael@bluth-company.com', $actualResult->getLinkText());
     }
 
@@ -65,14 +61,8 @@ final class EmailLinkBuilderTest extends UnitTestCase
                 }
             })
         );
-        $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
-        $contentObjectRenderer = new ContentObjectRenderer(
-            $typoScriptFrontendController,
-            $this->createMock(ContainerInterface::class),
-        );
-        $contentObjectRenderer->setRequest($request);
-        $subject = $this->getAccessibleMock(EmailLinkBuilder::class, null, [$contentObjectRenderer, $typoScriptFrontendController]);
-        $actualResult = $subject->build($linkDetails, '', '', []);
+        $subject = new EmailLinkBuilder(new LinkService());
+        $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('michael(at)bluth-company.com', $actualResult->getLinkText());
     }
 
@@ -96,15 +86,9 @@ final class EmailLinkBuilderTest extends UnitTestCase
                 }
             })
         );
-        $typoScriptFrontendController = $this->createMock(TypoScriptFrontendController::class);
-        $contentObjectRenderer = new ContentObjectRenderer(
-            $typoScriptFrontendController,
-            $this->createMock(ContainerInterface::class),
-        );
-        $contentObjectRenderer->setRequest($request);
-        $subject = $this->getAccessibleMock(EmailLinkBuilder::class, null, [$contentObjectRenderer, $typoScriptFrontendController]);
+        $subject = new EmailLinkBuilder(new LinkService());
         /** @var LinkResult $actualResult */
-        $actualResult = $subject->build($linkDetails, '', '', []);
+        $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('<a href="#" data-mailto-token="pdlowr-qr&#039;pdloCdfph1frp" data-mailto-vector="3">no&#039;mail(at)acme.com</a>', (string)$actualResult);
     }
 }

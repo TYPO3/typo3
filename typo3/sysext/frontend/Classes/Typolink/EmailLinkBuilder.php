@@ -17,34 +17,42 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Builds a TypoLink to an email address, also takes care of additional functionality for the time being
  * such as the infamous config.spamProtectedEmailAddresses option.
  */
-class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInterface
+class EmailLinkBuilder implements LoggerAwareInterface, TypolinkBuilderInterface
 {
     use DefaultJavaScriptAssetTrait;
     use LoggerAwareTrait;
 
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
-    {
-        [$url, $linkText, $attributes] = $this->processEmailLink($linkDetails['email'], $linkText, $linkDetails);
+    public function __construct(
+        private readonly LinkService $linkService,
+    ) {}
+
+    public function buildLink(
+        array $linkDetails,
+        array $configuration,
+        ServerRequestInterface $request,
+        string $linkText = '',
+    ): LinkResultInterface {
+        [$url, $linkText, $attributes] = $this->processEmailLink($linkDetails['email'], $linkText, $linkDetails, $request);
         return (new LinkResult(LinkService::TYPE_EMAIL, $url))
-            ->withTarget($target)
-            ->withLinkConfiguration($conf)
+            ->withTarget($linkDetails['target'] ?? '')
+            ->withLinkConfiguration($configuration)
             ->withLinkText($linkText)
             ->withAttributes($attributes);
     }
 
     /**
-     * Creates a href attibute for given $mailAddress.
+     * Creates a href attribute for given $mailAddress.
      * The function uses spamProtectEmailAddresses for encoding the mailto statement.
      * If spamProtectEmailAddresses is disabled, it'll just return a string like "mailto:user@example.tld".
      *
@@ -58,19 +66,18 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
      * @return array{0: string, 1: string, 2: array<string, string>} A numerical array with three items
      * @internal this method is not part of TYPO3's public API
      */
-    public function processEmailLink(string $mailAddress, string $linkText, array $linkDetails = []): array
+    public function processEmailLink(string $mailAddress, string $linkText, array $linkDetails, ServerRequestInterface $request): array
     {
         $linkText = $linkText ?: htmlspecialchars($mailAddress);
         $attributes = [];
         if ($linkDetails !== []) {
             // Ensure to add also additional query parameters to the string
-            $mailToUrl = GeneralUtility::makeInstance(LinkService::class)->asString($linkDetails);
+            $mailToUrl = $this->linkService->asString($linkDetails);
         } else {
             $mailToUrl = 'mailto:' . $mailAddress;
         }
 
         // no processing happened, therefore, the default processing kicks in
-        $request = $this->contentObjectRenderer->getRequest();
         $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
         $spamProtectEmailAddresses = (int)($frontendTypoScriptConfigArray['spamProtectEmailAddresses'] ?? 0);
         $spamProtectEmailAddresses = MathUtility::forceIntegerInRange($spamProtectEmailAddresses, -10, 10);

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\LinkHandler\RecordLinkHandler;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -30,7 +31,6 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\DatabaseRecordLinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -145,7 +145,6 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
                 ],
 
         ];
-        $target = '';
         $linkText = 'Test Link';
 
         $expectedConfiguration = [
@@ -155,18 +154,15 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         ];
 
         // Arrange
-        $frontendControllerMock = $this->createMock(TypoScriptFrontendController::class);
         $pageRepositoryMock = $this->createMock(PageRepository::class);
         $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray($typoScriptConfig);
-        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript)->withAttribute('currentContentObject', $contentObjectRendererMock);
         $contentObjectRendererMock->method('getRequest')->willReturn($request);
         GeneralUtility::setSingletonInstance(Context::class, new Context());
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(PageRepository::class, $pageRepositoryMock);
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
-        GeneralUtility::addInstance(TypoLinkCodecService::class, new TypoLinkCodecService(new NoopEventDispatcher()));
 
         $pageRepositoryMock
             ->method('checkRecord')
@@ -181,10 +177,18 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $contentObjectRendererMock->expects(self::once())->method('createLink');
 
         // Act
-        $databaseRecordLinkBuilder = $this->getAccessibleMock(DatabaseRecordLinkBuilder::class, ['getPageTsConfig'], [$contentObjectRendererMock, $frontendControllerMock]);
+        $databaseRecordLinkBuilder = $this->getAccessibleMock(
+            DatabaseRecordLinkBuilder::class,
+            ['getPageTsConfig'],
+            [
+                $this->createMock(TcaSchemaFactory::class),
+                new NullFrontend('testing'),
+                new TypoLinkCodecService(new NoopEventDispatcher()),
+            ]
+        );
         $databaseRecordLinkBuilder->method('getPageTsConfig')->willReturn($pageTsConfig);
         try {
-            $databaseRecordLinkBuilder->build($extractedLinkDetails, $linkText, $target, $confFromDb);
+            $databaseRecordLinkBuilder->buildLink($extractedLinkDetails, $confFromDb, $request, $linkText);
         } catch (UnableToLinkException) {
             // Assert
             $contentObjectRendererMock->expects(self::once())->method('typoLink')->with($linkText, $expectedConfiguration);

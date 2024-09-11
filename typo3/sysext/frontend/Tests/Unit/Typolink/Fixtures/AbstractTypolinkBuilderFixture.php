@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink\Fixtures;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
@@ -28,13 +30,13 @@ final class AbstractTypolinkBuilderFixture extends AbstractTypolinkBuilder
         return new LinkResult('type', 'url');
     }
 
-    public function forceAbsoluteUrl(string $url, array $configuration): string
+    public function forceAbsoluteUrl(string $url, array $configuration, ?ServerRequestInterface $request = null): string
     {
-        return parent::forceAbsoluteUrl($url, $configuration);
+        return parent::forceAbsoluteUrl($url, $configuration, $request);
     }
 
-    public function resolveTargetAttribute(array $conf, string $name): string
+    public function resolveTargetAttribute(array $conf, string $name, ?ContentObjectRenderer $contentObjectRenderer = null): string
     {
-        return parent::resolveTargetAttribute($conf, $name);
+        return parent::resolveTargetAttribute($conf, $name, $contentObjectRenderer);
     }
 }
