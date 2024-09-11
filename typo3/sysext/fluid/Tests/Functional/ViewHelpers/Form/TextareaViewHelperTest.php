@@ -75,12 +75,12 @@ final class TextareaViewHelperTest extends FunctionalTestCase
             'renderAddsReadonlyTrue' => [
                 '<f:form.textarea name="NameOfTextarea" readonly="{var}" />',
                 ['var' => true],
-                '<textarea readonly="1" name="NameOfTextarea"></textarea>',
+                '<textarea readonly="readonly" name="NameOfTextarea"></textarea>',
             ],
             'renderAddsReadonlyFalse' => [
                 '<f:form.textarea name="NameOfTextarea" readonly="{var}" />',
                 ['var' => false],
-                '<textarea readonly="" name="NameOfTextarea"></textarea>',
+                '<textarea name="NameOfTextarea"></textarea>',
             ],
             'renderAddsReadonlyNull' => [
                 '<f:form.textarea name="NameOfTextarea" readonly="{var}" />',
