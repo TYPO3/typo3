@@ -252,6 +252,7 @@ final class ComponentsController
             'currentAction' => 'modal',
             'routeIdentifier' => 'styleguide_components',
             'variants' => ['notice', 'info', 'ok', 'warning', 'error'],
+            'sizes' => ['small', 'default', 'medium', 'large', 'full'],
         ]);
         return $view->renderResponse('Backend/Components/Modal');
     }

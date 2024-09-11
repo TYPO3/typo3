@@ -168,19 +168,8 @@ $panel-default-heading-bg: #ddd;
 $hr-border: #7a7a7a;
 $hr-opacity: 1;
 
-// Modal
-$zindex-modal: 5000;
-
 // Popover
 $popover-box-shadow: var(--typo3-component-box-shadow-flyout);
-
-// todo: remove modal media queries?
-$modal-sm: 100vw;
-$modal-md: 100vw;
-$modal-lg: 100vw;
-$modal-xl: 100vw;
-$modal-content-box-shadow-xs: var(--typo3-component-box-shadow-dialog);
-$modal-content-box-shadow-sm-up: var(--typo3-component-box-shadow-dialog);
 
 // Dropdown
 $dropdown-padding-x: 2px;

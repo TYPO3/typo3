@@ -62,6 +62,29 @@
                 </f:for>
             </div>
         </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.size.headline" /></h2>
+        <f:variable name="codeSnippetSeverity">
+            <f:for each="{sizes}" as="size">
+            data-size="{size}"
+            </f:for>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSeverity}">
+            <div class="example-container">
+                <f:for each="{sizes}" as="size">
+                    <div class="example-item">
+                        <a
+                            class="btn btn-default t3js-modal-trigger"
+                            data-size="{size}"
+                            data-content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam condimentum faucibus libero sed efficitur. Aenean dictum faucibus tortor, ac rutrum lorem vulputate sit amet. Proin quis sem ante. Sed fermentum id leo et mollis. Aenean rhoncus metus vitae eros auctor aliquet. Mauris tristique rhoncus lacus in fermentum."
+                        >
+                            Open {size} modal
+                        </a>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+
     </div>
 
 </f:section>

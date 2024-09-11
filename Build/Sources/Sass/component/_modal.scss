@@ -1,28 +1,122 @@
 //
-// Modals
-//
-
-@import "../cropper/variables";
-
-//
-// Variables
-//
-$modal-sidebar-sm: 250px;
-$modal-sidebar-md: 300px;
-$modal-sidebar-button-space: $padding-small-vertical;
-//
-// Component
+// Modal
 //
 .modal {
+    --modal-height: auto;
+    --modal-width: 600px;
+    --typo3-modal-zindex: var(--typo3-zindex-modal);
+    --typo3-modal-padding: 1rem;
+    --typo3-modal-color: var(--typo3-component-color);
+    --typo3-modal-bg: var(--typo3-surface-container-low);
+    --typo3-modal-border-color: color-mix(in srgb, var(--typo3-modal-bg), var(--typo3-modal-color) 5%);
+    --typo3-modal-border-width: var(--typo3-component-border-width);
+    --typo3-modal-border-radius: var(--typo3-component-border-radius);
+    --typo3-modal-box-shadow: var(--typo3-component-box-shadow-dialog);
+    --typo3-modal-header-bg: var(--typo3-surface-container-base);
+    --typo3-modal-header-color: var(--typo3-text-color-base);
+    --typo3-modal-header-border-color: color-mix(in srgb, var(--typo3-modal-header-bg), var(--typo3-modal-header-color) 10%);
+    --typo3-modal-header-font-size: var(--typo3-font-size);
+    --typo3-modal-header-padding-y: .75rem;
+    --typo3-modal-header-padding-x: 1rem;
+    --typo3-modal-footer-gap: .5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--typo3-modal-zindex);
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+
+.modal-dialog {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0 auto !important;
+    pointer-events: none;
+
+    .modal.fade & {
+        transform: translate(0, -50px);
+        transition: transform .3s ease-out;
+
+        @media (prefers-reduced-motion) {
+            transition: none;
+        }
+    }
+
+    .modal.show & {
+        transform: none;
+    }
+}
+
+.modal-content {
+    display: flex;
+    margin: 0 auto;
+    max-height: calc(100vh - 40px);
+    max-width: calc(100vw - 40px);
+    flex-direction: column;
+    height: var(--modal-height);
+    width: var(--modal-width);
+    color: var(--typo3-modal-color);
+    pointer-events: auto;
+    background-color: var(--typo3-modal-bg);
+    background-clip: padding-box;
+    border: var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);
+    border-radius: var(--typo3-modal-border-radius);
+    box-shadow: var(--typo3-modal-box-shadow);
+    outline: 0;
+
+    .modal-loading {
+        height: 100%;
+        display: flex;
+        flex: 1 0 auto;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.modal-backdrop {
+    --typo3-backdrop-zindex: var(--typo3-zindex-modal-backdrop);
+    --typo3-backdrop-bg: #000;
+    --typo3-backdrop-opacity: .65;
+    position: fixed;
+    z-index: var(--typo3-backdrop-zindex);
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--typo3-backdrop-bg);
+
+    &.fade { opacity: 0; }
+    &.show { opacity: var(--typo3-backdrop-opacity); }
+}
+
+.modal-header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    color: var(--typo3-modal-header-color);
+    background-color: var(--typo3-modal-header-bg);
+    padding: var(--typo3-modal-header-padding-y) var(--typo3-modal-header-padding-x);
+    border-bottom: var(--typo3-modal-border-width) solid var(--typo3-modal-header-border-color);
+    border-start-start-radius: var(--typo3-modal-border-radius);
+    border-start-end-radius: var(--typo3-modal-border-radius);
+
     .close {
         background: transparent;
         border: none;
         color: inherit;
-        padding: 0;
-        margin: 0;
-        text-shadow: rgba(0, 0, 0, .5) 0 0 3px;
         opacity: .5;
         user-select: none;
+        padding: calc(var(--typo3-modal-header-padding-y) * .5) calc(var(--typo3-modal-header-padding-x) * .5);
+        margin: calc(-.5 * var(--typo3-modal-header-padding-y)) calc(-.5 * var(--typo3-modal-header-padding-x)) calc(-.5 * var(--typo3-modal-header-padding-y)) auto;
 
         &:hover,
         &:active {
@@ -34,25 +128,16 @@ $modal-sidebar-button-space: $padding-small-vertical;
     }
 }
 
-.modal-dialog {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
-    margin: 0 auto !important;
-    height: 100vh;
-    width: 100vw;
-}
-
-.modal-content {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    max-height: calc(100vh - 40px);
-    max-width: calc(100vw - 40px);
+.modal-title {
+    margin-bottom: 0;
+    font-size: var(--typo3-modal-header-font-size);
+    line-height: 1rem;
 }
 
 .modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: var(--typo3-modal-padding);
     overflow-y: auto;
 
     > *:first-child {
@@ -64,15 +149,18 @@ $modal-sidebar-button-space: $padding-small-vertical;
     }
 }
 
-.modal-header,
 .modal-footer {
-    padding: calc(var(--#{$prefix}modal-padding) / 2) var(--#{$prefix}modal-padding);
-}
-
-.modal-footer {
-    .btn + .btn {
-        margin-inline-start: .5em;
-    }
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    padding: calc(var(--typo3-modal-padding) / 2) var(--typo3-modal-padding);
+    background-color: var(--typo3-modal-bg);
+    border-top: var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);
+    border-end-start-radius: var(--typo3-modal-border-radius);
+    border-end-end-radius: var(--typo3-modal-border-radius);
+    gap: var(--typo3-modal-footer-gap);
 
     .progress {
         flex-basis: 100%;
@@ -81,79 +169,6 @@ $modal-sidebar-button-space: $padding-small-vertical;
 
     .modal-btn-group {
         margin-inline: 0;
-    }
-}
-
-.modal-content {
-    transition: margin-top .1s ease-in;
-    border: none;
-
-    .modal-loading {
-        height: 100%;
-        display: flex;
-        flex: 1 0 auto;
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-//
-// Image manipulation
-//
-.modal-image-manipulation {
-    .modal-body {
-        padding: 0;
-
-        @include media-breakpoint-up('md') {
-            display: flex;
-            flex-direction: row;
-        }
-    }
-
-    .modal-panel-main {
-        overflow: visible;
-        background-image: url("../Images/cropper-background.png");
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-
-        // Required to make the CropperJs container responsive
-        // so we do not need to fiddle around using js resize
-        // event to adjust the image width to the current view port
-        width: 100%;
-
-        @include media-breakpoint-up('md') {
-            width: calc(100% - #{$modal-sidebar-sm});
-        }
-
-        @include media-breakpoint-up('lg') {
-            width: calc(100% - #{$modal-sidebar-md});
-        }
-
-        img {
-            max-width: 100%;
-            max-height: 100%;
-            height: auto;
-        }
-    }
-
-    .modal-panel-sidebar {
-        padding: 15px;
-        flex-shrink: 0;
-        border-inline-start: 1px solid rgba(0, 0, 0, .25);
-        position: relative;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-        width: 100%;
-
-        @include media-breakpoint-up('md') {
-            width: $modal-sidebar-sm;
-        }
-
-        @include media-breakpoint-up('lg') {
-            width: $modal-sidebar-md;
-        }
     }
 }
 
@@ -179,51 +194,12 @@ $modal-sidebar-button-space: $padding-small-vertical;
 }
 
 //
-// Size
-//
-.modal-size-small {
-    .modal-content {
-        width: 440px;
-    }
-}
-
-.modal-size-default {
-    .modal-content {
-        width: 600px;
-    }
-}
-
-.modal-size-medium {
-    .modal-content {
-        width: 800px;
-        height: 520px;
-    }
-}
-
-.modal-size-large {
-    .modal-content {
-        width: 1000px;
-        height: 800px;
-    }
-}
-
-.modal-size-full {
-    .modal-content {
-        width: 100%;
-        height: 100%;
-    }
-}
-
-//
 // Severity
 //
-@each $state, $value in $theme-colors {
+@each $state in $base-variants {
     .modal-severity-#{$state} {
-        .modal-header {
-            background-color: $value;
-            color: color-contrast($value);
-            border-bottom-color: shade-color($value, 10%);
-        }
+        --typo3-modal-header-color: var(--typo3-surface-container-#{$state}-text);
+        --typo3-modal-header-bg: var(--typo3-surface-container-#{$state});
     }
 }
 
@@ -231,27 +207,96 @@ $modal-sidebar-button-space: $padding-small-vertical;
 // Variant
 //
 .modal-style-dark {
-    color: #fff;
+    color-scheme: only dark;
+}
 
-    .modal-header {
-        color: #fff;
-        background-color: #484848;
-        border-bottom-color: #000;
+//
+// Size
+//
+.modal-size-small {
+    --modal-width: 440px;
+}
+
+.modal-size-default {
+    --modal-width: 600px;
+}
+
+.modal-size-medium {
+    --modal-width: 800px;
+    --modal-height: 520px;
+}
+
+.modal-size-large {
+    --modal-width: 1000px;
+    --modal-height: 800px;
+}
+
+.modal-size-full {
+    --modal-width: 100%;
+    --modal-height: 100%;
+}
+
+//
+// Image manipulation
+//
+.modal-image-manipulation {
+    --typo3-modal-image-manipulation-sidebar-sm: 250px;
+    --typo3-modal-image-manipulation-sidebar-md: 300px;
+
+    .modal-body {
+        padding: 0;
+
+        @include media-breakpoint-up('md') {
+            display: flex;
+            flex-direction: row;
+        }
     }
 
-    .modal-content {
-        overflow: hidden;
-        background-color: #292929;
+    .modal-panel-main {
+        overflow: visible;
+        background-color: var(--typo3-modal-bg);
+        background-image: url("../Images/cropper-background.png");
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+
+        // Required to make the CropperJs container responsive
+        // so we do not need to fiddle around using js resize
+        // event to adjust the image width to the current view port
+        width: 100%;
+
+        @include media-breakpoint-up('md') {
+            width: calc(100% - var(--typo3-modal-image-manipulation-sidebar-sm));
+        }
+
+        @include media-breakpoint-up('lg') {
+            width: calc(100% - var(--typo3-modal-image-manipulation-sidebar-md));
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+        }
     }
 
-    .modal-body,
-    .modal-footer {
-        background-color: #292929;
-        color: #fff;
-    }
+    .modal-panel-sidebar {
+        padding: 15px;
+        flex-shrink: 0;
+        border-inline-start: 1px solid rgba(0, 0, 0, .25);
+        position: relative;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
 
-    .modal-footer {
-        border-top: 1px solid #000;
+        @include media-breakpoint-up('md') {
+            width: var(--typo3-modal-image-manipulation-sidebar-sm);
+        }
+
+        @include media-breakpoint-up('lg') {
+            width: var(--typo3-modal-image-manipulation-sidebar-md);
+        }
     }
 }
 
@@ -277,7 +322,7 @@ $modal-sidebar-button-space: $padding-small-vertical;
         .progress-bar {
             &.inactive {
                 background: none;
-                color: $body-color;
+                color: var(--typo3-text-color-base);
             }
         }
     }

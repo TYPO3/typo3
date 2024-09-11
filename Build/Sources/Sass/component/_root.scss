@@ -38,6 +38,10 @@
     // Header
     --typo3-header-font-family: "Source Sans 3", sans-serif;
 
+    // Z-Index
+    --typo3-zindex-modal-backdrop: 1050;
+    --typo3-zindex-modal: 1055;
+
     // Colors
     --typo3-text-color-base: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-10));
     --typo3-text-color-link: var(--typo3-text-color-base);

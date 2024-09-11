@@ -461,6 +461,9 @@
 			<trans-unit id="component.modal.section.severity.headline" resname="component.modal.section.severity.headline">
 				<source>Severity</source>
 			</trans-unit>
+			<trans-unit id="component.modal.section.size.headline" resname="component.modal.section.size.headline">
+				<source>Size</source>
+			</trans-unit>
 
 			<!-- Component: Navs -->
 			<trans-unit id="component.navs.headline" resname="component.navs.headline">

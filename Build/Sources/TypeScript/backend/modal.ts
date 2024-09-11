@@ -494,7 +494,7 @@ class Modal {
     const modalTrigger = (evt: Event, triggerElement: HTMLElement): void => {
       evt.preventDefault();
       const content = triggerElement.dataset.bsContent || triggerElement.dataset.content || TYPO3?.lang?.['message.confirmation'] || 'Are you sure?';
-      let severity = SeverityEnum.info;
+      let severity = SeverityEnum.notice;
       if (triggerElement.dataset.severity in SeverityEnum) {
         const severityKey = triggerElement.dataset.severity as keyof typeof SeverityEnum;
         severity = SeverityEnum[severityKey];
