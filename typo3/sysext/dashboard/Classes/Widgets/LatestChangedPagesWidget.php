@@ -21,10 +21,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -57,6 +60,7 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
         private readonly BackendViewFactory $backendViewFactory,
         private readonly ConnectionPool $connectionPool,
         private readonly WidgetConfigurationInterface $configuration,
+        private readonly SiteFinder $siteFinder,
         array $options = [],
     ) {
         $this->options = array_merge([
@@ -84,13 +88,20 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
     private function getSysHistoryEntries(int $limit): array
     {
         $queryBuilder = $this->getQueryBuilderSysHistory();
+        $workspaceId = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id');
         return $queryBuilder
             ->select('tablename', 'recuid', 'tstamp', 'userid')
             ->from('sys_history')
-            ->where($queryBuilder->expr()->in('tablename', [
-                $queryBuilder->createNamedParameter('pages'),
-                $queryBuilder->createNamedParameter('tt_content'),
-            ]))
+            ->where(
+                $queryBuilder->expr()->in(
+                    'tablename',
+                    [
+                        $queryBuilder->createNamedParameter('pages'),
+                        $queryBuilder->createNamedParameter('tt_content'),
+                    ]
+                ),
+                $queryBuilder->expr()->eq('workspace', $workspaceId),
+            )
             ->addOrderBy('tstamp', 'desc')
             ->setMaxResults($limit)
             ->executeQuery()
@@ -101,19 +112,30 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
     {
         $latestPages = [];
         foreach ($history as $historyEntry) {
-            $pageId = $historyEntry['tablename'] == 'tt_content' ? $this->getPidOfContentElement($historyEntry['recuid']) : $historyEntry['recuid'];
+            $pageId = $historyEntry['recuid'];
+            if ($historyEntry['tablename'] === 'tt_content') {
+                $pageId = $this->getPageOfContentElement($historyEntry['recuid']);
+            }
             if (!$pageId || isset($latestPages[$pageId])) {
                 continue;
             }
 
-            $pageRecord = BackendUtility::readPageAccess($pageId, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
-            if (!$pageRecord) {
+            $pageRecord = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+            if ($pageRecord === false || $pageRecord === []) {
                 // Backend user has no access to show page information. Dismiss this page.
                 continue;
             }
 
             $latestPages[$pageId]['history'] = $historyEntry;
+            $pageRecord['_uid'] = $pageRecord['sys_language_uid'] > 0 ? $pageRecord['l10n_parent'] : $pageRecord['uid'];
             $latestPages[$pageId]['pageRecord'] = $pageRecord;
+            try {
+                $latestPages[$pageId]['siteLanguage'] = $this->siteFinder->getSiteByPageId($pageRecord['_uid'])->getLanguageById($pageRecord['sys_language_uid']);
+            } catch (SiteNotFoundException $exception) {
+                $latestPages[$pageId]['siteLanguage'] = null;
+            }
+            // Override tstamp of pageRecord with tstamp from history record if newer
+            $latestPages[$pageId]['pageRecord']['tstamp'] = max($historyEntry['tstamp'], $latestPages[$pageId]['pageRecord']['tstamp']);
 
             if (count($latestPages) >= $limit) {
                 break;
@@ -127,10 +149,12 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
         $userNames = BackendUtility::getUserNames('username,realName,uid');
 
         foreach ($latestPages as $pageId => &$page) {
-            $page['rootline'] = $this->getRootline($pageId);
+            $page['rootline'] = $this->getRootLine($pageId);
 
-            $page['viewLink'] = (string)PreviewUriBuilder::create($pageId)
-                ->withRootLine(BackendUtility::BEgetRootLine($pageId))
+            $uriPageId = $page['pageRecord']['sys_language_uid'] > 0 ? $page['pageRecord']['l10n_parent'] : $page['pageRecord']['uid'];
+            $page['viewLink'] = (string)PreviewUriBuilder::create($uriPageId)
+                ->withRootLine(BackendUtility::BEgetRootLine($uriPageId))
+                ->withLanguage((int)$page['pageRecord']['sys_language_uid'])
                 ->buildUri();
             $page['userName'] = $userNames[$page['history']['userid']]['username'] ?? '';
             $page['realName'] = $userNames[$page['history']['userid']]['realName'] ?? '';
@@ -139,17 +163,40 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
         return $latestPages;
     }
 
-    private function getPidOfContentElement(int $uid): ?int
+    private function getPageOfContentElement(int $uid): int
     {
         $queryBuilder = $this->getQueryBuilderForContentElements();
-        $pid = $queryBuilder
-            ->select('pid')
+        $contentRecord = $queryBuilder
+            ->select('pid', 'sys_language_uid')
             ->from('tt_content')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid)))
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
+            ->setMaxResults(1)
             ->executeQuery()
-            ->fetchOne();
+            ->fetchAssociative();
 
-        return $pid ? (int)$pid : null;
+        $queryBuilder = $this->getQueryBuilderForPages();
+        if ($contentRecord !== false && (int)$contentRecord['sys_language_uid'] > 0) {
+            return $queryBuilder
+                ->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($contentRecord['pid'], Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($contentRecord['sys_language_uid'], Connection::PARAM_INT))
+                )
+                ->setMaxResults(1)
+                ->executeQuery()
+                ->fetchAssociative()['uid'];
+        }
+
+        return $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($contentRecord['pid'], Connection::PARAM_INT))
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative()['uid'];
     }
 
     private function getRootLine(int $pageId): string
@@ -157,9 +204,7 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
         return implode(' / ', array_slice(
             array_map(
-                function ($page) {
-                    return $page['title'];
-                },
+                static fn(array $page): string => $page['title'],
                 array_reverse($rootLine)
             ),
             0,
@@ -169,20 +214,22 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
 
     private function getQueryBuilderSysHistory(): QueryBuilder
     {
-        $workspaceRestriction = GeneralUtility::makeInstance(
-            WorkspaceRestriction::class,
-            GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id')
-        );
         $queryBuilder = $this->connectionPool->getConnectionForTable('sys_history')->createQueryBuilder();
-        $queryBuilder->getRestrictions()->add($workspaceRestriction);
         return $queryBuilder;
     }
 
     private function getQueryBuilderForContentElements(): QueryBuilder
     {
-        $queryBuilderTtContent = $this->connectionPool->getConnectionForTable('tt_content')->createQueryBuilder();
-        $queryBuilderTtContent->getRestrictions()->removeAll();
-        return $queryBuilderTtContent;
+        $queryBuilder = $this->connectionPool->getConnectionForTable('tt_content')->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        return $queryBuilder;
+    }
+
+    private function getQueryBuilderForPages(): QueryBuilder
+    {
+        $queryBuilder = $this->connectionPool->getConnectionForTable('pages')->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        return $queryBuilder;
     }
 
     public function getOptions(): array
@@ -193,5 +240,10 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
     public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
+    }
+
+    private function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

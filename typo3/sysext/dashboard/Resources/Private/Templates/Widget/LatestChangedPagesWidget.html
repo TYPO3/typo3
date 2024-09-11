@@ -11,9 +11,9 @@
                 <table class="widget-table table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th class="col-time">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.datetime')}</th>
+                            <th class="col-time">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.change')}</th>
                             <th colspan="2">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.user')}</th>
-                            <th colspan="2">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.recordTitle')}</th>
+                            <th colspan="2">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.page')}</th>
                             <th class="col-control nowrap"><span class="visually-hidden">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.control')}</span></th>
                         </tr>
                     </thead>
@@ -21,12 +21,13 @@
                         <f:for each="{latestPages}" as="page">
                             <tr>
                                 <td class="col-datetime">
-                                    {page.pageRecord.tstamp -> f:format.date(format: dateFormat)}
+                                    {page.pageRecord.tstamp -> f:format.date(format: dateFormat)}<br/>
+                                    <span class="badge badge-notice">{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.table.{page.history.tablename}')}</span>
                                 </td>
                                 <td class="col-avatar">
                                     <be:avatar backendUser="{page.history.userid}" size="32" showIcon="true" />
                                 </td>
-                                <td class="col-username col-responsive" style="max-width: 140px;">
+                                <td class="col-username col-responsive">
                                     <f:if condition="{page.realName}">
                                         <f:then>
                                             {page.realName}
@@ -43,8 +44,13 @@
                                     <span title="id={page.pageRecord.uid}">
                                         <core:iconForRecord table="pages" row="{page}" />
                                     </span>
+                                    <f:if condition="{page.siteLanguage}">
+                                        <span title="{page.siteLanguage.title}">
+                                            <core:icon identifier="{page.siteLanguage.flagIdentifier}" />
+                                        </span>
+                                    </f:if>
                                     <f:if condition="{page.pageRecord.t3ver_wsid}">
-                                        <span title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.recordTitle.workspace')}">
+                                        <span title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.page.workspace')}">
                                             <core:icon identifier="apps-toolbar-menu-workspace" size="small" />
                                         </span>
                                     </f:if>
@@ -52,7 +58,7 @@
                                 <td class="col-title">
                                     {page.pageRecord.title}
                                     <f:if condition="{page.rootline}">
-                                        <div><small class="text-muted" title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.recordTitle.pagetree')}">{page.rootline}</small></div>
+                                        <div><small class="text-muted" title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.page.pagetree')}">{page.rootline}</small></div>
                                     </f:if>
                                 </td>
                                 <td class="col-control nowrap">
@@ -74,7 +80,7 @@
 
                                         <f:be.link
                                             route="web_layout"
-                                            parameters="{id: page.pageRecord.uid}"
+                                            parameters="{id: page.pageRecord._uid, function: 2, language: page.pageRecord.sys_language_uid}"
                                             class="btn btn-default btn-sm"
                                             title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.latestChangedPages.column.control.editPageContent')}">
                                             <core:icon identifier="actions-document-edit" />

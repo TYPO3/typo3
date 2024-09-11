@@ -208,8 +208,8 @@
 			<trans-unit id="widgets.latestChangedPages.empty" resname="widgets.latestChangedPages.empty" xml:space="preserve">
 				<source>No history found</source>
 			</trans-unit>
-			<trans-unit id="widgets.latestChangedPages.column.datetime" resname="widgets.latestChangedPages.column.datetime" xml:space="preserve">
-				<source>Datetime</source>
+			<trans-unit id="widgets.latestChangedPages.column.change" resname="widgets.latestChangedPages.column.change" xml:space="preserve">
+				<source>Change</source>
 			</trans-unit>
 			<trans-unit id="widgets.latestChangedPages.column.user" resname="widgets.latestChangedPages.column.user" xml:space="preserve">
 				<source>User</source>
@@ -217,13 +217,13 @@
 			<trans-unit id="widgets.latestChangedPages.column.user.userNotFound" resname="widgets.latestChangedPages.column.user.userNotFound" xml:space="preserve">
 				<source>Not Found</source>
 			</trans-unit>
-			<trans-unit id="widgets.latestChangedPages.column.recordTitle" resname="widgets.latestChangedPages.column.recordTitle" xml:space="preserve">
-				<source>Title</source>
+			<trans-unit id="widgets.latestChangedPages.column.page" resname="widgets.latestChangedPages.column.page" xml:space="preserve">
+				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="widgets.latestChangedPages.column.recordTitle.workspace" resname="widgets.latestChangedPages.column.recordTitle.workspace" xml:space="preserve">
+			<trans-unit id="widgets.latestChangedPages.column.page.workspace" resname="widgets.latestChangedPages.column.page.workspace" xml:space="preserve">
 				<source>Changes in current selected workspace</source>
 			</trans-unit>
-			<trans-unit id="widgets.latestChangedPages.column.recordTitle.pagetree" resname="widgets.latestChangedPages.column.recordTitle.pagetree" xml:space="preserve">
+			<trans-unit id="widgets.latestChangedPages.column.page.pagetree" resname="widgets.latestChangedPages.column.page.pagetree" xml:space="preserve">
 				<source>Position in pagetree</source>
 			</trans-unit>
 			<trans-unit id="widgets.latestChangedPages.column.control" resname="widgets.latestChangedPages.column.control" xml:space="preserve">
@@ -240,6 +240,12 @@
 			</trans-unit>
 			<trans-unit id="widgets.latestChangedPages.column.control.editPage" resname="widgets.latestChangedPages.column.control.editPage" xml:space="preserve">
 				<source>Edit page properties</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.table.tt_content" resname="widgets.latestChangedPages.table.tt_content" xml:space="preserve">
+				<source>Content</source>
+			</trans-unit>
+			<trans-unit id="widgets.latestChangedPages.table.pages" resname="widgets.latestChangedPages.table.pages" xml:space="preserve">
+				<source>Page</source>
 			</trans-unit>
 
 			<trans-unit id="widget_group.general" resname="widget_group.general" xml:space="preserve">
