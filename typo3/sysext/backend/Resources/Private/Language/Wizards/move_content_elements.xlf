@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Wizards/move_page.xlf" date="2024-03-08T20:22:34Z" product-name="backend">
+		<header/>
+		<body>
+			<trans-unit id="headline" resname="headline">
+				<source>Move element "%1$s" [%2$d]</source>
+			</trans-unit>
+			<trans-unit id="currentPath" resname="currentPath">
+				<source>Current path</source>
+			</trans-unit>
+			<trans-unit id="makeCopy" resname="makeCopy">
+				<source>Copy element instead of moving</source>
+			</trans-unit>
+			<trans-unit id="moveElement.notification.elementMoved.title" resname="moveElement.notification.elementMoved.title">
+				<source>Element successfully moved</source>
+			</trans-unit>
+			<trans-unit id="moveElement.notification.elementMoved.message" resname="moveElement.notification.elementMoved.message">
+				<source>The element "%s" has been successfully moved.</source>
+			</trans-unit>
+			<trans-unit id="moveElement.notification.elementCopied.title" resname="moveElement.notification.elementCopied.title">
+				<source>Element successfully copied</source>
+			</trans-unit>
+			<trans-unit id="moveElement.notification.elementCopied.message" resname="moveElement.notification.elementCopied.message">
+				<source>The element "%s" has been successfully copied.</source>
+			</trans-unit>
+			<trans-unit id="moveElement.notification.elementPasted.action.dismiss" resname="moveElement.notification.elementPasted.action.dismiss">
+				<source>Dismiss</source>
+			</trans-unit>
+			<trans-unit id="moveElement.notification.elementPasted.action.open" resname="moveElement.notification.elementPasted.action.open">
+				<source>Open "%s"</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -10,12 +10,10 @@
     <h2>
         <f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:headline" arguments="{0: element.recordTitle, 1: element.record.uid}" />
     </h2>
-    <p>
-        <label><f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:currentPath" /></label> {element.recordPath}
-    </p>
+    <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:currentPath" /> {element.recordPath}</p>
     <input type="hidden" name="elementRecordTitle" id="elementRecordTitle" value="{element.recordTitle}" />
 
-    <div class="pt-2 mb-4">
+    <div class="form-row">
         <div class="form-check form-switch">
             <input type="checkbox" name="makeCopy" id="makeCopy" value="1" {f:if(condition: makeCopyChecked, then: 'checked')} class="form-check-input">
             <label for="makeCopy" class="form-check-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_page.xlf:makeCopy" /></label>

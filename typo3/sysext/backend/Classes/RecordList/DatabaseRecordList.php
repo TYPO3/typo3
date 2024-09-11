@@ -1573,23 +1573,26 @@ class DatabaseRecordList
         if ($permsEdit && ($table === 'tt_content' || $table === 'pages') && $this->isEditable($table)) {
             if ($isL10nOverlay || $isDeletePlaceHolder) {
                 $moveAction = $this->spaceIcon;
-            } elseif ($table === 'pages') {
-                $linkTitleLL = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:move_page'));
-                $icon = $this->iconFactory->getIcon('actions-page-move', IconSize::SMALL);
-                $url = (string)$this->uriBuilder->buildUriFromRoute('move_page', [
-                    'uid' => $row['uid'],
-                    'table' => $table,
-                    'expandPage' => $row['pid'] ?? 0,
-                ]);
-                $moveAction = '<typo3-move-record-wizard-button class="btn btn-default" subject="' . $linkTitleLL . '" url="' . htmlspecialchars($url) . '" aria-label="' . $linkTitleLL . '" table="' . (string)$table . '">' . $icon->render() . '</a>';
             } else {
-                $linkTitleLL = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:move_record'));
-                $icon = $this->iconFactory->getIcon('actions-document-move', IconSize::SMALL);
-                $url = (string)$this->uriBuilder->buildUriFromRoute('move_element', [
-                    'uid' => $row['uid'],
-                    'returnUrl' => $this->listURL(),
-                ]);
-                $moveAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" aria-label="' . $linkTitleLL . '">' . $icon->render() . '</a>';
+                if ($table === 'pages') {
+                    $linkTitleLL = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:move_page'));
+                    $icon = $this->iconFactory->getIcon('actions-page-move', IconSize::SMALL);
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('move_page', [
+                        'uid' => $row['uid'],
+                        'table' => $table,
+                        'expandPage' => $row['pid'] ?? 0,
+                    ]);
+                } else {
+                    $linkTitleLL = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:move_record'));
+                    $icon = $this->iconFactory->getIcon('actions-document-move', IconSize::SMALL);
+                    $url = (string)$this->uriBuilder->buildUriFromRoute('move_element', [
+                        'uid' => $row['uid'],
+                        'originalPid' => $row['pid'] ?? 0,
+                        'expandPage' => $row['pid'] ?? 0,
+                        'returnUrl' => $this->listURL(),
+                    ]);
+                }
+                $moveAction = '<typo3-backend-dispatch-modal-button class="btn btn-default" subject="' . $linkTitleLL . '" url="' . htmlspecialchars($url) . '" aria-label="' . $linkTitleLL . '">' . $icon->render() . ' ' . $linkTitleLL . '</typo3-backend-dispatch-modal-button>';
             }
             $this->addActionToCellGroup($cells, $moveAction, 'move');
         }

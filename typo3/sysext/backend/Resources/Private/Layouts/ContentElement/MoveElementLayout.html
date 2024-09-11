@@ -1,0 +1,36 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{contentOnly}">
+    <f:then>
+        <f:render section="Content" />
+    </f:then>
+    <f:else>
+        <div class="element-browser">
+            <div class="element-browser-main scaffold-content-navigation-available scaffold-content-navigation-expanded">
+                <div class="element-browser-main-sidebar">
+                    <typo3-backend-component-page-browser
+                        class="scaffold-content-navigation-component"
+                        active-page="{activePage}">
+                    </typo3-backend-component-page-browser>
+                </div>
+                <typo3-backend-navigation-switcher
+                    parent=".element-browser-main"
+                    navigation=".element-browser-main-sidebar"
+                    minimum-width="250"
+                    initial-width="{initialNavigationWidth}"
+                    persistence-identifier="selector.navigation.width"
+                ></typo3-backend-navigation-switcher>
+                <div class="element-browser-main-content">
+                    <div class="element-browser-body">
+                        <f:render section="Content" arguments="{_all}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </f:else>
+</f:if>
+
+</html>

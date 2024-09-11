@@ -18,13 +18,13 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 
 /**
- * Module: @typo3/backend/move-record-wizard-button
+ * Module: @typo3/backend/element/dispatch-modal-button
  *
  * @example
- * <typo3-move-record-wizard-button class="btn btn-default" url="link/to/endpoint" subject="Wizard title" ></typo3-move-record-wizard-button>
+ * <typo3-backend-dispatch-modal-button class="btn btn-default" url="link/to/endpoint" subject="Wizard title" ></typo3-move-record-wizard-button>
  */
-@customElement('typo3-move-record-wizard-button')
-export class MoveRecordWizardButton extends LitElement {
+@customElement('typo3-backend-dispatch-modal-button')
+export class DispatchModalButton extends LitElement {
   static styles = [css`:host { cursor: pointer; appearance: button; }`];
   @property({ type: String }) url: string;
   @property({ type: String }) subject: string;
@@ -84,6 +84,6 @@ export class MoveRecordWizardButton extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'typo3-move-record-wizard-button': MoveRecordWizardButton;
+    'typo3-backend-dispatch-modal-button': DispatchModalButton;
   }
 }

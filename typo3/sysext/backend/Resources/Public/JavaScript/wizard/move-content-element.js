@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+import RegularEvent from"@typo3/core/event/regular-event.js";import DocumentService from"@typo3/core/document-service.js";import AjaxDataHandler from"@typo3/backend/ajax-data-handler.js";import Modal from"@typo3/backend/modal.js";import ModuleMenu from"@typo3/backend/module-menu.js";import Notification from"@typo3/backend/notification.js";import ImmediateAction from"@typo3/backend/action-button/immediate-action.js";import{lll}from"@typo3/core/lit-helper.js";export class MoveContentElement{constructor(){this.initialize()}async initialize(){await DocumentService.ready(),this.registerEvents(document.querySelector(".element-browser-body"))}registerEvents(e){new RegularEvent("change",(async e=>{const t=e.target.checked?lll("copyElementToHere"):lll("moveElementToHere");document.querySelectorAll('[data-action="paste"]').forEach((e=>{e.querySelector("span.t3js-button-label").textContent=t}))})).delegateTo(e,"#makeCopy"),new RegularEvent("click",(async(e,t)=>{const o=document.querySelector("#makeCopy"),n=document.querySelector("#elementRecordTitle").value,a=document.querySelector("#pageRecordTitle").value,l=document.querySelector("#pageUid").value,i=new URL(window.location.href),c=o.checked,r=c?"copy":"move",m={cmd:{tt_content:{[i.searchParams.get("uid")]:{[r]:t.dataset.position}}}};void 0!==t.dataset.colpos&&(m.data={tt_content:{[i.searchParams.get("uid")]:{colPos:t.dataset.colpos}}}),AjaxDataHandler.process(m).then((()=>{Modal.dismiss(),Notification.success(lll(c?"moveElement.notification.elementCopied.title":"moveElement.notification.elementMoved.title"),lll(c?"moveElement.notification.elementCopied.title":"moveElement.notification.elementMoved.message").replace("%s",n),10,[{label:lll("moveElement.notification.elementPasted.action.dismiss")},{label:lll("moveElement.notification.elementPasted.action.open").replace("%s",a),action:new ImmediateAction((()=>{ModuleMenu.App.showModule("web_list","id="+l)}))}]),ModuleMenu.App.showModule("web_list","id="+i.searchParams.get("originalPid"))}))})).delegateTo(e,'[data-action="paste"]')}}

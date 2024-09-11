@@ -18,11 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tree\View;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Position map class for moving content elements
@@ -42,18 +42,11 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
      */
     public string $copyMode = 'move';
 
-    /**
-     * The return url, forwarded SimpleDataHandler
-     */
-    public string $R_URI = '';
-
     protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
 
-    public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder, BackendLayoutView $backendLayoutView)
+    public function __construct(IconFactory $iconFactory, BackendLayoutView $backendLayoutView)
     {
         $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
         parent::__construct($backendLayoutView);
     }
 
@@ -63,24 +56,24 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
     protected function insertPositionIcon(?array $row, int $colPos, int $pid): string
     {
         if (is_array($row)) {
-            $location = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
-                'cmd[tt_content][' . $this->moveUid . '][' . $this->copyMode . ']' => '-' . $row['uid'],
-                'redirect' => $this->R_URI,
-            ]);
+            $attributes = [
+                'data-action' => 'paste',
+                'data-position' => '-' . $row['uid'],
+            ];
         } else {
-            $location = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
-                'cmd[tt_content][' . $this->moveUid . '][' . $this->copyMode . ']' => $pid,
-                'data[tt_content][' . $this->moveUid . '][colPos]' => $colPos,
-                'redirect' => $this->R_URI,
-            ]);
+            $attributes = [
+                'data-action' => 'paste',
+                'data-position' => $pid,
+                'data-colpos' => $colPos,
+            ];
         }
         $buttonLabelTransUnit = $this->copyMode === 'move' ? 'moveElementToHere' : 'copyElementToHere';
         $buttonLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:' . $buttonLabelTransUnit));
         return '
             <div class="page-position-action">
-                <a class="btn btn-default btn-sm" href="' . htmlspecialchars($location) . '" title="' . $buttonLabel . '" role="button">
-                    ' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . ' ' . $buttonLabel . '
-                </a>
+                <button class="btn btn-default" title="' . $buttonLabel . '" ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+                    ' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . ' <span class="t3js-button-label">' . $buttonLabel . '</span>
+                </button>
             </div>';
     }
 
