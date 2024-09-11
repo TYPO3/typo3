@@ -787,7 +787,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function getCacheHeaders(ServerRequestInterface $request): array
     {
-        $headers = [];
+        // Even though we "could" tell the clients to cache the page, we tell clients not to cache this page
+        // by default.
+        // If TYPO3 does not define this, then a malformed .htaccess might send "cache every HTML file for 30 minutes"
+        // and exposing content that should not be cached.
+        // "no-store" is used to ensure that the client HAS to ask the server every time,
+        // and is not allowed to store anything at all
+        $headers = [
+            'Cache-Control' => 'private, no-store',
+        ];
         // Getting status whether we can send cache control headers for proxy caching:
         $doCache = $this->isStaticCacheble($request);
         $isBackendUserLoggedIn = $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
@@ -798,37 +806,47 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($isClientCachable) {
             // Only send the headers to the client that they are allowed to cache if explicitly activated.
             $typoScriptConfigArray = $request->getAttribute('frontend.typoscript')->getConfigArray();
-            if (!empty($typoScriptConfigArray['sendCacheHeaders'])) {
+            $sendCacheHeadersToClient = !empty($typoScriptConfigArray['sendCacheHeaders']);
+            // The flag "config.sendCacheHeadersForSharedCaches" is preferred over "config.sendCacheHeaders"
+            $sendCacheHeadersForSharedCaches = $typoScriptConfigArray['sendCacheHeadersForSharedCaches'] ?? '';
+            $isBehindReverseProxy = $request->getAttribute('normalizedParams')?->isBehindReverseProxy();
+            if (
+                $sendCacheHeadersForSharedCaches === 'force' ||
+                ($sendCacheHeadersForSharedCaches === 'auto' && $isBehindReverseProxy)
+            ) {
+                $headers = [
+                    'Expires' => gmdate('D, d M Y H:i:s T', ($GLOBALS['EXEC_TIME'] + $lifetime)),
+                    'ETag' => '"' . md5($this->content) . '"',
+                    // Do not cache for private caches, but store in shared caches
+                    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#:~:text=Age%3A%20100-,s%2Dmaxage,-The%20s%2Dmaxage
+                    'Cache-Control' => 'max-age=0, s-maxage=' . $lifetime,
+                    'Pragma' => 'public',
+                ];
+            } elseif ($sendCacheHeadersToClient) {
                 $headers = [
                     'Expires' => gmdate('D, d M Y H:i:s T', ($GLOBALS['EXEC_TIME'] + $lifetime)),
                     'ETag' => '"' . md5($this->content) . '"',
                     'Cache-Control' => 'max-age=' . $lifetime,
-                    // no-cache
                     'Pragma' => 'public',
                 ];
             }
-        } else {
-            // "no-store" is used to ensure that the client HAS to ask the server every time, and is not allowed to store anything at all
-            $headers = [
-                'Cache-Control' => 'private, no-store',
-            ];
-            // Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
-            if ($isBackendUserLoggedIn) {
-                if ($doCache) {
-                    $this->getTimeTracker()->setTSlogMessage('Cache-headers with max-age "' . $lifetime . '" would have been sent');
-                } else {
-                    $reasonMsg = [];
-                    if (!$request->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
-                        $reasonMsg[] = 'Caching disabled.';
-                    }
-                    if ($this->isINTincScript()) {
-                        $reasonMsg[] = '*_INT object(s) on page.';
-                    }
-                    if ($this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false)) {
-                        $reasonMsg[] = 'Frontend user logged in.';
-                    }
-                    $this->getTimeTracker()->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "' . implode(' ', $reasonMsg) . '"', LogLevel::NOTICE);
+        } elseif ($isBackendUserLoggedIn) {
+            // Now, if a backend user is logged in, tell the user in the Admin Panel log
+            // what the caching status would have been.
+            if ($doCache) {
+                $this->getTimeTracker()->setTSlogMessage('Cache-headers with max-age "' . $lifetime . '" would have been sent');
+            } else {
+                $reasonMsg = [];
+                if (!$request->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
+                    $reasonMsg[] = 'Caching disabled.';
                 }
+                if ($this->isINTincScript()) {
+                    $reasonMsg[] = '*_INT object(s) on page.';
+                }
+                if ($this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false)) {
+                    $reasonMsg[] = 'Frontend user logged in.';
+                }
+                $this->getTimeTracker()->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "' . implode(' ', $reasonMsg) . '"', LogLevel::NOTICE);
             }
         }
         return $headers;

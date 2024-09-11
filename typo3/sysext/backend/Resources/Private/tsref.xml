@@ -588,16 +588,46 @@ The conditions for allowing client caching are:
 page was cachedNo *_INT or *_EXT objects were on the page (eg. USER_INT)No frontend user is logged inNo backend user is logged in
 
 If these conditions are met, the headers sent are:
-Last-Modified [SYS_LASTCHANGED of page id]Expires [expire time of page cache]ETag [md5 of content]Cache-Control: max-age: [seconds til expiretime]Pragma: public
+
+Expires: [expire time of page cache]
+ETag: [md5 of content]
+Cache-Control: max-age=[seconds til expiretime]
+Pragma: public
 
 In case caching is not allowed, these headers are sent to avoid client caching:
-Cache-Control: private
+Cache-Control: private, no-store
 
 Notice that enabling the browser caches means you have to consider how log files are written. Because when a page is cached on the client it will not invoke a request to the webserver, thus not writing the request to the log. There should be ways to circumvent these problems but they are outside the domain of TYPO3 in any case.
 
 Tip: Enabling cache-control headers might confuse editors seeing old content served from the browser cache. "Shift-Reload" will bypass both browser- and reverse-proxy caches and even make TYPO3 regenerate the page. Teach them that trick!
 
 Thanks to Ole Tange, www.forbrug.dk for co-authoring this feature.]]></description>
+            <default><![CDATA[
+]]></default>
+        </property>
+        <property name="sendCacheHeadersForSharedCaches" type="string">
+            <description><![CDATA[If enabled, TYPO3 will output cache-control headers to a possible proxy / shared cache based mainly on whether the page was cached internally. This feature allows shared caches such as CDNs / reverse proxies to take load of TYPO3 websites while delivering fresh content to the client.
+
+The value "auto" will send s-maxage if TYPO3 is served behind a trusted reverse proxy, config.sendCacheHeaders might be respected if the request was not performed by a trusted reverse proxy.
+
+The value "force" will send s-maxage in any case, config.sendCacheHeaders will be ignored.
+
+The conditions for allowing proxy caching are:
+page was cachedNo *_INT or *_EXT objects were on the page (eg. USER_INT)No frontend user is logged inNo backend user is logged in
+
+If these conditions are met, the headers sent are:
+
+Expires: [expire time of page cache]
+ETag: [md5 of content]
+Cache-Control: max-age=0, s-maxage=[seconds til expiretime]
+Pragma: public
+
+In case caching is not allowed, these headers are sent to avoid client caching:
+Cache-Control: private, no-store
+
+Notice that enabling the shared caches means you have to consider how log files are written. Because when a page is cached on the client it will not invoke a request to the webserver, thus not writing the request to the log. There should be ways to circumvent these problems but they are outside the domain of TYPO3 in any case.
+
+Tip: Enabling cache-control headers might confuse editors seeing old content served from the shared cache. You should configure you shared cache to bypass cache if the cookie "be_typo_user" is set.]]></description>
             <default><![CDATA[
 ]]></default>
         </property>
