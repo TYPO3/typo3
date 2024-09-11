@@ -236,6 +236,13 @@ export class ModalElement extends LitElement {
         }
         // see Build/Sources/Sass/scaffold/_scaffold.scss
         iframe.contentDocument.body.classList.add('with-overflow');
+
+        // Register global event handler to close modal when <ESC> is invoked in modal iframe
+        new RegularEvent('keydown', (event: KeyboardEvent) => {
+          if(event.key === 'Escape' && parent?.top?.TYPO3?.Modal) {
+            parent.top.TYPO3.Modal.dismiss();
+          }
+        }).bindTo(iframe.contentDocument);
       };
       return html`
         <iframe src="${this.content}" name="modal_frame" class="modal-iframe t3js-modal-iframe" @load=${loadCallback}></iframe>
