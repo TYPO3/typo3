@@ -16,7 +16,13 @@
 				<source>Edit Settings</source>
 			</trans-unit>
 			<trans-unit id="overview.message.notEditable" resname="overview.message.notEditable">
-				<source>This sets of this sites do not provide any configurable settings.</source>
+				<source>The sets of this sites do not provide any configurable settings.</source>
+			</trans-unit>
+			<trans-unit id="overview.noSiteSettingsExists.title" resname="overview.noSiteSettingsExists.title">
+				<source>No configurable Site Settings found</source>
+			</trans-unit>
+			<trans-unit id="overview.noSiteSettingsExists.message" resname="overview.noSiteSettingsExists.message">
+				<source>See the documentation for instructions on defining settings via site sets.</source>
 			</trans-unit>
 			<trans-unit id="edit.title" resname="edit.noSettings.title">
 				<source>Site Settings for "{siteTitle}"</source>
@@ -25,7 +31,7 @@
 				<source>No Settings available</source>
 			</trans-unit>
 			<trans-unit id="edit.noSettings.message" resname="edit.noSettings.message">
-				<source>The site '%s' does provide configurable settings.</source>
+				<source>The site '%s' does not provide configurable settings.</source>
 			</trans-unit>
 			<trans-unit id="edit.yamlExport" resname="edit.yamlExport">
 				<source>YAML export</source>
