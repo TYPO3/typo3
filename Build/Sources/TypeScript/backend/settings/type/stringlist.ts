@@ -45,16 +45,17 @@ export class StringlistTypeElement extends BaseElement<string[]> {
             id=${`${this.formid}${index > 0 ? '-' + index : ''}`}
             type="text"
             class="form-control"
+            ?readonly=${this.readonly}
             .value=${live(value)}
             @change=${(e: InputEvent) => this.updateValue((e.target as HTMLInputElement).value, index)}
           />
         </td>
         <td>
           <div class="btn-group" role="group">
-            <button class="btn btn-default" type="button" @click=${() => this.addValue(index)}>
+            <button class="btn btn-default" type="button" ?disabled=${this.readonly} @click=${() => this.addValue(index)}>
               <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
             </button>
-            <button class="btn btn-default" type="button" @click=${() => this.removeValue(index)}>
+            <button class="btn btn-default" type="button" ?disabled=${this.readonly} @click=${() => this.removeValue(index)}>
               <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
             </button>
           </div>

@@ -28,6 +28,7 @@ readonly class SettingDefinition
         public string|int|float|bool|array|null $default,
         public string $label,
         public ?string $description = null,
+        public bool $readonly = false,
         public array $enum = [],
         public ?string $category = null,
         public array $tags = [],

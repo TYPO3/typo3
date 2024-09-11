@@ -15,6 +15,7 @@ var __decorate=function(e,t,o,r){var l,a=arguments.length,n=a<3?t:null===r?r=Obj
         type="text"
         id=${this.formid}
         class="form-control"
+        ?readonly=${this.readonly}
         .value=${this.value}
         @change=${e=>this.updateValue(e.target.value)}
       />

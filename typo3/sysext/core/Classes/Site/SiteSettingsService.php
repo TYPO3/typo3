@@ -90,6 +90,9 @@ readonly class SiteSettingsService
             if ($definition === null) {
                 throw new \RuntimeException('Unexpected setting ' . $key . ' is not defined', 1724067004);
             }
+            if ($definition->readonly) {
+                continue;
+            }
             $type = $this->settingsTypeRegistry->get($definition->type);
             $settings[$key] = $type->transformValue($value, $definition);
         }

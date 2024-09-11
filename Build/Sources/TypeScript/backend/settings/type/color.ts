@@ -49,6 +49,7 @@ export class ColorTypeElement extends BaseElement<string> {
         type="text"
         id=${this.formid}
         class="form-control"
+        ?readonly=${this.readonly}
         .value=${this.value}
         @change=${(e: InputEvent) => this.updateValue((e.target as HTMLInputElement).value)}
       />

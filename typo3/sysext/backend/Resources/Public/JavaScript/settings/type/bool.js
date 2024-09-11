@@ -17,6 +17,7 @@ var __decorate=function(e,t,o,r){var c,l=arguments.length,n=l<3?t:null===r?r=Obj
           id=${this.formid}
           class="form-check-input"
           value="1"
+          ?disabled=${this.readonly}
           .checked=${this.value}
           @change=${e=>this.value=!!e.target.checked}
         />

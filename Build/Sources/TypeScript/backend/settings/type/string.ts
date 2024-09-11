@@ -28,6 +28,7 @@ export class StringTypeElement extends BaseElement<string> {
         type="text"
         id=${this.formid}
         class="form-control"
+        ?readonly=${this.readonly}
         .value=${this.value}
         @change=${(e: InputEvent) => this.value = (e.target as HTMLInputElement).value}
       />

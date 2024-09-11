@@ -10,12 +10,13 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,r,o){var n,m=arguments.length,l=m<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,r):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(e,t,r,o);else for(var p=e.length-1;p>=0;p--)(n=e[p])&&(l=(m<3?n(l):m>3?n(t,r,l):n(t,r))||l);return m>3&&l&&Object.defineProperty(t,r,l),l};import{html}from"lit";import{customElement,property}from"lit/decorators.js";import{BaseElement}from"@typo3/backend/settings/type/base.js";export const componentName="typo3-backend-settings-type-number";let NumberTypeElement=class extends BaseElement{render(){return html`
+var __decorate=function(e,t,r,o){var n,l=arguments.length,m=l<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,r):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)m=Reflect.decorate(e,t,r,o);else for(var p=e.length-1;p>=0;p--)(n=e[p])&&(m=(l<3?n(m):l>3?n(t,r,m):n(t,r))||m);return l>3&&m&&Object.defineProperty(t,r,m),m};import{html}from"lit";import{customElement,property}from"lit/decorators.js";import{BaseElement}from"@typo3/backend/settings/type/base.js";export const componentName="typo3-backend-settings-type-number";let NumberTypeElement=class extends BaseElement{render(){return html`
       <input
         type="number"
         id=${this.formid}
         class="form-control"
         step="0.01"
+        ?readonly=${this.readonly}
         .value=${this.value}
         @change=${e=>this.value=parseFloat(e.target.value)}
       />

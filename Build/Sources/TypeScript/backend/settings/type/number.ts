@@ -29,6 +29,7 @@ export class NumberTypeElement extends BaseElement<number> {
         id=${this.formid}
         class="form-control"
         step="0.01"
+        ?readonly=${this.readonly}
         .value=${this.value}
         @change=${(e: InputEvent) => this.value = parseFloat((e.target as HTMLInputElement).value)}
       />

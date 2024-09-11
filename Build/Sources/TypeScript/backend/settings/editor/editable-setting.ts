@@ -30,7 +30,8 @@ interface SettingDefinition {
   type: string,
   default: ValueType,
   label: string,
-  description?: string|null,
+  description: string|null,
+  readonly: boolean,
   enum: ValueType[],
   categories: string[],
   tags: string[],
@@ -108,9 +109,19 @@ export class EditableSettingElement extends LitElement {
       formid: `setting-${definition.key}`,
       name: `settings[${definition.key}]`,
       value: Array.isArray(value) ? JSON.stringify(value) : String(value),
+      readonly: definition.readonly,
       default: Array.isArray(definition.default) ? JSON.stringify(definition.default) : String(definition.default),
     };
     for (const [key, value] of Object.entries(attributes)) {
+      if (typeof value === 'boolean') {
+        if (value && !element.hasAttribute(key)) {
+          element.setAttribute(key, '');
+        }
+        if (!value && element.hasAttribute(key)) {
+          element.removeAttribute(key);
+        }
+        continue;
+      }
       if (element.getAttribute(key) !== value) {
         element.setAttribute(key, value);
       }
@@ -131,6 +142,7 @@ export class EditableSettingElement extends LitElement {
           <li>
             <button class="dropdown-item dropdown-item-spaced"
               type="button"
+              ?disabled=${definition.readonly}
               @click="${() => this.setToDefaultValue()}">
               <typo3-backend-icon identifier="actions-undo" size="small"></typo3-backend-icon> ${lll('edit.resetSetting')}
             </button>

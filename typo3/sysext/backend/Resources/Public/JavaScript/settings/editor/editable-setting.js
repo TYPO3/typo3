@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(t,e,i,n){var o,s=arguments.length,a=s<3?e:null===n?n=Object.getOwnPropertyDescriptor(e,i):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,i,n);else for(var l=t.length-1;l>=0;l--)(o=t[l])&&(a=(s<3?o(a):s>3?o(e,i,a):o(e,i))||a);return s>3&&a&&Object.defineProperty(e,i,a),a};import{html,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import{until}from"lit/directives/until.js";import"@typo3/backend/element/spinner-element.js";import"@typo3/backend/element/icon-element.js";import{copyToClipboard}from"@typo3/backend/copy-to-clipboard.js";import Notification from"@typo3/backend/notification.js";import{lll}from"@typo3/core/lit-helper.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";let EditableSettingElement=class extends LitElement{constructor(){super(...arguments),this.hasChange=!1,this.typeElement=null}createRenderRoot(){return this}render(){const{value:t,systemDefault:e,definition:i}=this.setting;return html`
+var __decorate=function(t,e,i,n){var o,s=arguments.length,a=s<3?e:null===n?n=Object.getOwnPropertyDescriptor(e,i):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,i,n);else for(var r=t.length-1;r>=0;r--)(o=t[r])&&(a=(s<3?o(a):s>3?o(e,i,a):o(e,i))||a);return s>3&&a&&Object.defineProperty(e,i,a),a};import{html,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import{until}from"lit/directives/until.js";import"@typo3/backend/element/spinner-element.js";import"@typo3/backend/element/icon-element.js";import{copyToClipboard}from"@typo3/backend/copy-to-clipboard.js";import Notification from"@typo3/backend/notification.js";import{lll}from"@typo3/core/lit-helper.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";let EditableSettingElement=class extends LitElement{constructor(){super(...arguments),this.hasChange=!1,this.typeElement=null}createRenderRoot(){return this}render(){const{value:t,systemDefault:e,definition:i}=this.setting;return html`
       <div
         class=${`settings-item settings-item-${i.type} ${this.hasChange?"has-change":""}`}
         tabindex="0"
@@ -31,7 +31,7 @@ var __decorate=function(t,e,i,n){var o,s=arguments.length,a=s<3?e:null===n?n=Obj
           ${this.renderActions()}
         </div>
       </div>
-    `}async renderField(){const{definition:t,value:e,typeImplementation:i}=this.setting;let n=this.typeElement;if(!n){const t=await import(i);if(!("componentName"in t))throw new Error(`module ${i} is missing the "componentName" export`);n=document.createElement(t.componentName),this.typeElement=n,n.addEventListener("typo3:setting:changed",(t=>{this.hasChange=JSON.stringify(this.setting.value)!==JSON.stringify(t.detail.value)}))}const o={key:t.key,formid:`setting-${t.key}`,name:`settings[${t.key}]`,value:Array.isArray(e)?JSON.stringify(e):String(e),default:Array.isArray(t.default)?JSON.stringify(t.default):String(t.default)};for(const[t,e]of Object.entries(o))n.getAttribute(t)!==e&&n.setAttribute(t,e);return n}renderActions(){const{definition:t}=this.setting;return html`
+    `}async renderField(){const{definition:t,value:e,typeImplementation:i}=this.setting;let n=this.typeElement;if(!n){const t=await import(i);if(!("componentName"in t))throw new Error(`module ${i} is missing the "componentName" export`);n=document.createElement(t.componentName),this.typeElement=n,n.addEventListener("typo3:setting:changed",(t=>{this.hasChange=JSON.stringify(this.setting.value)!==JSON.stringify(t.detail.value)}))}const o={key:t.key,formid:`setting-${t.key}`,name:`settings[${t.key}]`,value:Array.isArray(e)?JSON.stringify(e):String(e),readonly:t.readonly,default:Array.isArray(t.default)?JSON.stringify(t.default):String(t.default)};for(const[t,e]of Object.entries(o))"boolean"!=typeof e?n.getAttribute(t)!==e&&n.setAttribute(t,e):(e&&!n.hasAttribute(t)&&n.setAttribute(t,""),!e&&n.hasAttribute(t)&&n.removeAttribute(t));return n}renderActions(){const{definition:t}=this.setting;return html`
       <div class="dropdown">
         <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
@@ -41,6 +41,7 @@ var __decorate=function(t,e,i,n){var o,s=arguments.length,a=s<3?e:null===n?n=Obj
           <li>
             <button class="dropdown-item dropdown-item-spaced"
               type="button"
+              ?disabled=${t.readonly}
               @click="${()=>this.setToDefaultValue()}">
               <typo3-backend-icon identifier="actions-undo" size="small"></typo3-backend-icon> ${lll("edit.resetSetting")}
             </button>

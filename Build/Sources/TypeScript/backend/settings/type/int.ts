@@ -28,6 +28,7 @@ export class IntTypeElement extends BaseElement<number> {
         type="number"
         id=${this.formid}
         class="form-control"
+        ?readonly=${this.readonly}
         .value=${this.value}
         @change=${(e: InputEvent) => this.value = parseInt((e.target as HTMLInputElement).value, 10)}
       />
