@@ -220,6 +220,7 @@ Options:
             - checkExceptionCodes: test core for duplicate exception codes
             - checkExtensionScannerRst: test all .rst files referenced by extension scanner exist
             - checkFilePathLength: test core file paths do not exceed maximum length
+            - checkFilesAndPathsForSpaces: test paths and files for spaces
             - checkGitSubmodule: test core git has no sub modules defined
             - checkGruntClean: Verify "grunt build" is clean. Warning: Executes git commands! Usually used in CI only.
             - checkNamespaceIntegrity: Verify namespace integrity in class and test code files are in good shape.
@@ -882,6 +883,10 @@ case ${TEST_SUITE} in
         ;;
     checkFilePathLength)
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-file-path-length-${SUFFIX} ${IMAGE_PHP} Build/Scripts/maxFilePathLength.sh
+        SUITE_EXIT_CODE=$?
+        ;;
+    checkFilesAndPathsForSpaces)
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-file-path-length-${SUFFIX} ${IMAGE_PHP} Build/Scripts/spacesInPathsAndFilenames.sh
         SUITE_EXIT_CODE=$?
         ;;
     checkGitSubmodule)

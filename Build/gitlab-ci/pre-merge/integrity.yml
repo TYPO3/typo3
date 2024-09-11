@@ -50,6 +50,7 @@ integration various pre-merge:
     - Build/Scripts/runTests.sh -s checkNamespaceIntegrity -p 7.4
     - Build/Scripts/runTests.sh -s lintServicesYaml -p 7.4
     - Build/Scripts/runTests.sh -s lintYaml -p 7.4
+    - Build/Scripts/runTests.sh -s checkFilesAndPathsForSpaces -p 7.4
 
 lint php pre-merge:
   stage: main
