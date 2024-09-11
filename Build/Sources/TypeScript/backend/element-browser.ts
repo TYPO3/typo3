@@ -79,8 +79,21 @@ class ElementBrowser {
    * Returns the parent document object
    */
   public getParent(): Window | null {
+    const isInModalFrame = typeof window.frames !== 'undefined'
+      && typeof window.frames.frameElement !== 'undefined'
+      && window.frames.frameElement.classList.contains('t3js-modal-iframe');
+    const otherModalFrames = Array.from(top.frames || []).filter((item: Window) =>
+      typeof item.frameElement !== 'undefined'
+      && item.frameElement.classList.contains('t3js-modal-iframe')
+      && item.frameElement !== window.frames.frameElement
+    );
+
     if (this.opener === null) {
-      if (
+      // in case the current modal frame was triggered by another modal frame
+      // (which is NOT the parent element in the DOM)
+      if (isInModalFrame && otherModalFrames.length > 0) {
+        this.opener = otherModalFrames.pop();
+      } else if (
         typeof window.parent !== 'undefined' &&
         typeof window.parent.document.list_frame !== 'undefined' &&
         window.parent.document.list_frame.parent.document.querySelector('.t3js-modal-iframe') !== null
