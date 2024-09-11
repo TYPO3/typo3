@@ -179,7 +179,7 @@ readonly class SiteSettingsController
         $parsedBody = $request->getParsedBody();
 
         $returnUrl = GeneralUtility::sanitizeLocalUrl(
-            (string)($parsedBody['returnUrl'])
+            (string)($parsedBody['returnUrl'] ?? '')
         ) ?: null;
         $overviewUrl = $this->uriBuilder->buildUriFromRoute('site_settings');
         $CMD = $parsedBody['CMD'] ?? '';
