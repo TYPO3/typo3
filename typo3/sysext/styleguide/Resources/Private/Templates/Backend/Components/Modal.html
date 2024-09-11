@@ -23,21 +23,22 @@
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.default.headline" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
-            <a class="btn btn-default t3js-modal-trigger">Open modal</a>
+            <button type="button" class="btn btn-default t3js-modal-trigger">Open modal</button>
         </sg:example>
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.customTitleContent.headline" /></h2>
         <f:variable name="codeSnippetCustomTitle">
-            <a class="btn btn-default t3js-modal-trigger" data-title="Custom modal title" data-content="Lorem ipsum dolor...">Open modal</a>
+            <button type="button" class="btn btn-default t3js-modal-trigger" data-title="Custom modal title" data-content="Lorem ipsum dolor...">Open modal</button>
         </f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetCustomTitle}">
-            <a
+            <button
+                type="button"
                 class="btn btn-default t3js-modal-trigger"
                 data-title="Custom modal title"
                 data-content="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
             >
                 Open modal
-            </a>
+            </button>
         </sg:example>
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.modal.section.severity.headline" /></h2>
@@ -57,7 +58,7 @@
                         </f:if>
                     </f:variable>
                     <div class="example-item">
-                        <a class="btn btn-{buttonClass -> f:spaceless()} t3js-modal-trigger" data-severity="{variant}">Open {variant} modal</a>
+                        <button type="button" class="btn btn-{buttonClass -> f:spaceless()} t3js-modal-trigger" data-severity="{variant}">Open {variant} modal</button>
                     </div>
                 </f:for>
             </div>

@@ -23,23 +23,23 @@
     <td class="col-datetime">{record.tstamp}</td>
     <td class="col-control">
         <div class="btn-group">
-            <a
+            <button
+                type="button"
                 class="btn btn-default"
                 data-action="undo"
                 title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.undo')}"
-                role="button"
             >
                 <core:icon identifier="actions-edit-undo" />
-            </a>
+            </button>
             <f:if condition="{allowDelete}">
-                <a
+                <button
+                    type="button"
                     class="btn btn-default"
                     data-action="delete"
                     title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.delete')}"
-                    role="button"
                 >
                     <core:icon identifier="actions-edit-delete" />
-                </a>
+                </button>
             </f:if>
         </div>
         <div class="btn-group">
