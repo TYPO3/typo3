@@ -65,6 +65,14 @@
         z-index: 3 !important;
     }
 
+    &:disabled {
+        --typo3-form-select-color: color-mix(in srgb, var(--typo3-form-select-disabled-color), transparent calc((1 - var(--typo3-form-select-disabled-opacity)) * 100%));
+        --typo3-form-select-bg: var(--typo3-form-select-disabled-bg);
+        --typo3-form-select-border-color: var(--typo3-form-select-disabled-border-color);
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
     &[multiple],
     &[size]:not([size="1"]) {
         min-height: 10rem;
