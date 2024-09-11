@@ -40,49 +40,49 @@
 				<source>Unknown author</source>
 			</trans-unit>
 			<trans-unit id="widget_group.sys_note_widget.title" resname="widget_group.sys_note_widget.title">
-				<source>Sys Notes</source>
+				<source>System Notes</source>
 			</trans-unit>
 			<!-- All -->
 			<trans-unit id="widget.all.title" resname="widget.all.title">
-				<source>Alle Sys Notes</source>
+				<source>All System Notes</source>
 			</trans-unit>
 			<trans-unit id="widget.all.description" resname="widget.all.description">
-				<source>Shows a list of all pages which have sys_notes</source>
+				<source>Shows a list of all pages with system notes</source>
 			</trans-unit>
 			<!-- Default -->
 			<trans-unit id="widget.pagesWithInternalNoteDefault.title" resname="widget.pagesWithInternalNoteDefault.title">
-				<source>Notes with category Default</source>
+				<source>Notes in the category "Default"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNoteDefault.description" resname="widget.pagesWithInternalNoteDefault.description">
-				<source>Shows a list of all pages which have sys_notes with the category "Default"</source>
+				<source>Shows a list of all pages with system notes in the category "Default"</source>
 			</trans-unit>
 			<!-- ToDos -->
 			<trans-unit id="widget.pagesWithInternalNoteToDos.title" resname="widget.pagesWithInternalNoteToDos.title">
-				<source>Notes with category ToDo</source>
+				<source>Notes in the category "ToDo"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNoteToDos.description" resname="widget.pagesWithInternalNoteToDos.description">
-				<source>Shows a list of all pages which have sys_notes with the category "ToDo"</source>
+				<source>Shows a list of all pages with system notes in the category "ToDo"</source>
 			</trans-unit>
 			<!-- Template -->
 			<trans-unit id="widget.pagesWithInternalNoteTemplate.title" resname="widget.pagesWithInternalNoteTemplate.title">
-				<source>Notes with category Template</source>
+				<source>Notes in the category "Template"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNoteTemplate.description" resname="widget.pagesWithInternalNoteTemplate.description">
-				<source>Shows a list of all pages which have sys_notes with the category "Template"</source>
+				<source>Shows a list of all pages with system notes in the category "Template"</source>
 			</trans-unit>
 			<!-- Notes -->
 			<trans-unit id="widget.pagesWithInternalNoteNotes.title" resname="widget.pagesWithInternalNoteNotes.title">
-				<source>Notes with category Notes</source>
+				<source>Notes in the category "Notes"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNoteNotes.description" resname="widget.pagesWithInternalNoteNotes.description">
-				<source>Shows a list of all pages which have sys_notes with the category "Notes"</source>
+				<source>Shows a list of all pages with system notes in the category "Notes"</source>
 			</trans-unit>
 			<!-- Instructions -->
 			<trans-unit id="widget.pagesWithInternalNoteInstructions.title" resname="widget.pagesWithInternalNoteInstructions.title">
-				<source>Notes with category Instructions</source>
+				<source>Notes in the category "Instructions"</source>
 			</trans-unit>
 			<trans-unit id="widget.pagesWithInternalNoteInstructions.description" resname="widget.pagesWithInternalNoteInstructions.description">
-				<source>Shows a list of all pages which have sys_notes with the category "Instructions"</source>
+				<source>Shows a list of all pages with system notes in the category "Instructions"</source>
 			</trans-unit>
 			<trans-unit id="created" resname="created">
 				<source>Created</source>
