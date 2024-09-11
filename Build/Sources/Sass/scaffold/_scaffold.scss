@@ -47,6 +47,7 @@ html {
 
 body {
     height: 100%;
+    background-color: var(--scaffold-bg);
 
     &.with-overflow {
         // @todo: This is a workaround until all browser support dvh units in combination with overscroll-behavior
@@ -54,6 +55,10 @@ body {
         // also see Build/Sources/TypeScript/backend/modal.ts, renderModalBody()
         overflow: auto;
     }
+}
+
+iframe {
+    background-color: var(--scaffold-bg);
 }
 
 //
@@ -171,7 +176,7 @@ body {
     height: calc(100vh - #{$scaffold-topbar-height});
     display: flex;
     flex-direction: row;
-    background: white;
+    background: var(--scaffold-bg);
 }
 
 .scaffold-content-module-iframe {

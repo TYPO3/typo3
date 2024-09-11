@@ -2219,8 +2219,9 @@ to{transform:rotate(360deg)}
 div.typo3-localizationLink,div.typo3-newRecordLink,div.typo3-synchronizationLink{display:inline}
 :root{--scaffold-bg:var(--typo3-surface-base);--scaffold-color:var(--typo3-text-color-base);--scaffold-content-navigation-drag-bg:color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 10%);--scaffold-content-navigation-drag-bg-hover:color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 20%);--scaffold-content-navigation-switcher-bg:var(--typo3-surface-container-base);--scaffold-content-navigation-switcher-border:color-mix(in srgb, var(--typo3-surface-container-base), var(--typo3-text-color-base) 10%)}
 html{height:100%;overflow:hidden}
-body{height:100%}
+body{height:100%;background-color:var(--scaffold-bg)}
 body.with-overflow{overflow:auto}
+iframe{background-color:var(--scaffold-bg)}
 .scaffold{display:flex;flex-wrap:wrap;background-color:var(--scaffold-bg);color:var(--scaffold-color);position:relative;height:100vh}
 .scaffold-header{flex:0 0 100%;position:sticky;top:0;z-index:1000;display:flex;flex-flow:row wrap;align-items:stretch;height:45px}
 .scaffold-topbar{background-color:#151515;color:#f5f5f5;height:45px;flex:1 0 auto}
@@ -2240,7 +2241,7 @@ body.with-overflow{overflow:auto}
 @media (max-width:991.98px){
 .scaffold-toolbar-expanded .scaffold-toolbar{min-height:calc(100vh - 45px);padding:8px;flex:1 0 100%;display:block}
 }
-.scaffold-content{position:relative!important;flex:1 0 0%;height:calc(100vh - 45px);display:flex;flex-direction:row;background:#fff}
+.scaffold-content{position:relative!important;flex:1 0 0%;height:calc(100vh - 45px);display:flex;flex-direction:row;background:var(--scaffold-bg)}
 .scaffold-content-module-iframe{display:block;border:none;height:100%;width:1px;min-width:100%}
 .scaffold-content-navigation{display:none;flex-direction:column;position:sticky!important;inset-inline-start:0;top:0;bottom:0;height:100%;width:300px}
 .scaffold-content-navigation-expanded .scaffold-content-navigation{display:flex}
