@@ -1,0 +1,6 @@
+record.preview.tt_content.paths {
+  10 = EXT:test_fluid_based_record_preview/Resources/Private/Templates/Preview/Content/
+}
+
+mod.web_layout.tt_content.preview.header = EXT:test_fluid_based_record_preview/Resources/Private/Templates/Preview/Header.html
+mod.web_layout.tt_content.preview.list.blog_pi1 = EXT:test_fluid_based_record_preview/Resources/Private/Templates/Preview/BlogPi1.html
