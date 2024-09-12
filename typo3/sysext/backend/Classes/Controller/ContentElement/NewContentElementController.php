@@ -231,6 +231,7 @@ class NewContentElementController
         $wizards = array_replace_recursive($wizards, $pluginWizards);
         $newContentElementWizardTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.'] ?? [];
         $wizardsFromPageTSConfig = $this->migrateCommonGroupToDefault($newContentElementWizardTsConfig['wizardItems.'] ?? []);
+        $wizardsFromPageTSConfig = $this->migratePositionalCommonGroupToDefault($wizardsFromPageTSConfig);
         $wizards = array_replace_recursive($wizards, $wizardsFromPageTSConfig);
         $wizards = $this->removeWizardsByPageTs($wizards, $newContentElementWizardTsConfig);
         if ($wizards === []) {
@@ -364,6 +365,19 @@ class NewContentElementController
         }
 
         return $wizardsFromPageTs;
+    }
+
+    protected function migratePositionalCommonGroupToDefault(array $wizards): array
+    {
+        foreach ($wizards as $group => $wizard) {
+            if (($wizard['before'] ?? '') === 'common') {
+                $wizards[$group]['before'] = 'default';
+            }
+            if (($wizard['after'] ?? '') === 'common') {
+                $wizards[$group]['after'] = 'default';
+            }
+        }
+        return $wizards;
     }
 
     protected function getAppendWizards(array $wizardElements): array
