@@ -4,7 +4,7 @@
 
     <h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.title"/></h1>
 
-    <f:if condition="{sites->f:count} == 0">
+    <f:if condition="{sites->f:count()} == 0">
         <f:be.infobox
             title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.title')}"
             message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.message')}"
