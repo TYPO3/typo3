@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Adminpanel\Controller\AjaxController;
 use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
 use TYPO3\CMS\Adminpanel\Modules\CacheModule;
 use TYPO3\CMS\Adminpanel\Modules\Debug\Events;
@@ -77,9 +76,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
         ],
     ],
 ];
-
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['adminPanel_save']
-    = AjaxController::class . '::saveDataAction';
 
 // The admin panel has a module to show log messages. Register a debug logger to gather those.
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['writerConfiguration'][LogLevel::DEBUG][InMemoryLogWriter::class] = [];
