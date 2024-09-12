@@ -46,6 +46,13 @@ return [
                 'required' => true,
             ],
         ],
+        'color_1' => [
+            'label' => 'color_1',
+            'config' => [
+                'type' => 'color',
+                'required' => true,
+            ],
+        ],
         'link_1' => [
             'label' => 'link_1 eval=required, type=link',
             'config' => [
@@ -356,6 +363,8 @@ return [
                     inline_1, inline_2, inline_3,
                 --div--;Flex,
                     flex_1, flex_2,
+                --div--;Color,
+                    color_1,
                 --div--;palette,
                     --palette--;palette_1;palette_1,
             ',
