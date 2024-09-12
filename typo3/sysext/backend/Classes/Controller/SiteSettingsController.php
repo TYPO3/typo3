@@ -203,17 +203,18 @@ readonly class SiteSettingsController
             return new RedirectResponse($returnUrl ?? $overviewUrl);
         }
 
-        $changes = $this->siteSettingsService->computeSettingsDiff($site, $parsedBody['settings'] ?? []);
-        $this->siteSettingsService->writeSettings($site, $changes['settings']);
+        $newSettings = $this->siteSettingsService->createSettingsFromFormData($site, $parsedBody['settings'] ?? []);
+        $settingsDiff = $this->siteSettingsService->computeSettingsDiff($site, $newSettings);
+        $this->siteSettingsService->writeSettings($site, $settingsDiff->asArray());
 
-        if ($changes['changes'] !== [] || $changes['deletions'] !== []) {
+        if ($settingsDiff->changes !== [] || $settingsDiff->deletions !== []) {
             $this->getBackendUser()->writelog(
                 Type::SITE,
                 SettingAction::CHANGE,
                 SystemLogErrorClassification::MESSAGE,
                 null,
                 'Site settings changed for \'%s\': %s',
-                [$site->getIdentifier(), json_encode($changes)],
+                [$site->getIdentifier(), json_encode($settingsDiff)],
                 'site'
             );
 
@@ -246,8 +247,10 @@ readonly class SiteSettingsController
         $specificSetting = (string)($parsedBody['specificSetting'] ?? '');
 
         $minify = $specificSetting !== '' ? false : true;
-        $changes = $this->siteSettingsService->computeSettingsDiff($site, $parsedBody['settings'] ?? [], $minify);
-        $settings = $changes['settings'];
+
+        $newSettings = $this->siteSettingsService->createSettingsFromFormData($site, $parsedBody['settings'] ?? []);
+        $settingsDiff = $this->siteSettingsService->computeSettingsDiff($site, $newSettings, $minify);
+        $settings = $settingsDiff->asArray();
         if ($specificSetting !== '') {
             $value = ArrayUtility::getValueByPath($settings, $specificSetting, '.');
             $settings = ArrayUtility::setValueByPath([], $specificSetting, $value, '.');

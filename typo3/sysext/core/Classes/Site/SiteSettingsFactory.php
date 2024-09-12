@@ -69,6 +69,21 @@ readonly class SiteSettingsFactory
     }
 
     /**
+     * Load settings from config/sites/{$siteIdentifier}/settings.yaml.
+     *
+     * @internal
+     */
+    public function loadLocalSettingsTree(string $siteIdentifier): ?array
+    {
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
+        if (!file_exists($fileName)) {
+            return null;
+        }
+
+        return $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
+    }
+
+    /**
      * Fetch the settings for a specific site and return the parsed Site Settings object.
      *
      * @todo This method resolves placeholders during the loading, which is okay as this is only used in context where
@@ -82,12 +97,7 @@ readonly class SiteSettingsFactory
     {
         $settingsTree = [];
         if ($siteIdentifier !== null) {
-            $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
-            if (file_exists($fileName)) {
-                $settingsTree = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
-            } else {
-                $settingsTree = $inlineSettings;
-            }
+            $settingsTree = $this->loadLocalSettingsTree($siteIdentifier) ?? $inlineSettings;
         }
 
         return $this->composeSettings($settingsTree, $sets);
@@ -135,14 +145,12 @@ readonly class SiteSettingsFactory
         );
     }
 
+    /**
+     * @internal
+     */
     public function createSettingsForKeys(array $settingKeys, string $siteIdentifier, array $inlineSettings = []): SiteSettings
     {
-        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
-        if (file_exists($fileName)) {
-            $settingsTree = $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
-        } else {
-            $settingsTree = $inlineSettings;
-        }
+        $settingsTree = $this->loadLocalSettingsTree($siteIdentifier) ?? $inlineSettings;
 
         /** @var array<string, string|int|float|bool|array|null> $settingsMap */
         $settingsMap = [];
@@ -152,11 +160,37 @@ readonly class SiteSettingsFactory
             }
             $settingsMap[$key] = ArrayUtility::getValueByPath($settingsTree, $key, '.');
         }
-        $flatSettings = $settingsTree === [] ? [] : ArrayUtility::flattenPlain($settingsTree);
-        return new SiteSettings(
-            settings: $settingsMap,
+
+        return SiteSettings::create(
+            settingsMap: $settingsMap,
             settingsTree: $settingsTree,
-            flatSettings: $flatSettings,
+        );
+    }
+
+    /**
+     * @internal
+     */
+    public function createSettingsFromFormData(array $settingsMap, array $definitions): SiteSettings
+    {
+        $settingsTree = [];
+        foreach ($settingsMap as $key => $value) {
+            $definition = $definitions[$key] ?? null;
+            if ($definition === null) {
+                throw new \RuntimeException('Unexpected setting ' . $key . ' is not defined', 1724067004);
+            }
+            $type = $this->settingsTypeRegistry->get($definition->type);
+            // @todo We should collect invalid values (readonly-violation/validation-error) and report in the UI instead of ignoring them
+            if ($definition->readonly || !$type->validate($value, $definition)) {
+                $value = $definition->default;
+            }
+            $value = $type->transformValue($value, $definition);
+            $settingsMap[$key] = $value;
+            $settingsTree = ArrayUtility::setValueByPath($settingsTree, $key, $value, '.');
+        }
+
+        return SiteSettings::create(
+            settingsMap: $settingsMap,
+            settingsTree: $settingsTree,
         );
     }
 
