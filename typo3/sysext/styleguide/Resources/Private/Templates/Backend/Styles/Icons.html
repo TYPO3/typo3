@@ -115,47 +115,79 @@
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styles.icons.section.overview.headline" /></h2>
 
         <div>
-            <ul class="nav nav-tabs t3js-tabs" role="tablist">
+            <ul class="nav nav-tabs form-section-tabs t3js-tabs" role="tablist">
                 <li role="presentation">
-                    <a href="#all" aria-controls="all" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">All Icons</a>
+                    <button
+                        type="button"
+                        class="nav-link active"
+                        role="tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#all"
+                        aria-controls="all"
+                        aria-selected="true"
+                    >
+                        All Icons
+                    </button>
                 </li>
                 <f:if condition="{deprecatedIcons}">
                     <li role="presentation">
-                        <a href="#deprecated" aria-controls="deprecated" role="tab" data-bs-toggle="tab" aria-selected="false">Deprecated Icons</a>
+                        <button
+                            type="button"
+                            class="nav-link"
+                            role="tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#deprecated"
+                            aria-controls="deprecated"
+                            aria-selected="true"
+                        >
+                            Deprecated Icons
+                        </button>
                     </li>
                 </f:if>
                 <li role="presentation">
-                    <a href="#overlays" aria-controls="overlays" role="tab" data-bs-toggle="tab" aria-selected="false">All Overlays</a>
+                    <button
+                        type="button"
+                        class="nav-link"
+                        role="tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#overlays"
+                        aria-controls="overlays"
+                        aria-selected="true"
+                    >
+                        All Overlays
+                    </button>
                 </li>
             </ul>
 
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane form-section active" id="all">
-                    <form class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Filter: </label>
-                            <div class="input-group">
-                                <div class="btn-group t3js-filter-buttons">
-                                    <button class="btn btn-default" data-filter="type:bitmap">Bitmap</button>
-                                    <button class="btn btn-default" data-filter="type:font">Font</button>
-                                    <button class="btn btn-default" data-filter="type:vector">Vector</button>
+                <div role="tabpanel" class="tab-pane active" id="all">
+                    <div class="form-section">
+                        <form class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Filter: </label>
+                                <div class="input-group">
+                                    <div class="btn-group t3js-filter-buttons">
+                                        <button class="btn btn-default" data-filter="type:bitmap">Bitmap</button>
+                                        <button class="btn btn-default" data-filter="type:font">Font</button>
+                                        <button class="btn btn-default" data-filter="type:vector">Vector</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-text"><core:icon identifier="actions-search" size="default" /></div>
-                                <input type="text" class="form-control" id="search-field" placeholder="Icon identifier">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-text"><core:icon identifier="actions-search" size="default" /></div>
+                                    <input type="text" class="form-control" id="search-field" placeholder="Icon identifier">
+                                </div>
                             </div>
+                        </form>
+                        <div class="row" id="t3js-filter-container">
+                            <f:for each="{allIcons}" as="icon">
+                                <div class="col-md-2 icon-container" data-icon-identifier="{icon}">
+                                    <span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
+                                    <span class="icon-container-label">{icon}</span>
+                                </div>
+                            </f:for>
                         </div>
-                    </form>
-                    <div class="row" id="t3js-filter-container">
-                        <f:for each="{allIcons}" as="icon">
-                            <div class="col-md-2 icon-container" data-icon-identifier="{icon}">
-                                <span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
-                                <span class="icon-container-label">{icon}</span>
-                            </div>
-                        </f:for>
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="deprecated">

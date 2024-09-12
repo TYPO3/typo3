@@ -2469,6 +2469,7 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .form-section .form-group:last-of-type{margin-bottom:0}
 .form-section-headline{font-size:var(--typo3-form-section-headline-font-size);margin-top:0;margin-bottom:var(--typo3-spacing)}
 .form-section-headline+.form-section-description{margin-top:calc(var(--typo3-spacing)/ 2 * -1);margin-bottom:var(--typo3-spacing)}
+.form-section-tabs{--typo3-nav-tabs-bg:var(--typo3-surface-container-low)}
 .form-group{margin-bottom:var(--typo3-spacing)}
 .form-group-dashed+.form-group-dashed{padding-top:var(--typo3-spacing);border-top:1px dashed rgba(0,0,0,.15)}
 .form-multigroup-wrap{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:var(--typo3-spacing)}
@@ -3786,7 +3787,6 @@ input[type=range].slider[disabled]::-ms-track{cursor:not-allowed}
 .slider-wrapper.slider-vertical{width:auto;margin-bottom:calc(100% - 3.75rem);transform-origin:top left;transform:rotate(-90deg) translate(-100%)}
 .slider-wrapper.slider-vertical .slider{margin:.375rem 0}
 .typo3-TCEforms{width:100%}
-.typo3-TCEforms .nav-tabs{--typo3-nav-tabs-bg:var(--typo3-surface-container-low)}
 .sortableHandle{cursor:move!important}
 img.t3-tceforms-sysfile-imagepreview{float:var(--typo3-position-start);margin-inline-end:10px;margin-bottom:10px}
 .typo3-TCEforms span.typo3-TCEforms-newToken{color:#900;font-weight:700}
