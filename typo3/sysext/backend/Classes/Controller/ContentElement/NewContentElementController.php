@@ -230,7 +230,7 @@ class NewContentElementController
         $newContentElementWizardTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.'] ?? [];
         $wizardsFromPageTSConfig = $this->migrateCommonGroupToDefault($newContentElementWizardTsConfig['wizardItems.'] ?? []);
         $wizardsFromPageTSConfig = $this->migratePositionalCommonGroupToDefault($wizardsFromPageTSConfig);
-        $wizards = array_replace_recursive($wizards, $wizardsFromPageTSConfig);
+        $wizards = $this->mergeContentElementWizardsWithPageTSConfigWizards($wizards, $wizardsFromPageTSConfig);
         $wizards = $this->removeWizardsByPageTs($wizards, $newContentElementWizardTsConfig);
         if ($wizards === []) {
             return [];
@@ -300,6 +300,39 @@ class NewContentElementController
             $groupedWizardItems[$groupIdentifier . '.']['elements.'][$recordType . '.'] = $wizardEntry;
         }
         return $groupedWizardItems;
+    }
+
+    /**
+     * This method merges Content Element wizards defined by TCA with wizards defined in PageTSConfig.
+     * PageTS has precedence.
+     * It might happen that both TCA and PageTS define an entry with exactly the same default values.
+     * In such a case, the automatically added TCA entry is dropped.
+     */
+    protected function mergeContentElementWizardsWithPageTSConfigWizards(array $contentElementWizards, array $pageTsConfigWizards): array
+    {
+        $uniqueDefaultValuesInPageTsWizards = [];
+        foreach ($pageTsConfigWizards as $wizard) {
+            foreach ($wizard['elements.'] ?? [] as $elementConfig) {
+                $defaultValues = $elementConfig['tt_content_defValues.'] ?? [];
+                if ($defaultValues === []) {
+                    continue;
+                }
+                ksort($defaultValues);
+                $uniqueDefaultValuesInPageTsWizards[] = $defaultValues;
+            }
+        }
+        foreach ($contentElementWizards as $group => $wizard) {
+            foreach ($wizard['elements.'] ?? [] as $key => $elementConfig) {
+                // Remove duplicated entry.
+                $defaultValues = $elementConfig['defaultValues'];
+                ksort($defaultValues);
+                if (in_array($defaultValues, $uniqueDefaultValuesInPageTsWizards, true)) {
+                    unset($contentElementWizards[$group]['elements.'][$key]);
+                }
+            }
+        }
+        $mergedWizards = array_replace_recursive($contentElementWizards, $pageTsConfigWizards);
+        return $mergedWizards;
     }
 
     /**
