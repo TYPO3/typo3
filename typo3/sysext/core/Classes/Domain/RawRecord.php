@@ -54,7 +54,7 @@ readonly class RawRecord implements RecordInterface
     public function getRecordType(): ?string
     {
         if (str_contains($this->type, '.')) {
-            return GeneralUtility::revExplode('.', $this->type, 2)[1];
+            return GeneralUtility::trimExplode('.', $this->type, true)[1] ?? null;
         }
         return null;
     }
@@ -62,7 +62,7 @@ readonly class RawRecord implements RecordInterface
     public function getMainType(): string
     {
         if (str_contains($this->type, '.')) {
-            return explode('.', $this->type)[0];
+            return explode('.', $this->type)[0] ?? '';
         }
         return $this->type;
     }

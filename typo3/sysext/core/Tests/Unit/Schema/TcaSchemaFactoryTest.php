@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Schema;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -388,7 +389,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     }
 
     #[Test]
-    public function subtypesInfoIsMergedWithMainSchemaInformation(): void
+    public function recordTypesInfoIsMergedWithMainSchemaInformation(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
@@ -423,5 +424,104 @@ final class TcaSchemaFactoryTest extends UnitTestCase
         self::assertSame('defaultRenderer', $schema->getRawConfiguration()['previewRenderer']);
         self::assertSame('typeSpecificRenderer', $subSchema->getRawConfiguration()['previewRenderer']);
 
+    }
+
+    public static function subtypesConfigurationIsAppliedToSubSchemaDataProvider(): iterable
+    {
+        yield 'No changes in subtype' => [
+            '',
+            '',
+            ['type', 'list_type', 'foo', 'bar'],
+        ];
+        yield 'Add fields' => [
+            'baz',
+            '',
+            ['type', 'list_type', 'foo', 'bar', 'baz'],
+        ];
+        yield 'Remove fields' => [
+            '',
+            'foo',
+            ['type', 'list_type', 'bar'],
+        ];
+        yield 'Add and remove fields' => [
+            'baz',
+            'foo',
+            ['type', 'list_type', 'bar', 'baz'],
+        ];
+        yield 'Unknown field is not added' => [
+            'unknown',
+            '',
+            ['type', 'list_type', 'foo', 'bar'],
+        ];
+    }
+
+    #[DataProvider('subtypesConfigurationIsAppliedToSubSchemaDataProvider')]
+    #[Test]
+    public function subtypesConfigurationIsAppliedToSubSchema(string $addList, string $excludeList, array $fields): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $subject = new TcaSchemaFactory(
+            new RelationMapBuilder(),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $subject->load([
+            'myTable' => [
+                'ctrl' => [
+                    'type' => 'type',
+                ],
+                'columns' => [
+                    'type' => [
+                        'config' => [
+                            'type' => 'select',
+                            'items' => [
+                                ['label' => 'list', 'value' => 'list'],
+                            ],
+                        ],
+                    ],
+                    'list_type' => [
+                        'config' => [
+                            'type' => 'select',
+                            'items' => [
+                                ['label' => 'Blog', 'value' => 'tx_blog_pi1'],
+                            ],
+                        ],
+                    ],
+                    'foo' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                    'bar' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                    'baz' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'list' => [
+                        'showitem' => 'type,list_type,foo,bar',
+                        'subtype_value_field' => 'list_type',
+                        'subtypes_addlist' => [
+                            'tx_blog_pi1' => $addList,
+                        ],
+                        'subtypes_excludelist' => [
+                            'tx_blog_pi1' => $excludeList,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $schema = $subject->get('myTable.list');
+        self::assertTrue($schema->hasSubSchema('tx_blog_pi1'));
+        self::assertSame($fields, array_values(array_map(static fn(FieldTypeInterface $field) => $field->getName(), iterator_to_array($schema->getSubSchema('tx_blog_pi1')->getFields()->getIterator()))));
     }
 }

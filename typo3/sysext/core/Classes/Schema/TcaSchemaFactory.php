@@ -211,13 +211,55 @@ class TcaSchemaFactory
 
                     $subSchemaFields[$fieldName] = $field;
                 }
-                $subSchema = new TcaSchema(
+
+                // @todo Support of "subtypes" will most likely be deprecated in upcoming versions
+                $subTypeSchemata = [];
+                if (isset($subSchemaDefinition['subtype_value_field'])
+                    && ($subTypeDivisorField = $subSchemaFields[$subSchemaDefinition['subtype_value_field']] ?? null) !== null
+                ) {
+                    // Add all the sub schema fields first. Afterwards extend this list based
+                    // on "subtypes_addlist" and reduce list based on "subtypes_excludelist".
+                    $subTypeFields = $subSchemaFields;
+                    $subTypes = array_filter(array_map(static fn(array $item) => $item['value'] ?? '', $subTypeDivisorField->getConfiguration()['items'] ?? []));
+                    foreach ($subTypes as $subType) {
+                        // Add fields based on "subtypes_addlist" configuration
+                        if ($subSchemaDefinition['subtypes_addlist'][$subType] ?? false) {
+                            $subTypeAddFields = GeneralUtility::trimExplode(',', (string)$subSchemaDefinition['subtypes_addlist'][$subType], true);
+                            foreach ($subTypeAddFields as $fieldName) {
+                                // Fetch the field from either the sub schema (taking columnsOverrides into account) or
+                                // fall back to the field based on the default configuration. In case field does not
+                                // exists, don't add it since it's not possible to add fields via subtypes, which have
+                                // not been defined beforehand.
+                                $field = $subSchemaFields[$fieldName] ?? $allFields[$fieldName] ?? null;
+                                if ($field === null) {
+                                    continue;
+                                }
+                                $subTypeFields[$fieldName] = $field;
+                            }
+                        }
+                        // Remove fields based on "subtypes_excludelist" configuration
+                        if ($subSchemaDefinition['subtypes_excludelist'][$subType] ?? false) {
+                            $subTypeExcludeFields = GeneralUtility::trimExplode(',', (string)$subSchemaDefinition['subtypes_excludelist'][$subType], true);
+                            foreach ($subTypeExcludeFields as $fieldName) {
+                                unset($subTypeFields[$fieldName]);
+                            }
+                        }
+
+                        $subTypeSchemata[$subType] = new TcaSchema(
+                            $schemaName . '.' . $subSchemaName . '.' . $subType,
+                            new FieldCollection($subTypeFields),
+                            array_replace_recursive($schemaConfiguration, $subSchemaDefinition)
+                        );
+                    }
+                }
+
+                $subSchemata[$subSchemaName] = new TcaSchema(
                     $schemaName . '.' . $subSchemaName,
                     new FieldCollection($subSchemaFields),
                     // Merge parts from the "types" section into the ctrl section of the main schema
-                    array_replace_recursive($schemaConfiguration, $subSchemaDefinition)
+                    array_replace_recursive($schemaConfiguration, $subSchemaDefinition),
+                    $subTypeSchemata !== [] ? new SchemaCollection($subTypeSchemata) : null
                 );
-                $subSchemata[$subSchemaName] = $subSchema;
             }
         }
         $schema = new TcaSchema(

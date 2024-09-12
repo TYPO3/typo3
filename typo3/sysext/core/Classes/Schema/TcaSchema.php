@@ -228,6 +228,17 @@ readonly class TcaSchema implements SchemaInterface
     }
 
     /**
+     * @internal "subtype" is not considered as API of TcaSchema since this feature will most likely be deprecated in upcoming versions
+     */
+    public function getSubTypeDivisorField(): ?FieldTypeInterface
+    {
+        if (isset($this->schemaConfiguration['subtype_value_field']) && isset($this->fields[$this->schemaConfiguration['subtype_value_field']])) {
+            return $this->fields[$this->schemaConfiguration['subtype_value_field']];
+        }
+        return null;
+    }
+
+    /**
      * @return PassiveRelation[]
      */
     public function getPassiveRelations(): array
