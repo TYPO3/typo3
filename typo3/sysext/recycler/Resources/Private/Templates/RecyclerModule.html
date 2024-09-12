@@ -41,8 +41,8 @@
             </div>
         </form>
         <f:render section="multiRecordSelectionActions" arguments="{allowDelete: allowDelete}"/>
-        <div class="table-fit mb-0">
-            <table class="table table-hover" id="itemsInRecycler">
+        <div class="table-fit mb-0" id="itemsInRecycler" hidden>
+            <table class="table table-hover">
                 <caption class="visually-hidden"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.caption.recently_deleted_records" /></caption>
                 <thead>
                     <tr>

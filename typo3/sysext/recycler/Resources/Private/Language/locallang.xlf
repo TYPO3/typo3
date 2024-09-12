@@ -105,6 +105,9 @@
 			<trans-unit id="flashmessage.undo.failure.plural" resname="flashmessage.undo.failure.plural">
 				<source>Could not recover %d records.</source>
 			</trans-unit>
+			<trans-unit id="alert.noDeletedRecords" resname="alert.noDeletedRecords">
+				<source>No deleted records have been found.</source>
+			</trans-unit>
 			<trans-unit id="table.caption.recently_deleted_records" resname="table.caption.recently_deleted_records">
 				<source>Recently deleted records</source>
 			</trans-unit>

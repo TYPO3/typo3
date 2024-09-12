@@ -14,6 +14,7 @@
 import DocumentService from '@typo3/core/document-service';
 import NProgress from 'nprogress';
 import '@typo3/backend/input/clearable';
+import '@typo3/backend/element/alert-element';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/element/pagination';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
@@ -293,10 +294,24 @@ class Recycler {
       start: (this.paging.currentPage - 1) * this.paging.itemsPerPage,
       limit: this.paging.itemsPerPage,
     }).get().then(async (response: AjaxResponse): Promise<AjaxResponse> => {
-      const tableBody = document.querySelector(`${Identifiers.recyclerTable} tbody`);
+      const tableWrapper = document.querySelector(Identifiers.recyclerTable);
+      const tableBody = tableWrapper.querySelector('tbody');
       const data = await response.resolve();
 
-      tableBody.innerHTML = data.rows;
+      if (data.totalItems === 0) {
+        if (tableWrapper.parentElement.querySelector('#no-recycler-records') === null) {
+          const alertElement = document.createElement('typo3-backend-alert');
+          alertElement.id = 'no-recycler-records';
+          alertElement.severity = SeverityEnum.info;
+          alertElement.message = TYPO3.lang['alert.noDeletedRecords'];
+          alertElement.showIcon = true;
+          tableWrapper.parentElement.insertBefore(alertElement, tableWrapper);
+        }
+      } else {
+        tableWrapper.parentElement.querySelector('#no-recycler-records')?.remove()
+        tableBody.innerHTML = data.rows;
+      }
+      tableWrapper.toggleAttribute('hidden', data.totalItems === 0);
       this.buildPaginator(data.totalItems);
 
       return response;
