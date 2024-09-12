@@ -807,7 +807,7 @@ class ExtensionManagementUtility
      *
      * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
      *
-     * @param array|SelectItem $itemArray Numerical or assoc array: [0 or 'label'] => Plugin label, [1 or 'value'] => Plugin identifier / plugin key, ideally prefixed with an extension-specific name (e.g. "events2_list"), [2 or 'icon'] => Icon identifier or path to plugin icon, [3 or 'group'] => an optional "group" ID, falls back to "default"
+     * @param array|SelectItem $itemArray Numerical or assoc array: [0 or 'label'] => Plugin label, [1 or 'value'] => Plugin identifier / plugin key, ideally prefixed with an extension-specific name (e.g. "events2_list"), [2 or 'icon'] => Icon identifier or path to plugin icon, [3 or 'group'] => an optional "group" ID, falls back to "plugins"
      * @param string|null $extensionKey The extension key
      * @throws \RuntimeException
      */
@@ -831,7 +831,7 @@ class ExtensionManagementUtility
             $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()] = $selectItem->getIcon();
         }
         if (!$selectItem->hasGroup()) {
-            $selectItem = $selectItem->withGroup('default');
+            $selectItem = $selectItem->withGroup('plugins');
         }
         // Override possible existing entries.
         foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] ?? [] as $index => $item) {

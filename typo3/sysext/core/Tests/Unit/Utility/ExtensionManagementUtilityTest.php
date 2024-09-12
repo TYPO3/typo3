@@ -1190,7 +1190,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 'label' => 'label',
                 'value' => $extKey,
                 'icon' => null,
-                'group' => 'default',
+                'group' => 'plugins',
                 'description' => null,
             ],
         ];
@@ -1240,7 +1240,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 'label' => 'label',
                 'value' => 'felogin',
                 'icon' => 'content-form-login',
-                'group' => 'default',
+                'group' => 'plugins',
                 'description' => null,
             ],
         ];
@@ -1262,7 +1262,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 'label' => 'label',
                 'value' => 'felogin',
                 'icon' => 'content-form-login',
-                'group' => 'default',
+                'group' => 'plugins',
                 'description' => null,
             ],
         ];
