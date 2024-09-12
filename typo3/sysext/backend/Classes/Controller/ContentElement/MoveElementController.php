@@ -115,7 +115,7 @@ final readonly class MoveElementController
 
             $assigns['pageRecord']['recordTooltip'] = BackendUtility::getRecordIconAltText($pageInfo, 'pages', false);
             $assigns['pageRecord']['recordTitle'] = BackendUtility::getRecordTitle('pages', $pageInfo, true);
-            $assigns['contentElementColumns'] = $contentPositionMap->printContentElementColumns($pageId);
+            $assigns['contentElementColumns'] = $contentPositionMap->printContentElementColumns($pageId, $pageInfo, $request);
         }
         return $assigns;
     }

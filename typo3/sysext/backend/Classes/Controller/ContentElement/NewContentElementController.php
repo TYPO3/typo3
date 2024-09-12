@@ -208,13 +208,15 @@ class NewContentElementController
      */
     protected function positionMapAction(ServerRequestInterface $request): ResponseInterface
     {
+        $pageInfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+
         $posMap = GeneralUtility::makeInstance(ContentCreationPagePositionMap::class);
         $posMap->cur_sys_language = $this->sys_language;
         $posMap->defVals = (array)($request->getParsedBody()['defVals'] ?? []);
         $posMap->saveAndClose = (bool)($request->getParsedBody()['saveAndClose'] ?? false);
         $posMap->R_URI = $this->returnUrl;
         $view = $this->backendViewFactory->create($request);
-        $view->assign('posMap', $posMap->printContentElementColumns($this->id));
+        $view->assign('posMap', $posMap->printContentElementColumns($this->id, $pageInfo, $request));
         return new HtmlResponse($view->render('NewContentElement/PositionMap'));
     }
 

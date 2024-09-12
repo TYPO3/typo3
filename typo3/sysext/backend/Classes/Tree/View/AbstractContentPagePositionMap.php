@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tree\View;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -71,7 +72,7 @@ abstract class AbstractContentPagePositionMap
      * @param int $pid page id onto which to insert content element.
      * @return string HTML
      */
-    public function printContentElementColumns(int $pid): string
+    public function printContentElementColumns(int $pid, array $pageInfo, ServerRequestInterface $request): string
     {
         $lines = [];
         $columnsConfiguration = $this->getColumnsConfiguration($pid);

@@ -24,12 +24,7 @@
 <f:format.raw>{column.beforeSectionMarkup}</f:format.raw>
 <f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent} && {column.active}">
     <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}">
-        <div class="t3-page-ce-actions t3js-page-new-ce">
-            <typo3-backend-new-content-element-wizard-button class="btn btn-default btn-sm" url="{column.newContentUrl}" subject="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
-                <core:icon identifier="actions-plus" />
-                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:createNewContent" />
-            </typo3-backend-new-content-element-wizard-button>
-        </div>
+        <f:render partial="PageLayout/ActionControls" arguments="{column: column, allowEditContent: allowEditContent, url: column.newContentUrl}" />
         <div class="t3-page-ce-dropzone t3js-page-ce-dropzone-available"></div>
     </div>
 </f:if>
