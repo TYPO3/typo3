@@ -88,6 +88,11 @@ final class FluidBasedRecordPreviewRendererTest extends FunctionalTestCase
             'list',
             '<h1>Layout</h1>5<h2>BlogPi2</h2>',
         ];
+        yield 'Invalid CType' => [
+            6,
+            'invalid',
+            '',
+        ];
     }
 
     #[DataProvider('pageContentPreviewIsRendererDataProvider')]

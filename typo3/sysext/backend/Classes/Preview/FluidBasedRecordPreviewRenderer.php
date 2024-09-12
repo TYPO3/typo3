@@ -186,7 +186,11 @@ final readonly class FluidBasedRecordPreviewRenderer
     private function resolveRecordType(RecordInterface $record): string
     {
         $recordType = $record->getRecordType();
-        // @todo Support of "subtypes" will most likely be deprecated in upcoming versions
+        if (!$this->tcaSchemaFactory->has($record->getFullType())) {
+            // There might be elements with a record type in the database for which corresponding configuration
+            // does no longer exist (e.g. a extension which added a specific content type has been removed).
+            return $recordType;
+        }
         $schema = $this->tcaSchemaFactory->get($record->getFullType());
         if ($schema->getSubTypeDivisorField() !== null // record type supports "subtypes"
             && $record->has($schema->getSubTypeDivisorField()->getName()) // record has the subtype field
