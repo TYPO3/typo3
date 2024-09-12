@@ -975,11 +975,18 @@ class HtmlParser
             }
         }
         if (!empty($TSconfig['removeTags'])) {
-            $lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags']), true);
-            foreach ($lN as $tn) {
-                $keepTags[$tn] = [];
-                $keepTags[$tn]['allowedAttribs'] = 0;
-                $keepTags[$tn]['rmTagIfNoAttrib'] = 1;
+            if (is_array($TSconfig['removeTags.'])) {
+                $removeTagsArray = $TSconfig['removeTags.'];
+            } else {
+                $removeTagsArray = GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags']), true);
+            }
+            foreach ($removeTagsArray as $removeTagName) {
+                if (!is_string($removeTagName) || $removeTagName === '') {
+                    continue;
+                }
+                $keepTags[$removeTagName] = [];
+                $keepTags[$removeTagName]['allowedAttribs'] = 0;
+                $keepTags[$removeTagName]['rmTagIfNoAttrib'] = 1;
             }
         }
         // Create additional configuration:
