@@ -2,12 +2,10 @@
 // Autocomplete
 // ============
 //
-$autocomplete-zindex: $zindex-dropdown;
-
 typo3-backend-formengine-suggest-result-container {
     position: absolute;
     inset-inline-start: 0;
-    z-index: $autocomplete-zindex;
+    z-index: var(--typo3-zindex-dropdown);
     max-width: calc(100vw - 20px);
 }
 

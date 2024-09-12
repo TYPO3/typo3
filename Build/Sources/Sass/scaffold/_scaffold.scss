@@ -7,23 +7,18 @@
 // Variables
 //
 $scaffold-overlay-bg: rgba(0, 0, 0, .65);
-$scaffold-overlay-zindex: var(--typo3-zindex-modal-backdrop);
 $scaffold-secondary-bg: #151515;
 $scaffold-secondary-color: #f5f5f5;
 $scaffold-topbar-bg: $scaffold-secondary-bg;
 $scaffold-topbar-color: $scaffold-secondary-color;
 $scaffold-topbar-height: 45px;
-$scaffold-topbar-zindex: $zindex-dropdown;
 $scaffold-topbar-toolbar-bg: $scaffold-secondary-bg;
 $scaffold-topbar-toolbar-color: $scaffold-secondary-color;
-$scaffold-header-zindex: $scaffold-topbar-zindex;
 $scaffold-modulemenu-bg: lighten($scaffold-secondary-bg, 8);
 $scaffold-modulemenu-color: $scaffold-secondary-color;
 $scaffold-modulemenu-expanded-width: 240px;
-$scaffold-modulemenu-zindex: $zindex-dropdown;
 $scaffold-toolbar-bg: lighten($scaffold-secondary-bg, 8);
 $scaffold-toolbar-color: $scaffold-secondary-color;
-$scaffold-toolbar-zindex: $zindex-dropdown;
 $scaffold-content-navigation-width: 300px;
 $scaffold-content-toggle-bg: lighten($scaffold-secondary-bg, 12);
 $scaffold-content-toggle-color: $scaffold-secondary-color;
@@ -77,7 +72,7 @@ iframe {
     flex: 0 0 100%;
     position: sticky;
     top: 0;
-    z-index: $scaffold-header-zindex;
+    z-index: var(--typo3-zindex-dropdown);
     display: flex;
     flex-flow: row wrap;
     align-items: stretch;
@@ -108,10 +103,10 @@ iframe {
     overflow-y: auto;
     color-scheme: dark;
     position: absolute;
-    z-index: $scaffold-overlay-zindex + 1;
+    z-index: calc(var(--typo3-zindex-modal) + 1);
 
     @include media-breakpoint-up('lg') {
-        z-index: $scaffold-modulemenu-zindex;
+        z-index: var(--typo3-zindex-dropdown);
         position: sticky;
     }
 }
@@ -122,7 +117,7 @@ iframe {
 .scaffold-toolbar {
     background-color: $scaffold-toolbar-bg;
     color: $scaffold-toolbar-color;
-    z-index: $scaffold-toolbar-zindex;
+    z-index: var(--typo3-zindex-dropdown);
 
     .toolbar-item-link {
         color: transparentize($scaffold-toolbar-color, .3);
@@ -218,7 +213,7 @@ iframe {
 .scaffold-content-overlay {
     display: none;
     position: absolute;
-    z-index: $scaffold-overlay-zindex;
+    z-index: var(--typo3-zindex-modal-backdrop);
     top: 0;
     left: 0;
     right: 0;
