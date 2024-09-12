@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Preview;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -321,6 +322,9 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         }
         try {
             $view = GeneralUtility::makeInstance(StandaloneView::class);
+            if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
+                $view->setRequest($GLOBALS['TYPO3_REQUEST']);
+            }
             $view->setTemplatePathAndFilename($fluidTemplateFileAbsolutePath);
             $view->assignMultiple($row);
             if ($table === 'tt_content' && !empty($row['pi_flexform'])) {
