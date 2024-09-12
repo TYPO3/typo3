@@ -169,4 +169,118 @@ final class NewContentElementControllerTest extends UnitTestCase
 
         self::assertSame($expected, $result);
     }
+
+    #[Test]
+    public function mergeContentElementWizardsWithPageTSConfigWizardsRemovesDuplicates(): void
+    {
+        $contentElementWizardItems = [
+            'default.' => [
+                'elements.' => [
+                    'a_element.' => [
+                        'title' => 'a',
+                        'defaultValues' => [
+                            'field' => 'a',
+                        ],
+                    ],
+                ],
+            ],
+            'news.' => [
+                'elements.' => [
+                    'news_list.' => [
+                        'title' => 'List',
+                        'defaultValues' => [
+                            'otherField' => 'foo',
+                            'field' => 'list',
+                        ],
+                    ],
+                    'news_show.' => [
+                        'title' => 'Show',
+                        'defaultValues' => [
+                            'field' => 'show',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $pageTsConfigWizardItems = [
+            'default.' => [
+                'elements.' => [
+                    'c_element.' => [
+                        'title' => 'foo',
+                        'tt_content_defValues.' => [
+                            'field' => 'foo',
+                        ],
+                    ],
+                ],
+            ],
+            'news-group.' => [
+                'elements.' => [
+                    'news_list.' => [
+                        'title' => 'List',
+                        'tt_content_defValues.' => [
+                            'field' => 'list',
+                            'otherField' => 'foo',
+                        ],
+                    ],
+                    'news_show.' => [
+                        'title' => 'Show',
+                        'tt_content_defValues.' => [
+                            'field' => 'show',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'default.' => [
+                'elements.' => [
+                    'a_element.' => [
+                        'title' => 'a',
+                        'defaultValues' => [
+                            'field' => 'a',
+                        ],
+                    ],
+                    'c_element.' => [
+                        'title' => 'foo',
+                        'tt_content_defValues.' => [
+                            'field' => 'foo',
+                        ],
+                    ],
+                ],
+            ],
+            'news.' => [
+                'elements.' => [],
+            ],
+            'news-group.' => [
+                'elements.' => [
+                    'news_list.' => [
+                        'title' => 'List',
+                        'tt_content_defValues.' => [
+                            'field' => 'list',
+                            'otherField' => 'foo',
+                        ],
+                    ],
+                    'news_show.' => [
+                        'title' => 'Show',
+                        'tt_content_defValues.' => [
+                            'field' => 'show',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = (new \ReflectionClass(NewContentElementController::class))
+            ->getMethod('mergeContentElementWizardsWithPageTSConfigWizards')
+            ->invokeArgs(
+                $this->createMock(
+                    NewContentElementController::class
+                ),
+                [$contentElementWizardItems, $pageTsConfigWizardItems]
+            );
+
+        self::assertSame($expected, $result);
+    }
 }
