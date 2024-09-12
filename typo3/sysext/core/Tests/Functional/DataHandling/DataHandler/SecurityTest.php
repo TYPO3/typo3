@@ -54,136 +54,152 @@ final class SecurityTest extends FunctionalTestCase
     {
         return [
             [
-                'The "test" value might be =< x or > y...', // submitted payload
-                [
+                'input' => 'The "test" value might be =< x or > y...', // submitted payload
+                'expectations' => [
                     // @todo issue in `masterminds/html5`, first `<` should be parsed and encoded to `&lt;`
                     'The "test" value might be = x or &gt; y...', // default processing, HTML Sanitizer enabled
                     'The "test" value might be =< x or > y...', // default processing, HTML Sanitizer disabled
                 ],
             ],
             [
-                '<p undefined="<not-allowed>"></p>',
-                [
+                'input' => '<p undefined="<not-allowed>"></p>',
+                'expectations' => [
                     '<p></p>',
                     '<p></p>',
                 ],
             ],
             [
-                '<p undefined=<not-allowed>></p>',
-                [
+                'input' => '<p undefined=<not-allowed>></p>',
+                'expectations' => [
                     '<p></p>',
                     '<p></p>',
                 ],
             ],
             [
-                '<p title="<encode-me>"></p>',
-                [
+                'input' => '<p title="<encode-me>"></p>',
+                'expectations' => [
                     '<p title="&lt;encode-me&gt;"></p>',
                     '<p title="&lt;encode-me&gt;"></p>',
                 ],
             ],
             [
-                '<p title=<encode-me>></p>',
-                [
+                'input' => '<p title=<encode-me>></p>',
+                'expectations' => [
                     '<p title="&lt;encode-me&gt;"></p>',
                     '<p title="&lt;encode-me&gt;"></p>',
                 ],
             ],
             [
-                '<p title="""></p>',
-                [
+                'input' => '<p title="""></p>',
+                'expectations' => [
                     '<p></p>',
                     '<p></p>',
                 ],
             ],
             [
-                '<p title="title"></p>',
-                [
+                'input' => '<p title="title"></p>',
+                'expectations' => [
                     '<p title="title"></p>',
                     '<p title="title"></p>',
                 ],
             ],
             [
-                '<p title="escape"<img src=src>"></p>',
-                [
+                'input' => '<p title="escape"<img src=src>"></p>',
+                'expectations' => [
                     '<p title="escape">"&gt;</p>',
                     '<p title="escape">"></p>',
                 ],
             ],
             [
-                '<p title=""""></p>',
-                [
+                'input' => '<p title=""""></p>',
+                'expectations' => [
                     '<p title></p>',
                     '<p title></p>',
                 ],
             ],
             [
-                '<p title=""anything"></p>',
-                [
+                'input' => '<p title=""anything"></p>',
+                'expectations' => [
                     '<p></p>',
                     '<p></p>',
                 ],
             ],
             [
-                '<p title=""anything""></p>',
-                [
+                'input' => '<p title=""anything""></p>',
+                'expectations' => [
                     '<p title></p>',
                     '<p title></p>',
                 ],
             ],
             [
-                '<p title="anything""></p>',
-                [
+                'input' => '<p title="anything""></p>',
+                'expectations' => [
                     '<p></p>',
                     '<p></p>',
                 ],
             ],
             [
-                '<not-allowed><p title="</not-allowed><img src=x onerror=alert(1)><img src=x onerror=alert(2)>',
-                [
+                // 'removeTags' scrubs this
+                'input' => '<link rel="nothing" /><meta name="something" value="anything">meta</meta><o:p>Word!</o:p>, <sdfield>sdfield</sdfield>, <style type="text/css">html { background-color: red }</style>',
+                'expectations' => [
+                    'metaWord!, sdfield, html { background-color: red }',
+                    'metaWord!, sdfield, html { background-color: red }',
+                ],
+            ],
+            [
+                // 'removeTags' no longer scrubs this
+                'input' => '<strike>strike</strike> <u>underline</u> <center>center</center>',
+                'expectations' => [
+                    '<strike>strike</strike> <u>underline</u> <center>center</center>',
+                    '<strike>strike</strike> <u>underline</u> <center>center</center>',
+                ],
+            ],
+            [
+                'input' => '<not-allowed><p title="</not-allowed><img src=x onerror=alert(1)><img src=x onerror=alert(2)>',
+                'expectations' => [
                     '<p>&lt;not-allowed&gt;</p>' . "\r\n" . '<p></p>',
                     '<p>&lt;not-allowed&gt;</p>' . "\r\n" . '<p></p>',
                 ],
             ],
             [
-                '<not-allowed><p title="</not-allowed><img src="x" onerror="alert(1)"><img src="x" onerror="alert(2)">',
-                [
+                'input' => '<not-allowed><p title="</not-allowed><img src="x" onerror="alert(1)"><img src="x" onerror="alert(2)">',
+                'expectations' => [
                     '<p>&lt;not-allowed&gt;</p>' . "\r\n" . '<p></p>',
                     '<p>&lt;not-allowed&gt;</p>' . "\r\n" . '<p></p>',
                 ],
             ],
             [
-                '<script>alert(3)</script>',
-                [
+                'input' => '<script>alert(3)</script>',
+                'expectations' => [
                     '&lt;script&gt;alert(3)&lt;/script&gt;',
                     '&lt;script&gt;alert(3)&lt;/script&gt;',
                 ],
             ],
             [
-                '<p><script>alert(3)</script></p>',
-                [
+                'input' => '<p><script>alert(3)</script></p>',
+                'expectations' => [
                     '<p>&lt;script&gt;alert(3)&lt;/script&gt;</p>',
                     '<p>&lt;script&gt;alert(3)&lt;/script&gt;</p>',
                 ],
             ],
             [
-                '<title>title</title>',
-                [
-                    '&lt;title&gt;title&lt;/title&gt;',
-                    '&lt;title&gt;title&lt;/title&gt;',
+                'input' => '<title>title</title>',
+                'expectations' => [
+                    'title',
+                    'title',
                 ],
             ],
             [
-                '<p><title>title</title></p>',
-                [
-                    '<p>&lt;title&gt;title&lt;/title&gt;</p>',
-                    '<p>&lt;title&gt;title&lt;/title&gt;</p>',
+                'input' => '<p><title>title</title></p>',
+                'expectations' => [
+                    '<p>title</p>',
+                    '<p>title</p>',
                 ],
             ],
             [
-                '<font face="a" color="b" onmouseover="alert(1);">text</font>'
+                'input' => '<font face="a" color="b" onmouseover="alert(1);">text</font>'
                     . '<img src="x" alt="test" onerror="alert(2)">',
-                [
+                'expectations' => [
                     '<font face="a" color="b">text</font>'
                         . '<img src="x" alt="test">',
                     // @todo "expected" for the time being without using HTML Sanitizer
@@ -192,11 +208,11 @@ final class SecurityTest extends FunctionalTestCase
                 ],
             ],
             [
-                '<p>'
+                'input' => '<p>'
                     . '<font face="a" color="b" onmouseover="alert(1);">text</font>'
                     . '<img src="x" alt="test" onerror="alert(2)">'
                     . '</p>',
-                [
+                'expectations' => [
                     '<p><font face="a" color="b">text</font>'
                         . '<img src="x" alt="test"></p>',
                     // @todo "expected" for the time being without using HTML Sanitizer
@@ -205,24 +221,24 @@ final class SecurityTest extends FunctionalTestCase
                 ],
             ],
             [
-                '<p><a href="https://typo3.org" target="_blank" rel="noreferrer" role="button" onmouseover="alert(1)">text</a></p>',
-                [
+                'input' => '<p><a href="https://typo3.org" target="_blank" rel="noreferrer" role="button" onmouseover="alert(1)">text</a></p>',
+                'expectations' => [
                     '<p><a href="https://typo3.org" target="_blank" rel="noreferrer" role="button">text</a></p>',
                     // @todo "expected" for the time being without using HTML Sanitizer
                     '<p><a href="https://typo3.org" target="_blank" rel="noreferrer" role="button" onmouseover="alert(1)">text</a></p>',
                 ],
             ],
             [
-                '<p><a href="t3://page?uid=1" target="_blank" rel="noreferrer" role="button" onmouseover="alert(1)">text</a></p>',
-                [
+                'input' => '<p><a href="t3://page?uid=1" target="_blank" rel="noreferrer" role="button" onmouseover="alert(1)">text</a></p>',
+                'expectations' => [
                     '<p><a href="t3://page?uid=1" target="_blank" rel="noreferrer" role="button">text</a></p>',
                     // @todo "expected" for the time being without using HTML Sanitizer
                     '<p><a href="t3://page?uid=1" target="_blank" rel="noreferrer" role="button" onmouseover="alert(1)">text</a></p>',
                 ],
             ],
             [
-                '<?xml >s<img src=x onerror=alert(1)> ?>',
-                [
+                'input' => '<?xml >s<img src=x onerror=alert(1)> ?>',
+                'expectations' => [
                     '&lt;?xml &gt;s&lt;img src=x onerror=alert(1)&gt; ?&gt;',
                     '<?xml >s<img src=x onerror=alert(1)> ?>',
                 ],

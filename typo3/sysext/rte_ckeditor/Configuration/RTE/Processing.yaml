@@ -92,7 +92,8 @@ processing:
 
     ## REMOVE OPEN OFFICE META DATA TAGS, WORD 2003 TAGS, LINK, META, STYLE AND TITLE TAGS, AND DEPRECATED HTML TAGS
     ## We use this rule instead of the denyTags rule so that we can protect custom tags without protecting these unwanted tags.
-    removeTags: [center, font, link, meta, o:p, sdfield, strike, style, title, u]
+    ## @todo In v14, insert "center, font" here again (breaking change, see #104839)
+    removeTags: [link, meta, o:p, sdfield, style, title]
 
     ## PROTECT CUSTOM TAGS
     keepNonMatchedTags: protect
