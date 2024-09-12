@@ -24,12 +24,12 @@ use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
+use TYPO3\CMS\Core\Settings\SettingsTree;
 use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -78,57 +78,20 @@ readonly class SiteSettingsService
         );
     }
 
-    public function computeSettingsDiff(Site $site, array $rawSettings, bool $minify = true): array
+    public function computeSettingsDiff(Site $site, SiteSettings $newSettings, bool $minify = true): SettingsTree
     {
-        $settings = [];
-        $localSettings = [];
+        // Settings from sets only – setting values without site-local config/sites/*/settings.yaml applied
+        $defaultSettings = $minify ? $this->siteSettingsFactory->createSettings($site->getSets(), null) : null;
 
-        $definitions = $this->getDefinitions($site);
-        foreach ($rawSettings as $key => $value) {
-            $definition = $definitions[$key] ?? null;
-            if ($definition === null) {
-                throw new \RuntimeException('Unexpected setting ' . $key . ' is not defined', 1724067004);
-            }
-            if ($definition->readonly) {
-                continue;
-            }
-            $type = $this->settingsTypeRegistry->get($definition->type);
-            $settings[$key] = $type->transformValue($value, $definition);
-        }
-
-        // Settings from sets – setting values without config/sites/*/settings.yaml applied
-        $setSettings = $this->siteSettingsFactory->createSettings($site->getSets());
         // Settings from config/sites/*/settings.yaml only (our persistence target)
-        $localSettings = $this->siteSettingsFactory->createSettingsForKeys(
-            array_map(static fn(SettingDefinition $d) => $d->key, $definitions),
-            $site->getIdentifier(),
-            $site->getRawConfiguration()['settings'] ?? []
+        $localSettings = $this->siteSettingsFactory->loadLocalSettingsTree($site->getIdentifier()) ??
+            $site->getRawConfiguration()['settings'] ?? [];
+
+        return SettingsTree::diff(
+            $localSettings,
+            $newSettings,
+            $defaultSettings,
         );
-
-        // Read existing settings, as we *must* not remove any settings that may be present because of
-        //  * "undefined" settings that were supported since TYPO3 v12
-        //  * (temporary) inactive sets
-        $settingsTree = $localSettings->getAll();
-
-        // Merge incoming settings into current settingsTree
-        $changes = [];
-        $deletions = [];
-        foreach ($settings as $key => $value) {
-            if ($minify && $value === $setSettings->get($key)) {
-                if (ArrayUtility::isValidPath($settingsTree, $key, '.')) {
-                    $settingsTree = $this->removeByPathWithAncestors($settingsTree, $key, '.');
-                    $deletions[] = $key;
-                }
-                continue;
-            }
-            $settingsTree = ArrayUtility::setValueByPath($settingsTree, $key, $value, '.');
-            $changes[] = $key;
-        }
-        return [
-            'settings' => $settingsTree,
-            'changes' => $changes,
-            'deletions' => $deletions,
-        ];
     }
 
     public function writeSettings(Site $site, array $settings): void
@@ -144,7 +107,10 @@ readonly class SiteSettingsService
         $this->codeCache->flush();
     }
 
-    private function getDefinitions(Site $site): array
+    /**
+     * @return array<string, SettingDefinition>
+     */
+    public function getDefinitions(Site $site): array
     {
         $sets = $this->setRegistry->getSets(...$site->getSets());
         $definitions = [];
@@ -156,26 +122,8 @@ readonly class SiteSettingsService
         return $definitions;
     }
 
-    private function removeByPathWithAncestors(array $array, string $path, string $delimiter): array
+    public function createSettingsFromFormData(Site $site, array $settingsMap): SiteSettings
     {
-        if ($path === '') {
-            return $array;
-        }
-        if (!ArrayUtility::isValidPath($array, $path, $delimiter)) {
-            return $array;
-        }
-
-        $array = ArrayUtility::removeByPath($array, $path, $delimiter);
-        $parts = explode($delimiter, $path);
-        array_pop($parts);
-        $parentPath = implode($delimiter, $parts);
-
-        if ($parentPath !== '' && ArrayUtility::isValidPath($array, $parentPath, $delimiter)) {
-            $parent = ArrayUtility::getValueByPath($array, $parentPath, $delimiter);
-            if ($parent === []) {
-                return $this->removeByPathWithAncestors($array, $parentPath, $delimiter);
-            }
-        }
-        return $array;
+        return $this->siteSettingsFactory->createSettingsFromFormData($settingsMap, $this->getDefinitions($site));
     }
 }
