@@ -44,8 +44,9 @@ readonly class Settings implements SettingsInterface
         return array_keys($this->settings);
     }
 
-    public static function __set_state(array $state): self
+    public static function __set_state(array $state): static
     {
-        return new self(...$state);
+        /** @phpstan-ignore-next-line Usage is safe because state is exported by PHP var_export() from the static instance */
+        return new static(...$state);
     }
 }
