@@ -152,7 +152,7 @@ class Bootstrap
         $GLOBALS['TCA'] = $tcaFactory->get();
         static::checkEncryptionKey();
         $bootState->complete = true;
-        $container->get(TcaSchemaFactory::class)->load($GLOBALS['TCA'], true);
+        $container->get(TcaSchemaFactory::class)->load($GLOBALS['TCA']);
         $eventDispatcher->dispatch(new BootCompletedEvent(true));
 
         return $container;
