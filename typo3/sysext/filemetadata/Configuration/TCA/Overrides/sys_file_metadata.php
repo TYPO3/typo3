@@ -248,7 +248,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 45,
+                'max' => 120,
             ],
         ],
         'source' => [
