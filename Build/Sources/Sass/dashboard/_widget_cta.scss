@@ -1,17 +1,35 @@
 .widget-cta {
+    --widget-cta-padding: 8px;
+    --widget-cta-bg: var(--typo3-state-secondary-bg);
+    --widget-cta-color: var(--typo3-state-secondary-color);
+    --widget-cta-hover-bg: var(--typo3-state-primary-hover-bg);
+    --widget-cta-hover-color: var(--typo3-state-primary-hover-color);
+    --widget-cta-focus-bg: var(--typo3-state-primary-focus-bg);
+    --widget-cta-focus-color: var(--typo3-state-primary-focus-color);
+    --widget-cta-border-radius: var(--typo3-component-border-radius);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $widget-cta-background;
-    color: $widget-cta-color;
-    border-radius: $widget-cta-border-radius;
-    padding: $widget-cta-padding;
+    background-color: var(--widget-cta-bg);
+    color: var(--widget-cta-color);
+    border-radius: var(--widget-cta-border-radius);
+    padding: var(--widget-cta-padding);
+    outline-offset: 0;
 
-    &:hover,
-    &:focus {
+    &:hover {
+        --widget-cta-color: var(--widget-cta-hover-color);
+        --widget-cta-bg: var(--widget-cta-hover-bg);
         text-decoration: none;
-        background: $widget-cta-hover-background;
-        color: $widget-cta-hover-color;
+    }
+
+    &:focus {
+        --widget-cta-color: var(--widget-cta-focus-color);
+        --widget-cta-bg: var(--widget-cta-focus-bg);
+        text-decoration: none;
+    }
+
+    &:focus-visible {
+        outline: .25rem solid color-mix(in srgb, var(--widget-cta-bg), transparent 25%);
     }
 }
 
@@ -22,5 +40,5 @@
     width: 18px;
     height: 18px;
     margin-inline-end: 12px;
-    color: $widget-cta-color;
+    color: var(--widget-cta-color);
 }

@@ -1,70 +1,27 @@
 // Table
+.widget-table-wrapper {
+    margin: calc(-1 * var(--widget-padding));
+}
+
 .widget-table {
-    width: 100%;
-    color: $widget-table-color;
-
-    thead tr {
-        background-color: $widget-table-head-background;
-    }
-
-    tr {
-        &:nth-child(odd) {
-            background-color: $widget-table-odd-background;
-        }
-
-        &:nth-child(even) {
-            background-color: $widget-table-even-background;
-        }
-    }
-
-    tbody {
-        th,
-        td {
-            border-top: 1px solid $widget-table-border-color;
-        }
-    }
-
-    tbody:first-child {
-        tr:first-child {
-            th,
-            td {
-                border-top: none;
-            }
-        }
-    }
+    margin: 0;
 
     th,
     td {
-        padding: $widget-table-padding;
-
-        > *:first-child {
-            margin-top: 0;
+        &:first-child {
+            padding-inline-start: var(--widget-padding);
         }
 
-        > *:last-child {
-            margin-bottom: 0;
+        &:last-child {
+            padding-inline-end: var(--widget-padding);
         }
     }
 
-    th {
-        font-weight: bold;
-    }
-}
-
-.widget-content-main {
-    .widget-table-wrapper {
-        margin-top: -($widget-padding - $widget-table-padding);
-        margin-left: -($widget-padding);
-        margin-right: -($widget-padding);
-
-        th,
-        td {
-            &:first-child {
-                padding-inline-start: $widget-padding;
-            }
-
-            &:last-child {
-                padding-inline-end: $widget-padding;
+    tbody:last-child {
+        tr:last-child {
+            th,
+            td {
+                border-bottom: none;
             }
         }
     }

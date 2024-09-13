@@ -1,9 +1,12 @@
 // Header
 .dashboard-header {
-    background: $dashboard-header-background;
-    border-bottom: 1px solid darken($dashboard-header-background, 5%);
+    --dashboard-header-bg: var(--typo3-surface-container-high);
+    --dashboard-header-border-color: var(--typo3-surface-container-highest);
+    background: var(--dashboard-header-bg);
+    border-bottom: 1px solid var(--dashboard-header-border-color);
     margin: calc(-1 * var(--module-body-padding-y)) calc(-1 * var(--module-body-padding-x)) var(--module-body-padding-y);
     padding: var(--module-body-padding-y) var(--module-body-padding-x) 0;
+    overflow: hidden;
 }
 
 .dashboard-header-container {
@@ -17,6 +20,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    gap: .5rem;
 }
 
 .dashboard-tabs-menu {
@@ -24,40 +28,44 @@
     list-style: none;
     margin: 0;
     padding: 0;
-
-    .dashboard-tabs-menuitem {
-        margin-inline-end: 2px;
-    }
+    gap: 2px;
 }
 
 .dashboard-tab {
-    border-radius: $dashboard-header-tab-border-radius $dashboard-header-tab-border-radius 0 0;
+    --dashboard-header-tab-padding: 1rem;
+    --dashboard-header-tab-state-color: initial;
+    --dashboard-header-tab-state-bg: initial;
+    --dashboard-header-tab-bg: var(--dashboard-header-tab-state-bg, var(--typo3-component-bg));
+    --dashboard-header-tab-color: var(--dashboard-header-tab-state-color, var(--typo3-component-color));
+    --dashboard-header-tab-border-color: color-mix(in srgb, var(--dashboard-header-tab-bg), var(--dashboard-header-tab-color) 15%);
+    --dashboard-header-tab-hover-bg: color-mix(in srgb, var(--typo3-component-bg), var(--typo3-component-color) 6%);
+    --dashboard-header-tab-hover-color: var(--typo3-component-color);
+    --dashboard-header-tab-focus-bg: var(--typo3-state-default-focus-bg);
+    --dashboard-header-tab-focus-color: var(--typo3-state-default-focus-color);
+    --dashboard-header-tab-active-bg: var(--typo3-state-primary-bg);
+    --dashboard-header-tab-active-color: var(--typo3-state-primary-color);
+    --dashboard-header-tab-border-radius: var(--typo3-component-border-radius);
+    border-radius: var(--dashboard-header-tab-border-radius) var(--dashboard-header-tab-border-radius) 0 0;
+    border: 1px solid var(--dashboard-header-tab-border-color);
+    margin-block-end: -1px;
     display: inline-block;
-    padding: $dashboard-header-tab-padding;
-    background: $dashboard-header-tab-background;
-    color: $dashboard-header-tab-color;
+    padding: calc(var(--dashboard-header-tab-padding) / 1.5) var(--dashboard-header-tab-padding);
+    background: var(--dashboard-header-tab-bg);
+    color: var(--dashboard-header-tab-color);
 
-    &:hover,
-    &:focus {
+    &:focus,
+    &:hover {
+        --dashboard-header-tab-state-bg: var(--dashboard-header-tab-hover-bg);
         text-decoration: none;
-        background: darken($dashboard-header-tab-background, 5%);
-        color: darken($dashboard-header-tab-color, 5%);
+        isolation: isolate;
     }
-}
 
-.dashboard-tab--active {
-    background: $dashboard-header-tab-active-background;
-    color: $dashboard-header-tab-active-color;
-
-    &:hover,
-    &:focus {
-        text-decoration: none;
-        background: darken($dashboard-header-tab-active-background, 5%);
-        color: darken($dashboard-header-tab-active-color, 5%);
+    &:focus-visible {
+        outline: .25rem solid color-mix(in srgb, var(--dashboard-header-tab-bg), transparent 25%);
     }
-}
 
-.dashboard-button-tab-add {
-    margin: 5px;
-    box-shadow: var(--typo3-component-box-shadow);
+    &--active {
+        --dashboard-header-tab-state-color: var(--dashboard-header-tab-active-color) !important;
+        --dashboard-header-tab-state-bg: var(--dashboard-header-tab-active-bg) !important;
+    }
 }

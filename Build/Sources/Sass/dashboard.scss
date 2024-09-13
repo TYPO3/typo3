@@ -1,9 +1,7 @@
 @import "../../node_modules/bootstrap/scss/functions";
 @import "variables/main";
-@import "variables/dashboard";
 
 // BASE
-@import "dashboard/module";
 @import "dashboard/header";
 @import "dashboard/empty";
 @import "dashboard/grid";

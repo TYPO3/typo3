@@ -33,7 +33,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  *    <dashboard:widget.button button="{button}" class="widget-cta">
  *        {f:translate(id: button.title, default: button.title)}
- *    </dashboard:widget.button button="{button}" class="widget-cta">
+ *    </dashboard:widget.button>
  */
 final class ButtonViewHelper extends AbstractTagBasedViewHelper
 {

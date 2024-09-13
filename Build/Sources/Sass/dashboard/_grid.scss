@@ -1,21 +1,23 @@
 // Grid
 .dashboard-grid {
+    --dashboard-grid-gutter: 20px;
     position: relative;
-    margin-right: -($dashboard-column-gutter * .5);
-    margin-left: -($dashboard-column-gutter * .5);
+    margin-right: calc(-.5 * var(--dashboard-grid-gutter));
+    margin-left: calc(-.5 * var(--dashboard-grid-gutter));
 }
 
 // Items
 .dashboard-item {
+    --dashboard-item-height: 200px;
     position: absolute;
     z-index: 1;
-    padding: ($dashboard-column-gutter * .5);
+    padding: calc(.5 * var(--dashboard-grid-gutter));
     width: 100%;
     height: auto;
 
     @media screen and (min-width: 750px) {
         width: 50%;
-        height: $widget-height;
+        height: var(--dashboard-item-height);
     }
 
     @media screen and (min-width: 1285px) {
@@ -36,7 +38,7 @@
         opacity: .5;
 
         .widget {
-            border: 1px dashed $gray-600;
+            border: 1px dashed var(--token-color-neutral-60);
         }
 
         .widget-remove {
@@ -64,7 +66,7 @@
     }
 
     &.widget-waiting {
-        line-height: $widget-height;
+        line-height: var(--dashboard-item-height);
     }
 }
 
@@ -74,13 +76,13 @@
 
 .dashboard-item--h-medium {
     @media screen and (min-width: 750px) {
-        height: $widget-height * 2;
+        height: calc(var(--dashboard-item-height) * 2);
     }
 }
 
 .dashboard-item--h-large {
     @media screen and (min-width: 750px) {
-        height: $widget-height * 3;
+        height: calc(var(--dashboard-item-height) * 3);
     }
 }
 

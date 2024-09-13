@@ -4,8 +4,8 @@
 }
 
 .dashboard-empty-content {
-    background-color: rgba(0, 0, 0, .05);
-    border: 2px dashed rgba(0, 0, 0, .15);
+    background-color: var(--typo3-surface-container-high);
+    border: 2px dashed var(--typo3-surface-container-highest);
     padding: 2.5em;
     text-align: center;
 

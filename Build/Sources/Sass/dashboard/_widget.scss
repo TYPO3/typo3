@@ -1,11 +1,23 @@
 // Main
 .widget {
+    --widget-title-font-size: 1rem;
+    --widget-title-line-height: 1.25;
+    --widget-title-font-family: var(--typo3-header-font-family);
+    --widget-action-size: 28px;
+    --widget-padding: 1.25rem;
+    --widget-color: var(--typo3-component-color);
+    --widget-bg: var(--typo3-component-bg);
+    --widget-border-width: 1px;
+    --widget-border-radius: var(--typo3-component-border-radius);
+    --widget-border-color: color-mix(in srgb, var(--widget-bg), var(--widget-color) 15%);
+    --widget-box-shadow: var(--typo3-component-box-shadow);
     height: 100%;
-    border-radius: $widget-border-radius;
+    border-radius: var(--widget-border-radius);
+    border: var(--widget-border-width) solid var(--widget-border-color);
     overflow: hidden;
-    background-color: $widget-background;
-    box-shadow: var(--typo3-component-box-shadow);
-    color: $widget-color;
+    color: var(--widget-color);
+    background-color: var(--widget-bg);
+    box-shadow: var(--widget-box-shadow);
 
     &:hover {
         .widget-actions {
@@ -22,13 +34,13 @@
 }
 
 .widget-content-title {
-    padding: ($widget-padding * .5) $widget-padding;
-    padding-inline-end: $widget-action-size * 2 + $widget-padding;
-    border-bottom: 1px solid $gray-300;
-    font-family: $widget-title-font-family;
-    font-size: $widget-title-size;
-    font-weight: $widget-title-weight;
-    line-height: $widget-title-line-height;
+    padding: calc(var(--widget-padding) / 2) var(--widget-padding);
+    padding-inline-end: calc(var(--widget-action-size) + (var(--widget-padding) * 2));
+    border-bottom: var(--widget-border-width) solid var(--widget-border-color);
+    font-family: var(--widget-title-font-family);
+    font-size: var(--widget-title-font-size);
+    font-weight: bold;
+    line-height: var(--widget-title-line-height);
 
     span {
         overflow: hidden;
@@ -42,34 +54,39 @@
     }
 
     div[data-widget-key="sys_note_default"] & {
-        background-color: var(--note-default-header-bg);
+        background-color: var(--typo3-state-default-bg);
+        color: var(--typo3-state-default-color);
     }
 
     div[data-widget-key="sys_note_todos"] & {
-        background-color: var(--note-success-header-bg);
+        background-color: var(--typo3-state-success-bg);
+        color: var(--typo3-state-success-color);
     }
 
     div[data-widget-key="sys_note_instructions"] & {
-        background-color: var(--note-info-header-bg);
+        background-color: var(--typo3-state-info-bg);
+        color: var(--typo3-state-info-color);
     }
 
     div[data-widget-key="sys_note_notes"] & {
-        background-color: var(--note-notice-header-bg);
+        background-color: var(--typo3-state-notice-bg);
+        color: var(--typo3-state-notice-color);
     }
 
     div[data-widget-key="sys_note_template"] & {
-        background-color: var(--note-warning-header-bg);
+        background-color: var(--typo3-state-warning-bg);
+        color: var(--typo3-state-warning-color);
     }
 }
 
 .widget-content-main {
     flex-grow: 1;
     overflow-y: auto;
-    padding: $widget-padding;
+    padding: var(--widget-padding);
 }
 
 .widget-content-footer {
-    padding: $widget-padding;
+    padding: var(--widget-padding);
     padding-top: 0;
 }
 
@@ -77,23 +94,30 @@
 .widget-actions {
     position: absolute;
     display: flex;
-    top: calc(((#{$widget-title-size} * #{$widget-title-line-height}) / 2) + (#{$widget-padding} / 2));
-    inset-inline-end: ($widget-padding * .5);
+    top: calc((var(--widget-title-font-size) * var(--widget-title-line-height) / 2) + (var(--widget-padding) / 2));
+    inset-inline-end: calc(var(--widget-padding) / 2);
     transform: translate(0, -50%);
-    opacity: 0;
+    opacity: .5;
     transition: opacity .2s ease-in-out;
 }
 
 .widget-action {
-    width: $widget-action-size;
-    height: $widget-action-size;
+    --widget-action-size: 28px;
+    --widget-action-color: var(--typo3-text-color-variant);
+    --widget-action-hover-color: var(--typo3-state-default-hover-color);
+    --widget-action-focus-color: var(--typo3-state-default-focus-color);
+    width: var(--widget-action-size);
+    height: var(--widget-action-size);
     position: relative;
-    color: $gray-600;
+    color: var(--widget-action-color);
     text-align: center;
 
-    &:hover,
+    &:hover {
+        color: var(--widget-action-hover-color);
+    }
+
     &:focus {
-        color: #ff8700;
+        color: var(--widget-action-focus-color);
     }
 
     .icon {
@@ -119,12 +143,12 @@
 }
 
 .widget-error {
-    padding: $widget-padding;
+    padding: var(--widget-padding);
     position: absolute;
     top: 50%;
     text-align: center;
     transform: translateY(-50%);
-    color: $danger;
+    color: var(--typo3-text-color-danger);
 }
 
 .widget-chart {

@@ -48,7 +48,7 @@ final class DashboardModuleCest
     public function createCustomDashboardAndWidgets(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         // Create Dashboard
-        $I->click('.dashboard-button-tab-add');
+        $I->click('.js-dashboard-modal');
         $modalDialog->canSeeDialog();
         $I->fillField('#dashboardModalAdd-title', self::$customDashboardTitle);
         $I->click('label[for="dashboardKey-empty"]');

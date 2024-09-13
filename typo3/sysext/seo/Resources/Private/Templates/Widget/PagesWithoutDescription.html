@@ -14,7 +14,7 @@
         </f:then>
         <f:else>
             <div class="widget-table-wrapper">
-                <table class="widget-table">
+                <table class="widget-table table table-striped table-hover">
                     <f:for each="{pages}" as="page">
                         <tr>
                             <td>
@@ -24,10 +24,10 @@
                             </td>
                             <td class="text-end">
                                 <div class="btn-group">
-                                    <a href="{page.frontendUrl}" target="_blank" class="btn">
+                                    <a href="{page.frontendUrl}" target="_blank" class="btn btn-default">
                                         <core:icon identifier="actions-eye" alternativeMarkupIdentifier="inline"/>
                                     </a>
-                                    <be:link.editRecord uid="{page.uid}" table="pages" fields="description" returnUrl="{be:moduleLink(route: 'dashboard')}" class="btn">
+                                    <be:link.editRecord uid="{page.uid}" table="pages" fields="description" returnUrl="{be:moduleLink(route: 'dashboard')}" class="btn btn-default">
                                         <core:icon identifier="actions-open" alternativeMarkupIdentifier="inline"/>
                                     </be:link.editRecord>
                                 </div>

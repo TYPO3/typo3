@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 .dashboard-modal-tabpanel .nav{margin:-15px -15px 0;padding:15px 15px 0}
-.dashboard-modal-items{display:flex;flex-flow:row wrap;margin-left:-10px;margin-right:-10px}
-.dashboard-modal-item{position:relative;width:100%;padding:10px}
+.dashboard-modal-items{--dashboard-modal-items-gutter:20px;display:flex;flex-flow:row wrap;margin-left:calc(-.5 * var(--dashboard-modal-items-gutter));margin-right:calc(-.5 * var(--dashboard-modal-items-gutter))}
+.dashboard-modal-item{position:relative;width:100%;padding:calc(.5 * var(--dashboard-modal-items-gutter))}
 @media screen and (min-width:768px){
 .dashboard-modal-item{width:50%}
 }
-.dashboard-modal-item-block{display:flex;font-weight:inherit;align-items:center;height:100%;padding:20px;border:1px solid #cacaca;background-color:#fff;box-shadow:var(--typo3-component-box-shadow);cursor:pointer}
+.dashboard-modal-item-block{display:flex;font-weight:inherit;align-items:center;height:100%;padding:1rem;border-radius:var(--typo3-component-border-radius);border:1px solid var(--typo3-state-default-border-color);background-color:var(--typo3-surface-container-lowest);box-shadow:var(--typo3-component-box-shadow);cursor:pointer}
 .dashboard-modal-item-checkBox{position:absolute;width:0;height:0;opacity:0;cursor:pointer}
-.dashboard-modal-item-checkBox:checked~.dashboard-modal-item-block{border:1px solid #313131}
+.dashboard-modal-item-checkBox:checked~.dashboard-modal-item-block{border:1px solid var(--typo3-state-secondary-border-color)}
 .dashboard-modal-item-icon{margin-inline-end:20px}
 .dashboard-modal-item-title{display:block;font-weight:700}

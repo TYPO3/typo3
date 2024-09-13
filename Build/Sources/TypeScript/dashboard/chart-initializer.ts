@@ -40,8 +40,9 @@ import { Chart,
 import RegularEvent from '@typo3/core/event/regular-event';
 
 class ChartInitializer {
-
   private readonly selector: string = '.dashboard-item';
+  private readonly lightColor: string = '#1a1a1a';
+  private readonly darkColor: string = '#e6e6e6';
 
   constructor() {
     this.initialize();
@@ -76,7 +77,7 @@ class ChartInitializer {
       SubTitle
     );
 
-    new RegularEvent('widgetContentRendered', function (this: HTMLElement, e: CustomEvent): void {
+    new RegularEvent('widgetContentRendered', (e: CustomEvent, htmlElement: HTMLElement): void => {
       e.preventDefault();
       const config: any = e.detail;
 
@@ -84,7 +85,7 @@ class ChartInitializer {
         return;
       }
 
-      const _canvas: any = this.querySelector('canvas');
+      const _canvas: any = htmlElement.querySelector('canvas');
       let context;
 
       if (_canvas !== null) {
@@ -95,8 +96,33 @@ class ChartInitializer {
         return;
       }
 
+      if (this.darkModeEnabled()) {
+        config.graphConfig.options.color = '#ccc';
+        config.graphConfig.options.borderColor = '#000';
+        Chart.defaults.borderColor = 'rgba(255,255,255,.1)';
+        Chart.defaults.color = '#ccc';
+      } else {
+        config.graphConfig.options.color = '#666';
+        config.graphConfig.options.borderColor = '#fff';
+        Chart.defaults.borderColor = 'rgba(0,0,0,.1)';
+        Chart.defaults.color = '#666';
+      }
+
       new Chart(context, config.graphConfig);
     }).delegateTo(document, this.selector);
+  }
+
+  private darkModeEnabled(): boolean {
+    const target = document.querySelector(this.selector);
+    const computedStyle = window.getComputedStyle(target);
+    const colorScheme = computedStyle.colorScheme;
+    if (colorScheme === 'light only' || colorScheme === 'light') {
+      return false;
+    } else if (colorScheme === 'dark only' || colorScheme === 'dark') {
+      return true;
+    }
+
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
 }
 
