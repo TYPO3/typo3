@@ -4103,7 +4103,7 @@ td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap
 .t3-page-ce-footer{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:.75rem;padding:calc(var(--pagemodule-grid-spacing)/ 2) var(--pagemodule-grid-spacing);background-color:rgba(0,0,0,.05);border-bottom-left-radius:var(--pagemodule-element-border-radius);border-bottom-right-radius:var(--pagemodule-element-border-radius)}
 .t3-page-ce-actions{text-align:center;z-index:2}
 .t3-page-ce-dropzone{position:relative;top:0;z-index:297;border-radius:var(--pagemodule-element-border-radius);background-color:var(--pagemodule-dropzone-bg)}
-.t3-page-ce-dropzone.active{border:1px dashed color-mix(in srgb,var(--pagemodule-dropzone-bg),currentColor 10%);height:25.75px;width:100%}
+.t3-page-ce-dropzone.active{border:1px dashed color-mix(in srgb,var(--pagemodule-dropzone-bg),currentColor 10%);height:28.5px;width:100%}
 .t3-page-ce-dropzone.active.t3-page-ce-dropzone-possible{--pagemodule-dropzone-bg:var(--pagemodule-dropzone-possible-bg);z-index:298}
 .element-preview a{color:inherit}
 .element-preview-header:empty{display:none}

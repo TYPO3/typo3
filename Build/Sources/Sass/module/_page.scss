@@ -236,7 +236,7 @@
 
     &.active {
         border: 1px dashed color-mix(in srgb, var(--pagemodule-dropzone-bg), currentColor 10%);
-        height: 25.75px; // @todo refactor later
+        height: 28.5px; // @todo refactor later
         width: 100%;
 
         &.t3-page-ce-dropzone-possible {
