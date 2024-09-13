@@ -104,7 +104,7 @@ final readonly class MoveElementController
             'record' => $contentElement,
             'makeCopyChecked' => $makeCopy,
             'pageInfo' => $pageInfo,
-            'recordTitle' => BackendUtility::getRecordTitle('tt_content', $contentElement, true),
+            'recordTitle' => BackendUtility::getRecordTitle('tt_content', $contentElement),
         ];
         if (is_array($pageInfo) && $this->getBackendUser()->isInWebMount($pageInfo['uid'], $permsClause)) {
             // Initialize the content position map:
@@ -114,7 +114,7 @@ final readonly class MoveElementController
             $contentPositionMap->cur_sys_language = $sysLanguage;
 
             $assigns['pageRecord']['recordTooltip'] = BackendUtility::getRecordIconAltText($pageInfo, 'pages', false);
-            $assigns['pageRecord']['recordTitle'] = BackendUtility::getRecordTitle('pages', $pageInfo, true);
+            $assigns['pageRecord']['recordTitle'] = BackendUtility::getRecordTitle('pages', $pageInfo);
             $assigns['contentElementColumns'] = $contentPositionMap->printContentElementColumns($pageId, $pageInfo, $request);
         }
         return $assigns;
