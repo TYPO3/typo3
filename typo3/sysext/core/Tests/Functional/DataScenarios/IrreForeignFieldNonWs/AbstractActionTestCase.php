@@ -145,11 +145,37 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     /**
      * See DataSet/copyParentContentToLanguageWAllChildren.csv
+     *
+     * @todo: Note there is a subtle difference between "copyToLanguage" command here,
+     *        and "supposedly the same" using "copy" below. It should be decided if
+     *        having two different results is what we really want in this case, or
+     *        if this should be streamlined.
      */
     public function copyParentContentToLanguageWithAllChildren(): void
     {
         $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    /**
+     * See DataSet/copyParentContentToDiffLanguageWAllChildren.csv
+     *
+     * @todo: Note there is a subtle difference between "copy" command here, and
+     *         "supposedly the same" using "copyToLanguage" above. It should be decided
+     *         if having two different results is what we really want in this case, or
+     *         if this should be streamlined.
+     */
+    public function copyParentContentToDifferentLanguageWAllChildren(): void
+    {
+        $newTableIds = $this->actionService->copyRecord(
+            self::TABLE_Content,
+            self::VALUE_ContentIdLast,
+            self::VALUE_PageId,
+            [
+                'sys_language_uid' => self::VALUE_LanguageId,
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
     /**
