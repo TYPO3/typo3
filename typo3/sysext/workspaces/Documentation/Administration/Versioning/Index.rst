@@ -199,3 +199,12 @@ Deleting records
 
 - Detaching versions from a workspace and raising stage of versions can
   be done as long as the user has edit permission to the record.
+
+.. _files:
+
+Files / Assets / Resources
+**************************
+
+To manage files/assets (unlike records/pages), the live workspace
+is utilized. This means that appropriate live workspace permissions need to be
+set in order to access backend modules like the file list module.
