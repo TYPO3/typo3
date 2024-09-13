@@ -63,8 +63,8 @@ final readonly class TcaFactory
     public function create(): array
     {
         $tca = $this->loadConfigurationTcaFiles();
-        $tca = $this->enrichTca($tca);
         $tca = $this->dispatchBeforeTcaOverridesEvent($tca);
+        $tca = $this->enrichTca($tca);
         $tca = $this->loadConfigurationTcaOverridesFiles($tca);
         $tca = $this->migrateTca($tca);
         $tca = $this->prepareTca($tca);
