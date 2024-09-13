@@ -25,9 +25,9 @@
         <f:else>
             <typo3-backend-settings-editor
                 action-url="{actionUrl}"
-                return-url="{returnUrl}"
                 dump-url="{dumpUrl}"
                 categories="{categories->f:format.json()}"
+                custom-form-data="{f:format.json(value: {formToken: formToken, returnUrl: returnUrl})}"
             ></typo3-backend-settings-editor>
 
         </f:else>

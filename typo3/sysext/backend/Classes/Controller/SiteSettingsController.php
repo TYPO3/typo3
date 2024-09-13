@@ -28,8 +28,10 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -68,6 +70,8 @@ readonly class SiteSettingsController
         protected PageRenderer $pageRenderer,
         protected FlashMessageService $flashMessageService,
         protected IconFactory $iconFactory,
+        protected ResponseFactory $responseFactory,
+        protected FormProtectionFactory $formProtectionFactory,
     ) {}
 
     public function overviewAction(ServerRequestInterface $request): ResponseInterface
@@ -152,6 +156,9 @@ readonly class SiteSettingsController
         $view->assign('dumpUrl', (string)$this->uriBuilder->buildUriFromRoute('site_settings.dump', ['site' => $site->getIdentifier()]));
         $view->assign('categories', $categories);
 
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
+        $view->assign('formToken', $formProtection->generateToken('site_settings', 'save'));
+
         return $view->renderResponse('SiteSettings/Edit');
     }
 
@@ -174,9 +181,17 @@ readonly class SiteSettingsController
 
         $site = $this->siteFinder->getSiteByIdentifier($identifier);
 
-        $view = $this->moduleTemplateFactory->create($request);
-
         $parsedBody = $request->getParsedBody();
+        $formProtection = $this->formProtectionFactory->createFromRequest($request);
+        if (!$formProtection->validateToken((string)($parsedBody['formToken'] ?? ''), 'site_settings', 'save')) {
+            return $this->responseFactory
+                ->createResponse(400, 'Invalid request token given')
+                ->withHeader('Location', (string)$this->uriBuilder->buildUriFromRoute('site_settings.edit', [
+                    'site' => $site->getIdentifier(),
+                ]));
+        }
+
+        $view = $this->moduleTemplateFactory->create($request);
 
         $returnUrl = GeneralUtility::sanitizeLocalUrl(
             (string)($parsedBody['returnUrl'] ?? '')

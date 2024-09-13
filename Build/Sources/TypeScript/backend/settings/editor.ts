@@ -68,7 +68,7 @@ export class SettingsEditorElement extends LitElement {
   @property({ type: Array }) categories: Category[];
   @property({ type: String, attribute: 'action-url' }) actionUrl: string;
   @property({ type: String, attribute: 'dump-url' }) dumpUrl: string;
-  @property({ type: String, attribute: 'return-url' }) returnUrl: string;
+  @property({ type: Object, attribute: 'custom-form-data' }) customFormData: Record<string, string> = {};
 
   @state() activeCategory: string = '';
 
@@ -189,7 +189,7 @@ export class SettingsEditorElement extends LitElement {
             method="post"
             @submit=${(e: SubmitEvent) => this.onSubmit(e)}
       >
-        ${this.returnUrl ? html`<input type="hidden" name="returnUrl" value=${this.returnUrl} />` : nothing}
+        ${Object.entries(this.customFormData).map(([name, value]) => html`<input type="hidden" name=${name} value=${value} />`)}
         <div class="settings">
           <div class="settings-navigation">
             ${this.renderCategoryTree(this.categories ?? [], 1)}
