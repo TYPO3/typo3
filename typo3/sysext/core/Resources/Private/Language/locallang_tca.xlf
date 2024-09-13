@@ -39,6 +39,9 @@
 			<trans-unit id="workspace_perms" resname="workspace_perms">
 				<source>Workspace permissions</source>
 			</trans-unit>
+			<trans-unit id="workspace_perms.description" resname="workspace_perms.description">
+				<source>Live workspace permissions are also required to allow management of files/resources</source>
+			</trans-unit>
 			<trans-unit id="workspace_perms_live" resname="workspace_perms_live">
 				<source>Edit Live (Online)</source>
 			</trans-unit>
