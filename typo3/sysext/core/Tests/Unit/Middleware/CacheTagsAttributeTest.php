@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Middleware;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Cache\CacheDataCollectorInterface;
@@ -29,17 +30,19 @@ final class CacheTagsAttributeTest extends UnitTestCase
     #[Test]
     public function cacheTagsAttributeIsAddedToRequest(): void
     {
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request
+        $requestMock = $this->createMock(ServerRequestInterface::class);
+        $requestMock
             ->expects(self::once())
             ->method('withAttribute')
-            ->with('frontend.cache.collector', self::isInstanceOf(CacheDataCollectorInterface::class));
+            ->with('frontend.cache.collector', self::isInstanceOf(CacheDataCollectorInterface::class))
+            ->willReturnSelf();
         $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
         $requestHandlerMock
             ->expects(self::once())
             ->method('handle')
-            ->with(self::isInstanceOf(ServerRequestInterface::class));
+            ->with(self::isInstanceOf(ServerRequestInterface::class))
+            ->willReturn($this->createMock(ResponseInterface::class));
         $middleware = new CacheDataCollectorAttribute();
-        $middleware->process($request, $requestHandlerMock);
+        $middleware->process($requestMock, $requestHandlerMock);
     }
 }
