@@ -15,18 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Event;
+namespace TYPO3\CMS\Core\Page;
 
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use TYPO3\CMS\Core\Exception;
 
 /**
- * Event listeners are able to manipulate fetched page content, which is already grouped by column
- * @todo Consider deprecation due to introduction of ResolveContentAreasEvent
+ * @internal
  */
-final class AfterContentHasBeenFetchedEvent
-{
-    public function __construct(
-        public array $groupedContent,
-        public readonly ServerRequestInterface $request,
-    ) {}
-}
+class ContentAreaNotFoundException extends Exception implements NotFoundExceptionInterface {}

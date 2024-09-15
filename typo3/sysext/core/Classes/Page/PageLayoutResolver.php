@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Page;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -43,6 +44,7 @@ readonly class PageLayoutResolver
         protected DataProviderCollection $dataProviderCollection,
         protected SiteFinder $siteFinder,
         protected PageTsConfigFactory $pageTsConfigFactory,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function getLayoutForPage(array $pageRecord, array $rootLine): ?PageLayout
@@ -56,23 +58,8 @@ readonly class PageLayoutResolver
             return null;
         }
 
-        $fullStructure = $layout->getStructure()['__config'];
-        $contentAreas = [];
-        // find all arrays recursively from , where one of the columns within the array is called "colPos"
-        $findColPos = function (array $structure) use (&$findColPos, &$contentAreas) {
-            if (isset($structure['colPos'])) {
-                unset($structure['colspan'], $structure['rowspan']);
-                $contentAreas[] = $structure;
-            }
-            foreach ($structure as $value) {
-                if (is_array($value)) {
-                    $findColPos($value);
-                }
-            }
-        };
-        $findColPos($fullStructure);
-
-        return new PageLayout($layout->getIdentifier(), $layout->getTitle(), $contentAreas);
+        $contentAreas = $this->eventDispatcher->dispatch(new ResolveContentAreasEvent($layout))->getContentAreas();
+        return new PageLayout($layout->getIdentifier(), $layout->getTitle(), new ContentAreaCollection($contentAreas));
     }
 
     /**

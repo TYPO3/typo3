@@ -1,16 +1,19 @@
 <header>
     <h1>{page.pageRecord.title}</h1>
     <f:for each="{mainContent.stage.records}" as="record">
+        {mainContent.stage.name}
         <f:render partial="SingleContent" arguments="{record: record}"/>
     </f:for>
 </header>
 <main>
     <f:for each="{mainContent.main.records}" as="record">
+        {mainContent.main.name}
         <f:render partial="SingleContent" arguments="{record: record}"/>
     </f:for>
 </main>
 <footer>
     <f:for each="{mainContent.footer.records}" as="record">
+        {mainContent.footer.name}
         <f:render partial="SingleContent" arguments="{record: record}"/>
     </f:for>
 </footer>

@@ -18,9 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
-use TYPO3\CMS\Core\Page\ContentSlideMode;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Content\RecordCollector;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
@@ -66,78 +63,14 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
         if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) {
             return $processedData;
         }
-        $recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
         $request = $cObj->getRequest();
         $pageInformation = $request->getAttribute('frontend.page.information');
-        $pageLayout = $pageInformation->getPageLayout();
-
-        $groupedContent = [];
-        $contentAreasWithSlideMode = [];
-        $contentAreasWithoutSlideMode = [];
-        foreach ($pageLayout?->getContentAreas() ?? [] as $contentAreaData) {
-            if (!isset($contentAreaData['colPos'])) {
-                continue;
-            }
-            if (!isset($contentAreaData['identifier'])) {
-                continue;
-            }
-            if (!isset($contentAreaData['slideMode'])) {
-                $contentAreasWithoutSlideMode[(int)$contentAreaData['colPos']] = $contentAreaData;
-            } else {
-                $contentAreasWithSlideMode[] = $contentAreaData;
-            }
-            // Create the content for the $groupedContents array
-            $contentAreaName = $contentAreaData['identifier'];
-            $contentAreaData['records'] = [];
-            $groupedContent[$contentAreaName] = $contentAreaData;
-        }
-
-        // 1. Content Areas without slide mode can be fetched with one SQL query, so let's do that first
-        $allUsedColPositionsWithoutSlideMode = array_column($contentAreasWithoutSlideMode, 'colPos');
-        if ($allUsedColPositionsWithoutSlideMode !== []) {
-            // 1a. Make the SQL query for all colPos
-            $flatRecords = $this->recordCollector->collect(
-                'tt_content',
-                [
-                    'where' => sprintf(
-                        '{#colPos} in (%s)',
-                        implode(',', array_map(intval(...), $allUsedColPositionsWithoutSlideMode))
-                    ),
-                    'orderBy' => 'colPos, sorting',
-                ],
-                ContentSlideMode::None,
-                $cObj,
-                $recordIdentityMap
-            );
-            // 1b. Sort the records into the contentArea they belong to
-            foreach ($flatRecords as $recordToSort) {
-                $colPosOfRecord = (int)$recordToSort->get('colPos');
-                $groupIdentifier = $contentAreasWithoutSlideMode[$colPosOfRecord]['identifier'];
-                $groupedContent[$groupIdentifier]['records'][] = $recordToSort;
-            }
-        }
-
-        // 2. Slide Mode elements need to be fetched one by one
-        foreach ($contentAreasWithSlideMode as $contentAreaData) {
-            $records = $this->recordCollector->collect(
-                'tt_content',
-                [
-                    'where' => '{#colPos}=' . (int)$contentAreaData['colPos'],
-                    'orderBy' => 'sorting',
-                ],
-                ContentSlideMode::tryFrom($contentAreaData['slideMode'] ?? null),
-                $cObj,
-                $recordIdentityMap
-            );
-            $contentAreaData['records'] = $records;
-            $contentAreaName = $contentAreaData['identifier'];
-            $groupedContent[$contentAreaName] = $contentAreaData;
-        }
-
         $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, 'content');
-        $processedData[$targetVariableName] = $this->eventDispatcher->dispatch(
-            new AfterContentHasBeenFetchedEvent($groupedContent, $request)
+        $contentAreas = $pageInformation->getPageLayout()?->getContentAreas();
+        $groupedContent = $this->eventDispatcher->dispatch(
+            new AfterContentHasBeenFetchedEvent($contentAreas->getGroupedRecords(), $request)
         )->groupedContent;
+        $processedData[$targetVariableName] = $contentAreas->withUpdatedRecords($groupedContent);
         return $processedData;
     }
 }

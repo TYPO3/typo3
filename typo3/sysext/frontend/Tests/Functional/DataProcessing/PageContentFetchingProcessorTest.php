@@ -93,7 +93,9 @@ final class PageContentFetchingProcessorTest extends FunctionalTestCase
         $body = (string)$response->getBody();
         self::assertStringContainsString('Hero is our flagship', $body);
         self::assertStringContainsString('Get a hero for yourself', $body);
+        self::assertStringContainsString('News / Flash Sale (optional, collect em all)', $body);
         self::assertStringContainsString('Flash Info for all products', $body);
         self::assertStringContainsString('If you read this you are at the end.', $body);
+        self::assertStringContainsString('[allowedContent: hero]', $body);
     }
 }

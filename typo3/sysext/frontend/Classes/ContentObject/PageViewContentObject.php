@@ -141,10 +141,11 @@ final class PageViewContentObject extends AbstractContentObject
      */
     private function getContentObjectVariables(array $conf): array
     {
+        $pageInformation = $this->request->getAttribute('frontend.page.information');
         $variables = [
             'site' => $this->request->getAttribute('site'),
             'language' => $this->request->getAttribute('language'),
-            'page' => $this->request->getAttribute('frontend.page.information'),
+            'page' => $pageInformation,
         ];
         // Accumulate the variables to be process and loop them through cObjGetSingle
         if (is_array($conf['variables.'] ?? false) && $conf['variables.'] !== []) {
@@ -162,6 +163,14 @@ final class PageViewContentObject extends AbstractContentObject
                 $variables[$variableName] = $this->cObj->cObjGetSingle($cObjType, $cObjConf, 'variables.' . $variableName);
             }
         }
+        if (!($conf['contentAs'] ?? false) && isset($variables['content'])) {
+            throw new \InvalidArgumentException(
+                'No variable name ("contentAs" option) for the content areas has been defined in PAGEVIEW, and the fallback name "content" is not available because it has been manually set.',
+                1726475574
+            );
+        }
+
+        $variables[$conf['contentAs'] ?? 'content'] = $pageInformation->getPageLayout()?->getContentAreas();
         return $variables;
     }
 }

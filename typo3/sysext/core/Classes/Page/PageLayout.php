@@ -28,7 +28,7 @@ class PageLayout
     public function __construct(
         protected string $identifier,
         protected string $title,
-        protected array $contentAreas,
+        protected ContentAreaCollection $contentAreas,
     ) {}
 
     public function getIdentifier(): string
@@ -41,7 +41,7 @@ class PageLayout
         return $this->title;
     }
 
-    public function getContentAreas(): array
+    public function getContentAreas(): ContentAreaCollection
     {
         return $this->contentAreas;
     }

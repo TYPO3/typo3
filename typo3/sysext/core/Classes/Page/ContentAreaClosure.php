@@ -15,18 +15,21 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Event;
-
-use Psr\Http\Message\ServerRequestInterface;
+namespace TYPO3\CMS\Core\Page;
 
 /**
- * Event listeners are able to manipulate fetched page content, which is already grouped by column
- * @todo Consider deprecation due to introduction of ResolveContentAreasEvent
+ * Used to initialize a content area once it is accessed
+ *
+ * @internal
  */
-final class AfterContentHasBeenFetchedEvent
+final readonly class ContentAreaClosure
 {
     public function __construct(
-        public array $groupedContent,
-        public readonly ServerRequestInterface $request,
+        private \Closure $instantiator
     ) {}
+
+    public function instantiate(): ContentArea
+    {
+        return ($this->instantiator)();
+    }
 }
