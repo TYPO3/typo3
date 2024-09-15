@@ -163,7 +163,7 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
                 $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
                 $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
                 $controller->debugInformationHeader = 'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $controller->cacheGenerated)
-                    . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $controller->cacheExpires);
+                    . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $pageCacheRow['expires']);
             }
             if ($setupConfigAst->getChildByName('no_cache')?->getValue()) {
                 // Disable cache if config.no_cache is set!
