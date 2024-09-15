@@ -141,7 +141,7 @@
 
 .localconf-item {
     width: 100%;
-    border: 1px solid #bebebe;
+    border: 1px solid var(--typo3-panel-border-color);
 
     &.searchhit ~ .alert {
         display: none;
@@ -150,7 +150,7 @@
 
 .localconf-item-heading {
     padding: .5rem 1rem;
-    background-color: #eee;
+    background-color: var(--typo3-panel-header-bg);
 }
 
 .localconf-item-body {

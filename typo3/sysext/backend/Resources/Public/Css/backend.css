@@ -4061,9 +4061,9 @@ td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap
 .install-tool-modal .module-action-list{display:flex;align-items:center;gap:var(--typo3-spacing)}
 .install-tool-modal .module-action-list .module-action-list-description{flex-grow:1}
 .localconf-list{display:flex;flex-direction:column;gap:1rem}
-.localconf-item{width:100%;border:1px solid #bebebe}
+.localconf-item{width:100%;border:1px solid var(--typo3-panel-border-color)}
 .localconf-item.searchhit~.alert{display:none}
-.localconf-item-heading{padding:.5rem 1rem;background-color:#eee}
+.localconf-item-heading{padding:.5rem 1rem;background-color:var(--typo3-panel-header-bg)}
 .localconf-item-body{padding:1rem}
 .localconf-item-body>:first-child{margin-top:0}
 .localconf-item-body>:last-child{margin-bottom:0}
