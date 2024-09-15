@@ -210,7 +210,7 @@ final class RecoveryCodesProviderTest extends FunctionalTestCase
             MfaProviderPropertyManager::create($this->subject, $this->user),
             MfaViewType::SETUP
         );
-        self::assertStringContainsString('<textarea type="text" id="recoveryCodes"', $response->getBody()->getContents());
+        self::assertStringContainsString('<input type="hidden" id="recoveryCodes"', $response->getBody()->getContents());
     }
 
     #[Test]
