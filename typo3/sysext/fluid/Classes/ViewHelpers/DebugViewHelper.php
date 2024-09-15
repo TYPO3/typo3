@@ -33,8 +33,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  *    <f:debug>{testVariables.array}</f:debug>
  *
- * foobarbazfoo
- *
  * All Features
  * ------------
  *
