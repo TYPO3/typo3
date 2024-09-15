@@ -31,9 +31,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * ::
  *
- *    <f:debug>{testVariables.array}</f:debug>
+ *    <f:debug>{myVariable}</f:debug>
  *
- * foobarbazfoo
+ * [A HTML dump of myVariable value]
  *
  * All Features
  * ------------
@@ -45,9 +45,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *        blacklistedPropertyNames="{0:'posts'}"
  *        plainText="true" ansiColors="false"
  *        inline="true"
- *        >
- *            {blogs}
- *        </f:debug>
+*     >
+ *        {blogs}
+ *    </f:debug>
  *
  * [A HTML view of the var_dump]
  */
