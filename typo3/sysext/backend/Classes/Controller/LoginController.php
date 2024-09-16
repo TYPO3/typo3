@@ -140,13 +140,6 @@ class LoginController
         if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {
             $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, useNonce: true);
         }
-        if (($logo = $this->authenticationStyleInformation->getLogo()) !== '') {
-            $logoAlt = $this->authenticationStyleInformation->getLogoAlt() ?: $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
-        } else {
-            $logo = $this->authenticationStyleInformation->getDefaultLogo();
-            $logoAlt = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
-            $this->pageRenderer->addCssInlineBlock('loginLogo', $this->authenticationStyleInformation->getDefaultLogoStyles(), useNonce: true);
-        }
         $loginProviderIdentifier = $this->loginProviderResolver->resolveLoginProviderIdentifierFromRequest($request, 'be_lastLoginProvider');
         if (empty($backendUser->user['uid'])) {
             // Show login form
@@ -159,9 +152,6 @@ class LoginController
         }
         $forgotPasswordUrl = $this->uriBuilder->buildUriWithRedirect('password_forget', ['loginProvider' => $loginProviderIdentifier], RouteRedirect::createFromRequest($request));
         $viewVariables = [
-            'logo' => $logo,
-            'logoAlt' => $logoAlt,
-            'images' => $this->authenticationStyleInformation->getSupportingImages(),
             'copyright' => $this->typo3Information->getCopyrightNotice(),
             'loginFootnote' => $this->authenticationStyleInformation->getFooterNote(),
             'referrerCheckEnabled' => $this->features->isFeatureEnabled('security.backend.enforceReferrer'),

@@ -68,6 +68,9 @@ readonly class AuthenticationStyleInformation
         }
         $highlightColor = GeneralUtility::sanitizeCssVariableValue($highlightColor);
         return '
+            .typo3-login {
+                --typo3-login-highlight: ' . $highlightColor . ';
+            }
             .btn-login {
                 --typo3-btn-color: #fff;
                 --typo3-btn-bg: ' . $highlightColor . ';
@@ -120,24 +123,7 @@ readonly class AuthenticationStyleInformation
 
     public function getDefaultLogo(): string
     {
-        // Use TYPO3 logo depending on highlight color
-        $logo = ((string)($this->getBackendExtensionConfiguration()['loginHighlightColor'] ?? '') !== '')
-            ? 'EXT:core/Resources/Public/Images/typo3_black.svg'
-            : 'EXT:core/Resources/Public/Images/typo3_orange.svg';
-
-        return $this->getUriForFileName($logo);
-    }
-
-    public function getDefaultLogoStyles(): string
-    {
-        return '.typo3-login-logo .typo3-login-image { max-width: 150px; height:100%;}';
-    }
-
-    public function getSupportingImages(): array
-    {
-        return [
-            'typo3' => $this->getUriForFileName('EXT:core/Resources/Public/Images/typo3_orange.svg'),
-        ];
+        return $this->getUriForFileName('EXT:core/Resources/Public/Images/typo3_variable.svg');
     }
 
     /**

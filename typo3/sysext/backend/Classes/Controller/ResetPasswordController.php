@@ -232,18 +232,7 @@ class ResetPasswordController
         if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {
             $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, useNonce: true);
         }
-        if (($logo = $this->authenticationStyleInformation->getLogo()) !== '') {
-            $logoAlt = $this->authenticationStyleInformation->getLogoAlt()
-                ?: $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
-        } else {
-            $logo = $this->authenticationStyleInformation->getDefaultLogo();
-            $logoAlt = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
-            $this->pageRenderer->addCssInlineBlock('loginLogo', $this->authenticationStyleInformation->getDefaultLogoStyles(), useNonce: true);
-        }
         $this->view->assignMultiple([
-            'logo' => $logo,
-            'logoAlt' => $logoAlt,
-            'images' => $this->authenticationStyleInformation->getSupportingImages(),
             'copyright' => $this->typo3Information->getCopyrightNotice(),
         ]);
     }

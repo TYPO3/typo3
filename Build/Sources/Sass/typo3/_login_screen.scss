@@ -35,6 +35,11 @@ body[data-typo3-login-ready] {
     background-color: var(--typo3-login-bg);
     background-size: cover;
     background-position: center center;
+
+    .highlight {
+        color: var(--typo3-login-highlight);
+        fill: var(--typo3-login-highlight);
+    }
 }
 
 .typo3-login-inner {
@@ -111,12 +116,12 @@ body[data-typo3-login-ready] {
 // Logo
 //
 .typo3-login-logo {
-    padding-top: 1em;
-
+    svg,
     img {
         display: block;
-        max-width: 100%;
+        width: auto;
         height: auto;
+        max-width: 220px;
         margin: 0 auto;
     }
 }

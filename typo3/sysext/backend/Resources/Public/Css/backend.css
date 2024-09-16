@@ -3879,6 +3879,7 @@ span.dragIcon{display:inline-block;height:16px}
 .history-block{border-inline-start:5px solid #a9a9a9;border-bottom:1px dotted #a9a9a9}
 body[data-typo3-login-ready]{overflow-y:auto}
 .typo3-login{--typo3-login-highlight:#f80;--typo3-login-btn-color:#fff;--typo3-login-btn-bg:var(--typo3-login-highlight);--typo3-login-width:320px;--typo3-login-width-large:960px;--typo3-login-color:var(--typo3-text-color-base);--typo3-login-bg:var(--typo3-surface-base);--typo3-login-padding-x:2.5em;--typo3-login-copyright-color:var(--typo3-text-color-variant);display:flex;flex-direction:row;width:100%;height:auto!important;color:var(--typo3-login-color);background-color:var(--typo3-login-bg);background-size:cover;background-position:center center}
+.typo3-login .highlight{color:var(--typo3-login-highlight);fill:var(--typo3-login-highlight)}
 .typo3-login-inner{margin:0 auto;width:99.999%;min-height:100vh;display:flex;flex-direction:column}
 .typo3-login-container{z-index:100;padding:1.5em;display:flex;flex-direction:column;flex:1 1 auto;align-items:center;justify-content:center}
 .typo3-login-footnote{margin-left:auto;margin-right:auto;font-size:.95em;text-align:center;padding:1em 1.5em;display:block;color:#666}
@@ -3891,8 +3892,7 @@ body[data-typo3-login-ready]{overflow-y:auto}
 .typo3-login-links{padding-top:inherit;margin-top:20px;margin-bottom:20px}
 .typo3-login-links a{display:flex;gap:.5rem}
 #t3js-login-url{width:0;height:0;border:0;padding:0;overflow:hidden;clip:rect(0,0,0,0);cursor:default}
-.typo3-login-logo{padding-top:1em}
-.typo3-login-logo img{display:block;max-width:100%;height:auto;margin:0 auto}
+.typo3-login-logo img,.typo3-login-logo svg{display:block;width:auto;height:auto;max-width:220px;margin:0 auto}
 .typo3-login-news-heading{font-size:14px;line-height:1.3em;margin-top:0}
 .card-login{overflow:visible}
 .card-login .card-heading{padding:2.5em var(--typo3-login-padding-x) 0}
