@@ -17,17 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+
 interface ProviderInterface
 {
     /**
      * An array of class names which implements the ExpressionFunctionProviderInterface
      *
-     * @return array<int, class-string>
+     * @return list<class-string<ExpressionFunctionProviderInterface>>
      */
     public function getExpressionLanguageProviders(): array;
 
     /**
      * An array with key/value pairs. The key will be available as variable name
+     *
+     * @return array<non-empty-string, mixed>
      */
     public function getExpressionLanguageVariables(): array;
 }
