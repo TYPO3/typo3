@@ -30,7 +30,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * ViewHelper which creates a checkbox field, that is used for file upload deletion in extbase
+ * ViewHelper which creates a checkbox field, that is used for file upload deletion in Extbase.
  *
  * Examples
  * ========
