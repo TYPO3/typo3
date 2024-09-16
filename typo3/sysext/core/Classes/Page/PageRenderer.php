@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -284,11 +285,16 @@ class PageRenderer implements SingletonInterface
                 $attributes['dir'] = 'rtl';
             }
             // TODO: build an API to add HTML attributes cleanly
-            if ($this->getApplicationType() === 'BE' && !empty($GLOBALS['BE_USER'])) {
-                $userTS = $GLOBALS['BE_USER']->getTSConfig();
+            if ($this->getApplicationType() === 'BE') {
+                $context = GeneralUtility::makeInstance(Context::class);
+                $backendUser = $context->getAspect('backend.user');
 
-                if (!isset($userTS['setup.']['fields.']['colorScheme.']['disabled']) || $userTS['setup.']['fields.']['colorScheme.']['disabled'] !== '1') {
-                    $attributes['data-color-scheme'] = $GLOBALS['BE_USER']->uc['colorScheme'] ?? 'auto';
+                if ($backendUser->isLoggedIn()) {
+                    $userTS = $GLOBALS['BE_USER']->getTSConfig();
+
+                    if (!isset($userTS['setup.']['fields.']['colorScheme.']['disabled']) || $userTS['setup.']['fields.']['colorScheme.']['disabled'] !== '1') {
+                        $attributes['data-color-scheme'] = $GLOBALS['BE_USER']->uc['colorScheme'] ?? 'auto';
+                    }
                 }
             }
             $this->setHtmlTag('<html ' . GeneralUtility::implodeAttributes($attributes, true) . '>');

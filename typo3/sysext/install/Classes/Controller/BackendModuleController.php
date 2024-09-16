@@ -82,12 +82,25 @@ class BackendModuleController
      */
     protected function setAuthorizedAndRedirect(string $controller, ServerRequestInterface $request): ResponseInterface
     {
+        $redirectParameters = [
+            'install' => [
+                'controller' => $controller,
+                'context' => 'backend',
+            ],
+        ];
+
+        $backendUser = $this->getBackendUser();
+        $userTS = $backendUser->getTSConfig();
+        if (!isset($userTS['setup.']['fields.']['colorScheme.']['disabled']) || $userTS['setup.']['fields.']['colorScheme.']['disabled'] !== '1') {
+            $redirectParameters['install']['colorScheme'] = $GLOBALS['BE_USER']->uc['colorScheme'] ?? 'auto';
+        }
+
         $userSession = $this->getBackendUser()->getSession();
         $this->sessionService->installSessionHandler();
         $this->sessionService->startSession();
         $this->sessionService->setAuthorizedBackendSession($userSession);
         $entryPointResolver = GeneralUtility::makeInstance(BackendEntryPointResolver::class);
-        $redirectLocation = $entryPointResolver->getUriFromRequest($request, 'install.php')->withQuery('?install[controller]=' . $controller . '&install[context]=backend' . '&install[colorScheme]=' . ($this->getBackendUser()->uc['colorScheme'] ?? ''));
+        $redirectLocation = $entryPointResolver->getUriFromRequest($request, 'install.php')->withQuery('?' . http_build_query($redirectParameters, '', '&', PHP_QUERY_RFC3986));
         return new RedirectResponse($redirectLocation, 303);
     }
 
