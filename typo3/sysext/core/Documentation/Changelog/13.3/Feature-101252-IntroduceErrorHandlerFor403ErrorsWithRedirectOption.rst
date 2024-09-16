@@ -11,8 +11,8 @@ See :issue:`101252`
 Description
 ===========
 
-The new error handler :php:`RedirectLoginErrorHandler` has been added,
-which makes it possible to redirect the user to a configurable page.
+The new error handler :php:`\TYPO3\CMS\Core\Error\PageErrorHandler\RedirectLoginErrorHandler`
+has been added, which makes it possible to redirect the user to a configurable page.
 
 Requesting a login-protected URL would usually return a generic HTTP 403 error
 in case of a missing fulfilled access permissions and the configuration
@@ -22,7 +22,8 @@ is set.
 By enabling this new handler via the site settings, the 403 response
 can be handled and a custom redirect can be performed.
 
-The :php:`RedirectLoginErrorHandler` allows to define a
+The :php-short:`\TYPO3\CMS\Core\Error\PageErrorHandler\RedirectLoginErrorHandler`
+allows to define a
 :php:`loginRedirectTarget`, which must be configured to the page, where the
 login process is handled. Additionally, the :php:`loginRedirectParameter`
 must be set to the URL parameter that will be used to hand over the original
@@ -44,7 +45,7 @@ for :php:`loginRedirectParameter`. Those values are used in extensions like
     :typoscript:`plugin.tx_felogin_login.settings.redirectMode=getpost,loginError`)
 
 The new error handler works (with some minor exceptions) similar to the
-"Forbidden (HTTP Status 403)" handler in TYPO3 extension `EXT:sierrha`.
+"Forbidden (HTTP Status 403)" handler in TYPO3 extension :composer:`plan2net/sierrha`.
 It will still emit generic 403 HTTP error messages in certain scenarios,
 like when a user is already logged in, but the permissions are not
 satisfied.
@@ -55,6 +56,7 @@ Impact
 It is now possible to configure a login redirection process when a user has no
 access to a page and a 403 error is thrown, so that after login the
 originating URL is requested again. Previously, this required custom
-Middlewares or implementations of :php:`PageErrorHandlerInterface`.
+Middlewares or implementations of
+:php-short:`\TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface`.
 
 .. index:: Frontend, ext:core

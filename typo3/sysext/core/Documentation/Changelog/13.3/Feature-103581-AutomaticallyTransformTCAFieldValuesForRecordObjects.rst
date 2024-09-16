@@ -3,7 +3,7 @@
 .. _feature-103581-1723209131:
 
 ==============================================================================
-Feature: #103581 - Automatically transform TCA field values for Record objects
+Feature: #103581 - Automatically transform TCA field values for record objects
 ==============================================================================
 
 See :issue:`103581`
@@ -11,18 +11,21 @@ See :issue:`103581`
 Description
 ===========
 
-With :issue:`103783` the new :php:`Record` object has been introduced. It's an
+With :issue:`103783` the new :php:`\TYPO3\CMS\Core\Domain\Record` object has been
+introduced. It is an
 object representing a raw database record, based on TCA and is usually used in
 the frontend (via Fluid Templates), when fetching records with the
-:php:`RecordTransformationDataProcessor` (:typoscript:`record-transformation`)
-or by collecting content elements with the :php:`PageContentFetchingProcessor`
+:ref:`RecordTransformationProcessor <t3tsref:RecordTransformationProcessor>`
+(:typoscript:`record-transformation`) or by collecting content elements with the
+:ref:`PageContentFetchingProcessor <t3tsref:PageContentFetchingProcessor>`
 (:typoscript:`page-content`).
 
 The Records API - introduced together with the Schema API in :issue:`104002` -
-now expands the :php:`Records`'s values for most common field types (known
+now expands the record's values for most common field types (known
 from the TCA Schema) from their raw database value into "rich-flavored" values,
-which might be :php:`Record`, :php:`FileReference`, :php:`Folder` or
-:php:`\DateTimeImmutable` objects.
+which might be :php-short:`\TYPO3\CMS\Core\Domain\Record`,
+:php-short:`\TYPO3\CMS\Core\Resource\FileReference`,
+:php:`\TYPO3\CMS\Core\Resource Folder` or :php:`\DateTimeImmutable` objects.
 
 This works for the following "relation" TCA types:
 
@@ -47,7 +50,7 @@ configuration from TCA.
 
 In case of relations (:php:`category`, :php:`group`, :php:`inline`,
 :php:`select` with :php:`MM` and :php:`foreign_table`), a collection
-(:php:`LazyRecordCollection`) of new :php:`Record` objects is attached as
+(:php:`LazyRecordCollection`) of new :php-short:`\TYPO3\CMS\Core\Domain\Record` objects is attached as
 value. In case of :php:`file`, a collection (:php:`LazyFileReferenceCollection`)
 of :php:`FileReference` objects and in case of type :php:`folder`, a collection
 (:php:`LazyFolderCollection`) of :php:`Folder` objects are attached.
@@ -56,7 +59,7 @@ of :php:`FileReference` objects and in case of type :php:`folder`, a collection
 
     The relations are only resolved once they are accessed - also known as
     "lazy loading". This allows for recursion and circular dependencies to be
-    managed automatically. It's therefore also possible that the collection
+    managed automatically. It is therefore also possible that the collection
     is actually empty.
 
 
@@ -112,7 +115,8 @@ Fields of TCA type :php:`datetime` will be transformed into a full
 
 Fields of TCA type :php:`json` will provide the decoded JSON value.
 
-Fields of TCA type :php:`link` will provide the :php:`TypolinkParameter` object,
+Fields of TCA type :php:`link` will provide the
+:php:`\TYPO3\CMS\Core\LinkHandling\TypolinkParameter` object,
 which is an object oriented representation of the corresponding TypoLink
 :typoscript:`parameter` configuration.
 
@@ -130,10 +134,13 @@ an array of static values.
 Impact
 ======
 
-When using :php:`Record` objects through the :php:`RecordFactory` API, e.g. via
-:php:`RecordTransformationDataProcessor` (:typoscript:`record-transformation`)
-or :php:`PageContentFetchingProcessor` (`page-content`), the corresponding
-:php:`Record` objects are now automatically processed and enriched.
+When using :php-short:`\TYPO3\CMS\Core\Domain\Record` objects through the
+:php:`\TYPO3\CMS\Core\Domain\RecordFactory` API, e.g. via
+:ref:`RecordTransformationProcessor <t3tsref:RecordTransformationProcessor>`
+(:typoscript:`record-transformation`) or
+:ref:`PageContentFetchingProcessor <t3tsref:PageContentFetchingProcessor>`
+(`page-content`), the corresponding :php-short:`\TYPO3\CMS\Core\Domain\Record`
+objects are now automatically processed and enriched.
 
 Those can not only be used in the frontend but also for Backend Previews in
 the page module. This is possible by configuring a Fluid Template via Page
@@ -152,7 +159,8 @@ templates to this new object, as the former values will probably vanish in the
 next major version.
 
 By utilizing the new API for fetching records and content elements, the need
-for further data processors, e.g. :php:`FilesProcessor` (:typoscript:`files`),
+for further data processors, e.g.
+:php-short:`\TYPO3\CMS\Frontend\DataProcessing\FilesProcessor` (:typoscript:`files`),
 becomes superfluous since all relations are resolved automatically when
 requested.
 

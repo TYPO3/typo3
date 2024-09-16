@@ -20,9 +20,9 @@ Impact
 ======
 
 Calling the methods
-:php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addCacheTags()`
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addCacheTags()`
 and
-:php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPageCacheTags()`
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPageCacheTags()`
 will trigger a PHP deprecation warning.
 
 
@@ -30,9 +30,9 @@ Affected installations
 ======================
 
 TYPO3 installations calling
-:php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addCacheTags()`
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addCacheTags()`
 or
-:php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPageCacheTags()`.
+:php-short:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPageCacheTags()`.
 
 
 Migration

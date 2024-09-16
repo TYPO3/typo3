@@ -12,17 +12,16 @@ Description
 ===========
 
 To make managing content across pages easier, a backend user may now drag
-content elements from the "Page" module into a page in the page tree.
+content elements from the :guilabel:`Web > Page` module into a page in the page tree.
 
-Once dropped, a modal window will open where the backend user may select the
-position where the content element shall be placed to, and also change the
-target page again.
+Once dropped, a modal window opens, allowing the backend user to select the
+position for placing the content element and to change the target page if needed.
 
 
 Impact
 ======
 
-Content elements can be moved from the "Page" module into the page tree to
-initiate the move process.
+Content elements can be moved from the :guilabel:`Web > Page` module into the
+page tree to initiate the moving process.
 
 .. index:: Backend, ext:backend

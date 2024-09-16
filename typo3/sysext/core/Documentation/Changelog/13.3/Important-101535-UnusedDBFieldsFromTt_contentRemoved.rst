@@ -19,13 +19,14 @@ accessible way, funded by the German Government (BLE_) with the
 "Konjunkturpaket II" was merged into CSS Styled Content.
 
 In this procedure, certain Content Types received new fields and rendering definitions, which
-were stored in the database fields "accessibility_title", "accessibility_bypass" and "accessibility_bypass_text".
+were stored in the database fields `accessibility_title`, `accessibility_bypass`
+and `accessibility_bypass_text`.
 
 When CSS Styled Content was removed in favor of Fluid Styled Content in TYPO3 v8, the DB
 fields continued to exist in TYPO3 Core, so a migration from CSS Styled Content was possible.
 
 However, the DB fields are not evaluated anymore since then, and are removed, along with
-their TCA definition in "tt_content".
+their TCA definition in `tt_content`.
 
 If these fields are still relevant for a custom legacy installation, these DB fields need to be
 re-created via TCA for further use in a third-party extension.

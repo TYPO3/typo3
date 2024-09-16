@@ -13,7 +13,7 @@ Description
 
 A new boolean property `opacity` has been added to the TCA configuration of
 a TCA type `color` element to allow defining colors with an opacity using
-the RRGGBBAA color notation.
+the `RRGGBBAA` color notation.
 
 ..  code-block:: php
 

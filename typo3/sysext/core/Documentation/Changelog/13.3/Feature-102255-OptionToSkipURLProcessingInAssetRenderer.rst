@@ -11,7 +11,8 @@ See :issue:`102255`
 Description
 ===========
 
-The :php:`AssetCollector` options have been extended to include an `external`
+The :php:`\TYPO3\CMS\Core\Page\AssetCollector` options have been extended to
+include an `external`
 flag. When set for asset files using :php:`$assetCollector->addStyleSheet()`
 or :php:`$assetCollector->addJavaScript()`, all processing of the asset
 URI (like the addition of the cache busting parameter) is skipped and the input
@@ -20,7 +21,8 @@ path will be used as-is in the resulting HTML tag.
 Example
 =======
 
-The following code skips the cache busting parameter `?1726090820` for the supplied CSS file:
+The following code skips the cache busting parameter `?1726090820` for the
+supplied CSS file:
 
 ..  code-block:: php
 
@@ -42,7 +44,8 @@ Resulting in the following HTML output:
 Impact
 ======
 
-Developers can now use the `AssetCollector` API to embed JavaScript or CSS files
-without any processing of the supplied asset URI.
+Developers can now use the :php-short:`\TYPO3\CMS\Core\Page\AssetCollector`
+API to embed JavaScript or CSS files without any processing of the
+supplied asset URI.
 
 .. index:: PHP-API, ext:core

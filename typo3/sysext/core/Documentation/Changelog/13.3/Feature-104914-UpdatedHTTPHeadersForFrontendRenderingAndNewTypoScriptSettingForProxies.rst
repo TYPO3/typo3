@@ -3,7 +3,7 @@
 .. _feature-104914-1726075631:
 
 =====================================================================================================
-Feature: #104914 - Updated HTTP Headers for Frontend Rendering and new TypoScript setting for proxies
+Feature: #104914 - Updated HTTP headers for frontend rendering and new TypoScript setting for proxies
 =====================================================================================================
 
 See :issue:`104914`
@@ -11,15 +11,17 @@ See :issue:`104914`
 Description
 ===========
 
-In a typical Frontend rendering scenario, TYPO3 sends HTTP Response Headers to
-deny caching to clients (= browsers) when e.g. a Frontend User is logged in,
-a Backend User's previewing a page, or a non-cacheable plugin is on a page.
+In a typical frontend rendering scenario, TYPO3 sends HTTP response headers to
+deny caching to clients (= browsers) when e.g. a frontend user is logged in,
+a backend user is previewing a page, or a non-cacheable plugin is on a page.
 
 When a frontend page is "client-cacheable", TYPO3 does not send any HTTP headers
 by default, but only when :typoscript:`config.sendCacheHeaders = 1` is set
 via TypoScript.
 
 In this case, TYPO3 sends the following HTTP Headers (example):
+
+..  code-block:: plaintext
 
     Expires: Thu, 26 Aug 2024 08:52:00 GMT
     ETag: "d41d8cd98f00b204ecs00998ecf8427e"
@@ -35,7 +37,7 @@ Thus, :typoscript:`config.sendCacheHeaders = 1` should be used with extreme care
 
 However, this option was also used when a proxy / CDN / shared cache such as
 Varnish was put in between TYPO3 / the webserver and the client. The reverse
-proxy can then evaluate the HTTP Response Headers sent by TYPO3 Frontend, put
+proxy can then evaluate the HTTP Response Headers sent by TYPO3 frontend, put
 the TYPO3 response from the actual webserver into its "shared cache" and send
 a manipulated / adapted response to the client.
 
@@ -47,7 +49,7 @@ client to not cache the response inside the browser cache.
 This is now achieved with a new option
 :typoscript:`config.sendCacheHeadersForSharedCaches = auto`.
 
-With this option enabled, TYPO3 now evaluates if the current TYPO3 Frontend
+With this option enabled, TYPO3 now evaluates if the current TYPO3 frontend
 request is executed behind a Reverse Proxy, and if so, TYPO3 sends the following
 HTTP Response Headers at a cached response:
 

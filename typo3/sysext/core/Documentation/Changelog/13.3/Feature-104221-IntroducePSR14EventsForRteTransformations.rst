@@ -14,12 +14,12 @@ Description
 When using an RTE HTML content element, two transformations
 take place within the TYPO3 backend:
 
-*  From database: Fetching the current content from the database (`persistence`) and
-   preparing it to be displayed inside the RTE HTML component.
-*  To database: Retrieving the data returned by the RTE and preparing it to
-   be persisted into the database.
+*   From database: Fetching the current content from the database (`persistence`) and
+    preparing it to be displayed inside the RTE HTML component.
+*   To database: Retrieving the data returned by the RTE and preparing it to
+    be persisted into the database.
 
-This takes place in the :php:`TYPO3\CMS\Core\Html\RteHtmlParser` class, by utilizing the
+This takes place in the :php:`\TYPO3\CMS\Core\Html\RteHtmlParser` class, by utilizing the
 methods :php:`transformTextForRichTextEditor` and :php:`transformTextForPersistence`.
 
 With :issue:`96107` and :issue:`92992`, the former hook
@@ -33,20 +33,20 @@ more customized transformations, apart from the internal and API ones:
 
 Modify data when saving RTE content to the database (persistence):
 
-*  :php:`TYPO3\CMS\Core\Html\Event\BeforeTransformTextForPersistenceEvent`
-*  :php:`TYPO3\CMS\Core\Html\Event\AfterTransformTextForPersistenceEvent`
+*   :php:`\TYPO3\CMS\Core\Html\Event\BeforeTransformTextForPersistenceEvent`
+*   :php:`\TYPO3\CMS\Core\Html\Event\AfterTransformTextForPersistenceEvent`
 
 Modify data when retrieving content from the database and pass to the RTE:
 
-*  :php:`TYPO3\CMS\Core\Html\Event\BeforeTransformTextForRichTextEditorEvent`
-*  :php:`TYPO3\CMS\Core\Html\Event\AfterTransformTextForRichTextEditorEvent`
+*   :php:`\TYPO3\CMS\Core\Html\Event\BeforeTransformTextForRichTextEditorEvent`
+*   :php:`\TYPO3\CMS\Core\Html\Event\AfterTransformTextForRichTextEditorEvent`
 
 All four events have the same structure (for now):
 
--  :php:`getHtmlContent()` - retrieve the current HTML content
--  :php:`setHtmlContent()` - used to set modifications of the HTML content
--  :php:`getInitialHtmlContent()` - retrieve the untampered initial HTML content
--  :php:`getProcessingConfiguration()` - retrieve processing configuration array
+*   :php:`getHtmlContent()` - retrieve the current HTML content
+*   :php:`setHtmlContent()` - used to set modifications of the HTML content
+*   :php:`getInitialHtmlContent()` - retrieve the untampered initial HTML content
+*   :php:`getProcessingConfiguration()` - retrieve processing configuration array
 
 The event is meant to be used so that developers can change the HTML content
 either `before` the internal TYPO3 modifications, or `after` those.
@@ -71,12 +71,12 @@ in the frontend to handle this part of the content with for example internal glo
 
 The workflow would be:
 
-*  Editor enters "TYPO3" in the RTE instance.
-*  When saving, this gets stored as "[tag:typo3]".
-*  When the editor sees the RTE instance again, "[tag:typo3]" gets replaced to "TYPO3" again.
-*  So: The editor will always only see "TYPO3" and not know how it is internally handled.
-*  The frontend output receives "[tag:typo3]" and could do its own content element magic,
-   other services accessing the database could also use the parseable representation.
+*   Editor enters "TYPO3" in the RTE instance.
+*   When saving, this gets stored as "[tag:typo3]".
+*   When the editor sees the RTE instance again, "[tag:typo3]" gets replaced to "TYPO3" again.
+*   So: The editor will always only see "TYPO3" and not know how it is internally handled.
+*   The frontend output receives "[tag:typo3]" and could do its own content element magic,
+    other services accessing the database could also use the parseable representation.
 
 The corresponding event listener class:
 
@@ -121,10 +121,10 @@ Impact
 
 Using the new PSR-14 events
 
-*  :php:`TYPO3\CMS\Core\Html\Event\BeforeTransformTextForPersistenceEvent`
-*  :php:`TYPO3\CMS\Core\Html\Event\AfterTransformTextForPersistenceEvent`
-*  :php:`TYPO3\CMS\Core\Html\Event\BeforeTransformTextForRichTextEditorEvent`
-*  :php:`TYPO3\CMS\Core\Html\Event\AfterTransformTextForRichTextEditorEvent`
+*   :php:`\TYPO3\CMS\Core\Html\Event\BeforeTransformTextForPersistenceEvent`
+*   :php:`\TYPO3\CMS\Core\Html\Event\AfterTransformTextForPersistenceEvent`
+*   :php:`\TYPO3\CMS\Core\Html\Event\BeforeTransformTextForRichTextEditorEvent`
+*   :php:`\TYPO3\CMS\Core\Html\Event\AfterTransformTextForRichTextEditorEvent`
 
 allows to apply custom transformations for `database <-> RTE content`
 transformations.

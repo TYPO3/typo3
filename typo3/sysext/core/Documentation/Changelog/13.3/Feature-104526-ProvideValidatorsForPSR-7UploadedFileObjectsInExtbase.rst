@@ -11,15 +11,16 @@ See :issue:`104526`
 Description
 ===========
 
-4 new extbase validators have been added to allow common validation tasks of a
-PSR-7 :php:`UploadedFile` object or an :php:`ObjectStorage` containing PSR-7
-:php:`UploadedFile` objects.
+4 new Extbase validators have been added to allow common validation tasks of a
+PSR-7 :php:`\TYPO3\CMS\Core\Http\UploadedFile` object or an
+:php:`\TYPO3\CMS\Extbase\Persistence\ObjectStorage` containing PSR-7
+:php-short:`\TYPO3\CMS\Core\Http\UploadedFile` objects.
 
 Note, that the new validators can only be applied to the TYPO3 implementation
-of the PSR-7 :php:`UploadedFileInterface` because they validate the uploaded
+of the PSR-7 :php:`\Psr\Http\Message\UploadedFileInterface` because they validate the uploaded
 files before it has been moved.
 
-Custom implementations of the :php:`UploadedFileInterface` must continue to
+Custom implementations of the :php-short:`\Psr\Http\Message\UploadedFileInterface` must continue to
 implement their own validators.
 
 FileNameValidator
@@ -74,6 +75,6 @@ Impact
 ======
 
 TYPO3 extension autors can now use the new validators to validate a given
-:php:`UploadedFile` object.
+:php-short:`\TYPO3\CMS\Core\Http\UploadedFile` object.
 
 .. index:: Backend, ext:extbase

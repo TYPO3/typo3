@@ -11,7 +11,7 @@ See :issue:`104463`
 Description
 ===========
 
-Fluid standalone method :php:`TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper->overrideArgument()`
+Fluid standalone method :php:`\TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper->overrideArgument()`
 has been marked as deprecated.
 
 

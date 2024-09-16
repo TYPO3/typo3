@@ -11,20 +11,20 @@ See :issue:`104773`
 Description
 ===========
 
-Class :php:`TYPO3\CMS\Core\View\ViewFactoryInterface` has been added as a
+Class :php:`\TYPO3\CMS\Core\View\ViewFactoryInterface` has been added as a
 generic view interface to create views that return an instance of
-:php:`TYPO3\CMS\Core\View\ViewInterface`. This implements the "V" of "MVC"
-in a generic way and is used throughout the TYPO3 core.
+:php:`\TYPO3\CMS\Core\View\ViewInterface`. This implements the "V" of "MVC"
+in a generic way and is used throughout the TYPO3 Core.
 
-This obsoletes all custom view instance creation approaches within the TYPO3 core
+This obsoletes all custom view instance creation approaches within the TYPO3 Core
 and within TYPO3 extensions. Extensions should retrieve view instances based
-on this :php:`ViewFactoryInterface`.
+on this :php-short:`\TYPO3\CMS\Core\View\ViewFactoryInterface`.
 
 Impact
 ======
 
 Instances of this interface should be injected using dependency injection. The
-default injected implementation is a fluid view, and can be reconfigured using
+default injected implementation is a Fluid view, and can be reconfigured using
 dependency injection configuration, typically in a :file:`Services.yaml` file.
 
 A casual example to create and render a view looks like this.
@@ -53,8 +53,7 @@ A casual example to create and render a view looks like this.
         }
     }
 
-Note extbase based extensions create a view instance based on this factory
+Note Extbase-based extensions create a view instance based on this factory
 by default and are accessible as :php:`$this->view`.
-
 
 .. index:: Fluid, PHP-API, ext:core

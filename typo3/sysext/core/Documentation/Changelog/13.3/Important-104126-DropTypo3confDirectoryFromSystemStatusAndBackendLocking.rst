@@ -11,16 +11,16 @@ See :issue:`104126`
 Description
 ===========
 
-The directory :file:`typo3conf` is no longer needed in Composer Mode.
+The directory :path:`typo3conf` is no longer needed in Composer Mode.
 Checking for the existence of this directory is no longer performed in the
 Environment and Install Tool.
 
-Previously it would contain:
+Previously it contained:
 
-*  extensions (which are now Composer packages stored in :file:`vendor/`),
-*  the configuration files (which are now part of the :file:`config/` tree),
-*  language labels and some artifact states (now part of :file:`var/`).
-*  a "backend lock" file (:file:`LOCK_BACKEND`)
+*   extensions (which are now Composer packages stored in :file:`vendor/`),
+*   the configuration files (which are now part of the :file:`config/` tree)
+*   language labels and some artifact states (now part of :file:`var/`)
+*   a "backend lock" file (:file:`LOCK_BACKEND`)
 
 The location to this file can be adjusted via the new configuration setting
 :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['lockBackendFile']`. See
@@ -28,7 +28,7 @@ The location to this file can be adjusted via the new configuration setting
 
 By default, :file:`LOCK_BACKEND` is now located here:
 
-*  `var/lock/` for Composer Mode
-*  `config/` for Legacy Mode
+*   :path:`var/lock/` for Composer Mode
+*   :path:`config/` for Legacy Mode
 
 .. index:: Backend, CLI, LocalConfiguration, ext:backend

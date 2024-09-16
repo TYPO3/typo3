@@ -11,8 +11,8 @@ See :issue:`104662`
 Description
 ===========
 
-The method :php:`BackendUtility::thumbCode()` has been deprecated since the
-method is no longer used in TYPO3 anymore. Additionally, due to multipe changes
+The method :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode()` has been deprecated since the
+method is no longer used in TYPO3 anymore. Additionally, due to multiple changes
 to file processing over the years, e.g. introducing of FAL, the method's
 signature changed a couple of times leading to a couple of method arguments
 are being unused, which is quite a bad API.
@@ -35,12 +35,12 @@ Migration
 
 Remove any usage of this method. In case you currently rely on the
 functionality, you can copy it to your custom extension. However, you might
-want to consider refactoring the correspoding code places.
+want to consider refactoring the corresponding code places.
 
-The method basically resolved given :php:`FileReference` objects. In case
+The method basically resolved given :php-short:`\TYPO3\CMS\Core\Resource\FileReference` objects. In case
 a file could not be resolved, a special icon has been rendered. Otherwise,
 the cropping configuration has been applied and the file's :php:`process()`
-has been called to get the thumbnail, which has been wrapped in correspoding
+has been called to get the thumbnail, which has been wrapped in corresponding
 thumbnail markup. This might has been extended to also open the information
 modal on click.
 

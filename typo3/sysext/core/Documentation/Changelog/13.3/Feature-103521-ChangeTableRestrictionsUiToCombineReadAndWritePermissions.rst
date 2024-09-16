@@ -24,7 +24,7 @@ This field now offers separate radio buttons to define which tables the backend
 user group should have permission to read and / or write. This is done by
 selecting one of the "No Access", "Read" or "Read & Write" options.
 
-To further improve the user experience, it's also possible to use the
+To further improve the user experience, it is also possible to use the
 "Check All", "Uncheck All" and "Toggle Selection" options for each permission.
 
 Under the hood, when these permissions are processed, they are still saved
@@ -43,7 +43,8 @@ It uses a dedicated data provider defined in:
 The JavaScript code is handled by a new web component:
 :js:`@typo3/backend/form-engine/element/table-permission-element.js`.
 
-When the `TcaTablePermission` data provider handles the configuration, it
+When the :php-short:`\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTablePermission`
+data provider handles the configuration, it
 reads table lists from both the `tables_select` and `tables_modify`
 columns and combines them into a single array with unique table names.
 

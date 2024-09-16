@@ -11,7 +11,8 @@ See :issue:`104973`
 Description
 ===========
 
-The `typo3` executable received a new command `lint:yaml` to ease and encourage linting of yaml files before deploying to production and therefor avoid failures.
+The :bash:`typo3` executable received a new command `lint:yaml` to ease and encourage
+linting of YAML files before deploying to production and therefore avoid failures.
 
 Usage as follows:
 
@@ -26,7 +27,8 @@ The `help` argument will list possible usage elements.
 Impact
 ======
 
-Integrate easy made linting of yaml files from core, custom extensions or
-any other source into your quality assurance workflow in the known format of the typo3 executable.
+Integrate easy made linting of YAML files from Core, custom extensions or
+any other source into your quality assurance workflow in the known format
+of the :bash:`typo3` executable.
 
 .. index:: CLI, YAML

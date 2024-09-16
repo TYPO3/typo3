@@ -20,7 +20,7 @@ them editable based on
 :doc:`Site Set provided Settings Definitions <../13.1/Feature-103437-IntroduceSiteSets>`.
 
 The editor shows a list of settings categories and respective settings. It will
-persist all settings into file:`config/sites/*/settings.yaml`. The module will
+persist all settings into :file:`config/sites/*/settings.yaml`. The module will
 only persist settings that deviate from the site-scoped default value. That
 means it will only change the minimal difference to the settings set defined
 by the active sets for the respective site.
@@ -92,7 +92,7 @@ configuration, which was previously only possible to modify via Constant Editor,
 modifying TypoScript constants.
 
 It is recommended to use site-sets and their UI configuration in favor of
-Typoscript Constants in the future.
+TypoScript Constants in the future.
 
 
 .. index:: Backend, Frontend, YAML, ext:backend

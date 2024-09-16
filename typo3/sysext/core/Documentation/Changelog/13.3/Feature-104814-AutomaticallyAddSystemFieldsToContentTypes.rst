@@ -11,10 +11,10 @@ See :issue:`104814`
 Description
 ===========
 
-All content elements (:php:`CTypes`'s) are usually equipped with the same
+All content elements types (:php:`CType`) are usually equipped with the same
 system fields (`language`, `hidden`, etc.) - see also :ref:`feature-104311-1720176189`.
 Adding them to the editor form has previously been done by adding those fields
-to each content type's :php:`showitem` definition.
+to each content types' :php:`showitem` definition.
 
 In the effort to simplify content element creation, to unify the available
 fields and position for the editor and to finally reduce configuration effort
@@ -51,7 +51,7 @@ depending on their definition in the table's :php:`ctrl` section:
 By default, all custom fields - the ones still defined in :php:`showitem` - are
 added after the `general` palette and are therefore added to the
 :guilabel:`General` tab, unless a custom tab (e.g. :guilabel:`Plugin`,
-or :guilabel:`Categories`) is defined in between. It's also possible to start
+or :guilabel:`Categories`) is defined in between. It is also possible to start
 with a custom tab by defining a `--div--` as the first item in the
 :php:`showitem`. In this case, the :guilabel:`General` tab will be omitted.
 

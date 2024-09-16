@@ -11,18 +11,18 @@ See :issue:`103789`
 Description
 ===========
 
-A "close"-button is now displayed in the page module, if the :php:`returnUrl`
+A "close"-button is now displayed in the page module, if the `returnUrl`
 argument is set. When this button is clicked, the previous module
-leading to the page module (or a custom link defined in :php:`returnUrl`) will be displayed
+leading to the page module (or a custom link defined in `returnUrl`) will be displayed
 again.
 
-In order to utilize this, backend module links set in extensions must pass the :php:`returnUrl`
-argument. If :php:`returnUrl` is not set, the "close"-button will not be displayed.
+In order to utilize this, backend module links set in extensions must pass the `returnUrl`
+argument. If `returnUrl` is not set, the "close"-button will not be displayed.
 
 Examples
 --------
 
-Here is an example, using the Fluid :html:`<be:moduleLink>` ViewHelper:
+Here is an example, using the Fluid :fluid:`<be:moduleLink>` ViewHelper:
 
 ..  code-block:: html
     :caption: Fluid example
@@ -34,26 +34,26 @@ Here is an example, using the Fluid :html:`<be:moduleLink>` ViewHelper:
     </a>
 
 The behaviour is similar to the :html:`<be:uri.editRecord>` ViewHelper,
-where setting the :html:`returnUrl` argument will also cause a "close"-button to
+where setting the `returnUrl` argument will also cause a "close"-button to
 be displayed.
 
 .. important::
 
-    When using the :html:`<be:uri.editRecord>` ViewHelper, :html:`returnUrl` is
-    passed directly as argument. However, using :html:`<be:moduleLink>`, the
-    :html:`returnUrl` argument must be passed as an additional parameter via the Fluid
-    ViewHelper's argument :html:`arguments` or :html:`query`.
+    When using the :fluid:`<be:uri.editRecord>` ViewHelper, `returnUrl` is
+    passed directly as argument. However, using :fluid:`<be:moduleLink>`, the
+    `returnUrl` argument must be passed as an additional parameter via the Fluid
+    ViewHelper's argument :fluid:`arguments` or :fluid:`query`.
 
-The :html:`returnUrl` should usually return to the calling (originating) module.
+The `returnUrl` should usually return to the calling (originating) module.
 
-You can build the :html:`returnUrl` with the Fluid ViewHelper :html:`be:uri`:
+You can build the `returnUrl` with the Fluid ViewHelper :fluid:`be:uri`:
 
 ..  code-block:: html
     :caption: Fluid example for building returnUrl to module "linkvalidator"
 
     <f:be.uri route="web_linkvalidator" parameters="{id: pageUid}"/>
 
-Here is an example for building the :html:`returnUrl` via PHP:
+Here is an example for building the `returnUrl` via PHP:
 
 ..  code-block:: php
     :caption: Backend module controller

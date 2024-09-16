@@ -11,9 +11,10 @@ See :issue:`101391`
 Description
 ===========
 
-The ViewHelpers :fluid:`<f:image>` and :fluid:`<f:uri.image>` now
-support the attribute :xml:`base64="true"` that will provide
-a possibility to return the value of the image's :html:`src` attribute
+The ViewHelpers :ref:`<f:image> <t3viewhelper:typo3-fluid-image>` and
+:ref:`<f:uri.image> <t3viewhelper:typo3-fluid-uri-image>` now
+support the attribute :fluid:`base64="true"` that will provide
+a possibility to return the value of the image's :fluid:`src` attribute
 encoded in base64.
 
 ..  code-block:: html
@@ -28,6 +29,7 @@ Will result in the according HTML tag providing the image encoded in base64.
     <img class="pr-2" src="data:image/svg+xml;base64,PHN2...cuODQ4LTYuNzU3Ii8+Cjwvc3ZnPgo=" alt="" width="20" height="20">
     <img src="data:image/svg+xml;base64,PHN2...cuODQ4LTYuNzU3Ii8+Cjwvc3ZnPgo=">
 
-This can be particularly useful inside `FluidEmail` or to prevent unneeded HTTP calls.
+This can be particularly useful inside `\TYPO3\CMS\Core\Mail\FluidEmail` or
+to prevent unneeded HTTP calls.
 
 .. index:: Fluid, ext:fluid

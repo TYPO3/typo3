@@ -12,13 +12,14 @@ Description
 ===========
 
 Fluid 4 brings a new template processor
-:php:`TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\RemoveCommentsTemplateProcessor`
-which removes Fluid comments created with :html:`<f:comment>` from the template source
+:php:`\TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\RemoveCommentsTemplateProcessor`
+which removes Fluid comments created with the
+:ref:`Debug ViewHelper <f:debug> <t3viewhelper:typo3-fluid-debug>` from the template source
 string before the parsing process starts. It retains the original line breaks to ensure
 that error messages still refer to the correct line in the template.
 
 By applying this template processor to all Fluid instances in the Core, it is now
-possible to use invalid Fluid code inside :html:`<f:comment>` without triggering a Fluid error.
+possible to use invalid Fluid code inside :fluid:`<f:comment>` without triggering a Fluid error.
 
 
 Impact

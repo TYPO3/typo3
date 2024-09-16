@@ -13,19 +13,19 @@ Description
 
 The TYPO3 :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder`
 provides a new method to cast expression results to text like datatypes. This
-is done to large VARCHAR/CHAR types using the :sql:`CAST/CONVERT` or similar
+is done to large :sql:`VARCHAR/CHAR` types using the :sql:`CAST/CONVERT` or similar
 methods based on the used database engine.
 
 ..  note::
 
     This should not be mixed with :sql:`TEXT`, :sql:`CHAR` or :sql:`VARCHAR`
-    datatypes for column (fields) definition used to describe the structure
+    data types for column (fields) definition used to describe the structure
     of a table.
 
-:php:`ExpressionBuilder::castText()`
-------------------------------------
+`ExpressionBuilder::castText()`
+-------------------------------
 
-Creates a CAST expression.
+Creates a :sql:`CAST` expression.
 
 ..  code-block:: php
     :caption: Method signature

@@ -11,12 +11,12 @@ See :issue:`104325`
 Description
 ===========
 
-Method :php:`TYPO3\CMS\Core\Utility\DiffUtility->makeDiffDisplay()`
+Method :php:`\TYPO3\CMS\Core\Utility\DiffUtility->makeDiffDisplay()`
 and class property :php:`DiffUtility->stripTags` have been
 deprecated in favor of new method :php:`DiffUtility->diff()`.
 The new method no longer applies :php:`strip_tags()` to the input strings.
 
-This change makes class :php:`DiffUtility` stateless: Property
+This change makes class :php-short:`\TYPO3\CMS\Core\Utility\DiffUtility` stateless: Property
 :php:`$stripTags` will vanish in v14.
 
 Impact

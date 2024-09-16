@@ -12,15 +12,15 @@ Description
 ===========
 
 A new method :php:`handleArgumentMappingExceptions` has been introduced in
-Extbase :php:`ActionController` to improve handling of exceptions that occur
-during argument mapping.
+Extbase :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController` to improve
+handling of exceptions that occur during argument mapping.
 
 The new method supports optional handling of the following exceptions:
 
-*  :php:`TargetNotFoundException`, which occurs, when a given object UID can not
-   be resolved to an existing record.
-*  :php:`RequiredArgumentMissingException`, which occurs, when a required action
-   argument is missing.
+*   :php:`\TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException`,
+    which occurs, when a given object UID can not be resolved to an existing record.
+*   :php:`\TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException`,
+    which occurs, when a required action argument is missing.
 
 Handling of the exceptions can be enabled globally with the following TypoScript
 configuration.
@@ -52,7 +52,8 @@ to implement custom argument mapping exception handling.
 Impact
 ======
 
-Extension authors can now handle exceptions in implementations of a :php:`ActionController`,
+Extension authors can now handle exceptions in implementations of a
+:php-short:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController`,
 which are thrown during argument mapping.
 
 .. index:: Frontend, ext:extbase

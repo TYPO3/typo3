@@ -18,7 +18,7 @@ For detailed information about this release, please refer to the
 
 With the update to Fluid 4, tag-based ViewHelpers now have proper
 support for boolean attributes. Before this change, it was very
-cumbersome to generate these with Fluid, now it's implemented similar
+cumbersome to generate these with Fluid, now it is implemented similar
 to popular JavaScript frameworks by using the newly introduced
 boolean literals:
 

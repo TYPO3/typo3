@@ -89,7 +89,7 @@ An example corresponding event listener class:
 Impact
 ======
 
-Using the PSR-14 event :php:`BeforeCountriesEvaluatedEvent` allows
-modification of countries provided by :php:`CountryProvider`.
+Using the PSR-14 event :php-short:`\TYPO3\CMS\Core\Country\Event\BeforeCountriesEvaluatedEvent` allows
+modification of countries provided by :php-short:`\TYPO3\CMS\Core\Country\CountryProvider`.
 
 .. index:: PHP-API, ext:core

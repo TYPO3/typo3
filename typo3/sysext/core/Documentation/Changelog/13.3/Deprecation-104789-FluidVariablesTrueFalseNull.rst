@@ -19,7 +19,7 @@ named `true`, `false` and `null` are no longer allowed.
 Impact
 ======
 
-Usage of `true`, `false` or `null` as variable name will throw
+Assigning variables with name `true`, `false` or `null` will throw
 an exception in Fluid v4. In preparation of this change, Fluid v2.15 logs a
 deprecation level error message if any of these variable names are used.
 

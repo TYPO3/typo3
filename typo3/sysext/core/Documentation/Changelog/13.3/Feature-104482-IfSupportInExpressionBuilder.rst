@@ -15,8 +15,8 @@ The TYPO3 :php:`\TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder`
 provides a new method to phrase "if-then-else" expressions. Those are translated
 into :sql:`IF` or :sql:`CASE` statements depending on the used database engine.
 
-:php:`ExpressionBuilder::if()`
-------------------------------
+`ExpressionBuilder::if()`
+-------------------------
 
 Creates an IF-THEN-ELSE expression.
 

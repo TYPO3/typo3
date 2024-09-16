@@ -11,7 +11,7 @@ See :issue:`104607`
 Description
 ===========
 
-Method :php:`BackendUserAuthentication::returnWebmounts()` has
+Method :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::returnWebmounts()` has
 been marked as deprecated and will be removed with TYPO3 v14.
 
 Method :php:`BackendUserAuthentication::getWebmounts()` was

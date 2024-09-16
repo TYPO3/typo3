@@ -3,7 +3,7 @@
 .. _feature-99510-1716815124:
 
 ================================================================
-Feature: #99510 - Add file embedding option to asset viewhelpers
+Feature: #99510 - Add file embedding option to asset ViewHelpers
 ================================================================
 
 See :issue:`99510`
@@ -11,21 +11,22 @@ See :issue:`99510`
 Description
 ===========
 
-The ViewHelpers :html:`<f:asset.css>` and :html:`<f:asset.script>` have
-been extended with a new argument :html:`inline`. If this argument is set,
+The ViewHelpers :ref:`<f:asset.css> <t3viewhelper:typo3-fluid-asset-css>`
+and :ref:`<f:asset.script> <t3viewhelper:typo3-fluid-asset-script>` have
+been extended with a new argument :fluid:`inline`. If this argument is set,
 the referenced asset file is rendered inline.
 
 Setting the argument will therefore load the file content of the defined
-:html:`href` / :html:`src` as inline style or script. This is especially
+:fluid:`href` / :fluid:`src` as inline style or script. This is especially
 useful for content elements which are used as first element on a page and
 need some custom CSS to improve the Cumulative Layout Shift (CLS).
 
 Impact
 ======
 
-To add inline styles and scripts from a referenced file, the new :html:`inline`
+To add inline styles and scripts from a referenced file, the new :fluid:`inline`
 argument can be set. For example, to add above-the-fold styles, the
-:html:`priority` option can be set, which will put the file contents of
+:fluid:`priority` option can be set, which will put the file contents of
 :file:`EXT:sitepackage/Resources/Public/Css/my-hero.css` as inline styles
 to the :html:`<head>` section.
 

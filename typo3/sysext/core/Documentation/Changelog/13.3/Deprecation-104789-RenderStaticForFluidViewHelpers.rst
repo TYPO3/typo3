@@ -13,8 +13,8 @@ Description
 
 The usage of :php:`renderStatic()` for Fluid ViewHelpers has been deprecated.
 Also, Fluid standalone traits
-:php:`TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic`
-and :php:`TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic`
+:php:`\TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic`
+and :php:`\TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic`
 have been marked as deprecated.
 
 
@@ -40,8 +40,8 @@ Migration
 ViewHelpers should always use :php:`render()` as their primary rendering method.
 
 ViewHelpers using just :php:`renderStatic()` without any trait or with the trait
-:php:`CompileWithRenderStatic` can be migrated by converting the static rendering
-method to a non-static method:
+:php-short:`\TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic`
+can be migrated by converting the static rendering method to a non-static method:
 
 Before:
 
@@ -67,8 +67,8 @@ After:
         }
     }
 
-ViewHelpers using :php:`CompileWithContentArgumentAndRenderStatic` can use the new
-contentArgumentName feature added with Fluid v2.15:
+ViewHelpers using :php:`\TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic`
+can use the new contentArgumentName feature added with Fluid v2.15:
 
 Before:
 

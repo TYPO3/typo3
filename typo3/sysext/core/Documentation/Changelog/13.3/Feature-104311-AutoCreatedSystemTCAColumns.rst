@@ -18,39 +18,40 @@ There are various :php:`TCA` table :php:`ctrl` settings that define fields used
 to enable certain TYPO3 table capabilities and to specify the database column
 to store this row state.
 
-An example is :php:`['ctrl']['enablecolumns']['starttime'] = 'starttime';`, which
-makes the table "starttime aware", resulting in the automatic exclusion of a record
-if the given starttime is in the future, when rendered in the frontend.
+An example is :php:`$GLOBALS['TCA']['ctrl']['enablecolumns']['starttime'] = 'starttime'`, which
+makes the table "start time aware", resulting in the automatic exclusion of a record
+if the given start time is in the future, when rendered in the frontend.
 
 Such :php:`ctrl` settings require TCA :php:`columns` definitions. Default definitions
 of such :php:`columns` are now automatically added to :php:`TCA` if not manually
 configured. Extension developers can now remove and avoid a significant amount
-of boilerplate field definitions in :php:`columns` and rely on TYPO3 core to create
-them automatically. Note the core does *not* automatically add such columns to TCA
+of boilerplate field definitions in :php:`columns` and rely on TYPO3 Core to create
+them automatically. Note the Core does *not* automatically add such columns to TCA
 :php:`types` or :php:`palettes` definitions: Developers still need to place them,
 to show the columns when editing record rows, and need to add according access
 permissions.
 
-Let's have a quick look on what happened within TCA and its surrounding code lately,
-to see how this feature embeds within the general TYPO3 core strategy in this area
+Let us have a quick look on what happened within TCA and its surrounding code lately,
+to see how this feature embeds within the general TYPO3 Core strategy in this area
 and why the above feature has been implemented at this point in time:
 
-TCA has always been a central cornerstone of TYPO3. The core strives to maintain
+TCA has always been a central cornerstone of TYPO3. The TYPO3 Core strives to maintain
 this central part while simplifying and streamlining less desirable details.
 
-Core version v12 aimed to simplify single column definitions by implementing new
+TYPO3 version v12 aimed to simplify single column definitions by implementing new
 column types like :php:`file`, :php:`category`, :php:`email`, and more. These are
 much easier to understand and require far fewer single property definitions than
 previous solutions. With this in place, auto-creation of database column
-definitions derived from TCA has been established with TYPO3 core v13, making the
+definitions derived from TCA has been established with TYPO3 v13, making the
 manual definition of database table schemas in :file:`ext_tables.sql` largely
-unnecessary. Additionally, an object-oriented approach called :php:`TcaSchema` has
+unnecessary. Additionally, an object-oriented approach called
+:php-short:`\TYPO3\CMS\Core\Schema\TcaSchema` has
 been introduced to harmonize and simplify information retrieval from TCA.
 
 With the step described in this document - the auto-creation of TCA columns from
 :php:`ctrl` properties - the amount of manual boilerplate definitions is
-significantly reduced, and the core gains more control over these columns to
-harmonize these fields throughout the system. Note that the TYPO3 core has not yet
+significantly reduced, and the TYPO3 Core gains more control over these columns to
+harmonize these fields throughout the system. Note that the TYPO3 Core has not yet
 altered the structure of TCA :php:`types` and :php:`palettes`. This will be one of
 the next steps in this area, but details have not been decided upon yet.
 
@@ -71,12 +72,12 @@ Auto-created columns from 'ctrl'
 The configuration settings below enable single table capabilities. Their values
 are a database column name responsible for storing the row data of the capability.
 
-If a setting is defined in a "base" TCA table file (:file:`Configuration/TCA`, not
-in :file:`Configuration/TCA/Overrides`), the core will add default :php:`columns`
+If a setting is defined in a "base" TCA table file (:path:`Configuration/TCA`, not
+in :path:`Configuration/TCA/Overrides`), the TYPO3 Core will add default :php:`columns`
 definition for this field name if no definition exists in a base file.
 
-:php:`['ctrl']['enablecolumns']['disabled']`
-............................................
+`$GLOBALS['TCA']['ctrl']['enablecolumns']['disabled']`
+......................................................
 
 This setting makes database table rows "disable aware": A row with this flag
 being set to 1 is not rendered in the frontend to casual website users.
@@ -91,7 +92,7 @@ Typical usage:
         ],
     ],
 
-Default configuration added by the core:
+Default configuration added by the TYPO3 Core:
 
 .. code-block:: php
 
@@ -111,8 +112,8 @@ Default configuration added by the core:
         ],
     ],
 
-:php:`['ctrl']['enablecolumns']['starttime']`
-.............................................
+`$GLOBALS['TCA']['ctrl']['enablecolumns']['starttime']`
+.......................................................
 
 This setting makes database table rows "starttime aware": A row having a start
 time in the future is not rendered in the frontend.
@@ -127,7 +128,7 @@ Typical usage:
         ],
     ],
 
-Default configuration added by the core:
+Default configuration added by the TYPO3 Core:
 
 .. code-block:: php
 
@@ -140,8 +141,8 @@ Default configuration added by the core:
         ],
     ],
 
-:php:`['ctrl']['enablecolumns']['endtime']`
-...........................................
+`$GLOBALS['TCA']['ctrl']['enablecolumns']['endtime']`
+.....................................................
 
 This setting makes database table rows "endtime aware": A row having an end
 time in the past is not rendered in the frontend.
@@ -156,7 +157,7 @@ Typical usage:
         ],
     ],
 
-Default configuration added by the core:
+Default configuration added by the TYPO3 Core:
 
 .. code-block:: php
 
@@ -172,8 +173,8 @@ Default configuration added by the core:
         ],
     ],
 
-:php:`['ctrl']['enablecolumns']['fe_group']`
-............................................
+`$GLOBALS['TCA']['ctrl']['enablecolumns']['fe_group']`
+......................................................
 
 This setting makes database table rows "frontend group aware": A row can be defined
 to be shown only to frontend users who are a member of selected groups.
@@ -188,7 +189,7 @@ Typical usage:
         ],
     ],
 
-Default configuration added by the core:
+Default configuration added by the TYPO3 Core:
 
 .. code-block:: php
 
@@ -219,8 +220,8 @@ Default configuration added by the core:
         ],
     ],
 
-:php:`['ctrl']['editlock']`
-...........................
+`$GLOBALS['TCA']['ctrl']['editlock']`
+.....................................
 
 This setting makes database table rows "backend lock aware": A row with this
 being flag enabled can only be edited by backend administrators.
@@ -233,7 +234,7 @@ Typical usage:
         'editlock' => 'editlock',
     ],
 
-Default configuration added by the core:
+Default configuration added by the TYPO3 Core:
 
 .. code-block:: php
 
@@ -246,8 +247,8 @@ Default configuration added by the core:
         ],
     ],
 
-:php:`['ctrl']['descriptionColumn']`
-....................................
+`$GLOBALS['TCA']['ctrl']['descriptionColumn']`
+..............................................
 
 This setting makes database table rows "description aware": Backend editors
 have a database field to add row specific notes.
@@ -260,7 +261,7 @@ Typical usage:
         'descriptionColumn' => 'description',
     ],
 
-Default configuration added by the core:
+Default configuration added by the TYPO3 Core:
 
 .. code-block:: php
 
@@ -275,12 +276,12 @@ Default configuration added by the core:
         ],
     ],
 
-:php:`['ctrl']['languageField']` and :php:`['ctrl']['transOrigPointerField']`
-.............................................................................
+`$GLOBALS['TCA']`['ctrl']['languageField']` and `transOrigPointerField`
+.......................................................................
 
 These setting make database table rows "localization aware": Backend editors
 can create localized versions of a record. Note when :php:`languageField` is
-set, and :php:`transOrigPointerField` is not, the core will automatically set
+set, and :php:`transOrigPointerField` is not, the TYPO3 Core will automatically set
 :php:`transOrigPointerField` to :php:`l10n_parent` since both fields must be
 always set in combination.
 
@@ -293,7 +294,7 @@ Typical usage:
         'transOrigPointerField' => 'l10n_parent',
     ],
 
-Default configuration added by the core, note string :php:`$table` corresponds
+Default configuration added by the TYPO3 Core, note string :php:`$table` corresponds
 to the current table name.
 
 .. code-block:: php
@@ -323,8 +324,8 @@ to the current table name.
         ],
     ],
 
-:php:`['ctrl']['transOrigDiffSourceField']`
-...........................................
+`$GLOBALS['TCA']['ctrl']['transOrigDiffSourceField']`
+.....................................................
 
 This setting makes database table rows "parent language record change aware": Backend
 editors can have an indicator when the parent column has been changed.
@@ -337,7 +338,7 @@ Typical usage:
         'transOrigDiffSourceField' = 'l10n_diffsource',
     ],
 
-Default configuration added by the core:
+Default configuration added by the TYPO3 Core:
 
 .. code-block:: php
 
@@ -348,8 +349,8 @@ Default configuration added by the core:
         ],
     ],
 
-:php:`['ctrl']['translationSource']`
-....................................
+`$GLOBALS['TCA']['ctrl']['translationSource']`
+..............................................
 
 This setting makes database table rows "parent language source aware" to
 determine the difference between "connected mode" and "free mode".
@@ -362,7 +363,7 @@ Typical usage:
         'translationSource' = 'l10n_source',
     ],
 
-Default configuration added by the core:
+Default configuration added by the TYPO3 Core:
 
 .. code-block:: php
 
@@ -387,8 +388,8 @@ steps:
 #. Apply TCA preparations
 
 As a result of this strategy, :php:`columns` fields are *not* auto-created, when
-a :php:`ctrl` capability is added in a :file:`Configuration/TCA/Overrides`
-file, and *not* in a :file:`Configuration/TCA` "base" file. In general, such
+a :php:`ctrl` capability is added in a :path:`Configuration/TCA/Overrides`
+file, and *not* in a :path:`Configuration/TCA` "base" file. In general, such
 capabilities should be set in base files only: Adding them at a later point - for
 example in a different extension - is brittle and there is a risk the main
 extension can not deal with such an added capability properly.
@@ -397,13 +398,13 @@ Overriding definitions from auto-created TCA columns
 ----------------------------------------------------
 
 I most cases, developers do not need to change definitions of :php:`columns`
-auto-created by the core. In general, it is advisable to not actively do this.
+auto-created by the TYPO3 Core. In general, it is advisable to not actively do this.
 Developers who still want to change detail properties of such columns should
 generally stick to "display" related details only.
 
 There are two options to have own definitions: When a column is already defined
-in a "base" TCA file (:file:`Configuration/TCA`), the core will not override it.
-Alternatively, a developer can decide to let the core auto-create a column, to
+in a "base" TCA file (:file:`Configuration/TCA`), the TYPO3 Core will not override it.
+Alternatively, a developer can decide to let the TYPO3 Core auto-create a column, to
 then override single properties in :file:`Configuration/TCA/Overrides` files.
 
 As example, "base" :php:`pages` file defines this (step 1 above):
@@ -416,7 +417,7 @@ As example, "base" :php:`pages` file defines this (step 1 above):
         ],
     ],
 
-The core thus creates this :php:`columns` definition (step 2 above):
+The TYPO3 Core thus creates this :php:`columns` definition (step 2 above):
 
 .. code-block:: php
 
@@ -453,7 +454,7 @@ Impact
 ======
 
 Extension developers can typically remove :php:`columns` definitions of all the
-above fields and rely on TYPO3 core creating them with a good default
+above fields and rely on TYPO3 Core creating them with a good default
 definition.
 
 It is only required to define the desired table capabilities in :php:`ctrl` with

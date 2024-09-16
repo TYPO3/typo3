@@ -28,8 +28,9 @@ Example:
     {data -> f:format.json()}
 
 Previously, this feature was only available to ViewHelpers using the trait
-:php:`CompileWithContentArgumentAndRenderStatic`. Now it's available to all
-ViewHelpers since it has been integrated into :php:`AbstractViewHelper`. The
+:php-short:`\TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic`.
+It is now available to all ViewHelpers since it has been integrated into  the
+:php-short:`\TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper`. The
 trait is no longer necessary.
 
 To use the new feature, all the ViewHelper implementation needs to do is to define
@@ -48,8 +49,11 @@ Example:
 Impact
 ======
 
-ViewHelpers using the trait `CompileWithContentArgumentAndRenderStatic` should
-be migrated to the new feature. `CompileWithContentArgumentAndRenderStatic`
+ViewHelpers using the trait
+:php-short:`\TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic`
+should be migrated to the new feature.
+
+:php-short:`\TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic`
 will continue to work in Fluid v4, but will log a deprecation level error message.
 It will be removed in Fluid v5.
 

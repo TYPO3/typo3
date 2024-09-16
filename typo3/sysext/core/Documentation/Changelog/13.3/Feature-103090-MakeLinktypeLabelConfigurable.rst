@@ -2,16 +2,16 @@
 
 .. _feature-103090-1707479280:
 
-===================================================
-Feature: #103090 - Make linktype label configurable
-===================================================
+====================================================
+Feature: #103090 - Make link type label configurable
+====================================================
 
 See :issue:`103090`
 
 Description
 ===========
 
-It is now possible to provide a translated label for custom linktypes.
+It is now possible to provide a translated label for custom link types.
 
 For this, a new interface
 :php:`\TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface` has been
@@ -77,9 +77,11 @@ Impact
 Custom linktype classes should now configure a label by implementing the method
 :php:`LabelledLinktypeInterface::getReadableName()`.
 
-All existing custom implementations of the `AbstractLinktype` class or the `LinktypeInterface`
+All existing custom implementations of the
+:php-short:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype` class or the
+:php-short:`\TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface`
 will continue to work as before, and will just continue to use the internal name of
-the linktype, instead of a translated label.
+the link type, instead of a translated label.
 
 
 .. index:: Backend, ext:linkvalidator
