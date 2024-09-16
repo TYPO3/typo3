@@ -66,6 +66,23 @@ The settings ordering is defined through the loading order of extensions and by
 the order of categories. Uncategorized settings will be grouped into a virtual
 "Other" category and shown at the end of the list of available settings.
 
+Readonly
+--------
+
+Site settings can be made readonly. They can be overridden only by editing
+the :file:`config/sites/my-site/settings.yaml` but not from within the editor.
+
+The value of the field is displayed in a readonly field in the settings editor.
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Sets/MySet/settings.definitions.yaml
+
+    settings:
+      my.readonlySetting:
+        label: 'My readonly setting'
+        type: int
+        default: 5
+        readonly: true
 
 Impact
 ======
