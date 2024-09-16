@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+
 /**
  * Provide functions and variables to symfony expression language.
  *
@@ -27,7 +29,14 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
  */
 abstract class AbstractProvider implements ProviderInterface
 {
+    /**
+     * @var list<class-string<ExpressionFunctionProviderInterface>>
+     */
     protected array $expressionLanguageProviders = [];
+
+    /**
+     * @var array<non-empty-string, mixed>
+     */
     protected array $expressionLanguageVariables = [];
 
     public function getExpressionLanguageProviders(): array
@@ -35,9 +44,6 @@ abstract class AbstractProvider implements ProviderInterface
         return $this->expressionLanguageProviders;
     }
 
-    /**
-     * An array with key/value pairs. The key will be available as variable name
-     */
     public function getExpressionLanguageVariables(): array
     {
         return $this->expressionLanguageVariables;
