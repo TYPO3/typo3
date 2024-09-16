@@ -1,3 +1,0 @@
-"pages",,,,,,,,,,
-,"uid","pid","sys_language_uid","deleted","l10n_parent","t3ver_state","t3ver_wsid","title","l10n_source","TSconfig"
-,1,0,0,0,0,0,0,"Home",0,"@import 'EXT:test_fluid_based_record_preview/Configuration/PageTS/page.tsconfig'"
