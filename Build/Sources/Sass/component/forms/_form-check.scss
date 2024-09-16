@@ -116,7 +116,7 @@
     }
 
     &:disabled {
-        pointer-events: none;
+        cursor: not-allowed;
         opacity: var(--typo3-form-check-disabled-opacity);
     }
 
