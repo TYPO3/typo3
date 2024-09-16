@@ -140,11 +140,12 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $this->expectExceptionMessage($message);
 
         $cObj = new ContentObjectRenderer();
-        $cObj->start(['uid' => 123], 'tt_content');
         $serverRequest = (new ServerRequest())
             ->withAttribute('currentContentObject', $cObj)
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $cObj->setRequest($serverRequest);
+        $cObj->start(['uid' => 123], 'tt_content');
 
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource($template);

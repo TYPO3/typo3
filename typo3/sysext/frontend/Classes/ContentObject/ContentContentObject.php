@@ -16,11 +16,8 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\ContentObject\Event\ModifyRecordsAfterFetchingContentEvent;
 
 /**
@@ -31,9 +28,6 @@ class ContentContentObject extends AbstractContentObject
     public function __construct(
         private readonly TimeTracker $timeTracker,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly CacheLifetimeCalculator $cacheLifetimeCalculator,
-        #[Autowire(expression: 'service("features").isFeatureEnabled("frontend.cache.autoTagging")')]
-        private readonly bool $autoTagging,
     ) {}
 
     /**
@@ -121,13 +115,6 @@ class ContentContentObject extends AbstractContentObject
                         $cObj->start($row, $conf['table']);
                         $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
                         $cobjValue .= $tmpValue;
-                    }
-
-                    if ($this->autoTagging) {
-                        // Only add cache tags when the record is rendered
-                        $lifetime = $this->cacheLifetimeCalculator->calculateLifetimeForRow($conf['table'], $row);
-                        $cacheCollectorAttribute = $this->request->getAttribute('frontend.cache.collector');
-                        $cacheCollectorAttribute->addCacheTags(new CacheTag(sprintf('%s_%s', $conf['table'], ($row['uid'] ?? 0)), $lifetime));
                     }
                 }
             }

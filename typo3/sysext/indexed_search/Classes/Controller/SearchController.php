@@ -958,6 +958,7 @@ class SearchController extends ActionController
         }
 
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj->setRequest($this->request);
         $cObj->start($row, 'pages');
         return $this->linkFactory->create($linkText, $linkConfiguration, $cObj);
     }

@@ -25,6 +25,7 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
@@ -72,6 +73,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterContentObjectRendererInitializedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterGetDataResolvedEvent;
 use TYPO3\CMS\Frontend\ContentObject\Event\AfterImageResourceResolvedEvent;
@@ -463,6 +465,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
         GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
             new AfterContentObjectRendererInitializedEvent($this)
         );
+
+        $autoTagging = GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('frontend.cache.autoTagging');
+        if ($this->currentRecord !== '' && $autoTagging) {
+            $cacheLifetimeCalculator = GeneralUtility::makeInstance(CacheLifetimeCalculator::class);
+            $this->request?->getAttribute('frontend.cache.collector')?->addCacheTags(
+                new CacheTag(
+                    name: sprintf('%s_%s', $this->table, ($this->data['uid'] ?? 0)),
+                    lifetime: $cacheLifetimeCalculator->calculateLifetimeForRow($this->table, $this->data)
+                )
+            );
+        }
     }
 
     /**
@@ -4744,6 +4757,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if (is_array($row)) {
                 $records[] = $row;
             }
+        }
+
+        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('frontend.cache.autoTagging')) {
+            $cacheLifetimeCalculator = GeneralUtility::makeInstance(CacheLifetimeCalculator::class);
+            $cacheTags = array_map(fn(array $record) => new CacheTag(
+                name: sprintf('%s_%s', $tableName, ($record['uid'] ?? 0)),
+                lifetime: $cacheLifetimeCalculator->calculateLifetimeForRow($tableName, $record)
+            ), $records);
+            $this->getRequest()->getAttribute('frontend.cache.collector')?->addCacheTags(...$cacheTags);
         }
 
         return $records;
