@@ -213,6 +213,7 @@ export class ModuleRouter extends LitElement {
         const controller = params.get('install[controller]');
         params.delete('install[controller]');
         params.delete('install[context]');
+        params.delete('install[colorScheme]');
         url.pathname = url.pathname.replace('/typo3/install.php', this.entryPoint + 'module/tools/' + controller);
       } else {
         // non token-urls cannot be mapped by
