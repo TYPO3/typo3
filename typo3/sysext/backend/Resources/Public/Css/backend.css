@@ -2729,29 +2729,28 @@ a.dropdown-toggle{text-decoration:none}
 .callout-danger{--typo3-callout-color:var(--typo3-surface-container-danger-text);--typo3-callout-bg:var(--typo3-surface-container-danger);--typo3-callout-border-color:var(--typo3-state-danger-bg);--typo3-callout-icon-color:var(--typo3-state-danger-color);--typo3-callout-icon-bg:var(--typo3-state-danger-bg)}
 .callout-notice{--typo3-callout-color:var(--typo3-surface-container-notice-text);--typo3-callout-bg:var(--typo3-surface-container-notice);--typo3-callout-border-color:var(--typo3-state-notice-bg);--typo3-callout-icon-color:var(--typo3-state-notice-color);--typo3-callout-icon-bg:var(--typo3-state-notice-bg)}
 .callout-default{--typo3-callout-color:var(--typo3-surface-container-default-text);--typo3-callout-bg:var(--typo3-surface-container-default);--typo3-callout-border-color:var(--typo3-state-default-bg);--typo3-callout-icon-color:var(--typo3-state-default-color);--typo3-callout-icon-bg:var(--typo3-state-default-bg)}
-:root{--statusreport-border-color:rgb(215, 215, 215);--statusreport-border-radius:4px;--statusreport-box-shadow:var(--typo3-component-box-shadow);--statusreport-spacing:.5rem;--statusreport-bg:#fff;--statusreport-color:#000;--statusreport-icon-size:16px;--statusreport-icon-bg:rgb(245, 245, 245);--statusreport-icon-color:#000;--statusreport-icon-primary-bg:#05c;--statusreport-icon-primary-color:#fff;--statusreport-icon-secondary-bg:rgb(115, 115, 115);--statusreport-icon-secondary-color:#fff;--statusreport-icon-success-bg:#247554;--statusreport-icon-success-color:#fff;--statusreport-icon-info-bg:#abdced;--statusreport-icon-info-color:#000;--statusreport-icon-warning-bg:#fc3;--statusreport-icon-warning-color:#000;--statusreport-icon-danger-bg:#d13a2e;--statusreport-icon-danger-color:#fff;--statusreport-icon-light-bg:rgb(245, 245, 245);--statusreport-icon-light-color:#000;--statusreport-icon-default-bg:rgb(245, 245, 245);--statusreport-icon-default-color:#000;--statusreport-icon-notice-bg:rgb(51, 51, 51);--statusreport-icon-notice-color:#fff;--statusreport-icon-dark-bg:rgb(30, 30, 30);--statusreport-icon-dark-color:#fff}
-.statusreport{display:grid;grid-template:"statusreport-indicator statusreport-title statusreport-body"/calc(var(--statusreport-icon-size) * 1.5) 400px auto;color:var(--statusreport-color);padding:calc(var(--statusreport-spacing) * 1.5);gap:var(--statusreport-spacing);background-color:var(--statusreport-bg);width:100%;border:1px solid var(--statusreport-border-color)}
+.statusreport{--typo3-statusreport-color:var(--typo3-component-color);--typo3-statusreport-bg:var(--typo3-component-bg);--typo3-statusreport-border-color:color-mix(in srgb, var(--typo3-statusreport-bg), var(--typo3-statusreport-color) 15%);--typo3-statusreport-border-radius:var(--typo3-component-border-radius);--typo3-statusreport-box-shadow:var(--typo3-component-box-shadow);--typo3-statusreport-spacing:.5rem;--typo3-statusreport-icon-size:16px;--typo3-statusreport-icon-color:var(--typo3-state-default-color);--typo3-statusreport-icon-bg:var(--typo3-state-default-bg);--typo3-statusreport-icon-primary-color:var(--typo3-state-primary-color);--typo3-statusreport-icon-primary-bg:var(--typo3-state-primary-bg);--typo3-statusreport-icon-secondary-color:var(--typo3-state-secondary-color);--typo3-statusreport-icon-secondary-bg:var(--typo3-state-secondary-bg);--typo3-statusreport-icon-info-color:var(--typo3-state-info-color);--typo3-statusreport-icon-info-bg:var(--typo3-state-info-bg);--typo3-statusreport-icon-success-color:var(--typo3-state-success-color);--typo3-statusreport-icon-success-bg:var(--typo3-state-success-bg);--typo3-statusreport-icon-warning-color:var(--typo3-state-warning-color);--typo3-statusreport-icon-warning-bg:var(--typo3-state-warning-bg);--typo3-statusreport-icon-danger-color:var(--typo3-state-danger-color);--typo3-statusreport-icon-danger-bg:var(--typo3-state-danger-bg);--typo3-statusreport-icon-notice-color:var(--typo3-state-notice-color);--typo3-statusreport-icon-notice-bg:var(--typo3-state-notice-bg);--typo3-statusreport-icon-default-color:var(--typo3-state-default-color);--typo3-statusreport-icon-default-bg:var(--typo3-state-default-bg);display:grid;grid-template:"statusreport-indicator statusreport-title statusreport-body"/calc(var(--typo3-statusreport-icon-size) * 1.5) 400px auto;color:var(--typo3-statusreport-color);padding:calc(var(--typo3-statusreport-spacing) * 1.5);gap:var(--typo3-statusreport-spacing);background-color:var(--typo3-statusreport-bg);width:100%;border:1px solid var(--typo3-statusreport-border-color)}
 .statusreport-indicator{display:flex;justify-content:center;grid-area:statusreport-indicator}
 .statusreport-title{grid-area:statusreport-title}
 .statusreport-body{grid-area:statusreport-body}
 .statusreport a:not([class]){color:#05c;text-decoration:underline}
 .statusreport a:not([class]):hover{color:#0044a3;text-decoration:underline}
-.statusreport .statusreport-indicator-icon{position:relative;display:inline-flex;justify-content:center;align-items:center;color:var(--statusreport-icon-color);font-size:var(--statusreport-icon-size);height:var(--statusreport-icon-size);width:var(--statusreport-icon-size)}
-.statusreport .statusreport-indicator-icon:before{position:absolute;content:" ";top:50%;left:50%;height:calc(var(--statusreport-icon-size) * 1.5);width:calc(var(--statusreport-icon-size) * 1.5);background-color:var(--statusreport-icon-bg);transform:translate(calc(-50% * var(--typo3-position-modifier)),-50%);border-radius:50%}
-.statusreport-wrapper{border-radius:var(--statusreport-border-radius);box-shadow:var(--statusreport-box-shadow);margin-bottom:var(--typo3-spacing)}
-.statusreport-wrapper .statusreport:first-child{border-top-left-radius:var(--statusreport-border-radius);border-top-right-radius:var(--statusreport-border-radius)}
-.statusreport-wrapper .statusreport:last-child{border-bottom-left-radius:var(--statusreport-border-radius);border-bottom-right-radius:var(--statusreport-border-radius)}
+.statusreport .statusreport-indicator-icon{position:relative;display:inline-flex;justify-content:center;align-items:center;color:var(--typo3-statusreport-icon-color);font-size:var(--typo3-statusreport-icon-size);height:var(--typo3-statusreport-icon-size);width:var(--typo3-statusreport-icon-size)}
+.statusreport .statusreport-indicator-icon:before{position:absolute;content:" ";top:50%;left:50%;height:calc(var(--typo3-statusreport-icon-size) * 1.5);width:calc(var(--typo3-statusreport-icon-size) * 1.5);background-color:var(--typo3-statusreport-icon-bg);transform:translate(calc(-50% * var(--typo3-position-modifier)),-50%);border-radius:50%}
+.statusreport-wrapper{border-radius:var(--typo3-statusreport-border-radius);box-shadow:var(--typo3-statusreport-box-shadow);margin-bottom:var(--typo3-spacing)}
+.statusreport-wrapper .statusreport:first-child{border-top-left-radius:var(--typo3-statusreport-border-radius);border-top-right-radius:var(--typo3-statusreport-border-radius)}
+.statusreport-wrapper .statusreport:last-child{border-bottom-left-radius:var(--typo3-statusreport-border-radius);border-bottom-right-radius:var(--typo3-statusreport-border-radius)}
 .statusreport-wrapper .statusreport+.statusreport{margin-top:-1px}
-.statusreport[data-severity=primary]{--statusreport-icon-bg:var(--statusreport-icon-primary-bg);--statusreport-icon-color:var(--statusreport-icon-primary-color)}
-.statusreport[data-severity=secondary]{--statusreport-icon-bg:var(--statusreport-icon-secondary-bg);--statusreport-icon-color:var(--statusreport-icon-secondary-color)}
-.statusreport[data-severity=success]{--statusreport-icon-bg:var(--statusreport-icon-success-bg);--statusreport-icon-color:var(--statusreport-icon-success-color)}
-.statusreport[data-severity=info]{--statusreport-icon-bg:var(--statusreport-icon-info-bg);--statusreport-icon-color:var(--statusreport-icon-info-color)}
-.statusreport[data-severity=warning]{--statusreport-icon-bg:var(--statusreport-icon-warning-bg);--statusreport-icon-color:var(--statusreport-icon-warning-color)}
-.statusreport[data-severity=danger]{--statusreport-icon-bg:var(--statusreport-icon-danger-bg);--statusreport-icon-color:var(--statusreport-icon-danger-color)}
-.statusreport[data-severity=light]{--statusreport-icon-bg:var(--statusreport-icon-light-bg);--statusreport-icon-color:var(--statusreport-icon-light-color)}
-.statusreport[data-severity=default]{--statusreport-icon-bg:var(--statusreport-icon-default-bg);--statusreport-icon-color:var(--statusreport-icon-default-color)}
-.statusreport[data-severity=notice]{--statusreport-icon-bg:var(--statusreport-icon-notice-bg);--statusreport-icon-color:var(--statusreport-icon-notice-color)}
-.statusreport[data-severity=dark]{--statusreport-icon-bg:var(--statusreport-icon-dark-bg);--statusreport-icon-color:var(--statusreport-icon-dark-color)}
+.statusreport[data-severity=primary]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-primary-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-primary-color)}
+.statusreport[data-severity=secondary]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-secondary-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-secondary-color)}
+.statusreport[data-severity=success]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-success-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-success-color)}
+.statusreport[data-severity=info]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-info-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-info-color)}
+.statusreport[data-severity=warning]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-warning-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-warning-color)}
+.statusreport[data-severity=danger]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-danger-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-danger-color)}
+.statusreport[data-severity=light]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-light-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-light-color)}
+.statusreport[data-severity=default]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-default-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-default-color)}
+.statusreport[data-severity=notice]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-notice-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-notice-color)}
+.statusreport[data-severity=dark]{--typo3-statusreport-icon-bg:var(--typo3-statusreport-icon-dark-bg);--typo3-statusreport-icon-color:var(--typo3-statusreport-icon-dark-color)}
 
 .statusreport-wrapper {
   container-type: inline-size;
@@ -2759,12 +2758,12 @@ a.dropdown-toggle{text-decoration:none}
 
 @container (max-width: 800px) {
   .statusreport {
-    grid-template: "statusreport-indicator statusreport-title statusreport-body"/calc(var(--statusreport-icon-size) * 1.5) 200px auto;
+    grid-template: "statusreport-indicator statusreport-title statusreport-body"/calc(var(--typo3-statusreport-icon-size) * 1.5) 200px auto;
   }
 }
 @container (max-width: 500px) {
   .statusreport {
-    grid-template: "statusreport-indicator statusreport-title" "statusreport-indicator statusreport-body"/calc(var(--statusreport-icon-size) * 1.5) auto;
+    grid-template: "statusreport-indicator statusreport-title" "statusreport-indicator statusreport-body"/calc(var(--typo3-statusreport-icon-size) * 1.5) auto;
   }
 }
 .diff{background-color:#fff;border:1px solid #ccc;display:table}
