@@ -1,0 +1,10 @@
+sys_file,
+,"uid","pid","tstamp","last_indexed","identifier","identifier_hash","folder_hash","extension","name","sha1","creation_date","modification_date","storage","type","mime_type","size","missing","metadata"
+,1,0,1726571840,1726571840,/kasper-skarhoj1.jpg,98576a90d58d51fcfe91c41f4c571fd600e1190e,42099b4af021e53fd8fd4e056c2568d7c2e3ffa8,jpg,kasper-skarhoj1.jpg,05d8c6dda534a0b9e7023c3031e60e4b49c3da40,1726571839,1726571839,1,2,image/jpeg,39037,0,0
+,2,0,1726571840,1726571840,/team-t3board10.jpg,6ae2fc1f91bba5869a99df9f2d0a19680202ed86,42099b4af021e53fd8fd4e056c2568d7c2e3ffa8,jpg,team-t3board10.jpg,ae6951147687ed1f94f60973fca7ef46e2ba2372,1726571839,1726571839,1,2,image/jpeg,166843,0,0
+,3,0,1726571840,1726571840,/typo3-logo.png,53a4e94fb75e99277090d62e0a5813bcdd7e8440,42099b4af021e53fd8fd4e056c2568d7c2e3ffa8,png,typo3-logo.png,cdac36562aaa65d23831b25c48cd14863b5be2ad,1726571839,1726571839,1,2,image/png,1392,0,0
+sys_file_metadata,
+,"uid","pid","tstamp","crdate","sys_language_uid","l10n_parent","l10n_state","l10n_diffsource","t3ver_oid","t3ver_wsid","t3ver_state","t3ver_stage","title","alternative","categories","file","description","width","height"
+,1,0,1726571840,1726571840,0,0,NULL,"",0,0,0,0,"Kasper Skarhoj","alternative 1",0,1,NULL,401,600
+,2,0,1726571840,1726571840,0,0,NULL,"",0,0,0,0,"Team T3Board","alternative 2",0,2,NULL,1024,683
+,3,0,1726571840,1726571840,0,0,NULL,"",0,0,0,0,"TYPO3 Logo","alternative 3",0,3,NULL,238,100

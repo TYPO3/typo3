@@ -20,76 +20,53 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 use Masterminds\HTML5;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Crypto\HashService;
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\ShowImageController;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShowImageControllerTest extends FunctionalTestCase
 {
-    private function buildFile(string $identifier, ResourceStorage $storage): FileInterface&MockObject
+    protected function setUp(): void
     {
-        $file = $this->createMock(FileInterface::class);
-        $file->method('getStorage')->willReturn($storage);
-        $file->method('getIdentifier')->willReturn($identifier);
-        $file->method('getProperty')
-            ->willReturnCallback(
-                $this->buildRoundTripClosure(
-                    'fileProperty',
-                    ['title' => '</title></head></html>']
-                )
-            );
-        return $file;
-    }
-
-    private function buildProcessedFile(string $publicUrl): ProcessedFile&MockObject
-    {
-        $processedFile = $this->createMock(ProcessedFile::class);
-        $processedFile
-            ->method('getPublicUrl')
-            ->willReturn($publicUrl);
-        $processedFile
-            ->method('getProperty')
-            ->with(self::isType('string'))
-            ->willReturnCallback($this->buildRoundTripClosure('processedProperty'));
-
-        return $processedFile;
-    }
-
-    private function buildRoundTripClosure(string $prefix, array $prependMap = []): \Closure
-    {
-        return static function (string $name) use ($prefix, $prependMap): string {
-            return sprintf(
-                '%s<!-- "%s::%s" -->',
-                $prependMap[$name] ?? '',
-                $prefix,
-                $name
-            );
-        };
+        $this->pathsToProvideInTestInstance = [
+            ...$this->pathsToProvideInTestInstance,
+            'typo3/sysext/frontend/Tests/Functional/Fixtures/Images/' => 'fileadmin/',
+        ];
+        parent::setUp();
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/fileadmin_images.csv');
     }
 
     public static function contentIsGeneratedForLocalFilesDataProvider(): \Generator
     {
         yield 'numeric fileId, json encoded' => [
-            13,
-            [
-                'file' => 13,
+            'fileId' => 1,
+            'baseUrl' => 'https://website.local/?eID=tx_cms_showpic',
+            'queryParams' => [
+                'file' => 1,
                 'parameters' => [json_encode([])],
             ],
+            'expectedImageTag' => '<img src="fileadmin/kasper-skarhoj1.jpg" alt="alternative 1" title="Kasper Skarhoj" width="401" height="600">',
+            'expectedSource' => 'fileadmin/kasper-skarhoj1.jpg',
+            'expectedTitle' => 'Kasper Skarhoj',
+            'expectedAlternative' => 'alternative 1',
+            'expectedWidth' => '401',
+            'expectedHeight' => '600',
         ];
         yield 'numeric fileId, outdated (valid) PHP encoded' => [
-            13,
-            [
-                'file' => 13,
+            'fileId' => 2,
+            'baseUrl' => 'https://website.local/?eID=tx_cms_showpic',
+            'queryParams' => [
+                'file' => 2,
                 'parameters' => [serialize([])],
             ],
+            'expectedImageTag' => '<img src="fileadmin/team-t3board10.jpg" alt="alternative 2" title="Team T3Board" width="1024" height="683">',
+            'expectedSource' => 'fileadmin/team-t3board10.jpg',
+            'expectedTitle' => 'Team T3Board',
+            'expectedAlternative' => 'alternative 2',
+            'expectedWidth' => '1024',
+            'expectedHeight' => '683',
         ];
     }
 
@@ -98,48 +75,38 @@ final class ShowImageControllerTest extends FunctionalTestCase
      */
     #[DataProvider('contentIsGeneratedForLocalFilesDataProvider')]
     #[Test]
-    public function contentIsGeneratedForLocalFiles(int $fileId, array $queryParams): void
-    {
-        $storageDriver = 'Local';
-        $expectedSrc = '/fileadmin/local-file/' . $fileId . '?&test=""';
-        $expectedTitle = '</title></head></html><!-- "fileProperty::title" -->';
-
-        $storage = $this->createMock(ResourceStorage::class);
-        $storage->expects(self::atLeastOnce())
-            ->method('getDriverType')
-            ->willReturn($storageDriver);
-        $file = $this->buildFile('/local-file/' . $fileId, $storage);
-        $processedFile = $this->buildProcessedFile($expectedSrc);
-        $resourceFactory = $this->createMock(ResourceFactory::class);
-        $resourceFactory->expects(self::atLeastOnce())
-            ->method('getFileObject')
-            ->with($fileId)
-            ->willReturn($file);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
-        $subject = $this->getMockBuilder(ShowImageController::class)
-            ->setConstructorArgs([new Features()])
-            ->onlyMethods(['processImage'])
-            ->getMock();
-        $subject->expects(self::once())
-            ->method('processImage')
-            ->willReturn($processedFile);
-
+    public function contentIsGeneratedForLocalFiles(
+        int $fileId,
+        string $baseUrl,
+        array $queryParams,
+        string $expectedImageTag,
+        string $expectedSource,
+        string $expectedTitle,
+        string $expectedAlternative,
+        string $expectedWidth,
+        string $expectedHeight,
+    ): void {
+        $uri = new Uri($baseUrl);
         $hashService = $this->get(HashService::class);
         $queryParams['md5'] = $hashService->hmac(implode('|', [$fileId, $queryParams['parameters'][0]]), 'tx_cms_showpic');
-        $request = new ServerRequest();
-        $request = $request->withQueryParams($queryParams);
+        $uri = $uri->withQuery($uri->getQuery() . '&' . http_build_query($queryParams));
 
-        $response = $subject->processRequest($request);
-        $responseBody = (string)$response->getBody();
-        $document = (new HTML5())->loadHTML($responseBody);
+        $request = new InternalRequest((string)$uri);
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame(200, $response->getStatusCode());
+        $content = (string)$response->getBody();
+        self::assertIsString($content);
+        self::assertNotEmpty($content);
 
+        $document = (new HTML5())->loadHTML($content);
         $titles = $document->getElementsByTagName('title');
         $images = $document->getElementsByTagName('img');
         self::assertSame($expectedTitle, $titles->item(0)->nodeValue);
-        self::assertSame($expectedSrc, $images->item(0)->getAttribute('src'));
+        self::assertSame($expectedSource, $images->item(0)->getAttribute('src'));
         self::assertSame($expectedTitle, $images->item(0)->getAttribute('title'));
-        self::assertSame('<!-- "fileProperty::alternative" -->', $images->item(0)->getAttribute('alt'));
-        self::assertSame('<!-- "processedProperty::width" -->', $images->item(0)->getAttribute('width'));
-        self::assertSame('<!-- "processedProperty::height" -->', $images->item(0)->getAttribute('height'));
+        self::assertSame($expectedAlternative, $images->item(0)->getAttribute('alt'));
+        self::assertSame($expectedWidth, $images->item(0)->getAttribute('width'));
+        self::assertSame($expectedHeight, $images->item(0)->getAttribute('height'));
+        self::assertStringContainsString($expectedImageTag, $content);
     }
 }
