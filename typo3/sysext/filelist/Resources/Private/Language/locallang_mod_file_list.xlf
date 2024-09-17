@@ -18,14 +18,17 @@
 			<trans-unit id="editColumns" resname="editColumns">
 				<source>Edit specific Metadata</source>
 			</trans-unit>
+			<trans-unit id="deleteMarked" resname="deleteMarked">
+				<source>Delete marked items</source>
+			</trans-unit>
 			<trans-unit id="clip_selectMarked" resname="clip_selectMarked">
 				<source>Transfer to clipboard</source>
 			</trans-unit>
 			<trans-unit id="clip_deleteMarked" resname="clip_deleteMarked">
 				<source>Remove from clipboard</source>
 			</trans-unit>
-			<trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning">
-				<source>Are you sure you want to delete all marked files from this folder?</source>
+			<trans-unit id="deleteMarkedWarning" resname="deleteMarkedWarning">
+				<source>Are you sure you want to delete all marked items from this folder?</source>
 			</trans-unit>
 			<trans-unit id="c_name" resname="c_name">
 				<source>Name</source>
