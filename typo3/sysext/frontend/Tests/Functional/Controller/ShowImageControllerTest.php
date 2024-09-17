@@ -109,4 +109,39 @@ final class ShowImageControllerTest extends FunctionalTestCase
         self::assertSame($expectedHeight, $images->item(0)->getAttribute('height'));
         self::assertStringContainsString($expectedImageTag, $content);
     }
+
+    #[Test]
+    public function missingFileUidReturns410ResponseHttpStatusCode(): void
+    {
+        $uri = new Uri('https://website.local/?eID=tx_cms_showpic');
+        $queryParams = [
+            'parameters' => [json_encode([])],
+        ];
+        $expectedHttpStatusCode = 410;
+        $hashService = $this->get(HashService::class);
+        $fileId = null;
+        $queryParams['md5'] = $hashService->hmac(implode('|', [$fileId, $queryParams['parameters'][0]]), 'tx_cms_showpic');
+        $uri = $uri->withQuery($uri->getQuery() . '&' . http_build_query($queryParams));
+
+        $request = new InternalRequest((string)$uri);
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame($expectedHttpStatusCode, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function invalidHmacValueReturns410ResponseHttpStatusCode(): void
+    {
+        $uri = new Uri('https://website.local/?eID=tx_cms_showpic');
+        $queryParams = [
+            'file' => 1,
+            'parameters' => [json_encode([])],
+        ];
+        $expectedHttpStatusCode = 410;
+        $queryParams['md5'] = 'invalid-md5';
+        $uri = $uri->withQuery($uri->getQuery() . '&' . http_build_query($queryParams));
+
+        $request = new InternalRequest((string)$uri);
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame($expectedHttpStatusCode, $response->getStatusCode());
+    }
 }
