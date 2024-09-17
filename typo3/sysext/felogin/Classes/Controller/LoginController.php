@@ -243,7 +243,7 @@ class LoginController extends ActionController
     /**
      * Is redirect disabled by setting or noredirect GET/POST parameter
      */
-    public function isRedirectDisabled(): bool
+    protected function isRedirectDisabled(): bool
     {
         return
             (int)($this->request->getParsedBody()['noredirect'] ?? $this->request->getQueryParams()['noredirect'] ?? 0) === 1
