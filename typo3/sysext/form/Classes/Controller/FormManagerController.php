@@ -435,8 +435,8 @@ class FormManagerController extends ActionController
                 'returnUrl' => $this->getModuleUrl('web_FormFormbuilder'),
             ];
             $references[] = [
-                'recordPageTitle' => is_array($pageRecord) ? $this->getRecordTitle('pages', $pageRecord) : '',
-                'recordTitle' => $this->getRecordTitle($referenceRow['tablename'], $record, true),
+                'recordPageTitle' => is_array($pageRecord) ? BackendUtility::getRecordTitle('pages', $pageRecord) : '',
+                'recordTitle' => BackendUtility::getRecordTitle($referenceRow['tablename'], $record),
                 'recordIcon' => $this->iconFactory->getIconForRecord($referenceRow['tablename'], $record, IconSize::SMALL)->render(),
                 'recordUid' => $referenceRow['recuid'],
                 'recordEditUrl' => $this->getModuleUrl('record_edit', $urlParameters),
@@ -530,14 +530,6 @@ class FormManagerController extends ActionController
     protected function getRecord(string $table, int $uid): ?array
     {
         return BackendUtility::getRecord($table, $uid);
-    }
-
-    /**
-     * Wrapper used for unit testing.
-     */
-    protected function getRecordTitle(string $table, array $row, bool $prep = false): string
-    {
-        return BackendUtility::getRecordTitle($table, $row, $prep);
     }
 
     /**

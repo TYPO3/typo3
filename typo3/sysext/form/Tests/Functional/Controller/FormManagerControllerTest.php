@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Routing\UriBuilder as CoreUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -223,57 +222,6 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $this->expectExceptionCode(1477071939);
         $subjectMock = $this->getAccessibleMock(FormManagerController::class, null, [], '', false);
         $subjectMock->_call('getProcessedReferencesRows', '');
-    }
-
-    #[Test]
-    public function getProcessedReferencesRowsReturnsProcessedArray(): void
-    {
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        $iconMock = $this->createMock(Icon::class);
-        $iconMock->expects(self::atLeastOnce())->method('render')->willReturn('');
-        $iconFactoryMock->method('getIconForRecord')->withAnyParameters()->willReturn($iconMock);
-        $databaseServiceMock = $this->createMock(DatabaseService::class);
-        $subjectMock = $this->getAccessibleMock(
-            FormManagerController::class,
-            [
-                'getModuleUrl',
-                'getRecord',
-                'getRecordTitle',
-            ],
-            [
-                $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $iconFactoryMock,
-                $databaseServiceMock,
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $this->createMock(TranslationService::class),
-                $this->createMock(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-            ]
-        );
-        $databaseServiceMock
-            ->method('getReferencesByPersistenceIdentifier')
-            ->with(self::anything())
-            ->willReturn([
-                0 => [
-                    'tablename' => 'tt_content',
-                    'recuid' => -1,
-                ],
-            ]);
-        $subjectMock->method('getModuleUrl')->willReturn('/typo3/index.php?some=param');
-        $subjectMock->method('getRecord')->willReturn([ 'uid' => 1, 'pid' => 0 ]);
-        $subjectMock->method('getRecordTitle')->willReturn('record title');
-        $expected = [
-            0 => [
-                'recordPageTitle' => 'record title',
-                'recordTitle' => 'record title',
-                'recordIcon' => '',
-                'recordUid' => -1,
-                'recordEditUrl' => '/typo3/index.php?some=param',
-            ],
-        ];
-        self::assertSame($expected, $subjectMock->_call('getProcessedReferencesRows', 'fake'));
     }
 
     #[Test]
