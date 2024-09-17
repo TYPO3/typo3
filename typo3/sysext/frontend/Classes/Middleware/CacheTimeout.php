@@ -38,7 +38,7 @@ class CacheTimeout implements MiddlewareInterface
             //        altogether since it is a flawed concept based on server timezone
             //        "when is midnight?".
             $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
-            $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheDataCollector->resolveLifetime();
+            $timeOutTime = min($GLOBALS['EXEC_TIME'] + $cacheDataCollector->resolveLifetime(), PHP_INT_MAX);
             $midnightTime = mktime(0, 0, 0, (int)date('m', $timeOutTime), (int)date('d', $timeOutTime), (int)date('Y', $timeOutTime));
             // If the midnight time of the expire-day is greater than the current time,
             // we may set the timeOutTime to the new midnighttime.
