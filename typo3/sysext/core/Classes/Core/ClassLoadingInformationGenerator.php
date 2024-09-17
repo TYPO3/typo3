@@ -152,7 +152,7 @@ class ClassLoadingInformationGenerator
         if ($ignorePotentialTestClasses) {
             $blacklistPathPrefix = (string)realpath($classesPath);
             $blacklistPathPrefix = str_replace('\\', '/', $blacklistPathPrefix);
-            $blacklistExpression = "{($blacklistPathPrefix/tests/|$blacklistPathPrefix/Tests/|$blacklistPathPrefix/Resources/|$blacklistPathPrefix/res/|$blacklistPathPrefix/class.ext_update.php)}";
+            $blacklistExpression = "{($blacklistPathPrefix/tests/|$blacklistPathPrefix/Tests/|$blacklistPathPrefix/Resources/|$blacklistPathPrefix/res/)}";
         }
         foreach (ClassMapGenerator::createMap($classesPath, $blacklistExpression, null, $namespace) as $class => $path) {
             if ($useRelativePaths) {

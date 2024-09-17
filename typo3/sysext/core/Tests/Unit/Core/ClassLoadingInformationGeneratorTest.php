@@ -219,7 +219,6 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
                     '!$typo3InstallDir . \'/Fixtures/test_extension/Tests/TestClass.php\'',
                     '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
                     '!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTestFile.php\'',
-                    '!$typo3InstallDir . \'/Fixtures/test_extension/class.ext_update.php\'',
                 ],
             ],
             'Classmap section pointing to two files' => [
