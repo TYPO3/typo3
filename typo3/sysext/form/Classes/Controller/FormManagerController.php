@@ -445,7 +445,7 @@ class FormManagerController extends AbstractBackendController
 
             $references[] = [
                 'recordPageTitle' => is_array($pageRecord) ? $this->getRecordTitle('pages', $pageRecord) : '',
-                'recordTitle' => $this->getRecordTitle($referenceRow['tablename'], $record, true),
+                'recordTitle' => $this->getRecordTitle($referenceRow['tablename'], $record),
                 'recordIcon' => $iconFactory->getIconForRecord($referenceRow['tablename'], $record, Icon::SIZE_SMALL)->render(),
                 'recordUid' => $referenceRow['recuid'],
                 'recordEditUrl' => $this->getModuleUrl('record_edit', $urlParameters),
