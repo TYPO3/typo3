@@ -17,41 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures;
 
-/**
- * Fixture file
- */
-class PropertyExistsStaticMatcherFixture1
-{
-    protected static $iAmAMatch = 42;
-
-    protected static $iAmNotAMatch;
-
-    public static $iAmNotAMatchEither;
-
-    private static $iAmNoMatchToo;
-}
-
-class PropertyExistsStaticMatcherFixture2
-{
-    public static $iAmAMatch;
-}
-
-class PropertyExistsStaticMatcherFixture3
-{
-    // Not a match: private
-    private static $iAmAMatch;
-}
-
 class PropertyExistsStaticMatcherFixture4
-{
-    // Not a match: suppressed
-    // @extensionScannerIgnoreLine
-    public static $iAmAMatch;
-    // Match (again). No longer ignored.
-    public static $iAmAnUnignoredMatch;
-}
-
-class PropertyExistsStaticMatcherFixture5
 {
     /**
      * Not a match: suppressed
@@ -62,10 +28,4 @@ class PropertyExistsStaticMatcherFixture5
     public static $iAmAMatch;
     // Match (again). No longer ignored.
     public static $iAmAnUnignoredMatch;
-}
-
-class PropertyExistsStaticMatcherFixture6
-{
-    // Not a match: Not static
-    public $iAmAMatch;
 }
