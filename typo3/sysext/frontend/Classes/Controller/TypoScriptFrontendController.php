@@ -421,7 +421,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             E_USER_DEPRECATED,
         );
         $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
-        $cacheDataCollector->addCacheTags(array_map(fn(string $tag) => new CacheTag($tag), $tags));
+        $cacheDataCollector->addCacheTags(...array_map(fn(string $tag) => new CacheTag($tag), $tags));
     }
 
     /**
