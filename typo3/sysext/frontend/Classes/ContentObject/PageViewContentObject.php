@@ -120,8 +120,8 @@ final class PageViewContentObject extends AbstractContentObject
     private function getContentObjectVariables(array $conf): array
     {
         $variables = [
-            'site' => $this->request->getAttribute('site'),
             'language' => $this->request->getAttribute('language'),
+            'site' => $this->request->getAttribute('site'),
             'page' => $this->request->getAttribute('frontend.page.information'),
         ];
         // Accumulate the variables to be process and loop them through cObjGetSingle
