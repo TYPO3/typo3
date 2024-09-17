@@ -3961,7 +3961,7 @@ textarea.formengine-textarea{resize:none}
 .sticky-form-actions{position:sticky;top:0;z-index:2;padding:calc(1rem / 2) 1rem;background:#fff}
 .modal-body .sticky-form-actions{margin-inline:calc(var(--bs-modal-padding) * -1);margin-bottom:var(--bs-modal-padding);padding:calc(var(--bs-modal-padding)/ 2) var(--bs-modal-padding);border-bottom:var(--bs-modal-border-width) solid var(--bs-modal-border-color)}
 .modal-body .sticky-form-actions:first-child{transform:translateY(calc(var(--bs-modal-padding) * -1));margin-bottom:0}
-.multi-record-selection-actions-wrapper{min-height:1rem;margin:.5rem 0}
+.multi-record-selection-actions-wrapper{min-height:calc(var(--typo3-input-sm-padding-y) * 2 + var(--typo3-input-border-width) * 2 + var(--typo3-input-font-size) * var(--typo3-input-line-height));margin:.5rem 0}
 .localization-wizard .option{margin-bottom:.25rem}
 .localization-fieldset{display:grid;gap:calc(var(--typo3-spacing)/ 4)}
 .localization-fieldset+.localization-fieldset{margin-top:var(--typo3-spacing)}

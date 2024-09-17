@@ -100,7 +100,12 @@ textarea {
 
 .multi-record-selection-actions-wrapper {
     // Calculation of min height for the multi record selection actions, based on the fact that btn-sm is used
-    min-height: floor(.125rem + ($padding-small-vertical * 2) + ($font-size-small * $line-height-small));
+    min-height:
+        calc(
+            (var(--typo3-input-sm-padding-y) * 2) +
+            (var(--typo3-input-border-width) * 2) +
+            (var(--typo3-input-font-size) * var(--typo3-input-line-height))
+        );
     // Consistent space between actions and listing
     margin: .5rem 0;
 }
