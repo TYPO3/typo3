@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Schema\Exception\FieldTypeNotAvailableException;
 use TYPO3\CMS\Core\Schema\Field\CategoryFieldType;
 use TYPO3\CMS\Core\Schema\Field\CheckboxFieldType;
 use TYPO3\CMS\Core\Schema\Field\ColorFieldType;
-use TYPO3\CMS\Core\Schema\Field\CountryFieldType;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\EmailFieldType;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
@@ -74,7 +73,6 @@ class FieldTypeFactory
         'category' => CategoryFieldType::class,
         'check' => CheckboxFieldType::class,
         'color' => ColorFieldType::class,
-        'country' => CountryFieldType::class,
         'datetime' => DateTimeFieldType::class,
         'email' => EmailFieldType::class,
         'file' => FileFieldType::class,

@@ -100,7 +100,6 @@ class NodeFactory
         'mfaInfo' => Element\MfaInfoElement::class,
         'slug' => Element\InputSlugElement::class,
         'language' => Element\SelectSingleElement::class,
-        'country' => Element\SelectCountryElement::class,
         'category' => Element\CategoryElement::class,
         'passthrough' => Element\PassThroughElement::class,
         'belayoutwizard' => Element\BackendLayoutWizardElement::class,

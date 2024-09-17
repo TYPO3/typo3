@@ -1482,7 +1482,6 @@ class DataHandler
             'category' => $this->checkValueForCategory($res, (string)$value, $tcaFieldConf, (string)$table, $id, (string)$status, (string)$field),
             'check' => $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
             'color' => $this->checkValueForColor((string)$value, $tcaFieldConf),
-            'country' => $this->checkValueForCountry((string)$value, $tcaFieldConf),
             'datetime' => $this->checkValueForDatetime($value, $tcaFieldConf),
             'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $checkField),
             'flex' => $field ? $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field) : [],
@@ -2429,18 +2428,6 @@ class DataHandler
             unset($res['value']);
         }
         return $res;
-    }
-
-    protected function checkValueForCountry(string $value, array $tcaFieldConf): array
-    {
-        // When values are sent as group or select they come as comma-separated values which are exploded by this function:
-        $valueArray = $this->checkValue_group_select_explodeSelectGroupValue($value);
-        // This could be a good spot for parsing the array through a validation-function which checks if the values are correct (except that database references are not in their final form - but that is the point, isn't it?)
-        // NOTE!!! Must check max-items of files before the later check because that check would just leave out file names if there are too many!!
-        $valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
-        return [
-            'value' => $valueArray[0] ?? '',
-        ];
     }
 
     /**

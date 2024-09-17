@@ -1022,19 +1022,6 @@ class DefaultTcaSchema
                             );
                         }
                         break;
-                    case 'country':
-                        $nullable = $fieldConfig['config']['nullable'] ?? false;
-                        $tables[$tableName]->addColumn(
-                            $this->quote($fieldName),
-                            Types::STRING,
-                            [
-                                'length' => 2,
-                                'default' => $nullable ? null : '',
-                                'notnull' => !$nullable,
-                            ]
-                        );
-                        break;
-
                 }
             }
         }

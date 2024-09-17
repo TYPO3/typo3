@@ -1827,9 +1827,6 @@ class BackendUtility
                     }
                 }
                 break;
-            case 'country':
-                $l = $value;
-                break;
             case 'json':
                 // For database type "JSON" the value in decoded state is most likely an array. This is not compatible with
                 // the "human-readable" processing and returning promise of this method. Thus, we ensure to handle value for
