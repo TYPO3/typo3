@@ -22,6 +22,7 @@ use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 use Symfony\Component\Mime\RawMessage;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\FluidEmail;
@@ -63,10 +64,17 @@ class AuthenticationService
         if ($password !== null && $password !== '') {
             $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
             $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-            // Throws an InvalidPasswordHashException if no hash mechanism for the stored password is found
-            $hashInstance = $hashFactory->get($installToolPassword, 'BE');
-            // @todo: This code should check required hash updates and update the hash if needed
-            $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
+            try {
+                $hashInstance = $hashFactory->get($installToolPassword, 'BE');
+                // @todo: This code should check required hash updates and update the hash if needed
+                $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
+            } catch (InvalidPasswordHashException $e) {
+                $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+                $logger->warning(
+                    'Invalid install tool password hash specified in "BE/installToolPassword" configuration.',
+                    ['exception' => $e]
+                );
+            }
         }
         if ($validPassword) {
             $session->setAuthorized();
