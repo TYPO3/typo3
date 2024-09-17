@@ -198,6 +198,12 @@ class BackendLayoutWizardElement extends AbstractFormElement
                                 if (isset($column['colPos'])) {
                                     $cellData['column'] = (int)$column['colPos'];
                                 }
+                                if (isset($column['identifier'])) {
+                                    $cellData['identifier'] = $column['identifier'];
+                                }
+                                if (isset($column['slideMode'])) {
+                                    $cellData['slideMode'] = $column['slideMode'];
+                                }
                             }
                         } else {
                             $cellData = ['colspan' => 1, 'rowspan' => 1, 'spanned' => 1];

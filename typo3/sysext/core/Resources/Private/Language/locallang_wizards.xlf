@@ -84,6 +84,12 @@
 			<trans-unit id="grid_column" resname="grid_column">
 				<source>Column number</source>
 			</trans-unit>
+			<trans-unit id="grid_identifier" resname="grid_identifier">
+				<source>Identifier</source>
+			</trans-unit>
+			<trans-unit id="grid_slideMode" resname="grid_slideMode">
+				<source>Slide mode</source>
+			</trans-unit>
 			<trans-unit id="grid_notSet" resname="grid_notSet">
 				<source>not set</source>
 			</trans-unit>
@@ -92,6 +98,12 @@
 			</trans-unit>
 			<trans-unit id="grid_columnHelp" resname="grid_columnHelp">
 				<source>The column position defines in which area the content is rendered in the frontend.</source>
+			</trans-unit>
+			<trans-unit id="grid_identifierHelp" resname="grid_identifierHelp">
+				<source>The identifier is a human-readable unique label, used to access the items in this column.</source>
+			</trans-unit>
+			<trans-unit id="grid_slideModeHelp" resname="grid_slideModeHelp">
+				<source>The slide mode defines which elements should be fetched for the column in the frontend.</source>
 			</trans-unit>
 			<trans-unit id="imwizard.open-editor" resname="imwizard.open-editor">
 				<source>Open Editor</source>

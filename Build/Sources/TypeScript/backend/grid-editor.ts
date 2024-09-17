@@ -22,7 +22,14 @@ import { StyleInfo, styleMap } from 'lit/directives/style-map';
 import { ref, Ref, createRef } from 'lit/directives/ref';
 import { CodeMirrorElement } from '@typo3/backend/code-editor/element/code-mirror-element';
 
-type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number }
+type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number, identifier: string, slideMode: SlideModes }
+
+enum SlideModes {
+  none = '',
+  slide = 'slide',
+  collect = 'collect',
+  collectReverse = 'collectReverse',
+}
 
 /**
  * Module: @typo3/backend/grid-editor
@@ -40,7 +47,7 @@ export class GridEditor extends LitElement {
   protected field: HTMLInputElement;
   protected previewAreaRef: Ref<HTMLTextAreaElement> = createRef();
   protected codeMirrorRef: Ref<CodeMirrorElement> = createRef();
-  protected defaultCell: Cell = { spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined };
+  protected defaultCell: Cell = { spanned: 0, rowspan: 1, colspan: 1, name: '', colpos: '', column: undefined, identifier: '', slideMode: SlideModes.none };
 
   /**
    * Remove all markup
@@ -231,6 +238,8 @@ export class GridEditor extends LitElement {
           <br/>
           <strong>${TYPO3.lang.grid_column}:</strong>
           ${typeof cell.column === 'undefined' || isNaN(cell.column) ? TYPO3.lang.grid_notSet : cell.column}
+          ${cell.identifier?.length ? html`<br/><strong>${TYPO3.lang.grid_identifier}:</strong> ${cell.identifier}` : ''}
+          ${(cell.slideMode?.toString() || '') !== '' ? html`<br/><strong>${TYPO3.lang.grid_slideMode}:</strong> ${cell.slideMode.toString()}` : ''}
         </div>
       </div>
     `;
@@ -277,6 +286,16 @@ export class GridEditor extends LitElement {
       );
       this.setColumn(
         parseInt((modal.querySelector('.t3js-grideditor-field-colpos') as HTMLInputElement).value, 10),
+        modal.userData.col,
+        modal.userData.row,
+      );
+      this.setIdentifier(
+        (modal.querySelector('.t3js-grideditor-field-identifier') as HTMLInputElement).value,
+        modal.userData.col,
+        modal.userData.row,
+      );
+      this.setSlideMode(
+        (modal.querySelector('.t3js-grideditor-field-slide-mode') as HTMLSelectElement).value,
         modal.userData.col,
         modal.userData.row,
       );
@@ -658,6 +677,24 @@ export class GridEditor extends LitElement {
     return true;
   }
 
+  protected setIdentifier(newIdentifier: string, col: number, row: number): boolean {
+    const cell = this.getCell(col, row);
+    if (!cell) {
+      return false;
+    }
+    cell.identifier = GridEditor.stripMarkup(newIdentifier);
+    return true;
+  }
+
+  protected setSlideMode(newSlideMode: string, col: number, row: number): boolean {
+    const cell = this.getCell(col, row);
+    if (!cell) {
+      return false;
+    }
+    cell.slideMode = SlideModes[newSlideMode as keyof typeof SlideModes];
+    return true;
+  }
+
   /**
    * Creates an Modal with two input fields and shows it. On save, the data
    * is written into the grid element.
@@ -709,7 +746,38 @@ export class GridEditor extends LitElement {
 
     columnFormGroup.append(columnLabel, columnInput);
 
-    markup.append(nameFormGroup, columnFormGroup);
+    const identifierFormGroup = formGroup.cloneNode(true) as HTMLElement;
+    const identifierLabel = label.cloneNode(true) as HTMLElement;
+    identifierLabel.innerText = TYPO3.lang.grid_identifierHelp;
+    const identifierInput = input.cloneNode(true) as HTMLInputElement;
+    nameInput.type = 'text';
+    identifierInput.classList.add('t3js-grideditor-field-identifier', 'form-control');
+    identifierInput.name = 'identifier';
+    identifierInput.value = typeof(cell.identifier) === 'string' ? GridEditor.stripMarkup(cell.identifier) : '';
+
+    identifierFormGroup.append(identifierLabel, identifierInput);
+
+    const slideModeFormGroup = formGroup.cloneNode(true) as HTMLElement;
+    const slideModeLabel = label.cloneNode(true) as HTMLElement;
+    slideModeLabel.innerText = TYPO3.lang.grid_slideModeHelp;
+    const slideModeSelect = document.createElement('select');
+    slideModeSelect.classList.add('t3js-grideditor-field-slide-mode', 'form-select', 'form-control-adapt');
+    slideModeSelect.name = 'slideMode';
+    slideModeSelect.value = GridEditor.stripMarkup(cell.slideMode?.toString()) || '';
+
+    (Object.keys(SlideModes) as Array<keyof typeof SlideModes>).map((key) => {
+      const text = key !== 'none' ? key : '';
+      const value = SlideModes[key as keyof typeof SlideModes];
+      const option = document.createElement('option');
+      option.value = value;
+      option.text = text;
+      option.selected = value === cell.slideMode?.toString();
+      slideModeSelect.appendChild(option);
+    });
+
+    slideModeFormGroup.append(slideModeLabel, slideModeSelect);
+
+    markup.append(nameFormGroup, columnFormGroup, identifierFormGroup, slideModeFormGroup);
 
     const modal = Modal.show(TYPO3.lang.grid_windowTitle, markup, SeverityEnum.notice, [
       {
@@ -957,6 +1025,12 @@ export class GridEditor extends LitElement {
             }
             if (typeof(cell.column) === 'number') {
               result += '\t\t\t\t\tcolPos = ' + cell.column + '\n';
+            }
+            if (typeof(cell.identifier) === 'string' && cell.identifier.length) {
+              result += '\t\t\t\t\tidentifier = ' + cell.identifier + '\n';
+            }
+            if (cell.slideMode !== undefined && cell.slideMode !== SlideModes.none) {
+              result += '\t\t\t\t\tslideMode = ' + cell.slideMode.toString() + '\n';
             }
             result += '\t\t\t\t}\n';
           }
