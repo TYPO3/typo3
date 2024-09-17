@@ -2,40 +2,11 @@
 // Tiles
 //
 .resource-tiles {
-    --resource-tiles-grid-spacing: .5rem;
-    --resource-tiles-grid-width: 150px;
-    --resource-tile-spacing: 1rem;
-    --resource-tile-border-radius: 4px;
-    --resource-tile-nameplate-size: 12px;
-    --resource-tile-nameplate-activity-size: 10px;
-    --resource-tile-checkbox-size: 16px;
-    --resource-tile-color: #313131;
-    --resource-tile-bg: #fff;
-    --resource-tile-border-color: #{$gray-300};
-    --resource-tile-hover-color: var(--resource-tile-color);
-    --resource-tile-hover-bg: rgba(0, 0, 0, .05);
-    --resource-tile-hover-border-color: #{$gray-300};
-    --resource-tile-focus-color: var(--resource-tile-color);
-    --resource-tile-focus-bg: rgba(0, 0, 0, .05);
-    --resource-tile-focus-border-color: #{$gray-500};
-    --resource-tile-active-color: var(--resource-tile-color);
-    --resource-tile-active-bg: #{tint-color($primary, 95%)};
-    --resource-tile-active-border-color: #{tint-color($primary, 20%)};
-    --resource-tile-success-color: var(--resource-tile-color);
-    --resource-tile-success-bg: #{tint-color($success, 95%)};
-    --resource-tile-success-border-color: #{tint-color($success, 20%)};
-    --resource-tile-info-color: var(--resource-tile-color);
-    --resource-tile-info-bg: #{tint-color($info, 95%)};
-    --resource-tile-info-border-color: #{tint-color($info, 20%)};
-    --resource-tile-danger-color: var(--resource-tile-color);
-    --resource-tile-danger-bg: #{tint-color($danger, 95%)};
-    --resource-tile-danger-border-color: #{tint-color($danger, 20%)};
-    --resource-tile-warning-color: var(--resource-tile-color);
-    --resource-tile-warning-bg: #{tint-color($warning, 95%)};
-    --resource-tile-warning-border-color: #{tint-color($warning, 20%)};
+    --typo3-resource-tiles-grid-spacing: .5rem;
+    --typo3-resource-tiles-grid-width: 150px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, var(--resource-tiles-grid-width));
-    gap: var(--resource-tiles-grid-spacing);
+    grid-template-columns: repeat(auto-fill, var(--typo3-resource-tiles-grid-width));
+    gap: var(--typo3-resource-tiles-grid-spacing);
     user-select: none;
 }
 
@@ -50,74 +21,82 @@
 
 @container (min-width: 480px) {
     .resource-tiles {
-        --resource-tiles-grid-width: 169px;
+        --typo3-resource-tiles-grid-width: 169px;
     }
 }
 
 @container (min-width: 768px) {
     .resource-tiles {
-        --resource-tiles-grid-width: 200px;
+        --typo3-resource-tiles-grid-width: 200px;
     }
 }
 
 /* clean-css ignore:end */
 
 .resource-tile {
+    --typo3-resource-tile-spacing: 1rem;
+    --typo3-resource-tile-border-radius: var(--typo3-component-border-radius);
+    --typo3-resource-tile-nameplate-size: 12px;
+    --typo3-resource-tile-nameplate-activity-size: 10px;
+    --typo3-resource-tile-checkbox-size: 16px;
+    --typo3-resource-tile-color-state: initial;
+    --typo3-resource-tile-bg-state: initial;
+    --typo3-resource-tile-color: var(--typo3-component-color);
+    --typo3-resource-tile-bg: var(--typo3-component-bg);
+    --typo3-resource-tile-border-color: color-mix(in srgb, var(--typo3-resource-tile-bg-state, var(--typo3-resource-tile-bg)), var(--typo3-resource-tile-color-state, var(--typo3-resource-tile-color)) 15%);
+
+    @each $variant in $base-variants {
+        --typo3-resource-tile-#{$variant}-color: var(--typo3-surface-container-#{$variant}-text);
+        --typo3-resource-tile-#{$variant}-bg: var(--typo3-surface-container-#{$variant});
+    }
     position: relative;
     padding-top: 98%;
-    color: var(--resource-tile-color);
-    background-color: var(--resource-tile-bg);
-    border: 1px solid var(--resource-tile-border-color);
-    border-radius: var(--resource-tile-border-radius);
+    color: var(--typo3-resource-tile-color-state, var(--typo3-resource-tile-color));
+    background-color: var(--typo3-resource-tile-bg-state, var(--typo3-resource-tile-bg));
+    border: 1px solid var(--typo3-resource-tile-border-color);
+    border-radius: var(--typo3-resource-tile-border-radius);
 }
 
 .resource-tile:hover {
-    --resource-tile-color: var(--resource-tile-hover-color);
-    --resource-tile-bg: var(--resource-tile-hover-bg);
-    --resource-tile-border-color: var(--resource-tile-hover-border-color);
+    --typo3-resource-tile-bg-state: color-mix(in srgb, var(--typo3-resource-tile-bg), var(--typo3-resource-tile-color) 6%);
+    --typo3-resource-tile-color-state: var(--typo3-resource-tile-color);
     text-decoration: none;
 }
 
 .resource-tile:focus-within {
-    --resource-tile-color: var(--resource-tile-focus-color);
-    --resource-tile-bg: var(--resource-tile-focus-bg);
-    --resource-tile-border-color: var(--resource-tile-focus-border-color);
+    outline: .25rem solid color-mix(in srgb, var(--typo3-resource-tile-border-color), transparent 25%);
 }
 
 .resource-tile.active {
-    --resource-tile-color: var(--resource-tile-active-color);
-    --resource-tile-bg: var(--resource-tile-active-bg);
-    --resource-tile-border-color: var(--resource-tile-active-border-color);
+    --typo3-resource-tile-color: var(--typo3-resource-tile-primary-color);
+    --typo3-resource-tile-bg: var(--typo3-resource-tile-primary-bg);
 }
 
 .resource-tile.selected,
 .resource-tile.info {
-    --resource-tile-color: var(--resource-tile-info-color);
-    --resource-tile-bg: var(--resource-tile-info-bg);
-    --resource-tile-border-color: var(--resource-tile-info-border-color);
+    --typo3-resource-tile-color: var(--typo3-resource-tile-info-color);
+    --typo3-resource-tile-bg: var(--typo3-resource-tile-info-bg);
 }
 
 .resource-tile.success {
-    --resource-tile-color: var(--resource-tile-success-color);
-    --resource-tile-bg: var(--resource-tile-success-bg);
-    --resource-tile-border-color: var(--resource-tile-success-border-color);
+    --typo3-resource-tile-color: var(--typo3-resource-tile-success-color);
+    --typo3-resource-tile-bg: var(--typo3-resource-tile-success-bg);
 }
 
 .resource-tile.danger {
-    --resource-tile-color: var(--resource-tile-danger-color);
-    --resource-tile-bg: var(--resource-tile-danger-bg);
-    --resource-tile-border-color: var(--resource-tile-danger-border-color);
+    --typo3-resource-tile-color: var(--typo3-resource-tile-danger-color);
+    --typo3-resource-tile-bg: var(--typo3-resource-tile-danger-bg);
 }
 
 .resource-tile.warning {
-    --resource-tile-color: var(--resource-tile-warning-color);
-    --resource-tile-bg: var(--resource-tile-warning-bg);
-    --resource-tile-border-color: var(--resource-tile-warning-border-color);
+    --typo3-resource-tile-color: var(--typo3-resource-tile-warning-color);
+    --typo3-resource-tile-bg: var(--typo3-resource-tile-warning-bg);
 }
 
 .resource-tile.active,
 .resource-tile.selected,
-.resource-tile:hover {
+.resource-tile:hover,
+.resource-tile:focus-within {
     .resource-tile-checkbox {
         display: block;
     }
@@ -156,7 +135,7 @@
 .resource-tile-preview {
     flex: 1;
     position: relative;
-    margin: var(--resource-tile-spacing);
+    margin: var(--typo3-resource-tile-spacing);
     margin-bottom: 0;
 }
 
@@ -187,7 +166,7 @@
 .resource-tile-image img {
     max-height: 100%;
     max-width: 100%;
-    outline: 2px solid #fff;
+    outline: 2px solid var(--typo3-resource-tile-border-color);
     outline-offset: 0;
     border-radius: 2px;
     box-shadow: var(--typo3-component-box-shadow-strong);
@@ -195,16 +174,16 @@
 
 .resource-tile-image-icon {
     position: absolute;
-    top: calc(var(--resource-tile-spacing) * -.5);
-    inset-inline-start: calc(var(--resource-tile-spacing) * -.5);
+    top: calc(var(--typo3-resource-tile-spacing) * -.5);
+    inset-inline-start: calc(var(--typo3-resource-tile-spacing) * -.5);
 }
 
 .resource-tile-nameplate {
     display: flex;
     flex-direction: column;
-    padding: var(--resource-tile-spacing);
+    padding: var(--typo3-resource-tile-spacing);
     text-align: center;
-    font-size: var(--resource-tile-nameplate-size);
+    font-size: var(--typo3-resource-tile-nameplate-size);
     width: 100%;
 }
 
@@ -215,14 +194,18 @@
 }
 
 .resource-tile-nameplate-activity {
-    font-size: var(--resource-tile-nameplate-activity-size);
+    font-size: var(--typo3-resource-tile-nameplate-activity-size);
     opacity: .75;
 }
 
 .resource-tile-checkbox {
     display: none;
     position: absolute;
-    font-size: var(--resource-tile-checkbox-size);
-    inset-inline-end: calc(var(--resource-tile-spacing) / 2);
-    top: calc(var(--resource-tile-spacing) / 2);
+    font-size: var(--typo3-resource-tile-checkbox-size);
+    inset-inline-end: calc(var(--typo3-resource-tile-spacing) / 2);
+    top: calc(var(--typo3-resource-tile-spacing) / 2);
+
+    .form-check-input {
+        margin-top: 0;
+    }
 }
