@@ -15,4 +15,6 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace TYPO3\CMS\Core\Tests\Unit\Core\Fixtures\test_extension\Tests;
+
 class TestClass {}
