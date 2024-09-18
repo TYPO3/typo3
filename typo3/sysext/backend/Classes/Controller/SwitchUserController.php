@@ -106,7 +106,7 @@ class SwitchUserController
 
         return $this->jsonResponse([
             'success' => true,
-            'url' => $this->uriBuilder->buildUriFromRoute('main'),
+            'url' => (string)$this->uriBuilder->buildUriFromRoute('main'),
         ]);
     }
 
@@ -132,7 +132,7 @@ class SwitchUserController
 
         return $this->jsonResponse([
             'success' => true,
-            'url' => $this->uriBuilder->buildUriFromRoute('main'),
+            'url' => (string)$this->uriBuilder->buildUriFromRoute('main'),
         ]);
     }
 
