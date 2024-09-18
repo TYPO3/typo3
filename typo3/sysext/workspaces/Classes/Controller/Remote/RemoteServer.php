@@ -301,7 +301,7 @@ readonly class RemoteServer
         if (($tcaConfiguration['type'] ?? '') === 'flex') {
             return $this->flexFormValueFormatter->format($table, $fieldName, $value, $uid, $tcaConfiguration);
         }
-        return (string)BackendUtility::getProcessedValue($table, $fieldName, $value, defaultPassthrough: true, uid: $uid);
+        return (string)BackendUtility::getProcessedValue($table, $fieldName, $value, 0, true, false, $uid);
     }
 
     /**
