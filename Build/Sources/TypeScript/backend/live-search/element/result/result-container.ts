@@ -53,7 +53,7 @@ export class ResultContainer extends LitElement {
 
   protected render(): TemplateResult | symbol {
     if (this.loading) {
-      return html`<div class="d-flex flex-fill justify-content-center mt-2"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`;
+      return html`<div class="d-flex flex-fill align-items-center justify-content-center"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`;
     }
 
     if (this.results === null) {

@@ -6,33 +6,21 @@
 
 <form id="columnSelectorForm">
 
-    <div class="sticky-form-actions border-bottom">
-        <div class="row row-cols-auto justify-content-between">
-            <div class="col flex-grow-1">
-                <div class="input-group">
-                    <span class="input-group-text" id="columns-filter-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:columnsFilter" /></span>
-                    <input type="search" name="columns-filter" class="form-control" value="" aria-labelledby="columns-filter-label" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
-                </div>
-            </div>
-            <div class="col">
-                <div class="row row-cols-auto justify-content-end g-2 t3js-column-selector-actions">
-                    <div class="col">
-                        <button type="button" class="btn btn-default disabled" data-action="select-all">
-                            <core:icon identifier="actions-check-square"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-default disabled" data-action="select-none">
-                            <core:icon identifier="actions-square"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll" />
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-default" data-action="select-toggle">
-                            <core:icon identifier="actions-document-select"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection" />
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <div class="sticky-form-actions">
+        <div class="input-group">
+            <span class="input-group-text" id="columns-filter-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:columnsFilter" /></span>
+            <input type="search" name="columns-filter" class="form-control" value="" aria-labelledby="columns-filter-label" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
+        </div>
+        <div class="btn-group t3js-column-selector-actions">
+            <button type="button" class="btn btn-default disabled" data-action="select-all">
+                <core:icon identifier="actions-check-square"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />
+            </button>
+            <button type="button" class="btn btn-default disabled" data-action="select-none">
+                <core:icon identifier="actions-square"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll" />
+            </button>
+            <button type="button" class="btn btn-default" data-action="select-toggle">
+                <core:icon identifier="actions-document-select"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection" />
+            </button>
         </div>
     </div>
 

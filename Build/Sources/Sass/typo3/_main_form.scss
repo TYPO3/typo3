@@ -79,22 +79,25 @@ textarea {
  * A sticky form actions menu for the modal-body
  */
 .sticky-form-actions {
+    --typo3-stickyform-bg: var(--typo3-surface-base);
+    --typo3-stickyform-border-width: var(--typo3-component-border-width);
+    --typo3-stickyform-border-color: var(--typo3-component-border-color);
+    --typo3-stickyform-padding-y: 1rem;
+    --typo3-stickyform-padding-x: 1rem;
+    --typo3-stickyform-spacing: 1rem;
     position: sticky;
     top: 0;
     z-index: 2;
-    padding: calc(#{$spacer} / 2) $spacer;
-    background: $white;
+    display: flex;
+    gap: var(--typo3-stickyform-spacing);
+    padding: var(--typo3-stickyform-padding-y) var(--typo3-stickyform-padding-x);
+    margin-inline: calc(var(--typo3-stickyform-padding-x) * -1);
+    background: var(--typo3-stickyform-bg);
+    margin-bottom: var(--typo3-stickyform-spacing);
+    border-bottom: var(--typo3-stickyform-border-width) solid var(--typo3-stickyform-border-color);
 
-    .modal-body & {
-        margin-inline: calc(var(--#{$prefix}modal-padding) * -1);
-        margin-bottom: var(--#{$prefix}modal-padding);
-        padding: calc(var(--#{$prefix}modal-padding) / 2) var(--#{$prefix}modal-padding);
-        border-bottom: var(--#{$prefix}modal-border-width) solid var(--#{$prefix}modal-border-color);
-
-        &:first-child {
-            transform: translateY(calc(var(--#{$prefix}modal-padding) * -1));
-            margin-bottom: 0;
-        }
+    .modal-body:has(&) {
+        padding-top: 0;
     }
 }
 

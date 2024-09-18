@@ -14,7 +14,6 @@
 import { html, css, TemplateResult, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
-import Severity from '@typo3/backend/severity';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -184,7 +183,7 @@ export class ColumnSelectorButton extends LitElement {
         },
         {
           text: this.buttonOk,
-          btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.info),
+          btnClass: 'btn-primary',
           name: 'update',
           trigger: (e: Event, modal: ModalElement): void => this.processSelection(modal)
         }

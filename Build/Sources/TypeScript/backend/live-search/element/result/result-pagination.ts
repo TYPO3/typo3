@@ -42,7 +42,7 @@ export class ResultPagination extends LitElement {
     }
 
     return html`<nav>
-      <ul class="pagination pagination-sm">
+      <ul class="pagination">
         <li class="page-item">
           <typo3-backend-live-search-result-page class="page-link ${!this.pagination.previousPageNumber || this.pagination.previousPageNumber < this.pagination.firstPage ? 'disabled' : ''}" page="${this.pagination.previousPageNumber}" perPage="${this.pagination.itemsPerPage}">
             <typo3-backend-icon identifier="actions-arrow-left-alt" size="small"></typo3-backend-icon>
