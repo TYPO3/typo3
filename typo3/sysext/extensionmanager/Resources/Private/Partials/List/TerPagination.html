@@ -35,7 +35,8 @@
             <li class="page-item">
                 <span class="page-link">
                     <f:translate key="pagination.page" />
-                    <form style="display:inline;"
+                    <form
+                        class="form-inline"
                         data-global-event="submit"
                         data-action-navigate="$form=~s/$value/"
                         data-navigate-value="{f:uri.action(action:actionName, arguments:'{search:search, currentPage: \'$[value]\'}')}"

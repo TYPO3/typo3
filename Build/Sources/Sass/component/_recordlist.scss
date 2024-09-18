@@ -57,10 +57,6 @@
         padding: var(--typo3-recordlist-padding-y) var(--typo3-recordlist-padding-x);
     }
 
-    .pagination {
-        display: inline-flex;
-    }
-
     + .recordlist {
         margin-top: calc(var(--typo3-spacing) * 1.5);
     }

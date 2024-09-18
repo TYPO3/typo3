@@ -232,7 +232,7 @@
     --typo3-component-bg: var(--typo3-surface-container-lowest);
     --typo3-component-link-color: light-dark(#{$primary}, #{tint-color($primary, 40%)});
     --typo3-component-link-hover-color: light-dark(#{tint-color($primary, 10%)}, #{tint-color($primary, 50%)});
-    --typo3-component-font-size: #{$font-size-base};
+    --typo3-component-font-size: var(--typo3-font-size);
     --typo3-component-line-height: #{$line-height-base};
     --typo3-component-border-radius: 4px;
     --typo3-component-border-width: 1px;
@@ -254,9 +254,9 @@
     --typo3-component-active-color: #{$white};
     --typo3-component-active-bg: light-dark(#{tint-color($primary, 20%)}, #{shade-color($primary, 15%)});
     --typo3-component-active-border-color: light-dark(#{tint-color($primary, 20%)}, #{shade-color($primary, 20%)});
-    --typo3-component-disabled-color: #{$gray-600};
-    --typo3-component-disabled-bg: transparent;
-    --typo3-component-disabled-border-color: transparent;
+    --typo3-component-disabled-color: var(--typo3-text-color-variant);
+    --typo3-component-disabled-bg: var(--typo3-surface-container-base);
+    --typo3-component-disabled-border-color: var(--typo3-component-border-color);
     --typo3-component-spacing: 2rem;
 
     // List

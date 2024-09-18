@@ -32,7 +32,7 @@ export class PaginationElement extends LitElement {
       <ul class="pagination">
         <li class=${classMap({ 'page-item': true, disabled: this.paging.currentPage === 1 })}>
           <button type="button" class="page-link" data-action="previous" ?disabled=${this.paging.currentPage === 1}>
-            <typo3-backend-icon identifier="actions-arrow-left-alt" size="small"></typo3-backend-icon>
+            <typo3-backend-icon identifier="actions-view-paging-previous" size="small"></typo3-backend-icon>
           </button>
         </li>
         ${map(range(1, this.paging.totalPages + 1), (page) => html`
@@ -44,7 +44,7 @@ export class PaginationElement extends LitElement {
         `)}
         <li class=${classMap({ 'page-item': true, disabled: this.paging.currentPage === this.paging.totalPages })}>
           <button type="button" class="page-link" data-action="next" ?disabled=${this.paging.currentPage === this.paging.totalPages}>
-            <typo3-backend-icon identifier="actions-arrow-right-alt" size="small"></typo3-backend-icon>
+            <typo3-backend-icon identifier="aactions-view-paging-next" size="small"></typo3-backend-icon>
           </button>
         </li>
       </ul>

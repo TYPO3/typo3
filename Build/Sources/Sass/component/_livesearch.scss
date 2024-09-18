@@ -28,15 +28,19 @@ typo3-backend-live-search-result-pagination {
     nav {
         padding: var(--typo3-livesearch-padding);
         border-top: var(--typo3-livesearch-border-width) solid var(--typo3-livesearch-border-color);
-    }
 
-    .pagination {
-        display: flex;
-    }
+        > *:first-child {
+            margin-top: 0;
+        }
 
-    .page-item {
-        text-align: center;
+        > *:last-child {
+            margin-bottom: 0;
+        }
     }
+}
+
+typo3-backend-live-search-result-page {
+    cursor: pointer;
 }
 
 typo3-backend-live-search-result-container {

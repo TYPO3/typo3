@@ -85,7 +85,7 @@
 #t3-form-stage-container{overflow:auto;position:relative;height:calc(100% - var(--module-docheader-height));max-height:100%;text-align:center}
 #t3-form-stage-container ol,#t3-form-stage-container ul{list-style:none}
 #t3-form-stage-container .panel-heading button{outline:0}
-#t3-form-stage-container .panel-heading .pagination-label{margin-inline-end:1em}
+#t3-form-stage-container .panel-heading .panel-label{margin-inline-end:1em}
 #t3-form-stage-container .t3-form-new-element-container{display:flex;justify-content:center;align-items:center;height:62px;border:1px dashed #ddd}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract .t3-form-page-title{margin:0 0 .5em}
 #t3-form-stage-container.t3-form-stage-viewmode-abstract #t3-form-stage-inner-container{overflow:hidden}

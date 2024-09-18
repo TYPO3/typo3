@@ -43,7 +43,7 @@
 // @import "../../node_modules/bootstrap/scss/card";
 // @import "../../node_modules/bootstrap/scss/accordion";
 @import "../../node_modules/bootstrap/scss/breadcrumb";
-@import "../../node_modules/bootstrap/scss/pagination";
+// @import "../../node_modules/bootstrap/scss/pagination";
 // @import "../../node_modules/bootstrap/scss/badge";
 // @import "../../node_modules/bootstrap/scss/alert";
 @import "../../node_modules/bootstrap/scss/progress";
@@ -84,6 +84,7 @@
 @import "component/type";
 @import "component/order";
 @import "component/nav";
+@import "component/pagination";
 @import "component/icon";
 @import "component/caret";
 @import "component/spacer";

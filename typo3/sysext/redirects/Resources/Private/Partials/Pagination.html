@@ -39,7 +39,7 @@
                         <f:variable name="gotToPageUrl">
                             <f:be.uri route="site_redirects" parameters="{action: 'overview', demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: 987654322}" />
                         </f:variable>
-                        <form data-on-submit="processNavigate" style="display:inline;">
+                        <form data-on-submit="processNavigate" class="form-inline">
                             <input type="number"
                                 value="{pagination.current}"
                                 name="paginator-target-page"

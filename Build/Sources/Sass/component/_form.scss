@@ -20,6 +20,10 @@
     margin-bottom: var(--typo3-spacing);
 }
 
+.form-inline {
+    display: inline;
+}
+
 // Search results can be displayed as badges next to the search input field. Wrap the search
 // result with a .form-group.form-group-search-result to properly align the output.
 .form-group-search-result {

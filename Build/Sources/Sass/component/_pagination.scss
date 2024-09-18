@@ -2,6 +2,111 @@
 // Pagination
 //
 .pagination {
+    --typo3-pagination-padding-y: var(--typo3-input-padding-y);
+    --typo3-pagination-padding-x: var(--typo3-input-padding-x);
+    --typo3-pagination-font-size: var(--typo3-font-size);
+    --typo3-pagination-line-height: var(--typo3-component-line-height);
+    --typo3-pagination-border-radius: var(--typo3-component-border-radius);
+    --typo3-pagination-border-width: var(--typo3-component-border-width);
+    --typo3-pagination-color: var(--typo3-component-color);
+    --typo3-pagination-bg: var(--typo3-component-bg);
+    --typo3-pagination-border-color: var(--typo3-component-border-color);
+    --typo3-pagination-hover-color: var(--typo3-list-item-hover-color);
+    --typo3-pagination-hover-bg: var(--typo3-list-item-hover-bg);
+    --typo3-pagination-hover-border-color: var(--typo3-list-item-hover-border-color);
+    --typo3-pagination-active-color: var(--typo3-list-item-active-color);
+    --typo3-pagination-active-bg: var(--typo3-list-item-active-bg);
+    --typo3-pagination-active-border-color: var(--typo3-list-item-active-border-color);
+    --typo3-pagination-disabled-color: var(--typo3-list-item-disabled-color);
+    --typo3-pagination-disabled-bg: var(--typo3-list-item-disabled-bg);
+    --typo3-pagination-disabled-border-color: var(--typo3-list-item-disabled-border-color);
+    --typo3-pagination-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+    display: flex;
     flex-wrap: wrap;
-    row-gap: 4px;
+    list-style: none;
+    padding: 0;
+    padding-inline-start: var(--typo3-pagination-border-width);
+    row-gap: 2px;
+    margin-bottom: var(--typo3-spacing);
+}
+
+.page-item {
+    text-align: center;
+    margin-inline-start: calc(var(--typo3-pagination-border-width) * -1);
+
+    &:first-child .page-link {
+        border-start-start-radius: var(--typo3-pagination-border-radius);
+        border-end-start-radius: var(--typo3-pagination-border-radius);
+    }
+
+    &:last-child .page-link {
+        border-start-end-radius: var(--typo3-pagination-border-radius);
+        border-end-end-radius: var(--typo3-pagination-border-radius);
+    }
+}
+
+.page-link {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--typo3-pagination-padding-y) var(--typo3-pagination-padding-x);
+    font-size: var(--typo3-pagination-font-size);
+    line-height: var(--typo3-pagination-line-height);
+    text-decoration: none;
+    color: var(--typo3-pagination-color);
+    background-color: var(--typo3-pagination-bg);
+    border: var(--typo3-pagination-border-width) solid var(--typo3-pagination-border-color);
+    transition: var(--typo3-pagination-transition);
+    height: 100%;
+    gap: .25rem;
+    white-space: nowrap;
+    outline-offset: 0;
+    user-select: none;
+
+    @media (prefers-reduced-motion) {
+        transition: none;
+    }
+
+    &:not(span) {
+        &:hover,
+        &:focus {
+            --typo3-pagination-color: var(--typo3-pagination-hover-color);
+            --typo3-pagination-bg: var(--typo3-pagination-hover-bg);
+            --typo3-pagination-border-color: var(--typo3-pagination-hover-border-color);
+            text-decoration: none;
+            z-index: 1;
+        }
+
+        &:focus-visible {
+            outline: .25rem solid color-mix(in srgb, var(--typo3-pagination-border-color), transparent 25%);
+            z-index: 3 !important;
+        }
+    }
+
+    &.active,
+    .active > & {
+        --typo3-pagination-color: var(--typo3-pagination-active-color) !important;
+        --typo3-pagination-bg: var(--typo3-pagination-active-bg) !important;
+        --typo3-pagination-border-color: var(--typo3-pagination-active-border-color) !important;
+        z-index: 2;
+    }
+
+    &.disabled,
+    .disabled > & {
+        --typo3-pagination-color: var(--typo3-pagination-disabled-color) !important;
+        --typo3-pagination-bg: var(--typo3-pagination-disabled-bg) !important;
+        --typo3-pagination-border-color: var(--typo3-pagination-disabled-border-color) !important;
+        pointer-events: none;
+    }
+}
+
+.paginator-input {
+    display: inline-block;
+    margin: -7px 0;
+
+    &.form-control {
+        width: auto;
+        min-width: auto;
+    }
 }

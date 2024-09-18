@@ -11,7 +11,8 @@
     />
     <h1><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.headline" /></h1>
     <f:if condition="{hasForms}">
-        <form style="display:inline;"
+        <form
+            class="form-inline"
             data-global-event="submit"
             data-action-navigate="$form=~s/$value/"
             data-navigate-value="{f:uri.action(action:'index', arguments:'{searchTerm: \'$[value]\'}')}"

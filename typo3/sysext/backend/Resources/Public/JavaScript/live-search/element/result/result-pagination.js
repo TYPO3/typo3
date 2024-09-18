@@ -14,7 +14,7 @@ var __decorate=function(e,a,t,i){var n,s=arguments.length,l=s<3?a:null===i?i=Obj
       <ul class="pagination">
         <li class="page-item">
           <typo3-backend-live-search-result-page class="page-link ${!this.pagination.previousPageNumber||this.pagination.previousPageNumber<this.pagination.firstPage?"disabled":""}" page="${this.pagination.previousPageNumber}" perPage="${this.pagination.itemsPerPage}">
-            <typo3-backend-icon identifier="actions-arrow-left-alt" size="small"></typo3-backend-icon>
+            <typo3-backend-icon identifier="actions-view-paging-previous" size="small"></typo3-backend-icon>
           </typo3-backend-live-search-result-page>
         </li>
         ${this.pagination.allPageNumbers.includes(this.pagination.firstPage)?nothing:html`
@@ -38,7 +38,7 @@ var __decorate=function(e,a,t,i){var n,s=arguments.length,l=s<3?a:null===i?i=Obj
           </li>`}
         <li class="page-item">
           <typo3-backend-live-search-result-page class="page-link ${!this.pagination.nextPageNumber||this.pagination.nextPageNumber>this.pagination.lastPage?"disabled":""}" page="${this.pagination.nextPageNumber}" perPage="${this.pagination.itemsPerPage}">
-            <typo3-backend-icon identifier="actions-arrow-right-alt" size="small"></typo3-backend-icon>
+            <typo3-backend-icon identifier="actions-view-paging-next" size="small"></typo3-backend-icon>
           </typo3-backend-live-search-result-page>
         </li>
       </ul>

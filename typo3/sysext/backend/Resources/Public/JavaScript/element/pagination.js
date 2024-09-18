@@ -10,11 +10,11 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(t,e,a,i){var n,o=arguments.length,r=o<3?e:null===i?i=Object.getOwnPropertyDescriptor(e,a):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)r=Reflect.decorate(t,e,a,i);else for(var l=t.length-1;l>=0;l--)(n=t[l])&&(r=(o<3?n(r):o>3?n(e,a,r):n(e,a))||r);return o>3&&r&&Object.defineProperty(e,a,r),r};import{customElement,property}from"lit/decorators.js";import{html,LitElement}from"lit";import{range}from"lit/directives/range.js";import{map}from"lit/directives/map.js";import{classMap}from"lit/directives/class-map.js";let PaginationElement=class extends LitElement{constructor(){super(...arguments),this.paging=null}createRenderRoot(){return this}render(){return html`
+var __decorate=function(t,e,a,i){var n,o=arguments.length,r=o<3?e:null===i?i=Object.getOwnPropertyDescriptor(e,a):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)r=Reflect.decorate(t,e,a,i);else for(var s=t.length-1;s>=0;s--)(n=t[s])&&(r=(o<3?n(r):o>3?n(e,a,r):n(e,a))||r);return o>3&&r&&Object.defineProperty(e,a,r),r};import{customElement,property}from"lit/decorators.js";import{html,LitElement}from"lit";import{range}from"lit/directives/range.js";import{map}from"lit/directives/map.js";import{classMap}from"lit/directives/class-map.js";let PaginationElement=class extends LitElement{constructor(){super(...arguments),this.paging=null}createRenderRoot(){return this}render(){return html`
       <ul class="pagination">
         <li class=${classMap({"page-item":!0,disabled:1===this.paging.currentPage})}>
           <button type="button" class="page-link" data-action="previous" ?disabled=${1===this.paging.currentPage}>
-            <typo3-backend-icon identifier="actions-arrow-left-alt" size="small"></typo3-backend-icon>
+            <typo3-backend-icon identifier="actions-view-paging-previous" size="small"></typo3-backend-icon>
           </button>
         </li>
         ${map(range(1,this.paging.totalPages+1),(t=>html`
@@ -26,7 +26,7 @@ var __decorate=function(t,e,a,i){var n,o=arguments.length,r=o<3?e:null===i?i=Obj
         `))}
         <li class=${classMap({"page-item":!0,disabled:this.paging.currentPage===this.paging.totalPages})}>
           <button type="button" class="page-link" data-action="next" ?disabled=${this.paging.currentPage===this.paging.totalPages}>
-            <typo3-backend-icon identifier="actions-arrow-right-alt" size="small"></typo3-backend-icon>
+            <typo3-backend-icon identifier="aactions-view-paging-next" size="small"></typo3-backend-icon>
           </button>
         </li>
       </ul>
