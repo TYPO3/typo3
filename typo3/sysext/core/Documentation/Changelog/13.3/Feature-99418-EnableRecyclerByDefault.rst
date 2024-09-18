@@ -11,7 +11,7 @@ See :issue:`99418`
 Description
 ===========
 
-The TYPO3 system extension :composer:`typo3-cms/recycler` is now enabled by default for new TYPO3 installations.
+The TYPO3 system extension :composer:`typo3/cms-recycler` is now enabled by default for new TYPO3 installations.
 
 Impact
 ======
