@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Core;
 
 use Composer\Autoload\ClassLoader;
-use Composer\Autoload\ClassMapGenerator;
+use Composer\ClassMapGenerator\ClassMapGenerator;
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -154,9 +154,12 @@ class ClassLoadingInformationGenerator
             $blacklistPathPrefix = str_replace('\\', '/', $blacklistPathPrefix);
             $blacklistExpression = "{($blacklistPathPrefix/tests/|$blacklistPathPrefix/Tests/|$blacklistPathPrefix/Resources/|$blacklistPathPrefix/res/)}";
         }
-        foreach (ClassMapGenerator::createMap($classesPath, $blacklistExpression, null, $namespace) as $class => $path) {
+        $generator = new ClassMapGenerator();
+        $generator->scanPaths($classesPath, $blacklistExpression, 'classmap', $namespace);
+        $map = $generator->getClassMap()->getMap();
+        foreach ($map as $class => $path) {
             if ($useRelativePaths) {
-                $classMap[$class] = $this->makePathRelative($classesPath, $path);
+                $classMap[$class] = $this->makePathRelative($classesPath, realpath($path));
             } else {
                 $classMap[$class] = $path;
             }
