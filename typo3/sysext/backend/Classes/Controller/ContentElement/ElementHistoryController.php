@@ -356,8 +356,8 @@ class ElementHistoryController
                         $old = $flexFormValueFormatter->format($table, $fN, ($entry['oldRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
                         $new = $flexFormValueFormatter->format($table, $fN, ($entry['newRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
                     } else {
-                        $old = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['oldRecord'][$fN] ?? ''), 0, true, uid: $rollbackUid);
-                        $new = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true, uid: $rollbackUid);
+                        $old = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['oldRecord'][$fN] ?? ''), 0, true, false, $rollbackUid);
+                        $new = (string)BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true, false, $rollbackUid);
                     }
                     $diffResult = $diffUtility->makeDiffDisplay($old, $new, $granularity);
                     $rollbackUrl = '';
