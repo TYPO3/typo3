@@ -9,8 +9,17 @@
     data-configuration-is-writable="{f:if(condition: isWritable, then: 'true', else: 'false')}"
 >
     <p>
-        Gives an overview of available languages excluding the default (English) language.
-        It allows you to activate and deactivate additional localizations and to update language packs from the official TYPO3 translation server.
+        Shows an overview of available languages excluding the default (English) language.
+        You can activate and deactivate additional localizations and to update language packs from the official
+        <a target="_blank" rel="noreferrer" href="https://localize.typo3.org/xliff/status.html">
+            <u>TYPO3 translation server</u></a>.
+    </p>
+    <p>
+        Miss a translation or want to improve or add translations? Read the
+        <a target="_blank" rel="noreferrer" href="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Localization/TranslationServer/Crowdin.html">
+            <u>documentation</u></a> on how to easily contribute through
+        <a target="_blank" rel="noreferrer" href="https://crowdin.com/profile/TYPO3">
+            <u>Crowdin</u></a>.
     </p>
 
     <f:render partial="Generic/ConfigurationNotWritable" arguments="{_all}"/>
