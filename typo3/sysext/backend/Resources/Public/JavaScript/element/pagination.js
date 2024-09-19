@@ -26,7 +26,7 @@ var __decorate=function(t,e,a,i){var n,o=arguments.length,r=o<3?e:null===i?i=Obj
         `))}
         <li class=${classMap({"page-item":!0,disabled:this.paging.currentPage===this.paging.totalPages})}>
           <button type="button" class="page-link" data-action="next" ?disabled=${this.paging.currentPage===this.paging.totalPages}>
-            <typo3-backend-icon identifier="aactions-view-paging-next" size="small"></typo3-backend-icon>
+            <typo3-backend-icon identifier="actions-view-paging-next" size="small"></typo3-backend-icon>
           </button>
         </li>
       </ul>
