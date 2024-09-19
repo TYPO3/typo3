@@ -49,6 +49,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\Capability\LabelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -831,8 +832,9 @@ class DatabaseIntegrityController
             ) {
                 if ($this->MOD_SETTINGS['search_result_labels'] ?? false) {
                     $title  = null;
-                    if ($schema->hasCapability(TcaSchemaCapability::Label) && $schema->getCapability(TcaSchemaCapability::Label)->hasPrimaryField()) {
-                        $title = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()->getName();
+                    // Note: "uid" is not part of the regular schema definition. In this case we fallback to the $fieldName.
+                    if ($schema->hasField($fieldName)) {
+                        $title = $schema->getField($fieldName)->getLabel();
                         $title = $languageService->sL($title);
                     }
                     $title = $title ?: $fieldName;
@@ -931,11 +933,24 @@ class DatabaseIntegrityController
         // Analysing the fields in the table.
         if ($this->tcaSchemaFactory->has($table)) {
             $schema = $this->tcaSchemaFactory->get($table);
-            $fieldType = $schema->getField($fieldName);
-            $fields = $fieldType->getConfiguration();
-            $fields['exclude'] = $fields['exclude'] ?? false;
-            if ($fieldType->getLabel()) {
-                $fields['label'] = preg_replace('/:$/', '', trim($this->getLanguageService()->sL($fieldType->getLabel())));
+
+            if (!$schema->hasField($fieldName)) {
+                // happens for "uid", "pid", ... fields
+                // We can shortcut this for these fields and jump
+                // straight to the fallback case of an undefined fieldLabel.
+                // @todo: Again, this is so wrong.
+                $fieldLabel = null;
+            } else {
+                $fieldType = $schema->getField($fieldName);
+                $fieldLabel = $fieldType->getLabel();
+                $fields = $fieldType->getConfiguration();
+                $fields['exclude'] = $fields['exclude'] ?? false;
+                if ($fieldLabel) {
+                    $fields['label'] = preg_replace('/:$/', '', trim($this->getLanguageService()->sL($fieldType->getLabel())));
+                }
+            }
+
+            if ($fieldLabel) {
                 switch ($fields['type']) {
                     case 'input':
                         if (GeneralUtility::inList($fields['eval'] ?? '', 'year')) {
@@ -1221,25 +1236,19 @@ class DatabaseIntegrityController
                     $this->MOD_SETTINGS['labels_noprefix'] =
                         ($this->MOD_SETTINGS['labels_noprefix'] ?? '') == 1
                             ? 'on'
-                            : $this->MOD_SETTINGS['labels_noprefix'];
+                            : $this->MOD_SETTINGS['labels_noprefix'] ?? '';
                     $prefixString =
                         $this->MOD_SETTINGS['labels_noprefix'] === 'on'
                             ? ''
                             : ' [' . $tablePrefix . $val['uid'] . '] ';
-                    if ($out !== '') {
-                        $out .= $splitString;
-                    }
                     if (GeneralUtility::inList($fieldValue, $tablePrefix . $val['uid'])
                         || $fieldValue == $tablePrefix . $val['uid']) {
-                        if ($useSelectLabels) {
-                            $out .= htmlspecialchars($prefixString . $labelFieldSelect[$val[$labelFieldName]]);
-                        } elseif ($val[$labelFieldName]) {
-                            $out .= htmlspecialchars($prefixString . $val[$labelFieldName]);
-                        } elseif ($useAltSelectLabels) {
-                            $out .= htmlspecialchars($prefixString . $altLabelFieldSelect[$val[$altLabelFieldName]]);
-                        } else {
-                            $out .= htmlspecialchars($prefixString . $val[$altLabelFieldName]);
+                        // Multiple matching records are separated by a newline inside the same HTML cell
+                        if ($out !== '') {
+                            $out .= $splitString;
                         }
+
+                        $out .= $this->evaluateRelationDisplayWithLabels($useSelectLabels, $useAltSelectLabels, $labelCapability, $altLabelFieldName, $val, $labelFieldSelect, $altLabelFieldSelect, $labelFieldName);
                     }
                 }
             }
@@ -2001,15 +2010,7 @@ class DatabaseIntegrityController
                     }
 
                     foreach (($this->tableArray[$from_table] ?? []) as $val) {
-                        if ($useSelectLabels) {
-                            $outArray[$tablePrefix . $val['uid']] = htmlspecialchars($labelFieldSelect[$val[$labelFieldName]]);
-                        } elseif ($val[$labelFieldName]) {
-                            $outArray[$tablePrefix . $val['uid']] = htmlspecialchars($val[$labelFieldName]);
-                        } elseif ($useAltSelectLabels) {
-                            $outArray[$tablePrefix . $val['uid']] = htmlspecialchars($altLabelFieldSelect[$val[$altLabelFieldName]]);
-                        } else {
-                            $outArray[$tablePrefix . $val['uid']] = htmlspecialchars($val[$altLabelFieldName]);
-                        }
+                        $outArray[$tablePrefix . $val['uid']] = $this->evaluateRelationDisplayWithLabels($useSelectLabels, $useAltSelectLabels, $labelCapability, $altLabelFieldName, $val, $labelFieldSelect, $altLabelFieldSelect, $labelFieldName);
                     }
                     if (isset($this->MOD_SETTINGS['options_sortlabel']) && $this->MOD_SETTINGS['options_sortlabel'] && is_array($outArray)) {
                         natcasesort($outArray);
@@ -2028,6 +2029,58 @@ class DatabaseIntegrityController
         }
 
         return implode(LF, $out);
+    }
+
+    /**
+     * Helper method to evaluate a specific field configuration and decide which label to return.
+     * This is used for both the dropdown when choosing a WHERE condition, but also for the record list itself,
+     * when inline relations are resolved in case the option "[search_result_labels]" is set.
+     * @param bool $useSelectLabels - Whether foreign resolving of a primary TCA 'label' field is required
+     * @param bool $useAltSelectLabels - Whether foreign resolving of the FIRST TCA 'label_alt' relation field is required
+     * @param LabelCapability $labelCapability - Schema capability information, used here for the table's label/label_alt evaluation
+     * @param string $altLabelFieldName - The name of the matched first TCA 'label_alt' relation field
+     * @param array $val - The DB SQL result row array
+     * @param array $labelFieldSelect - An array holding the possible select values of a 'label' relation
+     * @param array $altLabelFieldSelect - An array holding the possible select values of a 'label_alt' relation
+     * @param string $labelFieldName - The name of the primary TCA column used for the label
+     * @return string
+     * @todo Please refactor me.
+     */
+    protected function evaluateRelationDisplayWithLabels(bool $useSelectLabels, bool $useAltSelectLabels, LabelCapability $labelCapability, string $altLabelFieldName, array $val, array $labelFieldSelect, array $altLabelFieldSelect, string $labelFieldName): string
+    {
+        // Several checks here to decide whether:
+        // 1. the primary label field contains resolved selectable values,
+        // 2. or a straight field value (no relation) for the primary label field is set,
+        // 3. or a fallback to the FIRST label_alt relation exists (guaranteed that ONE select relation exists!)
+        // 4. or a label_alt configuration is used where NO relations exist (final fallback)
+        // (this piece of code is similar (but not identical) in makeOptionList() AND makeValueList()!
+        if ($useSelectLabels) {
+            return htmlspecialchars($labelFieldSelect[$val[$labelFieldName]]);
+        }
+        if ($val[$labelFieldName]) {
+            return htmlspecialchars($val[$labelFieldName]);
+        }
+        if ($useAltSelectLabels) {
+            if (isset($altLabelFieldSelect[$val[$altLabelFieldName]])) {
+                // For example, altLabelFieldName=CType (for tt_content) and the row's CType is set to "text", this would return a string like "Regular Text element"
+                // Resolved labels are already html-encoded.
+                return $altLabelFieldSelect[$val[$altLabelFieldName]];
+            }
+
+            // For old/invalid item associations (like CType=list), display the hardcoded value here instead the resolved item
+            return '[' . htmlspecialchars($val[$altLabelFieldName]) . ']';
+        }
+        // This case happens when NO relations exist. Iterate existing label_alt configuration and
+        // take the first non-empty value.
+        foreach ($labelCapability->getAdditionalFields() as $altLabelField) {
+            if ($val[$altLabelField->getName()]) {
+                // First altLabelField that matches concludes the output.
+                return htmlspecialchars($val[$altLabelField->getName()]);
+            }
+        }
+        // This happens when NONE of the label_alt fields contained an entry. We still need to be able to
+        // match this field, so we put in a special empty indicator ('').
+        return '';
     }
 
     protected function mkOperatorSelect(string $name, string $op, bool $draw, bool $submit): string
