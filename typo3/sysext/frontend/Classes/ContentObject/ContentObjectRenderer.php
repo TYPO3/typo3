@@ -953,6 +953,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $url = $altUrl . (($conf['JSwindow.']['altUrl_noDefaultParams'] ?? false) ? '' : '?file=' . rawurlencode((string)$imageFile) . $params);
                 }
 
+                if ($file instanceof ProcessedFile) {
+                    // TypoScript record delivered like 'file = fileadmin/something.jpg' which can result
+                    // in an already processed file. Process the original file with the proper config now.
+                    $file = $file->getOriginalFile();
+                }
                 $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $conf);
                 $JSwindowExpand = $this->stdWrapValue('expand', $conf['JSwindow.'] ?? []);
                 $offset = GeneralUtility::intExplode(',', $JSwindowExpand . ',');
