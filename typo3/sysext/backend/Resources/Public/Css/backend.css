@@ -2620,6 +2620,7 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .input-group{position:relative;display:flex;flex-wrap:wrap;align-items:stretch;width:100%;border-radius:var(--typo3-input-border-radius)}
 .input-group>.form-control,.input-group>.form-control-clearable-wrapper,.input-group>.form-floating,.input-group>.form-select{position:relative;flex:1 1 auto;width:1%;min-width:0}
 .input-group>.form-control:focus,.input-group>.form-floating:focus-within,.input-group>.form-select:focus{z-index:5}
+.input-group>.input-group-text>.form-check-type-toggle{margin-bottom:0}
 .input-group .btn{position:relative;z-index:2}
 .input-group .btn:focus{z-index:5}
 .input-group-text{display:flex;align-items:center;min-width:2.5rem;padding:var(--typo3-input-padding-y) var(--typo3-input-padding-x);font-size:var(--typo3-input-font-size);font-weight:400;line-height:var(--typo3-input-line-height);color:var(--typo3-input-color);text-align:center;white-space:nowrap;background-color:var(--typo3-input-group-addon-bg);border:var(--typo3-input-border-width) solid var(--typo3-input-border-color);border-radius:var(--typo3-input-border-radius)}

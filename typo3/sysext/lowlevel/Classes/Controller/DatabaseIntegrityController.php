@@ -866,7 +866,6 @@ class DatabaseIntegrityController
                 . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')) . '">'
                 . $this->iconFactory->getIcon('actions-open', IconSize::SMALL)->render()
                 . '</a>';
-            $out .= '<div class="btn-group" role="group">' . $editAction . '</div>';
 
             // "Info"
             $infoActionTitle = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo'));
@@ -876,7 +875,8 @@ class DatabaseIntegrityController
                 htmlspecialchars($table . ',' . $row['uid']),
                 $this->iconFactory->getIcon('actions-document-info', IconSize::SMALL)->render()
             );
-            $out .= '<div class="btn-group" role="group">' . $infoAction . '</div>';
+
+            $out .= '<div class="btn-group" role="group">' . $editAction . $infoAction . '</div>';
         } else {
             $undeleteActionUrl = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                 'cmd' => [
@@ -1366,14 +1366,16 @@ class DatabaseIntegrityController
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
 
         // Make output
+
+        // Open form row
+        $out[] = '<div class="row">';
         if (in_array('table', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectATable'] ?? false)) {
-            $out[] = '<div class="row">';
-            $out[] =   '<div class="form-group">';
-            $out[] =     '<label class="form-label" for="select-table">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryTable.label') . '</label>';
-            $out[] =     $this->mkTableSelect('SET[queryTable]', $this->table);
-            $out[] =   '</div>';
+            $out[] = '<div class="form-group">';
+            $out[] =   '<label class="form-label" for="select-table">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryTable.label') . '</label>';
+            $out[] =   $this->mkTableSelect('SET[queryTable]', $this->table);
             $out[] = '</div>';
         }
+
         if ($this->table) {
             // Init fields:
             $this->setAndCleanUpExternalLists('queryFields', $modSettings['queryFields'] ?? '', 'uid,' . $this->getLabelCol());
@@ -1408,33 +1410,29 @@ class DatabaseIntegrityController
             $this->enableQueryParts = (bool)($modSettings['search_query_smallparts'] ?? false);
             $codeArr = $this->getFormElements();
             $queryCode = $this->printCodeArray($codeArr);
+
             if (in_array('fields', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectFields'] ?? false)) {
-                $out[] = '<div class="row">';
-                $out[] =   '<div class="form-group">';
-                $out[] =     '<label class="form-label" for="select-queryFields">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryFields.label') . '</label>';
-                $out[] =      $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields']);
-                $out[] =   '</div>';
+                $out[] = '<div class="form-group">';
+                $out[] =   '<label class="form-label" for="select-queryFields">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryFields.label') . '</label>';
+                $out[] =    $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields']);
                 $out[] = '</div>';
             }
             if (in_array('query', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableMakeQuery'] ?? false)) {
-                $out[] = '<div class="row">';
-                $out[] =   '<div class="form-group">';
-                $out[] =     '<label class="form-label">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.query.label') . '</label>';
-                $out[] =      $queryCode;
-                $out[] =   '</div>';
+                $out[] = '<div class="form-group">';
+                $out[] =   '<label class="form-label">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.query.label') . '</label>';
+                $out[] =    $queryCode;
                 $out[] = '</div>';
             }
 
-            // 'Order by' and 'Group by':
-            if (in_array('group', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false) && in_array('order', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableOrderBy'] ?? false)) {
-                $out[] = '<div class="row">';
-            }
+            // 'Group by'
             if (in_array('group', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false)) {
                 $out[] = '<div class="form-group col-sm-6">';
                 $out[] =   '<label class="form-label" for="SET[queryGroup]">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.groupBy.label') . '</label>';
                 $out[] =   $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '');
                 $out[] = '</div>';
             }
+
+            // 'Order by'
             if (in_array('order', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableOrderBy'] ?? false)) {
                 $orderByArr = explode(',', $this->extFieldLists['queryOrder']);
                 $orderBy = [];
@@ -1469,10 +1467,8 @@ class DatabaseIntegrityController
                 $out[] =   implode(LF, $orderBy);
                 $out[] = '</div>';
             }
-            if (in_array('group', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableGroupBy'] ?? false) && in_array('order', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableOrderBy'] ?? false)) {
-                $out[] = '</div>';
-            }
 
+            // 'Limit'
             if (in_array('limit', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableLimit'] ?? false)) {
                 $limit = [];
                 $limit[] = '<div class="input-group">';
@@ -1499,7 +1495,6 @@ class DatabaseIntegrityController
                     $nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars((string)$limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $limitLength) . '">';
                 }
 
-                $out[] = '<div class="row">';
                 $out[] = '  <div class="form-group">';
                 $out[] = '    <label for="queryLimit" class="form-label">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.limit.label') . '</label>';
                 $out[] = '    <div class="form-row">';
@@ -1522,9 +1517,9 @@ class DatabaseIntegrityController
                 $out[] = '      </div>';
                 $out[] = '    </div>';
                 $out[] = '  </div>';
-                $out[] = '</div>';
             }
         }
+        $out[] = '</div>';
 
         return implode(LF, $out);
     }
@@ -1678,7 +1673,7 @@ class DatabaseIntegrityController
                 case 'relation':
                     $lineHTML[] = '<div class="form-row">';
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    $lineHTML[] = '<div class="form-group">';
+                    $lineHTML[] =   '<div class="form-group col col-sm-4">';
                     if ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
                         $lineHTML[] = '<select class="form-select" name="' . $fieldPrefix . '[inputValue][]" multiple="multiple">';
                     } elseif ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
@@ -1695,16 +1690,16 @@ class DatabaseIntegrityController
                         $lineHTML[] = '<select class="form-select t3js-submit-change" name="' . $fieldPrefix . '[inputValue]">';
                     }
                     if ($conf['comparison'] != 66 && $conf['comparison'] != 67) {
-                        $lineHTML[] = $this->makeOptionList($fieldName, $conf, $this->table);
+                        $lineHTML[] =   $this->makeOptionList($fieldName, $conf, $this->table);
                         $lineHTML[] = '</select>';
                     }
-                    $lineHTML[] = '</div>';
+                    $lineHTML[] =   '</div>';
                     $lineHTML[] = '</div>';
                     break;
                 case 'boolean':
                     $lineHTML[] = '<div class="form-row">';
-                    $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-                    $lineHTML[] = '<input type="hidden" value="1" name="' . $fieldPrefix . '[inputValue]">';
+                    $lineHTML[] =   $this->makeComparisonSelector($subscript, $fieldName, $conf);
+                    $lineHTML[] =   '<input type="hidden" value="1" name="' . $fieldPrefix . '[inputValue]">';
                     $lineHTML[] = '</div>';
                     break;
                 default:
@@ -1712,17 +1707,17 @@ class DatabaseIntegrityController
                     $lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
                     if ($conf['comparison'] === 37 || $conf['comparison'] === 36) {
                         // between:
-                        $lineHTML[] = '<div class="form-group">';
+                        $lineHTML[] = '<div class="form-group col col-sm-2">';
                         $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
                         $lineHTML[] = '</div>';
-                        $lineHTML[] = '<div class="form-group">';
+                        $lineHTML[] = '<div class="form-group col col-sm-2">';
                         $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1'] ?? '') . '" name="' . $fieldPrefix . '[inputValue1]">';
                         $lineHTML[] = '</div>';
                     } else {
                         if (is_array($conf['inputValue'] ?? null)) {
                             $conf['inputValue'] = '';
                         }
-                        $lineHTML[] = '<div class="form-group">';
+                        $lineHTML[] = '<div class="form-group col col-sm-4">';
                         $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
                         $lineHTML[] = '</div>';
                     }
@@ -2004,17 +1999,19 @@ class DatabaseIntegrityController
 
     protected function makeComparisonSelector(string $subscript, string $fieldName, array $conf): string
     {
+        $languageService = $this->getLanguageService();
         $fieldPrefix = $this->name . $subscript;
         $lineHTML = [];
-        $lineHTML[] = '<div class="form-group">';
+        $lineHTML[] = '<div class="form-group col col-sm-4">';
         $lineHTML[] =    $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
         $lineHTML[] = '</div>';
-        $lineHTML[] = '<div class="form-group">';
+        $lineHTML[] = '<div class="form-group col">';
         $lineHTML[] = '  <div class="input-group">';
         $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', (int)$conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
         $lineHTML[] = '    <span class="input-group-text">';
         $lineHTML[] = '      <div class="form-check form-check-type-toggle">';
-        $lineHTML[] = '        <input type="checkbox" class="form-check-input t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
+        $lineHTML[] = '        <input type="checkbox" id="negateComparison" class="form-check-input t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
+        $lineHTML[] = '        <label class="form-check-label" for="negateComparison">' . $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.form.field.queryConfig.comparison.negate') . '</label>';
         $lineHTML[] = '      </div>';
         $lineHTML[] = '    </span>';
         $lineHTML[] = '  </div>';

@@ -254,6 +254,9 @@
 			<trans-unit id="fullSearch.form.field.queryStore.title.label" resname="fullSearch.form.field.queryStore.title.label">
 				<source>Title</source>
 			</trans-unit>
+			<trans-unit id="fullSearch.form.field.queryConfig.comparison.negate" resname="fullSearch.form.field.queryConfig.comparison.negate">
+				<source>Negate</source>
+			</trans-unit>
 
 			<trans-unit id="showSQL" resname="showSQL">
 				<source>Show SQL parts</source>

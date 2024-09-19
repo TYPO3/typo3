@@ -26,6 +26,10 @@
         z-index: 5;
     }
 
+    > .input-group-text > .form-check-type-toggle {
+        margin-bottom: 0;
+    }
+
     // Ensure buttons are always above inputs for more visually pleasing borders.
     // This isn't needed for `.input-group-text` since it shares the same border-color
     // as our inputs.
