@@ -417,7 +417,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function addCacheTags(array $tags)
     {
         trigger_error(
-            'TypoScriptFrontendController->addCacheTags has been marked as deprecated in TYPO3 v13. Use $request->getAttribute(\'cacheTags\')->addCacheTags(new CacheTag($tag, $lifetime)) instead.',
+            'TypoScriptFrontendController->addCacheTags has been marked as deprecated in TYPO3 v13. Use $request->getAttribute(\'frontend.cache.collector\')->addCacheTags(new CacheTag($tag, $lifetime)) instead.',
             E_USER_DEPRECATED,
         );
         $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
@@ -431,7 +431,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getPageCacheTags(): array
     {
         trigger_error(
-            'TypoScriptFrontendController->getPageCacheTags has been marked as deprecated in TYPO3 v13. Use $request->getAttribute(\'cacheTags\')->getCacheTags() instead.',
+            'TypoScriptFrontendController->getPageCacheTags has been marked as deprecated in TYPO3 v13. Use $request->getAttribute(\'frontend.cache.collector\')->getCacheTags() instead.',
             E_USER_DEPRECATED,
         );
         $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
