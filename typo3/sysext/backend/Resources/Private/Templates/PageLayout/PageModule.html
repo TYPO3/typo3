@@ -53,22 +53,6 @@
         <f:format.raw>{mainContentHtml}</f:format.raw>
     </form>
 
-    <f:if condition="{hiddenElementsShowToggle}">
-        <div class="form-check form-switch">
-            <input
-                type="checkbox"
-                id="checkShowHidden"
-                class="form-check-input"
-                name="showHidden"
-                value="1"
-                {f:if(condition:'{pageLayoutContext.drawingConfiguration.showHidden}', then:'checked="checked"')}
-            />
-            <label class="form-check-label" for="checkShowHidden">
-                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:hiddenCE" /> ({hiddenElementsCount})
-            </label>
-        </div>
-    </f:if>
-
     <f:format.raw>{eventContentHtmlBottom}</f:format.raw>
 
 </f:section>

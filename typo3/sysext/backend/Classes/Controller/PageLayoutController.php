@@ -31,6 +31,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -135,8 +136,6 @@ class PageLayoutController
 
         $pageLayoutContext = $this->createPageLayoutContext($request, $tsConfig);
         $mainLayoutHtml = $this->backendLayoutRenderer->drawContent($request, $pageLayoutContext);
-        $numberOfHiddenElements = $this->getNumberOfHiddenElements($pageLayoutContext->getDrawingConfiguration());
-
         $pageLocalizationRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
 
         $view->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'), $this->pageinfo['title']);
@@ -150,8 +149,6 @@ class PageLayoutController
             'localizedPageTitle' => $pageLocalizationRecord['title'] ?? $this->pageinfo['title'] ?? '',
             'eventContentHtmlTop' => $event->getHeaderContent(),
             'mainContentHtml' => $mainLayoutHtml,
-            'hiddenElementsShowToggle' => ($this->getBackendUser()->check('tables_select', 'tt_content') && ($numberOfHiddenElements > 0)),
-            'hiddenElementsCount' => $numberOfHiddenElements,
             'eventContentHtmlBottom' => $event->getFooterContent(),
         ]);
         return $view->renderResponse('PageLayout/PageModule');
@@ -538,6 +535,33 @@ class PageLayoutController
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
             ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', IconSize::SMALL));
         $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+
+        // ViewMode
+        $viewModeItems = [];
+        $pageLayoutContext = $this->createPageLayoutContext($request, $tsConfig);
+        $hiddenElementsShowToggle = $this->getBackendUser()->check('tables_select', 'tt_content');
+        if ($hiddenElementsShowToggle) {
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+                ->setTag('button')
+                ->setActive((bool)$this->moduleData->get('showHidden'))
+                ->setLabel($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:hiddenCE') . ' (' . $this->getNumberOfHiddenElements($pageLayoutContext->getDrawingConfiguration()) . ')')
+                ->setIcon($this->iconFactory->getIcon('actions-eye'))
+                ->setAttributes([
+                    'id' => 'pageLayoutToggleShowHidden',
+                    'type' => 'button',
+                    'data-pageaction-showhidden' => (bool)$this->moduleData->get('showHidden') ? '1' : '0',
+                ]);
+        }
+        if (!empty($viewModeItems)) {
+            $viewModeButton = $buttonBar->makeDropDownButton()
+                ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
+                ->setShowLabelText(true);
+            foreach ($viewModeItems as $viewModeItem) {
+                /** @var DropDownItemInterface $viewModeItem */
+                $viewModeButton->addItem($viewModeItem);
+            }
+            $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
+        }
 
         // Reload
         $reloadButton = $buttonBar->makeLinkButton()

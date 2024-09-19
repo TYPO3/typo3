@@ -123,6 +123,31 @@ h4.dropdown-headline {
     gap: .5em;
 }
 
+.dropdown-item-status {
+    display: flex;
+    width: 16px;
+    height: 16px;
+    justify-content: center;
+    align-items: center;
+
+    &:after {
+        content: '';
+        display: block;
+        height: 16px;
+        width: 16px;
+        mask-position: center center;
+        mask-size: contain;
+        mask-repeat: no-repeat;
+    }
+
+    [data-dropdowntoggle-status="active"] & {
+        &:after {
+            background-color: var(--typo3-text-color-primary);
+            mask-image: var(--typo3-icons-check);
+        }
+    }
+}
+
 .dropdown-item-column-icon {
     width: var(--icon-size-small);
 }

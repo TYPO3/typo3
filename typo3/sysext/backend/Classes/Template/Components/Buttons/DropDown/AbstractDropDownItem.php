@@ -30,7 +30,7 @@ abstract class AbstractDropDownItem implements \Stringable
     protected bool $active = false;
     public function setTag(string $tag): self
     {
-        $this->$tag = htmlspecialchars(trim($tag));
+        $this->tag = htmlspecialchars(trim($tag));
         return $this;
     }
 
@@ -90,6 +90,16 @@ abstract class AbstractDropDownItem implements \Stringable
     public function setAttributes(array $attributes): self
     {
         $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     */
+    public function setAttribute(string $name, string $value): self
+    {
+        $this->attributes[$name] = $value;
         return $this;
     }
 

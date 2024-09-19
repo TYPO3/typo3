@@ -26,19 +26,20 @@ enum IdentifierEnum {
 class PageActions {
   constructor() {
     DocumentService.ready().then((): void => {
-      const showHiddenElementsCheckbox = document.getElementById('checkShowHidden') as HTMLInputElement;
-      if (showHiddenElementsCheckbox !== null) {
-        new RegularEvent('change', this.toggleContentElementVisibility).bindTo(showHiddenElementsCheckbox);
+      const pageLayoutToggleShowHidden = document.getElementById('pageLayoutToggleShowHidden') as HTMLButtonElement|null;
+      if (pageLayoutToggleShowHidden !== null) {
+        new RegularEvent('click', this.toggleContentElementVisibility).bindTo(pageLayoutToggleShowHidden);
       }
     });
   }
 
   /**
-   * Toggles the "Show hidden content elements" checkbox
+   * Toggles the "Show hidden content elements"
    */
   private toggleContentElementVisibility(e: Event): void {
-    const me = e.target as HTMLInputElement;
+    const me = e.target as HTMLButtonElement;
     const hiddenElements = document.querySelectorAll(IdentifierEnum.hiddenElements) as NodeListOf<HTMLElement>;
+    const show = me.dataset.dropdowntoggleStatus !== 'active';
     me.disabled = true;
 
     for (const hiddenElement of hiddenElements) {
@@ -50,7 +51,7 @@ class PageActions {
       // * For visible state setting `overflow: clip` is fine anyway.
       hiddenElement.style.overflow = 'clip';
 
-      if (!me.checked) {
+      if (!show) {
         // * Invisible elements must not be accessible/focusable by keyboard.
         // * Spacing between content elements is kept uniform by collapsed margins,
         //   hidden elements have a height of 0 and the margins of the surrounding elements
@@ -80,7 +81,8 @@ class PageActions {
       }
     }
 
-    PersistentStorage.set('moduleData.web_layout.showHidden', me.checked ? '1' : '0').then((): void => {
+    me.dataset.dropdowntoggleStatus = show ? 'active' : 'inactive';
+    PersistentStorage.set('moduleData.web_layout.showHidden', show ? '1' : '0').then((): void => {
       me.disabled = false;
     });
   }
