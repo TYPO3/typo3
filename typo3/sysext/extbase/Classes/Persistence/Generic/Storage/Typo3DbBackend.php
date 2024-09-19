@@ -232,8 +232,13 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
         if (!empty($rows)) {
             $rows = $this->overlayLanguageAndWorkspace($query->getSource(), $rows, $query);
             if ($this->autoTagging) {
-                /** @var SelectorInterface $source */
-                $source = $query->getSource() instanceof JoinInterface ? $query->getSource()->getRight() : $query->getSource();
+                $source = $query->getSource();
+                if ($source instanceof JoinInterface) {
+                    $source = $source->getRight();
+                }
+                if (!$source instanceof SelectorInterface) {
+                    throw new \RuntimeException(get_class($source) . ' must implement SelectorInterface at this point.', 1726753183);
+                }
                 $tableName = $source->getSelectorName();
                 $this->addCacheTagsForRows($tableName, $rows);
             }
@@ -402,10 +407,6 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
     /**
      * Performs workspace and language overlay on the given row array. The language and workspace id is automatically
      * detected (depending on FE or BE context). You can also explicitly set the language/workspace id.
-     *
-     * @param Qom\SourceInterface $source The source (selector or join)
-     * @param int|null $workspaceUid
-     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     protected function overlayLanguageAndWorkspace(SourceInterface $source, array $rows, QueryInterface $query, ?int $workspaceUid = null): array
     {

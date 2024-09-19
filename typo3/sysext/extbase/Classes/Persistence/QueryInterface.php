@@ -102,7 +102,8 @@ interface QueryInterface
     /**
      * Gets the node-tuple source for this query.
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the node-tuple source; non-NULL
+     * @return SourceInterface
+     * @todo: Set SourceInterface as return type.
      */
     public function getSource();
 

@@ -363,11 +363,12 @@ class Repository implements RepositoryInterface, SingletonInterface
         }
         $storagePageIds = $query->getQuerySettings()->getStoragePageIds();
         if (empty($storagePageIds) || $query->getQuerySettings()->getRespectStoragePage() === false) {
-            /** @var SelectorInterface $source */
             $source = $query->getSource();
-            $this->eventDispatcher->dispatch(
-                new AddCacheTagEvent(new CacheTag($source->getSelectorName()))
-            );
+            if ($source instanceof SelectorInterface) {
+                $this->eventDispatcher->dispatch(
+                    new AddCacheTagEvent(new CacheTag($source->getSelectorName()))
+                );
+            }
         } else {
             $this->addStorageCacheTags($query);
         }
@@ -381,14 +382,15 @@ class Repository implements RepositoryInterface, SingletonInterface
         if (!$this->autoTagging) {
             return;
         }
-        /** @var SelectorInterface $source */
         $source = $query->getSource();
-        $tableName = $source->getSelectorName();
-        $storagePageIds = $query->getQuerySettings()->getStoragePageIds();
-        foreach ($storagePageIds as $storagePageId) {
-            $this->eventDispatcher->dispatch(
-                new AddCacheTagEvent(new CacheTag(sprintf('%s_pid_%s', $tableName, $storagePageId)))
-            );
+        if ($source instanceof SelectorInterface) {
+            $tableName = $source->getSelectorName();
+            $storagePageIds = $query->getQuerySettings()->getStoragePageIds();
+            foreach ($storagePageIds as $storagePageId) {
+                $this->eventDispatcher->dispatch(
+                    new AddCacheTagEvent(new CacheTag(sprintf('%s_pid_%s', $tableName, $storagePageId)))
+                );
+            }
         }
     }
 }

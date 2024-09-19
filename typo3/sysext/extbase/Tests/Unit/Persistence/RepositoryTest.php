@@ -119,10 +119,9 @@ final class RepositoryTest extends UnitTestCase
     public function findAllCreatesQueryAndReturnsResultOfExecuteCall(): void
     {
         $expectedResult = $this->createMock(QueryResultInterface::class);
-        $mockSource = $this->createMock(Selector::class);
-        $mockSource->method('getSelectorName')->willReturn('tx_myext_domain_model_foo');
+        $source = new Selector('tx_myext_domain_model_foo', 'not_relevant');
 
-        $this->mockQuery->method('getSource')->willReturn($mockSource);
+        $this->mockQuery->method('getSource')->willReturn($source);
         $this->mockQuery->expects(self::once())->method('execute')->with()->willReturn($expectedResult);
         $this->mockQuerySettings->method('getStoragePageIds')->willReturn([]);
         $repository = $this->getMockBuilder(Repository::class)
@@ -383,12 +382,11 @@ final class RepositoryTest extends UnitTestCase
     public function findAllCreatesTableCacheTagForEmptyStoragePid(): void
     {
         $mockQuery = $this->createMock(QueryResultInterface::class);
-        $mockSource = $this->createMock(Selector::class);
-        $mockSource->method('getSelectorName')->willReturn('tx_myext_domain_model_foo');
+        $source = new Selector('tx_myext_domain_model_foo', 'not_relevant');
 
         $this->mockQuerySettings->method('getStoragePageIds')->willReturn([]);
         $this->mockQuery->method('execute')->willReturn($mockQuery);
-        $this->mockQuery->method('getSource')->willReturn($mockSource);
+        $this->mockQuery->method('getSource')->willReturn($source);
 
         $mockEventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $mockEventDispatcher->expects(self::once())->method('dispatch')->with(

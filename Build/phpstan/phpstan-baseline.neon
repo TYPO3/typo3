@@ -846,11 +846,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
 
 		-
-			message: "#^Parameter \\#1 \\$nodeTypeName of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\QueryObjectModelFactory\\:\\:selector\\(\\) expects string, null given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
-
-		-
 			message: "#^Parameter \\#3 \\$operand2 of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\QueryObjectModelFactory\\:\\:comparison\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\StaticOperandInterface, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php

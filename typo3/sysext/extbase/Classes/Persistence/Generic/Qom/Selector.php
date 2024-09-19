@@ -30,47 +30,19 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Selector implements SelectorInterface
+final readonly class Selector implements SourceInterface, SelectorInterface
 {
-    /**
-     * @var string
-     */
-    protected $nodeTypeName;
+    public function __construct(
+        private string $selectorName,
+        private ?string $nodeTypeName,
+    ) {}
 
-    /**
-     * @var string
-     */
-    protected $selectorName;
-
-    /**
-     * Constructs the Selector instance
-     *
-     * @param string $selectorName
-     * @param string $nodeTypeName
-     */
-    public function __construct($selectorName, $nodeTypeName)
-    {
-        $this->selectorName = $selectorName;
-        $this->nodeTypeName = $nodeTypeName;
-    }
-
-    /**
-     * Gets the name of the required node type.
-     *
-     * @return string the node type name; non-null
-     */
-    public function getNodeTypeName()
+    public function getNodeTypeName(): ?string
     {
         return $this->nodeTypeName;
     }
 
-    /**
-     * Gets the selector name.
-     * A selector's name can be used elsewhere in the query to identify the selector.
-     *
-     * @return string the selector name; non-null
-     */
-    public function getSelectorName()
+    public function getSelectorName(): string
     {
         return $this->selectorName;
     }

@@ -39,7 +39,9 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\NonExistentPropertyException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Session;
@@ -529,8 +531,9 @@ class DataMapper
         }
         // Work with the UIDs directly in a workspace
         if (!empty($resolvedRelationIds)) {
-            if ($query->getSource() instanceof Persistence\Generic\Qom\JoinInterface) {
-                $constraint = $query->in($query->getSource()->getJoinCondition()->getProperty1Name(), $resolvedRelationIds);
+            $source = $query->getSource();
+            if ($source instanceof JoinInterface) {
+                $constraint = $query->in($source->getJoinCondition()->getProperty1Name(), $resolvedRelationIds);
                 // When querying MM relations directly, Typo3DbQueryParser uses enableFields and thus, filters
                 // out versioned records by default. However, we directly query versioned UIDs here, so we want
                 // to include the versioned records explicitly.
@@ -632,17 +635,15 @@ class DataMapper
      * Builds and returns the source to build a join for a m:n relation.
      *
      * @param string $propertyName
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source
      */
-    protected function getSource(DomainObjectInterface $parentObject, $propertyName)
+    protected function getSource(DomainObjectInterface $parentObject, $propertyName): SourceInterface
     {
         $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
         $left = $this->qomFactory->selector(null, $columnMap->getRelationTableName());
         $childClassName = $this->getType(get_class($parentObject), $propertyName);
         $right = $this->qomFactory->selector($childClassName, $columnMap->getChildTableName());
         $joinCondition = $this->qomFactory->equiJoinCondition($columnMap->getRelationTableName(), $columnMap->getChildKeyFieldName(), $columnMap->getChildTableName(), 'uid');
-        $source = $this->qomFactory->join($left, $right, Query::JCR_JOIN_TYPE_INNER, $joinCondition);
-        return $source;
+        return $this->qomFactory->join($left, $right, Query::JCR_JOIN_TYPE_INNER, $joinCondition);
     }
 
     /**

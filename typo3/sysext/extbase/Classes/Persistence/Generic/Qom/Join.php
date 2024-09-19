@@ -22,79 +22,37 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Join implements JoinInterface
+final readonly class Join implements SourceInterface, JoinInterface
 {
     /**
-     * @var SourceInterface
-     */
-    protected $left;
-
-    /**
-     * @var SourceInterface
-     */
-    protected $right;
-
-    /**
-     * @var string
-     */
-    protected $joinType;
-
-    /**
-     * @var JoinConditionInterface
-     */
-    protected $joinCondition;
-
-    /**
-     * Constructs the Join instance
-     *
-     * @param SourceInterface $left the left node-tuple source; non-null
-     * @param SourceInterface $right the right node-tuple source; non-null
      * @param string $joinType One of Query::JCR_JOIN_TYPE_*
      */
-    public function __construct(SourceInterface $left, SourceInterface $right, $joinType, JoinConditionInterface $joinCondition)
-    {
-        $this->left = $left;
-        $this->right = $right;
-        $this->joinType = $joinType;
-        $this->joinCondition = $joinCondition;
-    }
+    public function __construct(
+        private SourceInterface&SelectorInterface $left,
+        private SourceInterface&SelectorInterface $right,
+        private string $joinType,
+        private JoinConditionInterface $joinCondition
+    ) {}
 
-    /**
-     * Gets the left node-tuple source.
-     *
-     * @return SourceInterface the left source; non-null
-     */
-    public function getLeft()
+    public function getLeft(): SourceInterface&SelectorInterface
     {
         return $this->left;
     }
 
-    /**
-     * Gets the right node-tuple source.
-     *
-     * @return SourceInterface the right source; non-null
-     */
-    public function getRight()
+    public function getRight(): SourceInterface&SelectorInterface
     {
         return $this->right;
     }
 
     /**
-     * Gets the join type.
-     *
      * @return string one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
      */
-    public function getJoinType()
+    public function getJoinType(): string
     {
         return $this->joinType;
     }
 
-    /**
-     * Gets the join condition.
-     *
-     * @return JoinConditionInterface the join condition; non-null
-     */
-    public function getJoinCondition()
+    public function getJoinCondition(): JoinConditionInterface
     {
         return $this->joinCondition;
     }

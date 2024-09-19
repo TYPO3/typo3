@@ -30,18 +30,13 @@ class QueryObjectModelFactory implements SingletonInterface
 {
     /**
      * Selects a subset of the nodes in the repository based on node type.
-     *
-     * @param string $nodeTypeName the name of the required node type; non-null
-     * @param string $selectorName the selector name; optional
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface the selector
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
      */
-    public function selector($nodeTypeName, $selectorName = '')
+    public function selector(?string $nodeTypeName = null, string $selectorName = ''): SourceInterface&SelectorInterface
     {
         if ($selectorName === '') {
             $selectorName = $nodeTypeName;
         }
-        return GeneralUtility::makeInstance(Selector::class, $selectorName, $nodeTypeName);
+        return new Selector($selectorName, $nodeTypeName);
     }
 
     /**
@@ -58,15 +53,10 @@ class QueryObjectModelFactory implements SingletonInterface
 
     /**
      * Performs a join between two node-tuple sources.
-     *
-     * @param SourceInterface $left the left node-tuple source; non-null
-     * @param SourceInterface $right the right node-tuple source; non-null
-     * @param string $joinType one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface the join; non-null
      */
-    public function join(SourceInterface $left, SourceInterface $right, $joinType, JoinConditionInterface $joinCondition)
+    public function join(SourceInterface&SelectorInterface $left, SourceInterface&SelectorInterface $right, string $joinType, JoinConditionInterface $joinCondition): SourceInterface&JoinInterface
     {
-        return GeneralUtility::makeInstance(Join::class, $left, $right, $joinType, $joinCondition);
+        return new Join($left, $right, $joinType, $joinCondition);
     }
 
     /**

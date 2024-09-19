@@ -20,33 +20,16 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-interface JoinInterface extends SourceInterface
+interface JoinInterface
 {
-    /**
-     * Gets the left node-tuple source.
-     *
-     * @return SelectorInterface the left source; non-null
-     */
-    public function getLeft();
+    public function getLeft(): SourceInterface&SelectorInterface;
+
+    public function getRight(): SourceInterface&SelectorInterface;
 
     /**
-     * Gets the right node-tuple source.
-     *
-     * @return SelectorInterface the right source; non-null
-     */
-    public function getRight();
-
-    /**
-     * Gets the join type.
-     *
      * @return string one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
      */
-    public function getJoinType();
+    public function getJoinType(): string;
 
-    /**
-     * Gets the join condition.
-     *
-     * @return JoinConditionInterface the join condition; non-null
-     */
-    public function getJoinCondition();
+    public function getJoinCondition(): JoinConditionInterface;
 }

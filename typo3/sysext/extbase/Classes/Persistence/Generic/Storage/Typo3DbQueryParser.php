@@ -173,10 +173,8 @@ class Typo3DbQueryParser
 
     /**
      * Creates the queryBuilder object whether it is a regular select or a JOIN
-     *
-     * @param Qom\SourceInterface $source The source
      */
-    protected function initializeQueryBuilder(SourceInterface $source)
+    protected function initializeQueryBuilder(SourceInterface $source): void
     {
         if ($source instanceof SelectorInterface) {
             $className = $source->getNodeTypeName();
@@ -213,13 +211,8 @@ class Typo3DbQueryParser
 
     /**
      * Transforms a constraint into SQL and parameter arrays
-     *
-     * @param Qom\ConstraintInterface $constraint The constraint
-     * @param Qom\SourceInterface $source The source
-     * @return CompositeExpression|string
-     * @throws \RuntimeException
      */
-    protected function parseConstraint(ConstraintInterface $constraint, SourceInterface $source)
+    protected function parseConstraint(ConstraintInterface $constraint, SourceInterface $source): CompositeExpression|string
     {
         if ($constraint instanceof AndInterface) {
             return $this->queryBuilder->expr()->and(
@@ -246,10 +239,9 @@ class Typo3DbQueryParser
      * Transforms orderings into SQL.
      *
      * @param array $orderings An array of orderings (Qom\Ordering)
-     * @param Qom\SourceInterface $source The source
      * @throws UnsupportedOrderException
      */
-    protected function parseOrderings(array $orderings, SourceInterface $source)
+    protected function parseOrderings(array $orderings, SourceInterface $source): void
     {
         foreach ($orderings as $propertyName => $order) {
             if ($order !== QueryInterface::ORDER_ASCENDING && $order !== QueryInterface::ORDER_DESCENDING) {
@@ -313,14 +305,10 @@ class Typo3DbQueryParser
     /**
      * Parse a Comparison into SQL and parameter arrays.
      *
-     * @param Qom\ComparisonInterface $comparison The comparison to parse
-     * @param Qom\SourceInterface $source The source
-     * @return string
-     * @throws \RuntimeException
      * @throws RepositoryException
      * @throws BadConstraintException
      */
-    protected function parseComparison(ComparisonInterface $comparison, SourceInterface $source)
+    protected function parseComparison(ComparisonInterface $comparison, SourceInterface $source): string
     {
         if ($comparison->getOperator() === QueryInterface::OPERATOR_CONTAINS) {
             if ($comparison->getOperand2() === null) {
@@ -402,12 +390,10 @@ class Typo3DbQueryParser
     /**
      * Parse a DynamicOperand into SQL and parameter arrays.
      *
-     * @param Qom\SourceInterface $source The source
-     * @return string
      * @throws Exception
      * @throws BadConstraintException
      */
-    protected function parseDynamicOperand(ComparisonInterface $comparison, SourceInterface $source)
+    protected function parseDynamicOperand(ComparisonInterface $comparison, SourceInterface $source): string
     {
         $value = $comparison->getOperand2();
         $fieldName = $this->parseOperand($comparison->getOperand1(), $source);
@@ -533,12 +519,7 @@ class Typo3DbQueryParser
         return $placeholder;
     }
 
-    /**
-     * @param Qom\SourceInterface $source The source
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    protected function parseOperand(DynamicOperandInterface $operand, SourceInterface $source)
+    protected function parseOperand(DynamicOperandInterface $operand, SourceInterface $source): string
     {
         $tableName = null;
         if ($operand instanceof LowerCaseInterface) {
@@ -901,11 +882,8 @@ class Typo3DbQueryParser
 
     /**
      * Transforms a Join into SQL and parameter arrays
-     *
-     * @param Qom\JoinInterface $join The join
-     * @param string $leftTableAlias The alias from the table to main
      */
-    protected function parseJoin(JoinInterface $join, $leftTableAlias)
+    protected function parseJoin(JoinInterface $join, string $leftTableAlias): void
     {
         $leftSource = $join->getLeft();
         $leftClassName = $leftSource->getNodeTypeName();
@@ -947,25 +925,21 @@ class Typo3DbQueryParser
      * @param string $fullPropertyPath The full property path that is related to the given table.
      * @return string The generated table alias.
      */
-    protected function getUniqueAlias($tableName, $fullPropertyPath = null)
+    protected function getUniqueAlias($tableName, $fullPropertyPath = null): string
     {
         if (isset($fullPropertyPath) && isset($this->tablePropertyMap[$fullPropertyPath])) {
             return $this->tablePropertyMap[$fullPropertyPath];
         }
-
         $alias = $tableName;
         $i = 0;
         while (isset($this->tableAliasMap[$alias])) {
             $alias = $tableName . $i;
             $i++;
         }
-
         $this->tableAliasMap[$alias] = $tableName;
-
         if (isset($fullPropertyPath)) {
             $this->tablePropertyMap[$fullPropertyPath] = $alias;
         }
-
         return $alias;
     }
 

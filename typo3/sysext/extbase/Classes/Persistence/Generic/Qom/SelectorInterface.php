@@ -28,20 +28,16 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-interface SelectorInterface extends SourceInterface
+interface SelectorInterface
 {
     /**
      * Gets the name of the required node type.
-     *
-     * @return string the node type name; non-null
      */
-    public function getNodeTypeName();
+    public function getNodeTypeName(): ?string;
 
     /**
      * Gets the selector name.
      * A selector's name can be used elsewhere in the query to identify the selector.
-     *
-     * @return string the selector name; non-null
      */
-    public function getSelectorName();
+    public function getSelectorName(): string;
 }
