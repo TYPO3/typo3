@@ -1,7 +1,7 @@
 {
   "name": "ckeditor5",
   "description": "Override of the official ckeditor5 umbrella package to avoid pulling in all available packages. See: https://github.com/ckeditor/ckeditor5/issues/16360",
-  "version": "43.0.0",
+  "version": "43.1.0",
   "private": true,
   "license": "GPL-2.0+"
 }
