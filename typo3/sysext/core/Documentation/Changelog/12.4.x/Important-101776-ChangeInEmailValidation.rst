@@ -11,7 +11,7 @@ See :issue:`101776`
 Description
 ===========
 
-The :php:`GeneralUtility::validEmail()` method uses the package `egulias/email-validator`
+The :php:`GeneralUtility::validEmail()` method uses the package :composer:`egulias/email-validator`
 for validating emails.
 This library treats an email address like :samp:`email @example.com` with a space before the `@`
 character as valid, but issues a warning, which has previously not been caught by TYPO3. Warnings
