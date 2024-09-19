@@ -180,7 +180,7 @@ final class DebuggerUtilityTest extends UnitTestCase
         };
         $result = DebuggerUtilityAccessibleProxy::var_dump($class, null, 8, false, false, true);
         self::assertTrue(DebuggerUtilityAccessibleProxy::getStylesheetEchoed());
-        self::assertMatchesRegularExpression('#<style nonce="[^"]+">[^>]+</style>#m', $result);
+        self::assertMatchesRegularExpression('#<style nonce="[^"]+">[^<]+</style>#m', $result);
     }
 
     #[Test]

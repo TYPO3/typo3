@@ -931,16 +931,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Service/ImageService.php
 
 		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Utility/DebuggerUtility.php
-
-		-
-			message: "#^Variable \\$object in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Utility/DebuggerUtility.php
-
-		-
 			message: "#^Call to function is_array\\(\\) with object will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
