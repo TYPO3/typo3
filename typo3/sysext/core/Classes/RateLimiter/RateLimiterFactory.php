@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\RateLimiter\Storage\CachingFrameworkStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @internal This is not part of the official TYPO3 Core API due to a limitation of the experimental Symfony Rate Limiter API.
+ * @internal This is not part of the official TYPO3 Core API due to a limitation of the Symfony Rate Limiter API.
  */
 class RateLimiterFactory
 {
