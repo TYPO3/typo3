@@ -3619,7 +3619,7 @@ typo3-backend-draggable-resizable{display:inline-block;position:absolute;transit
 typo3-backend-draggable-resizable[reverting]{transition-property:left,top,width,height;transition-duration:.25s}
 typo3-backend-draggable-resizable #t3js-cropper-focus-area{width:100%;height:100%}
 typo3-backend-draggable-resizable .ui-resizable-handle{z-index:90}
-typo3-backend-editable-page-title{display:block;white-space:nowrap;text-overflow:ellipsis}
+typo3-backend-editable-page-title{display:block;white-space:nowrap;text-overflow:ellipsis;--input-border-color:var(--typo3-state-default-border-color);--input-hover-border-color:var(--typo3-state-default-hover-border-color);--input-focus-border-color:var(--typo3-state-default-focus-border-color);--button-hover-color:var(--typo3-state-default-focus-color);--button-hover-bg:var(--typo3-state-default-hover-bg);--button-hover-border-color:var(--typo3-state-default-focus-border-color);--button-focus-color:var(--typo3-state-default-focus-color);--button-focus-bg:var(--typo3-state-default-focus-bg);--button-focus-border-color:var(--typo3-state-default-focus-border-color)}
 typo3-backend-formengine-char-counter{inset-inline-start:0;position:absolute;z-index:5;top:100%;display:flex}
 typo3-backend-formengine-char-counter .form-hint{--typo3-formhint-box-shadow:var(--typo3-component-box-shadow-tooltip);margin-top:.5rem}
 typo3-backend-security-csp-reports .infolist-container{container-type:inline-size}
@@ -3678,6 +3678,7 @@ typo3-formengine-element-link .form-control-explanation:not([hidden])~.form-cont
 typo3-notification-message{display:block}
 typo3-notification-message .alert{--typo3-alert-margin-bottom:0}
 typo3-rte-ckeditor-ckeditor5 .ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled{display:none}
+typo3-scheduler-editable-group-name{--input-border-color:var(--typo3-state-default-border-color);--input-hover-border-color:var(--typo3-state-default-hover-border-color);--input-focus-border-color:var(--typo3-state-default-focus-border-color);--button-hover-color:var(--typo3-state-default-focus-color);--button-hover-bg:var(--typo3-state-default-hover-bg);--button-hover-border-color:var(--typo3-state-default-focus-border-color);--button-focus-color:var(--typo3-state-default-focus-color);--button-focus-bg:var(--typo3-state-default-focus-bg);--button-focus-border-color:var(--typo3-state-default-focus-border-color)}
 .collapse-horizontal{height:auto;width:0;vertical-align:middle;overflow:hidden}
 .collapse-horizontal.show{display:inline-block;width:auto}
 .collapse-horizontal.collapsing{display:inline-block;transition-property:width,visibility;width:0}

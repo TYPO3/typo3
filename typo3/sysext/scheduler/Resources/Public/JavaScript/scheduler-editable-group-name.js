@@ -10,12 +10,12 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,i,o){var r,a=arguments.length,n=a<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(e,t,i,o);else for(var s=e.length-1;s>=0;s--)(r=e[s])&&(n=(a<3?r(n):a>3?r(t,i,n):r(t,i))||n);return a>3&&n&&Object.defineProperty(t,i,n),n};import{html,css,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import"@typo3/backend/element/icon-element.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import Notification from"@typo3/backend/notification.js";let EditableGroupName=class extends LitElement{constructor(){super(...arguments),this.groupName="",this.groupId=0,this.editable=!1,this._isEditing=!1,this._isSubmitting=!1,this.labels={input:TYPO3?.lang?.["editableGroupName.input.field.label"]||"Field",edit:TYPO3?.lang?.["editableGroupName.button.edit.label"]||"Edit",save:TYPO3?.lang?.["editableGroupName.button.save.label"]||"Save",cancel:TYPO3?.lang?.["editableGroupName.button.cancel.label"]||"Cancel"}}async startEditing(){this.isEditable()&&(this._isEditing=!0,await this.updateComplete,this.shadowRoot.querySelector("input")?.focus())}render(){if(""===this.groupName)return nothing;if(!this.isEditable())return html`
-        <div class="wrapper"><div class="label">${this.groupName}</div></div>`;let e;return e=this._isEditing?this.composeEditForm():html`
+var __decorate=function(t,e,o,i){var r,n=arguments.length,a=n<3?e:null===i?i=Object.getOwnPropertyDescriptor(e,o):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,o,i);else for(var s=t.length-1;s>=0;s--)(r=t[s])&&(a=(n<3?r(a):n>3?r(e,o,a):r(e,o))||a);return n>3&&a&&Object.defineProperty(e,o,a),a};import{html,css,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import"@typo3/backend/element/icon-element.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import Notification from"@typo3/backend/notification.js";let EditableGroupName=class extends LitElement{constructor(){super(...arguments),this.groupName="",this.groupId=0,this.editable=!1,this._isEditing=!1,this._isSubmitting=!1,this.labels={input:TYPO3?.lang?.["editableGroupName.input.field.label"]||"Field",edit:TYPO3?.lang?.["editableGroupName.button.edit.label"]||"Edit",save:TYPO3?.lang?.["editableGroupName.button.save.label"]||"Save",cancel:TYPO3?.lang?.["editableGroupName.button.cancel.label"]||"Cancel"}}async startEditing(){this.isEditable()&&(this._isEditing=!0,await this.updateComplete,this.shadowRoot.querySelector("input")?.focus())}render(){if(""===this.groupName)return nothing;if(!this.isEditable())return html`
+        <div class="wrapper"><div class="label">${this.groupName}</div></div>`;let t;return t=this._isEditing?this.composeEditForm():html`
         <div class="wrapper">
           <div class="label" @dblclick="${()=>{this.startEditing()}}">${this.groupName}</div>
           ${this.composeEditButton()}
-        </div>`,e}isEditable(){return this.editable&&this.groupId>0}endEditing(){this.isEditable()&&(this._isEditing=!1)}updateGroupName(e){e.preventDefault();const t=new FormData(e.target),i=Object.fromEntries(t).newGroupName.toString();if(this.groupName===i)return void this.endEditing();this._isSubmitting=!0;const o="&data[tx_scheduler_task_group]["+this.groupId+"][groupName]="+encodeURIComponent(i)+"&redirect="+encodeURIComponent(document.location.href);new AjaxRequest(TYPO3.settings.ajaxUrls.record_process).post(o,{headers:{"Content-Type":"application/x-www-form-urlencoded","X-Requested-With":"XMLHttpRequest"}}).then((async e=>await e.resolve())).then((e=>(e.messages.forEach((t=>{Notification.info(t.title,t.message),window.location.href=e.redirect})),e))).then((()=>{this.groupName=i})).finally((()=>{this.endEditing(),this._isSubmitting=!1}))}composeEditButton(){return html`
+        </div>`,t}isEditable(){return this.editable&&this.groupId>0}endEditing(){this.isEditable()&&(this._isEditing=!1)}updateGroupName(t){t.preventDefault();const e=new FormData(t.target),o=Object.fromEntries(e).newGroupName.toString();if(this.groupName===o)return void this.endEditing();this._isSubmitting=!0;const i="&data[tx_scheduler_task_group]["+this.groupId+"][groupName]="+encodeURIComponent(o)+"&redirect="+encodeURIComponent(document.location.href);new AjaxRequest(TYPO3.settings.ajaxUrls.record_process).post(i,{headers:{"Content-Type":"application/x-www-form-urlencoded","X-Requested-With":"XMLHttpRequest"}}).then((async t=>await t.resolve())).then((t=>(t.messages.forEach((e=>{Notification.info(e.title,e.message),window.location.href=t.redirect})),t))).then((()=>{this.groupName=o})).finally((()=>{this.endEditing(),this._isSubmitting=!1}))}composeEditButton(){return html`
       <button
         data-action="edit"
         type="button"
@@ -34,7 +34,7 @@ var __decorate=function(e,t,i,o){var r,a=arguments.length,n=a<3?t:null===o?o=Obj
           required
           value="${this.groupName}"
           ?disabled="${this._isSubmitting}"
-          @keydown="${e=>{"Escape"===e.key&&this.endEditing()}}"
+          @keydown="${t=>{"Escape"===t.key&&this.endEditing()}}"
         >
         <button
           data-action="save"
@@ -58,11 +58,19 @@ var __decorate=function(e,t,i,o){var r,a=arguments.length,n=a<3?t:null===o?o=Obj
       </form>`}};EditableGroupName.styles=css`
     :host {
       display: block;
-      --border-color: #bebebe;
-      --hover-bg: #cacaca;
-      --hover-border-color: #bebebe;
-      --focus-bg: #cacaca;
-      --focus-border-color: #bebebe;
+      --input-border-color: #bebebe;
+      --input-hover-border-color: #bebebe;
+      --input-focus-border-color: #bebebe;
+      --button-border-radius:
+      --button-color: inherit;
+      --button-bg: transparent;
+      --button-border-color: transparent;
+      --button-hover-color: inherit;
+      --button-hover-bg: #cacaca;
+      --button-hover-border-color: #bebebe;
+      --button-focus-color: inherit;
+      --button-focus-bg: #cacaca;
+      --button-focus-border-color: #bebebe;
     }
 
     .label {
@@ -88,17 +96,22 @@ var __decorate=function(e,t,i,o){var r,a=arguments.length,n=a<3?t:null===o?o=Obj
       padding: .16rem 0;
       border: 0;
       border-top: 1px solid transparent;
-      border-bottom: 1px dashed var(--border-color);
+      border-bottom: 1px dashed var(--input-border-color);
       margin: 0;
       width: 100%;
+      outline-offset: 0;
     }
 
     input:hover {
-      border-bottom: 1px dashed var(--hover-border-color);
+      --input-border-color: var(--input-hover-border-color);
     }
 
     input:focus {
-      border-bottom: 1px dashed var(--focus-border-color);
+      --input-border-color: var(--input-focus-border-color);
+    }
+
+    input:focus-visible {
+      outline: .25rem solid color-mix(in srgb, var(--input-border-color), transparent 25%);
     }
 
     .wrapper {
@@ -130,22 +143,30 @@ var __decorate=function(e,t,i,o){var r,a=arguments.length,n=a<3?t:null===o?o=Obj
       border-radius: 2px;
       overflow: hidden;
       outline: none;
-      border: 1px solid transparent;
-      background: transparent;
+      color: var(--button-color);
+      background: var(--button-bg);
+      border: 1px solid var(--button-border-color);
       opacity: .3;
+      outline-offset: 0;
       transition: all .2s ease-in-out;
     }
 
     button:hover {
       opacity: 1;
-      background: var(--hover-bg);
-      border-color: var(--hover-border-color);
+      --button-color: var(--button-hover-color);
+      --button-bg: var(--button-hover-bg);
+      --button-border-color: var(--button-hover-border-color);
     }
 
     button:focus {
       opacity: 1;
-      background: var(--focus-bg);
-      border-color: var(--focus-border-color);
+      --button-color: var(--button-focus-color);
+      --button-bg: var(--button-focus-bg);
+      --button-border-color: var(--button-focus-border-color);
+    }
+
+    button:focus-visible {
+      outline: .25rem solid color-mix(in srgb, var(--button-border-color), transparent 25%);
     }
 
     button[data-action="edit"] {

@@ -21,11 +21,19 @@ export class EditablePageTitle extends LitElement {
   static styles = css`
     :host {
       display: block;
-      --border-color: #bebebe;
-      --hover-bg: #cacaca;
-      --hover-border-color: #bebebe;
-      --focus-bg: #cacaca;
-      --focus-border-color: #bebebe;
+      --input-border-color: #bebebe;
+      --input-hover-border-color: #bebebe;
+      --input-focus-border-color: #bebebe;
+      --button-border-radius:
+      --button-color: inherit;
+      --button-bg: transparent;
+      --button-border-color: transparent;
+      --button-hover-color: inherit;
+      --button-hover-bg: #cacaca;
+      --button-hover-border-color: #bebebe;
+      --button-focus-color: inherit;
+      --button-focus-bg: #cacaca;
+      --button-focus-border-color: #bebebe;
     }
 
     h1 {
@@ -51,17 +59,22 @@ export class EditablePageTitle extends LitElement {
       padding: 0;
       border: 0;
       border-top: 1px solid transparent;
-      border-bottom: 1px dashed var(--border-color);
+      border-bottom: 1px dashed var(--input-border-color);
       margin: 0;
       width: 100%;
+      outline-offset: 0;
     }
 
     input:hover {
-      border-bottom: 1px dashed var(--hover-border-color);
+      --input-border-color: var(--input-hover-border-color);
     }
 
     input:focus {
-      border-bottom: 1px dashed var(--focus-border-color);
+      --input-border-color: var(--input-focus-border-color);
+    }
+
+    input:focus-visible {
+      outline: .25rem solid color-mix(in srgb, var(--input-border-color), transparent 25%);
     }
 
     .wrapper {
@@ -93,22 +106,30 @@ export class EditablePageTitle extends LitElement {
       border-radius: 2px;
       overflow: hidden;
       outline: none;
-      border: 1px solid transparent;
-      background: transparent;
+      color: var(--button-color);
+      background: var(--button-bg);
+      border: 1px solid var(--button-border-color);
       opacity: .3;
+      outline-offset: 0;
       transition: all .2s ease-in-out;
     }
 
     button:hover {
       opacity: 1;
-      background: var(--hover-bg);
-      border-color: var(--hover-border-color);
+      --button-color: var(--button-hover-color);
+      --button-bg: var(--button-hover-bg);
+      --button-border-color: var(--button-hover-border-color);
     }
 
     button:focus {
       opacity: 1;
-      background: var(--focus-bg);
-      border-color: var(--focus-border-color);
+      --button-color: var(--button-focus-color);
+      --button-bg: var(--button-focus-bg);
+      --button-border-color: var(--button-focus-border-color);
+    }
+
+    button:focus-visible {
+      outline: .25rem solid color-mix(in srgb, var(--button-border-color), transparent 25%);
     }
 
     button[data-action="edit"] {

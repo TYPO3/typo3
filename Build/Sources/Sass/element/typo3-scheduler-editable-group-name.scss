@@ -1,12 +1,8 @@
 //
 // CSS for custom element:
-// typo3-backend-editable-page-title
+// typo3-scheduler-editable-group-name
 //
-typo3-backend-editable-page-title {
-    @extend h1;
-    display: block;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+typo3-scheduler-editable-group-name {
     --input-border-color: var(--typo3-state-default-border-color);
     --input-hover-border-color: var(--typo3-state-default-hover-border-color);
     --input-focus-border-color: var(--typo3-state-default-focus-border-color);
