@@ -63,6 +63,7 @@ class UriBuilder implements SingletonInterface
     protected array $generated = [];
 
     protected ?RequestContext $requestContext = null;
+
     /**
      * Loads the router to fetch the available routes from the Router to be used for generating routes
      */
