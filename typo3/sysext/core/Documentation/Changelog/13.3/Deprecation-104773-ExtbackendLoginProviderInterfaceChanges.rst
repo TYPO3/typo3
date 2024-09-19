@@ -49,12 +49,23 @@ Migration
 =========
 
 Consumers of :php-short:`\TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface`
-should implement :php:`modifyView()`
-instead, the transition should be smooth. Consumers that need the
-:php-short:`\TYPO3\CMS\Core\Page\PageRenderer`
+should implement :php:`modifyView()` instead, the transition should be smooth.
+Consumers that need the :php-short:`\TYPO3\CMS\Core\Page\PageRenderer`
 for JavaScript magic, should use :ref:`dependency injection <t3coreapi:Dependency-Injection>`
-to receive an instance
-of it.
+to receive an instance.
+
+The default implementation in :php-short:`\TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider`
+is a good example. Extensions that need to configure additional template, layout or
+partial lookup paths can extend them:
+
+.. code-block:: php
+
+    if ($view instanceof FluidViewAdapter) {
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+        $templateRootPaths = $templatePaths->getTemplateRootPaths();
+        $templateRootPaths[] = 'EXT:my_extension/Resources/Private/Templates';
+        $templatePaths->setTemplateRootPaths($templateRootPaths);
+    }
 
 Consumers of :php-short:`\TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent`
 should use the request instead, and/or should get an instance of
