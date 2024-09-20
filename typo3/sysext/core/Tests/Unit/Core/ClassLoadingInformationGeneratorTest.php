@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
-use Composer\Autoload\ClassLoader;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\ClassLoadingInformationGenerator;
@@ -34,7 +33,6 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1444142481);
-
         $packageMock = $this->createPackageMock([
             'extra' => [
                 'typo3/class-alias-loader' => [
@@ -45,8 +43,7 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
             ],
         ]);
-        $classLoaderMock = $this->createMock(ClassLoader::class);
-        $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
+        $generator = new ClassLoadingInformationGenerator();
         $generator->buildClassAliasMapForPackage($packageMock);
     }
 
@@ -65,8 +62,7 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
             ],
         ]);
-        $classLoaderMock = $this->createMock(ClassLoader::class);
-        $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
+        $generator = new ClassLoadingInformationGenerator();
         $generator->buildClassAliasMapForPackage($packageMock);
     }
 
@@ -88,8 +84,7 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
             ],
         ];
         $packageMock = $this->createPackageMock([]);
-        $classLoaderMock = $this->createMock(ClassLoader::class);
-        $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
+        $generator = new ClassLoadingInformationGenerator();
         self::assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
     }
 
@@ -119,8 +114,7 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
             ],
         ]);
-        $classLoaderMock = $this->createMock(ClassLoader::class);
-        $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
+        $generator = new ClassLoadingInformationGenerator();
         self::assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
     }
 
@@ -244,9 +238,8 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
     #[Test]
     public function autoloadFilesAreBuildCorrectly(array $packageManifest, array $expectedPsr4Files, array $expectedClassMapFiles): void
     {
-        $classLoaderMock = $this->createMock(ClassLoader::class);
-        $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__);
-        $files = $generator->buildAutoloadInformationFiles();
+        $generator = new ClassLoadingInformationGenerator();
+        $files = $generator->buildAutoloadInformationFiles(false, __DIR__, [$this->createPackageMock($packageManifest)]);
 
         self::assertArrayHasKey('psr-4File', $files);
         self::assertArrayHasKey('classMapFile', $files);
@@ -342,9 +335,8 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
     #[Test]
     public function autoloadDevFilesAreBuildCorrectly(array $packageManifest, array $expectedPsr4Files, array $expectedClassMapFiles): void
     {
-        $classLoaderMock = $this->createMock(ClassLoader::class);
-        $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__, true);
-        $files = $generator->buildAutoloadInformationFiles();
+        $generator = new ClassLoadingInformationGenerator();
+        $files = $generator->buildAutoloadInformationFiles(true, __DIR__, [$this->createPackageMock($packageManifest)]);
 
         self::assertArrayHasKey('psr-4File', $files);
         self::assertArrayHasKey('classMapFile', $files);
@@ -373,7 +365,6 @@ final class ClassLoadingInformationGeneratorTest extends UnitTestCase
         $packageMock->method('getValueFromComposerManifest')->willReturn(
             json_decode(json_encode($packageManifest))
         );
-
         return $packageMock;
     }
 }

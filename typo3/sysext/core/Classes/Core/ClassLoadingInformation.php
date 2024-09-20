@@ -90,15 +90,14 @@ class ClassLoadingInformation
     public static function dumpClassLoadingInformation()
     {
         self::ensureAutoloadInfoDirExists();
-        $composerClassLoader = static::getClassLoader();
         $activeExtensionPackages = static::getActiveExtensionPackages();
 
-        $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, Environment::getPublicPath() . '/', self::isTestingContext());
-        $classInfoFiles = $generator->buildAutoloadInformationFiles();
+        $generator = new ClassLoadingInformationGenerator();
+        $classInfoFiles = $generator->buildAutoloadInformationFiles(self::isTestingContext(), Environment::getPublicPath() . '/', $activeExtensionPackages);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
 
-        $classAliasMapFile = $generator->buildClassAliasMapFile();
+        $classAliasMapFile = $generator->buildClassAliasMapFile($activeExtensionPackages);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile);
     }
 
@@ -145,17 +144,14 @@ class ClassLoadingInformation
     public static function registerTransientClassLoadingInformationForPackage(PackageInterface $package)
     {
         $composerClassLoader = static::getClassLoader();
-        $activeExtensionPackages = static::getActiveExtensionPackages();
-
-        $generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, Environment::getPublicPath() . '/', self::isTestingContext());
-
-        $classInformation = $generator->buildClassLoadingInformationForPackage($package);
+        $generator = new ClassLoadingInformationGenerator();
+        $classInformation = $generator->buildClassLoadingInformationForPackage($package, false, self::isTestingContext(), Environment::getPublicPath() . '/');
         $composerClassLoader->addClassMap($classInformation['classMap']);
         foreach ($classInformation['psr-4'] as $prefix => $paths) {
             $composerClassLoader->setPsr4($prefix, $paths);
         }
         $classAliasMap = $generator->buildClassAliasMapForPackage($package);
-        if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
+        if (!empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
             ClassAliasMap::addAliasMap($classAliasMap);
         }
     }
