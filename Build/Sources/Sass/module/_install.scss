@@ -123,6 +123,7 @@
 .module-action-list {
     display: grid;
     gap: .25rem;
+    margin-bottom: var(--typo3-spacing);
 }
 
 .module-action-item {
@@ -135,8 +136,13 @@
     border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
     border-radius: var(--typo3-component-border-radius);
 
-    .module-action-item-description {
+    .module-action-item-body {
         flex-grow: 1;
+    }
+
+    .module-action-item-title {
+        font-weight: bold;
+        margin-bottom: calc(var(--typo3-spacing) / 4);
     }
 }
 
