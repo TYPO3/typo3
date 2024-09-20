@@ -1,0 +1,23 @@
+:root {
+    --typo3-debugger-color: var(--typo3-component-color);
+    --typo3-debugger-bg: var(--typo3-component-bg);
+    --typo3-debugger-bg-variant: color-mix(in srgb, var(--typo3-debugger-bg), var(--typo3-debugger-color) 3%);
+    --typo3-debugger-outline: #101010;
+    --typo3-debugger-border-color: var(--typo3-component-border-color);
+    --typo3-debugger-border-radius: var(--typo3-component-border-radius);
+    --typo3-debugger-box-shadow: var(--typo3-component-box-shadow);
+    --typo3-debugger-top-bg: var(--typo3-surface-container-default);
+    --typo3-debugger-top-color: var(--typo3-surface-container-default-text);
+    --typo3-debugger-color-variant: var(--typo3-text-color-variant);
+    --typo3-debugger-unregistered-bg: light-dark(var(--token-color-warning-60), var(--token-color-blue-60));
+    --typo3-debugger-scope-bg: light-dark(var(--token-color-teal-60), var(--token-color-teal-80));
+    --typo3-debugger-ptype-bg: light-dark(var(--token-color-green-60), var(--token-color-green-70));
+    --typo3-debugger-visibility-bg: light-dark(var(--token-color-magenta-55), var(--token-color-magenta-75));
+    --typo3-debugger-unitialized-bg: light-dark(var(--token-color-orange-60), var(--token-color-orange-75));
+    --typo3-debugger-dirty-bg: light-dark(var(--token-color-yellow-70), var(--token-color-yellow-80));
+    --typo3-debugger-filtered-bg: light-dark(var(--token-color-yellow-70), var(--token-color-yellow-80));
+    --typo3-debugger-string-color: light-dark(var(--token-color-orange-60), var(--token-color-orange-40));
+    --typo3-debugger-type-color: light-dark(var(--token-color-blue-60), var(--token-color-blue-25));
+    --typo3-debugger-closure-color: light-dark(var(--token-color-yellow-70), var(--token-color-yellow-50));
+    --typo3-debugger-property-color: var(--typo3-component-color);
+}

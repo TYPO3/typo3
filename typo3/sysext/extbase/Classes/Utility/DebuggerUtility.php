@@ -505,42 +505,154 @@ class DebuggerUtility
             self::$blacklistedPropertyNames = $blacklistedPropertyNames;
         }
         self::clearState();
-        $css = '';
+
+        $css = self::cssTreeToString([
+            '.extbase-debugger-tree' => [
+                'position' => 'relative',
+            ],
+            '.extbase-debugger-tree summary' => [
+                'list-style' => 'none',
+                'cursor' => 'pointer',
+                'white-space' => 'nowrap',
+            ],
+            '.extbase-debugger-tree:has(>summary:target)' => [
+                'outline' => 'var(--typo3-debugger-outline, #101010) auto 1px',
+                'padding' => '3px',
+            ],
+            '.extbase-debugger-tree :is(.extbase-debug-header)>*' => [
+                'vertical-align' => 'top',
+            ],
+            '.extbase-debugger-tree .extbase-debug-expander' => [
+                'position' => 'relative',
+                'display' => 'none',
+                'height' => '1em',
+                'aspect-ratio' => '1',
+                'margin' => '0 3px 0 0',
+                'vertical-align' => '-12%',
+                'cursor' => 'pointer',
+            ],
+            '.extbase-debugger-tree summary>.extbase-debug-expander' => [
+                'display' => 'inline-block',
+            ],
+            // Hide expander on first level
+            '.extbase-debugger-inner>details>summary>.extbase-debug-expander' => [
+                'display' => 'none',
+            ],
+            '.extbase-debugger-tree .extbase-debug-expander::before' => [
+                'content' => '""',
+                'position' => 'absolute',
+                'inset' => '0',
+                'background-size' => '100%',
+                'display' => 'inline-block',
+                'background-image' => sprintf('url(data:image/svg+xml;base64,%s)', base64_encode(
+                    '<?xml version="1.0" encoding="utf-8"?><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" fill="#888"><path d="M11,11H0V0h11V11z M10,1H1v9h9V1z"/><rect x="2" y="5" width="7" height="1"/><rect x="5" y="2" width="1" height="7"/></svg>'
+                )),
+            ],
+            '.extbase-debugger-tree[open]>summary>.extbase-debug-expander::before' => [
+                'background-image' => sprintf('url(data:image/svg+xml;base64,%s)', base64_encode(
+                    '<?xml version="1.0" encoding="utf-8"?><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" fill="#888"><path d="M11,11H0V0h11V11z M10,1H1v9h9V1z"/><rect x="2" y="5" width="7" height="1"/></svg>'
+                )),
+            ],
+            '.extbase-debugger-tree .extbase-debug-content' => [
+                'padding-left' => '3ch',
+            ],
+            '.extbase-debugger' => [
+                'display' => 'block',
+                'text-align' => 'left',
+                'background' => 'var(--typo3-debugger-bg, #2a2a2a)',
+                'border' => '1px solid var(--typo3-debugger-border-color, #2a2a2a)',
+                'box-shadow' => 'var(--typo3-debugger-box-shadow, 0 3px 0 rgba(0, 0, 0, .5))',
+                'margin' => '20px',
+                'overflow' => 'hidden',
+                'border-radius' => 'var(--typo3-debugger-border-radius, 4px)',
+            ],
+            '.extbase-debugger-floating' => [
+                'position' => 'relative',
+                'z-index' => '99990',
+            ],
+            '.extbase-debugger-top' => [
+                'background' => 'var(--typo3-debugger-top-bg, #444)',
+                'font-size' => '12px',
+                'font-family' => 'monospace',
+                'color' => 'var(--typo3-debugger-top-color, #f1f1f1)',
+                'padding' => '6px 15px',
+            ],
+            '.extbase-debugger-inner' => [
+                'overflow-x' => 'auto',
+            ],
+            '.extbase-debugger-center' => [
+                'padding' => '0 15px',
+                'margin' => '15px 0',
+                'background-image' => sprintf(
+                    'repeating-linear-gradient(to bottom, transparent 0, transparent 20px, %1$s 20px, %1$s 40px)',
+                    'var(--typo3-debugger-bg-variant, #252525)',
+                ),
+                'color' => 'var(--typo3-debugger-color-variant, #999)',
+                'word-wrap' => 'break-word',
+            ],
+            '.extbase-debugger-center, .extbase-debugger-center :is(.extbase-debug-string, a, p, pre, strong)' => [
+                'font-size' => '12px',
+                'font-weight' => '400',
+                'font-family' => 'monospace',
+                'line-height' => '20px',
+                'color' => 'var(--typo3-debugger-color, #f1f1f1)',
+            ],
+            '.extbase-debugger-center .extbase-debug-string-container' => [
+                'display' => 'inline-block',
+            ],
+            '.extbase-debugger-center :is(.extbase-debug-filtered, .extbase-debug-proxy, .extbase-debug-ptype, .extbase-debug-visibility, .extbase-debug-uninitialized, .extbase-debug-scope, .extbase-debug-dirty)' => [
+                'color' => '#fff',
+                'font-size' => '10px',
+                'line-height' => '18px',
+                'padding' => '2px 4px',
+                'margin-right' => '2px',
+            ],
+            '.extbase-debugger-center .extbase-debug-unregistered' => [
+                'background-color' => 'var(--typo3-debugger-unregistered-bg, #dce1e8)',
+            ],
+            '.extbase-debugger-center .extbase-debug-scope' => [
+                'background-color' => 'var(--typo3-debugger-scope-bg, #497AA2)',
+            ],
+            '.extbase-debugger-center .extbase-debug-ptype' => [
+                'background-color' => 'var(--typo3-debugger-ptype-bg, #698747)',
+            ],
+            '.extbase-debugger-center .extbase-debug-visibility' => [
+                'background-color' => 'var(--typo3-debugger-visibility-bg, #6c0787)',
+            ],
+            '.extbase-debugger-center .extbase-debug-uninitialized' => [
+                'background-color' => 'var(--typo3-debugger-uninitializedy-bg, #698747)',
+            ],
+            '.extbase-debugger-center .extbase-debug-dirty' => [
+                'background-color' => 'var(--typo3-debugger-dirty-bg, #664d00)',
+            ],
+            '.extbase-debugger-center .extbase-debug-filtered' => [
+                'background-color' => 'var(--typo3-debugger-filtered-bg, #664d00)',
+            ],
+            '.extbase-debugger-center .extbase-debug-string' => [
+                'color' => 'var(--typo3-debugger-string-color, #ce9178)',
+                'white-space' => 'normal',
+            ],
+            '.extbase-debugger-center .extbase-debug-type' => [
+                'color' => 'var(--typo3-debugger-type-color, #569CD6)',
+                'padding-right' => '4px',
+            ],
+            '.extbase-debugger-center .extbase-debug-closure' => [
+                'color' => 'var(--typo3-debugger-closure-color, #9BA223)',
+                'white-space' => 'pre',
+            ],
+            '.extbase-debugger-center .extbase-debug-property' => [
+                'color' => 'var(--typo3-debugger-property-color, #f1f1f1)',
+            ],
+            '.extbase-debugger-center .extbase-debug-seeabove' => [
+                'display' => 'block',
+                'text-decoration' => 'none',
+                'font-style' => 'italic',
+            ],
+        ]);
+
+        $style = '';
         if (!$plainText && self::$stylesheetEchoed === false) {
-            $css = self::html('style', ['nonce' => self::resolveNonceValue()], static fn(): string => '
-					.extbase-debugger-tree{position:relative}
-					.extbase-debugger-tree:has(>summary:target){outline:#101010 auto 1px;padding:3px}
-					.extbase-debugger-tree summary{list-style:none;cursor:pointer;white-space:nowrap}
-					.extbase-debugger-tree :is(.extbase-debug-header)>*{vertical-align:top}
-					.extbase-debugger-tree .extbase-debug-expander{position:relative;display:none;height:1em;aspect-ratio:1;margin:0 3px 0 0;vertical-align:-12%;cursor:pointer}
-					.extbase-debugger-tree summary>.extbase-debug-expander{display:inline-block}
-					.extbase-debugger-inner>details>summary>.extbase-debug-expander{display:none}
-					.extbase-debugger-tree .extbase-debug-expander::before{content:"";position:absolute;inset:0;background-size:100%}
-					.extbase-debugger-tree .extbase-debug-expander::before{background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTIgMTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDEyIDEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6Izg4ODg4ODt9PC9zdHlsZT48cGF0aCBpZD0iQm9yZGVyIiBjbGFzcz0ic3QwIiBkPSJNMTEsMTFIMFYwaDExVjExeiBNMTAsMUgxdjloOVYxeiIvPjxnIGlkPSJJbm5lciI+PHJlY3QgeD0iMiIgeT0iNSIgY2xhc3M9InN0MCIgd2lkdGg9IjciIGhlaWdodD0iMSIvPjxyZWN0IHg9IjUiIHk9IjIiIGNsYXNzPSJzdDAiIHdpZHRoPSIxIiBoZWlnaHQ9IjciLz48L2c+PC9zdmc+);display:inline-block}
-					.extbase-debugger-tree[open]>summary>.extbase-debug-expander::before{background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTIgMTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDEyIDEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6Izg4ODg4ODt9PC9zdHlsZT48cGF0aCBpZD0iQm9yZGVyIiBjbGFzcz0ic3QwIiBkPSJNMTEsMTFIMFYwaDExVjExeiBNMTAsMUgxdjloOVYxeiIvPjxnIGlkPSJJbm5lciI+PHJlY3QgeD0iMiIgeT0iNSIgY2xhc3M9InN0MCIgd2lkdGg9IjciIGhlaWdodD0iMSIvPjwvZz48L3N2Zz4=)}
-					.extbase-debugger-tree .extbase-debug-content{padding-left:3ch}
-					.extbase-debugger{display:block;text-align:left;background:#2a2a2a;border:1px solid #2a2a2a;box-shadow:0 3px 0 rgba(0,0,0,.5);color:#000;margin:20px;overflow:hidden;border-radius:4px}
-					.extbase-debugger-floating{position:relative;z-index:99990}
-					.extbase-debugger-top{background:#444;font-size:12px;font-family:monospace;color:#f1f1f1;padding:6px 15px}
-					.extbase-debugger-inner{overflow-x:auto}
-					.extbase-debugger-center{padding:0 15px;margin:15px 0;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 20px,#252525 20px,#252525 40px)}
-					.extbase-debugger-center,.extbase-debugger-center .extbase-debug-string,.extbase-debugger-center a,.extbase-debugger-center p,.extbase-debugger-center pre,.extbase-debugger-center strong{font-size:12px;font-weight:400;font-family:monospace;line-height:20px;color:#f1f1f1}
-					.extbase-debugger-center{color:#999;word-wrap:break-word;}
-					.extbase-debugger-center .extbase-debug-string-container{display:inline-block}
-					.extbase-debugger-center .extbase-debug-string{color:#ce9178;white-space:normal}
-					.extbase-debugger-center .extbase-debug-type{color:#569CD6;padding-right:4px}
-					.extbase-debugger-center .extbase-debug-unregistered{background-color:#dce1e8}
-					.extbase-debugger-center .extbase-debug-filtered,.extbase-debugger-center .extbase-debug-proxy,.extbase-debugger-center .extbase-debug-ptype,.extbase-debugger-center .extbase-debug-visibility,.extbase-debugger-center .extbase-debug-uninitialized,.extbase-debugger-center .extbase-debug-scope{color:#fff;font-size:10px;line-height:18px;padding:2px 4px;margin-right:2px}
-					.extbase-debugger-center .extbase-debug-scope{background-color:#497AA2}
-					.extbase-debugger-center .extbase-debug-ptype{background-color:#698747}
-					.extbase-debugger-center .extbase-debug-visibility{background-color:#6c0787}
-					.extbase-debugger-center .extbase-debug-uninitialized{background-color:#698747}
-					.extbase-debugger-center .extbase-debug-dirty{background-color:#FFFFB6}
-					.extbase-debugger-center .extbase-debug-filtered{background-color:#4F4F4F}
-					.extbase-debugger-center .extbase-debug-seeabove{display:block;text-decoration:none;font-style:italic}
-					.extbase-debugger-center .extbase-debug-property{color:#f1f1f1}
-					.extbase-debugger-center .extbase-debug-closure{white-space:pre;color:#9BA223;}
-				')();
+            $style = self::html('style', ['nonce' => self::resolveNonceValue()], static fn(): string => $css)();
             self::$stylesheetEchoed = true;
         }
         if ($plainText) {
@@ -567,9 +679,9 @@ class DebuggerUtility
         self::$blacklistedClassNames = $backupBlacklistedClassNames;
         self::$blacklistedPropertyNames = $backupBlacklistedPropertyNames;
         if ($return === true) {
-            return $css . $output;
+            return $style . $output;
         }
-        echo $css . $output;
+        echo $style . $output;
 
         return '';
     }
@@ -669,5 +781,51 @@ class DebuggerUtility
         }
 
         throw new \InvalidArgumentException('Invalid callable return type: ' . gettype($content), 1726673500);
+    }
+
+    /**
+     * Converts a CSS tree to a CSS stylesheet string
+     *
+     * Example input:
+     *
+     *     [
+     *         '.my-class' => [
+     *             'display' => 'block',
+     *             'color' => 'black',
+     *         ],
+     *         '.other-class' => [
+     *             'display' => 'flex',
+     *         ],
+     *     ]
+     *
+     * Output:
+     *     .my-class{display:block;color:black}
+     *     .other-class{display:flex}
+     *
+     * @param array<string, array<string, string>> $cssTree
+     */
+    protected static function cssTreeToString(array $cssTree): string
+    {
+        $rules = array_map(
+            static fn(string $selector): string => sprintf(
+                '%s{%s}',
+                $selector,
+                implode(
+                    ';',
+                    array_map(
+                        static fn(string $property): string => sprintf(
+                            '%s:%s',
+                            $property,
+                            $cssTree[$selector][$property]
+                        ),
+                        array_keys($cssTree[$selector])
+                    )
+                )
+            ),
+            array_keys($cssTree)
+        );
+        $stylesheet = implode(PHP_EOL, $rules);
+        // Optimize away uneeded whitespace
+        return str_replace(', ', ',', $stylesheet);
     }
 }
