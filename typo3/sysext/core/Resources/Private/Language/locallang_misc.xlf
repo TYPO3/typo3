@@ -435,6 +435,15 @@
 			<trans-unit id="liveSearch_help.shortcutOpen" resname="liveSearch_help.shortcutOpen">
 				<source>You can open the live search by pressing the Ctrl+K or Cmd+K keystroke</source>
 			</trans-unit>
+			<trans-unit id="liveSearch_search" resname="liveSearch_search">
+				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="liveSearch_searchIn" resname="liveSearch_searchIn">
+				<source>Search records in</source>
+			</trans-unit>
+			<trans-unit id="liveSearch_activeFilters" resname="liveSearch_activeFilters">
+				<source>active filters</source>
+			</trans-unit>
 			<trans-unit id="viewport_navigation_show" resname="viewport_navigation_show">
 				<source>Show Navigation</source>
 			</trans-unit>

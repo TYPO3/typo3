@@ -13,11 +13,11 @@
                         <core:icon identifier="actions-menu-alternative" size="small" />
                         <span class="search-option-badge badge badge-primary {activeOptions == 0 ? 'hidden' : ''}" data-active-options-counter="{activeOptions}">
                             <output>{activeOptions}</output>
-                            <span class="visually-hidden">active filters</span>
+                            <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_activeFilters')}</span>
                         </span>
                     </button>
                     <div class="dropdown-menu t3js-search-provider-dropdown">
-                        <h6 class="dropdown-header">Search records in</h6>
+                        <h6 class="dropdown-header">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_searchIn')}</h6>
                         <div class="dropdown-item-text">
                             <f:for each="{searchProviders}" as="searchProvider" key="searchProviderIdentifier">
                                 <typo3-backend-live-search-option-item
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </f:if>
-            <input type="search" name="query" class="form-control" placeholder="Search" value="{searchDemand.query}" autocomplete="off">
+            <input type="search" name="query" class="form-control" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_search')}" value="{searchDemand.query}" autocomplete="off">
         </div>
         <div class="form-text">
             <core:icon identifier="actions-lightbulb-on" size="small" /> {f:translate(key: '{hint}')}
