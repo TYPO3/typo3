@@ -33,6 +33,7 @@ final class MediaViewHelperTest extends FunctionalTestCase
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Folders/fileadmin/user_upload/example.mp4' => 'fileadmin/user_upload/example.mp4',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/MediaViewHelper/Folders/fileadmin/user_upload/example.youtube' => 'fileadmin/user_upload/example.youtube',
     ];
 
     public static function renderReturnsExpectedMarkupDataProvider(): array
@@ -47,6 +48,21 @@ final class MediaViewHelperTest extends FunctionalTestCase
                 '<f:media file="{file}" additionalConfig="{controlsList: \'nodownload\'}" />',
                 '1:/user_upload/example.mp4',
                 '<video controls controlsList="nodownload"><source src="fileadmin/user_upload/example.mp4" type="video/mp4"></video>',
+            ],
+            'show youtube video with title' => [
+                '<f:media file="{file}" title="Youtube Video Example" additionalConfig="{allowFullScreen: \'true\'}" />',
+                '1:/user_upload/example.youtube',
+                '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen title="Youtube Video Example" allow="fullscreen"></iframe>',
+            ],
+            'show youtube video with empty title' => [
+                '<f:media file="{file}" title="" additionalConfig="{allowFullScreen: \'true\'}" />',
+                '1:/user_upload/example.youtube',
+                '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen allow="fullscreen"></iframe>',
+            ],
+            'show youtube video with title is null' => [
+                '<f:media file="{file}" title="null" additionalConfig="{allowFullScreen: \'true\'}" />',
+                '1:/user_upload/example.youtube',
+                '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen allow="fullscreen"></iframe>',
             ],
         ];
     }

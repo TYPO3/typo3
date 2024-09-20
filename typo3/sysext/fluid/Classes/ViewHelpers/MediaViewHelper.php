@@ -126,7 +126,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
             return $this->renderImage($file, $width, $height, $this->arguments['fileExtension'] ?? null);
         }
         $arguments = [];
-        foreach ($this->arguments as $argumentName => $argumentValue) {
+        foreach (array_merge($this->arguments, $this->additionalArguments) as $argumentName => $argumentValue) {
             // Prevent "null" when given in fluid
             if (!empty($argumentValue) && $argumentValue !== 'null') {
                 $arguments[$argumentName] = $argumentValue;
