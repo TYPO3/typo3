@@ -4056,7 +4056,7 @@ td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap
 .install-tool-modal .t3-install-displaytwinimagetextarea pre{border-top:0}
 .install-tool-modal .bg-transparent-emulation{padding:10px;text-align:center;background:url(../Images/bg_transparent_emulation.png)}
 .install-tool-modal .bg-transparent-emulation img{max-width:300px}
-.install-tool-modal #phpinfo table{width:100%;table-layout:fixed;word-wrap:break-word;background:#fff}
+.install-tool-modal #phpinfo table{width:100%;table-layout:fixed;word-wrap:break-word;margin-bottom:var(--typo3-spacing)}
 .install-tool-modal .upgrade_analysis_item_to_filter pre a{text-decoration:underline}
 .install-tool-modal .upgradeWizards-wizards-output .row-explanation{white-space:pre-wrap}
 .install-tool-modal ul{word-wrap:anywhere}

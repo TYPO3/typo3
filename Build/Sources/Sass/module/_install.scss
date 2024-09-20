@@ -100,7 +100,7 @@
         width: 100%;
         table-layout: fixed;
         word-wrap: break-word;
-        background: $table-bg;
+        margin-bottom: var(--typo3-spacing);
     }
 
     // Styles for specific modals: Issue number in expand upgrade documentation item
