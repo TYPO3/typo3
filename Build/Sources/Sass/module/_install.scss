@@ -73,9 +73,9 @@
 
     // Styles for specific modals: image processing
     .t3-install-displaytwinimageimages {
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding: 10px;
+        border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+        border-radius: var(--typo3-component-border-radius);
+        padding: var(--typo3-component-padding-y) var(--typo3-component-padding-x);
         margin-bottom: var(--typo3-spacing);
     }
 

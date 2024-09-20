@@ -4052,7 +4052,7 @@ td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap
 .install-tool-modal .list-group-item a{display:block}
 .install-tool-modal .list-group-item.active a{color:#fff}
 .install-tool-modal .table .t3-languagePacks-inactive,.install-tool-modal .table .t3-languagePacks-inactive td{color:#aaa}
-.install-tool-modal .t3-install-displaytwinimageimages{border:1px solid #ccc;border-radius:4px;padding:10px;margin-bottom:var(--typo3-spacing)}
+.install-tool-modal .t3-install-displaytwinimageimages{border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);border-radius:var(--typo3-component-border-radius);padding:var(--typo3-component-padding-y) var(--typo3-component-padding-x);margin-bottom:var(--typo3-spacing)}
 .install-tool-modal .t3-install-displaytwinimagetextarea pre{border-top:0}
 .install-tool-modal .bg-transparent-emulation{padding:10px;text-align:center;background:url(../Images/bg_transparent_emulation.png)}
 .install-tool-modal .bg-transparent-emulation img{max-width:300px}
