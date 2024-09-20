@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Styleguide\DummyDumpContentProvider;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 
 /**
@@ -49,6 +50,7 @@ final class ComponentsController
         'buttons',
         'cards',
         'checkboxes',
+        'developerTools',
         'flashMessages',
         'form',
         'infobox',
@@ -87,6 +89,7 @@ final class ComponentsController
             'buttons' => $this->renderButtonsView($request),
             'cards' => $this->renderCardsView($request),
             'checkboxes' => $this->renderCheckboxesView($request),
+            'developerTools' => $this->renderDeveloperToolsView($request),
             'flashMessages' => $this->renderFlashMessagesView($request),
             'form' => $this->renderFormView($request),
             'infobox' => $this->renderInfoboxView($request),
@@ -176,6 +179,18 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Checkboxes');
+    }
+
+    private function renderDeveloperToolsView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'developerTools');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'developerTools',
+            'routeIdentifier' => 'styleguide_components',
+            'exampleData' => DummyDumpContentProvider::getTestData(),
+        ]);
+        return $view->renderResponse('Backend/Components/DeveloperTools');
     }
 
     private function renderFlashMessagesView(ServerRequestInterface $request): ResponseInterface

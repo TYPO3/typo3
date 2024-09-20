@@ -1,0 +1,59 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.developerTools.headline" /></h1>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.developerTools.section.default.headline" /></h2>
+        <f:variable name="codeSnippetDefault">&lt;f:debug inline="true"&gt;&lcub;_all&rcub;&lt;/f:debug&gt;</f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
+            <f:debug inline="true">{exampleData}</f:debug>
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.developerTools.section.attributes.headline" /></h2>
+
+        <f:variable name="codeSnippetDefault">&lt;f:debug inline="true" title="Test Variable Dump" maxDepth="2"&gt;&lcub;_all&rcub;&lt;/f:debug&gt;</f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
+            <f:debug inline="true" title="Test Variable Dump" maxDepth="2">{exampleData}</f:debug>
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.developerTools.section.attributes.headline" /></h2>
+
+        <f:variable name="codeSnippetDefault">&lt;f:debug inline="true" plainText="true" title="Plaintext Variable Dump"&gt;&lcub;_all&rcub;&lt;/f:debug&gt;</f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetDefault}" decodeEntities="true">
+            <f:debug inline="true" plainText="true" title="Plaintext Variable Dump">{exampleData}</f:debug>
+        </sg:example>
+
+        <hr>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
+
+        <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.developerTools.headline" /></h3>
+        <sg:colorScheme>
+            <f:debug inline="true" title="Test Variable Dump">{exampleData}</f:debug>
+        </sg:colorScheme>
+    </div>
+
+</f:section>
+
+</html>

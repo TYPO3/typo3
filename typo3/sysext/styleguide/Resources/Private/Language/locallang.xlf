@@ -67,6 +67,9 @@
 			<trans-unit id="action.componentsOverview" resname="action.componentsOverview">
 				<source>Components overview</source>
 			</trans-unit>
+			<trans-unit id="action.developerTools" resname="action.developerTools">
+				<source>Developer Tools</source>
+			</trans-unit>
 			<trans-unit id="action.flashMessages" resname="action.flashMessages">
 				<source>Flash messages</source>
 			</trans-unit>
@@ -360,6 +363,14 @@
 			</trans-unit>
 			<trans-unit id="component.checkbox.section.toggle.headline" resname="component.checkbox.section.toggle.headline">
 				<source>Toggle</source>
+			</trans-unit>
+
+			<!-- Component: Developer Tools -->
+			<trans-unit id="component.developerTools.headline" resname="component.developerTools.headline">
+				<source>Flash messages</source>
+			</trans-unit>
+			<trans-unit id="component.developerTools.section.default.headline" resname="component.developerTools.section.default.headline">
+				<source>Default</source>
 			</trans-unit>
 
 			<!-- Component: Flash message -->
