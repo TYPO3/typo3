@@ -8,13 +8,13 @@
     <f:then>
         <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:mergedDifferences.description" /></p>
 
-        <div class="ps-2 mb-3 history-block">
+        <div class="diff-group">
             <f:for each="{multipleDiff}" as="historyRow">
                 <h3>{historyRow.title}</h3>
                 <div class="row">
                     <div class="col">
                         <f:if condition="{historyRow.insertDelete} || {historyRow.fieldNames} || {historyRow.differences -> f:count()}">
-                            <div class="ps-2 ms-3 history-block">
+                            <div class="diff-group">
                                 <f:if condition="{historyRow.insertDelete} == 'delete'">
                                     <p><strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:rollback.plannedAction.delete')}</strong></p>
                                 </f:if>
@@ -31,9 +31,7 @@
                         </f:if>
                     </div>
                 </div>
-                <div class="row mt-3 mb-3">
-                    <div class="col-auto"><a href="{historyRow.revertRecordUrl}" class="btn btn-default">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertRecord')}</a></div>
-                </div>
+                <a href="{historyRow.revertRecordUrl}" class="btn btn-default">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertRecord')}</a>
             </f:for>
         </div>
         <a href="{revertAllUrl}" class="btn btn-default">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:revertAll')}</a>
