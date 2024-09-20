@@ -28,7 +28,7 @@ final readonly class RecordPropertyClosure
         private \Closure $instantiator
     ) {}
 
-    public function instantiate(): ?object
+    public function instantiate(): mixed
     {
         return ($this->instantiator)();
     }

@@ -174,10 +174,15 @@ readonly class RecordFieldTransformer
         }
         if ($fieldInformation->isType(TableColumnType::FLEX)) {
             /** @var FlexFormFieldType $fieldInformation */
-            return $this->processFlexForm($rawRecord, $fieldInformation, (string)$fieldValue, $context);
+            return new RecordPropertyClosure(fn(): array => $this->processFlexForm($rawRecord, $fieldInformation, (string)$fieldValue, $context));
         }
         if ($fieldInformation->isType(TableColumnType::JSON)) {
-            return Type::getType('json')->convertToPHPValue((string)$fieldValue, $this->connectionPool->getConnectionForTable($rawRecord->getMainType())->getDatabasePlatform());
+            return new RecordPropertyClosure(
+                fn(): array => Type::getType('json')->convertToPHPValue(
+                    (string)$fieldValue,
+                    $this->connectionPool->getConnectionForTable($rawRecord->getMainType())->getDatabasePlatform()
+                )
+            );
         }
         if ($fieldInformation instanceof DateTimeFieldType) {
             return $fieldValue === null || (!$fieldInformation->isNullable() && $fieldValue === 0)
@@ -185,7 +190,9 @@ readonly class RecordFieldTransformer
                 : new \DateTimeImmutable((MathUtility::canBeInterpretedAsInteger($fieldValue) ? '@' : '') . $fieldValue);
         }
         if ($fieldInformation->isType(TableColumnType::LINK)) {
-            return TypolinkParameter::createFromTypolinkParts($this->typoLinkCodecService->decode($fieldValue));
+            return new RecordPropertyClosure(
+                fn(): TypolinkParameter => TypolinkParameter::createFromTypolinkParts($this->typoLinkCodecService->decode($fieldValue))
+            );
         }
         return $fieldValue;
     }

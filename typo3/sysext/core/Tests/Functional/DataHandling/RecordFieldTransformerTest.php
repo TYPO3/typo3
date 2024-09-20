@@ -757,10 +757,12 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
             $this->get(Context::class)
         );
 
+        $result = $result instanceof RecordPropertyClosure ? $result->instantiate() : $result;
         self::assertSame($expected, $result);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertSame($expected, $resolvedRecord->get($fieldName));
+        $fieldValue = $resolvedRecord->get($fieldName) instanceof RecordPropertyClosure ? $resolvedRecord->get($fieldName)->instantiate() : $resolvedRecord->get($fieldName);
+        self::assertSame($expected, $fieldValue);
     }
 
     public static function canConvertDateTimeDataProvider(): \Generator
@@ -1086,7 +1088,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
             $fieldInformation,
             $dummyRecord,
             $this->get(Context::class)
-        );
+        )->instantiate();
 
         self::assertIsArray($result);
         self::assertSame('Header in Flex', $result['header']);
@@ -1136,12 +1138,12 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
             $fieldInformation,
             $dummyRecord,
             $this->get(Context::class)
-        );
+        )->instantiate();
 
         self::assertIsArray($result);
         self::assertSame('Header in Flex', $result['header']);
         self::assertSame('Text in Flex', $result['textarea']);
-        self::assertSame('t3://page?uid=13', $result['link']->url);
+        self::assertSame('t3://page?uid=13', $result['link']->instantiate()->url);
         self::assertSame('12', $result['number']);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
@@ -1149,7 +1151,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertIsArray($resolvedRelation);
         self::assertSame('Header in Flex', $resolvedRelation['header']);
         self::assertSame('Text in Flex', $resolvedRelation['textarea']);
-        self::assertSame('t3://page?uid=13', $resolvedRelation['link']->url);
+        self::assertSame('t3://page?uid=13', $resolvedRelation['link']->instantiate()->url);
         self::assertSame('12', $resolvedRelation['number']);
     }
 
