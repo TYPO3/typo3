@@ -8,7 +8,7 @@
 .form-group-dashed {
     & + & {
         padding-top: var(--typo3-spacing);
-        border-top: 1px dashed rgba(0, 0, 0, .15);
+        border-top: var(--typo3-component-border-width) dashed var(--typo3-component-border-color);
     }
 }
 

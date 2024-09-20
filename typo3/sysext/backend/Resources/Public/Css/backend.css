@@ -2471,7 +2471,7 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .form-section-headline+.form-section-description{margin-top:calc(var(--typo3-spacing)/ 2 * -1);margin-bottom:var(--typo3-spacing)}
 .form-section-tabs{--typo3-nav-tabs-bg:var(--typo3-surface-container-low)}
 .form-group{margin-bottom:var(--typo3-spacing)}
-.form-group-dashed+.form-group-dashed{padding-top:var(--typo3-spacing);border-top:1px dashed rgba(0,0,0,.15)}
+.form-group-dashed+.form-group-dashed{padding-top:var(--typo3-spacing);border-top:var(--typo3-component-border-width) dashed var(--typo3-component-border-color)}
 .form-multigroup-wrap{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:var(--typo3-spacing)}
 .form-row{display:flex;flex-wrap:wrap;gap:var(--typo3-spacing);align-items:flex-end;margin-bottom:var(--typo3-spacing)}
 .form-row>.form-group{margin-bottom:0}
