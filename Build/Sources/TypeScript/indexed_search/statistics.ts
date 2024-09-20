@@ -39,7 +39,7 @@ class IndexedSearchStatistics extends HTMLElement {
   }
 
   private initializeWordList(slot: HTMLSlotElement): void {
-    const wordList: HTMLTableElement = (slot.assignedElements()[0] ?? null) as HTMLTableElement|null;
+    const wordList: HTMLTableElement = (slot.assignedElements()[0].children[0] ?? null) as HTMLTableElement|null;
     if (wordList === null || wordList.tagName.toLowerCase() !== 'table') {
       throw new Error(`Sortable table could not be initialized. Expected <table> child name, but found: ${wordList}`);
     }
