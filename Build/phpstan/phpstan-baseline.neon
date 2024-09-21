@@ -1551,21 +1551,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^Empty array passed to foreach\\.$#"
-			count: 2
-			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
-
-		-
-			message: "#^Offset int\\<0, max\\> does not exist on array\\{\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
-
-		-
-			message: "#^Parameter \\#1 \\$tag of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:get_tag_attributes\\(\\) expects string, array\\<string, string\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
-
-		-
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/ConstructorArgumentMatcher.php
