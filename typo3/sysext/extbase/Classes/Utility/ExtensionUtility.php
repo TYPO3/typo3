@@ -45,12 +45,17 @@ class ExtensionUtility
      * @param string $pluginType either \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN (default) or \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
      * @throws \InvalidArgumentException
      */
-    public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = [], $pluginType = self::PLUGIN_TYPE_PLUGIN)
+    public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = [], ?string $pluginType = null)
     {
         self::checkPluginNameFormat($pluginName);
         self::checkExtensionNameFormat($extensionName);
 
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
+
+        $pluginType ??= self::PLUGIN_TYPE_PLUGIN;
+        if ($pluginType === 'list_type') {
+            trigger_error('Plugin subtype "list_type" has been deprecated and will be removed in TYPO3 v14.0. Register the plugin "' . $pluginName . '" as "CType" instead. Affected extension: ' . $extensionName, E_USER_DEPRECATED);
+        }
 
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
 

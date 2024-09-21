@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
@@ -1315,12 +1316,13 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 'description' => null,
             ],
         ];
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
-        ExtensionManagementUtility::addPlugin(['label', $extKey], 'list_type', $extKey);
-        self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
+        ExtensionManagementUtility::addPlugin(['label', $extKey], 'CType', $extKey);
+        self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items']);
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function addPluginSetsCorrectItemGroupsEntry(): void
     {
         $extKey = 'indexed_search';

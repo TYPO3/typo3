@@ -612,4 +612,9 @@ return [
             'Deprecation-102032-AbstractFileConstants.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN' => [
+        'restFiles' => [
+            'Deprecation-105076-PluginContentElementAndPluginSubTypes.rst',
+        ],
+    ],
 ];

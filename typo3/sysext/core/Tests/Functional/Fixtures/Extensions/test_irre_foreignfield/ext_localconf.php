@@ -17,5 +17,6 @@ ExtensionUtility::configurePlugin(
     ],
     [
         ContentController::class => ['create', 'update', 'delete'],
-    ]
+    ],
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );

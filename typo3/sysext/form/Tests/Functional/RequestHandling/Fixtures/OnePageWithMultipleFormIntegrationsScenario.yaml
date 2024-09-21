@@ -39,6 +39,6 @@ entities:
             content:
               - self: {id: 1000, CType: form_formframework, pi_flexform: "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n<data>\n<sheet index=\"sDEF\">\n<language index=\"lDEF\">\n<field index=\"settings.persistenceIdentifier\">\n<value index=\"vDEF\">EXT:form/Tests/Functional/RequestHandling/Fixtures/Forms/SinglestepTestForm.form.yaml</value>\n</field>\n<field index=\"settings.overrideFinishers\">\n<value index=\"vDEF\">0</value>\n</field>\n</language>\n</sheet>\n</data>\n</T3FlexForms>"}
               - self: {id: 1001, CType: form_formframework, pi_flexform: "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n<data>\n<sheet index=\"sDEF\">\n<language index=\"lDEF\">\n<field index=\"settings.persistenceIdentifier\">\n<value index=\"vDEF\">EXT:form/Tests/Functional/RequestHandling/Fixtures/Forms/MultistepTestForm.form.yaml</value>\n</field>\n<field index=\"settings.overrideFinishers\">\n<value index=\"vDEF\">0</value>\n</field>\n</language>\n</sheet>\n</data>\n</T3FlexForms>"}
-              - self: {id: 1002, CType: list, list_type: formcachingtests_renderactioniscached}
-              - self: {id: 1003, CType: list, list_type: formcachingtests_allactionsuncached}
-              - self: {id: 1004, CType: list, list_type: formcachingtests_allactionscached}
+              - self: {id: 1002, CType: formcachingtests_renderactioniscached}
+              - self: {id: 1003, CType: formcachingtests_allactionsuncached}
+              - self: {id: 1004, CType: formcachingtests_allactionscached}

@@ -871,7 +871,7 @@ class ExtensionManagementUtility
      * @param string|null $extensionKey The extension key
      * @throws \RuntimeException
      */
-    public static function addPlugin(array|SelectItem $itemArray, string $type = 'list_type', ?string $extensionKey = null): void
+    public static function addPlugin(array|SelectItem $itemArray, ?string $type = null, ?string $extensionKey = null): void
     {
         // $extensionKey is required, but presumably for BC reasons it still lives after $type in the
         // parameter list, and $type is nominally optional.
@@ -885,7 +885,14 @@ class ExtensionManagementUtility
                 1404068038
             );
         }
+
         $selectItem = is_array($itemArray) ? SelectItem::fromTcaItemArray($itemArray) : $itemArray;
+
+        $type ??= 'list_type';
+        if ($type === 'list_type') {
+            trigger_error('Plugin subtype "list_type" has been deprecated and will be removed in TYPO3 v14.0. Register the plugin "' . $selectItem->getValue() . '" as "CType" instead. Affected extension: ' . $extensionKey, E_USER_DEPRECATED);
+        }
+
         if ($type === 'CType' && $selectItem->getIcon() && !isset($GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()])) {
             // Set the type icon as well
             $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()] = $selectItem->getIcon();

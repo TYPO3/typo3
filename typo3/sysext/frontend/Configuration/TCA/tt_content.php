@@ -584,6 +584,7 @@ return [
                 'default' => 0,
             ],
         ],
+        // @deprecated since 13.4, will be removed in TYPO3 v14
         'list_type' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:list_type',
             'onChange' => 'reload',
@@ -726,6 +727,7 @@ return [
             ],
         ],
         // @todo list has to be kept, due to general plugin management
+        // @deprecated since 13.4, will be removed in TYPO3 v14
         'list' => [
             'showitem' => '
                     --palette--;;headers,

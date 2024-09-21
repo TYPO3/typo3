@@ -13,12 +13,16 @@ ExtensionUtility::configurePlugin(
     'Blogs',
     [
         BlogController::class => ['list', 'details', 'testSingle', 'testForm', 'testForward', 'testForwardTarget', 'testRelatedObject'],
-    ]
+    ],
+    [],
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 ExtensionUtility::configurePlugin(
     'BlogExample',
     'Content',
     [
         ContentController::class => ['list'],
-    ]
+    ],
+    [],
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
