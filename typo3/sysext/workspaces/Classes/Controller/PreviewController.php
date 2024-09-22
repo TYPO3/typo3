@@ -19,10 +19,12 @@ namespace TYPO3\CMS\Workspaces\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\DateFormatter;
@@ -127,13 +129,47 @@ class PreviewController
                 $queryParameters['_language'] = $site->getLanguageById((int)$queryParameters['L']);
                 unset($queryParameters['L']);
             }
-            $parameters = $queryParameters;
+
+            // Build URL for live version of page
+            $page = BackendUtility::getRecord('pages', $pageUid);
+            $rootline = BackendUtility::BEgetRootLine($pageUid, '', false);
+            $queryParametersLive = PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages(
+                $page,
+                clone GeneralUtility::makeInstance(Context::class),
+                $rootline
+            );
             if (!$this->workspaceService->isNewPage($pageUid)) {
-                $parameters['ADMCMD_prev'] = 'LIVE';
+                $parameters = array_merge(
+                    $queryParameters,
+                    $queryParametersLive,
+                    ['ADMCMD_prev' => 'LIVE']
+                );
                 $liveUrl = $this->generateUrl($site, $pageUid, $parameters);
             }
-            $parameters = $queryParameters;
-            $parameters['ADMCMD_prev'] = 'IGNORE';
+
+            // Build URL for draft version of page
+            $page = BackendUtility::getRecordWSOL('pages', $pageUid);
+            $rootline = BackendUtility::BEgetRootLine($pageUid, '', true);
+            $queryParametersDraft = PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages(
+                $page,
+                clone GeneralUtility::makeInstance(Context::class),
+                $rootline
+            );
+            // Edge case 1: live version is protected, draft version isn't
+            if (isset($queryParametersLive['ADMCMD_simUser']) &&
+                empty($queryParametersDraft['ADMCMD_simUser'])) {
+                // Use live versions ADMCMD_simUser for draft URL
+                $queryParametersDraft['ADMCMD_simUser'] = $queryParametersLive['ADMCMD_simUser'];
+            }
+            // Edge case 2: both versions are protected by different groups
+            if (($queryParametersLive['ADMCMD_simUser'] ?? 0) !== ($queryParametersDraft['ADMCMD_simUser'] ?? 0)) {
+                // TODO: figure out how the handle this edge case
+            }
+            $parameters = array_merge(
+                $queryParameters,
+                $queryParametersDraft,
+                ['ADMCMD_prev' => 'IGNORE']
+            );
             $wsUrl = $this->generateUrl($site, $pageUid, $parameters);
         } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
             throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $pageUid, $e->getMessage()), 1559794913, $e);

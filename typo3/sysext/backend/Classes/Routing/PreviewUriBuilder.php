@@ -195,7 +195,7 @@ class PreviewUriBuilder
                 $event->setAdditionalQueryParameters(
                     array_replace_recursive(
                         $event->getAdditionalQueryParameters(),
-                        $this->getAdditionalQueryParametersForAccessRestrictedPages($pageInfo, $event->getContext(), $event->getRootline())
+                        self::getAdditionalQueryParametersForAccessRestrictedPages($pageInfo, $event->getContext(), $event->getRootline())
                     )
                 );
 
@@ -387,8 +387,9 @@ class PreviewUriBuilder
 
     /**
      * Creates ADMCMD parameters for the "viewpage" extension / frontend
+     * @internal not part of TYPO3 Core API
      */
-    protected function getAdditionalQueryParametersForAccessRestrictedPages(array $pageInfo, Context $context, array $rootLine): array
+    public static function getAdditionalQueryParametersForAccessRestrictedPages(array $pageInfo, Context $context, array $rootLine): array
     {
         if ($pageInfo === []) {
             return [];
