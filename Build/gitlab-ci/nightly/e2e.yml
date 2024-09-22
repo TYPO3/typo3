@@ -1,0 +1,14 @@
+e2e playwright composer sqlite 8.4:
+  stage: acceptance
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s e2e -p 8.4 -d sqlite

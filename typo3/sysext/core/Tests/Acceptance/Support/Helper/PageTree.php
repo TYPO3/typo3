@@ -17,49 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
 
-use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 final class PageTree extends AbstractTree
 {
     public static $treeSelector = '#typo3-pagetree-treeContainer';
 
-    private Mouse $mouse;
-
     /**
      * Inject our core AcceptanceTester actor into PageTree
      */
-    public function __construct(ApplicationTester $I, Mouse $mouse)
+    public function __construct(ApplicationTester $I)
     {
         $this->tester = $I;
-        $this->mouse = $mouse;
-    }
-
-    /**
-     * Perform drag and drop for a new page into the given target page.
-     */
-    public function dragAndDropNewPage(string $pageName, string $dragNode, string $nodeEditInput): void
-    {
-        $target = $this->getPageXPathByPageName($pageName);
-        $pageTitle = sprintf('Dummy 1-%s-new', $pageName);
-
-        $this->mouse->dragAndDrop($dragNode, $target);
-
-        $this->tester->seeElement($nodeEditInput);
-
-        // Change the new page title.
-        // We can't use $I->fillField() here since this sends a clear() to the element
-        // which drops the node creation in the tree. So we do it manually with selenium.
-        $element = $this->tester->executeInSelenium(static function (RemoteWebDriver $webdriver) use ($nodeEditInput) {
-            return $webdriver->findElement(WebDriverBy::cssSelector($nodeEditInput));
-        });
-        $element->sendKeys($pageTitle);
-
-        $this->tester->pressKey($nodeEditInput, WebDriverKeys::ENTER);
-        $this->tester->waitForElementNotVisible($nodeEditInput);
-        $this->tester->waitForText($pageTitle);
     }
 
     /**
