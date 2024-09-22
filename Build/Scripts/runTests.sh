@@ -175,6 +175,73 @@ getPhpImageVersion() {
     esac
 }
 
+# @todo: Add support for all available database engines (see -d option)
+# @todo: Add support for classic mode
+runPlaywright() {
+    PREPAREPARAMS="-e TYPO3_DB_DRIVER=sqlite"
+    TESTPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
+
+    if [ "${PLAYWRIGHT_USE_EXISTING_INSTANCE}x" = "x" ]; then
+        rm -rf "${CORE_ROOT}/typo3temp/var/tests/playwright-composer" "${CORE_ROOT}/typo3temp/var/tests/playwright-reports" "${CORE_ROOT}/typo3temp/var/tests/playwright-results"
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/playwright-composer" sqlite
+        if [[ $? -gt 0 ]]; then
+            kill -SIGINT -$$
+        fi
+    fi
+
+    [[ -e "${CORE_ROOT}/Build/node_modules/.bin/playwright" ]] || ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX}-npm-ci \
+        -e HOME=${CORE_ROOT}/.cache \
+        ${IMAGE_NODEJS_CHROME} \
+        npm --prefix=Build ci
+        if [[ $? -gt 0 ]]; then
+            kill -SIGINT -$$
+        fi
+
+    APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/playwright-composer/public -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
+    if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 1 ]]; then
+        APACHE_OPTIONS="${APACHE_OPTIONS} -p 127.0.0.1::80"
+    fi
+
+    if [ ${CONTAINER_BIN} = "docker" ]; then
+        ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+        ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+    else
+        ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
+        ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+    fi
+
+    waitFor web 80
+
+    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run ${PLAYWRIGHT_PROJECT}"
+    COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open ${PLAYWRIGHT_PROJECT}"
+    if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 ]]; then
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name accessibility-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
+        SUITE_EXIT_CODE=$?
+    else
+        PLAYWRIGHT_BASE_URL="http://$(${CONTAINER_BIN} port ac-web-${SUFFIX} 80/tcp)/"
+        echo
+        echo -en "\033[32m✓\033[0m "
+        echo "Environment prepared. You can now press Enter to run all tests or run playwright locally with one of the following commands."
+        echo
+        echo "  Run with local playwright (headless):"
+        echo -n "    "
+        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3 ${COMMAND}"
+        echo
+        echo "  Open local playwright UI:"
+        echo -n "    "
+        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3 ${COMMAND_UI}"
+        echo
+        echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to run tests in container)"
+        # maybe use https://stackoverflow.com/a/58508884/4223467
+        while read -r _; do
+            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name accessibility-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
+            SUITE_EXIT_CODE=$?
+            echo
+            echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to re-run tests in container)"
+        done </dev/tty
+    fi
+}
+
 loadHelp() {
     # Load help text into $HELP
     read -r -d '' HELP <<EOF
@@ -228,7 +295,8 @@ Options:
             - lintTypescript: TS linting
             - lintYaml: YAML Linting (excluding Services.yaml)
             - npm: "npm" command dispatcher, to execute various npm commands directly
-            - accessibility: accessibility tests
+            - accessibility: accessibility tests (use accessibility-prepare for manual execution)
+            - e2e: end to end tests (use e2e-prepare for manual execution)
             - phpstan: phpstan tests
             - phpstanGenerateBaseline: regenerate phpstan baseline, handy after phpstan updates
             - unit (default): PHP unit tests
@@ -796,64 +864,25 @@ case ${TEST_SUITE} in
                 ;;
         esac
         ;;
-    accessibility*)
-        [[ "$TEST_SUITE" = 'accessibility-prepare' ]] && ACCESSIBILITY_PREPARE=1 || ACCESSIBILITY_PREPARE=0
-        PREPAREPARAMS="-e TYPO3_DB_DRIVER=sqlite"
-        TESTPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
-
-        if [ "${ACCESSIBILITY_USE_EXISTING_INSTANCE}x" = "x" ]; then
-            rm -rf "${CORE_ROOT}/typo3temp/var/tests/playwright-composer" "${CORE_ROOT}/typo3temp/var/tests/playwright-reports" "${CORE_ROOT}/typo3temp/var/tests/playwright-results"
-            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name accessibility-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/playwright-composer" sqlite
-            if [[ $? -gt 0 ]]; then
-                kill -SIGINT -$$
-            fi
-        fi
-
-        [[ -e "${CORE_ROOT}/Build/node_modules/.bin/playwright" ]] || ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX}-npm-ci \
-            -e HOME=${CORE_ROOT}/.cache \
-            ${IMAGE_NODEJS_CHROME} \
-            npm --prefix=Build ci
-            if [[ $? -gt 0 ]]; then
-                kill -SIGINT -$$
-            fi
-
-        APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/playwright-composer/public -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
-        if [[ ${ACCESSIBILITY_PREPARE} -eq 1 ]]; then
-            APACHE_OPTIONS="${APACHE_OPTIONS} -p 127.0.0.1::80"
-        fi
-
-        if [ ${CONTAINER_BIN} = "docker" ]; then
-            ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
-            ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
-        else
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
-        fi
-
-        waitFor web 80
-
-        COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run"
-        if [[ ${ACCESSIBILITY_PREPARE} -eq 0 ]]; then
-            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name accessibility-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
-            SUITE_EXIT_CODE=$?
-        else
-            ACCESSIBILITY_BASE_URL="http://$(${CONTAINER_BIN} port ac-web-${SUFFIX} 80/tcp)/"
-            echo
-            echo -en "\033[32m✓\033[0m "
-            echo "Environment prepared. You can now manually run the following command or press Enter to run all tests."
-            echo
-            echo -n "  "
-            echo "ACCESSIBILITY_BASE_URL=${ACCESSIBILITY_BASE_URL}typo3 ${COMMAND}"
-            echo
-            echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to run tests)"
-            # maybe use https://stackoverflow.com/a/58508884/4223467
-            while read -r _; do
-                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name accessibility-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
-                SUITE_EXIT_CODE=$?
-                echo
-                echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to re-run tests)"
-            done </dev/tty
-        fi
+    e2e)
+        PLAYWRIGHT_PROJECT="--project e2e"
+        PLAYWRIGHT_PREPARE_ONLY=0
+        runPlaywright
+        ;;
+    e2e-prepare)
+        PLAYWRIGHT_PROJECT="--project e2e"
+        PLAYWRIGHT_PREPARE_ONLY=1
+        runPlaywright
+        ;;
+    accessibility)
+        PLAYWRIGHT_PROJECT="--project accessibility"
+        PLAYWRIGHT_PREPARE_ONLY=0
+        runPlaywright
+        ;;
+    accessibility-prepare)
+        PLAYWRIGHT_PROJECT="--project accessibility"
+        PLAYWRIGHT_PREPARE_ONLY=1
+        runPlaywright
         ;;
     buildCss)
         COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt css"
