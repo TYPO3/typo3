@@ -28,6 +28,6 @@ Impact
 ======
 
 You can now mark an already executed upgrade wizard as "undone" with
-:bash:`typo3 upgrade:markUndone <wizardIdentifier>`
+:bash:`typo3 upgrade:mark:undone <wizardIdentifier>`
 
 .. index:: CLI, ext:install
