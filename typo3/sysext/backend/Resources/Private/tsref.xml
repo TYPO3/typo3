@@ -350,11 +350,11 @@ See "config.htmlTag_setParams" for more details on the effect on the html tag.
 ]]></default>
         </property>
         <property name="extTarget" type="string">
-            <description><![CDATA[default external target. Used by typolink if no extTarget is set]]></description>
-            <default><![CDATA[_top]]></default>
+            <description><![CDATA[Default external target. Used by typolink if no extTarget is set.]]></description>
+            <default><![CDATA["" by default, "_blank" if TypoScript settings from Fluid Styled Content are loaded]]></default>
         </property>
         <property name="fileTarget" type="string">
-            <description><![CDATA[Default file link target. Used by typolink if no fileTarget is set. ]]></description>
+            <description><![CDATA[Default file link target. Used by typolink if no fileTarget is set.]]></description>
             <default><![CDATA[
             ]]></default>
         </property>
