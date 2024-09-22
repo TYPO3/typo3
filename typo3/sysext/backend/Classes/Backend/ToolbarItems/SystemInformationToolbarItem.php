@@ -21,7 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
-use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus as DeprectaedInformationStatus;
+use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus as DeprecatedInformationStatus;
 use TYPO3\CMS\Backend\Toolbar\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -77,7 +77,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
 
         if (is_string($status)) {
             trigger_error(
-                'Using a string of the non-native enumeration ' . DeprectaedInformationStatus::class . ' for $status '
+                'Using a string of the non-native enumeration ' . DeprecatedInformationStatus::class . ' for $status '
                 . 'in SystemInformationToolbarItem->addSystemMessage() has been deprecated and will stop working in '
                 . 'TYPO3 v14.0. Use the native ' . InformationStatus::class . ' instead.',
                 E_USER_DEPRECATED
@@ -116,7 +116,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     {
         if (is_string($status)) {
             trigger_error(
-                'Using a string of the non-native enumeration ' . DeprectaedInformationStatus::class . ' for $status '
+                'Using a string of the non-native enumeration ' . DeprecatedInformationStatus::class . ' for $status '
                 . 'in SystemInformationToolbarItem->addSystemInformation() has been deprecated and will stop working in '
                 . 'TYPO3 v14.0. Use the native ' . InformationStatus::class . ' instead.',
                 E_USER_DEPRECATED
