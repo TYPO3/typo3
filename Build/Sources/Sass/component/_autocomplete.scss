@@ -19,6 +19,7 @@ typo3-backend-formengine-suggest-result-list {
     box-shadow: var(--typo3-component-box-shadow);
     font-size: var(--typo3-component-font-size);
     line-height: var(--typo3-component-line-height);
+    padding: 1px;
 }
 
 typo3-backend-formengine-suggest-result-item {
@@ -28,8 +29,8 @@ typo3-backend-formengine-suggest-result-item {
     line-height: var(--typo3-component-line-height);
     padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
     border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
-    color: #{$body-color};
-    background-color: #{$white};
+    color: var(--typo3-component-color);
+    background-color: var(--typo3-component-bg);
     cursor: pointer;
 
     &:hover,
@@ -39,13 +40,15 @@ typo3-backend-formengine-suggest-result-item {
     }
 
     &:hover {
-        background-color: tint-color($primary, 95%);
-        outline: 1px solid tint-color($primary, 85%);
+        color: var(--typo3-list-item-hover-color);
+        background-color: var(--typo3-list-item-hover-bg);
+        outline: 1px solid var(--typo3-list-item-hover-border-color);
     }
 
     &:focus {
-        background-color: tint-color($primary, 95%);
-        outline: 1px solid tint-color($primary, 20%);
+        color: var(--typo3-list-item-focus-color);
+        background-color: var(--typo3-list-item-focus-bg);
+        outline: 1px solid var(--typo3-list-item-focus-border-color);
     }
 
     .formengine-suggest-result-item-icon {
