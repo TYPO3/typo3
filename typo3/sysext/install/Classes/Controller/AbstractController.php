@@ -21,9 +21,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\View\FluidViewAdapter;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
 /**

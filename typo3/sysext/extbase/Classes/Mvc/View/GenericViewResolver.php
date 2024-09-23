@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\View\FluidViewAdapter;
 use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 
 /**

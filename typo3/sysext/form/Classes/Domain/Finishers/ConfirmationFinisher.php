@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\View\FluidViewAdapter;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;

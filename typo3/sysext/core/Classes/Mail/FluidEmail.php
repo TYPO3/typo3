@@ -24,9 +24,9 @@ use Symfony\Component\Mime\Part\AbstractPart;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\View\FluidViewAdapter;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 

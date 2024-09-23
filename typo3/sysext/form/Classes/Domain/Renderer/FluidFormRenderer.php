@@ -23,9 +23,9 @@ namespace TYPO3\CMS\Form\Domain\Renderer;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\View\FluidViewAdapter;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 

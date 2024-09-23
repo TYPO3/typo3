@@ -18,7 +18,7 @@ implementing any view that implements :php-short:`\TYPO3\CMS\Core\View\ViewInter
 and frees the direct dependency to Fluid.
 
 The default return object is an instance of
-:php:`\TYPO3\CMS\Core\View\FluidViewAdapter` which implements all
+:php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter` which implements all
 special methods tailored for Fluid. Extbase controllers should
 check for instance of this object before calling these methods,
 especially:
@@ -48,7 +48,7 @@ Affected installations
 ======================
 
 Instances with Extbase based extensions that call :php:`$view` methods without
-testing for :php-short:`\TYPO3\CMS\Core\View\FluidViewAdapter`.
+testing for :php-short:`\TYPO3\CMS\Fluid\View\FluidViewAdapter`.
 
 
 Migration

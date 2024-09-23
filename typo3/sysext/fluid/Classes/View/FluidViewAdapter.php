@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\View;
+namespace TYPO3\CMS\Fluid\View;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\View\ViewInterface as CoreViewInterface;
@@ -31,6 +31,8 @@ use TYPO3Fluid\Fluid\View\ViewInterface as FluidStandaloneViewInterface;
 
 /**
  * A view adapter that handles a Typo3Fluid view and implements generic ext:core ViewInterface.
+ *
+ * @internal This is a specific view adapter is not considered part of the Public TYPO3 API.
  */
 readonly class FluidViewAdapter implements CoreViewInterface, FluidStandaloneViewInterface, FluidStandaloneTemplateAwareViewInterface
 {

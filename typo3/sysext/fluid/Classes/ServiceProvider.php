@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Fluid;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
-use TYPO3\CMS\Core\View\FluidViewFactory;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
@@ -80,7 +79,7 @@ class ServiceProvider extends AbstractServiceProvider
         ?ViewFactoryInterface $viewFactory = null
     ): ViewFactoryInterface {
         // Provide the default FluidViewFactory for the install tool when $viewFactory is null (that means when we run without symfony DI)
-        return $viewFactory ?? new FluidViewFactory(
+        return $viewFactory ?? new View\FluidViewFactory(
             $container->get(Core\Rendering\RenderingContextFactory::class),
         );
     }

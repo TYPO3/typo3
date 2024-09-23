@@ -15,18 +15,23 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\View;
+namespace TYPO3\CMS\Fluid\View;
 
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Create a view based on fluid.
  *
- * Return an instance of ext:core FluidViewAdapter that implements ext:core ViewInterface.
+ * Return an instance of ext:fluid FluidViewAdapter that implements ext:core ViewInterface.
  *
  * This is the default implementation when a class asks for a ViewFactoryInterface injection.
+ *
+ * @internal This is a specific view factory is not considered part of the Public TYPO3 API.
  */
 #[AsAlias(ViewFactoryInterface::class, public: true)]
 final readonly class FluidViewFactory implements ViewFactoryInterface

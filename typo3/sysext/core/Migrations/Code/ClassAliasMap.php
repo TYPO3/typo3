@@ -17,4 +17,6 @@ declare(strict_types=1);
 
 return [
     'TYPO3\\CMS\\Core\\Database\\Schema\\Types\\EnumType' => \Doctrine\DBAL\Types\EnumType::class,
+    'TYPO3\\CMS\\Core\\View\\FluidViewAdapter' => \TYPO3\CMS\Fluid\View\FluidViewAdapter::class,
+    'TYPO3\\CMS\\Core\\View\\FluidViewFactory' => \TYPO3\CMS\Fluid\View\FluidViewFactory::class,
 ];
