@@ -191,7 +191,7 @@
                 <f:render partial="MultiRecordSelectionActions" />
             </div>
             <form data-multi-record-selection-form="task-group-{groupKey}" name="tx_scheduler_form_{groupKey}" id="tx_scheduler_form_{groupKey}" method="post">
-                <div class="panel-collapse collapse {f:if(condition: '!{group.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{groupKey}" data-table="task-group-{groupKey}">
+                <div class="panel-collapse collapse {f:if(condition: '!{group.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{groupKey}" data-table="task-group-{f:if(condition: '{group.uid}', then: '{group.uid}', else: '{groupKey}')}">
                     <div class="table-fit">
                         <table class="table table-striped table-hover" data-scheduler-table>
                             <thead>
