@@ -54,11 +54,17 @@
 			<trans-unit id="table_setCountHeadline" resname="table_setCountHeadline">
 				<source>Change table size</source>
 			</trans-unit>
-			<trans-unit id="table_buttonApply" resname="table_buttonApply">
-				<source>Apply</source>
+			<trans-unit id="table_buttonUpdate" resname="table_buttonUpdate">
+				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="table_showCode" resname="table_buttonApply">
+			<trans-unit id="table_showCode" resname="table_showCode">
 				<source>Show table code</source>
+			</trans-unit>
+			<trans-unit id="table_showCodeHeadline" resname="table_showCodeHeadline">
+				<source>Table code</source>
+			</trans-unit>
+			<trans-unit id="table_showCodeLabel" resname="table_showCodeLabel">
+				<source>Raw value</source>
 			</trans-unit>
 			<trans-unit id="grid_windowTitle" resname="grid_windowTitle">
 				<source>Set cell name and column number</source>
