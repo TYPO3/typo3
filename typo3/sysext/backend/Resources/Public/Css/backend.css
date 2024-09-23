@@ -2212,6 +2212,7 @@ typo3-backend-navigation-switcher{display:flex}
 }
 .topbar-header-site{overflow:hidden;position:relative;max-width:100%;height:45px;line-height:45px;padding-inline-start:1em;padding-inline-end:1em;white-space:nowrap}
 .topbar-header-site a{display:inline-block;outline:0;padding-inline-start:.5rem;padding-inline-end:.5rem;margin-inline-start:-.5rem}
+.topbar-header-site a:hover{text-decoration:none}
 .topbar-header-site a:focus-visible{box-shadow:inset 0 0 0 1px #000,inset 0 0 0 2px #fff}
 .topbar-header-site:after,.topbar-header-site:before{display:block;content:"";position:absolute;top:0;bottom:0;width:1em}
 .topbar-header-site:before{inset-inline-end:0;background:#151515}
