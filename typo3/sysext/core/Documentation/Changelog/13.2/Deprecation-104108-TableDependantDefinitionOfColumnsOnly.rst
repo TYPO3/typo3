@@ -47,7 +47,7 @@ corresponding table name.
 
 An example, building such link using the `UriBuilder`:
 
-.. code-block:: php
+..  code-block:: php
 
     $urlParameters = [
         'edit' => [
@@ -63,7 +63,7 @@ An example, building such link using the `UriBuilder`:
 
 Above example has to be migrated to:
 
-.. code-block:: php
+..  code-block:: php
 
     $urlParameters = [
         'edit' => [
@@ -85,7 +85,7 @@ Above example has to be migrated to:
 Additionally, when rendering records form different tables, a configuration
 could look like the following:
 
-.. code-block:: php
+..  code-block:: php
 
     $urlParameters = [
         'edit' => [

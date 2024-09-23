@@ -14,15 +14,15 @@ Description
 In the :guilabel:`Web > List` backend module, the data of records for each
 database table (including pages and content records) can be downloaded.
 
-This export takes the current selected list of columns into consideration and
-alternatively allows to choose all columns.
+This export takes the currently selected list of columns into consideration and
+alternatively allows all columns to be selected.
 
-A new feature has been introduced, adding the ability to pick the exported
+A new feature has been introduced adding the ability to pick the exported
 data columns from a list of configurable presets.
 
 Those presets can be configured via page TSconfig, and can also be
-overridden via user TSconfig (for example, to expand certain presets
-only to specific users).
+overridden via user TSconfig (for example, to make certain presets
+only available to specific users).
 
 ..  code-block:: typoscript
     :caption: EXT:my_extension/Configuration/page.tsconfig
@@ -49,8 +49,8 @@ any number of presets.
 Each preset contains a :typoscript:`label` (the displayed name of the preset,
 which can be a locallang key), a comma-separated list of each column that
 should be included in the export as :typoscript:`columns` and optionally
-a :typoscript:`identifier`. In case :typoscript:`identifier` is not provided,
-the identifier is generated as hash of the :typoscript:`label` and
+an :typoscript:`identifier`. If :typoscript:`identifier` is not provided,
+the identifier is generated as a hash of the :typoscript:`label` and
 :typoscript:`columns`.
 
 This can be manipulated with user TSConfig by adding the :typoscript:`page.`
@@ -85,7 +85,7 @@ Additionally, the list of presets can be manipulated via the new
 Impact
 ======
 
-Editors can now export data with specific presets that match their need
+Editors can now export data with specific presets as required
 as identified by the website maintainer or extension developer(s).
 
 It is no longer required to pick specific columns to export over and over again,

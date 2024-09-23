@@ -28,7 +28,7 @@ Tag based view helpers (such as :html:`<f:image />` or :html:`<f:form.*>`) can n
 receive arbitrary tag attributes which will be appended to the resulting HTML tag,
 without dedicated registration.
 
-.. code-block:: html
+..  code-block:: html
 
     <f:form.textfield inputmode="tel" />
     <f:image image="{image}" hidden="hidden" />
@@ -40,7 +40,7 @@ New f:constant ViewHelper
 A :html:`<f:constant>` ViewHelper has been added to be able to access PHP constants from
 Fluid templates:
 
-.. code-block:: html
+..  code-block:: html
 
     {f:constant(name: 'PHP_INT_MAX')}
     {f:constant(name: '\Vendor\Package\Class::CONSTANT')}

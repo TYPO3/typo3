@@ -12,18 +12,18 @@ Description
 ===========
 
 Previously, the listing in the :guilabel:`Check Links` backend module
-provided the possibility to edit the field of a record, a broken link has
-been identified for. However, in some cases relevant context might be missing,
+provided the possibility to edit the field of a record that has been identified
+as having a broken link. However, in some cases relevant context might be missing,
 e.g. when editing redirect records.
 
-Therefore, a new button has been introduced, which allows to edit the
-full record of the broken link. The new button is placed next to the
+Therefore, a new button has been introduced which allows the full record of the
+broken link to be edited. The new button is placed next to the
 existing - single field - edit button.
 
 Impact
 ======
 
 A new button is now displayed in the :guilabel:`Check Links` backend module,
-allowing to edit the full record of a broken link.
+allowing the full record of a broken link to be edited.
 
 .. index:: Backend, ext:linkvalidator

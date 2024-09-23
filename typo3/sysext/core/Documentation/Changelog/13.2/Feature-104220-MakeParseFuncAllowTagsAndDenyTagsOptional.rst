@@ -29,7 +29,7 @@ unless :typoscript:`htmlSanitize` is disabled explicitly.
 Examples
 --------
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     10 = TEXT
     10.value = <p><em>Example</em> <u>underlined</u> text</p>
@@ -41,7 +41,7 @@ Examples
 
 The example above allows any tag, except :html:`<u>` which will be encoded.
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     10 = TEXT
     10.value = <p><em>Example</em> <u>underlined</u> text</p>
@@ -52,7 +52,7 @@ The example above allows any tag, except :html:`<u>` which will be encoded.
 
 The example above only allows :html:`<u>` and encodes any other tag.
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     10 = TEXT
     10.value = <p><em>Example</em> <u>underlined</u> text</p>

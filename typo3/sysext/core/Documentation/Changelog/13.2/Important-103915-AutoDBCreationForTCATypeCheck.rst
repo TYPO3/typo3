@@ -74,9 +74,9 @@ This means, for all custom extension code that
 * *and* relied on the database field definition default
 
 may have created wrong database records when used between
-TYPO3 v13.0 and 13.2.
+TYPO3 v13.0 and v13.2.
 
-For TYPO3 core code, this has only affected:
+For TYPO3 Core code, this has only affected:
 
 * Default file storage creation, field :sql:`sys_file_metadata.auto_extract_metadata`
 * Default backend user creation (admin) property :sql:`be_users.options`

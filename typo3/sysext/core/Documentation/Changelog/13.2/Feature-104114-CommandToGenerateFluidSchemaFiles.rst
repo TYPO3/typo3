@@ -16,7 +16,7 @@ been introduced, which was previously a separate composer package. These XSD fil
 allow IDEs to provide autocompletion for ViewHelper arguments in Fluid templates,
 provided that they are included in the template by using the xmlns syntax:
 
-.. code-block:: html
+..  code-block:: html
 
     <html
         xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"

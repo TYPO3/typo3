@@ -12,11 +12,11 @@ Description
 ===========
 
 Configuration option :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields']`
-has been obsoleted, its handling has been removed with TYPO3 core v13.2.
+has been obsoleted, its handling has been removed with TYPO3 Core v13.2.
 
 This option is well-known to integrators who add relations to the TCA :sql:`pages`
-table: It triggers relation resolving of page relations for additional fields when
-rendering a frontend request in default language. The most common usage is
+table. It triggers relation resolving of page relations for additional fields when
+rendering a frontend request in the default language. The most common usage is
 TypoScript "slide".
 
 Impact
@@ -42,7 +42,7 @@ is configured to locate such usages.
 Migration
 =========
 
-The option is no longer evaluated in TYPO3 core. It is removed from
+The option is no longer evaluated in TYPO3 Core. It is removed from
 :php:`settings.php` during upgrade, if given.
 
 

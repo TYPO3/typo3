@@ -25,7 +25,7 @@ changing records in the backend by the :php:`DataHandler` automatically.
 
 In general, fully updating the reference index is required when database
 relations defined in TCA change - typically when adding, removing
-or changing extensions, and after TYPO3 core updates (also patch level).
+or changing extensions, and after TYPO3 Core updates (also patch level).
 
 It is strongly recommended to update the reference index after deployments.
 Note TYPO3 v13 optimized this operation, a full update is usually much
@@ -34,7 +34,7 @@ quicker than with previous versions.
 The typical and recommended way to rebuild and fully update the
 reference index is this CLI command:
 
-.. code-block:: bash
+..  code-block:: bash
 
     bin/typo3 referenceindex:update
 

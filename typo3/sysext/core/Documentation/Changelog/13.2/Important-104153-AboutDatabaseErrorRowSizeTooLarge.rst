@@ -19,7 +19,7 @@ when modifying the schema of tables with numerous columns. This document aims to
 provide a detailed explanation of this error and presents solutions for TYPO3
 instance maintainers to address it.
 
-Note that TYPO3 core v13 has implemented measures to mitigate this error in
+Note that TYPO3 Core v13 has implemented measures to mitigate this error in
 most scenarios. Therefore, instance maintainers typically do not need to
 address the specific details outlined below.
 
@@ -46,12 +46,12 @@ Ensure storage engine is 'InnoDB'
 .................................
 
 TYPO3 typically utilizes the :sql:`InnoDB` storage engine for tables in MySQL / MariaDB
-databases. However, instances upgraded from older TYPO3 core versions might still
-employ different storage engines for some tables. While the TYPO3 core plans to
+databases. However, instances upgraded from older TYPO3 Core versions might still
+employ different storage engines for some tables. While the TYPO3 Core plans to
 automatically detect and transition these to :sql:`InnoDB` in the future, it is advisable
 for maintainers to manually verify the storage engine currently in use:
 
-.. code-block:: sql
+..  code-block:: sql
 
     SELECT `TABLE_NAME`,`ENGINE`
     FROM `information_schema`.`TABLES`
@@ -60,7 +60,7 @@ for maintainers to manually verify the storage engine currently in use:
 
 Tables *not* using :sql:`InnoDB` should be converted to :sql:`InnoDB`:
 
-.. code-block:: sql
+..  code-block:: sql
 
     USE `my_database`;
     ALTER TABLE `tt_content` ENGINE=InnoDB;
@@ -71,12 +71,12 @@ Ensure InnoDB row format is 'Dynamic'
 The :sql:`InnoDB` row format dictates how data is physically stored. The :sql:`Dynamic` row
 format provides better support for tables with many variable-length columns and
 has been the default format for some time. However, instances upgraded from
-older TYPO3 core versions and older MySQL / MariaDB engines might still use the
-previous default format :sql:`Compact`. While the TYPO3 core intends to automatically
+older TYPO3 Core versions and older MySQL / MariaDB engines might still use the
+previous default format :sql:`Compact`. While the TYPO3 Core intends to automatically
 detect and transition such tables to the :sql:`Dynamic` row format in the future, it
 is recommended that maintainers manually verify the format currently in use:
 
-.. code-block:: sql
+..  code-block:: sql
 
     SELECT `TABLE_NAME`,`Row_format`
     FROM `information_schema`.`TABLES`
@@ -85,7 +85,7 @@ is recommended that maintainers manually verify the format currently in use:
 
 Tables *not* using 'Dynamic' should be converted:
 
-.. code-block:: sql
+..  code-block:: sql
 
     USE 'my_database`;
     ALTER TABLE `tt_content` ROW_FORMAT=DYNAMIC;
@@ -105,7 +105,7 @@ multiplied by four (4). For example, a :sql:`VARCHAR(20)` can take up to eighty
 *bytes*. In contrast, a :sql:`VARCHAR(20)` in a :sql:`latin1` column will consume
 only twenty (20) *bytes*, as each *character* is only one byte long.
 
-The TYPO3 core may set individual columns to a charset like :sql:`latin1` in the
+The TYPO3 Core may set individual columns to a charset like :sql:`latin1` in the
 future to optimize storage needs for columns that store only ASCII characters,
 but most content-related columns should usually be :sql:`utf8mb4` to avoid issues
 with multi-byte characters.
@@ -113,7 +113,7 @@ with multi-byte characters.
 Note that column types that do not store characters (like :sql:`INT`) do not have
 a charset set at all. An overview of current charsets can be retrieved:
 
-.. code-block:: sql
+..  code-block:: sql
 
     # Default charset of the database, new tables use this charset when no
     # explicit charset is given with a "CREATE TABLE" statement:
@@ -141,7 +141,7 @@ Few instances modify the MySQL / MariaDB :sql:`innodb_page_size` system variable
 and it is advisable to keep it at the default value of :sql:`16384`. Verify the
 current value:
 
-.. code-block:: sql
+..  code-block:: sql
 
     SHOW variables WHERE `Variable_name`='innodb_page_size';
 
@@ -157,7 +157,7 @@ specific column charsets, and :sql:`innodb_page_size` default :sql:`16384` is ke
 Error "Row size too large 65535"
 --------------------------------
 
-.. code-block:: plaintext
+..  code-block:: plaintext
 
     ERROR 1118 (42000): Row size too large. The maximum row size for the used table type,
     not counting BLOBs, is 65535. This includes storage overhead, check the manual. You
@@ -185,14 +185,14 @@ of all other table columns.
 As another example, consider the query below attempting to create a table with
 a :sql:`VARCHAR(16383)` column alongside an :sql:`INT` column:
 
-.. code-block:: sql
+..  code-block:: sql
 
     # ERROR 1118 (42000): Row size too large. The maximum row size [...] is 65535
     CREATE TABLE test (c1 varchar(16383), c2 int) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 Let's break down the calculation:
 
-.. code-block:: plaintext
+..  code-block:: plaintext
 
     varchar 16383 characters = 16383 * 4 bytes = 65532 bytes
     int = 4 bytes
@@ -206,7 +206,7 @@ Mitigation
 The primary strategy to mitigate the 65kB limit is to minimize the use of
 lengthy :sql:`VARCHAR` columns.
 
-For instance, in the :sql:`tt_content` table of a default core instance, there
+For instance, in the :sql:`tt_content` table of a default Core instance, there
 are approximately a dozen :sql:`VARCHAR(255)` columns, totaling about 12kB,
 alongside smaller :sql:`INT` and similar fields. This allocation leaves ample
 room for additional custom :sql:`VARCHAR()` columns.
@@ -219,7 +219,7 @@ The :sql:`tt_content` table was affected by this change with at least one
 column (:sql:`header_link`). This adjustment provides more space by default for
 custom columns.
 
-Additionally, the TYPO3 core now defaults to using :sql:`TEXT` instead of
+Additionally, the TYPO3 Core now defaults to using :sql:`TEXT` instead of
 :sql:`VARCHAR()` for TCA fields with :php:`type='input'` when the TCA property
 :php:`max` is set to a value greater than :php:`255` and extension authors utilize
 the :ref:`column auto creation feature <feature-101553-1691166389>`.
@@ -241,15 +241,15 @@ considerations in mind:
   However, be cautious as setting :sql:`VARCHAR()` columns to "too short" lengths
   may impose a different limit, as discussed below.
 
-* Consider removing entries from :file:`ext_tables.sql` with TYPO3 core v13: The
+* Consider removing entries from :file:`ext_tables.sql` with TYPO3 Core v13: The
   :ref:`column auto creation feature <feature-101553-1691166389>` generally provides
   better-defined column definitions and ensures columns stay synchronized with TCA
-  definitions automatically. The TYPO3 core aims to provide sensible default
+  definitions automatically. The TYPO3 Core aims to provide sensible default
   definitions, often superior to a potentially imprecise definition by extension
   authors.
 
 * Note that individual column definitions in :file:`ext_tables.sql` always override
-  TYPO3 core v13's column auto creation feature: In rare cases where TYPO3 core makes
+  TYPO3 Core v13's column auto creation feature: In rare cases where TYPO3 Core makes
   unfavorable decisions, extension authors can always override these details.
 
 * Note :sql:`utf8mb4` :sql:`VARCHAR(255)` and :sql:`TINYTEXT` are *not* the same:
@@ -276,14 +276,14 @@ considerations in mind:
 Error "Row size too large (> 8126)"
 -----------------------------------
 
-.. code-block:: plaintext
+..  code-block:: plaintext
 
     ERROR 1118 (42000): Row size too large (> 8126). Changing some columns to TEXT
     or BLOB may help. In current row format, BLOB prefix of 0 bytes is stored inline.
 
 Sometimes also an error similar to this in MySQL / MariaDB logs:
 
-.. code-block:: plaintext
+..  code-block:: plaintext
 
     [Warning] InnoDB: Cannot add field col1 in table db1.tab because after adding it,
     the row size is 8478 which is greater than maximum allowed size (8126) for a record
@@ -320,8 +320,8 @@ columns, enabling InnoDB to store them on overflow pages.
 Mitigation
 ..........
 
-TYPO3 core v13 modified several default columns to mitigate the issue for instances
-with many custom columns. The TYPO3 core maintainers expect this issue to occur
+TYPO3 Core v13 modified several default columns to mitigate the issue for instances
+with many custom columns. The TYPO3 Core maintainers expect this issue to occur
 infrequently in practice.
 
 Instances encountering the 8192 bytes limit can consider adjusting fields with these
@@ -348,9 +348,9 @@ considerations in mind:
 * Columns using :sql:`utf8mb4` that are smaller or equal to :sql:`VARCHAR(63)` and
   only store ASCII characters can be downsized by changing the charset to :sql:`latin1`.
   For instance, a :sql:`VARCHAR(60)` column occupies 4 * 60 = 240 bytes in row size,
-  but only 60 bytes when using the :sql:`latin1` charset. Currently, TYPO3 core does
+  but only 60 bytes when using the :sql:`latin1` charset. Currently, TYPO3 Core does
   not interpret charset definitions for individual columns from :sql:`ext_tables.sql`.
-  The core team anticipates implementing this feature in the future.
+  The Core Team anticipates implementing this feature in the future.
 
 * Note that increasing the length of :sql:`VARCHAR` columns can potentially conflict
   with the 65kB limit mentioned earlier. This is another reason to avoid indiscriminately
@@ -372,7 +372,7 @@ Final words
 -----------
 
 Navigating the two limits in MySQL / MariaDB requires a deep understanding of
-database engine internals to manage effectively. The TYPO3 core team is confident
+database engine internals to manage effectively. The TYPO3 Core Team is confident
 that version 13 has effectively mitigated the issue, ensuring that typical instances
 will rarely encounter it. We trust this document remains helpful and welcome any
 feedback in case something crucial has been overlooked.

@@ -14,14 +14,14 @@ Description
 This feature introduces the new PSR-14 event
 :php:`ModifyRedirectUrlValidationResultEvent` in the felogin extension to
 provide developers the possibility and flexibility to implement custom
-validation for the redirect URL. This may be useful, if TYPO3 frontend login
+validation for the redirect URL. This may be useful if TYPO3 frontend login
 acts as an SSO system or if users should be redirected to an external URL after
 login.
 
 Example
 -------
 
-.. code-block:: php
+..  code-block:: php
 
     <?php
 
@@ -47,7 +47,7 @@ Impact
 ======
 
 Developers now have the possibility to modify the validation results for the
-redirect URL, allowing redirects to URLs not matching the existing validation
+redirect URL, allowing redirects to URLs not matching existing validation
 constraints.
 
 .. index:: Frontend, PHP-API, ext:felogin

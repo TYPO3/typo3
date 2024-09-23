@@ -21,13 +21,13 @@ or JSON format.
 
 The event class offers the following methods:
 
-- :php:`getPresets()`: Returns list of presets set via TSconfig
+- :php:`getPresets()`: Returns a list of presets set via TSconfig
 - :php:`setPresets()`: Sets a modified list of presets.
 - :php:`getDatabaseTable()`: Returns the database table name that a preset applies to.
 - :php:`getRequest()`: Returns the PSR Request object for the context of the request.
 - :php:`getId()`: Returns the page ID of the originating page.
 
-Note that the event is dispatched for one specific database table name. If
+Note that the event is dispatched for one specific database table. If
 an event listener is created to attach presets to different tables, the
 listener method must check for the table name, as shown in the example below.
 
@@ -37,13 +37,13 @@ be used to modify and add presets to it via the :php:`setPresets()` method.
 The array passed from :php:`getPresets()` to :php:`setPresets()` can contain
 an array collection of :php:`TYPO3\CMS\Backend\RecordList\DownloadPreset`
 objects with the array key using the preset label.
-The existing presets can be retrieved with those getters:
+The existing presets can be retrieved with these getters:
 
 - :php:`$preset->getLabel()`: Name of the preset (can utilize LLL translations), optional.
 - :php:`$preset->getColumns()`: Array of database table column names.
 - :php:`$preset->getIdentifier()`: Identifier of the preset (manually set or calculated based on label and columns)
 
-The event listener can also remove array indexes, or also columns of existing
+The event listener can also remove array indexes or columns of existing
 array entries by passing a newly constructed :php:`DownloadPreset` object with the
 changed `label` and `columns` constructor properties.
 
@@ -98,7 +98,7 @@ Impact
 ======
 
 Using the PSR-14 event :php:`BeforeRecordDownloadPresetsAreDisplayedEvent`
-it's now possible to modify the available presets of each table for
+it is now possible to modify the presets of each table for
 downloading / exporting a list of such records via the :guilabel:`Web > List`
 module.
 

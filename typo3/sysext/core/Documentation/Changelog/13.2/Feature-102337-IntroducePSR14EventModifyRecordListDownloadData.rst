@@ -12,7 +12,7 @@ Description
 ===========
 
 A new PSR-14 event :php:`TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadIsExecutedEvent`
-has been introduced to modify the result of a download / export initiated via
+has been introduced to modify the result of a download / export initiated in
 the :guilabel:`Web > List` module.
 
 This replaces the
@@ -21,8 +21,8 @@ and
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['customizeCsvRow']`,
 hooks, which have been :ref:`deprecated <deprecation-102337-1715591179>`.
 
-The event allows to modify both body and header section of the data
-dump, so it can e.g. be used to redact specific data for GDPR compliance,
+The event allows body and header sections of the data dump to be modified,
+so that they can e.g. be used to redact specific data for GDPR compliance,
 transform / translate specific data, trigger creation of archives or web hooks,
 log export access and more.
 
@@ -92,8 +92,8 @@ The corresponding event listener class:
 Migration
 =========
 
-The functionality of both hooks (:php:`customizeCsvHeader` and
-:php:`customizeCsvRow`) is now handled by the new PSR-14 event.
+The functionality of both hooks :php:`customizeCsvHeader` and
+:php:`customizeCsvRow` are now handled by the new PSR-14 event.
 
 Migrating :php:`customizeCsvHeader`
 -----------------------------------
@@ -106,7 +106,7 @@ reference) is accessible via :php:`$event->getHeaderRow()`.
 Migrating :php:`customizeCsvRow`
 --------------------------------
 
-The following prior hook parameters/variables have these substitutes:
+The prior hook parameters/variables have the following substitutes:
 
 - :php:`databaseRow` is now available via :php:`$event->getRecords()` (see note below).
 - :php:`tableName` is now available via :php:`$event->getTable()`.
@@ -119,12 +119,12 @@ reference) is accessible via :php:`$event->getRecords()`.
 Please note that the hook was previously executed once per row retrieved
 from the database. The PSR-14 event however - due to performance reasons -
 is only executed for the full record list after database retrieval,
-thus allows post-processing on this whole dataset.
+thus allowing post-processing on the whole dataset.
 
 Impact
 ======
 
-Using the PSR-14 event :php:`BeforeRecordDownloadIsExecutedEvent` it's
+Using the PSR-14 event :php:`BeforeRecordDownloadIsExecutedEvent` it is
 now possible to modify all of the data available when downloading / exporting
 a list of records via the :guilabel:`Web > List` module.
 

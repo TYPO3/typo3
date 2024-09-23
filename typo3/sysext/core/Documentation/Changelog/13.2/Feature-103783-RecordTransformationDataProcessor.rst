@@ -17,16 +17,16 @@ A new TypoScript data processor for :typoscript:`FLUIDTEMPLATE` and
 The :typoscript:`record-transformation` Data Processor can typically be used in
 conjunction with the DatabaseQuery Data Processor. The DatabaseQuery Data
 Processor typically fetches records from the database, and the
-:typoscript:`record-transformation` will take the result, and transforms
-the objects into :php:`Record` objects, which contain only relevant data from
+:typoscript:`record-transformation` will take the result and transform
+the objects into :php:`Record` objects, which contain relevant data from
 the TCA table, which has been configured in the TCA columns fields for this
 record.
 
 This is especially useful for TCA tables, which contain "types" (such as pages
 or tt_content database tables), where only relevant fields are added to the
 record object. In addition, special fields from "enableColumns" or deleted
-fields, next to language and version information are extracted so they can be
-addressed in a unified way.
+fields, as well as language and version information are extracted so they can be
+dealt with in a unified way.
 
 The "type" property contains the database table name and the actual type based
 on the record, such as "tt_content.textmedia" for Content Elements.
@@ -34,17 +34,17 @@ on the record, such as "tt_content.textmedia" for Content Elements.
 ..  note::
 
     The Record object is available but details are still to be finalized in
-    the API until TYPO3 v13 LTS. Right now only the usage in Fluid is public
+    the API by TYPO3 v13 LTS. Right now only the usage in Fluid is public
     API.
 
 
 Impact
 ======
 
-Example usage for the data processor in conjunction with DatabaseQuery
+Example of the data processor being used in conjunction with DatabaseQuery
 processor.
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     page = PAGE
     page {
@@ -68,7 +68,7 @@ object. This can be used for Content Elements of Fluid Styled Content or
 custom ones. In this example the FSC element "Text" has its data transformed for
 easier and enhanced usage.
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     tt_content.text {
       templateName = Text
@@ -84,12 +84,12 @@ Usage in Fluid templates
 ------------------------
 
 The :html:`f:debug` output of the Record object is misleading for integrators,
-as most properties are accessed differently as one would assume. The debug view
-is most of all a better organized overview of all available information. E.g.
+as most properties are accessed differently than would be expected. The debug view
+is a better organized overview of all the available information. E.g.
 the property `properties` lists all relevant fields for the current Content
 Type.
 
-We are dealing with an object here. You however can access your record
+We are dealing with an object here. You can, however, access your record
 properties as you are used to with :html:`{record.title}` or
 :html:`{record.uid}`. In addition, you gain special, context-aware properties
 like the language :html:`{record.languageId}` or workspace
@@ -97,7 +97,7 @@ like the language :html:`{record.languageId}` or workspace
 
 Overview of all possibilities:
 
-.. code-block:: html
+..  code-block:: html
 
     <!-- Any property, which is available in the Record (like normal) -->
     {record.title}
@@ -151,9 +151,9 @@ Overview of all possibilities:
 
 .. note::
 
-    The :html:`{record}` object contains only the properties, relevant for
-    the current record type (e.g. `CType` for :php:`tt_content`). In case
-    you need to access properties, which are not defined for the record
+    The :html:`{record}` object contains only properties relevant for
+    the current record type (e.g. `CType` for :php:`tt_content`). If
+    you need to access properties which are not defined for the record
     type, which is usually the case for fields of TCA type `passthrough`,
     the "raw" record can be used by accessing it via :html:`{record.rawRecord}`.
     Note that those properties are not transformed (:ref:`feature-103581-1723209131`).
@@ -162,7 +162,7 @@ Overview of all possibilities:
 Available options
 ------------------
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
     The variable that contains the record(s) from a previous data processor,
     or from a FLUIDTEMPLATE view. Default is :typoscript:`data`.

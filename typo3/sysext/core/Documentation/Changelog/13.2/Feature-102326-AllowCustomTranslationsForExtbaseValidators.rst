@@ -3,7 +3,7 @@
 .. _feature-102326-1699707043:
 
 ===================================================================
-Feature: #102326 - Allow custom translations for extbase validators
+Feature: #102326 - Allow custom translations for Extbase validators
 ===================================================================
 
 See :issue:`102326`
@@ -11,14 +11,14 @@ See :issue:`102326`
 Description
 ===========
 
-All validation messages from included extbase validators can now be overwritten
+All validation messages from Extbase validators can now be overwritten
 using validator options. It is possible to provide either a translation key or
 a custom message as string.
 
-Extbase validators providing only one validation message allow to overwrite the
+Extbase validators providing only one validation message can be overwritten by a
 translation key or message using the validator option :php:`message`. Validators
 providing multiple validation messages (e.g. :php:`Boolean`, :php:`NotEmpty` or
-:php:`NumberRange`) use different validator options keys. In general, possible
+:php:`NumberRange`) use different validator options keys. In general,
 translation keys or messages for validators are registered in the validator
 property :php:`translationOptions`.
 
@@ -41,7 +41,7 @@ Example with translations
 In this example, translation option keys for the :php:`NotEmptyValidator` are
 overwritten for the property :php:`$myProperty`. The :php:`locallang.xlf`
 translation file from the extension :php:`my_extension` will be used to lookup
-translations for the new provided translation key options.
+translations for the newly provided translation key options.
 
 Example with a custom string
 ----------------------------
@@ -58,15 +58,15 @@ Example with a custom string
     ])]
     protected float $myProperty = 0.0;
 
-In this example, translation option keys for the :php:`FloatValidator` is
-overwritten for the property :php:`$myProperty`. The given message string is
-shown directly, if validation fails.
+In this example, translation option keys for the :php:`FloatValidator` are
+overwritten for the property :php:`$myProperty`. The message string is
+shown if validation fails.
 
 Impact
 ======
 
 The new validator translation option keys allow developers to define unique
-validation messages for TYPO3 extbase validators on validator usage basis. This
+validation messages for TYPO3 Extbase validators on validator usage basis. This
 may result in a better user experience, since validation messages now can refer
 to the current usage scope (e.g. "The field 'Title' is required" instead of
 "The given subject was empty.").
