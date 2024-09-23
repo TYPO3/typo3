@@ -79,11 +79,14 @@ readonly class RecordFieldTransformer
         protected LinkService $linkService,
         protected TypoLinkCodecService $typoLinkCodecService,
         protected ConnectionPool $connectionPool,
-        protected RecordIdentityMap $recordIdentityMap,
     ) {}
 
-    public function transformField(FieldTypeInterface $fieldInformation, RawRecord $rawRecord, Context $context): mixed
-    {
+    public function transformField(
+        FieldTypeInterface $fieldInformation,
+        RawRecord $rawRecord,
+        Context $context,
+        RecordIdentityMap $recordIdentityMap,
+    ): mixed {
         $fieldValue = $rawRecord->get($fieldInformation->getName());
 
         // type=file needs to be handled before RelationalFieldTypeInterface
@@ -110,40 +113,26 @@ readonly class RecordFieldTransformer
             $recordFactory = GeneralUtility::makeInstance(RecordFactory::class);
             if ($fieldInformation->getRelationshipType()->hasOne()) {
                 return new RecordPropertyClosure(
-                    function () use ($rawRecord, $fieldInformation, $context, $recordFactory): ?RecordInterface {
+                    function () use ($rawRecord, $fieldInformation, $context, $recordFactory, $recordIdentityMap): ?RecordInterface {
                         $recordData = $this->relationResolver->resolve($rawRecord, $fieldInformation, $context)[0] ?? null;
                         if ($recordData === null) {
                             return null;
                         }
                         $dbTable = $recordData['table'];
                         $row = $recordData['row'];
-                        // check RecordIdentityMap for already loaded records
-                        if ($this->recordIdentityMap->hasIdentifier($dbTable, (int)$row['uid'])) {
-                            $record = $this->recordIdentityMap->findByIdentifier($dbTable, (int)$row['uid']);
-                        } else {
-                            $record = $recordFactory->createResolvedRecordFromDatabaseRow($dbTable, $row, $context);
-                            $this->recordIdentityMap->add($record);
-                        }
-                        return $record;
+                        return $recordFactory->createResolvedRecordFromDatabaseRow($dbTable, $row, $context, $recordIdentityMap);
                     }
                 );
             }
             return new LazyRecordCollection(
                 $fieldValue,
-                function () use ($rawRecord, $fieldInformation, $context, $recordFactory): array {
+                function () use ($rawRecord, $fieldInformation, $context, $recordFactory, $recordIdentityMap): array {
                     $relationalRecords = [];
                     $recordData = $this->relationResolver->resolve($rawRecord, $fieldInformation, $context);
                     foreach ($recordData as $singleRecordData) {
                         $dbTable = $singleRecordData['table'];
                         $row = $singleRecordData['row'];
-                        // check RecordIdentityMap for already loaded records
-                        if ($this->recordIdentityMap->hasIdentifier($dbTable, (int)$row['uid'])) {
-                            $relationalRecords[] = $this->recordIdentityMap->findByIdentifier($dbTable, (int)$row['uid']);
-                        } else {
-                            $record = $recordFactory->createResolvedRecordFromDatabaseRow($dbTable, $row, $context);
-                            $this->recordIdentityMap->add($record);
-                            $relationalRecords[] = $record;
-                        }
+                        $relationalRecords[] = $recordFactory->createResolvedRecordFromDatabaseRow($dbTable, $row, $context, $recordIdentityMap);
                     }
                     return $relationalRecords;
                 }
@@ -174,7 +163,7 @@ readonly class RecordFieldTransformer
         }
         if ($fieldInformation->isType(TableColumnType::FLEX)) {
             /** @var FlexFormFieldType $fieldInformation */
-            return new RecordPropertyClosure(fn(): array => $this->processFlexForm($rawRecord, $fieldInformation, (string)$fieldValue, $context));
+            return new RecordPropertyClosure(fn(): array => $this->processFlexForm($rawRecord, $fieldInformation, (string)$fieldValue, $context, $recordIdentityMap));
         }
         if ($fieldInformation->isType(TableColumnType::JSON)) {
             return new RecordPropertyClosure(
@@ -218,8 +207,13 @@ readonly class RecordFieldTransformer
      * selected Schema. Ideally, this should be "FlexRecord" objects, and also keep the original values.
      * This functionality will likely change in the future.
      */
-    protected function processFlexForm(RawRecord $record, FlexFormFieldType $fieldInformation, mixed $fieldValue, Context $context): array
-    {
+    protected function processFlexForm(
+        RawRecord $record,
+        FlexFormFieldType $fieldInformation,
+        mixed $fieldValue,
+        Context $context,
+        RecordIdentityMap $recordIdentityMap,
+    ): array {
         $plainValues = $this->flexFormService->convertFlexFormContentToArray((string)$fieldValue);
         $usedSchema = $this->flexFormSchemaFactory->getSchemaForRecord(
             $record,
@@ -245,7 +239,7 @@ readonly class RecordFieldTransformer
                 }
                 $rawRecordValues = array_replace($record->toArray(), [$fieldInformationOfFlexField->getName() => $plainFieldValue]);
                 $fakeRawRecordWithFlexField = $recordFactory->createRawRecord($record->getMainType(), $rawRecordValues);
-                $transformedValue = $this->transformField($fieldInformationOfFlexField, $fakeRawRecordWithFlexField, $context);
+                $transformedValue = $this->transformField($fieldInformationOfFlexField, $fakeRawRecordWithFlexField, $context, $recordIdentityMap);
                 $resolvedValues[$fieldName] = $transformedValue;
             }
             return ArrayUtility::unflatten($resolvedValues);

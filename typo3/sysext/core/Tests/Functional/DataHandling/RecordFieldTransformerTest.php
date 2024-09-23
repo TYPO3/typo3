@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
 use TYPO3\CMS\Core\Domain\Exception\RecordPropertyException;
+use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
@@ -61,7 +62,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $propertyClosure = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
@@ -86,7 +88,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $propertyClosure = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
@@ -107,7 +110,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         foreach ($result as $fileReference) {
@@ -134,7 +138,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         foreach ($result as $fileReference) {
@@ -162,7 +167,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $propertyClosure = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
@@ -189,7 +195,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $propertyClosure = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
@@ -211,6 +218,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
             $fieldInformation,
             $dummyRecord,
             $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         foreach ($result as $folder) {
@@ -245,7 +253,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -270,7 +279,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -309,7 +319,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -334,7 +345,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -368,7 +380,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -395,7 +408,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $context
+            $context,
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(1, $result);
@@ -425,7 +439,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $context
+            $context,
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(1, $result);
@@ -449,7 +464,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $propertyClosure = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
@@ -476,7 +492,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -503,7 +520,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $propertyClosure = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
@@ -533,7 +551,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -563,7 +582,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(1, $result);
@@ -590,7 +610,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(LazyRecordCollection::class, $result);
@@ -633,7 +654,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -661,7 +683,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
         self::assertCount(4, $result);
         self::assertInstanceOf(LazyRecordCollection::class, $result);
@@ -693,7 +716,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -750,7 +774,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         $result = $result instanceof RecordPropertyClosure ? $result->instantiate() : $result;
@@ -817,7 +842,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         )->instantiate();
 
         self::assertSame($expected, $result);
@@ -880,7 +906,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertSame($expected, $result?->format('c'));
@@ -900,7 +927,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertSame('1', $result);
@@ -921,7 +949,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $propertyClosure = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
@@ -950,7 +979,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $propertyClosure = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
@@ -979,7 +1009,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $propertyClosure = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(RecordPropertyClosure::class, $propertyClosure);
@@ -1005,7 +1036,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(LazyRecordCollection::class, $result);
@@ -1032,7 +1064,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertInstanceOf(LazyRecordCollection::class, $result);
@@ -1056,7 +1089,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -1072,6 +1106,42 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function recordIdentitiyMapIsRespected(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/select_foreign.csv');
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_select_foreign_multiple' => '1,2',
+        ]);
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_select_foreign_multiple');
+
+        $dummyRecordData = array_replace_recursive($this->getTestRecord(), ['uid' => 1, 'pid' => 1, 'title' => 'Testing #1', 'record_collection' => 0]);
+        $dummyRecordRelation = $this->get(RecordFactory::class)
+            ->createFromDatabaseRow('test_record', $dummyRecordData)
+            ->getRawRecord();
+        $recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
+        $recordIdentityMap->add($dummyRecordRelation);
+
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            $recordIdentityMap
+        );
+
+        self::assertCount(2, $result);
+        self::assertSame('Testing #1', $result[0]->get('title'));
+        self::assertSame('Record 2', $result[1]->get('title'));
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray(), null, $recordIdentityMap);
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_select_foreign_multiple');
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRelation);
+        self::assertCount(2, $resolvedRelation);
+        self::assertSame('Testing #1', $resolvedRelation[0]->get('title'));
+        self::assertSame('Record 2', $resolvedRelation[1]->get('title'));
+    }
+
+    #[Test]
     public function canResolveSelectForeignTableMultipleAndSame(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/foreign_table_select_multiple.csv');
@@ -1083,7 +1153,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(2, $result);
@@ -1116,7 +1187,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
 
         self::assertCount(1, $result);
@@ -1161,7 +1233,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         )->instantiate();
 
         self::assertIsArray($result);
@@ -1211,7 +1284,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
-            $this->get(Context::class)
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
         )->instantiate();
 
         self::assertIsArray($result);

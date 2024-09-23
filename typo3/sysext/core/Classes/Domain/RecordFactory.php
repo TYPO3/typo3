@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
 use TYPO3\CMS\Core\Domain\Event\RecordCreationEvent;
 use TYPO3\CMS\Core\Domain\Exception\IncompleteRecordException;
 use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
+use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Domain\Record\LanguageInfo;
 use TYPO3\CMS\Core\Domain\Record\SystemProperties;
@@ -101,9 +102,14 @@ readonly class RecordFactory
      * their values resolved and extended. A typical use-case is resolving
      * of related records, or using \DateTimeImmutable objects for datetime fields.
      */
-    public function createResolvedRecordFromDatabaseRow(string $table, array $record, ?Context $context = null): RecordInterface
+    public function createResolvedRecordFromDatabaseRow(string $table, array $record, ?Context $context = null, ?RecordIdentityMap $recordIdentityMap = null): RecordInterface
     {
         $context = $context ?? GeneralUtility::makeInstance(Context::class);
+        /** @var RecordIdentityMap $recordIdentityMap */
+        $recordIdentityMap = $recordIdentityMap ?? GeneralUtility::makeInstance(RecordIdentityMap::class);
+        if ($recordIdentityMap->hasIdentifier($table, (int)($record['uid'] ?? 0))) {
+            return $recordIdentityMap->findByIdentifier($table, (int)$record['uid']);
+        }
         $properties = [];
         $rawRecord = $this->createRawRecord($table, $record);
         $schema = $this->schemaFactory->get($table);
@@ -133,10 +139,13 @@ readonly class RecordFactory
             $properties[$fieldName] = $this->fieldTransformer->transformField(
                 $fieldInformation,
                 $rawRecord,
-                $context
+                $context,
+                $recordIdentityMap
             );
         }
-        return $this->createRecord($rawRecord, $properties, $context);
+        $resolvedRecord = $this->createRecord($rawRecord, $properties, $context);
+        $recordIdentityMap->add($resolvedRecord);
+        return $resolvedRecord;
     }
 
     /**

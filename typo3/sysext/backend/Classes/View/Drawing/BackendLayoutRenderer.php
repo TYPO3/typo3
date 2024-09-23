@@ -72,13 +72,11 @@ class BackendLayoutRenderer
                 if (isset($column['colPos'])) {
                     $records = $contentFetcher->getContentRecordsPerColumn((int)$column['colPos'], $languageId);
                     foreach ($records as $contentRecord) {
-                        // @todo: ideally we hand in the record object into the GridColumnItem in the future
-                        if (!$recordIdentityMap->hasIdentifier('tt_content', (int)($contentRecord['uid'] ?? null))) {
-                            try {
-                                $recordObject = $this->recordFactory->createResolvedRecordFromDatabaseRow('tt_content', $contentRecord);
-                                $recordIdentityMap->add($recordObject);
-                            } catch (UndefinedSchemaException) {
-                            }
+                        // @todo: ideally we hand in the record object into the GridColumnItem in the future - For now
+                        //        we just call record factory to create the record and store it in the identity map.
+                        try {
+                            $this->recordFactory->createResolvedRecordFromDatabaseRow('tt_content', $contentRecord, null, $recordIdentityMap);
+                        } catch (UndefinedSchemaException) {
                         }
                         $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $context, $columnObject, $contentRecord);
                         $columnObject->addItem($columnItem);

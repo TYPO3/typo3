@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
+use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Content\ContentSlideMode;
 use TYPO3\CMS\Frontend\Content\RecordCollector;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -51,7 +53,7 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
 {
     public function __construct(
         protected RecordCollector $recordCollector,
-        protected PageLayoutResolver $pageLayoutResolver,
+        protected PageLayoutResolver $pageLayoutResolver
     ) {}
 
     public function process(
@@ -63,6 +65,7 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
         if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) {
             return $processedData;
         }
+        $recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
         $pageInformation = $cObj->getRequest()->getAttribute('frontend.page.information');
         $pageLayout = $pageInformation->getPageLayout();
 
@@ -103,7 +106,8 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
                     'orderBy' => 'colPos, sorting',
                 ],
                 ContentSlideMode::None,
-                $cObj
+                $cObj,
+                $recordIdentityMap
             );
             // 1b. Sort the records into the contentArea they belong to
             foreach ($flatRecords as $recordToSort) {
@@ -122,7 +126,8 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
                     'orderBy' => 'sorting',
                 ],
                 ContentSlideMode::tryFrom($contentAreaData['slideMode'] ?? null),
-                $cObj
+                $cObj,
+                $recordIdentityMap
             );
             $contentAreaData['records'] = $records;
             $contentAreaName = $contentAreaData['identifier'];

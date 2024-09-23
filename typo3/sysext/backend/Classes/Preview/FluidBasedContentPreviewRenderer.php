@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Preview;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
+use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
@@ -55,14 +55,14 @@ final readonly class FluidBasedContentPreviewRenderer
             $event->getRecord(),
             $event->getTable(),
             $event->getRecordType(),
-            $event->getPageLayoutContext()->getCurrentRequest(),
+            $event->getPageLayoutContext()
         );
         if ($previewContent !== null) {
             $event->setPreviewContent($previewContent);
         }
     }
 
-    private function renderContentElementPreviewFromFluidTemplate(array $row, string $table, string $recordType, ServerRequestInterface $request): ?string
+    private function renderContentElementPreviewFromFluidTemplate(array $row, string $table, string $recordType, PageLayoutContext $context): ?string
     {
         $tsConfig = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['web_layout.'][$table . '.']['preview.'] ?? [];
         $fluidTemplateFile = '';
@@ -89,15 +89,14 @@ final readonly class FluidBasedContentPreviewRenderer
         try {
             $viewFactoryData = new ViewFactoryData(
                 templatePathAndFilename: $fluidTemplateFileAbsolutePath,
-                request: $request,
+                request: $context->getCurrentRequest(),
             );
             $view = $this->viewFactory->create($viewFactoryData);
             $view->assignMultiple($row);
             if ($table === 'tt_content' && !empty($row['pi_flexform'])) {
                 $view->assign('pi_flexform_transformed', $this->flexFormService->convertFlexFormContentToArray($row['pi_flexform']));
             }
-            // @todo Should we make sure that "record" is actually a Record object?
-            $view->assign('record', $this->recordFactory->createResolvedRecordFromDatabaseRow($table, $row));
+            $view->assign('record', $this->recordFactory->createResolvedRecordFromDatabaseRow($table, $row, null, $context->getRecordIdentityMap()));
             return $view->render();
         } catch (\Exception $e) {
             $this->logger->warning('The backend preview for content element {uid} can not be rendered using the Fluid template file "{file}"', [

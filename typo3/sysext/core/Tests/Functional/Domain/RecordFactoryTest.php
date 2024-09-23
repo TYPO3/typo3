@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Event\RecordCreationEvent;
 use TYPO3\CMS\Core\Domain\Exception\IncompleteRecordException;
+use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
@@ -135,6 +136,25 @@ final class RecordFactoryTest extends FunctionalTestCase
         self::assertArrayNotHasKey('shortcut', $result->toArray());
         self::assertSame(1, $result->getComputedProperties()->getRequestedOverlayLanguageId());
         self::assertNull($result->getComputedProperties()->getVersionedUid());
+    }
+
+    #[Test]
+    public function recordIdentityMapIsRespected(): void
+    {
+        $context = clone $this->get(Context::class);
+        $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0]));
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
+        $dbRow = $pageRepository->getPage(3);
+        $testRecord = $this->get(RecordFactory::class)
+            ->createFromDatabaseRow('pages', array_replace_recursive($dbRow, ['title' => 'Testing #1']))
+            ->getRawRecord();
+        $recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
+        $recordIdentityMap->add($testRecord);
+        $subject = $this->get(RecordFactory::class);
+        /** @var Record $result */
+        $result = $subject->createResolvedRecordFromDatabaseRow('pages', $dbRow, null, $recordIdentityMap);
+        self::assertSame(3, $result->getUid());
+        self::assertSame('Testing #1', $result->get('title'));
     }
 
     #[Test]
