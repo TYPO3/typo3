@@ -48,6 +48,7 @@
 @import "component/indent";
 @import "component/settings";
 @import "component/example";
+@import "component/dropzone";
 
 //
 // Elements
@@ -73,14 +74,12 @@
 @import "typo3/element_tceforms";
 @import "typo3/element_tree";
 @import "typo3/element_uiblock";
-@import "typo3/element_draguploader";
 @import "typo3/install";
 @import "typo3/login_screen";
 @import "typo3/main_content";
 @import "typo3/main_backend_layout_wizard";
 @import "typo3/main_form";
 @import "typo3/wizard_localization";
-@import "typo3/structure/module_file_filelist";
 @import "typo3/visual/element_typoscript";
 
 //
@@ -90,6 +89,7 @@
 @import "module/access";
 @import "module/beuser";
 @import "module/extensionmanager";
+@import "module/filelist";
 @import "module/help";
 @import "module/info";
 @import "module/install";

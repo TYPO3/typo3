@@ -190,6 +190,7 @@ export default class DragUploader {
 
     const dropzoneCloseButton = document.createElement('button');
     dropzoneCloseButton.classList.add('dropzone-close');
+    dropzoneCloseButton.type = 'button';
     dropzoneCloseButton.setAttribute('aria-label', TYPO3.lang['file_upload.dropzone.close']);
     dropzoneCloseButton.addEventListener('click', this.hideDropzone);
     this.dropzone.append(dropzoneCloseButton);

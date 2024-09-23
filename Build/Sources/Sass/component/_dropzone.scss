@@ -1,0 +1,233 @@
+//
+// Dropzone
+//
+.dropzone {
+    --dropzone-font-size: var(--typo3-component-font-size);
+    --dropzone-color: var(--typo3-component-color);
+    --dropzone-bg: var(--typo3-component-bg);
+    --dropzone-border-color: var(--typo3-component-border-color);
+    --dropzone-hover-color: var(--typo3-component-hover-color);
+    --dropzone-hover-bg: var(--typo3-component-hover-bg);
+    --dropzone-hover-border-color: var(--typo3-component-hover-border-color);
+    --dropzone-focus-color: var(--typo3-component-focus-color);
+    --dropzone-focus-bg: var(--typo3-component-focus-bg);
+    --dropzone-focus-border-color: var(--typo3-component-focus-border-color);
+    --dropzone-border-width: var(--typo3-component-border-width);
+    --dropzone-border-radius: var(--typo3-component-border-radius);
+    --dropzone-spacing: .25rem;
+    --dropzone-padding-y: var(--typo3-component-padding-y);
+    --dropzone-padding-x: var(--typo3-component-padding-x);
+    --dropzone-icons-arrow-down: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%23fff'%3e%3cpath d='M7 2v7.3H5c-.4 0-.6.5-.4.8l3 3.7c.2.2.6.2.8 0l3-3.7c.2-.3 0-.8-.4-.8H9V2H7z'/%3e%3c/g%3e%3c/svg%3e");
+    --dropzone-icons-close: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%23fff'%3e%3cpath d='M11.9 5.5 9.4 8l2.5 2.5c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0L8 9.4l-2.5 2.5c-.2.2-.5.2-.7 0l-.7-.7c-.2-.2-.2-.5 0-.7L6.6 8 4.1 5.5c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0L8 6.6l2.5-2.5c.2-.2.5-.2.7 0l.7.7c.2.2.2.5 0 .7z'/%3e%3c/g%3e%3c/svg%3e");
+    --dropzone-icons-upload: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%23fff'%3e%3cpath d='M10 11h1v1h-1zM12 11h1v1h-1zM11.27 6H4.73a.25.25 0 0 1-.188-.414l3.27-3.743a.244.244 0 0 1 .377 0l3.27 3.743A.25.25 0 0 1 11.27 6z'/%3e%3cpath d='M14.5 9H10v1h4v3H2v-3h4V9H1.5a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 0-.5-.5z'/%3e%3cpath d='M7 6h2v4H7z'/%3e%3c/g%3e%3c/svg%3e");
+    --dropdown-close-border-radius: 3px;
+    --dropdown-close-color: var(--typo3-state-default-color);
+    --dropdown-close-bg: var(--typo3-state-default-bg);
+    --dropdown-close-border-color: var(--typo3-state-default-border-color);
+    --dropdown-close-hover-color: var(--typo3-state-default-hover-color);
+    --dropdown-close-hover-bg: var(--typo3-state-default-hover-bg);
+    --dropdown-close-hover-border-color: var(--typo3-state-default-hover-border-color);
+    --dropdown-close-border-width: 1px;
+    --dropzone-close-width: 2rem;
+    --dropzone-close-height: 2rem;
+    --dropzone-close-icon-size: 1rem;
+    --dropzone-close-icon-image: var(--dropzone-icons-close);
+    --dropzone-icon-size: 1rem;
+    --dropzone-icon-height: 2.5rem;
+    --dropzone-icon-width: 2.5rem;
+    --dropzone-icon-radius: 50%;
+    --dropzone-icon-color: var(--dropzone-color);
+    --dropzone-icon-bg: var(--dropzone-border-color);
+    --dropzone-icon-success-color: var(--typo3-state-success-color);
+    --dropzone-icon-success-bg: var(--typo3-state-success-bg);
+    --dropzone-icon-info-color: var(--typo3-state-info-color);
+    --dropzone-icon-info-bg: var(--typo3-state-info-bg);
+    --dropzone-icon-icon: var(--dropzone-icons-upload);
+    //
+    position: relative;
+    cursor: pointer;
+    background-color: color-mix(in srgb, var(--dropzone-bg), transparent 65%);
+    border-radius: var(--typo3-component-border-radius);
+    padding: var(--dropzone-padding-y) var(--dropzone-padding-x);
+    padding-inline-end: calc(var(--dropzone-close-width) + var(--dropzone-padding-x) + var(--dropzone-spacing));
+    color: var(--dropzone-color);
+    border: var(--dropzone-border-width) dashed var(--dropzone-border-color);
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+    outline-offset: 0;
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+    }
+
+    &:hover {
+        --dropzone-color: var(--dropzone-hover-color);
+        --dropzone-bg: var(--dropzone-hover-bg);
+        --dropzone-border-color: var(--dropzone-hover-border-color);
+    }
+
+    &:has(.dropzone-hint:focus) {
+        --dropzone-color: var(--dropzone-focus-color);
+        --dropzone-bg: var(--dropzone-focus-bg);
+        --dropzone-border-color: var(--dropzone-focus-border-color);
+    }
+
+    &:has(.dropzone-hint:focus-visible) {
+        border-style: solid;
+        outline: .25rem solid color-mix(in srgb, var(--dropzone-border-color), transparent 25%);
+    }
+}
+
+.dropzone-mask {
+    position: absolute;
+    inset: 0;
+}
+
+//
+// Dropzone Close
+//
+.dropzone-close {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: calc(var(--dropzone-padding-y) / 2);
+    inset-inline-end: calc(var(--dropzone-padding-x) / 2);
+    height: var(--dropzone-close-height);
+    width: var(--dropzone-close-width);
+    background-color: var(--dropdown-close-bg);
+    color: var(--dropdown-close-color);
+    border: var(--dropdown-close-border-width) solid var(--dropdown-close-border-color);
+    border-radius: var(--dropdown-close-border-radius);
+    outline: 0;
+
+    &:focus,
+    &:hover {
+        --dropdown-close-color: var(--dropdown-close-hover-color);
+        --dropdown-close-bg: var(--dropdown-close-hover-bg);
+        --dropdown-close-border-color: var(--dropdown-close-hover-border-color);
+    }
+
+    &:focus-visible {
+        outline: .25rem solid color-mix(in srgb, var(--dropdown-close-border-color), transparent 25%);
+    }
+
+    &:before {
+        content: '';
+        mask: var(--dropzone-close-icon-image);
+        background-color: var(--dropdown-close-color);
+        background-size: contain;
+        display: block;
+        width: var(--dropzone-close-icon-size);
+        height: var(--dropzone-close-icon-size);
+    }
+}
+
+//
+// Dropzone Hint
+//
+// Markup:
+// <div class="dropzone-hint">
+//   <div class="dropzone-hint-media">
+//     <span class="dropzone-hint-icon"></span>
+//   </div>
+//   <div class="dropzone-hint-body">
+//     <h3 id="dropzone-title" class="dropzone-hint-title">Title</h3>
+//     <p class="dropzone-hint-message">Message</h3>
+//   </div>
+// </div>
+//
+.dropzone-hint {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: 0;
+    text-align: start;
+    padding: 0;
+    outline: 0;
+    gap: var(--dropzone-padding-x);
+}
+
+.dropzone-hint-body {
+    *:first-child {
+        margin-top: 0;
+    }
+
+    *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.dropzone-hint-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--dropzone-icon-height);
+    width: var(--dropzone-icon-width);
+    background-color: var(--dropzone-icon-bg);
+    border-radius: var(--dropzone-icon-radius);
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+
+    &:before {
+        content: '';
+        mask: var(--dropzone-icon-icon);
+        background-color: var(--dropzone-icon-color);
+        background-size: contain;
+        display: block;
+        width: var(--dropzone-icon-size);
+        height: var(--dropzone-icon-size);
+    }
+}
+
+.dropzone-hint-title {
+    font-size: var(--dropzone-font-size);
+    font-weight: bold;
+    margin-bottom: .25em;
+}
+
+//
+// Drop progress
+//
+.drop-status-ok {
+    --dropzone-icon-color: var(--dropzone-icon-success-color);
+    --dropzone-icon-bg: var(--dropzone-icon-success-bg);
+}
+
+.drop-in-progress {
+    --dropzone-icon-color: var(--dropzone-icon-info-color);
+    --dropzone-icon-bg: var(--dropzone-icon-info-bg);
+    --dropzone-icon-icon: var(--dropzone-icons-arrow-down);
+}
+
+//
+// Improved DragUploader for filelist
+//
+.filelist-main {
+    .dropzone {
+        --dropzone-bg: #000;
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        top: var(--module-docheader-height);
+        left: 0;
+        z-index: 10;
+        height: calc(100% - var(--module-docheader-height));
+        width: 100%;
+        border-width: 2px;
+
+        .dropzone-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--typo3-component-color);
+            background: var(--typo3-component-bg);
+            padding: var(--dropzone-padding-y) var(--dropzone-padding-x);
+            border-radius: var(--typo3-component-border-radius);
+            border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+            box-shadow: var(--typo3-component-box-shadow-tooltip);
+        }
+    }
+}
