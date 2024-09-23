@@ -57,7 +57,6 @@ use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Service\FileHandlingService;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
-use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
@@ -316,15 +315,14 @@ abstract class ActionController implements ControllerInterface
             /** @var ConjunctionValidator $validator */
             $validator = $this->validatorResolver->createValidator(ConjunctionValidator::class);
             foreach ($classSchemaMethodParameter->getValidators() as $validatorDefinition) {
-                /** @var ValidatorInterface $validatorInstance */
                 $validatorInstance = $this->validatorResolver->createValidator(
                     $validatorDefinition['className'],
                     $validatorDefinition['options'],
                     $this->request
                 );
-                $validator->addValidator(
-                    $validatorInstance
-                );
+                if ($validatorInstance !== null) {
+                    $validator->addValidator($validatorInstance);
+                }
             }
             $baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction(
                 $argument->getDataType(),
