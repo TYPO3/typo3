@@ -2,10 +2,11 @@
 
 <div class="t3js-module-content" data-installer-database-data-execute-token="{executeDatabaseDataToken}">
     <div class="typo3-install-content-body">
-        <h3>Create Administrative User & Specify Site Name</h3>
-
-        <p>Use this account to log into the backend of your site.</p>
-        <p>The password you provide for this account is also used to access the <strong>Install Tool</strong>.</p>
+        <h2>Create administrative user and specify site name</h2>
+        <p>
+            Use this account to log into the backend of your site.<br>
+            The password you provide for this account is also used to access the <strong>Install Tool</strong>.
+        </p>
         <p>On this page you can also set a name for your new website.</p>
 
         <div class="typo3-install-content-spacer"></div>
@@ -14,80 +15,76 @@
 
         <form method="post" id="stepInstaller-databaseData" class="t3-install-form-label-before" spellcheck="false">
             <input type="hidden" value="execute" name="install[set]" />
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-floating mb-3">
-                        <input
-                            class="t3-install-form-input-text form-control"
-                            name="install[values][username]"
-                            id="username"
-                            placeholder="admin"
-                            autocomplete="off"
-                        />
-                        <label for="username" class="form-label">Username</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating mb-3">
-                        <input
-                            class="t3-install-form-input-text t3-install-form-password-strength form-control"
-                            name="install[values][password]"
-                            id="password"
-                            type="password"
-                            autocomplete="off"
-                            placeholder="random password"
-                        />
-                        <f:comment><!-- @todo: Add API for input group addons in floating forms--></f:comment>
-                        <button type="button"
-                                class="t3-install-form-password-toggle btn btn-link"
-                                data-toggle-target="#password" data-toggle-state="invisible"
-                                style="position: absolute; bottom: .35em; right: 0; outline: none; box-shadow: none"
-                                aria-label="Toggle password visibility">
-                            <core:icon identifier="actions-lock" size="small" />
-                            <core:icon identifier="actions-eye" size="small" />
-                        </button>
-                        <label for="password" class="form-label">Password</label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="alert alert-info" role="alert">
-                        If compromised, this account will provide an attacker with complete access to your installation. <br>A strong password is recommended. Include lower and upper case characters, special characters and numbers. Your password must be at least eight characters long.
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input
+                    class="t3-install-form-input-text form-control"
+                    name="install[values][username]"
+                    id="username"
+                    placeholder="admin"
+                    autocomplete="off"
+                />
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-floating mb-3">
-                        <input
-                            type="email"
-                            class="t3-install-form-input-text form-control"
-                            name="install[values][email]"
-                            id="email"
-                            placeholder="you@me.com"
-                        />
-                        <label for="email" class="form-label">Email address</label>
-                    </div>
 
-                    <div class="form-floating mb-3">
-                        <input
-                            class="t3-install-form-input-text form-control"
-                            name="install[values][sitename]"
-                            id="sitename"
-                            type="text"
-                            value="{siteName}"
-                            placeholder="Your new website"
-                        />
-                        <label for="sitename" class="form-label">Site name</label>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-success float-end t3js-installer-databaseData-execute">
-                            Continue
-                        </button>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input
+                    class="t3-install-form-input-text t3-install-form-password-strength form-control"
+                    name="install[values][password]"
+                    id="password"
+                    type="password"
+                    autocomplete="off"
+                    placeholder="random password"
+                />
+                <f:comment><!-- @todo: Add API for input group addons in floating forms--></f:comment>
+                <button
+                    type="button"
+                    class="t3-install-form-password-toggle btn btn-link"
+                    data-toggle-target="#password" data-toggle-state="invisible"
+                    style="position: absolute; bottom: .35em; right: 0; outline: none; box-shadow: none"
+                    aria-label="Toggle password visibility"
+                >
+                    <core:icon identifier="actions-lock" size="small" />
+                    <core:icon identifier="actions-eye" size="small" />
+                </button>
+            </div>
+
+            <f:be.infobox
+                title="Password security"
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+            >
+                If compromised, this account will provide an attacker with complete access to your installation.<br>
+                A strong password is recommended. Include lower and upper case characters, special characters and numbers. Your password must be at least eight characters long.
+            </f:be.infobox>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email address</label>
+                <input
+                    type="email"
+                    class="t3-install-form-input-text form-control"
+                    name="install[values][email]"
+                    id="email"
+                    placeholder="you@me.com"
+                />
+            </div>
+            <div class="form-group">
+                <label for="sitename" class="form-label">Site name</label>
+                <input
+                    class="t3-install-form-input-text form-control"
+                    name="install[values][sitename]"
+                    id="sitename"
+                    type="text"
+                    value="{siteName}"
+                    placeholder="Your new website"
+                />
+            </div>
+
+            <div class="clearfix">
+                <button class="btn btn-primary float-end t3js-installer-databaseData-execute">
+                    Continue
+                </button>
             </div>
         </form>
-
     </div>
 </div>
 

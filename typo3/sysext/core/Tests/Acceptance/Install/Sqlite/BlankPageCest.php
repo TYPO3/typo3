@@ -38,18 +38,18 @@ final class BlankPageCest
         $I->click('No problems detected, continue with installation');
 
         // DatabaseConnection step
-        $I->waitForText('Select database', 30);
+        $I->waitForText('Connect to database', 30);
         $I->selectOption('#t3js-connect-database-driver', 'Manually configured SQLite connection');
         $I->click('Continue');
 
         // DatabaseData step
-        $I->waitForText('Create Administrative User & Specify Site Name');
+        $I->waitForText('Create administrative user and specify site name');
         $I->fillField('#username', 'admin');
         $I->fillField('#password', 'Policy-Compliant_Password.1');
         $I->click('Continue');
 
         // DefaultConfiguration step - load distributions
-        $I->waitForText('Installation Complete', 60);
+        $I->waitForText('Installation complete', 60);
         $I->click('#create-site');
         $I->click('Open the TYPO3 Backend');
 

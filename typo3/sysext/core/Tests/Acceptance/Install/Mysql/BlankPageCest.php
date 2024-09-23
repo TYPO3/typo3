@@ -39,7 +39,7 @@ final class BlankPageCest
         $I->click('No problems detected, continue with installation');
 
         // DatabaseConnection step
-        $I->waitForText('Select database', 30);
+        $I->waitForText('Connect to database', 30);
         $I->fillField('#t3-install-step-mysqliManualConfiguration-username', $scenario->current('typo3InstallMysqlDatabaseUsername'));
         $I->fillField('#t3-install-step-mysqliManualConfiguration-password', $scenario->current('typo3InstallMysqlDatabasePassword'));
         $I->fillField('#t3-install-step-mysqliManualConfiguration-host', $scenario->current('typo3InstallMysqlDatabaseHost'));
@@ -52,13 +52,13 @@ final class BlankPageCest
         $I->click('Continue');
 
         // DatabaseData step
-        $I->waitForText('Create Administrative User & Specify Site Name');
+        $I->waitForText('Create administrative user and specify site name');
         $I->fillField('#username', 'admin');
         $I->fillField('#password', 'Policy-Compliant_Password.1');
         $I->click('Continue');
 
         // DefaultConfiguration step - Create empty page
-        $I->waitForText('Installation Complete', 60);
+        $I->waitForText('Installation complete', 60);
         $I->click('#create-site');
         $I->click('Open the TYPO3 Backend');
 

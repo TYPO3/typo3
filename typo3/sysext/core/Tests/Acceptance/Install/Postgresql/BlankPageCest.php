@@ -39,7 +39,7 @@ final class BlankPageCest
         $I->click('No problems detected, continue with installation');
 
         // DatabaseConnection step
-        $I->waitForText('Select database');
+        $I->waitForText('Connect to database');
         $I->selectOption('#t3js-connect-database-driver', 'Manually configured PostgreSQL connection');
         $I->fillField('#t3-install-step-postgresManualConfiguration-username', $scenario->current('typo3InstallPostgresqlDatabaseUsername'));
         $I->fillField('#t3-install-step-postgresManualConfiguration-password', $scenario->current('typo3InstallPostgresqlDatabasePassword'));
@@ -48,13 +48,13 @@ final class BlankPageCest
         $I->click('Continue');
 
         // DatabaseData step
-        $I->waitForText('Create Administrative User & Specify Site Name');
+        $I->waitForText('Create administrative user and specify site name');
         $I->fillField('#username', 'admin');
         $I->fillField('#password', 'Policy-Compliant_Password.1');
         $I->click('Continue');
 
         // DefaultConfiguration step - load distributions
-        $I->waitForText('Installation Complete', 60);
+        $I->waitForText('Installation complete', 60);
         $I->click('#create-site');
         $I->click('Open the TYPO3 Backend');
 

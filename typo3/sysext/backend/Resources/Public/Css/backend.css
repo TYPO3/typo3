@@ -2636,8 +2636,8 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .form-control-clearable-wrapper:focus{box-shadow:none;border-color:inherit}
 .form-control-clearable-wrapper:focus-within{z-index:3}
 .input-group{position:relative;display:flex;flex-wrap:wrap;align-items:stretch;width:100%;border-radius:var(--typo3-input-border-radius)}
-.input-group>.form-control,.input-group>.form-control-clearable-wrapper,.input-group>.form-floating,.input-group>.form-select{position:relative;flex:1 1 auto;width:1%;min-width:0}
-.input-group>.form-control:focus,.input-group>.form-floating:focus-within,.input-group>.form-select:focus{z-index:5}
+.input-group>.form-control,.input-group>.form-control-clearable-wrapper,.input-group>.form-select{position:relative;flex:1 1 auto;width:1%;min-width:0}
+.input-group>.form-control:focus,.input-group>.form-select:focus{z-index:5}
 .input-group>.input-group-text>.form-check-type-toggle{margin-bottom:0}
 .input-group .btn{position:relative;z-index:2}
 .input-group .btn:focus{z-index:5}
@@ -2645,12 +2645,11 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .input-group-icon{vertical-align:middle}
 .input-group-icon img{max-height:16px}
 .input-group-sm{--typo3-input-font-size:var(--typo3-input-sm-font-size);--typo3-input-padding-y:var(--typo3-input-sm-padding-y);--typo3-input-padding-x:var(--typo3-input-sm-padding-x)}
-.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control,.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select,.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating){border-start-end-radius:0;border-end-end-radius:0}
-.input-group.has-validation>.dropdown-toggle:nth-last-child(n+4),.input-group.has-validation>.form-floating:nth-last-child(n+3)>.form-control,.input-group.has-validation>.form-floating:nth-last-child(n+3)>.form-select,.input-group.has-validation>:nth-last-child(n+3):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating){border-start-end-radius:0;border-end-end-radius:0}
+.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu){border-start-end-radius:0;border-end-end-radius:0}
+.input-group.has-validation>.dropdown-toggle:nth-last-child(n+4),.input-group.has-validation>:nth-last-child(n+3):not(.dropdown-toggle):not(.dropdown-menu){border-start-end-radius:0;border-end-end-radius:0}
 .input-group>*+.form-control-clearable-wrapper>.form-control,.input-group>*+.form-control-clearable-wrapper>.form-select{border-start-start-radius:0;border-end-start-radius:0}
 .input-group>.form-control-clearable-wrapper:not(:last-child)>.form-control,.input-group>.form-control-clearable-wrapper:not(:last-child)>.form-select{border-start-end-radius:0;border-end-end-radius:0}
 .input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){margin-inline-start:calc(var(--typo3-input-border-width) * -1);border-start-start-radius:0;border-end-start-radius:0}
-.input-group>.form-floating:not(:first-child)>.form-control,.input-group>.form-floating:not(:first-child)>.form-select{border-start-start-radius:0;border-end-start-radius:0}
 .input-group>label.visually-hidden:first-child+.form-control,.input-group>label.visually-hidden:first-child+.form-select{border-start-start-radius:inherit!important;border-end-start-radius:inherit!important}
 .form{margin-bottom:var(--typo3-spacing)}
 .form-inline{display:inline}

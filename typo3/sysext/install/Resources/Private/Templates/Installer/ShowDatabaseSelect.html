@@ -9,78 +9,87 @@
 
         <f:if condition="{errors -> f:count()}">
             <f:for each="{errors}" as="error">
-                <div class="alert alert-danger">
-                    <h4>Exception</h4>
-                    <p>{error}</p>
-                </div>
+                <f:be.infobox
+                    title="Exception"
+                    state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}"
+                >
+                    {error}
+                </f:be.infobox>
             </f:for>
         </f:if>
 
         <form method="post" id="stepInstaller-databaseSelect" spellcheck="false">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-check">
-                        <input class="form-check-input" id="t3-install-form-db-select-type-existing" type="radio" name="install[values][type]" value="existing" class="radio" checked="checked" />
-                        <label class="form-check-label" for="t3-install-form-db-select-type-existing">
-                            Use an existing empty database:
-                        </label>
-                    </div>
-                    <div class="form-group mb-3">
-                        <p>
-                            Select a database.
-                        </p>
-                        <select
-                            id="t3-install-step-database-existing"
-                            name="install[values][existing]"
-                            class="form-select"
-                            onfocus="document.getElementById('t3-install-form-db-select-type-existing').checked=true;"
-                        >
-                            <option value="">-- Choose --</option>
-                            <f:for each="{databaseList}" as="database">
-                                <f:if condition="{database.tables} || {database.readonly}">
-                                    <f:then>
-                                        <option value="{database.name}" disabled="disabled">{database.name} ({f:if(condition: database.readonly, then: 'readonly', else: '{database.tables} Tables')})</option>
-                                    </f:then>
-                                    <f:else>
-                                        <option value="{database.name}">{database.name}</option>
-                                    </f:else>
-                                </f:if>
-                            </f:for>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-check">
-                        <input
-                            id="t3-install-form-db-select-type-new"
-                            type="radio"
-                            name="install[values][type]"
-                            value="new"
-                            class="form-check-input"
-                        />
-                        <label class="form-check-label" for="t3-install-form-db-select-type-new">
-                            Create a new database:
-                        </label>
-                    </div>
-                    <div class="form-group mb-3">
-                        <p>
-                            Specify a name for your TYPO3 database.
-                        </p>
-                        <input
-                            id="t3-install-step-database-new"
-                            class="t3-install-form-input-text form-control"
-                            type="text"
-                            name="install[values][new]"
-                            checked="checked"
-                            onfocus="document.getElementById('t3-install-form-db-select-type-new').checked=true;"
-                        />
-                    </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input
+                        id="t3-install-form-db-select-type-existing"
+                        type="radio"
+                        name="install[values][type]"
+                        value="existing"
+                        checked="checked"
+                        class="form-check-input"
+                    />
+                    <label class="form-check-label" for="t3-install-form-db-select-type-existing">
+                        Use an existing empty database:
+                    </label>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-success float-end t3js-installer-databaseSelect-execute">
-                        Continue
-                    </button>
+                    <label class="form-label" for="t3-install-step-database-existing">
+                        Select a database
+                    </label>
+                    <select
+                        id="t3-install-step-database-existing"
+                        name="install[values][existing]"
+                        class="form-select"
+                        onfocus="document.getElementById('t3-install-form-db-select-type-existing').checked=true;"
+                    >
+                        <option value="">-- Choose --</option>
+                        <f:for each="{databaseList}" as="database">
+                            <f:if condition="{database.tables} || {database.readonly}">
+                                <f:then>
+                                    <option value="{database.name}" disabled="disabled">{database.name} ({f:if(condition: database.readonly, then: 'readonly', else: '{database.tables} Tables')})</option>
+                                </f:then>
+                                <f:else>
+                                    <option value="{database.name}">{database.name}</option>
+                                </f:else>
+                            </f:if>
+                        </f:for>
+                    </select>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-check">
+                    <input
+                        id="t3-install-form-db-select-type-new"
+                        type="radio"
+                        name="install[values][type]"
+                        value="new"
+                        class="form-check-input"
+                    />
+                    <label class="form-check-label" for="t3-install-form-db-select-type-new">
+                        Create a new database:
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="t3-install-step-database-new">
+                        Specify a name for your TYPO3 database
+                    </label>
+                    <input
+                        id="t3-install-step-database-new"
+                        class="t3-install-form-input-text form-control"
+                        type="text"
+                        name="install[values][new]"
+                        checked="checked"
+                        onfocus="document.getElementById('t3-install-form-db-select-type-new').checked=true;"
+                    />
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <button class="btn btn-primary float-end t3js-installer-databaseSelect-execute">
+                    Continue
+                </button>
             </div>
         </form>
     </div>

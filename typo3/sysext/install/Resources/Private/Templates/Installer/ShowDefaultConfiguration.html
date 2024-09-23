@@ -2,22 +2,27 @@
 
 <div class="t3js-module-content" data-installer-default-configuration-execute-token="{executeDefaultConfigurationToken}">
     <div class="typo3-install-content-body">
-        <h2>Installation Complete</h2>
-        <p>The Installation Wizard can create an empty page at the root of your website to help get you started. If you would like to use this option select "Create empty starting page".</p>
+        <h2>Installation complete</h2>
 
         <div class="typo3-install-content-spacer"></div>
         <div class="t3js-installer-defaultConfiguration-output"></div>
         <div class="typo3-install-content-spacer"></div>
 
+        <h3>Initial state</h3>
+        <p>
+            You currently have an empty installation of TYPO3.
+        </p>
+
         <f:if condition="!{composerMode}">
-            <div class="alert alert-info">
-                <h3 class="alert-title">Want a pre-configured site?</h3>
-                <p class="alert-message">
-                    You currently have an empty installation of TYPO3. If you would like to view a list of pre-configured distributions select “download list of distributions” from the list below.
-                    <strong>Note: This may take some time to load.</strong>
-                </p>
-            </div>
+            <p>
+                If you would like to view a list of pre-configured distributions select “Download list of distributions” from the list below.
+                Note: This may take some time to load.
+            </p>
         </f:if>
+        <p>
+            The Installation Wizard can create an empty page at the root of your website to help you get started. If you would like to use this
+            option select "Create empty starting page".
+        </p>
 
         <form method="post" spellcheck="false">
             <div class="form-group">
@@ -25,7 +30,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
                         <label class="form-check-label" for="load-distributions">
-                            Yes, download the list of distributions
+                            Download list of distributions
                         </label>
                     </div>
                 </f:if>
@@ -38,29 +43,28 @@
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" checked="checked" />
                     <label class="form-check-label" for="do-nothing">
-                        Take me straight to the backend
+                        Do nothing, take me straight to the backend
                     </label>
                 </div>
             </div>
 
-            <div class="alert alert-info">
-                <h3>Do you want to setup pre-configured backend user groups?</h3>
-                <p>
-                    If you would like to have pre-configured and ready to use base backend user groups "Editor" and "Advanced Editor", select this option.
-                    You can rename these preset backend user groups after their creation.
-                </p>
-            </div>
+            <h3>Pre-configured backend user groups</h3>
+            <p>
+                If you would like to have pre-configured and ready to use base backend user groups "Editor" and "Advanced Editor", select this option.
+                You can rename these preset backend user groups after their creation.
+            </p>
 
             <div class="form-group">
-                <div class="form-check">
+                <div class="form-check form-check-type-toggle">
                     <input class="form-check-input" type="checkbox" id="create-groups" name="install[values][backendgroups]" value="creategroups" />
                     <label class="form-check-label" for="create-groups">
                         Create default backend user groups
                     </label>
                 </div>
             </div>
+
             <div class="clearfix">
-                <button class="btn btn-success float-end t3js-installer-defaultConfiguration-execute">
+                <button class="btn btn-primary float-end t3js-installer-defaultConfiguration-execute">
                     Open the TYPO3 Backend
                 </button>
             </div>

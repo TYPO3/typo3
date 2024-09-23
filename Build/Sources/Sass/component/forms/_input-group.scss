@@ -11,8 +11,7 @@
 
     > .form-control-clearable-wrapper,
     > .form-control,
-    > .form-select,
-    > .form-floating {
+    > .form-select {
         position: relative; // For focus state's z-index
         flex: 1 1 auto;
         width: 1%;
@@ -21,8 +20,7 @@
 
     // Bring the "active" form control to the top of surrounding elements
     > .form-control:focus,
-    > .form-select:focus,
-    > .form-floating:focus-within {
+    > .form-select:focus {
         z-index: 5;
     }
 
@@ -87,20 +85,16 @@
 //
 .input-group {
     &:not(.has-validation) {
-        > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
-        > .dropdown-toggle:nth-last-child(n + 3),
-        > .form-floating:not(:last-child) > .form-control,
-        > .form-floating:not(:last-child) > .form-select {
+        > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
+        > .dropdown-toggle:nth-last-child(n + 3) {
             border-start-end-radius: 0;
             border-end-end-radius: 0;
         }
     }
 
     &.has-validation {
-        > :nth-last-child(n + 3):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
-        > .dropdown-toggle:nth-last-child(n + 4),
-        > .form-floating:nth-last-child(n + 3) > .form-control,
-        > .form-floating:nth-last-child(n + 3) > .form-select {
+        > :nth-last-child(n + 3):not(.dropdown-toggle):not(.dropdown-menu),
+        > .dropdown-toggle:nth-last-child(n + 4) {
             border-start-end-radius: 0;
             border-end-end-radius: 0;
         }
@@ -132,14 +126,6 @@
         margin-inline-start: calc(var(--typo3-input-border-width) * -1);
         border-start-start-radius: 0;
         border-end-start-radius: 0;
-    }
-
-    > .form-floating:not(:first-child) {
-        > .form-control,
-        > .form-select {
-            border-start-start-radius: 0;
-            border-end-start-radius: 0;
-        }
     }
 
     > label.visually-hidden:first-child {
