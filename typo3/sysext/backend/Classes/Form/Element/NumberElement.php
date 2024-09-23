@@ -187,7 +187,7 @@ class NumberElement extends AbstractFormElement
             ];
             $rangeAttributes = [
                 'type' => 'range',
-                'class' => 'slider',
+                'class' => 'form-range-input',
                 'min' => (string)(int)($config['range']['lower'] ?? 0),
                 'max' => (string)(int)($config['range']['upper'] ?? 10000),
                 'step' => (string)($config['slider']['step'] ?? 1),
@@ -197,7 +197,7 @@ class NumberElement extends AbstractFormElement
             ];
 
             $valueSliderHtml[] = '<typo3-formengine-valueslider ' . GeneralUtility::implodeAttributes($valueSliderConfiguration, true) . '>';
-            $valueSliderHtml[] = '<div class="slider-wrapper">';
+            $valueSliderHtml[] = '<div class="form-range">';
             $valueSliderHtml[] = '<input ' . GeneralUtility::implodeAttributes($rangeAttributes, true) . '>';
             $valueSliderHtml[] = '</div>';
             $valueSliderHtml[] = '</typo3-formengine-valuepicker>';
@@ -233,11 +233,13 @@ class NumberElement extends AbstractFormElement
         $mainFieldHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($valueSliderHtml) || !empty($fieldControlHtml)) {
             $mainFieldHtml[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
-            $mainFieldHtml[] =          '<div class="btn-group">';
-            $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
-            $mainFieldHtml[] =              implode(LF, $valueSliderHtml);
-            $mainFieldHtml[] =              $fieldControlHtml;
-            $mainFieldHtml[] =          '</div>';
+            if (!empty($valuePickerHtml)) {
+                $mainFieldHtml[] = '<div class="btn-group">' . implode(LF, $valuePickerHtml) . '</div>';
+            }
+            $mainFieldHtml[] = implode(LF, $valueSliderHtml);
+            if (!empty($fieldControlHtml)) {
+                $mainFieldHtml[] = '<div class="btn-group">' . $fieldControlHtml . '</div>';
+            }
             $mainFieldHtml[] =      '</div>';
         }
         if (!empty($fieldWizardHtml)) {

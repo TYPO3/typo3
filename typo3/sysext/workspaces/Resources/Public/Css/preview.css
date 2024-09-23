@@ -31,7 +31,6 @@
 .workspace-action{height:26px;display:block;line-height:26px}
 .workspace-action:after{content:"";clear:both;display:table}
 .workspace-action .active-preview-mode{display:inline-block;text-align:start}
-.workspace-action .slider-wrapper .slider{height:26px}
 .workspaces{position:relative}
 .workspaces iframe{border:0}
 .preview-mode-slider iframe{position:absolute;top:0;left:0;z-index:100;width:100%;height:calc(100vh - 50px);background-color:#fff}
