@@ -110,13 +110,13 @@ final class GeneratorCommand extends Command
                 break;
             default:
                 $output->writeln('<error>Please specify a valid action. Choose "tca", "frontend", "frontend-systemplate" or "all"</error>');
-                return 1;
+                return Command::FAILURE;
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
-    private function createTca(OutputInterface $output): int
+    private function createTca(OutputInterface $output): void
     {
         if (count($this->recordFinder->findUidsOfStyleguideEntryPages())) {
             $output->writeln('<comment>TCA page tree already exists!</comment>');
@@ -124,37 +124,28 @@ final class GeneratorCommand extends Command
             $this->generator->create();
             $output->writeln('<info>TCA page tree created!</info>');
         }
-
-        return 0;
     }
 
-    private function deleteTca(OutputInterface $output): int
+    private function deleteTca(OutputInterface $output): void
     {
         $this->generator->delete();
         $output->writeln('<info>TCA page tree deleted!</info>');
-
-        return 0;
     }
 
-    private function createFrontend(OutputInterface $output, bool $useSiteSets): int
+    private function createFrontend(OutputInterface $output, bool $useSiteSets): void
     {
-
         if (count($this->recordFinder->findUidsOfFrontendPages())) {
             $output->writeln('<info>Frontend page tree already exists!</info>');
         } else {
             $this->generatorFrontend->create('', 1, $useSiteSets);
             $output->writeln('<info>Frontend page tree created!</info>');
         }
-
-        return 0;
     }
 
-    private function deleteFrontend(OutputInterface $output): int
+    private function deleteFrontend(OutputInterface $output): void
     {
         $this->generatorFrontend->delete();
 
         $output->writeln('<info>Frontend page tree deleted!</info>');
-
-        return 0;
     }
 }
