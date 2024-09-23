@@ -47,7 +47,6 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
-use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\TemplateView;
@@ -333,11 +332,10 @@ abstract class ActionController implements ControllerInterface
             /** @var ConjunctionValidator $validator */
             $validator = $this->validatorResolver->createValidator(ConjunctionValidator::class, []);
             foreach ($classSchemaMethodParameter->getValidators() as $validatorDefinition) {
-                /** @var ValidatorInterface $validatorInstance */
                 $validatorInstance = $this->validatorResolver->createValidator($validatorDefinition['className'], $validatorDefinition['options']);
-                $validator->addValidator(
-                    $validatorInstance
-                );
+                if ($validatorInstance !== null) {
+                    $validator->addValidator($validatorInstance);
+                }
             }
             $baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
             if ($baseValidatorConjunction->count() > 0) {

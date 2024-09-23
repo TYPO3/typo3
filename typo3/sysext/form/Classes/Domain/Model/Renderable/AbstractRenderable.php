@@ -181,7 +181,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      *
      * @throws ValidatorPresetNotFoundException
      */
-    public function createValidator(string $validatorIdentifier, array $options = []): ValidatorInterface
+    protected function createValidator(string $validatorIdentifier, array $options = []): ?ValidatorInterface
     {
         $validatorsDefinition = $this->getRootForm()->getValidatorsDefinition();
         if (isset($validatorsDefinition[$validatorIdentifier]) && is_array($validatorsDefinition[$validatorIdentifier]) && isset($validatorsDefinition[$validatorIdentifier]['implementationClassName'])) {
@@ -196,9 +196,10 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
                 $container = GeneralUtility::getContainer();
                 $this->validatorResolver = $container->get(ValidatorResolver::class);
             }
-            /** @var ValidatorInterface $validator */
             $validator = $this->validatorResolver->createValidator($implementationClassName, $defaultOptions);
-            $this->addValidator($validator);
+            if ($validator !== null) {
+                $this->addValidator($validator);
+            }
             return $validator;
         }
         throw new ValidatorPresetNotFoundException('The validator preset identified by "' . $validatorIdentifier . '" could not be found, or the implementationClassName was not specified.', 1328710202);
