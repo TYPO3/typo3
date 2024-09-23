@@ -541,15 +541,12 @@ export default class DragUploader {
       }
     });
 
-    new RegularEvent('change', (event: Event) => {
-      const actionSelect = event.currentTarget as HTMLSelectElement,
-        value = actionSelect.value;
-
-      if (value !== '') {
+    new RegularEvent('change', (event: Event, target: HTMLSelectElement) => {
+      if (target.value !== '') {
         // mass action was selected, apply action to every file
         for (const select of modal.querySelectorAll('.t3js-actions') as NodeListOf<HTMLSelectElement>) {
           const index = parseInt(select.dataset.override, 10);
-          select.value = value;
+          select.value = target.value;
           select.disabled = true;
           this.askForOverride[index].action = <Action>select.value;
         }
