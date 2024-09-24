@@ -26,6 +26,8 @@ import '@typo3/backend/element/icon-element';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DomHelper from '@typo3/backend/utility/dom-helper';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
+import '@typo3/backend/element/progress-bar-element';
+import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 
 /**
  * Possible actions for conflicts w/ existing files
@@ -591,15 +593,12 @@ export default class DragUploader {
 class FileQueueItem {
   private readonly row: HTMLElement;
   private readonly progress: HTMLElement;
-  private readonly progressContainer: HTMLElement;
   private readonly file: File;
   private readonly override: Action;
   private readonly selector: HTMLElement;
   private readonly iconCol: HTMLElement;
   private readonly fileName: HTMLElement;
-  private readonly progressBar: HTMLElement;
-  private readonly progressPercentage: HTMLElement;
-  private readonly progressMessage: HTMLElement;
+  private readonly progressBar: ProgressBarElement;
   private readonly dragUploader: DragUploader;
 
   constructor(dragUploader: DragUploader, file: File, override: Action) {
@@ -608,7 +607,7 @@ class FileQueueItem {
     this.override = override;
 
     this.row = document.createElement('tr');
-    this.row.classList.add('upload-queue-item', 'uploading');
+    this.row.classList.add('upload-queue-item');
 
     if (!this.dragUploader.manualTable) {
       // Add selector cell, if this is a real table (e.g. not in FormEngine)
@@ -630,22 +629,8 @@ class FileQueueItem {
     this.progress.setAttribute('colspan', String(this.dragUploader.fileListColumnCount - this.row.querySelectorAll('td').length));
     this.row.append(this.progress);
 
-    this.progressContainer = document.createElement('div');
-    this.progressContainer.classList.add('upload-queue-progress');
-    this.progress.append(this.progressContainer);
-
-    this.progressBar = document.createElement('div');
-    this.progressBar.classList.add('upload-queue-progress-bar');
-    this.progressContainer.append(this.progressBar);
-
-    this.progressPercentage = document.createElement('span');
-    this.progressPercentage.classList.add('upload-queue-progress-percentage');
-    this.progressContainer.append(this.progressPercentage);
-
-    this.progressMessage = document.createElement('span');
-    this.progressMessage.classList.add('upload-queue-progress-message');
-    this.progressContainer.append(this.progressMessage);
-
+    this.progressBar = document.createElement('typo3-backend-progress-bar');
+    this.progress.append(this.progressBar);
 
     // position queue item in filelist
     if (this.dragUploader.fileList.querySelectorAll('tbody tr.upload-queue-item').length === 0) {
@@ -672,23 +657,23 @@ class FileQueueItem {
       this.updateMessage(TYPO3.lang['file_upload.maxFileSizeExceeded']
         .replace(/\{0\}/g, this.file.name)
         .replace(/\{1\}/g, DragUploader.fileSizeAsString(this.dragUploader.maxFileSize)));
-      this.row.classList.add('error');
+      this.progressBar.value = 100;
+      this.progressBar.severity = SeverityEnum.error;
 
       // check filename/extension against deny pattern
     } else if (this.dragUploader.fileDenyPattern && this.file.name.match(this.dragUploader.fileDenyPattern)) {
       this.updateMessage(TYPO3.lang['file_upload.fileNotAllowed'].replace(/\{0\}/g, this.file.name));
-      this.row.classList.add('error');
+      this.progressBar.value = 100;
+      this.progressBar.severity = SeverityEnum.error;
 
     } else if (!this.checkAllowedExtensions()) {
-      this.updateMessage(TYPO3.lang['file_upload.fileExtensionExpected']
-        .replace(/\{0\}/g, this.dragUploader.filesExtensionsAllowed),
-      );
-      this.row.classList.add('error');
+      this.updateMessage(TYPO3.lang['file_upload.fileExtensionExpected'].replace(/\{0\}/g, this.dragUploader.filesExtensionsAllowed));
+      this.progressBar.value = 100;
+      this.progressBar.severity = SeverityEnum.error;
     } else if (!this.checkDisallowedExtensions()) {
-      this.updateMessage(TYPO3.lang['file_upload.fileExtensionDisallowed']
-        .replace(/\{0\}/g, this.dragUploader.filesExtensionsDisallowed),
-      );
-      this.row.classList.add('error');
+      this.updateMessage(TYPO3.lang['file_upload.fileExtensionDisallowed'].replace(/\{0\}/g, this.dragUploader.filesExtensionsDisallowed));
+      this.progressBar.value = 100;
+      this.progressBar.severity = SeverityEnum.error;
     } else {
       this.updateMessage('- ' + DragUploader.fileSizeAsString(this.file.size));
 
@@ -732,7 +717,7 @@ class FileQueueItem {
    * @param {string} message
    */
   public updateMessage(message: string): void {
-    this.progressMessage.textContent = message;
+    this.progressBar.label = message;
   }
 
   /**
@@ -753,7 +738,6 @@ class FileQueueItem {
     try {
       const jsonResponse = JSON.parse(response.responseText) as any;
       const messages = jsonResponse.messages as FlashMessage[];
-      this.progressPercentage.textContent = '';
       if (messages && messages.length) {
         for (const flashMessage of messages) {
           Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity, 10);
@@ -763,7 +747,7 @@ class FileQueueItem {
       // do nothing in case JSON could not be parsed
     }
 
-    this.row.classList.add('error');
+    this.progressBar.severity = SeverityEnum.error;
     this.dragUploader.decrementQueueLength();
     this.dragUploader.trigger?.dispatchEvent(new CustomEvent('uploadError', { detail: [this, response] }));
   }
@@ -772,9 +756,9 @@ class FileQueueItem {
    * @param {ProgressEvent} event
    */
   public updateProgress(event: ProgressEvent): void {
-    const percentage = Math.round((event.loaded / event.total) * 100) + '%';
-    this.progressBar.style.width = percentage;
-    this.progressPercentage.textContent = percentage;
+    const percentage = Math.round((event.loaded / event.total) * 100);
+    this.progressBar.value = percentage;
+    this.progressBar.label = `${TYPO3.lang['file_upload.upload-in-progress']} ${percentage}%`;
     this.dragUploader.trigger?.dispatchEvent(new CustomEvent('updateProgress', { detail: [this, percentage, event] }));
   }
 
@@ -784,13 +768,12 @@ class FileQueueItem {
   public uploadSuccess(data: { upload?: UploadedFile[], messages?: FlashMessage[] }): void {
     if (data.upload) {
       this.dragUploader.decrementQueueLength(data.messages);
-      this.row.classList.remove('uploading');
       this.row.setAttribute('data-type', 'file');
       this.row.setAttribute('data-file-uid', String(data.upload[0].uid));
       this.fileName.textContent = data.upload[0].name;
-      this.progressPercentage.textContent = '';
-      this.progressMessage.textContent = '100%';
-      this.progressBar.style.width = '100%';
+      this.progressBar.value = 100;
+      this.progressBar.label = TYPO3.lang['file_upload.uploadSucceeded'];
+      this.progressBar.severity = SeverityEnum.ok;
 
       const combinedIdentifier: string = String(data.upload[0].id);
 

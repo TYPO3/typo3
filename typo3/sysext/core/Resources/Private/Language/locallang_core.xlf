@@ -688,6 +688,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.uploadFailed" resname="file_upload.uploadFailed">
 				<source>Upload of file &quot;{0}&quot; failed!</source>
 			</trans-unit>
+			<trans-unit id="file_upload.uploadSucceeded" resname="file_upload.uploadSucceeded">
+				<source>File has been uploaded.</source>
+			</trans-unit>
 			<trans-unit id="file_upload.upload-in-progress" resname="file_upload.upload-in-progress">
 				<source>File upload in progress...</source>
 			</trans-unit>

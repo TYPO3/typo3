@@ -1,56 +1,4 @@
 //
-// Upload Queue
-//
-// <table class="table upload-queue">
-//     <tr class="upload-queue-item uploading">
-//         <td class="col-progress" colspan="5">
-//             <div class="upload-queue-progress">
-//                 <div class="upload-queue-progress-bar" style="width: 50%;"></div>
-//                 <span class="upload-queue-progress-percentage"></span>
-//                 <span class="upload-queue-progress-message">50%</span>
-//             </div>
-//         </td>
-//     </tr>
-// </table>
-//
-.upload-queue-progress {
-    --typo3-upload-queue-progress-padding-x: .5rem;
-    --typo3-upload-queue-progress-padding-y: .25rem;
-    --typo3-upload-queue-progress-bg: var(--typo3-state-default-bg);
-    --typo3-upload-queue-progress-color: var(--typo3-state-default-color);
-    --typo3-upload-queue-progress-border-width: 1px;
-    --typo3-upload-queue-progress-border-color: var(--typo3-state-default-border-color);
-    --typo3-upload-queue-progress-info: var(--typo3-surface-container-info);
-    --typo3-upload-queue-progress-success: var(--typo3-surface-container-success);
-    --typo3-upload-queue-progress-danger: var(--typo3-surface-container-danger);
-    --typo3-upload-queue-progress-bar-bg: var(--typo3-upload-queue-progress-success);
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    padding: var(--typo3-upload-queue-progress-padding-y) var(--typo3-upload-queue-progress-padding-x);
-    color: var(--typo3-upload-queue-progress-color);
-    background-color: var(--typo3-upload-queue-progress-bg);
-    border: var(--typo3-upload-queue-progress-border-width) solid  var(--typo3-upload-queue-progress-border-color);
-    text-align: end;
-}
-
-.upload-queue-progress-bar {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    inset-inline-start: 0;
-    bottom: 0;
-    background-color: var(--typo3-upload-queue-progress-bar-bg);
-}
-
-.upload-queue-progress-percentage,
-.upload-queue-progress-message {
-    display: inline;
-    position: relative;
-    z-index: 2;
-}
-
-//
 // Upload filepicker
 //
 .upload-file-picker {
@@ -60,19 +8,4 @@
     height: 1px;
     width: 1px;
     visibility: hidden;
-}
-
-//
-// Upload status
-//
-.uploading {
-    .upload-queue-progress {
-        --typo3-upload-queue-progress-bar-bg: var(--typo3-upload-queue-progress-info);
-    }
-}
-
-.error {
-    .upload-queue-progress {
-        --typo3-upload-queue-progress-bar-bg: var(--typo3-upload-queue-progress-danger);
-    }
 }
