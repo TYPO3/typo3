@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
+use TYPO3\CMS\Core\Domain\Exception\RecordPropertyException;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
@@ -735,11 +736,6 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
             'input' => '',
             'expected' => [],
         ];
-        yield 'canResolveJson' => [
-            'fieldName' => 'typo3tests_contentelementb_json',
-            'input' => '{"foo": "bar"}',
-            'expected' => ['foo' => 'bar'],
-        ];
     }
 
     #[Test]
@@ -763,6 +759,84 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
         $fieldValue = $resolvedRecord->get($fieldName) instanceof RecordPropertyClosure ? $resolvedRecord->get($fieldName)->instantiate() : $resolvedRecord->get($fieldName);
         self::assertSame($expected, $fieldValue);
+    }
+
+    public static function jsonTypeConversionDataProvider(): \Generator
+    {
+        yield 'canResolveJsonObject' => [
+            'fieldName' => 'typo3tests_contentelementb_json',
+            'input' => '{"foo": "bar"}',
+            'expected' => ['foo' => 'bar'],
+        ];
+        yield 'canResolveJsonArray' => [
+            'fieldName' => 'typo3tests_contentelementb_json',
+            'input' => '["foo", "bar"]',
+            'expected' => ['foo', 'bar'],
+        ];
+        yield 'canResolveJsonString' => [
+            'fieldName' => 'typo3tests_contentelementb_json',
+            'input' => '"foo"',
+            'expected' => 'foo',
+        ];
+        yield 'canResolveJsonInt' => [
+            'fieldName' => 'typo3tests_contentelementb_json',
+            'input' => '5',
+            'expected' => 5,
+        ];
+        yield 'canResolveJsonFloat' => [
+            'fieldName' => 'typo3tests_contentelementb_json',
+            'input' => '5.5',
+            'expected' => 5.5,
+        ];
+        yield 'canResolveJsonBool' => [
+            'fieldName' => 'typo3tests_contentelementb_json',
+            'input' => 'true',
+            'expected' => true,
+        ];
+        yield 'canResolveJsonNull' => [
+            'fieldName' => 'typo3tests_contentelementb_json',
+            'input' => 'null',
+            'expected' => null,
+        ];
+        yield 'canResolveJsonEmpty' => [
+            'fieldName' => 'typo3tests_contentelementb_json',
+            'input' => '',
+            'expected' => null,
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('jsonTypeConversionDataProvider')]
+    public function jsonTypeConversionConvertedToArray(string $fieldName, string $input, array|string|int|float|bool|null $expected): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            $fieldName => $input,
+        ]);
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField($fieldName);
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class)
+        )->instantiate();
+
+        self::assertSame($expected, $result);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertSame($expected, $resolvedRecord->get($fieldName));
+    }
+
+    #[Test]
+    public function jsonTypeConversionThrowsExceptionOnInvalidJson(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_json' => '@@@',
+        ]);
+
+        $this->expectException(RecordPropertyException::class);
+        $this->expectExceptionCode(1725892139);
+
+        $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray())->get('typo3tests_contentelementb_json');
     }
 
     public static function canConvertDateTimeDataProvider(): \Generator

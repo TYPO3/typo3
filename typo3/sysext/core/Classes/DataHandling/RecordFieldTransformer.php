@@ -178,7 +178,7 @@ readonly class RecordFieldTransformer
         }
         if ($fieldInformation->isType(TableColumnType::JSON)) {
             return new RecordPropertyClosure(
-                fn(): array => Type::getType('json')->convertToPHPValue(
+                fn(): array|string|int|float|bool|null => Type::getType('json')->convertToPHPValue(
                     (string)$fieldValue,
                     $this->connectionPool->getConnectionForTable($rawRecord->getMainType())->getDatabasePlatform()
                 )
