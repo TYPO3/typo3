@@ -198,6 +198,7 @@ class FlexFormValueFormatter
                         'table' => $relationTable,
                         'row' => BackendUtility::getRecord($relationTable, $valueStructure[$elementKey]['vDEF'] ?? ''),
                         'title' => $valueStructure[$elementKey]['vDEF'] ?? '',
+                        'options' => $GLOBALS['TCA'][$relationTable]['ctrl']['label_userFunc_options'] ?? [],
                     ];
                     GeneralUtility::callUserFunction($labelUserFunction, $parameters);
                     $processedValue = $parameters['title'];
