@@ -53,7 +53,6 @@ class DebuggerUtility
      * @var array
      */
     protected static $blacklistedClassNames = [
-        'PHPUnit_Framework_MockObject_InvocationMocker',
         ReflectionService::class,
         DataMapper::class,
         PersistenceManager::class,
