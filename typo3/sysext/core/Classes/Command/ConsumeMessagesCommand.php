@@ -68,7 +68,7 @@ class ConsumeMessagesCommand extends Command
                     ),
                     new InputOption('sleep', null, InputOption::VALUE_REQUIRED, 'Seconds to sleep before asking for new messages after no messages were found', 1),
                     new InputOption('queues', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Limit receivers to only consume from the specified queues'),
-                    new InputOption('exit-code-on-limit', null, InputOption::VALUE_REQUIRED, 'Exit code when limits are reached', 0),
+                    new InputOption('exit-code-on-limit', null, InputOption::VALUE_REQUIRED, 'Exit code when limits are reached', Command::SUCCESS),
                 ]
             )
             ->setHelp(
@@ -150,7 +150,7 @@ EOF
         }
         $worker->run($options);
 
-        return $this->stopWorkerOnTimeLimitListener->hasStopped() ? $exitCodeOnLimit : 0;
+        return $this->stopWorkerOnTimeLimitListener->hasStopped() ? $exitCodeOnLimit : Command::SUCCESS;
     }
 
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
