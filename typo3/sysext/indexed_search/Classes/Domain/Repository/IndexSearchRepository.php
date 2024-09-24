@@ -71,9 +71,10 @@ class IndexSearchRepository
 
     /**
      * Media type
+     * Can be either an ENUM backed value or a raw string
      * formally known as $this->piVars['media']
      */
-    protected MediaType $mediaType = MediaType::INTERNAL_PAGES;
+    protected MediaType|string $mediaType = MediaType::INTERNAL_PAGES;
 
     /**
      * Sort order
@@ -157,7 +158,17 @@ class IndexSearchRepository
         $this->sections = (string)($searchData['sections'] ?? '');
         $this->searchType = SearchType::tryFrom((int)($searchData['searchType'] ?? 0)) ?? SearchType::DISTINCT;
         $this->languageUid = (int)($searchData['languageUid'] ?? 0);
-        $this->mediaType = MediaType::tryFrom((int)($searchData['mediaType'] ?? 0)) ?? MediaType::INTERNAL_PAGES;
+
+        // 'mediaType' can either be an INT in range (-1|-2|0), but also be a file extension string ('ppt').
+        // Only when it's an integer, it can be mapped to the ENUM. Otherwise, the input 'mediaType' needs to be mapped here.
+        if (isset($searchData['mediaType'])) {
+            if (MathUtility::canBeInterpretedAsInteger($searchData['mediaType'])) {
+                $this->mediaType = MediaType::tryFrom((int)$searchData['mediaType']) ?? MediaType::INTERNAL_PAGES;
+            } elseif (is_string($searchData['mediaType']) && $searchData['mediaType'] !== '') {
+                $this->mediaType = $searchData['mediaType'];
+            }
+        }
+
         $this->sortOrder = (string)($searchData['sortOrder'] ?? '');
         $this->descendingSortOrderFlag = (bool)($searchData['desc'] ?? false);
         $this->resultpagePointer = (int)($searchData['pointer'] ?? 0);
@@ -765,11 +776,15 @@ class IndexSearchRepository
     protected function mediaTypeWhere(): string
     {
         $expressionBuilder = $this->connectionPool->getQueryBuilderForTable('index_phash')->expr();
-        $whereClause = match ($this->mediaType) {
-            MediaType::ALL_EXTERNAL => $expressionBuilder->neq('IP.item_type', $expressionBuilder->literal((string)MediaType::INTERNAL_PAGES->value)),
-            MediaType::ALL_MEDIA => '', // include TYPO3 pages and external media
-            default => $expressionBuilder->eq('IP.item_type', $expressionBuilder->literal((string)$this->mediaType->value)),
-        };
+        if ($this->mediaType instanceof MediaType) {
+            $whereClause = match ($this->mediaType) {
+                MediaType::ALL_EXTERNAL => $expressionBuilder->neq('IP.item_type', $expressionBuilder->literal((string)MediaType::INTERNAL_PAGES->value)),
+                MediaType::ALL_MEDIA => '', // include TYPO3 pages and external media
+                default => $expressionBuilder->eq('IP.item_type', $expressionBuilder->literal((string)$this->mediaType->value)),
+            };
+        } else {
+            $whereClause = $expressionBuilder->eq('IP.item_type', $expressionBuilder->literal($this->mediaType));
+        }
         return $whereClause ? ' AND ' . $whereClause : '';
     }
 

@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
 use TYPO3\CMS\IndexedSearch\Indexer;
+use TYPO3\CMS\IndexedSearch\Type\MediaType;
 use TYPO3\CMS\IndexedSearch\Type\SearchType;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -86,6 +88,85 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
         $searchRepository = $this->getSearchRepository();
         $searchResults = $searchRepository->doSearch([['sword' => 'l%rem']], -1);
         self::assertIsNotArray($searchResults['resultRows'] ?? false);
+    }
+
+    public static function searchByMediaTypeSetsAppropriateQuerybuilderWhereConditionDataProvider(): \Generator
+    {
+        yield 'mediaType is "ALL_MEDIA"' => [
+            'postInput' => '-1',
+            'expected' => MediaType::ALL_MEDIA,
+            'expectedSql' => '',
+        ];
+
+        yield 'mediaType is "ALL_EXTERNAL"' => [
+            'postInput' => '-2',
+            'expected' => MediaType::ALL_EXTERNAL,
+            'expectedSql' => ' AND IP.item_type <> 0',
+        ];
+
+        yield 'mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => '0',
+            'expected' => MediaType::INTERNAL_PAGES,
+            'expectedSql' => ' AND IP.item_type = 0',
+        ];
+
+        yield 'empty mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => '',
+            'expected' => MediaType::INTERNAL_PAGES,
+            'expectedSql' => ' AND IP.item_type = 0',
+        ];
+
+        yield 'null mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => null,
+            'expected' => MediaType::INTERNAL_PAGES,
+            'expectedSql' => ' AND IP.item_type = 0',
+        ];
+
+        yield 'invalid mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => '189',
+            'expected' => MediaType::INTERNAL_PAGES,
+            'expectedSql' => ' AND IP.item_type = 0',
+        ];
+
+        yield 'negative invalid mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => '-189',
+            'expected' => MediaType::INTERNAL_PAGES,
+            'expectedSql' => ' AND IP.item_type = 0',
+        ];
+
+        yield 'string ppt mediaType is string' => [
+            'postInput' => 'ppt',
+            'expected' => 'ppt',
+            'expectedSql' => ' AND IP.item_type = ppt',
+        ];
+
+        yield 'invalid string mediaType is still string' => [
+            'postInput' => 'php',
+            'expected' => 'php',
+            'expectedSql' => ' AND IP.item_type = php',
+        ];
+    }
+
+    #[DataProvider('searchByMediaTypeSetsAppropriateQuerybuilderWhereConditionDataProvider')]
+    #[Test]
+    public function searchByMediaTypeSetsAppropriateQuerybuilderWhereCondition(?string $postInput, string|MediaType $expected, string $expectedSql): void
+    {
+        $searchRepository = $this->get(IndexSearchRepository::class);
+        $mediaTypeWhere = new \ReflectionMethod($searchRepository, 'mediaTypeWhere');
+        $getMediaType = new \ReflectionProperty($searchRepository, 'mediaType');
+        $searchRepositoryDefaultOptions = [
+            'defaultOperand' => 0,
+            'sections' => 0,
+            'mediaType' => $postInput,
+            'sortOrder' => 'rank_flag',
+            'languageUid' => 'current',
+            'sortDesc' => 1,
+            'searchType' => SearchType::PART_OF_WORD->value,
+            'extResume' => 1,
+        ];
+        $searchRepository->initialize([], $searchRepositoryDefaultOptions, [], -1);
+        self::assertSame($expected, $getMediaType->getValue($searchRepository));
+        self::assertSame($expectedSql, preg_replace('@["\'`]@imsU', '', $mediaTypeWhere->invoke($searchRepository)));
     }
 
     private function getSearchRepository(SearchType $searchType = SearchType::PART_OF_WORD): IndexSearchRepository
