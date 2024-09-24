@@ -29,6 +29,8 @@ use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserDomainClass;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserDomainClassToString;
+use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleBackedEnum;
+use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleEnum;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -595,5 +597,55 @@ EOT;
 </select>
 EOT;
         self::assertSame($expected, $view->render());
+    }
+
+    #[Test]
+    public function selectAppliesSelectedValueFromUnitEnum(): void
+    {
+        $user = new UserDomainClass(1, 'Oliver', 'Bartsch');
+        $options = [
+            UserRoleEnum::ADMIN->name => 'Admin',
+            UserRoleEnum::EDITOR->name => 'Editor',
+            UserRoleEnum::GUEST->name => 'Guest',
+        ];
+
+        $serverRequest = (new ServerRequest())
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{user}" fieldNamePrefix="myFieldPrefix" objectName="user"><f:form.select prependOptionLabel="please choose" prependOptionValue="-1" options="{options}" property="role"/></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('user', $user);
+        $view->assign('options', $options);
+        $view->assign('property', UserRoleEnum::EDITOR);
+        $view->assign('value', UserRoleEnum::EDITOR);
+        $result = $view->render();
+        self::assertStringContainsString('<select name="myFieldPrefix[user][role]">', $result);
+        self::assertStringContainsString('<option value="GUEST" selected="selected">Guest</option>', $result);
+    }
+
+    #[Test]
+    public function selectAppliesSelectedValueFromBackedEnum(): void
+    {
+        $user = new UserDomainClass(1, 'Oliver', 'Bartsch');
+        $options = [
+            UserRoleBackedEnum::ADMIN->value => 'Admin',
+            UserRoleBackedEnum::EDITOR->value => 'Editor',
+            UserRoleBackedEnum::GUEST->value => 'Guest',
+        ];
+
+        $serverRequest = (new ServerRequest())
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{user}" fieldNamePrefix="myFieldPrefix" objectName="user"><f:form.select prependOptionLabel="please choose" prependOptionValue="-1" options="{options}" property="roleBacked"/></f:form>');
+        $view = new TemplateView($context);
+        $view->assign('user', $user);
+        $view->assign('options', $options);
+        $view->assign('property', UserRoleEnum::EDITOR);
+        $view->assign('value', UserRoleEnum::EDITOR);
+        $result = $view->render();
+        self::assertStringContainsString('<select name="myFieldPrefix[user][roleBacked]">', $result);
+        self::assertStringContainsString('<option value="3" selected="selected">Guest</option>', $result);
     }
 }

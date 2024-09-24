@@ -331,6 +331,12 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
             if ($this->persistenceManager->getIdentifierByObject($valueElement) !== null) {
                 return $this->persistenceManager->getIdentifierByObject($valueElement);
             }
+            if ($valueElement instanceof \BackedEnum) {
+                return $valueElement->value;
+            }
+            if ($valueElement instanceof \UnitEnum) {
+                return $valueElement->name;
+            }
             return (string)$valueElement;
         }
         return $valueElement;

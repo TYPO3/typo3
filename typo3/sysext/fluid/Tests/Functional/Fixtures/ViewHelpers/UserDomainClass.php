@@ -26,11 +26,17 @@ class UserDomainClass
     protected string $firstName;
     protected string $lastName;
 
-    public function __construct(int $id, string $firstName, string $lastName)
+    protected UserRoleEnum $role;
+
+    protected UserRoleBackedEnum $roleBacked;
+
+    public function __construct(int $id, string $firstName, string $lastName, UserRoleEnum $role = UserRoleEnum::GUEST, UserRoleBackedEnum $roleBacked = UserRoleBackedEnum::GUEST)
     {
         $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->role = $role;
+        $this->roleBacked = $roleBacked;
     }
 
     public function getId(): int
@@ -46,5 +52,15 @@ class UserDomainClass
     public function getLastName(): string
     {
         return $this->lastName;
+    }
+
+    public function getRole(): UserRoleEnum
+    {
+        return $this->role;
+    }
+
+    public function getRoleBacked(): UserRoleBackedEnum
+    {
+        return $this->roleBacked;
     }
 }
