@@ -57,6 +57,7 @@ class WindowManager {
     if (Utility.urlsPointToSameServerSideResource(uri, existingUri)) {
       existingWindow.location.replace(uri);
       existingWindow.location.reload();
+      existingWindow.focus();
       return existingWindow;
     }
     const newWindow = window.open(uri, windowName, windowFeatures);
