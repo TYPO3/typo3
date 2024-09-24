@@ -88,9 +88,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
         }
         $codeOrData = $cache instanceof PhpFrontend ? 'code' : 'data';
         $finalCacheDirectory = $temporaryCacheDirectory . 'cache/' . $codeOrData . '/' . $this->cacheIdentifier . '/';
-        if (!is_dir($finalCacheDirectory)) {
-            $this->createFinalCacheDirectory($finalCacheDirectory);
-        }
+        $this->createFinalCacheDirectory($finalCacheDirectory);
         unset($this->temporaryCacheDirectory);
         $this->cacheDirectory = $finalCacheDirectory;
         $this->cacheEntryFileExtension = $cache instanceof PhpFrontend ? '.php' : '';
@@ -183,13 +181,26 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      */
     protected function createFinalCacheDirectory($finalCacheDirectory)
     {
-        try {
-            GeneralUtility::mkdir_deep($finalCacheDirectory);
-        } catch (\RuntimeException $e) {
-            throw new Exception('The directory "' . $finalCacheDirectory . '" can not be created.', 1303669848, $e);
+        if (!is_dir($finalCacheDirectory)) {
+            try {
+                GeneralUtility::mkdir_deep($finalCacheDirectory);
+            } catch (\RuntimeException $e) {
+                throw new Exception('The directory "' . $finalCacheDirectory . '" can not be created.', 1303669848, $e);
+            }
         }
         if (!is_writable($finalCacheDirectory)) {
             throw new Exception('The directory "' . $finalCacheDirectory . '" is not writable.', 1203965200);
+        }
+        $tmpFilesCacheDirectory = $finalCacheDirectory . 'tmp/';
+        if (!is_dir($tmpFilesCacheDirectory)) {
+            try {
+                GeneralUtility::mkdir_deep($tmpFilesCacheDirectory);
+            } catch (\RuntimeException $e) {
+                throw new Exception('The temporary cache directory "' . $tmpFilesCacheDirectory . '" can not be created.', 1727176780, $e);
+            }
+        }
+        if (!is_writable($tmpFilesCacheDirectory)) {
+            throw new Exception('The temporary cache directory "' . $tmpFilesCacheDirectory . '" is not writable.', 1727176781);
         }
     }
 
@@ -225,14 +236,17 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
         if ($entryIdentifier === '') {
             throw new \InvalidArgumentException('The specified entry identifier must not be empty.', 1334756736);
         }
-        $temporaryCacheEntryPathAndFilename = $this->cacheDirectory . StringUtility::getUniqueId() . '.temp';
-        $result = file_put_contents($temporaryCacheEntryPathAndFilename, $data);
-        GeneralUtility::fixPermissions($temporaryCacheEntryPathAndFilename);
+        $temporaryCacheEntryPathAndFilename = $this->cacheDirectory . 'tmp/' . StringUtility::getUniqueId() . '.temp';
+        $result = @file_put_contents($temporaryCacheEntryPathAndFilename, $data);
         if ($result === false) {
             throw new Exception('The temporary cache file "' . $temporaryCacheEntryPathAndFilename . '" could not be written.', 1334756737);
         }
+        GeneralUtility::fixPermissions($temporaryCacheEntryPathAndFilename);
         $cacheEntryPathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-        rename($temporaryCacheEntryPathAndFilename, $cacheEntryPathAndFilename);
+        $result = @rename($temporaryCacheEntryPathAndFilename, $cacheEntryPathAndFilename);
+        if ($result === false) {
+            throw new Exception('The cache file "' . $cacheEntryPathAndFilename . '" could not be written.', 1727178709);
+        }
         if ($this->cacheEntryFileExtension === '.php') {
             GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($cacheEntryPathAndFilename);
         }
@@ -297,24 +311,17 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
 
     /**
      * Removes all cache entries of this cache.
-     * Flushes a directory by first moving to a temporary resource, and then
-     * triggering the remove process. This way directories can be flushed faster
-     * to prevent race conditions on concurrent processes accessing the same directory.
      */
     public function flush()
     {
-        $directory = $this->cacheDirectory;
-        if (is_link($directory)) {
-            // Avoid attempting to rename the symlink see #87367
-            $directory = (string)realpath($directory);
-        }
-
-        if (is_dir($directory)) {
-            $temporaryDirectory = rtrim($directory, '/') . '.' . StringUtility::getUniqueId('remove');
-            if (rename($directory, $temporaryDirectory)) {
-                GeneralUtility::mkdir($directory);
-                clearstatcache();
-                GeneralUtility::rmdir($temporaryDirectory, true);
+        $directoryIterator = new \DirectoryIterator($this->cacheDirectory);
+        foreach ($directoryIterator as $fileInfo) {
+            if ($fileInfo->isFile()) {
+                if (!@unlink($this->cacheDirectory . $fileInfo->getFilename())) {
+                    $this->logger->error('Failed to unlink cache entry: {filename}', [
+                        'filename' => $this->cacheDirectory . $fileInfo->getFilename(),
+                    ]);
+                }
             }
         }
     }

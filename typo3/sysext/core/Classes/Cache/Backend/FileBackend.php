@@ -68,7 +68,7 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         }
         $cacheEntryFileExtensionLength = strlen($this->cacheEntryFileExtension);
         for ($directoryIterator = new \DirectoryIterator($this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
-            if ($directoryIterator->isDot()) {
+            if (!$directoryIterator->isFile()) {
                 continue;
             }
             if ($cacheEntryFileExtensionLength > 0) {
@@ -237,7 +237,7 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         $now = $GLOBALS['EXEC_TIME'];
         $cacheEntryFileExtensionLength = strlen($this->cacheEntryFileExtension);
         for ($directoryIterator = GeneralUtility::makeInstance(\DirectoryIterator::class, $this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
-            if ($directoryIterator->isDot()) {
+            if (!$directoryIterator->isFile()) {
                 continue;
             }
             $cacheEntryPathAndFilename = $directoryIterator->getPathname();
@@ -323,7 +323,7 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
             return;
         }
         for ($directoryIterator = new \DirectoryIterator($this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
-            if ($directoryIterator->isDot()) {
+            if (!$directoryIterator->isFile()) {
                 continue;
             }
             if ($this->isCacheFileExpired($directoryIterator->getPathname())) {
