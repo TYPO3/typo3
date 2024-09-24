@@ -69,9 +69,10 @@ class IndexSearchRepository
 
     /**
      * Media type
+     * Can be either an integer value or a raw string
      * formally known as $this->piVars['media']
      */
-    protected int $mediaType = 0;
+    protected int|string $mediaType = 0;
 
     /**
      * Sort order
@@ -148,7 +149,16 @@ class IndexSearchRepository
         $this->sections = (string)($searchData['sections'] ?? '');
         $this->searchType = (int)($searchData['searchType'] ?? 0);
         $this->languageUid = (int)($searchData['languageUid'] ?? 0);
-        $this->mediaType = (int)($searchData['mediaType'] ?? 0);
+
+        // 'mediaType' can either be an INT in range (-1|-2|0), but also be a file extension string ('ppt').
+        if (isset($searchData['mediaType'])) {
+            if (MathUtility::canBeInterpretedAsInteger($searchData['mediaType'])) {
+                $this->mediaType = (int)($searchData['mediaType']);
+            } elseif (is_string($searchData['mediaType']) && $searchData['mediaType'] !== '') {
+                $this->mediaType = $searchData['mediaType'];
+            }
+        }
+
         $this->sortOrder = (string)($searchData['sortOrder'] ?? '');
         $this->descendingSortOrderFlag = (bool)($searchData['desc'] ?? false);
         $this->resultpagePointer = (int)($searchData['pointer'] ?? 0);

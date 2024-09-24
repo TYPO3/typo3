@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -88,6 +89,97 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
         $searchRepository = $this->getSearchRepository();
         $searchResults = $searchRepository->doSearch([['sword' => 'l%rem']], -1);
         self::assertIsNotArray($searchResults['resultRows'] ?? false);
+    }
+
+    public static function searchByMediaTypeSetsAppropriateQuerybuilderWhereConditionDataProvider(): \Generator
+    {
+        yield 'mediaType is "ALL_MEDIA"' => [
+            'postInput' => '-1',
+            'expected' => -1,
+            'expectedSql' => '',
+        ];
+
+        yield 'mediaType is "ALL_EXTERNAL"' => [
+            'postInput' => '-2',
+            'expected' => -2,
+            'expectedSql' => ' AND IP.item_type <> 0',
+        ];
+
+        yield 'mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => '0',
+            'expected' => 0,
+            'expectedSql' => ' AND IP.item_type = 0',
+        ];
+
+        yield 'empty mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => '',
+            'expected' => 0,
+            'expectedSql' => ' AND IP.item_type = 0',
+        ];
+
+        yield 'null mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => null,
+            'expected' => 0,
+            'expectedSql' => ' AND IP.item_type = 0',
+        ];
+
+        // Backport note: This is actually a difference in v12 to v13
+        // for v12, mediaTypes outside the range of the backend ENUM
+        // are passed through just like a file extension.
+        yield 'invalid mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => '189',
+            'expected' => 189,
+            'expectedSql' => ' AND IP.item_type = 189',
+        ];
+
+        yield 'negative invalid mediaType is "INTERNAL_PAGES"' => [
+            'postInput' => '-189',
+            'expected' => -189,
+            'expectedSql' => ' AND IP.item_type = -189',
+        ];
+
+        yield 'string ppt mediaType is string' => [
+            'postInput' => 'ppt',
+            'expected' => 'ppt',
+            'expectedSql' => ' AND IP.item_type = ppt',
+        ];
+
+        yield 'invalid string mediaType is still string' => [
+            'postInput' => 'php',
+            'expected' => 'php',
+            'expectedSql' => ' AND IP.item_type = php',
+        ];
+    }
+
+    #[DataProvider('searchByMediaTypeSetsAppropriateQuerybuilderWhereConditionDataProvider')]
+    #[Test]
+    public function searchByMediaTypeSetsAppropriateQuerybuilderWhereCondition(?string $postInput, string|int $expected, string $expectedSql): void
+    {
+        $searchRepository = GeneralUtility::makeInstance(IndexSearchRepository::class);
+
+        $getMediaType = \Closure::bind(
+            static fn(): int|string => $searchRepository->mediaType,
+            null,
+            IndexSearchRepository::class
+        );
+        $mediaTypeWhere = \Closure::bind(
+            static fn(): string => $searchRepository->mediaTypeWhere(),
+            null,
+            IndexSearchRepository::class
+        );
+        $searchRepositoryDefaultOptions = [
+            'defaultOperand' => 0,
+            'sections' => 0,
+            'mediaType' => $postInput,
+            'sortOrder' => 'rank_flag',
+            'languageUid' => 'current',
+            'sortDesc' => 1,
+            'searchType' => 1,
+            'extResume' => 1,
+        ];
+        $searchRepository->initialize([], $searchRepositoryDefaultOptions, [], -1);
+        self::assertSame($expected, $getMediaType());
+        self::assertSame($expectedSql, preg_replace('@["\'`]@imsU', '', $mediaTypeWhere()));
     }
 
     #[Test]
