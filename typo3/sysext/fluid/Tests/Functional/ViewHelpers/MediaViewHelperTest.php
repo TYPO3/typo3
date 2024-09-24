@@ -20,8 +20,9 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Fluid\ViewHelpers\MediaViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class MediaViewHelperTest extends FunctionalTestCase
 {
@@ -38,13 +39,13 @@ final class MediaViewHelperTest extends FunctionalTestCase
     {
         return [
             'fallback to image' => [
+                '<f:media file="{file}" width="400" height="300" />',
                 '1:/user_upload/typo3_image2.jpg',
-                ['title' => 'null'],
                 '<img src="fileadmin/user_upload/typo3_image2.jpg" width="400" height="300" alt="" />',
             ],
-            'show media image' => [
+            'show media video' => [
+                '<f:media file="{file}" additionalConfig="{controlsList: \'nodownload\'}" />',
                 '1:/user_upload/example.mp4',
-                ['title' => 'null', 'additionalConfig' => ['controlsList' => 'nodownload']],
                 '<video controls controlsList="nodownload"><source src="fileadmin/user_upload/example.mp4" type="video/mp4"></video>',
             ],
         ];
@@ -52,14 +53,16 @@ final class MediaViewHelperTest extends FunctionalTestCase
 
     #[DataProvider('renderReturnsExpectedMarkupDataProvider')]
     #[Test]
-    public function renderReturnsExpectedMarkup(string $file, array $arguments, string $expected): void
+    public function renderReturnsExpectedMarkup(string $template, string $file, string $expected): void
     {
         $file = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier($file);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $subject = new MediaViewHelper();
-        $subject->setArguments(['file' => $file] + $arguments);
-        $result = $subject->render();
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $view = new TemplateView($context);
+        $view->assign('file', $file);
+        $result = $view->render();
         self::assertEquals($expected, $result);
     }
 }
