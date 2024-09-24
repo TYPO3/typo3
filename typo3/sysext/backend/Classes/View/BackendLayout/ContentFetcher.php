@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -223,7 +225,11 @@ class ContentFetcher
             )
         );
 
-        $sortBy = (string)($GLOBALS['TCA']['tt_content']['ctrl']['sortby'] ?: $GLOBALS['TCA']['tt_content']['ctrl']['default_sortby']);
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('tt_content');
+        $sortBy = $schema->hasCapability(TcaSchemaCapability::SortByField) ? (string)$schema->getCapability(TcaSchemaCapability::SortByField) : '';
+        if ($sortBy === '' && $schema->hasCapability(TcaSchemaCapability::DefaultSorting)) {
+            $sortBy = (string)$schema->getCapability(TcaSchemaCapability::DefaultSorting);
+        }
         foreach (QueryHelper::parseOrderBy($sortBy) as $orderBy) {
             $queryBuilder->addOrderBy($orderBy[0], $orderBy[1]);
         }

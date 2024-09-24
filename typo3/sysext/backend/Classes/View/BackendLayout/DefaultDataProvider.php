@@ -25,6 +25,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -182,8 +185,12 @@ class DefaultDataProvider implements DataProviderInterface
                 )
             );
 
-        if (!empty($GLOBALS['TCA'][$this->tableName]['ctrl']['sortby'])) {
-            $queryBuilder->orderBy($GLOBALS['TCA'][$this->tableName]['ctrl']['sortby']);
+        try {
+            $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->tableName);
+            if ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
+                $queryBuilder->orderBy((string)$schema->getCapability(TcaSchemaCapability::SortByField));
+            }
+        } catch (UndefinedSchemaException) {
         }
 
         $statement = $queryBuilder->executeQuery();

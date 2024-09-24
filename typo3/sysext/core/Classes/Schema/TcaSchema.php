@@ -100,6 +100,13 @@ readonly class TcaSchema implements SchemaInterface
         return (bool)($this->schemaConfiguration['versioningWS'] ?? false);
     }
 
+    public function hasFieldRestrictions(): bool
+    {
+        return is_array($this->schemaConfiguration['enablecolumns'] ?? false)
+            && $this->schemaConfiguration['enablecolumns'] !== [];
+
+    }
+
     public function hasCapability(TcaSchemaCapability $capability): bool
     {
         return match ($capability) {
@@ -188,6 +195,10 @@ readonly class TcaSchema implements SchemaInterface
             }
         }
         $labelConfiguration = [];
+        if (isset($this->schemaConfiguration['label_userFunc'])) {
+            $labelConfiguration['generator'] = $this->schemaConfiguration['label_userFunc'];
+            $labelConfiguration['generatorOptions'] = $this->schemaConfiguration['label_userFunc_options'] ?? [];
+        }
         if (isset($this->schemaConfiguration['formattedLabel_userFunc'])) {
             $labelConfiguration['formatter'] = $this->schemaConfiguration['formattedLabel_userFunc'];
             $labelConfiguration['formatterOptions'] = $this->schemaConfiguration['formattedLabel_userFunc_options'] ?? [];

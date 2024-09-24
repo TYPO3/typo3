@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\View\ValueFormatter;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -190,19 +192,23 @@ class FlexFormValueFormatter
                 }
             } elseif (!empty($elementStructure['config'])) {
                 // Render plain elements
-                $relationTable = $this->getRelationTable($elementStructure['config']);
-                $labelUserFunction = $relationTable !== null ? $this->getRelationLabelUserFunction($relationTable) : null;
+                $relationTable = $this->getRelationTable($elementStructure['config']) ?? '';
+                $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
 
-                if ($relationTable !== null && $labelUserFunction !== null) {
+                if ($schemaFactory->has($relationTable)
+                    && ($userFunc = ($schemaFactory->get($relationTable)->getCapability(TcaSchemaCapability::Label)->getConfiguration()['generator'] ?? false))
+                ) {
                     $parameters = [
                         'table' => $relationTable,
                         'row' => BackendUtility::getRecord($relationTable, $valueStructure[$elementKey]['vDEF'] ?? ''),
                         'title' => $valueStructure[$elementKey]['vDEF'] ?? '',
-                        'options' => $GLOBALS['TCA'][$relationTable]['ctrl']['label_userFunc_options'] ?? [],
+                        'options' => ($schemaFactory->get($relationTable)->getCapability(TcaSchemaCapability::Label)->getConfiguration()['generatorOptions'] ?? []),
                     ];
-                    GeneralUtility::callUserFunction($labelUserFunction, $parameters);
+                    GeneralUtility::callUserFunction($userFunc, $parameters);
                     $processedValue = $parameters['title'];
                 } else {
+                    // @todo Evaluate manipulation of $GLOBALS['TCA'] - This will at least
+                    //       no longer work when core is using TcaSchema consistently
                     $GLOBALS['TCA'][$processingTableValue]['columns'][$processingColumnValue]['config'] = $elementStructure['config'];
                     $processedValue = BackendUtility::getProcessedValue(
                         $processingTableValue,
@@ -233,19 +239,6 @@ class FlexFormValueFormatter
         }
 
         return $configuration['foreign_table'] ?? null;
-    }
-
-    /**
-     * @param string $relationTable
-     * @return non-empty-string|null
-     */
-    protected function getRelationLabelUserFunction(string $relationTable): ?string
-    {
-        if (!empty($GLOBALS['TCA'][$relationTable]['ctrl']['label_userFunc'])) {
-            return $GLOBALS['TCA'][$relationTable]['ctrl']['label_userFunc'];
-        }
-
-        return null;
     }
 
     protected function getProcessedSections(array $dataStructure, array $valueStructure): array
