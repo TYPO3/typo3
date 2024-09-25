@@ -495,7 +495,6 @@ class ShortcutRepository
             $shortcut['href'] = (string)$this->uriBuilder->buildUriFromRoute($routeIdentifier, $arguments);
             $shortcut['route'] = $routeIdentifier;
             $shortcut['module'] = $moduleName;
-            $shortcut['pageId'] = $pageId;
             $shortcuts[] = $shortcut;
         }
 

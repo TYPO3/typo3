@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -68,6 +69,48 @@ class TreeController
             return $this->prepareItemForOutput($item);
         }, $items);
         return new JsonResponse($items);
+    }
+
+    /**
+     * Returns JSON representing page rootline
+     */
+    public function fetchRootlineAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $identifier = (string)($request->getQueryParams()['identifier'] ?? '');
+        if ($identifier === '') {
+            return new JsonResponse(null, 400);
+        }
+
+        try {
+            $folder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($identifier);
+        } catch (InsufficientFolderAccessPermissionsException) {
+            return new JsonResponse(null, 403);
+        } catch (FolderDoesNotExistException) {
+            return new JsonResponse(null, 404);
+        }
+
+        $rootline = [];
+        while (true) {
+            $identifier = $folder->getCombinedIdentifier();
+            $rootline[] = $identifier;
+            try {
+                $parent = $folder->getParentFolder();
+            } catch (InsufficientFolderAccessPermissionsException) {
+                break;
+            }
+            if (!$parent instanceof Folder) {
+                break;
+            }
+            if ($parent->getCombinedIdentifier() === $identifier) {
+                // parent folder of root folder is the root folder => break
+                break;
+            }
+            $folder = $parent;
+        }
+
+        return new JsonResponse([
+            'rootline' => array_reverse($rootline),
+        ]);
     }
 
     /**

@@ -11,16 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-interface StateChange {
-  mount?: string;
+interface CurrentState {
   identifier: string;
-  selected: boolean;
+  treeIdentifier: string|null;
 }
 
-interface CurrentState {
-  mount?: string;
-  identifier: string;
-  selection?: string
+export interface ModuleStateUpdateEvent {
+  state: CurrentState;
+  oldState: CurrentState;
 }
 
 /**
@@ -35,37 +33,52 @@ interface CurrentState {
 export class ModuleStateStorage {
   private static readonly prefix = 't3-module-state-';
 
-  public static update(module: string, identifier: string|number, selected: boolean, mount?: string|number)
+  public static update(module: string, identifier: string|number): CurrentState
   {
     if (typeof identifier === 'number') {
       identifier = identifier.toString(10);
     } else if (typeof identifier !== 'string') {
       throw new SyntaxError('identifier must be of type string');
     }
-    if (typeof mount === 'number') {
-      mount = mount.toString(10);
-    } else if (typeof mount !== 'string' && typeof mount !== 'undefined' && mount !== null) {
-      throw new SyntaxError('mount must be of type string');
-    }
-    const state = ModuleStateStorage.assignProperties(
-      { mount, identifier, selected } as StateChange,
-      ModuleStateStorage.fetch(module)
-    );
-    ModuleStateStorage.commit(module, state);
+
+    const oldState = ModuleStateStorage.current(module);
+    const treeIdentifier = identifier === oldState.identifier ? oldState.treeIdentifier : null;
+    const state = { identifier, treeIdentifier };
+
+    ModuleStateStorage.commit(module, 'update', state);
+    return state;
   }
 
-  public static updateWithCurrentMount(module: string, identifier: string|number, selected: boolean)
+  public static updateWithTreeIdentifier(module: string, identifier: string|number, treeIdentifier: string|number): CurrentState
   {
-    ModuleStateStorage.update(
-      module,
-      identifier,
-      selected,
-      ModuleStateStorage.current(module).mount
-    );
+    if (typeof identifier === 'number') {
+      identifier = identifier.toString(10);
+    } else if (typeof identifier !== 'string') {
+      throw new SyntaxError('identifier must be of type string');
+    }
+
+    if (typeof treeIdentifier === 'number') {
+      treeIdentifier = treeIdentifier.toString(10);
+    } else if (typeof treeIdentifier !== 'string') {
+      throw new SyntaxError('treeIdentifier must be of type string');
+    }
+
+    const state = { identifier, treeIdentifier };
+    ModuleStateStorage.commit(module, 'update-with-tree-identifier', state);
+    return state;
+  }
+
+  public static updateWithCurrentMount(module: string, identifier: string|number)
+  {
+    ModuleStateStorage.update(module, identifier);
   }
 
   public static current(module: string): CurrentState {
-    return ModuleStateStorage.fetch(module) || ModuleStateStorage.createCurrentState();
+    const state = {
+      ...ModuleStateStorage.getInitialState(),
+      ...(ModuleStateStorage.fetch(module) ?? {}),
+    };
+    return state;
   }
 
   public static purge(): void
@@ -83,30 +96,23 @@ export class ModuleStateStorage {
     return JSON.parse(data);
   }
 
-  private static commit(module: string, state: CurrentState) {
+  private static async commit(module: string, mode: string, state: CurrentState) {
+    const oldState = ModuleStateStorage.current(module);
     sessionStorage.setItem(ModuleStateStorage.prefix + module, JSON.stringify(state));
+
+    top.document.dispatchEvent(new CustomEvent<ModuleStateUpdateEvent>('typo3:module-state-storage:' + mode + ':' + module, {
+      detail: {
+        state,
+        oldState,
+      }
+    }));
   }
 
-  private static assignProperties(change: StateChange, state: CurrentState|null): CurrentState
+  private static getInitialState(): CurrentState
   {
-    const target = Object.assign(ModuleStateStorage.createCurrentState(), state) as CurrentState;
-    if (change.mount) {
-      target.mount = change.mount;
-    }
-    if (change.identifier) {
-      target.identifier = change.identifier;
-    }
-    if (change.selected) {
-      target.selection = target.identifier;
-    }
-    return target;
-  }
-
-  private static createCurrentState(): CurrentState
-  {
-    return { mount: null, identifier: '', selection: null } as CurrentState;
+    return { identifier: '', treeIdentifier: null };
   }
 }
 
 // exposing `ModuleStateStorage`
-(window as any).ModuleStateStorage = ModuleStateStorage;
+window.ModuleStateStorage = ModuleStateStorage;

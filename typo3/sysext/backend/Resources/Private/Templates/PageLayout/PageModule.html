@@ -14,7 +14,8 @@
             3: '@typo3/backend/localization.js',
             4: '@typo3/backend/layout-module/drag-drop.js',
             5: '@typo3/backend/modal.js',
-            6: '@typo3/backend/element/editable-page-title.js'
+            6: '@typo3/backend/element/editable-page-title.js',
+            7: '@typo3/backend/element/immediate-action-element.js'
         }"
         addJsInlineLabels="{
             'editablePageTitle.input.field.label': 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageTitle.input.field.label',
@@ -23,9 +24,9 @@
             'editablePageTitle.button.cancel.label': 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'
         }"
     />
-    <f:variable name="immediateActionArgs" value="{0: 'web', 1: pageId, 2: 1}" />
+    <f:variable name="immediateActionArgs" value="{0: 'web', 1: pageId}" />
     <typo3-immediate-action
-        action="TYPO3.Backend.Storage.ModuleStateStorage.updateWithCurrentMount"
+        action="TYPO3.Backend.Storage.ModuleStateStorage.update"
         args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"
     ></typo3-immediate-action>
 </f:section>

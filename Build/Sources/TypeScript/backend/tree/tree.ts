@@ -92,6 +92,13 @@ export class Tree extends LitElement {
   protected allowNodeDrag: boolean = false;
   protected allowNodeSorting: boolean = false;
 
+  private __loadFinished: () => void;
+  private __loadPromise: Promise<void> = new Promise(res => this.__loadFinished = res);
+
+  public get loadComplete(): Promise<void> {
+    return this.__loadPromise;
+  }
+
   public getNodeFromElement(element: HTMLElement): TreeNodeInterface|null
   {
     if (element === null || !('treeId' in element.dataset)) {
@@ -133,6 +140,8 @@ export class Tree extends LitElement {
   public async loadData(): Promise<void> {
     this.loading = true;
     this.nodes = this.prepareNodes(await this.fetchData());
+    this.__loadFinished();
+    this.__loadPromise = new Promise(res => this.__loadFinished = res);
     this.loading = false;
   }
 
@@ -196,7 +205,7 @@ export class Tree extends LitElement {
 
       parentNode.__loading = true;
 
-      const nodes = await this.fetchData(parentNode);
+      const nodes = this.prepareNodes(await this.fetchData(parentNode));
       const positionAfterParentNode = this.nodes.indexOf(parentNode) + 1;
       let deleteCount = 0;
       for (let i = positionAfterParentNode; i < this.nodes.length; ++i) {
@@ -466,6 +475,23 @@ export class Tree extends LitElement {
     return 'actions-ban';
   }
 
+  public async expandParents(parents: string[]) {
+    for (const id of parents) {
+      const node = this.nodes.find((node) => node.identifier === id.toString());
+      if (!node) {
+        // :\ user has no access
+        return;
+      }
+      if (!node.__expanded) {
+        await this.showChildren(node);
+      }
+    }
+  }
+
+  public async expandNodeParents(node: TreeNodeInterface) {
+    await this.expandParents(node.__parents);
+  }
+
   protected prepareNodes(nodes: TreeNodeInterface[]): TreeNodeInterface[] {
     const evt = new CustomEvent('typo3:tree:nodes-prepared', { detail: { nodes }, bubbles: false });
     this.dispatchEvent(evt);
@@ -646,7 +672,7 @@ export class Tree extends LitElement {
       `;
   }
 
-  protected firstUpdated(): void {
+  protected async firstUpdated(): Promise<void> {
     const resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
       for (const entry of entries) {
         if (entry.target === this.root) {
@@ -658,7 +684,7 @@ export class Tree extends LitElement {
 
     Object.assign(this.settings, this.setup || {});
     this.registerUnloadHandler();
-    this.loadData();
+    await this.loadData();
     this.dispatchEvent(new Event('tree:initialized'));
   }
 
