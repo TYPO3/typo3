@@ -25,7 +25,7 @@ class ColorSchemeManager {
     const colorScheme = event.detail.payload?.name || event.detail.name;
 
     document.documentElement.setAttribute('data-color-scheme', colorScheme);
-    document.list_frame.document.documentElement.setAttribute('data-color-scheme', colorScheme);
+    window.frames.list_frame?.document.documentElement.setAttribute('data-color-scheme', colorScheme);
 
     this.updateActiveScheme(colorScheme);
   }
