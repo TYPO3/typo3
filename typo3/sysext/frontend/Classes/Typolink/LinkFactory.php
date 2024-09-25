@@ -55,6 +55,7 @@ class LinkFactory implements LoggerAwareInterface
 
     /**
      * Main method to create links from typolink strings and configuration.
+     * @throws UnableToLinkException
      */
     public function create(string $linkText, array $linkConfiguration, ContentObjectRenderer $contentObjectRenderer): LinkResultInterface
     {
