@@ -36,7 +36,7 @@ Results in the output:
 
     #String to be trimmed.#
 
-Trim only ony side
+Trim only one side
 ~~~~~~~~~~~~~~~~~~
 
 ..  code-block:: html
