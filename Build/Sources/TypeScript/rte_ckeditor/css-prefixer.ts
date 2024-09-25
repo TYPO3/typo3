@@ -8,8 +8,8 @@ export function prefixAndRebaseCss(contents: string, currentPath: string, prefix
   const prefixer = cssPrefixer(prefix);
   const relocator = cssRelocator(currentPath);
   csstree.walk(ast, (node) => {
-    prefixer(node);
     relocator(node);
+    return prefixer(node);
   });
   return csstree.generate(ast);
 }
@@ -41,13 +41,13 @@ export function cssPrefixer(prefix: string): NodeProcessor {
     };
   }
 
-  return (node: CssNode): void => {
+  return (node: CssNode): void|typeof csstree.walk.skip => {
     if (node.type !== 'Selector') {
       return;
     }
     const selector: Selector = node;
     if (selector.children.isEmpty) {
-      return;
+      return csstree.walk.skip;
     }
 
     const prefixAst = csstree.parse(prefix + '{}');
@@ -63,7 +63,7 @@ export function cssPrefixer(prefix: string): NodeProcessor {
       /* Replace `:root foo bar {}` with `#prefix foo bar {}` */
       selector.children.shift();
       selector.children.prependList(prefixSelector.children);
-      return;
+      return csstree.walk.skip;
     }
 
     /* Replace `html foo bar {}` or `body foo bar {}` with `#prefix foo bar {}` */
@@ -83,10 +83,12 @@ export function cssPrefixer(prefix: string): NodeProcessor {
       }
     });
     if (htmlBodyHasBeenReplaced) {
-      return;
+      return csstree.walk.skip;
     }
 
     selector.children.unshift({ type: 'Combinator', loc: null, name: ' ' });
     selector.children.prependList(prefixSelector.children);
+
+    return csstree.walk.skip;
   }
 }

@@ -23,7 +23,7 @@
     "@stylistic/eslint-plugin": "^2.6.2",
     "@types/autosize": "^4.0.1",
     "@types/bootstrap": "^5.2.6",
-    "@types/css-tree": "^2.3.2",
+    "@types/css-tree": "^2.3.8",
     "@types/jquery": "2.0.47",
     "@types/luxon": "^3.4.2",
     "@types/mocha": "^10.0.6",
