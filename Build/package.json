@@ -24,7 +24,7 @@
     "@types/autosize": "^4.0.1",
     "@types/bootstrap": "^5.2.6",
     "@types/chosen-js": "^1.8.1",
-    "@types/css-tree": "^2.3.2",
+    "@types/css-tree": "^2.3.8",
     "@types/d3-dispatch": "^3.0.2",
     "@types/d3-drag": "^3.0.2",
     "@types/d3-selection": "^3.0.4",

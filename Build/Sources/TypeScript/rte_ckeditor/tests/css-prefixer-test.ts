@@ -96,6 +96,31 @@ describe('@typo3/rte-ckeditor/css-prefixer-test', () => {
           source: 'my___html___div { color: #abc; }',
           target: 'foo my___html___div{color:#abc}',
         },
+        hasSelector: {
+          prefix: 'foo',
+          source: 'ul li:has(> p.text-center) { color: red; }',
+          target: 'foo ul li:has(>p.text-center){color:red}',
+        },
+        hasOnRootSelector: {
+          prefix: 'foo',
+          source: ':root:has(>header) { color: red; }',
+          target: 'foo:has(>header){color:red}',
+        },
+        hasSelectorWithInvalidNestingSelector: {
+          prefix: 'foo',
+          source: 'ul li:has(& > p.text-center) { color: red; }',
+          target: 'foo ul li:has(&>p.text-center){color:red}',
+        },
+        whereSelector: {
+          prefix: 'foo',
+          source: ':where(ol, ul) :where(ol, ul) ol { color: red; }',
+          target: 'foo :where(ol,ul) :where(ol,ul) ol{color:red}',
+        },
+        isSelector: {
+          prefix: 'foo',
+          source: ':is(ol, ul) :is(ol, ul) ol { color: red; }',
+          target: 'foo :is(ol,ul) :is(ol,ul) ol{color:red}',
+        },
         complete: {
           prefix: 'foo',
           source: getOriginCss(),
