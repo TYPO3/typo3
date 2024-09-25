@@ -432,7 +432,7 @@ export class PageTreeNavigationComponent extends LitElement {
       return;
     }
     //remember the selected page in the global state
-    ModuleStateStorage.update('web', node.__treeIdentifier, true, node.__treeParents[0] ?? '0');
+    ModuleStateStorage.update('web', node.identifier, true, node.__treeParents[0] ?? '0');
 
     if (evt.detail.propagate === false) {
       return;
