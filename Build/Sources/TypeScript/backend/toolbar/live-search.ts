@@ -86,8 +86,8 @@ class LiveSearch {
   private openSearchModal(): void {
     const url = new URL(TYPO3.settings.ajaxUrls.livesearch_form, window.location.origin);
     const moduleStateStorage = ModuleStateStorage.current('web');
-    if (moduleStateStorage.selection) {
-      url.searchParams.set('pageId', moduleStateStorage.selection);
+    if (moduleStateStorage.identifier) {
+      url.searchParams.set('pageId', moduleStateStorage.identifier);
     }
     url.searchParams.set('query', BrowserSession.get('livesearch-term') ?? '');
     url.searchParams.set('offset', BrowserSession.get('livesearch-offset') ?? '0');

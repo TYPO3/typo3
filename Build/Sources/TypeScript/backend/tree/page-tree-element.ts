@@ -23,6 +23,7 @@ import ContextMenu from '../context-menu';
 import { PageTree } from '@typo3/backend/tree/page-tree';
 import { TreeNodeInterface, TreeNodeCommandEnum, TreeNodePositionEnum } from '@typo3/backend/tree/tree-node';
 import { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
+import { TreeModuleState } from '@typo3/backend/tree/tree-module-state';
 import Modal from '../modal';
 import Severity from '../severity';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
@@ -302,11 +303,13 @@ interface Configuration {
 }
 
 @customElement('typo3-backend-navigation-component-pagetree')
-export class PageTreeNavigationComponent extends LitElement {
+export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
   @property({ type: String }) mountPointPath: string = null;
 
   @query('.tree-wrapper') tree: EditablePageTree;
   @query('typo3-backend-navigation-component-pagetree-toolbar') toolbar: PageTreeToolbar;
+
+  protected override moduleStateType: string = 'web';
 
   private configuration: Configuration = null;
 
@@ -352,25 +355,23 @@ export class PageTreeNavigationComponent extends LitElement {
       });
   }
 
-  protected renderTree(): Promise<TemplateResult> {
-    return this.getConfiguration()
-      .then((configuration: Configuration): TemplateResult => {
-        // Initialize the toolbar once the tree was rendered
-        const initialized = () => {
-          this.toolbar.tree = this.tree;
-          this.tree.addEventListener('typo3:tree:node-selected', this.loadContent);
-          this.tree.addEventListener('typo3:tree:node-context', this.showContextMenu);
-          this.tree.addEventListener('typo3:tree:nodes-prepared', this.selectActiveNode);
-        };
-
-        return html`
-          <typo3-backend-navigation-component-pagetree-toolbar id="typo3-pagetree-toolbar" .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
-          <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
-            ${this.renderMountPoint()}
-            <typo3-backend-navigation-component-pagetree-tree id="typo3-pagetree-tree" class="tree-wrapper" .setup=${configuration} @tree:initialized=${initialized}></typo3-backend-navigation-component-pagetree-tree>
-          </div>
-        `;
-      });
+  protected async renderTree(): Promise<TemplateResult> {
+    const configuration = await this.getConfiguration()
+    return html`
+      <typo3-backend-navigation-component-pagetree-toolbar id="typo3-pagetree-toolbar" .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
+      <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
+        ${this.renderMountPoint()}
+        <typo3-backend-navigation-component-pagetree-tree
+            id="typo3-pagetree-tree"
+            class="tree-wrapper"
+            .setup=${configuration}
+            @tree:initialized=${() => { this.toolbar.tree = this.tree; this.fetchActiveNodeIfMissing(); }}
+            @typo3:tree:node-selected=${this.loadContent}
+            @typo3:tree:node-context=${this.showContextMenu}
+            @typo3:tree:nodes-prepared=${this.selectActiveNodeInLoadedNodes}
+        ></typo3-backend-navigation-component-pagetree-tree>
+      </div>
+    `;
   }
 
   private readonly refresh = (): void => {
@@ -431,8 +432,9 @@ export class PageTreeNavigationComponent extends LitElement {
     if (!node?.checked) {
       return;
     }
-    //remember the selected page in the global state
-    ModuleStateStorage.update('web', node.identifier, true, node.__treeParents[0] ?? '0');
+
+    // remember the selected page in the global state
+    ModuleStateStorage.updateWithTreeIdentifier('web', node.identifier, node.__treeIdentifier);
 
     if (evt.detail.propagate === false) {
       return;
@@ -459,21 +461,6 @@ export class PageTreeNavigationComponent extends LitElement {
       this.tree.getElementFromNode(node),
       evt.detail.originalEvent as PointerEvent
     );
-  };
-
-  /**
-   * Event listener called for each loaded node,
-   * here used to mark node remembered in ModuleState as selected
-   */
-  private readonly selectActiveNode = (evt: CustomEvent): void => {
-    const selectedNodeTreeIdentifier = ModuleStateStorage.current('web').selection;
-    const nodes = evt.detail.nodes as Array<TreeNodeInterface>;
-    evt.detail.nodes = nodes.map((node: TreeNodeInterface) => {
-      if (node.__treeIdentifier === selectedNodeTreeIdentifier) {
-        node.checked = true;
-      }
-      return node;
-    });
   };
 }
 

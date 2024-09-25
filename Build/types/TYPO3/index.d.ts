@@ -116,6 +116,7 @@ declare namespace TBE_EDITOR {
 // type definition for global namespace object
 interface Window {
   TYPO3: Partial<typeof TYPO3>;
+  ModuleStateStorage: typeof import('@typo3/backend/storage/module-state-storage').ModuleStateStorage;
   list_frame: Window;
 }
 

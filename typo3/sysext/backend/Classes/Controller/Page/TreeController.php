@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Controller providing data to the page tree
@@ -144,6 +145,7 @@ class TreeController
             'temporaryMountPoint' => $this->getMountPointPath((int)($this->getBackendUser()->uc['pageTree_temporaryMountPoint'] ?? 0)),
             'showIcons' => true,
             'dataUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_data'),
+            'rootlineUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_rootline'),
             'filterUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_filter'),
             'setTemporaryMountPointUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_set_temporary_mount_point'),
         ];
@@ -239,6 +241,31 @@ class TreeController
         $items = array_merge(...$items);
 
         return new JsonResponse($this->getPostProcessedPageItems($request, $items));
+    }
+
+    /**
+     * Returns JSON representing page rootline
+     */
+    public function fetchRootlineAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $identifier = (string)($request->getQueryParams()['identifier'] ?? '');
+        if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
+            return new JsonResponse(null, 400);
+        }
+        $pageId = (int)$identifier;
+
+        if ($pageId === 0) {
+            return new JsonResponse(['rootline' => ['0']]);
+        }
+
+        $rootline = BackendUtility::BEgetRootLine((int)$identifier);
+        if ($rootline === []) {
+            return new JsonResponse(null, 404);
+        }
+
+        return new JsonResponse([
+            'rootline' => array_map(strval(...), array_column(array_reverse($rootline), 'uid')),
+        ]);
     }
 
     /**

@@ -15,8 +15,6 @@ import { lll } from '@typo3/core/lit-helper';
 import DocumentService from '@typo3/core/document-service';
 import Notification from '@typo3/backend/notification';
 import InfoWindow from '@typo3/backend/info-window';
-import { BroadcastMessage } from '@typo3/backend/broadcast-message';
-import broadcastService from '@typo3/backend/broadcast-service';
 import { FileListActionEvent, FileListActionDetail, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import NProgress from 'nprogress';
 import Icons from '@typo3/backend/icons';
@@ -67,8 +65,6 @@ export const fileListOpenElementBrowser = 'typo3:filelist:openElementBrowser';
  */
 export default class Filelist {
   constructor() {
-    Filelist.processTriggers();
-
     new RegularEvent(fileListOpenElementBrowser, (event: CustomEvent): void => {
       const url = new URL(event.detail.actionUrl, window.location.origin);
 
@@ -134,6 +130,8 @@ export default class Filelist {
     }).bindTo(document);
 
     DocumentService.ready().then((): void => {
+      Filelist.processTriggers();
+
       new RegularEvent('click', (e: Event, trigger: HTMLAnchorElement): void => {
         e.preventDefault();
 
@@ -201,21 +199,7 @@ export default class Filelist {
       return;
     }
     // update ModuleStateStorage to the current folder identifier
-    const id = encodeURIComponent(mainElement.dataset.filelistCurrentIdentifier);
-    ModuleStateStorage.update('media', id, true, undefined);
-    // emit event for currently shown folder so the folder tree gets updated
-    Filelist.emitTreeUpdateRequest(
-      mainElement.dataset.filelistCurrentIdentifier
-    );
-  }
-
-  private static emitTreeUpdateRequest(identifier: string): void {
-    const message = new BroadcastMessage(
-      'filelist',
-      'treeUpdateRequested',
-      { type: 'folder', identifier: identifier }
-    );
-    broadcastService.post(message);
+    ModuleStateStorage.update('media', mainElement.dataset.filelistCurrentIdentifier);
   }
 
   private static parseQueryParameters(location: Location): QueryParameters {

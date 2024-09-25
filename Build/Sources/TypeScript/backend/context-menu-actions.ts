@@ -20,7 +20,6 @@ import Modal from './modal';
 import ModuleMenu from './module-menu';
 import Notification from '@typo3/backend/notification';
 import Viewport from './viewport';
-import { ModuleStateStorage } from './storage/module-state-storage';
 import '@typo3/backend/new-record-wizard';
 
 /**
@@ -187,10 +186,6 @@ class ContextMenuActions {
         const eventData = { component: 'contextmenu', action: 'delete', table, uid };
         AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1', eventData).then((): void => {
           if (table === 'pages') {
-            // base on the assumption that the last selected node, is the one that got deleted
-            if (ModuleStateStorage.current('web').identifier === uid.toString()) {
-              top.document.dispatchEvent(new CustomEvent('typo3:pagetree:selectFirstNode'));
-            }
             ContextMenuActions.refreshPageTree();
           } else if (table === 'tt_content') {
             Viewport.ContentContainer.refresh();

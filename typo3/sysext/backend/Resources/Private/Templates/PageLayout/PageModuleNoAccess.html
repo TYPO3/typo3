@@ -6,6 +6,11 @@
 <f:layout name="Module" />
 
 <f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/element/immediate-action-element.js'
+        }"
+    />
     <f:variable name="immediateActionArgs" value="{0: 'web', 1: pageId}" />
     <typo3-immediate-action
         action="TYPO3.Backend.Storage.ModuleStateStorage.update"
