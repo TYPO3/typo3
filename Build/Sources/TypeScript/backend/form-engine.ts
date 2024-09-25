@@ -798,16 +798,16 @@ export default (function() {
     callback = callback || FormEngine.preventExitIfNotSavedCallback;
 
     if (FormEngine.hasChange() || FormEngine.isNew()) {
-      const title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to close without saving?';
-      const content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes. Are you sure you want to discard these changes?';
+      const title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Unsaved changes';
+      const content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes which will be discarded if you close without saving.';
       const buttons: Array<{text: string, btnClass: string, name: string, active?: boolean}> = [
         {
-          text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
+          text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'Keep editing',
           btnClass: 'btn-default',
           name: 'no'
         },
         {
-          text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Yes, discard my changes',
+          text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Discard changes',
           btnClass: 'btn-default',
           name: 'yes'
         }

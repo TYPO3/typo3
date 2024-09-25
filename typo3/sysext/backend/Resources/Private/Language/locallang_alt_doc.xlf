@@ -64,10 +64,10 @@
 				<source>Yes, save and duplicate this record</source>
 			</trans-unit>
 			<trans-unit id="buttons.confirm.close_without_save.yes">
-				<source>Yes, discard my changes</source>
+				<source>Discard changes</source>
 			</trans-unit>
 			<trans-unit id="buttons.confirm.close_without_save.no">
-				<source>No, I will continue editing</source>
+				<source>Keep editing</source>
 			</trans-unit>
 			<trans-unit id="buttons.confirm.save_and_close">
 				<source>Save and close</source>
@@ -112,10 +112,10 @@
 				<source>Save changes and view</source>
 			</trans-unit>
 			<trans-unit id="label.confirm.close_without_save.title">
-				<source>Do you want to close without saving?</source>
+				<source>Unsaved changes</source>
 			</trans-unit>
 			<trans-unit id="label.confirm.close_without_save.content">
-				<source>You currently have unsaved changes. Are you sure you want to discard these changes?</source>
+				<source>You currently have unsaved changes which will be discarded if you close without saving.</source>
 			</trans-unit>
 			<trans-unit id="buttons.confirm.delete_file.no">
 				<source>Cancel</source>

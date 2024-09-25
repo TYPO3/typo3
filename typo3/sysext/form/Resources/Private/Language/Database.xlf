@@ -392,10 +392,10 @@
 				<source>Do you want to quit without saving?</source>
 			</trans-unit>
 			<trans-unit id="formEditor.modals.close.confirmButton" xml:space="preserve">
-				<source>Yes, discard my changes</source>
+				<source>Discard changes</source>
 			</trans-unit>
 			<trans-unit id="formEditor.modals.close.cancelButton" xml:space="preserve">
-				<source>No, I will continue editing</source>
+				<source>Keep editing</source>
 			</trans-unit>
 
 			<trans-unit id="formEditor.pagination.title" xml:space="preserve">

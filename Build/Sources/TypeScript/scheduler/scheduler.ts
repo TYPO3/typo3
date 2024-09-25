@@ -416,18 +416,18 @@ class Scheduler {
         e.preventDefault();
         const closeUrl = (e.currentTarget as HTMLLinkElement).href;
         Modal.confirm(
-          TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to close without saving?',
-          TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes. Are you sure you want to discard these changes?',
+          TYPO3.lang['label.confirm.close_without_save.title'] || 'Unsaved changes',
+          TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes which will be discarded if you close without saving.',
           Severity.warning,
           [
             {
-              text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
+              text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'Keep editing',
               btnClass: 'btn-default',
               name: 'no',
               trigger: () => Modal.dismiss(),
             },
             {
-              text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Yes, discard my changes',
+              text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Discard changes',
               btnClass: 'btn-default',
               name: 'yes',
               trigger: () => {
