@@ -92,16 +92,16 @@ var __decorate=function(t,e,l,a){var o,n=arguments.length,i=n<3?e:null===a?a=Obj
       </span>
     `}showTableConfigurationModal(t){const e=this.firstRow.length,l=this.table.length,a=l||1,o=e||1,n=Modal.advanced({content:html`
         <div class="form-group">
-          <label for="t3js-expand-rows" class="form-legend">${lll("table_rowCount")}</label>
+          <label for="t3js-expand-rows" class="form-label">${lll("table_rowCount")}</label>
           <input id="t3js-expand-rows" class="form-control" type="number" min="1" required value="${a}">
         </div>
         <div class="form-group">
-          <label for="t3js-expand-cols" class="form-legend">${lll("table_colCount")}</label>
+          <label for="t3js-expand-cols" class="form-label">${lll("table_colCount")}</label>
           <input id="t3js-expand-cols" class="form-control" type="number" min="1" required value="${o}">
         </div>
       `,title:lll("table_setCountHeadline"),size:Modal.sizes.small,buttons:[{text:lll("labels.cancel")||"Cancel",btnClass:"btn-default",name:"cancel",trigger:()=>n.hideModal()},{text:lll("table_buttonUpdate")||"Update",active:!0,btnClass:"btn-primary",name:"apply",trigger:()=>{const a=n.querySelector("#t3js-expand-rows"),o=n.querySelector("#t3js-expand-cols");if(null!==a&&null!==o)if(a.checkValidity()&&o.checkValidity()){const i=Number(a.value)-l,s=Number(o.value)-e;this.setColAndRowCount(t,s,i),n.hideModal()}else a.reportValidity(),o.reportValidity()}}]})}showTableSyntax(){const t=document.querySelector(this.selectorData),e=Modal.advanced({content:html`
         <div class="form-group">
-          <label for="table-wizard-textarea-raw" class="form-legend">${lll("table_showCodeLabel")}</label>
+          <label for="table-wizard-textarea-raw" class="form-label">${lll("table_showCodeLabel")}</label>
           <textarea id="table-wizard-textarea-raw" rows="8" class="form-control">${t.value}</textarea>
         </div>
       `,title:lll("table_showCodeHeadline"),size:Modal.sizes.small,buttons:[{text:lll("labels.cancel")||"Cancel",btnClass:"btn-default",name:"cancel",trigger:()=>e.hideModal()},{text:lll("table_buttonUpdate")||"Update",active:!0,btnClass:"btn-primary",name:"apply",trigger:()=>{t.value=e.querySelector("textarea").value,t.dispatchEvent(new CustomEvent("change",{bubbles:!0})),this.readTableFromTextarea(),this.requestUpdate(),e.hideModal()}}]})}setColAndRowCount(t,e,l){const a=this.table.length;if(l>0)for(let e=0;e<l;e++)this.appendRow(t,a);else for(let e=0;e<Math.abs(l);e++)this.removeRow(t,this.table.length-1);if(e>0)for(let l=0;l<e;l++)this.appendColumn(t,e);else for(let l=0;l<Math.abs(e);l++)this.removeColumn(t,this.firstRow.length-1)}};__decorate([property({type:String})],TableWizardElement.prototype,"type",void 0),__decorate([property({type:String})],TableWizardElement.prototype,"selectorData",void 0),__decorate([property({type:String})],TableWizardElement.prototype,"delimiter",void 0),__decorate([property({type:String})],TableWizardElement.prototype,"enclosure",void 0),__decorate([property({type:Number,attribute:"append-rows"})],TableWizardElement.prototype,"appendRows",void 0),TableWizardElement=__decorate([customElement("typo3-formengine-table-wizard")],TableWizardElement);export{TableWizardElement};

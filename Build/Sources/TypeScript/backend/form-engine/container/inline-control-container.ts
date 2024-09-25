@@ -666,7 +666,7 @@ class InlineControlContainer {
     }
 
     (<HTMLInputElement>formField).value = records.join(',');
-    (<HTMLInputElement>formField).classList.add('has-change');
+    FormEngineValidation.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('change'));
 
     this.redrawSortingButtons(this.container.dataset.objectGroup, records);
@@ -697,7 +697,7 @@ class InlineControlContainer {
       records.splice(indexOfRemoveUid, 1);
 
       (<HTMLInputElement>formField).value = records.join(',');
-      (<HTMLInputElement>formField).classList.add('has-change');
+      FormEngineValidation.markFieldAsChanged(formField);
       document.dispatchEvent(new Event('change'));
 
       this.redrawSortingButtons(this.container.dataset.objectGroup, records);
@@ -751,7 +751,7 @@ class InlineControlContainer {
       .map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
-    (<HTMLInputElement>formField).classList.add('has-change');
+    FormEngineValidation.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('inline:sorting-changed'));
     document.dispatchEvent(new Event('change'));
 
@@ -777,7 +777,7 @@ class InlineControlContainer {
     }
 
     new RegularEvent('transitionend', (): void => {
-      recordContainer.parentElement.removeChild(recordContainer);
+      recordContainer.remove();
       FormEngineValidation.validate(this.container);
     }).bindTo(recordContainer);
 

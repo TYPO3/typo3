@@ -77,7 +77,7 @@ export default (function() {
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-update-value', (data: {elementName: string}) => {
     const valueField = document.querySelector(selector`[name="${data.elementName}"]`);
-    const humanReadableField = document.querySelector(selector`[data-formengine-input-name="${data.elementName}]`);
+    const humanReadableField = document.querySelector(selector`[data-formengine-input-name="${data.elementName}"]`);
     FormEngine.Validation.updateInputField(data.elementName);
     if (valueField !== null) {
       FormEngine.Validation.markFieldAsChanged(valueField as HTMLInputElement);

@@ -304,11 +304,11 @@ export class TableWizardElement extends LitElement {
     const modal = Modal.advanced({
       content: html`
         <div class="form-group">
-          <label for="t3js-expand-rows" class="form-legend">${lll('table_rowCount')}</label>
+          <label for="t3js-expand-rows" class="form-label">${lll('table_rowCount')}</label>
           <input id="t3js-expand-rows" class="form-control" type="number" min="1" required value="${initRowValue}">
         </div>
         <div class="form-group">
-          <label for="t3js-expand-cols" class="form-legend">${lll('table_colCount')}</label>
+          <label for="t3js-expand-cols" class="form-label">${lll('table_colCount')}</label>
           <input id="t3js-expand-cols" class="form-control" type="number" min="1" required value="${initTableValue}">
         </div>
       `,
@@ -354,7 +354,7 @@ export class TableWizardElement extends LitElement {
     const modal = Modal.advanced({
       content: html`
         <div class="form-group">
-          <label for="table-wizard-textarea-raw" class="form-legend">${lll('table_showCodeLabel')}</label>
+          <label for="table-wizard-textarea-raw" class="form-label">${lll('table_showCodeLabel')}</label>
           <textarea id="table-wizard-textarea-raw" rows="8" class="form-control">${textarea.value}</textarea>
         </div>
       `,

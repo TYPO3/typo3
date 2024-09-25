@@ -453,7 +453,7 @@ class FilesControlContainer extends HTMLElement {
     }
 
     (<HTMLInputElement>formField).value = records.join(',');
-    (<HTMLInputElement>formField).classList.add('has-change');
+    FormEngineValidation.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('change'));
 
     this.redrawSortingButtons(this.container.dataset.objectGroup, records);
@@ -479,7 +479,7 @@ class FilesControlContainer extends HTMLElement {
       records.splice(indexOfRemoveUid, 1);
 
       (<HTMLInputElement>formField).value = records.join(',');
-      (<HTMLInputElement>formField).classList.add('has-change');
+      FormEngineValidation.markFieldAsChanged(formField);
       document.dispatchEvent(new Event('change'));
 
       this.redrawSortingButtons(this.container.dataset.objectGroup, records);
@@ -527,7 +527,7 @@ class FilesControlContainer extends HTMLElement {
       .map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
-    (<HTMLInputElement>formField).classList.add('has-change');
+    FormEngineValidation.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('formengine:files:sorting-changed'));
     document.dispatchEvent(new Event('change'));
 

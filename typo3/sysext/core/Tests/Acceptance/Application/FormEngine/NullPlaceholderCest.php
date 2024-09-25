@@ -54,7 +54,8 @@ final class NullPlaceholderCest
         foreach (['title', 'alternative', 'description'] as $fieldName) {
             $currentCheckboxSelector = '//input[contains(@name, "[' . $fieldName . ']") and @type="checkbox" and contains(@name, "control[active][sys_file_reference]")]';
             $I->checkOption($currentCheckboxSelector);
-            $I->seeElement($currentCheckboxSelector . '/./ancestor::div[contains(concat(\' \', @class, \' \'), \'has-change\')]');
+            $checkboxCheckedSelector = '//input[contains(@name, "[' . $fieldName . ']") and @type="checkbox" and contains(@name, "control[active][sys_file_reference]") and contains(concat(\' \', @class, \' \'), \'has-change\')]';
+            $I->seeElement($checkboxCheckedSelector);
 
             // Remove focus from field, otherwise codeception can't find other checkboxes
             $I->click('.form-irre-object .form-section');

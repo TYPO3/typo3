@@ -13,6 +13,7 @@
     --typo3-input-focus-bg: var(--typo3-input-bg);
     --typo3-input-focus-border-color: var(--typo3-state-info-focus-border-color);
 
+    &.form-label:before,
     .form-label:before {
         @include icon-background($icon-actions-exclamation-circle, var(--typo3-text-color-info));
         width: calc(16 / 12 * 1em);
@@ -33,6 +34,7 @@
     --typo3-input-focus-bg: var(--typo3-input-bg);
     --typo3-input-focus-border-color: var(--typo3-state-success-focus-border-color);
 
+    &.form-label:before,
     .form-label:before {
         @include icon-background($icon-actions-check-circle, var(--typo3-text-color-success));
         width: calc(16 / 12 * 1em);
@@ -52,6 +54,7 @@
     --typo3-input-focus-bg: var(--typo3-input-bg);
     --typo3-input-focus-border-color: var(--typo3-state-warning-focus-border-color);
 
+    &.form-label:before,
     .form-label:before {
         @include icon-background($icon-actions-exclamation-triangle, var(--typo3-text-color-warning));
         width: calc(16 / 12 * 1em);
@@ -72,6 +75,7 @@
     --typo3-input-focus-bg: var(--typo3-input-bg);
     --typo3-input-focus-border-color: var(--typo3-state-danger-focus-border-color);
 
+    &.form-label:before,
     .form-label:before {
         @include icon-background($icon-actions-exclamation-circle, var(--typo3-text-color-danger));
         width: calc(16 / 12 * 1em);

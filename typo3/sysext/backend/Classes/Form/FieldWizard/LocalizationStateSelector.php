@@ -82,7 +82,7 @@ class LocalizationStateSelector extends AbstractNode
 
         $html = [];
         $html[] = '<div class="t3js-l10n-state-container">';
-        $html[] =   '<div class="form-legend">';
+        $html[] =   '<div class="form-label">';
         $html[] =       $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:localizationStateSelector.header');
         $html[] =   '</div>';
         $html[] =   '<div class="form-check">';

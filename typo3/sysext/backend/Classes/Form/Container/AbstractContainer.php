@@ -144,7 +144,7 @@ abstract class AbstractContainer extends AbstractNode
             $fieldName = $this->data['flexFormContainerFieldName'] ?? $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
             $legend .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
         }
-        return '<fieldset><legend class="form-legend">' . $legend . '</legend>' . $fieldContent . '</fieldset>';
+        return '<fieldset><legend class="form-label t3js-formengine-label">' . $legend . '</legend>' . $fieldContent . '</fieldset>';
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication

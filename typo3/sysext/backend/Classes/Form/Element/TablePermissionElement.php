@@ -195,7 +195,7 @@ final class TablePermissionElement extends AbstractFormElement
         }
         $html = [];
         $html[] = '<fieldset>';
-        $html[] =     '<legend class="form-legend t3js-formengine-legend">' . $legend . '</legend>';
+        $html[] =     '<legend class="form-label t3js-formengine-label">' . $legend . '</legend>';
         $html[] =     $innerHTML;
         $html[] = '</fieldset>';
         return implode(LF, $html);

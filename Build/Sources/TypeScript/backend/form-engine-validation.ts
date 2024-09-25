@@ -548,9 +548,10 @@ export default (function() {
       // Can be removed altogether with jQuery support in TYPO3 v14
       return;
     }
-    const paletteField = field.closest('.t3js-formengine-palette-field');
-    if (paletteField !== null) {
-      paletteField.classList.add('has-change');
+    field.classList.add('has-change');
+    const fieldLabel = field.closest('.t3js-formengine-palette-field')?.querySelector('.t3js-formengine-label');
+    if (fieldLabel !== null) {
+      fieldLabel.classList.add('has-change');
     }
   };
 

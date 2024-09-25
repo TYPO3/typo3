@@ -446,7 +446,7 @@ class DatabaseIntegrityController
             $queryOptions .= '<div class="form-row">';
             $queryOptions .=   '<div class="form-group">';
             $queryOptions .=     '<fieldset>';
-            $queryOptions .=       '<legend class="form-legend">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.queryOptions') . '</legend>';
+            $queryOptions .=       '<legend class="form-label">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.queryOptions') . '</legend>';
             $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'] ?? '', $request, 'id="checkSearch_query_smallparts"')
                 . '<label class="form-check-label" for="checkSearch_query_smallparts">' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:showSQL') . '</label></div>';
             $queryOptions .=       '<div class="form-check form-switch form-check-size-input">' . $this->getFuncCheck('SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'] ?? '', $request, 'id="checkSearch_result_labels"')
