@@ -1,0 +1,48 @@
+//
+// CSS for custom element:
+// <typo3-backend-color-scheme-switch>
+//
+typo3-backend-color-scheme-switch {
+    display: block;
+    margin-inline-start: var(--typo3-list-item-padding-x);
+    margin-inline-end: var(--typo3-list-item-padding-x);
+    padding-top: var(--typo3-list-item-padding-y);
+
+    .btn-group,
+    .dropdown-list {
+        width: 100%;
+        padding-bottom: var(--typo3-list-item-padding-y);
+    }
+
+    .btn-group .btn {
+        padding-inline-start: .75rem;
+        padding-inline-end: .75rem;
+
+        &:first-child {
+            flex: 1 1 auto;
+            justify-content: flex-start;
+            gap: calc(var(--typo3-spacing) * 2 / 3);
+        }
+
+        &:first-child + .btn {
+            flex: 0 0 auto;
+        }
+    }
+
+    .dropdown-item {
+        padding-inline-start: calc(.75rem + 1px);
+        padding-inline-end: calc(.75rem + 1px);
+
+        &-column-title-info {
+            color: var(--typo3-text-color-variant);
+            font-style: italic;
+            margin-inline-start: .25rem;
+        }
+
+        &-columns {
+            align-items: center;
+            justify-content: flex-start;
+            gap: calc(var(--typo3-spacing) * 2 / 3);
+        }
+    }
+}

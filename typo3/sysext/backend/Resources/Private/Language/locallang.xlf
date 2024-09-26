@@ -201,14 +201,17 @@
 			<trans-unit id="colorScheme" resname="colorScheme">
 				<source>Color scheme</source>
 			</trans-unit>
+			<trans-unit id="toggleColorScheme" resname="toggleColorScheme">
+				<source>Toggle color scheme between light and dark mode</source>
+			</trans-unit>
 			<trans-unit id="colorScheme.auto" resname="colorScheme.auto">
-				<source>OS default</source>
+				<source>Auto detect</source>
 			</trans-unit>
 			<trans-unit id="colorScheme.light" resname="colorScheme.light">
-				<source>Light</source>
+				<source>Light mode</source>
 			</trans-unit>
 			<trans-unit id="colorScheme.dark" resname="colorScheme.dark">
-				<source>Dark</source>
+				<source>Dark mode</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -177,10 +177,6 @@ class UserToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
         $schemes = [];
 
         foreach (ColorScheme::cases() as $scheme) {
-            if ($scheme->value === 'auto') {
-                continue;
-            }
-
             $schemeItem = [
                 'label' => $this->getLanguageService()->sL($scheme->getLabel()),
                 'value' => $scheme->value,

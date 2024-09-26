@@ -3651,6 +3651,14 @@ typo3-backend-live-search-result-item-action>:first-child .livesearch-result-ite
 .drop-in-progress{--dropzone-icon-color:var(--dropzone-icon-info-color);--dropzone-icon-bg:var(--dropzone-icon-info-bg);--dropzone-icon-icon:var(--dropzone-icons-arrow-down)}
 .filelist-main .dropzone{--dropzone-bg:#000;position:absolute;margin:0;padding:0;top:var(--module-docheader-height);left:0;z-index:10;height:calc(100% - var(--module-docheader-height));width:100%;border-width:2px}
 .filelist-main .dropzone .dropzone-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--typo3-component-color);background:var(--typo3-component-bg);padding:var(--dropzone-padding-y) var(--dropzone-padding-x);border-radius:var(--typo3-component-border-radius);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);box-shadow:var(--typo3-component-box-shadow-tooltip)}
+typo3-backend-color-scheme-switch{display:block;margin-inline-start:var(--typo3-list-item-padding-x);margin-inline-end:var(--typo3-list-item-padding-x);padding-top:var(--typo3-list-item-padding-y)}
+typo3-backend-color-scheme-switch .btn-group,typo3-backend-color-scheme-switch .dropdown-list{width:100%;padding-bottom:var(--typo3-list-item-padding-y)}
+typo3-backend-color-scheme-switch .btn-group .btn{padding-inline-start:.75rem;padding-inline-end:.75rem}
+typo3-backend-color-scheme-switch .btn-group .btn:first-child{flex:1 1 auto;justify-content:flex-start;gap:calc(var(--typo3-spacing) * 2 / 3)}
+typo3-backend-color-scheme-switch .btn-group .btn:first-child+.btn{flex:0 0 auto}
+typo3-backend-color-scheme-switch .dropdown-item{padding-inline-start:calc(.75rem + 1px);padding-inline-end:calc(.75rem + 1px)}
+typo3-backend-color-scheme-switch .dropdown-item-column-title-info{color:var(--typo3-text-color-variant);font-style:italic;margin-inline-start:.25rem}
+typo3-backend-color-scheme-switch .dropdown-item-columns{align-items:center;justify-content:flex-start;gap:calc(var(--typo3-spacing) * 2 / 3)}
 .ui-resizable{position:relative}
 .ui-resizable-handle{position:absolute;font-size:.1px;display:block;touch-action:none}
 .ui-resizable-autohide .ui-resizable-handle,.ui-resizable-disabled .ui-resizable-handle{display:none}

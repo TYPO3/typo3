@@ -10,14 +10,46 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,o,r){var c,n=arguments.length,i=n<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,o):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,t,o,r);else for(var l=e.length-1;l>=0;l--)(c=e[l])&&(i=(n<3?c(i):n>3?c(t,o,i):c(t,o))||i);return n>3&&i&&Object.defineProperty(t,o,i),i};import{html,LitElement}from"lit";import{customElement,property}from"lit/decorators.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import"@typo3/backend/element/icon-element.js";let ColorSchemeSwitchElement=class extends LitElement{constructor(){super(...arguments),this.activeColorScheme=null,this.data=null}createRenderRoot(){return this}render(){return html`
-      <ul class="dropdown-list">
-        ${this.data.map((e=>this.renderItem(e)))}
-      </ul>
-    `}renderItem(e){return html`
+var __decorate=function(e,t,o,a){var i,n=arguments.length,c=n<3?t:null===a?a=Object.getOwnPropertyDescriptor(t,o):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)c=Reflect.decorate(e,t,o,a);else for(var r=e.length-1;r>=0;r--)(i=e[r])&&(c=(n<3?i(c):n>3?i(t,o,c):i(t,o))||c);return n>3&&c&&Object.defineProperty(t,o,c),c};import{html,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import"@typo3/backend/element/icon-element.js";let ColorSchemeSwitchElement=class extends LitElement{constructor(){super(...arguments),this.activeColorScheme=null,this.colorSchemes=null,this.advancedOptionsExpanded=!1,this.autoDetect=null,this.mql=null,this.mediaQueryListener=e=>this.autoDetect=e.matches?"dark":"light"}connectedCallback(){super.connectedCallback(),this.mql=window.matchMedia("(prefers-color-scheme: dark)"),this.mediaQueryListener(this.mql),this.mql.addEventListener("change",this.mediaQueryListener)}disconnectedCallback(){super.disconnectedCallback(),this.mql.removeEventListener("change",this.mediaQueryListener),this.mql=null}createRenderRoot(){return this}getRealColorScheme(){return"auto"===this.activeColorScheme?this.autoDetect??"light":this.activeColorScheme??"light"}render(){const e="dark"===this.getRealColorScheme();return html`
+      <div class="btn-group">
+        <button
+            type="button"
+            class="btn ${e?"btn-primary":"btn-default"}"
+            aria-pressed=${e?"true":"false"}
+            title=${this.label}
+            @click=${e=>this.toggle(e)}
+        >
+          <typo3-backend-icon identifier=${this.getIcon(this.activeColorScheme??"auto")} size="small"></typo3-backend-icon>
+          ${this.getLabel(this.getRealColorScheme())}
+        </button>
+
+        <button
+            type="button"
+            class="btn btn-default ${this.advancedOptionsExpanded?"active":""}"
+            aria-haspopup="true"
+            aria-expanded=${this.advancedOptionsExpanded?"true":"false"}
+            @click=${e=>{e.stopPropagation(),this.advancedOptionsExpanded=!this.advancedOptionsExpanded}}
+            >
+          <span class="visually-hidden">Show more options</span>
+          <typo3-backend-icon identifier=${this.advancedOptionsExpanded?"actions-chevron-up":"actions-chevron-down"} size="small"></typo3-backend-icon>
+        </button>
+      </div>
+      ${!1===this.advancedOptionsExpanded?nothing:html`
+        <ul class="dropdown-list">
+          ${this.colorSchemes.map((e=>this.renderItem(e)))}
+        </ul>
+      `}
+    `}getIcon(e){return this.colorSchemes.find((t=>t.value===e))?.icon??"auto"}getLabel(e){return this.colorSchemes.find((t=>t.value===e))?.label??""}renderItem(e){return html`
       <li>
-        <button class="dropdown-item" @click="${()=>this.handleClick(e.value)}" aria-current="${this.activeColorScheme===e.value?"true":"false"}">
+        <button class="dropdown-item" @click="${t=>this.handleClick(t,e.value)}" aria-current="${this.activeColorScheme===e.value?"true":"false"}">
           <span class="dropdown-item-columns">
+            <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+              <typo3-backend-icon identifier="${e.icon}" size="small"></typo3-backend-icon>
+            </span>
+            <span class="dropdown-item-column dropdown-item-column-title">
+              ${e.label}
+              ${"auto"===e.value?html`<span class="dropdown-item-column-title-info">${this.getLabel(this.autoDetect)}</span>`:""}
+            </span>
             ${this.activeColorScheme===e.value?html`
               <span class="text-primary">
                 <typo3-backend-icon identifier="actions-dot" size="small"></typo3-backend-icon>
@@ -25,14 +57,7 @@ var __decorate=function(e,t,o,r){var c,n=arguments.length,i=n<3?t:null===r?r=Obj
             `:html`
               <typo3-backend-icon identifier="empty-empty" size="small"></typo3-backend-icon>
             `}
-            <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-              <typo3-backend-icon identifier="${e.icon}" size="small"></typo3-backend-icon>
-            </span>
-            <span class="dropdown-item-column dropdown-item-column-title">
-              ${e.label}
-            </span>
-            <slot></slot>
           </span>
         </button>
       </li>
-    `}async handleClick(e){this.triggerSchemeUpdate(e),await this.persistSchemeUpdate(e)}async persistSchemeUpdate(e){const t=new URL(TYPO3.settings.ajaxUrls.color_scheme_update,window.location.origin);return await new AjaxRequest(t).post({colorScheme:e})}triggerSchemeUpdate(e){document.dispatchEvent(new CustomEvent("typo3:color-scheme:update",{detail:{colorScheme:e}}))}};__decorate([property({type:String})],ColorSchemeSwitchElement.prototype,"activeColorScheme",void 0),__decorate([property({type:Array})],ColorSchemeSwitchElement.prototype,"data",void 0),ColorSchemeSwitchElement=__decorate([customElement("typo3-backend-color-scheme-switch")],ColorSchemeSwitchElement);export{ColorSchemeSwitchElement};
+    `}async toggle(e){e.preventDefault(),e.stopPropagation();let t="dark"===this.getRealColorScheme()?"light":"dark";t===this.autoDetect&&(t="auto"),this.triggerSchemeUpdate(t),await this.persistSchemeUpdate(t)}async handleClick(e,t){e.preventDefault(),e.stopPropagation(),this.triggerSchemeUpdate(t),await this.persistSchemeUpdate(t),this.advancedOptionsExpanded=!1}async persistSchemeUpdate(e){const t=new URL(TYPO3.settings.ajaxUrls.color_scheme_update,window.location.origin);return await new AjaxRequest(t).post({colorScheme:e})}triggerSchemeUpdate(e){document.dispatchEvent(new CustomEvent("typo3:color-scheme:update",{detail:{colorScheme:e}}))}};__decorate([property({type:String})],ColorSchemeSwitchElement.prototype,"activeColorScheme",void 0),__decorate([property({type:Array})],ColorSchemeSwitchElement.prototype,"colorSchemes",void 0),__decorate([property({type:String})],ColorSchemeSwitchElement.prototype,"label",void 0),__decorate([state()],ColorSchemeSwitchElement.prototype,"advancedOptionsExpanded",void 0),__decorate([state()],ColorSchemeSwitchElement.prototype,"autoDetect",void 0),ColorSchemeSwitchElement=__decorate([customElement("typo3-backend-color-scheme-switch")],ColorSchemeSwitchElement);export{ColorSchemeSwitchElement};

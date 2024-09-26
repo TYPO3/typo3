@@ -61,8 +61,10 @@
 </f:if>
 <f:if condition="{colorSchemeSwitchEnabled}">
     <hr class="dropdown-divider" aria-hidden="true">
-    <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:colorScheme" /></p>
-    <typo3-backend-color-scheme-switch data="{colorSchemes -> f:format.json()}" activeColorScheme="{activeColorScheme}"></typo3-backend-color-scheme-switch>
+    <typo3-backend-color-scheme-switch
+        label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:toggleColorScheme')}"
+        colorschemes="{colorSchemes -> f:format.json()}" activeColorScheme="{activeColorScheme}"
+    ></typo3-backend-color-scheme-switch>
 </f:if>
 <hr class="dropdown-divider" aria-hidden="true">
 <f:if condition="{switchUserMode}">
