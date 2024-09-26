@@ -60,10 +60,10 @@ class SiteWriter
     protected string $cacheIdentifier = 'sites-configuration';
 
     public function __construct(
-        protected string $configPath,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected PhpFrontend $cache,
-        private YamlFileLoader $yamlFileLoader,
+        protected readonly string $configPath,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly PhpFrontend $cache,
+        private readonly YamlFileLoader $yamlFileLoader,
     ) {}
 
     /**
@@ -220,14 +220,14 @@ class SiteWriter
     {
         $differences = [];
         foreach ($newConfiguration as $key => $value) {
-            if (!isset($currentConfiguration[$key]) || $currentConfiguration[$key] !== $newConfiguration[$key]) {
-                if (!isset($newConfiguration[$key]) && isset($currentConfiguration[$key])) {
+            if (!isset($currentConfiguration[$key]) || $currentConfiguration[$key] !== $value) {
+                if (!isset($value) && isset($currentConfiguration[$key])) {
                     $differences[$key] = '__UNSET';
                 } elseif (isset($currentConfiguration[$key])
-                    && is_array($newConfiguration[$key])
+                    && is_array($value)
                     && is_array($currentConfiguration[$key])
                 ) {
-                    $differences[$key] = self::findModified($currentConfiguration[$key], $newConfiguration[$key]);
+                    $differences[$key] = self::findModified($currentConfiguration[$key], $value);
                 } else {
                     $differences[$key] = $value;
                 }
@@ -242,8 +242,8 @@ class SiteWriter
         foreach ($currentConfiguration as $key => $value) {
             if (!isset($newConfiguration[$key])) {
                 $removed[$key] = '__UNSET';
-            } elseif (isset($currentConfiguration[$key]) && is_array($currentConfiguration[$key]) && is_array($newConfiguration[$key])) {
-                $removedInRecursion = self::findRemoved($currentConfiguration[$key], $newConfiguration[$key]);
+            } elseif (isset($value) && is_array($value) && is_array($newConfiguration[$key])) {
+                $removedInRecursion = self::findRemoved($value, $newConfiguration[$key]);
                 if (!empty($removedInRecursion)) {
                     $removed[$key] = $removedInRecursion;
                 }
