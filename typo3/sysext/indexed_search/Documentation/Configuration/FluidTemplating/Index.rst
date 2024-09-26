@@ -15,6 +15,8 @@ Overriding the Fluid template
 The plugin "Indexed Search" can be extended with custom templates. You need
 a custom :ref:`site package <t3sitepackage:start>` to achieve this.
 
+The paths to the templates can also be extended in the :ref:`settings-editor`.
+
 ..  literalinclude:: _settings.yaml
     :caption: EXT:site_package/Configuration/Sets/SitePackage/settings.yaml
 

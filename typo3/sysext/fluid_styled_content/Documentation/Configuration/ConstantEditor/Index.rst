@@ -12,6 +12,10 @@ Constant Editor
     superseded using TypoScript constants. Using TypoScript constants is
     still possible for compatibility reasons.
 
+..  tip::
+    If :ref:`Site sets <t3coreapi:site-sets>` are used, the constant editor might be disabled. You can then edit
+    the settings in the :ref:`settings-editor`.
+
 ..  include:: /Images/AutomaticScreenshots/TypoScript/ConstantEditor.rst.txt
 
 ..  rst-class:: bignums-xxl

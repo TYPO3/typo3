@@ -9,7 +9,7 @@ Site set "Fluid Styled Content CSS"
 ===================================
 
 ..  versionadded:: 13.1
-    Site sets have been added to the extension :composer:`typo3/cms-fluid-styled-content`.
+    :ref:`Site sets <t3coreapi:site-sets>` have been added to the extension :composer:`typo3/cms-fluid-styled-content`.
     See :ref:`include-site-set` on how to use them.
 
 This site set depends on the :ref:`site-set-fluid-styled-content`. Additionally it

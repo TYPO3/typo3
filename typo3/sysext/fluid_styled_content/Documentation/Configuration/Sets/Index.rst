@@ -7,12 +7,15 @@ Site sets
 =========
 
 ..  versionadded:: 13.1
-    Site sets have been added to the extension :composer:`typo3/cms-fluid-styled-content`.
+    :ref:`Site sets <t3coreapi:site-sets>` have been added to the extension
+    :composer:`typo3/cms-fluid-styled-content`.
     See :ref:`include-site-set` on how to use them.
 
 The extension :composer:`typo3/cms-fluid-styled-content` offers two site sets
 that can be included via the Site module or required by your
 :ref:`site package's site set <t3sitepackage:site_set>`.
+
+The settings provided by these sets can be adjusted in the :ref:`settings-editor`.
 
 ..  card-grid::
     :columns: 1

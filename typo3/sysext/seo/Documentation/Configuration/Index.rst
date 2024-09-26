@@ -32,6 +32,8 @@ Include the site set "SEO Sitemap" via the :ref:`site set in the site
 configuration <t3coreapi:site-sets>` or the custom
 :ref:`site package's site set <t3sitepackage:site_set>`.
 
+Settings for the included set can be adjusted in the :ref:`settings-editor`.
+
 ..  figure:: /Images/SiteSet.png
 
     Add the site set "SEO Sitemap"

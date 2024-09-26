@@ -58,6 +58,8 @@ See also: :ref:`configuration-examples-felogin-pid`.
 If you plan to migrate from TypoScript setup settings to site settings see
 :ref:`configuration-migration`.
 
+These settings can be adjusted in the :ref:`settings-editor`.
+
 ..  typo3:site-set-settings:: PROJECT:/Configuration/Sets/Felogin/settings.definitions.yaml
     :name: felogin
     :type:

@@ -24,6 +24,7 @@ the fields an editor is allowed to use. Configuration like this is done using
    :glob:
 
    Sets/Index
+   SettingsEditor/Index
    ConstantEditor/Index
    TypoScript/Index
    OverridingFluidTemplates/Index

@@ -36,6 +36,8 @@ can also add the "Indexed Search" set as dependency in your site set's configura
 Settings of the site set "Indexed Search"
 =========================================
 
+These settings can be adjusted in the :ref:`settings-editor`.
+
 ..  typo3:site-set-settings:: PROJECT:/Configuration/Sets/IndexedSearch/settings.definitions.yaml
     :name: indexed-search
     :type:

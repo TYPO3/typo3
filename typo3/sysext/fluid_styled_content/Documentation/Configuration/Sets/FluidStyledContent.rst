@@ -9,7 +9,7 @@ Site set "Fluid Styled Content"
 ===============================
 
 ..  versionadded:: 13.1
-    Site sets have been added to the extension :composer:`typo3/cms-fluid-styled-content`.
+    :ref:`Site sets <t3coreapi:site-sets>` have been added to the extension :composer:`typo3/cms-fluid-styled-content`.
     See :ref:`include-site-set` on how to use them.
 
 The site set "Fluid Styled Content" includes all TypoScript required to
@@ -29,6 +29,8 @@ via page TSconfig that lose their function due to missing CSS.
 
 Settings provided by site set "Fluid Styled Content"
 ====================================================
+
+These settings can be adjusted in the :ref:`settings-editor`.
 
 ..  typo3:site-set-settings:: PROJECT:/Configuration/Sets/FluidStyledContent/settings.definitions.yaml
     :name: fluid-styled-content

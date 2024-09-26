@@ -13,5 +13,6 @@ Configuration
 
     General/Index
     SiteSet/Index
+    SettingsEditor/Index
     TypoScript/Index
     FluidTemplating/Index

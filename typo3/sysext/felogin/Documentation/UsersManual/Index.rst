@@ -34,7 +34,8 @@ must know where the records are stored. There are two possibilities
 for setting this storage folder:
 
 The site's integrator may have set a default value for the
-:confval:`User Storage Page <felogin-felogin-pid>`. If you use the default
+:confval:`User Storage Page <felogin-felogin-pid>` or using the
+:ref:`settings-editor`. If you use the default
 folder to store frontend users in your project there is nothing to do here.
 
 If your project needs multiple storage folders for frontend users or

@@ -27,6 +27,9 @@ Each of the following options is defined for the TypoScript setup path
 Target pid
 ----------
 
+If your installation uses :ref:`Site sets <t3coreapi:site-sets>`, the target pid can also be set in
+the :ref:`settings-editor`.
+
 ..  confval:: targetPid
 
     :Type: boolean
@@ -157,6 +160,9 @@ Media list
 
 Root pid list
 -------------
+
+If your installation uses :ref:`Site sets <t3coreapi:site-sets>`, the rootPidList can also be set in
+the :ref:`settings-editor`.
 
 ..  confval:: rootPidList
 

@@ -9,7 +9,7 @@ Include one of the available site sets
 ======================================
 
 ..  versionadded:: 13.1
-    Site sets have been introduced and are the recommended method to include
+    :ref:`Site sets <t3coreapi:site-sets>` have been introduced and are the recommended method to include
     TypoScript. If you do not want to use site sets, you can still use
     :ref:`TypoScript includes <include-default-typoscript>` to include the
     default TypoScript.
@@ -48,6 +48,13 @@ site package's site set:
 
 ..  literalinclude:: _site_package_config.yaml
     :caption: EXT:my_site_package/Configuration/Sets/MySet/config.yaml
+
+Edit the settings
+=================
+
+..  _include-site-set-editor:
+
+All settings of this extension are now available in the :ref:`settings-editor`.
 
 ..  _include-default-site-set-next:
 
