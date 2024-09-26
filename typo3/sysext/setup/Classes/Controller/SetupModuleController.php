@@ -73,6 +73,8 @@ class SetupModuleController
     protected array $overrideConf = [];
     protected bool $languageUpdate = false;
     protected bool $pagetreeNeedsRefresh = false;
+    protected bool $colorSchemeChanged = false;
+    protected bool $themeChanged = false;
     protected array $tsFieldConf = [];
     protected int $passwordIsUpdated = self::PASSWORD_NOT_UPDATED;
     protected bool $passwordIsSubmitted = false;
@@ -116,6 +118,12 @@ class SetupModuleController
         $this->storeIncomingData($request);
         if ($this->pagetreeNeedsRefresh) {
             BackendUtility::setUpdateSignal('updatePageTree');
+        }
+        if ($this->colorSchemeChanged) {
+            BackendUtility::setUpdateSignal('updateColorScheme', $this->getBackendUser()->uc['colorScheme']);
+        }
+        if ($this->themeChanged) {
+            BackendUtility::setUpdateSignal('updateTheme', $this->getBackendUser()->uc['theme']);
         }
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $this->addFlashMessages($view);
@@ -197,6 +205,12 @@ class SetupModuleController
             // Reload pagetree if the title length is changed
             if (isset($d['titleLen']) && $d['titleLen'] !== $backendUser->uc['titleLen']) {
                 $this->pagetreeNeedsRefresh = true;
+            }
+            if (isset($d['colorScheme']) && $d['colorScheme'] !== $backendUser->uc['colorScheme']) {
+                $this->colorSchemeChanged = true;
+            }
+            if (isset($d['theme']) && $d['theme'] !== $backendUser->uc['theme']) {
+                $this->themeChanged = true;
             }
             if ($d['setValuesToDefault']) {
                 // If every value should be default

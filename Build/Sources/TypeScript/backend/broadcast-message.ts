@@ -11,21 +11,23 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+export type BroadcastEvent<Payload extends object> = CustomEvent<{ payload: Payload }>;
+
 /**
  * @module @typo3/backend/broadcast-message
  */
-export class BroadcastMessage {
+export class BroadcastMessage<Payload = unknown> {
   readonly componentName: string;
   readonly eventName: string;
-  readonly payload: any;
+  readonly payload: Payload;
 
-  constructor(componentName: string, eventName: string, payload: any) {
+  constructor(componentName: string, eventName: string, payload: Payload) {
     if (!componentName || !eventName) {
       throw new Error('Properties componentName and eventName have to be defined');
     }
     this.componentName = componentName;
     this.eventName = eventName;
-    this.payload = payload || {};
+    this.payload = payload || ({} as Payload);
   }
 
   public static fromData(data: any): BroadcastMessage {

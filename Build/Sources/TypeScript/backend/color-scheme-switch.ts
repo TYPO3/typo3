@@ -14,20 +14,19 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { BroadcastMessage } from '@typo3/backend/broadcast-message';
-import BroadcastService from '@typo3/backend/broadcast-service';
 import '@typo3/backend/element/icon-element';
+import type { ColorSchemeUpdateEventData, ColorScheme } from '@typo3/backend/user-settings-manager';
 
-interface ColorScheme {
+interface ColorSchemeOption {
   label: string,
   icon: string,
-  value: string,
+  value: ColorScheme,
 }
 
 @customElement('typo3-backend-color-scheme-switch')
 export class ColorSchemeSwitchElement extends LitElement {
   @property({ type: String }) activeColorScheme: string = null;
-  @property({ type: Array }) data: ColorScheme[] = null;
+  @property({ type: Array }) data: ColorSchemeOption[] = null;
 
   protected createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
@@ -41,7 +40,7 @@ export class ColorSchemeSwitchElement extends LitElement {
     `;
   }
 
-  protected renderItem(colorScheme: ColorScheme): TemplateResult | symbol {
+  protected renderItem(colorScheme: ColorSchemeOption): TemplateResult | symbol {
     return html`
       <li>
         <button class="dropdown-item" @click="${() => this.handleClick(colorScheme.value)}" aria-current="${this.activeColorScheme === colorScheme.value ? 'true' : 'false'}">
@@ -66,22 +65,19 @@ export class ColorSchemeSwitchElement extends LitElement {
     `;
   }
 
-  private async handleClick(value: string): Promise<void> {
-    this.broadcastSchemeUpdate(value);
+  private async handleClick(value: ColorScheme): Promise<void> {
+    this.triggerSchemeUpdate(value);
     await this.persistSchemeUpdate(value);
   }
 
-  private async persistSchemeUpdate(colorScheme: string) {
+  private async persistSchemeUpdate(colorScheme: ColorScheme) {
     const url = new URL(TYPO3.settings.ajaxUrls.color_scheme_update, window.location.origin);
 
-    return await (new AjaxRequest(url)).post({ colorScheme: colorScheme });
+    return await new AjaxRequest(url).post({ colorScheme });
   }
 
-  private broadcastSchemeUpdate(colorScheme: string): void {
-    const broadcastMessage = new BroadcastMessage('color-scheme', 'update', { name: colorScheme });
-
-    BroadcastService.post(broadcastMessage);
-    document.dispatchEvent(broadcastMessage.createCustomEvent('typo3'));
+  private triggerSchemeUpdate(colorScheme: ColorScheme): void {
+    document.dispatchEvent(new CustomEvent<ColorSchemeUpdateEventData>('typo3:color-scheme:update', { detail: { colorScheme } }));
   }
 }
 
