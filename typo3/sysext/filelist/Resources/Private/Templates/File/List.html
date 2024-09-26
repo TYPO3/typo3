@@ -149,7 +149,7 @@
                     </div>
                 </div>
             </f:if>
-            {listHtml -> f:format.raw()}
+            {listHtml -> f:format.raw() -> f:if(condition: totalItems)}
         </div>
     </form>
 

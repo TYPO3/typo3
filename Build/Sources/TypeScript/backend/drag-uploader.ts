@@ -345,9 +345,9 @@ export default class DragUploader {
       // Show the filelist (table)
       this.fileList.parentElement.removeAttribute('hidden');
       // Remove hidden state from table container (also makes column selection etc. visible)
-      this.fileList.closest('.t3-filelist-table-container')?.classList.remove('hidden');
+      this.fileList.closest('.t3-filelist-container')?.classList.remove('hidden');
       // Hide the information container
-      this.fileList.closest('form')?.querySelector('.t3-filelist-info-container')?.setAttribute('hidden', 'hidden');
+      this.fileList.closest('.filelist-main')?.querySelector('.t3-filelist-info-container')?.setAttribute('hidden', 'hidden');
     }
 
     NProgress.start();
@@ -808,7 +808,7 @@ class FileQueueItem {
             this.row.remove();
             if (this.dragUploader.fileList.querySelectorAll('tr').length === 0) {
               this.dragUploader.fileList.setAttribute('hidden', 'hidden');
-              this.dragUploader.fileList.closest('.t3-filelist-table-container')?.classList.add('hidden');
+              this.dragUploader.fileList.closest('.t3-filelist-container')?.classList.add('hidden');
               this.dragUploader.trigger?.dispatchEvent(new CustomEvent('uploadSuccess', { detail: [this, data] }));
             }
           },
