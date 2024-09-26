@@ -311,9 +311,9 @@ class DragUploaderPlugin {
       // Show the filelist (table)
       this.$fileList.parent().show();
       // Remove hidden state from table container (also makes column selection etc. visible)
-      this.$fileList.closest('.t3-filelist-table-container')?.removeClass('hidden');
+      this.$fileList.closest('.t3-filelist-container')?.removeClass('hidden');
       // Hide the information container
-      this.$fileList.closest('form')?.find('.t3-filelist-info-container')?.hide();
+      this.$fileList.closest('.filelist-main')?.find('.t3-filelist-info-container')?.hide();
     }
 
     NProgress.start();
@@ -774,7 +774,7 @@ class FileQueueItem {
             this.$row.remove();
             if ($('tr', this.dragUploader.$fileList).length === 0) {
               this.dragUploader.$fileList.hide();
-              this.dragUploader.$fileList.closest('.t3-filelist-table-container')?.addClass('hidden');
+              this.dragUploader.$fileList.closest('.t3-filelist-container')?.addClass('hidden');
               this.dragUploader.$trigger.trigger('uploadSuccess', [this, data]);
             }
           },
