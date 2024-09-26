@@ -11,9 +11,11 @@ See :issue:`101621`
 Description
 ===========
 
-The default value of the field `twitter_card` of a page is now an empty string instead of `summary`.
+The default value of the `twitter_card` field of a page is now an empty string
+instead of `summary`.
 
-Only if one of the following fields is filled, the meta tag :html:`<meta name="twitter:card">` is rendered.
+Meta tag :html:`<meta name="twitter:card">` is only rendered if one of the
+following fields is filled in,
 
 - `twitter_title`
 - `twitter_description`

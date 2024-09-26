@@ -11,12 +11,12 @@ See :issue:`104154`
 Description
 ===========
 
-The method :js:`Utility.updateQueryStringParameter()` from the module
-:js:`@typo3/backend/utility.js` was introduced in TYPO3 v8 as a bugfix for
-highlighting in the old ExtJS-based page tree. With removal of ExtJS in TYPO3 v9,
-the method became unused since then.
+The :js:`Utility.updateQueryStringParameter()` method in the
+:js:`@typo3/backend/utility.js` module was introduced in TYPO3 v8 as a bugfix
+for highlighting in the old ExtJS-based page tree. Since removal of ExtJS in
+TYPO3 v9 the method has been unused.
 
-Since a safe removal of the method cannot be guaranteed as this point, it is
+Because safe removal of the method cannot be guaranteed as this point, it is
 therefore deprecated.
 
 
@@ -30,13 +30,13 @@ warning.
 Affected installations
 ======================
 
-All 3rd party extensions using the deprecated method are affected.
+All 3rd party extensions using the deprecated method.
 
 
 Migration
 =========
 
-Nowadays, JavaScript supports the :js:`URL` and its related :js:`URLSearchParams`
+Now, JavaScript supports the :js:`URL` and its related :js:`URLSearchParams`
 object that can be used to achieve the same result:
 
 ..  code-block:: javascript

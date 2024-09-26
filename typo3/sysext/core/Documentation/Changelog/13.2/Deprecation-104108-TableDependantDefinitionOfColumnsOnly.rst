@@ -13,15 +13,15 @@ Description
 
 When linking to the edit form it's possible to instruct the
 :php:`EditDocumentController` to only render a subset of available
-fields for corresponding records using the `columnsOnly` functionality,
+fields for relevant records using the `columnsOnly` functionality,
 by adding the fields to be rendered as a comma-separated list.
 
-However, besides rendering only records form a single table, the edit form
-is also capable of rendering records of different tables in the same request.
+However, the edit form can render records from many tables, and not just
+a single table, in the same request.
 
 Therefore, the limit fields functionality has been extended to allow
-set the fields to be rendered on a per-table basis. This means that
-passing just a comma-separated list of fields as value for `columnsOnly`
+setting the fields to be rendered on a per-table basis. This means that
+passing a comma-separated list of fields as a value for `columnsOnly`
 has been deprecated.
 
 Impact
@@ -29,20 +29,20 @@ Impact
 
 Passing a comma-separated list of fields as value for `columnsOnly` will
 trigger a PHP deprecation warning. A compatibility layer will automatically
-set the field list for the given tables.
+set the field list for the required tables.
 
 
 Affected installations
 ======================
 
-All installations passing a comma-separated list of fields as value for
+All installations passing a comma-separated list of fields as a value for
 `columnsOnly`.
 
 
 Migration
 =========
 
-The field to be rendered have to be passed as :php:`array` under the
+The fields to be rendered have to be passed as an :php:`array` under the
 corresponding table name.
 
 An example, building such link using the `UriBuilder`:
@@ -82,7 +82,7 @@ Above example has to be migrated to:
 
     GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('record_edit', $urlParameters);
 
-Additionally, when rendering records form different tables, a configuration
+Additionally, when rendering records from many tables, a configuration
 could look like the following:
 
 ..  code-block:: php

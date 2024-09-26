@@ -11,7 +11,7 @@ See :issue:`103915`
 Description
 ===========
 
-TYPO3 v13.0 introduced the automatic database field creation for TCA
+TYPO3 v13.0 has introduced automatic database field creation for TCA
 fields configured as type "check" (if not explicitly defined in
 :file:`ext_tables.sql`), via
 `https://review.typo3.org/c/Packages/TYPO3.CMS/+/80513`__.
@@ -45,44 +45,43 @@ all the following fields to their proper default settings:
 * :sql:`sys_workspace_stage.allow_notificaton_settings`   (0->3)
 * :sql:`sys_workspace_stage.notification_preselection`    (0->8)
 
-All these records created via :php:`DataHandler` calls actually
-interpret the TCA default for record insertion and do not rely
+All these records, created via :php:`DataHandler` calls, actually
+evaluate the TCA default for record insertion and do not rely
 on SQL database field defaults.
 
-Only if records were created using the :php:`QueryBuilder` or
-other "raw" database calls, this would cause applying wrong
+Only records created using the :php:`QueryBuilder` or
+other "raw" database calls would apply the wrong
 values.
 
-An example for this is
+An example of this is
 :php:`TYPO3\CMS\Core\Resource\StorageRepository->createLocalStorage()`
-which creates the default :file:`fileadmin` storage record, and would do
-that via the :php:`QueryBuilder` and then setting this storage with
-the field :sql:`auto_extract_metadata` to :sql:`0` instead of the
-TCA expectation of `1`. This would then cause inserted
-YouTube files to not automatically fetch metadata on creation.
+which creates a default :file:`fileadmin` record via the :php:`QueryBuilder`
+and then sets the field :sql:`auto_extract_metadata` to :sql:`0`, instead of `1`
+as would be expected in the TCA. This would mean YouTube files would not
+automatically fetch metadata on creation.
 
 This means, for all custom extension code that
 
 * removed the column definition in :file:`ext_tables.sql`
   to enforce automatic database field creation,
 * *and* did not use the recommended :php:`DataHandler` for
-  record insertion (so, any code that is not executed in
+  record insertion (so, any code that is not executed in the
   backend context, using :php:`QueryBuilder` or Extbase
   repository methods),
 * *and* expects a different default than :sql:`0` for newly
   created records,
 * *and* relied on the database field definition default
 
-may have created wrong database records when used between
-TYPO3 v13.0 and v13.2.
+this code may have created incorrect database records for versions between
+TYPO3 v13.0 and 13.2.
 
 For TYPO3 Core code, this has only affected:
 
 * Default file storage creation, field :sql:`sys_file_metadata.auto_extract_metadata`
 * Default backend user creation (admin) property :sql:`be_users.options`
 
-In this rare case, the database record integrity needs to be
-manually evaluated, because there is no automation available
+In these rare case, the database record integrity needs to be
+checked manually, because there are no automated tools
 to see if a record has used SQL default values or specifically
 defined values.
 

@@ -13,7 +13,7 @@ Description
 
 The TYPO3 backend module "Access" has been renamed to "Permissions".
 
-This reflects the actual purpose of this module and improves consistency in the
+This accurately reflects the purpose of this module and improves consistency in the
 TYPO3 backend.
 
 .. index:: Backend, ext:core
