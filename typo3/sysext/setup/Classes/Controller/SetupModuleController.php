@@ -233,7 +233,7 @@ class SetupModuleController
                     $params = ['be_user_data' => &$be_user_data];
                     GeneralUtility::callUserFunction($function, $params, $this);
                 }
-                $this->passwordIsSubmitted = (string)$be_user_data['password'] !== '';
+                $this->passwordIsSubmitted = (string)($be_user_data['password'] ?? '') !== '';
                 $passwordIsConfirmed = $this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2'];
 
                 // Validate password against password policy
