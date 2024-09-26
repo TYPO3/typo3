@@ -140,6 +140,7 @@ body[data-typo3-login-ready] {
 //
 .card-login {
     overflow: visible;
+    --typo3-card-bg: var(--typo3-surface-container-lowest);
 
     .card-heading {
         padding: 2.5em var(--typo3-login-padding-x) 0;

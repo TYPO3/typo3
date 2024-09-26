@@ -31,6 +31,6 @@ final class LogoCest
 
     public function checkIfTypo3LogoIsLinked(ApplicationTester $I): void
     {
-        $I->seeElement('//div[@class="topbar-header-site"]/a[@href="./"]');
+        $I->seeElement('//a[@class="topbar-site"][@href="./"]');
     }
 }

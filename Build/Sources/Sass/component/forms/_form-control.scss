@@ -60,7 +60,7 @@
         --typo3-form-control-color: var(--typo3-form-control-focus-color);
         --typo3-form-control-bg: var(--typo3-form-control-focus-bg);
         --typo3-form-control-border-color: var(--typo3-form-control-focus-border-color);
-        outline: .25rem solid color-mix(in srgb, var(--typo3-form-control-focus-border-color), transparent 25%);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-form-control-focus-border-color), transparent 25%);
         z-index: 3 !important;
     }
 

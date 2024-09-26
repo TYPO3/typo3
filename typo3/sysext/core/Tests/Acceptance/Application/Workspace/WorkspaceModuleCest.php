@@ -38,7 +38,7 @@ final class WorkspaceModuleCest
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->waitForText('Test Workspace', 5, self::$topBarModuleSelector);
         $I->click('Test Workspace', self::$topBarModuleSelector);
-        $I->waitForElement('.topbar-header.typo3-in-workspace');
+        $I->waitForElement('.scaffold.scaffold-in-workspace');
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->waitForText('Test Workspace', 5, '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem .active');
     }

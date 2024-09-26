@@ -10,7 +10,6 @@
     --viewpage-topbar-height: 40px;
     --viewpage-resizable-size: 5px;
     --viewpage-item-radius: 5px;
-    color-scheme: only dark;
 
     .module-body {
         text-align: center;
@@ -101,7 +100,6 @@
         border-bottom: 1px solid rgba($primary, .5);
         transition: all .5s ease-in-out;
         color: inherit;
-        color-scheme: dark;
 
         &:focus,
         &:hover {

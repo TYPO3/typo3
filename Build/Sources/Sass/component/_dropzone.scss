@@ -73,7 +73,7 @@
 
     &:has(.dropzone-hint:focus-visible) {
         border-style: solid;
-        outline: .25rem solid color-mix(in srgb, var(--dropzone-border-color), transparent 25%);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--dropzone-border-color), transparent 25%);
     }
 }
 
@@ -108,7 +108,7 @@
     }
 
     &:focus-visible {
-        outline: .25rem solid color-mix(in srgb, var(--dropdown-close-border-color), transparent 25%);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--dropdown-close-border-color), transparent 25%);
     }
 
     &:before {

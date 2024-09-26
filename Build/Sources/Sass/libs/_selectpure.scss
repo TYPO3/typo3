@@ -28,7 +28,7 @@ select-pure {
     --hover-background-color: var(--typo3-form-selectpure-hover-bg);
     --disabled-color: var(--typo3-form-selectpure-disabled-color);
     --disabled-background-color: var(--typo3-form-selectpure-disabled-bg);
-    --select-outline: .25rem solid color-mix(in srgb, var(--typo3-form-selectpure-focus-border-color), transparent 25%);
+    --select-outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-form-selectpure-focus-border-color), transparent 25%);
     --selected-background-color: var(--typo3-component-active-bg);
     --selected-color: var(--typo3-component-active-color);
     --dropdown-gap: calc(var(--typo3-spacing) * .5);

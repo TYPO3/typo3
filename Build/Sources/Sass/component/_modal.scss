@@ -83,19 +83,19 @@
 }
 
 .modal-backdrop {
-    --typo3-backdrop-zindex: var(--typo3-zindex-modal-backdrop);
-    --typo3-backdrop-bg: #000;
-    --typo3-backdrop-opacity: .65;
+    --typo3-modal-backdrop-zindex: var(--typo3-zindex-modal-backdrop);
+    --typo3-modal-backdrop-bg: var(--typo3-overlay-bg);
+    --typo3-modal-backdrop-opacity: var(--typo3-overlay-opacity);
     position: fixed;
-    z-index: var(--typo3-backdrop-zindex);
+    z-index: var(--typo3-modal-backdrop-zindex);
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: var(--typo3-backdrop-bg);
+    background-color: var(--typo3-modal-backdrop-bg);
 
     &.fade { opacity: 0; }
-    &.show { opacity: var(--typo3-backdrop-opacity); }
+    &.show { opacity: var(--typo3-modal-backdrop-opacity); }
 }
 
 .modal-header {

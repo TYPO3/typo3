@@ -9,7 +9,7 @@
     --typo3-btn-border-width: var(--typo3-input-border-width);
     --typo3-btn-border-radius: var(--typo3-input-border-radius);
     --typo3-btn-disabled-opacity: .65;
-    --typo3-btn-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    --typo3-btn-transition: var(--typo3-transition-color);
     --typo3-btn-color: inherit;
     --typo3-btn-bg: transparent;
     --typo3-btn-border-color: transparent;
@@ -62,7 +62,7 @@
     .btn-check:focus-visible + &,
     &:has(*:focus-visible),
     &:focus-visible {
-        outline: .25rem solid color-mix(in srgb, var(--typo3-btn-focus-border-color), transparent 25%);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-btn-focus-border-color), transparent 25%);
     }
 
     .btn-check:checked + &,

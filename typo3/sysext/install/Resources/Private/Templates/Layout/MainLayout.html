@@ -35,26 +35,22 @@
         <div class="scaffold t3js-scaffold scaffold-modulemenu-expanded">
             <div class="scaffold-header t3js-scaffold-header">
                 <div class="scaffold-topbar t3js-scaffold-topbar">
-                    <div class="topbar">
-                        <div class="topbar-header t3js-topbar-header {f:if(condition: '{isInWorkspace}', then: 'typo3-in-workspace')}">
-                            <button class="topbar-button topbar-button-modulemenu t3js-topbar-button-modulemenu"
-                                title="Minimize/maximize module menu"
-                                aria-label="Minimize/maximize module menu"
-                            >
-                                <core:icon identifier="actions-menu" alternativeMarkupIdentifier="inline" />
-                            </button>
-                            <div class="topbar-header-site">
-                                <a href="" target="_top" title="TYPO3.CMS">
-                                    <span class="topbar-header-site-logo">
-                                        <img src="{f:uri.resource(path: 'EXT:install/Resources/Public/Images/typo3_logo_orange.svg')}" width="22" height="22" title="TYPO3 Content Management System" alt="TYPO3 Content Management System">
-                                    </span>
-                                    <span class="topbar-header-site-title">
-                                        <span class="topbar-header-site-name">Admin tool on site: {siteName}</span>
-                                        <span class="topbar-header-site-version">TYPO3 CMS {currentTypo3Version}</span>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
+                    <div class="topbar t3js-topbar">
+                        <button class="topbar-button topbar-button-modulemenu t3js-topbar-button-modulemenu"
+                            title="Minimize/maximize module menu"
+                            aria-label="Minimize/maximize module menu"
+                        >
+                            <core:icon identifier="actions-menu" alternativeMarkupIdentifier="inline" />
+                        </button>
+                        <a class="topbar-site" href="" target="_top" title="TYPO3.CMS">
+                            <span class="topbar-site-logo">
+                                <img src="{f:uri.resource(path: 'EXT:install/Resources/Public/Images/typo3_logo_orange.svg')}" width="22" height="22" title="TYPO3 Content Management System" alt="TYPO3 Content Management System">
+                            </span>
+                            <span class="topbar-site-title">
+                                <span class="topbar-site-name">Admin tool on site: {siteName}</span>
+                                <span class="topbar-site-version">TYPO3 CMS {currentTypo3Version}</span>
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>

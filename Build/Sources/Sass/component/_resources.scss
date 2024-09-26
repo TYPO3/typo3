@@ -64,7 +64,7 @@
 }
 
 .resource-tile:focus-within {
-    outline: .25rem solid color-mix(in srgb, var(--typo3-resource-tile-border-color), transparent 25%);
+    outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-resource-tile-border-color), transparent 25%);
 }
 
 .resource-tile.active {

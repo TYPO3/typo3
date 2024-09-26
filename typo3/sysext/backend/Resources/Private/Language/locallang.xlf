@@ -189,6 +189,15 @@
 			<trans-unit id="editdocument.moduleMenu.dropdown.label" resname="editdocument.moduleMenu.dropdown.label">
 				<source>Record language</source>
 			</trans-unit>
+			<trans-unit id="theme" resname="theme">
+				<source>Theme</source>
+			</trans-unit>
+			<trans-unit id="theme.classic" resname="theme.classic">
+				<source>Classic</source>
+			</trans-unit>
+			<trans-unit id="theme.modern" resname="theme.modern">
+				<source>Modern</source>
+			</trans-unit>
 			<trans-unit id="colorScheme" resname="colorScheme">
 				<source>Color scheme</source>
 			</trans-unit>

@@ -6,57 +6,54 @@
 >
 
 <div class="scaffold-topbar t3js-scaffold-topbar" data-topbar-identifier="topbar">
-    <div class="topbar">
-        <div class="topbar-header t3js-topbar-header {f:if(condition: '{isInWorkspace}', then: 'typo3-in-workspace')}">
-            <f:render
-                section="ToggleButton"
-                arguments="{
-                    icon: 'actions-menu',
-                    enabled: '{hasModules}',
-                    classes: 'topbar-button-modulemenu t3js-topbar-button-modulemenu',
-                    title: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.minMaxModuleMenu\')}'
-                }"
-            />
-
-            <div class="topbar-header-site">
-                <a href="./" target="_top" title="{siteName} - {applicationVersion}">
-                    <span class="topbar-header-site-logo">
-                        <img src="{logoUrl}" width="{logoWidth}" height="{logoHeight}" alt="" aria-hidden="true" />
-                    </span>
-                    <span class="topbar-header-site-title">
-                        <span class="topbar-header-site-name">{siteName}</span>
-                        <span class="topbar-header-site-version">{applicationVersion}</span>
-                    </span>
-                </a>
-            </div>
-            <button
-                class="topbar-button topbar-button-toolbar t3js-topbar-button-toolbar"
-                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.toolbarOpenClose')}"
-                aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.toolbarOpenClose')}"
-            >
-                <core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline" />
-            </button>
-            <button
-                class="topbar-button topbar-button-search t3js-topbar-button-search"
-                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.searchbarOpenClose')}"
-                aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.searchbarOpenClose')}"
-            >
-                <core:icon identifier="actions-search" alternativeMarkupIdentifier="inline" />
-            </button>
+    <div class="topbar t3js-topbar">
+        <f:render
+            section="ToggleButton"
+            arguments="{
+                icon: 'actions-menu',
+                enabled: '{hasModules}',
+                classes: 'topbar-button-modulemenu t3js-topbar-button-modulemenu',
+                title: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.minMaxModuleMenu\')}'
+            }"
+        />
+        <div class="topbar-site-container">
+            <a class="topbar-site" href="./" target="_top" title="{siteName} - {applicationVersion}">
+                <span class="topbar-site-logo">
+                    <img src="{logoUrl}" width="{logoWidth}" height="{logoHeight}" alt="" aria-hidden="true" />
+                </span>
+                <span class="topbar-site-title">
+                    <span class="topbar-site-name">{siteName}</span>
+                    <span class="topbar-site-version">{applicationVersion}</span>
+                </span>
+            </a>
         </div>
+        <button
+            class="topbar-button topbar-button-toolbar t3js-topbar-button-toolbar"
+            title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.toolbarOpenClose')}"
+            aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.toolbarOpenClose')}"
+        >
+            <core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline" />
+        </button>
+        <button
+            class="topbar-button topbar-button-search t3js-topbar-button-search"
+            title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.searchbarOpenClose')}"
+            aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.searchbarOpenClose')}"
+        >
+            <core:icon identifier="actions-search" alternativeMarkupIdentifier="inline" />
+        </button>
     </div>
 </div>
 <div class="scaffold-toolbar t3js-scaffold-toolbar" data-toolbar-identifier="toolbar">
     <div class="toolbar">
         <ul class="toolbar-list" data-typo3-role="typo3-module-menu">
-            <f:for each="{toolbarItems}" as="toolbarItem">
+            <f:for each="{toolbarItems}" as="toolbarItem" iteration="iterator">
                 <li {be:toolbar.attributes(class: toolbarItem) -> f:format.raw()}>
                     <be:toolbar.ifHasDropdown class="{toolbarItem}">
                         <f:then>
-                            <a href="#" class="toolbar-item-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-offset="0,0">
+                            <button type="button" class="toolbar-item-link dropdown-toggle" data-bs-target="toolbar-menu-{iterator.cycle}" data-bs-toggle="dropdown" data-bs-offset="0,0">
                                 {toolbarItem.item -> f:format.raw()}
-                            </a>
-                            <div class="dropdown-menu" role="menu">
+                            </button>
+                            <div id="toolbar-menu-{iterator.cycle}" class="dropdown-menu" role="menu">
                                 {toolbarItem.dropdown -> f:format.raw()}
                             </div>
                         </f:then>

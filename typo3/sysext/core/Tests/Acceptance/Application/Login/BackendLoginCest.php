@@ -141,7 +141,7 @@ final class BackendLoginCest
         $I->amGoingTo('logout');
         // ensure that we are on the main frame
         $I->switchToMainFrame();
-        $I->click('#typo3-cms-backend-backend-toolbaritems-usertoolbaritem > a');
+        $I->click('#typo3-cms-backend-backend-toolbaritems-usertoolbaritem > button');
         $I->click('Logout');
         $I->waitForElement('#t3-username');
     }

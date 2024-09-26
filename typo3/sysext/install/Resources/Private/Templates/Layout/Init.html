@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" {f:if(condition: colorScheme, then: 'data-color-scheme="{colorScheme}"')}>
+<html lang="en"{f:if(condition: colorScheme, then: ' data-color-scheme="{colorScheme}"')}{f:if(condition: theme, then: ' data-theme="{theme}"')}>
 <head>
     <title>Install Tool on site {siteName}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">

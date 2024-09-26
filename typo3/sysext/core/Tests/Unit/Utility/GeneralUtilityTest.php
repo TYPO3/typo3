@@ -2374,8 +2374,8 @@ final class GeneralUtilityTest extends UnitTestCase
         file_put_contents($path . '/subDirectory/other.php', 'milk');
         file_put_contents($path . '/subDirectory/stuff.csv', 'honey');
         mkdir($path . '/beStylesheet');
-        file_put_contents($path . '/beStylesheet/backend.css', '.topbar-header-site { color: red; }');
-        file_put_contents($path . '/beStylesheet/backend.scss', '.topbar-header-site { color: green; }');
+        file_put_contents($path . '/beStylesheet/backend.css', '.topbar-site { color: red; }');
+        file_put_contents($path . '/beStylesheet/backend.scss', '.topbar-site { color: green; }');
         file_put_contents($path . '/excludeMe.txt', 'cocoa nibs');
         file_put_contents($path . '/double.setup.typoscript', 'cool TS');
         file_put_contents($path . '/testB.txt', 'olive oil');

@@ -13,7 +13,8 @@
     --pagemodule-grid-column-unused-bg: var(--typo3-surface-container-warning);
     --pagemodule-element-spacing: 1rem;
     --pagemodule-element-bg: var(--typo3-surface-bright);
-    --pagemodule-element-border-radius: 2px;
+    --pagemodule-element-border-radius: 4px;
+    --pagemodule-element-border-color: color-mix(in srgb, var(--pagemodule-element-bg), currentColor 15%);
     --pagemodule-element-warning-bg: var(--typo3-surface-container-warning);
     --pagemodule-element-hidden-bg: var(--pagemodule-grid-cell-bg);
     --pagemodule-dropzone-bg: var(--typo3-surface-container-warning);
@@ -141,7 +142,7 @@
 }
 
 .t3-page-ce-element {
-    border: 1px solid var(--pagemodule-element-bg);
+    border: 1px solid var(--pagemodule-element-border-color);
     background-color: var(--pagemodule-element-bg);
     border-radius: var(--pagemodule-element-border-radius);
     box-shadow: var(--typo3-component-box-shadow-strong);

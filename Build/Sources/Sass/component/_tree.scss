@@ -33,7 +33,6 @@
 // Nodes
 //
 .nodes-container {
-    color-scheme: light dark;
     color: var(--tree-color);
     background: var(--tree-bg);
     position: relative;
@@ -370,7 +369,6 @@
 // Dragging Tooltip
 //
 .dragging-tooltip {
-    color-scheme: light dark;
     pointer-events: none;
     position: fixed;
     left: 0;
@@ -464,7 +462,6 @@ typo3-backend-form-selecttree-toolbar {
 }
 
 .tree-toolbar {
-    color-scheme: light dark;
     padding: var(--module-docheader-padding-y) 12px;
     color: var(--module-color);
     border-bottom: 1px solid var(--module-docheader-border-color);

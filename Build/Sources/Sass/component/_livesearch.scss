@@ -158,7 +158,7 @@ typo3-backend-live-search-result-item-action {
     }
 
     &:focus-within {
-        outline: .25rem solid color-mix(in srgb, var(--typo3-livesearch-result-item-border-color), transparent 25%);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-livesearch-result-item-border-color), transparent 25%);
     }
 
     .livesearch-expand-action {

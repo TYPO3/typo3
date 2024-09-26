@@ -97,12 +97,12 @@
     &:focus-visible {
         &::-webkit-slider-thumb {
             outline-offset: 0;
-            outline: .25rem solid color-mix(in srgb, var(--typo3-form-range-border-color-state, var(--typo3-form-range-border-color)), transparent 25%);
+            outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-form-range-border-color-state, var(--typo3-form-range-border-color)), transparent 25%);
         }
 
         &::-moz-range-thumb {
             outline-offset: 0;
-            outline: .25rem solid color-mix(in srgb, var(--typo3-form-range-border-color-state, var(--typo3-form-range-border-color)), transparent 25%);
+            outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-form-range-border-color-state, var(--typo3-form-range-border-color)), transparent 25%);
         }
     }
 

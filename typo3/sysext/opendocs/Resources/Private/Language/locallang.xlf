@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:opendocs/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="opendocs">
 		<header/>
 		<body>
+			<trans-unit id="toolbaritem" resname="toolbaritem">
+				<source>Open and recently used documents</source>
+			</trans-unit>
 			<trans-unit id="toolbarItems.headline" resname="toolbarItems.headline">
 				<source>Open and recently used documents</source>
 			</trans-unit>

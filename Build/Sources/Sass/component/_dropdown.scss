@@ -2,7 +2,6 @@
 // Dropdown Adjustments
 //
 .dropdown-menu {
-    color-scheme: light dark;
     text-align: start;
     font-size: var(--typo3-component-font-size);
     line-height: var(--typo3-component-line-height);
@@ -99,7 +98,6 @@ h4.dropdown-headline {
         outline: 1px solid var(--typo3-list-item-focus-border-color);
     }
 
-    &:active,
     &.active {
         color: var(--typo3-list-item-active-color);
         background-color: var(--typo3-list-item-active-bg);

@@ -45,10 +45,10 @@
     // .badge-test,
     // .badge-excludeFromUpdates
     @include badge-use-variant('default');
-    --typo3-badge-padding-y: calc(.35em - 1px);
+    --typo3-badge-padding-y: calc(.34375em - 1px);
     --typo3-badge-padding-x: .65em;
     --typo3-badge-border-radius: .25em;
-    --typo3-badge-font-size: calc(1em / 12 * 10);
+    --typo3-badge-font-size: calc(1em / 12 * 11);
     background-color: var(--typo3-badge-bg);
     display: inline-flex;
     padding: var(--typo3-badge-padding-y) var(--typo3-badge-padding-x);
@@ -79,7 +79,7 @@
         }
 
         &:focus-visible {
-            outline: .25rem solid color-mix(in srgb, var(--typo3-badge-link-focus-bg), transparent 25%);
+            outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-badge-link-focus-bg), transparent 25%);
         }
     }
 }

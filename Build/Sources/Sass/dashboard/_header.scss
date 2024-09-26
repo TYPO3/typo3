@@ -6,7 +6,6 @@
     border-bottom: 1px solid var(--dashboard-header-border-color);
     margin: calc(-1 * var(--module-body-padding-y)) calc(-1 * var(--module-body-padding-x)) var(--module-body-padding-y);
     padding: var(--module-body-padding-y) var(--module-body-padding-x) 0;
-    overflow: hidden;
 }
 
 .dashboard-header-container {
@@ -42,8 +41,8 @@
     --dashboard-header-tab-hover-color: var(--typo3-component-color);
     --dashboard-header-tab-focus-bg: var(--typo3-state-default-focus-bg);
     --dashboard-header-tab-focus-color: var(--typo3-state-default-focus-color);
-    --dashboard-header-tab-active-bg: var(--typo3-state-primary-bg);
-    --dashboard-header-tab-active-color: var(--typo3-state-primary-color);
+    --dashboard-header-tab-active-bg: var(--module-bg);
+    --dashboard-header-tab-active-color: var(--module-color);
     --dashboard-header-tab-border-radius: var(--typo3-component-border-radius);
     border-radius: var(--dashboard-header-tab-border-radius) var(--dashboard-header-tab-border-radius) 0 0;
     border: 1px solid var(--dashboard-header-tab-border-color);
@@ -52,6 +51,7 @@
     padding: calc(var(--dashboard-header-tab-padding) / 1.5) var(--dashboard-header-tab-padding);
     background: var(--dashboard-header-tab-bg);
     color: var(--dashboard-header-tab-color);
+    outline-offset: -1px;
 
     &:focus,
     &:hover {
@@ -61,11 +61,13 @@
     }
 
     &:focus-visible {
-        outline: .25rem solid color-mix(in srgb, var(--dashboard-header-tab-bg), transparent 25%);
+        border-radius: var(--dashboard-header-tab-border-radius);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--dashboard-header-tab-color), transparent 50%);
     }
 
     &--active {
         --dashboard-header-tab-state-color: var(--dashboard-header-tab-active-color) !important;
         --dashboard-header-tab-state-bg: var(--dashboard-header-tab-active-bg) !important;
+        border-bottom-color: var(--dashboard-header-tab-state-bg);
     }
 }

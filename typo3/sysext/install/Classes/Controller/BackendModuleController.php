@@ -91,8 +91,23 @@ class BackendModuleController
 
         $backendUser = $this->getBackendUser();
         $userTS = $backendUser->getTSConfig();
-        if (!isset($userTS['setup.']['fields.']['colorScheme.']['disabled']) || $userTS['setup.']['fields.']['colorScheme.']['disabled'] !== '1') {
-            $redirectParameters['install']['colorScheme'] = $GLOBALS['BE_USER']->uc['colorScheme'] ?? 'auto';
+
+        $themeDisabled = $userTS['setup.']['fields.']['theme.']['disabled'] ?? '0';
+        $theme = $GLOBALS['BE_USER']->uc['theme'] ?? $userTS['setup.']['fields.']['theme'] ?? 'auto';
+        if ($themeDisabled === '1') {
+            $theme = $userTS['setup.']['fields.']['theme'] ?? 'modern';
+        }
+        if ($theme !== 'modern') {
+            $redirectParameters['install']['theme'] = $theme;
+        }
+
+        $colorSchemeDisabled = $userTS['setup.']['fields.']['colorScheme.']['disabled'] ?? '0';
+        $colorScheme = $GLOBALS['BE_USER']->uc['colorScheme'] ?? $userTS['setup.']['fields.']['colorScheme'] ?? 'auto';
+        if ($colorSchemeDisabled === '1') {
+            $colorScheme = $userTS['setup.']['fields.']['colorScheme'] ?? 'light';
+        }
+        if ($colorScheme !== 'auto') {
+            $redirectParameters['install']['colorScheme'] = $colorScheme;
         }
 
         $userSession = $this->getBackendUser()->getSession();

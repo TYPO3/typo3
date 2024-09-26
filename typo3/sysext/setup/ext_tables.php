@@ -100,10 +100,18 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:colorScheme',
             'items' => ColorScheme::getAvailableItemsForSelection(),
         ],
+        'theme' => [
+            'type' => 'select',
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme',
+            'items' => [
+                'modern' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme.modern',
+                'classic' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme.classic',
+            ],
+        ],
     ],
     'showitem' => '--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data,realName,email,emailMeAtLogin,avatar,lang,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:accountSecurity,passwordCurrent,password,password2,mfaProviders,
-            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening,colorScheme,startModule,backendTitleFormat,
+            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening,colorScheme,theme,startModule,backendTitleFormat,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,titleLen,edit_docModuleUpload,showHiddenFilesAndFolders,copyLevels,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetTab,resetConfiguration',
 ];

@@ -292,8 +292,22 @@ class PageRenderer implements SingletonInterface
                 if ($backendUser->isLoggedIn()) {
                     $userTS = $GLOBALS['BE_USER']->getTSConfig();
 
-                    if (!isset($userTS['setup.']['fields.']['colorScheme.']['disabled']) || $userTS['setup.']['fields.']['colorScheme.']['disabled'] !== '1') {
-                        $attributes['data-color-scheme'] = $GLOBALS['BE_USER']->uc['colorScheme'] ?? 'auto';
+                    $themeDisabled = $userTS['setup.']['fields.']['theme.']['disabled'] ?? '0';
+                    $theme = $GLOBALS['BE_USER']->uc['theme'] ?? $userTS['setup.']['fields.']['theme'] ?? 'auto';
+                    if ($themeDisabled === '1') {
+                        $theme = $userTS['setup.']['fields.']['theme'] ?? 'modern';
+                    }
+                    if ($theme !== 'modern') {
+                        $attributes['data-theme'] = $theme;
+                    }
+
+                    $colorSchemeDisabled = $userTS['setup.']['fields.']['colorScheme.']['disabled'] ?? '0';
+                    $colorScheme = $GLOBALS['BE_USER']->uc['colorScheme'] ?? $userTS['setup.']['fields.']['colorScheme'] ?? 'auto';
+                    if ($colorSchemeDisabled === '1') {
+                        $colorScheme = $userTS['setup.']['fields.']['colorScheme'] ?? 'light';
+                    }
+                    if ($colorScheme !== 'auto') {
+                        $attributes['data-color-scheme'] = $colorScheme;
                     }
                 }
             }

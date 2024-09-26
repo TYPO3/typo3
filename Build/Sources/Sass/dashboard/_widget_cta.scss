@@ -29,7 +29,7 @@
     }
 
     &:focus-visible {
-        outline: .25rem solid color-mix(in srgb, var(--widget-cta-bg), transparent 25%);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--widget-cta-bg), transparent 25%);
     }
 }
 

@@ -2,30 +2,27 @@
 // Scaffold
 // ========
 //
-
-//
-// Variables
-//
-$scaffold-overlay-bg: rgba(0, 0, 0, .65);
-$scaffold-secondary-bg: #151515;
-$scaffold-secondary-color: #f5f5f5;
-$scaffold-topbar-bg: $scaffold-secondary-bg;
-$scaffold-topbar-color: $scaffold-secondary-color;
-$scaffold-topbar-height: 45px;
-$scaffold-topbar-toolbar-bg: $scaffold-secondary-bg;
-$scaffold-topbar-toolbar-color: $scaffold-secondary-color;
-$scaffold-modulemenu-bg: lighten($scaffold-secondary-bg, 8);
-$scaffold-modulemenu-color: $scaffold-secondary-color;
-$scaffold-modulemenu-expanded-width: 240px;
-$scaffold-toolbar-bg: lighten($scaffold-secondary-bg, 8);
-$scaffold-toolbar-color: $scaffold-secondary-color;
-$scaffold-content-navigation-width: 300px;
-$scaffold-content-toggle-bg: lighten($scaffold-secondary-bg, 12);
-$scaffold-content-toggle-color: $scaffold-secondary-color;
-
 :root {
-    --scaffold-bg: var(--typo3-surface-base);
     --scaffold-color: var(--typo3-text-color-base);
+    --scaffold-bg: var(--typo3-surface-base);
+    --scaffold-border-color: color-mix(in srgb, var(--typo3-surface-base), var(--scaffold-color) 15%);
+    --scaffold-gap: .5rem;
+    --scaffold-header-height: 3.75rem;
+    --scaffold-header-color: var(--typo3-text-color-base);
+    --scaffold-header-bg: var(--typo3-surface-bright);
+    --scaffold-header-box-shadow: var(--typo3-shadow-2);
+    --scaffold-header-item-height: 2.5rem;
+    --scaffold-header-item-width: 2.5rem;
+    --scaffold-header-item-border-radius: .25rem;
+    --scaffold-header-padding-y: .5rem;
+    --scaffold-header-padding-x: .5rem;
+    --scaffold-header-foldout-bg: var(--typo3-surface-container-high);
+    --scaffold-header-zindex: var(--typo3-zindex-header);
+    --scaffold-modulemenu-color: var(--typo3-text-color-base);
+    --scaffold-modulemenu-bg: var(--typo3-surface-container-high);
+    --scaffold-modulemenu-expanded-width: 240px;
+    --scaffold-modulemenu-box-shadow: var(--typo3-shadow-2);
+    --scaffold-content-navigation-width: 300px;
     --scaffold-content-navigation-drag-bg: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 10%);
     --scaffold-content-navigation-drag-bg-hover: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 20%);
     --scaffold-content-navigation-switcher-bg: var(--typo3-surface-container-base);
@@ -38,10 +35,12 @@ $scaffold-content-toggle-color: $scaffold-secondary-color;
 html {
     height: 100%;
     overflow: hidden;
+    scrollbar-color: color-mix(in srgb, var(--typo3-text-color-base), transparent 75%) transparent;
 }
 
 body {
     height: 100%;
+    color: var(--scaffold-color);
     background-color: var(--scaffold-bg);
 
     &.with-overflow {
@@ -53,6 +52,7 @@ body {
 }
 
 iframe {
+    color: var(--scaffold-color);
     background-color: var(--scaffold-bg);
 }
 
@@ -72,41 +72,45 @@ iframe {
     flex: 0 0 100%;
     position: sticky;
     top: 0;
-    z-index: var(--typo3-zindex-dropdown);
     display: flex;
-    flex-flow: row wrap;
-    align-items: stretch;
-    height: $scaffold-topbar-height;
+    align-items: center;
+    gap: var(--scaffold-gap);
+    padding: var(--scaffold-header-padding-y) var(--scaffold-header-padding-x);
+    height: var(--scaffold-header-height);
+    color: var(--scaffold-header-color);
+    background-color: var(--scaffold-header-bg);
+    box-shadow: var(--scaffold-header-box-shadow);
+    z-index: var(--scaffold-header-zindex);
 }
 
 //
 // Topbar
 //
 .scaffold-topbar {
-    background-color: $scaffold-topbar-bg;
-    color: $scaffold-topbar-color;
-    height: $scaffold-topbar-height;
-    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
 }
 
 //
 // ModuleMenu
 //
 .scaffold-modulemenu {
-    background-color: $scaffold-modulemenu-bg;
-    color: $scaffold-modulemenu-color;
-    top: $scaffold-topbar-height;
+    background-color: var(--scaffold-modulemenu-bg);
+    color: var(--scaffold-modulemenu-color);
+    top: var(--scaffold-header-height);
     width: auto;
-    height: calc(100vh - #{$scaffold-topbar-height});
+    height: calc(100vh - var(--scaffold-header-height));
     max-width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    color-scheme: dark;
     position: absolute;
-    z-index: calc(var(--typo3-zindex-modal) + 1);
+    z-index: calc(var(--scaffold-header-zindex) - 1);
+    box-shadow: var(--scaffold-modulemenu-box-shadow);
+    border-inline-end: 1px solid color-mix(in srgb, var(--scaffold-modulemenu-bg), var(--scaffold-modulemenu-color) 15%);
 
     @include media-breakpoint-up('lg') {
-        z-index: var(--typo3-zindex-dropdown);
+        z-index: initial;
         position: sticky;
     }
 }
@@ -115,32 +119,12 @@ iframe {
 // Toolbar
 //
 .scaffold-toolbar {
-    background-color: $scaffold-toolbar-bg;
-    color: $scaffold-toolbar-color;
     z-index: var(--typo3-zindex-dropdown);
-
-    .toolbar-item-link {
-        color: transparentize($scaffold-toolbar-color, .3);
-
-        &:focus,
-        &:hover {
-            color: $scaffold-toolbar-color;
-        }
-
-        &:after {
-            display: none;
-        }
-    }
-
-    .active > .toolbar-item-link {
-        color: $scaffold-toolbar-color;
-    }
     display: none;
 
     @include media-breakpoint-up('lg') {
         overflow: visible;
         background-color: transparent;
-        height: $scaffold-topbar-height;
         inset-inline-start: auto;
         bottom: auto;
         display: block;
@@ -149,15 +133,24 @@ iframe {
 
 .scaffold-toolbar-expanded {
     .scaffold-toolbar {
-        .toolbar {
-            background-color: $scaffold-modulemenu-bg;
-        }
-
         @include media-breakpoint-down('lg') {
-            min-height: calc(100vh - #{$scaffold-topbar-height});
-            padding: 8px;
-            flex: 1 0 100%;
+            &:before {
+                content: "";
+                height: 1px;
+                position: fixed;
+                top: calc(var(--scaffold-header-height) - 1px);
+                inset-inline: 0;
+                box-shadow: var(--scaffold-header-box-shadow);
+            }
+            // border-top: 1px solid color-mix(in srgb, var(--scaffold-header-bg), currentColor 20%);
+            position: absolute;
+            top: var(--scaffold-header-height);
+            inset-inline: 0;
+            height: calc(100vh - var(--scaffold-header-height));
+            padding: 1rem .5rem;
             display: block;
+            overflow: auto;
+            background-color: var(--scaffold-header-foldout-bg);
         }
     }
 }
@@ -168,7 +161,7 @@ iframe {
 .scaffold-content {
     position: relative !important;
     flex: 1 0 0%;
-    height: calc(100vh - #{$scaffold-topbar-height});
+    height: calc(100vh - var(--scaffold-header-height));
     display: flex;
     flex-direction: row;
     background: var(--scaffold-bg);
@@ -194,7 +187,7 @@ iframe {
     top: 0;
     bottom: 0;
     height: 100%;
-    width: $scaffold-content-navigation-width;
+    width: var(--scaffold-content-navigation-width);
 
     &-component {
         flex: 1 0 auto;
@@ -213,12 +206,13 @@ iframe {
 .scaffold-content-overlay {
     display: none;
     position: absolute;
-    z-index: var(--typo3-zindex-modal-backdrop);
+    z-index: calc(var(--scaffold-header-zindex) - 2);
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: $scaffold-overlay-bg;
+    opacity: var(--typo3-overlay-opacity);
+    background-color: var(--typo3-overlay-bg);
 }
 
 .scaffold-modulemenu-expanded {
@@ -244,7 +238,7 @@ iframe {
 
 .scaffold-modulemenu-expanded {
     .scaffold-modulemenu {
-        width: $scaffold-modulemenu-expanded-width;
+        width: var(--scaffold-modulemenu-expanded-width);
 
         @include media-breakpoint-down('lg') {
             display: block;
@@ -253,7 +247,6 @@ iframe {
 }
 
 .scaffold-content-navigation-drag {
-    color-scheme: light dark;
     display: none;
     flex: 0 0 auto;
     width: 1px;
@@ -303,7 +296,6 @@ iframe {
 }
 
 .scaffold-content-navigation-switcher {
-    color-scheme: light dark;
     display: none;
 
     .scaffold-content-navigation-available & {

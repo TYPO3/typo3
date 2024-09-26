@@ -19,7 +19,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 
 enum Identifiers {
-  topbarHeaderSelector = '.t3js-topbar-header',
+  scaffoldSelector = '.t3js-scaffold',
   containerSelector = '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem',
   activeMenuItemLinkSelector = '.t3js-workspaces-switchlink.active',
   menuItemLinkSelector = '.t3js-workspaces-switchlink',
@@ -27,7 +27,7 @@ enum Identifiers {
 }
 
 enum Classes {
-  workspaceBodyClass = 'typo3-in-workspace',
+  workspaceBodyClass = 'scaffold-in-workspace',
   workspacesTitleInToolbarClass = 'toolbar-item-name',
 }
 
@@ -113,8 +113,8 @@ class WorkspacesMenu {
       return;
     }
 
-    const topbarHeader = document.querySelector(Identifiers.topbarHeaderSelector);
-    topbarHeader.classList.toggle(Classes.workspaceBodyClass, workspaceState.inWorkspace);
+    const topbar = document.querySelector(Identifiers.scaffoldSelector);
+    topbar.classList.toggle(Classes.workspaceBodyClass, workspaceState.inWorkspace);
     if (workspaceState.inWorkspace && !workspaceState.title) {
       workspaceState.title = TYPO3.lang['Workspaces.workspaceTitle'];
     }

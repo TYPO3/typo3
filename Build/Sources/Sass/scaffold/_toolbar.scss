@@ -1,31 +1,9 @@
 //
 // Toolbar
 //
-$toolbar-item-padding-vertical: 9px;
-$toolbar-item-padding-horizontal: 10px;
-$toolbar-color: #ddd;
-$toolbar-height: 45px;
-$toolbar-bg: $navbar-inverse-bg;
-$toolbar-navigation-color: $toolbar-color;
-$toolbar-navigation-bg: #2f2f2f;
-$toolbar-navigation-border-color: #111;
-$toolbar-dropdown-padding: 16px;
-$toolbar-dropdown-color: $toolbar-navigation-color;
-$toolbar-dropdown-bg: $toolbar-navigation-bg;
-$toolbar-dropdown-link-bg: $toolbar-navigation-bg;
-$toolbar-dropdown-link-color: #ddd;
-$toolbar-dropdown-link-hover-bg: #333;
-$toolbar-dropdown-link-hover-color: #fff;
-$toolbar-dropdown-link-active-bg: lighten($toolbar-dropdown-bg, 15);
-$toolbar-dropdown-link-active-color: #fff;
-$toolbar-navigation-search-bg: $toolbar-navigation-bg;
-$toolbar-navigation-search-hover-bg: $toolbar-dropdown-link-hover-bg;
-$toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
-
 .toolbar {
     display: flex;
     padding: 0;
-    background-color: $scaffold-topbar-bg;
 }
 
 .toolbar-list {
@@ -35,6 +13,7 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
     margin: 0;
     gap: .5rem;
     flex-wrap: wrap;
+    max-width: 100%;
 
     @include media-breakpoint-up('lg') {
         gap: 1px;
@@ -64,91 +43,200 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
 .toolbar-item {
     .dropdown-menu {
         width: 350px;
-        max-height: calc(100vh - #{$toolbar-height} - 1rem);
+        max-height: calc(100vh - var(--scaffold-header-height) - 1rem);
         overflow-y: auto;
 
         @include media-breakpoint-up('lg') {
-            border-top: 0;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
+            margin-top: 2px !important;
         }
 
         @include media-breakpoint-down('lg') {
             position: fixed !important;
-            width: 100% !important;
+            width: calc(100vw - 2rem) !important;
             top: 50% !important;
             inset-inline-start: 50% !important;
             transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%) !important;
             max-height: calc(100vh - 2rem);
         }
     }
+
+    @include media-breakpoint-down('lg') {
+        &:has(.dropdown-toggle.show) {
+            &:after {
+                content: '';
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                background-color: var(--typo3-overlay-bg);
+                opacity: var(--typo3-overlay-opacity);
+                z-index: calc(var(--typo3-zindex-dropdown) - 1);
+            }
+        }
+    }
 }
 
 // Toolbar Item
 .toolbar-item-avatar {
-    margin-inline-end: 2px;
     display: inline-block;
     vertical-align: middle;
+
+    .avatar {
+        margin-left: -3px;
+        margin-right: -3px;
+    }
 }
 
 .toolbar-item-icon {
+    flex-shrink: 0;
     display: inline-flex;
 }
 
-.toolbar-item-badge {
-    position: absolute;
-    top: 14px;
-    inset-inline-end: 11px;
+.toolbar-item-title,
+.toolbar-item-name {
+    flex-grow: 1;
+    text-align: start;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
+.toolbar-item-title:has(+ .toolbar-item-name) {
+    flex-grow: 0;
+}
+
+.toolbar-item-badge {
+    flex-shrink: 0;
+}
+
+//
 // Toolbar Item Link
+//
 .toolbar-item-link {
+    --toolbar-item-link-height: var(--scaffold-header-item-height);
+    --toolbar-item-link-width: var(--scaffold-header-item-width);
+    --toolbar-item-link-border-radius: var(--scaffold-header-item-border-radius);
+    --toolbar-item-link-color-state: initial;
+    --toolbar-item-link-bg-state: initial;
+    --toolbar-item-link-border-color-state: initial;
+    --toolbar-item-link-color: var(--typo3-state-default-color);
+    --toolbar-item-link-bg: var(--typo3-state-default-bg);
+    --toolbar-item-link-border-color: var(--typo3-state-default-border-color);
+
+    @include media-breakpoint-up('lg') {
+        --toolbar-item-link-color-state: inherit;
+        --toolbar-item-link-bg-state: transparent;
+        --toolbar-item-link-border-color-state: transparent;
+    }
+    color: var(--toolbar-item-link-color-state, var(--toolbar-item-link-color));
+    background-color: var(--toolbar-item-link-bg-state, var(--toolbar-item-link-bg));
+    border: 1px solid var(--toolbar-item-link-border-color-state, var(--toolbar-item-link-border-color));
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
-    border: 1px solid rgba(0, 0, 0, .5);
+    border-radius: var(--toolbar-item-link-border-radius);
     position: relative;
     display: flex;
     align-items: center;
-    gap: .35em;
+    gap: .75em;
+    // (item-width - border-width * 2 - icon-width) / 2;
+    padding: 0 calc((var(--scaffold-header-item-width) - 18px) / 2);
     text-decoration: none;
-    padding: $toolbar-item-padding-vertical $toolbar-item-padding-horizontal;
-    height: $toolbar-height;
-    line-height: $toolbar-height - ($toolbar-item-padding-vertical * 2);
-    outline: none;
+    height: var(--toolbar-item-link-height);
+    min-width: var(--toolbar-item-link-width);
+    outline-offset: 0;
+    width: 100%;
+    transition: var(--typo3-transition-color);
+
+    @media (prefers-reduced-motion) {
+        transition: none;
+    }
+
+    @include media-breakpoint-up('lg') {
+        justify-content: center;
+    }
+
+    &:after {
+        display: none;
+    }
 
     &:hover,
     &:focus {
         text-decoration: none;
     }
 
-    &:focus-visible {
-        box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #fff;
+    &:hover {
+        --toolbar-item-link-color-state: var(--typo3-state-default-hover-color);
+        --toolbar-item-link-bg-state: var(--typo3-state-default-hover-bg);
+        --toolbar-item-link-border-color-state: var(--typo3-state-default-hover-border-color);
     }
 
+    .open &,
+    &.show,
+    &:focus {
+        --toolbar-item-link-color-state: var(--typo3-state-default-focus-color);
+        --toolbar-item-link-bg-state: var(--typo3-state-default-focus-bg);
+        --toolbar-item-link-border-color-state: var(--typo3-state-default-focus-border-color);
+    }
+
+    &:hover,
+    &:focus {
+        z-index: 1;
+    }
+
+    .open &,
     &.show {
-        background-color: #292929;
+        z-index: 2;
     }
 
-    @include media-breakpoint-up('lg') {
-        border: none;
+    &:focus-visible {
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--toolbar-item-link-border-color-state), transparent var(--typo3-outline-transparent-mix));
+        z-index: 3;
     }
 }
 
-.open {
-    .toolbar-item-link {
-        background-color: #292929;
+.scaffold-in-workspace #typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem .toolbar-item-link {
+    --toolbar-item-link-color-state: var(--typo3-state-primary-color);
+    --toolbar-item-link-bg-state: var(--typo3-state-primary-bg);
+    --toolbar-item-link-border-color-state: var(--typo3-state-primary-border-color);
+
+    &:hover {
+        --toolbar-item-link-color-state: var(--typo3-state-primary-hover-color);
+        --toolbar-item-link-bg-state: var(--typo3-state-primary-hover-bg);
+        --toolbar-item-link-border-color-state: var(--typo3-state-primary-hover-border-color);
+    }
+
+    .open &,
+    &.show,
+    &:focus {
+        --toolbar-item-link-color-state: var(--typo3-state-primary-focus-color);
+        --toolbar-item-link-state: var(--typo3-state-primary-focus-bg);
+        --toolbar-item-link-border-color-state: var(--typo3-state-primary-focus-border-color);
+    }
+
+    &:focus-visible {
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-state-primary-bg), transparent var(--typo3-outline-transparent-mix));
+        z-index: 3;
     }
 }
 
 @include media-breakpoint-up('lg') {
     .toolbar-item-title {
-        display: none;
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
     }
 
     .toolbar-item-badge {
-        top: auto;
-        bottom: 4px;
-        inset-inline-end: 4px;
+        position: absolute;
+        top: -.5rem;
+        inset-inline-end: -.5rem;
+        z-index: 4;
     }
 }
