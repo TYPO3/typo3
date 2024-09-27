@@ -61,6 +61,10 @@ final class SystemInformationController
                 $queryBuilder->expr()->in(
                     'error',
                     $queryBuilder->createNamedParameter([-1, 1, 2], Connection::PARAM_INT_ARRAY)
+                ),
+                $queryBuilder->expr()->eq(
+                    'channel',
+                    $queryBuilder->createNamedParameter('php', Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
