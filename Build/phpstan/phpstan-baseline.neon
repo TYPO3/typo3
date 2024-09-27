@@ -1186,7 +1186,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between class\\-string\\<T of object\\> and '' will always evaluate to false\\.$#"
+			message: "#^Strict comparison using \\=\\=\\= between class\\-string\\<T of object \\(method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:makeInstance\\(\\), argument\\)\\> and '' will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
