@@ -67,12 +67,12 @@ abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
     /**
      * Renders a hidden form field containing the technical identity of the given object.
      *
-     * @param object|null $object Object to create the identity field for
+     * @param mixed $object Object to create the identity field for. Non-objects are ignored.
      * @param string|null $name Name
      * @return string A hidden field containing the Identity (uid) of the given object
      * @see \TYPO3\CMS\Extbase\Mvc\Controller\Argument::setValue()
      */
-    protected function renderHiddenIdentityField(?object $object, ?string $name): string
+    protected function renderHiddenIdentityField(mixed $object, ?string $name): string
     {
         if ($object instanceof LazyLoadingProxy) {
             $object = $object->_loadRealInstance();
