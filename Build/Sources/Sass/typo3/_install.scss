@@ -1,47 +1,19 @@
 .typo3-install {
-    padding: 30px;
-    background-color: #dadada;
-
-    h1 {
-        font-size: 28px;
-    }
-
-    h2 {
-        font-size: 18px;
-    }
-
-    h3 {
-        font-size: 16px;
-    }
-
-    .alert {
-        padding: 1.5em;
-
-        h3 {
-            font-size: 14px;
-            margin-bottom: 0;
-        }
-
-        > *:first-child {
-            margin-top: 0;
-        }
-
-        > *:last-child {
-            margin-bottom: 0;
-        }
-    }
+    background-color: var(--typo3-surface-dim);
 }
 
 .typo3-install-container {
-    margin: 4em auto;
+    margin: 4rem auto;
     max-width: 620px;
 }
 
 .typo3-install-content {
-    background-color: #fff;
-    box-shadow: 0 2px 1px rgba(0, 0, 0, .15);
+    color: var(--typo3-component-color);
+    background-color: var(--typo3-component-bg);
+    box-shadow: var(--typo3-component-box-shadow-strong);
+    border-radius: 1rem;
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
     overflow: hidden;
-    border-radius: 5px;
 
     > div {
         > *:first-child {
@@ -55,27 +27,23 @@
 }
 
 .typo3-install-content-header {
-    padding: 35px;
+    padding: 2rem;
 }
 
 .typo3-install-content-header-logo {
     margin: 0 auto;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 }
 
 .typo3-install-content-progress {
-    padding: 25px 35px 20px;
-    border-top: 1px solid #eaeaea;
-    background-color: #fafafa;
-}
-
-.typo3-install-content-progress-text {
-    padding-bottom: 7px;
+    padding: 1rem 2rem;
+    border-top: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    background-color: color-mix(in srgb, var(--typo3-component-bg), var(--typo3-component-color) 3%);
 }
 
 .typo3-install-content-body {
-    border-top: 1px solid #eaeaea;
-    padding: 35px;
+    border-top: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    padding: 2rem;
 
     > *:first-child {
         margin-top: 0;
@@ -87,16 +55,16 @@
 }
 
 .typo3-install-content-spacer {
-    margin-top: 2em;
+    margin-top: 2rem;
 }
 
 .typo3-install-content-spacer-small {
-    margin-top: 1em;
+    margin-top: 1rem;
 }
 
 .extensionConfiguration-form {
     .tab-content {
-        margin-bottom: 15px;
+        margin-bottom: 1rem;
     }
 }
 
