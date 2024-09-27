@@ -36,7 +36,7 @@
 .statusreport {
     --typo3-statusreport-color: var(--typo3-component-color);
     --typo3-statusreport-bg: var(--typo3-component-bg);
-    --typo3-statusreport-border-color: color-mix(in srgb, var(--typo3-statusreport-bg), var(--typo3-statusreport-color) 15%);
+    --typo3-statusreport-border-color: color-mix(in srgb, var(--typo3-statusreport-bg), var(--typo3-statusreport-color) var(--typo3-border-mix));
     --typo3-statusreport-border-radius: var(--typo3-component-border-radius);
     --typo3-statusreport-box-shadow: var(--typo3-component-box-shadow);
     --typo3-statusreport-spacing: .5rem;

@@ -10,7 +10,7 @@
     --typo3-alert-padding-y: 1rem;
     --typo3-alert-padding-dismissable-end: 3rem;
     --typo3-alert-margin-bottom: var(--typo3-spacing);
-    --typo3-alert-border-color: color-mix(in srgb, var(--typo3-alert-bg), var(--typo3-alert-color) 15%);
+    --typo3-alert-border-color: color-mix(in srgb, var(--typo3-alert-bg), var(--typo3-alert-color) var(--typo3-border-mix));
     --typo3-alert-border-width: 1px;
     --typo3-alert-border-radius: var(--typo3-component-border-radius);
     --typo3-alert-link-color: inherit;

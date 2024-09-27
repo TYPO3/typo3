@@ -101,6 +101,9 @@
     --typo3-surface-container-default: light-dark(var(--token-color-neutral-5), var(--token-color-neutral-95));
     --typo3-surface-container-default-text: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-0));
 
+    // Borders
+    --typo3-border-mix: 17.5%;
+
     // Outline
     --typo3-outline-width: .25rem;
     --typo3-outline-style: solid;
@@ -254,7 +257,7 @@
     --typo3-component-line-height: var(--typo3-line-height);
     --typo3-component-border-radius: 4px;
     --typo3-component-border-width: 1px;
-    --typo3-component-border-color: color-mix(in srgb, var(--typo3-component-bg), var(--typo3-component-color) 15%);
+    --typo3-component-border-color: color-mix(in srgb, var(--typo3-component-bg), var(--typo3-component-color) var(--typo3-border-mix));
     --typo3-component-padding-y: .75rem;
     --typo3-component-padding-x: 1rem;
     --typo3-component-box-shadow: var(--typo3-shadow-2);

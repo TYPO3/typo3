@@ -5,7 +5,7 @@
 :root {
     --scaffold-color: var(--typo3-text-color-base);
     --scaffold-bg: var(--typo3-surface-base);
-    --scaffold-border-color: color-mix(in srgb, var(--typo3-surface-base), var(--scaffold-color) 15%);
+    --scaffold-border-color: color-mix(in srgb, var(--typo3-surface-base), var(--scaffold-color) var(--typo3-border-mix));
     --scaffold-gap: .5rem;
     --scaffold-header-height: 3.75rem;
     --scaffold-header-color: var(--typo3-text-color-base);
@@ -24,7 +24,7 @@
     --scaffold-modulemenu-box-shadow: var(--typo3-shadow-2);
     --scaffold-content-navigation-width: 300px;
     --scaffold-content-navigation-drag-bg: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 10%);
-    --scaffold-content-navigation-drag-bg-hover: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 20%);
+    --scaffold-content-navigation-drag-bg-hover: color-mix(in srgb, var(--typo3-surface-container-high), var(--typo3-text-color-base) 15%);
     --scaffold-content-navigation-switcher-bg: var(--typo3-surface-container-base);
     --scaffold-content-navigation-switcher-border: color-mix(in srgb, var(--typo3-surface-container-base), var(--typo3-text-color-base) 10%);
 }
@@ -107,7 +107,7 @@ iframe {
     position: absolute;
     z-index: calc(var(--scaffold-header-zindex) - 1);
     box-shadow: var(--scaffold-modulemenu-box-shadow);
-    border-inline-end: 1px solid color-mix(in srgb, var(--scaffold-modulemenu-bg), var(--scaffold-modulemenu-color) 15%);
+    border-inline-end: 1px solid color-mix(in srgb, var(--scaffold-modulemenu-bg), var(--scaffold-modulemenu-color) var(--typo3-border-mix));
 
     @include media-breakpoint-up('lg') {
         z-index: initial;

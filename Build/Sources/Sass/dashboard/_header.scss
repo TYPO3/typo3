@@ -34,7 +34,7 @@
     --dashboard-header-tab-padding: 1rem;
     --dashboard-header-tab-state-color: initial;
     --dashboard-header-tab-state-bg: initial;
-    --dashboard-header-tab-border-color: color-mix(in srgb, var(--dashboard-header-tab-bg), var(--dashboard-header-tab-color) 15%);
+    --dashboard-header-tab-border-color: color-mix(in srgb, var(--dashboard-header-tab-bg), var(--dashboard-header-tab-color) var(--typo3-border-mix));
     --dashboard-header-tab-color: var(--dashboard-header-tab-state-color, var(--module-color));
     --dashboard-header-tab-bg: var(--dashboard-header-tab-state-bg, color-mix(in srgb, var(--module-bg), var(--dashboard-header-tab-color) 5%));
     --dashboard-header-tab-hover-color: var(--dashboard-header-tab-color);

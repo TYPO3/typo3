@@ -11,7 +11,7 @@
     --typo3-alert-container-bg: var(--typo3-surface-container-high);
     --typo3-alert-contanier-border-radius: var(--typo3-component-border-radius);
     --typo3-alert-container-padding: .5rem;
-    --typo3-alert-container-border-color: color-mix(in srgb, var(--typo3-alert-container-bg), var(--typo3-alert-container-color) 20%);
+    --typo3-alert-container-border-color: color-mix(in srgb, var(--typo3-alert-container-bg), var(--typo3-alert-container-color) var(--typo3-border-mix));
     --typo3-alert-container-shadow: var(--typo3-component-box-shadow-dialog);
     --typo3-alert-container-offset: calc(var(--typo3-spacing) * 1.5);
     --typo3-alert-container-bar-shadow: var(--typo3-component-box-shadow-strong);

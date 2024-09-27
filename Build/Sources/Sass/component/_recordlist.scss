@@ -16,7 +16,7 @@
 .recordlist {
     --typo3-recordlist-color: var(--typo3-component-color);
     --typo3-recordlist-bg: var(--typo3-component-bg);
-    --typo3-recordlist-border-color: color-mix(in srgb, var(--typo3-recordlist-bg), var(--typo3-recordlist-color) 15%);
+    --typo3-recordlist-border-color: color-mix(in srgb, var(--typo3-recordlist-bg), var(--typo3-recordlist-color) var(--typo3-border-mix));
     --typo3-recordlist-border-width: var(--typo3-component-border-width);
     --typo3-recordlist-border-radius: var(--typo3-component-border-radius);
     --typo3-recordlist-border-radius-top: var(--typo3-recordlist-border-radius);
@@ -25,8 +25,8 @@
     --typo3-recordlist-border-radius-inner-bottom: max(0px, calc(var(--typo3-recordlist-border-radius-bottom) - var(--typo3-recordlist-border-width)));
     --typo3-recordlist-padding-y: .75rem;
     --typo3-recordlist-padding-x: 1rem;
-    --typo3-recordlist-header-bg: var(--typo3-surface-container-low);
-    --typo3-recordlist-header-color: var(--typo3-text-color-base);
+    --typo3-recordlist-header-bg: var(--typo3-surface-container-default);
+    --typo3-recordlist-header-color: var(--typo3-surface-container-default-text);
     --typo3-recordlist-spacing: var(--typo3-component-spacing);
     --typo3-recordlist-box-shadow: var(--typo3-component-box-shadow);
     --typo3-recordlist-progress-bg: var(--typo3-state-primary-bg);

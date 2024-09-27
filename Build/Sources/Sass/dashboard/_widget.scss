@@ -9,7 +9,7 @@
     --widget-bg: var(--typo3-component-bg);
     --widget-border-width: 1px;
     --widget-border-radius: var(--typo3-component-border-radius);
-    --widget-border-color: color-mix(in srgb, var(--widget-bg), var(--widget-color) 15%);
+    --widget-border-color: color-mix(in srgb, var(--widget-bg), var(--widget-color) var(--typo3-border-mix));
     --widget-box-shadow: var(--typo3-component-box-shadow);
     height: 100%;
     border-radius: var(--widget-border-radius);

@@ -26,7 +26,7 @@
 .panel {
     --typo3-panel-color: var(--typo3-component-color);
     --typo3-panel-bg: var(--typo3-component-bg);
-    --typo3-panel-border-color: color-mix(in srgb, var(--typo3-panel-bg), var(--typo3-panel-color) 15%);
+    --typo3-panel-border-color: color-mix(in srgb, var(--typo3-panel-bg), var(--typo3-panel-color) var(--typo3-border-mix));
     --typo3-panel-border-width: var(--typo3-component-border-width);
     --typo3-panel-border-radius: var(--typo3-component-border-radius);
     --typo3-panel-border-radius-top: var(--typo3-panel-border-radius);
@@ -45,7 +45,7 @@
     @each $state in $base-variants {
         --typo3-panel-#{$state}-header-color: var(--typo3-surface-container-#{$state}-text);
         --typo3-panel-#{$state}-header-bg: var(--typo3-surface-container-#{$state});
-        --typo3-panel-#{$state}-border-color: color-mix(in srgb, var(--typo3-panel-#{$state}-header-bg), var(--typo3-panel-#{$state}-header-color) 15%);
+        --typo3-panel-#{$state}-border-color: color-mix(in srgb, var(--typo3-panel-#{$state}-header-bg), var(--typo3-panel-#{$state}-header-color) var(--typo3-border-mix));
     }
     display: flex;
     flex-direction: column;

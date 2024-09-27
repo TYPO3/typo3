@@ -43,7 +43,7 @@
     --typo3-resource-tile-bg-state: initial;
     --typo3-resource-tile-color: var(--typo3-component-color);
     --typo3-resource-tile-bg: var(--typo3-component-bg);
-    --typo3-resource-tile-border-color: color-mix(in srgb, var(--typo3-resource-tile-bg-state, var(--typo3-resource-tile-bg)), var(--typo3-resource-tile-color-state, var(--typo3-resource-tile-color)) 15%);
+    --typo3-resource-tile-border-color: color-mix(in srgb, var(--typo3-resource-tile-bg-state, var(--typo3-resource-tile-bg)), var(--typo3-resource-tile-color-state, var(--typo3-resource-tile-color)) var(--typo3-border-mix));
 
     @each $variant in $base-variants {
         --typo3-resource-tile-#{$variant}-color: var(--typo3-surface-container-#{$variant}-text);

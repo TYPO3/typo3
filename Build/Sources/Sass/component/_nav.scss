@@ -58,11 +58,11 @@
 .nav-tabs {
     --typo3-nav-tabs-color: var(--typo3-component-color);
     --typo3-nav-tabs-bg: var(--typo3-component-bg);
-    --typo3-nav-tabs-border-color: color-mix(in srgb, var(--typo3-nav-tabs-bg), var(--typo3-nav-tabs-color) 15%);
+    --typo3-nav-tabs-border-color: color-mix(in srgb, var(--typo3-nav-tabs-bg), var(--typo3-nav-tabs-color) var(--typo3-border-mix));
     --typo3-nav-tabs-border-width: var(--typo3-component-border-width);
     --typo3-nav-tabs-border-radius: var(--typo3-component-border-radius);
     position: relative;
-    gap: 2px 1px;
+    gap: 3px 2px;
     z-index: 1;
     border-bottom: var(--typo3-nav-tabs-border-width) solid var(--typo3-nav-tabs-border-color);
 
@@ -71,7 +71,7 @@
         --typo3-nav-tabs-link-state-bg: initial;
         --typo3-nav-tabs-link-color: var(--typo3-nav-tabs-link-state-color, var(--typo3-nav-tabs-color));
         --typo3-nav-tabs-link-bg: var(--typo3-nav-tabs-link-state-bg, color-mix(in srgb, var(--typo3-nav-tabs-bg), currentColor 5%));
-        --typo3-nav-tabs-link-border-color: color-mix(in srgb, var(--typo3-nav-tabs-link-bg), var(--typo3-nav-tabs-link-color) 15%);
+        --typo3-nav-tabs-link-border-color: color-mix(in srgb, var(--typo3-nav-tabs-link-bg), var(--typo3-nav-tabs-link-color) var(--typo3-border-mix));
         --typo3-nav-tabs-link-active-color: var(--typo3-nav-tabs-color);
         --typo3-nav-tabs-link-active-bg: var(--typo3-nav-tabs-bg);
         --typo3-nav-tabs-link-danger-color: var(--typo3-surface-container-danger-text);
