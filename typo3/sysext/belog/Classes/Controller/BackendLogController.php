@@ -137,6 +137,7 @@ class BackendLogController extends ActionController
         }
         $numberOfDeletedRows = $this->logEntryRepository->deleteByMessageDetails($logEntry);
         $this->addFlashMessage(sprintf(LocalizationUtility::translate('actions.delete.message', 'belog') ?? '', $numberOfDeletedRows));
+        BackendUtility::setUpdateSignal('updateSystemInformationMenu');
         return $this->redirect('list');
     }
 

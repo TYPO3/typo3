@@ -54,6 +54,9 @@ class SystemInformationMenu {
     new RegularEvent('click', this.handleMessageLinkClick)
       .delegateTo(document, SystemInformationSelector.messageLink);
     Viewport.Topbar.Toolbar.registerEvent(this.updateMenu);
+
+    //  triggred via BackendUtility::setUpdateSignal('updateSystemInformationMenu')
+    document.addEventListener('typo3:system-information-menu:update', () => this.updateMenu());
   }
 
   private static getData(): SystemInformationData {
