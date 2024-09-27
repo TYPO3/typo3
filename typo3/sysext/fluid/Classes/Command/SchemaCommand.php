@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Fluid\Command;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
@@ -40,7 +41,9 @@ final class SchemaCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $allViewHelpers = (new ViewHelperFinder())->findViewHelpersInComposerProject($this->classLoader);
+        $viewHelperFinder = new ViewHelperFinder();
+        $allViewHelpers = $viewHelperFinder->findViewHelpersInComposerProject($this->classLoader);
+        $errors = $viewHelperFinder->getLastErrors();
 
         // Group ViewHelpers by xml namespace to split them into xsd files later
         $xsdFiles = $groupedByNamespace = [];
@@ -105,6 +108,20 @@ final class SchemaCommand extends Command
             $fileName = str_replace('/', '_', $fileName);
             $fileName = preg_replace('#[^0-9a-zA-Z_]#', '', $fileName);
             GeneralUtility::writeFile($temporaryPath . 'schema_' . $fileName . '.xsd', $schema->asXml());
+        }
+
+        if ($errors !== []) {
+            $output->writeln('Reported errors:');
+            $table = new Table($output);
+            $table->setHeaders(['Class', 'Message']);
+            foreach ($errors as $error) {
+                $table->addRow([
+                    $error->getFile(),
+                    $error->getMessage(),
+                ]);
+            }
+            $table->render();
+            $output->writeln('Successfully generated all schemas except those listed with errors.');
         }
 
         return Command::SUCCESS;
