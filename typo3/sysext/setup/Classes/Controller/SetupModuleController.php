@@ -206,10 +206,10 @@ class SetupModuleController
             if (isset($d['titleLen']) && $d['titleLen'] !== $backendUser->uc['titleLen']) {
                 $this->pagetreeNeedsRefresh = true;
             }
-            if (isset($d['colorScheme']) && $d['colorScheme'] !== $backendUser->uc['colorScheme']) {
+            if (isset($d['colorScheme']) && $d['colorScheme'] !== ($backendUser->uc['colorScheme'] ?? null)) {
                 $this->colorSchemeChanged = true;
             }
-            if (isset($d['theme']) && $d['theme'] !== $backendUser->uc['theme']) {
+            if (isset($d['theme']) && $d['theme'] !== ($backendUser->uc['theme'] ?? null)) {
                 $this->themeChanged = true;
             }
             if ($d['setValuesToDefault']) {
