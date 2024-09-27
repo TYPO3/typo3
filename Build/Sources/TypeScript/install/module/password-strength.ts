@@ -23,7 +23,7 @@ class PasswordStrength {
 
     new RegularEvent('blur', (event: Event): void => {
       const field = event.target as HTMLInputElement;
-      field.removeAttribute('style');
+      field.classList.remove('has-error', 'has-success', 'has-warning');
     }).bindTo(fieldElement);
 
     new RegularEvent('focus', (event: Event): void => {
@@ -37,17 +37,18 @@ class PasswordStrength {
     const strongRegex = new RegExp('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$', 'g');
     const mediumRegex = new RegExp('^(?=.{8,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g');
     const enoughRegex = new RegExp('(?=.{8,}).*', 'g');
+    fieldElement.classList.remove('has-error', 'has-success', 'has-warning');
 
     if (value.length === 0) {
-      fieldElement.setAttribute('style', 'background-color:#FBB19B; border:1px solid #DC4C42');
+      fieldElement.classList.add('has-error');
     } else if (!enoughRegex.test(value)) {
-      fieldElement.setAttribute('style', 'background-color:#FBB19B; border:1px solid #DC4C42');
+      fieldElement.classList.add('has-error');
     } else if (strongRegex.test(value)) {
-      fieldElement.setAttribute('style', 'background-color:#CDEACA; border:1px solid #58B548');
+      fieldElement.classList.add('has-success');
     } else if (mediumRegex.test(value)) {
-      fieldElement.setAttribute('style', 'background-color:#FBFFB3; border:1px solid #C4B70D');
+      fieldElement.classList.add('has-warning');
     } else {
-      fieldElement.setAttribute('style', 'background-color:#FBFFB3; border:1px solid #C4B70D');
+      fieldElement.classList.add('has-warning');
     }
   }
 }
