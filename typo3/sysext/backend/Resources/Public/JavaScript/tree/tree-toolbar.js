@@ -21,7 +21,14 @@ var __decorate=function(e,t,o,r){var l,n=arguments.length,s=n<3?t:null===r?r=Obj
           </div>
         </div>
         <div class="tree-toolbar__submenu">
-          <a class="tree-toolbar__menuitem dropdown-toggle dropdown-toggle-no-chevron float-end" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon></a>
+          <button
+            type="button"
+            class="tree-toolbar__menuitem dropdown-toggle dropdown-toggle-no-chevron float-end"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon>
+          </button>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
               <button class="dropdown-item" @click="${()=>this.refreshTree()}">

@@ -1,6 +1,6 @@
 :root {
     --tree-color: var(--typo3-text-color-base);
-    --tree-bg: var(--typo3-surface-container-low);
+    --tree-bg: var(--typo3-surface-base);
     // node
     --tree-node-color: var(--tree-color);
     --tree-node-bg: var(--tree-bg);
@@ -480,11 +480,34 @@ typo3-backend-form-selecttree-toolbar {
 
     &__menuitem {
         color: inherit;
-        display: inline-block;
-        padding: .25rem;
-        border: none;
+        display: inline-flex;
+        padding: 0 .25rem;
+        border: 1px solid transparent;
         background: 0 0;
         font-size: 11px;
+        justify-content: center;
+        align-items: center;
+        height: var(--module-docheader-bar-height);
+        border-radius: var(--typo3-input-border-radius);
+        outline-offset: 0;
+
+        &:is(button) {
+            &:hover {
+                border-color: var(--typo3-state-default-hover-border-color);
+                color: var(--typo3-state-default-hover-color);
+                background-color: var(--typo3-state-default-hover-bg);
+            }
+
+            &:focus {
+                border-color: var(--typo3-state-default-focus-border-color);
+                color: var(--typo3-state-default-focus-color);
+                background-color: var(--typo3-state-default-focus-bg);
+            }
+
+            &:focus-visible {
+                outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-state-default-focus-border-color), transparent 25%);
+            }
+        }
     }
 
     &__drag-node {
