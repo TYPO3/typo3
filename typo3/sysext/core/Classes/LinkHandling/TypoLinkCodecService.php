@@ -94,7 +94,7 @@ final readonly class TypoLinkCodecService
     {
         $typoLink = trim($typoLink);
         if ($typoLink !== '') {
-            $parts = str_replace(['\\\\', '\\"'], ['\\', '"'], str_getcsv($typoLink, self::DELIMITER));
+            $parts = str_replace(['\\\\', '\\"'], ['\\', '"'], str_getcsv($typoLink, self::DELIMITER, '"', '\\'));
         } else {
             $parts = [];
         }

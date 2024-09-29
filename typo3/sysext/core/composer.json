@@ -117,6 +117,9 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Core\\": "Classes/"
 		},
-		"files": ["Resources/PHP/GlobalDebugFunctions.php"]
+		"files": [
+			"Resources/PHP/DeprecatedConstants.php",
+			"Resources/PHP/GlobalDebugFunctions.php"
+		]
 	}
 }

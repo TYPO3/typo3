@@ -88,7 +88,8 @@ final class ErrorHandlerTest extends FunctionalTestCase
         $logger->expects(self::never())->method('log');
 
         $coreErrorHandler = new ErrorHandler(
-            E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR)
+            // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
+            E_ALL & ~(E_STRICT_DEPRECATED | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR)
         );
         $coreErrorHandler->setLogger($logger);
 
