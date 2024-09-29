@@ -62,10 +62,11 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         E_USER_ERROR => 'PHP User Error',
         E_USER_WARNING => 'PHP User Warning',
         E_USER_NOTICE => 'PHP User Notice',
-        E_STRICT => 'PHP Runtime Notice',
         E_RECOVERABLE_ERROR => 'PHP Catchable Fatal Error',
         E_USER_DEPRECATED => 'TYPO3 Deprecation Notice',
         E_DEPRECATED => 'PHP Runtime Deprecation Notice',
+        // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
+        E_STRICT_DEPRECATED => 'PHP Runtime Notice',
     ];
 
     /**

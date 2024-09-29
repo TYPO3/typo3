@@ -262,7 +262,7 @@ class SuggestWizardDefaultReceiver
      */
     protected function splitSearchString(string $searchString): array
     {
-        return str_getcsv($searchString, ' ');
+        return str_getcsv($searchString, ' ', '"', '\\');
     }
 
     /**

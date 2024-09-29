@@ -80,7 +80,7 @@ class TypoLinkCodecService
     {
         $typoLink = trim((string)$typoLink);
         if ($typoLink !== '') {
-            $parts = str_replace(['\\\\', '\\"'], ['\\', '"'], str_getcsv($typoLink, static::$partDelimiter));
+            $parts = str_replace(['\\\\', '\\"'], ['\\', '"'], str_getcsv($typoLink, static::$partDelimiter, '"', '\\'));
         } else {
             $parts = [];
         }
