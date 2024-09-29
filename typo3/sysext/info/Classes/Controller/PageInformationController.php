@@ -292,8 +292,14 @@ class PageInformationController extends InfoModuleController
         }
 
         if ($depth >= 0) {
+            $countQueryBuilder = clone $queryBuilder;
+            if (method_exists($countQueryBuilder, 'resetOrderBy')) {
+                $countQueryBuilder->resetOrderBy()->count('uid');
+            } else {
+                $countQueryBuilder->resetQueryPart('orderBy')->count('uid');
+            }
+            $rowCount = $countQueryBuilder->executeQuery()->fetchOne();
             $result = $queryBuilder->executeQuery();
-            $rowCount = $queryBuilder->count('uid')->executeQuery()->fetchOne();
             $count = 0;
             while ($row = $result->fetchAssociative()) {
                 BackendUtility::workspaceOL('pages', $row);
