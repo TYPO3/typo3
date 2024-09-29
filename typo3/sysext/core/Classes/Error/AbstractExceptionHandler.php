@@ -51,6 +51,8 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         1517949792, // The IP address of your client does not match the list of allowed IP addresses
         1517949793, // Backend access by browser is locked for maintenance
         1517949794, // Backend and Install Tool are locked for maintenance
+        1436717270, // Client sends a header with an invalid name
+        1436717269, // Client sends a header with an invalid value
     ];
 
     public const IGNORED_HMAC_EXCEPTION_CODES = [
