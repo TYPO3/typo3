@@ -293,6 +293,7 @@
 			"TYPO3\\CMS\\Frontend\\Tests\\": "typo3/sysext/frontend/Tests/",
 			"TYPO3\\CMS\\Impexp\\Tests\\": "typo3/sysext/impexp/Tests/",
 			"TYPO3\\CMS\\IndexedSearch\\Tests\\": "typo3/sysext/indexed_search/Tests/",
+			"TYPO3\\CMS\\Info\\Tests\\": "typo3/sysext/info/Tests/",
 			"TYPO3\\CMS\\Install\\Tests\\": "typo3/sysext/install/Tests/",
 			"TYPO3\\CMS\\Linkvalidator\\Tests\\": "typo3/sysext/linkvalidator/Tests/",
 			"TYPO3\\CMS\\Lowlevel\\Tests\\": "typo3/sysext/lowlevel/Tests/",
