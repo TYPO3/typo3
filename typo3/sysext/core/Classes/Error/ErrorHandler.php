@@ -62,10 +62,13 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         E_USER_ERROR => 'PHP User Error',
         E_USER_WARNING => 'PHP User Warning',
         E_USER_NOTICE => 'PHP User Notice',
-        E_STRICT => 'PHP Runtime Notice',
         E_RECOVERABLE_ERROR => 'PHP Catchable Fatal Error',
         E_USER_DEPRECATED => 'TYPO3 Deprecation Notice',
         E_DEPRECATED => 'PHP Runtime Deprecation Notice',
+        // @todo: Remove 2048 (deprecated E_STRICT) in v14, as this value is no longer used by PHP itself
+        //        and only kept here here because possible custom PHP extensions may still use it.
+        //        See https://wiki.php.net/rfc/deprecations_php_8_4#remove_e_strict_error_level_and_deprecate_e_strict_constant
+        2048 /* deprecated E_STRICT */ => 'PHP Runtime Notice',
     ];
 
     /**

@@ -181,7 +181,7 @@ class ArrayUtility
                 // Programming error has to be sanitized before calling the method -> global exception
                 throw new \RuntimeException('Path must not be empty', 1341397767);
             }
-            $path = str_getcsv($path, $delimiter);
+            $path = str_getcsv($path, $delimiter, '"', '\\');
         }
         // Loop through each part and extract its value
         $value = $array;
@@ -265,7 +265,7 @@ class ArrayUtility
                 throw new \RuntimeException('Path must not be empty', 1341406194);
             }
             // Extract parts of the path
-            $path = str_getcsv($path, $delimiter);
+            $path = str_getcsv($path, $delimiter, '"', '\\');
         }
         // Point to the root of the array
         $pointer = &$array;
@@ -306,7 +306,7 @@ class ArrayUtility
             throw new \RuntimeException('Path must not be empty', 1371757718);
         }
         // Extract parts of the path
-        $pathSegments = str_getcsv($path, $delimiter);
+        $pathSegments = str_getcsv($path, $delimiter, '"', '\\');
         $pathDepth = count($pathSegments);
         $currentDepth = 0;
         $pointer = &$array;

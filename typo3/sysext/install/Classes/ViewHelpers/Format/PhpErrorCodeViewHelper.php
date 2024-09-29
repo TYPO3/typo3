@@ -38,10 +38,13 @@ final class PhpErrorCodeViewHelper extends AbstractViewHelper
         E_USER_ERROR => 'E_USER_ERROR',
         E_USER_WARNING => 'E_USER_WARNING',
         E_USER_NOTICE => 'E_USER_NOTICE',
-        E_STRICT => 'E_STRICT',
         E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
         E_DEPRECATED => 'E_DEPRECATED',
         E_USER_DEPRECATED => 'E_USER_DEPRECATED',
+        // @todo: Remove 2048 (deprecated E_STRICT) in v14, as this value is no longer used by PHP itself
+        //        and only kept here here because possible custom PHP extensions may still use it.
+        //        See https://wiki.php.net/rfc/deprecations_php_8_4#remove_e_strict_error_level_and_deprecate_e_strict_constant
+        2048 /* deprecated E_STRICT */ => 'PHP Runtime Notice',
     ];
 
     public function initializeArguments(): void

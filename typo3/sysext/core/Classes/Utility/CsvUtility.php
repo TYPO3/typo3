@@ -58,7 +58,7 @@ class CsvUtility
         if (($handle = fopen('php://memory', 'r+')) !== false) {
             fwrite($handle, $input);
             rewind($handle);
-            while (($cells = fgetcsv($handle, 0, $fieldDelimiter, $fieldEnclosure)) !== false) {
+            while (($cells = fgetcsv($handle, 0, $fieldDelimiter, $fieldEnclosure, '\\')) !== false) {
                 $maximumCellCount = max(count($cells), $maximumCellCount);
                 $multiArray[] = preg_replace('|<br */?>|i', LF, $cells);
             }
@@ -110,7 +110,7 @@ class CsvUtility
         } elseif ($type === self::TYPE_PREFIX_CONTROLS) {
             $row = array_map(self::prefixControlLiterals(...), $row);
         }
-        fputcsv($resource, $modifier($row), $delim, $quote);
+        fputcsv($resource, $modifier($row), $delim, $quote, '\\');
         fseek($resource, 0);
         return stream_get_contents($resource);
     }
