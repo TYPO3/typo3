@@ -72,7 +72,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
         $searchTerm = (string)$this->searchDemand->getSearchTerm();
         $constraints = [];
 
-        $searchTermParts = str_getcsv($searchTerm, ' ');
+        $searchTermParts = str_getcsv($searchTerm, ' ', '"', '\\');
         foreach ($searchTermParts as $searchTermPart) {
             $searchTermPart = trim($searchTermPart);
             if ($searchTermPart === '') {

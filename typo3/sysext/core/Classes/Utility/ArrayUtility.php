@@ -185,7 +185,7 @@ class ArrayUtility
                 // Programming error has to be sanitized before calling the method -> global exception
                 throw new \RuntimeException('Path must not be empty', 1341397767);
             }
-            $path = str_getcsv($path, $delimiter);
+            $path = str_getcsv($path, $delimiter, '"', '\\');
         } elseif (!is_array($path)) {
             // Programming error has to be sanitized before calling the method -> global exception
             throw new \InvalidArgumentException('getValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1476557628);

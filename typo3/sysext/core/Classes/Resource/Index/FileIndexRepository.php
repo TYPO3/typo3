@@ -259,7 +259,7 @@ class FileIndexRepository implements SingletonInterface
             );
 
         if (isset($fileName)) {
-            $nameParts = str_getcsv($fileName, ' ');
+            $nameParts = str_getcsv($fileName, ' ', '"', '\\');
             foreach ($nameParts as $part) {
                 $part = trim($part);
                 if ($part !== '') {

@@ -260,9 +260,13 @@ return [
         'productionExceptionHandler' => \TYPO3\CMS\Core\Error\ProductionExceptionHandler::class,
         'debugExceptionHandler' => \TYPO3\CMS\Core\Error\DebugExceptionHandler::class,
         'errorHandler' => \TYPO3\CMS\Core\Error\ErrorHandler::class,
-        'errorHandlerErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR),
-        'exceptionalErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),
-        'belogErrorReporting' => E_ALL & ~(E_STRICT | E_NOTICE),
+        // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
+        'errorHandlerErrors' => E_ALL & ~(E_STRICT_DEPRECATED | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR),
+        // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
+        'exceptionalErrors' => E_ALL & ~(E_STRICT_DEPRECATED | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),
+        // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
+        'belogErrorReporting' => E_ALL & ~(E_STRICT_DEPRECATED | E_NOTICE),
+        'allowedPhpDisableFunctions' => [],
         'locallangXMLOverride' => [], // For extension/overriding of the arrays in 'locallang' files in frontend  and backend.
         'generateApacheHtaccess' => 1,
         'ipAnonymization' => 1,

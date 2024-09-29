@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2078aa09b1d8e101fa5754934bbfc473",
+    "content-hash": "048c3aeb236a0e280e73defa6d4567ae",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9798,16 +9798,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.16.9",
+            "version": "6.16.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "62005ddb550f8b1c69c955c8683a8a632a44f482"
+                "reference": "440e6b5037f911337b06c85fa9a4fc5461a49c06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/62005ddb550f8b1c69c955c8683a8a632a44f482",
-                "reference": "62005ddb550f8b1c69c955c8683a8a632a44f482",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/440e6b5037f911337b06c85fa9a4fc5461a49c06",
+                "reference": "440e6b5037f911337b06c85fa9a4fc5461a49c06",
                 "shasum": ""
             },
             "require": {
@@ -9831,8 +9831,8 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.4.0",
-                "phpstan/phpstan": "^1.8.0",
-                "phpstan/phpstan-phpunit": "^1.1.1",
+                "phpstan/phpstan": "^1.12.5",
+                "phpstan/phpstan-phpunit": "^1.4.0",
                 "typo3/cms-workspaces": "10.*.*@dev || 11.*.*@dev"
             },
             "type": "library",
@@ -9868,14 +9868,14 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.9"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.10"
             },
-            "time": "2023-08-02T16:11:00+00:00"
+            "time": "2024-09-29T14:23:37+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -9889,7 +9889,7 @@
         "ext-xml": "*",
         "composer-runtime-api": "^2.1"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "7.4.1"
     },

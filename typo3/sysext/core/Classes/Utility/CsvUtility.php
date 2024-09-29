@@ -57,7 +57,7 @@ class CsvUtility
         if (($handle = fopen('php://memory', 'r+')) !== false) {
             fwrite($handle, $input);
             rewind($handle);
-            while (($cells = fgetcsv($handle, 0, $fieldDelimiter, $fieldEnclosure)) !== false) {
+            while (($cells = fgetcsv($handle, 0, $fieldDelimiter, $fieldEnclosure, '\\')) !== false) {
                 $cells = is_array($cells) ? $cells : [];
                 $maximumCellCount = max(count($cells), $maximumCellCount);
                 $multiArray[] = preg_replace('|<br */?>|i', LF, $cells);
