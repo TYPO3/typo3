@@ -49,10 +49,7 @@ final class HookFixture implements SingletonInterface
         ];
     }
 
-    /**
-     * @param string|int $id
-     */
-    public function processDatamap_postProcessFieldArray(string $status, string $table, $id, array $fieldArray, DataHandler $dataHandler): void
+    public function processDatamap_postProcessFieldArray(string $status, string $table, string|int $id, array $fieldArray, DataHandler $dataHandler): void
     {
         $this->invocations[__FUNCTION__][] = [
             'status' => $status,

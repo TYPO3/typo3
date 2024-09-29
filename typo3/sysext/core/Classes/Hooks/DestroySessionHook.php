@@ -25,13 +25,8 @@ class DestroySessionHook
 {
     /**
      * If a fe_users' or be_users' password is updated, clear all sessions.
-     *
-     * @param string $status
-     * @param string $table
-     * @param int $id
-     * @param array $fieldArray
      */
-    public function processDatamap_postProcessFieldArray($status, $table, $id, $fieldArray, DataHandler $dataHandler)
+    public function processDatamap_postProcessFieldArray(string $status, string $table, string|int $id, array $fieldArray, DataHandler $dataHandler): void
     {
         if ($table !== 'be_users' && $table !== 'fe_users') {
             return;
