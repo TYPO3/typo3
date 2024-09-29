@@ -33,6 +33,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
+use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
 final class WorkspaceTest extends FunctionalTestCase
 {
@@ -43,6 +44,8 @@ final class WorkspaceTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = ['workspaces'];
 
     protected BlogRepository $blogRepository;
+
+    protected PostRepository $postRepository;
 
     protected function setUp(): void
     {
@@ -64,6 +67,7 @@ final class WorkspaceTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $this->blogRepository = $this->get(BlogRepository::class);
+        $this->postRepository = $this->get(PostRepository::class);
         // ConfigurationManager is used by PersistenceManager to retrieve configuration.
         // We set a proper extensionName and pluginName for the ConfigurationManager singleton
         // here, to not run into warnings due to incomplete test setup.
@@ -257,5 +261,19 @@ final class WorkspaceTest extends FunctionalTestCase
         $blog = $query->execute()->getFirst();
         self::assertEquals('WorkspaceOverlay Blog1', $blog->getTitle());
         self::assertCount(2, $blog->getCategories());
+    }
+
+    #[Test]
+    public function limitConstraintReturnsRelevantPosts(): void
+    {
+        $this->setupSubjectInFrontend();
+        $query = $this->postRepository->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setRespectStoragePage(false);
+        $query->setOrderings(['uid' => QueryInterface::ORDER_DESCENDING]);
+        // Ensure the limit is applied after the overlay of draft records
+        $query->setLimit(3);
+        $posts = $query->execute()->toArray();
+        self::assertCount(3, $posts);
     }
 }
