@@ -154,10 +154,10 @@
 				<source>Condition (end)</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionIncludeTyposcript" resname="module.pagetsconfig_includes.tree.child.type.ConditionIncludeTyposcript">
-				<source>Included via "INCLUDE_TYPOSCRIPT" (with condition)</source>
+				<source>Included via "INCLUDE_TYPOSCRIPT" (deprecated, with condition)</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.IncludeTyposcript" resname="module.pagetsconfig_includes.tree.child.type.IncludeTyposcript">
-				<source>Included via "INCLUDE_TYPOSCRIPT"</source>
+				<source>Included via "INCLUDE_TYPOSCRIPT" (deprecated)</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" resname="module.pagetsconfig_includes.tree.child.type.Segment">
 				<source>Code segment</source>

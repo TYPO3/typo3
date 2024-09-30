@@ -23,6 +23,9 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
+ */
 final class ImportOldLineTest extends UnitTestCase
 {
     #[Test]

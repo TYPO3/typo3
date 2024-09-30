@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
  * at this point, this is done by the IncludeTree classes.
  *
  * @internal: Internal tokenizer structure.
+ * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
  */
 final class ImportOldLine extends AbstractLine
 {

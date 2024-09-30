@@ -21,5 +21,6 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode;
  * A node created for "<INCLUDE_TYPOSCRIPT: ..." includes.
  *
  * @internal: Internal tree structure.
+ * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
  */
 final class IncludeTyposcriptInclude extends AbstractInclude {}

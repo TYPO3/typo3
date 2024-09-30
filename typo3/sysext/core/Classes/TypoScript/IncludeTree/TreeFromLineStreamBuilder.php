@@ -245,6 +245,17 @@ final class TreeFromLineStreamBuilder
             }
 
             if ($line instanceof ImportOldLine) {
+                // @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
+                $deprecationPath = $node->getPath();
+                $deprecationName = $node->getName();
+                $deprecationString = '<INCLUDE_TYPOSCRIPT:' . $line->getValueToken() . '>';
+                trigger_error(
+                    'TypoScript syntax "<INCLUDE_TYPOSCRIPT:" has been deprecated with TYPO3 v13 and will be removed with TYPO3 v14. Switch to "@import" instead.'
+                    . ' Found string: "' . $deprecationString . '"'
+                    . ' Potential path: "' . $deprecationPath . '"'
+                    . ' Internal name: "' . $deprecationName . '"',
+                    E_USER_DEPRECATED
+                );
                 $node->setSplit();
                 $includeTypoScriptValueToken = $line->getValueToken();
                 if (!$lineStream->isEmpty()) {
@@ -394,6 +405,9 @@ final class TreeFromLineStreamBuilder
         $parentNode->addChild($newNode);
     }
 
+    /**
+     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
+     */
     private function processIncludeTyposcript(IncludeInterface $node, Token $includeTyposcriptValueToken, LineInterface $importKeywordOldLine): void
     {
         $fullString = $includeTyposcriptValueToken->getValue();
@@ -477,6 +491,8 @@ final class TreeFromLineStreamBuilder
      * ConditionIncludeTyposcriptInclude node the included file is added as child to.
      * The method either returns current parent node if there is no condition, or the new
      * conditional sub node, if there is one.
+     *
+     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
      */
     private function processConditionalIncludeTyposcript(IncludeInterface $parentNode, ?string $condition, string $fileName): IncludeInterface
     {
@@ -492,6 +508,9 @@ final class TreeFromLineStreamBuilder
         return $nodeToAddTo;
     }
 
+    /**
+     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
+     */
     private function importIncludeTyposcriptDirectoryRecursive(
         IncludeInterface $nodeToAddTo,
         LineInterface $importKeywordOldLine,
@@ -545,6 +564,8 @@ final class TreeFromLineStreamBuilder
      * Get content of a single INCLUDE_TYPOSCRIPT file and add to current node as child.
      *
      * Warning: Recursively calls buildTree() to process includes of included content.
+     *
+     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
      */
     private function addSingleIncludeTyposcriptFile(IncludeInterface $parentNode, string $absoluteFileName, string $path, LineInterface $importKeywordOldLine): void
     {

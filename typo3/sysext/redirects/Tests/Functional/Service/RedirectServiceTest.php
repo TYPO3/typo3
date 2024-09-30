@@ -1053,21 +1053,11 @@ final class RedirectServiceTest extends FunctionalTestCase
         if ($useTestBolt === true) {
             $constants = '';
             foreach ($rootPageTypoScriptFiles['constants'] ?? [] as $typoScriptFile) {
-                if (!str_starts_with($typoScriptFile, 'EXT:')) {
-                    // @deprecated will be removed in version 8, use "EXT:" syntax instead
-                    $constants .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
-                } else {
-                    $constants .= '@import \'' . $typoScriptFile . '\'' . LF;
-                }
+                $constants .= '@import \'' . $typoScriptFile . '\'' . LF;
             }
             $setup = '';
             foreach ($rootPageTypoScriptFiles['setup'] ?? [] as $typoScriptFile) {
-                if (!str_starts_with($typoScriptFile, 'EXT:')) {
-                    // @deprecated will be removed in version 8, use "EXT:" syntax instead
-                    $setup .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
-                } else {
-                    $setup .= '@import \'' . $typoScriptFile . '\'' . LF;
-                }
+                $setup .= '@import \'' . $typoScriptFile . '\'' . LF;
             }
             $this->mergeSiteConfiguration('acme-com', [
                 'test_bolt_enabled' => true,

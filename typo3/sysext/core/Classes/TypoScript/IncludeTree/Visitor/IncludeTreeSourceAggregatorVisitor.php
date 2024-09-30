@@ -79,6 +79,7 @@ final class IncludeTreeSourceAggregatorVisitor implements IncludeTreeVisitorInte
                 $this->source .= "\n#\n# Condition from '" . $include->getName() . '\' Line ' . $include->getConditionToken()->getLine() . "\n#\n";
                 $this->source .= $lineStream;
             }
+            // @deprecated: Remove IncludeTyposcriptInclude together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
             if ($include instanceof IncludeTyposcriptInclude || $include instanceof AtImportInclude) {
                 $this->source .= "\n#\n# Include from definition '" . trim((string)($include->getOriginalLine()->getTokenStream())) . "'\n#\n";
             }

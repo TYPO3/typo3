@@ -59,9 +59,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * of correct include order.
  *
  * This class together with TreeFromLineStreamBuilder also takes care of conditions and
- * imports ("@import" and "<INCLUDE_TYPOSCRIPT:"): Those create child nodes in the tree. To
- * evaluate conditions, the tree is later traversed, condition verdicts (true / false) are
- * determined, to see if condition's child nodes should be considered in AST.
+ * imports ("@import"): Those create child nodes in the tree. To evaluate conditions, the
+ * tree is later traversed, condition verdicts (true / false) are determined, to see if
+ * condition's child nodes should be considered in AST.
  *
  * The IncludeTree is "runtime stateless": Constants values and conditions are *not* evaluated
  * here, so the tree is always the same for a given rootline. This makes this structure cache-able:

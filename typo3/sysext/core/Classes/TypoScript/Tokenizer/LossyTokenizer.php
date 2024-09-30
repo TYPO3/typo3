@@ -109,6 +109,7 @@ final class LossyTokenizer implements TokenizerInterface
             } elseif (str_starts_with($this->currentLineString, '@import')) {
                 $this->parseImportLine();
             } elseif (str_starts_with($this->currentLineString, '<INCLUDE_TYPOSCRIPT:')) {
+                // @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
                 $this->parseImportOld();
             } else {
                 $this->parseIdentifier();
@@ -271,6 +272,8 @@ final class LossyTokenizer implements TokenizerInterface
     /**
      * Parse everything behind <INCLUDE_TYPOSCRIPT: at least until end of line or
      * more if there is a multiline comment at end.
+     *
+     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
      */
     private function parseImportOld(): void
     {

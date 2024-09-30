@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -106,10 +107,11 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
     }
 
     /**
-     * @deprecated Remove together with $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] handling.
+     * @deprecated Remove together with $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] handling and INCLUDE_TYPOSCRIPT
      *             Remove Fixtures/userTsConfigTestFixtureDeprecated.csv as well.
      */
     #[Test]
+    #[IgnoreDeprecations]
     public function userTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';

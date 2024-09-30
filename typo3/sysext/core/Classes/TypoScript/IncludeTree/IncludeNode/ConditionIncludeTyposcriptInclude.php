@@ -24,5 +24,6 @@ namespace TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode;
  * a "IncludeTyposcriptInclude" child then contains the body of the included source.
  *
  * @internal: Internal tree structure.
+ * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
  */
 final class ConditionIncludeTyposcriptInclude extends AbstractConditionInclude {}

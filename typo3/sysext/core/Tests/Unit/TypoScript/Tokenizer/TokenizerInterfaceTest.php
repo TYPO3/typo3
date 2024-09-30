@@ -50,6 +50,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class TokenizerInterfaceTest extends UnitTestCase
 {
+    /**
+     * @deprecated: Remove INCLUDE_TYPOSCRIPT related cases in v14, search for keyword INCLUDE_TYPOSCRIPT
+     */
     public static function tokenizeStringDataProvider(): array
     {
         return [

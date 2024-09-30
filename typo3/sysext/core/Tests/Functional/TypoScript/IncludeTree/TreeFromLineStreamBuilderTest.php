@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\AtImportInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionElseInclude;
@@ -889,6 +890,9 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
         self::assertEquals($expectedTree, $tree);
     }
 
+    /**
+     * @deprecated Remove in v14 together with consuming test. Remove Fixtures/IncludeTyposcript/ExtImport folder.
+     */
     public static function buildTreeImportTyposcriptDataProvider(): iterable
     {
         $includeTyposcriptStatement = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/ExtImport/Scenario1/setup.typoscript">';
@@ -1479,6 +1483,7 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
 
     #[DataProvider('buildTreeImportTyposcriptDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function buildTreeImportTyposcript(LineStream $lineStream, IncludeInterface $expectedTree): void
     {
         $tree = (new FileInclude());
@@ -1622,6 +1627,7 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function importTyposcriptIncludesMagicTypoScriptRenderingForSimpleFile(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = [

@@ -121,7 +121,7 @@ final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterfa
     }
 
     /**
-     * Look for @import and INCLUDE_TYPOSCRIPT that don't find to-include file(s).
+     * Look for @import that don't find to-include file(s).
      *
      * @todo: This code is far more complex than it could be. See #102102 and #102103 for
      *        changes we should apply to the include tree structure to simplify this.
@@ -143,12 +143,14 @@ final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterfa
         $allImportLines = [];
         foreach ($lineStream->getNextLine() as $line) {
             if ($line instanceof ImportLine || $line instanceof ImportOldLine) {
+                // @deprecated: Remove ImportOldLine together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
                 $valueToken = $line->getValueToken();
                 $allImportLines[$valueToken->getLine() . '-' . $valueToken->getColumn()] = $line;
             }
         }
         // Now iterate children to exclude valid allImportLines, those that included something.
         foreach ($include->getNextChild() as $child) {
+            // @deprecated: Remove IncludeTyposcriptInclude together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
             if ($child instanceof AtImportInclude || $child instanceof IncludeTyposcriptInclude) {
                 /** @var ImportLine|ImportOldLine $originalLine */
                 $originalLine = $child->getOriginalLine();
@@ -160,6 +162,7 @@ final class IncludeTreeSyntaxScannerVisitor implements IncludeTreeVisitorInterfa
             // which of them resolved to child nodes.
             if ($child instanceof ConditionInclude
                 || $child instanceof ConditionElseInclude
+                // @deprecated: Remove ConditionIncludeTyposcriptInclude together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
                 || $child instanceof ConditionIncludeTyposcriptInclude
             ) {
                 foreach ($child->getNextChild() as $conditionChild) {
