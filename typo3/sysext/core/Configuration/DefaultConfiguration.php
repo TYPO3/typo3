@@ -260,12 +260,12 @@ return [
         'productionExceptionHandler' => \TYPO3\CMS\Core\Error\ProductionExceptionHandler::class,
         'debugExceptionHandler' => \TYPO3\CMS\Core\Error\DebugExceptionHandler::class,
         'errorHandler' => \TYPO3\CMS\Core\Error\ErrorHandler::class,
-        // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
-        'errorHandlerErrors' => E_ALL & ~(E_STRICT_DEPRECATED | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR),
-        // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
-        'exceptionalErrors' => E_ALL & ~(E_STRICT_DEPRECATED | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),
-        // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
-        'belogErrorReporting' => E_ALL & ~(E_STRICT_DEPRECATED | E_NOTICE),
+        // @todo: Remove 2048 (deprecated E_STRICT) in v14, as this value is no longer used by PHP itself
+        //        and only kept here here because possible custom PHP extensions may still use it.
+        //        See https://wiki.php.net/rfc/deprecations_php_8_4#remove_e_strict_error_level_and_deprecate_e_strict_constant
+        'errorHandlerErrors' => E_ALL & ~(2048 /* deprecated E_STRICT */ | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR),
+        'exceptionalErrors' => E_ALL & ~(2048 /* deprecated E_STRICT */ | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),
+        'belogErrorReporting' => E_ALL & ~(2048 /* deprecated E_STRICT */ | E_NOTICE),
         'allowedPhpDisableFunctions' => [],
         'locallangXMLOverride' => [], // For extension/overriding of the arrays in 'locallang' files in frontend  and backend.
         'generateApacheHtaccess' => 1,

@@ -120,7 +120,6 @@
 		},
 		"classmap": ["Resources/PHP/"],
 		"files": [
-			"Resources/PHP/DeprecatedConstants.php",
 			"Resources/PHP/GlobalDebugFunctions.php"
 		]
 	}

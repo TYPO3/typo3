@@ -38,10 +38,11 @@ class ErrorHandlerTest extends UnitTestCase
     protected LoggerInterface $trackingLogger;
 
     // These are borrowed from DefaultConfiguration.php.
-    // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
-    protected const DEFAULT_ERROR_HANDLER_LEVELS = E_ALL & ~(E_STRICT_DEPRECATED | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR);
-    // @todo Remove intermediate constant E_STRICT_DEPRECATED with TYPO3 v14. E_STRICT (2048) constant deprecated since PHP 8.4.0 RC1.
-    protected const DEFAULT_EXCEPTIONAL_ERROR_LEVELS = E_ALL & ~(E_STRICT_DEPRECATED | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING);
+    // @todo: Remove 2048 (deprecated E_STRICT) in v14, as this value is no longer used by PHP itself
+    //        and only kept here here because possible custom PHP extensions may still use it.
+    //        See https://wiki.php.net/rfc/deprecations_php_8_4#remove_e_strict_error_level_and_deprecate_e_strict_constant
+    protected const DEFAULT_ERROR_HANDLER_LEVELS = E_ALL & ~(2048 /* deprecated E_STRICT */ | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR);
+    protected const DEFAULT_EXCEPTIONAL_ERROR_LEVELS = E_ALL & ~(2048 /* deprecated E_STRICT */ | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING);
 
     protected $resetSingletonInstances = true;
 
