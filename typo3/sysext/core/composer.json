@@ -118,7 +118,6 @@
 			"TYPO3\\CMS\\Core\\": "Classes/"
 		},
 		"files": [
-			"Resources/PHP/DeprecatedConstants.php",
 			"Resources/PHP/GlobalDebugFunctions.php"
 		]
 	}

@@ -268,7 +268,6 @@
 			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/"
 		},
 		"files": [
-			"typo3/sysext/core/Resources/PHP/DeprecatedConstants.php",
 			"typo3/sysext/core/Resources/PHP/GlobalDebugFunctions.php"
 		]
 	},
