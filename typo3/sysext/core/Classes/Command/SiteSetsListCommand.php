@@ -22,6 +22,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Set\SetCollector;
 
 /**
@@ -60,7 +61,7 @@ class SiteSetsListCommand extends Command
             $table->addRow(
                 [
                     '<options=bold>' . $set->name . '</>',
-                    $set->label,
+                    $this->getLanguageService()->sL($set->label),
                     implode(', ', [
                         ...$set->dependencies,
                         ...array_map(static fn(string $d): string => '(' . $d . ')', $set->optionalDependencies),
@@ -70,5 +71,10 @@ class SiteSetsListCommand extends Command
         }
         $table->render();
         return Command::SUCCESS;
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
