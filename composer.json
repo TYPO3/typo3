@@ -261,7 +261,6 @@
 			"typo3/sysext/core/Resources/PHP/"
 		],
 		"files": [
-			"typo3/sysext/core/Resources/PHP/DeprecatedConstants.php",
 			"typo3/sysext/core/Resources/PHP/GlobalDebugFunctions.php"
 		]
 	},
