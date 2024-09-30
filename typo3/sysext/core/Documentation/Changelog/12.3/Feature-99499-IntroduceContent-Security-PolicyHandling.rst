@@ -13,7 +13,7 @@ Description
 
 A corresponding representation of the W3C standard of
 `Content-Security-Policy (CSP) <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy>`__
-has been introduced to TYPO3. Content-Security-Policy declarations can either be provided by using the
+has been introduced to TYPO3. Content-Security-Policy declarations can either be provided by using
 the general builder pattern of :php:`\TYPO3\CMS\Core\Security\ContentSecurityPolicy\Policy`, extension-specific
 mutations (changes to the general policy) via :file:`Configuration/ContentSecurityPolicies.php`
 located in corresponding extension directories, or YAML path :yaml:`contentSecurityPolicies.mutations` for
