@@ -1135,6 +1135,18 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
 
         $fooNode = new ChildNode('foo');
+        $fooNode->setValue('');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier removeFromList if original value is null' => [
+            'foo := removeFromList(123)',
+            $expectedAst,
+            [
+                'foo' => '',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
         $fooNode->setValue('foo,bar');
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
@@ -1174,6 +1186,18 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
 
         $fooNode = new ChildNode('foo');
+        $fooNode->setValue('');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier uniqueList throws no error if original value is null' => [
+            'foo := uniqueList()',
+            $expectedAst,
+            [
+                'foo' => '',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
         $fooNode->setValue('456,abc,456,123');
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
@@ -1209,6 +1233,18 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             $expectedAst,
             [
                 'foo' => '123',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier reverseList throws no error if original value is null' => [
+            'foo := reverseList()',
+            $expectedAst,
+            [
+                'foo' => '',
             ],
         ];
 
@@ -1274,6 +1310,42 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             $expectedAst,
             [
                 'foo' => '100,20,10',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier sortList throws no error if original value is null' => [
+            'foo := sortList()',
+            $expectedAst,
+            [
+                'foo' => '',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier sortList ignores invalid modifier arguments and throws no error if original value is null' => [
+            'foo := sortList(foo,descending,bar)',
+            $expectedAst,
+            [
+                'foo' => '',
+            ],
+        ];
+
+        $fooNode = new ChildNode('foo');
+        $fooNode->setValue('');
+        $expectedAst = new RootNode();
+        $expectedAst->addChild($fooNode);
+        yield 'value modifier sortList descending throws no error if original value is null' => [
+            'foo := sortList(descending)',
+            $expectedAst,
+            [
+                'foo' => '',
             ],
         ];
     }
