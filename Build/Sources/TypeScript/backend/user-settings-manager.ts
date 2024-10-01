@@ -62,17 +62,56 @@ class UserSettingsManager {
   }
 
   private activateColorScheme(colorScheme: ColorScheme) {
-    document.documentElement.setAttribute('data-color-scheme', colorScheme);
-    window.frames.list_frame?.document.documentElement.setAttribute('data-color-scheme', colorScheme);
     const colorSchemeSwitch = document.querySelector(Identifier.colorSchemeSwitch);
     if (colorSchemeSwitch) {
       colorSchemeSwitch.activeColorScheme = colorScheme;
     }
+    this.setStyleChangingDocumentAttribute('data-color-scheme', colorScheme);
   }
 
   private activateTheme(theme: Theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    window.frames.list_frame?.document.documentElement.setAttribute('data-theme', theme);
+    this.setStyleChangingDocumentAttribute('data-theme', theme);
+  }
+
+  private async setStyleChangingDocumentAttribute(attributeName: string, attributeValue: string) {
+    const rootEl = document.documentElement;
+    const frame = window.frames.list_frame?.document.documentElement;
+
+    const action = () => {
+      rootEl.classList.add('t3js-disable-transitions');
+      frame?.classList.add('t3js-disable-transitions');
+
+      rootEl.setAttribute(attributeName, attributeValue);
+      frame?.setAttribute(attributeName, attributeValue);
+    };
+
+    const cleanup = () => {
+      rootEl.classList.remove('t3js-disable-transitions');
+      frame?.classList.remove('t3js-disable-transitions');
+    };
+
+
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      // The fallback condition in the next line (currently needed for firefox) can be removed
+      // once view transitions enter baseline "Widely available":
+      // https://webstatus.dev/features/view-transitions?q=view+transition
+      !('startViewTransition' in document) || typeof document.startViewTransition !== 'function'
+    ) {
+      action();
+
+      // await animation frame in order for the transition disable to be
+      // considered by the time the change-transitions are being started.
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      if (frame) {
+        await new Promise(resolve => window.frames.list_frame.requestAnimationFrame(resolve));
+      }
+      cleanup();
+      return;
+    }
+
+    await document.startViewTransition(action).finished;
+    cleanup();
   }
 }
 

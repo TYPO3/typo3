@@ -120,6 +120,10 @@
         border-color .15s ease-in-out,
         box-shadow .15s ease-in-out;
 
+    &.t3js-disable-transitions {
+        --typo3-transition-color: none;
+    }
+
     // Stateful Variants
     --typo3-state-default-color: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-15));
     --typo3-state-default-bg: light-dark(var(--token-color-neutral-5), var(--token-color-neutral-85));
@@ -341,6 +345,15 @@
     .scaffold-header,
     .scaffold-modulemenu {
         color-scheme: only dark;
+    }
+}
+
+:root.t3js-disable-transitions {
+    &,
+    & *,
+    & *:before,
+    & *:after {
+        transition: none !important;
     }
 }
 
