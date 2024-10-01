@@ -156,7 +156,7 @@
     "chart.js": "^4.4.2",
     "ckeditor5": "file:overrides/ckeditor5",
     "cropperjs": "^1.6.1",
-    "css-tree": "^2.3.1",
+    "css-tree": "^3.0.1",
     "flatpickr": "^4.6.13",
     "interactjs": "^1.10.17",
     "jquery": "^3.7.1",
