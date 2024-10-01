@@ -24,7 +24,7 @@ Affected Installations
 
 Existing installations having this option set in their database.
 
-This can easily be checked via a SQL query: :sql:`SELECT uid, pid, title, FROM pages WHERE deleted=0
+This can easily be checked via a SQL query: :sql:`SELECT uid, pid, title FROM pages WHERE deleted=0
 AND pid>=0 AND no_cache=1;`.
 
 
