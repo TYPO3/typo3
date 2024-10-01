@@ -3567,7 +3567,7 @@ typo3-backend-live-search-result-item-action>:first-child .livesearch-result-ite
 .indent-inline-block{display:inline-block}
 :root{--settings-color:var(--typo3-component-color);--settings-padding:calc(var(--typo3-spacing) * 2);--settings-bg:var(--typo3-component-bg);--settings-border-width:var(--typo3-component-border-width);--settings-border-color:var(--typo3-component-border-color);--settings-border-radius:var(--typo3-component-border-radius);--settings-box-shadow:var(--typo3-component-box-shadow);--settings-highlight:var(--typo3-component-primary-color);--settings-indicator-bg:transparent;--settings-item-color:var(--settings-color);--settings-item-bg:var(--settings-bg)}
 .module[data-module-name=site_settings] .module-body{width:100%;max-width:1320px;margin:0 auto}
-.settings-container{container-type:inline-size}
+.settings-container{container-type:inline-size;margin-top:1.5rem}
 .settings{display:flex;align-items:flex-start;flex-wrap:wrap;color:var(--settings-color);box-shadow:var(--settings-box-shadow)}
 .settings-body,.settings-navigation{padding:var(--settings-padding)}
 .settings-body{background:var(--settings-bg);border:var(--settings-border-width) solid var(--settings-border-color);border-radius:var(--settings-border-radius)}

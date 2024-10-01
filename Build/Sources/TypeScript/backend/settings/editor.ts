@@ -13,6 +13,7 @@
 
 import { html, LitElement, TemplateResult, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
+import { live } from 'lit/directives/live.js';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';
 import Notification from '@typo3/backend/notification';
@@ -20,6 +21,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { copyToClipboard } from '@typo3/backend/copy-to-clipboard';
 import { lll } from '@typo3/core/lit-helper';
 import '@typo3/backend/settings/editor/editable-setting';
+import '@typo3/backend/element/icon-element';
 
 // preload known/common types
 import '@typo3/backend/settings/type/bool';
@@ -38,6 +40,13 @@ export interface Category {
   icon: string,
   settings: EditableSetting[],
   categories: Category[],
+}
+
+interface FilteredCategory extends Category {
+  settings: FilteredEditableSetting[],
+  categories: FilteredCategory[],
+  // runtime value calculated depending on filter (user entered search term)
+  __hidden: boolean,
 }
 
 /** @see \TYPO3\CMS\Core\Settings\SettingDefinition */
@@ -62,6 +71,11 @@ export interface EditableSetting {
   typeImplementation: string,
 }
 
+interface FilteredEditableSetting extends EditableSetting {
+  // runtime value calculated depending on filter (user entered search term)
+  __hidden: boolean,
+}
+
 @customElement('typo3-backend-settings-editor')
 export class SettingsEditorElement extends LitElement {
 
@@ -70,6 +84,7 @@ export class SettingsEditorElement extends LitElement {
   @property({ type: String, attribute: 'dump-url' }) dumpUrl: string;
   @property({ type: Object, attribute: 'custom-form-data' }) customFormData: Record<string, string> = {};
 
+  @state() searchTerm: string = '';
   @state() activeCategory: string = '';
 
   visibleCategories: Record<string, boolean> = {};
@@ -104,11 +119,11 @@ export class SettingsEditorElement extends LitElement {
     [...this.renderRoot.querySelectorAll('.settings-category')].map(entry => this.observer?.observe(entry));
   }
 
-  protected renderCategoryTree(categories: Category[], level: number): TemplateResult {
+  protected renderCategoryTree(categories: FilteredCategory[], level: number): TemplateResult {
     return html`
       <ul data-level=${level}>
         ${categories.map(category => html`
-          <li>
+          <li ?hidden=${category.__hidden}>
             <a href=${`#category-headline-${category.key}`}
               @click=${() => this.activeCategory = category.key}
               class="settings-navigation-item ${this.activeCategory === category.key ? 'active' : ''}">
@@ -126,15 +141,19 @@ export class SettingsEditorElement extends LitElement {
     `;
   }
 
-  protected renderSettings(categories: Category[], level: number): TemplateResult[] {
+  protected renderSettings(categories: FilteredCategory[], level: number): TemplateResult[] {
     return categories.map(category => html`
       <div class="settings-category-list" data-key=${category.key}>
-        <div class="settings-category" data-key=${category.key}>
+        <div class="settings-category" data-key=${category.key} ?hidden=${category.__hidden}>
           ${this.renderHeadline(Math.min(level + 1, 6), `category-headline-${category.key}`, html`${category.label}`)}
           ${category.description ? html`<p>${category.description}</p>` : nothing}
         </div>
         ${category.settings.map((setting): TemplateResult => html`
-          <typo3-backend-editable-setting .setting=${setting} .dumpuri=${this.dumpUrl}></typo3-backend-editable-setting>
+          <typo3-backend-editable-setting
+              ?hidden=${setting.__hidden}
+              .setting=${setting}
+              .dumpuri=${this.dumpUrl}
+          ></typo3-backend-editable-setting>
         `)}
       </div>
       ${category.categories.length === 0 ? nothing : html`
@@ -180,7 +199,14 @@ export class SettingsEditorElement extends LitElement {
     }
   }
 
+  protected async onSearch(e: Event): Promise<void> {
+    e.preventDefault();
+    this.searchTerm = (e.currentTarget as HTMLInputElement).value;
+  }
+
   protected render(): TemplateResult {
+    const categories = this.filterCategories();
+    const hasVisibleCategories = categories.filter(c => !c.__hidden).length > 0;
     return html`
       <form class="settings-container"
             id="sitesettings_form"
@@ -189,17 +215,107 @@ export class SettingsEditorElement extends LitElement {
             method="post"
             @submit=${(e: SubmitEvent) => this.onSubmit(e)}
       >
-        ${Object.entries(this.customFormData).map(([name, value]) => html`<input type="hidden" name=${name} value=${value} />`)}
-        <div class="settings">
+        ${Object.entries(this.customFormData).map(([name, value]) => html`
+          <input type="hidden" name=${name} value=${value}>
+        `)}
+
+        <div class="settings-search form-group">
+          <label for="settings-search" class="visually-hidden">
+            ${lll('edit.searchTermVisuallyHiddenLabel')}
+          </label>
+          <input
+            type="search"
+            id="settings-search"
+            class="form-control"
+            placeholder=${lll('edit.searchTermPlaceholder')}
+            .value=${live(this.searchTerm)}
+            @change=${(e: Event) => this.onSearch(e)}
+            @input=${(e: Event) => this.onSearch(e)}>
+        </div>
+
+        ${hasVisibleCategories ? nothing : html`
+          <div class="callout callout-info">
+            <div class="callout-icon">
+              <span class="icon-emphasized">
+                <typo3-backend-icon identifier="actions-info" size="small"></typo3-backend-icon>
+              </span>
+            </div>
+            <div class="callout-content">
+              <div class="callout-title">${lll('edit.search.noResultsTitle')}</div>
+              <div class="callout-body">
+                <p>${lll('edit.search.noResultsMessage')}</p>
+                <button
+                    type="button"
+                    class="btn btn-default"
+                    @click=${() => this.searchTerm = ''}
+                  >${lll('edit.search.noResultsResetButtonLabel')}</button>
+              </div>
+            </div>
+          </div>
+        `}
+
+        <div class="settings" ?hidden=${!hasVisibleCategories}>
           <div class="settings-navigation">
-            ${this.renderCategoryTree(this.categories ?? [], 1)}
+            ${this.renderCategoryTree(categories ?? [], 1)}
           </div>
           <div class="settings-body">
-            ${this.renderSettings(this.categories ?? [], 1)}
+            ${this.renderSettings(categories ?? [], 1)}
           </div>
         </div>
       </form>
     `;
+  }
+
+  protected filterCategories(categories: Category[] = null): FilteredCategory[] {
+    categories ??= this.categories;
+    return categories.map(category => {
+      const settings = this.filterSettings(category.settings);
+      const subcategories = this.filterCategories(category.categories);
+      const hasVisibleSettings = settings.filter(setting => !setting.__hidden).length > 0;
+      const hasVisibleSubcategories = subcategories.filter(c => !c.__hidden).length > 0;
+      return {
+        ...category,
+        settings,
+        categories: subcategories,
+        __hidden: !hasVisibleSettings && !hasVisibleSubcategories
+      };
+    });
+  }
+
+  protected filterSettings(settings: EditableSetting[]): FilteredEditableSetting[] {
+    return settings.map((setting) => {
+      return {
+        ...setting,
+        __hidden: !(
+          this.matchesSearchTerm(setting.definition.key) ||
+          this.matchesSearchTerm(setting.definition.label) ||
+          this.matchesSearchTerm(setting.definition.description) ||
+          this.valueMatchesSearchTerm(setting.value) ||
+          setting.definition.tags.filter(tag => this.matchesSearchTerm(tag)).length > 0
+        )
+      };
+    });
+  }
+
+  protected matchesSearchTerm(input: string): boolean {
+    if (this.searchTerm === '') {
+      return true;
+    }
+    return this.matchesSubstring(input, this.searchTerm);
+  }
+
+  protected valueMatchesSearchTerm(value: ValueType): boolean {
+    if (typeof value === 'string') {
+      return this.matchesSearchTerm(value);
+    }
+    if (Array.isArray(value)) {
+      return value.filter(v => typeof v === 'string' && this.matchesSearchTerm(v)).length > 0;
+    }
+    return false;
+  }
+
+  protected matchesSubstring(input: string, searchString: string): boolean {
+    return input.toLowerCase().includes(searchString.toLowerCase());
   }
 }
 

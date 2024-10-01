@@ -48,6 +48,21 @@
 			<trans-unit id="edit.copyAsYaml" resname="edit.copyAsYaml">
 				<source>Copy as YAML</source>
 			</trans-unit>
+			<trans-unit id="edit.searchTermVisuallyHiddenLabel" resname="edit.searchTermVisuallyHiddenLabel">
+				<source>Search settings</source>
+			</trans-unit>
+			<trans-unit id="edit.searchTermPlaceholder" resname="edit.searchTermPlaceholder">
+				<source>Search settings</source>
+			</trans-unit>
+			<trans-unit id="edit.search.noResultsTitle" resname="edit.search.noResultsTitle">
+				<source>No settings were found.</source>
+			</trans-unit>
+			<trans-unit id="edit.search.noResultsMessage" resname="edit.search.noResultsMessage">
+				<source>The search filters by setting value, label, description or identifier.</source>
+			</trans-unit>
+			<trans-unit id="edit.search.noResultsResetButtonLabel" resname="edit.search.noResultsResetButtonLabel">
+				<source>Reset filter</source>
+			</trans-unit>
 			<trans-unit id="save.message.updated" resname="save.message.updated">
 				<source>Settings updated.</source>
 			</trans-unit>
