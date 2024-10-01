@@ -69,9 +69,6 @@
 			<trans-unit id="copyLevels" resname="copyLevels">
 				<source>Recursive copy: Enter the number of page sublevels to include, when a page is copied</source>
 			</trans-unit>
-			<trans-unit id="activateChanges" resname="activateChanges">
-				<source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
-			</trans-unit>
 			<trans-unit id="levels" resname="levels">
 				<source>levels</source>
 			</trans-unit>

@@ -118,17 +118,17 @@ class SetupModuleController
     {
         $view = $this->initialize($request);
         $this->storeIncomingData($request);
-        if ($this->pagetreeNeedsRefresh) {
+        if ($this->pagetreeNeedsRefresh || $this->settingsAreResetToDefault) {
             BackendUtility::setUpdateSignal('updatePageTree');
         }
-        if ($this->colorSchemeChanged) {
-            BackendUtility::setUpdateSignal('updateColorScheme', $this->getBackendUser()->uc['colorScheme']);
+        if ($this->colorSchemeChanged || $this->settingsAreResetToDefault) {
+            BackendUtility::setUpdateSignal('updateColorScheme', $this->getBackendUser()->uc['colorScheme'] ?? 'auto');
         }
-        if ($this->themeChanged) {
-            BackendUtility::setUpdateSignal('updateTheme', $this->getBackendUser()->uc['theme']);
+        if ($this->themeChanged || $this->settingsAreResetToDefault) {
+            BackendUtility::setUpdateSignal('updateTheme', $this->getBackendUser()->uc['theme'] ?? 'modern');
         }
-        if ($this->backendTitleFormatChanged) {
-            BackendUtility::setUpdateSignal('updateTitleFormat', $this->getBackendUser()->uc['backendTitleFormat']);
+        if ($this->backendTitleFormatChanged || $this->settingsAreResetToDefault) {
+            BackendUtility::setUpdateSignal('updateTitleFormat', $this->getBackendUser()->uc['backendTitleFormat'] ?? 'titleFirst');
         }
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $this->addFlashMessages($view);
@@ -936,9 +936,6 @@ class SetupModuleController
         }
         if ($this->settingsAreResetToDefault) {
             $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:settingsAreReset'), $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfiguration'));
-        }
-        if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
-            $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:activateChanges'), '', ContextualFeedbackSeverity::INFO);
         }
         if ($this->passwordIsSubmitted) {
             switch ($this->passwordIsUpdated) {
