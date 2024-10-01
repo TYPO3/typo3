@@ -11,7 +11,8 @@ See :issue:`100229`
 Description
 ===========
 
-:php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation` is now
+The class :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation` is replaced by
+:php:`\TYPO3\CMS\Core\Authentication\JsConfirmation`. The new class is
 extending the :php:`\TYPO3\CMS\Core\Type\BitSet` class instead of
 :php:`\TYPO3\CMS\Core\TypeEnumeration\Enumeration`.
 
@@ -48,6 +49,9 @@ if first argument passed is not an :php:`int`.
 Migration
 =========
 
+Replace existing usages of :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation`
+with :php:`\TYPO3\CMS\Core\Authentication\JsConfirmation`.
+
 There is no migration for the methods:
 
 - :php:`matches()`
@@ -56,7 +60,9 @@ There is no migration for the methods:
 
 Remove existing calls to static methods
 :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation::method()`
-except for the method :php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation::compare()`
+and where :php:`JSConfirmation::compare()` is used, replace the namespace from
+:php:`\TYPO3\CMS\Core\Type\Bitmask\JSConfirmation` to
+:php:`\TYPO3\CMS\Core\Authentication\JsConfirmation`.
 
 Ensure an int value is passed to:
 
