@@ -121,6 +121,16 @@ describe('@typo3/rte-ckeditor/css-prefixer-test', () => {
           source: ':is(ol, ul) :is(ol, ul) ol { color: red; }',
           target: 'foo :is(ol,ul) :is(ol,ul) ol{color:red}',
         },
+        containerQuery: {
+          prefix: 'foo',
+          source: '.card h2 { font-size: 1em; } @container (min-width: 700px) { .card h2 { font-size: 2em; } }',
+          target: 'foo .card h2{font-size:1em}\n@container (min-width:700px){foo .card h2{font-size:2em}\n}',
+        },
+        supportsQuery: {
+          prefix: 'foo',
+          source: '@supports selector(.a) { .a{ display:block } }',
+          target: '@supports selector(foo .a){foo .a{display:block}\n}',
+        },
         complete: {
           prefix: 'foo',
           source: getOriginCss(),
