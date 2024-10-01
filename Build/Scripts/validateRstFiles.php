@@ -141,7 +141,7 @@ class validateRstFiles
         $checkFor = [
             [
                 'type' => 'include',
-                'regex' => '#^\\.\\. include:: /Includes.rst.txt#m',
+                'regex' => '#^\\.\\. {1,2}include:: /Includes\.rst\.txt#m',
                 'title' => 'no include',
                 'message' => 'insert \'.. include:: /Includes.rst.txt\' in first line of the file',
             ],
@@ -167,7 +167,7 @@ class validateRstFiles
         $checkFor = [
             [
                 'type' => 'index',
-                'regex' => '#^\.\. index:: (?:(?:TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|YAML|ext:[a-zA-Z_0-9]+)(?:,\\s|$))+#',
+                'regex' => '#^\.\. {1,2}index:: (?:(?:TypoScript|TSConfig|TCA|FlexForm|LocalConfiguration|Fluid|FAL|Database|JavaScript|PHP-API|Frontend|Backend|CLI|RTE|YAML|ext:[a-zA-Z_0-9]+)(?:,\\s|$))+#',
                 'title' => 'no or wrong index',
                 'message' => 'insert \'.. index:: <at least one valid keyword>\' at the last line of the file. See Build/Scripts/validateRstFiles.php for allowed keywords',
             ],
@@ -195,7 +195,7 @@ class validateRstFiles
                     . '[78]'                     // from 7.x and 8.x (as there was no extension scanner back then)
                     . ')'
                     . '#',
-                'regex' => '#^\.\. index::.*(,|\s)(?:Fully|Partially|Not)Scanned([, ]|$).*#',
+                'regex' => '#^\.\. {1,2}index::.*(,|\s)(?:Fully|Partially|Not)Scanned([, ]|$).*#',
                 'title' => 'missing FullyScanned / PartiallyScanned / NotScanned tag',
                 'message' => 'insert \'.. index:: <at least one valid keyword and either FullyScanned, PartiallyScanned or NotScanned>\' at the last line of the file. See Build/Scripts/validateRstFiles.php for allowed keywords',
             ],
