@@ -30,14 +30,26 @@
 			<trans-unit id="table.column.title">
 				<source>Title</source>
 			</trans-unit>
+			<trans-unit id="btn.editSiteConfiguration">
+				<source>Edit site configuration</source>
+			</trans-unit>
+			<trans-unit id="btn.editSiteSettings">
+				<source>Edit site settings</source>
+			</trans-unit>
 			<trans-unit id="btn.editTypoScriptRecord">
 				<source>Edit the whole TypoScript record</source>
 			</trans-unit>
 			<trans-unit id="infoTypoScriptRecordFromSite.title">
-				<source>Includes via site sets</source>
+				<source>TypoScript settings have been implicitly generated from site sets includes</source>
 			</trans-unit>
 			<trans-unit id="infoTypoScriptRecordFromSite.message">
-				<source>The site configuration '%s' has one or more dependencies on site sets. The TypoScript definitions can be edited on the file system.</source>
+				<source>The site configuration '%s' has one or more dependencies on site sets. The sets can be configured in the 'Site Management » Settings' backend module. The TypoScript definitions can be edited on the file system.</source>
+			</trans-unit>
+			<trans-unit id="noConstantsButSiteSettings.title">
+				<source>Site Settings available</source>
+			</trans-unit>
+			<trans-unit id="noConstantsButSiteSettings.message">
+				<source>Edit site settings via the 'Site Management » Settings' backend module.</source>
 			</trans-unit>
 		</body>
 	</file>

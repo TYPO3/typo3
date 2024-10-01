@@ -80,12 +80,21 @@
             state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
             title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoTypoScriptRecordFromSite.title')}"
         >
-            <f:translate
-                key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoTypoScriptRecordFromSite.message"
-                arguments="{
-                    0: '{templateRecord.site.identifier}'
-                }"
-            />
+            <p>
+                <f:translate
+                    key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:infoTypoScriptRecordFromSite.message"
+                    arguments="{
+                        0: '{templateRecord.site.identifier}'
+                    }"
+                />
+            </p>
+            <f:variable name="returnUrl">{f:be.uri(route: 'web_typoscript_infomodify', parameters: {id: pageUid})}</f:variable>
+            <f:be.link route="site_configuration.edit" parameters="{site: templateRecord.site.identifier, returnUrl: returnUrl}" class="btn btn-default">
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:btn.editSiteConfiguration"/>
+            </f:be.link>
+            <f:be.link route="site_settings.edit" parameters="{site: templateRecord.site.identifier, returnUrl: returnUrl}" class="btn btn-default">
+                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:btn.editSiteSettings"/>
+            </f:be.link>
         </f:be.infobox>
     </f:if>
 
