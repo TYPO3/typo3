@@ -75,6 +75,8 @@ class SetupModuleController
     protected bool $pagetreeNeedsRefresh = false;
     protected bool $colorSchemeChanged = false;
     protected bool $themeChanged = false;
+    protected bool $backendTitleFormatChanged = false;
+
     protected array $tsFieldConf = [];
     protected int $passwordIsUpdated = self::PASSWORD_NOT_UPDATED;
     protected bool $passwordIsSubmitted = false;
@@ -124,6 +126,9 @@ class SetupModuleController
         }
         if ($this->themeChanged) {
             BackendUtility::setUpdateSignal('updateTheme', $this->getBackendUser()->uc['theme']);
+        }
+        if ($this->backendTitleFormatChanged) {
+            BackendUtility::setUpdateSignal('updateTitleFormat', $this->getBackendUser()->uc['backendTitleFormat']);
         }
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $this->addFlashMessages($view);
@@ -212,6 +217,10 @@ class SetupModuleController
             if (isset($d['theme']) && $d['theme'] !== ($backendUser->uc['theme'] ?? null)) {
                 $this->themeChanged = true;
             }
+            if (isset($d['backendTitleFormat']) && $d['backendTitleFormat'] !== ($backendUser->uc['backendTitleFormat'] ?? null)) {
+                $this->backendTitleFormatChanged = true;
+            }
+
             if ($d['setValuesToDefault']) {
                 // If every value should be default
                 $backendUser->resetUC();

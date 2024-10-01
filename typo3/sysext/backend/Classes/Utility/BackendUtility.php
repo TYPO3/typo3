@@ -2173,6 +2173,13 @@ class BackendUtility
                             true
                         );
                         break;
+                    case 'updateTitleFormat':
+                        $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
+                            'typo3:title-format:update',
+                            ['format' => $val['parameter']],
+                            true
+                        );
+                        break;
                     case 'updateSystemInformationMenu':
                         $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
                             'typo3:system-information-menu:update',

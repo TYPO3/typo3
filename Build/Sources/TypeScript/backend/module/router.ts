@@ -49,10 +49,13 @@ export class ModuleRouter extends LitElement {
   @property({ type: String, hasChanged: alwaysUpdate }) endpoint: string = '';
   @property({ type: String, attribute: 'state-tracker' }) stateTrackerUrl: string;
   @property({ type: String, attribute: 'sitename' }) sitename: string;
-  @property({ type: Boolean, attribute: 'sitename-first' }) sitenameFirst: boolean;
   @property({ type: String, attribute: 'entry-point' }) entryPoint: string;
   @property({ type: String, attribute: 'install-tool-path' }) installToolPath: string;
   @query('slot', true) slotElement: HTMLSlotElement;
+
+  // Not a @property, since changes must not cause a module-reload
+  sitenameFirst: boolean = false;
+  titleComponents: string[]|null = null;
 
   constructor() {
     super();
@@ -122,6 +125,26 @@ export class ModuleRouter extends LitElement {
     });
   }
 
+  public static get observedAttributes(): string[] {
+    return [
+      ...super.observedAttributes,
+      'sitename-first',
+    ];
+  }
+
+  public connectedCallback() {
+    super.connectedCallback();
+    this.sitenameFirst = this.hasAttribute('sitename-first');
+  }
+
+  public attributeChangedCallback(name: string, oldValue: string|null, newValue: string): void {
+    super.attributeChangedCallback(name, oldValue, newValue);
+    if (name === 'sitename-first') {
+      this.sitenameFirst = newValue !== null;
+      this.updateBrowserTitle();
+    }
+  }
+
   protected render(): TemplateResult {
     const moduleData = ModuleUtility.getFromName(this.module);
     const jsModule = moduleData.component || IFRAME_COMPONENT;
@@ -186,6 +209,20 @@ export class ModuleRouter extends LitElement {
     component.setAttribute('endpoint', url);
   }
 
+  private updateBrowserTitle(): void {
+    let { titleComponents } = this;
+
+    if (titleComponents === null) {
+      // updateBrowserState has not been invoked yet, nothing to update for now
+      return;
+    }
+
+    if (this.sitenameFirst) {
+      titleComponents = titleComponents.toReversed();
+    }
+    document.title = titleComponents.join(' · ');
+  }
+
   private updateBrowserState(state: ModuleState): void {
     const url = new URL(state.url || '', window.location.origin);
     const params = new URLSearchParams(url.search);
@@ -198,10 +235,8 @@ export class ModuleRouter extends LitElement {
       if (title !== '') {
         titleComponents.unshift(title);
       }
-      if (this.sitenameFirst) {
-        titleComponents.reverse();
-      }
-      document.title = titleComponents.join(' · ');
+      this.titleComponents = titleComponents;
+      this.updateBrowserTitle();
     }
 
     if (!params.has('token')) {

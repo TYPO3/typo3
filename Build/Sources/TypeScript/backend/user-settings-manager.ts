@@ -20,6 +20,7 @@ enum Identifier {
 
 export type ColorScheme = 'auto' | 'light' | 'dark';
 export type Theme = 'modern' | 'classic';
+export type TitleFormat = 'titleFirst' | 'sitenameFirst';
 
 // Event for typo3:color-scheme:update and typo3:color-scheme:broadcast
 export interface ColorSchemeUpdateEventData {
@@ -31,6 +32,11 @@ export interface ThemeUpdateEventData {
   theme: Theme;
 }
 
+// Event for typo3:title-format:update and typo3:title-format:broadcast
+export interface TitleFormatUpdateEventData {
+  format: TitleFormat;
+}
+
 class UserSettingsManager {
   constructor() {
     // triggered by
@@ -39,10 +45,13 @@ class UserSettingsManager {
     document.addEventListener('typo3:color-scheme:update', e => this.onColorSchemeUpdate(e.detail));
     //  triggred by user setup module (via BackendUtility::setUpdateSignal('updateColorScheme', …))
     document.addEventListener('typo3:theme:update', e => this.onThemeUpdate(e.detail));
+    //  triggred by user setup module (via BackendUtility::setUpdateSignal('updateTitleFormat', …))
+    document.addEventListener('typo3:title-format:update', e => this.onTitleFormatUpdate(e.detail));
 
     // broadcast message by other instances
     document.addEventListener('typo3:color-scheme:broadcast', e => this.activateColorScheme(e.detail.payload.colorScheme));
     document.addEventListener('typo3:theme:broadcast', e => this.activateTheme(e.detail.payload.theme));
+    document.addEventListener('typo3:title-format:broadcast', e => this.activateTitleFormat(e.detail.payload.format));
   }
 
   private onColorSchemeUpdate(data: ColorSchemeUpdateEventData) {
@@ -61,6 +70,14 @@ class UserSettingsManager {
     BroadcastService.post(new BroadcastMessage<ThemeUpdateEventData>('theme', 'broadcast', { theme }));
   }
 
+  private onTitleFormatUpdate(data: TitleFormatUpdateEventData) {
+    const { format } = data;
+    this.activateTitleFormat(format);
+
+    // broadcast to other instances
+    BroadcastService.post(new BroadcastMessage<TitleFormatUpdateEventData>('title-format', 'broadcast', { format }));
+  }
+
   private activateColorScheme(colorScheme: ColorScheme) {
     const colorSchemeSwitch = document.querySelector(Identifier.colorSchemeSwitch);
     if (colorSchemeSwitch) {
@@ -71,6 +88,14 @@ class UserSettingsManager {
 
   private activateTheme(theme: Theme) {
     this.setStyleChangingDocumentAttribute('data-theme', theme);
+  }
+
+  private activateTitleFormat(format: TitleFormat) {
+    if (format === 'sitenameFirst') {
+      document.querySelector('typo3-backend-module-router')?.setAttribute('sitename-first', '');
+    } else {
+      document.querySelector('typo3-backend-module-router')?.removeAttribute('sitename-first');
+    }
   }
 
   private async setStyleChangingDocumentAttribute(attributeName: string, attributeValue: string) {
@@ -123,5 +148,7 @@ declare global {
     'typo3:color-scheme:broadcast': BroadcastEvent<ColorSchemeUpdateEventData>;
     'typo3:theme:update': CustomEvent<ThemeUpdateEventData>;
     'typo3:theme:broadcast': BroadcastEvent<ThemeUpdateEventData>;
+    'typo3:title-format:update': CustomEvent<TitleFormatUpdateEventData>;
+    'typo3:title-format:broadcast': BroadcastEvent<TitleFormatUpdateEventData>;
   }
 }
