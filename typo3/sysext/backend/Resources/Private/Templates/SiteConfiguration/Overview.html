@@ -115,6 +115,9 @@
                                             </div>
                                         </f:else>
                                     </f:if>
+                                    <f:if condition="{page.siteConfiguration.invalidSets}">
+                                        <f:render partial="SiteManagement/InvalidSets" arguments="{site: page.siteConfiguration}"/>
+                                    </f:if>
                                 </td>
                                 <td class="align-top">
                                     <f:if condition="{page.siteConfiguration}">
@@ -149,7 +152,7 @@
                                                 <core:icon identifier="actions-open" />
                                             </f:be.link>
 
-                                            <f:if condition="{page.siteConfiguration.sets->f:count()} > 0">
+                                            <f:if condition="{page.siteConfiguration.sets -> f:count()} > 0">
                                                 <f:then>
                                                     <f:variable name="returnUrl">{f:be.uri(route: 'site_configuration')}</f:variable>
                                                     <f:be.link

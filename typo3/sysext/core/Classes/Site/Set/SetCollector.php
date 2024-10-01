@@ -25,6 +25,9 @@ class SetCollector
     /** @var array<string, SetDefinition> */
     protected array $sets = [];
 
+    /** @var array<string, array{ error: SetError, name: string, context: string }> */
+    protected array $invalidSets = [];
+
     /**
      * @return array<string, SetDefinition>
      */
@@ -33,8 +36,25 @@ class SetCollector
         return $this->sets;
     }
 
+    /**
+     * @return array<string, array{ error: SetError, name: string, context: string }>
+     */
+    public function getInvalidSets(): array
+    {
+        return $this->invalidSets;
+    }
+
     public function add(SetDefinition $set): void
     {
         $this->sets[$set->name] = $set;
+    }
+
+    public function addError(SetError $error, string $name, string $context): void
+    {
+        $this->invalidSets[$name] = [
+            'error' => $error,
+            'name' => $name,
+            'context' => $context,
+        ];
     }
 }

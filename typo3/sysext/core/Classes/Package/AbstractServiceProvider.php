@@ -26,7 +26,10 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOrigin;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOriginType;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
+use TYPO3\CMS\Core\Site\Set\InvalidSettingsDefinitionsException;
+use TYPO3\CMS\Core\Site\Set\InvalidSettingsException;
 use TYPO3\CMS\Core\Site\Set\SetCollector;
+use TYPO3\CMS\Core\Site\Set\SetError;
 use TYPO3\CMS\Core\Site\Set\YamlSetDefinitionProvider;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -198,6 +201,30 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         foreach ($finder as $fileInfo) {
             try {
                 $setCollector->add($setProvider->get($fileInfo));
+            } catch (InvalidSettingsDefinitionsException $e) {
+                $setCollector->addError(
+                    SetError::invalidSettingsDefinitions,
+                    $e->getSetName(),
+                    $e->getMessage(),
+                );
+                $logger = $container->get(LogManager::class)->getLogger(self::class);
+                $logger->error('Set {setName} invalidated {file} because of invalid settings.definitions.yaml: {reason}', [
+                    'file' => $fileInfo->getPathname(),
+                    'reason' => $e->getMessage(),
+                    'setName' => $e->getSetName(),
+                ]);
+            } catch (InvalidSettingsException $e) {
+                $setCollector->addError(
+                    SetError::invalidSettings,
+                    $e->getSetName(),
+                    $e->getMessage(),
+                );
+                $logger = $container->get(LogManager::class)->getLogger(self::class);
+                $logger->error('Set {setName} invalidated {file} because of invalid settings.yaml: {reason}', [
+                    'file' => $fileInfo->getPathname(),
+                    'reason' => $e->getMessage(),
+                    'setName' => $e->getSetName(),
+                ]);
             } catch (\RuntimeException $e) {
                 $logger = $container->get(LogManager::class)->getLogger(self::class);
                 $logger->error('Invalid set in {file}: {reason}', [

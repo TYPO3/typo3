@@ -1,0 +1,33 @@
+<f:if condition="{site.invalidSets}">
+    <f:variable name="renderMode">{f:if(condition: '{renderMode} == "infobox"', then: 'infobox', else: 'alert')}</f:variable>
+
+    <f:render section="{renderMode}" arguments="{
+        site: site,
+        title: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.site.invalidSetDependencies\')}'
+    }"/>
+</f:if>
+
+<f:section name="infobox">
+    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}" title="{title}">
+        <ul class="alert-message">
+            <f:for each="{site.invalidSets}" as="invalidSet">
+                <li><f:translate key="{invalidSet.error.label}" arguments="{0: invalidSet.name, 1: invalidSet.context}"/></li>
+            </f:for>
+        </ul>
+    </f:be.infobox>
+</f:section>
+
+<f:section name="alert">
+    <div class="alert alert-danger mt-2">
+        <div class="alert-inner">
+            <div class="alert-content">
+                <div class="alert-title">{title}</div>
+                <ul class="alert-message">
+                    <f:for each="{site.invalidSets}" as="invalidSet">
+                        <li><f:translate key="{invalidSet.error.label}" arguments="{0: invalidSet.name, 1: invalidSet.context}"/></li>
+                    </f:for>
+                </ul>
+            </div>
+        </div>
+    </div>
+</f:section>

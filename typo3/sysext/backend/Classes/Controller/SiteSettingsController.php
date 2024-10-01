@@ -144,7 +144,7 @@ readonly class SiteSettingsController
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf');
 
-        $view->assign('siteIdentifier', $site->getIdentifier());
+        $view->assign('site', $site);
         $view->assign('siteTitle', $this->getSiteTitle($site));
         $view->assign('rootPageId', $site->getRootPageId());
 

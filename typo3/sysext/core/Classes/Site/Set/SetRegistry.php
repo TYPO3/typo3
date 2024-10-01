@@ -31,6 +31,9 @@ class SetRegistry
     /** @var list<SetDefinition>|null */
     protected ?array $orderedSets = null;
 
+    /** @var array<string, array{ error: SetError, name: string, context: string }> */
+    protected ?array $invalidSets = null;
+
     public function __construct(
         protected DependencyOrderingService $dependencyOrderingService,
         #[Autowire(expression: 'service("package-dependent-cache-identifier").withPrefix("Sets").toString()')]
@@ -63,9 +66,30 @@ class SetRegistry
         return isset($this->getOrderedSets()[$setName]);
     }
 
+    /**
+     * @return array<string, SetDefinition>
+     * @internal
+     */
+    public function getAllSets(): array
+    {
+        return $this->getOrderedSets();
+    }
+
     public function getSet(string $setName): ?SetDefinition
     {
         return $this->getOrderedSets()[$setName] ?? null;
+    }
+
+    /**
+     * @return array<string, array{ error: SetError, name: string, context: string }>
+     */
+    public function getInvalidSets(): array
+    {
+        // create ordered sets which logs invalidSets as out-of-band data
+        if ($this->orderedSets === null) {
+            $this->getOrderedSets();
+        }
+        return $this->invalidSets;
     }
 
     /**
@@ -84,20 +108,20 @@ class SetRegistry
         if (!$this->cache->has($this->cacheIdentifier)) {
             return null;
         }
+        $setData = null;
         try {
-            $orderedSets = $this->cache->require($this->cacheIdentifier);
-            if ($orderedSets === false) {
-                // Cache entry has been removed in the meantime
-                return null;
-            }
-            if (!is_array($orderedSets)) {
-                // An invalid result is to be ignored (cache will be recreated)
-                return null;
-            }
-            $this->orderedSets = $orderedSets;
+            $setData = $this->cache->require($this->cacheIdentifier);
         } catch (\Error) {
+        }
+        if ($setData === false) {
+            // Cache entry has been removed in the meantime
             return null;
         }
+        if (!is_array($setData) || !isset($setData['orderedSets']) || !isset($setData['invalidSets'])) {
+            throw new \RuntimeException('Invalid "Site Sets" cache entry', 1727809282);
+        }
+        $this->orderedSets = $setData['orderedSets'];
+        $this->invalidSets = $setData['invalidSets'];
         return $this->orderedSets;
     }
 
@@ -107,6 +131,7 @@ class SetRegistry
     protected function computeOrderedSets(): array
     {
         $tmp = [];
+        $this->invalidSets = $this->setCollector->getInvalidSets();
         $sets = $this->setCollector->getSetDefinitions();
         foreach ($sets as $set) {
             foreach ($set->dependencies as $dependencyName) {
@@ -117,6 +142,11 @@ class SetRegistry
                     'name' => $set->name,
                     'dependency' => $dependencyName,
                 ]);
+                $this->invalidSets[$set->name] = [
+                    'error' => SetError::missingDependency,
+                    'name' => $set->name,
+                    'context' => $dependencyName,
+                ];
                 continue 2;
             }
             $tmp[$set->name] = [
@@ -130,7 +160,12 @@ class SetRegistry
             static fn(array $data): SetDefinition => $data['set'],
             $this->dependencyOrderingService->orderByDependencies($tmp)
         );
-        $this->cache->set($this->cacheIdentifier, 'return ' . var_export($this->orderedSets, true) . ';');
+
+        $setData = [
+            'orderedSets' => $this->orderedSets,
+            'invalidSets' => $this->invalidSets,
+        ];
+        $this->cache->set($this->cacheIdentifier, 'return ' . var_export($setData, true) . ';');
         return $this->orderedSets;
     }
 

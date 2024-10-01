@@ -56,16 +56,27 @@ class YamlSetDefinitionProvider
             throw new InvalidSetException('Invalid set definition. Filename: ' . $filename, 1711024370, $e);
         }
         $path = dirname($filename);
+        $setName = $set['name'] ?? '';
 
         $settingsDefinitionsFile = $path . '/settings.definitions.yaml';
         if (is_file($settingsDefinitionsFile)) {
             try {
                 $settingsDefinitions = Yaml::parseFile($settingsDefinitionsFile);
             } catch (ParseException $e) {
-                throw new InvalidSetException('Invalid settings definition. Filename: ' . $settingsDefinitionsFile, 1711024374, $e);
+                throw new InvalidSettingsDefinitionsException(
+                    'Invalid settings definition. Filename: ' . $settingsDefinitionsFile,
+                    1711024374,
+                    $e,
+                    $setName
+                );
             }
             if (!is_array($settingsDefinitions['settings'] ?? null)) {
-                throw new \RuntimeException('Missing "settings" key in settings definitions. Filename: ' . $settingsDefinitionsFile, 1711024378);
+                throw new InvalidSettingsDefinitionsException(
+                    'Missing "settings" key in settings definitions. Filename: ' . $settingsDefinitionsFile,
+                    1711024378,
+                    null,
+                    $setName
+                );
             }
             $set['settingsDefinitions'] = $settingsDefinitions['settings'] ?? [];
             $set['categoryDefinitions'] = $settingsDefinitions['categories'] ?? [];
@@ -76,10 +87,10 @@ class YamlSetDefinitionProvider
             try {
                 $settings = Yaml::parseFile($settingsFile);
             } catch (ParseException $e) {
-                throw new InvalidSetException('Invalid settings format. Filename: ' . $settingsFile, 1711024380, $e);
+                throw new InvalidSettingsException('Invalid settings format. Filename: ' . $settingsFile, 1711024380, $e, $setName);
             }
             if (!is_array($settings)) {
-                throw new \RuntimeException('Invalid settings format. Filename: ' . $settingsFile, 1711024382);
+                throw new InvalidSettingsException('Invalid settings format. Filename: ' . $settingsFile, 1711024382, null, $setName);
             }
             $set['settings'] = $settings;
         }

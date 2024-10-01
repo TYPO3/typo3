@@ -7,10 +7,12 @@
     <h1>
         Site Settings for "{siteTitle}"
         <br>
-        <small class="text-muted">{siteIdentifier} <code>[pid: {rootPageId}]</code></small>
+        <small class="text-muted">{site.dentifier} <code>[pid: {rootPageId}]</code></small>
     </h1>
 
-    <f:if condition="{categories->f:count()} == 0">
+    <f:render partial="SiteManagement/InvalidSets" arguments="{site: site, renderMode: 'infobox'}"/>
+
+    <f:if condition="{categories -> f:count()} == 0">
         <f:then>
             <f:be.infobox
                 state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
@@ -18,18 +20,17 @@
             >
                 <f:translate
                     key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.noSettings.message"
-                    arguments="{0: siteIdentifier}"
+                    arguments="{0: site.identifier}"
                 />
-        </f:be.infobox>
+            </f:be.infobox>
         </f:then>
         <f:else>
             <typo3-backend-settings-editor
                 action-url="{actionUrl}"
                 dump-url="{dumpUrl}"
-                categories="{categories->f:format.json()}"
+                categories="{categories -> f:format.json()}"
                 custom-form-data="{f:format.json(value: {formToken: formToken, returnUrl: returnUrl})}"
             ></typo3-backend-settings-editor>
-
         </f:else>
     </f:if>
 </f:section>

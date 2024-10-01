@@ -1422,6 +1422,21 @@ Do you want to refresh it now?</source>
 			<trans-unit id="labels.contextMenu.open.recordLabel" resname="labels.contextMenu.open.recordLabel">
 				<source>Open context menu for record: %s</source>
 			</trans-unit>
+			<trans-unit id="error.site.invalidSetDependencies" resname="error.site.invalidSetDependencies">
+				<source>This site depends on invalid site sets</source>
+			</trans-unit>
+			<trans-unit id="error.siteSet.notFound" resname="error.siteSet.notFound">
+				<source>Site set '%1$s' not found (referenced by '%2$s')</source>
+			</trans-unit>
+			<trans-unit id="error.siteSet.missingDependency" resname="error.siteSet.missingDependency">
+				<source>Site set '%1$s' is disabled: Missing dependency '%2$s'</source>
+			</trans-unit>
+			<trans-unit id="error.siteSet.invalidSettingsDefinitions" resname="error.siteSet.invalidSettingsDefinitions">
+				<source>Site set '%1$s' is disabled due to invalid settings definitions</source>
+			</trans-unit>
+			<trans-unit id="error.siteSet.invalidSettings" resname="error.siteSet.invalidSettings">
+				<source>Site set '%1$s' is disabled due to invalid settings</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

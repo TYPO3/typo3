@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Routing\PageRouter;
 use TYPO3\CMS\Core\Routing\RouterInterface;
+use TYPO3\CMS\Core\Site\Set\SetError;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -82,6 +83,11 @@ class Site implements SiteInterface
      * @var list<string>
      */
     protected array $sets;
+
+    /**
+     * @var array<string, array{error: SetError, name: string, context: string}>
+     */
+    public array $invalidSets = [];
 
     /**
      * @var array

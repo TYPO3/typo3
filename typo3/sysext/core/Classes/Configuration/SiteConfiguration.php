@@ -33,6 +33,8 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\Site\Entity\SiteTSconfig;
 use TYPO3\CMS\Core\Site\Entity\SiteTypoScript;
+use TYPO3\CMS\Core\Site\Set\SetError;
+use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteSettingsFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -80,6 +82,7 @@ class SiteConfiguration
         #[Autowire('%env(TYPO3:configPath)%/sites')]
         protected string $configPath,
         protected SiteSettingsFactory $siteSettingsFactory,
+        protected SetRegistry $setRegistry,
         protected EventDispatcherInterface $eventDispatcher,
         #[Autowire(service: 'cache.core')]
         protected PhpFrontend $cache,
@@ -120,7 +123,10 @@ class SiteConfiguration
 
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript, $siteTSconfig);
+                $site = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript, $siteTSconfig);
+                $this->determineInvalidSets($site);
+                $sites[$identifier] = $site;
+
             }
         }
         $this->runtimeCache->set(self::CACHE_IDENTIFIER, $sites);
@@ -147,7 +153,9 @@ class SiteConfiguration
 
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript);
+                $site = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript);
+                $this->determineInvalidSets($site);
+                $sites[$identifier] = $site;
             }
         }
         return $sites;
@@ -270,6 +278,24 @@ class SiteConfiguration
             return $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
         }
         return [];
+    }
+
+    protected function determineInvalidSets(Site $site): void
+    {
+        $site->invalidSets = array_filter(
+            $this->setRegistry->getInvalidSets(),
+            static fn($setName) => in_array($setName, $site->getSets(), true),
+            ARRAY_FILTER_USE_KEY
+        );
+        foreach ($site->getSets() as $set) {
+            if (!$this->setRegistry->hasSet($set) && !isset($site->invalidSets[$set])) {
+                $site->invalidSets[$set] = [
+                    'name' => $set,
+                    'error' => SetError::notFound,
+                    'context' => 'site:' . $site->getIdentifier(),
+                ];
+            }
+        }
     }
 
     #[AsEventListener(event: SiteConfigurationChangedEvent::class)]
