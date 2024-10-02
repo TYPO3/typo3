@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -65,6 +66,7 @@ final class PageRecordProvider implements SearchProviderInterface
         protected readonly UriBuilder $uriBuilder,
         protected readonly QueryParser $queryParser,
         protected readonly SiteFinder $siteFinder,
+        protected readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
@@ -270,17 +272,7 @@ final class PageRecordProvider implements SearchProviderInterface
     protected function extractSearchableFieldsFromTable(): array
     {
         // Get the list of fields to search in from the TCA, if any
-        if (isset($GLOBALS['TCA']['pages']['ctrl']['searchFields'])) {
-            $fieldListArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA']['pages']['ctrl']['searchFields'], true);
-        } else {
-            $fieldListArray = [];
-        }
-        // Add special fields
-        if ($this->getBackendUser()->isAdmin()) {
-            $fieldListArray[] = 'uid';
-            $fieldListArray[] = 'pid';
-        }
-        return $fieldListArray;
+        return $this->searchableSchemaFieldsCollector->getUniqueFieldList('pages', [], $this->getBackendUser()->isAdmin());
     }
 
     protected function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder): array

@@ -54,6 +54,9 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
+use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
+use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -409,6 +412,7 @@ class DatabaseRecordList
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly ModuleProvider $moduleProvider,
+        protected readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
     ) {
         $this->calcPerms = new Permission();
         $this->spaceIcon = '<span class="btn btn-default disabled" aria-hidden="true">' . $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
@@ -2544,49 +2548,37 @@ class DatabaseRecordList
             return '';
         }
 
-        $searchableFields = [];
+        $searchableFields = $this->searchableSchemaFieldsCollector->getFields($table);
         // Get fields from ctrl section of TCA first
-        if (isset($GLOBALS['TCA'][$table]['ctrl']['searchFields'])) {
-            $searchableFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['searchFields'], true);
-        }
-
         if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
             $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
-            foreach ($searchableFields as $fieldName) {
-                if (!isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
-                    continue;
-                }
-                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
-                $fieldType = $fieldConfig['type'];
-                if (($fieldType === 'number' && ($fieldConfig['format'] ?? 'integer') === 'integer')
-                    || ($fieldType === 'datetime' && !in_array($fieldConfig['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true))
+            foreach ($searchableFields as $field) {
+                $fieldConfig = $field->getConfiguration();
+                if (($field instanceof NumberFieldType && $field->getFormat() === 'integer')
+                    || ($field instanceof DateTimeFieldType && !$field->getPersistenceType())
                 ) {
                     if (!isset($fieldConfig['search']['pidonly'])
                         || ($fieldConfig['search']['pidonly'] && $currentPid > 0)
                     ) {
                         $constraints[] = $expressionBuilder->and(
-                            $expressionBuilder->eq($fieldName, (int)$this->searchString),
-                            $expressionBuilder->eq($tablePidField, (int)$currentPid)
+                            $expressionBuilder->eq($field->getName(), (int)$this->searchString),
+                            $expressionBuilder->eq($tablePidField, $currentPid)
                         );
                     }
-                } elseif ($this->isTextFieldType($fieldType)) {
+                } elseif ($this->isTextFieldType($field->getType())) {
                     $constraints[] = $expressionBuilder->like(
-                        $fieldName,
+                        $field->getName(),
                         $queryBuilder->quote('%' . $this->searchString . '%')
                     );
                 }
             }
-        } elseif (!empty($searchableFields)) {
+        } elseif ($searchableFields->count() > 0) {
             $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->searchString) . '%');
-            foreach ($searchableFields as $fieldName) {
-                if (!isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
-                    continue;
-                }
-                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
-                $fieldType = $fieldConfig['type'];
+            foreach ($searchableFields as $field) {
+                $fieldConfig = $field->getConfiguration();
                 $searchConstraint = $expressionBuilder->and(
                     $expressionBuilder->comparison(
-                        'LOWER(' . $queryBuilder->castFieldToTextType($fieldName) . ')',
+                        'LOWER(' . $queryBuilder->castFieldToTextType($field->getName()) . ')',
                         'LIKE',
                         'LOWER(' . $like . ')'
                     )
@@ -2595,7 +2587,7 @@ class DatabaseRecordList
                     $searchConfig = $fieldConfig['search'];
                     if ($searchConfig['case'] ?? false) {
                         // Replace case insensitive default constraint
-                        $searchConstraint = $expressionBuilder->and($expressionBuilder->like($fieldName, $like));
+                        $searchConstraint = $expressionBuilder->and($expressionBuilder->like($field->getName(), $like));
                     }
                     if (($searchConfig['pidonly'] ?? false) && $currentPid > 0) {
                         $searchConstraint = $searchConstraint->with($expressionBuilder->eq($tablePidField, (int)$currentPid));
@@ -2606,7 +2598,7 @@ class DatabaseRecordList
                         );
                     }
                 }
-                if ($this->isTextFieldType($fieldType) && $searchConstraint->count() !== 0) {
+                if ($this->isTextFieldType($field->getType()) && $searchConstraint->count() !== 0) {
                     $constraints[] = $searchConstraint;
                 }
             }

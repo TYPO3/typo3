@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
@@ -68,7 +69,8 @@ readonly class RemoteServer
         protected IconFactory $iconFactory,
         protected Avatar $avatar,
         protected ConnectionPool $connectionPool,
-        protected TcaDatabaseRecord $tcaDatabaseRecord
+        protected TcaDatabaseRecord $tcaDatabaseRecord,
+        protected SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
     ) {}
 
     /**
@@ -546,9 +548,6 @@ readonly class RemoteServer
             $fieldList = [];
         }
 
-        return array_unique(array_merge(
-            $fieldList,
-            GeneralUtility::trimExplode(',', (string)($GLOBALS['TCA'][$table]['ctrl']['searchFields'] ?? ''))
-        ));
+        return $this->searchableSchemaFieldsCollector->getUniqueFieldList($table, $fieldList, false);
     }
 }

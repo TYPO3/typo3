@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -67,6 +68,7 @@ class ElementInformationController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ResourceFactory $resourceFactory,
         private readonly FormDataCompiler $formDataCompiler,
+        private readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
     ) {}
 
     /**
@@ -370,9 +372,7 @@ class ElementInformationController
             $fieldList = [];
         }
 
-        $searchFields = GeneralUtility::trimExplode(',', ($GLOBALS['TCA'][$table]['ctrl']['searchFields'] ?? ''));
-
-        return array_unique(array_merge($fieldList, $searchFields));
+        return $this->searchableSchemaFieldsCollector->getUniqueFieldList($table, $fieldList, false);
     }
 
     /**

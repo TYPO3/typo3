@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -63,6 +64,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         protected readonly LanguageServiceFactory $languageServiceFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly QueryParser $queryParser,
+        protected readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
@@ -338,17 +340,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     protected function extractSearchableFieldsFromTable(string $tableName): array
     {
         // Get the list of fields to search in from the TCA, if any
-        if (isset($GLOBALS['TCA'][$tableName]['ctrl']['searchFields'])) {
-            $fieldListArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$tableName]['ctrl']['searchFields'], true);
-        } else {
-            $fieldListArray = [];
-        }
-        // Add special fields
-        if ($this->getBackendUser()->isAdmin()) {
-            $fieldListArray[] = 'uid';
-            $fieldListArray[] = 'pid';
-        }
-        return $fieldListArray;
+        return $this->searchableSchemaFieldsCollector->getUniqueFieldList($tableName, [], $this->getBackendUser()->isAdmin());
     }
 
     /**

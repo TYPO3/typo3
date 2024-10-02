@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
@@ -125,7 +126,8 @@ final class RemoteServerTest extends UnitTestCase
             $this->createMock(IconFactory::class),
             $this->createMock(Avatar::class),
             new ConnectionPool(),
-            new TcaDatabaseRecord()
+            new TcaDatabaseRecord(),
+            $this->createMock(SearchableSchemaFieldsCollector::class)
         );
         $subjectReflection = new \ReflectionObject($subject);
         $result = $subjectReflection->getMethod('prepareFileReferenceDifferences')

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
+use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -142,12 +143,8 @@ class SearchTermRestriction implements QueryRestrictionInterface
 
             return $searchFields;
         }
-        $fieldListArray = [];
-        // Get the list of fields to search in from the TCA, if any
-        if (isset($GLOBALS['TCA'][$tableName]['ctrl']['searchFields'])) {
-            $fieldListArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$tableName]['ctrl']['searchFields'], true);
-        }
 
-        return $fieldListArray;
+        // Get the list of fields to search in from the TCA, if any
+        return GeneralUtility::makeInstance(SearchableSchemaFieldsCollector::class)->getFieldNames($tableName);
     }
 }
