@@ -21,8 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
-use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -35,6 +33,7 @@ use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
+use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
@@ -63,14 +62,13 @@ readonly class RemoteServer
         protected StagesService $stagesService,
         protected WorkspaceService $workspaceService,
         protected EventDispatcherInterface $eventDispatcher,
-        private FormDataCompiler $formDataCompiler,
         protected FlexFormValueFormatter $flexFormValueFormatter,
         private DiffUtility $diffUtility,
         protected IconFactory $iconFactory,
         protected Avatar $avatar,
         protected ConnectionPool $connectionPool,
-        protected TcaDatabaseRecord $tcaDatabaseRecord,
         protected SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
+        protected VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
     ) {}
 
     /**
@@ -113,7 +111,7 @@ readonly class RemoteServer
             'tables_select',
             $parameter->language !== null ? (int)$parameter->language : null
         );
-        $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace(), $request);
+        $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
         return $data;
     }
 
@@ -123,7 +121,7 @@ readonly class RemoteServer
      * @param \stdClass $parameter
      * @return array $data
      */
-    public function getRowDetails($parameter, ServerRequestInterface $request)
+    public function getRowDetails($parameter)
     {
         $diffReturnArray = [];
         $liveReturnArray = [];
@@ -134,7 +132,7 @@ readonly class RemoteServer
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
         $isNewOrDeletePlaceholder = $versionState === VersionState::NEW_PLACEHOLDER || $versionState === VersionState::DELETE_PLACEHOLDER;
-        $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($parameter->table, $parameter->t3ver_oid, $request)) : [];
+        $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($parameter->table, $liveRecord)) : [];
         foreach ($fieldsOfRecords as $fieldName) {
             if (
                 empty($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'])
@@ -530,24 +528,12 @@ readonly class RemoteServer
     /**
      * Gets the fields suitable for being displayed in new and delete diff views
      */
-    protected function getSuitableFields(string $table, int $uid, ServerRequestInterface $request): array
+    protected function getSuitableFields(string $table, array $row): array
     {
-        try {
-            $result = $this->formDataCompiler->compile(
-                [
-                    'request' => $request,
-                    'command' => 'edit',
-                    'tableName' => $table,
-                    'vanillaUid' => $uid,
-                ],
-                $this->tcaDatabaseRecord
-            );
-            $fieldList = array_unique(array_values($result['columnsToProcess']));
-        } catch (\Exception) {
-            // @todo: Avoid this general exception and catch something specific to not hide-away errors.
-            $fieldList = [];
-        }
-
-        return $this->searchableSchemaFieldsCollector->getUniqueFieldList($table, $fieldList, false);
+        return $this->searchableSchemaFieldsCollector->getUniqueFieldList(
+            $table,
+            $this->visibleSchemaFieldsCollector->getFieldNames($table, $row),
+            false
+        );
     }
 }

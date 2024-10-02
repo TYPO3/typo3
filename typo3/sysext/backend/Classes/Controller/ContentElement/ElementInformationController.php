@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
@@ -40,7 +38,10 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -67,7 +68,8 @@ class ElementInformationController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ResourceFactory $resourceFactory,
-        private readonly FormDataCompiler $formDataCompiler,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
         private readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
     ) {}
 
@@ -142,7 +144,7 @@ class ElementInformationController
         $view->setTitle($pageTitle['table'] . ': ' . $pageTitle['title']);
         $view->assignMultiple($pageTitle);
         $view->assignMultiple($this->getPreview($request));
-        $view->assignMultiple($this->getPropertiesForTable($request));
+        $view->assignMultiple($this->getPropertiesForTable());
         $view->assignMultiple($this->getReferences($request, $uid));
         $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? ''));
         $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
@@ -228,14 +230,14 @@ class ElementInformationController
     /**
      * Get property array for html table
      */
-    protected function getPropertiesForTable(ServerRequestInterface $request): array
+    protected function getPropertiesForTable(): array
     {
         $lang = $this->getLanguageService();
         $propertiesForTable = [];
         $propertiesForTable['extraFields'] = $this->getExtraFields();
 
         // Traverse the list of fields to display for the record:
-        $fieldList = $this->getFieldList($request, $this->table, (int)($this->row['uid'] ?? 0));
+        $fieldList = $this->getFieldList($this->table, $this->row);
 
         foreach ($fieldList as $name) {
             $name = trim($name);
@@ -260,10 +262,6 @@ class ElementInformationController
                 continue;
             }
 
-            $isExcluded = !(!($GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
-            if ($isExcluded) {
-                continue;
-            }
             $label = $lang->sL(BackendUtility::getItemLabel($this->table, $name));
             $label = $label ?: $name;
 
@@ -318,16 +316,11 @@ class ElementInformationController
 
                 // If there is no metadata record, skip it
                 if ($metaData !== []) {
-                    $allowedFields = $this->getFieldList($request, $table, (int)$metaData['uid']);
+                    $allowedFields = $this->getFieldList($table, $metaData);
 
                     foreach ($metaData as $name => $value) {
                         if (in_array($name, $allowedFields, true)) {
                             if (!isset($GLOBALS['TCA'][$table]['columns'][$name])) {
-                                continue;
-                            }
-
-                            $isExcluded = !(!($GLOBALS['TCA'][$table]['columns'][$name]['exclude'] ?? false) || $this->getBackendUser()->check('non_exclude_fields', $table . ':' . $name));
-                            if ($isExcluded) {
                                 continue;
                             }
 
@@ -350,29 +343,26 @@ class ElementInformationController
     /**
      * Get the list of fields that should be shown for the given table
      */
-    protected function getFieldList(ServerRequestInterface $request, string $table, int $uid): array
+    protected function getFieldList(string $table, array $row): array
     {
-        $formDataCompilerInput = [
-            'request' => $request,
-            'command' => 'edit',
-            'tableName' => $table,
-            'vanillaUid' => $uid,
-        ];
-        try {
-            $result = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
-            $fieldList = array_unique(array_values($result['columnsToProcess']));
-
-            $ctrlKeysOfUnneededFields = ['origUid', 'transOrigPointerField', 'transOrigDiffSourceField'];
-            foreach ($ctrlKeysOfUnneededFields as $field) {
-                if (isset($GLOBALS['TCA'][$table]['ctrl'][$field]) && ($key = array_search($GLOBALS['TCA'][$table]['ctrl'][$field], $fieldList, true)) !== false) {
-                    unset($fieldList[$key]);
-                }
+        $fieldNamesToExclude = [];
+        $schema = $this->tcaSchemaFactory->get($table);
+        if ($schema->hasCapability(TcaSchemaCapability::AncestorReferenceField)) {
+            $fieldNamesToExclude[] = $schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName();
+        }
+        if ($schema->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $fieldNamesToExclude[] = $languageCapability->getTranslationOriginPointerField()->getName();
+            if ($languageCapability->hasDiffSourceField()) {
+                $fieldNamesToExclude[] = $languageCapability->getDiffSourceField()?->getName();
             }
-        } catch (\Exception $exception) {
-            $fieldList = [];
         }
 
-        return $this->searchableSchemaFieldsCollector->getUniqueFieldList($table, $fieldList, false);
+        return $this->searchableSchemaFieldsCollector->getUniqueFieldList(
+            $table,
+            $this->visibleSchemaFieldsCollector->getFieldNames($table, $row, $fieldNamesToExclude),
+            false
+        );
     }
 
     /**

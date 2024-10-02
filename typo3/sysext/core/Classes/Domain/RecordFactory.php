@@ -174,7 +174,8 @@ readonly class RecordFactory
             $fullType .= '.' . $recordType;
         }
         $computedProperties = $this->extractComputedProperties($record);
-        return new RawRecord((int)$record['uid'], (int)$record['pid'], $record, $computedProperties, $fullType);
+        // @todo We might want to throw an exception in case uid / pid are not defined.
+        return new RawRecord((int)($record['uid'] ?? 0), (int)($record['pid'] ?? 0), $record, $computedProperties, $fullType);
     }
 
     /**
