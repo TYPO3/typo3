@@ -25,8 +25,7 @@ call_user_func(static function () {
             10 = EXT:form/Configuration/Yaml/FormSetup.yaml
         }
     }
-}',
-        false
+}'
     );
 
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][1489772699]

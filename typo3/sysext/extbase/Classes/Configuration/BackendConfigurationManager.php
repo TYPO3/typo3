@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
@@ -77,6 +79,7 @@ final readonly class BackendConfigurationManager
         private SiteFinder $siteFinder,
         private FrontendTypoScriptFactory $frontendTypoScriptFactory,
         private ConnectionPool $connectionPool,
+        private SetRegistry $setRegistry,
     ) {}
 
     /**
@@ -170,6 +173,7 @@ final readonly class BackendConfigurationManager
         }
 
         $rootLine = [];
+        $sysTemplateRows = [];
         $sysTemplateFakeRow = [
             'uid' => 0,
             'pid' => 0,
@@ -193,8 +197,10 @@ final readonly class BackendConfigurationManager
             $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
             ksort($rootLine);
         }
-        if (empty($sysTemplateRows)) {
-            // If there is no page (pid 0 only), or if the first 'is_siteroot' site has no sys_template record,
+
+        $sets = $site instanceof Site ? $this->setRegistry->getSets(...$site->getSets()) : [];
+        if (empty($sysTemplateRows) && $sets === []) {
+            // If there is no page (pid 0 only), or if the first 'is_siteroot' site has no sys_template record or assigned site sets,
             // then we "fake" a sys_template row: This triggers inclusion of 'global' and 'extension static' TypoScript.
             $sysTemplateRows[] = $sysTemplateFakeRow;
         }
