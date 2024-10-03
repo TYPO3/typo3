@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Site;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -41,9 +42,17 @@ final readonly class TcaSiteSetCollector
     {
         $currentValue = $fieldConfiguration['row'][$fieldConfiguration['field']] ?? '';
         $selectedSets = $currentValue === '' ? [] : array_fill_keys(GeneralUtility::trimExplode(',', $currentValue), true);
+
+        $hiddenSets = GeneralUtility::trimExplode(',', $this->getBackendUser()->getTSConfig()['options.']['sites.']['hideSets'] ?? '', true);
         foreach ($this->setRegistry->getAllSets() as $set) {
+            $hidden = $set->hidden || in_array($set->name, $hiddenSets, true);
+            if ($hidden && !isset($selectedSets[$set->name])) {
+                continue;
+            }
             $fieldConfiguration['items'][] = [
-                'label' => $this->getLanguageService()->sL($set->label),
+                'label' => $this->getLanguageService()->sL($set->label) . (
+                    $hidden ? ' (' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden') . ')' : ''
+                ),
                 'value' => $set->name,
             ];
             unset($selectedSets[$set->name]);
@@ -80,6 +89,11 @@ final readonly class TcaSiteSetCollector
             );
             $flashMessageQueue->enqueue($flashMessage);
         }
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

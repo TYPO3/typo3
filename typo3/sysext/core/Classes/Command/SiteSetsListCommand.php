@@ -20,10 +20,11 @@ namespace TYPO3\CMS\Core\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Site\Set\SetCollector;
+use TYPO3\CMS\Core\Site\Set\SetRegistry;
 
 /**
  * Command for listing all configured sites
@@ -31,9 +32,19 @@ use TYPO3\CMS\Core\Site\Set\SetCollector;
 class SiteSetsListCommand extends Command
 {
     public function __construct(
-        protected readonly SetCollector $setCollector
+        protected readonly SetRegistry $setRegistry
     ) {
         parent::__construct();
+    }
+
+    /**
+     * Defines the allowed options for this command
+     */
+    protected function configure(): void
+    {
+        $this->setDefinition([
+            new InputOption('all', 'a', InputOption::VALUE_NONE, 'Show all sets, including hidden ones.'),
+        ]);
     }
 
     /**
@@ -42,7 +53,8 @@ class SiteSetsListCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $sets = $this->setCollector->getSetDefinitions();
+        $showAll = $input->getOption('all') ?? false;
+        $sets = $this->setRegistry->getAllSets();
 
         if ($sets === []) {
             $io->title('No site sets configured');
@@ -58,9 +70,12 @@ class SiteSetsListCommand extends Command
             'Dependencies',
         ]);
         foreach ($sets as $set) {
+            if ($set->hidden && !$showAll) {
+                continue;
+            }
             $table->addRow(
                 [
-                    '<options=bold>' . $set->name . '</>',
+                    '<options=bold>' . $set->name . ($set->hidden ? ' (hidden)' : '') . '</>',
                     $this->getLanguageService()->sL($set->label),
                     implode(', ', [
                         ...$set->dependencies,

@@ -107,6 +107,40 @@ This setting will be exposed as site setting whenever the set
 `my-vendor/my-set` is applied to a site configuration.
 
 
+Hidden sets
+-----------
+
+Sets may be hidden from the backend set selection in
+:guilabel:`Site Management > Sites` and the console command
+:bash:`bin/typo3 site:sets:list` by adding a `hidden` flag to the
+:file:`config.yaml` definition:
+
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Sets/MyHelperSet/config.yaml
+
+    name: my-vendor/my-helperset
+    label: A helper Set that is not visible inside the GUI
+    hidden: true
+
+
+Integrators may choose to hide existing sets from the list of available
+sets for backend users via User TSConfig, in case only a curated list of sets
+shall be selectable:
+
+..  code-block:: typoscript
+    :caption: EXT:my_extension/Configuration/user.tsconfig
+
+    options.sites.hideSets := addToList(typo3/fluid-styled-content)
+
+
+The :guilabel:`Site Management > Sites` GUI will not show hidden sets,
+but makes one exception if a hidden set has already been applied to a site
+(e.g. by manual modification of :file:`config.yaml`). In this case a set
+marked as hidden will be shown in the list of currently activated sets (that means
+it can be introspected and removed via backend UI).
+
+
 Impact
 ======
 

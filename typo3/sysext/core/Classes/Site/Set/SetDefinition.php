@@ -37,6 +37,7 @@ readonly class SetDefinition
         public ?string $typoscript = null,
         public ?string $pagets = null,
         public array $settings = [],
+        public bool $hidden = false,
     ) {}
 
     public function toArray(): array
