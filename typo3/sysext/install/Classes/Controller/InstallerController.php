@@ -453,7 +453,6 @@ final class InstallerController
         $view = $this->initializeView();
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assignMultiple([
-            'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'executeDatabaseDataToken' => $formProtection->generateToken('installTool', 'executeDatabaseData'),
         ]);
         return new JsonResponse([

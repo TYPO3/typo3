@@ -56,7 +56,6 @@ class LoginController extends AbstractController
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view = $this->initializeView($request);
         $view->assignMultiple([
-            'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'loginToken' => $formProtection->generateToken('installTool', 'login'),
             'installToolEnableFilePermanent' => EnableFileService::isInstallToolEnableFilePermanent(),
             'configFile' => $this->configurationManager->getSystemConfigurationFileLocation(true),

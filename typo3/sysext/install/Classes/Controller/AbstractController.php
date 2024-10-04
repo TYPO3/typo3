@@ -53,6 +53,7 @@ class AbstractController
             'currentTypo3Version' => (string)(new Typo3Version()),
             'colorScheme' => $request->getQueryParams()['install']['colorScheme'] ?? '',
             'theme' => $request->getQueryParams()['install']['theme'] ?? '',
+            'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
         ]);
         return $view;
     }
