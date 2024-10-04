@@ -46,7 +46,7 @@ After:
 
     ExtensionManagementUtility::addPlugin(
         [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_headerOnly_title'
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_headerOnly_title',
             'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_headerOnly_description',
             'group' => 'default',
             'value' => 'header',
