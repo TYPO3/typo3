@@ -46,6 +46,7 @@ class StandardPreviewRendererResolver
             $tcaTypeOfRow = $row[$tcaTypeField];
             $typeConfiguration = $tca['types'][$tcaTypeOfRow] ?? [];
 
+            // @deprecated Remove in v14, when "sub types" are removed altogether
             $subTypeValueField = $typeConfiguration['subtype_value_field'] ?? null;
             if (!empty($typeConfiguration['previewRenderer'])) {
                 if (!empty($subTypeValueField) && is_array($typeConfiguration['previewRenderer'])) {

@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 /**
  * This event listener removes the Content Element "General Plugin" (CType: list) if
  * there are no `list_type` plugins registered.
+ *
+ * @deprecated Remove event listener in v14, when the whole sub types feature is removed
  */
 class RemoveListTypePluginFromNewContentElementWizard
 {

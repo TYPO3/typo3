@@ -54,6 +54,32 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     #[Test]
+    public function usageOfSubTypeAddsMessage(): void
+    {
+        $input = [
+            'aTable' => [
+                'types' => [
+                    'aType' => [
+                        'subtype_value_field' => 'subtype_value_file',
+                    ],
+                ],
+            ],
+            'tt_content' => [
+                'types' => [
+                    'list' => [
+                        'subtype_value_field' => 'list_type',
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $subject->migrate($input);
+        $messages = $subject->getMessages();
+        self::assertCount(1, $messages);
+        self::assertStringContainsString('The TCA record type \'aType\' of table \'aTable\' defines the field \'subtype_value_file\' as \'subtype_value_field\'', $messages[0]);
+    }
+
+    #[Test]
     public function migrateReturnsGivenArrayUnchangedIfNoMigrationNeeded(): void
     {
         $input = $expected = [

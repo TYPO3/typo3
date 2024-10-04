@@ -97,6 +97,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
             // *should* be avoided. But sub types should vanish from TCA at some point anyway (this usage shows
             // the complexity they introduce quite well), so we live with the solution for now instead of handing
             // the selected sub type through the system differently.
+            // @deprecated Remove in v14, when "sub types" are removed altogether
             $subtypeValueField = $processedTca['types'][$recordTypeValue]['subtype_value_field'] ?? null;
             $subtypeValue = explode(',', $queryParameters['dataStructureIdentifier']['dataStructureKey'] ?? '')[0];
             if ($subtypeValueField

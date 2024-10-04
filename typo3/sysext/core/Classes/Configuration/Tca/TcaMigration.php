@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Migrate TCA from old to new syntax.
  * Used in bootstrap and Flex Form Data Structures.
  * This is to *migrate* from "old" to "new" TCA syntax,
- * all methods must add a deprecation method if they
+ * all methods must add a deprecation message if they
  * change something.
  *
  * @internal Class and API may change any time.
@@ -49,6 +49,7 @@ class TcaMigration
     public function migrate(array $tca): array
     {
         $this->validateTcaType($tca);
+        $this->deprecateSubTypes($tca);
 
         $tca = $this->migrateColumnsConfig($tca);
         $tca = $this->migratePagesLanguageOverlayRemoval($tca);
@@ -107,7 +108,7 @@ class TcaMigration
      *
      * @param array $tca Incoming TCA
      */
-    protected function validateTcaType(array $tca)
+    protected function validateTcaType(array $tca): void
     {
         foreach ($tca as $table => $tableDefinition) {
             if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
@@ -120,6 +121,30 @@ class TcaMigration
                         1482394401
                     );
                 }
+            }
+        }
+    }
+
+    /**
+     * Adds deprecation log entries for sub types usages
+     */
+    protected function deprecateSubTypes(array $tca): void
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!is_array($tableDefinition['types'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['types'] ?? [] as $typeName => $typeConfig) {
+                if (!isset($typeConfig['subtype_value_field'])
+                    // Do not add deprecation entry for tt_content.list_type as this is deprecated separately
+                    || ($table === 'tt_content' && $typeConfig['subtype_value_field'] === 'list_type')
+                ) {
+                    continue;
+                }
+                $this->messages[] = 'The TCA record type \'' . $typeName . '\' of table \'' . $table . '\' defines the '
+                    . 'field \'' . $typeConfig['subtype_value_field'] . '\' as \'subtype_value_field\', which is '
+                    . 'deprecated since TYPO3 v13 and will stop working in TYPO3 v14. Please adjust your TCA '
+                    . 'accordingly by migrating those sub types to dedicated record types.';
             }
         }
     }

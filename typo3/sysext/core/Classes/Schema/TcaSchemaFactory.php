@@ -212,7 +212,7 @@ class TcaSchemaFactory
                     $subSchemaFields[$fieldName] = $field;
                 }
 
-                // @todo Support of "subtypes" will most likely be deprecated in upcoming versions
+                // @deprecated Remove"sub type" handling in v14
                 $subTypeSchemata = [];
                 if (isset($subSchemaDefinition['subtype_value_field'])
                     && ($subTypeDivisorField = $subSchemaFields[$subSchemaDefinition['subtype_value_field']] ?? null) !== null

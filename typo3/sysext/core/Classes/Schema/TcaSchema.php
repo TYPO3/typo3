@@ -239,7 +239,8 @@ readonly class TcaSchema implements SchemaInterface
     }
 
     /**
-     * @internal "subtype" is not considered as API of TcaSchema since this feature will most likely be deprecated in upcoming versions
+     * @deprecated Remove in v14, when "sub types" are removed altogether
+     * @internal "subtype" is not considered as API of TcaSchema
      */
     public function getSubTypeDivisorField(): ?FieldTypeInterface
     {

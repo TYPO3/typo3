@@ -63,6 +63,7 @@ class TcaColumnsProcessCommon implements FormDataProviderInterface
 
         // fields added to subtypes_addlist (can be pi_flexform)
         $recordTypeValue = $result['recordTypeValue'];
+        // @deprecated Remove in v14, when "sub types" are removed altogether
         if (!empty($result['processedTca']['types'][$recordTypeValue]['subtype_value_field'])) {
             $subtypeFieldName = $result['processedTca']['types'][$recordTypeValue]['subtype_value_field'];
             $fieldName = $result['databaseRow'][$subtypeFieldName] ?? null;

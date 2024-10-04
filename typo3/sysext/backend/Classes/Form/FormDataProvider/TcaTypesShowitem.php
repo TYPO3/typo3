@@ -44,6 +44,7 @@ class TcaTypesShowitem implements FormDataProviderInterface
         $recordTypeValue = $result['recordTypeValue'];
 
         // Handle subtype_value_field, subtypes_addlist, subtypes_excludelist
+        // @deprecated Remove in v14, when "sub types" are removed altogether
         if (!empty($result['processedTca']['types'][$recordTypeValue]['subtype_value_field'])) {
             $subtypeFieldName = $result['processedTca']['types'][$recordTypeValue]['subtype_value_field'];
             if (array_key_exists($subtypeFieldName, $result['databaseRow'])) {

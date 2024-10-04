@@ -276,6 +276,9 @@ class NewContentElementController
             : [];
     }
 
+    /**
+     * @deprecated Remove in v14, when "sub types" are removed altogether
+     */
     protected function loadAvailableWizardsFromPluginSubTypes(): array
     {
         return (($pluginSubtypeValueField = (string)($GLOBALS['TCA']['tt_content']['types']['list']['subtype_value_field'] ?? '')) !== '')
