@@ -557,10 +557,11 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Http\RequestHandler::class),
             $container->get('core.middlewares'),
         );
-        return new Http\Application(
+
+        return self::new($container, Http\Application::class, [
             $requestHandler,
             $container->get(Configuration\ConfigurationManager::class),
-        );
+        ]);
     }
 
     public static function getHttpRequestHandler(ContainerInterface $container): Http\RequestHandler
