@@ -50,6 +50,7 @@ class AbstractController
             'context' => $request->getQueryParams()['install']['context'] ?? '',
             'composerMode' => Environment::isComposerMode(),
             'currentTypo3Version' => (string)(new Typo3Version()),
+            'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
         ]);
         return $view;
     }

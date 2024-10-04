@@ -76,7 +76,6 @@ class LayoutController extends AbstractController
         $view->assignMultiple([
             // time is used as cache bust for js and css resources
             'bust' => $bust,
-            'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'initModule' => $initModule,
             'importmap' => $importMap->render($sitePath, $nonce),
         ]);
