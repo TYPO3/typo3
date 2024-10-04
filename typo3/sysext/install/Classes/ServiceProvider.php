@@ -141,7 +141,10 @@ class ServiceProvider extends AbstractServiceProvider
         $dispatcher->add($container->get(Middleware\Maintenance::class));
         $dispatcher->lazy(NormalizedParamsMiddleware::class);
 
-        return new Http\Application($dispatcher, $container->get(Context::class));
+        return self::new($container, Http\Application::class, [
+            $dispatcher,
+            $container->get(Context::class),
+        ]);
     }
 
     public static function getNotFoundRequestHandler(ContainerInterface $container): Http\NotFoundRequestHandler

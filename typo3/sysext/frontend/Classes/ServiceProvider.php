@@ -65,10 +65,11 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get('frontend.middlewares'),
             $container
         );
-        return new Http\Application(
+
+        return self::new($container, Http\Application::class, [
             $requestHandler,
             $container->get(Context::class),
-        );
+        ]);
     }
 
     public static function provideFallbackRequestHandler(

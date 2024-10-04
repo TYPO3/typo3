@@ -92,10 +92,10 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get('backend.middlewares'),
             $container
         );
-        return new Application(
+        return self::new($container, Application::class, [
             $requestHandler,
             $container->get(Context::class),
-        );
+        ]);
     }
 
     public static function getRequestHandler(ContainerInterface $container): RequestHandler

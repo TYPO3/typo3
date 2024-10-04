@@ -20,13 +20,17 @@ namespace TYPO3\CMS\Core\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 
 /**
  * @internal
  */
-abstract class AbstractApplication implements ApplicationInterface, RequestHandlerInterface
+abstract class AbstractApplication implements ApplicationInterface, RequestHandlerInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private const MULTI_LINE_HEADERS = [
         'set-cookie',
     ];
@@ -92,7 +96,18 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
      */
     final public function run()
     {
-        $response = $this->handle(ServerRequestFactory::fromGlobals());
+        try {
+            $request = ServerRequestFactory::fromGlobals();
+        } catch (\InvalidArgumentException $e) {
+            $this->logger?->debug('Rejected invalid request: {message}', [
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
+            $this->sendResponse(new Response(null, 400));
+            return;
+        }
+
+        $response = $this->handle($request);
         $this->sendResponse($response);
     }
 }
