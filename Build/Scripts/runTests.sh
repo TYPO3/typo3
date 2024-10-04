@@ -565,6 +565,10 @@ else
     CONTAINER_COMMON_PARAMS="${CONTAINER_INTERACTIVE} ${CI_PARAMS} --rm --network ${NETWORK} -v ${CORE_ROOT}:${CORE_ROOT} -w ${CORE_ROOT}"
 fi
 
+if [[ "${CI}" == "true" ]]; then
+    CONTAINER_COMMON_PARAMS="${CONTAINER_COMMON_PARAMS} --add-host \"repo.packagist.org:146.59.12.218\"  --add-host \"github.com:140.82.121.3\" --add-host \"api.github.com:140.82.121.6\""
+fi
+
 if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
     XDEBUG_MODE="-e XDEBUG_MODE=off"
     XDEBUG_CONFIG=" "
