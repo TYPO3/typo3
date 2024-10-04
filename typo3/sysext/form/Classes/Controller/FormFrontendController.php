@@ -93,9 +93,11 @@ class FormFrontendController extends ActionController
      */
     protected function overrideByFlexFormSettings(array $formDefinition): array
     {
-        $flexFormData = GeneralUtility::xml2array($this->request->getAttribute('currentContentObject')?->data['pi_flexform'] ?? '');
-
-        if (!is_array($flexFormData)) {
+        $flexFormData = $this->request->getAttribute('currentContentObject')?->data['pi_flexform'] ?? [];
+        if (is_string($flexFormData) && $flexFormData !== '') {
+            $flexFormData = GeneralUtility::xml2array($flexFormData);
+        }
+        if (!is_array($flexFormData) || $flexFormData === []) {
             return $formDefinition;
         }
 
