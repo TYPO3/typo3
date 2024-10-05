@@ -125,8 +125,8 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
             ],
             [
                 'languageId' => 0,
-                'base' => 'en_US.UTF-8',
-                'locale' => '/en-us/',
+                'base' => '/en-us/',
+                'locale' => 'en_US.UTF-8',
             ],
         ];
         $this->sites = [
