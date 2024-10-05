@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -69,6 +70,9 @@ final class BackendControllerTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/main', ['packageName' => 'typo3/cms-backend', '_identifier' => 'main']));
 
+        $request = $request
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $subject = $this->get(BackendController::class);
         $subject->mainAction($request);
@@ -86,6 +90,9 @@ final class BackendControllerTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['redirect' => 'site_configuration'])
             ->withAttribute('route', new Route('/main', ['packageName' => 'typo3/cms-backend', '_identifier' => 'main']));
+
+        $request = $request
+            ->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
 
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $this->get(BackendController::class)->mainAction($request);

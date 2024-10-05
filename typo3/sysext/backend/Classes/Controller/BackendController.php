@@ -169,6 +169,9 @@ class BackendController
             'modulesInformation' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getModulesInformation(), false),
             'startupModule' => $this->getStartupModule($request),
             'entryPoint' => $this->backendEntryPointResolver->getPathFromRequest($request),
+            // /typo3/install.php is currently physically and statically installed to typo3/install.php
+            // so we must not use BackendEntryPointResolver which is targeted towards virtual backend paths.
+            'installToolPath' => $request->getAttribute('normalizedParams')->getSitePath() . 'typo3/install.php',
             'stateTracker' => (string)$this->uriBuilder->buildUriFromRoute('state-tracker'),
             'sitename' => $title,
             'sitenameFirstInBackendTitle' => ($backendUser->uc['backendTitleFormat'] ?? '') === 'sitenameFirst',
