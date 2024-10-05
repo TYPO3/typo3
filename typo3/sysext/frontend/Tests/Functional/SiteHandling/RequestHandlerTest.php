@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Cache\NonceValueSubstitution;
@@ -27,6 +28,22 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 final class RequestHandlerTest extends AbstractTestCase
 {
+    protected array $configurationToUseInTestInstance = [
+        'SYS' => [
+            'caching' => [
+                // `typo3/testing-framework` uses `NullBackend` per default
+                'cacheConfigurations' => [
+                    'pages' => [
+                        'backend' => Typo3DatabaseBackend::class,
+                    ],
+                    'hash' => [
+                        'backend' => Typo3DatabaseBackend::class,
+                    ],
+                ],
+            ],
+        ],
+    ];
+
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Assets/app.css' => 'fileadmin/app.css',
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Assets/app.js' => 'fileadmin/app.js',
@@ -97,8 +114,7 @@ final class RequestHandlerTest extends AbstractTestCase
         self::assertSame($secondScriptNonce, $secondLinkNonce);
         self::assertNotSame($firstScriptNonce, $secondScriptNonce);
         self::assertStringContainsString(sprintf("'nonce-%s'", $secondScriptNonce), $secondCspHeader);
-        // @todo `FunctionalTestCase` sets caches to `NullBackend`, thus caching cannot be asserted
-        // self::assertStringStartsWith('Cached page generated', $secondResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
+        self::assertStringStartsWith('Cached page generated', $secondResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
     }
 
     #[Test]
