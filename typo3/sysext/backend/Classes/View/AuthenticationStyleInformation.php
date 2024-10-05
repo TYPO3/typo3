@@ -101,19 +101,7 @@ readonly class AuthenticationStyleInformation
 
     public function getLogo(): string
     {
-        $logo = ($this->getBackendExtensionConfiguration()['loginLogo'] ?? '');
-        if ($logo === '') {
-            return '';
-        }
-        $logoUri = $this->getUriForFileName($logo);
-        if ($logoUri === '') {
-            $this->logger->warning('The configured TYPO3 backend login logo "{logo_url}" can\'t be resolved. Please check if the file exists and the extension is activated.', [
-                'logo_url' => $logoUri,
-            ]);
-            return '';
-        }
-
-        return $logoUri;
+        return $this->getBackendExtensionConfiguration()['loginLogo'] ?? '';
     }
 
     public function getLogoAlt(): string
@@ -123,7 +111,7 @@ readonly class AuthenticationStyleInformation
 
     public function getDefaultLogo(): string
     {
-        return $this->getUriForFileName('EXT:core/Resources/Public/Images/typo3_variable.svg');
+        return 'EXT:core/Resources/Public/Images/typo3_variable.svg';
     }
 
     /**
@@ -135,7 +123,7 @@ readonly class AuthenticationStyleInformation
      * @return string Returns the filename of $filename if valid, otherwise blank string.
      * @internal
      */
-    protected function getUriForFileName(string $filename): string
+    public function getUriForFileName(string $filename): string
     {
         // Check if it's already a URL
         if (preg_match('/^(https?:)?\/\//', $filename)) {

@@ -79,13 +79,14 @@ final class LoginLogoViewHelper extends AbstractViewHelper
             return $renderedSvg;
         }
 
-        return $this->renderImage($filepath, $alternativeText);
+        $uri = $this->authenticationStyleInformation->getUriForFileName($filepath);
+        return $this->renderImage($uri, $alternativeText);
     }
 
-    protected function renderImage(string $filepath, string $alt): string
+    protected function renderImage(string $uri, string $alt): string
     {
         return sprintf('<img %s>', GeneralUtility::implodeAttributes([
-            'src' => $filepath,
+            'src' => $uri,
             'alt' => $alt,
         ], true));
     }
@@ -109,6 +110,11 @@ final class LoginLogoViewHelper extends AbstractViewHelper
     protected function parseSvg(string $filepath): ?string
     {
         if (!str_ends_with($filepath, '.svg')) {
+            return null;
+        }
+
+        // Check if it's a URL
+        if (preg_match('/^(https?:)?\/\//', $filepath)) {
             return null;
         }
 
