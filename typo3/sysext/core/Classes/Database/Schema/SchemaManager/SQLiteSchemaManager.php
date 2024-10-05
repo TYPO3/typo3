@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\SQLiteSchemaManager as DoctrineSQLiteSchemaManager;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * Extending the doctrine SQLiteSchemaManager to integrate additional processing stuff
@@ -40,6 +41,33 @@ use Doctrine\DBAL\Schema\SQLiteSchemaManager as DoctrineSQLiteSchemaManager;
 class SQLiteSchemaManager extends DoctrineSQLiteSchemaManager
 {
     use CustomDoctrineTypesColumnDefinitionTrait;
+    use ColumnTypeCommentMethodsTrait;
+
+    /**
+     * Doctrine DBAL v4 dropped column comment based type api, which TYPO3 still needs. To mitigate this, this
+     * method is overridden to reapply the type comment removal, adopted from:
+     *
+     * - https://github.com/doctrine/dbal/blob/61446f07fcb522414d6cfd8b1c3e5f9e18c579ba/src/Schema/SqliteSchemaManager.php#L338-L344
+     *
+     * by using {@see ColumnTypeCommentMethodsTrait::determineColumnType()} to reuse methods.
+     */
+    protected function _getPortableTableColumnList(string $table, string $database, array $tableColumns): array
+    {
+        $list = parent::_getPortableTableColumnList($table, $database, $tableColumns);
+        foreach ($list as $columnName => $column) {
+            $fakeTableColumn = [
+                'type' => $column->getType(),
+                'comment' => $column->getComment(),
+            ];
+            $type = $this->determineColumnType('', $fakeTableColumn);
+            if ($type !== '') {
+                $column->setType(Type::getType($type));
+            }
+            $column->setComment($fakeTableColumn['comment']);
+        }
+
+        return $list;
+    }
 
     /**
      * Gets Table Column Definition.

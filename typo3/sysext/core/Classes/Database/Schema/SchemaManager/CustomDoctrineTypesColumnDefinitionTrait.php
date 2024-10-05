@@ -40,6 +40,8 @@ use Doctrine\DBAL\Types\Type;
  */
 trait CustomDoctrineTypesColumnDefinitionTrait
 {
+    use ColumnTypeCommentMethodsTrait;
+
     /**
      * This method is used to handle additional processing for custom doctrine types.
      *
@@ -79,8 +81,7 @@ trait CustomDoctrineTypesColumnDefinitionTrait
             'comment' => (string)($tableColumn['comment'] ?? ''),
         ];
 
-        $dbType = $this->getDatabaseType($tableColumn['type']);
-        $doctrineType = $platform->getDoctrineTypeMapping($dbType);
+        $doctrineType = $this->determineColumnType($dbType, $tableColumn);
 
         $column = new Column($tableColumn['field'] ?? '', Type::getType($doctrineType), $options);
         $column->setPlatformOption('unquotedValues', $this->getUnquotedEnumerationValues($tableColumn['type']));

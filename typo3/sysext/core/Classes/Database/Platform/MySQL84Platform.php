@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Database\Platform;
 
 use Doctrine\DBAL\Platforms\MySQL84Platform as DoctrineMySQL84Platform;
 use Doctrine\DBAL\Schema\TableDiff as DoctrineTableDiff;
+use TYPO3\CMS\Core\Database\Platform\Traits\GetColumnDeclarationSQLCommentTypeAwareTrait;
+use TYPO3\CMS\Core\Database\Platform\Traits\MySQLCompatibleAlterTablePlatformAwareTrait;
 use TYPO3\CMS\Core\Database\Platform\Traits\MySQLDefaultValueDeclarationSQLOverrideTrait;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 
@@ -31,6 +33,7 @@ use TYPO3\CMS\Core\Database\Schema\TableDiff;
  */
 class MySQL84Platform extends DoctrineMySQL84Platform
 {
+    use GetColumnDeclarationSQLCommentTypeAwareTrait;
     use MySQLCompatibleAlterTablePlatformAwareTrait;
     use MySQLDefaultValueDeclarationSQLOverrideTrait;
 

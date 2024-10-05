@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
@@ -50,6 +53,26 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
 {
     use CustomDoctrineTypesColumnDefinitionTrait;
     use CustomPortableTableIndexesListTrait;
+    use ColumnTypeCommentMethodsTrait;
+
+    /** @see https://mariadb.com/kb/en/library/string-literals/#escape-sequences */
+    private const MARIADB_ESCAPE_SEQUENCES = [
+        '\\0' => "\0",
+        "\\'" => "'",
+        '\\"' => '"',
+        '\\b' => "\b",
+        '\\n' => "\n",
+        '\\r' => "\r",
+        '\\t' => "\t",
+        '\\Z' => "\x1a",
+        '\\\\' => '\\',
+        '\\%' => '%',
+        '\\_' => '_',
+
+        // Internally, MariaDB escapes single quotes using the standard syntax
+        "''" => "'",
+    ];
+
     private const MYSQL_ESCAPE_SEQUENCES = [
         '\\0' => "\0",
         "\\'" => "'",
@@ -83,7 +106,7 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
         $platform = $this->platform;
         $tableColumn = $this->normalizeTableColumnData($tableColumn, $platform);
         return $this->processCustomDoctrineTypesColumnDefinition($tableColumn, $platform)
-            ?? parent::_getPortableTableColumnDefinition($tableColumn);
+            ?? $this->parentGetPortableTableColumnDefinition($tableColumn);
     }
 
     /**
@@ -160,5 +183,170 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
             // connection
             $this->connection,
         );
+    }
+
+    /**
+     * Gets Table Column Definition.
+     *
+     * This is a copy of {@see DoctrineMySQLSchemaManager::_getPortableTableColumnDefinition()} with a minor change
+     * to respect column comments for Doctrine Type matching and thus restoring Doctrine DBAL behaviour before v4.x.
+     *
+     * @param array $tableColumn
+     *
+     * @throws Exception
+     */
+    private function parentGetPortableTableColumnDefinition(array $tableColumn): Column
+    {
+        $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
+
+        $dbType = strtolower($tableColumn['type']);
+        $dbType = strtok($dbType, '(), ');
+        assert(is_string($dbType));
+
+        $length = $tableColumn['length'] ?? strtok('(), ');
+
+        $fixed = false;
+
+        if (! isset($tableColumn['name'])) {
+            $tableColumn['name'] = '';
+        }
+
+        $scale     = 0;
+        $precision = null;
+
+        // Following line differs from \Doctrine\DBAL\Schema\MySQLSchemaManager::_getPortableTableColumnDefinition,
+        // taken from:
+        // - https://github.com/doctrine/dbal/blob/61446f07fcb522414d6cfd8b1c3e5f9e18c579ba/src/Schema/MySQLSchemaManager.php#L186-L192
+        // - https://github.com/doctrine/dbal/blob/61446f07fcb522414d6cfd8b1c3e5f9e18c579ba/src/Schema/PostgreSQLSchemaManager.php#L427-L429
+        $type = $this->determineColumnType($dbType, $tableColumn);
+
+        switch ($dbType) {
+            case 'char':
+            case 'binary':
+                $fixed = true;
+                break;
+
+            case 'float':
+            case 'double':
+            case 'real':
+            case 'numeric':
+            case 'decimal':
+                if (
+                    preg_match(
+                        '([A-Za-z]+\(([0-9]+),([0-9]+)\))',
+                        $tableColumn['type'],
+                        $match,
+                    ) === 1
+                ) {
+                    $precision = (int)$match[1];
+                    $scale     = (int)$match[2];
+                    $length    = null;
+                }
+
+                break;
+
+            case 'tinytext':
+                $length = AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT;
+                break;
+
+            case 'text':
+                $length = AbstractMySQLPlatform::LENGTH_LIMIT_TEXT;
+                break;
+
+            case 'mediumtext':
+                $length = AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMTEXT;
+                break;
+
+            case 'tinyblob':
+                $length = AbstractMySQLPlatform::LENGTH_LIMIT_TINYBLOB;
+                break;
+
+            case 'blob':
+                $length = AbstractMySQLPlatform::LENGTH_LIMIT_BLOB;
+                break;
+
+            case 'mediumblob':
+                $length = AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB;
+                break;
+
+            case 'tinyint':
+            case 'smallint':
+            case 'mediumint':
+            case 'int':
+            case 'integer':
+            case 'bigint':
+            case 'year':
+                $length = null;
+                break;
+        }
+
+        if ($this->platform instanceof MariaDBPlatform) {
+            $columnDefault = $this->getMariaDBColumnDefault($this->platform, $tableColumn['default']);
+        } else {
+            $columnDefault = $tableColumn['default'];
+        }
+
+        $options = [
+            'length'        => $length !== null ? (int)$length : null,
+            'unsigned'      => str_contains($tableColumn['type'], 'unsigned'),
+            'fixed'         => $fixed,
+            'default'       => $columnDefault,
+            'notnull'       => $tableColumn['null'] !== 'YES',
+            'scale'         => $scale,
+            'precision'     => $precision,
+            'autoincrement' => str_contains($tableColumn['extra'], 'auto_increment'),
+        ];
+
+        if (isset($tableColumn['comment'])) {
+            $options['comment'] = $tableColumn['comment'];
+        }
+
+        $column = new Column($tableColumn['field'], Type::getType($type), $options);
+
+        if (isset($tableColumn['characterset'])) {
+            $column->setPlatformOption('charset', $tableColumn['characterset']);
+        }
+
+        if (isset($tableColumn['collation'])) {
+            $column->setPlatformOption('collation', $tableColumn['collation']);
+        }
+
+        return $column;
+    }
+
+    /**
+     * Return Doctrine/Mysql-compatible column default values for MariaDB 10.2.7+ servers.
+     *
+     * - Since MariaDb 10.2.7 column defaults stored in information_schema are now quoted
+     *   to distinguish them from expressions (see MDEV-10134).
+     * - CURRENT_TIMESTAMP, CURRENT_TIME, CURRENT_DATE are stored in information_schema
+     *   as current_timestamp(), currdate(), currtime()
+     * - Quoted 'NULL' is not enforced by Maria, it is technically possible to have
+     *   null in some circumstances (see https://jira.mariadb.org/browse/MDEV-14053)
+     * - \' is always stored as '' in information_schema (normalized)
+     *
+     * @link https://mariadb.com/kb/en/library/information-schema-columns-table/
+     * @link https://jira.mariadb.org/browse/MDEV-13132
+     *
+     * Copy of {@see DoctrineMySQLSchemaManager::getMariaDBColumnDefault()}
+     *
+     * @param string|null $columnDefault default value as stored in information_schema for MariaDB >= 10.2.7
+     */
+    private function getMariaDBColumnDefault(MariaDBPlatform $platform, ?string $columnDefault): ?string
+    {
+        if ($columnDefault === 'NULL' || $columnDefault === null) {
+            return null;
+        }
+
+        if (preg_match('/^\'(.*)\'$/', $columnDefault, $matches) === 1) {
+            return strtr($matches[1], self::MARIADB_ESCAPE_SEQUENCES);
+        }
+
+        return match ($columnDefault) {
+            'current_timestamp()' => $platform->getCurrentTimestampSQL(),
+            'curdate()' => $platform->getCurrentDateSQL(),
+            'curtime()' => $platform->getCurrentTimeSQL(),
+            default => $columnDefault,
+        };
     }
 }

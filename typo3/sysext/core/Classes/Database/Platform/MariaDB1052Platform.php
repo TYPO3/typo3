@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Database\Platform;
 
 use Doctrine\DBAL\Platforms\MariaDB1052Platform as DoctrineMariaDB1052Platform;
 use Doctrine\DBAL\Schema\TableDiff as DoctrineTableDiff;
+use TYPO3\CMS\Core\Database\Platform\Traits\GetColumnDeclarationSQLCommentTypeAwareTrait;
+use TYPO3\CMS\Core\Database\Platform\Traits\MySQLCompatibleAlterTablePlatformAwareTrait;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 
 /**
@@ -30,6 +32,7 @@ use TYPO3\CMS\Core\Database\Schema\TableDiff;
  */
 class MariaDB1052Platform extends DoctrineMariaDB1052Platform
 {
+    use GetColumnDeclarationSQLCommentTypeAwareTrait;
     use MySQLCompatibleAlterTablePlatformAwareTrait;
 
     /**

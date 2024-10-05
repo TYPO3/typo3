@@ -1872,21 +1872,9 @@ class ConnectionMigrator
             return;
         }
 
-        foreach ($table->getColumns() as $column) {
-            // Doctrine DBAL 4 no longer determines the field type taking field comments into account. Due to the fact
-            // that SQLite does not provide a native JSON type, it is created as TEXT field type. In consequence, the
-            // current way to compare columns this leads to a change look for JSON fields. To mitigate this, until the
-            // real Doctrine DBAL 4 way to compare columns can be enabled we need to mirror that type transformation
-            // on the virtual database schema and change the type here.
-            // @see https://github.com/doctrine/dbal/blob/4.0.x/UPGRADE.md#bc-break-removed-platform-commented-type-api
-            if ($column->getType() instanceof JsonType) {
-                $column->setType(new TextType());
-            }
-        }
-
         // doctrine/dbal detects both sqlite autoincrement variants (row_id alias and autoincrement) through assumptions
         // which have been made. TYPO3 reads the ext_tables.sql files as MySQL/MariaDB variant, thus not setting the
-        // autoincrement value to true for the row_id alias variant, which leads to an endless missmatch during database
+        // autoincrement value to true for the row_id alias variant, which leads to an endless mismatch during database
         // comparison. This method adopts the doctrine/dbal assumption and apply it to the meta schema to mitigate
         // endless database compare detections in these cases.
         //

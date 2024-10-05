@@ -21,6 +21,9 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
+use Doctrine\DBAL\Types\IntegerType;
+use Doctrine\DBAL\Types\JsonType;
+use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -787,5 +790,53 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
         $this->verifyMigrationResult($result);
         $this->verifyCleanDatabaseState($sqlCode);
+    }
+
+    public static function introspectTableDoctrineTypeDataSets(): \Generator
+    {
+        yield 'varchar => StringType' => [
+            'createTableDDL' => "CREATE TABLE a_test_table (test_field VARCHAR(100) NOT NULL DEFAULT '');",
+            'tableName' => 'a_test_table',
+            'fieldName' => 'test_field',
+            'expectedType' => StringType::class,
+        ];
+        yield 'int => IntegerType' => [
+            'createTableDDL' => 'CREATE TABLE a_test_table (test_field INT(11) NOT NULL DEFAULT 0);',
+            'tableName' => 'a_test_table',
+            'fieldName' => 'test_field',
+            'expectedType' => IntegerType::class,
+        ];
+        yield 'json => JsonType' => [
+            'createTableDDL' => 'CREATE TABLE a_test_table (test_field JSON);',
+            'tableName' => 'a_test_table',
+            'fieldName' => 'test_field',
+            'expectedType' => JsonType::class,
+        ];
+    }
+
+    #[DataProvider('introspectTableDoctrineTypeDataSets')]
+    #[Test]
+    public function introspectTableReturnsExpectedTypeForField(
+        string $createTableDDL,
+        string $tableName,
+        string $fieldName,
+        string $expectedType,
+    ): void {
+        $subject = $this->createSchemaMigrator();
+        $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($createTableDDL));
+        $this->verifyMigrationResult($result);
+        $this->verifyCleanDatabaseState($createTableDDL);
+
+        $schemaManager = (new ConnectionPool())->getConnectionForTable($tableName)->createSchemaManager();
+        self::assertTrue($schemaManager->tableExists($tableName));
+        $table = $schemaManager->introspectTable($tableName);
+        self::assertTrue($table->hasColumn($fieldName));
+        self::assertSame($expectedType, $table->getColumn($fieldName)->getType()::class);
+
+        $schemaInfo = (new ConnectionPool())->getConnectionForTable($tableName)->getSchemaInformation();
+        self::assertTrue($schemaInfo->introspectSchema()->hasTable($tableName));
+        $table = $schemaInfo->introspectTable($tableName);
+        self::assertTrue($table->hasColumn($fieldName));
+        self::assertSame($expectedType, $table->getColumn($fieldName)->getType()::class);
     }
 }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Platform;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use TYPO3\CMS\Core\Database\Platform\Traits\GetColumnDeclarationSQLCommentTypeAwareTrait;
 
 /**
  * doctrine/dbal 4+ removed the old doctrine event system. The new way is to extend the platform
@@ -28,4 +29,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
  *
  * @internal not part of Public Core API.
  */
-class PostgreSQLPlatform extends DoctrinePostgreSQLPlatform {}
+class PostgreSQLPlatform extends DoctrinePostgreSQLPlatform
+{
+    use GetColumnDeclarationSQLCommentTypeAwareTrait;
+}
