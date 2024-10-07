@@ -5,7 +5,7 @@ acceptance application sys_template mariadb 10.4 php 8.4 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.3"
   artifacts:
     when: on_failure
     paths:
@@ -23,7 +23,7 @@ acceptance application composer postgres 15 php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.3"
   artifacts:
     when: on_failure
     paths:

@@ -5,7 +5,7 @@ accessibility playwright composer sqlite 8.3 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.3"
   artifacts:
     when: on_failure
     paths:
