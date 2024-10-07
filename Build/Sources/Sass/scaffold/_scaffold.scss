@@ -35,6 +35,9 @@
 html {
     height: 100%;
     overflow: hidden;
+}
+
+* {
     scrollbar-color: color-mix(in srgb, var(--typo3-text-color-base), transparent 75%) transparent;
 }
 
