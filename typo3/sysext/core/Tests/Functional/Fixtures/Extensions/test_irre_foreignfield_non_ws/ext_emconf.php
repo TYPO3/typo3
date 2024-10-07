@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'DataHandler Testing test_irre_foreignfield_non_ws',
     'description' => 'DataHandler Testing test_irre_foreignfield_non_ws',
     'category' => 'example',
-    'version' => '13.3.0',
+    'version' => '13.3.1',
     'state' => 'beta',
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.3.0',
+            'typo3' => '13.3.1',
         ],
         'conflicts' => [],
         'suggests' => [],

@@ -4,7 +4,7 @@
 	"description": "A test extension for site config override",
 	"license": "GPL-2.0-or-later",
 	"require": {
-		"typo3/cms-core": "13.3.0"
+		"typo3/cms-core": "13.3.*@dev"
 	},
 	"extra": {
 		"typo3/cms": {
