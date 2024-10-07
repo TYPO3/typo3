@@ -302,25 +302,27 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             switch ($order) {
                 case 'label':
                     $direction = strtolower($direction);
+                    $collator = new \Collator((string)($this->getLanguageService()->getLocale() ?? 'en'));
                     @usort(
                         $items,
-                        static function ($item1, $item2) use ($direction) {
+                        static function ($item1, $item2) use ($direction, $collator) {
                             if ($direction === 'desc') {
-                                return (strcasecmp($item1['label'], $item2['label']) <= 0) ? 1 : 0;
+                                return $collator->compare($item1['label'], $item2['label']) <= 0;
                             }
-                            return strcasecmp($item1['label'], $item2['label']);
+                            return $collator->compare($item1['label'], $item2['label']);
                         }
                     );
                     break;
                 case 'value':
                     $direction = strtolower($direction);
+                    $collator = new \Collator((string)($this->getLanguageService()->getLocale() ?? 'en'));
                     @usort(
                         $items,
-                        static function ($item1, $item2) use ($direction) {
+                        static function ($item1, $item2) use ($direction, $collator) {
                             if ($direction === 'desc') {
-                                return (strcasecmp($item1['value'], $item2['value']) <= 0) ? 1 : 0;
+                                return ($collator->compare((string)$item1['value'], (string)$item2['value']) <= 0) ? 1 : 0;
                             }
-                            return strcasecmp($item1['value'], $item2['value']);
+                            return $collator->compare((string)$item1['value'], (string)$item2['value']);
                         }
                     );
                     break;
