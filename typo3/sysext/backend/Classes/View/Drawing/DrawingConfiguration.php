@@ -96,8 +96,8 @@ class DrawingConfiguration
         } else {
             $obj->activeColumns = $availableColumnPositionsFromBackendLayout;
         }
-        $obj->allowTranslateModeForTranslations = $pageTsConfig['mod.']['web_layout.']['localization.']['enableTranslate'] ?? true;
-        $obj->allowCopyModeForTranslations = $pageTsConfig['mod.']['web_layout.']['localization.']['enableCopy'] ?? true;
+        $obj->allowTranslateModeForTranslations = (bool)($pageTsConfig['mod.']['web_layout.']['localization.']['enableTranslate'] ?? true);
+        $obj->allowCopyModeForTranslations = (bool)($pageTsConfig['mod.']['web_layout.']['localization.']['enableCopy'] ?? true);
 
         return $obj;
     }
