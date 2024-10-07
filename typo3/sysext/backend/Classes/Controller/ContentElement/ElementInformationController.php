@@ -489,8 +489,13 @@ class ElementInformationController
             // Recordlist button
             $actions['webListUrl'] = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $uid, 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()]);
 
+            // retrieve record to get page language
+            $record = BackendUtility::getRecord($table, $uid);
+
             $previewUriBuilder = PreviewUriBuilder::create((int)$uid)
+                ->withLanguage((int)($record[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? 0))
                 ->withRootLine(BackendUtility::BEgetRootLine($uid));
+
             // View page button
             $actions['previewUrlAttributes'] = $previewUriBuilder->serializeDispatcherAttributes();
         }
