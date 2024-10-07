@@ -982,15 +982,15 @@ abstract class AbstractMenuContentObject
         // Will not work out of rootline
         if ($specialValue != ($localRootLine[0]['uid'] ?? null)) {
             $recArr = [];
-            // The page record of the 'value'.
-            $value_rec = $this->sys_page->getPage((int)$specialValue, $this->disableGroupAccessCheck);
+            // The page id of the 'value'
+            $value_rec_pid = $this->sys_page->getPage((int)$specialValue, $this->disableGroupAccessCheck)['pid'] ?? null;
             // 'up' page cannot be outside rootline
-            if ($value_rec['pid']) {
+            if ($value_rec_pid) {
                 // The page record of 'up'.
-                $recArr['up'] = $this->sys_page->getPage((int)$value_rec['pid'], $this->disableGroupAccessCheck);
+                $recArr['up'] = $this->sys_page->getPage((int)$value_rec_pid, $this->disableGroupAccessCheck);
             }
             // If the 'up' item was NOT level 0 in rootline...
-            if (($recArr['up']['pid'] ?? 0) && $value_rec['pid'] != ($localRootLine[0]['uid'] ?? null)) {
+            if (($recArr['up']['pid'] ?? 0) && $value_rec_pid != ($localRootLine[0]['uid'] ?? null)) {
                 // The page record of "index".
                 $recArr['index'] = $this->sys_page->getPage((int)$recArr['up']['pid']);
             }
@@ -1000,7 +1000,10 @@ abstract class AbstractMenuContentObject
                 $additionalWhere .= ' AND pages.no_search=0';
             }
             // prev / next is found
-            $prevnext_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($value_rec['pid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
+            $prevnext_menu = [];
+            if ($value_rec_pid) {
+                $prevnext_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($value_rec_pid, '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
+            }
             $nextActive = false;
             foreach ($prevnext_menu as $k_b => $v_b) {
                 if ($nextActive) {
@@ -1033,7 +1036,7 @@ abstract class AbstractMenuContentObject
                             $nextActive = false;
                         }
                     }
-                    if ($v_b['uid'] == $value_rec['pid']) {
+                    if ($v_b['uid'] == $value_rec_pid) {
                         if (isset($lastKey)) {
                             $sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $sortingField, $additionalWhere, true, $this->disableGroupAccessCheck));
                             if (!empty($sectionRec_temp)) {
