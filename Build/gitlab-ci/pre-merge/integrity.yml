@@ -18,7 +18,7 @@ integration various php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.3"
   script:
     - Build/Scripts/runTests.sh -s composerValidate -p 8.2
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.2
