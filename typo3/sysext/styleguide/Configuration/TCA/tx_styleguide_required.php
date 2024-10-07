@@ -226,6 +226,32 @@ return [
             ],
         ],
 
+        'file_1' => [
+            'label' => 'file_1 typical fal image',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'common-image-types',
+                'minitems' => 1,
+                'appearance' => [
+                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
+                ],
+                'overrideChildTca' => [
+                    'columns' => [
+                        'crop' => [
+                            'description' => 'field description',
+                        ],
+                    ],
+                    'types' => [
+                        \TYPO3\CMS\Core\Resource\FileType::IMAGE->value => [
+                            'showitem' => '
+                                --palette--;;imageoverlayPalette,
+                                --palette--;;filePalette',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+
         'flex_1' => [
             'label' => 'flex_1 required field in flex',
             'config' => [
@@ -361,6 +387,8 @@ return [
                     group_1, group_2,
                 --div--;Inline,
                     inline_1, inline_2, inline_3,
+                --div--;File,
+                    file_1,
                 --div--;Flex,
                     flex_1, flex_2,
                 --div--;Color,
