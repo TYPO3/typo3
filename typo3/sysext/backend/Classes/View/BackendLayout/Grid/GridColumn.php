@@ -157,8 +157,8 @@ class GridColumn extends AbstractGridObject
                     implode(',', $this->getAllContainedItemUids()) => 'edit',
                 ],
             ],
-            'recTitle' => rawurlencode(BackendUtility::getRecordTitle('pages', $pageRecord, true)),
-            'returnUrl' => rawurlencode($this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri()),
+            'recTitle' => BackendUtility::getRecordTitle('pages', $pageRecord, true),
+            'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
         ]);
     }
 
