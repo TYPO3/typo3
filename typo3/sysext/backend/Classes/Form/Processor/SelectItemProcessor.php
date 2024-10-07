@@ -162,25 +162,27 @@ final class SelectItemProcessor
             switch ($order) {
                 case 'label':
                     $direction = strtolower($direction);
+                    $collator = new \Collator((string)($this->getLanguageService()->getLocale() ?? 'en'));
                     @usort(
                         $items,
-                        static function (SelectItem $item1, SelectItem $item2) use ($direction) {
+                        static function (SelectItem $item1, SelectItem $item2) use ($direction, $collator) {
                             if ($direction === 'desc') {
-                                return (strcasecmp($item1->getLabel(), $item2->getLabel()) <= 0) ? 1 : 0;
+                                return $collator->compare($item1->getLabel(), $item2->getLabel()) <= 0;
                             }
-                            return strcasecmp($item1->getLabel(), $item2->getLabel());
+                            return $collator->compare($item1->getLabel(), $item2->getLabel());
                         }
                     );
                     break;
                 case 'value':
                     $direction = strtolower($direction);
+                    $collator = new \Collator((string)($this->getLanguageService()->getLocale() ?? 'en'));
                     @usort(
                         $items,
-                        static function (SelectItem $item1, SelectItem $item2) use ($direction) {
+                        static function (SelectItem $item1, SelectItem $item2) use ($direction, $collator) {
                             if ($direction === 'desc') {
-                                return (strcasecmp((string)$item1->getValue(), (string)$item2->getValue()) <= 0) ? 1 : 0;
+                                return ($collator->compare((string)$item1->getValue(), (string)$item2->getValue()) <= 0) ? 1 : 0;
                             }
-                            return strcasecmp((string)$item1->getValue(), (string)$item2->getValue());
+                            return $collator->compare((string)$item1->getValue(), (string)$item2->getValue());
                         }
                     );
                     break;
