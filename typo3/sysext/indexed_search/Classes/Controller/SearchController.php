@@ -259,9 +259,10 @@ class SearchController extends ActionController
                 }
             }
 
+            $pointer = (int)($searchData['pointer'] ?? 0);
             $paginator = new SlicePaginator(
                 $result['rows'],
-                ((int)$searchData['pointer']) + 1,
+                $pointer + 1,
                 $resultData['count'],
                 $searchData['numberOfResults'],
             );
