@@ -642,6 +642,15 @@ EOT
 
         if ($createSiteFromCli === false && $input->isInteractive()) {
             $questionCreateSite = new Question('Create a basic site? Please enter a URL [default: no] ', false);
+            $questionCreateSite->setNormalizer(function (string $value): string {
+                if (strtolower($value) === 'no') {
+                    // User provided "no" as an answer. Normalize the given input to an empty input to trigger the same
+                    // behavior as no input was given at all.
+                    return '';
+                }
+
+                return $value;
+            });
             $questionCreateSite->setValidator($urlValidator);
 
             return $questionHelper->ask($input, $output, $questionCreateSite);
