@@ -251,14 +251,20 @@
 			<trans-unit id="formEditor.save_button" resname="formEditor.save_button" xml:space="preserve">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="formEditor.form_settings_button" resname="formEditor.form_settings_button" xml:space="preserve">
-				<source>Settings</source>
+			<trans-unit id="formEditor.edit_button" resname="formEditor.edit_button" xml:space="preserve">
+				<source>Edit</source>
 			</trans-unit>
 			<trans-unit id="formEditor.undo_button" resname="formEditor.undo_button" xml:space="preserve">
 				<source>Undo</source>
 			</trans-unit>
 			<trans-unit id="formEditor.redo_button" resname="formEditor.redo_button" xml:space="preserve">
 				<source>Redo</source>
+			</trans-unit>
+			<trans-unit id="formEditor.button_toggle_structure" resname="formEditor.button_toggle_structure" xml:space="preserve">
+				<source>Toggle structure</source>
+			</trans-unit>
+			<trans-unit id="formEditor.button_toggle_inspector" resname="formEditor.button_toggle_inspector" xml:space="preserve">
+				<source>Toggle inspector</source>
 			</trans-unit>
 			<trans-unit id="formEditor.new_page_button" resname="formEditor.new_page_button" xml:space="preserve">
 				<source>Create new step</source>
@@ -268,6 +274,9 @@
 			</trans-unit>
 			<trans-unit id="formEditor.next_step_button" resname="formEditor.edit_mode_button" xml:space="preserve">
 				<source>Next step</source>
+			</trans-unit>
+			<trans-unit id="formEditor.step.name.empty" resname="formEditor.step.name.empty" xml:space="preserve">
+				<source>Step name is not set</source>
 			</trans-unit>
 			<trans-unit id="formEditor.preview_mode_button" resname="formEditor.preview_mode_button" xml:space="preserve">
 				<source>Preview mode</source>

@@ -168,6 +168,8 @@
     }
 
     .modal-btn-group {
+        display: flex;
+        gap: .25rem;
         margin-inline: 0;
     }
 }

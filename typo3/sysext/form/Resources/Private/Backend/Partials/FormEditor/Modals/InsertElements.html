@@ -1,25 +1,21 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
 <div id="t3-form-insert-elements-panel">
-    <div class="t3-form-x-component-inner-wrapper">
-        <f:for each="{insertRenderablesPanelConfiguration}" as="insertRenderablePanelConfiguration">
-            <f:if condition="{insertRenderablePanelConfiguration.key} != 'page'">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h4 class="t3-form-group-{insertRenderablePanelConfiguration.key}">
-                            <span>{insertRenderablePanelConfiguration.label}</span>
-                        </h4>
+    <f:for each="{insertRenderablesPanelConfiguration}" as="insertRenderablePanelConfiguration">
+        <f:if condition="{insertRenderablePanelConfiguration.key} != 'page'">
+            <h4 class="t3-form-group-{insertRenderablePanelConfiguration.key}">
+                <span>{insertRenderablePanelConfiguration.label}</span>
+            </h4>
+            <div class="row">
+                <f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
+                    <div class="col-4 mb-3">
+                        <a class="text-start t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default d-block" title="{element.key}" data-element-type="{element.key}">
+                            <core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
+                            <span>{element.label}</span>
+                        </a>
                     </div>
-                    <f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
-                        <div class="col-4 mb-3">
-                            <a class="text-start t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default d-block" title="{element.key}" data-element-type="{element.key}">
-                                <core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
-                                <span>{element.label}</span>
-                            </a>
-                        </div>
-                    </f:for>
-                </div>
-            </f:if>
-        </f:for>
-    </div>
+                </f:for>
+            </div>
+        </f:if>
+    </f:for>
 </div>
 </html>

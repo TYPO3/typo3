@@ -32,27 +32,24 @@ import type {
   Configuration as HelperConfiguration,
 } from '@typo3/form/backend/form-editor/helper';
 
+enum TreeNodeLinkType {
+  hidden = 'hidden',
+  connect = 'connect',
+  line = 'line',
+  last = 'last',
+}
+
 interface Configuration extends Partial<HelperConfiguration> {
-  isSortable: boolean,
-  svgLink: {
-    height: number,
-    width: number
-    paths: {
-      angle: string,
-      vertical: string,
-      hidden: string,
-    },
-  }
+  isSortable: boolean
 }
 
 const defaultConfiguration: Configuration = {
   domElementClassNames: {
-    collapsed: 'mjs-nestedSortable-collapsed',
-    expanded: 'mjs-nestedSortable-expanded',
-    hasChildren: 't3-form-element-has-children',
+    collapsed: 'collapsed',
+    expanded: 'expanded',
+    hasChildren: 'has-children',
     sortable: 'sortable',
-    svgLinkWrapper: 'svg-wrapper',
-    noNesting: 'mjs-nestedSortable-no-nesting'
+    noNesting: 'no-nesting'
   },
   domElementDataAttributeNames: {
     abstractType: 'data-element-abstract-type'
@@ -63,15 +60,6 @@ const defaultConfiguration: Configuration = {
     title: 'treeTitle'
   },
   isSortable: true,
-  svgLink: {
-    height: 15,
-    paths: {
-      angle: 'M0 0 V20 H15',
-      vertical: 'M0 0 V20 H0',
-      hidden: 'M0 0 V0 H0'
-    },
-    width: 20
-  }
 };
 
 let configuration: Configuration = null;
@@ -120,19 +108,18 @@ function getFormElementDefinition<T extends keyof FormElementDefinition>(
   return getFormEditorApp().getFormElementDefinition(formElement, formElementDefinitionKey);
 }
 
-function getLinkSvg(type: keyof Configuration['svgLink']['paths']): JQuery {
-  return $('<span class="' + getHelper().getDomElementClassName('svgLinkWrapper') + '">'
-    + '<svg version="1.1" width="' + configuration.svgLink.width + '" height="' + configuration.svgLink.height + '">'
-    + '<path class="link" d="' + configuration.svgLink.paths[type] + '">'
-    + '</svg>'
-    + '</span>');
+function renderTreeNodeLink(type: TreeNodeLinkType): HTMLElement {
+  const link = document.createElement('span');
+  link.classList.add('formeditor-tree-line', 'formeditor-tree-line--' + type);
+
+  return link
 }
 
 /**
  * @publish view/tree/render/listItemAdded
  * @throws 1478715704
  */
-function renderNestedSortableListItem(formElement: FormElement): JQuery {
+function renderNestedSortableListItem(formElement: FormElement, current: number, max: number): JQuery {
   assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1478715704);
 
   const listItem = $('<li></li>');
@@ -141,9 +128,11 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
   }
 
   const listItemContent = $('<div></div>')
+    .addClass('formeditor-tree-item')
     .attr(getHelper().getDomElementDataAttribute('elementIdentifier'), formElement.get('__identifierPath'))
     .append(
       $('<span></span>')
+        .addClass('formeditor-tree-title')
         .attr(getHelper().getDomElementDataAttribute('identifier'), getHelper().getDomElementDataAttributeValue('title'))
         .append(buildTitleByFormElement(formElement))
     );
@@ -155,26 +144,32 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
     listItemContent.attr(getHelper().getDomElementDataAttribute('abstractType'), 'isTopLevelFormElement');
   }
 
-  const expanderItem = $('<span></span>').attr('data-identifier', getHelper().getDomElementDataAttributeValue('expander'));
+  const caret = document.createElement('span');
+  caret.classList.add('caret');
+  const expanderItem = $('<span></span>')
+    .addClass('formeditor-tree-expander')
+    .attr('data-identifier', getHelper().getDomElementDataAttributeValue('expander'))
+    .append(caret);
   listItemContent.prepend(expanderItem);
 
   Icons.getIcon(getFormElementDefinition(formElement, 'iconIdentifier'), Icons.sizes.small, null, Icons.states.default).then(function(icon) {
     expanderItem.after(
-      $(icon).addClass(getHelper().getDomElementClassName('icon'))
+      $('<span></span>')
+        .addClass('formeditor-tree-icon')
+        .addClass(getHelper().getDomElementClassName('icon'))
         .attr('title', 'id = ' + formElement.get('identifier'))
+        .append(icon)
     );
 
     if (getFormElementDefinition(formElement, '_isCompositeFormElement')) {
       if (formElement.get('renderables') && formElement.get('renderables').length > 0) {
-        Icons.getIcon(getHelper().getDomElementDataAttributeValue('collapse'), Icons.sizes.small).then(function(icon) {
-          expanderItem.before(getLinkSvg('angle')).html(icon);
-          listItem.addClass(getHelper().getDomElementClassName('hasChildren'));
-        });
+        expanderItem.before(renderTreeNodeLink(current != max ? TreeNodeLinkType.connect : TreeNodeLinkType.last));
+        listItem.addClass(getHelper().getDomElementClassName('hasChildren'));
       } else {
-        expanderItem.before(getLinkSvg('angle')).remove();
+        expanderItem.before(renderTreeNodeLink(TreeNodeLinkType.connect)).remove();
       }
     } else {
-      listItemContent.prepend(getLinkSvg('angle'));
+      listItemContent.prepend(renderTreeNodeLink(current != max ? TreeNodeLinkType.connect : TreeNodeLinkType.last));
       expanderItem.remove();
     }
 
@@ -185,9 +180,9 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
       }
 
       if (searchElement.get('__identifierPath') === getFormEditorApp().getLastFormElementWithinParentFormElement(searchElement).get('__identifierPath')) {
-        listItemContent.prepend(getLinkSvg('hidden'));
+        listItemContent.prepend(renderTreeNodeLink(TreeNodeLinkType.hidden));
       } else {
-        listItemContent.prepend(getLinkSvg('vertical'));
+        listItemContent.prepend(renderTreeNodeLink(TreeNodeLinkType.line));
       }
       searchElement = searchElement.get('__parentRenderable');
     }
@@ -200,7 +195,7 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
   if ('array' === $.type(childFormElements)) {
     childList = $('<ol></ol>');
     for (let i = 0, len = childFormElements.length; i < len; ++i) {
-      childList.append(renderNestedSortableListItem(childFormElements[i]));
+      childList.append(renderNestedSortableListItem(childFormElements[i], i + 1, len));
     }
   }
 
@@ -223,8 +218,8 @@ function addSortableEvents(): void {
     fallbackTolerance: 200,
     fallbackOnBody: true,
     swapThreshold: 0.6,
-    dragClass: 'form-sortable-drag',
-    ghostClass: 'form-sortable-ghost',
+    dragClass: 'formeditor-sortable-drag',
+    ghostClass: 'formeditor-sortable-ghost',
     onChange: function (e) {
       let enclosingCompositeFormElement;
       const parentFormElementIdentifierPath = getParentTreeNodeIdentifierPathWithinDomElement($(e.item));
@@ -325,7 +320,7 @@ export function renderCompositeFormElementChildsAsSortableList(formElement: Form
   const elementList = $('<ol></ol>').addClass(getHelper().getDomElementClassName('sortable'));
   if ('array' === $.type(formElement.get('renderables'))) {
     for (let i = 0, len = formElement.get('renderables').length; i < len; ++i) {
-      elementList.append(renderNestedSortableListItem(formElement.get('renderables')[i]));
+      elementList.append(renderNestedSortableListItem(formElement.get('renderables')[i], i + 1, len));
     }
   }
   return elementList;
@@ -465,17 +460,10 @@ function editTreeNodeLabel(formElementIdentifierPath: string): void {
   const treeNode = getTreeNode(formElementIdentifierPath);
   const titleNode = $(getHelper().getDomElementDataIdentifierSelector('title'), treeNode);
   const currentTitle = titleNode.children()[0].childNodes[0].nodeValue.trim();
-  const treeRootWidth = getTreeDomElement().width();
   let nodeIsEdit = true;
 
   const input = $('<input>')
-    .attr('class', 'node-edit')
-    .css('top', function() {
-      const top = titleNode.position().top;
-      return top + 'px';
-    })
-    .css('left', titleNode.position().left + 'px')
-    .css('width', treeRootWidth - titleNode.position().left + 'px')
+    .attr('class', 'formeditor-tree-edit')
     .attr('type', 'text')
     .attr('value', currentTitle)
     .on('click', (e: Event) => {

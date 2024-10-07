@@ -47,12 +47,12 @@ type PropertyData = Array<{code: string, message: string}>;
 
 const defaultConfiguration: Configuration = {
   domElementClassNames: {
-    buttonFormElementRemove: 't3-form-remove-element-button',
-    collectionElement: 't3-form-collection-element',
+    buttonFormElementRemove: 'formeditor-inspector-element-remove-button',
+    collectionElement: 'formeditor-inspector-collection-element',
     finisherEditorPrefix: 't3-form-inspector-finishers-editor-',
-    inspectorEditor: 'form-editor',
+    inspectorEditor: 'formeditor-inspector-element',
     inspectorInputGroup: 'input-group',
-    validatorEditorPrefix: 't3-form-inspector-validators-editor-'
+    validatorEditorPrefix: 'formeditor-inspector-validators-editor-'
   },
   domElementDataAttributeNames: {
     contentElementSelectorTarget: 'data-insert-target',
@@ -378,8 +378,8 @@ function addSortableCollectionElementsEvents(
     animation: 200,
     fallbackTolerance: 200,
     swapThreshold: 0.6,
-    dragClass: 'form-sortable-drag',
-    ghostClass: 'form-sortable-ghost',
+    dragClass: 'formeditor-sortable-drag',
+    ghostClass: 'formeditor-sortable-ghost',
     onEnd: function (e) {
       let dataAttributeName;
 
@@ -498,19 +498,13 @@ function validateCollectionElement(propertyPath: string, editorHtml: HTMLElement
   if (validationResults.length > 0) {
     getHelper()
       .getTemplatePropertyDomElement('validationErrors', editorHtml)
-      .text(validationResults[0]);
-    getViewModel().setElementValidationErrorClass(
-      getHelper().getTemplatePropertyDomElement('validationErrors', editorHtml)
-    );
+      .html('<span class="text-danger">' + validationResults[0] + '</span>');
     getViewModel().setElementValidationErrorClass(
       getEditorControlsWrapperDomElement(editorHtml),
       'hasError'
     );
   } else {
-    getHelper().getTemplatePropertyDomElement('validationErrors', editorHtml).text('');
-    getViewModel().removeElementValidationErrorClass(
-      getHelper().getTemplatePropertyDomElement('validationErrors', editorHtml)
-    );
+    getHelper().getTemplatePropertyDomElement('validationErrors', editorHtml).html('');
     getViewModel().removeElementValidationErrorClass(
       getEditorControlsWrapperDomElement(editorHtml),
       'hasError'
@@ -735,7 +729,7 @@ export function renderCollectionElementEditors(
   collectionName: keyof FormEditorDefinitions,
   collectionElementIdentifier: string
 ): void {
-  let collapseWrapper, collectionContainer;
+  let collapseWrapper, collapsePanel, collectionContainer;
 
   assert(
     getUtility().isNonEmptyString(collectionName),
@@ -756,7 +750,10 @@ export function renderCollectionElementEditors(
     return;
   }
 
-  const collectionContainerElementWrapper = $('<div></div>').addClass(getHelper().getDomElementClassName('collectionElement'));
+  const collectionContainerElementWrapper = $('<div></div>')
+    .addClass(getHelper().getDomElementClassName('collectionElement'))
+    .addClass('panel')
+    .addClass('panel-default');
   if (collectionName === 'finishers') {
     collectionContainer = getFinishersContainerDomElement();
     collectionContainerElementWrapper
@@ -773,12 +770,12 @@ export function renderCollectionElementEditors(
     collectionElementEditorsLength > 0
     && collectionElementConfiguration.editors[0].identifier === 'header'
   ) {
-    collapseWrapper = $('<div role="tabpanel"></div>')
-      .addClass('panel-collapse collapse')
-      .prop('id', getCollectionElementId(
-        collectionName,
-        collectionElementIdentifier
-      ));
+    collapsePanel = document.createElement('div');
+    collapsePanel.classList.add('panel-body');
+    collapseWrapper = document.createElement('div');
+    collapseWrapper.classList.add('panel-collapse', 'collapse');
+    collapseWrapper.id = getCollectionElementId(collectionName, collectionElementIdentifier);
+    collapseWrapper.appendChild(collapsePanel);
   }
 
   for (let i = 0; i < collectionElementEditorsLength; ++i) {
@@ -806,9 +803,9 @@ export function renderCollectionElementEditors(
       && collapseWrapper
       && collectionElementConfiguration.editors[i].identifier === 'removeButton'
     ) {
-      getCollectionElementDomElement(collectionName, collectionElementIdentifier).append(html);
+      collapsePanel.append(html.get(0));
     } else if (i > 0 && collapseWrapper) {
-      collapseWrapper.append(html);
+      collapsePanel.append(html.get(0));
     } else {
       getCollectionElementDomElement(collectionName, collectionElementIdentifier).append(html);
     }
@@ -931,8 +928,13 @@ export function renderCollectionElementSelectionEditor(
   }
 
   if (removeSelectElement) {
-    getHelper().getTemplatePropertyDomElement('select-group', editorHtml).off().empty().remove();
-    const labelNoSelect = getHelper().getTemplatePropertyDomElement('label-no-select', editorHtml);
+    getHelper()
+      .getTemplatePropertyDomElement('select-group', editorHtml)
+      .off()
+      .empty()
+      .remove();
+    const labelNoSelect = getHelper()
+      .getTemplatePropertyDomElement('label-no-select', editorHtml);
     if (hasAlreadySelectedCollectionElements) {
       labelNoSelect.text(editorConfiguration.label);
     } else {
@@ -977,7 +979,8 @@ export function renderFormElementHeaderEditor(
   ).then(function(icon) {
     getHelper().getTemplatePropertyDomElement('header-label', editorHtml)
       .append($(icon).addClass(getHelper().getDomElementClassName('icon')))
-      .append(buildTitleByFormElement());
+      .append(buildTitleByFormElement())
+      .append('<code>' + getCurrentlySelectedFormElement().get('identifier') + '</code>');
   });
 }
 
@@ -1009,10 +1012,12 @@ export function renderCollectionElementHeaderEditor(
   );
 
   const setData = function(icon?: string) {
+    const iconPlaceholder = getHelper()
+      .getTemplatePropertyDomElement('panel-icon', editorHtml);
     if (icon) {
-      getHelper()
-        .getTemplatePropertyDomElement('header-label', editorHtml)
-        .prepend($(icon));
+      iconPlaceholder.replaceWith(icon);
+    } else {
+      iconPlaceholder.remove();
     }
 
     const editors = getFormEditorApp().getPropertyCollectionElementConfiguration(
@@ -1021,35 +1026,43 @@ export function renderCollectionElementHeaderEditor(
     ).editors;
 
     if (!(
-      (
-        editors.length === 2
-        && editors[0].identifier === 'header'
-        && editors[1].identifier === 'removeButton'
-      ) || (
-        editors.length === 1
-        && editors[0].identifier === 'header'
-      ))
-    ) {
-      Icons.getIcon(
-        getHelper().getDomElementDataAttributeValue('collapse'),
-        Icons.sizes.small,
-        null,
-        Icons.states.default,
-        Icons.markupIdentifiers.inline
-      ).then(function(icon) {
-        const iconWrap = $('<a></a>')
-          .attr('href', getCollectionElementId(collectionName, collectionElementIdentifier, true))
-          .attr('data-bs-toggle', 'collapse')
-          .attr('aria-expanded', 'false')
-          .attr('aria-controls', getCollectionElementId(collectionName, collectionElementIdentifier))
-          .addClass('collapsed')
-          .append($(icon));
+      (editors.length === 2 && editors[0].identifier === 'header' && editors[1].identifier === 'removeButton') ||
+      (editors.length === 1 && editors[0].identifier === 'header')
+    )) {
+      const button = document.createElement('button');
+      button.classList.add('panel-button', 'collapsed');
+      button.setAttribute('type', 'button');
+      button.setAttribute('data-bs-toggle', 'collapse');
+      button.setAttribute('data-bs-target', getCollectionElementId(collectionName, collectionElementIdentifier, true));
+      button.setAttribute('aria-expaned', 'false');
+      button.setAttribute('aria-controls', getCollectionElementId(collectionName, collectionElementIdentifier));
 
-        getHelper()
-          .getTemplatePropertyDomElement('header-label', editorHtml)
-          .prepend(iconWrap);
-      });
+      const caret = document.createElement('span');
+      caret.classList.add('caret');
+      getHelper()
+        .getTemplatePropertyDomElement('panel-heading-row', editorHtml)
+        .find('.panel-title')
+        .before(caret);
+      getHelper()
+        .getTemplatePropertyDomElement('panel-heading-row', editorHtml)
+        .wrapInner(button);
     }
+
+    // Move delete button
+    const collectionElement = getCollectionElementDomElement(collectionName, collectionElementIdentifier).get(0);
+    const removeButtonElement = collectionElement.querySelector('.formeditor-inspector-element-remove-button');
+    if (removeButtonElement) {
+      const removeButton = removeButtonElement.querySelector('button');
+      removeButton.classList.add('btn-sm');
+      removeButton.querySelector('.btn-label').classList.add('visually-hidden');
+      const panelActions = document.createElement('div');
+      panelActions.classList.add('panel-actions');
+      panelActions.append(removeButton);
+      getHelper()
+        .getTemplatePropertyDomElement('panel-heading-row', editorHtml)
+        .append(panelActions);
+    }
+    removeButtonElement?.remove();
   }
 
   const collectionElementConfiguration = getFormEditorApp().getFormEditorDefinition(collectionName, collectionElementIdentifier);
@@ -1067,7 +1080,10 @@ export function renderCollectionElementHeaderEditor(
   }
 
   if (editorConfiguration.label) {
-    getHelper().getTemplatePropertyDomElement('label', editorHtml).append(editorConfiguration.label);
+    getHelper()
+      .getTemplatePropertyDomElement('panel-title', editorHtml)
+      .removeAttr('data-template-property')
+      .append(editorConfiguration.label);
   }
 }
 
@@ -1816,8 +1832,8 @@ export function renderPropertyGridEditor(
         // @ts-ignore
         pull: 'clone',
         swapThreshold: 0.6,
-        dragClass: 'form-sortable-drag',
-        ghostClass: 'form-sortable-ghost',
+        dragClass: 'formeditor-sortable-drag',
+        ghostClass: 'formeditor-sortable-ghost',
         onUpdate: function() {
           setPropertyGridData(
             $(editorHtml),

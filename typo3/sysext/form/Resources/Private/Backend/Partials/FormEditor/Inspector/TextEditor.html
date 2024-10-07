@@ -1,25 +1,25 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
-<div class="form-editor">
-    <div class="t3-form-control-group form-group">
-        <label data-random-id data-random-id-attribute="for" data-random-id-number="1"><span data-template-property="label"></span></label>
-        <div class="formengine-field-item">
-            <div data-template-property="fieldExplanationText" class="form-description"></div>
-            <div class="input-group form-control-wrap" data-identifier="inspectorEditorControlsGroup">
-                <div data-identifier="inspectorEditorControlsWrapper">
-                    <input data-random-id data-random-id-attribute="id" data-random-id-number="1" type="text" value="" data-template-property="propertyPath" class="form-control">
-                </div>
-                <span class="input-group-btn" role="group" data-identifier="inspectorEditorFormElementSelectorControlsWrapper">
-                    <span class="btn-group t3-form-dropdown-buttons" data-identifier="inspectorEditorFormElementSelectorSplitButtonContainer">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.formelement_selector.title')}">
-                            <core:icon identifier="actions-variable-select" />
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right" data-identifier="inspectorEditorFormElementSelectorSplitButtonListContainer"></ul>
-                    </span>
-                </span>
+<div class="formeditor-inspector-element">
+    <div class="form-group">
+        <label class="form-label" data-random-id data-random-id-attribute="for" data-random-id-number="1">
+            <span data-template-property="label"></span>
+        </label>
+        <div class="form-description" data-template-property="fieldExplanationText"></div>
+        <div class="input-group form-control-wrap" data-identifier="inspectorEditorControlsGroup">
+            <div data-identifier="inspectorEditorControlsWrapper">
+                <input data-random-id data-random-id-attribute="id" data-random-id-number="1" type="text" value="" data-template-property="propertyPath" class="form-control">
             </div>
-            <span data-template-property="validationErrors"></span>
+            <span class="input-group-btn" role="group" data-identifier="inspectorEditorFormElementSelectorControlsWrapper">
+                <span class="btn-group" data-identifier="inspectorEditorFormElementSelectorSplitButtonContainer">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.formelement_selector.title')}">
+                        <core:icon identifier="actions-variable-select" />
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" data-identifier="inspectorEditorFormElementSelectorSplitButtonListContainer"></ul>
+                </span>
+            </span>
         </div>
+        <div class="form-text" data-template-property="validationErrors"></div>
     </div>
 </div>
 </html>

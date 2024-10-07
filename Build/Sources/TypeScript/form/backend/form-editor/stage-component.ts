@@ -42,12 +42,12 @@ interface Configuration extends Partial<HelperConfiguration> {
 
 const defaultConfiguration: Configuration = {
   domElementClassNames: {
-    formElementIsComposit: 't3-form-element-composit',
-    formElementIsTopLevel: 't3-form-element-toplevel',
-    noNesting: 'mjs-nestedSortable-no-nesting',
+    formElementIsComposit: 'formeditor-element-composit',
+    formElementIsTopLevel: 'formeditor-element-toplevel',
+    noNesting: 'no-nesting',
     selected: 'selected',
     sortable: 'sortable',
-    previewViewPreviewElement: 't3-form-element-preview'
+    previewViewPreviewElement: 'formeditor-element-preview'
   },
   domElementDataAttributeNames: {
     abstractType: 'data-element-abstract-type',
@@ -241,6 +241,8 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
   }
   if (getFormElementDefinition(formElement, '_isTopLevelFormElement')) {
     template.attr(getHelper().getDomElementDataAttribute('abstractType'), 'isTopLevelFormElement');
+  } else {
+    template.addClass('formeditor-element');
   }
   listItem.append(template);
 
@@ -251,6 +253,7 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
   if ('array' === $.type(childFormElements)) {
     childList = $('<ol></ol>');
     childList.addClass(getHelper().getDomElementClassName('sortable'));
+    childList.addClass('formeditor-list');
     for (let i = 0, len = childFormElements.length; i < len; ++i) {
       childList.append(renderNestedSortableListItem(childFormElements[i]));
     }
@@ -275,7 +278,7 @@ function addSortableEvents(): void {
 
   sortableLists.forEach(function (sortableList: HTMLElement) {
     sortableList.querySelectorAll(handleSelector).forEach(function (draggable) {
-      draggable.classList.add('form-sortable-handle');
+      draggable.classList.add('formeditor-sortable-handle');
     });
 
     new Sortable(sortableList, {
@@ -284,8 +287,8 @@ function addSortableEvents(): void {
       draggable: draggableSelector,
       animation: 200,
       swapThreshold: 0.6,
-      dragClass: 'form-sortable-drag',
-      ghostClass: 'form-sortable-ghost',
+      dragClass: 'formeditor-sortable-drag',
+      ghostClass: 'formeditor-sortable-ghost',
       onStart: function (e) {
         getPublisherSubscriber().publish('view/stage/abstract/dnd/start', [$(e.item), $(e.item)]);
       },
@@ -406,6 +409,7 @@ export function renderFormDefinitionPageAsSortableList(pageIndex: number): JQuer
   );
 
   return $('<ol></ol>')
+    .addClass('formeditor-list')
     .append(renderNestedSortableListItem(getRootFormElement().get('renderables')[pageIndex]));
 }
 

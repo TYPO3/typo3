@@ -355,18 +355,10 @@ class FormEditorController extends ActionController
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $getVars = $request->getArguments();
         if (isset($getVars['action']) && $getVars['action'] === 'index') {
-            $newPageButton = $buttonBar->makeInputButton()
-                ->setDataAttributes(['action' => 'formeditor-new-page', 'identifier' => 'headerNewPage'])
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.new_page_button'))
-                ->setName('formeditor-new-page')
-                ->setValue('new-page')
-                ->setClasses('t3-form-element-new-page-button hidden')
-                ->setIcon($this->iconFactory->getIcon('actions-page-new', IconSize::SMALL));
-            $buttonBar->addButton($newPageButton);
             $closeButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(['identifier' => 'closeButton'])
                 ->setHref((string)$this->coreUriBuilder->buildUriFromRoute('web_FormFormbuilder'))
-                ->setClasses('t3-form-element-close-form-button hidden')
+                ->setClasses('formeditor-element-close-form-button hidden')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
                 ->setShowLabelText(true)
                 ->setIcon($this->iconFactory->getIcon('actions-close', IconSize::SMALL));
@@ -376,25 +368,16 @@ class FormEditorController extends ActionController
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.save_button'))
                 ->setName('formeditor-save-form')
                 ->setValue('save')
-                ->setClasses('t3-form-element-save-form-button hidden')
+                ->setClasses('formeditor-element-save-form-button hidden')
                 ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL))
                 ->setShowLabelText(true);
             $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
-            $formSettingsButton = $buttonBar->makeInputButton()
-                ->setDataAttributes(['identifier' => 'formSettingsButton'])
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.form_settings_button'))
-                ->setName('formeditor-form-settings')
-                ->setValue('settings')
-                ->setClasses('t3-form-element-form-settings-button hidden')
-                ->setIcon($this->iconFactory->getIcon('actions-system-extension-configure', IconSize::SMALL))
-                ->setShowLabelText(true);
-            $buttonBar->addButton($formSettingsButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
             $undoButton = $buttonBar->makeInputButton()
                 ->setDataAttributes(['identifier' => 'undoButton'])
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.undo_button'))
                 ->setName('formeditor-undo-form')
                 ->setValue('undo')
-                ->setClasses('t3-form-element-undo-form-button hidden disabled')
+                ->setClasses('formeditor-element-undo-form-button hidden disabled')
                 ->setIcon($this->iconFactory->getIcon('actions-edit-undo', IconSize::SMALL));
             $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
             $redoButton = $buttonBar->makeInputButton()
@@ -402,7 +385,7 @@ class FormEditorController extends ActionController
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.redo_button'))
                 ->setName('formeditor-redo-form')
                 ->setValue('redo')
-                ->setClasses('t3-form-element-redo-form-button hidden disabled')
+                ->setClasses('formeditor-element-redo-form-button hidden disabled')
                 ->setIcon($this->iconFactory->getIcon('actions-edit-redo', IconSize::SMALL));
             $buttonBar->addButton($redoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
         }

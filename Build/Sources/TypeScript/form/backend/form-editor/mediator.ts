@@ -212,6 +212,7 @@ function subscribeEvents(): void {
     getViewModel().renderAbstractStageArea();
     getViewModel().renewStructure();
     getViewModel().renderPagination();
+    getViewModel().showInspectorSidebar();
     getViewModel().renderInspectorEditors();
   });
 

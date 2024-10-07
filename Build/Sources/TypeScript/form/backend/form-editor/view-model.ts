@@ -41,59 +41,40 @@ import type {
 import type { InsertElementsModalConfiguration } from '@typo3/form/backend/form-editor/modals-component';
 import type { JavaScriptItemPayload } from '@typo3/core/java-script-item-processor';
 
-export interface Configuration extends Partial<HelperConfiguration> {
-  panels: {
-    structure: {
-      width: number
-    },
-    stage: {
-      marginLeft: number,
-      marginRight: number,
-      marginLeftCollapsed: number,
-      marginRightCollapsed: number,
-      maxWidthPreview: number,
-      maxWidthAbstract: number,
-    },
-    inspector: {
-      width: number
-    }
-  }
-}
-
 type AdditionalViewModelModules = JavaScriptItemPayload[];
 
-const configuration: Configuration = {
+const configuration: Partial<HelperConfiguration> = {
   domElementClassNames: {
-    formElementIsComposit: 't3-form-element-composit',
-    formElementIsTopLevel: 't3-form-element-toplevel',
+    formElementIsComposit: 'formeditor-element-composit',
+    formElementIsTopLevel: 'formeditor-element-toplevel',
     hasError: 'has-error',
-    headerButtonBar: 'module-docheader-bar-column-left',
-    selectedCompositFormElement: 't3-form-form-composit-element-selected',
-    selectedFormElement: 't3-form-form-element-selected',
-    selectedRootFormElement: 't3-form-root-element-selected',
+    selectedCompositFormElement: 'selected',
+    selectedFormElement: 'selected',
+    selectedRootFormElement: 'selected',
     selectedStagePanel: 't3-form-form-stage-selected',
     sortableHover: 'sortable-hover',
-    stageViewModeAbstract: 't3-form-stage-viewmode-abstract',
-    stageViewModePreview: 't3-form-stage-viewmode-preview',
-    validationErrors: 't3-form-validation-errors',
-    validationChildHasErrors: 't3-form-validation-child-has-error'
+    viewModeAbstract: 'formeditor-module-viewmode-abstract',
+    viewModePreview: 'formeditor-module-viewmode-preview',
+    validationErrors: 'formeditor-validation-errors',
+    validationChildHasErrors: 'formeditor-validation-child-has-error'
   },
   domElementDataAttributeNames: {
     abstractType: 'data-element-abstract-type'
   },
   domElementDataAttributeValues: {
     buttonHeaderClose: 'closeButton',
-    buttonHeaderNewPage: 'headerNewPage',
     buttonHeaderPaginationNext: 'buttonPaginationNext',
     buttonHeaderPaginationPrevious: 'buttonPaginationPrevious',
     buttonHeaderRedo: 'redoButton',
     buttonHeaderSave: 'saveButton',
-    buttonHeaderSettings: 'formSettingsButton',
     buttonHeaderUndo: 'undoButton',
     buttonHeaderViewModeAbstract: 'buttonViewModeAbstract',
     buttonHeaderViewModePreview: 'buttonViewModePreview',
     buttonStageNewElementBottom: 'stageNewElementBottom',
-    buttonStructureNewPage: 'treeNewPageBottom',
+    buttonFormSettings: 'formSettings',
+    buttonToggleStructure: 'formeditorStructureToggle',
+    buttonToggleInspector: 'formeditorInspectorToggle',
+    buttonNewPage: 'newPage',
     iconMailform: 'content-form',
     iconSave: 'actions-document-save',
     iconSaveSpinner: 'spinner-circle',
@@ -110,22 +91,6 @@ const configuration: Configuration = {
     structureSection: 'structureSection',
     structureRootContainer: 'treeRootContainer',
     structureRootElement: 'treeRootElement'
-  },
-  panels: {
-    structure: {
-      width: 300
-    },
-    stage: {
-      marginLeft: 300,
-      marginRight: 325,
-      marginLeftCollapsed: 0,
-      marginRightCollapsed: -25,
-      maxWidthPreview: 1000,
-      maxWidthAbstract: 800
-    },
-    inspector: {
-      width: 350
-    }
   }
 };
 
@@ -418,10 +383,6 @@ function buttonsSetup(): void {
     getPublisherSubscriber().publish('view/header/button/save/clicked', []);
   });
 
-  $(getHelper().getDomElementDataIdentifierSelector('buttonHeaderSettings')).on('click', function() {
-    getPublisherSubscriber().publish('view/header/formSettings/clicked', []);
-  });
-
   $(getHelper().getDomElementDataIdentifierSelector('buttonStageNewElementBottom')).on('click', function() {
     getPublisherSubscriber().publish(
       'view/stage/abstract/button/newElement/clicked', [
@@ -430,11 +391,20 @@ function buttonsSetup(): void {
     );
   });
 
-  $(getHelper().getDomElementDataIdentifierSelector('buttonHeaderNewPage')).on('click', function() {
-    getPublisherSubscriber().publish('view/header/button/newPage/clicked', ['view/insertPages/perform']);
+  $(getHelper().getDomElementDataIdentifierSelector('buttonToggleStructure')).on('click', function() {
+    $(getHelper().getDomElementDataIdentifierSelector('structureSection')).toggleClass('formeditor-sidebar-expanded');
   });
 
-  $(getHelper().getDomElementDataIdentifierSelector('buttonStructureNewPage')).on('click', function() {
+  $(getHelper().getDomElementDataIdentifierSelector('buttonToggleInspector')).on('click', function() {
+    $(getHelper().getDomElementDataIdentifierSelector('inspectorSection')).toggleClass('formeditor-sidebar-expanded');
+  });
+
+
+  $(getHelper().getDomElementDataIdentifierSelector('buttonFormSettings')).on('click', function() {
+    getPublisherSubscriber().publish('view/header/formSettings/clicked', []);
+  });
+
+  $(getHelper().getDomElementDataIdentifierSelector('buttonNewPage')).on('click', function() {
     getPublisherSubscriber().publish('view/structure/button/newPage/clicked', ['view/insertPages/perform']);
   });
 
@@ -497,7 +467,7 @@ export function getFormElementDefinition<T extends keyof FormElementDefinition>(
   return getFormEditorApp().getFormElementDefinition(formElement, formElementDefinitionKey);
 }
 
-export function getConfiguration(): Configuration {
+export function getConfiguration(): Partial<HelperConfiguration> {
   return $.extend(true, {}, configuration);
 }
 
@@ -541,6 +511,12 @@ export function removeAllStructureSelections(): void {
     .removeClass(getHelper().getDomElementClassName('selectedFormElement'));
 }
 
+export function getStructureRootContainer(): JQuery {
+  return $(getHelper().getDomElementDataAttribute('identifier', 'bracesWithKeyValue', [
+    getHelper().getDomElementDataAttributeValue('structureRootContainer')
+  ]));
+}
+
 export function getStructureRootElement(): JQuery {
   return $(getHelper().getDomElementDataAttribute('identifier', 'bracesWithKeyValue', [
     getHelper().getDomElementDataAttributeValue('structureRootElement')
@@ -573,7 +549,7 @@ export function addStructureValidationResults(): void {
     .removeClass(getHelper().getDomElementClassName('validationErrors'))
     .removeClass(getHelper().getDomElementClassName('validationChildHasErrors'));
 
-  removeElementValidationErrorClass(getStructureRootElement());
+  removeElementValidationErrorClass(getStructureRootContainer());
 
   const validationResults = getFormEditorApp().validateFormElementRecursive(getRootFormElement());
   for (let i = 0, len = validationResults.length; i < len; ++i) {
@@ -590,7 +566,7 @@ export function addStructureValidationResults(): void {
 
     if (hasError) {
       if (i === 0) {
-        setElementValidationErrorClass(getStructureRootElement());
+        setElementValidationErrorClass(getStructureRootContainer());
       } else {
         let validationElement = getStructure().getTreeNode(validationResults[i].formElementIdentifierPath);
         setElementValidationErrorClass(validationElement);
@@ -684,6 +660,13 @@ export function renderInspectorEditors(formElement?: FormElement | string, useFa
   }
 }
 
+export function showInspectorSidebar(): void {
+  // Expand inspector sidebar if expander button is visible
+  if (document.querySelector(getHelper().getDomElementDataIdentifierSelector('buttonToggleInspector'))?.getClientRects().length === 1) {
+    document.querySelector(getHelper().getDomElementDataIdentifierSelector('inspectorSection')).classList.add('formeditor-sidebar-expanded');
+  }
+}
+
 export function renderInspectorCollectionElementEditors(
   collectionName: keyof FormEditorDefinitions,
   collectionElementIdentifier: string
@@ -724,28 +707,6 @@ export function renderUndoRedo(): void {
  * @publish view/stage/abstract/render/preProcess
  */
 export function renderAbstractStageArea(useFadeEffect?: boolean, toolbarUseFadeEffect?: boolean): void {
-  $(getHelper().getDomElementDataIdentifierSelector('structureSection'))
-    .animate({
-      'inset-inline-start': '0px'
-    }, 'slow');
-  $(getHelper().getDomElementDataIdentifierSelector('inspectorSection'))
-    .animate({
-      'inset-inline-end': '0px'
-    }, 'slow');
-  $(getHelper().getDomElementDataIdentifierSelector('stageContainer'))
-    .animate({
-      'margin-inline-start': configuration.panels.stage.marginLeft + 'px',
-      'margin-inline-end': configuration.panels.stage.marginRight + 'px'
-    }, 'slow');
-  $(getHelper().getDomElementDataIdentifierSelector('stageContainerInner'))
-    .animate({
-      'max-width': configuration.panels.stage.maxWidthAbstract + 'px'
-    }, 'slow');
-  $(getHelper().getDomElementClassName('headerButtonBar', true))
-    .animate({
-      'margin-inline-start': configuration.panels.structure.width + 'px'
-    }, 'slow');
-
   if (getUtility().isUndefinedOrNull(useFadeEffect)) {
     useFadeEffect = true;
   }
@@ -757,11 +718,11 @@ export function renderAbstractStageArea(useFadeEffect?: boolean, toolbarUseFadeE
   setButtonActive($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderViewModeAbstract')));
   removeButtonActive($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderViewModePreview')));
 
-  const render = (callback: () => void): void => {
-    $(getHelper().getDomElementDataIdentifierSelector('stageContainer'))
-      .addClass(getHelper().getDomElementClassName('stageViewModeAbstract'))
-      .removeClass(getHelper().getDomElementClassName('stageViewModePreview'));
+  $(getHelper().getDomElementDataIdentifierSelector('moduleWrapper'))
+    .addClass(getHelper().getDomElementClassName('viewModeAbstract'))
+    .removeClass(getHelper().getDomElementClassName('viewModePreview'));
 
+  const render = (callback: () => void): void => {
     getStage().renderAbstractStageArea(undefined, callback);
   };
 
@@ -777,7 +738,6 @@ export function renderAbstractStageArea(useFadeEffect?: boolean, toolbarUseFadeE
       }
     });
 
-    showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderNewPage')));
     if (
       formElementTypeDefinition._isTopLevelFormElement
       && !formElementTypeDefinition._isCompositeFormElement
@@ -816,39 +776,15 @@ export function renderAbstractStageArea(useFadeEffect?: boolean, toolbarUseFadeE
  * @publish view/stage/preview/render/postProcess
  */
 export function renderPreviewStageArea(html: string): void {
-  $(getHelper().getDomElementDataIdentifierSelector('structureSection'))
-    .animate({
-      'inset-inline-start': '-' + configuration.panels.structure.width + 'px'
-    }, 'slow');
-  $(getHelper().getDomElementDataIdentifierSelector('inspectorSection'))
-    .animate({
-      'inset-inline-end': '-' + configuration.panels.inspector.width + 'px'
-    }, 'slow');
-  $(getHelper().getDomElementDataIdentifierSelector('stageContainer'))
-    .animate({
-      'margin-inline-start': configuration.panels.stage.marginLeftCollapsed + 'px',
-      'margin-inline-end': configuration.panels.stage.marginRightCollapsed + 'px'
-    }, 'slow');
-  $(getHelper().getDomElementDataIdentifierSelector('stageContainerInner'))
-    .animate({
-      'max-width': configuration.panels.stage.maxWidthPreview + 'px'
-    }, 'slow');
-  $(getHelper().getDomElementClassName('headerButtonBar', true))
-    .animate({
-      'margin-inline-start': configuration.panels.stage.marginLeftCollapsed + 'px'
-    }, 'slow');
-
   setButtonActive($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderViewModePreview')));
   removeButtonActive($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderViewModeAbstract')));
 
+  $(getHelper().getDomElementDataIdentifierSelector('moduleWrapper'))
+    .addClass(getHelper().getDomElementClassName('viewModePreview'))
+    .removeClass(getHelper().getDomElementClassName('viewModeAbstract'));
+
   $(getHelper().getDomElementDataIdentifierSelector('stageSection')).fadeOut(400, function() {
-    $(getHelper().getDomElementDataIdentifierSelector('stageContainer'))
-      .addClass(getHelper().getDomElementClassName('stageViewModePreview'))
-      .removeClass(getHelper().getDomElementClassName('stageViewModeAbstract'));
-
     hideComponent($(getHelper().getDomElementDataIdentifierSelector('buttonStageNewElementBottom')));
-    hideComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderNewPage')));
-
     getStage().renderPreviewStageArea(html);
     $(getHelper().getDomElementDataIdentifierSelector('stageSection')).fadeIn(400);
     getPublisherSubscriber().publish('view/stage/preview/render/postProcess');
@@ -1112,28 +1048,6 @@ export function removeAllStageElementSelectionsBatch(): void {
 }
 
 export function onViewReadyBatch(): void {
-  $(getHelper().getDomElementDataIdentifierSelector('structureSection'))
-    .css({
-      width: configuration.panels.structure.width + 'px',
-      insetStart: '-=' + configuration.panels.structure.width + 'px'
-    });
-  $(getHelper().getDomElementDataIdentifierSelector('inspectorSection'))
-    .css({
-      width: configuration.panels.inspector.width + 'px',
-      insetEnd: '-=' + configuration.panels.inspector.width + 'px'
-    });
-
-  $(getHelper().getDomElementClassName('headerButtonBar', true))
-    .css({
-      'margin-inline-start': configuration.panels.structure.width + 'px'
-    });
-
-  $(getHelper().getDomElementDataIdentifierSelector('stageContainer'))
-    .css({
-      'margin-inline-start': configuration.panels.stage.marginLeft + 'px',
-      'margin-inline-end': configuration.panels.stage.marginRight + 'px'
-    });
-
   hideComponent($(getHelper().getDomElementDataIdentifierSelector('buttonStageNewElementBottom')));
   hideComponent($(getHelper().getDomElementDataIdentifierSelector('stageNewElementRow')));
 
@@ -1148,9 +1062,7 @@ export function onViewReadyBatch(): void {
   hideComponent($(getHelper().getDomElementDataIdentifierSelector('moduleLoadingIndicator')));
   showComponent($(getHelper().getDomElementDataIdentifierSelector('moduleWrapper')));
   showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderSave')));
-  showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderSettings')));
   showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderClose')));
-  showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderNewPage')));
   showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderUndo')));
   showComponent($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderRedo')));
   setButtonActive($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderViewModeAbstract')));

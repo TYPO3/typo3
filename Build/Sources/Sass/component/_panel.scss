@@ -168,7 +168,7 @@
     outline-offset: 0;
     margin: 0;
 
-    &:not(:last-child):not(.collapsed):not(:has(.collapsed)) {
+    &:not(:last-child):not(.collapsed):not(:has(.collapsed)):not(:has(+ .collapse)) {
         --typo3-panel-border-radius-inner-bottom: 0;
     }
 
@@ -192,18 +192,30 @@
             --typo3-caret-rotation: calc(-90deg * var(--typo3-position-modifier));
         }
     }
+}
 
-    &-row {
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        max-width: 100%;
-        gap: .5rem;
+.panel-heading-row {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    gap: .5rem;
 
-        .panel-button {
-            width: auto;
-        }
+    .panel-button {
+        width: auto;
     }
+
+    &-spread {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+}
+
+.panel-heading-column {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem;
 }
 
 //
@@ -396,6 +408,10 @@
     margin-bottom: var(--typo3-spacing);
     border-radius: var(--typo3-panel-group-border-radius-top) var(--typo3-panel-group-border-radius-top) var(--typo3-panel-group-border-radius-bottom) var(--typo3-panel-group-border-radius-bottom);
     box-shadow: var(--typo3-panel-group-box-shadow);
+
+    &:empty {
+        display: none;
+    }
 
     > .panel {
         // Disable stylelint to preserve units

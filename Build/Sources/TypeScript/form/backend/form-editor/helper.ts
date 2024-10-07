@@ -37,12 +37,11 @@ export interface Configuration {
 const defaultConfiguration: Partial<Configuration> = {
   domElementClassNames: {
     active: 'active',
-    buttonCollectionElementRemove: 't3-form-collection-element-remove-button',
-    buttonFormEditor: 't3-form-button',
+    buttonCollectionElementRemove: 'formeditor-inspector-collection-element-remove-button',
+    buttonFormEditor: 'formeditor-button',
     disabled: 'disabled',
     hidden: 'hidden',
-    icon: 't3-form-icon',
-    jQueryUiStateDisabled: 'ui-state-disabled',
+    icon: 'formeditor-icon',
     sortableHover: 'sortable-hover'
   },
   domElementDataAttributeNames: {

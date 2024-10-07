@@ -8,80 +8,119 @@
 <f:layout name="Module" />
 
 <f:section name="Content">
-    <div data-identifier="moduleLoadingIndicator" class="form-editor-loading-spinner">
+    <div class="formeditor-loader" data-identifier="moduleLoadingIndicator">
         <core:icon identifier="spinner-circle" size="medium" />
-        <div class="form-editor-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
+        <div><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
     </div>
-    <div data-identifier="moduleWrapper" class="hidden">
+    <div class="formeditor-module hidden" data-identifier="moduleWrapper">
         <f:format.raw>{formEditorTemplates}</f:format.raw>
-        <section id="t3-form-navigation-component" class="t3-form-x-component" data-identifier="structureSection">
-            <div id="t3-form-structure-panel">
+        <section class="formeditor-sidebar formeditor-sidebar-navigation" data-identifier="structureSection">
+            <div class="formeditor-sidebar-toggle">
+                <button
+                    type="button"
+                    class="btn btn-default btn-sm"
+                    title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_structure')}"
+                    data-identifier="formeditorStructureToggle"
+                    >
+                    <span class="caret"></span>
+                    <span class="visually-hidden">{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_structure')}</span>
+                </button>
+            </div>
+            <div class="formeditor-sidebar-inner">
                 <f:render section="ElementSidebarTree" />
             </div>
         </section>
-        <section id="t3-form-stage-container" data-identifier="stageContainer">
-            <div id="t3-form-stage-inner-container" data-identifier="stageContainerInner">
-                <header id="t3-form-stage-header">
-                    <f:render section="Header" />
-                </header>
-                <div id="t3-form-stage-content">
-                    <f:render section="Stage" />
-                </div>
+        <section class="formeditor-stage" data-identifier="stageContainer">
+            <div class="formeditor-stage-inner" data-identifier="stageContainerInner">
+                <f:render section="Header" />
+                <f:render section="Stage" />
             </div>
         </section>
-        <section id="t3-form-inspector-panels-container" class="t3-form-x-component" data-identifier="inspectorSection">
-            <f:render section="Inspector" />
+        <section class="formeditor-sidebar formeditor-sidebar-inspector" data-identifier="inspectorSection">
+            <div class="formeditor-sidebar-toggle">
+                <button
+                    type="button"
+                    class="btn btn-default btn-sm"
+                    title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_inspector')}"
+                    data-identifier="formeditorInspectorToggle"
+                    >
+                    <span class="caret"></span>
+                    <span class="visually-hidden">{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_inspector')}</span>
+                </button>
+            </div>
+            <div class="formeditor-sidebar-inner">
+                <f:render section="Inspector" />
+            </div>
         </section>
     </div>
 </f:section>
 
 <f:section name="ElementSidebarTree">
-    <div class="t3-form-x-component-inner-wrapper">
-        <div id="t3-form-navigation-component-tree-root-container" data-identifier="treeRootContainer">
+    <div class="formeditor-tree-root" data-identifier="treeRootContainer">
+        <span class="formeditor-tree-icon">
             <core:icon identifier="content-form" />
-            <span id="t3-form-navigation-component-tree-root" data-identifier="treeRootElement"></span>
-        </div>
-        <div class="tree" data-identifier="structure-element"></div>
-        <div class="form-group col-sm-12">
-            <div class="btn-group btn-group-sm" role="group">
-                <a class="btn btn-default t3-form-element-new-page-button" href="#" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.new_page_button')}" data-identifier="treeNewPageBottom"><core:icon identifier="actions-page-new" /> {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.new_page_button')}</a>
-            </div>
-        </div>
+        </span>
+        <span class="formeditor-tree-title" data-identifier="treeRootElement"></span>
     </div>
+    <div class="formeditor-tree" data-identifier="structure-element"></div>
 </f:section>
 
 <f:section name="Header">
-    <h1><span id="t3-form-form-definition-label" data-identifier="formDefinitionLabel"></span></h1>
+    <div class="formeditor-header">
+        <h1 data-identifier="formDefinitionLabel"></h1>
+        <button
+            type="button"
+            class="btn btn-sm btn-default"
+            title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.edit_button')}"
+            data-identifier="formSettings"
+        >
+            <core:icon identifier="actions-cog" />
+            {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.edit_button')}
+        </button>
+    </div>
 </f:section>
 
 <f:section name="Stage">
     <div class="panel panel-default" data-identifier="stagePanel">
         <div class="panel-heading" data-identifier="panelHeading">
-            <span data-identifier="stageHeaderToolbar">
-                <div class="btn-group">
-                    <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.preview_mode_button')}" data-identifier="buttonViewModePreview"><core:icon identifier="actions-document-view" alternativeMarkupIdentifier="inline" /></button>
-                    <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.edit_mode_button')}" data-identifier="buttonViewModeAbstract"><core:icon identifier="actions-document-open" alternativeMarkupIdentifier="inline" /></button>
+            <div class="panel-heading-row panel-heading-row-spread">
+                <div class="panel-heading-column">
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.preview_mode_button')}" data-identifier="buttonViewModePreview"><core:icon identifier="actions-document-view" alternativeMarkupIdentifier="inline" /></button>
+                        <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.edit_mode_button')}" data-identifier="buttonViewModeAbstract"><core:icon identifier="actions-document-open" alternativeMarkupIdentifier="inline" /></button>
+                    </div>
                 </div>
-                <div class="float-end">
+                <div class="panel-heading-column">
                     <span class="panel-label" data-identifier="paginationTitle"></span>
-                    <div class="btn-group">
+                    <div class="btn-group btn-group-sm">
                         <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.previous_step_button')}" data-identifier="buttonPaginationPrevious"><core:icon identifier="actions-view-paging-previous" alternativeMarkupIdentifier="inline" /></button>
                         <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.next_step_button')}" data-identifier="buttonPaginationNext"><core:icon identifier="actions-view-paging-next" alternativeMarkupIdentifier="inline" /></button>
                     </div>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-default"
+                        title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.new_page_button')}"
+                        data-identifier="newPage"
+                    >
+                        <core:icon identifier="actions-page-new" />
+                        {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.new_page_button')}
+                    </button>
                 </div>
-            </span>
-        </div>
-        <div class="form-section" data-identifier="stageSection">
-            <div class="row">
-                <div id="t3-form-stage" class="form-group col-sm-12" data-identifier="stageArea"></div>
             </div>
-            <div class="row" data-identifier="stageNewElementRow">
-                <div class="form-group col-sm-12">
-                    <div class="t3-form-new-element-container">
-                        <div class="btn-group btn-group-sm" role="group">
-                            <a class="btn btn-default" href="#" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element')}" data-identifier="stageNewElementBottom"><core:icon identifier="actions-document-new" /> {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element')}</a>
-                        </div>
-                    </div>
+        </div>
+        <div class="panel-body" data-identifier="stageSection">
+            <div data-identifier="stageArea"></div>
+            <div data-identifier="stageNewElementRow">
+                <div class="formeditor-new-element-container">
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-default"
+                        title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element')}"
+                        data-identifier="stageNewElementBottom"
+                    >
+                        <core:icon identifier="actions-document-new" />
+                        {f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.stage.toolbar.new_element')}
+                    </button>
                 </div>
             </div>
         </div>
@@ -89,11 +128,7 @@
 </f:section>
 
 <f:section name="Inspector">
-    <div id="t3-form-inspector-panels">
-        <div class="t3-form-x-component-inner-wrapper">
-            <div id="t3-form-inspector" data-identifier="inspector"></div>
-        </div>
-    </div>
+    <div class="formeditor-inspector" data-identifier="inspector"></div>
 </f:section>
 
 </html>
