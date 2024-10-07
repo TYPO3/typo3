@@ -45,6 +45,10 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
     expect(fetchStub).calledWithMatch(new URL('https://example.com/'), { method: 'GET' });
   });
 
+  it('sends POST request with empty object', (): void => {
+    (new AjaxRequest('https://example.com')).post({});
+    expect(fetchStub).calledWithMatch(new URL('https://example.com/'), { method: 'POST', body: '' });
+  });
 
   for (const requestMethod of ['POST', 'PUT', 'DELETE']) {
     describe(`send a ${requestMethod} request`, (): void => {
