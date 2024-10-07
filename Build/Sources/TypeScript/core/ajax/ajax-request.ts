@@ -84,7 +84,7 @@ class AjaxRequest {
    */
   public async post(data: string | FormData | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
     const localDefaultOptions: RequestInit = {
-      body: typeof data === 'string' || data instanceof FormData ? data : InputTransformer.byHeader(data, init?.headers),
+      body: typeof data === 'string' || data instanceof FormData ? data : ( Object.keys(data).length ? InputTransformer.byHeader(data, init?.headers) : ''),
       cache: 'no-cache',
       method: 'POST',
     };
