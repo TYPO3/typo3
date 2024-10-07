@@ -1718,6 +1718,31 @@ final class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Checks if getData() works with type "siteLanguage" using a custom "hrefLang"
+     */
+    #[Test]
+    public function getDataWithTypeSiteLanguageForAlternateHrefLang(): void
+    {
+        $pageInformation = new PageInformation();
+        $pageInformation->setPageRecord([]);
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $site = $this->createSiteWithLanguage([
+            'base' => '/',
+            'languageId' => 1,
+            'locale' => 'de_DE',
+            'title' => 'languageTitle',
+            'hreflang' => 'en-US',
+            'navigationTitle' => 'German',
+        ]);
+        $language = $site->getLanguageById(1);
+        $request = $request->withAttribute('language', $language);
+        $this->subject->setRequest($request);
+        self::assertEquals('en-US', $this->subject->getData('siteLanguage:hreflang'));
+        self::assertEquals('de-DE', $this->subject->getData('siteLanguage:locale:full'));
+    }
+
+    /**
      * Checks if getData() works with type "parentRecordNumber"
      */
     #[Test]

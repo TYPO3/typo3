@@ -4099,9 +4099,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if ($key === 'twoLetterIsoCode') {
                             $key = 'locale:languageCode';
                         }
-                        if ($key === 'hreflang') {
-                            $key = 'locale:full';
-                        }
                         // Harmonizing the namings from the site configuration value with the TypoScript setting
                         if ($key === 'flag') {
                             $key = 'flagIdentifier';
@@ -4129,7 +4126,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         } else {
                             $config = $siteLanguage->toArray();
                             if (isset($config[$key])) {
-                                $retVal = $config[$key] ?? '';
+                                $retVal = $config[$key];
                             }
                         }
                         break;
