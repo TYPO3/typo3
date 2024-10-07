@@ -98,6 +98,11 @@ a {
     color: var(--typo3-text-color-default) !important;
 }
 
+.text-highlight {
+    color: inherit !important;
+    background-color: var(--typo3-component-match-highlight-bg) !important;
+}
+
 code,
 .text-code,
 .text-code-emphasis {

@@ -245,7 +245,7 @@
                                 <f:if condition="{displayConstantSubstitutions} && {condition.originalValue}">
                                     <f:then>
                                         <span class="font-monospace">[{condition.value}]</span>
-                                        <span class="diff-item-result diff-item-result-inline font-monospace p-0">
+                                        <span class="diff-inline">
                                             <f:format.raw>
                                                 <f:translate
                                                     key="LLL:EXT:backend/Resources/Private/Language/locallang_pagetsconfig.xlf:module.pagetsconfig_active.panel.info.conditionWithConstant"
@@ -331,7 +331,7 @@
         </f:if>
         <f:if condition="{displayConstantSubstitutions} && {child.originalValueTokenStream}">
             <li class="loose">
-                <span class="diff-item-result diff-item-result-inline">
+                <span class="diff-inline">
                     <f:format.raw>
                         <f:variable name="trimmedValueTokenStream"><f:format.trim>{child.originalValueTokenStream}</f:format.trim></f:variable>
                         <f:translate

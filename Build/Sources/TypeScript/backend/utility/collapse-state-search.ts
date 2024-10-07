@@ -147,8 +147,8 @@ class CollapseStateSearch {
     }
 
     markInstance.mark(term, {
-      element: 'strong',
-      className: 'text-danger'
+      element: 'span',
+      className: 'text-highlight'
     });
   }
 

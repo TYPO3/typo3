@@ -221,6 +221,6 @@ final class TemplateCest
         $I->fillField('#searchValue', 'styles');
         $I->waitForText('Setup');
         $I->waitForText('1 search match(es)');
-        $I->seeInSource('<strong data-markjs="true" class="text-danger">styles</strong>');
+        $I->seeInSource('<span data-markjs="true" class="text-highlight">styles</span>');
     }
 }

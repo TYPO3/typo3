@@ -18,7 +18,10 @@
 //   </div>
 // </div>
 //
-.diff {
+// <span class="diff-inline"><del>old</del><ins>new</ins></span>
+//
+.diff,
+.diff-inline {
     --typo3-diff-padding-y: var(--typo3-component-padding-y);
     --typo3-diff-padding-x: var(--typo3-component-padding-x);
     --typo3-diff-bg: var(--typo3-component-bg);
@@ -30,6 +33,9 @@
     --typo3-diff-del-color: var(--typo3-surface-container-danger-text);
     --typo3-diff-ins-bg: var(--typo3-surface-container-success);
     --typo3-diff-ins-color: var(--typo3-surface-container-success-text);
+}
+
+.diff {
     color: var(--typo3-diff-color);
     background-color: var(--typo3-component-bg);
     border: var(--typo3-diff-border-width) solid var(--typo3-diff-border-color);
@@ -95,5 +101,24 @@
 
     > *:last-child {
         margin-bottom: 0;
+    }
+}
+
+//
+// Inline
+//
+.diff-inline {
+    font-family: var(--typo3-font-family-monospace);
+
+    del {
+        color: var(--typo3-diff-del-color);
+        background-color: var(--typo3-diff-del-bg);
+        text-decoration: none;
+    }
+
+    ins {
+        color: var(--typo3-diff-ins-color);
+        background-color: var(--typo3-diff-ins-bg);
+        text-decoration: none;
     }
 }
