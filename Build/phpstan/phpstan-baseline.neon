@@ -311,11 +311,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
 
 		-
-			message: "#^Offset 2 on array\\{string, non\\-empty\\-string, non\\-empty\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Configuration/CKEditor5Migrator.php
-
-		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Configuration/ExtensionConfiguration.php
@@ -457,11 +452,6 @@ parameters:
 
 		-
 			message: "#^Offset 'aspects' on array\\{0\\: string, flags\\: non\\-falsy\\-string, 1\\: non\\-falsy\\-string, scope\\: non\\-empty\\-string\\|null, 2\\: non\\-empty\\-string\\|null, subject\\: non\\-empty\\-string, 3\\: non\\-empty\\-string, aspects\\: non\\-falsy\\-string, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
-
-		-
-			message: "#^Offset 'flags' on array\\{0\\: string, flags\\: non\\-falsy\\-string, 1\\: non\\-falsy\\-string, scope\\: non\\-empty\\-string\\|null, 2\\: non\\-empty\\-string\\|null, subject\\: non\\-empty\\-string, 3\\: non\\-empty\\-string, aspects\\: non\\-falsy\\-string, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
 

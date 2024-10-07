@@ -720,7 +720,7 @@ class CKEditor5Migrator
                 return $ruleConfig;
             }
             $name = $matches[1];
-            $properties = $matches[2] ?? null;
+            $properties = $matches[2];
             $config = true;
             if ($properties !== null) {
                 $config = [];
