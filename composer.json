@@ -88,6 +88,7 @@
 		"symfony/polyfill-mbstring": "^1.23.1",
 		"symfony/polyfill-php80": "^1.23.1",
 		"symfony/polyfill-php81": "^1.23",
+		"symfony/polyfill-php83": "^1.31",
 		"symfony/property-access": "^5.4",
 		"symfony/property-info": "^5.4",
 		"symfony/rate-limiter": "^5.4.8",
