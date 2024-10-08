@@ -57,33 +57,33 @@ final class ElementsGroupCest
 
         $I->amGoingTo('put "' . $selectOption1 . '" on first position');
         $I->selectOption($select, $selectOption1);
-        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > button.t3js-btn-moveoption-top');
+        $I->click($formWizardsWrap . ' > div:nth-of-type(3) > div > button.t3js-btn-moveoption-top');
         $I->see($selectOption1, $select . ' > option:nth-child(1)');
 
         $I->amGoingTo('put "' . $selectOption1 . '" one position down / on the second position');
         $I->selectOption($select, $selectOption1);
-        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > button.t3js-btn-moveoption-down');
+        $I->click($formWizardsWrap . ' > div:nth-of-type(3) > div > button.t3js-btn-moveoption-down');
         $I->see($selectOption1, $select . ' > option:nth-child(2)');
 
         $I->amGoingTo('put "' . $selectOption1 . '" on the last position');
         $I->selectOption($select, $selectOption1);
-        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > button.t3js-btn-moveoption-bottom');
+        $I->click($formWizardsWrap . ' > div:nth-of-type(3) > div > button.t3js-btn-moveoption-bottom');
         $I->see($selectOption1, $select . ' > option:nth-last-child(1)');
 
         $I->amGoingTo('put "' . $selectOption1 . '" one position up / on second last position');
         $I->selectOption($select, $selectOption1);
-        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > button.t3js-btn-moveoption-up');
+        $I->click($formWizardsWrap . ' > div:nth-of-type(3) > div > button.t3js-btn-moveoption-up');
         $I->see($selectOption1, $select . ' > option:nth-last-child(2)');
 
         $I->amGoingTo('put ' . print_r($multiselect, true) . ' on first position');
         $I->selectOption($select, $multiselect);
-        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > button.t3js-btn-moveoption-top');
+        $I->click($formWizardsWrap . ' > div:nth-of-type(3) > div > button.t3js-btn-moveoption-top');
         $I->see($multiselect[0], $select . ' > option:nth-child(1)');
         $I->see($multiselect[1], $select . ' > option:nth-child(2)');
 
         $I->amGoingTo('put ' . print_r($multiselect, true) . ' one position down');
         $I->selectOption($select, $multiselect);
-        $I->click($formWizardsWrap . ' div:nth-of-type(3) > div > button.t3js-btn-moveoption-down');
+        $I->click($formWizardsWrap . ' > div:nth-of-type(3) > div > button.t3js-btn-moveoption-down');
         $I->see($multiselect[0], $select . ' > option:nth-child(2)');
         $I->see($multiselect[1], $select . ' > option:nth-child(3)');
     }
@@ -157,7 +157,7 @@ final class ElementsGroupCest
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(2)';
 
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
-        $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
+        $I->click($formWizardsWrap . ' > div:nth-of-type(4) > div > a:nth-of-type(1)');
 
         $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
@@ -176,7 +176,7 @@ final class ElementsGroupCest
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(2)';
 
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
-        $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
+        $I->click($formWizardsWrap . ' > div:nth-of-type(4) > div > a:nth-of-type(1)');
 
         $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
@@ -197,10 +197,20 @@ final class ElementsGroupCest
         $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div:nth-of-type(2)';
 
         $I->seeNumberOfElements('select[data-formengine-input-name="data[tx_styleguide_elements_group][1][group_db_1]"] option', 4);
-        $I->click($formWizardsWrap . ' div:nth-of-type(4) > div > a:nth-of-type(1)');
+        $I->click($formWizardsWrap . ' > div:nth-of-type(4) > div > a:nth-of-type(1)');
 
         $I->switchToWindow('typo3-backend');
         $I->switchToIFrame('modal_frame');
+        // Wait for modal-iframe to become fully loaded: on load CSS-class `with-overflow` is added to `body`.
+        $I->waitForElement('body.with-overflow');
+        // The added CSS-class `with-overflow` changes default `overflow: visible` to `overflow: auto` and thereby a
+        // new "block formatting context" (BFC) is created.
+        // We wait for the creation of the new BFC to finish, as this might trigger kind of re-renderings and thereby
+        // might disturb any running testing-actions like filling out form inputs.
+        // Also see:
+        // * https://developer.mozilla.org/en-US/docs/Web/CSS/overflow#description
+        // * https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_display/Block_formatting_context
+        $I->wait(0.5);
 
         $I->amGoingTo('search record foo in DB-Browser');
         $I->fillField('#recordsearchbox-searchterm', 'foo');
