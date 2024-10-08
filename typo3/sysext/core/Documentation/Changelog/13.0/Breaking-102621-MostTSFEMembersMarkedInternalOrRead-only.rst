@@ -44,7 +44,9 @@ but never write" for extensions. This allows implementation of a deprecation lay
 further notice. A similar strategy is added for methods, leaving only a few not
 marked :php:`@internal`, which the Core will deprecate with a compatibility layer later.
 
-The following public class properties have been marked "read-only":
+The following public class properties have been marked "read-only", and have later been
+deprecated with the full deprecation of :php:`TypoScriptFrontendController` in
+TYPO3 v13.4, see :ref:`deprecation-105230-1728374467`.
 
 * :php:`TypoScriptFrontendController->id` - Use :php:`$request->getAttribute('frontend.page.information')->getId()` instead
 * :php:`TypoScriptFrontendController->rootLine` - Use :php:`$request->getAttribute('frontend.page.information')->getRootLine()` instead
@@ -52,14 +54,16 @@ The following public class properties have been marked "read-only":
 * :php:`TypoScriptFrontendController->contentPid` - Avoid usages altogether, available as :php:`@internal` call using
   :php:`$request->getAttribute('frontend.page.information')->getContentFromPid()`
 * :php:`TypoScriptFrontendController->sys_page` - Avoid altogether, create own instance using :php:`GeneralUtility::makeInstance(PageRepository::class)`
-* :php:`TypoScriptFrontendController->config` - Reading :php:`$tsfe->config['config']` and :php:`$tsfe->config['rootLine']` is allowed
-* :php:`TypoScriptFrontendController->absRefPrefix`
-* :php:`TypoScriptFrontendController->cObj`
+* :php:`TypoScriptFrontendController->config` - Use :php:`$request->getAttribute('frontend.typoscript')->getConfigArray()` instead of :php:`config['config']`
+* :php:`TypoScriptFrontendController->cObj` - Create an own :php:`ContentObjectRenderer` instance, call :php:`setRequest($request)`
+  and :php:`start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages')`
 * :php:`TypoScriptFrontendController->config['rootLine']` - Use :php:`$request->getAttribute('frontend.page.information')->getLocalRootLine()` instead
 
 The following public class properties have been marked :php:`@internal` - in general
-all properties not listed above:
+all properties not listed above. They contain information usually not relevant within
+extensions. The TYPO3 core will model them differently.
 
+* :php:`TypoScriptFrontendController->absRefPrefix`
 * :php:`TypoScriptFrontendController->no_cache` - Use request attribute :php:`frontend.cache.instruction` instead
 * :php:`TypoScriptFrontendController->additionalHeaderData`
 * :php:`TypoScriptFrontendController->additionalFooterData`
@@ -70,7 +74,7 @@ all properties not listed above:
 * :php:`TypoScriptFrontendController->content`
 * :php:`TypoScriptFrontendController->lastImgResourceInfo`
 
-The following methods have been marked :php:`@internal`:
+The following methods have been marked :php:`@internal` and may vanish anytime:
 
 * :php:`TypoScriptFrontendController->__construct()` - extensions should not create own instances of TSFE
 * :php:`TypoScriptFrontendController->determineId()`
@@ -89,12 +93,14 @@ The following methods have been marked :php:`@internal`:
 * :php:`TypoScriptFrontendController->logDeprecatedTyposcript()`
 * :php:`TypoScriptFrontendController->uniqueHash()`
 * :php:`TypoScriptFrontendController->set_cache_timeout_default()`
+* :php:`TypoScriptFrontendController->set_no_cache()` - Use :php:`$request->getAttribute('frontend.cache.instruction')->disableCache()` instead
+* :php:`TypoScriptFrontendController->sL()` - Use :php:`GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($request->getAttribute('language'))->sL()`` instead
 * :php:`TypoScriptFrontendController->get_cache_timeout()`
 * :php:`TypoScriptFrontendController->getRequestedId()` - Use :php:`$request->getAttribute('routing')->getPageId()` instead
-* :php:`TypoScriptFrontendController->getLanguage()`
-* :php:`TypoScriptFrontendController->getSite()`
+* :php:`TypoScriptFrontendController->getLanguage()` - Use :php:`$request->getAttribute('site')->getDefaultLanguage()` instead
+* :php:`TypoScriptFrontendController->getSite()` - Use :php:`$request->getAttribute('site')` instead
 * :php:`TypoScriptFrontendController->getContext()` - Use dependency injection or :php:`GeneralUtility::makeInstance()` instead
-* :php:`TypoScriptFrontendController->getPageArguments()`
+* :php:`TypoScriptFrontendController->getPageArguments()` - Use :php:`$request->getAttribute('routing')` instead
 
 Impact
 ======

@@ -78,4 +78,9 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TSFE\']' => [
+        'restFiles' => [
+            'Deprecation-105230-TypoScriptFrontendControllerAndGLOBALSTSFE.rst',
+        ],
+    ],
 ];

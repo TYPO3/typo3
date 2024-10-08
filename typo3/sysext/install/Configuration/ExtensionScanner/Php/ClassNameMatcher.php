@@ -2552,4 +2552,9 @@ return [
             'Deprecation-104789-RenderStaticForFluidViewHelpers.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController' => [
+        'restFiles' => [
+            'Deprecation-105230-TypoScriptFrontendControllerAndGLOBALSTSFE.rst',
+        ],
+    ],
 ];

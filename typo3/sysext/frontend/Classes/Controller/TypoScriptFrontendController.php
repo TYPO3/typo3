@@ -55,45 +55,39 @@ use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
  * When calling a Frontend page, an instance of this object is available
  * as $GLOBALS['TSFE'], even though the core development strives to get
  * rid of this in the future.
+ *
+ * @deprecated since TYPO3 v13, will vanish during v14 development. There are some
+ *             remaining internal usages that can be adapted without further .rst
+ *             files. The class should vanish together with $GLOBALS['TSFE'] in v14.
  */
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     /**
-     * The page id (int).
-     *
-     * Read-only! Extensions may read but never write this property!
-     * @todo: deprecate
+     * Use $request->getAttribute('frontend.page.information')->getId() instead.
      */
     public int $id;
 
     /**
+     * Use $request->getAttribute('frontend.page.information')->getRootLine() instead.
+     *
      * @var array<int, array<string, mixed>>
-     * @todo: deprecate
      */
     public array $rootLine = [];
 
     /**
-     * The page record.
-     *
-     * Read-only! Extensions may read but never write this property!
-     * @todo: deprecate
+     * Use $request->getAttribute('frontend.page.information')->getPageRecord() instead.
      */
     public ?array $page = [];
 
     /**
-     * This will normally point to the same value as id, but can be changed to
-     * point to another page from which content will then be displayed instead.
-     *
-     * Read-only! Extensions may read but never write this property!
-     * @todo: deprecate
+     * Available as @internal $request->getAttribute('frontend.page.information')->getContentFromPid().
      */
     public int $contentPid = 0;
 
     /**
-     * Read-only! Extensions may read but never write this property!
-     * @todo: deprecate
+     * Create own instance using GeneralUtility::makeInstance(PageRepository::class).
      */
     public PageRepository $sys_page;
 
@@ -105,14 +99,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * for instance a list of INT identifiers used to calculate 'dynamic' page
      * parts when a page is retrieved from cache.
      *
-     * 'config': This is the TypoScript ['config.'] sub-array, with some
-     *           settings being sanitized and merged.
+     * Remaining core @internal uses:
+     *  'INTincScript': (internal) List of INT instructions
+     *  'INTincScript_ext': (internal) Further state for INT instructions
+     *  'pageTitleCache': (internal)
      *
-     * 'INTincScript': (internal) List of INT instructions
-     * 'INTincScript_ext': (internal) Further state for INT instructions
-     * 'pageTitleCache': (internal)
-     *
-     * Read-only! Extensions may read but never write this property!
+     * Use $request->getAttribute('frontend.typoscript')->getConfigArray() instead.
      *
      * @var array<string, mixed>
      */
@@ -164,9 +156,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public array $additionalFooterData = [];
 
     /**
-     * Absolute Reference prefix
+     * Absolute Reference prefix.
      *
-     * Read-only! Extensions may read but never write this property!
+     * @internal Used by content generation and link builders. Will be
+     *           modeled differently in TYPO3 v14.
      */
     public string $absRefPrefix = '';
 
@@ -209,9 +202,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected string $uniqueString = '';
 
     /**
-     * Page content render object
+     * Page content render object.
      *
-     * Read-only! Extensions may read but never write this property!
+     * @internal Still used is some cases.
+     *
+     * Use instead:
+     * $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this);
+     * $cObj->setRequest($request);
+     * $cObj->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
      */
     public ContentObjectRenderer $cObj;
 
@@ -954,8 +952,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Sets the cache-flag to 1. Could be called from user-included php-files in order to ensure that a page is not cached.
      *
+     * Use :php:`$request->getAttribute('frontend.cache.instruction')->disableCache()` instead.
+     *
      * @param string $reason An optional reason to be written to the log.
-     * @todo: deprecate
      */
     public function set_no_cache(string $reason = ''): void
     {
@@ -995,8 +994,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Sets the default page cache timeout in seconds
-     * @internal
+     * Sets the default page cache timeout in seconds.
+     * Unused.
      */
     public function set_cache_timeout_default(int $seconds): void
     {
@@ -1025,9 +1024,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Split Label function for front-end applications.
      *
+     * $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
+     *                        ->createFromSiteLanguage($request->getAttribute('language'))->sL() instead.
+     *
      * @param string $input Key string. Accepts the "LLL:" prefix.
      * @return string Label value, if any.
-     * @todo: deprecate
      */
     public function sL(string $input): string
     {
