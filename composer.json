@@ -92,6 +92,7 @@
 		"symfony/messenger": "^7.1.4",
 		"symfony/mime": "^7.1.4",
 		"symfony/options-resolver": "^7.1",
+		"symfony/polyfill-php83": "^1.31",
 		"symfony/process": "^7.1.3",
 		"symfony/property-access": "^7.1.4",
 		"symfony/property-info": "^7.1.3",
