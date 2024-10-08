@@ -49,6 +49,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         private readonly StreamFactoryInterface $streamFactory,
         private readonly FormDataCompiler $formDataCompiler,
         private readonly HashService $hashService,
+        private readonly NodeFactory $nodeFactory,
     ) {}
 
     /**
@@ -125,7 +126,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
                         'parentConfig' => $parentConfig,
                     ],
                 ],
-                GeneralUtility::makeInstance(NodeFactory::class)->create($fileReferenceData)->render()
+                $this->nodeFactory->create($fileReferenceData)->render()
             )
         );
     }
@@ -184,7 +185,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
                     'stylesheetFiles' => [],
                     'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
                 ],
-                GeneralUtility::makeInstance(NodeFactory::class)->create($fileReferenceData)->render()
+                $this->nodeFactory->create($fileReferenceData)->render()
             )
         );
     }
@@ -302,7 +303,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
 
                 $jsonArray = $this->mergeFileReferenceResultIntoJsonResult(
                     $jsonArray,
-                    GeneralUtility::makeInstance(NodeFactory::class)->create($fileReferenceData)->render()
+                    $this->nodeFactory->create($fileReferenceData)->render()
                 );
 
                 // Get the name of the field used as foreign selector (if any):

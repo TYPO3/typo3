@@ -74,6 +74,7 @@ class SiteConfigurationController
         private readonly PageRenderer $pageRenderer,
         private readonly SiteConfiguration $siteConfiguration,
         private readonly SiteWriter $siteWriter,
+        private readonly NodeFactory $nodeFactory,
     ) {}
 
     /**
@@ -166,9 +167,8 @@ class SiteConfigurationController
             'defaultValues' => $defaultValues,
         ];
         $formData = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(SiteConfigurationDataGroup::class));
-        $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
         $formData['renderType'] = 'outerWrapContainer';
-        $formResult = $nodeFactory->create($formData)->render();
+        $formResult = $this->nodeFactory->create($formData)->render();
         // Needed to be set for 'onChange="reload"' and reload on type change to work
         $formResult['doSaveFieldName'] = 'doSave';
         $formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);

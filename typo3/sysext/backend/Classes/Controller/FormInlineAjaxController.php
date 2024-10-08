@@ -44,6 +44,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
         private readonly HashService $hashService,
+        private readonly NodeFactory $nodeFactory,
     ) {}
 
     /**
@@ -139,8 +140,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
         $childData['inlineParentUid'] = $parent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
-        $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-        $childResult = $nodeFactory->create($childData)->render();
+        $childResult = $this->nodeFactory->create($childData)->render();
 
         $jsonArray = [
             'data' => '',
@@ -207,8 +207,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
-        $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-        $childResult = $nodeFactory->create($childData)->render();
+        $childResult = $this->nodeFactory->create($childData)->render();
 
         $jsonArray = [
             'data' => '',
@@ -337,8 +336,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
                 $childData['inlineParentUid'] = (int)$parent['uid'];
                 $childData['renderType'] = 'inlineRecordContainer';
-                $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-                $childResult = $nodeFactory->create($childData)->render();
+                $childResult = $this->nodeFactory->create($childData)->render();
 
                 $jsonArray = $this->mergeChildResultIntoJsonResult($jsonArray, $childResult);
 

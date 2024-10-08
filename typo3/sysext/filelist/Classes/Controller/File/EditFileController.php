@@ -104,6 +104,7 @@ class EditFileController
         protected readonly ResponseFactory $responseFactory,
         protected readonly StreamFactoryInterface $streamFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly NodeFactory $nodeFactory,
     ) {}
 
     /**
@@ -158,7 +159,7 @@ class EditFileController
             new ModifyEditFileFormDataEvent($formData, $file, $request)
         )->getFormData();
 
-        $resultArray = GeneralUtility::makeInstance(NodeFactory::class)->create($formData)->render();
+        $resultArray = $this->nodeFactory->create($formData)->render();
         $formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
         $formResultCompiler->mergeResult($resultArray);
 

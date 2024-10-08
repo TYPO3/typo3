@@ -41,7 +41,7 @@ class NodeFactory
      * Node resolver classes
      * Nested array with nodeName as key, (sorted) priority as sub key and class as value
      */
-    private array $nodeResolver = [];
+    private array $nodeResolver;
 
     /**
      * Default registry of node name to handling class
@@ -137,13 +137,10 @@ class NodeFactory
         'passwordGenerator' => FieldControl\PasswordGenerator::class,
     ];
 
-    /**
-     * Set up factory. Initialize additionally registered nodes.
-     */
     public function __construct()
     {
-        $this->registerAdditionalNodeTypesFromConfiguration();
-        $this->registerNodeResolvers();
+        $this->nodeTypes = $this->getAdditionalNodeTypesFromConfiguration($this->nodeTypes);
+        $this->nodeResolver = $this->getRegisteredNodeResolvers();
     }
 
     /**
@@ -193,7 +190,7 @@ class NodeFactory
      *
      * @throws Exception if configuration is incomplete or two nodes with identical priorities are registered
      */
-    private function registerAdditionalNodeTypesFromConfiguration(): void
+    private function getAdditionalNodeTypesFromConfiguration(array $nodeTypes): array
     {
         // List of additional or override nodes
         $registeredTypeOverrides = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'];
@@ -225,9 +222,10 @@ class NodeFactory
         foreach ($registeredTypeOverrides as $override) {
             if (!isset($highestPriority[$override['nodeName']]) || $override['priority'] > $highestPriority[$override['nodeName']]) {
                 $highestPriority[$override['nodeName']] = $override['priority'];
-                $this->nodeTypes[$override['nodeName']] = $override['class'];
+                $nodeTypes[$override['nodeName']] = $override['class'];
             }
         }
+        return $nodeTypes;
     }
 
     /**
@@ -236,7 +234,7 @@ class NodeFactory
      *
      * @throws Exception if configuration is incomplete or two resolver with identical priorities are registered
      */
-    private function registerNodeResolvers(): void
+    private function getRegisteredNodeResolvers(): array
     {
         // List of node resolver
         $registeredNodeResolvers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'];
@@ -267,7 +265,7 @@ class NodeFactory
             krsort($prioritiesAndClasses);
             $sortedResolversByType[$nodeName] = $prioritiesAndClasses;
         }
-        $this->nodeResolver = $sortedResolversByType;
+        return $sortedResolversByType;
     }
 
     /**

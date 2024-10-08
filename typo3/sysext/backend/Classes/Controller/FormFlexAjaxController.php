@@ -40,6 +40,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
         private readonly FlexFormTools $flexFormTools,
+        private readonly NodeFactory $nodeFactory,
     ) {}
 
     /**
@@ -157,9 +158,8 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         // @todo: check GroupElement for usage of elementBaseName ... maybe kick that thing?
 
         // Feed resulting form data to container structure to render HTML and other result data
-        $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
         $formData['renderType'] = 'flexFormContainerContainer';
-        $newContainerResult = $nodeFactory->create($formData)->render();
+        $newContainerResult = $this->nodeFactory->create($formData)->render();
         $scriptItems = GeneralUtility::makeInstance(JavaScriptItems::class);
 
         $jsonResult = [

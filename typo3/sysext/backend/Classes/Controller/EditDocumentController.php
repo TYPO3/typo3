@@ -348,6 +348,7 @@ class EditDocumentController
         protected readonly BackendEntryPointResolver $backendEntryPointResolver,
         protected readonly ModuleProvider $moduleProvider,
         private readonly FormDataCompiler $formDataCompiler,
+        private readonly NodeFactory $nodeFactory,
     ) {}
 
     /**
@@ -1122,8 +1123,6 @@ class EditDocumentController
                     }
 
                     try {
-                        $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-
                         // Reset viewId - it should hold data of last entry only
                         $this->viewId = 0;
 
@@ -1200,7 +1199,7 @@ class EditDocumentController
                         }
 
                         $formData['renderType'] = 'outerWrapContainer';
-                        $formResult = $nodeFactory->create($formData)->render();
+                        $formResult = $this->nodeFactory->create($formData)->render();
 
                         $html = $formResult['html'];
 

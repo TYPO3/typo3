@@ -44,13 +44,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 #[AsController]
 class SiteInlineAjaxController extends AbstractFormEngineAjaxController
 {
-    /**
-     * Default constructor
-     */
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
         private readonly SiteLanguagePresets $siteLanguagePresets,
         private readonly HashService $hashService,
+        private readonly NodeFactory $nodeFactory,
     ) {
         // Bring site TCA into global scope.
         // @todo: We might be able to get rid of that later
@@ -161,8 +159,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
-        $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-        $childResult = $nodeFactory->create($childData)->render();
+        $childResult = $this->nodeFactory->create($childData)->render();
 
         $jsonArray = [
             'data' => '',
@@ -231,8 +228,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
 
         $childData['inlineParentUid'] = (int)$parent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
-        $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-        $childResult = $nodeFactory->create($childData)->render();
+        $childResult = $this->nodeFactory->create($childData)->render();
 
         $jsonArray = [
             'data' => '',

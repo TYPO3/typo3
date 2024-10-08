@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
-use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -30,9 +29,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class FormInlineAjaxControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
-
-    protected FormInlineAjaxController $subject;
-    protected HashService $hashService;
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
@@ -46,19 +42,14 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
     ];
 
-    /**
-     * Sets up this test case.
-     */
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/tx_testirrecsv_hotel.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-
         $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
@@ -67,9 +58,6 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
                 $this->buildLanguageConfiguration('DA', '/da/'),
             ]
         );
-
-        $this->subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService());
-        $this->hashService = new HashService();
     }
 
     #[Test]
@@ -81,15 +69,12 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
                 'context' => json_encode($this->getContextForSysLanguageUid(0)),
             ],
         ];
-
         $request = new ServerRequest();
         $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
         $request = $request->withParsedBody($parsedBody);
-
-        $response = $this->subject->createAction($request);
+        $response = $this->get(FormInlineAjaxController::class)->createAction($request);
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
-
         self::assertNotEmpty($jsonArray['data']);
     }
 
@@ -102,15 +87,12 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
                 'context' => json_encode($this->getContextForSysLanguageUid(0)),
             ],
         ];
-
         $request = new ServerRequest();
         $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
         $request = $request->withParsedBody($parsedBody);
-
-        $response = $this->subject->createAction($request);
+        $response = $this->get(FormInlineAjaxController::class)->createAction($request);
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
-
         self::assertNotEmpty($jsonArray['data']);
     }
 
@@ -123,15 +105,12 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
                 'context' => json_encode($this->getContextForSysLanguageUid(1)),
             ],
         ];
-
         $request = new ServerRequest();
         $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
         $request = $request->withParsedBody($parsedBody);
-
-        $response = $this->subject->createAction($request);
+        $response = $this->get(FormInlineAjaxController::class)->createAction($request);
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
-
         self::assertMatchesRegularExpression('/<option value="1"[^>]* selected="selected">Dansk<\/option>/', $jsonArray['data']);
     }
 
@@ -141,22 +120,18 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['languageField']);
         unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['transOrigPointerField']);
         unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['transOrigDiffSourceField']);
-
         $parsedBody = [
             'ajax' => [
                 0 => 'data-1-tx_testirrecsv_hotel-NEW59c1062549e56282348897-offers-tx_testirrecsv_offer',
                 'context' => json_encode($this->getContextForSysLanguageUid(1)),
             ],
         ];
-
         $request = new ServerRequest();
         $request = $request->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
         $request = $request->withParsedBody($parsedBody);
-
-        $response = $this->subject->createAction($request);
+        $response = $this->get(FormInlineAjaxController::class)->createAction($request);
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
-
         self::assertDoesNotMatchRegularExpression('/<select[^>]* name="data\[tx_testirrecsv_offer\]\[NEW[1-9]+\]\[sys_language_uid\]"[^>]*>/', $jsonArray['data']);
     }
 
@@ -188,11 +163,10 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
                 'last' => false,
             ],
         ];
-
         $configJson = json_encode($config);
         return [
             'config' => $configJson,
-            'hmac' => $this->hashService->hmac($configJson, 'InlineContext'),
+            'hmac' => (new HashService())->hmac($configJson, 'InlineContext'),
         ];
     }
 }
