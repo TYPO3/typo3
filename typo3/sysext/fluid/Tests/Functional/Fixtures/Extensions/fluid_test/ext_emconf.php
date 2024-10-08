@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'info@helhum.io',
     'author_company' => 'helhum.io',
     'state' => 'stable',
-    'version' => '13.3.1',
+    'version' => '13.3.2',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.3.1',
+            'typo3' => '13.3.2',
         ],
         'conflicts' => [],
         'suggests' => [],
