@@ -67,6 +67,9 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
         }
         $body = $response->getBody();
         if ($body instanceof SelfEmittableStreamInterface) {
+            while (ob_get_level()) {
+                ob_end_clean();
+            }
             // Optimization for streams that use php functions like readfile() as fastpath for serving files.
             $body->emit();
         } else {
