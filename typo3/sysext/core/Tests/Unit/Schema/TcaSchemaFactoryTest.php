@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Schema;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -188,7 +189,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
         $subject = new TcaSchemaFactory(
-            new RelationMapBuilder(),
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
             '',
             $cacheMock
@@ -233,7 +234,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
         $subject = new TcaSchemaFactory(
-            new RelationMapBuilder(),
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
             '',
             $cacheMock
@@ -382,7 +383,15 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
-        $subject = $this->getAccessibleMock(TcaSchemaFactory::class, ['load'], [new RelationMapBuilder(), new FieldTypeFactory(), '', $cacheMock]);
+        $subject = $this->getAccessibleMock(
+            TcaSchemaFactory::class,
+            ['load'],
+            [
+                new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+                new FieldTypeFactory(),
+                '', $cacheMock,
+            ]
+        );
         $result = $subject->_call('getFinalFieldConfiguration', $fieldName, $schemaConfiguration, $subSchemaConfiguration, $fieldLabel);
         self::assertSame($expected, $result);
     }
@@ -393,7 +402,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
         $subject = new TcaSchemaFactory(
-            new RelationMapBuilder(),
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
             '',
             $cacheMock

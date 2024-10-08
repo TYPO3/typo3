@@ -25,6 +25,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 use TYPO3\CMS\Core\Adapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
@@ -498,6 +499,8 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Resource\StorageRepository::class, [
             $container->get(EventDispatcherInterface::class),
             $container->get(Resource\Driver\DriverRegistry::class),
+            $container->get(FlexFormTools::class),
+            $container->get(Log\LogManager::class)->getLogger(Resource\StorageRepository::class),
         ]);
     }
 

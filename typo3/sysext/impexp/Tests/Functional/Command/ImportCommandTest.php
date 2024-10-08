@@ -33,7 +33,7 @@ final class ImportCommandTest extends AbstractImportExportTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Not enough arguments (missing: "file")');
-        $tester = new CommandTester(new ImportCommand(new Import()));
+        $tester = new CommandTester($this->get(ImportCommand::class));
         $tester->execute([], []);
     }
 
@@ -41,7 +41,7 @@ final class ImportCommandTest extends AbstractImportExportTestCase
     public function importCommandRequiresFileArgumentOnly(): void
     {
         $filePath = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_news.xml';
-        $tester = new CommandTester(new ImportCommand(new Import()));
+        $tester = new CommandTester($this->get(ImportCommand::class));
         $tester->execute(['file' => $filePath], []);
         self::assertEquals(0, $tester->getStatusCode());
     }
@@ -63,9 +63,8 @@ final class ImportCommandTest extends AbstractImportExportTestCase
         ];
 
         $importMock = $this->getAccessibleMock(Import::class, [
-            'setPid', 'setUpdate', 'setGlobalIgnorePid', 'setForceAllUids', 'setEnableLogging', 'loadFile',
-            'setImportMode',
-        ]);
+            'setPid', 'setUpdate', 'setGlobalIgnorePid', 'setForceAllUids', 'setEnableLogging', 'loadFile', 'setImportMode',
+        ], [], '', false);
 
         $importMock->expects(self::once())->method('setPid')->with(self::equalTo(3));
         $importMock->expects(self::once())->method('setUpdate')->with(self::equalTo(false));
@@ -134,7 +133,7 @@ final class ImportCommandTest extends AbstractImportExportTestCase
     #[Test]
     public function importCommandFails(array $input, string $expected): void
     {
-        $tester = new CommandTester(new ImportCommand(new Import()));
+        $tester = new CommandTester($this->get(ImportCommand::class));
         $tester->execute(
             $input,
             ['verbosity' => Output::VERBOSITY_VERBOSE]

@@ -69,7 +69,7 @@ final class DataHandlerTest extends UnitTestCase
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
         $this->tcaSchemaFactory = new TcaSchemaFactory(
-            new RelationMapBuilder(),
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
             '',
             $cacheMock

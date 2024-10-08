@@ -46,27 +46,16 @@ final class ImportExportUtilityTest extends AbstractImportExportTestCase
     {
         $this->expectException(\ErrorException::class);
         $this->expectExceptionMessage('No page records imported');
-
-        $importUtilityMock = $this->getAccessibleMock(
-            ImportExportUtility::class,
-            null,
-            ['eventDispatcher' => new NoopEventDispatcher()]
-        );
-        $importUtilityMock->importT3DFile($filePath, 0);
+        $subject = new ImportExportUtility(new NoopEventDispatcher());
+        $subject->importT3DFile($filePath, 0);
     }
 
     #[Test]
     public function importSucceeds(): void
     {
         $filePath = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml';
-
-        $importUtilityMock = $this->getAccessibleMock(
-            ImportExportUtility::class,
-            null,
-            ['eventDispatcher' => new NoopEventDispatcher()]
-        );
-        $result = $importUtilityMock->importT3DFile($filePath, 0);
-
+        $subject = new ImportExportUtility(new NoopEventDispatcher());
+        $result = $subject->importT3DFile($filePath, 0);
         self::assertEquals(1, $result);
     }
 }

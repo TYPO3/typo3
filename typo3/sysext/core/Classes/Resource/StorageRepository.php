@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -34,10 +33,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Repository for accessing the file storages
  */
-class StorageRepository implements LoggerAwareInterface
+class StorageRepository
 {
-    use LoggerAwareTrait;
-
     /**
      * @var array<positive-int, array<mixed>>|null
      */
@@ -58,6 +55,8 @@ class StorageRepository implements LoggerAwareInterface
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly DriverRegistry $driverRegistry,
+        protected readonly FlexFormTools $flexFormTools,
+        protected readonly LoggerInterface $logger,
     ) {
         $this->table = 'sys_file_storage';
     }
@@ -243,7 +242,7 @@ class StorageRepository implements LoggerAwareInterface
             ],
         ];
 
-        $flexFormXml = GeneralUtility::makeInstance(FlexFormTools::class)->flexArray2Xml($flexFormData);
+        $flexFormXml = $this->flexFormTools->flexArray2Xml($flexFormData);
 
         // create the record
         $field_values = [

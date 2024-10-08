@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Schema;
 
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Low-level API to parse TCA to find field types which should be processed, as they contain
@@ -33,6 +32,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final readonly class RelationMapBuilder
 {
+    public function __construct(
+        private FlexFormTools $flexFormTools,
+    ) {}
+
     public function buildFromStructure(array $tca): RelationMap
     {
         $relationMap = new RelationMap();
@@ -61,8 +64,6 @@ final readonly class RelationMapBuilder
      */
     protected function addRelationsForFlexFieldToRelationMap(array $tcaConfig, string $tableName, string $fieldName, RelationMap $relationMap): array
     {
-        // @todo: FlexFormTools should not be used here, as it should only work with real records.
-        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
         $resolvedDataStructures = [];
         foreach ($tcaConfig['ds'] as $dataStructureKey => $dataStructure) {
             $dataStructureIdentifier = [
@@ -71,7 +72,8 @@ final readonly class RelationMapBuilder
                 'fieldName' => $fieldName,
                 'dataStructureKey' => $dataStructureKey,
             ];
-            $flexStructureAsArray = $flexFormTools->parseDataStructureByIdentifier(json_encode($dataStructureIdentifier));
+            // @todo: FlexFormTools should not be used here, as it should only work with real records.
+            $flexStructureAsArray = $this->flexFormTools->parseDataStructureByIdentifier(json_encode($dataStructureIdentifier));
             foreach ($flexStructureAsArray['sheets'] as $sheetIdentifier => $sheet) {
                 foreach ($sheet['ROOT']['el'] as $flexFieldName => $flexFieldConfig) {
                     $fieldIdentifier = $sheetIdentifier . '/' . $flexFieldName;

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Domain;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
@@ -38,7 +39,7 @@ final class RecordFactoryTest extends UnitTestCase
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
-            new RelationMapBuilder(),
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
             '',
             $cacheMock
@@ -58,7 +59,7 @@ final class RecordFactoryTest extends UnitTestCase
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
-            new RelationMapBuilder(),
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
             '',
             $cacheMock
@@ -86,7 +87,7 @@ final class RecordFactoryTest extends UnitTestCase
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
-            new RelationMapBuilder(),
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
             '',
             $cacheMock

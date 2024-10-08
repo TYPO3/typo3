@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Environment;
@@ -47,6 +48,7 @@ use TYPO3\CMS\Impexp\Exception\PrerequisitesNotMetException;
  *
  * @internal This class is not considered part of the public TYPO3 API.
  */
+#[Autoconfigure(public: true, shared: false)]
 class Import extends ImportExport
 {
     public const IMPORT_MODE_FORCE_UID = 'force_uid';
@@ -115,8 +117,9 @@ class Import extends ImportExport
      */
     protected string $fileadminFolderName = '';
 
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly FlexFormTools $flexFormTools,
+    ) {
         $this->storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
         parent::__construct();
         $this->fetchStorages();
@@ -1306,14 +1309,13 @@ class Import extends ImportExport
                                 $actualRecord = BackendUtility::getRecord($table, $actualUid, '*');
                                 $fieldTca = &$GLOBALS['TCA'][$table]['columns'][$field];
                                 if (is_array($actualRecord) && is_array($fieldTca['config'] ?? null) && $fieldTca['config']['type'] === 'flex') {
-                                    $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                                    $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                                    $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                                         $fieldTca,
                                         $table,
                                         $field,
                                         $actualRecord
                                     );
-                                    $dataStructure = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                                    $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                                     $flexFormData = (new Typo3XmlParser())->decodeWithReturningExceptionAsString(
                                         (string)($this->dat['records'][$table . ':' . $uid]['data'][$field] ?? ''),
                                         new Typo3XmlSerializerOptions([
@@ -1420,14 +1422,13 @@ class Import extends ImportExport
                             if ($fieldTca['config']['type'] === 'flex') {
                                 $actualRecord = BackendUtility::getRecord($table, $actualUid, '*');
                                 if (is_array($actualRecord)) {
-                                    $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                                    $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
+                                    $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                                         $fieldTca,
                                         $table,
                                         $field,
                                         $actualRecord
                                     );
-                                    $dataStructure = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                                    $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                                     $flexFormData = (new Typo3XmlParser())->decodeWithReturningExceptionAsString(
                                         (string)($actualRecord[$field] ?? ''),
                                         new Typo3XmlSerializerOptions([
