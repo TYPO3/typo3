@@ -4,8 +4,6 @@ __variables:
   - &pageMount 7
   - &pageFolder 254
   - &contentText 'text'
-  - &idAcmeRootPage 1000
-  - &idAcmeFirstPage 1100
 
 entitySettings:
   '*':
@@ -45,11 +43,13 @@ entities:
   workspace:
     - self: {id: 1, title: 'Workspace'}
   beGroup:
+    - self: {id: 7, title: 'editors without DB mounts', db_mountpoints: '', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,web_list'}
+    - self: {id: 8, title: 'editors with DB mounts', db_mountpoints: '9200', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,web_list'}
     - self: {id: 9, title: 'editors', db_mountpoints: '1000,2000,8110', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,web_list'}
   page:
-    - self: {id: *idAcmeRootPage, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
+    - self: {id: 1000, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
       children:
-        - self: {id: *idAcmeFirstPage, title: 'EN: Welcome', slug: '/welcome', subtitle: 'hello-and-welcome'}
+        - self: {id: 1100, title: 'EN: Welcome', slug: '/welcome', subtitle: 'hello-and-welcome'}
         - self: {id: 1200, title: 'EN: Features', slug: '/features'}
           children:
             - self: {id: 1210, title: 'EN: Frontend Editing', slug: '/features/frontend-editing', perms_userid: 9, perms_groupid: 1, description: 'accessible for user, but not for group'}
@@ -153,3 +153,6 @@ entities:
                         - { action: 'move', type: 'toPage', target: 1700 }
             - self: {id: 8120, title: 'Asia', slug: '/divisions/asia', description: 'not visible as not mounted'}
             - self: {id: 8130, title: 'South America', slug: '/divisions/south-america'}
+    - self: {id: 9100, title: 'Page 9100', type: *pageStandard, root: true, slug: '/page-9100', perms_userid: 1, perms_groupid: 1, perms_everybody: 15}
+    - self: {id: 9200, title: 'Page 9200', type: *pageStandard, root: true, slug: '/page-9200', perms_userid: 1, perms_groupid: 1, perms_everybody: 0}
+    - self: {id: 9300, title: 'Page 9300', type: *pageStandard, root: true, slug: '/page-9300', perms_userid: 1, perms_groupid: 1, perms_everybody: 15}
