@@ -59,11 +59,11 @@ final class TreeControllerTest extends FunctionalTestCase
         $this->withDatabaseSnapshot(function () {
             $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
             // Admin user for importing dataset
-            $this->backendUser = $this->setUpBackendUser(1);
-            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
+            $backendUser = $this->setUpBackendUser(1);
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
             $scenarioFile = __DIR__ . '/Fixtures/PagesWithBEPermissions.yaml';
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
-            $writer = DataHandlerWriter::withBackendUser($this->backendUser);
+            $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);
             self::failIfArrayIsNotEmpty($writer->getErrors());
         }, function () {
@@ -286,6 +286,19 @@ final class TreeControllerTest extends FunctionalTestCase
                                 '_children' => [],
                             ],
                         ],
+                    ],
+                    [
+                        // 9100 is shown due to `perms_everybody=15`
+                        'uid' => 9100,
+                        'title' => 'Page 9100',
+                        '_children' => [],
+                    ],
+                    // 9200 is omitted due to `perms_everybody=0`
+                    [
+                        // 9300 is shown due to `perms_everybody=15`
+                        'uid' => 9300,
+                        'title' => 'Page 9300',
+                        '_children' => [],
                     ],
                 ],
             ],
@@ -812,5 +825,38 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertCount(12, $afterPageTreeItemsPreparedEvent->getItems());
         self::assertEquals('1000', $afterPageTreeItemsPreparedEvent->getItems()[1]['identifier']);
         self::assertEquals('ACME Inc', $afterPageTreeItemsPreparedEvent->getItems()[1]['name']);
+    }
+
+    public static function fetchDataActionConsidersPermissionsDataProvider(): \Generator
+    {
+        yield 'admin user can see all root pages' => [
+            'backendUser' => 1,
+            'expectation' => ['0', '1000', '2000', '7000', '8000', '9100', '9200', '9300'],
+        ];
+        yield 'editor with DB mounts can only see accessible pages' => [
+            'backendUser' => 9,
+            'expectation' => ['0', '1000', '8110'],
+        ];
+        yield 'editor with DB mounts cannot see inaccessible pages' => [
+            'backendUser' => 8,
+            'expectation' => ['0'],
+        ];
+        yield 'editor without DB mounts cannot see any pages' => [
+            'backendUser' => 7,
+            'expectation' => ['0'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('fetchDataActionConsidersPermissionsDataProvider')]
+    public function fetchDataActionConsidersPermissions(int $backendUser, array $expectation): void
+    {
+        $this->backendUser = $this->setUpBackendUser($backendUser);
+        $request = (new ServerRequest(new Uri('https://example.com')))->withQueryParams(['depth' => 1]);
+        $response = $this->get(TreeController::class)->fetchDataAction($request);
+        $data = json_decode((string)$response->getBody(), true);
+        $items = array_filter($data, static fn(array $page): bool => $page['depth'] <= 1);
+        $items = array_map(static fn(array $page): string => $page['identifier'], $items);
+        self::assertSame($expectation, array_values($items));
     }
 }
