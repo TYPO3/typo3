@@ -5,13 +5,13 @@ declare(strict_types=1);
 $EM_CONF[$_EXTKEY] = [
     'title'            => 'Test DataHandler with slug fields',
     'description'      => 'TYPO3 extension to be used for functional tests in TYPO3 core',
-    'version' => '11.5.40',
+    'version' => '11.5.41',
     'state'            => 'beta',
     'author'           => '',
     'author_email'     => '',
     'constraints'      => [
         'depends' => [
-            'typo3' => '11.5.40',
+            'typo3' => '11.5.41',
         ],
         'conflicts' => [],
         'suggests' => [],
