@@ -42,24 +42,23 @@
                                 <f:if condition="{note.canBeEdited}">
                                     <be:link.editRecord uid="{note.uid}" table="sys_note" title="{f:translate(key: 'LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:edit_note')}" class="btn btn-default btn-sm" returnUrl="{returnUrl}">
                                         <core:icon identifier="actions-open" />
+                                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:edit_note')}</span>
                                     </be:link.editRecord>
                                 </f:if>
                                 <f:if condition="{note.canBeDeleted}">
-                                    <form action="{be:moduleLink(route:'tce_db')}" method="post">
-                                        <input type="hidden" name="cmd[sys_note][{note.uid}][delete]" value="1" />
-                                        <input type="hidden" name="redirect" value="{returnUrl}" />
-                                        <button
-                                                type="submit"
-                                                class="btn btn-default btn-sm t3js-modal-trigger"
-                                                title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
-                                                data-severity="warning"
-                                                data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
-                                                data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
-                                                data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
-                                        >
-                                            <core:icon identifier="actions-edit-delete" />
-                                        </button>
-                                    </form>
+                                    <typo3-sysnote-delete-button
+                                        class="btn btn-default btn-sm"
+                                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
+                                        modal-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
+                                        modal-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
+                                        modal-button-ok="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:ok')}"
+                                        modal-button-cancel="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                                        uid="{note.uid}"
+                                        return-url="{returnUrl}"
+                                    >
+                                        <core:icon identifier="actions-edit-delete" />
+                                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}</span>
+                                    </typo3-sysnote-delete-button>
                                 </f:if>
                             </span>
                         </span>

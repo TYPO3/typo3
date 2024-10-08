@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 
@@ -36,6 +37,7 @@ class NoteRenderer
     public function __construct(
         protected readonly SysNoteRepository $sysNoteRepository,
         protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly PageRenderer $pageRenderer,
     ) {}
 
     /**
@@ -60,6 +62,7 @@ class NoteRenderer
         if (!$notes) {
             return '';
         }
+        $this->pageRenderer->loadJavaScriptModule('@typo3/sys-note/element/delete-button.js');
         $view = $this->backendViewFactory->create($request, ['typo3/cms-sys-note']);
         $view->assignMultiple([
             'notes' => $this->enrichWithEditPermissions($notes),
