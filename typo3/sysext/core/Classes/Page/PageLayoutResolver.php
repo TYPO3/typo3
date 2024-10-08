@@ -98,7 +98,7 @@ class PageLayoutResolver
         };
         $findColPos($fullStructure);
 
-        return new PageLayout($layout->getIdentifier(), $layout->getTitle(), $contentAreas, $layout->getStructure());
+        return new PageLayout($layout->getIdentifier(), $layout->getTitle(), $contentAreas);
     }
 
     /**

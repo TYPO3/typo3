@@ -29,7 +29,6 @@ class PageLayout
         protected string $identifier,
         protected string $title,
         protected array $contentAreas,
-        protected array $fullConfiguration
     ) {}
 
     public function getIdentifier(): string
