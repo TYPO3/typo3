@@ -268,8 +268,8 @@ class BackendController
                 // Only redirect to existing non-ajax routes with no restriction to a specific method
                 $router = GeneralUtility::makeInstance(Router::class);
                 $redirect->resolve($router);
-                $module = $router->getRoute($redirect->getName())->getOption('module');
-                if ($this->isSpecialNoModuleRoute($redirect->getName())
+                $module = $router->getRoute($redirect->getName())?->getOption('module');
+                if ($module instanceof ModuleInterface === false
                     || $this->moduleProvider->accessGranted($module->getIdentifier(), $this->getBackendUser())
                 ) {
                     // Only add start module from request in case user has access or it's a no module route,
@@ -381,14 +381,6 @@ class BackendController
                     true
                 )
             );
-    }
-
-    /**
-     * Check if given route identifier is a special "no module" route
-     */
-    protected function isSpecialNoModuleRoute(string $routeIdentifier): bool
-    {
-        return in_array($routeIdentifier, ['record_edit', 'file_edit'], true);
     }
 
     protected function getBackendUser(): BackendUserAuthentication
