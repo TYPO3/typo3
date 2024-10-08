@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -79,26 +78,6 @@ readonly class ResourceFactory implements SingletonInterface
     public function getStorageObject($uid, array $recordData = [], &$fileIdentifier = null)
     {
         return $this->storageRepository->getStorageObject($uid, $recordData, $fileIdentifier);
-    }
-
-    /**
-     * Converts a flexform data string to a flat array with key value pairs.
-     *
-     * It is recommended to not use this functionality directly, and instead implement this code yourself, as this
-     * code has nothing to do with a Public API for Resources.
-     *
-     * @param string $flexFormData
-     * @return array Array with key => value pairs of the field data in the FlexForm
-     * @internal
-     */
-    public function convertFlexFormDataToConfigurationArray($flexFormData)
-    {
-        $configuration = [];
-        if ($flexFormData) {
-            $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
-            $configuration = $flexFormService->convertFlexFormContentToArray($flexFormData);
-        }
-        return $configuration;
     }
 
     /**
@@ -345,22 +324,6 @@ readonly class ResourceFactory implements SingletonInterface
             }
         }
         return $this->storageRepository->getStorageObject($storageUid, [], $folderIdentifier)->getFolder($folderIdentifier);
-    }
-
-    /**
-     * Gets a storage object from a combined identifier
-     *
-     * @param string $identifier An identifier of the form [storage uid]:[object identifier]
-     * @return ResourceStorage
-     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
-     */
-    public function getStorageObjectFromCombinedIdentifier($identifier)
-    {
-        [$storageId, $objectIdentifier] = array_pad(GeneralUtility::trimExplode(':', $identifier), 2, null);
-        if (!MathUtility::canBeInterpretedAsInteger($storageId) && $objectIdentifier === null) {
-            return $this->storageRepository->findByUid(0);
-        }
-        return $this->storageRepository->findByUid((int)$storageId);
     }
 
     /**
