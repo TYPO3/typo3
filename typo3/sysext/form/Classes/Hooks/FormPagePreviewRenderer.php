@@ -56,7 +56,10 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
     {
         $row = $item->getRecord();
         $itemContent = $this->linkEditContent('<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong>', $row) . '<br />';
-        $flexFormData = $this->flexFormService->convertFlexFormContentToArray($row['pi_flexform']);
+        $flexFormData = [];
+        if (isset($row['pi_flexform'])) {
+            $flexFormData = is_string($row['pi_flexform']) ? $this->flexFormService->convertFlexFormContentToArray($row['pi_flexform']) : $row['pi_flexform'];
+        }
         $persistenceIdentifier = $flexFormData['settings']['persistenceIdentifier'] ?? '';
         $languageService = $this->getLanguageService();
         if (!empty($persistenceIdentifier)) {
