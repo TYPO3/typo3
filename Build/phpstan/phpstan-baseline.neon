@@ -266,11 +266,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
 
 		-
-			message: "#^Offset 'aspects' on array\\{0\\: string, flags\\: non\\-falsy\\-string, 1\\: non\\-falsy\\-string, scope\\: non\\-empty\\-string\\|null, 2\\: non\\-empty\\-string\\|null, subject\\: non\\-empty\\-string, 3\\: non\\-empty\\-string, aspects\\: non\\-falsy\\-string, \\.\\.\\.\\} in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:getUid\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Classes/DataHandling/SoftReference/TypolinkSoftReferenceParser.php

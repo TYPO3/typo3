@@ -60,7 +60,7 @@ class CorrelationId implements \JsonSerializable
         }
 
         $flags = hexdec($matches['flags']);
-        $aspects = !empty($matches['aspects']) ? explode('/', ltrim($matches['aspects'], '/')) : [];
+        $aspects = $matches['aspects'] === '' ? [] : explode('/', ltrim($matches['aspects'], '/'));
         $target = static::create()
             ->withSubject($matches['subject'])
             ->withAspects(...$aspects);
