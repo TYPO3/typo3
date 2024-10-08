@@ -160,7 +160,7 @@ class ShortcutRepository
      * Add a shortcut
      *
      * @param string $routeIdentifier route identifier of the new shortcut
-     * @param string $arguments arguments of the new shortcut
+     * @param string $arguments arguments of the new shortcut (JSON encoded)
      * @param string $title title of the new shortcut
      * @throws \RuntimeException if the given URL is invalid
      */
@@ -168,6 +168,9 @@ class ShortcutRepository
     {
         // Do not add shortcuts for routes which do not exist
         if (!$this->router->hasRoute($routeIdentifier)) {
+            return false;
+        }
+        if (!json_validate($arguments)) {
             return false;
         }
 
@@ -205,20 +208,24 @@ class ShortcutRepository
                 )
             )
             ->set('description', $title)
-            ->set('sc_group', $groupId);
+            // Non-admin users are only allowed to assign `sc_group>=0`
+            ->set('sc_group', $backendUser->isAdmin() ? $groupId : max(0, $groupId));
 
         if (!$backendUser->isAdmin()) {
-            // Users can only modify their own shortcuts
+            // Non-admin users can only modify their own shortcuts
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     'userid',
                     $queryBuilder->createNamedParameter($backendUser->user['uid'], Connection::PARAM_INT)
                 )
             );
-
-            if ($groupId < 0) {
-                $queryBuilder->set('sc_group', 0);
-            }
+            // Non-admin users are only allowed to update non-global groups
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->gte(
+                    'sc_group',
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                )
+            );
         }
 
         $affectedRows = $queryBuilder->executeStatement();
@@ -369,11 +376,26 @@ class ShortcutRepository
             $pageId = 0;
             $shortcut = ['raw' => $row];
             $routeIdentifier = $row['route'] ?? '';
-            $arguments = json_decode($row['arguments'] ?? '', true) ?? [];
+
+            try {
+                $arguments = json_decode($row['arguments'] ?? '', true, 64, JSON_THROW_ON_ERROR);
+            } catch (\JsonException) {
+                continue;
+            }
+            if (!is_array($arguments)) {
+                continue;
+            }
 
             if ($routeIdentifier === 'record_edit' && is_array($arguments['edit'] ?? null)) {
-                $shortcut['table'] = (string)(key($arguments['edit']) ?? '');
-                $shortcut['recordid'] = key($arguments['edit'][$shortcut['table']]);
+                // example array: `[ 'edit' => ['tt_content' => [ '123' => 'edit' ] ] ]`
+                $shortcutTable = key($arguments['edit']);
+                $shortcutTableData = current($arguments['edit']);
+                $shortcutRecordId = is_array($shortcutTableData) ? key($shortcutTableData) : null;
+                if (!is_string($shortcutTable) || (!is_string($shortcutRecordId) && !is_int($shortcutRecordId))) {
+                    continue;
+                }
+                $shortcut['table'] = $shortcutTable;
+                $shortcut['recordid'] = (string)$shortcutRecordId;
 
                 if ($arguments['edit'][$shortcut['table']][$shortcut['recordid']] === 'edit') {
                     $shortcut['type'] = 'edit';
@@ -381,8 +403,8 @@ class ShortcutRepository
                     $shortcut['type'] = 'new';
                 }
 
-                if (str_ends_with((string)$shortcut['recordid'], ',')) {
-                    $shortcut['recordid'] = substr((string)$shortcut['recordid'], 0, -1);
+                if (str_ends_with($shortcut['recordid'], ',')) {
+                    $shortcut['recordid'] = substr($shortcut['recordid'], 0, -1);
                 }
             } else {
                 $shortcut['type'] = 'other';

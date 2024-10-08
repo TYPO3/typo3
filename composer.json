@@ -87,6 +87,7 @@
 		"symfony/messenger": "^6.4 || ^7.0",
 		"symfony/mime": "^6.4 || ^7.0",
 		"symfony/options-resolver": "^6.4 || ^7.0",
+		"symfony/polyfill-php83": "^1.31",
 		"symfony/property-access": "^6.4 || ^7.0",
 		"symfony/property-info": "^6.4 || ^7.0",
 		"symfony/rate-limiter": "^6.4 || ^7.0",
