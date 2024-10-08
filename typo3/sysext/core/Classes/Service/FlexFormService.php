@@ -33,9 +33,8 @@ class FlexFormService implements SingletonInterface
      * @param string $flexFormContent flexForm xml string
      * @param string $languagePointer language pointer used in the flexForm
      * @param string $valuePointer value pointer used in the flexForm
-     * @return array the processed array
      */
-    public function convertFlexFormContentToArray($flexFormContent, $languagePointer = 'lDEF', $valuePointer = 'vDEF')
+    public function convertFlexFormContentToArray($flexFormContent, $languagePointer = 'lDEF', $valuePointer = 'vDEF'): array
     {
         $settings = [];
         $flexFormArray = GeneralUtility::xml2array($flexFormContent);
