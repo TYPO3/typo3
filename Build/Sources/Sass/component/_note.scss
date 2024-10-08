@@ -24,46 +24,6 @@
 //
 
 //
-// Variables
-//
-$note-header-bg-scale: -60%;
-$note-bg-scale: -85%;
-$note-padding: 1rem;
-
-@mixin note-create-variant($state, $value) {
-    $note-bg: shift-color($value, $note-bg-scale);
-    $note-color: color-contrast($note-bg);
-    $note-header-bg: shift-color($value, $note-header-bg-scale);
-    $note-header-color: color-contrast($note-header-bg);
-    --note-#{$state}-color: #{$note-color};
-    --note-#{$state}-bg: #{$note-bg};
-    --note-#{$state}-header-color: #{$note-header-color};
-    --note-#{$state}-header-bg: #{$note-header-bg};
-}
-
-@mixin note-use-variant($state) {
-    --note-color: var(--note-#{$state}-color);
-    --note-bg: var(--note-#{$state}-bg);
-    --note-header-color: var(--note-#{$state}-header-color);
-    --note-header-bg: var(--note-#{$state}-header-bg);
-}
-
-:root {
-    @each $state, $value in $theme-colors {
-        @include note-create-variant($state, $value);
-    }
-
-    //
-    // Variants
-    // The light variants have problems beeing generated, they need manual correction.
-    //
-    --note-light-bg: #{$light};
-    --note-light-header-bg: #{shade-color($light, 10%)};
-    --note-default-bg: #{$default};
-    --note-default-header-bg: #{shade-color($default, 10%)};
-}
-
-//
 // Component
 //
 .note-list {
@@ -77,22 +37,39 @@ $note-padding: 1rem;
 }
 
 .note {
+    --typo3-note-color: var(--typo3-component-color);
+    --typo3-note-bg: var(--typo3-component-bg);
+    --typo3-note-border-color: color-mix(in srgb, var(--typo3-note-bg), var(--typo3-note-color) var(--typo3-border-mix));
+    --typo3-note-border-width: var(--typo3-component-border-width);
+    --typo3-note-border-radius: var(--typo3-component-border-radius);
+    --typo3-note-padding-y: 1rem;
+    --typo3-note-padding-x: 1rem;
+    --typo3-note-header-bg: var(--typo3-surface-container-low);
+    --typo3-note-header-color: var(--typo3-text-color-base);
+    --typo3-note-header-padding-y: .5rem;
+    --typo3-note-header-padding-x: 1rem;
+    --typo3-note-box-shadow: var(--typo3-component-box-shadow);
+
+    @each $state in $base-variants {
+        --typo3-note-#{$state}-header-color: var(--typo3-surface-container-#{$state}-text);
+        --typo3-note-#{$state}-header-bg: var(--typo3-surface-container-#{$state});
+        --typo3-note-#{$state}-border-color: color-mix(in srgb, var(--typo3-note-#{$state}-header-bg), var(--typo3-note-#{$state}-header-color) var(--typo3-border-mix));
+    }
     overflow: hidden;
     position: relative;
     z-index: 1;
-    color: var(--note-color);
-    background-color: var(--note-bg);
-    border-radius: var(--typo3-component-border-radius);
+    color: var(--typo3-note-color);
+    background-color: var(--typo3-note-bg);
+    border-radius: var(--typo3-note-border-radius);
+    border: var(--typo3-note-border-width) solid var(--typo3-note-border-color);
     margin-bottom: var(--typo3-spacing);
-    box-shadow: var(--typo3-component-box-shadow);
-
-    @include note-use-variant('default');
+    box-shadow: var(--typo3-note-box-shadow);
 }
 
 .note-header {
-    color: var(--note-header-color);
-    background-color: var(--note-header-bg);
-    padding: ($note-padding * .5) $note-padding;
+    color: var(--typo3-note-header-color);
+    background-color: var(--typo3-note-header-bg);
+    padding: var(--typo3-note-header-padding-y) var(--typo3-note-header-padding-x);
 }
 
 .note-header-bar {
@@ -107,7 +84,7 @@ $note-padding: 1rem;
 }
 
 .note-body {
-    padding: $note-padding;
+    padding: var(--typo3-note-padding-y) var(--typo3-note-padding-x);
 
     > *:first-child {
         margin-top: 0;
@@ -121,28 +98,35 @@ $note-padding: 1rem;
 //
 // Variants
 //
-@each $state, $value in $theme-colors {
-    .note-#{$state} {
-        @include note-use-variant($state);
+@each $variant in $base-variants {
+    .note-#{$variant} {
+        --typo3-note-header-color: var(--typo3-note-#{$variant}-header-color);
+        --typo3-note-header-bg: var(--typo3-note-#{$variant}-header-bg);
+        --typo3-note-border-color: var(--typo3-note-#{$variant}-border-color);
     }
+}
+
+// Default
+.note-category-0 {
+    @extend .note-default;
 }
 
 // Instruction
 .note-category-1 {
-    @include note-use-variant('info');
+    @extend .note-info;
 }
 
 // Template
 .note-category-2 {
-    @include note-use-variant('warning');
+    @extend .note-warning;
 }
 
 // Notice
 .note-category-3 {
-    @include note-use-variant('notice');
+    @extend .note-notice;
 }
 
 // Todo
 .note-category-4 {
-    @include note-use-variant('success');
+    @extend .note-success;
 }

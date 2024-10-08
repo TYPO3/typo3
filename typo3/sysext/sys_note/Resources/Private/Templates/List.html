@@ -67,14 +67,14 @@
                 </div>
                 <div class="note-body">
                     <h4>
-                        <span>
-                            <f:if condition="{note.category}">
-                                <f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:category.{note.category}" />:
-                            </f:if>
-                        </span>
+                        <f:if condition="{note.category}">
+                            <f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:category.{note.category}" />:
+                        </f:if>
                         {note.subject}
                     </h4>
-                    <p><f:format.nl2br>{note.message}</f:format.nl2br></p>
+                    <f:if condition="{note.message}">
+                        <p><f:format.nl2br>{note.message}</f:format.nl2br></p>
+                    </f:if>
                 </div>
             </div>
         </f:for>
