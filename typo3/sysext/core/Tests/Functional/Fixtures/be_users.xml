@@ -22,6 +22,24 @@
         <admin>0</admin>
     </be_users>
     <be_users>
+        <uid>7</uid>
+        <pid>0</pid>
+        <username>editor</username>
+        <usergroup>7</usergroup>
+        <deleted>0</deleted>
+        <admin>0</admin>
+        <options>3</options>
+    </be_users>
+    <be_users>
+        <uid>8</uid>
+        <pid>0</pid>
+        <username>editor</username>
+        <usergroup>8</usergroup>
+        <deleted>0</deleted>
+        <admin>0</admin>
+        <options>3</options>
+    </be_users>
+    <be_users>
         <uid>9</uid>
         <pid>0</pid>
         <username>editor</username>

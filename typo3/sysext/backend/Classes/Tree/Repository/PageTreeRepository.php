@@ -168,29 +168,28 @@ class PageTreeRepository
      *
      * @param array $pageTree The page record of the top level page you want to get the page tree of
      * @param int $depth Number of levels to fetch
-     * @param array $entryPointIds entryPointIds to include
+     * @param ?array $entryPointIds entryPointIds to include (null in case no entry-points were provided)
      * @return array An array with page records and their children
      */
-    public function getTreeLevels(array $pageTree, int $depth, array $entryPointIds = []): array
+    public function getTreeLevels(array $pageTree, int $depth, ?array $entryPointIds = null): array
     {
         $groupedAndSortedPagesByPid = [];
-
-        if (count($entryPointIds) > 0) {
+        // the method was called without any entry-point information
+        if ($entryPointIds === null) {
+            $parentPageIds = [$pageTree['uid']];
+            // the method was called with entry-point information, that is not empty
+        } elseif ($entryPointIds !== []) {
             $pageRecords = $this->getPageRecords($entryPointIds);
             $groupedAndSortedPagesByPid[$pageTree['uid']] = $pageRecords;
             $parentPageIds = $entryPointIds;
-        } else {
-            $parentPageIds = [$pageTree['uid']];
         }
-
         for ($i = 0; $i < $depth; $i++) {
+            // stop in case the initial or recursive query did not have any pages
             if (empty($parentPageIds)) {
                 break;
             }
             $pageRecords = $this->getChildPageRecords($parentPageIds);
-
             $groupedAndSortedPagesByPid = $this->groupAndSortPages($pageRecords, $groupedAndSortedPagesByPid);
-
             $parentPageIds = array_column($pageRecords, 'uid');
         }
         $this->addChildrenToPage($pageTree, $groupedAndSortedPagesByPid);

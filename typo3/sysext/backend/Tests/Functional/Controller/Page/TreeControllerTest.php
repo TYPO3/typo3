@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -290,6 +292,19 @@ class TreeControllerTest extends FunctionalTestCase
                                 '_children' => [],
                             ],
                         ],
+                    ],
+                    [
+                        // 9100 is shown due to `perms_everybody=15`
+                        'uid' => 9100,
+                        'title' => 'Page 9100',
+                        '_children' => [],
+                    ],
+                    // 9200 is omitted due to `perms_everybody=0`
+                    [
+                        // 9300 is shown due to `perms_everybody=15`
+                        'uid' => 9300,
+                        'title' => 'Page 9300',
+                        '_children' => [],
                     ],
                 ],
             ],
@@ -721,6 +736,41 @@ class TreeControllerTest extends FunctionalTestCase
             ],
         ];
         self::assertEquals($expected, $actual);
+    }
+
+    public static function fetchDataActionConsidersPermissionsDataProvider(): \Generator
+    {
+        yield 'admin user can see all root pages' => [
+            'backendUser' => 1,
+            'expectation' => ['0', '1000', '2000', '7000', '8000', '9100', '9200', '9300'],
+        ];
+        yield 'editor with DB mounts can only see accessible pages' => [
+            'backendUser' => 9,
+            'expectation' => ['0', '1000', '8110'],
+        ];
+        yield 'editor with DB mounts cannot see inaccessible pages' => [
+            'backendUser' => 8,
+            'expectation' => ['0'],
+        ];
+        yield 'editor without DB mounts cannot see any pages' => [
+            'backendUser' => 7,
+            'expectation' => ['0'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider fetchDataActionConsidersPermissionsDataProvider
+     */
+    public function fetchDataActionConsidersPermissions(int $backendUser, array $expectation): void
+    {
+        $this->backendUser = $this->setUpBackendUser($backendUser);
+        $request = (new ServerRequest(new Uri('https://example.com')))->withQueryParams(['depth' => 1]);
+        $response = (new TreeController())->fetchDataAction($request);
+        $data = json_decode((string)$response->getBody(), true);
+        $items = array_filter($data, static fn(array $page): bool => $page['depth'] <= 1);
+        $items = array_map(static fn(array $page): string => $page['identifier'], $items);
+        self::assertSame($expectation, array_values($items));
     }
 
     /**
