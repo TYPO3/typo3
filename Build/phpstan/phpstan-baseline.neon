@@ -436,26 +436,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/State.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\) but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\:\\:fromString\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\) but returns TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\CorrelationId\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
-
-		-
-			message: "#^Offset 'aspects' on array\\{0\\: string, flags\\: non\\-falsy\\-string, 1\\: non\\-falsy\\-string, scope\\: non\\-empty\\-string\\|null, 2\\: non\\-empty\\-string\\|null, subject\\: non\\-empty\\-string, 3\\: non\\-empty\\-string, aspects\\: non\\-falsy\\-string, \\.\\.\\.\\} in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
-
-		-
-			message: "#^Offset 'aspects' on array\\{0\\: string, flags\\: non\\-falsy\\-string, 1\\: non\\-falsy\\-string, scope\\: non\\-empty\\-string\\|null, 2\\: non\\-empty\\-string\\|null, subject\\: non\\-empty\\-string, 3\\: non\\-empty\\-string, aspects\\: non\\-falsy\\-string, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/CorrelationId.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\RecordStateFactory\\:\\:forName\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\RecordStateFactory\\) but returns object\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Model/RecordStateFactory.php

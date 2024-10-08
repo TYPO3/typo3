@@ -55,9 +55,6 @@ class CorrelationId implements \JsonSerializable
      */
     protected $aspects = [];
 
-    /**
-     * @return static
-     */
     public static function forScope(string $scope): self
     {
         $target = static::create();
@@ -72,9 +69,6 @@ class CorrelationId implements \JsonSerializable
             ->withAspects(...$aspects);
     }
 
-    /**
-     * @return static
-     */
     public static function fromString(string $correlationId): self
     {
         if (!preg_match(self::PATTERN_V1, $correlationId, $matches, PREG_UNMATCHED_AS_NULL)) {
@@ -82,7 +76,7 @@ class CorrelationId implements \JsonSerializable
         }
 
         $flags = hexdec($matches['flags']);
-        $aspects = !empty($matches['aspects']) ? explode('/', ltrim($matches['aspects'] ?? '', '/')) : [];
+        $aspects = $matches['aspects'] === '' ? [] : explode('/', ltrim($matches['aspects'], '/'));
         $target = static::create()
             ->withSubject($matches['subject'])
             ->withAspects(...$aspects);
@@ -92,9 +86,6 @@ class CorrelationId implements \JsonSerializable
         return $target;
     }
 
-    /**
-     * @return static
-     */
     protected static function create(): self
     {
         return GeneralUtility::makeInstance(static::class);
