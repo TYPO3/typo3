@@ -19,11 +19,11 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "12.4.21",
-		"typo3/cms-frontend": "12.4.21",
-		"typo3/cms-backend": "12.4.21",
-		"typo3/cms-fluid": "12.4.21",
-		"typo3/cms-extbase": "12.4.21"
+		"typo3/cms-core": "12.4.*@dev",
+		"typo3/cms-frontend": "12.4.*@dev",
+		"typo3/cms-backend": "12.4.*@dev",
+		"typo3/cms-fluid": "12.4.*@dev",
+		"typo3/cms-extbase": "12.4.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
