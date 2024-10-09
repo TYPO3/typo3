@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -26,19 +26,41 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Backend layout data provider class
+ *
+ * @internal Specific DataProviderInterface implementation, not considered public API.
  */
-class DefaultDataProvider implements DataProviderInterface
+#[Autoconfigure(public: true)]
+readonly class DefaultDataProvider implements DataProviderInterface
 {
-    /**
-     * Table name for backend_layouts
-     */
-    protected string $tableName = 'backend_layout';
+    private const DEFAULT_COLUMNS_LAYOUT = '
+		backend_layout {
+			colCount = 1
+			rowCount = 1
+			rows {
+				1 {
+					columns {
+						1 {
+							name = LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.1
+							colPos = 0
+							identifier = main
+						}
+					}
+				}
+			}
+		}
+		';
+
+    public function __construct(
+        private FileRepository $fileRepository,
+        private ConnectionPool $connectionPool,
+        private TcaSchemaFactory $tcsSchemaFactory,
+        private Context $context,
+    ) {}
 
     /**
      * Adds backend layouts to the given backend layout collection.
@@ -54,7 +76,6 @@ class DefaultDataProvider implements DataProviderInterface
             $dataProviderContext->pageTsConfig,
             $dataProviderContext->pageId
         );
-
         foreach ($layoutData as $data) {
             $backendLayout = $this->createBackendLayout($data);
             $backendLayoutCollection->add($backendLayout);
@@ -70,17 +91,13 @@ class DefaultDataProvider implements DataProviderInterface
     public function getBackendLayout($identifier, $pageId): ?BackendLayout
     {
         $backendLayout = null;
-
         if ((string)$identifier === 'default') {
             return $this->createDefaultBackendLayout();
         }
-
-        $data = BackendUtility::getRecordWSOL($this->tableName, (int)$identifier);
-
+        $data = BackendUtility::getRecordWSOL('backend_layout', (int)$identifier);
         if (is_array($data)) {
             $backendLayout = $this->createBackendLayout($data);
         }
-
         return $backendLayout;
     }
 
@@ -92,7 +109,7 @@ class DefaultDataProvider implements DataProviderInterface
         return BackendLayout::create(
             'default',
             'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout.default',
-            BackendLayoutView::getDefaultColumnLayout()
+            self::DEFAULT_COLUMNS_LAYOUT
         );
     }
 
@@ -112,8 +129,7 @@ class DefaultDataProvider implements DataProviderInterface
      */
     protected function getIconPath(array $icon): string
     {
-        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $references = $fileRepository->findByRelation($this->tableName, 'icon', (int)$icon['uid']);
+        $references = $this->fileRepository->findByRelation('backend_layout', 'icon', (int)$icon['uid']);
         if (!empty($references)) {
             $icon = reset($references);
             return $icon->getPublicUrl();
@@ -131,22 +147,28 @@ class DefaultDataProvider implements DataProviderInterface
      */
     protected function getLayoutData(string $fieldName, array $pageTsConfig, int $pageUid): array
     {
+        // @todo: This depends on backend_layout TCA being available for both the query and
+        //        TcaSchemaFactory. backend_layout TCA comes from ext:frontend, so we have
+        //        an indirect cross dependency between ext:backend and ext:frontend here.
+        //        There should be an explicit exception here when core is decoupled to run
+        //        an instance with ext:backend but without ext:frontend, or backend_layout TCA
+        //        should be relocated to ext:core? There are probably many more cases like this.
+
         $storagePid = $this->getStoragePid($pageTsConfig);
         $pageTsConfigId = $this->getPageTSconfigIds($pageTsConfig);
 
         // Add layout records
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('backend_layout');
         $queryBuilder->getRestrictions()
             ->add(
                 GeneralUtility::makeInstance(
                     WorkspaceRestriction::class,
-                    GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id')
+                    $this->context->getPropertyFromAspect('workspace', 'id')
                 )
             );
         $queryBuilder
             ->select('*')
-            ->from($this->tableName)
+            ->from('backend_layout')
             ->where(
                 $queryBuilder->expr()->or(
                     $queryBuilder->expr()->and(
@@ -185,19 +207,18 @@ class DefaultDataProvider implements DataProviderInterface
                 )
             );
 
-        try {
-            $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->tableName);
-            if ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
-                $queryBuilder->orderBy((string)$schema->getCapability(TcaSchemaCapability::SortByField));
-            }
-        } catch (UndefinedSchemaException) {
+        // Not catching UndefinedSchemaException here since backend_layout must exist at
+        // this point, or the entire query would fail already.
+        $schema = $this->tcsSchemaFactory->get('backend_layout');
+        if ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
+            $queryBuilder->orderBy((string)$schema->getCapability(TcaSchemaCapability::SortByField));
         }
 
         $statement = $queryBuilder->executeQuery();
 
         $results = [];
         while ($record = $statement->fetchAssociative()) {
-            BackendUtility::workspaceOL($this->tableName, $record);
+            BackendUtility::workspaceOL('backend_layout', $record);
             if (is_array($record)) {
                 $results[$record['t3ver_oid'] ?: $record['uid']] = $record;
             }

@@ -281,28 +281,4 @@ class BackendLayoutView implements SingletonInterface
         }
         return $backendLayoutData;
     }
-
-    /**
-     * Get default columns layout (main column)
-     */
-    public static function getDefaultColumnLayout(): string
-    {
-        return '
-		backend_layout {
-			colCount = 1
-			rowCount = 1
-			rows {
-				1 {
-					columns {
-						1 {
-							name = LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.1
-							colPos = 0
-							identifier = main
-						}
-					}
-				}
-			}
-		}
-		';
-    }
 }
