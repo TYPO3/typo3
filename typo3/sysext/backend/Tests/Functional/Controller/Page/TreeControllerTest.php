@@ -768,6 +768,65 @@ final class TreeControllerTest extends FunctionalTestCase
         self::assertSame($expectation, array_values($items));
     }
 
+    public static function filterDataActionResolvesNestedPagesDataProvider(): \Generator
+    {
+        yield 'searching "Forecasts"' => [
+            'query' => 'Forecasts',
+            'expectation' => [
+                [
+                    'identifier' => '0',
+                    'depth' => 0,
+                    'name' => 'New TYPO3 site',
+                    'hasChildren' => true,
+                ],
+                [
+                    'identifier' => '1000',
+                    'depth' => 1,
+                    'name' => 'ACME Inc',
+                    'hasChildren' => true,
+                ],
+                [
+                    'identifier' => '1500',
+                    'depth' => 2,
+                    'name' => 'Internal',
+                    'hasChildren' => true,
+                ],
+                [
+                    'identifier' => '1520',
+                    'depth' => 3,
+                    'name' => 'Forecasts',
+                    // see https://forge.typo3.org/issues/105239
+                    'hasChildren' => true,
+                ],
+                [
+                    'identifier' => '8110',
+                    'depth' => 1,
+                    'name' => 'Europe',
+                    'hasChildren' => true,
+                ],
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('filterDataActionResolvesNestedPagesDataProvider')]
+    public function filterDataActionResolvesNestedPages(string $query, array $expectation): void
+    {
+        $filterProperties = ['identifier', 'depth', 'name', 'hasChildren'];
+        $request = (new ServerRequest(new Uri('https://example.com')))->withQueryParams(['q' => $query]);
+        $response = (new TreeController())->filterDataAction($request);
+        $data = json_decode((string)$response->getBody(), true);
+        $items = array_map(
+            static fn(array $page): array => array_filter(
+                $page,
+                static fn(string $property): bool => in_array($property, $filterProperties, true),
+                ARRAY_FILTER_USE_KEY
+            ),
+            $data,
+        );
+        self::assertSame($expectation, $items);
+    }
+
     private function setWorkspace(int $workspaceId): void
     {
         $this->backendUser->workspace = $workspaceId;
