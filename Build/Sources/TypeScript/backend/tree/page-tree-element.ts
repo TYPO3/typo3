@@ -552,6 +552,7 @@ class PageTreeToolbar extends TreeToolbar {
   protected handleDragStart(event: DragEvent, item: any): void {
     const newNode: TreeNodeInterface = {
       __hidden: false,
+      __expanded: false,
       __indeterminate: false,
       __loading: false,
       __processed: false,
@@ -564,7 +565,6 @@ class PageTreeToolbar extends TreeToolbar {
       deletable: false,
       depth: 0,
       editable: true,
-      expanded: false,
       hasChildren: false,
       icon: item.icon,
       overlayIcon: '',

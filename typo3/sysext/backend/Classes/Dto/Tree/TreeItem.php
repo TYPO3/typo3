@@ -39,7 +39,6 @@ final readonly class TreeItem implements \JsonSerializable
         public string $tooltip,
         public int $depth,
         public bool $hasChildren,
-        public bool $expanded,
         public bool $loaded,
         public string $icon,
         public string $overlayIcon,

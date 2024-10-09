@@ -108,7 +108,7 @@ export class EditableFileStorageTree extends FileStorageTree {
 
       // Open node with children while holding the
       // node/element over this node for 1 second
-      if (targetNode.hasChildren && !targetNode.expanded) {
+      if (targetNode.hasChildren && !targetNode.__expanded) {
         if (this.openNodeTimeout.targetNode != targetNode) {
           this.openNodeTimeout.targetNode = targetNode;
           clearTimeout(this.openNodeTimeout.timeout);

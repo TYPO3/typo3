@@ -206,7 +206,6 @@ class FormSelectTreeAjaxController
                     tooltip: (string)($item['tooltip'] ?? ''),
                     depth: (int)($item['depth'] ?? 0),
                     hasChildren: (bool)($item['hasChildren'] ?? false),
-                    expanded: (bool)($item['expanded'] ?? false),
                     loaded: true,
                     icon: (string)($item['icon'] ?? ''),
                     overlayIcon: (string)($item['overlayIcon'] ?? ''),

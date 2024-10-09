@@ -158,7 +158,6 @@ class TreeController
                 tooltip: (string)($item['tooltip'] ?? ''),
                 depth: (int)($item['depth'] ?? 0),
                 hasChildren: (bool)($item['hasChildren'] ?? false),
-                expanded: (bool)($item['expanded'] ?? false),
                 loaded: (bool)($item['loaded'] ?? false),
                 icon: $item['icon'],
                 overlayIcon: $item['overlayIcon'],

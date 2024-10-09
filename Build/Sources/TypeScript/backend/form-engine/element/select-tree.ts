@@ -80,17 +80,17 @@ export class SelectTree extends Tree
   public filter(searchTerm?: string|null): void {
     this.searchTerm = searchTerm;
     if (this.nodes.length) {
-      this.nodes[0].expanded = false;
+      this.nodes[0].__expanded = false;
     }
     const regex = new RegExp(searchTerm, 'i');
 
     this.nodes.forEach((node: any) => {
       if (regex.test(node.name)) {
         this.showParents(node);
-        node.expanded = true
+        node.__expanded = true
         node.__hidden = false;
       } else {
-        node.expanded = false
+        node.__expanded = false
         node.__hidden = true;
       }
     });
@@ -105,7 +105,7 @@ export class SelectTree extends Tree
     }
     const parent = this.nodes[node.parents[0]];
     parent.__hidden = false;
-    parent.expanded = true;
+    parent.__expanded = true;
     this.showParents(parent);
   }
 

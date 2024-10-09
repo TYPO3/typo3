@@ -87,11 +87,6 @@ class TreeController
     protected array $labels = [];
 
     /**
-     * Contains the state of all items that are expanded.
-     */
-    protected array $expandedState = [];
-
-    /**
      * Number of tree levels which should be returned on the first page tree load
      */
     protected int $levelsToFetch = 2;
@@ -324,9 +319,6 @@ class TreeController
 
         $stopPageTree = !empty($page['php_tree_stop']) && $depth > 0;
         $identifier = $entryPoint . '_' . $pageId;
-        $expanded = !empty($page['expanded'])
-            || (isset($this->expandedState[$identifier]) && $this->expandedState[$identifier])
-            || $this->expandAllNodes;
 
         $suffix = '';
         $prefix = '';
@@ -393,7 +385,6 @@ class TreeController
             'depth' => $depth,
             'icon' => $icon->getIdentifier(),
             'overlayIcon' => $icon->getOverlayIcon() ? $icon->getOverlayIcon()->getIdentifier() : '',
-            'expanded' => $expanded,
             'editable' => $editable,
             'deletable' => $backendUser->doesUserHaveAccess($page, Permission::PAGE_DELETE),
             'labels' => $labels,
@@ -426,7 +417,7 @@ class TreeController
         }
 
         $items[] = $item;
-        if (!$stopPageTree && is_array($page['_children']) && !empty($page['_children']) && ($depth < $this->levelsToFetch || $expanded)) {
+        if (!$stopPageTree && is_array($page['_children']) && !empty($page['_children']) && ($depth < $this->levelsToFetch || $this->expandAllNodes)) {
             $items[key($items)]['loaded'] = true;
             foreach ($page['_children'] as $child) {
                 $items = array_merge($items, $this->pagesToFlatArray($child, $entryPoint, $depth + 1));
@@ -631,7 +622,6 @@ class TreeController
                         tooltip: (string)($item['tooltip'] ?? ''),
                         depth: (int)($item['depth'] ?? 0),
                         hasChildren: (bool)($item['hasChildren'] ?? false),
-                        expanded: (bool)($item['expanded'] ?? false),
                         loaded: (bool)($item['loaded'] ?? false),
                         editable: (bool)($item['editable'] ?? false),
                         deletable: (bool)($item['deletable'] ?? false),

@@ -106,13 +106,13 @@ export class Tree extends LitElement {
   }
 
   public hideChildren(node: TreeNodeInterface): void {
-    node.expanded = false;
+    node.__expanded = false;
     this.saveNodeStatus(node);
     this.dispatchEvent(new CustomEvent('typo3:tree:expand-toggle', { detail: { node: node } }));
   }
 
   public async showChildren(node: TreeNodeInterface): Promise<void> {
-    node.expanded = true;
+    node.__expanded = true;
     await this.loadChildren(node);
     this.saveNodeStatus(node);
     this.dispatchEvent(new CustomEvent('typo3:tree:expand-toggle', { detail: { node: node } }));
@@ -166,8 +166,8 @@ export class Tree extends LitElement {
         nodes.map(async (node: TreeNodeInterface): Promise<TreeNodeInterface[]> => {
           const parentNodeTreeIdentifier = node.__parents.join('_');
           const parentNode = nodes.find(p => p.__treeIdentifier === parentNodeTreeIdentifier) || null;
-          const isVisible = parentNode === null || parentNode.expanded;
-          if (!node.loaded && node.hasChildren && node.expanded && isVisible) {
+          const isVisible = parentNode === null || parentNode.__expanded;
+          if (!node.loaded && node.hasChildren && node.__expanded && isVisible) {
             const children = await this.fetchData(node);
             node.loaded = true;
             return [ node, ...children ];
@@ -188,7 +188,7 @@ export class Tree extends LitElement {
       if (parentNode.loaded) {
         await Promise.all(
           this.nodes
-            .filter(n => n.__parents.join('_') === parentNode.__treeIdentifier && !n.loaded && n.hasChildren && n.expanded)
+            .filter(n => n.__parents.join('_') === parentNode.__treeIdentifier && !n.loaded && n.hasChildren && n.__expanded)
             .map(n => this.loadChildren(n))
         );
         return;
@@ -237,7 +237,7 @@ export class Tree extends LitElement {
   public saveNodeStatus(node: TreeNodeInterface): void {
     const treeState = JSON.parse(ClientStorage.get(this.getLocalStorageIdentifier())) ?? {};
     treeState[node.__treeIdentifier] = {
-      expanded: node.expanded
+      expanded: node.__expanded
     };
     ClientStorage.set(this.getLocalStorageIdentifier(), JSON.stringify(treeState));
   }
@@ -324,13 +324,13 @@ export class Tree extends LitElement {
     }]).pop();
 
     if (parentNode) {
-      if (parentNode.hasChildren && !parentNode.expanded) {
+      if (parentNode.hasChildren && !parentNode.__expanded) {
         await this.showChildren(parentNode);
       }
 
       if (!parentNode.hasChildren) {
         parentNode.hasChildren = true;
-        parentNode.expanded = true;
+        parentNode.__expanded = true;
       }
     }
 
@@ -350,9 +350,9 @@ export class Tree extends LitElement {
     }
     this.requestUpdate();
     this.updateComplete.then(() => {
-      if (parentNode.expanded && parentNode.hasChildren && this.getNodeChildren(parentNode).length === 0) {
+      if (parentNode.__expanded && parentNode.hasChildren && this.getNodeChildren(parentNode).length === 0) {
         parentNode.hasChildren = false;
-        parentNode.expanded = false;
+        parentNode.__expanded = false;
       }
     });
   }
@@ -499,9 +499,13 @@ export class Tree extends LitElement {
       }
 
       // State
-      node.expanded = node.expanded === true ? true : (this.settings.expandUpToLevel !== null)
-        ? node.depth < this.settings.expandUpToLevel
-        : Boolean(this.getNodeStatus(node).expanded);
+      if (this.searchTerm) {
+        node.__expanded = node.loaded && node.hasChildren;
+      } else {
+        node.__expanded = (this.settings.expandUpToLevel !== null)
+          ? node.depth < this.settings.expandUpToLevel
+          : Boolean(this.getNodeStatus(node).expanded);
+      }
 
       node.__processed = true;
 
@@ -524,7 +528,7 @@ export class Tree extends LitElement {
     // get nodes with depth 0, if there is only 1 then open it and disable toggle
     const nodesOnRootLevel = enhancedNodes.filter((node) => node.depth === 0);
     if (nodesOnRootLevel.length === 1) {
-      enhancedNodes[0].expanded = true;
+      enhancedNodes[0].__expanded = true;
     }
 
     return enhancedNodes;
@@ -567,7 +571,7 @@ export class Tree extends LitElement {
   protected renderVisibleNodes(): TemplateResult {
     const blacklist: string[] = [];
     this.nodes.forEach((node: TreeNodeInterface): void => {
-      if (node.expanded === false) {
+      if (node.__expanded === false) {
         blacklist.push(this.getNodeTreeIdentifier(node));
       }
     });
@@ -607,7 +611,7 @@ export class Tree extends LitElement {
             draggable="true"
             title="${this.getNodeTitle(node)}"
             aria-owns="${(node.hasChildren ? 'group-identifier-' + this.getNodeIdentifier(node) : null)}"
-            aria-expanded="${(node.hasChildren ? (node.expanded ? '1' : '0') : null)}"
+            aria-expanded="${(node.hasChildren ? (node.__expanded ? '1' : '0') : null)}"
             aria-level="${this.getNodeDepth(node)}"
             aria-setsize="${this.getNodeSetsize(node)}"
             aria-posinset="${this.getNodePositionInSet(node)}"
@@ -773,7 +777,7 @@ export class Tree extends LitElement {
 
     // Open node with children while holding the
     // node/element over this node for 1 second
-    if (targetNode.hasChildren && !targetNode.expanded) {
+    if (targetNode.hasChildren && !targetNode.__expanded) {
       if (this.openNodeTimeout.targetNode != targetNode) {
         this.openNodeTimeout.targetNode = targetNode;
         clearTimeout(this.openNodeTimeout.timeout);
@@ -846,7 +850,7 @@ export class Tree extends LitElement {
     if (targetHoverOffset < 6) {
       this.nodeDragPosition = TreeNodePositionEnum.BEFORE;
       hoverElement.classList.add('node-dragging-before');
-    } else if ((this.nodeHeight - targetHoverOffset) < 6 && targetNode.hasChildren === false && targetNode.expanded === false) {
+    } else if ((this.nodeHeight - targetHoverOffset) < 6 && targetNode.hasChildren === false && targetNode.__expanded === false) {
       this.nodeDragPosition = TreeNodePositionEnum.AFTER;
       hoverElement.classList.add('node-dragging-after');
     }
@@ -991,7 +995,7 @@ export class Tree extends LitElement {
       ? html `
           <span class="node-toggle" @click="${(event: PointerEvent) => { event.preventDefault(); event.stopImmediatePropagation(); this.handleNodeToggle(node); }}">
             <typo3-backend-icon
-              identifier="${(node.expanded ? 'actions-chevron-down' : collapsedIconIdentifier)}"
+              identifier="${(node.__expanded ? 'actions-chevron-down' : collapsedIconIdentifier)}"
               size="small"
             ></typo3-backend-icon>
           </span>
@@ -1350,7 +1354,7 @@ export class Tree extends LitElement {
    * Event handler for collapsing or expanding nodes
    */
   protected handleNodeToggle(node: TreeNodeInterface): void {
-    if (node.expanded) {
+    if (node.__expanded) {
       this.hideChildren(node);
     } else {
       this.showChildren(node);
@@ -1431,7 +1435,7 @@ export class Tree extends LitElement {
         }
         break;
       case KeyTypes.LEFT:
-        if (currentNode.expanded) {
+        if (currentNode.__expanded) {
           // collapse node if collapsible
           if (currentNode.hasChildren) {
             this.hideChildren(currentNode);
@@ -1443,7 +1447,7 @@ export class Tree extends LitElement {
         }
         break;
       case KeyTypes.RIGHT:
-        if (currentNode.expanded && nextNode) {
+        if (currentNode.__expanded && nextNode) {
           // the current node is expanded,
           // goto first child (next element on the list)
           this.scrollNodeIntoVisibleArea(nextNode);
