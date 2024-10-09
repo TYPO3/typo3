@@ -407,11 +407,11 @@ class TreeController
             'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,
         ];
 
-        if ($depth >= $this->levelsToFetch && $this->pageTreeRepository->hasChildren($pageId)) {
-            $page = $this->pageTreeRepository->getTreeLevels($page, 1);
-        }
-        if (!empty($page['_children'])) {
+        if (!empty($page['_children']) || $this->pageTreeRepository->hasChildren($pageId)) {
             $item['hasChildren'] = true;
+            if ($depth >= $this->levelsToFetch) {
+                $page = $this->pageTreeRepository->getTreeLevels($page, 1);
+            }
         }
         if (is_array($lockInfo)) {
             $item['locked'] = true;

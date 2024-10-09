@@ -859,4 +859,63 @@ final class TreeControllerTest extends FunctionalTestCase
         $items = array_map(static fn(array $page): string => $page['identifier'], $items);
         self::assertSame($expectation, array_values($items));
     }
+
+    public static function filterDataActionResolvesNestedPagesDataProvider(): \Generator
+    {
+        yield 'searching "Forecasts"' => [
+            'query' => 'Forecasts',
+            'expectation' => [
+                [
+                    'identifier' => '0',
+                    'name' => 'New TYPO3 site',
+                    'depth' => 0,
+                    'hasChildren' => true,
+                ],
+                [
+                    'identifier' => '1000',
+                    'name' => 'ACME Inc',
+                    'depth' => 1,
+                    'hasChildren' => true,
+                ],
+                [
+                    'identifier' => '1500',
+                    'name' => 'Internal',
+                    'depth' => 2,
+                    'hasChildren' => true,
+                ],
+                [
+                    'identifier' => '1520',
+                    'name' => 'Forecasts',
+                    'depth' => 3,
+                    // see https://forge.typo3.org/issues/105239
+                    'hasChildren' => true,
+                ],
+                [
+                    'identifier' => '8110',
+                    'name' => 'Europe',
+                    'depth' => 1,
+                    'hasChildren' => true,
+                ],
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('filterDataActionResolvesNestedPagesDataProvider')]
+    public function filterDataActionResolvesNestedPages(string $query, array $expectation): void
+    {
+        $filterProperties = ['identifier', 'depth', 'name', 'hasChildren'];
+        $request = (new ServerRequest(new Uri('https://example.com')))->withQueryParams(['q' => $query]);
+        $response = $this->get(TreeController::class)->filterDataAction($request);
+        $data = json_decode((string)$response->getBody(), true);
+        $items = array_map(
+            static fn(array $page): array => array_filter(
+                $page,
+                static fn(string $property): bool => in_array($property, $filterProperties, true),
+                ARRAY_FILTER_USE_KEY
+            ),
+            $data,
+        );
+        self::assertSame($expectation, $items);
+    }
 }
