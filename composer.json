@@ -287,7 +287,6 @@
 			"TYPO3\\CMS\\Extensionmanager\\Tests\\": "typo3/sysext/extensionmanager/Tests/",
 			"TYPO3\\CMS\\FrontendLogin\\Tests\\": "typo3/sysext/felogin/Tests/",
 			"TYPO3\\CMS\\Filelist\\Tests\\": "typo3/sysext/filelist/Tests/",
-			"TYPO3\\CMS\\Filemetadata\\Tests\\": "typo3/sysext/filemetadata/Tests/",
 			"TYPO3\\CMS\\Fluid\\Tests\\": "typo3/sysext/fluid/Tests/",
 			"TYPO3\\CMS\\FluidStyledContent\\Tests\\": "typo3/sysext/fluid_styled_content/Tests/",
 			"TYPO3\\CMS\\Form\\Tests\\": "typo3/sysext/form/Tests/",
