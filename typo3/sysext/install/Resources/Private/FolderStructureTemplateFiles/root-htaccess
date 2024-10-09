@@ -320,7 +320,7 @@ AddDefaultCharset utf-8
 
 	# Stop rewrite processing, if we are in any known directory
 	# NOTE: Add your additional local storages here
-	RewriteRule ^(?:fileadmin/|typo3conf/|typo3temp/|uploads/) - [L]
+	RewriteRule ^(?:fileadmin/|typo3conf/|typo3temp/|_assets/) - [L]
 
 	# If the file/symlink/directory does not exist but is below /typo3/, redirect to the main TYPO3 entry point.
 	RewriteCond %{REQUEST_FILENAME} !-f
