@@ -420,11 +420,11 @@ class TreeController
             'allowEdit' => $this->userHasAccessToModifyPagesAndToDefaultLanguage && $backendUser->doesUserHaveAccess($page, Permission::PAGE_EDIT),
         ];
 
-        if ($depth >= $this->levelsToFetch && $this->pageTreeRepository->hasChildren($pageId)) {
-            $page = $this->pageTreeRepository->getTreeLevels($page, 1);
-        }
-        if (!empty($page['_children'])) {
+        if (!empty($page['_children']) || $this->pageTreeRepository->hasChildren($pageId)) {
             $item['hasChildren'] = true;
+            if ($depth >= $this->levelsToFetch) {
+                $page = $this->pageTreeRepository->getTreeLevels($page, 1);
+            }
         }
         if (!empty($prefix)) {
             $item['prefix'] = htmlspecialchars($prefix);
