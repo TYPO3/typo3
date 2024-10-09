@@ -104,7 +104,7 @@ final class PageTsBackendLayoutDataProvider implements DataProviderInterface
             throw new \RuntimeException('Either $dataProviderContext or $pageId must be provided', 1676380686);
         }
         if ($dataProviderContext) {
-            return $dataProviderContext->getPageTsConfig();
+            return $dataProviderContext->pageTsConfig;
         }
         return BackendUtility::getPagesTSconfig($pageId);
     }

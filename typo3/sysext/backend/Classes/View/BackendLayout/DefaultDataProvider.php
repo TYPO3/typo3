@@ -50,9 +50,9 @@ class DefaultDataProvider implements DataProviderInterface
         BackendLayoutCollection $backendLayoutCollection
     ): void {
         $layoutData = $this->getLayoutData(
-            $dataProviderContext->getFieldName(),
-            $dataProviderContext->getPageTsConfig(),
-            $dataProviderContext->getPageId()
+            $dataProviderContext->fieldName,
+            $dataProviderContext->pageTsConfig,
+            $dataProviderContext->pageId
         );
 
         foreach ($layoutData as $data) {
