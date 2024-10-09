@@ -46,6 +46,15 @@ final class BackendUtilityTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/tt_content.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1, 'http://localhost/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+                $this->buildLanguageConfiguration('DA', '/da/'),
+                $this->buildLanguageConfiguration('DE', '/de/'),
+            ]
+        );
         $this->backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->backendUser);
     }
@@ -89,16 +98,6 @@ final class BackendUtilityTest extends FunctionalTestCase
     #[Test]
     public function getProcessedValueForLanguage(): void
     {
-        $this->writeSiteConfiguration(
-            'website-local',
-            $this->buildSiteConfiguration(1, 'http://localhost/'),
-            [
-                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DA', '/da/'),
-                $this->buildLanguageConfiguration('DE', '/de/'),
-            ]
-        );
-
         self::assertEquals(
             'Dansk',
             BackendUtility::getProcessedValue(

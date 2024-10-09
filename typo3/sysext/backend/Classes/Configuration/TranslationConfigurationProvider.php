@@ -17,8 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Configuration;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -35,9 +38,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @phpstan-type LanguageRef -1|0|positive-int
  * @internal The whole class is subject to be removed, fetch all language info from the current site object.
  */
-class TranslationConfigurationProvider
+#[Autoconfigure(public: true)]
+readonly class TranslationConfigurationProvider
 {
-    protected array $systemLanguageCache = [];
+    public function __construct(
+        #[Autowire(service: 'cache.runtime')]
+        private FrontendInterface $runtimeCache,
+        private SiteFinder $siteFinder,
+        private ConnectionPool $connectionPool,
+    ) {}
 
     /**
      * Returns array of languages given for a specific site (or "nullSite" if on page=0)
@@ -46,17 +55,17 @@ class TranslationConfigurationProvider
      * @param int $pageId Page id (used to get TSconfig configuration setting flag and label for default language)
      * @return array<LanguageRef, array{uid: int, title: string, ISOcode: string, flagIcon: string}> Array with languages
      */
-    public function getSystemLanguages($pageId = 0)
+    public function getSystemLanguages(int $pageId = 0): array
     {
-        if (isset($this->systemLanguageCache[$pageId])) {
-            return $this->systemLanguageCache[$pageId];
+        $cacheKey = 'system-language-cache-page-uid-' . $pageId;
+        if ($this->runtimeCache->has($cacheKey)) {
+            return $this->runtimeCache->get($cacheKey);
         }
         $allSystemLanguages = [];
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         if ($pageId === 0) {
             // Used for e.g. filelist, where there is no site selected
             // This also means that there is no "-1" (All Languages) selectable.
-            $sites = $siteFinder->getAllSites();
+            $sites = $this->siteFinder->getAllSites();
             foreach ($sites as $site) {
                 $allSystemLanguages = $this->addSiteLanguagesToConsolidatedList(
                     $allSystemLanguages,
@@ -67,8 +76,8 @@ class TranslationConfigurationProvider
             }
         } else {
             try {
-                $site = $siteFinder->getSiteByPageId((int)$pageId);
-            } catch (SiteNotFoundException $e) {
+                $site = $this->siteFinder->getSiteByPageId($pageId);
+            } catch (SiteNotFoundException) {
                 $site = new NullSite();
             }
             $siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), true);
@@ -83,7 +92,7 @@ class TranslationConfigurationProvider
             );
         }
         ksort($allSystemLanguages);
-        $this->systemLanguageCache[$pageId] = $allSystemLanguages;
+        $this->runtimeCache->set($cacheKey, $allSystemLanguages);
         return $allSystemLanguages;
     }
 
@@ -114,9 +123,9 @@ class TranslationConfigurationProvider
      * @param int $languageUid Language uid. If 0, then all languages are selected.
      * @param array|null $row The record to be translated
      * @param array|string $selFieldList Select fields for the query which fetches the translations of the current record
-     * @return mixed Array with information or error message as a string.
+     * @return array|string Array with information or error message as a string.
      */
-    public function translationInfo($table, $uid, $languageUid = 0, ?array $row = null, $selFieldList = '')
+    public function translationInfo($table, $uid, $languageUid = 0, ?array $row = null, $selFieldList = ''): array|string
     {
         if (!$GLOBALS['TCA'][$table] || !$uid) {
             return 'No table "' . $table . '" or no UID value';
@@ -146,7 +155,7 @@ class TranslationConfigurationProvider
         } else {
             $selectFields = ['uid', $GLOBALS['TCA'][$table]['ctrl']['languageField']];
         }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
@@ -183,9 +192,7 @@ class TranslationConfigurationProvider
                     )
                 );
         }
-        $translationRecords = $queryBuilder
-            ->executeQuery()
-            ->fetchAllAssociative();
+        $translationRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         $translations = [];
         $translationsErrors = [];

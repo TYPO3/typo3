@@ -20,25 +20,21 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Configuration;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TranslationConfigurationProviderTest extends UnitTestCase
 {
-    protected TranslationConfigurationProvider $subject;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->subject = new TranslationConfigurationProvider();
         $backendUserAuthentication = $this->createMock(BackendUserAuthentication::class);
         $backendUserAuthentication->method('checkLanguageAccess')->with(self::anything())->willReturn(true);
         $GLOBALS['BE_USER'] = $backendUserAuthentication;
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
     }
 
     #[Test]
@@ -52,8 +48,12 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
         $site = new Site('dummy', $pageId, ['base' => 'http://sub.domainhostname.tld/path/']);
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteFinderMock->method('getSiteByPageId')->with($pageId)->willReturn($site);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
-        $languages = $this->subject->getSystemLanguages($pageId);
+        $subject = new TranslationConfigurationProvider(
+            $this->createMock(FrontendInterface::class),
+            $siteFinderMock,
+            $this->createMock(ConnectionPool::class)
+        );
+        $languages = $subject->getSystemLanguages($pageId);
         self::assertArrayHasKey(0, $languages);
     }
 
@@ -62,8 +62,12 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteFinderMock->method('getAllSites')->willReturn($this->getDummySites());
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
-        $languages = $this->subject->getSystemLanguages(0);
+        $subject = new TranslationConfigurationProvider(
+            $this->createMock(FrontendInterface::class),
+            $siteFinderMock,
+            $this->createMock(ConnectionPool::class)
+        );
+        $languages = $subject->getSystemLanguages(0);
         self::assertCount(3, $languages);
     }
 
@@ -72,15 +76,19 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteFinderMock->method('getAllSites')->willReturn($this->getDummySites());
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
-        $languages = $this->subject->getSystemLanguages(0);
+        $subject = new TranslationConfigurationProvider(
+            $this->createMock(FrontendInterface::class),
+            $siteFinderMock,
+            $this->createMock(ConnectionPool::class)
+        );
+        $languages = $subject->getSystemLanguages(0);
         self::assertEquals('Deutsch [Site: dummy1], German [Site: dummy2]', $languages[1]['title']);
     }
 
     /**
      * @return Site[]
      */
-    protected function getDummySites(): array
+    private function getDummySites(): array
     {
         return [
             new Site(
