@@ -29,23 +29,12 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @internal The AssetRenderer is used for the asset rendering and is not public API
  */
 #[Autoconfigure(public: true)]
-class AssetRenderer
+readonly class AssetRenderer
 {
-    /**
-     * @var AssetCollector
-     */
-    protected $assetCollector;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    public function __construct(?AssetCollector $assetCollector = null, ?EventDispatcherInterface $eventDispatcher = null)
-    {
-        $this->assetCollector = $assetCollector ?? GeneralUtility::makeInstance(AssetCollector::class);
-        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
-    }
+    public function __construct(
+        protected AssetCollector $assetCollector,
+        protected EventDispatcherInterface $eventDispatcher,
+    ) {}
 
     public function renderInlineJavaScript($priority = false, ?ConsumableNonce $nonce = null): string
     {

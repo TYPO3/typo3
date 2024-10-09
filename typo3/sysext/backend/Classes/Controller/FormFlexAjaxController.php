@@ -160,7 +160,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         // Feed resulting form data to container structure to render HTML and other result data
         $formData['renderType'] = 'flexFormContainerContainer';
         $newContainerResult = $this->nodeFactory->create($formData)->render();
-        $scriptItems = GeneralUtility::makeInstance(JavaScriptItems::class);
+        $scriptItems = new JavaScriptItems();
 
         $jsonResult = [
             'html' => $newContainerResult['html'],

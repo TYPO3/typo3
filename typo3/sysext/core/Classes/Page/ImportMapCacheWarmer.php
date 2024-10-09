@@ -23,14 +23,11 @@ use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 /**
  * @internal
  */
-final class ImportMapCacheWarmer
+final readonly class ImportMapCacheWarmer
 {
-    private ImportMapFactory $importMapFactory;
-
-    public function __construct(ImportMapFactory $importMapFactory)
-    {
-        $this->importMapFactory = $importMapFactory;
-    }
+    public function __construct(
+        private ImportMapFactory $importMapFactory
+    ) {}
 
     #[AsEventListener]
     public function warmupCaches(CacheWarmupEvent $event): void

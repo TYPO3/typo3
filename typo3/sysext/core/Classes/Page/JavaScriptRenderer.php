@@ -28,6 +28,9 @@ class JavaScriptRenderer
     protected ImportMap $importMap;
     protected int $javaScriptModuleInstructionFlags = 0;
 
+    /**
+     * @internal Only to be used by PageRenderer
+     */
     public static function create(?string $uri = null): self
     {
         $uri ??= PathUtility::getAbsoluteWebPath(
@@ -36,10 +39,13 @@ class JavaScriptRenderer
         return GeneralUtility::makeInstance(static::class, $uri);
     }
 
+    /**
+     * @internal
+     */
     public function __construct(string $handlerUri)
     {
         $this->handlerUri = $handlerUri;
-        $this->items = GeneralUtility::makeInstance(JavaScriptItems::class);
+        $this->items = new JavaScriptItems();
         $this->importMap = GeneralUtility::makeInstance(ImportMapFactory::class)->create();
     }
 

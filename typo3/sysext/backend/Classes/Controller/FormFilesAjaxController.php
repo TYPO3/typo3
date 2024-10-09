@@ -119,7 +119,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
                 [
                     'data' => '',
                     'stylesheetFiles' => [],
-                    'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
+                    'scriptItems' => new JavaScriptItems(),
                     'compilerInput' => [
                         'uid' => $fileReferenceData['databaseRow']['uid'],
                         'childChildUid' => $fileId,
@@ -183,7 +183,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
                 [
                     'data' => '',
                     'stylesheetFiles' => [],
-                    'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
+                    'scriptItems' => new JavaScriptItems(),
                 ],
                 $this->nodeFactory->create($fileReferenceData)->render()
             )
@@ -209,7 +209,7 @@ class FormFilesAjaxController extends AbstractFormEngineAjaxController
         $jsonArray = [
             'data' => '',
             'stylesheetFiles' => [],
-            'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
+            'scriptItems' => new JavaScriptItems(),
             'compilerInput' => [
                 'localize' => [],
             ],

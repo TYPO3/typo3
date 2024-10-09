@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Page;
 
-class JavaScriptItems implements \JsonSerializable
+final class JavaScriptItems implements \JsonSerializable
 {
     /**
      * @var list<array>
