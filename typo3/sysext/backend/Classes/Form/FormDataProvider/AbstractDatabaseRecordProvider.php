@@ -31,6 +31,13 @@ abstract class AbstractDatabaseRecordProvider implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
+    private ConnectionPool $connectionPool;
+
+    public function injectConnectionPool(ConnectionPool $connectionPool): void
+    {
+        $this->connectionPool = $connectionPool;
+    }
+
     /**
      * Fetch a record from database. Deleted records will NOT be fetched.
      * Method is similar to BackendUtility::getRecord, but is more picky
@@ -71,7 +78,7 @@ abstract class AbstractDatabaseRecordProvider implements LoggerAwareInterface
      */
     protected function getDatabaseRow(string $tableName, int $uid): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));

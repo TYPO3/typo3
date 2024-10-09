@@ -34,6 +34,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataProviderInterface
 {
+    public function __construct(
+        private readonly SiteFinder $siteFinder,
+    ) {}
+
     /**
      * Resolve inline fields
      */
@@ -118,9 +122,8 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
         $connectedUids = [];
         if ($result['command'] === 'edit') {
             $siteConfigurationForPageUid = (int)$result['databaseRow']['rootPageId'][0];
-            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
             try {
-                $site = $siteFinder->getSiteByRootPageId($siteConfigurationForPageUid);
+                $site = $this->siteFinder->getSiteByRootPageId($siteConfigurationForPageUid);
             } catch (SiteNotFoundException $e) {
                 $site = null;
             }

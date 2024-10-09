@@ -664,13 +664,15 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $flashMessage = $this->createMock(FlashMessage::class);
         GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $flashMessageQueue->expects(self::atLeastOnce())->method('enqueue');
 
-        (new TcaCheckboxItems())->addData($input);
+        $subject = new TcaCheckboxItems();
+        $subject->injectFlashMessageService($flashMessageService);
+
+        $subject->addData($input);
     }
 
     #[Test]

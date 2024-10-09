@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -32,17 +31,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Note this data provider has a loose dependency to DatabaseDefaultLanguagePageRow,
  * it needs that to determine the correct base pid if localized pages are edited.
  */
-class SiteResolving implements FormDataProviderInterface
+readonly class SiteResolving implements FormDataProviderInterface
 {
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
-
-    public function __construct(?SiteFinder $siteFinder = null)
-    {
-        $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
-    }
+    public function __construct(
+        private SiteFinder $siteFinder,
+    ) {}
 
     /**
      * Find and add site object

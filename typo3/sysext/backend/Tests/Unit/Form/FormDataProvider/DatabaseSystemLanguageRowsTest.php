@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -33,7 +34,7 @@ final class DatabaseSystemLanguageRowsTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1534952559);
-        (new DatabaseSystemLanguageRows())->addData([]);
+        (new DatabaseSystemLanguageRows($this->createMock(FlashMessageService::class)))->addData([]);
     }
 
     #[Test]
@@ -95,6 +96,6 @@ final class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame(array_merge($input, $expected), (new DatabaseSystemLanguageRows())->addData($input));
+        self::assertSame(array_merge($input, $expected), (new DatabaseSystemLanguageRows($this->createMock(FlashMessageService::class)))->addData($input));
     }
 }

@@ -20,13 +20,16 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Resolve select items for the type="language" and set processed item list in processedTca
  */
 class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterface
 {
+    public function __construct(
+        private readonly SiteFinder $siteFinder,
+    ) {}
+
     /**
      * Fetch languages to add them as select item
      *
@@ -51,8 +54,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             if (($result['effectivePid'] ?? 0) === 0 || !($result['site'] ?? null) instanceof Site) {
                 // In case we deal with a pid=0 record or a record on a page outside
                 // of a site config, all languages from all sites should be added.
-                $sites = $this->getAllSites();
-                foreach ($sites as $site) {
+                foreach ($this->siteFinder->getAllSites() as $site) {
                     // Add ALL languages from ALL sites
                     foreach ($site->getAllLanguages() as $languageId => $language) {
                         if (isset($siteLanguages[$languageId])) {
@@ -177,10 +179,5 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
         array_unshift($items, ['label' => @sprintf($noMatchingLabel, $invalidValue), 'value' => $invalidValue, 'icon' => null]);
 
         return $items;
-    }
-
-    protected function getAllSites(): array
-    {
-        return GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
     }
 }

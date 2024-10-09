@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -126,7 +128,13 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
                 'checked' => false,
             ],
         ];
-        self::assertEquals($expected, (new TcaSelectTreeItems())->addData($input));
+
+        $selectItems = (new TcaSelectTreeItems($this->get(IconFactory::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $result = $selectItems->addData($input);
+
+        self::assertEquals($expected, $result);
     }
 
     #[Test]
@@ -188,7 +196,10 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
             'selectTreeCompileItems' => true,
         ];
 
-        $result = (new TcaSelectTreeItems())->addData($input);
+        $selectItems = (new TcaSelectTreeItems($this->get(IconFactory::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $result = $selectItems->addData($input);
 
         $resultItems = $result['processedTca']['columns']['select_tree']['config']['items'];
         $expectedItems = [
@@ -299,7 +310,10 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
             'selectTreeCompileItems' => true,
         ];
 
-        $result = (new TcaSelectTreeItems())->addData($input);
+        $selectItems = (new TcaSelectTreeItems($this->get(IconFactory::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $result = $selectItems->addData($input);
 
         $resultStartingPoints = $result['processedTca']['columns']['select_tree']['config']['treeConfig']['startingPoints'];
         self::assertSame($expectedStartingPoints, $resultStartingPoints);

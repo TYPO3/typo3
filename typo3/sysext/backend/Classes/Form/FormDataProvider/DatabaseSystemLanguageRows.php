@@ -27,8 +27,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Fill the "systemLanguageRows" part of the result array
  */
-class DatabaseSystemLanguageRows implements FormDataProviderInterface
+readonly class DatabaseSystemLanguageRows implements FormDataProviderInterface
 {
+    public function __construct(
+        private FlashMessageService $flashMessageService
+    ) {}
+
     /**
      * Fetch available system languages and resolve iso code if necessary.
      *
@@ -82,8 +86,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
                     '',
                     ContextualFeedbackSeverity::ERROR
                 );
-                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
         }

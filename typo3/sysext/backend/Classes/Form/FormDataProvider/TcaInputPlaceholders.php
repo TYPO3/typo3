@@ -28,8 +28,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * in the processedTca section of the result will be replaced with the resolved
  * value.
  */
-class TcaInputPlaceholders implements FormDataProviderInterface
+readonly class TcaInputPlaceholders implements FormDataProviderInterface
 {
+    public function __construct(
+        private ConnectionPool $connectionPool,
+    ) {}
+
     /**
      * Resolve placeholders for input/email/text fields. Placeholders that are simple
      * strings will be returned unmodified. Placeholders beginning with __row are
@@ -243,7 +247,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
     protected function getPossibleUidsByCurrentSysLanguage(array $possibleUids, $foreignTableName, $currentLanguage)
     {
         $languageField = $GLOBALS['TCA'][$foreignTableName]['ctrl']['languageField'];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($foreignTableName);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($foreignTableName);
         $possibleRecords = $queryBuilder->select('uid', $languageField)
             ->from($foreignTableName)
             ->where(

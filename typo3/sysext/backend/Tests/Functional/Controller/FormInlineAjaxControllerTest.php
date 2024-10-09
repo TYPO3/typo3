@@ -48,8 +48,6 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/tx_testirrecsv_hotel.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
         $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
@@ -58,6 +56,8 @@ final class FormInlineAjaxControllerTest extends FunctionalTestCase
                 $this->buildLanguageConfiguration('DA', '/da/'),
             ]
         );
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
     #[Test]

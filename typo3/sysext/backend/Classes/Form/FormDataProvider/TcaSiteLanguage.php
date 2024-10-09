@@ -34,6 +34,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormDataProviderInterface
 {
+    public function __construct(
+        private readonly SiteFinder $siteFinder,
+    ) {}
+
     private const FOREIGN_TABLE = 'site_language';
     private const FOREIGN_FIELD = 'languageId';
 
@@ -153,8 +157,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
         if ($result['command'] === 'edit') {
             $siteConfiguration = [];
             try {
-                $site = GeneralUtility::makeInstance(SiteFinder::class)
-                    ->getSiteByRootPageId((int)($result['databaseRow']['rootPageId'][0] ?? 0));
+                $site = $this->siteFinder->getSiteByRootPageId((int)($result['databaseRow']['rootPageId'][0] ?? 0));
                 $siteConfiguration = $site->getConfiguration();
             } catch (SiteNotFoundException $e) {
             }
@@ -302,7 +305,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
     {
         $defaultDatabaseRow = [];
 
-        foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
+        foreach ($this->siteFinder->getAllSites() as $site) {
             foreach ($site->getAllLanguages() as $language) {
                 if ($language->getLanguageId() === 0) {
                     $defaultDatabaseRow['locale'] = $language->getLocale()->posixFormatted();

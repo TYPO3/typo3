@@ -33,6 +33,8 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     // nodes have to be set "shared: false" manually, in case they are stateful.
     $containerBuilder->addCompilerPass(new PublicServicePass('backend.form.node', true));
 
+    $containerBuilder->addCompilerPass(new PublicServicePass('backend.form.dataprovider'));
+
     // adds tag backend.controller to services
     $containerBuilder->registerAttributeForAutoconfiguration(
         AsController::class,

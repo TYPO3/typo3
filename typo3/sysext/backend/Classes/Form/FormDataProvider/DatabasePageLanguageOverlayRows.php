@@ -26,8 +26,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Fill the "pageLanguageOverlayRows" part of the result array
  */
-class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
+readonly class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
 {
+    public function __construct(
+        private Context $context,
+        private ConnectionPool $connectionPool
+    ) {}
+
     /**
      * Fetch available page overlay records of page
      *
@@ -50,10 +55,8 @@ class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
      */
     protected function getDatabaseRows(int $pid): array
     {
-        $context = GeneralUtility::makeInstance(Context::class);
-        $workspaceId = $context->getPropertyFromAspect('workspace', 'id');
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
+        $workspaceId = $this->context->getPropertyFromAspect('workspace', 'id');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))

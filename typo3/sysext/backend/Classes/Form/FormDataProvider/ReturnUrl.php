@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 
@@ -31,10 +30,11 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
  *        data, since only controllers know details about current
  *        context. The fallback below is a bit of guesswork.
  */
-#[Autoconfigure(public: true)]
 readonly class ReturnUrl implements FormDataProviderInterface
 {
-    public function __construct(private UriBuilder $uriBuilder) {}
+    public function __construct(
+        private UriBuilder $uriBuilder,
+    ) {}
 
     public function addData(array $result): array
     {

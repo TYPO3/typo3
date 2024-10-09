@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -26,10 +25,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This is the first data provider in the chain of flex form related providers.
  */
-#[Autoconfigure(public: true)]
 readonly class TcaFlexPrepare implements FormDataProviderInterface
 {
-    public function __construct(private FlexFormTools $flexFormTools) {}
+    public function __construct(
+        private FlexFormTools $flexFormTools,
+    ) {}
 
     /**
      * Resolve flex data structures and prepare flex data values.

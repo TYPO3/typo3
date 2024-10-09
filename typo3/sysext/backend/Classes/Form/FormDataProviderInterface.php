@@ -15,10 +15,13 @@
 
 namespace TYPO3\CMS\Backend\Form;
 
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+
 /**
  * Interface must be implemented by form data provider classes.
  * This is a single data provider called by a form data group.
  */
+#[AutoconfigureTag('backend.form.dataprovider')]
 interface FormDataProviderInterface
 {
     /**

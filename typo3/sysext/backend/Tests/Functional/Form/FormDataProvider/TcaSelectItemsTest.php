@@ -20,11 +20,15 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
+use TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -86,7 +90,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         ];
 
         $expected = $input;
-        self::assertSame($expected, (new TcaSelectItems())->addData($input));
+        self::assertSame($expected, (new TcaSelectItems($this->get(SelectItemProcessor::class)))->addData($input));
     }
 
     #[Test]
@@ -112,7 +116,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1439288036);
 
-        (new TcaSelectItems())->addData($input);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->addData($input);
     }
 
     #[Test]
@@ -150,7 +156,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
 
         $expected['databaseRow']['aField'] = ['aValue'];
 
-        self::assertSame($expected, (new TcaSelectItems())->addData($input));
+        self::assertSame($expected, (new TcaSelectItems($this->get(SelectItemProcessor::class)))->addData($input));
     }
 
     #[Test]
@@ -222,7 +228,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertSame($expected, (new TcaSelectItems())->addData($input));
+        self::assertSame($expected, (new TcaSelectItems($this->get(SelectItemProcessor::class)))->addData($input));
     }
 
     #[Test]
@@ -278,7 +284,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'itemgroup3', // Item uid=5
         ];
 
-        $result = (new TcaSelectItems())->addData($input);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $result = $selectItems->addData($input);
         $resultItems = $result['processedTca']['columns']['aField']['config']['items'];
         $resultItemGroups = array_column($resultItems, 'group');
 
@@ -318,7 +327,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['aValue'];
 
-        self::assertSame($expected, (new TcaSelectItems())->addData($input));
+        self::assertSame($expected, (new TcaSelectItems($this->get(SelectItemProcessor::class)))->addData($input));
     }
 
     #[Test]
@@ -370,7 +379,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        $result = (new TcaSelectItems())->addData($input);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $result = $selectItems->addData($input);
 
         self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
@@ -443,7 +454,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        $result = (new TcaSelectItems())->addData($input);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $result = $selectItems->addData($input);
 
         self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
@@ -471,7 +484,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1479399227);
-        (new TcaSelectItems())->addData($input);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->addData($input);
     }
 
     #[Test]
@@ -525,7 +540,12 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'description' => null,
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->addData($input);
+
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -587,7 +607,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'description' => null,
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -641,7 +664,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'description' => null,
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     public static function addDataReplacesMarkersInForeignTableClauseDataProvider(): array
@@ -1098,7 +1124,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected['processedTca']['columns']['aField']['config']['items'] = $expectedItems;
         $expected['databaseRow']['aField'] = [];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1122,7 +1151,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1439569743);
 
-        (new TcaSelectItems())->addData($input);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->addData($input);
     }
 
     #[Test]
@@ -1178,7 +1209,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
 
         $expected['databaseRow']['aField'] = [];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1219,12 +1253,14 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
 
-        $result = (new TcaSelectItems())->addData($input);
         $flashMessageService = $this->get(FlashMessageService::class);
-        $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 
-        self::assertEquals($expected, $result);
-        self::assertCount(1, $flashMessageQueue->getAllMessages());
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectFlashMessageService($flashMessageService);
+
+        self::assertEquals($expected, $selectItems->addData($input));
+        self::assertCount(1, $flashMessageService->getMessageQueueByIdentifier()->getAllMessages());
     }
 
     #[Test]
@@ -1268,7 +1304,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1314,7 +1353,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1366,7 +1408,11 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/sys_file_reference.csv');
         $GLOBALS['TCA']['foreign_table']['ctrl']['selicon_field'] = 'fal_field';
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectFileRepository($this->get(FileRepository::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1423,7 +1469,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             $expected['processedTca']['columns']['aField']['config']['items'][2]
         );
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1472,7 +1521,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'] = [];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1547,7 +1599,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1604,7 +1659,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = [];
         unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
         $expected['processedTca']['columns']['aField']['config']['items'] = array_values($expected['processedTca']['columns']['aField']['config']['items']);
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1660,7 +1718,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
         unset($expected['processedTca']['columns']['aField']['config']['items'][2]);
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1713,7 +1774,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = [];
         unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1799,7 +1863,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1839,7 +1906,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['doktype'] = ['keep'];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1882,7 +1952,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['doktype'] = ['keep'];
         unset($expected['processedTca']['columns']['doktype']['config']['items'][1]);
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -1943,7 +2016,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'maxitems' => 99999,
         ];
 
-        self::assertSame($expected, (new TcaSelectItems())->addData($input));
+        self::assertSame($expected, (new TcaSelectItems($this->get(SelectItemProcessor::class)))->addData($input));
     }
 
     /**
@@ -2020,7 +2093,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
 
         $expected['databaseRow']['aField'] = [];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     /**
@@ -2107,7 +2183,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
 
         $expected['databaseRow']['aField'] = [];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     /**
@@ -2203,7 +2282,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
 
         $expected['databaseRow']['aField'] = [];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -2272,7 +2354,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        (new TcaSelectItems())->addData($input);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->addData($input);
 
         $flashMessageService = $this->get(FlashMessageService::class);
         $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
@@ -2329,7 +2413,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        (new TcaSelectItems())->addData($input);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectFlashMessageService($this->get(FlashMessageService::class));
+        $selectItems->addData($input);
 
         $flashMessageService = $this->get(FlashMessageService::class);
         $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
@@ -2381,7 +2468,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = ['aValue'];
         $expected['processedTca']['columns']['aField']['config']['items'][0]['label'] = 'labelOverride';
 
-        self::assertSame($expected, (new TcaSelectItems())->addData($input));
+        self::assertSame($expected, (new TcaSelectItems($this->get(SelectItemProcessor::class)))->addData($input));
     }
 
     #[Test]
@@ -2429,7 +2516,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected['databaseRow']['aField'] = ['aValue'];
         $expected['processedTca']['columns']['aField']['config']['items'][0]['icon'] = 'icon-identifier-override';
 
-        self::assertSame($expected, (new TcaSelectItems())->addData($input));
+        self::assertSame($expected, (new TcaSelectItems($this->get(SelectItemProcessor::class)))->addData($input));
     }
 
     #[Test]
@@ -2460,7 +2547,11 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertSame(['5', '6'], (new TcaSelectItems())->addData($input)['databaseRow']['mm_field']);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+
+        self::assertSame(['5', '6'], $selectItems->addData($input)['databaseRow']['mm_field']);
     }
 
     #[Test]
@@ -2488,7 +2579,11 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertSame(['1', '2', '3', '4'], (new TcaSelectItems())->addData($input)['databaseRow']['foreign_field']);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+
+        self::assertSame(['1', '2', '3', '4'], $selectItems->addData($input)['databaseRow']['foreign_field']);
     }
 
     #[Test]
@@ -2518,7 +2613,11 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ],
         ];
 
-        self::assertSame(['1', '2', 'foo'], (new TcaSelectItems())->addData($input)['databaseRow']['foreign_field']);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+
+        self::assertSame(['1', '2', 'foo'], $selectItems->addData($input)['databaseRow']['foreign_field']);
     }
 
     #[Test]
@@ -2552,7 +2651,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'bar',
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -2580,7 +2682,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -2615,7 +2720,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'c',
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -2650,7 +2758,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['foo'];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -2690,7 +2801,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             ['label' => '[ MISSING LABEL ("1") ]', 'value' => '1', 'icon' => null, 'group' => 'none', 'description' => null],
             ['label' => 'foo', 'value' => 'foo', 'icon' => null, 'group' => null, 'description' => null],
         ];
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -2730,7 +2844,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             'bar',
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     #[Test]
@@ -2769,7 +2886,10 @@ final class TcaSelectItemsTest extends FunctionalTestCase
             4 => 'bar',
         ];
 
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
     }
 
     public static function processSelectFieldSetsCorrectValuesForMmRelationsDataProvider(): array
@@ -2892,6 +3012,9 @@ final class TcaSelectItemsTest extends FunctionalTestCase
     #[Test]
     public function processSelectFieldSetsCorrectValuesForMmRelations(array $input, array $relationHandlerUids): void
     {
-        self::assertEquals($relationHandlerUids, (new TcaSelectItems())->addData($input)['databaseRow']['mm_field']);
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        self::assertEquals($relationHandlerUids, $selectItems->addData($input)['databaseRow']['mm_field']);
     }
 }

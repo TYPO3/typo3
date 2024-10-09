@@ -328,14 +328,15 @@ final class TcaRadioItemsTest extends UnitTestCase
         $flashMessage = $this->createMock(FlashMessage::class);
         GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         // itemsProcFunc must NOT have raised an exception
         $flashMessageQueue->expects(self::never())->method('enqueue')->with($flashMessage);
 
-        (new TcaRadioItems())->addData($input);
+        $subject = new TcaRadioItems();
+        $subject->injectFlashMessageService($flashMessageService);
+        $subject->addData($input);
     }
 
     #[Test]
@@ -393,13 +394,14 @@ final class TcaRadioItemsTest extends UnitTestCase
         $flashMessage = $this->createMock(FlashMessage::class);
         GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $flashMessageQueue->expects(self::atLeastOnce())->method('enqueue')->with($flashMessage);
 
-        (new TcaRadioItems())->addData($input);
+        $subject = new TcaRadioItems();
+        $subject->injectFlashMessageService($flashMessageService);
+        $subject->addData($input);
     }
 
     #[Test]

@@ -30,6 +30,7 @@ final class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getMockBuilder(DatabasePageLanguageOverlayRows::class)
+            ->disableOriginalConstructor()
             ->onlyMethods(['getDatabaseRows'])
             ->getMock();
     }

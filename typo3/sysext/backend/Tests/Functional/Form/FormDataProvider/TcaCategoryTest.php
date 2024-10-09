@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -368,7 +370,10 @@ final class TcaCategoryTest extends FunctionalTestCase
         // Expect fetched category items
         $expected['processedTca']['columns']['categories']['config']['items'] = $this->getExpectedCategoryItems([31]);
 
-        self::assertEquals($expected, (new TcaCategory())->addData($input));
+        $category = new TcaCategory();
+        $category->injectConnectionPool($this->get(ConnectionPool::class));
+        $category->injectIconFactory($this->get(IconFactory::class));
+        self::assertEquals($expected, $category->addData($input));
     }
 
     #[Test]
@@ -436,7 +441,10 @@ final class TcaCategoryTest extends FunctionalTestCase
             $expected['processedTca']['columns']['categories']['config']['items']
         );
 
-        self::assertEquals($expected, (new TcaCategory())->addData($input));
+        $category = new TcaCategory();
+        $category->injectConnectionPool($this->get(ConnectionPool::class));
+        $category->injectIconFactory($this->get(IconFactory::class));
+        self::assertEquals($expected, $category->addData($input));
     }
 
     #[Test]
@@ -494,7 +502,10 @@ final class TcaCategoryTest extends FunctionalTestCase
             $expected['processedTca']['columns']['categories']['config']['items']
         );
 
-        self::assertEquals($expected, (new TcaCategory())->addData($input));
+        $category = new TcaCategory();
+        $category->injectConnectionPool($this->get(ConnectionPool::class));
+        $category->injectIconFactory($this->get(IconFactory::class));
+        self::assertEquals($expected, $category->addData($input));
     }
 
     /**

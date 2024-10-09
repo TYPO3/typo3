@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -28,11 +27,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Resolve databaseRow field content for type=folder
  */
-#[Autoconfigure(public: true)]
-class TcaFolder implements FormDataProviderInterface
+readonly class TcaFolder implements FormDataProviderInterface
 {
     public function __construct(
-        private readonly ResourceFactory $resourceFactory,
+        private ResourceFactory $resourceFactory,
     ) {}
 
     /**

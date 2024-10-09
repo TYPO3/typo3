@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaText;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaTextTest extends UnitTestCase
@@ -71,9 +70,7 @@ final class TcaTextTest extends UnitTestCase
         ];
 
         $richtextConfigurationMock = $this->createMock(Richtext::class);
-        GeneralUtility::addInstance(Richtext::class, $richtextConfigurationMock);
         $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);
-        GeneralUtility::addInstance(RteHtmlParser::class, $rteHtmlParserMock);
 
         $richtextConfigurationMock
             ->method('getConfiguration')
@@ -96,7 +93,7 @@ final class TcaTextTest extends UnitTestCase
             )
             ->willReturn('processedContent');
 
-        self::assertSame($expected, (new TcaText())->addData($input));
+        self::assertSame($expected, (new TcaText($richtextConfigurationMock, $rteHtmlParserMock))->addData($input));
     }
 
     #[Test]
@@ -122,7 +119,7 @@ final class TcaTextTest extends UnitTestCase
 
         // No processing should be performed
         $expected = $input;
-        self::assertSame($expected, (new TcaText())->addData($input));
+        self::assertSame($expected, (new TcaText($this->createMock(Richtext::class), $this->createMock(RteHtmlParser::class)))->addData($input));
     }
 
     #[Test]
@@ -148,8 +145,6 @@ final class TcaTextTest extends UnitTestCase
         ];
 
         $richtextConfigurationMock = $this->createMock(Richtext::class);
-        GeneralUtility::addInstance(Richtext::class, $richtextConfigurationMock);
-
         $richtextConfigurationMock
             ->method('getConfiguration')
             ->with(
@@ -166,6 +161,6 @@ final class TcaTextTest extends UnitTestCase
 
         // No processing should be performed
         $expected = $input;
-        self::assertSame($expected, (new TcaText())->addData($input));
+        self::assertSame($expected, (new TcaText($richtextConfigurationMock, $this->createMock(RteHtmlParser::class)))->addData($input));
     }
 }

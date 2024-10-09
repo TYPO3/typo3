@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseDefaultLanguageException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DatabaseLanguageRowsTest extends UnitTestCase
@@ -36,6 +35,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
 
         $this->subject = $this->getMockBuilder(DatabaseLanguageRows::class)
+            ->disableOriginalConstructor()
             ->onlyMethods(['getRecordWorkspaceOverlay'])
             ->getMock();
     }
@@ -223,16 +223,20 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         ];
 
         $translationMock = $this->createMock(TranslationConfigurationProvider::class);
-        GeneralUtility::addInstance(TranslationConfigurationProvider::class, $translationMock);
         $translationMock->expects(self::atLeastOnce())->method('translationInfo')
             ->with('tt_content', 23, 3)->willReturn($translationResult);
+
+        $subject = $this->getMockBuilder(DatabaseLanguageRows::class)
+            ->setConstructorArgs([$translationMock])
+            ->onlyMethods(['getRecordWorkspaceOverlay'])
+            ->getMock();
 
         // The second call is the real check: The "additional overlay" should be fetched
         $series = [
             [['tableName' => 'tt_content', 'uid' => 23], $defaultLanguageRow],
             [['tableName' => 'tt_content', 'uid' => 43], $recordWsolResult],
         ];
-        $this->subject->expects(self::exactly(2))
+        $subject->expects(self::exactly(2))
             ->method('getRecordWorkspaceOverlay')
             ->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
                 [$expectedArgs, $return] = array_shift($series);
@@ -251,7 +255,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
             ],
         ];
 
-        self::assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $subject->addData($input));
     }
 
     #[Test]
@@ -320,16 +324,20 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
         ];
 
         $translationMock = $this->createMock(TranslationConfigurationProvider::class);
-        GeneralUtility::addInstance(TranslationConfigurationProvider::class, $translationMock);
         $translationMock->expects(self::once())->method('translationInfo')->with('tt_content', 23, 3)
             ->willReturn($translationResult);
+
+        $subject = $this->getMockBuilder(DatabaseLanguageRows::class)
+            ->setConstructorArgs([$translationMock])
+            ->onlyMethods(['getRecordWorkspaceOverlay'])
+            ->getMock();
 
         // The second call is the real check: The "additional overlay" should be fetched
         $series = [
             [['tableName' => 'tt_content', 'uid' => 23], $defaultLanguageRow],
             [['tableName' => 'tt_content', 'uid' => 43], $recordWsolResult],
         ];
-        $this->subject->expects(self::exactly(2))
+        $subject->expects(self::exactly(2))
             ->method('getRecordWorkspaceOverlay')
             ->willReturnCallback(function (string $tableName, int $uid) use (&$series): array {
                 [$expectedArgs, $return] = array_shift($series);
@@ -348,7 +356,7 @@ final class DatabaseLanguageRowsTest extends UnitTestCase
             ],
         ];
 
-        self::assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $subject->addData($input));
     }
 
     #[Test]

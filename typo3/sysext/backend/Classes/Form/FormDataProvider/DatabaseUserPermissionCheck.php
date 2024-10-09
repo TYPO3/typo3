@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedEditInternalsException;
@@ -34,10 +33,11 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 /**
  * Determine user permission for action and check them
  */
-#[Autoconfigure(public: true)]
 readonly class DatabaseUserPermissionCheck implements FormDataProviderInterface
 {
-    public function __construct(private EventDispatcherInterface $eventDispatcher) {}
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+    ) {}
 
     /**
      * Set userPermissionOnPage to result array and check access rights.

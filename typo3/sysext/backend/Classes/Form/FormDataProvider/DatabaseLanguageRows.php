@@ -24,8 +24,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Add language related data to result array
  */
-class DatabaseLanguageRows implements FormDataProviderInterface
+readonly class DatabaseLanguageRows implements FormDataProviderInterface
 {
+    public function __construct(
+        private TranslationConfigurationProvider $translationConfigurationProvider,
+    ) {}
+
     /**
      * Fetch default language if handled record is a localized one,
      * unserialize transOrigDiffSourceField if it is defined,
@@ -75,7 +79,6 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                 // @todo: The TranslationConfigurationProvider is more stupid than good for us ... invent a better translation overlay api!
                 if (!empty($result['userTsConfig']['options.']['additionalPreviewLanguages'])) {
                     $additionalLanguageUids = GeneralUtility::intExplode(',', (string)$result['userTsConfig']['options.']['additionalPreviewLanguages'], true);
-                    $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
                     foreach ($additionalLanguageUids as $additionalLanguageUid) {
                         // Continue if this system language record does not exist or if 0 or -1 is requested
                         // or if row is the same as the to-be-displayed row
@@ -85,7 +88,7 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                         ) {
                             continue;
                         }
-                        $translationInfo = $translationProvider->translationInfo(
+                        $translationInfo = $this->translationConfigurationProvider->translationInfo(
                             $result['tableName'],
                             (int)$result['databaseRow'][$fieldWithUidOfDefaultRecord],
                             $additionalLanguageUid

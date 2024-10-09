@@ -48,6 +48,31 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 abstract class AbstractItemProvider
 {
+    private IconFactory $iconFactory;
+    private FileRepository $fileRepository;
+    private FlashMessageService $flashMessageService;
+    private ConnectionPool $connectionPool;
+
+    public function injectIconFactory(IconFactory $iconFactory): void
+    {
+        $this->iconFactory = $iconFactory;
+    }
+
+    public function injectFileRepository(FileRepository $fileRepository): void
+    {
+        $this->fileRepository = $fileRepository;
+    }
+
+    public function injectFlashMessageService(FlashMessageService $flashMessageService): void
+    {
+        $this->flashMessageService = $flashMessageService;
+    }
+
+    public function injectConnectionPool(ConnectionPool $connectionPool): void
+    {
+        $this->connectionPool = $connectionPool;
+    }
+
     /**
      * Resolve "itemProcFunc" of elements.
      *
@@ -123,8 +148,7 @@ abstract class AbstractItemProvider
                 ContextualFeedbackSeverity::ERROR,
                 true
             );
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
 
@@ -259,7 +283,8 @@ abstract class AbstractItemProvider
      * @param array $result Result array
      * @param string $fieldName Current handled field name
      * @param array $items Incoming items
-     * @param bool $includeFullRows @internal Hack for category tree to speed up tree processing, adding full db row as _row to item
+     * @param bool $includeFullRows @internal Hack for category tree to speed up tree processing, adding full db row as
+     *                              _row to item
      * @return array Modified item array
      * @throws \UnexpectedValueException
      */
@@ -299,8 +324,7 @@ abstract class AbstractItemProvider
             $msg .= $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch');
             $msgTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch_title');
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, $msgTitle, ContextualFeedbackSeverity::ERROR, true);
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
             return $items;
         }
@@ -310,9 +334,6 @@ abstract class AbstractItemProvider
             $labelPrefix = $result['processedTca']['columns'][$fieldName]['config']['foreign_table_prefix'];
             $labelPrefix = $languageService->sL($labelPrefix);
         }
-
-        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         $allForeignRows = $queryResult->fetchAllAssociative();
         // Find all possible versioned records of the current IDs, so we do not need to overlay each record
@@ -342,14 +363,14 @@ abstract class AbstractItemProvider
                 }
                 $icon = '';
                 if ($isFileReference) {
-                    $references = $fileRepository->findByRelation($foreignTable, $iconFieldName, $foreignRow['uid']);
+                    $references = $this->fileRepository->findByRelation($foreignTable, $iconFieldName, $foreignRow['uid']);
                     if (is_array($references) && !empty($references)) {
                         $icon = reset($references);
                         $icon = $icon->getPublicUrl();
                     }
                 } else {
                     // Else, determine icon based on record type, or a generic fallback
-                    $icon = $iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
+                    $icon = $this->iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
                 }
                 $item = [
                     'label' => $labelPrefix . BackendUtility::getRecordTitle($foreignTable, $foreignRow),
@@ -584,8 +605,7 @@ abstract class AbstractItemProvider
             $fieldList[] = $foreignTableName . '.' . $result['processedTca']['columns'][$localFieldName]['config']['foreign_table_item_group'];
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($foreignTableName);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($foreignTableName);
 
         $queryBuilder->getRestrictions()
             ->removeAll()
@@ -692,7 +712,7 @@ abstract class AbstractItemProvider
      */
     protected function processForeignTableClause(array $result, $foreignTableName, $localFieldName)
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($foreignTableName);
+        $connection = $this->connectionPool->getConnectionForTable($foreignTableName);
         $localTable = $result['tableName'];
         $effectivePid = $result['effectivePid'];
 

@@ -37,6 +37,10 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProviderInterface
 {
+    public function __construct(
+        private readonly FlashMessageService $flashMessageService,
+    ) {}
+
     /**
      * Resolve inline fields
      *
@@ -382,7 +386,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     '',
                     ContextualFeedbackSeverity::ERROR
                 );
-                GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->enqueue($flashMessage);
+                $this->flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
             }
         }
         return $mainChild;

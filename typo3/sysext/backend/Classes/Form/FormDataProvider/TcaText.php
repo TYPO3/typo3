@@ -20,14 +20,18 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Resolve databaseRow field content for type=text, especially handle
  * richtext transformations "from db to rte"
  */
-class TcaText implements FormDataProviderInterface
+readonly class TcaText implements FormDataProviderInterface
 {
+    public function __construct(
+        private Richtext $richtext,
+        private RteHtmlParser $rteHtmlParser,
+    ) {}
+
     /**
      * Handle text field content, especially richtext transformation
      *
@@ -43,8 +47,7 @@ class TcaText implements FormDataProviderInterface
 
             // Check if richtext is enabled for the field
             if ($fieldConfig['config']['enableRichtext'] ?? false) {
-                $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
-                $richtextConfiguration = $richtextConfigurationProvider->getConfiguration(
+                $richtextConfiguration = $this->richtext->getConfiguration(
                     $result['tableName'],
                     $fieldName,
                     $result['effectivePid'],
@@ -60,8 +63,7 @@ class TcaText implements FormDataProviderInterface
                     // If eval=null is set for field, value might be null ... don't transform anything in this case.
                     if ($result['databaseRow'][$fieldName] !== null) {
                         // Process "from-db-to-rte" on current value
-                        $richTextParser = GeneralUtility::makeInstance(RteHtmlParser::class);
-                        $result['databaseRow'][$fieldName] = $richTextParser->transformTextForRichTextEditor($result['databaseRow'][$fieldName], $richtextConfiguration['proc.'] ?? []);
+                        $result['databaseRow'][$fieldName] = $this->rteHtmlParser->transformTextForRichTextEditor($result['databaseRow'][$fieldName], $richtextConfiguration['proc.'] ?? []);
                     }
                 }
             }

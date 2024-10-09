@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,7 +57,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         unset($expected['processedTca']['columns']['aField']['config']['placeholder']);
 
-        self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders($this->createMock(ConnectionPool::class)))->addData($input));
     }
 
     #[Test]
@@ -79,7 +80,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
 
         $expected = $input;
 
-        self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders($this->createMock(ConnectionPool::class)))->addData($input));
     }
 
     #[Test]
@@ -105,7 +106,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = 'anotherPlaceholder';
 
-        self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders($this->createMock(ConnectionPool::class)))->addData($input));
     }
 
     #[Test]
@@ -169,7 +170,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $aForeignTableInput['databaseRow']['aForeignField'];
 
-        self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders($this->createMock(ConnectionPool::class)))->addData($input));
     }
 
     #[Test]
@@ -202,7 +203,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         unset($expected['processedTca']['columns']['aField']['config']['placeholder']);
 
-        self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders($this->createMock(ConnectionPool::class)))->addData($input));
     }
 
     #[Test]
@@ -275,7 +276,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMockResult['databaseRow']['sha1'];
 
-        self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders($this->createMock(ConnectionPool::class)))->addData($input));
     }
 
     #[Test]
@@ -341,7 +342,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataMockResult['databaseRow']['title'];
 
-        self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders($this->createMock(ConnectionPool::class)))->addData($input));
     }
 
     #[Test]
@@ -446,7 +447,7 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataMockResult['databaseRow']['title'];
 
-        self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders($this->createMock(ConnectionPool::class)))->addData($input));
     }
 
     #[Test]
@@ -475,6 +476,6 @@ final class TcaInputPlaceholdersTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->expects(self::atLeastOnce())->method('sL')->with($labelString)->willReturn($localizedString);
 
-        self::assertSame($expected, (new TcaInputPlaceholders())->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders($this->createMock(ConnectionPool::class)))->addData($input));
     }
 }

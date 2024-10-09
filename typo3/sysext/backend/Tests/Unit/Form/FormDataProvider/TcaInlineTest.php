@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaInlineTest extends UnitTestCase
@@ -62,7 +63,7 @@ final class TcaInlineTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['children'] = [];
-        self::assertEquals($expected, (new TcaInline())->addData($input));
+        self::assertEquals($expected, (new TcaInline($this->createMock(FlashMessageService::class)))->addData($input));
     }
 
     #[Test]
@@ -92,7 +93,7 @@ final class TcaInlineTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['type'] = 'input';
-        self::assertEquals($expected, (new TcaInline())->addData($input));
+        self::assertEquals($expected, (new TcaInline($this->createMock(FlashMessageService::class)))->addData($input));
     }
 
     #[Test]
@@ -124,6 +125,6 @@ final class TcaInlineTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['children'] = [];
-        self::assertEquals($expected, (new TcaInline())->addData($input));
+        self::assertEquals($expected, (new TcaInline($this->createMock(FlashMessageService::class)))->addData($input));
     }
 }
