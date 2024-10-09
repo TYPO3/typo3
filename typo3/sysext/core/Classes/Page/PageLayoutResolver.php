@@ -19,13 +19,9 @@ namespace TYPO3\CMS\Core\Page;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection;
-use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Finds the proper layout for a page, using the database fields "backend_layout"
@@ -42,12 +38,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This is not part of TYPO3 Core API.
  */
 #[Autoconfigure(public: true)]
-class PageLayoutResolver
+readonly class PageLayoutResolver
 {
     public function __construct(
-        protected readonly DataProviderCollection $dataProviderCollection,
-        protected readonly SiteFinder $siteFinder,
-        protected readonly PageTsConfigFactory $pageTsConfigFactory
+        protected DataProviderCollection $dataProviderCollection,
+        protected SiteFinder $siteFinder,
+        protected PageTsConfigFactory $pageTsConfigFactory
     ) {
         $this->dataProviderCollection->add('default', DefaultDataProvider::class);
         foreach ((array)($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'] ?? []) as $identifier => $className) {
@@ -58,22 +54,6 @@ class PageLayoutResolver
     public function getLayoutForPage(array $pageRecord, array $rootLine): ?PageLayout
     {
         $pageId = (int)$pageRecord['uid'];
-
-        try {
-            $site = $this->siteFinder->getSiteByPageId($pageId, $rootLine);
-        } catch (SiteNotFoundException) {
-            $site = new NullSite();
-        }
-
-        $pageTsConfig = $this->pageTsConfigFactory->create($rootLine, $site);
-
-        $dataProviderContext = GeneralUtility::makeInstance(DataProviderContext::class);
-        $dataProviderContext
-            ->setPageId($pageId)
-            ->setData($pageRecord)
-            ->setTableName('pages')
-            ->setFieldName('backend_layout')
-            ->setPageTsConfig($pageTsConfig->getPageTsConfigArray());
 
         $selectedPageLayout = $this->getLayoutIdentifierForPage($pageRecord, $rootLine);
         $layout = $this->dataProviderCollection->getBackendLayout($selectedPageLayout, $pageId);
