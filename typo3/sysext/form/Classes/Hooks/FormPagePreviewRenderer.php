@@ -44,9 +44,16 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
     {
         $row = $item->getRecord();
         $itemContent = $this->linkEditContent('<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong>', $row) . '<br />';
-        $flexFormData = [];
-        if (isset($row['pi_flexform'])) {
-            $flexFormData = is_string($row['pi_flexform']) ? GeneralUtility::makeInstance(FlexFormService::class)->convertFlexFormContentToArray($row['pi_flexform']) : $row['pi_flexform'];
+        $flexFormData = $row['pi_flexform'] ?? [];
+        if (is_string($flexFormData)) {
+            $flexFormData = GeneralUtility::makeInstance(FlexFormService::class)->convertFlexFormContentToArray($flexFormData);
+        }
+        if (!is_array($flexFormData)) {
+            $this->logger?->warning(
+                'Type "{type}" of field "pi_flexform" for record-uid "{uid}" is not valid. Must be either empty or set to one of: "string", "array".',
+                ['type' => get_debug_type($flexFormData), 'uid' => $row['uid'] ?? 'UNKNOWN']
+            );
+            $flexFormData = [];
         }
         $persistenceIdentifier = $flexFormData['settings']['persistenceIdentifier'] ?? '';
         if (!empty($persistenceIdentifier)) {
