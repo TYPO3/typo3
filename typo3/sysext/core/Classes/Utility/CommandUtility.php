@@ -108,9 +108,15 @@ class CommandUtility
             return false;
         }
 
-        $output = explode(PHP_EOL, $process->getOutput());
+        $processOutput = $process->getOutput();
+        if (str_ends_with($processOutput, PHP_EOL)) {
+            // Last \n is ignored by PHP exec(): https://github.com/php/php-src/blob/b675db4c56dd0de4ea1f5195d587ed90f0096ed8/ext/standard/exec.c#L148
+            $processOutput = substr($processOutput, 0, -1);
+        }
+        $output = explode(PHP_EOL, $processOutput);
 
-        return $output[count($output) - 1] ?? '';
+        return rtrim(strrchr($processOutput, PHP_EOL) ?: $processOutput);
+
     }
 
     /**
