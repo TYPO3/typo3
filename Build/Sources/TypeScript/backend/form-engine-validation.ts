@@ -53,6 +53,7 @@ export default (function() {
   };
 
   let formEngineFormElement: HTMLFormElement;
+  let validationSuspended = false;
 
   const customEvaluations: Map<string, CustomEvaluationCallback> = new Map();
 
@@ -620,10 +621,24 @@ export default (function() {
     });
   };
 
+  /**
+   * @internal
+   */
+  FormEngineValidation.suspend = function () {
+    validationSuspended = true;
+  }
+
+  /**
+   * @internal
+   */
+  FormEngineValidation.resume = function () {
+    validationSuspended = false;
+  }
+
   FormEngineValidation.registerSubmitCallback = function () {
     const submitInterceptor = new SubmitInterceptor(formEngineFormElement);
     submitInterceptor.addPreSubmitCallback((): boolean => {
-      if (document.querySelector('.' + FormEngineValidation.errorClass) === null) {
+      if (validationSuspended || document.querySelector('.' + FormEngineValidation.errorClass) === null) {
         return true;
       }
 

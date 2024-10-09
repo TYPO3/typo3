@@ -89,33 +89,7 @@ export default (function() {
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-reload', (data: {confirmation: boolean}) => {
-    if (!data.confirmation) {
-      FormEngine.saveDocument();
-      return;
-    }
-    const modal = Modal.advanced({
-      title: TYPO3.lang['FormEngine.refreshRequiredTitle'],
-      content: TYPO3.lang['FormEngine.refreshRequiredContent'],
-      severity: Severity.warning,
-      staticBackdrop: true,
-      buttons: [
-        {
-          text: TYPO3.lang['button.cancel'] || 'Cancel',
-          active: true,
-          btnClass: 'btn-default',
-          name: 'cancel'
-        },
-        {
-          text: TYPO3.lang['button.ok'] || 'OK',
-          btnClass: 'btn-' + Severity.getCssClass(Severity.warning),
-          name: 'ok',
-          trigger: () => {
-            FormEngine.saveDocument();
-          }
-        }
-      ]
-    });
-    modal.addEventListener('button.clicked', () => modal.hideModal());
+    FormEngine.requestFormEngineUpdate(data.confirmation);
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-update-bitmask', (data: {position: number, total: number, invert: boolean, elementName: string }, evt: Event) => {
@@ -849,36 +823,45 @@ export default (function() {
   };
 
   FormEngine.requestFormEngineUpdate = function(showConfirmation: boolean): void {
-    if (showConfirmation) {
-      const modal = Modal.advanced({
-        title: TYPO3.lang['FormEngine.refreshRequiredTitle'],
-        content: TYPO3.lang['FormEngine.refreshRequiredContent'],
-        severity: Severity.warning,
-        staticBackdrop: true,
-        buttons: [
-          {
-            text: TYPO3.lang['button.cancel'] || 'Cancel',
-            active: true,
-            btnClass: 'btn-default',
-            name: 'cancel',
-            trigger: () => {
-              modal.hideModal();
-            }
-          },
-          {
-            text: TYPO3.lang['button.ok'] || 'OK',
-            btnClass: 'btn-' + Severity.getCssClass(Severity.warning),
-            name: 'ok',
-            trigger: () => {
-              FormEngine.closeModalsRecursive();
-              FormEngine.saveDocument();
-            }
-          }
-        ]
-      });
-    } else {
+    const saveDocumentWithoutValidation = (): void => {
+      // Shortcut method to suspend FormEngine validation on purpose as user attempts to switch to another document type
+      // and fields may become irrelevant after switching the type (e.g. the "URL" field when switching a page's doktype from "External URL" to "Standard").
+      // This is a workaround! FormEngine must be able to determine on a field basis whether the field is still relevant or not.
+      FormEngine.Validation.suspend();
       FormEngine.saveDocument();
+      FormEngine.Validation.resume();
+    };
+
+    if (!showConfirmation) {
+      saveDocumentWithoutValidation();
     }
+
+    const modal = Modal.advanced({
+      title: TYPO3.lang['FormEngine.refreshRequiredTitle'],
+      content: TYPO3.lang['FormEngine.refreshRequiredContent'],
+      severity: Severity.warning,
+      staticBackdrop: true,
+      buttons: [
+        {
+          text: TYPO3.lang['button.cancel'] || 'Cancel',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'cancel',
+          trigger: () => {
+            modal.hideModal();
+          }
+        },
+        {
+          text: TYPO3.lang['button.ok'] || 'OK',
+          btnClass: 'btn-' + Severity.getCssClass(Severity.warning),
+          name: 'ok',
+          trigger: () => {
+            FormEngine.closeModalsRecursive();
+            saveDocumentWithoutValidation();
+          }
+        }
+      ]
+    });
   };
 
   /**
