@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange;
 use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
@@ -119,6 +120,14 @@ class SingleFieldContainer extends AbstractContainer
             $parameterArray['itemFormElName']
         );
 
+        $requestFormEngineUpdate =
+            (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
+            || (isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload');
+        if ($requestFormEngineUpdate) {
+            $askForUpdate = $backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE);
+            $parameterArray['fieldChangeFunc']['record_type_changed'] = new ReloadOnFieldChange($askForUpdate);
+        }
+
         // Based on the type of the item, call a render function on a child element
         $options = $this->data;
         $options['parameterArray'] = $parameterArray;
@@ -129,22 +138,8 @@ class SingleFieldContainer extends AbstractContainer
             // Fallback to type if no renderType is given
             $options['renderType'] = $parameterArray['fieldConf']['config']['type'];
         }
-        $resultArray = $this->nodeFactory->create($options)->render();
-        if ($resultArray['html'] !== '') {
-            // Render a custom HTML element which will ask the user to save/update the form due to changing the element.
-            // This is used for e.g. "type" fields and others configured with "onChange"
-            // (https://docs.typo3.org/m/typo3/reference-tca/main/en-us/Columns/Properties/OnChange.html)
-            $requestFormEngineUpdate =
-                (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
-                || (isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload');
-            if ($requestFormEngineUpdate) {
-                $askForUpdate = $backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE);
-                $requestMode = $askForUpdate ? 'ask' : 'enforce';
-                $fieldSelector = sprintf('[name="%s"]', $parameterArray['itemFormElName']);
-                $resultArray['html'] .= '<typo3-formengine-updater mode="' . htmlspecialchars($requestMode) . '" field="' . htmlspecialchars($fieldSelector) . '"></typo3-formengine-updater>';
-            }
-        }
-        return $resultArray;
+
+        return $this->nodeFactory->create($options)->render();
     }
 
     /**

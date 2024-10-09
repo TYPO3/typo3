@@ -192,8 +192,6 @@ class FormResultCompiler
             }
         }
 
-        $pageRenderer->loadJavaScriptModule('@typo3/backend/form-engine/request-update.js');
-
         // todo: change these things in JS
         $pageRenderer->addInlineLanguageLabelArray([
             'FormEngine.noRecordTitle' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title'),
