@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Routing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -282,21 +283,12 @@ final class SiteMatcherTest extends UnitTestCase
 
     private function createSiteFinder(Site ...$sites): SiteFinder
     {
-        $siteConfiguration = new class ($sites) extends SiteConfiguration {
-            public function __construct(
-                protected array $sites
-            ) {
-                // empty by default
-            }
-
-            public function getAllExistingSites(bool $useCache = true): array
-            {
-                return array_combine(
-                    array_map(static function (Site $site) { return $site->getIdentifier(); }, $this->sites),
-                    $this->sites
-                );
-            }
-        };
-        return new SiteFinder(new $siteConfiguration($sites));
+        $siteConfigurationMock = $this->createMock(SiteConfiguration::class);
+        $sitesArray = array_combine(
+            array_map(static function (Site $site) { return $site->getIdentifier(); }, $sites),
+            $sites
+        );
+        $siteConfigurationMock->method('getAllExistingSites')->willReturn($sitesArray);
+        return new SiteFinder($siteConfigurationMock, $this->createMock(FrontendInterface::class));
     }
 }

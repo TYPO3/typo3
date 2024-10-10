@@ -23,7 +23,6 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
@@ -44,12 +43,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SiteTest extends UnitTestCase
 {
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        GeneralUtility::purgeInstances();
-    }
-
     public static function getBaseReturnsProperUriDataProvider(): array
     {
         return [
@@ -121,7 +114,7 @@ final class SiteTest extends UnitTestCase
     }
 
     /**
-     * This test shows that the a base from a site language is properly "inheriting" the base
+     * This test shows a base from a site language is properly "inheriting" the base
      * from a site if it isn't absolute.
      */
     #[DataProvider('getBaseForSiteLanguageReturnsProperUriDataProvider')]
@@ -167,37 +160,16 @@ final class SiteTest extends UnitTestCase
 
         GeneralUtility::addInstance(FluidPageErrorHandler::class, $this->createMock(FluidPageErrorHandler::class));
 
-        $app = new class () extends Application {
-            // This is ugly but php-cs-fixer insists.
-            public function __construct() {}
-        };
-        $link = new class () extends LinkService {
-            // This is ugly but php-cs-fixer insists.
-            public function __construct() {}
-        };
-        $siteFinder = new class () extends SiteFinder {
-            // This is ugly but php-cs-fixer insists.
-            public function __construct() {}
-        };
-        $cacheManager = new class () extends CacheManager {
-            public function getCache($identifier)
-            {
-                return new class () extends PhpFrontend {
-                    // This is ugly but php-cs-fixer insists.
-                    public function __construct() {}
-                };
-            }
-        };
         $container = new Container();
-        $container->set(Application::class, $app);
+        $container->set(Application::class, $this->createMock(Application::class));
         $container->set(Features::class, new Features());
         $container->set(GuzzleClientFactory::class, new GuzzleClientFactory());
         $container->set(RequestFactory::class, new RequestFactory(new GuzzleClientFactory()));
         $container->set(RequestFactoryInterface::class, new RequestFactory(new GuzzleClientFactory()));
         $container->set(ResponseFactoryInterface::class, new ResponseFactory());
-        $container->set(LinkService::class, $link);
-        $container->set(SiteFinder::class, $siteFinder);
-        $container->set(CacheManager::class, $cacheManager);
+        $container->set(LinkService::class, $this->createMock(LinkService::class));
+        $container->set(SiteFinder::class, $this->createMock(SiteFinder::class));
+        $container->set(CacheManager::class, $this->createMock(CacheManager::class));
         GeneralUtility::setContainer($container);
 
         self::assertInstanceOf(FluidPageErrorHandler::class, $subject->getErrorHandler(123));
@@ -255,27 +227,15 @@ final class SiteTest extends UnitTestCase
     #[Test]
     public function getErrorHandlerUsesFallbackWhenNoErrorHandlerForStatusCodeIsConfigured(): void
     {
-        $app = new class () extends Application {
-            // This is ugly but php-cs-fixer insists.
-            public function __construct() {}
-        };
-        $link = new class () extends LinkService {
-            // This is ugly but php-cs-fixer insists.
-            public function __construct() {}
-        };
-        $siteFinder = new class () extends SiteFinder {
-            // This is ugly but php-cs-fixer insists.
-            public function __construct() {}
-        };
         $container = new Container();
-        $container->set(Application::class, $app);
+        $container->set(Application::class, $this->createMock(Application::class));
         $container->set(Features::class, new Features());
         $container->set(GuzzleClientFactory::class, new GuzzleClientFactory());
         $container->set(RequestFactory::class, new RequestFactory(new GuzzleClientFactory()));
         $container->set(RequestFactoryInterface::class, new RequestFactory(new GuzzleClientFactory()));
         $container->set(ResponseFactoryInterface::class, new ResponseFactory());
-        $container->set(LinkService::class, $link);
-        $container->set(SiteFinder::class, $siteFinder);
+        $container->set(LinkService::class, $this->createMock(LinkService::class));
+        $container->set(SiteFinder::class, $this->createMock(SiteFinder::class));
         GeneralUtility::setContainer($container);
 
         $subject = new Site('aint-misbehaving', 13, [

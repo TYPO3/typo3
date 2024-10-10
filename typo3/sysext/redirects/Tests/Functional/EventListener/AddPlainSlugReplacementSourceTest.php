@@ -37,7 +37,7 @@ final class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
     public function plainSlugReplacementSourceIsAdded(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimpleSiteRoot.csv');
-        $this->buildBaseSite([]);
+        $this->buildBaseSite();
         $site = $this->get(SiteFinder::class)->getSiteByRootPageId(1);
         $siteLanguage = $site->getDefaultLanguage();
 
@@ -72,12 +72,12 @@ final class AddPlainSlugReplacementSourceTest extends FunctionalTestCase
         self::assertSame([], $source->getTargetLinkParameters());
     }
 
-    protected function buildBaseSite(array $settings): void
+    private function buildBaseSite(): void
     {
         $configuration = [
             'rootPageId' => 1,
             'base' => '/',
-            'settings' => $settings,
+            'settings' => [],
         ];
         $siteWriter = $this->get(SiteWriter::class);
         $siteWriter->write('testing', $configuration);
