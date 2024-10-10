@@ -63,7 +63,8 @@ final class SiteConfigurationTest extends UnitTestCase
             new SiteSettingsFactory($this->fixturePath, $setRegistry, $settingsTypeRegistry, $this->createMock(YamlFileLoader::class), new NullFrontend('test'), $packageDependentCacheIdentifier),
             new NoopEventDispatcher(),
             new NullFrontend('test'),
-            new YamlFileLoader($this->createMock(LoggerInterface::class))
+            new YamlFileLoader($this->createMock(LoggerInterface::class)),
+            new NullFrontend('test')
         );
     }
 

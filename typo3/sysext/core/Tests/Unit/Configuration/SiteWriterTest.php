@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
@@ -53,7 +52,6 @@ final class SiteWriterTest extends UnitTestCase
         $this->siteWriter = new SiteWriter(
             $this->fixturePath,
             new NoopEventDispatcher(),
-            new NullFrontend('test'),
             new YamlFileLoader($this->createMock(LoggerInterface::class))
         );
     }

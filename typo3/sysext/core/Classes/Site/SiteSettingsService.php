@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Site;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
@@ -57,7 +56,7 @@ readonly class SiteSettingsService
     {
         // create a fresh Settings instance instead of using
         // $site->getSettings() which may have been loaded from cache
-        return $settings = $this->siteSettingsFactory->createSettings(
+        return $this->siteSettingsFactory->createSettings(
             $site->getSets(),
             $site->getIdentifier(),
             $site->getRawConfiguration()['settings'] ?? [],
@@ -138,7 +137,6 @@ readonly class SiteSettingsService
             $this->siteWriter->writeSettings($site->getIdentifier(), $settings);
         } catch (SiteConfigurationWriteException $e) {
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', ContextualFeedbackSeverity::ERROR, true);
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }

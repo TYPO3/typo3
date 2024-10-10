@@ -18,17 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Event\SiteConfigurationChangedEvent;
 use TYPO3\CMS\Core\Configuration\Event\SiteConfigurationLoadedEvent;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\Site\Entity\SiteTSconfig;
@@ -43,57 +43,38 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class SiteConfiguration implements SingletonInterface
+#[Autoconfigure(public: true)]
+class SiteConfiguration
 {
     /**
      * Config yaml file name.
-     *
-     * @internal
      */
-    protected string $configFileName = 'config.yaml';
+    private const CONFIG_FILE_NAME = 'config.yaml';
 
     /**
      * File naming containing TypoScript Setup.
-     *
-     * @internal
      */
-    protected string $typoScriptSetupFileName = 'setup.typoscript';
+    private const TYPOSCRIPT_SETUP_FILE_NAME = 'setup.typoscript';
 
     /**
      * File naming containing TypoScript Constants.
-     *
-     * @internal
      */
-    protected string $typoScriptConstantsFileName = 'constants.typoscript';
+    private const TYPOSCRIPT_CONSTANTS_FILE_NAME = 'constants.typoscript';
 
     /**
      * File naming containing page TSconfig definitions
-     *
-     * @internal
      */
-    protected string $pageTSconfigFileName = 'page.tsconfig';
+    private const PAGE_TSCONFIG_FILE_NAME = 'page.tsconfig';
 
     /**
      * YAML file name with all settings related to Content-Security-Policies.
-     *
-     * @internal
      */
-    protected string $contentSecurityFileName = 'csp.yaml';
+    private const CONTENT_SECURITY_FILE_NAME = 'csp.yaml';
 
     /**
      * Identifier to store all configuration data in the core cache.
-     *
-     * @internal
      */
-    protected string $cacheIdentifier = 'sites-configuration';
-
-    /**
-     * Cache stores all configuration as Site objects, as long as they haven't been changed.
-     * This drastically improves performance as SiteFinder utilizes SiteConfiguration heavily
-     *
-     * @var array|null
-     */
-    protected $firstLevelCache;
+    private const CACHE_IDENTIFIER = 'sites-configuration';
 
     public function __construct(
         #[Autowire('%env(TYPO3:configPath)%/sites')]
@@ -102,7 +83,9 @@ class SiteConfiguration implements SingletonInterface
         protected EventDispatcherInterface $eventDispatcher,
         #[Autowire(service: 'cache.core')]
         protected PhpFrontend $cache,
-        private YamlFileLoader $yamlFileLoader,
+        private readonly YamlFileLoader $yamlFileLoader,
+        #[Autowire(service: 'cache.runtime')]
+        protected readonly FrontendInterface $runtimeCache,
     ) {}
 
     /**
@@ -112,8 +95,8 @@ class SiteConfiguration implements SingletonInterface
      */
     public function getAllExistingSites(bool $useCache = true): array
     {
-        if ($useCache && $this->firstLevelCache !== null) {
-            return $this->firstLevelCache;
+        if ($useCache && $this->runtimeCache->has(self::CACHE_IDENTIFIER)) {
+            return $this->runtimeCache->get(self::CACHE_IDENTIFIER);
         }
         return $this->resolveAllExistingSites($useCache);
     }
@@ -140,7 +123,7 @@ class SiteConfiguration implements SingletonInterface
                 $sites[$identifier] = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript, $siteTSconfig);
             }
         }
-        $this->firstLevelCache = $sites;
+        $this->runtimeCache->set(self::CACHE_IDENTIFIER, $sites);
         return $sites;
     }
 
@@ -180,7 +163,7 @@ class SiteConfiguration implements SingletonInterface
         $finder = new Finder();
         $paths = [];
         try {
-            $finder->files()->depth(0)->name($this->configFileName)->in($this->configPath . '/*');
+            $finder->files()->depth(0)->name(self::CONFIG_FILE_NAME)->in($this->configPath . '/*');
         } catch (\InvalidArgumentException $e) {
             $finder = [];
         }
@@ -200,13 +183,13 @@ class SiteConfiguration implements SingletonInterface
     protected function getAllSiteConfigurationFromFiles(bool $useCache = true): array
     {
         // Check if the data is already cached
-        $siteConfiguration = $useCache ? $this->cache->require($this->cacheIdentifier) : false;
+        $siteConfiguration = $useCache ? $this->cache->require(self::CACHE_IDENTIFIER) : false;
         if ($siteConfiguration !== false) {
             return $siteConfiguration;
         }
         $finder = new Finder();
         try {
-            $finder->files()->depth(0)->name($this->configFileName)->in($this->configPath . '/*');
+            $finder->files()->depth(0)->name(self::CONFIG_FILE_NAME)->in($this->configPath . '/*');
         } catch (\InvalidArgumentException $e) {
             // Directory $this->configPath does not exist yet
             $finder = [];
@@ -218,7 +201,7 @@ class SiteConfiguration implements SingletonInterface
             $event = $this->eventDispatcher->dispatch(new SiteConfigurationLoadedEvent($identifier, $configuration));
             $siteConfiguration[$identifier] = $event->getConfiguration();
         }
-        $this->cache->set($this->cacheIdentifier, 'return ' . var_export($siteConfiguration, true) . ';');
+        $this->cache->set(self::CACHE_IDENTIFIER, 'return ' . var_export($siteConfiguration, true) . ';');
 
         return $siteConfiguration;
     }
@@ -235,16 +218,15 @@ class SiteConfiguration implements SingletonInterface
      */
     public function load(string $siteIdentifier): array
     {
-        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->configFileName;
-        $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
-        return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . self::CONFIG_FILE_NAME;
+        return $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
     }
 
     protected function getSiteTypoScript(string $siteIdentifier): ?SiteTypoScript
     {
         $data = [
-            'setup' => $this->typoScriptSetupFileName,
-            'constants' => $this->typoScriptConstantsFileName,
+            'setup' => self::TYPOSCRIPT_SETUP_FILE_NAME,
+            'constants' => self::TYPOSCRIPT_CONSTANTS_FILE_NAME,
         ];
         $definitions = [];
         foreach ($data as $type => $fileName) {
@@ -265,7 +247,7 @@ class SiteConfiguration implements SingletonInterface
     protected function getSiteTSconfig(string $siteIdentifier): ?SiteTSconfig
     {
         $pageTSconfig = null;
-        $path = $this->configPath . '/' . $siteIdentifier . '/' . $this->pageTSconfigFileName;
+        $path = $this->configPath . '/' . $siteIdentifier . '/' . self::PAGE_TSCONFIG_FILE_NAME;
         if (file_exists($path)) {
             $contents = @file_get_contents(GeneralUtility::fixWindowsFilePath($path));
             if ($contents !== false) {
@@ -283,18 +265,18 @@ class SiteConfiguration implements SingletonInterface
 
     protected function getContentSecurityPolicies(string $siteIdentifier): array
     {
-        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->contentSecurityFileName;
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . self::CONTENT_SECURITY_FILE_NAME;
         if (file_exists($fileName)) {
-            $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
-            return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+            return $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
         }
         return [];
     }
 
     #[AsEventListener(event: SiteConfigurationChangedEvent::class)]
-    public function siteConfigurationChanged()
+    public function siteConfigurationChanged(): void
     {
-        $this->firstLevelCache = null;
+        $this->cache->remove(self::CACHE_IDENTIFIER);
+        $this->runtimeCache->remove(self::CACHE_IDENTIFIER);
     }
 
     #[AsEventListener('typo3-core/site-configuration')]

@@ -150,7 +150,7 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
         $cache = $this->get('cache.core');
         $eventDispatcher = $this->get(EventDispatcherInterface::class);
         GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
-        (new SiteWriter($path, $eventDispatcher, $cache, $this->get(YamlFileLoader::class)))
+        (new SiteWriter($path, $eventDispatcher, $this->get(YamlFileLoader::class)))
             ->write($site->getIdentifier(), $site->getConfiguration());
     }
 

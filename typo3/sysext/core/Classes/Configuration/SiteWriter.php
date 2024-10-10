@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Configuration;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Event\SiteConfigurationBeforeWriteEvent;
 use TYPO3\CMS\Core\Configuration\Event\SiteConfigurationChangedEvent;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
@@ -39,30 +38,17 @@ class SiteWriter
 {
     /**
      * Config yaml file name.
-     *
-     * @internal
      */
-    protected string $configFileName = 'config.yaml';
+    private const CONFIG_FILE_NAME = 'config.yaml';
 
     /**
      * YAML file name with all settings.
-     *
-     * @internal
-     * @todo remove, move usages to SiteSettingsFactory
      */
-    protected string $settingsFileName = 'settings.yaml';
-
-    /**
-     * Identifier to store all configuration data in the core cache.
-     *
-     * @internal
-     */
-    protected string $cacheIdentifier = 'sites-configuration';
+    private const SETTINGS_FILE_NAME = 'settings.yaml';
 
     public function __construct(
         protected readonly string $configPath,
         protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly PhpFrontend $cache,
         private readonly YamlFileLoader $yamlFileLoader,
     ) {}
 
@@ -95,7 +81,7 @@ class SiteWriter
 
     public function writeSettings(string $siteIdentifier, array $settings): void
     {
-        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . self::SETTINGS_FILE_NAME;
         if ($settings === []) {
             if (!is_file($fileName)) {
                 return;
@@ -106,7 +92,7 @@ class SiteWriter
         }
         $yamlFileContents = Yaml::dump($settings, 99, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE | Yaml::DUMP_OBJECT_AS_MAP);
         if (!GeneralUtility::writeFile($fileName, $yamlFileContents)) {
-            throw new SiteConfigurationWriteException('Unable to write site settings in sites/' . $siteIdentifier . '/' . $this->configFileName, 1590487411);
+            throw new SiteConfigurationWriteException('Unable to write site settings in sites/' . $siteIdentifier . '/' . self::SETTINGS_FILE_NAME, 1590487411);
         }
     }
 
@@ -120,7 +106,7 @@ class SiteWriter
     public function write(string $siteIdentifier, array $configuration, bool $protectPlaceholders = false): void
     {
         $folder = $this->configPath . '/' . $siteIdentifier;
-        $fileName = $folder . '/' . $this->configFileName;
+        $fileName = $folder . '/' . self::CONFIG_FILE_NAME;
         $newConfiguration = $configuration;
         if (!file_exists($folder)) {
             GeneralUtility::mkdir_deep($folder);
@@ -147,9 +133,8 @@ class SiteWriter
         $newConfiguration = $this->sortConfiguration($event->getConfiguration());
         $yamlFileContents = Yaml::dump($newConfiguration, 99, 2);
         if (!GeneralUtility::writeFile($fileName, $yamlFileContents)) {
-            throw new SiteConfigurationWriteException('Unable to write site configuration in sites/' . $siteIdentifier . '/' . $this->configFileName, 1590487011);
+            throw new SiteConfigurationWriteException('Unable to write site configuration in sites/' . $siteIdentifier . '/' . self::CONFIG_FILE_NAME, 1590487011);
         }
-        $this->cache->remove($this->cacheIdentifier);
         $this->eventDispatcher->dispatch(new SiteConfigurationChangedEvent($siteIdentifier));
     }
 
@@ -163,7 +148,6 @@ class SiteWriter
         if (!rename($this->configPath . '/' . $currentIdentifier, $this->configPath . '/' . $newIdentifier)) {
             throw new SiteConfigurationWriteException('Unable to rename folder sites/' . $currentIdentifier, 1522491300);
         }
-        $this->cache->remove($this->cacheIdentifier);
         $this->eventDispatcher->dispatch(new SiteConfigurationChangedEvent($newIdentifier));
     }
 
@@ -175,14 +159,13 @@ class SiteWriter
      */
     public function delete(string $siteIdentifier): void
     {
-        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->configFileName;
+        $fileName = $this->configPath . '/' . $siteIdentifier . '/' . self::CONFIG_FILE_NAME;
         if (!file_exists($fileName)) {
-            throw new SiteNotFoundException('Site configuration file ' . $this->configFileName . ' within the site ' . $siteIdentifier . ' not found.', 1522866184);
+            throw new SiteNotFoundException('Site configuration file ' . self::CONFIG_FILE_NAME . ' within the site ' . $siteIdentifier . ' not found.', 1522866184);
         }
         if (!unlink($fileName)) {
             throw new SiteConfigurationWriteException('Unable to delete folder sites/' . $siteIdentifier, 1596462020);
         }
-        $this->cache->remove($this->cacheIdentifier);
         $this->eventDispatcher->dispatch(new SiteConfigurationChangedEvent($siteIdentifier));
     }
 

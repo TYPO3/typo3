@@ -29,8 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SiteDatabaseEditRowTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     public function setUp(): void
     {
         $this->backupEnvironment = true;
@@ -110,7 +108,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         $siteMock->method('getIdentifier')->willReturn('testident');
         $siteConfiguration = $this->createMock(SiteConfiguration::class);
         $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, $siteConfiguration);
+        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration);
 
         $expected = $input;
         $expected['databaseRow'] = [
@@ -144,7 +142,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         $siteMock->method('getIdentifier')->willReturn('testident');
         $siteConfiguration = $this->createMock(SiteConfiguration::class);
         $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, $siteConfiguration);
+        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
@@ -170,7 +168,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         $siteMock->method('getIdentifier')->willReturn('testident');
         $siteConfiguration = $this->createMock(SiteConfiguration::class);
         $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, $siteConfiguration);
+        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
@@ -200,7 +198,7 @@ final class SiteDatabaseEditRowTest extends UnitTestCase
         $siteMock->method('getIdentifier')->willReturn('testident');
         $siteConfiguration = $this->createMock(SiteConfiguration::class);
         $siteConfiguration->method('load')->with('testident')->willReturn($rowData);
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, $siteConfiguration);
+        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration);
 
         $expected = $input;
         $expected['databaseRow'] = [
