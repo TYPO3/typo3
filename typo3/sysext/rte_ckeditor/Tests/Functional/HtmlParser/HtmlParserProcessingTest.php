@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class HtmlParserProcessingTest extends FunctionalTestCase
 {
-    protected bool $initializeDatabase = false;
+    protected bool $initializeDatabase = true;
     protected array $coreExtensionsToLoad = ['rte_ckeditor'];
 
     protected array $removeTagsExpectation = [
@@ -54,8 +54,98 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
             ->getConfiguration('any', 'any', 0, 'any', []);
 
         self::assertSame($this->removeTagsExpectation, $richTextConfigurationConfiguration['processing']['HTMLparser_db']['removeTags']);
-        // Legacy assertion, still valid too.
+        // TypoScript/TSconfig assertion, still valid too.
         self::assertSame($this->removeTagsExpectation, $richTextConfigurationConfiguration['proc.']['HTMLparser_db.']['removeTags.']);
+    }
+
+    #[Test]
+    public function HtmlParserProcessingReceivesTypoScriptStringConfiguration(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/rte-pages-string.csv');
+
+        $extraConfig = [
+            'richtextConfiguration' => 'testing',
+        ];
+        // NOTICE: This is just plain TSconfig. No YAML preset exist. For TSconfig,
+        // the "preset" name has no relevance.
+        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationConfiguration = $richTextConfigurationProvider
+            ->getConfiguration('pages', 'TSconfig', 1, 'any', $extraConfig);
+
+        self::assertSame('span,style,meta,code', $richTextConfigurationConfiguration['proc.']['HTMLparser_db.']['removeTags']);
+    }
+
+    #[Test]
+    public function HtmlParserProcessingReceivesTypoScriptArrayConfiguration(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/rte-pages-array.csv');
+
+        $extraConfig = [
+            'richtextConfiguration' => 'testing',
+        ];
+        // NOTICE: This is just plain TSconfig. No YAML preset exist. For TSconfig,
+        // the "preset" name has no relevance.
+        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationConfiguration = $richTextConfigurationProvider
+            ->getConfiguration('pages', 'TSconfig', 1, 'any', $extraConfig);
+
+        self::assertSame(['empty', 'span', 'style', 'meta', 'code'], $richTextConfigurationConfiguration['proc.']['HTMLparser_db.']['removeTags.']);
+    }
+
+    #[Test]
+    public function HtmlParserProcessingAppliesTypoScriptStringConfiguration(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/rte-pages-string.csv');
+
+        $extraConfig = [
+            'richtextConfiguration' => 'testing',
+        ];
+        // NOTICE: This is just plain TSconfig. No YAML preset exist. For TSconfig,
+        // the "preset" name has no relevance.
+        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationConfiguration = $richTextConfigurationProvider
+            ->getConfiguration('pages', 'TSconfig', 1, 'any', $extraConfig);
+        $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
+
+        // Note: RteHtmlParser->TS_transform_db() is another layer of scrubbing
+        //       which already removes any inline-level tags if they occur at
+        //       block-level range. Thus, removeTags has no influence on that.
+        //       We're testing removeTags functionality for removing inline-level tags.
+        $html = "<p>This stays.</p>\n<blockquote>This stays</blockquote>\n<div><b>This stays</b>.</div><div><code>This vanishes</code></div>\n<div><span>This vanishes</span></div>\n<div><style type='text/css'>This vanishes</style></div>\n<div><meta>This vanishes</meta></div>\n";
+        $htmlExpected = "<p>This stays.</p>\r\n<blockquote>This stays</blockquote>\r\n<div><b>This stays</b>.</div>\r\n<div>This vanishes</div>\r\n<div>This vanishes</div>\r\n<div>This vanishes</div>\r\n<div>This vanishes</div>";
+
+        $subject = $this->get(RteHtmlParser::class);
+        $result = $subject->transformTextForPersistence($html, $richTextConfigurationConfigurationProc);
+
+        self::assertSame($htmlExpected, $result);
+    }
+
+    #[Test]
+    public function HtmlParserProcessingAppliesTypoScriptArrayConfiguration(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/rte-pages-array.csv');
+
+        $extraConfig = [
+            'richtextConfiguration' => 'testing',
+        ];
+        // NOTICE: This is just plain TSconfig. No YAML preset exist. For TSconfig,
+        // the "preset" name has no relevance.
+        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationConfiguration = $richTextConfigurationProvider
+            ->getConfiguration('pages', 'TSconfig', 1, 'any', $extraConfig);
+        $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
+
+        // Note: RteHtmlParser->TS_transform_db() is another layer of scrubbing
+        //       which already removes any inline-level tags if they occur at
+        //       block-level range. Thus, removeTags has no influence on that.
+        //       We're testing removeTags functionality for removing inline-level tags.
+        $html = "<p>This stays.</p>\n<blockquote>This stays</blockquote>\n<div><i><invalid>This partially stays</invalid></i>.</div><div><code>This vanishes</code></div>\n<div><span>This vanishes</span></div>\n<div><style type='text/css'>This vanishes</style></div>\n<div><meta>This vanishes</meta></div>\n";
+        $htmlExpected = "<p>This stays.</p>\r\n<blockquote>This stays</blockquote>\r\n<div><i>This partially stays</i>.</div>\r\n<div>This vanishes</div>\r\n<div>This vanishes</div>\r\n<div>This vanishes</div>\r\n<div>This vanishes</div>";
+
+        $subject = $this->get(RteHtmlParser::class);
+        $result = $subject->transformTextForPersistence($html, $richTextConfigurationConfigurationProc);
+
+        self::assertSame($htmlExpected, $result);
     }
 
     #[Test]

@@ -954,20 +954,19 @@ class HtmlParser
                 }
             }
         }
-        if (!empty($TSconfig['removeTags'])) {
-            if (is_array($TSconfig['removeTags.'])) {
-                $removeTagsArray = $TSconfig['removeTags.'];
-            } else {
-                $removeTagsArray = GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags']), true);
+        // Hint: RteHtmlParser->TS_transform_db() is another layer of scrubbing
+        //       which already removes any inline-level tags if they occur at
+        //       block-level range.
+        $removeTagsArray = is_array($TSconfig['removeTags.'] ?? null) ?
+            $TSconfig['removeTags.'] :
+            GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags'] ?? ''), true);
+        foreach ($removeTagsArray as $removeTagName) {
+            if (!is_string($removeTagName) || $removeTagName === '') {
+                continue;
             }
-            foreach ($removeTagsArray as $removeTagName) {
-                if (!is_string($removeTagName) || $removeTagName === '') {
-                    continue;
-                }
-                $keepTags[$removeTagName] = [];
-                $keepTags[$removeTagName]['allowedAttribs'] = 0;
-                $keepTags[$removeTagName]['rmTagIfNoAttrib'] = 1;
-            }
+            $keepTags[$removeTagName] = [];
+            $keepTags[$removeTagName]['allowedAttribs'] = 0;
+            $keepTags[$removeTagName]['rmTagIfNoAttrib'] = 1;
         }
         // Create additional configuration:
         $addConfig = [];

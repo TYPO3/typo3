@@ -1,0 +1,9 @@
+"pages"
+,"uid","pid","TSconfig"
+,1,0,"RTE.proc.HTMLparser_db.removeTags {
+0 = empty
+1 = span
+2 = style
+3 = meta
+4 = code
+}"
