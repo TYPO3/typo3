@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Message;
 use TYPO3\CMS\Extbase\Error\Notice;
@@ -93,20 +94,21 @@ class FlashMessageFinisher extends AbstractFinisher
         $messageArguments = $this->parseOption('messageArguments');
         $messageCode = $this->parseOption('messageCode');
         $severity = $this->parseOption('severity');
-        switch ($severity) {
-            case ContextualFeedbackSeverity::NOTICE:
-                $message = GeneralUtility::makeInstance(Notice::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
-                break;
-            case ContextualFeedbackSeverity::WARNING:
-                $message = GeneralUtility::makeInstance(Warning::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
-                break;
-            case ContextualFeedbackSeverity::ERROR:
-                $message = GeneralUtility::makeInstance(Error::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
-                break;
-            default:
-                $message = GeneralUtility::makeInstance(Message::class, $messageBody, $messageCode, $messageArguments, $messageTitle);
+
+        if (MathUtility::canBeInterpretedAsInteger($severity)) {
+            $severity = ContextualFeedbackSeverity::tryFrom((int)$severity);
+        }
+        if (!$severity instanceof ContextualFeedbackSeverity) {
+            $severity = $this->defaultOptions['severity'];
         }
 
+        $messageClass = match ($severity) {
+            ContextualFeedbackSeverity::NOTICE => Notice::class,
+            ContextualFeedbackSeverity::WARNING => Warning::class,
+            ContextualFeedbackSeverity::ERROR => Error::class,
+            default => Message::class,
+        };
+        $message = GeneralUtility::makeInstance($messageClass, $messageBody, $messageCode, $messageArguments, $messageTitle);
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
             $message->render(),
