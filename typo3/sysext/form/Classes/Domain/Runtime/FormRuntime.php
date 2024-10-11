@@ -1006,7 +1006,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * Override the the current site language configuration.
+     * Override the current site language configuration.
      *
      * This is typically not needed in production code, but it is very
      * helpful when displaying some kind of "preview" of the form (e.g. form editor).

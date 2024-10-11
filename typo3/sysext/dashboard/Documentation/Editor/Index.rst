@@ -52,7 +52,7 @@ In order to add further dashboards, press the :guilabel:`+` sign.
 
 A wizard should open which allows to add the new dashboard.
 
-There you can select a preset. At least the the default preset, which is shipped
+There you can select a preset. At least the default preset, which is shipped
 by core should be available. Depending on system configuration further dashboard
 presets might be available.
 
