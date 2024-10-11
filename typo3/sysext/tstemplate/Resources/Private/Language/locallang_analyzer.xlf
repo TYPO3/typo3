@@ -27,9 +27,6 @@
 			<trans-unit id="panel.header.syntaxErrors" resname="panel.header.syntaxErrors">
 				<source>Syntax scanner warnings</source>
 			</trans-unit>
-			<trans-unit id="panel.header.conditions" resname="panel.header.conditions">
-				<source>Conditions</source>
-			</trans-unit>
 			<trans-unit id="panel.header.configuration" resname="panel.header.configuration">
 				<source>Configuration</source>
 			</trans-unit>
@@ -38,15 +35,6 @@
 			</trans-unit>
 			<trans-unit id="panel.info.syntaxErrorCount.multiple" resname="panel.info.syntaxErrorCount.multiple">
 				<source>%s syntax warnings</source>
-			</trans-unit>
-			<trans-unit id="panel.info.conditionActiveCount.multiple" resname="panel.info.conditionActiveCount.multiple">
-				<source>%s active conditions</source>
-			</trans-unit>
-			<trans-unit id="panel.info.conditionActiveCount.single" resname="panel.info.conditionActiveCount.single">
-				<source>%s active condition</source>
-			</trans-unit>
-			<trans-unit id="panel.info.conditionWithConstant" resname="panel.info.conditionWithConstant">
-				<source>Constant usage: [%s]</source>
 			</trans-unit>
 			<trans-unit id="syntaxError.sourceCode" resname="syntaxError.sourceCode">
 				<source>Show affected code snippet</source>
@@ -68,12 +56,6 @@
 			</trans-unit>
 			<trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes" resname="tree.child.btn.sourceCodeWithResolvedIncludes">
 				<source>Show code including possible includes/imports</source>
-			</trans-unit>
-			<trans-unit id="tree.child.conditionVerdict.matched" resname="tree.child.conditionVerdict.matched">
-				<source>Matched</source>
-			</trans-unit>
-			<trans-unit id="tree.child.conditionVerdict.notMatched" resname="tree.child.conditionVerdict.notMatched">
-				<source>Not matched</source>
 			</trans-unit>
 			<trans-unit id="tree.child.setting.clear" resname="tree.child.setting.clear">
 				<source>Clear</source>

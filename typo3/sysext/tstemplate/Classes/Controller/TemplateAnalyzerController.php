@@ -22,21 +22,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\RootInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateTreeBuilder;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\ConditionVerdictAwareIncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSyntaxScannerVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
@@ -56,7 +49,6 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly SysTemplateRepository $sysTemplateRepository,
         private readonly IncludeTreeTraverser $treeTraverser,
-        private readonly ConditionVerdictAwareIncludeTreeTraverser $treeTraverserConditionVerdictAware,
         private readonly SysTemplateTreeBuilder $treeBuilder,
         private readonly LosslessTokenizer $losslessTokenizer,
         private readonly ResponseFactoryInterface $responseFactory,
@@ -115,30 +107,15 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         // Build the constant include tree
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         $constantIncludeTree->setIdentifier('constants tstemplate includes');
-        // Set enabled conditions in constant include tree
-        $constantConditions = $this->handleToggledConstantConditions($constantIncludeTree, $moduleData, $parsedBody);
-        $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($constantConditions, static fn($condition) => $condition['active']), 'value'));
         $treeTraverserVisitors = [];
-        $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $constantSyntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
         $treeTraverserVisitors[] = $constantSyntaxScannerVisitor;
         $this->treeTraverser->traverse($constantIncludeTree, $treeTraverserVisitors);
-        // Build the constant AST and flatten it. Needed for setup include tree to substitute constants in setup conditions.
-        $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeAstBuilderVisitor::class);
-        $this->treeTraverserConditionVerdictAware->traverse($constantIncludeTree, [$constantAstBuilderVisitor]);
-        $constantAst = $constantAstBuilderVisitor->getAst();
-        $flattenedConstants = $constantAst->flatten();
 
         // Build the setup include tree
         $setupIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRows, $this->losslessTokenizer, $site);
         $setupIncludeTree->setIdentifier('setup tstemplate includes');
-        // Set enabled conditions in setup include tree and let it handle constant substitutions in setup conditions.
-        $setupConditions = $this->handleToggledSetupConditions($setupIncludeTree, $moduleData, $parsedBody, $flattenedConstants);
-        $conditionEnforcerVisitor = GeneralUtility::makeInstance(IncludeTreeConditionEnforcerVisitor::class);
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($setupConditions, static fn($condition) => $condition['active']), 'value'));
         $treeTraverserVisitors = [];
-        $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $setupSyntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
         $treeTraverserVisitors[] = $setupSyntaxScannerVisitor;
         $this->treeTraverser->traverse($setupIncludeTree, $treeTraverserVisitors);
@@ -154,13 +131,9 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             'allTemplatesOnPage' => $allTemplatesOnPage,
             'selectedTemplateUid' => $selectedTemplateUid,
             'templateTitle' => $templateTitle,
-            'constantConditions' => $constantConditions,
-            'constantConditionsActiveCount' => count(array_filter($constantConditions, static fn($condition) => $condition['active'])),
             'constantIncludeTree' => $constantIncludeTree,
             'constantErrors' => $constantSyntaxScannerVisitor->getErrors(),
             'constantErrorCount' => count($constantSyntaxScannerVisitor->getErrors()),
-            'setupConditions' => $setupConditions,
-            'setupConditionsActiveCount' => count(array_filter($setupConditions, static fn($condition) => $condition['active'])),
             'setupIncludeTree' => $setupIncludeTree,
             'setupErrors' => $setupSyntaxScannerVisitor->getErrors(),
             'setupErrorCount' => count($setupSyntaxScannerVisitor->getErrors()),
@@ -234,90 +207,6 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             ->createResponse()
             ->withHeader('Content-Type', 'text/plain')
             ->withBody($this->streamFactory->createStream($source));
-    }
-
-    /**
-     * Align module data active constant conditions with toggled conditions from POST,
-     * write updated active conditions to user's module data if needed and
-     * prepare a list of active conditions for view.
-     */
-    private function handleToggledConstantConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody): array
-    {
-        $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
-        $this->treeTraverser->traverse($constantTree, [$conditionAggregatorVisitor]);
-        $constantConditions = $conditionAggregatorVisitor->getConditions();
-        $conditionsFromPost = $parsedBody['constantsConditions'] ?? [];
-        $conditionsFromModuleData = array_flip((array)$moduleData->get('constantConditions'));
-        $typoscriptConditions = [];
-        foreach ($constantConditions as $condition) {
-            $conditionHash = sha1($condition['value']);
-            $conditionActive = array_key_exists($conditionHash, $conditionsFromModuleData);
-            // Note we're not feeding the post values directly to module data, but filter
-            // them through available conditions to prevent polluting module data with
-            // manipulated post values.
-            if (($conditionsFromPost[$conditionHash] ?? null) === '0') {
-                unset($conditionsFromModuleData[$conditionHash]);
-                $conditionActive = false;
-            } elseif (($conditionsFromPost[$conditionHash] ?? null) === '1') {
-                $conditionsFromModuleData[$conditionHash] = true;
-                $conditionActive = true;
-            }
-            $typoscriptConditions[] = [
-                'value' => $condition['value'],
-                'hash' => $conditionHash,
-                'active' => $conditionActive,
-            ];
-        }
-        if ($conditionsFromPost) {
-            $moduleData->set('constantConditions', array_keys($conditionsFromModuleData));
-            $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
-        }
-        return $typoscriptConditions;
-    }
-
-    /**
-     * Align module data active setup conditions with toggled conditions from POST,
-     * write updated active conditions to user's module data if needed and
-     * prepare a list of active conditions for view.
-     */
-    private function handleToggledSetupConditions(RootInclude $constantTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
-    {
-        $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
-        $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flattenedConstants);
-        $treeTraverserVisitors = [];
-        $treeTraverserVisitors[] = $setupConditionConstantSubstitutionVisitor;
-        $conditionAggregatorVisitor = GeneralUtility::makeInstance(IncludeTreeConditionAggregatorVisitor::class);
-        $treeTraverserVisitors[] = $conditionAggregatorVisitor;
-        $this->treeTraverser->traverse($constantTree, $treeTraverserVisitors);
-        $setupConditions = $conditionAggregatorVisitor->getConditions();
-        $conditionsFromPost = $parsedBody['setupConditions'] ?? [];
-        $conditionsFromModuleData = array_flip((array)$moduleData->get('setupConditions'));
-        $typoscriptConditions = [];
-        foreach ($setupConditions as $condition) {
-            $conditionHash = sha1($condition['value']);
-            $conditionActive = array_key_exists($conditionHash, $conditionsFromModuleData);
-            // Note we're not feeding the post values directly to module data, but filter
-            // them through available conditions to prevent polluting module data with
-            // manipulated post values.
-            if (($conditionsFromPost[$conditionHash] ?? null) === '0') {
-                unset($conditionsFromModuleData[$conditionHash]);
-                $conditionActive = false;
-            } elseif (($conditionsFromPost[$conditionHash] ?? null) === '1') {
-                $conditionsFromModuleData[$conditionHash] = true;
-                $conditionActive = true;
-            }
-            $typoscriptConditions[] = [
-                'value' => $condition['value'],
-                'originalValue' => $condition['originalValue'],
-                'hash' => $conditionHash,
-                'active' => $conditionActive,
-            ];
-        }
-        if ($conditionsFromPost) {
-            $moduleData->set('setupConditions', array_keys($conditionsFromModuleData));
-            $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
-        }
-        return $typoscriptConditions;
     }
 
     private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void

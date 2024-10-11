@@ -49,7 +49,7 @@
         }"
     />
 
-    <f:comment><!-- Constants: Syntax errors, conditions, source and tree --></f:comment>
+    <f:comment><!-- Constants: Syntax errors, source and tree --></f:comment>
     <f:if condition="{constantIncludeTree.children}">
         <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:sectionHeadline.constants" /></h2>
         <div class="panel-group">
@@ -63,15 +63,6 @@
                 }"
             />
             <f:render
-                partial="AnalyzerConditions"
-                arguments="{
-                    pageUid: pageUid,
-                    type: 'constants',
-                    conditions: constantConditions,
-                    conditionActiveCount: constantConditionsActiveCount
-                }"
-            />
-            <f:render
                 partial="AnalyzerTreePanel"
                 arguments="{
                     type: 'constants',
@@ -82,7 +73,7 @@
         </div>
     </f:if>
 
-    <f:comment><!-- Setup: Syntax errors, conditions, source and tree --></f:comment>
+    <f:comment><!-- Setup: Syntax errors, source and tree --></f:comment>
     <f:if condition="{setupIncludeTree.children}">
         <h2><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:sectionHeadline.setup" /></h2>
         <div class="panel-group">
@@ -93,15 +84,6 @@
                     pageUid: pageUid,
                     errors: setupErrors,
                     errorCount: setupErrorCount
-                }"
-            />
-            <f:render
-                partial="AnalyzerConditions"
-                arguments="{
-                    pageUid: pageUid,
-                    type: 'setup',
-                    conditions: setupConditions,
-                    conditionActiveCount: setupConditionsActiveCount
                 }"
             />
             <f:render

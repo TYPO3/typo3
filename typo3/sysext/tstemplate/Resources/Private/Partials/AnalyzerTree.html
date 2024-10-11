@@ -76,22 +76,6 @@
                                     <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.setting.clear" />
                                 </span>
                             </f:if>
-                            <f:if condition="{child.conditionToken}">
-                                <f:then>
-                                    <f:if condition="{child.conditionVerdict}">
-                                        <f:then>
-                                            <span title="[{child.conditionToken.value}]" class="badge badge-success">
-                                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.conditionVerdict.matched" />
-                                            </span>
-                                        </f:then>
-                                        <f:else>
-                                            <span title="[{child.conditionToken.value}]" class="badge badge-danger">
-                                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf:tree.child.conditionVerdict.notMatched" />
-                                            </span>
-                                        </f:else>
-                                    </f:if>
-                                </f:then>
-                            </f:if>
                         </div>
                     </div>
                 </div>

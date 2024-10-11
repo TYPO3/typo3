@@ -120,8 +120,6 @@ return [
         ],
         'moduleData' => [
             'selectedTemplatePerPage' => [],
-            'constantConditions' => [],
-            'setupConditions' => [],
         ],
     ],
 ];
