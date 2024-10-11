@@ -25,7 +25,7 @@ Impact
 ======
 
 The global services configuration files :file:`services.yaml` and
-:file:`services.php` are now read within the the :file:`config/system/` path
+:file:`services.php` are now read within the :file:`config/system/` path
 of a TYPO3 project in Composer-based installations.
 
 Example

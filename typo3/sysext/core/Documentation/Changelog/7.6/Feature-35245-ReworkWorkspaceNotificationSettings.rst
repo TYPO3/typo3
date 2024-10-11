@@ -13,7 +13,7 @@ Description
 ===========
 
 The current notification settings have some drawbacks and are not easy to
-understand if it comes the the expected behavior in the workspace module.
+understand if it comes the expected behavior in the workspace module.
 The settings are defined in each sys_workspace and sys_workspace_stage
 record and are evaluated in the workspace module if sending a particular
 element to be reviewed to the previous or next stage.

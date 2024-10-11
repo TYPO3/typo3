@@ -131,7 +131,7 @@ needs to verify that the request-token has the expected `'my/process'` scope.
             } else {
                 // request-token was valid and for the expected scope
                 $this->doTheMagic();
-                // middleware takes care to remove the the cookie in case no other
+                // middleware takes care to remove the cookie in case no other
                 // nonce value shall be emitted during the current HTTP request
                 if ($requestToken->getSigningSecretIdentifier() !== null) {
                     $securityAspect->getSigningSecretResolver()->revokeIdentifier(

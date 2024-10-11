@@ -24,7 +24,7 @@ Impact
 ======
 
 Using inline JavaScript to initialize RequireJS modules in `FormEngine`,
-like shown in the the example below, will throw a corresponding
+like shown in the example below, will throw a corresponding
 :php:`\LogicException`.
 
 ..  code-block:: php

@@ -11,7 +11,7 @@ See :issue:`105076`
 Description
 ===========
 
-Historically, plugins have been registered using the the :php:`list` content
+Historically, plugins have been registered using the :php:`list` content
 element and the plugin subtype :php:`list_type` field. This functionality
 has been kept for backwards compatibility reasons. However, since the release
 of TYPO3 v12.4, the recommended way to create a plugin is by using a dedicated

@@ -90,7 +90,7 @@ Migration
 =========
 
 An upgrade wizard is used to migrate possibly left-over "placeholder" records
-within the the database. This is only needed when workspaces are in use and there
+within the database. This is only needed when workspaces are in use and there
 are records in the database that are newly created and have not been
 published.
 
