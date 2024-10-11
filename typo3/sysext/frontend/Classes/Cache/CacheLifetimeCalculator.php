@@ -69,7 +69,7 @@ class CacheLifetimeCalculator
                 $timeField = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
 
                 if (array_key_exists($timeField, $record) && $record[$timeField] > 0) {
-                    $cacheTimeout = min($cacheTimeout, (int)$record[$field] - $GLOBALS['ACCESS_TIME']);
+                    $cacheTimeout = min($cacheTimeout, (int)$record[$timeField] - $GLOBALS['ACCESS_TIME']);
                 }
             }
         }
