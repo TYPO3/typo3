@@ -238,7 +238,7 @@ class UserInformationService
             if (count($split) !== 3) {
                 continue;
             }
-            $data['pageContentTypes'][] = BackendUtility::getLabelFromItemlist(...$split);
+            $data['pageContentTypes'][$split[2]] = BackendUtility::getLabelFromItemlist(...$split);
         }
 
         return $data;

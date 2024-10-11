@@ -44,7 +44,7 @@
                                     <span title="id={compareData.group.uid}">
                                         <core:iconForRecord table="be_groups" row="{compareData.group}"/>
                                     </span>
-                                    <span>{compareData.group.title}</span>
+                                    <span>{compareData.group.title}<f:if condition="{showUid}"> <code>[{compareData.group.uid}]</code></f:if></span>
                                 </div>
                                 <div class="beuser-comparison-element__action">
                                     <backend:link.editRecord
@@ -82,7 +82,7 @@
                     <th scope="row"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.subgroup" /></th>
                     <f:for each="{compareGroupList}" as="compareData">
                         <td>
-                            <f:render partial="Compare/Information" section="groups" arguments="{groups: compareData.groups}" />
+                            <f:render partial="Compare/Information" section="groups" arguments="{groups: compareData.groups, showUid: showUid}" />
                         </td>
                     </f:for>
                 </tr>
@@ -90,7 +90,7 @@
                     <th scope="row"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:allowedLanguages" /></th>
                     <f:for each="{compareGroupList}" as="compareData">
                         <td>
-                            <f:render partial="Compare/Information" section="languages" arguments="{languages: compareData.languages}" />
+                            <f:render partial="Compare/Information" section="languages" arguments="{languages: compareData.languages, showUid: showUid}" />
                         </td>
                     </f:for>
                 </tr>
@@ -98,7 +98,7 @@
                     <th scope="row"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:userMods" /></th>
                     <f:for each="{compareGroupList}" as="compareData">
                         <td>
-                            <f:render partial="Compare/Information" section="modules" arguments="{modules: compareData.modules}" />
+                            <f:render partial="Compare/Information" section="modules" arguments="{modules: compareData.modules, showUid: showUid}" />
                         </td>
                     </f:for>
                 </tr>
@@ -106,7 +106,7 @@
                     <th scope="row"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.pagetypes_select" /></th>
                     <f:for each="{compareGroupList}" as="compareData">
                         <td>
-                            <f:render partial="Compare/Information" section="pageTypes" arguments="{pageTypes: compareData.pageTypes}" />
+                            <f:render partial="Compare/Information" section="pageTypes" arguments="{pageTypes: compareData.pageTypes, showUid: showUid}" />
                         </td>
                     </f:for>
                 </tr>
@@ -119,7 +119,8 @@
                                 section="tables"
                                 arguments="{
                                     tables: compareData.tables,
-                                    id:compareData.group.uid
+                                    id:compareData.group.uid,
+                                    showUid: showUid
                                 }"
                             />
                         </td>
@@ -134,7 +135,8 @@
                                 section="nonExcludeFields"
                                 arguments="{
                                     nonExcludeFields: compareData.non_exclude_fields,
-                                    id: compareData.group.uid
+                                    id: compareData.group.uid,
+                                    showUid: showUid
                                 }"
                             />
                         </td>
@@ -152,7 +154,7 @@
                     <th scope="row"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:dbMountPoints" /></th>
                     <f:for each="{compareGroupList}" as="compareData">
                         <td>
-                            <f:render partial="Compare/Information" section="dbMounts" arguments="{dbMounts: compareData.dbMounts}" />
+                            <f:render partial="Compare/Information" section="dbMounts" arguments="{dbMounts: compareData.dbMounts, showUid: showUid}" />
                         </td>
                     </f:for>
                 </tr>
@@ -160,7 +162,7 @@
                     <th scope="row"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:fileMounts" /></th>
                     <f:for each="{compareGroupList}" as="compareData">
                         <td>
-                            <f:render partial="Compare/Information" section="fileMounts" arguments="{fileMounts: compareData.fileMounts}" />
+                            <f:render partial="Compare/Information" section="fileMounts" arguments="{fileMounts: compareData.fileMounts, showUid: showUid}" />
                         </td>
                     </f:for>
                 </tr>
@@ -168,7 +170,7 @@
                     <th scope="row"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms" /></th>
                     <f:for each="{compareGroupList}" as="compareData">
                         <td>
-                            <f:render partial="Compare/Information" section="fileFolderPermissions" arguments="{fileFolderPermissions: compareData.fileFolderPermissions}" />
+                            <f:render partial="Compare/Information" section="fileFolderPermissions" arguments="{fileFolderPermissions: compareData.fileFolderPermissions, showUid: showUid}" />
                         </td>
                     </f:for>
                 </tr>
@@ -176,7 +178,7 @@
                     <th scope="row"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms" /></th>
                     <f:for each="{compareGroupList}" as="compareData">
                         <td>
-                            <f:render partial="Compare/Information" section="categories" arguments="{categories: compareData.categories}" />
+                            <f:render partial="Compare/Information" section="categories" arguments="{categories: compareData.categories, showUid: showUid}" />
                         </td>
                     </f:for>
                 </tr>

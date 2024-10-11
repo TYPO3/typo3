@@ -50,7 +50,7 @@ final class CompareUserCest
         $I->click('table.beuser-comparison-table > thead > tr > th:nth-child(2) a[title="Edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
-        $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');
+        $I->canSee('Edit Backend user "' . trim(explode('[', $usernameFirstCompare)[0]) . '" on root level');
 
         // back to compare view
         $I->click('.module-docheader a[title="Close"]');
@@ -62,7 +62,7 @@ final class CompareUserCest
         $I->click('table.beuser-comparison-table > thead > tr > th:nth-child(3) a[title="Edit"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
-        $I->canSee('Edit Backend user "' . $usernameFirstCompare . '" on root level');
+        $I->canSee('Edit Backend user "' . trim(explode('[', $usernameFirstCompare)[0]) . '" on root level');
     }
 
     public function accessingBackendUserGroupCompareViewWorks(ApplicationTester $I): void
