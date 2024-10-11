@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 <f:layout name="Module" />
 
 <f:section name="Content">
@@ -7,9 +12,15 @@
     <f:if condition="{sites -> f:count()} == 0">
         <f:be.infobox
             title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.title')}"
-            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.message')}"
             state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
-        />
+        >
+            <p>{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.message')}</p>
+            <p>
+                <be:link.documentation identifier="t3coreapi:site-sets" class="btn btn-default">
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.button-documentation-label"/>
+                </be:link.documentation>
+            </p>
+        </f:be.infobox>
     </f:if>
 
     <div class="card-container">
@@ -65,3 +76,4 @@
         </f:for>
     </div>
 </f:section>
+</html>

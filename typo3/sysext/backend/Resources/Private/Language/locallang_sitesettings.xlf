@@ -24,6 +24,9 @@
 			<trans-unit id="overview.noSiteSettingsExists.message" resname="overview.noSiteSettingsExists.message">
 				<source>See the documentation for instructions on defining settings via site sets.</source>
 			</trans-unit>
+			<trans-unit id="overview.noSiteSettingsExists.button-documentation-label" resname="overview.noSiteSettingsExists.button-documentation-label">
+				<source>Open the documentation</source>
+			</trans-unit>
 			<trans-unit id="edit.title" resname="edit.noSettings.title">
 				<source>Site Settings for "{siteTitle}"</source>
 			</trans-unit>
