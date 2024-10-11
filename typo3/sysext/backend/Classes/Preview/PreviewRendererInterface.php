@@ -40,7 +40,7 @@ interface PreviewRendererInterface
 {
     /**
      * Dedicated method for rendering preview header HTML for
-     * the page module only. Receives the the GridColumnItem
+     * the page module only. Receives the GridColumnItem
      * that contains the record for which a preview header
      * should be rendered and returned.
      */
@@ -48,7 +48,7 @@ interface PreviewRendererInterface
 
     /**
      * Dedicated method for rendering preview body HTML for
-     * the page module only. Receives the the GridColumnItem
+     * the page module only. Receives the GridColumnItem
      * that contains the record for which a preview should be
      * rendered and returned.
      */
