@@ -19,8 +19,9 @@ The API is implemented as a new PSR-7 request attribute
 :php:`'frontend.cache.collector'`, which makes this API independent from TSFE.
 
 Every cache tag has a lifetime. The minimum lifetime is calculated
-from all given cache tags. API users don't have to deal with it individually.
-The default lifetime for a cache tag is 86400 seconds (24 hours).
+from all given cache tags. By default, the lifetime of a cache tag is set to
+:php:`PHP_INT_MAX`, so it expires many years in the future. API users must
+therefore define the lifetime of a cache tag individually.
 
 The current TSFE API is deprecated in favor of the new API, as the
 current cache tag API implementation does not allow to set lifetime and
@@ -30,13 +31,13 @@ Example
 -------
 
 ..  code-block:: php
-    :caption: Add a single cache tag
+    :caption: Add a single cache tag with 24 hours lifetime
 
     use TYPO3\CMS\Core\Cache\CacheTag;
 
     $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
     $cacheDataCollector->addCacheTags(
-        new CacheTag('tx_myextension_mytable')
+        new CacheTag('tx_myextension_mytable', 86400)
     );
 
 ..  code-block:: php
