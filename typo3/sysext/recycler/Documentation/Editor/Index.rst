@@ -52,7 +52,7 @@ To view more details, click on the :guilabel:`i` button ("Expand record"):
 
 The following details are displayed:
 
-*   Date when the the record was created.
+*   Date when the record was created.
 *   The user who originally created this record (creator).
 *   The user who deleted this record.
 *   The path to the record in the page tree.

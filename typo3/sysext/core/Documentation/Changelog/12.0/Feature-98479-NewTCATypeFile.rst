@@ -44,7 +44,7 @@ The new TCA type :php:`file` features the following column configuration:
 
     The option :php:`showFileSelectors` can be used to define whether the
     file selectors, such as "Select & upload files" are displayed. This is
-    similar to the the :php:`showPossibleRecordsSelector` option, available
+    similar to the :php:`showPossibleRecordsSelector` option, available
     for TCA type :php:`inline`.
 
 The following column configuration can be overwritten by Page TSconfig:

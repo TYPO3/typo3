@@ -42,7 +42,7 @@ The following example show a potential migration path to avoid inline JavaScript
             ],
             // ...
 
-The above configuration can be replace by the the following.
+The above configuration can be replace by the following.
 
 .. code-block:: php
 

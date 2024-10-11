@@ -20,7 +20,7 @@ clearer and the user to see more information at a glance.
 Each dropdown consists of different items ranging from
 headlines to item links that can display the current
 status. The button automatically changes the icon
-representation to the icon of the the first active radio
+representation to the icon of the first active radio
 icon in the dropdown list.
 
 

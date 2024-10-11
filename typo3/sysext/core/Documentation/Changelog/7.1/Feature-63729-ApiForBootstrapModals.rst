@@ -84,7 +84,7 @@ A basic modal without any specials can be created this way:
 
 .. code-block:: javascript
 
-	TYPO3.Modal.confirm('The title of the modal', 'This the the body of the modal');
+	TYPO3.Modal.confirm('The title of the modal', 'This the body of the modal');
 
 A modal as warning with button:
 

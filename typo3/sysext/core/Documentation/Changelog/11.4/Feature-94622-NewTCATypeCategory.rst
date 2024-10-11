@@ -36,7 +36,7 @@ only have to configure the TCA column and add it to the desired record types.
    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes($myTable, 'categories');
 
 The above example does not contain the new option :php:`relationship`
-since the the default is :php:`manyToMany`. All possible values are:
+since the default is :php:`manyToMany`. All possible values are:
 
 * :php:`oneToOne`: Stores the uid of the selected category. When using this
   relationship, :php:`maxitems=1` will automatically be added to the column configuration
