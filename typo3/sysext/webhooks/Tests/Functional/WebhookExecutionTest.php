@@ -24,6 +24,7 @@ use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\SecurityAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\ResponseFactory;
@@ -225,13 +226,23 @@ final class WebhookExecutionTest extends FunctionalTestCase
                     'uid' => $recordId,
                 ]
             )->fetchAssociative();
-        if (array_key_exists('additional_headers', $row)) {
-            $type = new JsonType();
-            $expectedRow['additional_headers'] = $type->convertToDatabaseValue(
-                $type->convertToPHPValue($expectedRow['additional_headers'], $connection->getDatabasePlatform()),
+        $row = $this->prepareRowField($connection, $row, ['additional_headers']);
+        $expectedRow = $this->prepareRowField($connection, $expectedRow, ['additional_headers']);
+        self::assertSame($expectedRow, $row);
+    }
+
+    private function prepareRowField(Connection $connection, array $row, array $fields): array
+    {
+        $type = new JsonType();
+        foreach ($fields as $field) {
+            if (!array_key_exists($field, $row)) {
+                continue;
+            }
+            $row[$field] = $type->convertToDatabaseValue(
+                $type->convertToPHPValue($row[$field], $connection->getDatabasePlatform()),
                 $connection->getDatabasePlatform()
             );
         }
-        self::assertSame($expectedRow, $row);
+        return $row;
     }
 }
