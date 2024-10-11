@@ -297,7 +297,7 @@ class DataMap
     }
 
     /**
-     * Sets the name of a column holding the the uid of the record which this record is a translation of.
+     * Sets the name of a column holding the uid of the record which this record is a translation of.
      *
      * @param string $translationOriginColumnName The field name
      */
@@ -307,7 +307,7 @@ class DataMap
     }
 
     /**
-     * Returns the name of a column holding the the uid of the record which this record is a translation of.
+     * Returns the name of a column holding the uid of the record which this record is a translation of.
      *
      * @return string The field name
      */
@@ -317,7 +317,7 @@ class DataMap
     }
 
     /**
-     * Sets the name of a column holding the the diff data for the record which this record is a translation of.
+     * Sets the name of a column holding the diff data for the record which this record is a translation of.
      *
      * @param string $translationOriginDiffSourceName The field name
      */
