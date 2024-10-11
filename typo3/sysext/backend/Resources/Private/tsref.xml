@@ -4000,17 +4000,17 @@ This must be a valid ".ico"-file (iconfile)]]></description>
 ]]></default>
         </property>
         <property name="stdWrap" type="stdWrap">
-            <description><![CDATA[Wraps the content of the the cObject array with stdWrap options]]></description>
+            <description><![CDATA[Wraps the content of the cObject array with stdWrap options]]></description>
             <default><![CDATA[
 ]]></default>
         </property>
         <property name="typeNum" type="int">
-            <description><![CDATA[This decides the the typeId of the page. The value defaults to 0 for the first
+            <description><![CDATA[This decides the typeId of the page. The value defaults to 0 for the first
 found PAGE object, but it MUST be set and be unique as soon you use more than one such object (watch this if you use frames on your page)!]]></description>
             <default><![CDATA[0]]></default>
         </property>
         <property name="wrap" type="wrap">
-            <description><![CDATA[Wraps the content of the the cObject array]]></description>
+            <description><![CDATA[Wraps the content of the cObject array]]></description>
             <default><![CDATA[
 ]]></default>
         </property>

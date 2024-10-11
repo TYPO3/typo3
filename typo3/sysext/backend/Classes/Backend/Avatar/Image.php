@@ -51,7 +51,7 @@ class Image
     }
 
     /**
-     * Fetches the URL to the the avatar image
+     * Fetches the URL to the avatar image
      *
      * @return string
      */

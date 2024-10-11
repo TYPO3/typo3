@@ -125,7 +125,7 @@ class ResetPasswordCommand extends Command
 
     /**
      * This is a workaround to use "PublicPath . /typo3/index.php" instead of "publicPath . /typo3/sysext/core/bin/typo3"
-     * so the the web root is detected properly in normalizedParams.
+     * so the web root is detected properly in normalizedParams.
      */
     protected function simulateEnvironmentForBackendEntryPoint(): array
     {
