@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Schema\SchemaManager\CoreSchemaManagerFactory;
 use TYPO3\CMS\Core\Database\Schema\Types\DateTimeType;
 use TYPO3\CMS\Core\Database\Schema\Types\DateType;
-use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\CMS\Core\Database\Schema\Types\TimeType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -58,7 +57,6 @@ class ConnectionPool
      * @var array<non-empty-string,class-string>
      */
     protected array $customDoctrineTypes = [
-        EnumType::TYPE => EnumType::class,
         SetType::TYPE => SetType::class,
     ];
 

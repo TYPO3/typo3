@@ -19,13 +19,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\SchemaManager;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Types\EnumType;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\PostgreSQLPlatform;
-use TYPO3\CMS\Core\Database\Schema\Types\EnumType;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\CMS\Core\Tests\Unit\Database\Schema\SchemaManager\Fixtures\SchemaManager\FixturePostgreSQLSchemaManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -55,21 +55,16 @@ final class PostgreSQLSchemaManagerTest extends UnitTestCase
         $platformMock->method('getDoctrineTypeMapping')->with('enum')->willReturn('enum');
         $connectionMock = $this->createConnectionMock($platformMock);
         $subject = $this->createSchemaManager($connectionMock, $platformMock);
-        if (Type::hasType('enum')) {
-            Type::overrideType('enum', EnumType::class);
-        } else {
-            Type::addType('enum', EnumType::class);
-        }
 
         $column = $subject->callProcessCustomDoctrineTypesColumnDefinitionFromTraitDirectly(['Type' => "enum('value1', 'value2','value3')"]);
         self::assertInstanceOf(Column::class, $column);
         self::assertInstanceOf(EnumType::class, $column->getType());
-        self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('unquotedValues'));
+        self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('values'));
 
         $column = $subject->callProtectedGetPortableTableColumnDefinition(['Type' => "enum('value1', 'value2','value3')"]);
         self::assertInstanceOf(Column::class, $column);
         self::assertInstanceOf(EnumType::class, $column->getType());
-        self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('unquotedValues'));
+        self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('values'));
     }
 
     #[DataProvider('platformDataProvider')]

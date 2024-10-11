@@ -84,7 +84,10 @@ trait CustomDoctrineTypesColumnDefinitionTrait
         $doctrineType = $this->determineColumnType($dbType, $tableColumn);
 
         $column = new Column($tableColumn['field'] ?? '', Type::getType($doctrineType), $options);
-        $column->setPlatformOption('unquotedValues', $this->getUnquotedEnumerationValues($tableColumn['type']));
+        $column->setPlatformOption(
+            ($dbType === 'enum' ? 'values' : 'unquotedValues'),
+            $this->getUnquotedEnumerationValues($tableColumn['type'])
+        );
 
         return $column;
     }
