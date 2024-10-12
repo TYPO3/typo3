@@ -17,13 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\PageTsConfig;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -37,11 +35,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SiteInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\TsConfigInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Traverser\IncludeTreeTraverser;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\TsConfigTreeBuilder;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeAstBuilderVisitor;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionAggregatorVisitor;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeConditionEnforcerVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeNodeFinderVisitor;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSetupConditionConstantSubstitutionVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSourceAggregatorVisitor;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor\IncludeTreeSyntaxScannerVisitor;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
@@ -52,15 +46,14 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-final class PageTsConfigIncludesController
+final readonly class PageTsConfigIncludesController
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly UriBuilder $uriBuilder,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly TsConfigTreeBuilder $tsConfigTreeBuilder,
-        private readonly ResponseFactoryInterface $responseFactory,
-        private readonly StreamFactoryInterface $streamFactory,
+        private UriBuilder $uriBuilder,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private TsConfigTreeBuilder $tsConfigTreeBuilder,
+        private ResponseFactoryInterface $responseFactory,
+        private StreamFactoryInterface $streamFactory,
     ) {}
 
     public function indexAction(ServerRequestInterface $request): ResponseInterface
@@ -69,11 +62,9 @@ final class PageTsConfigIncludesController
         $languageService = $this->getLanguageService();
 
         $queryParams = $request->getQueryParams();
-        $parsedBody = $request->getParsedBody();
 
         $currentModule = $request->getAttribute('module');
         $currentModuleIdentifier = $currentModule->getIdentifier();
-        $moduleData = $request->getAttribute('moduleData');
 
         $pageUid = (int)($queryParams['id'] ?? 0);
         $pageRecord = BackendUtility::readPageAccess($pageUid, '1=1') ?: [];
@@ -87,7 +78,6 @@ final class PageTsConfigIncludesController
         // Prepare site constants if any
         $site = $request->getAttribute('site');
         $siteSettingsTree = new RootInclude();
-        $siteSettingsFlat = [];
         if ($site instanceof Site && !$site->getSettings()->isEmpty()) {
             $siteSettings = $site->getSettings()->getAllFlat();
             $siteConstants = '';
@@ -99,12 +89,6 @@ final class PageTsConfigIncludesController
             $siteSettingsNode->setLineStream((new LosslessTokenizer())->tokenize($siteConstants));
             $siteSettingsTree->addChild($siteSettingsNode);
             $siteSettingsTree->setIdentifier('pageTsConfig-siteSettingsTree');
-            /** @var IncludeTreeAstBuilderVisitor $astBuilderVisitor */
-            $astBuilderVisitor = $this->container->get(IncludeTreeAstBuilderVisitor::class);
-            $includeTreeTraverser = new IncludeTreeTraverser();
-            $includeTreeTraverser->traverse($siteSettingsTree, [$astBuilderVisitor]);
-            $siteSettingsAst = $astBuilderVisitor->getAst();
-            $siteSettingsFlat = $siteSettingsAst->flatten();
         }
 
         // Base page TSconfig tree
@@ -134,15 +118,10 @@ final class PageTsConfigIncludesController
         }
         $pageTsConfigTree->setIdentifier('pageTsConfig-pageTsConfigTree');
 
-        // Set enabled conditions in page TSconfig include tree and let it handle constant substitutions in page TSconfig conditions.
         $treeTraverser = new IncludeTreeTraverser();
         $treeTraverserVisitors = [];
         $syntaxScannerVisitor = new IncludeTreeSyntaxScannerVisitor();
         $treeTraverserVisitors[] = $syntaxScannerVisitor;
-        $pageTsConfigConditions = $this->handleToggledPageTsConfigConditions($pageTsConfigTree, $moduleData, $parsedBody, $siteSettingsFlat);
-        $conditionEnforcerVisitor = new IncludeTreeConditionEnforcerVisitor();
-        $conditionEnforcerVisitor->setEnabledConditions(array_column(array_filter($pageTsConfigConditions, static fn(array $condition): bool => (bool)$condition['active']), 'value'));
-        $treeTraverserVisitors[] = $conditionEnforcerVisitor;
         $treeTraverser->traverse($pageTsConfigTree, $treeTraverserVisitors);
 
         $view = $this->moduleTemplateFactory->create($request);
@@ -155,8 +134,6 @@ final class PageTsConfigIncludesController
             'pageTitle' => $pageRecord['title'] ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
             'siteSettingsTree' => $siteSettingsTree,
             'pageTsConfigTree' => $pageTsConfigTree,
-            'pageTsConfigConditions' => $pageTsConfigConditions,
-            'pageTsConfigConditionsActiveCount' => count(array_filter($pageTsConfigConditions, static fn(array $condition): bool => (bool)$condition['active'])),
             'syntaxErrors' => $syntaxScannerVisitor->getErrors(),
             'syntaxErrorCount' => count($syntaxScannerVisitor->getErrors()),
         ]);
@@ -300,52 +277,6 @@ final class PageTsConfigIncludesController
             ->createResponse()
             ->withHeader('Content-Type', 'text/plain')
             ->withBody($this->streamFactory->createStream($source));
-    }
-
-    /**
-     * Align module data active page TSconfig conditions with toggled conditions from POST,
-     * write updated active conditions to user's module data if needed and
-     * prepare a list of active conditions for view.
-     */
-    private function handleToggledPageTsConfigConditions(RootInclude $pageTsConfigTree, ModuleData $moduleData, ?array $parsedBody, array $flattenedConstants): array
-    {
-        $treeTraverser = new IncludeTreeTraverser();
-        $treeTraverserVisitors = [];
-        $setupConditionConstantSubstitutionVisitor = new IncludeTreeSetupConditionConstantSubstitutionVisitor();
-        $setupConditionConstantSubstitutionVisitor->setFlattenedConstants($flattenedConstants);
-        $treeTraverserVisitors[] = $setupConditionConstantSubstitutionVisitor;
-        $conditionAggregatorVisitor = new IncludeTreeConditionAggregatorVisitor();
-        $treeTraverserVisitors[] = $conditionAggregatorVisitor;
-        $treeTraverser->traverse($pageTsConfigTree, $treeTraverserVisitors);
-        $pageTsConfigConditions = $conditionAggregatorVisitor->getConditions();
-        $conditionsFromPost = $parsedBody['pageTsConfigConditions'] ?? [];
-        $conditionsFromModuleData = array_flip((array)$moduleData->get('pageTsConfigConditions'));
-        $conditions = [];
-        foreach ($pageTsConfigConditions as $condition) {
-            $conditionHash = hash('xxh3', $condition['value']);
-            $conditionActive = array_key_exists($conditionHash, $conditionsFromModuleData);
-            // Note we're not feeding the post values directly to module data, but filter
-            // them through available conditions to prevent polluting module data with
-            // manipulated post values.
-            if (($conditionsFromPost[$conditionHash] ?? null) === '0') {
-                unset($conditionsFromModuleData[$conditionHash]);
-                $conditionActive = false;
-            } elseif (($conditionsFromPost[$conditionHash] ?? null) === '1') {
-                $conditionsFromModuleData[$conditionHash] = true;
-                $conditionActive = true;
-            }
-            $conditions[] = [
-                'value' => $condition['value'],
-                'originalValue' => $condition['originalValue'],
-                'hash' => $conditionHash,
-                'active' => $conditionActive,
-            ];
-        }
-        if ($conditionsFromPost) {
-            $moduleData->set('pageTsConfigConditions', array_keys($conditionsFromModuleData));
-            $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
-        }
-        return $conditions;
     }
 
     private function addShortcutButtonToDocHeader(ModuleTemplate $view, string $moduleIdentifier, array $pageInfo, int $pageUid): void

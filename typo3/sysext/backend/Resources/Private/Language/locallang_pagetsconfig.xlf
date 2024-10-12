@@ -105,23 +105,11 @@
 			<trans-unit id="module.pagetsconfig_includes.panel.header.syntaxErrors" resname="module.pagetsconfig_includes.panel.header.syntaxErrors">
 				<source>Syntax scanner warnings</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.panel.header.conditions" resname="module.pagetsconfig_includes.panel.header.conditions">
-				<source>Conditions</source>
-			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.single" resname="module.pagetsconfig_includes.panel.info.syntaxErrorCount.single">
 				<source>%s syntax warning</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.panel.info.syntaxErrorCount.multiple" resname="module.pagetsconfig_includes.panel.info.syntaxErrorCount.multiple">
 				<source>%s syntax warnings</source>
-			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.panel.info.conditionActiveCount.multiple" resname="module.pagetsconfig_includes.panel.info.conditionActiveCount.multiple">
-				<source>%s active conditions</source>
-			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.panel.info.conditionActiveCount.single" resname="module.pagetsconfig_includes.panel.info.conditionActiveCount.single">
-				<source>%s active condition</source>
-			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.panel.info.conditionWithConstant" resname="module.pagetsconfig_includes.panel.info.conditionWithConstant">
-				<source>Constant usage: [%s]</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.syntaxError.sourceCode" resname="module.pagetsconfig_includes.syntaxError.sourceCode">
 				<source>Show affected code snippet</source>
@@ -159,17 +147,8 @@
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.IncludeTyposcript" resname="module.pagetsconfig_includes.tree.child.type.IncludeTyposcript">
 				<source>Included via "INCLUDE_TYPOSCRIPT" (deprecated)</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.tree.child.type.Segment" resname="module.pagetsconfig_includes.tree.child.type.Segment">
-				<source>Code segment</source>
-			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig" resname="module.pagetsconfig_includes.tree.child.type.TsConfig">
 				<source>TSconfig</source>
-			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.tree.child.conditionVerdict.matched" resname="module.pagetsconfig_includes.tree.child.conditionVerdict.matched">
-				<source>Matched</source>
-			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.tree.child.conditionVerdict.notMatched" resname="module.pagetsconfig_includes.tree.child.conditionVerdict.notMatched">
-				<source>Not matched</source>
 			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCode" resname="module.pagetsconfig_includes.tree.child.btn.sourceCode">
 				<source>Show code</source>

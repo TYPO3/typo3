@@ -178,9 +178,6 @@ return [
                 'target' => PageTsConfigIncludesController::class . '::sourceWithIncludesAction',
             ],
         ],
-        'moduleData' => [
-            'pageTsConfigConditions' => [],
-        ],
     ],
     'tools_csp' => [
         'parent' => 'tools',
