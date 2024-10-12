@@ -56,6 +56,7 @@ final class DocumentationViewHelper extends AbstractTagBasedViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('identifier', 'string', 'the documentation permalink identifier as displayed in the modal link popup of any rendered documentation manual', true);
+        $this->registerUniversalTagAttributes();
     }
 
     /**
