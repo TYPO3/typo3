@@ -36,6 +36,13 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * some part fails or conditions are not met.
  *
  * @internal This script is internal code and subject to change.
+ *
+ * Note that changes in this file must be carefully tested along with the
+ * typo3/testing-framework not only in Core CI, but also when used to test
+ * extensions or projects to ensure that things like link generation works
+ * as expected and returns leading slashes, important value calculation in
+ * NormalizedParams during frontend sub-requests determines correct values
+ * and similar.
  */
 class SystemEnvironmentBuilder
 {
@@ -59,13 +66,13 @@ class SystemEnvironmentBuilder
      */
     public static function run(int $entryPointLevel = 0, int $requestType = 0)
     {
-        self::defineBaseConstants();
-        $scriptPath = self::calculateScriptPath($entryPointLevel, $requestType);
-        $rootPath = self::calculateRootPath($entryPointLevel, $requestType);
+        static::defineBaseConstants();
+        $scriptPath = static::calculateScriptPath($entryPointLevel, $requestType);
+        $rootPath = static::calculateRootPath($entryPointLevel, $requestType);
 
-        self::initializeGlobalVariables();
-        self::initializeGlobalTimeTrackingVariables();
-        self::initializeEnvironment($requestType, $scriptPath, $rootPath);
+        static::initializeGlobalVariables();
+        static::initializeGlobalTimeTrackingVariables();
+        static::initializeEnvironment($requestType, $scriptPath, $rootPath);
     }
 
     /**
@@ -108,14 +115,14 @@ class SystemEnvironmentBuilder
      */
     protected static function calculateScriptPath(int $entryPointLevel, int $requestType): string
     {
-        $isCli = self::isCliRequestType($requestType);
+        $isCli = static::isCliRequestType($requestType);
         // Absolute path of the entry script that was called
-        $scriptPath = GeneralUtility::fixWindowsFilePath((string)self::getPathThisScript($isCli));
-        $rootPath = self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
+        $scriptPath = GeneralUtility::fixWindowsFilePath((string)static::getPathThisScript($isCli));
+        $rootPath = static::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
         // Check if the root path has been set in the environment (e.g. by the composer installer)
-        $rootPathFromEnvironment = self::getDefinedPathRoot();
+        $rootPathFromEnvironment = static::getDefinedPathRoot();
         if ($rootPathFromEnvironment) {
-            if ($isCli && self::usesComposerClassLoading()) {
+            if ($isCli && static::usesComposerClassLoading()) {
                 // $scriptPath is used for various path calculations based on the document root
                 // Therefore we assume it is always a subdirectory of the document root, which is not the case
                 // in composer mode on cli, as the binary is in the composer bin directory.
@@ -150,14 +157,14 @@ class SystemEnvironmentBuilder
     protected static function calculateRootPath(int $entryPointLevel, int $requestType): string
     {
         // Check if the root path has been set in the environment (e.g. by the composer installer)
-        $pathRoot = self::getDefinedPathRoot();
+        $pathRoot = static::getDefinedPathRoot();
         if ($pathRoot) {
             return rtrim(GeneralUtility::fixWindowsFilePath($pathRoot), '/');
         }
-        $isCli = self::isCliRequestType($requestType);
+        $isCli = static::isCliRequestType($requestType);
         // Absolute path of the entry script that was called
-        $scriptPath = GeneralUtility::fixWindowsFilePath((string)self::getPathThisScript($isCli));
-        return self::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
+        $scriptPath = GeneralUtility::fixWindowsFilePath((string)static::getPathThisScript($isCli));
+        return static::getRootPathFromScriptPath($scriptPath, $entryPointLevel);
     }
 
     /**
@@ -196,7 +203,7 @@ class SystemEnvironmentBuilder
      */
     protected static function initializeEnvironment(int $requestType, string $scriptPath, string $sitePath)
     {
-        $pathRoot = self::getDefinedPathRoot();
+        $pathRoot = static::getDefinedPathRoot();
         if ($pathRoot) {
             $rootPathFromEnvironment = rtrim(GeneralUtility::fixWindowsFilePath($pathRoot), '/');
             if ($sitePath !== $rootPathFromEnvironment) {
@@ -213,14 +220,14 @@ class SystemEnvironmentBuilder
         $isDifferentRootPath = ($projectRootPath && $projectRootPath !== $sitePath);
         Environment::initialize(
             static::createApplicationContext(),
-            self::isCliRequestType($requestType),
+            static::isCliRequestType($requestType),
             static::usesComposerClassLoading(),
             $isDifferentRootPath ? $projectRootPath : $sitePath,
             $sitePath,
             $isDifferentRootPath ? $projectRootPath . '/var' : $sitePath . '/typo3temp/var',
             $isDifferentRootPath ? $projectRootPath . '/config' : $sitePath . '/typo3conf',
             $scriptPath,
-            self::isRunningOnWindows() ? 'WINDOWS' : 'UNIX'
+            static::isRunningOnWindows() ? 'WINDOWS' : 'UNIX'
         );
     }
 
@@ -252,9 +259,9 @@ class SystemEnvironmentBuilder
     protected static function getPathThisScript(bool $isCli)
     {
         if ($isCli) {
-            return self::getPathThisScriptCli();
+            return static::getPathThisScriptCli();
         }
-        return self::getPathThisScriptNonCli();
+        return static::getPathThisScriptNonCli();
     }
 
     /**
