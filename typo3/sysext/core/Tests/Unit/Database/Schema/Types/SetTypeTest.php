@@ -44,7 +44,7 @@ final class SetTypeTest extends UnitTestCase
     public function getSQLDeclaration(): void
     {
         $fieldDeclaration = [
-            'unquotedValues' => ['aValue', 'anotherValue'],
+            'values' => ['aValue', 'anotherValue'],
         ];
 
         $databaseMock = $this->createMock(AbstractPlatform::class);

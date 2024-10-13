@@ -85,12 +85,12 @@ final class PostgreSQLSchemaManagerTest extends UnitTestCase
         $column = $subject->callProcessCustomDoctrineTypesColumnDefinitionFromTraitDirectly(['Type' => "set('value1', 'value3')"]);
         self::assertInstanceOf(Column::class, $column);
         self::assertInstanceOf(SetType::class, $column->getType());
-        self::assertSame(['value1', 'value3'], $column->getPlatformOption('unquotedValues'));
+        self::assertSame(['value1', 'value3'], $column->getPlatformOption('values'));
 
         $column = $subject->callProtectedGetPortableTableColumnDefinition(['Type' => "set('value1', 'value3')"]);
         self::assertInstanceOf(Column::class, $column);
         self::assertInstanceOf(SetType::class, $column->getType());
-        self::assertSame(['value1', 'value3'], $column->getPlatformOption('unquotedValues'));
+        self::assertSame(['value1', 'value3'], $column->getPlatformOption('values'));
     }
 
     public static function platformDataProvider(): \Generator

@@ -179,7 +179,7 @@ class TableBuilder
         }
 
         if ($item->dataType instanceof SetDataType) {
-            $column->setPlatformOption('unquotedValues', $item->dataType->getValues());
+            $column->setPlatformOption('values', $item->dataType->getValues());
         }
         if ($item->dataType instanceof EnumDataType) {
             $column->setPlatformOption('values', $item->dataType->getValues());

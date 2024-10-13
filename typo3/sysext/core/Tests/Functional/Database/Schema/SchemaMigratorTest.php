@@ -21,7 +21,6 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
-use Doctrine\DBAL\Types\EnumType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\StringType;
@@ -770,8 +769,6 @@ final class SchemaMigratorTest extends FunctionalTestCase
     #[Test]
     public function enumTypeFieldCanBeCreated(): void
     {
-        // @todo ENUM never worked for SQLite and PostgreSQL. Fix EnumType implementation for SQLite and PostgreSQL
-        //       and remove the exclude group attributes of the test to test working state.
         $subject = $this->createSchemaMigrator();
         $sqlCode = file_get_contents(__DIR__ . '/../Fixtures/enumTable.sql');
         $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
@@ -784,8 +781,6 @@ final class SchemaMigratorTest extends FunctionalTestCase
     #[Test]
     public function setTypeFieldCanBeCreated(): void
     {
-        // @todo SET never worked for SQLite and PostgreSQL. Fix EnumType implementation for SQLite and PostgreSQL
-        //       and remove the exclude group attributes of the test to test working state.
         $subject = $this->createSchemaMigrator();
         $sqlCode = file_get_contents(__DIR__ . '/../Fixtures/setTable.sql');
         $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));

@@ -41,9 +41,12 @@ class SetType extends Type
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        $quotedValues = array_map($platform->quoteStringLiteral(...), $fieldDeclaration['unquotedValues']);
-
+        if (method_exists($platform, 'getSetDeclarationSQL')) {
+            return $platform->getSetDeclarationSQL($fieldDeclaration);
+        }
+        $quotedValues = array_map($platform->quoteStringLiteral(...), $fieldDeclaration['values']);
         return sprintf('SET(%s)', implode(', ', $quotedValues));
+
     }
 
     /**
